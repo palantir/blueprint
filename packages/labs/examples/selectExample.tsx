@@ -48,7 +48,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 popoverProps={{ popoverClassName: minimal ? Classes.MINIMAL : "" }}
             >
                 <Button
-                    rightIconName="double-caret-vertical"
+                    rightIconName="caret-down"
                     text={film ? film.title : "(No selection)"}
                 />
             </FilmSelect>
