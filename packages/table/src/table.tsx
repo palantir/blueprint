@@ -786,23 +786,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const tableBottom = this.grid.getCumulativeHeightAt(this.grid.numRows - 1);
         const tableRight = this.grid.getCumulativeWidthAt(this.grid.numCols - 1);
 
-        let nextScrollTop = (tableBottom < viewportRect.top + viewportRect.height)
+        const nextScrollTop = (tableBottom < viewportRect.top + viewportRect.height)
             // scroll the last row into view
             ? Math.max(0, tableBottom - viewportRect.height)
             : viewportRect.top;
 
-        let nextScrollLeft = (tableRight < viewportRect.left + viewportRect.width)
+        const nextScrollLeft = (tableRight < viewportRect.left + viewportRect.width)
             // scroll the last column into view
             ? Math.max(0, tableRight - viewportRect.width)
             : viewportRect.left;
-
-        // reset the scroll position when scrolling is disabled
-        if (this.shouldDisableVerticalScroll()) {
-            nextScrollTop = 0;
-        }
-        if (this.shouldDisableHorizontalScroll()) {
-            nextScrollLeft = 0;
-        }
 
         this.syncViewportPosition(nextScrollLeft, nextScrollTop);
     }
