@@ -256,15 +256,17 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", this.handleDocumentClick);
 
-        document.body.classList.remove(Classes.OVERLAY_OPEN);
-
         const { openStack } = Overlay;
         const stackIndex = openStack.indexOf(this);
         if (stackIndex !== -1) {
             openStack.splice(stackIndex, 1);
-            const lastOpenedOverlay = Overlay.getLastOpened();
-            if (openStack.length > 0 && lastOpenedOverlay.props.enforceFocus) {
-                document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
+            if (openStack.length > 0) {
+                const lastOpenedOverlay = Overlay.getLastOpened();
+                if (lastOpenedOverlay.props.enforceFocus) {
+                    document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
+                }
+            } else {
+                document.body.classList.remove(Classes.OVERLAY_OPEN);
             }
         }
     }

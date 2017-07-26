@@ -281,30 +281,35 @@ describe("<Overlay>", () => {
     });
 
     describe("Background scrolling", () => {
+        beforeEach(() => {
+            // force-reset Overlay stack state between tests
+            (Overlay as any).openStack = [];
+            document.body.classList.remove(Classes.OVERLAY_OPEN);
+        });
 
-        it("disables document scrolling by default", () => {
+        it("disables document scrolling by default", (done) => {
             wrapper = mountOverlay(undefined, undefined);
-            assert.isTrue(isBodyScrollingDisabled());
+            assertBodyScrollingDisabled(true, done);
         });
 
-        it("disables document scrolling if inline=false and hasBackdrop=true", () => {
+        it("disables document scrolling if inline=false and hasBackdrop=true", (done) => {
             wrapper = mountOverlay(false, true);
-            assert.isTrue(isBodyScrollingDisabled());
+            assertBodyScrollingDisabled(true, done);
         });
 
-        it("does not disable document scrolling if inline=false and hasBackdrop=false", () => {
+        it("does not disable document scrolling if inline=false and hasBackdrop=false", (done) => {
             wrapper = mountOverlay(false, false);
-            assert.isFalse(isBodyScrollingDisabled());
+            assertBodyScrollingDisabled(false, done);
         });
 
-        it("does not disable document scrolling if inline=true and hasBackdrop=true", () => {
+        it("does not disable document scrolling if inline=true and hasBackdrop=true", (done) => {
             wrapper = mountOverlay(true, true);
-            assert.isFalse(isBodyScrollingDisabled());
+            assertBodyScrollingDisabled(false, done);
         });
 
-        it("does not disable document scrolling if inline=true and hasBackdrop=false", () => {
+        it("does not disable document scrolling if inline=true and hasBackdrop=false", (done) => {
             wrapper = mountOverlay(true, false);
-            assert.isFalse(isBodyScrollingDisabled());
+            assertBodyScrollingDisabled(false, done);
         });
 
         function mountOverlay(inline: boolean, hasBackdrop: boolean) {
@@ -315,8 +320,13 @@ describe("<Overlay>", () => {
             );
         }
 
-        function isBodyScrollingDisabled() {
-            return document.body.classList.contains(Classes.OVERLAY_OPEN);
+        function assertBodyScrollingDisabled(disabled: boolean, done: MochaDone) {
+            // wait for the DOM to settle before checking body classes
+            setTimeout(() => {
+                const hasClass = document.body.classList.contains(Classes.OVERLAY_OPEN);
+                assert.equal(hasClass, disabled);
+                done();
+            });
         }
     });
 
