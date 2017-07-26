@@ -138,6 +138,28 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
 
+    // Throttled event callbacks
+    // =========================
+
+    private throttledHandleMainQuadrantWheel: (event: React.WheelEvent<HTMLElement>) => any;
+    private throttledHandleMainQuadrantScroll: (event: React.UIEvent<HTMLElement>) => any;
+    private throttledHandleTopQuadrantWheel: (event: React.WheelEvent<HTMLElement>) => any;
+    private throttledHandleLeftQuadrantWheel: (event: React.WheelEvent<HTMLElement>) => any;
+    private throttledHandleTopLeftQuadrantWheel: (event: React.WheelEvent<HTMLElement>) => any;
+
+    public constructor(props: ITableQuadrantStackProps, context?: any) {
+        super(props, context);
+
+        // declare throttled functions on each component instance, since they're stateful
+        this.throttledHandleMainQuadrantWheel =
+            CoreUtils.throttleReactEventCallback2(this.handleMainQuadrantWheel, /* preventDefault */ true);
+        this.throttledHandleMainQuadrantScroll = CoreUtils.throttleReactEventCallback2(this.handleMainQuadrantScroll);
+        this.throttledHandleTopQuadrantWheel = CoreUtils.throttleReactEventCallback2(this.handleTopQuadrantWheel);
+        this.throttledHandleLeftQuadrantWheel = CoreUtils.throttleReactEventCallback2(this.handleLeftQuadrantWheel);
+        this.throttledHandleTopLeftQuadrantWheel =
+            CoreUtils.throttleReactEventCallback2(this.handleTopLeftQuadrantWheel);
+    }
+
     public componentDidMount() {
         CoreUtils.safeInvoke(this.props.columnHeaderRef, this.findColumnHeader(QuadrantType.MAIN));
         CoreUtils.safeInvoke(this.props.rowHeaderRef, this.findRowHeader(QuadrantType.MAIN));
@@ -166,8 +188,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                     bodyRef={this.props.bodyRef}
                     grid={grid}
                     isRowHeaderShown={isRowHeaderShown}
-                    onScroll={this.handleMainQuadrantScroll}
-                    onWheel={this.handleMainQuadrantWheel}
+                    onScroll={this.throttledHandleMainQuadrantScroll}
+                    onWheel={this.throttledHandleMainQuadrantWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.MAIN].quadrant}
                     quadrantType={QuadrantType.MAIN}
                     renderBody={renderBody}
@@ -179,7 +201,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 <TableQuadrant
                     grid={grid}
                     isRowHeaderShown={isRowHeaderShown}
-                    onWheel={this.handleTopQuadrantWheel}
+                    onWheel={this.throttledHandleTopQuadrantWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP].quadrant}
                     quadrantType={QuadrantType.TOP}
                     renderBody={renderBody}
@@ -191,7 +213,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 <TableQuadrant
                     grid={grid}
                     isRowHeaderShown={isRowHeaderShown}
-                    onWheel={this.handleLeftQuadrantWheel}
+                    onWheel={this.throttledHandleLeftQuadrantWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
                     quadrantType={QuadrantType.LEFT}
                     renderBody={renderBody}
@@ -203,7 +225,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 <TableQuadrant
                     grid={grid}
                     isRowHeaderShown={isRowHeaderShown}
-                    onWheel={this.handleTopLeftQuadrantWheel}
+                    onWheel={this.throttledHandleTopLeftQuadrantWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].quadrant}
                     quadrantType={QuadrantType.TOP_LEFT}
                     renderBody={renderBody}
@@ -276,23 +298,25 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // ==============
 
     private handleMainQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
-        const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
-
-        // prevent default scrolling action and explicitly set new scroll offset on the main
-        // quadrant, to keep all quadrants in the exact same spot in each frame
-        event.preventDefault();
-        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
-        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
-
-        this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
-        this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
-
+        // we invoke event.preventDefault() when defining the throttled version of this function in
+        // the constructor. this lets us prevent default scrolling animations and instead
+        // programmatically keep all quadrants in the exact same spot in each frame.
+        if (!this.props.isHorizontalScrollDisabled) {
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
+            const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
+            this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
+        }
+        if (!this.props.isVerticalScrollDisabled) {
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
+            const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
+            this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
+        }
         this.props.onScroll(event);
     }
 
-    // use the more generic "scroll" event for the main quadrant, which captures both click+dragging
-    // on the scrollbar and trackpad/mousewheel gestures
+    // use the more generic "scroll" event to sync quadrants in response to scrollbar interactions
     private handleMainQuadrantScroll = (event: React.UIEvent<HTMLElement>) => {
         if (this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback) {
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
