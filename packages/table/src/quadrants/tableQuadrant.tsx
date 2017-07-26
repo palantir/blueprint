@@ -170,9 +170,6 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
         if (nextProps.onScroll != null && quadrantType !== QuadrantType.MAIN) {
             console.warn(Errors.QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED);
         }
-        if (nextProps.onWheel && quadrantType === QuadrantType.MAIN) {
-            console.warn(Errors.QUADRANT_ON_WHEEL_UNNECESSARILY_DEFINED);
-        }
     }
 
     private getQuadrantCssClass() {
