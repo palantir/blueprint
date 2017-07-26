@@ -12,7 +12,7 @@ node_modules
 npm-debug.log
 lerna-debug.log
 
-# SASS
+# Sass
 .sass-cache/
 
 # Blueprint

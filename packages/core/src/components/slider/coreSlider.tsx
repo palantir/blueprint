@@ -160,7 +160,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         const labelStepSize: number = this.props.labelStepSize;
         if (this.props.renderLabel === false) { return undefined; }
 
-        const stepSize = Math.round(this.state.tickSize * (labelStepSize as number));
+        const stepSize = Math.round(this.state.tickSize * labelStepSize);
         const labels: JSX.Element[] = [];
         // tslint:disable-next-line:one-variable-per-declaration
         for (let i = min, left = 0; i < max || approxEqual(i, max); i += labelStepSize, left += stepSize) {
@@ -203,7 +203,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
 
     private updateTickSize() {
         if (this.trackElement != null) {
-            const tickSize = this.trackElement.clientWidth / ((this.props.max as number) - (this.props.min as number));
+            const tickSize = this.trackElement.clientWidth / (this.props.max - this.props.min);
             this.setState({ tickSize });
         }
     }
