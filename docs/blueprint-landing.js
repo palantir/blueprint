@@ -5563,6 +5563,7 @@
 	exports.ARROW_UP = 38;
 	exports.ARROW_RIGHT = 39;
 	exports.ARROW_DOWN = 40;
+	exports.DELETE = 46;
 
 	//# sourceMappingURL=keys.js.map
 
@@ -29617,7 +29618,7 @@
 	        var isAutoHeight = this.state.height === "auto";
 	        var containerStyle = {
 	            height: showContents ? this.state.height : undefined,
-	            overflowY: isAutoHeight ? "visible" : undefined,
+	            overflowY: (isAutoHeight ? "visible" : undefined),
 	            transition: isAutoHeight ? "none" : undefined,
 	        };
 	        var contentsStyle = {
@@ -29788,7 +29789,7 @@
 	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    Menu.prototype.render = function () {
-	        return React.createElement("ul", { className: classNames(Classes.MENU, this.props.className) }, this.props.children);
+	        return (React.createElement("ul", { className: classNames(Classes.MENU, this.props.className), ref: this.props.ulRef }, this.props.children));
 	    };
 	    return Menu;
 	}(React.Component));
@@ -31118,10 +31119,10 @@
 	        return element != null && element.type === Hotkey;
 	    };
 	    Hotkey.prototype.render = function () {
-	        var _a = this.props, combo = _a.combo, label = _a.label;
+	        var _a = this.props, label = _a.label, spreadableProps = tslib_1.__rest(_a, ["label"]);
 	        return React.createElement("div", { className: "pt-hotkey" },
 	            React.createElement("div", { className: "pt-hotkey-label" }, label),
-	            React.createElement(keyCombo_1.KeyCombo, { combo: combo }));
+	            React.createElement(keyCombo_1.KeyCombo, tslib_1.__assign({}, spreadableProps)));
 	    };
 	    Hotkey.prototype.validateProps = function (props) {
 	        if (props.global !== true && props.group == null) {
@@ -31131,7 +31132,11 @@
 	    return Hotkey;
 	}(common_1.AbstractComponent));
 	Hotkey.defaultProps = {
+	    allowInInput: false,
+	    disabled: false,
 	    global: false,
+	    preventDefault: false,
+	    stopPropagation: false,
 	};
 	exports.Hotkey = Hotkey;
 
@@ -31579,32 +31584,22 @@
 	        this.scope = scope;
 	        this.actions = [];
 	        this.handleKeyDown = function (e) {
-	            if (_this.isTextInput(e) || hotkeysDialog_1.isHotkeysDialogShowing()) {
+	            if (hotkeysDialog_1.isHotkeysDialogShowing()) {
 	                return;
 	            }
 	            var combo = hotkeyParser_1.getKeyCombo(e);
-	            if (hotkeyParser_1.comboMatches(hotkeyParser_1.parseKeyCombo(SHOW_DIALOG_KEY), combo)) {
+	            var isTextInput = _this.isTextInput(e);
+	            if (!isTextInput && hotkeyParser_1.comboMatches(hotkeyParser_1.parseKeyCombo(SHOW_DIALOG_KEY), combo)) {
 	                hotkeysDialog_1.showHotkeysDialog(_this.actions.map(function (action) { return action.props; }));
 	                return;
 	            }
-	            for (var _i = 0, _a = _this.actions; _i < _a.length; _i++) {
-	                var action = _a[_i];
-	                if (hotkeyParser_1.comboMatches(action.combo, combo)) {
-	                    utils_1.safeInvoke(action.props.onKeyDown, e);
-	                }
-	            }
+	            _this.invokeNamedCallbackIfComboRecognized(combo, "onKeyDown", e);
 	        };
 	        this.handleKeyUp = function (e) {
-	            if (_this.isTextInput(e) || hotkeysDialog_1.isHotkeysDialogShowing()) {
+	            if (hotkeysDialog_1.isHotkeysDialogShowing()) {
 	                return;
 	            }
-	            var combo = hotkeyParser_1.getKeyCombo(e);
-	            for (var _i = 0, _a = _this.actions; _i < _a.length; _i++) {
-	                var action = _a[_i];
-	                if (hotkeyParser_1.comboMatches(action.combo, combo)) {
-	                    utils_1.safeInvoke(action.props.onKeyUp, e);
-	                }
-	            }
+	            _this.invokeNamedCallbackIfComboRecognized(hotkeyParser_1.getKeyCombo(e), "onKeyUp", e);
 	        };
 	    }
 	    HotkeysEvents.prototype.count = function () {
@@ -31625,6 +31620,24 @@
 	            }
 	        });
 	        this.actions = actions;
+	    };
+	    HotkeysEvents.prototype.invokeNamedCallbackIfComboRecognized = function (combo, callbackName, e) {
+	        var isTextInput = this.isTextInput(e);
+	        for (var _i = 0, _a = this.actions; _i < _a.length; _i++) {
+	            var action = _a[_i];
+	            var shouldIgnore = (isTextInput && !action.props.allowInInput) || action.props.disabled;
+	            if (!shouldIgnore && hotkeyParser_1.comboMatches(action.combo, combo)) {
+	                if (action.props.preventDefault) {
+	                    e.preventDefault();
+	                }
+	                if (action.props.stopPropagation) {
+	                    // set a flag just for unit testing. not meant to be referenced in feature work.
+	                    e.isPropagationStopped = true;
+	                    e.stopPropagation();
+	                }
+	                utils_1.safeInvoke(action.props[callbackName], e);
+	            }
+	        }
 	    };
 	    HotkeysEvents.prototype.isScope = function (props) {
 	        return (props.global ? HotkeyScope.GLOBAL : HotkeyScope.LOCAL) === this.scope;
@@ -34181,6 +34194,7 @@
 	    CELL_TOWER: "pt-icon-cell-tower",
 	    ID_NUMBER: "pt-icon-id-number",
 	    IP_ADDRESS: "pt-icon-ip-address",
+	    ERASER: "pt-icon-eraser",
 	};
 
 	//# sourceMappingURL=iconClasses.js.map
@@ -34597,6 +34611,7 @@
 	    CELL_TOWER: "\ue770",
 	    ID_NUMBER: "\ue771",
 	    IP_ADDRESS: "\ue772",
+	    ERASER: "\ue773",
 	};
 
 	//# sourceMappingURL=iconStrings.js.map

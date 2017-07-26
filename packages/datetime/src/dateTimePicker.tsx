@@ -69,7 +69,7 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
     public constructor(props?: IDateTimePickerProps, context?: any) {
         super(props, context);
 
-        const initialValue = (this.props.value != null) ? this.props.value : this.props.defaultValue;
+        const initialValue = (this.props.value !== undefined) ? this.props.value : this.props.defaultValue;
         this.state = {
             dateValue: initialValue,
             timeValue: initialValue,
@@ -101,6 +101,9 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
                 dateValue: nextProps.value,
                 timeValue: nextProps.value,
             });
+        } else {
+            // clear only the date to remove the selected-date style in the calendar
+            this.setState({ dateValue: null });
         }
     }
 

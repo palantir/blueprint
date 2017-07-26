@@ -53,7 +53,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 25%;
+  top: 10%;
   right: 50%;
   z-index: $pt-z-index-overlay;
   // add bottom margin for overflow scrolling scenarios

@@ -2798,5 +2798,47 @@
     "tags": "internet, protocol, number, id, network",
     "group": "miscellaneous",
     "content": "\\e772"
+  },
+  {
+    "name": "Eraser",
+    "className": "pt-icon-eraser",
+    "tags": "delete, remove",
+    "group": "editor",
+    "content": "\\e773"
+  },
+  {
+    "name": "Issue",
+    "className": "pt-icon-issue",
+    "tags": "circle, notification, failure, circle, exclamation mark, sign, problem",
+    "group": "interface",
+    "content": "\\e774"
+  },
+  {
+    "name": "Issue: new",
+    "className": "pt-icon-issue-new",
+    "tags": "circle, notification, failure, circle, exclamation mark, sign, problem",
+    "group": "interface",
+    "content": "\\e775"
+  },
+  {
+    "name": "Issue: closed",
+    "className": "pt-icon-issue-closed",
+    "tags": "circle, notification, failure, circle, exclamation mark, sign, problem",
+    "group": "interface",
+    "content": "\\e776"
+  },
+  {
+    "name": "Panel: stats",
+    "className": "pt-icon-panel-stats",
+    "tags": "sidebar, layout, list",
+    "group": "table",
+    "content": "\\e777"
+  },
+  {
+    "name": "Panel: table",
+    "className": "pt-icon-panel-table",
+    "tags": "sidebar, layout, spreadsheet",
+    "group": "table",
+    "content": "\\e778"
   }
 ]

@@ -10,19 +10,20 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
-    AbstractComponent,
     Button,
-    Classes,
+    Classes as CoreClasses,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
     Keys,
+    Menu,
     Popover,
     Position,
     Utils,
 } from "@blueprintjs/core";
-import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { IListItemsProps, IQueryListRendererProps, QueryList } from "../";
+import * as Classes from "../../common/classes";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -50,7 +51,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     inputProps?: IInputGroupProps & HTMLInputProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected
@@ -88,7 +89,7 @@ export interface ISelectState<T> {
 }
 
 @PureRender
-export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T>> {
+export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>> {
     public static displayName = "Blueprint.Select";
 
     public static ofType<T>() {
@@ -151,22 +152,22 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames("pt-select-popover", popoverProps.popoverClassName)}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 popoverWillOpen={this.handlePopoverWillOpen}
                 popoverDidOpen={this.handlePopoverDidOpen}
                 popoverWillClose={this.handlePopoverWillClose}
             >
                 <div
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
-                    onKeyUp={this.state.isOpen && handleKeyUp}
+                    onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     {this.props.children}
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
-                    <ul className={Classes.MENU} ref={listProps.itemsParentRef}>
+                    <Menu ulRef={listProps.itemsParentRef}>
                         {this.renderItems(listProps)}
-                    </ul>
+                    </Menu>
                 </div>
             </Popover>
         );
@@ -187,7 +188,7 @@ export class Select<T> extends AbstractComponent<ISelectProps<T>, ISelectState<T
 
     private maybeRenderInputClearButton() {
         return this.state.query.length > 0
-            ? <Button className={Classes.MINIMAL} iconName="cross" onClick={this.resetQuery} />
+            ? <Button className={CoreClasses.MINIMAL} iconName="cross" onClick={this.resetQuery} />
             : undefined;
     }
 

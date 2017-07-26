@@ -9,7 +9,17 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { AbstractComponent, Classes, HTMLInputProps, IProps, ITagProps, Keys, Tag, Utils } from "@blueprintjs/core";
+import {
+    AbstractComponent,
+    Classes as CoreClasses,
+    HTMLInputProps,
+    IProps,
+    ITagProps,
+    Keys,
+    Tag,
+    Utils,
+} from "@blueprintjs/core";
+import * as Classes from "../../common/classes";
 
 export interface ITagInputProps extends IProps {
     /** React props to pass to the `<input>` element */
@@ -19,8 +29,12 @@ export interface ITagInputProps extends IProps {
      * Callback invoked when a new tag is added by the user pressing `enter` on the input.
      * Receives the current value of the input field. New tags are expected to be appended to
      * the list.
+     *
+     * The input will be cleared after `onAdd` is invoked _unless_ the callback explicitly
+     * returns `false`. This is useful if the provided `value` is somehow invalid and should
+     * not be added as a tag.
      */
-    onAdd?: (value: string) => void;
+    onAdd?: (value: string) => boolean | void;
 
     /**
      * Callback invoked when the user clicks the X button on a tag.
@@ -54,7 +68,7 @@ const NONE = -1;
 export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> {
     public static displayName = "Blueprint.TagInput";
 
-    public static defaultProps: Partial<ITagInputProps> = {
+    public static defaultProps: Partial<ITagInputProps> & object = {
         inputProps: {},
         tagProps: {},
     };
@@ -80,8 +94,8 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     public render() {
         const { className, inputProps, values } = this.props;
 
-        const classes = classNames(Classes.INPUT, "pt-tag-input", {
-            [Classes.ACTIVE]: this.state.isInputFocused,
+        const classes = classNames(CoreClasses.INPUT, Classes.TAG_INPUT, {
+            [CoreClasses.ACTIVE]: this.state.isInputFocused,
         }, className);
 
         return (
@@ -98,7 +112,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     onChange={this.handleInputChange}
                     onKeyDown={this.handleInputKeyDown}
                     ref={this.refHandlers.input}
-                    className={classNames("pt-input-ghost", inputProps.className)}
+                    className={classNames(Classes.INPUT_GHOST, inputProps.className)}
                 />
             </div>
         );
@@ -167,8 +181,11 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         const { selectionEnd, value } = event.currentTarget;
         if (event.which === Keys.ENTER && value.length > 0) {
             // enter key on non-empty string invokes onAdd
-            this.setState({ inputValue: "" });
-            Utils.safeInvoke(this.props.onAdd, value);
+            const shouldClearInput = Utils.safeInvoke(this.props.onAdd, value);
+            // only explicit return false cancels text clearing
+            if (shouldClearInput !== false) {
+                this.setState({ inputValue: "" });
+            }
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.

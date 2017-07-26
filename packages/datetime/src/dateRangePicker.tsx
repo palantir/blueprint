@@ -315,14 +315,17 @@ export class DateRangePicker
         }
 
         const shortcuts = typeof propsShortcuts === "boolean" ? createDefaultShortcuts() : propsShortcuts;
-        const shortcutElements = shortcuts.map((s, i) => (
-            <MenuItem
-                className={Classes.POPOVER_DISMISS_OVERRIDE}
-                key={i}
-                onClick={this.getShorcutClickHandler(s.dateRange)}
-                text={s.label}
-            />
-        ));
+        const shortcutElements = shortcuts.map((s, i) => {
+            return (
+                <MenuItem
+                    className={Classes.POPOVER_DISMISS_OVERRIDE}
+                    disabled={!this.isShortcutInRange(s.dateRange)}
+                    key={i}
+                    onClick={this.getShorcutClickHandler(s.dateRange)}
+                    text={s.label}
+                />
+            );
+        });
 
         return (
             <Menu className={DateClasses.DATERANGEPICKER_SHORTCUTS}>
@@ -496,6 +499,10 @@ export class DateRangePicker
 
     private setViews(leftView: MonthAndYear, rightView: MonthAndYear) {
         this.setState({ leftView, rightView });
+    }
+
+    private isShortcutInRange(shortcutDateRange: DateRange) {
+        return DateUtils.isDayRangeInRange(shortcutDateRange, [this.props.minDate, this.props.maxDate]);
     }
 }
 

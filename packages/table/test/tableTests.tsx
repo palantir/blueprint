@@ -15,6 +15,7 @@ import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
+import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { IRegion, Regions } from "../src/regions";
 import { TableBody } from "../src/tableBody";
@@ -142,6 +143,38 @@ describe("<Table>", () => {
         // Resize by visible columns
         table.resizeRowsByTallestCell();
         expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
+    });
+
+    it("Invokes onVisibleCellsChange on mount", () => {
+        const onVisibleCellsChange = sinon.spy();
+        const renderCell = () => <Cell>foo</Cell>;
+        mount(
+            <Table onVisibleCellsChange={onVisibleCellsChange} numRows={3}>
+                <Column name="Column0" renderCell={renderCell} />
+            </Table>,
+        );
+
+        // the callback is called quite often even in the course of a single render cycle.
+        // don't bother to count the invocations.
+        expect(onVisibleCellsChange.called).to.be.true;
+        const rowIndices = { rowIndexStart: 0, rowIndexEnd: 2 } as IRowIndices;
+        const columnIndices = { columnIndexStart: 0, columnIndexEnd: 0 } as IColumnIndices;
+        expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
+    });
+
+    it("Invokes onVisibleCellsChange when the table body scrolls", () => {
+        const onVisibleCellsChange = sinon.spy();
+        const renderCell = () => <Cell>foo</Cell>;
+        const table = mount(
+            <Table onVisibleCellsChange={onVisibleCellsChange} numRows={3}>
+                <Column name="Column0" renderCell={renderCell} />
+            </Table>,
+        );
+        table.find(`.${Classes.TABLE_BODY}`).simulate("scroll");
+        expect(onVisibleCellsChange.callCount).to.be.greaterThan(1);
+        const rowIndices = { rowIndexStart: 0, rowIndexEnd: 2 } as IRowIndices;
+        const columnIndices = { columnIndexStart: 0, columnIndexEnd: 0 } as IColumnIndices;
+        expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
     describe("Full-table selection", () => {
@@ -468,6 +501,7 @@ describe("<Table>", () => {
 
     describe("Focused cell", () => {
         let onFocus: Sinon.SinonSpy;
+        let onVisibleCellsChange: Sinon.SinonSpy;
 
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
@@ -487,6 +521,7 @@ describe("<Table>", () => {
 
         beforeEach(() => {
             onFocus = sinon.spy();
+            onVisibleCellsChange = sinon.spy();
         });
 
         it("removes the focused cell if enableFocus is reset to false", () => {
@@ -624,6 +659,11 @@ describe("<Table>", () => {
                     const { component } = mountTable();
                     component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
                     expect(component.state("viewportRect")[attrToCheck]).to.equal(expectedOffset);
+                    expect(onVisibleCellsChange.calledThrice).to.be.true;
+
+                    const rowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 } as IRowIndices;
+                    const columnIndices = { columnIndexStart: 0, columnIndexEnd: NUM_COLS - 1 } as IColumnIndices;
+                    expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
                 });
             }
         });
@@ -638,6 +678,7 @@ describe("<Table>", () => {
                     enableFocus={true}
                     focusedCell={DEFAULT_FOCUSED_CELL_COORDS}
                     onFocus={onFocus}
+                    onVisibleCellsChange={onVisibleCellsChange}
                     rowHeights={Array(NUM_ROWS).fill(rowHeight)}
                     numRows={NUM_ROWS}
                 >
@@ -803,6 +844,12 @@ describe("<Table>", () => {
         const UPDATED_COL_WIDTH = COL_WIDTH - 1;
         const UPDATED_ROW_HEIGHT = ROW_HEIGHT - 1;
 
+        let onVisibleCellsChange: Sinon.SinonSpy;
+
+        beforeEach(() => {
+            onVisibleCellsChange = sinon.spy();
+        });
+
         it("when column count decreases", () => {
             const table = mountTable(NUM_COLS, 1);
             scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0);
@@ -813,6 +860,10 @@ describe("<Table>", () => {
             // the viewport should have auto-scrolled to fit the last column in view
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.left).to.equal((UPDATED_NUM_COLS * COL_WIDTH) - viewportRect.width);
+
+            // this callback is invoked more than necessary in response to a single change.
+            // feel free to tighten the screws and reduce this expected count.
+            expect(onVisibleCellsChange.callCount).to.equal(5);
         });
 
         it("when row count decreases", () => {
@@ -823,6 +874,7 @@ describe("<Table>", () => {
 
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.top).to.equal((UPDATED_NUM_ROWS * ROW_HEIGHT) - viewportRect.height);
+            expect(onVisibleCellsChange.callCount).to.equal(5);
         });
 
         it("when column widths decrease", () => {
@@ -833,6 +885,7 @@ describe("<Table>", () => {
 
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.left).to.equal((NUM_COLS * UPDATED_COL_WIDTH) - viewportRect.width);
+            expect(onVisibleCellsChange.callCount).to.equal(5);
         });
 
         it("when row heights decrease", () => {
@@ -843,6 +896,7 @@ describe("<Table>", () => {
 
             const viewportRect = table.state("viewportRect");
             expect(viewportRect.top).to.equal((NUM_ROWS * UPDATED_ROW_HEIGHT) - viewportRect.height);
+            expect(onVisibleCellsChange.callCount).to.equal(5);
         });
 
         function mountTable(numCols: number, numRows: number) {
@@ -851,6 +905,7 @@ describe("<Table>", () => {
                     columnWidths={Array(numCols).fill(COL_WIDTH)}
                     rowHeights={Array(numRows).fill(ROW_HEIGHT)}
                     numRows={numRows}
+                    onVisibleCellsChange={onVisibleCellsChange}
                 >
                     {renderColumns(numCols)}
                 </Table>);
