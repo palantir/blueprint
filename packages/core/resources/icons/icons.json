@@ -401,7 +401,7 @@
   {
     "name": "Tick",
     "className": "pt-icon-tick",
-    "tags": "tick mark, sign, ok, approved, success",
+    "tags": "mark, sign, ok, approved, success",
     "group": "action",
     "content": "\\2713"
   },
