@@ -403,6 +403,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         [QuadrantType.TOP_LEFT]: this.generateQuadrantRefHandlers(QuadrantType.TOP_LEFT),
     };
 
+    private wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
 
@@ -801,6 +803,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // captures both click+dragging on the scrollbar and
     // trackpad/mousewheel gestures
     private handleMainQuadrantScroll = (event: React.UIEvent<HTMLElement>) => {
+        if (this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback) {
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+            return;
+        }
         const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop;
         const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft;
 
@@ -815,10 +821,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleTopQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
         if (!this.shouldDisableHorizontalScroll()) {
             const nextScrollLeft = this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
         }
         if (!this.shouldDisableVerticalScroll()) {
             const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
             this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
         }
@@ -828,11 +836,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
         if (!this.shouldDisableHorizontalScroll()) {
             const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
         }
         if (!this.shouldDisableVerticalScroll()) {
             const nextScrollTop = this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
         }
         this.handleBodyScroll(event);
@@ -841,11 +851,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleTopLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
         if (!this.shouldDisableVerticalScroll()) {
             const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
             this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
         }
         if (!this.shouldDisableHorizontalScroll()) {
             const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
             this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
             this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
         }
@@ -963,12 +975,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const numFrozenColumns = this.getNumFrozenColumnsClamped();
         const numFrozenRows = this.getNumFrozenRowsClamped();
 
-        const frozenColumnsCumulativeWidth = numFrozenColumns > 0
+        // if there are no frozen rows or columns, we still want the quadrant to be 1px bigger to
+        // reveal the header border.
+        const BORDER_WIDTH_CORRECTION = 1;
+
+        const leftQuadrantGridContentWidth = numFrozenColumns > 0
             ? this.grid.getCumulativeWidthAt(numFrozenColumns - 1)
-            : 0;
-        const frozenRowsCumulativeHeight = numFrozenRows > 0
+            : BORDER_WIDTH_CORRECTION;
+        const topQuadrantGridContentHeight = numFrozenRows > 0
             ? this.grid.getCumulativeHeightAt(numFrozenRows - 1)
-            : 0;
+            : BORDER_WIDTH_CORRECTION;
 
         // all menus are the same size, so arbitrarily use the one from the main quadrant.
         // assumes that the menu element width has already been sync'd after the last render
@@ -977,10 +993,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnHeaderHeight = this.getQuadrantColumnHeaderHeight(QuadrantType.MAIN);
 
         // no need to sync the main quadrant, because it fills the entire viewport
-        topQuadrantElement.style.height = `${frozenRowsCumulativeHeight + columnHeaderHeight}px`;
-        leftQuadrantElement.style.width = `${frozenColumnsCumulativeWidth + rowHeaderWidth}px`;
-        topLeftQuadrantElement.style.width = `${frozenColumnsCumulativeWidth + rowHeaderWidth}px`;
-        topLeftQuadrantElement.style.height = `${frozenRowsCumulativeHeight + columnHeaderHeight}px`;
+        topQuadrantElement.style.height = `${topQuadrantGridContentHeight + columnHeaderHeight}px`;
+        leftQuadrantElement.style.width = `${leftQuadrantGridContentWidth + rowHeaderWidth}px`;
+        topLeftQuadrantElement.style.width = `${leftQuadrantGridContentWidth + rowHeaderWidth}px`;
+        topLeftQuadrantElement.style.height = `${topQuadrantGridContentHeight + columnHeaderHeight}px`;
 
         // resize the top and left quadrants to keep the main quadrant's scrollbar visible
         const scrollbarWidth = mainQuadrantScrollElement.offsetWidth - mainQuadrantScrollElement.clientWidth;

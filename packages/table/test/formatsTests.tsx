@@ -51,7 +51,8 @@ describe("Formats", () => {
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
 
-        it("can automatically truncate and show popover when truncated and word wrapped", () => {
+        // TODO: FROZEN
+        it.skip("can automatically truncate and show popover when truncated and word wrapped", () => {
             const str = `
                 We are going to die, and that makes us the lucky ones. Most
                 people are never going to die because they are never going to
