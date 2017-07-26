@@ -86,7 +86,7 @@ export function countDecimalPlaces(num: number) {
 }
 
 /**
- * Throttle an event on an EventTarget by wrapping it in `requestAnimationFrame` call.
+ * Throttle an event on an EventTarget by wrapping it in a `requestAnimationFrame` call.
  * Returns the event handler that was bound to given eventName so you can clean up after yourself.
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
@@ -104,3 +104,36 @@ export function throttleEvent(target: EventTarget, eventName: string, newEventNa
     target.addEventListener(eventName, func);
     return func;
 };
+
+/**
+ * Throttle a callback by wrapping it in a `requestAnimationFrame` call. Returns the throttled
+ * function.
+ * @see https://www.html5rocks.com/en/tutorials/speed/animations/
+ */
+export function throttleReactEventCallback2(
+    callback: (event: React.SyntheticEvent<any>, ...otherArgs: any[]) => any,
+    preventDefault?: boolean,
+) {
+    let isRunning = false;
+    const func = (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => {
+        // need to preventDefault synchronously and without regard to the rAF timeline,
+        // if we want it to work
+        if (preventDefault) {
+            event2.preventDefault();
+        }
+
+        if (isRunning) {
+            return;
+        }
+        isRunning = true;
+
+        // prevent React from reclaiming the event object before we reference it
+        event2.persist();
+
+        requestAnimationFrame(() => {
+            callback(event2, ...otherArgs2);
+            isRunning = false;
+        });
+    };
+    return func;
+}
