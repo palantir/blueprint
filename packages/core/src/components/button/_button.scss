@@ -204,12 +204,6 @@ Styleguide pt-button
   &.pt-small,
   .pt-small & {
     @include pt-button-small();
-
-    // small buttons are too small to contain any Blueprint icons
-    &[class*="pt-icon-"]::before,
-    #{$icon-classes} {
-      display: none;
-    }
   }
 
   // ensure icon button with no text is a perfect square
