@@ -17,8 +17,11 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps, removeNonHTMLProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
+import { HTMLInputProps } from "../../index";
 
-export interface IControlProps extends IProps {
+export interface IControlProps extends IProps, HTMLInputProps {
+    // NOTE: HTML props are duplicated here to provide control-specific documentation
+
     /** Whether the control is checked. */
     checked?: boolean;
 
@@ -31,22 +34,36 @@ export interface IControlProps extends IProps {
     /** Ref handler that receives HTML `<input>` element backing this component. */
     inputRef?: (ref: HTMLInputElement) => any;
 
-    /** Text label for the control. */
-    label?: React.ReactNode;
+    /**
+     * Text label for the control.
+     *
+     * This prop actually supports JSX elements, but TypeScript will throw an error because
+     * `HTMLProps` only allows strings. Use `labelElement` to supply a JSX element in TypeScript.
+     */
+    label?: string;
+
+    /**
+     * JSX Element label for the control.
+     *
+     * This prop is necessary for TypeScript consumers as the type definition for `label` only
+     * accepts strings. JavaScript consumers can provide a JSX element directly to `label`.
+     */
+    labelElement?: React.ReactNode;
 
     /** Event handler invoked when input value is changed. */
     onChange?: React.FormEventHandler<HTMLInputElement>;
 }
 
-const INVALID_PROPS = [
+const INVALID_PROPS: Array<keyof ICheckboxProps> = [
     // we spread props to `<input>` but render `children` as its sibling
     "children",
     "defaultIndeterminate",
     "indeterminate",
+    "labelElement",
 ];
 
 /** Base Component class for all Controls */
-export class Control<P extends IControlProps> extends React.Component<React.HTMLProps<HTMLInputElement> & P, {}> {
+export class Control<P extends IControlProps> extends React.Component<P, {}> {
     // generates control markup for given input type.
     // optional inputRef in case the component needs reference for itself (don't forget to invoke the prop!).
     protected renderControl(type: "checkbox" | "radio", typeClassName: string, inputRef = this.props.inputRef) {
@@ -62,6 +79,7 @@ export class Control<P extends IControlProps> extends React.Component<React.HTML
                 <input {...inputProps} ref={inputRef} type={type} />
                 <span className={Classes.CONTROL_INDICATOR} />
                 {this.props.label}
+                {this.props.labelElement}
                 {this.props.children}
             </label>
         );
