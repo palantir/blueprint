@@ -23,7 +23,7 @@ type QuadrantRefHandler = (ref: HTMLElement) => void;
 type IQuadrantRefs = IQuadrantRefMap<HTMLElement>;
 type IQuadrantRefHandlers = IQuadrantRefMap<QuadrantRefHandler>;
 
-export interface ITableQuadrantProps extends IProps {
+export interface ITableQuadrantStackProps extends IProps {
     /**
      * A callback that receives a `ref` to the main quadrant's table-body element.
      */
@@ -113,10 +113,10 @@ export interface ITableQuadrantProps extends IProps {
     scrollContainerRef?: (ref: HTMLElement) => void;
 }
 
-export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {}> {
+export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackProps, {}> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
-    public static defaultProps: Partial<ITableQuadrantProps> & object = {
+    public static defaultProps: Partial<ITableQuadrantStackProps> & object = {
         isHorizontalScrollDisabled: false,
         isRowHeaderShown: true,
         isVerticalScrollDisabled: false,
