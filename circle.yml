@@ -19,7 +19,7 @@ general:
 
 machine:
   environment:
-    YARN_VERSION: 0.27.5
+    YARN_VERSION: 0.27.5-1
   node:
     version: 6.1.0
 
