@@ -88,7 +88,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that renders either all of or just the frozen section of the column header.
      */
-    renderColumnHeader?: (showFrozenColumnsOnly?: boolean) => JSX.Element;
+    renderColumnHeader?: ( showFrozenColumnsOnly?: boolean) => JSX.Element;
 
     /**
      * A callback that renders either all of or just the frozen section of the row header.
@@ -132,6 +132,7 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
 
         const maybeMenu = isRowHeaderShown ? this.props.renderMenu() : undefined;
         const maybeRowHeader = isRowHeaderShown ? this.props.renderRowHeader(showFrozenRowsOnly) : undefined;
+        const columnHeader = this.props.renderColumnHeader(showFrozenColumnsOnly);
 
         // need to set bottom container size to prevent overlay clipping on scroll
         const bottomContainerStyle = {
@@ -149,7 +150,7 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
                 >
                     <div className={Classes.TABLE_TOP_CONTAINER}>
                         {maybeMenu}
-                        {this.props.renderColumnHeader(showFrozenColumnsOnly)}
+                        {columnHeader}
                     </div>
                     <div className={Classes.TABLE_BOTTOM_CONTAINER} style={bottomContainerStyle}>
                         {maybeRowHeader}

@@ -26,7 +26,7 @@ import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { ISelectedRegionTransform } from "./interactions/selectable";
-// import { GuideLayer } from "./layers/guides";
+import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
 import { QuadrantType, TableQuadrant } from "./quadrants/tableQuadrant";
@@ -521,9 +521,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        this.validateGrid();
-
         const { className, isRowHeaderShown } = this.props;
+        const {horizontalGuides, verticalGuides } = this.state;
+        this.validateGrid();
 
         const classes = classNames(Classes.TABLE_CONTAINER, {
             [Classes.TABLE_REORDERING]: this.state.isReordering,
@@ -546,7 +546,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.MAIN].quadrant}
                     quadrantType={QuadrantType.MAIN}
                     renderBody={this.renderBody}
-                    renderColumnHeader={this.renderColumnHeader}
+                    renderColumnHeader={this.renderMainQuadrantColumnHeader}
                     renderMenu={this.renderMainQuadrantMenu}
                     renderRowHeader={this.renderMainQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.MAIN].scrollContainer}
@@ -558,7 +558,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP].quadrant}
                     quadrantType={QuadrantType.TOP}
                     renderBody={this.renderBody}
-                    renderColumnHeader={this.renderColumnHeader}
+                    renderColumnHeader={this.renderTopQuadrantColumnHeader}
                     renderMenu={this.renderTopQuadrantMenu}
                     renderRowHeader={this.renderTopQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP].scrollContainer}
@@ -570,7 +570,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
                     quadrantType={QuadrantType.LEFT}
                     renderBody={this.renderBody}
-                    renderColumnHeader={this.renderColumnHeader}
+                    renderColumnHeader={this.renderLeftQuadrantColumnHeader}
                     renderMenu={this.renderLeftQuadrantMenu}
                     renderRowHeader={this.renderLeftQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.LEFT].scrollContainer}
@@ -582,19 +582,20 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].quadrant}
                     quadrantType={QuadrantType.TOP_LEFT}
                     renderBody={this.renderBody}
-                    renderColumnHeader={this.renderColumnHeader}
+                    renderColumnHeader={this.renderTopLeftQuadrantColumnHeader}
                     renderMenu={this.renderTopLeftQuadrantMenu}
                     renderRowHeader={this.renderTopLeftQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].scrollContainer}
                 />
 
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
+            {/* this.maybeRenderRegions(this.styleBodyRegion) */}
+                <GuideLayer
+                    className={Classes.TABLE_RESIZE_GUIDES}
+                    verticalGuides={verticalGuides}
+                    horizontalGuides={horizontalGuides}
+                />
             </div>
-            // <GuideLayer
-            //     className={Classes.TABLE_RESIZE_GUIDES}
-            //     verticalGuides={verticalGuides}
-            //     horizontalGuides={horizontalGuides}
-            // />
         );
     }
 
@@ -897,19 +898,39 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private renderMainQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
-        return this.renderRowHeader(this.quadrantRefHandlers[QuadrantType.MAIN].rowHeader, showFrozenRowsOnly);
+        return this.renderRowHeader(this.handleRowResizeGuideMain,
+            this.quadrantRefHandlers[QuadrantType.MAIN].rowHeader, showFrozenRowsOnly);
     }
 
     private renderTopQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
-        return this.renderRowHeader(this.quadrantRefHandlers[QuadrantType.TOP].rowHeader, showFrozenRowsOnly);
+        return this.renderRowHeader(this.handleRowResizeGuideTop,
+            this.quadrantRefHandlers[QuadrantType.TOP].rowHeader, showFrozenRowsOnly);
     }
 
     private renderLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
-        return this.renderRowHeader(this.quadrantRefHandlers[QuadrantType.LEFT].rowHeader, showFrozenRowsOnly);
+        return this.renderRowHeader(this.handleRowResizeGuideLeft,
+            this.quadrantRefHandlers[QuadrantType.LEFT].rowHeader, showFrozenRowsOnly);
     }
 
     private renderTopLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
-        return this.renderRowHeader(this.quadrantRefHandlers[QuadrantType.TOP_LEFT].rowHeader, showFrozenRowsOnly);
+        return this.renderRowHeader(this.handleRowResizeGuideTopLeft,
+            this.quadrantRefHandlers[QuadrantType.TOP_LEFT].rowHeader, showFrozenRowsOnly);
+    }
+
+    private renderMainQuadrantColumnHeader = (showFrozenRowsOnly: boolean) => {
+        return this.renderColumnHeader(this.handleColumnResizeGuideMain, showFrozenRowsOnly);
+    }
+
+    private renderTopQuadrantColumnHeader = (showFrozenRowsOnly: boolean) => {
+        return this.renderColumnHeader(this.handleColumnResizeGuideTop, showFrozenRowsOnly);
+    }
+
+    private renderLeftQuadrantColumnHeader = (showFrozenRowsOnly: boolean) => {
+        return this.renderColumnHeader(this.handleColumnResizeGuideLeft, showFrozenRowsOnly);
+    }
+
+    private renderTopLeftQuadrantColumnHeader = (showFrozenRowsOnly: boolean) => {
+        return this.renderColumnHeader(this.handleColumnResizeGuideTopLeft, showFrozenRowsOnly);
     }
 
     private renderMenu = (refHandler: (ref: HTMLElement) => void) => {
@@ -1099,7 +1120,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private renderColumnHeader = (showFrozenColumnsOnly: boolean = false) => {
+    private renderColumnHeader = (handleColumnResizeGuide: (verticalGuides: number[]) => void,
+                                  showFrozenColumnsOnly: boolean = false) => {
         // columnIndexStart?: number, columnIndexEnd?: number) {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
@@ -1138,7 +1160,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onLayoutLock={this.handleLayoutLock}
                     onReordered={this.handleColumnsReordered}
                     onReordering={this.handleColumnsReordering}
-                    onResizeGuide={this.handleColumnResizeGuide}
+                    onResizeGuide={handleColumnResizeGuide}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
@@ -1153,7 +1175,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    private renderRowHeader = (refHandler: (ref: HTMLElement) => void, showFrozenRowsOnly: boolean = false) => {
+    private renderRowHeader = (handleRowResizeGuide: (horizontalGuides: number[]) => void,
+                               refHandler: (ref: HTMLElement) => void,
+                               showFrozenRowsOnly: boolean = false) => {
         // rowIndexStart?: number, rowIndexEnd?: number) {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
@@ -1193,7 +1217,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     minRowHeight={minRowHeight}
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
-                    onResizeGuide={this.handleRowResizeGuide}
+                    onResizeGuide={handleRowResizeGuide}
                     onReordered={this.handleRowsReordered}
                     onReordering={this.handleRowsReordering}
                     onRowHeightChanged={this.handleRowHeightChanged}
@@ -1663,14 +1687,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private handleColumnResizeGuide = (verticalGuides: number[]) => {
-        this.setState({ verticalGuides } as ITableState);
-    }
-
-    private handleRowResizeGuide = (horizontalGuides: number[]) => {
-        this.setState({ horizontalGuides } as ITableState);
-    }
-
     private clearSelection = (_selectedRegions: IRegion[]) => {
         this.handleSelection([]);
     }
@@ -1980,6 +1996,56 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private getNumFrozenRowsClamped(props: ITableProps = this.props) {
         const { numFrozenRows, numRows } = props;
         return Utils.clamp(numFrozenRows, 0, numRows);
+    }
+
+    private handleColumnResizeGuideMain = (verticalGuides: number[]) => {
+        this.handleColumnResizeGuide(verticalGuides, QuadrantType.MAIN);
+    }
+
+    private handleColumnResizeGuideLeft = (verticalGuides: number[]) => {
+        this.handleColumnResizeGuide(verticalGuides, QuadrantType.LEFT);
+    }
+
+    private handleColumnResizeGuideTop = (verticalGuides: number[]) => {
+        this.handleColumnResizeGuide(verticalGuides, QuadrantType.TOP);
+    }
+
+    private handleColumnResizeGuideTopLeft = (verticalGuides: number[]) => {
+        this.handleColumnResizeGuide(verticalGuides, QuadrantType.TOP_LEFT);
+    }
+
+    private handleColumnResizeGuide = (verticalGuides: number[], quadrantType: QuadrantType) => {
+        const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollLeft;
+        const rowHeaderWidth = this.getQuadrantRowHeaderWidth(quadrantType);
+        const adjustedVerticalGuides = verticalGuides != null
+            ? verticalGuides.map((verticalGuide) => verticalGuide - scrollAmount + rowHeaderWidth)
+            : verticalGuides;
+        this.setState({ verticalGuides: adjustedVerticalGuides } as ITableState);
+    }
+
+    private handleRowResizeGuideMain = (horizontalGuides: number[]) => {
+        this.handleRowResizeGuide(horizontalGuides, QuadrantType.MAIN);
+    }
+
+    private handleRowResizeGuideLeft = (horizontalGuides: number[]) => {
+        this.handleRowResizeGuide(horizontalGuides, QuadrantType.LEFT);
+    }
+
+    private handleRowResizeGuideTop = (horizontalGuides: number[]) => {
+        this.handleRowResizeGuide(horizontalGuides, QuadrantType.TOP);
+    }
+
+    private handleRowResizeGuideTopLeft = (horizontalGuides: number[]) => {
+        this.handleRowResizeGuide(horizontalGuides, QuadrantType.TOP_LEFT);
+    }
+
+    private handleRowResizeGuide = (horizontalGuides: number[], quadrantType: QuadrantType) => {
+        const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollTop;
+        const columnHeaderHeight = this.getQuadrantColumnHeaderHeight(quadrantType);
+        const adjustedHorizontalGuides = horizontalGuides != null
+            ? horizontalGuides.map((horizontalGuide) => horizontalGuide - scrollAmount + columnHeaderHeight)
+            : horizontalGuides;
+        this.setState({ horizontalGuides: adjustedHorizontalGuides } as ITableState);
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;

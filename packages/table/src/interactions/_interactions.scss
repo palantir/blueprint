@@ -3,8 +3,8 @@
 @import "../common/variables";
 
 $resize-handle-width: 3px !default;
-$resize-handle-position-correction: -2px !default;
-$resize-handle-padding: $pt-grid-size / 2 !default;
+$resize-handle-position-correction: -3px !default;
+$resize-handle-padding: 0 !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 
@@ -86,18 +86,18 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
 
   &.bp-table-resize-vertical {
     top: 0;
-    right: -$resize-handle-padding;
-    bottom: -$cell-border-width;
+    right: 0;
+    bottom: -1px;
     cursor: $resize-vertical-cursor;
-    width: $resize-handle-padding * 2;
+    width: 5px;
   }
 
   &.bp-table-resize-horizontal {
-    right: -$cell-border-width;
-    bottom: -$resize-handle-padding / 2;
+    right: -1px;
+    bottom: 0;
     left: 0;
     cursor: $resize-horizontal-cursor;
-    height: $resize-handle-padding;
+    height: 5px;
   }
 }
 
@@ -114,12 +114,12 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
 .bp-table-resize-vertical .bp-table-resize-handle {
   top: 0;
   bottom: 0;
-  left: $resize-handle-padding - ceil($resize-handle-width / 2);
+  left: 2px;
   width: $resize-handle-width;
 }
 
 .bp-table-resize-horizontal .bp-table-resize-handle {
-  top: $resize-handle-padding / 2 - ceil($resize-handle-width / 2);
+  top: 2px;
   right: 0;
   left: 0;
   height: $resize-handle-width;
