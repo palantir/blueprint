@@ -2840,5 +2840,26 @@
     "tags": "sidebar, layout, spreadsheet",
     "group": "table",
     "content": "\\e778"
+  },
+  {
+    "name": "Tick circle",
+    "className": "pt-icon-tick-circle",
+    "tags": "tick mark, sign, ok, approved, success",
+    "group": "action",
+    "content": "\\e779"
+  },
+  {
+    "name": "Prescription",
+    "className": "pt-icon-prescription",
+    "tags": "instruction, direction, medicine, drug, medication, mixture",
+    "group": "miscellaneous",
+    "content": "\\e78a"
+  },
+  {
+    "name": "New prescription",
+    "className": "pt-icon-new-prescription",
+    "tags": "instruction, direction, medicine, drug, medication, mixture",
+    "group": "miscellaneous",
+    "content": "\\e78b"
   }
 ]
