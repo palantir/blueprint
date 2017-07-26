@@ -167,6 +167,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
                     grid={grid}
                     isRowHeaderShown={isRowHeaderShown}
                     onScroll={this.handleMainQuadrantScroll}
+                    onWheel={this.handleMainQuadrantWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.MAIN].quadrant}
                     quadrantType={QuadrantType.MAIN}
                     renderBody={renderBody}
@@ -273,6 +274,22 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
 
     // Event handlers
     // ==============
+
+    private handleMainQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
+        const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
+        const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
+
+        // prevent default scrolling action and explicitly set new scroll offset on the main
+        // quadrant, to keep all quadrants in the exact same spot in each frame
+        event.preventDefault();
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
+
+        this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
+        this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
+
+        this.props.onScroll(event);
+    }
 
     // use the more generic "scroll" event for the main quadrant, which captures both click+dragging
     // on the scrollbar and trackpad/mousewheel gestures
