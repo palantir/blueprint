@@ -1773,7 +1773,7 @@
   {
     "name": "Small tick",
     "className": "pt-icon-small-tick",
-    "tags": "tick mark, sign, ok, approved, success",
+    "tags": "mark, sign, ok, approved, success",
     "group": "action",
     "content": "\\e6d8"
   },
@@ -2690,7 +2690,7 @@
   {
     "name": "Endorsed",
     "className": "pt-icon-endorsed",
-    "tags": "tick mark, sign, ok, approved, success",
+    "tags": "tick, mark, sign, ok, approved, success",
     "group": "action",
     "content": "\\e75f"
   },
@@ -2844,7 +2844,7 @@
   {
     "name": "Tick circle",
     "className": "pt-icon-tick-circle",
-    "tags": "tick mark, sign, ok, approved, success",
+    "tags": "mark, sign, ok, approved, success",
     "group": "action",
     "content": "\\e779"
   },
