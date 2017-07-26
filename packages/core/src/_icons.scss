@@ -7,6 +7,11 @@
 
 #{$icon-classes} {
   display: inline-block;
+  color: $pt-icon-color;
+
+  .pt-dark & {
+    color: $pt-dark-icon-color;
+  }
 
   @each $intent, $color in $pt-intent-colors {
     &.pt-intent-#{$intent} {
