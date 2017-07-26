@@ -36,7 +36,7 @@ dependencies:
   # non-zero exit codes in `dependencies` group will fail the build early
   # so these following commands will block the build and prevent tests
   override:
-    - ./scripts/yarn.sh $YARN_VERSION
+    - sudo apt-get install yarn=$YARN_VERSION
     - yarn
     - echo "Checking if yarn.lock changed..." && git diff --exit-code
     - yarn bootstrap
