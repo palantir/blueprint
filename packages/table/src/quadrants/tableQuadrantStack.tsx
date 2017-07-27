@@ -229,7 +229,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
                         CoreUtils.safeInvoke(this.props.scrollContainerRef, ref);
                     }
                 }
-            }
+            };
             return agg;
         };
         return ["menu", "quadrant", "rowHeader", "scrollContainer"].reduce(reducer, {});
