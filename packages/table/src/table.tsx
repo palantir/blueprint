@@ -522,7 +522,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     public render() {
         const { className, isRowHeaderShown } = this.props;
-        const {horizontalGuides, verticalGuides } = this.state;
+        const { horizontalGuides, verticalGuides } = this.state;
         this.validateGrid();
 
         const classes = classNames(Classes.TABLE_CONTAINER, {
@@ -589,7 +589,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 />
 
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
-            {/* this.maybeRenderRegions(this.styleBodyRegion) */}
                 <GuideLayer
                     className={Classes.TABLE_RESIZE_GUIDES}
                     verticalGuides={verticalGuides}
@@ -1928,7 +1927,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleColumnsReordering = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const leftOffset = this.grid.getCumulativeWidthBefore(guideIndex);
-        this.setState({ isReordering: true, verticalGuides: [leftOffset] } as ITableState);
+        const quadrantType = guideIndex <= this.props.numFrozenColumns ? QuadrantType.TOP_LEFT : QuadrantType.TOP;
+        const verticalGuides = this.adjustVerticalGuides([leftOffset], quadrantType);
+        this.setState({ isReordering: true, verticalGuides } as ITableState);
     }
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
@@ -1939,7 +1940,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleRowsReordering = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const topOffset = this.grid.getCumulativeHeightBefore(guideIndex);
-        this.setState({ isReordering: true, horizontalGuides: [topOffset] } as ITableState);
+        const quadrantType = guideIndex <= this.props.numFrozenRows ? QuadrantType.TOP_LEFT : QuadrantType.LEFT;
+        const horizontalGuides = this.adjustHorizontalGuides([topOffset], quadrantType);
+        this.setState({ isReordering: true, horizontalGuides } as ITableState);
     }
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
@@ -2015,11 +2018,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleColumnResizeGuide = (verticalGuides: number[], quadrantType: QuadrantType) => {
-        const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollLeft;
-        const rowHeaderWidth = this.getQuadrantRowHeaderWidth(quadrantType);
-        const adjustedVerticalGuides = verticalGuides != null
-            ? verticalGuides.map((verticalGuide) => verticalGuide - scrollAmount + rowHeaderWidth)
-            : verticalGuides;
+        const adjustedVerticalGuides = this.adjustVerticalGuides(verticalGuides, quadrantType);
         this.setState({ verticalGuides: adjustedVerticalGuides } as ITableState);
     }
 
@@ -2040,12 +2039,26 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleRowResizeGuide = (horizontalGuides: number[], quadrantType: QuadrantType) => {
+        const adjustedHorizontalGuides = this.adjustHorizontalGuides(horizontalGuides, quadrantType);
+        this.setState({ horizontalGuides: adjustedHorizontalGuides } as ITableState);
+    }
+
+    private adjustVerticalGuides(verticalGuides: number[], quadrantType: QuadrantType) {
+        const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollLeft;
+        const rowHeaderWidth = this.getQuadrantRowHeaderWidth(quadrantType);
+        const adjustedVerticalGuides = verticalGuides != null
+            ? verticalGuides.map((verticalGuide) => verticalGuide - scrollAmount + rowHeaderWidth)
+            : verticalGuides;
+        return adjustedVerticalGuides;
+    }
+
+    private adjustHorizontalGuides(horizontalGuides: number[], quadrantType: QuadrantType) {
         const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollTop;
         const columnHeaderHeight = this.getQuadrantColumnHeaderHeight(quadrantType);
         const adjustedHorizontalGuides = horizontalGuides != null
             ? horizontalGuides.map((horizontalGuide) => horizontalGuide - scrollAmount + columnHeaderHeight)
             : horizontalGuides;
-        this.setState({ horizontalGuides: adjustedHorizontalGuides } as ITableState);
+        return adjustedHorizontalGuides;
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;

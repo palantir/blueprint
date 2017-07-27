@@ -2,9 +2,10 @@
 
 @import "../common/variables";
 
+$resize-handle-target-width: 5px !default;
 $resize-handle-width: 3px !default;
 $resize-handle-position-correction: -3px !default;
-$resize-handle-padding: 0 !default;
+$resize-handle-padding: 2px !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 
@@ -87,17 +88,17 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
   &.bp-table-resize-vertical {
     top: 0;
     right: 0;
-    bottom: -1px;
+    bottom: -$cell-border-width;
     cursor: $resize-vertical-cursor;
-    width: 5px;
+    width: $resize-handle-target-width;
   }
 
   &.bp-table-resize-horizontal {
-    right: -1px;
+    right: -$cell-border-width;
     bottom: 0;
     left: 0;
     cursor: $resize-horizontal-cursor;
-    height: 5px;
+    height: $resize-handle-target-width;
   }
 }
 
@@ -114,12 +115,12 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
 .bp-table-resize-vertical .bp-table-resize-handle {
   top: 0;
   bottom: 0;
-  left: 2px;
+  left: $resize-handle-padding;
   width: $resize-handle-width;
 }
 
 .bp-table-resize-horizontal .bp-table-resize-handle {
-  top: 2px;
+  top: $resize-handle-padding;
   right: 0;
   left: 0;
   height: $resize-handle-width;

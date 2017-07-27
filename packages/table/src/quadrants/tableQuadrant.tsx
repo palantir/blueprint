@@ -88,7 +88,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that renders either all of or just the frozen section of the column header.
      */
-    renderColumnHeader?: ( showFrozenColumnsOnly?: boolean) => JSX.Element;
+    renderColumnHeader?: (showFrozenColumnsOnly?: boolean) => JSX.Element;
 
     /**
      * A callback that renders either all of or just the frozen section of the row header.
