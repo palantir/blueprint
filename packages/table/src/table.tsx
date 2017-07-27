@@ -863,7 +863,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private renderColumnHeader = (showFrozenColumnsOnly: boolean = false) => {
+    private renderColumnHeader = (refHandler: (ref: HTMLElement) => void, showFrozenColumnsOnly: boolean = false) => {
         // columnIndexStart?: number, columnIndexEnd?: number) {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
@@ -886,7 +886,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndexEnd = showFrozenColumnsOnly ? this.getMaxFrozenColumnIndex() : columnIndices.columnIndexEnd;
 
         return (
-            <div className={classes}>
+            <div
+                className={classes}
+                ref={refHandler}
+            >
                 <ColumnHeader
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}

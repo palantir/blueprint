@@ -13,6 +13,7 @@ import { Grid } from "../common/grid";
 import { QuadrantType, TableQuadrant } from "./tableQuadrant";
 
 interface IQuadrantRefMap<T> {
+    columnHeader?: T;
     menu?: T;
     quadrant?: T;
     rowHeader?: T;
@@ -90,7 +91,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that renders either all of or just the frozen section of the column header.
      */
-    renderColumnHeader?: (showFrozenColumnsOnly?: boolean) => JSX.Element;
+    renderColumnHeader?: (refHandler: (ref: HTMLElement) => void, showFrozenColumnsOnly?: boolean) => JSX.Element;
 
     /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
@@ -139,15 +140,13 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     private wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
 
     public componentDidMount() {
-        CoreUtils.safeInvoke(this.props.columnHeaderRef, this.findColumnHeader(QuadrantType.MAIN));
-        CoreUtils.safeInvoke(this.props.rowHeaderRef, this.findRowHeader(QuadrantType.MAIN));
+        this.emitRowAndColumnRefs();
         this.syncQuadrantSizes();
         this.syncQuadrantMenuElementWidths();
     }
 
     public componentDidUpdate() {
-        CoreUtils.safeInvoke(this.props.columnHeaderRef, this.findColumnHeader(QuadrantType.MAIN));
-        CoreUtils.safeInvoke(this.props.rowHeaderRef, this.findRowHeader(QuadrantType.MAIN));
+        this.emitRowAndColumnRefs();
         this.syncQuadrantSizes();
         this.syncQuadrantMenuElementWidths();
     }
@@ -170,7 +169,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.MAIN].quadrant}
                     quadrantType={QuadrantType.MAIN}
                     renderBody={renderBody}
-                    renderColumnHeader={renderColumnHeader}
+                    renderColumnHeader={this.renderMainQuadrantColumnHeader}
                     renderMenu={this.renderMainQuadrantMenu}
                     renderRowHeader={this.renderMainQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.MAIN].scrollContainer}
@@ -182,7 +181,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP].quadrant}
                     quadrantType={QuadrantType.TOP}
                     renderBody={renderBody}
-                    renderColumnHeader={renderColumnHeader}
+                    renderColumnHeader={this.renderTopQuadrantColumnHeader}
                     renderMenu={this.renderTopQuadrantMenu}
                     renderRowHeader={this.renderTopQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP].scrollContainer}
@@ -194,7 +193,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
                     quadrantType={QuadrantType.LEFT}
                     renderBody={renderBody}
-                    renderColumnHeader={renderColumnHeader}
+                    renderColumnHeader={this.renderLeftQuadrantColumnHeader}
                     renderMenu={this.renderLeftQuadrantMenu}
                     renderRowHeader={this.renderLeftQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.LEFT].scrollContainer}
@@ -206,7 +205,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].quadrant}
                     quadrantType={QuadrantType.TOP_LEFT}
                     renderBody={renderBody}
-                    renderColumnHeader={renderColumnHeader}
+                    renderColumnHeader={this.renderTopLeftQuadrantColumnHeader}
                     renderMenu={this.renderTopLeftQuadrantMenu}
                     renderRowHeader={this.renderTopLeftQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].scrollContainer}
@@ -238,6 +237,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     // Quadrant-specific renderers
     // ===========================
 
+    // Menu
+
     private renderMainQuadrantMenu = () => {
         return this.props.renderMenu(this.quadrantRefHandlers[QuadrantType.MAIN].menu);
     }
@@ -253,6 +254,30 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     private renderTopLeftQuadrantMenu = () => {
         return this.props.renderMenu(this.quadrantRefHandlers[QuadrantType.TOP_LEFT].menu);
     }
+
+    // Column header
+
+    private renderMainQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
+        const refHandler = this.quadrantRefHandlers[QuadrantType.MAIN].columnHeader;
+        return this.props.renderColumnHeader(refHandler, showFrozenColumnsOnly);
+    }
+
+    private renderTopQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
+        const refHandler = this.quadrantRefHandlers[QuadrantType.TOP].columnHeader;
+        return this.props.renderColumnHeader(refHandler, showFrozenColumnsOnly);
+    }
+
+    private renderLeftQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
+        const refHandler = this.quadrantRefHandlers[QuadrantType.LEFT].columnHeader;
+        return this.props.renderColumnHeader(refHandler, showFrozenColumnsOnly);
+    }
+
+    private renderTopLeftQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
+        const refHandler = this.quadrantRefHandlers[QuadrantType.TOP_LEFT].columnHeader;
+        return this.props.renderColumnHeader(refHandler, showFrozenColumnsOnly);
+    }
+
+    // Row header
 
     private renderMainQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         return this.props.renderRowHeader(this.quadrantRefHandlers[QuadrantType.MAIN].rowHeader, showFrozenRowsOnly);
@@ -336,6 +361,14 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
             this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
         }
         this.props.onScroll(event);
+    }
+
+    // Emitters
+    // ========
+
+    private emitRowAndColumnRefs() {
+        CoreUtils.safeInvoke(this.props.columnHeaderRef, this.quadrantRefs[QuadrantType.MAIN].columnHeader);
+        CoreUtils.safeInvoke(this.props.rowHeaderRef, this.quadrantRefs[QuadrantType.MAIN].rowHeader);
     }
 
     // Size syncing
