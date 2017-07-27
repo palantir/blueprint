@@ -22,6 +22,12 @@ export interface IHotkeysDialogProps extends IDialogProps {
     globalHotkeysGroup?: string;
 }
 
+/**
+ * The delay before showing or hiding the dialog. Should be long enough to
+ * allow all registered hotkey listeners to execute first.
+ */
+const DELAY_IN_MS = 10;
+
 class HotkeysDialog {
     public componentProps = {
         globalHotkeysGroup: "Global hotkeys",
@@ -30,7 +36,8 @@ class HotkeysDialog {
     private container: HTMLElement;
     private hotkeysQueue = [] as IHotkeyProps[][];
     private isDialogShowing = false;
-    private timeoutToken = 0;
+    private showTimeoutToken: number;
+    private hideTimeoutToken: number;
 
     public render() {
         if (this.container == null) {
@@ -59,8 +66,13 @@ class HotkeysDialog {
         this.hotkeysQueue.push(hotkeys);
 
         // reset timeout for debounce
-        clearTimeout(this.timeoutToken);
-        this.timeoutToken = setTimeout(this.show, 10);
+        clearTimeout(this.showTimeoutToken);
+        this.showTimeoutToken = setTimeout(this.show, DELAY_IN_MS);
+    }
+
+    public hideAfterDelay() {
+        clearTimeout(this.hideTimeoutToken);
+        this.hideTimeoutToken = setTimeout(this.hide, DELAY_IN_MS);
     }
 
     public show = () => {
@@ -140,4 +152,13 @@ export function showHotkeysDialog(hotkeys: IHotkeyProps[]) {
 
 export function hideHotkeysDialog() {
     HOTKEYS_DIALOG.hide();
+}
+
+/**
+ * Use this function instead of `hideHotkeysDialog` if you need to ensure that all hotkey listeners
+ * have time to execute with the dialog in a consistent open state. This can avoid flickering the
+ * dialog between open and closed states as successive listeners fire.
+ */
+export function hideHotkeysDialogAfterDelay() {
+    HOTKEYS_DIALOG.hideAfterDelay();
 }
