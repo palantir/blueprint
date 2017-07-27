@@ -423,9 +423,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
         // all menus are the same size, so arbitrarily use the one from the main quadrant.
         // assumes that the menu element width has already been sync'd after the last render
 
-        const rowHeader = this.findRowHeader(QuadrantType.MAIN);
-        const columnHeader = this.findColumnHeader(QuadrantType.MAIN);
-
+        const { rowHeader, columnHeader } = this.quadrantRefs[QuadrantType.MAIN];
         const rowHeaderWidth = rowHeader == null ? 0 : rowHeader.getBoundingClientRect().width;
         const columnHeaderHeight = columnHeader == null ? 0 : columnHeader.getBoundingClientRect().height;
 
