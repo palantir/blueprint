@@ -152,13 +152,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     }
 
     public render() {
-        const {
-            grid,
-            isRowHeaderShown,
-            renderBody,
-            renderColumnHeader,
-        } = this.props;
-
+        const { grid, isRowHeaderShown, renderBody } = this.props;
         return (
             <div>
                 <TableQuadrant
@@ -452,18 +446,5 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
         // this child element dictates the width of all row-header cells
         const elementToResize = rowHeaderElement.querySelector(selector) as HTMLElement;
         elementToResize.style.width = `${width}px`;
-    }
-
-    // Helpers
-    // =======
-
-    private findColumnHeader(quadrantType: QuadrantType) {
-        const quadrantElement = this.quadrantRefs[quadrantType].quadrant;
-        return quadrantElement.querySelector(`.${Classes.TABLE_COLUMN_HEADERS}`) as HTMLElement;
-    }
-
-    private findRowHeader(quadrantType: QuadrantType) {
-        const quadrantElement = this.quadrantRefs[quadrantType].quadrant;
-        return quadrantElement.querySelector(`.${Classes.TABLE_ROW_HEADERS}`) as HTMLElement;
     }
 }
