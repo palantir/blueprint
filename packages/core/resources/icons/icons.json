@@ -401,7 +401,7 @@
   {
     "name": "Tick",
     "className": "pt-icon-tick",
-    "tags": "tick mark, sign, ok, approved, success",
+    "tags": "mark, sign, ok, approved, success",
     "group": "action",
     "content": "\\2713"
   },
@@ -1773,7 +1773,7 @@
   {
     "name": "Small tick",
     "className": "pt-icon-small-tick",
-    "tags": "tick mark, sign, ok, approved, success",
+    "tags": "mark, sign, ok, approved, success",
     "group": "action",
     "content": "\\e6d8"
   },
@@ -2690,7 +2690,7 @@
   {
     "name": "Endorsed",
     "className": "pt-icon-endorsed",
-    "tags": "tick mark, sign, ok, approved, success",
+    "tags": "tick, mark, sign, ok, approved, success",
     "group": "action",
     "content": "\\e75f"
   },
@@ -2840,5 +2840,26 @@
     "tags": "sidebar, layout, spreadsheet",
     "group": "table",
     "content": "\\e778"
+  },
+  {
+    "name": "Tick circle",
+    "className": "pt-icon-tick-circle",
+    "tags": "mark, sign, ok, approved, success",
+    "group": "action",
+    "content": "\\e779"
+  },
+  {
+    "name": "Prescription",
+    "className": "pt-icon-prescription",
+    "tags": "instruction, direction, medicine, drug, medication, mixture",
+    "group": "miscellaneous",
+    "content": "\\e78a"
+  },
+  {
+    "name": "New prescription",
+    "className": "pt-icon-new-prescription",
+    "tags": "instruction, direction, medicine, drug, medication, mixture",
+    "group": "miscellaneous",
+    "content": "\\e78b"
   }
 ]
