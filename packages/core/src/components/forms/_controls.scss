@@ -83,13 +83,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   &:hover {
     .pt-control-indicator {
       background-color: $control-background-color-hover;
-      background-image: $button-gradient;
     }
 
     input:checked ~ .pt-control-indicator {
       box-shadow: $button-intent-box-shadow;
       background-color: $control-checked-background-color-hover;
-      background-image: $button-intent-gradient;
     }
   }
 
@@ -420,7 +418,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     &:hover {
       .pt-control-indicator {
         background-color: $dark-control-background-color-hover;
-        background-image: $dark-button-gradient;
       }
     }
 

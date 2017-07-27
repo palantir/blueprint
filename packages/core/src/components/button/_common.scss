@@ -137,7 +137,6 @@ $button-intents: (
   box-shadow: $button-box-shadow;
   background-clip: padding-box;
   background-color: $button-background-color-hover;
-  background-image: $button-gradient;
 }
 
 @mixin pt-button-active() {
@@ -174,7 +173,6 @@ $button-intents: (
   &:hover {
     box-shadow: $button-intent-box-shadow;
     background-color: $hover-color;
-    background-image: $button-intent-gradient;
   }
 
   &:active,
@@ -233,7 +231,6 @@ $button-intents: (
 @mixin pt-dark-button-hover() {
   box-shadow: $dark-button-box-shadow;
   background-color: $dark-button-background-color-hover;
-  background-image: $dark-button-gradient;
 }
 
 @mixin pt-dark-button-active() {
