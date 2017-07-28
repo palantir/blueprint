@@ -140,13 +140,13 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     private wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
 
     public componentDidMount() {
-        this.emitRowAndColumnRefs();
+        this.emitMainQuadrantRefs();
         this.syncQuadrantSizes();
         this.syncQuadrantMenuElementWidths();
     }
 
     public componentDidUpdate() {
-        this.emitRowAndColumnRefs();
+        this.emitMainQuadrantRefs();
         this.syncQuadrantSizes();
         this.syncQuadrantMenuElementWidths();
     }
@@ -213,16 +213,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
 
     private generateQuadrantRefHandlers(quadrantType: QuadrantType): IQuadrantRefHandlers {
         const reducer = (agg: IQuadrantRefHandlers, key: keyof IQuadrantRefHandlers) => {
-            agg[key] = (ref: HTMLElement) => {
-                this.quadrantRefs[quadrantType][key] = ref;
-                if (quadrantType === QuadrantType.MAIN) {
-                    if (key === "quadrant") {
-                        CoreUtils.safeInvoke(this.props.quadrantRef, ref);
-                    } else if (key === "scrollContainer") {
-                        CoreUtils.safeInvoke(this.props.scrollContainerRef, ref);
-                    }
-                }
-            };
+            agg[key] = (ref: HTMLElement) => this.quadrantRefs[quadrantType][key] = ref;
             return agg;
         };
         return ["columnHeader", "menu", "quadrant", "rowHeader", "scrollContainer"].reduce(reducer, {});
@@ -360,9 +351,11 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     // Emitters
     // ========
 
-    private emitRowAndColumnRefs() {
+    private emitMainQuadrantRefs() {
         CoreUtils.safeInvoke(this.props.columnHeaderRef, this.quadrantRefs[QuadrantType.MAIN].columnHeader);
+        CoreUtils.safeInvoke(this.props.quadrantRef, this.quadrantRefs[QuadrantType.MAIN].quadrant);
         CoreUtils.safeInvoke(this.props.rowHeaderRef, this.quadrantRefs[QuadrantType.MAIN].rowHeader);
+        CoreUtils.safeInvoke(this.props.scrollContainerRef, this.quadrantRefs[QuadrantType.MAIN].scrollContainer);
     }
 
     // Size syncing
