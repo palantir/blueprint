@@ -225,7 +225,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
             };
             return agg;
         };
-        return ["menu", "quadrant", "rowHeader", "scrollContainer"].reduce(reducer, {});
+        return ["columnHeader", "menu", "quadrant", "rowHeader", "scrollContainer"].reduce(reducer, {});
     }
 
     // Quadrant-specific renderers
