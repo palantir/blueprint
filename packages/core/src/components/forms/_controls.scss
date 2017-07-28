@@ -52,7 +52,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
   .pt-control-indicator {
     @include pt-icon($pt-icon-size-standard);
-    @include linear-gradient-with-fallback($white, $white-transparent, $control-background-color);
     position: absolute;
     top: 0;
     left: 0;
@@ -60,6 +59,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     border: none;
     box-shadow: $button-box-shadow;
     background-clip: padding-box;
+    background-color: $control-background-color;
+    background-image: $button-gradient;
     cursor: pointer;
     width: $control-indicator-size;
     height: $control-indicator-size;
@@ -73,31 +74,20 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   input:checked ~ .pt-control-indicator {
-    @include linear-gradient-with-fallback(
-      rgba($white, 0.1),
-      $white-transparent,
-      $control-checked-background-color
-    );
     box-shadow: $button-intent-box-shadow;
+    background-color: $control-checked-background-color;
+    background-image: $button-intent-gradient;
     color: $white;
   }
 
   &:hover {
     .pt-control-indicator {
-      @include linear-gradient-with-fallback(
-        rgba($white, 0.5),
-        $white-transparent,
-        $control-background-color-hover
-      );
+      background-color: $control-background-color-hover;
     }
 
     input:checked ~ .pt-control-indicator {
-      @include linear-gradient-with-fallback(
-        rgba($white, 0.1),
-        $white-transparent,
-        $control-checked-background-color-hover
-      );
       box-shadow: $button-intent-box-shadow;
+      background-color: $control-checked-background-color-hover;
     }
   }
 
@@ -416,12 +406,9 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     }
 
     .pt-control-indicator {
-      @include linear-gradient-with-fallback(
-        rgba($white, 0.05),
-        $white-transparent,
-        $dark-control-background-color
-      );
       box-shadow: $dark-button-box-shadow;
+      background-color: $dark-control-background-color;
+      background-image: $dark-button-gradient;
     }
 
     input:checked ~ .pt-control-indicator {
@@ -430,11 +417,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
     &:hover {
       .pt-control-indicator {
-        @include linear-gradient-with-fallback(
-          rgba($black, 0.05),
-          $white-transparent,
-          $dark-control-background-color-hover
-        );
+        background-color: $dark-control-background-color-hover;
       }
     }
 
