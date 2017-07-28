@@ -456,29 +456,25 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     // Columns
 
     private handleColumnsReorderingMain = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length, QuadrantType.MAIN);
+        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
     }
 
     private handleColumnsReorderingTop = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length, QuadrantType.TOP);
+        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
     }
 
     private handleColumnsReorderingLeft = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length, QuadrantType.LEFT);
+        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
     }
 
     private handleColumnsReorderingTopLeft = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length, QuadrantType.TOP_LEFT);
+        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
     }
 
-    private invokeColumnsReorderingHandler = (
-        oldIndex: number,
-        newIndex: number,
-        length: number,
-        quadrantType: QuadrantType,
-    ) => {
+    private invokeColumnsReorderingHandler = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const leftOffset = this.props.grid.getCumulativeWidthBefore(guideIndex);
+        const quadrantType = guideIndex <= this.props.numFrozenColumns ? QuadrantType.TOP_LEFT : QuadrantType.TOP;
         const verticalGuides = this.adjustVerticalGuides([leftOffset], quadrantType);
         this.props.handleColumnsReordering(verticalGuides);
     }
@@ -486,29 +482,25 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     // Rows
 
     private handleRowsReorderingMain = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeRowsReorderingHandler(oldIndex, newIndex, length, QuadrantType.MAIN);
+        this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
     }
 
     private handleRowsReorderingTop = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeRowsReorderingHandler(oldIndex, newIndex, length, QuadrantType.TOP);
+        this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
     }
 
     private handleRowsReorderingLeft = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeRowsReorderingHandler(oldIndex, newIndex, length, QuadrantType.LEFT);
+        this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
     }
 
     private handleRowsReorderingTopLeft = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeRowsReorderingHandler(oldIndex, newIndex, length, QuadrantType.TOP_LEFT);
+        this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
     }
 
-    private invokeRowsReorderingHandler = (
-        oldIndex: number,
-        newIndex: number,
-        length: number,
-        quadrantType: QuadrantType,
-    ) => {
+    private invokeRowsReorderingHandler = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const leftOffset = this.props.grid.getCumulativeWidthBefore(guideIndex);
+        const quadrantType = guideIndex <= this.props.numFrozenRows ? QuadrantType.TOP_LEFT : QuadrantType.LEFT;
         const horizontalGuides = this.adjustHorizontalGuides([leftOffset], quadrantType);
         this.props.handleRowsReordering(horizontalGuides);
     }
