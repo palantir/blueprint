@@ -60,6 +60,13 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * @default false
      */
     resetOnSelect?: boolean;
+
+    /**
+     * Whether the filtering state should be reset to initial when the popover closes.
+     * The query will become the empty string and the first item will be made active.
+     * @default false
+     */
+    resetOnClose?: boolean;
 }
 
 export interface ISelectItemRendererProps<T> {
@@ -225,10 +232,14 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     }
 
     private handlePopoverWillOpen = () => {
+        const { popoverProps = {}, resetOnClose } = this.props;
         // save currently focused element before popover steals focus, so we can restore it when closing.
         this.previousFocusedElement = document.activeElement as HTMLElement;
 
-        const { popoverProps = {} } = this.props;
+        if (resetOnClose) {
+            this.resetQuery();
+        }
+
         Utils.safeInvoke(popoverProps.popoverWillOpen);
     }
 
@@ -261,5 +272,6 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         this.setState({ query: event.currentTarget.value });
         Utils.safeInvoke(inputProps.onChange, event);
     }
+
     private resetQuery = () => this.setState({ activeItem: this.props.items[0], query: "" });
 }
