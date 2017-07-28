@@ -154,8 +154,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.throttledHandleMainQuadrantWheel =
             CoreUtils.throttleReactEventCallback(this.handleMainQuadrantWheel, /* preventDefault */ true);
         this.throttledHandleMainQuadrantScroll = CoreUtils.throttleReactEventCallback(this.handleMainQuadrantScroll);
-        this.throttledHandleTopQuadrantWheel = CoreUtils.throttleReactEventCallback(this.handleTopQuadrantWheel);
-        this.throttledHandleLeftQuadrantWheel = CoreUtils.throttleReactEventCallback(this.handleLeftQuadrantWheel);
+        this.throttledHandleTopQuadrantWheel =
+            CoreUtils.throttleReactEventCallback(this.handleTopQuadrantWheel, /* preventDefault */ true);
+        this.throttledHandleLeftQuadrantWheel =
+            CoreUtils.throttleReactEventCallback(this.handleLeftQuadrantWheel, /* preventDefault */ true);
         this.throttledHandleTopLeftQuadrantWheel =
             CoreUtils.throttleReactEventCallback(this.handleTopLeftQuadrantWheel);
     }
@@ -330,17 +332,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     }
 
     private handleLeftQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        if (!this.props.isHorizontalScrollDisabled) {
-            const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-            this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
-            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
-        }
-        if (!this.props.isVerticalScrollDisabled) {
-            const nextScrollTop = this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop;
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
-        }
+        this.handleHorizontalWheel(event.deltaX, QuadrantType.MAIN, [QuadrantType.TOP]);
+        this.handleVerticalWheel(event.deltaY, QuadrantType.LEFT, [QuadrantType.MAIN]);
         this.props.onScroll(event);
     }
 
