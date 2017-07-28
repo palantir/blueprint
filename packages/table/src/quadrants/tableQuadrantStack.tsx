@@ -303,15 +303,15 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // programmatically keep all quadrants in the exact same spot in each frame.
         if (!this.props.isHorizontalScrollDisabled) {
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-            const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft + event.deltaX;
-            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
-            this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
+            this.handleHorizontalWheel(event.deltaX, this.quadrantRefs[QuadrantType.MAIN].scrollContainer, [
+                this.quadrantRefs[QuadrantType.TOP].scrollContainer,
+            ]);
         }
         if (!this.props.isVerticalScrollDisabled) {
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-            const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
-            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
-            this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
+            this.handleVerticalWheel(event.deltaY, this.quadrantRefs[QuadrantType.MAIN].scrollContainer, [
+                this.quadrantRefs[QuadrantType.LEFT].scrollContainer,
+            ]);
         }
         this.props.onScroll(event);
     }
@@ -475,5 +475,29 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     private findRowHeader(quadrantType: QuadrantType) {
         const quadrantElement = this.quadrantRefs[quadrantType].quadrant;
         return quadrantElement.querySelector(`.${Classes.TABLE_ROW_HEADERS}`) as HTMLElement;
+    }
+
+    private handleVerticalWheel(
+        deltaY: number,
+        quadrantScrollContainer: HTMLElement,
+        quadrantScrollContainersToSync: HTMLElement[],
+    ) {
+        const nextScrollTop = quadrantScrollContainer.scrollTop + deltaY;
+        quadrantScrollContainer.scrollTop = nextScrollTop;
+        quadrantScrollContainersToSync.forEach((quadrantScrollContainerToSync) => {
+            quadrantScrollContainerToSync.scrollTop = nextScrollTop;
+        });
+    }
+
+    private handleHorizontalWheel(
+        deltaX: number,
+        quadrantScrollContainer: HTMLElement,
+        quadrantScrollContainersToSync: HTMLElement[],
+    ) {
+        const nextScrollLeft = quadrantScrollContainer.scrollLeft + deltaX;
+        quadrantScrollContainer.scrollLeft = nextScrollLeft;
+        quadrantScrollContainersToSync.forEach((quadrantScrollContainerToSync) => {
+            quadrantScrollContainerToSync.scrollLeft = nextScrollLeft;
+        });
     }
 }
