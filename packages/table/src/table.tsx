@@ -1927,7 +1927,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleColumnsReordering = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const leftOffset = this.grid.getCumulativeWidthBefore(guideIndex);
-        const quadrantType = guideIndex <= this.props.numFrozenColumns ? QuadrantType.TOP_LEFT : QuadrantType.TOP;
+        const quadrantType = guideIndex <= this.getNumFrozenColumnsClamped() ? QuadrantType.TOP_LEFT : QuadrantType.TOP;
         const verticalGuides = this.adjustVerticalGuides([leftOffset], quadrantType);
         this.setState({ isReordering: true, verticalGuides } as ITableState);
     }
@@ -1940,7 +1940,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleRowsReordering = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const topOffset = this.grid.getCumulativeHeightBefore(guideIndex);
-        const quadrantType = guideIndex <= this.props.numFrozenRows ? QuadrantType.TOP_LEFT : QuadrantType.LEFT;
+        const quadrantType = guideIndex <= this.getNumFrozenRowsClamped() ? QuadrantType.TOP_LEFT : QuadrantType.LEFT;
         const horizontalGuides = this.adjustHorizontalGuides([topOffset], quadrantType);
         this.setState({ isReordering: true, horizontalGuides } as ITableState);
     }
