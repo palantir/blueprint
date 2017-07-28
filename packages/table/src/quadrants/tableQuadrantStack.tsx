@@ -152,12 +152,12 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         // declare throttled functions on each component instance, since they're stateful
         this.throttledHandleMainQuadrantWheel =
-            CoreUtils.throttleReactEventCallback2(this.handleMainQuadrantWheel, /* preventDefault */ true);
-        this.throttledHandleMainQuadrantScroll = CoreUtils.throttleReactEventCallback2(this.handleMainQuadrantScroll);
-        this.throttledHandleTopQuadrantWheel = CoreUtils.throttleReactEventCallback2(this.handleTopQuadrantWheel);
-        this.throttledHandleLeftQuadrantWheel = CoreUtils.throttleReactEventCallback2(this.handleLeftQuadrantWheel);
+            CoreUtils.throttleReactEventCallback(this.handleMainQuadrantWheel, /* preventDefault */ true);
+        this.throttledHandleMainQuadrantScroll = CoreUtils.throttleReactEventCallback(this.handleMainQuadrantScroll);
+        this.throttledHandleTopQuadrantWheel = CoreUtils.throttleReactEventCallback(this.handleTopQuadrantWheel);
+        this.throttledHandleLeftQuadrantWheel = CoreUtils.throttleReactEventCallback(this.handleLeftQuadrantWheel);
         this.throttledHandleTopLeftQuadrantWheel =
-            CoreUtils.throttleReactEventCallback2(this.handleTopLeftQuadrantWheel);
+            CoreUtils.throttleReactEventCallback(this.handleTopLeftQuadrantWheel);
     }
 
     public componentDidMount() {

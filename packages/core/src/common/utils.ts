@@ -110,7 +110,7 @@ export function throttleEvent(target: EventTarget, eventName: string, newEventNa
  * function.
  * @see https://www.html5rocks.com/en/tutorials/speed/animations/
  */
-export function throttleReactEventCallback2(
+export function throttleReactEventCallback(
     callback: (event: React.SyntheticEvent<any>, ...otherArgs: any[]) => any,
     preventDefault?: boolean,
 ) {
