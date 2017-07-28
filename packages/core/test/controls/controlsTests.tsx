@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Checkbox, Radio, Switch } from "../../src/index";
+import { Checkbox, IControlProps, Radio, Switch } from "../../src/components/forms/controls";
 
 type ControlType = typeof Checkbox | typeof Radio | typeof Switch;
 
@@ -38,26 +38,38 @@ describe("Controls:", () => {
     function controlsTests(classType: ControlType, propType: string, className: string, moreTests?: () => void) {
         describe(`<${classType.displayName.split(".")[1]}>`, () => {
             it(`renders .pt-control.${className}`, () => {
-                const control = mount(React.createElement(classType));
+                const control = mountControl();
                 assert.isTrue(control.find(".pt-control").hasClass(className));
             });
 
             it(`renders input[type=${propType}]`, () => {
                 // ensure that `type` prop always comes out as expected, regardless of given value
-                const control = mount(React.createElement(classType, { type: "failure" }));
+                const control = mountControl({ type: "failure" });
                 assert.equal(control.find("input").prop("type"), propType);
             });
 
             it("supports JSX children", () => {
-                const control = mount(React.createElement(classType, {},
-                    <span className="pt-icon-standard" />, "Label Text"));
+                const control = mountControl({}, <span className="pt-icon-standard" key="icon" />, "Label Text");
                 assert.lengthOf(control.find(".pt-icon-standard"), 1);
                 assert.equal(control.text(), "Label Text");
+            });
+
+            it("supports JSX labelElement", () => {
+                // uncommenting this line should present a tsc error on label prop:
+                // <Checkbox label={<strong>boom</strong>} />;
+
+                const control = mountControl({ labelElement: <strong>boom</strong> });
+                assert.lengthOf(control.find("strong"), 1);
+                assert.equal(control.text(), "boom");
             });
 
             if (moreTests != null) {
                 moreTests();
             }
         });
+
+        function mountControl(props?: IControlProps, ...children: React.ReactNode[]) {
+            return mount(React.createElement(classType, props, children));
+        }
     }
 });
