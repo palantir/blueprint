@@ -136,6 +136,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         [QuadrantType.TOP_LEFT]: this.generateQuadrantRefHandlers(QuadrantType.TOP_LEFT),
     };
 
+    // this flag helps us avoid redundant work in the MAIN quadrant's onScroll callback, if the
+    // callback was triggered from a manual scrollTop/scrollLeft update within an onWheel.
     private wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
 
     // Throttled event callbacks
@@ -150,7 +152,13 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     public constructor(props: ITableQuadrantStackProps, context?: any) {
         super(props, context);
 
-        // declare throttled functions on each component instance, since they're stateful
+        // a few points here:
+        // - we throttle onScroll/onWheel callbacks to making scrolling look more fluid.
+        // - we declare throttled functions on the component instance, since they're stateful.
+        // - "wheel"-ing triggers super-fluid onScroll behavior by default, but relying on that
+        //   causes sync'd quadrants to lag behind. thus, we preventDefault for onWheel and instead
+        //   manually update all relevant quadrants using event.delta{X,Y} later, in the callback.
+        //   this keeps every sync'd quadrant visually aligned in each animation frame.
         this.throttledHandleMainQuadrantScroll =
             CoreUtils.throttleReactEventCallback(this.handleMainQuadrantScroll);
         this.throttledHandleMainQuadrantWheel =
@@ -300,10 +308,11 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // Event handlers
     // ==============
 
+    // recall that we've already invoked event.preventDefault() when defining the throttled versions
+    // of these onWheel callbacks, so now we need to manually update the affected quadrant's scroll
+    // position too.
+
     private handleMainQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        // we invoke event.preventDefault() when defining the throttled version of this function in
-        // the constructor. this lets us prevent default scrolling animations and instead
-        // programmatically keep all quadrants in the exact same spot in each frame.
         this.handleHorizontalWheel(event.deltaX, QuadrantType.MAIN, [QuadrantType.TOP]);
         this.handleVerticalWheel(event.deltaY, QuadrantType.MAIN, [QuadrantType.LEFT]);
         this.props.onScroll(event);
@@ -324,8 +333,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.props.onScroll(event);
     }
 
-    // listen to the wheel event on the top quadrant, since the scroll bar isn't visible and thus
-    // can't trigger scroll events via clicking-and-dragging on the scroll bar.
+    // listen to only the wheel event on other quadrants, since their scroll bars aren't visible
     private handleTopQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
         this.handleHorizontalWheel(event.deltaX, QuadrantType.TOP, [QuadrantType.MAIN]);
         this.handleVerticalWheel(event.deltaY, QuadrantType.MAIN, [QuadrantType.LEFT]);
