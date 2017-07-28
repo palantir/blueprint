@@ -301,14 +301,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // we invoke event.preventDefault() when defining the throttled version of this function in
         // the constructor. this lets us prevent default scrolling animations and instead
         // programmatically keep all quadrants in the exact same spot in each frame.
-        if (!this.props.isHorizontalScrollDisabled) {
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-            this.handleHorizontalWheel(event.deltaX, QuadrantType.MAIN, [QuadrantType.TOP]);
-        }
-        if (!this.props.isVerticalScrollDisabled) {
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-            this.handleVerticalWheel(event.deltaY, QuadrantType.MAIN, [QuadrantType.LEFT]);
-        }
+        this.handleHorizontalWheel(event.deltaX, QuadrantType.MAIN, [QuadrantType.TOP]);
+        this.handleVerticalWheel(event.deltaY, QuadrantType.MAIN, [QuadrantType.LEFT]);
         this.props.onScroll(event);
     }
 
@@ -330,17 +324,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // listen to the wheel event on the top quadrant, since the scroll bar isn't visible and thus
     // can't trigger scroll events via clicking-and-dragging on the scroll bar.
     private handleTopQuadrantWheel = (event: React.WheelEvent<HTMLElement>) => {
-        if (!this.props.isHorizontalScrollDisabled) {
-            const nextScrollLeft = this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft;
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
-        }
-        if (!this.props.isVerticalScrollDisabled) {
-            const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop + event.deltaY;
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-            this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
-            this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
-        }
+        this.handleHorizontalWheel(event.deltaX, QuadrantType.TOP, [QuadrantType.MAIN]);
+        this.handleVerticalWheel(event.deltaY, QuadrantType.MAIN, [QuadrantType.LEFT]);
         this.props.onScroll(event);
     }
 
@@ -473,27 +458,35 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         return quadrantElement.querySelector(`.${Classes.TABLE_ROW_HEADERS}`) as HTMLElement;
     }
 
-    private handleVerticalWheel(
+    private handleVerticalWheel = (
         deltaY: number,
         quadrantType: QuadrantType,
         quadrantTypesToSync: QuadrantType[],
-    ) {
-        const nextScrollTop = this.quadrantRefs[quadrantType].scrollContainer.scrollTop + deltaY;
-        this.quadrantRefs[quadrantType].scrollContainer.scrollTop = nextScrollTop;
-        quadrantTypesToSync.forEach((quadrantTypeToSync) => {
-            this.quadrantRefs[quadrantTypeToSync].scrollContainer.scrollTop = nextScrollTop;
-        });
+    ) => {
+        if (!this.props.isVerticalScrollDisabled) {
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
+
+            const nextScrollTop = this.quadrantRefs[quadrantType].scrollContainer.scrollTop + deltaY;
+            this.quadrantRefs[quadrantType].scrollContainer.scrollTop = nextScrollTop;
+            quadrantTypesToSync.forEach((quadrantTypeToSync) => {
+                this.quadrantRefs[quadrantTypeToSync].scrollContainer.scrollTop = nextScrollTop;
+            });
+        }
     }
 
-    private handleHorizontalWheel(
+    private handleHorizontalWheel = (
         deltaX: number,
         quadrantType: QuadrantType,
         quadrantTypesToSync: QuadrantType[],
-    ) {
-        const nextScrollLeft = this.quadrantRefs[quadrantType].scrollContainer.scrollLeft + deltaX;
-        this.quadrantRefs[quadrantType].scrollContainer.scrollLeft = nextScrollLeft;
-        quadrantTypesToSync.forEach((quadrantTypeToSync) => {
-            this.quadrantRefs[quadrantTypeToSync].scrollContainer.scrollLeft = nextScrollLeft;
-        });
+    ) => {
+        if (!this.props.isHorizontalScrollDisabled) {
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
+
+            const nextScrollLeft = this.quadrantRefs[quadrantType].scrollContainer.scrollLeft + deltaX;
+            this.quadrantRefs[quadrantType].scrollContainer.scrollLeft = nextScrollLeft;
+            quadrantTypesToSync.forEach((quadrantTypeToSync) => {
+                this.quadrantRefs[quadrantTypeToSync].scrollContainer.scrollLeft = nextScrollLeft;
+            });
+        }
     }
 }
