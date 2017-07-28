@@ -530,6 +530,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     bodyRef={this.setBodyRef}
                     columnHeaderRef={this.refHandlers.columnHeader}
                     grid={this.grid}
+                    handleColumnResizeGuide={this.handleColumnResizeGuide}
+                    handleColumnsReordering={this.handleColumnsReordering}
+                    handleRowResizeGuide={this.handleRowResizeGuide}
+                    handleRowsReordering={this.handleRowsReordering}
                     isHorizontalScrollDisabled={this.shouldDisableHorizontalScroll()}
                     isRowHeaderShown={isRowHeaderShown}
                     isVerticalScrollDisabled={this.shouldDisableHorizontalScroll()}
@@ -863,7 +867,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private renderColumnHeader = (refHandler: (ref: HTMLElement) => void, showFrozenColumnsOnly: boolean = false) => {
+    private renderColumnHeader = (
+        refHandler: (ref: HTMLElement) => void,
+        resizeHandler: (verticalGuides: number[]) => void,
+        reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
+        showFrozenColumnsOnly: boolean = false,
+    ) => {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
         const {
@@ -904,8 +913,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onReordered={this.handleColumnsReordered}
-                    onReordering={this.handleColumnsReordering}
-                    onResizeGuide={this.handleColumnResizeGuide}
+                    onReordering={reorderingHandler}
+                    onResizeGuide={resizeHandler}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
@@ -920,7 +929,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    private renderRowHeader = (refHandler: (ref: HTMLElement) => void, showFrozenRowsOnly: boolean = false) => {
+    private renderRowHeader = (
+        refHandler: (ref: HTMLElement) => void,
+        resizeHandler: (verticalGuides: number[]) => void,
+        reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
+        showFrozenRowsOnly: boolean = false,
+    ) => {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
         const {
@@ -959,9 +973,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     minRowHeight={minRowHeight}
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
-                    onResizeGuide={this.handleRowResizeGuide}
+                    onResizeGuide={resizeHandler}
                     onReordered={this.handleRowsReordered}
-                    onReordering={this.handleRowsReordering}
+                    onReordering={reorderingHandler}
                     onRowHeightChanged={this.handleRowHeightChanged}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_ROWS)}
                     renderRowHeader={renderRowHeader}
@@ -973,7 +987,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
                 {this.maybeRenderRegions(this.styleRowHeaderRegion)}
             </div>
-            // {/*{...rowIndices}*/}
         );
     }
 
@@ -1667,10 +1680,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private handleColumnsReordering = (oldIndex: number, newIndex: number, length: number) => {
-        const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
-        const leftOffset = this.grid.getCumulativeWidthBefore(guideIndex);
-        const verticalGuides = this.adjustVerticalGuides([leftOffset]);
+    private handleColumnsReordering = (verticalGuides: number[]) => {
         this.setState({ isReordering: true, verticalGuides } as ITableState);
     }
 
@@ -1679,10 +1689,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
     }
 
-    private handleRowsReordering = (oldIndex: number, newIndex: number, length: number) => {
-        const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
-        const topOffset = this.grid.getCumulativeHeightBefore(guideIndex);
-        const horizontalGuides = this.adjustHorizontalGuides([topOffset]);
+    private handleRowsReordering = (horizontalGuides: number[]) => {
         this.setState({ isReordering: true, horizontalGuides } as ITableState);
     }
 
@@ -1748,35 +1755,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleColumnResizeGuide = (verticalGuides: number[]) => {
-        this.setState({ verticalGuides: this.adjustVerticalGuides(verticalGuides) } as ITableState);
+        this.setState({ verticalGuides } as ITableState);
     }
 
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
-        this.setState({ horizontalGuides: this.adjustHorizontalGuides(horizontalGuides) } as ITableState);
-    }
-
-    // use the MAIN row-header width as the source of truth for every quadrant
-
-    private adjustVerticalGuides(verticalGuides: number[]) {
-        const scrollAmount = this.scrollContainerElement.scrollLeft;
-        const rowHeaderWidth = this.rowHeaderElement.clientWidth;
-
-        const adjustedVerticalGuides = verticalGuides != null
-            ? verticalGuides.map((verticalGuide) => verticalGuide - scrollAmount + rowHeaderWidth)
-            : verticalGuides;
-
-        return adjustedVerticalGuides;
-    }
-
-    private adjustHorizontalGuides(horizontalGuides: number[]) {
-        const scrollAmount = this.scrollContainerElement.scrollLeft;
-        const columnHeaderHeight = this.columnHeaderElement.clientHeight;
-
-        const adjustedHorizontalGuides = horizontalGuides != null
-            ? horizontalGuides.map((horizontalGuide) => horizontalGuide - scrollAmount + columnHeaderHeight)
-            : horizontalGuides;
-
-        return adjustedHorizontalGuides;
+        this.setState({ horizontalGuides } as ITableState);
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
