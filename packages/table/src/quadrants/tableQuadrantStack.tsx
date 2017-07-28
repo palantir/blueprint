@@ -140,13 +140,13 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     private wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
 
     public componentDidMount() {
-        this.emitMainQuadrantRefs();
+        this.emitRefs();
         this.syncQuadrantSizes();
         this.syncQuadrantMenuElementWidths();
     }
 
     public componentDidUpdate() {
-        this.emitMainQuadrantRefs();
+        this.emitRefs();
         this.syncQuadrantSizes();
         this.syncQuadrantMenuElementWidths();
     }
@@ -351,7 +351,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     // Emitters
     // ========
 
-    private emitMainQuadrantRefs() {
+    private emitRefs() {
         CoreUtils.safeInvoke(this.props.columnHeaderRef, this.quadrantRefs[QuadrantType.MAIN].columnHeader);
         CoreUtils.safeInvoke(this.props.quadrantRef, this.quadrantRefs[QuadrantType.MAIN].quadrant);
         CoreUtils.safeInvoke(this.props.rowHeaderRef, this.quadrantRefs[QuadrantType.MAIN].rowHeader);
