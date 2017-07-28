@@ -69,13 +69,13 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 />,
                 <Switch
                     key="resetOnClose"
-                    label="Reset query on close"
+                    label="Reset on close"
                     checked={this.state.resetOnClose}
                     onChange={this.handleResetOnCloseChange}
                 />,
                 <Switch
                     key="resetOnSelect"
-                    label="Reset query on select"
+                    label="Reset on select"
                     checked={this.state.resetOnSelect}
                     onChange={this.handleResetOnSelectChange}
                 />,
