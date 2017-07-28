@@ -42,6 +42,11 @@ export interface ITableQuadrantProps extends IProps {
     grid: Grid;
 
     /**
+     * An optional callback for handling column-resize events.
+     */
+    handleColumnResizeGuide?: (verticalGuides: number[]) => void;
+
+    /**
      * Whether horizontal scrolling is currently disabled.
      * @default false
      */
