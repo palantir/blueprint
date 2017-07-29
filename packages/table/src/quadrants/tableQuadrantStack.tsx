@@ -499,9 +499,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
 
     private invokeRowsReorderingHandler = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
-        const leftOffset = this.props.grid.getCumulativeWidthBefore(guideIndex);
+        const topOffset = this.props.grid.getCumulativeHeightBefore(guideIndex);
         const quadrantType = guideIndex <= this.props.numFrozenRows ? QuadrantType.TOP_LEFT : QuadrantType.LEFT;
-        const horizontalGuides = this.adjustHorizontalGuides([leftOffset], quadrantType);
+        const horizontalGuides = this.adjustHorizontalGuides([topOffset], quadrantType);
         this.props.handleRowsReordering(horizontalGuides);
     }
 
@@ -612,8 +612,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantProps, {
     }
 
     private adjustHorizontalGuides(horizontalGuides: number[], quadrantType: QuadrantType) {
-        const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollLeft;
-        const columnHeaderHeight = this.quadrantRefs[quadrantType].rowHeader.clientHeight;
+        const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollTop;
+        const columnHeaderHeight = this.quadrantRefs[quadrantType].columnHeader.clientHeight;
 
         const adjustedHorizontalGuides = horizontalGuides != null
             ? horizontalGuides.map((horizontalGuide) => horizontalGuide - scrollAmount + columnHeaderHeight)
