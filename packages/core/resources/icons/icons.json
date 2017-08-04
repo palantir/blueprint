@@ -2592,7 +2592,7 @@
   {
     "name": "Dashboard",
     "className": "pt-icon-dashboard",
-    "tags": "panel, control",
+    "tags": "panel, control, gauge, instrument, meter",
     "group": "interface",
     "content": "\\e751"
   },
