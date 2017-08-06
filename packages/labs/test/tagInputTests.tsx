@@ -10,7 +10,7 @@ import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 
 import { Intent, Keys, Tag } from "@blueprintjs/core";
-import { TagInput } from "../src/index";
+import { ITagInputProps, TagInput } from "../src/index";
 
 describe("<TagInput>", () => {
     const VALUES = ["one", "two", "three"];
@@ -67,7 +67,7 @@ describe("<TagInput>", () => {
             const wrapper = mountTagInput(onAdd);
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.isTrue(onAdd.calledOnce);
-            assert.strictEqual(onAdd.args[0][0], NEW_VALUE);
+            assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
         });
 
         it("does not clear the input if onAdd returns false", () => {
@@ -94,8 +94,33 @@ describe("<TagInput>", () => {
             assert.strictEqual(wrapper.state().inputValue, "");
         });
 
-        function mountTagInput(onAdd: Sinon.SinonStub) {
-            return shallow(<TagInput onAdd={onAdd} values={VALUES} />);
+        it("splits input value on separator RegExp", () => {
+            const onAdd = sinon.stub();
+            // this is actually the defaultProps value, but reproducing here for explicitness
+            const wrapper = mountTagInput(onAdd, { separator: /,\s*/g });
+            // extra spaces to exercise `\s*` in regexp
+            pressEnterInInput(wrapper, [NEW_VALUE, NEW_VALUE, NEW_VALUE].join(",   "));
+            assert.deepEqual(onAdd.args[0][0], [NEW_VALUE, NEW_VALUE, NEW_VALUE]);
+        });
+
+        it("splits input value on separator string", () => {
+            const onAdd = sinon.stub();
+            const wrapper = mountTagInput(onAdd, { separator: "  |  " });
+            pressEnterInInput(wrapper, "1 |  2  |   3   |    4    |");
+            assert.deepEqual(onAdd.args[0][0], ["1 |  2", " 3 ", "  4    |"]);
+        });
+
+        it("separator=false emits one-element values array", () => {
+            const value = "one, two, three";
+            const onAdd = sinon.stub();
+            const wrapper = mountTagInput(onAdd, { separator: false });
+            // extra spaces to exercise `\s*` in regexp
+            pressEnterInInput(wrapper, value);
+            assert.deepEqual(onAdd.args[0][0], [value]);
+        });
+
+        function mountTagInput(onAdd: Sinon.SinonStub, props?: Partial<ITagInputProps>) {
+            return shallow(<TagInput onAdd={onAdd} values={VALUES} {...props} />);
         }
 
         function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {

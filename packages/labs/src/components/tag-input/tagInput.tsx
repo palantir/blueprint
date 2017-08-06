@@ -26,21 +26,28 @@ export interface ITagInputProps extends IProps {
     inputProps?: HTMLInputProps;
 
     /**
-     * Callback invoked when a new tag is added by the user pressing `enter` on the input.
-     * Receives the current value of the input field. New tags are expected to be appended to
-     * the list.
+     * Callback invoked when new tags are added by the user pressing `enter` on the input.
+     * Receives the current value of the input field split by `separator` into an array.
+     * New tags are expected to be appended to the list.
      *
      * The input will be cleared after `onAdd` is invoked _unless_ the callback explicitly
      * returns `false`. This is useful if the provided `value` is somehow invalid and should
      * not be added as a tag.
      */
-    onAdd?: (value: string) => boolean | void;
+    onAdd?: (values: string[]) => boolean | void;
 
     /**
      * Callback invoked when the user clicks the X button on a tag.
      * Receives value and index of removed tag.
      */
     onRemove?: (value: string, index: number) => void;
+
+    /**
+     * Separator pattern used to split input text into multiple values.
+     * Explicit `false` value disables splitting (note that `onAdd` will still receive an array of length 1).
+     * @default  \/,\s*\/g
+     */
+    separator?: string | RegExp | false;
 
     /**
      * React props to pass to each `Tag`. Provide an object to pass the same props to every tag,
@@ -70,6 +77,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     public static defaultProps: Partial<ITagInputProps> & object = {
         inputProps: {},
+        separator: /,\s*/g,
         tagProps: {},
     };
 
@@ -152,6 +160,18 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         }
     }
 
+    private getValues(inputValue: string) {
+        const { separator } = this.props;
+        if (separator === false) {
+            return [inputValue];
+        } else if (typeof separator === "string") {
+            return inputValue.split(separator);
+        } else {
+            return inputValue.split(separator);
+        }
+
+    }
+
     private handleContainerClick = () => {
         if (this.inputElement != null) {
             this.inputElement.focus();
@@ -181,7 +201,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         const { selectionEnd, value } = event.currentTarget;
         if (event.which === Keys.ENTER && value.length > 0) {
             // enter key on non-empty string invokes onAdd
-            const shouldClearInput = Utils.safeInvoke(this.props.onAdd, value);
+            const shouldClearInput = Utils.safeInvoke(this.props.onAdd, this.getValues(value));
             // only explicit return false cancels text clearing
             if (shouldClearInput !== false) {
                 this.setState({ inputValue: "" });

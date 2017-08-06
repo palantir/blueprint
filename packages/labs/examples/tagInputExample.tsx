@@ -96,8 +96,8 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         ];
     }
 
-    private handleAdd = (newValue: string) => {
-        this.setState({ values: [...this.state.values, newValue] });
+    private handleAdd = (newValues: string[]) => {
+        this.setState({ values: [...this.state.values, ...newValues] });
     }
     private handleRemove = (_removedValue: string, removedIndex: number) => {
         this.setState({ values: this.state.values.filter((_, i) => i !== removedIndex) });
