@@ -26,7 +26,7 @@ import { IContextMenuRenderer } from "./interactions/menus";
 import { IIndexedResizeCallback } from "./interactions/resizable";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { ISelectedRegionTransform } from "./interactions/selectable";
-// import { GuideLayer } from "./layers/guides";
+import { GuideLayer } from "./layers/guides";
 import { IRegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
 import { QuadrantType } from "./quadrants/tableQuadrant";
@@ -509,9 +509,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        this.validateGrid();
-
         const { className, isRowHeaderShown } = this.props;
+        const { horizontalGuides, verticalGuides } = this.state;
+        this.validateGrid();
 
         const classes = classNames(Classes.TABLE_CONTAINER, {
             [Classes.TABLE_REORDERING]: this.state.isReordering,
@@ -530,6 +530,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     bodyRef={this.setBodyRef}
                     columnHeaderRef={this.refHandlers.columnHeader}
                     grid={this.grid}
+                    handleColumnResizeGuide={this.handleColumnResizeGuide}
+                    handleColumnsReordering={this.handleColumnsReordering}
+                    handleRowResizeGuide={this.handleRowResizeGuide}
+                    handleRowsReordering={this.handleRowsReordering}
                     isHorizontalScrollDisabled={this.shouldDisableHorizontalScroll()}
                     isRowHeaderShown={isRowHeaderShown}
                     isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
@@ -545,12 +549,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     scrollContainerRef={this.refHandlers.scrollContainer}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
+                <GuideLayer
+                    className={Classes.TABLE_RESIZE_GUIDES}
+                    verticalGuides={verticalGuides}
+                    horizontalGuides={horizontalGuides}
+                />
             </div>
-            // <GuideLayer
-            //     className={Classes.TABLE_RESIZE_GUIDES}
-            //     verticalGuides={verticalGuides}
-            //     horizontalGuides={horizontalGuides}
-            // />
         );
     }
 
@@ -871,8 +875,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private renderColumnHeader = (showFrozenColumnsOnly: boolean = false) => {
-        // columnIndexStart?: number, columnIndexEnd?: number) {
+    private renderColumnHeader = (
+        refHandler: (ref: HTMLElement) => void,
+        resizeHandler: (verticalGuides: number[]) => void,
+        reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
+        showFrozenColumnsOnly: boolean = false,
+    ) => {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
         const {
@@ -885,16 +893,20 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             minColumnWidth,
             selectedRegionTransform,
         } = this.props;
+
         const classes = classNames(Classes.TABLE_COLUMN_HEADERS, {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
         });
-        const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
 
+        const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
         const columnIndexEnd = showFrozenColumnsOnly ? this.getMaxFrozenColumnIndex() : columnIndices.columnIndexEnd;
 
         return (
-            <div className={classes}>
+            <div
+                className={classes}
+                ref={refHandler}
+            >
                 <ColumnHeader
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
@@ -909,8 +921,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onReordered={this.handleColumnsReordered}
-                    onReordering={this.handleColumnsReordering}
-                    onResizeGuide={this.handleColumnResizeGuide}
+                    onReordering={reorderingHandler}
+                    onResizeGuide={resizeHandler}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
@@ -925,8 +937,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    private renderRowHeader = (refHandler: (ref: HTMLElement) => void, showFrozenRowsOnly: boolean = false) => {
-        // rowIndexStart?: number, rowIndexEnd?: number) {
+    private renderRowHeader = (
+        refHandler: (ref: HTMLElement) => void,
+        resizeHandler: (verticalGuides: number[]) => void,
+        reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
+        showFrozenRowsOnly: boolean = false,
+    ) => {
         const { grid, locator } = this;
         const { selectedRegions, viewportRect } = this.state;
         const {
@@ -940,12 +956,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             renderRowHeader,
             selectedRegionTransform,
         } = this.props;
+
         const classes = classNames(Classes.TABLE_ROW_HEADERS, {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
         });
 
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
-
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? this.getMaxFrozenRowIndex() : rowIndices.rowIndexEnd;
 
@@ -965,9 +981,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     minRowHeight={minRowHeight}
                     onFocus={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
-                    onResizeGuide={this.handleRowResizeGuide}
+                    onResizeGuide={resizeHandler}
                     onReordered={this.handleRowsReordered}
-                    onReordering={this.handleRowsReordering}
+                    onReordering={reorderingHandler}
                     onRowHeightChanged={this.handleRowHeightChanged}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_ROWS)}
                     renderRowHeader={renderRowHeader}
@@ -979,7 +995,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
                 {this.maybeRenderRegions(this.styleRowHeaderRegion)}
             </div>
-            // {/*{...rowIndices}*/}
         );
     }
 
@@ -1435,14 +1450,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private handleColumnResizeGuide = (verticalGuides: number[]) => {
-        this.setState({ verticalGuides } as ITableState);
-    }
-
-    private handleRowResizeGuide = (horizontalGuides: number[]) => {
-        this.setState({ horizontalGuides } as ITableState);
-    }
-
     private clearSelection = (_selectedRegions: IRegion[]) => {
         this.handleSelection([]);
     }
@@ -1681,10 +1688,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private handleColumnsReordering = (oldIndex: number, newIndex: number, length: number) => {
-        const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
-        const leftOffset = this.grid.getCumulativeWidthBefore(guideIndex);
-        this.setState({ isReordering: true, verticalGuides: [leftOffset] } as ITableState);
+    private handleColumnsReordering = (verticalGuides: number[]) => {
+        this.setState({ isReordering: true, verticalGuides } as ITableState);
     }
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
@@ -1692,10 +1697,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
     }
 
-    private handleRowsReordering = (oldIndex: number, newIndex: number, length: number) => {
-        const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
-        const topOffset = this.grid.getCumulativeHeightBefore(guideIndex);
-        this.setState({ isReordering: true, horizontalGuides: [topOffset] } as ITableState);
+    private handleRowsReordering = (horizontalGuides: number[]) => {
+        this.setState({ isReordering: true, horizontalGuides } as ITableState);
     }
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
@@ -1757,6 +1760,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private getNumFrozenRowsClamped(props: ITableProps = this.props) {
         const { numFrozenRows, numRows } = props;
         return Utils.clamp(numFrozenRows, 0, numRows);
+    }
+
+    private handleColumnResizeGuide = (verticalGuides: number[]) => {
+        this.setState({ verticalGuides } as ITableState);
+    }
+
+    private handleRowResizeGuide = (horizontalGuides: number[]) => {
+        this.setState({ horizontalGuides } as ITableState);
     }
 
     private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
