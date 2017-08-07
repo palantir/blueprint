@@ -37,6 +37,18 @@ export interface ITagInputProps extends IProps {
     onAdd?: (values: string[]) => boolean | void;
 
     /**
+     * Callback invoked when new tags are added or removed. Receives the updated list of `values`:
+     * new tags are appended to the end of the list, removed tags are removed at their index.
+     *
+     * Like `onAdd`, the input will be cleared after this handler is invoked _unless_ the callback
+     * explicitly returns `false`.
+     *
+     * This callback essentially implements basic `onAdd` and `onRemove` functionality and merges
+     * the two handlers into one to simplify controlled usage.
+     */
+    onChange?: (values: string[]) => boolean | void;
+
+    /**
      * Callback invoked when the user clicks the X button on a tag.
      * Receives value and index of removed tag.
      */
@@ -160,14 +172,19 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         }
     }
 
+    /**
+     * Splits inputValue on separator prop and removes outer whitespace from each new value.
+     * Empty values are ignored.
+     */
     private getValues(inputValue: string) {
         const { separator } = this.props;
+        const newValue = inputValue.trim();
         if (separator === false) {
-            return [inputValue];
-        } else if (typeof separator === "string") {
-            return inputValue.split(separator);
+            return [newValue];
         } else {
-            return inputValue.split(separator);
+            // NOTE: split() typings define two overrides for string and RegExp which doesn't play
+            // well with union prop type, so we'll just cast to one of the valid types.
+            return newValue.split(separator as RegExp).filter((val) => val.length > 0);
         }
 
     }
@@ -201,7 +218,11 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         const { selectionEnd, value } = event.currentTarget;
         if (event.which === Keys.ENTER && value.length > 0) {
             // enter key on non-empty string invokes onAdd
-            const shouldClearInput = Utils.safeInvoke(this.props.onAdd, this.getValues(value));
+            const newValues = this.getValues(value);
+            let shouldClearInput = Utils.safeInvoke(this.props.onAdd, newValues);
+            if (Utils.isFunction(this.props.onChange)) {
+                shouldClearInput = shouldClearInput || this.props.onChange([...this.props.values, ...newValues]);
+            }
             // only explicit return false cancels text clearing
             if (shouldClearInput !== false) {
                 this.setState({ inputValue: "" });
@@ -216,7 +237,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     this.setState({ activeIndex: nextIndex });
                 }
             } else if (event.which === Keys.BACKSPACE) {
-                this.removeActiveIndex(event);
+                this.handleBackspaceToRemove(event);
             }
         }
         Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
@@ -225,17 +246,31 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {
         // using data attribute to simplify callback logic -- one handler for all children
         const index = +event.currentTarget.parentElement.getAttribute("data-tag-index");
-        Utils.safeInvoke(this.props.onRemove, this.props.values[index], index);
+        this.removeIndexFromValues(index);
     }
 
-    private removeActiveIndex(event: React.KeyboardEvent<HTMLInputElement>) {
+    private handleBackspaceToRemove(event: React.KeyboardEvent<HTMLInputElement>) {
         const previousActiveIndex = this.state.activeIndex;
         // always move leftward one item (this will focus last item if nothing is focused)
         this.setState({ activeIndex: this.getNextActiveIndex(-1) });
         // delete item if there was a previous valid selection (ignore first backspace to focus last item)
-        if (previousActiveIndex !== NONE && previousActiveIndex < this.props.values.length) {
+        if (this.isValidIndex(previousActiveIndex)) {
             event.preventDefault();
-            Utils.safeInvoke(this.props.onRemove, this.props.values[previousActiveIndex], previousActiveIndex);
+            this.removeIndexFromValues(previousActiveIndex);
         }
+    }
+
+    /** Invokes `onAdd` and `onChange` accordingly to remove the item at the given index. */
+    private removeIndexFromValues(index: number) {
+        const { onChange, onRemove, values } = this.props;
+        Utils.safeInvoke(onRemove, values[index], index);
+        if (Utils.isFunction(onChange)) {
+            onChange(values.filter((_, i) => i !== index));
+        }
+    }
+
+    /** Returns whether the given index represents a valid item in `this.props.values`. */
+    private isValidIndex(index: number) {
+        return index !== NONE && index < this.props.values.length;
     }
 }

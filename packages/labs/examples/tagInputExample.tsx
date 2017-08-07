@@ -55,8 +55,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         return (
             <TagInput
                 className={classes}
-                onAdd={this.handleAdd}
-                onRemove={this.handleRemove}
+                onChange={this.handleChange}
                 tagProps={getTagProps}
                 values={values}
             />
@@ -96,10 +95,5 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         ];
     }
 
-    private handleAdd = (newValues: string[]) => {
-        this.setState({ values: [...this.state.values, ...newValues] });
-    }
-    private handleRemove = (_removedValue: string, removedIndex: number) => {
-        this.setState({ values: this.state.values.filter((_, i) => i !== removedIndex) });
-    }
+    private handleChange = (values: string[]) => this.setState({ values });
 }

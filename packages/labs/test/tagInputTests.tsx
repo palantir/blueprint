@@ -122,13 +122,6 @@ describe("<TagInput>", () => {
         function mountTagInput(onAdd: Sinon.SinonStub, props?: Partial<ITagInputProps>) {
             return shallow(<TagInput onAdd={onAdd} values={VALUES} {...props} />);
         }
-
-        function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {
-            wrapper.find("input").simulate("keydown", {
-                currentTarget: { value },
-                which: Keys.ENTER,
-            });
-        }
     });
 
     describe("onRemove", () => {
@@ -177,6 +170,75 @@ describe("<TagInput>", () => {
         });
     });
 
+    describe("onChange", () => {
+        const NEW_VALUE = "new item";
+
+        it("is not invoked on enter when input is empty", () => {
+            const onChange = sinon.stub();
+            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            pressEnterInInput(wrapper, "");
+            assert.isTrue(onChange.notCalled);
+        });
+
+        it("is invoked on enter with non-empty input", () => {
+            const onChange = sinon.stub();
+            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.args[0][0], [...VALUES, NEW_VALUE]);
+        });
+
+        it("can add multiple tags at once with separator", () => {
+            const onChange = sinon.stub();
+            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            pressEnterInInput(wrapper, [NEW_VALUE, NEW_VALUE, NEW_VALUE].join(", "));
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.args[0][0], [...VALUES, NEW_VALUE, NEW_VALUE, NEW_VALUE]);
+        });
+
+        it("is invoked when a tag is removed by clicking", () => {
+            const onChange = sinon.stub();
+            const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
+            wrapper.find("button").at(1).simulate("click");
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.args[0][0], [VALUES[0], VALUES[2]]);
+        });
+
+        it("is invoked when a tag is removed by backspace", () => {
+            const onChange = sinon.stub();
+            const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
+            wrapper.find("input")
+                .simulate("keydown", { which: Keys.BACKSPACE })
+                .simulate("keydown", { which: Keys.BACKSPACE });
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.args[0][0], [VALUES[0], VALUES[1]]);
+        });
+
+        it("does not clear the input if onChange returns false", () => {
+            const onChange = sinon.stub().returns(false);
+            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            wrapper.setState({ inputValue: NEW_VALUE });
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
+        });
+
+        it("clears the input if onChange returns true", () => {
+            const onChange = sinon.stub().returns(true);
+            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            wrapper.setState({ inputValue: NEW_VALUE });
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, "");
+        });
+
+        it("clears the input if onChange returns nothing", () => {
+            const onChange = sinon.spy();
+            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} />);
+            wrapper.setState({ inputValue: NEW_VALUE });
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, "");
+        });
+    });
+
     describe("when input is not empty", () => {
         it("pressing backspace does not remove item", () => {
             const onRemove = sinon.spy();
@@ -188,4 +250,11 @@ describe("<TagInput>", () => {
             assert.isTrue(onRemove.notCalled);
         });
     });
+
+    function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {
+        wrapper.find("input").simulate("keydown", {
+            currentTarget: { value },
+            which: Keys.ENTER,
+        });
+    }
 });
