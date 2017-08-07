@@ -74,7 +74,37 @@ describe("Utils", () => {
         assert.equal(Utils.countDecimalPlaces(-1.1111111111), 10);
     });
 
-    // TODO: not sure how to test these
+    // TODO: not sure how to test this. perhaps with the help of https://github.com/alexreardon/raf-stub?
     it.skip("throttleEvent");
-    it.skip("throttleReactEventCallback");
+
+    describe("throttleReactEventCallback", () => {
+        let callback: Sinon.SinonSpy;
+        let fakeEvent: any; // cast as `any` to avoid having to set every required property on the event
+        let throttledCallback: (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => void;
+
+        beforeEach(() => {
+            callback = sinon.spy();
+            fakeEvent = { persist: sinon.spy(), preventDefault: sinon.spy() };
+        });
+
+        afterEach(() => {
+            callback = undefined;
+            fakeEvent = undefined;
+        });
+
+        it("invokes event.persist() to prevent React from pooling before we can reference the event in rAF", () => {
+            throttledCallback = Utils.throttleReactEventCallback(callback);
+            throttledCallback(fakeEvent as any);
+            assert.isTrue(fakeEvent.persist.calledOnce);
+        });
+
+        it("can preventDefault", () => {
+            throttledCallback = Utils.throttleReactEventCallback(callback, /* preventDefault */ true);
+            throttledCallback(fakeEvent as any);
+            assert.isTrue(fakeEvent.preventDefault.calledOnce);
+        });
+
+        // TODO: how to test this properly? perhaps with the help of https://github.com/alexreardon/raf-stub?
+        it.skip("properly throttles callback using requestAnimationFrame");
+    });
 });
