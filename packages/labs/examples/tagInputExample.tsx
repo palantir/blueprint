@@ -56,6 +56,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
             <TagInput
                 className={classes}
                 onChange={this.handleChange}
+                placeholder="Separate values with commas..."
                 tagProps={getTagProps}
                 values={values}
             />

@@ -239,6 +239,31 @@ describe("<TagInput>", () => {
         });
     });
 
+    describe("placeholder", () => {
+        it("appears only when values is empty", () => {
+            const wrapper = shallow(<TagInput placeholder="hold the door" values={[]} />);
+            assert.strictEqual(wrapper.find("input").prop("placeholder"), "hold the door");
+            wrapper.setProps({ values: VALUES });
+            assert.isUndefined(wrapper.find("input").prop("placeholder"));
+        });
+
+        it("inputProps.placeholder appears all the time", () => {
+            const wrapper = shallow(<TagInput inputProps={{ placeholder: "hold the door" }} values={[]} />);
+            assert.strictEqual(wrapper.find("input").prop("placeholder"), "hold the door");
+            wrapper.setProps({ values: VALUES });
+            assert.strictEqual(wrapper.find("input").prop("placeholder"), "hold the door");
+        });
+
+        it("setting both shows placeholder when empty and inputProps.placeholder otherwise", () => {
+            const wrapper = shallow(
+                <TagInput inputProps={{ placeholder: "inputProps" }} placeholder="props" values={[]} />,
+            );
+            assert.strictEqual(wrapper.find("input").prop("placeholder"), "props");
+            wrapper.setProps({ values: VALUES });
+            assert.strictEqual(wrapper.find("input").prop("placeholder"), "inputProps");
+        });
+    });
+
     describe("when input is not empty", () => {
         it("pressing backspace does not remove item", () => {
             const onRemove = sinon.spy();

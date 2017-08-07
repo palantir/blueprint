@@ -55,6 +55,15 @@ export interface ITagInputProps extends IProps {
     onRemove?: (value: string, index: number) => void;
 
     /**
+     * HTML input placeholder text which will not appear if `values` contains any items.
+     * Use `inputProps.placeholder` if you want the placeholder text to _always_ appear.
+     *
+     * If you define both `placeholder` and `inputProps.placeholder`, then the former will appear
+     * when `values` is empty and the latter at all other times.
+     */
+    placeholder?: string;
+
+    /**
      * Separator pattern used to split input text into multiple values.
      * Explicit `false` value disables splitting (note that `onAdd` will still receive an array of length 1).
      * @default  \/,\s*\/g
@@ -112,11 +121,15 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     };
 
     public render() {
-        const { className, inputProps, values } = this.props;
+        const { className, inputProps, placeholder, values } = this.props;
 
         const classes = classNames(CoreClasses.INPUT, Classes.TAG_INPUT, {
             [CoreClasses.ACTIVE]: this.state.isInputFocused,
         }, className);
+
+        const resolvedPlaceholder = placeholder == null || values.length > 0
+            ? inputProps.placeholder
+            : placeholder;
 
         return (
             <div
@@ -131,6 +144,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     onFocus={this.handleInputFocus}
                     onChange={this.handleInputChange}
                     onKeyDown={this.handleInputKeyDown}
+                    placeholder={resolvedPlaceholder}
                     ref={this.refHandlers.input}
                     className={classNames(Classes.INPUT_GHOST, inputProps.className)}
                 />
