@@ -28,7 +28,14 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         intent: false,
         large: false,
         minimal: false,
-        values: [<strong>Albert</strong>, undefined, undefined, ["Bar", <em key="thol">thol</em>, "omew"], "Casper"],
+        values: [
+            // supports single JSX elements
+            <strong>Albert</strong>,
+            // supports JSX "fragments" (don't forget `key` on elements in arrays!)
+            ["Bar", <em key="thol">thol</em>, "omew"],
+            // and supports simple strings
+            "Casper",
+        ],
     };
 
     private handleFillChange = handleBooleanChange((fill) => this.setState({ fill }));
