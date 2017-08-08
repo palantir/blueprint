@@ -20,6 +20,9 @@ export const CONTEXTMENU_WARN_DECORATOR_NO_METHOD =
 
 export const HOTKEYS_HOTKEY_CHILDREN = `${ns} <Hotkeys> only accepts <Hotkey> children.`;
 
+export const ICON_DEPRECATED_NAMES =
+    `${ns} The "pt-icon-" prefix for iconName is deprecated and will be removed in 2.0.`;
+
 export const MENU_WARN_CHILDREN_SUBMENU_MUTEX =
     `${ns} <MenuItem> children and submenu props are mutually exclusive, with children taking priority.`;
 

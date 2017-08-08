@@ -9,6 +9,8 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, IIntentProps, IProps } from "../../common";
+import { ICON_DEPRECATED_NAMES } from "../../common/errors";
+import { isNodeEnv } from "../../common/utils";
 import { IconName } from "../../generated/iconName";
 
 export { IconName }
@@ -36,6 +38,12 @@ export const Icon: React.SFC<IIconProps & React.HTMLAttributes<HTMLSpanElement>>
         return null;
     }
     const { className, iconName, intent, iconSize = 16, ...restProps }  = props;
+
+    // TODO: remove me in 2.0, and remove pt-icon-* entries from IconName enum in icons.js#buildUnionType
+    if (!isNodeEnv("production") && iconName.indexOf("pt-icon-") === 0) {
+        console.warn(ICON_DEPRECATED_NAMES, `Given "${iconName}".`);
+    }
+
     const classes = classNames(
         getSizeClass(iconSize),
         Classes.iconClass(iconName),

@@ -9,6 +9,7 @@ module.exports = (blueprint, gulp, plugins) => {
     const text = require("./util/text");
     const mergeStream = require("merge-stream");
 
+    /** @type {object[]} */
     const ICONS = require(path.resolve(blueprint.findProject("core").cwd, "resources", "icons", "icons.json"));
 
     // generate sass and typescript files containing icon variables, driven by docs/src/icons.json
@@ -56,7 +57,10 @@ module.exports = (blueprint, gulp, plugins) => {
     }
 
     function buildUnionType() {
-        const iconNames = ICONS.map((i) => `"${i.className.replace("pt-icon-", "")}"`).sort();
+        const iconNames = ICONS.reduce((arr, i) => {
+            arr.push(`"${i.className}"`, `"${i.className.replace("pt-icon-", "")}"`);
+            return arr;
+        }, []).sort();
         return [`export type IconName = ${iconNames.join(" |\n    ")};`];
     }
 };
