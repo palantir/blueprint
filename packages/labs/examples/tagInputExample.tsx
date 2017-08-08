@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Intent, ITagProps, Switch } from "@blueprintjs/core";
+import { Button, Classes, Intent, ITagProps, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 import { TagInput } from "../src";
 
@@ -44,6 +44,14 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
             [Classes.LARGE]: large,
         });
 
+        const clearButton = (
+            <Button
+                className={classNames(Classes.MINIMAL, Classes.SMALL)}
+                iconName="cross"
+                onClick={this.handleClear}
+            />
+        );
+
         // define a new function every time so switch changes will cause it to re-render
         // NOTE: avoid this pattern in your app (use this.getTagProps instead); this is only for
         // example purposes!!
@@ -55,6 +63,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         return (
             <TagInput
                 className={classes}
+                rightElement={clearButton}
                 leftIconName="user"
                 onChange={this.handleChange}
                 placeholder="Separate values with commas..."
@@ -98,4 +107,6 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
     }
 
     private handleChange = (values: string[]) => this.setState({ values });
+
+    private handleClear = () => this.handleChange([]);
 }

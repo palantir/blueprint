@@ -68,6 +68,12 @@ export interface ITagInputProps extends IProps {
     placeholder?: string;
 
     /**
+     * Element to render on right side of input.
+     * For best results, use a small minimal button, tag, or spinner.
+     */
+    rightElement?: JSX.Element;
+
+    /**
      * Separator pattern used to split input text into multiple values.
      * Explicit `false` value disables splitting (note that `onAdd` will still receive an array of length 1).
      * @default ","
@@ -153,6 +159,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     ref={this.refHandlers.input}
                     className={classNames(Classes.INPUT_GHOST, inputProps.className)}
                 />
+                {this.props.rightElement}
             </div>
         );
     }
