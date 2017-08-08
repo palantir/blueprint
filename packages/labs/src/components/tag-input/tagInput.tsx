@@ -55,7 +55,8 @@ export interface ITagInputProps extends IProps {
     onRemove?: (value: string, index: number) => void;
 
     /**
-     * HTML input placeholder text which will not appear if `values` contains any items.
+     * Input placeholder text which will not appear if `values` contains any items
+     * (consistent with default HTML input behavior).
      * Use `inputProps.placeholder` if you want the placeholder text to _always_ appear.
      *
      * If you define both `placeholder` and `inputProps.placeholder`, then the former will appear
@@ -66,7 +67,7 @@ export interface ITagInputProps extends IProps {
     /**
      * Separator pattern used to split input text into multiple values.
      * Explicit `false` value disables splitting (note that `onAdd` will still receive an array of length 1).
-     * @default  \/,\s*\/g
+     * @default ","
      */
     separator?: string | RegExp | false;
 
@@ -98,7 +99,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     public static defaultProps: Partial<ITagInputProps> & object = {
         inputProps: {},
-        separator: /,\s*/g,
+        separator: ",",
         tagProps: {},
     };
 
