@@ -15,6 +15,7 @@
 @page editable-text
 @page forms
 @page hotkeys
+@page icon
 @page menu
 @page navbar
 @page non-ideal-state

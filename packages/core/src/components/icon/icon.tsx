@@ -15,12 +15,12 @@ import { IconName } from "../../generated/iconName";
 
 export { IconName }
 
-export type IconSize = 16 | 20 | "inherit";
-
 export interface IIconProps extends IIntentProps, IProps {
     /**
      * Name of the icon (the part after `pt-icon-`).
      * If `undefined`, this component will render nothing.
+     *
+     * The `pt-icon-` prefix is currently supported in icon names but will be removed in v2.0.
      */
     iconName: IconName | undefined;
 
@@ -30,7 +30,7 @@ export interface IIconProps extends IIntentProps, IProps {
      * render a 20px icon but inherit `font-size` from its parent.
      * @default 16
      */
-    iconSize?: IconSize;
+    iconSize?: 16 | 20 | "inherit";
 }
 
 export const Icon: React.SFC<IIconProps & React.HTMLAttributes<HTMLSpanElement>> = (props) => {
@@ -54,7 +54,8 @@ export const Icon: React.SFC<IIconProps & React.HTMLAttributes<HTMLSpanElement>>
 };
 Icon.displayName = "Blueprint.Icon";
 
-function getSizeClass(size: IconSize) {
+// NOTE: not using a type alias here so the full union will appear in the interface docs
+function getSizeClass(size: 16 | 20 | "inherit") {
     switch (size) {
         case 16: return Classes.ICON_STANDARD;
         case 20: return Classes.ICON_LARGE;
