@@ -337,6 +337,7 @@ describe("<Table>", () => {
                 mainScrollContainer.scrollTop = SCROLL_OFFSET_Y;
                 TestUtils.Simulate.scroll(mainScrollContainer);
 
+                // defer checks to make sure the throttled scroll logic executes first
                 requestAnimationFrame(() => {
                     assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
                     assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
