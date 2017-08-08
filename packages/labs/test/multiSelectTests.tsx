@@ -37,6 +37,13 @@ describe("<MultiSelect>", () => {
         };
     });
 
+    it("placeholder can be controlled with TagInput's inputProps", () => {
+        const placeholder = "look here";
+
+        const input = multiselect({ tagInputProps: { inputProps: { placeholder } } }).find("input");
+        assert.equal((input.getDOMNode() as HTMLInputElement).placeholder, placeholder);
+    });
+
     it("clicking item invokes onSelectItem with placeholder", () => {
         const placeholder = "look here";
 
