@@ -189,7 +189,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         //   manually update all relevant quadrants using event.delta{X,Y} later, in the callback.
         //   this keeps every sync'd quadrant visually aligned in each animation frame.
         this.throttledHandleMainQuadrantScroll = CoreUtils.throttleReactEventCallback(this.handleMainQuadrantScroll);
-        this.throttledHandleWheel = CoreUtils.throttleReactEventCallback(this.handleWheel, /* preventDefault */ true);
+        this.throttledHandleWheel = CoreUtils.throttleReactEventCallback(this.handleWheel, { preventDefault: true });
     }
 
     public componentDidMount() {

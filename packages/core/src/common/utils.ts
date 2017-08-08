@@ -105,6 +105,10 @@ export function throttleEvent(target: EventTarget, eventName: string, newEventNa
     return func;
 };
 
+export interface IThrottledReactEventOptions {
+    preventDefault?: boolean;
+};
+
 /**
  * Throttle a callback by wrapping it in a `requestAnimationFrame` call. Returns the throttled
  * function.
@@ -112,13 +116,13 @@ export function throttleEvent(target: EventTarget, eventName: string, newEventNa
  */
 export function throttleReactEventCallback(
     callback: (event: React.SyntheticEvent<any>, ...otherArgs: any[]) => any,
-    preventDefault?: boolean,
+    options: IThrottledReactEventOptions = {},
 ) {
     let isRunning = false;
     const func = (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => {
         // need to preventDefault synchronously and without regard to the rAF timeline,
         // if we want it to work
-        if (preventDefault) {
+        if (options.preventDefault) {
             event2.preventDefault();
         }
 
