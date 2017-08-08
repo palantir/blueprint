@@ -25,6 +25,9 @@ export interface ITagInputProps extends IProps {
     /** React props to pass to the `<input>` element */
     inputProps?: HTMLInputProps;
 
+    /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
+    leftIconName?: string;
+
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.
      * Receives the current value of the input field split by `separator` into an array.
@@ -138,6 +141,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 onBlur={this.handleBlur}
                 onClick={this.handleContainerClick}
             >
+                {this.maybeRenderLeftIcon(classes.indexOf(CoreClasses.LARGE) > NONE)}
                 {values.map(this.renderTag)}
                 <input
                     value={this.state.inputValue}
@@ -151,6 +155,19 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 />
             </div>
         );
+    }
+
+    private maybeRenderLeftIcon(useLarge: boolean) {
+        const { leftIconName } = this.props;
+        if (leftIconName == null) {
+            return undefined;
+        }
+        const iconClass = classNames(
+            Classes.TAG_INPUT_ICON,
+            useLarge ? CoreClasses.ICON_LARGE : CoreClasses.ICON_STANDARD ,
+            CoreClasses.iconClass(leftIconName),
+        );
+        return <span className={iconClass} />;
     }
 
     private renderTag = (tag: string, index: number) => {

@@ -55,6 +55,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         return (
             <TagInput
                 className={classes}
+                leftIconName="user"
                 onChange={this.handleChange}
                 placeholder="Separate values with commas..."
                 tagProps={getTagProps}

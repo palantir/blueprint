@@ -13,3 +13,4 @@ export const OMNIBOX_OVERLAY = `${OMNIBOX}-overlay`;
 export const SELECT = "pt-select";
 export const SELECT_POPOVER = `${SELECT}-popover`;
 export const TAG_INPUT = "pt-tag-input";
+export const TAG_INPUT_ICON = `${TAG_INPUT}-icon`;

@@ -11,22 +11,28 @@
 
 $tag-input-padding: ($pt-input-height - $tag-height) / 2;
 
+$tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
+$tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
+
 .pt-tag-input {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   cursor: text;
   height: auto;
-  padding: $tag-input-padding 0 0 $tag-input-padding;
+  padding: $tag-input-padding $tag-input-padding 0 0;
+
+  .pt-tag-input-icon {
+    // stylelint-disable-next-line max-line-length
+    margin: 0 ($tag-input-icon-padding - $tag-input-padding) $tag-input-padding $tag-input-icon-padding;
+    color: $pt-icon-color;
+  }
 
   .pt-tag {
-    margin: 0 0 $tag-input-padding 0;
+    margin: 0 0 $tag-input-padding $tag-input-padding;
     // NOTE: in order to wrap long words, you must set explicit width on TagInput,
     // or use .pt-fill CSS class modifier.
     overflow-wrap: break-word;
-
-    &:not(:last-of-type) {
-      margin-right: $tag-input-padding;
-    }
   }
 
   .pt-input-ghost {
@@ -42,6 +48,11 @@ $tag-input-padding: ($pt-input-height - $tag-height) / 2;
   &.pt-large {
     height: auto;
 
+    .pt-tag-input-icon {
+      // stylelint-disable-next-line max-line-length
+      margin: 0 ($tag-input-icon-padding-large - $tag-input-padding) $tag-input-padding $tag-input-icon-padding-large;
+    }
+
     .pt-input-ghost {
       line-height: $tag-height-large;
     }
@@ -54,6 +65,10 @@ $tag-input-padding: ($pt-input-height - $tag-height) / 2;
 
   .pt-dark &,
   &.pt-dark {
+    .pt-tag-input-icon {
+      color: $pt-dark-icon-color;
+    }
+
     .pt-input-ghost {
       color: $dark-input-color;
     }
