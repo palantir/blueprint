@@ -180,7 +180,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     public render() {
         const { value, valueString } = this.state;
         const dateString = this.state.isInputFocused ? valueString : this.getDateString(value);
-        const date = this.state.isInputFocused ? moment(valueString, this.props.format) : value;
+        const date = this.state.isInputFocused ? moment(valueString, this.props.format, this.props.locale) : value;
         const dateValue = this.isMomentValidAndInRange(value) ? fromMomentToDate(value) : null;
 
         const popoverContent = this.props.timePrecision === undefined
@@ -253,7 +253,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         }
         if (value.isValid()) {
             if (this.isMomentInRange(value)) {
-                return value.format(this.props.format);
+                if (this.props.locale) {
+                    return value.locale(this.props.locale).format(this.props.format);
+                } else {
+                    return value.format(this.props.format);
+                }
             } else {
                 return this.props.outOfRangeMessage;
             }
@@ -316,7 +320,14 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-        const valueString = isMomentNull(this.state.value) ? "" : this.state.value.format(this.props.format);
+        let valueString: string;
+        if (isMomentNull(this.state.value)) {
+          valueString = "";
+        } else if (this.props.locale) {
+          valueString = this.props.locale ? this.state.value.locale(this.props.locale).format(this.props.format);
+        } else {
+          valueString = this.state.value.format(this.props.format);
+        }
 
         if (this.props.openOnFocus) {
             this.setState({ isInputFocused: true, isOpen: true, valueString });
@@ -335,7 +346,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const valueString = (e.target as HTMLInputElement).value;
-        const value = moment(valueString, this.props.format);
+        const value = moment(valueString, this.props.format, this.props.locale);
 
         if (value.isValid() && this.isMomentInRange(value)) {
             if (this.props.value === undefined) {
@@ -355,7 +366,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         const valueString = this.state.valueString;
-        const value = moment(valueString, this.props.format);
+        const value = moment(valueString, this.props.format, this.props.locale);
         if (valueString.length > 0
             && valueString !== this.getDateString(this.state.value)
             && (!value.isValid() || !this.isMomentInRange(value))) {
