@@ -771,13 +771,12 @@ describe("<DateRangeInput>", () => {
             let getDayElement: (dayNumber?: number, fromLeftMonth?: boolean) => WrappedComponentDayElement;
             let dayElement: WrappedComponentDayElement;
 
-            const DEFAULT_RANGE: DateRange = [HOVER_TEST_DATE_2, HOVER_TEST_DATE_4];
-
             before(() => {
                 const result = wrap(<DateRangeInput
                     closeOnSelection={false}
-                    defaultValue={DEFAULT_RANGE}
+                    defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]}
                 />);
+
                 root = result.root;
                 rootInstance = root.instance() as DateRangeInput;
                 getDayElement = result.getDayElement;
