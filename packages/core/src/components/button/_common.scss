@@ -423,5 +423,4 @@ $button-intents: (
 @mixin pt-button-small() {
   @include pt-button-height($pt-button-height-small);
   padding: $button-padding-small;
-  font-size: $pt-font-size-small;
 }
