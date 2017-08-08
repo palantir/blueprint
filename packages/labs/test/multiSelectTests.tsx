@@ -20,6 +20,7 @@ describe("<MultiSelect>", () => {
         items: TOP_100_FILMS,
         popoverProps: { inline: true, isOpen: true },
         query: "",
+        selectedItems: [] as Film[],
         tagRenderer: renderTag,
     };
     let handlers: {
@@ -36,11 +37,13 @@ describe("<MultiSelect>", () => {
         };
     });
 
-    it("placeholder can be controlled with TagInput's inputProps", () => {
+    it("clicking item invokes onSelectItem with placeholder", () => {
         const placeholder = "look here";
 
-        const input = multiselect({ tagInputProps: { inputProps: { placeholder } } }).find("input");
-        assert.equal((input.getDOMNode() as HTMLInputElement).placeholder, placeholder);
+        const wrapper = multiselect({ tagInputProps: { inputProps: { placeholder } } });
+        wrapper.setState({activeItem: TOP_100_FILMS[4]});
+        wrapper.find(MenuItem).at(4).find("a").simulate("click");
+        assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
     });
 
     function multiselect(props: Partial<IMultiSelectProps<Film>> = {}, query?: string) {
@@ -52,7 +55,7 @@ describe("<MultiSelect>", () => {
     }
 });
 
-const renderFilm = ({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) => {
+function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
     const classes = classNames({
         [Classes.ACTIVE]: isActive,
         [Classes.INTENT_PRIMARY]: isActive,
@@ -70,7 +73,7 @@ const renderFilm = ({ handleClick, isActive, item: film }: ISelectItemRendererPr
     );
 };
 
-const renderTag = (film: Film) => {
+function renderTag (film: Film) {
     return film.title;
 };
 
