@@ -187,19 +187,17 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     }
 
     /**
-     * Splits inputValue on separator prop and removes outer whitespace from each new value.
-     * Empty values are ignored.
+     * Splits inputValue on separator prop,
+     * trims whitespace from each new value,
+     * and ignores empty values.
      */
     private getValues(inputValue: string) {
         const { separator } = this.props;
-        const newValue = inputValue.trim();
-        if (separator === false) {
-            return [newValue];
-        } else {
-            // NOTE: split() typings define two overrides for string and RegExp which doesn't play
-            // well with union prop type, so we'll just cast to one of the valid types.
-            return newValue.split(separator as RegExp).filter((val) => val.length > 0);
-        }
+        // NOTE: split() typings define two overrides for string and RegExp.
+        // this does not play well with our union prop type, so we'll just declare it as a valid type.
+        return (separator === false ? [inputValue] : inputValue.split(separator as string))
+                .map((val) => val.trim())
+                .filter((val) => val.length > 0);
 
     }
 
@@ -234,6 +232,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             // enter key on non-empty string invokes onAdd
             const newValues = this.getValues(value);
             let shouldClearInput = Utils.safeInvoke(this.props.onAdd, newValues);
+            // avoid a potentially expensive computation if this prop is omitted
             if (Utils.isFunction(this.props.onChange)) {
                 shouldClearInput = shouldClearInput || this.props.onChange([...this.props.values, ...newValues]);
             }
@@ -274,7 +273,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         }
     }
 
-    /** Invokes `onAdd` and `onChange` accordingly to remove the item at the given index. */
+    /** Remove the item at the given index by invoking `onRemove` and `onChange` accordingly. */
     private removeIndexFromValues(index: number) {
         const { onChange, onRemove, values } = this.props;
         Utils.safeInvoke(onRemove, values[index], index);
