@@ -11,6 +11,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { safeInvoke } from "../../common/utils";
 import { Collapse } from "../collapse/collapse";
+import { Icon, IconName } from "../icon/icon";
 
 export interface ITreeNode {
     /**
@@ -32,7 +33,7 @@ export interface ITreeNode {
     /**
      * The name of a Blueprint icon to display next to the node's label.
      */
-    iconName?: string;
+    iconName?: IconName;
 
     /**
      * A unique identifier for the node.
@@ -77,12 +78,12 @@ export interface ITreeNodeProps extends ITreeNode {
 
 export class TreeNode extends React.Component<ITreeNodeProps, {}> {
     public render() {
-        const {children, className, hasCaret, isExpanded, isSelected, label} = this.props;
+        const {children, className, hasCaret, iconName, isExpanded, isSelected, label} = this.props;
 
         const showCaret = hasCaret == null ? React.Children.count(children) > 0 : hasCaret;
         const caretClass = showCaret ? Classes.TREE_NODE_CARET : Classes.TREE_NODE_CARET_NONE;
         const caretStateClass = isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED;
-        const caretClasses = classNames(caretClass, "pt-icon-standard", {
+        const caretClasses = classNames(caretClass, Classes.ICON_STANDARD, {
             [caretStateClass]: showCaret,
         });
 
@@ -103,7 +104,7 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
                     ref={this.handleContentRef}
                 >
                     <span className={caretClasses} onClick={showCaret ? this.handleCaretClick : null}/>
-                    {this.maybeRenderIcon()}
+                    <Icon className={Classes.TREE_NODE_ICON} iconName={iconName} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
                     {this.maybeRenderSecondaryLabel()}
                 </div>
@@ -112,16 +113,6 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
                 </Collapse>
             </li>
         );
-    }
-
-    private maybeRenderIcon() {
-        const { iconName } = this.props;
-        if (iconName != null) {
-            const iconClasses = classNames(Classes.TREE_NODE_ICON, "pt-icon-standard", Classes.iconClass(iconName));
-            return <span className={iconClasses}/>;
-        } else {
-            return undefined;
-        }
     }
 
     private maybeRenderSecondaryLabel() {

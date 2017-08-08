@@ -12,6 +12,7 @@ import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IActionProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
+import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
 export interface IButtonProps extends IActionProps {
@@ -26,7 +27,7 @@ export interface IButtonProps extends IActionProps {
     elementRef?: (ref: HTMLElement) => any;
 
     /** Name of the icon (the part after `pt-icon-`) to add to the button. */
-    rightIconName?: string;
+    rightIconName?: IconName;
 
     /**
      * If set to `true`, the button will display a centered loading spinner instead of its contents.
@@ -115,7 +116,6 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
 
     protected renderChildren(): React.ReactNode {
         const { loading, rightIconName, text } = this.props;
-        const iconClasses = classNames(Classes.ICON_STANDARD, Classes.iconClass(rightIconName), Classes.ALIGN_RIGHT);
 
         const children = React.Children.map(this.props.children, (child, index) => {
             // must wrap string children in spans so loading prop can hide them
@@ -126,10 +126,10 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         });
 
         return [
-            loading ? <Spinner className="pt-small pt-button-spinner" key="spinner" /> : undefined,
-            text != null ? <span key="text">{text}</span> : undefined,
-            children,
-            rightIconName != null ? <span className={iconClasses} key="icon" /> : undefined,
+            loading && <Spinner className="pt-small pt-button-spinner" key="spinner" />,
+            text != null && <span key="text">{text}</span>,
+            ...children,
+            <Icon className={Classes.ALIGN_RIGHT} iconName={rightIconName} key="icon" />,
         ];
     }
 }

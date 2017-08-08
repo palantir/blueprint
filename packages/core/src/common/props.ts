@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { Intent } from "./intent";
+import { IconName, Intent } from "./index";
 
 export type HTMLInputProps = React.HTMLProps<HTMLInputElement>;
 
@@ -33,7 +33,7 @@ export interface IActionProps extends IIntentProps, IProps {
     disabled?: boolean;
 
     /** Name of the icon (the part after `pt-icon-`) to add to the button. */
-    iconName?: string;
+    iconName?: IconName;
 
     /** Click event handler. */
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;

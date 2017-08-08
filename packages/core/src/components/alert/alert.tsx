@@ -12,6 +12,7 @@ import { AbstractComponent, Classes, Intent, IProps } from "../../common";
 import { ALERT_WARN_CANCEL_PROPS } from "../../common/errors";
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
+import { Icon, IconName } from "../icon/icon";
 
 export interface IAlertProps extends IProps {
     /**
@@ -26,7 +27,7 @@ export interface IAlertProps extends IProps {
     confirmButtonText?: string;
 
     /** Name of the icon (the part after `pt-icon-`) to add next to the alert message */
-    iconName?: string;
+    iconName?: IconName;
 
     /**
      * The intent to be applied to the confirm (right-most) button.
@@ -65,11 +66,11 @@ export class Alert extends AbstractComponent<IAlertProps, {}> {
     public static displayName = "Blueprint.Alert";
 
     public render() {
-        const { children, className, intent, isOpen, confirmButtonText, onConfirm, style } = this.props;
+        const { children, className, iconName, intent, isOpen, confirmButtonText, onConfirm, style } = this.props;
         return (
             <Dialog className={classNames(Classes.ALERT, className)} isOpen={isOpen} style={style}>
                 <div className={Classes.ALERT_BODY}>
-                    {this.maybeRenderIcon()}
+                    <Icon iconName={iconName} iconSize="inherit" intent={Intent.DANGER} />
                     <div className={Classes.ALERT_CONTENTS}>
                         {children}
                     </div>
@@ -87,15 +88,6 @@ export class Alert extends AbstractComponent<IAlertProps, {}> {
             props.cancelButtonText == null && props.onCancel != null ) {
             console.warn(ALERT_WARN_CANCEL_PROPS);
         }
-    }
-
-    private maybeRenderIcon() {
-        const { iconName } = this.props;
-        if (iconName != null) {
-            const iconClass = classNames("pt-icon", Classes.iconClass(iconName));
-            return <span className={iconClass} />;
-        }
-        return undefined;
     }
 
     private maybeRenderSecondaryAction() {
