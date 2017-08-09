@@ -141,17 +141,24 @@ function throttleHelper(
 ) {
     let isRunning = false;
     const func = (...args: any[]) => {
-        safeInvoke(onBeforeIsRunningCheck, ...args);
+        // don't use safeInvoke, because we might have more than its max number of typed params
+        if (isFunction(onBeforeIsRunningCheck)) {
+             onBeforeIsRunningCheck(...args);
+        }
 
         if (isRunning) {
             return;
         }
         isRunning = true;
 
-        safeInvoke(onAfterIsRunningCheck, ...args);
+        if (isFunction(onAfterIsRunningCheck)) {
+            onAfterIsRunningCheck(...args);
+        }
 
         requestAnimationFrame(() => {
-            safeInvoke(onAnimationFrameRequested, ...args);
+            if (isFunction(onAnimationFrameRequested)) {
+                onAnimationFrameRequested(...args);
+            }
             isRunning = false;
         });
     };
