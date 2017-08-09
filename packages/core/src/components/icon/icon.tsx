@@ -10,18 +10,14 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes, IIntentProps, IProps } from "../../common";
-import { ICON_DEPRECATED_NAMES } from "../../common/errors";
-import { isNodeEnv } from "../../common/utils";
 import { IconName } from "../../generated/iconName";
 
 export { IconName }
 
 export interface IIconProps extends IIntentProps, IProps {
     /**
-     * Name of the icon (the part after `pt-icon-`).
+     * Name of the icon (with or without `"pt-icon-"` prefix).
      * If `undefined`, this component will render nothing.
-     *
-     * The `pt-icon-` prefix is currently supported in icon names but will be removed in v2.0.
      */
     iconName: IconName | undefined;
 
@@ -49,11 +45,6 @@ export class Icon extends React.Component<IIconProps & React.HTMLAttributes<HTML
             return null;
         }
         const { className, iconName, intent, iconSize = Icon.SIZE_STANDARD, ...restProps }  = this.props;
-
-        // TODO: remove me in 2.0, and remove pt-icon-* entries from IconName enum in icons.js#buildUnionType
-        if (!isNodeEnv("production") && iconName.indexOf("pt-icon-") === 0) {
-            console.warn(ICON_DEPRECATED_NAMES, `Given "${iconName}".`);
-        }
 
         const classes = classNames(
             getSizeClass(iconSize),

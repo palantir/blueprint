@@ -34,24 +34,22 @@ Icon classes also support the four `.pt-intent-*` modifiers to color the image.
 @## JavaScript API
 
 Use the `<Icon>` component to easily render icons in React. The required `iconName` prop is typed
-such that it can offer autocomplete for known icon names. The optional `iconSize` prop ensures
+such that editors can offer autocomplete for known icon names. The optional `iconSize` prop ensures
 you'll never forget a sizing class and clarifies the expected width and height of the icon element.
 The component also accepts all valid HTML props for a `<span>` element.
 
 ```tsx
+// string literals are supported through IconName union type
 <Icon iconName="cross" />
+<Icon iconName="pt-icon-globe" iconSize="inherit" />
 <Icon iconName="graph" iconSize={20} intent={Intent.PRIMARY} />
-<Icon iconName="add" iconSize="inherit" onClick={handleAdd}>
 
-// deprecated usage, will be removed in 2.0:
-<Icon iconName="pt-icon-globe" />
+// can also use IconClasses string enum and Icon.SIZE_* constants
+import { IconClasses } from "@blueprintjs/core";
+<Icon iconName={IconClasses.ALIGN_LEFT} iconSize={Icon.SIZE_LARGE} />
+
+// can pass all valid HTML props
+<Icon iconName="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys}>
 ```
-
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-  <h5>Deprecated usage of full icon names</h5>
-  Fully qualified icon names including the "pt-icon-" prefix are supported by the `iconName` prop,
-  __but their usage is deprecated__ and will be removed in 2.0. Passing such icon names will log
-  a warning to the console.
-</div>
 
 @interface IIconProps

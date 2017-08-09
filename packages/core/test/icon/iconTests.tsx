@@ -37,17 +37,14 @@ describe("<Icon>", () => {
         IconClasses.VERTICAL_DISTRIBUTION,
     ));
 
+    it("supports prefixed iconName", () => assertIconClass(
+        <Icon iconName={IconClasses.AIRPLANE} />,
+        IconClasses.AIRPLANE,
+    ));
+
     it("iconName=undefined renders nothing", () => {
         const icon = shallow(<Icon iconName={undefined} />);
         assert.isTrue(icon.isEmptyRender());
-    });
-
-    it("supports prefixed iconName with warning", () => {
-        const warnSpy = sinon.spy(console, "warn");
-        shallow(<Icon iconName={IconClasses.ADD_COLUMN_RIGHT} />);
-        assert.isTrue(warnSpy.calledOnce);
-        assert.match(warnSpy.args[0][0], /deprecated/);
-        warnSpy.restore();
     });
 
     /** Asserts that rendered icon has given className. */
