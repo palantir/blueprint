@@ -26,7 +26,7 @@ Icon classes also support the four `.pt-intent-*` modifiers to color the image.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     <h5>Non-standard sizes</h5>
-    Generally, icons should only be used at either 16px or 20px. However if a non-standard size is
+    Generally, icons should only be used at either 16px or 20px. However, if a non-standard size is
     necessary, set a `font-size` that is whole multiple of 16 or 20 with the relevant size class.
     You can instead use the class `pt-icon` to make the icon inherit its size from surrounding text.
 </div>
@@ -49,7 +49,7 @@ The component also accepts all valid HTML props for a `<span>` element.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
   <h5>Deprecated usage of full icon names</h5>
-  Fully qualified icon names including the "pt-icon-" prefix are supported by the `iconName` prop
+  Fully qualified icon names including the "pt-icon-" prefix are supported by the `iconName` prop,
   __but their usage is deprecated__ and will be removed in 2.0. Passing such icon names will log
   a warning to the console.
 </div>

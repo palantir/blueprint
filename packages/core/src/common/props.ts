@@ -7,7 +7,8 @@
 
 import * as React from "react";
 
-import { IconName, Intent } from "./index";
+import { IconName } from "../generated/iconName";
+import { Intent } from "./intent";
 
 export type HTMLInputProps = React.HTMLProps<HTMLInputElement>;
 

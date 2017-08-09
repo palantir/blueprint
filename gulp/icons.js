@@ -56,8 +56,9 @@ module.exports = (blueprint, gulp, plugins) => {
     }
 
     function buildUnionType() {
-        const iconNames = ICONS.reduce((arr, i) => {
-            arr.push(`"${i.className}"`, `"${i.className.replace("pt-icon-", "")}"`);
+        const iconNames = ICONS.reduce((arr, { className }) => {
+            // support un/prefixed variants
+            arr.push(`"${className}"`, `"${className.replace("pt-icon-", "")}"`);
             return arr;
         }, []).sort();
         return [`export type IconName = ${iconNames.join(" |\n    ")};`];
