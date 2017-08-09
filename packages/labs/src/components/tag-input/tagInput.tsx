@@ -45,8 +45,17 @@ export interface ITagInputProps extends IProps {
      *
      * This callback essentially implements basic `onAdd` and `onRemove` functionality and merges
      * the two handlers into one to simplify controlled usage.
+     *
+     * **Note about typed usage:** Your handler can declare a subset type of `React.ReactNode[]`,
+     * such as `string[]` or `Array<string | JSX.Element>`, to match the type of your `values` array:
+     * ```tsx
+     * <TagInput
+     *     onChange={(values: string[]) => this.setState({ values })}
+     *     values={["apple", "banana", "cherry"]}
+     * />
+     * ```
      */
-    onChange?: (values: string[]) => boolean | void;
+    onChange?: (values: React.ReactNode[]) => boolean | void;
 
     /**
      * Callback invoked when the user clicks the X button on a tag.
@@ -78,10 +87,17 @@ export interface ITagInputProps extends IProps {
      * If you define `onRemove` here then you will have to implement your own tag removal
      * handling as `TagInput`'s own `onRemove` handler will never be invoked.
      */
-    tagProps?: ITagProps | ((value: string, index: number) => ITagProps);
+    tagProps?: ITagProps | ((value: React.ReactNode, index: number) => ITagProps);
 
-    /** Controlled tag values. */
-    values: string[];
+    /**
+     * Controlled tag values. Each value will be rendered inside a `Tag`, which can be customized
+     * using `tagProps`. Therefore, any valid React node can be used as a `TagInput` value.
+     *
+     * __Note about typed usage:__ If you know your `values` will always be of a certain `ReactNode`
+     * subtype, such as `string` or `ReactChild`, you can use that type on all your handlers
+     * to simplify type logic.
+     */
+    values: React.ReactNode[];
 }
 
 export interface ITagInputState {
@@ -153,7 +169,9 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         );
     }
 
-    private renderTag = (tag: string, index: number) => {
+    private renderTag = (tag: React.ReactNode, index: number) => {
+        // ignore all falsy values
+        if (!tag) { return null; }
         const { tagProps } = this.props;
         const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
         return (

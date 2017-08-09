@@ -19,7 +19,7 @@ export interface ITagInputExampleState {
     intent?: boolean;
     large?: boolean;
     minimal?: boolean;
-    values?: string[];
+    values?: React.ReactNode[];
 }
 
 export class TagInputExample extends BaseExample<ITagInputExampleState> {
@@ -28,7 +28,14 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         intent: false,
         large: false,
         minimal: false,
-        values: ["Albert", "Bartholomew", "Casper"],
+        values: [
+            // supports single JSX elements
+            <strong>Albert</strong>,
+            // supports JSX "fragments" (don't forget `key` on elements in arrays!)
+            ["Bar", <em key="thol">thol</em>, "omew"],
+            // and supports simple strings
+            "Casper",
+        ],
     };
 
     private handleFillChange = handleBooleanChange((fill) => this.setState({ fill }));

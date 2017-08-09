@@ -31,6 +31,15 @@ describe("<TagInput>", () => {
         assert.lengthOf(wrapper.find(Tag), VALUES.length);
     });
 
+    it("values can be valid JSX nodes", () => {
+        const values = [<strong>Albert</strong>, ["Bar", <em key="thol">thol</em>, "omew"], "Casper", undefined];
+        const wrapper = mount(<TagInput values={values} />);
+        // undefined does not produce a tag
+        assert.lengthOf(wrapper.find(Tag), values.length - 1);
+        assert.lengthOf(wrapper.find("strong"), 1);
+        assert.lengthOf(wrapper.find("em"), 1);
+    });
+
     it("tagProps object is applied to each Tag", () => {
         const wrapper = mount(<TagInput tagProps={{ intent: Intent.PRIMARY }} values={VALUES} />);
         const intents = wrapper.find(Tag).map((tag) => tag.prop("intent"));
