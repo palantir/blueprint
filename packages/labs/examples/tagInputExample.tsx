@@ -14,14 +14,21 @@ import { TagInput } from "../src";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
-const VALUES = ["Albert", "Bartholomew", "Casper"];
+const VALUES = [
+    // supports single JSX elements
+    <strong>Albert</strong>,
+    // supports JSX "fragments" (don't forget `key` on elements in arrays!)
+    ["Bar", <em key="thol">thol</em>, "omew"],
+    // and supports simple strings
+    "Casper",
+];
 
 export interface ITagInputExampleState {
     fill?: boolean;
     intent?: boolean;
     large?: boolean;
     minimal?: boolean;
-    values?: string[];
+    values?: React.ReactNode[];
 }
 
 export class TagInputExample extends BaseExample<ITagInputExampleState> {
@@ -108,7 +115,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         ];
     }
 
-    private handleChange = (values: string[]) => this.setState({ values });
+    private handleChange = (values: React.ReactNode[]) => this.setState({ values });
 
     private handleClear = () => this.handleChange(this.state.values.length > 0 ? [] : VALUES);
 }
