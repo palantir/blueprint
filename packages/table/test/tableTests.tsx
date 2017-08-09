@@ -338,7 +338,7 @@ describe("<Table>", () => {
                 TestUtils.Simulate.scroll(mainScrollContainer);
 
                 // defer checks to make sure the throttled scroll logic executes first
-                delayToNextAnimationFrame(() => {
+                delayToNextFrame(() => {
                     assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
                     assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
                     assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
@@ -353,7 +353,7 @@ describe("<Table>", () => {
                     deltaY: SCROLL_OFFSET_Y,
                 });
 
-                delayToNextAnimationFrame(() => {
+                delayToNextFrame(() => {
                     assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
                     assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
                     assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
@@ -368,7 +368,7 @@ describe("<Table>", () => {
                     deltaY: SCROLL_OFFSET_Y,
                 });
 
-                delayToNextAnimationFrame(() => {
+                delayToNextFrame(() => {
                     assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
                     assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
                     assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
@@ -382,7 +382,7 @@ describe("<Table>", () => {
                     deltaY: SCROLL_OFFSET_Y,
                 });
 
-                delayToNextAnimationFrame(() => {
+                delayToNextFrame(() => {
                     assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
                     assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
                     assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
@@ -394,14 +394,8 @@ describe("<Table>", () => {
         // Clock management
         // ================
 
-        function delayToNextAnimationFrame(callback: () => void) {
-            // two rAFs are required to force the callback to execute on the *next* frame, allowing
-            // any initial rAF'd code to execute
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    callback();
-                });
-            });
+        function delayToNextFrame(callback: () => void) {
+            setTimeout(callback);
         }
 
         // Test templates
