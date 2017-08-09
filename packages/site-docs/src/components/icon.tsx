@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
+import { ContextMenuTarget, IconName, Menu, MenuItem } from "@blueprintjs/core";
 
 import { ClickToCopy } from "./clickToCopy";
 
@@ -19,7 +19,7 @@ export interface IIcon {
 }
 
 export interface IFontIcon extends IIcon {
-    className: string;
+    className: IconName;
 }
 
 export interface IIconProps {
