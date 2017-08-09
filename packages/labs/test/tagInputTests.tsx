@@ -32,9 +32,10 @@ describe("<TagInput>", () => {
     });
 
     it("values can be valid JSX nodes", () => {
-        const values = [<strong>Albert</strong>, ["Bar", <em key="thol">thol</em>, "omew"], "Casper"];
+        const values = [<strong>Albert</strong>, undefined, ["Bar", <em key="thol">thol</em>, "omew"], "Casper"];
         const wrapper = mount(<TagInput values={values} />);
-        assert.lengthOf(wrapper.find(Tag), values.length);
+        // undefined does not produce a tag
+        assert.lengthOf(wrapper.find(Tag), values.length - 1);
         assert.lengthOf(wrapper.find("strong"), 1);
         assert.lengthOf(wrapper.find("em"), 1);
     });
@@ -293,6 +294,37 @@ describe("<TagInput>", () => {
             });
             assert.isTrue(onRemove.notCalled);
         });
+    });
+
+    it("arrow key interactions ignore falsy values", () => {
+        const MIXED_VALUES = [
+            undefined,
+            <strong>Albert</strong>,
+            false,
+            ["Bar", <em key="thol">thol</em>, "omew"],
+            null,
+            "Casper",
+            undefined,
+        ];
+
+        const onChange = sinon.spy();
+        const wrapper = mount(<TagInput onChange={onChange} values={MIXED_VALUES} />);
+        assert.lengthOf(wrapper.find(Tag), 3, "should render only real values");
+        const input = wrapper.find("input");
+
+        function keydownAndAssertIndex(which: number, activeIndex: number) {
+            input.simulate("keydown", { which });
+            assert.equal(wrapper.state("activeIndex"), activeIndex);
+        }
+        keydownAndAssertIndex(Keys.ARROW_LEFT, 5);
+        keydownAndAssertIndex(Keys.ARROW_RIGHT, 7);
+        keydownAndAssertIndex(Keys.ARROW_LEFT, 5);
+        keydownAndAssertIndex(Keys.ARROW_LEFT, 3);
+        keydownAndAssertIndex(Keys.BACKSPACE, 1);
+
+        assert.isTrue(onChange.calledOnce);
+        assert.lengthOf(onChange.args[0][0], MIXED_VALUES.length - 1,
+            "should remove one item and preserve other falsy values");
     });
 
     function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {

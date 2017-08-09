@@ -21,6 +21,8 @@ const VALUES = [
     ["Bar", <em key="thol">thol</em>, "omew"],
     // and supports simple strings
     "Casper",
+    // falsy values are not rendered and ignored by the keyboard
+    undefined,
 ];
 
 export interface ITagInputExampleState {
