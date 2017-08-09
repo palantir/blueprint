@@ -13,12 +13,12 @@ import { Classes, Icon, IconClasses, IIconProps, Intent } from "../../src/index"
 
 describe("<Icon>", () => {
     it("iconSize=16 renders standard size", () => assertIconClass(
-        <Icon iconName="vertical-distribution" iconSize={16} />,
+        <Icon iconName="vertical-distribution" iconSize={Icon.SIZE_STANDARD} />,
         Classes.ICON_STANDARD,
     ));
 
     it("iconSize=20 renders large size", () => assertIconClass(
-        <Icon iconName="vertical-distribution" iconSize={20} />,
+        <Icon iconName="vertical-distribution" iconSize={Icon.SIZE_LARGE} />,
         Classes.ICON_LARGE,
     ));
 
