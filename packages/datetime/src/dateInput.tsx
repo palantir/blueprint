@@ -180,7 +180,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     public render() {
         const { value, valueString } = this.state;
         const dateString = this.state.isInputFocused ? valueString : this.getDateString(value);
-        const date = this.state.isInputFocused ? moment(valueString, this.props.format, this.props.locale) : value;
+        const date = this.state.isInputFocused ? this.createMoment(valueString) : value;
         const dateValue = this.isMomentValidAndInRange(value) ? fromMomentToDate(value) : null;
 
         const popoverContent = this.props.timePrecision === undefined
@@ -247,7 +247,12 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         }
     }
 
-    private localizedFormat = (value: moment.Moment) => {
+    private createMoment(valueString: string) {
+        // Locale here used for parsing, does not set the locale on the moment itself
+        return moment(valueString, this.props.format, this.props.locale);
+    }
+
+    private localizedFormat(value: moment.Moment) {
         if (this.props.locale) {
             return value.locale(this.props.locale).format(this.props.format);
         } else {
@@ -348,7 +353,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const valueString = (e.target as HTMLInputElement).value;
-        const value = moment(valueString, this.props.format, this.props.locale);
+        const value = this.createMoment(valueString);
 
         if (value.isValid() && this.isMomentInRange(value)) {
             if (this.props.value === undefined) {
@@ -368,7 +373,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         const valueString = this.state.valueString;
-        const value = moment(valueString, this.props.format, this.props.locale);
+        const value = this.createMoment(valueString);
         if (valueString.length > 0
             && valueString !== this.getDateString(this.state.value)
             && (!value.isValid() || !this.isMomentInRange(value))) {
