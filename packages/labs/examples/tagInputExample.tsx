@@ -14,6 +14,8 @@ import { TagInput } from "../src";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
+const VALUES = ["Albert", "Bartholomew", "Casper"];
+
 export interface ITagInputExampleState {
     fill?: boolean;
     intent?: boolean;
@@ -28,7 +30,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         intent: false,
         large: false,
         minimal: false,
-        values: ["Albert", "Bartholomew", "Casper"],
+        values: VALUES,
     };
 
     private handleFillChange = handleBooleanChange((fill) => this.setState({ fill }));
@@ -47,7 +49,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         const clearButton = (
             <Button
                 className={classNames(Classes.MINIMAL, Classes.SMALL)}
-                iconName="cross"
+                iconName={values.length > 0 ? "cross" : "refresh"}
                 onClick={this.handleClear}
             />
         );
@@ -108,5 +110,5 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
 
     private handleChange = (values: string[]) => this.setState({ values });
 
-    private handleClear = () => this.handleChange([]);
+    private handleClear = () => this.handleChange(this.state.values.length > 0 ? [] : VALUES);
 }
