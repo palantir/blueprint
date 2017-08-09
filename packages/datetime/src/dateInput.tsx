@@ -247,17 +247,21 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         }
     }
 
+    private localizedFormat = (value: moment.Moment) => {
+        if (this.props.locale) {
+            return value.locale(this.props.locale).format(this.props.format);
+        } else {
+            return value.format(this.props.format);
+        }
+    }
+
     private getDateString = (value: moment.Moment) => {
         if (isMomentNull(value)) {
             return "";
         }
         if (value.isValid()) {
             if (this.isMomentInRange(value)) {
-                if (this.props.locale) {
-                    return value.locale(this.props.locale).format(this.props.format);
-                } else {
-                    return value.format(this.props.format);
-                }
+                return this.localizedFormat(value);
             } else {
                 return this.props.outOfRangeMessage;
             }
@@ -322,11 +326,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
         let valueString: string;
         if (isMomentNull(this.state.value)) {
-          valueString = "";
-        } else if (this.props.locale) {
-          valueString = this.props.locale ? this.state.value.locale(this.props.locale).format(this.props.format);
+            valueString = "";
         } else {
-          valueString = this.state.value.format(this.props.format);
+            valueString = this.localizedFormat(this.state.value);
         }
 
         if (this.props.openOnFocus) {
