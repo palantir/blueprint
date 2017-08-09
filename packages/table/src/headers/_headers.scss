@@ -19,10 +19,14 @@ $dark-header-menu-hover-background:
 $selectable-header-menu-hover-background:
   menu-background($header-hover-background-color);
 $selectable-header-menu-selected-background:
+  menu-background(mix($pt-intent-primary, $header-background-color, 10%));
+$selectable-header-menu-selected-hover-background:
   menu-background(mix($pt-intent-primary, $header-hover-background-color, 10%));
 $dark-selectable-header-menu-hover-background:
   menu-background($dark-header-hover-background-color);
 $dark-selectable-header-menu-selected-background:
+  menu-background(mix($pt-intent-primary, $dark-header-background-color, 10%));
+$dark-selectable-header-menu-selected-hover-background:
   menu-background(mix($pt-intent-primary, $dark-header-hover-background-color, 10%));
 
 .bp-table-header {
@@ -79,7 +83,8 @@ $dark-selectable-header-menu-selected-background:
   text-align: right;
 
   .bp-table-header:hover &,
-  .bp-table-header-active & {
+  .bp-table-header-active &,
+  &.bp-table-th-menu-open {
     opacity: 1;
   }
 
@@ -100,10 +105,18 @@ $dark-selectable-header-menu-selected-background:
     height: $interaction-bar-height;
   }
 
-  // background doesn't change on hover when selection is disabled; match the default background
+  .bp-table-th-menu-open & {
+    background-image: $header-menu-hover-background;
 
+    .pt-dark & {
+      background-image: $dark-header-menu-hover-background;
+    }
+  }
+
+  // background doesn't change on hover when selection is disabled; match the default background
   .bp-table-header:hover &,
-  .bp-table-header-active & {
+  .bp-table-header-active &,
+  .bp-table-th-menu-open & {
     background-image: $header-menu-hover-background;
 
     .pt-dark & {
@@ -112,7 +125,6 @@ $dark-selectable-header-menu-selected-background:
   }
 
   // background changes on hover/select when selection is enabled; need to match the new background
-
   .bp-table-selection-enabled .bp-table-header:hover &,
   .bp-table-selection-enabled .bp-table-header-active & {
     background-image: $selectable-header-menu-hover-background;
@@ -127,6 +139,14 @@ $dark-selectable-header-menu-selected-background:
 
     .pt-dark & {
       background-image: $dark-selectable-header-menu-selected-background;
+    }
+  }
+
+  .bp-table-selection-enabled .bp-table-header.bp-table-header-selected:hover & {
+    background-image: $selectable-header-menu-selected-hover-background;
+
+    .pt-dark & {
+      background-image: $dark-selectable-header-menu-selected-hover-background;
     }
   }
 }

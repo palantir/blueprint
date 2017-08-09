@@ -176,8 +176,13 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
     }
 
     private handleQueryChange = (e: React.FormEvent<HTMLInputElement>) => {
+        const { tagInputProps = {}, openOnKeyDown } = this.props;
         const query = e.currentTarget.value;
-        this.setState({ query, isOpen: !(query.length === 0 && this.props.openOnKeyDown) });
+        this.setState({ query, isOpen: query.length > 0 || !openOnKeyDown });
+
+        if (tagInputProps.inputProps != null) {
+            Utils.safeInvoke(tagInputProps.inputProps.onChange, e);
+        }
     }
 
     private handleItemSelect = (item: T, e: React.SyntheticEvent<HTMLElement>) => {

@@ -318,10 +318,15 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
     }
 
     private handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (this.props.canOutsideClickClose) {
-            safeInvoke(this.props.onClose, e);
+        const { backdropProps, canOutsideClickClose, enforceFocus, onClose } = this.props;
+        if (canOutsideClickClose) {
+            safeInvoke(onClose, e);
         }
-        safeInvoke(this.props.backdropProps.onMouseDown, e);
+        if (enforceFocus) {
+            // make sure document.activeElement is updated before bringing the focus back
+            requestAnimationFrame(() => this.bringFocusInsideOverlay());
+        }
+        safeInvoke(backdropProps.onMouseDown, e);
     }
 
     private handleDocumentClick = (e: MouseEvent) => {

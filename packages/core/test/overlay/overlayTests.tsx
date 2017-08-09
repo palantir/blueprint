@@ -209,6 +209,20 @@ describe("<Overlay>", () => {
             );
         });
 
+        it("returns focus to overlay after clicking the backdrop if enforceFocus=true", (done) => {
+            wrapper = mount(
+                <Overlay enforceFocus={true} canOutsideClickClose={false} inline={true} isOpen={true}>
+                    {createOverlayContents()}
+                </Overlay>,
+                { attachTo: testsContainerElement },
+            );
+            wrapper.find(BACKDROP_SELECTOR).simulate("mousedown");
+            setTimeout(() => {
+                assert.equal(document.querySelector(`.${Classes.OVERLAY_CONTENT}`), document.activeElement);
+                done();
+            });
+        });
+
         it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
             const anotherContainer = document.createElement("div");
             document.documentElement.appendChild(anotherContainer);

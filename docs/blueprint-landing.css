@@ -1525,6 +1525,30 @@ span.pt-icon {
 .pt-icon-eraser::before {
   content: "\E773"; }
 
+.pt-icon-issue::before {
+  content: "\E774"; }
+
+.pt-icon-issue-new::before {
+  content: "\E775"; }
+
+.pt-icon-issue-closed::before {
+  content: "\E776"; }
+
+.pt-icon-panel-stats::before {
+  content: "\E777"; }
+
+.pt-icon-panel-table::before {
+  content: "\E778"; }
+
+.pt-icon-tick-circle::before {
+  content: "\E779"; }
+
+.pt-icon-prescription::before {
+  content: "\E78A"; }
+
+.pt-icon-new-prescription::before {
+  content: "\E78B"; }
+
 :focus {
   outline: rgba(19, 124, 189, 0.5) auto 2px;
   outline-offset: 2px;
@@ -1665,15 +1689,14 @@ span.pt-icon {
   .pt-button.pt-fill {
     width: 100%; }
   .pt-button:not([class*="pt-intent-"]) {
-    background: #f5f8fa;
-    background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+    background-color: #f5f8fa;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
     color: #182026; }
     .pt-button:not([class*="pt-intent-"]):hover {
-      background: #ebf1f5;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
       box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-      background-clip: padding-box; }
+      background-clip: padding-box;
+      background-color: #ebf1f5; }
     .pt-button:not([class*="pt-intent-"]):active, .pt-button:not([class*="pt-intent-"]).pt-active {
       box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #d8e1e8;
@@ -1688,16 +1711,15 @@ span.pt-icon {
       .pt-button:not([class*="pt-intent-"]):disabled.pt-active, .pt-button:not([class*="pt-intent-"]).pt-disabled.pt-active {
         background: rgba(206, 217, 224, 0.7); }
   .pt-button.pt-intent-primary {
-    background: #137cbd;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #137cbd;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
+    background-color: #137cbd;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
     color: #ffffff; }
     .pt-button.pt-intent-primary:hover, .pt-button.pt-intent-primary:active, .pt-button.pt-intent-primary.pt-active {
       color: #ffffff; }
     .pt-button.pt-intent-primary:hover {
-      background: #106ba3;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #106ba3;
-      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2); }
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
+      background-color: #106ba3; }
     .pt-button.pt-intent-primary:active, .pt-button.pt-intent-primary.pt-active {
       box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #0e5a8a;
@@ -1709,16 +1731,15 @@ span.pt-icon {
       background-image: none;
       color: rgba(255, 255, 255, 0.6); }
   .pt-button.pt-intent-success {
-    background: #0f9960;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #0f9960;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
+    background-color: #0f9960;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
     color: #ffffff; }
     .pt-button.pt-intent-success:hover, .pt-button.pt-intent-success:active, .pt-button.pt-intent-success.pt-active {
       color: #ffffff; }
     .pt-button.pt-intent-success:hover {
-      background: #0d8050;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #0d8050;
-      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2); }
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
+      background-color: #0d8050; }
     .pt-button.pt-intent-success:active, .pt-button.pt-intent-success.pt-active {
       box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #0a6640;
@@ -1730,16 +1751,15 @@ span.pt-icon {
       background-image: none;
       color: rgba(255, 255, 255, 0.6); }
   .pt-button.pt-intent-warning {
-    background: #d9822b;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #d9822b;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
+    background-color: #d9822b;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
     color: #ffffff; }
     .pt-button.pt-intent-warning:hover, .pt-button.pt-intent-warning:active, .pt-button.pt-intent-warning.pt-active {
       color: #ffffff; }
     .pt-button.pt-intent-warning:hover {
-      background: #bf7326;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #bf7326;
-      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2); }
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
+      background-color: #bf7326; }
     .pt-button.pt-intent-warning:active, .pt-button.pt-intent-warning.pt-active {
       box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #a66321;
@@ -1751,16 +1771,15 @@ span.pt-icon {
       background-image: none;
       color: rgba(255, 255, 255, 0.6); }
   .pt-button.pt-intent-danger {
-    background: #db3737;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #db3737;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
+    background-color: #db3737;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
     color: #ffffff; }
     .pt-button.pt-intent-danger:hover, .pt-button.pt-intent-danger:active, .pt-button.pt-intent-danger.pt-active {
       color: #ffffff; }
     .pt-button.pt-intent-danger:hover {
-      background: #c23030;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #c23030;
-      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2); }
+      box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
+      background-color: #c23030; }
     .pt-button.pt-intent-danger:active, .pt-button.pt-intent-danger.pt-active {
       box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #a82a2a;
@@ -1802,16 +1821,15 @@ span.pt-icon {
       margin-right: 0;
       margin-left: 7px; }
   .pt-dark .pt-button:not([class*="pt-intent-"]) {
-    background: #394b59;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+    background-color: #394b59;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
     color: #f5f8fa; }
     .pt-dark .pt-button:not([class*="pt-intent-"]):hover, .pt-dark .pt-button:not([class*="pt-intent-"]):active, .pt-dark .pt-button:not([class*="pt-intent-"]).pt-active {
       color: #f5f8fa; }
     .pt-dark .pt-button:not([class*="pt-intent-"]):hover {
-      background: #30404d;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
-      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+      background-color: #30404d; }
     .pt-dark .pt-button:not([class*="pt-intent-"]):active, .pt-dark .pt-button:not([class*="pt-intent-"]).pt-active {
       box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #202b33;
@@ -1849,7 +1867,7 @@ span.pt-icon {
   .pt-button.pt-minimal {
     box-shadow: none;
     background: none; }
-    .pt-button.pt-minimal:hover, .pt-button.pt-minimal:focus {
+    .pt-button.pt-minimal:hover {
       box-shadow: none;
       background: rgba(167, 182, 194, 0.3);
       text-decoration: none;
@@ -1884,7 +1902,7 @@ span.pt-icon {
         box-shadow: none;
         background: none;
         color: #106ba3; }
-      .pt-button.pt-minimal.pt-intent-primary:hover, .pt-button.pt-minimal.pt-intent-primary:focus {
+      .pt-button.pt-minimal.pt-intent-primary:hover {
         background: rgba(19, 124, 189, 0.15);
         color: #106ba3; }
       .pt-button.pt-minimal.pt-intent-primary:active, .pt-button.pt-minimal.pt-intent-primary.pt-active {
@@ -1897,7 +1915,7 @@ span.pt-icon {
         stroke: #106ba3; }
       .pt-dark .pt-button.pt-minimal.pt-intent-primary {
         color: #48aff0; }
-        .pt-dark .pt-button.pt-minimal.pt-intent-primary:hover, .pt-dark .pt-button.pt-minimal.pt-intent-primary:focus {
+        .pt-dark .pt-button.pt-minimal.pt-intent-primary:hover {
           background: rgba(19, 124, 189, 0.2);
           color: #48aff0; }
         .pt-dark .pt-button.pt-minimal.pt-intent-primary:active, .pt-dark .pt-button.pt-minimal.pt-intent-primary.pt-active {
@@ -1912,7 +1930,7 @@ span.pt-icon {
         box-shadow: none;
         background: none;
         color: #0d8050; }
-      .pt-button.pt-minimal.pt-intent-success:hover, .pt-button.pt-minimal.pt-intent-success:focus {
+      .pt-button.pt-minimal.pt-intent-success:hover {
         background: rgba(15, 153, 96, 0.15);
         color: #0d8050; }
       .pt-button.pt-minimal.pt-intent-success:active, .pt-button.pt-minimal.pt-intent-success.pt-active {
@@ -1925,7 +1943,7 @@ span.pt-icon {
         stroke: #0d8050; }
       .pt-dark .pt-button.pt-minimal.pt-intent-success {
         color: #3dcc91; }
-        .pt-dark .pt-button.pt-minimal.pt-intent-success:hover, .pt-dark .pt-button.pt-minimal.pt-intent-success:focus {
+        .pt-dark .pt-button.pt-minimal.pt-intent-success:hover {
           background: rgba(15, 153, 96, 0.2);
           color: #3dcc91; }
         .pt-dark .pt-button.pt-minimal.pt-intent-success:active, .pt-dark .pt-button.pt-minimal.pt-intent-success.pt-active {
@@ -1940,7 +1958,7 @@ span.pt-icon {
         box-shadow: none;
         background: none;
         color: #bf7326; }
-      .pt-button.pt-minimal.pt-intent-warning:hover, .pt-button.pt-minimal.pt-intent-warning:focus {
+      .pt-button.pt-minimal.pt-intent-warning:hover {
         background: rgba(217, 130, 43, 0.15);
         color: #bf7326; }
       .pt-button.pt-minimal.pt-intent-warning:active, .pt-button.pt-minimal.pt-intent-warning.pt-active {
@@ -1953,7 +1971,7 @@ span.pt-icon {
         stroke: #bf7326; }
       .pt-dark .pt-button.pt-minimal.pt-intent-warning {
         color: #ffb366; }
-        .pt-dark .pt-button.pt-minimal.pt-intent-warning:hover, .pt-dark .pt-button.pt-minimal.pt-intent-warning:focus {
+        .pt-dark .pt-button.pt-minimal.pt-intent-warning:hover {
           background: rgba(217, 130, 43, 0.2);
           color: #ffb366; }
         .pt-dark .pt-button.pt-minimal.pt-intent-warning:active, .pt-dark .pt-button.pt-minimal.pt-intent-warning.pt-active {
@@ -1968,7 +1986,7 @@ span.pt-icon {
         box-shadow: none;
         background: none;
         color: #c23030; }
-      .pt-button.pt-minimal.pt-intent-danger:hover, .pt-button.pt-minimal.pt-intent-danger:focus {
+      .pt-button.pt-minimal.pt-intent-danger:hover {
         background: rgba(219, 55, 55, 0.15);
         color: #c23030; }
       .pt-button.pt-minimal.pt-intent-danger:active, .pt-button.pt-minimal.pt-intent-danger.pt-active {
@@ -1981,7 +1999,7 @@ span.pt-icon {
         stroke: #c23030; }
       .pt-dark .pt-button.pt-minimal.pt-intent-danger {
         color: #ff7373; }
-        .pt-dark .pt-button.pt-minimal.pt-intent-danger:hover, .pt-dark .pt-button.pt-minimal.pt-intent-danger:focus {
+        .pt-dark .pt-button.pt-minimal.pt-intent-danger:hover {
           background: rgba(219, 55, 55, 0.2);
           color: #ff7373; }
         .pt-dark .pt-button.pt-minimal.pt-intent-danger:active, .pt-dark .pt-button.pt-minimal.pt-intent-danger.pt-active {
@@ -2018,13 +2036,6 @@ span.pt-icon {
     line-height: 24px;
     padding: 0 7px;
     font-size: 12px; }
-    .pt-button.pt-small[class*="pt-icon-"]::before,
-    .pt-button.pt-small .pt-icon, .pt-button.pt-small .pt-icon-standard, .pt-button.pt-small .pt-icon-large,
-    .pt-small .pt-button[class*="pt-icon-"]::before,
-    .pt-small .pt-button .pt-icon,
-    .pt-small .pt-button .pt-icon-standard,
-    .pt-small .pt-button .pt-icon-large {
-      display: none; }
   .pt-button[class*="pt-icon-"]:empty {
     padding: 0; }
     .pt-button[class*="pt-icon-"]:empty::before {
@@ -2047,9 +2058,9 @@ a.pt-button {
   padding: 0 10px;
   vertical-align: middle;
   font-size: 14px;
-  background: #f5f8fa;
-  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
   box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+  background-color: #f5f8fa;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
   color: #182026;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -2057,10 +2068,9 @@ a.pt-button {
   height: 30px;
   padding: 0 25px 0 10px; }
   .pt-select select:hover {
-    background: #ebf1f5;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-    background-clip: padding-box; }
+    background-clip: padding-box;
+    background-color: #ebf1f5; }
   .pt-select select:active, .pt-select select.pt-active {
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #d8e1e8;
@@ -2078,7 +2088,7 @@ a.pt-button {
 .pt-select.pt-minimal select {
   box-shadow: none;
   background: none; }
-  .pt-select.pt-minimal select:hover, .pt-select.pt-minimal select:focus {
+  .pt-select.pt-minimal select:hover {
     box-shadow: none;
     background: rgba(167, 182, 194, 0.3);
     text-decoration: none;
@@ -2113,7 +2123,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #106ba3; }
-    .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:focus {
+    .pt-select.pt-minimal select.pt-intent-primary:hover {
       background: rgba(19, 124, 189, 0.15);
       color: #106ba3; }
     .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
@@ -2126,7 +2136,7 @@ a.pt-button {
       stroke: #106ba3; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
       color: #48aff0; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-primary:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
         background: rgba(19, 124, 189, 0.2);
         color: #48aff0; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
@@ -2141,7 +2151,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #0d8050; }
-    .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:focus {
+    .pt-select.pt-minimal select.pt-intent-success:hover {
       background: rgba(15, 153, 96, 0.15);
       color: #0d8050; }
     .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
@@ -2154,7 +2164,7 @@ a.pt-button {
       stroke: #0d8050; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
       color: #3dcc91; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-success:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-success:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
         background: rgba(15, 153, 96, 0.2);
         color: #3dcc91; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
@@ -2169,7 +2179,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #bf7326; }
-    .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:focus {
+    .pt-select.pt-minimal select.pt-intent-warning:hover {
       background: rgba(217, 130, 43, 0.15);
       color: #bf7326; }
     .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
@@ -2182,7 +2192,7 @@ a.pt-button {
       stroke: #bf7326; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
       color: #ffb366; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-warning:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
         background: rgba(217, 130, 43, 0.2);
         color: #ffb366; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
@@ -2197,7 +2207,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #c23030; }
-    .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:focus {
+    .pt-select.pt-minimal select.pt-intent-danger:hover {
       background: rgba(219, 55, 55, 0.15);
       color: #c23030; }
     .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
@@ -2210,7 +2220,7 @@ a.pt-button {
       stroke: #c23030; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
       color: #ff7373; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-danger:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
         background: rgba(219, 55, 55, 0.2);
         color: #ff7373; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
@@ -2226,16 +2236,15 @@ a.pt-button {
   font-size: 16px; }
 
 .pt-dark .pt-select select {
-  background: #394b59;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+  background-color: #394b59;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
   color: #f5f8fa; }
   .pt-dark .pt-select select:hover, .pt-dark .pt-select select:active, .pt-dark .pt-select select.pt-active {
     color: #f5f8fa; }
   .pt-dark .pt-select select:hover {
-    background: #30404d;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
-    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+    background-color: #30404d; }
   .pt-dark .pt-select select:active, .pt-dark .pt-select select.pt-active {
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #202b33;
@@ -2270,7 +2279,7 @@ a.pt-button {
   right: 7px;
   line-height: 30px;
   color: #5c7080;
-  content: "\2304";
+  content: "\E6C6";
   pointer-events: none; }
   .pt-disabled.pt-select::after {
     color: rgba(92, 112, 128, 0.5); }
@@ -2318,7 +2327,7 @@ a.pt-button {
     margin-right: 11px;
     border-radius: 3px !important;
     overflow: visible; }
-    .pt-button-group.pt-minimal .pt-button:hover, .pt-button-group.pt-minimal .pt-button:focus {
+    .pt-button-group.pt-minimal .pt-button:hover {
       box-shadow: none;
       background: rgba(167, 182, 194, 0.3);
       text-decoration: none;
@@ -2353,7 +2362,7 @@ a.pt-button {
         box-shadow: none;
         background: none;
         color: #106ba3; }
-      .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-primary:focus {
+      .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover {
         background: rgba(19, 124, 189, 0.15);
         color: #106ba3; }
       .pt-button-group.pt-minimal .pt-button.pt-intent-primary:active, .pt-button-group.pt-minimal .pt-button.pt-intent-primary.pt-active {
@@ -2366,7 +2375,7 @@ a.pt-button {
         stroke: #106ba3; }
       .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary {
         color: #48aff0; }
-        .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:focus {
+        .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:hover {
           background: rgba(19, 124, 189, 0.2);
           color: #48aff0; }
         .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary:active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-primary.pt-active {
@@ -2381,7 +2390,7 @@ a.pt-button {
         box-shadow: none;
         background: none;
         color: #0d8050; }
-      .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-success:focus {
+      .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover {
         background: rgba(15, 153, 96, 0.15);
         color: #0d8050; }
       .pt-button-group.pt-minimal .pt-button.pt-intent-success:active, .pt-button-group.pt-minimal .pt-button.pt-intent-success.pt-active {
@@ -2394,7 +2403,7 @@ a.pt-button {
         stroke: #0d8050; }
       .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success {
         color: #3dcc91; }
-        .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:focus {
+        .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:hover {
           background: rgba(15, 153, 96, 0.2);
           color: #3dcc91; }
         .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success:active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-success.pt-active {
@@ -2409,7 +2418,7 @@ a.pt-button {
         box-shadow: none;
         background: none;
         color: #bf7326; }
-      .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-warning:focus {
+      .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover {
         background: rgba(217, 130, 43, 0.15);
         color: #bf7326; }
       .pt-button-group.pt-minimal .pt-button.pt-intent-warning:active, .pt-button-group.pt-minimal .pt-button.pt-intent-warning.pt-active {
@@ -2422,7 +2431,7 @@ a.pt-button {
         stroke: #bf7326; }
       .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning {
         color: #ffb366; }
-        .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:focus {
+        .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:hover {
           background: rgba(217, 130, 43, 0.2);
           color: #ffb366; }
         .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning:active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-warning.pt-active {
@@ -2437,7 +2446,7 @@ a.pt-button {
         box-shadow: none;
         background: none;
         color: #c23030; }
-      .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover, .pt-button-group.pt-minimal .pt-button.pt-intent-danger:focus {
+      .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover {
         background: rgba(219, 55, 55, 0.15);
         color: #c23030; }
       .pt-button-group.pt-minimal .pt-button.pt-intent-danger:active, .pt-button-group.pt-minimal .pt-button.pt-intent-danger.pt-active {
@@ -2450,7 +2459,7 @@ a.pt-button {
         stroke: #c23030; }
       .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger {
         color: #ff7373; }
-        .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:focus {
+        .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:hover {
           background: rgba(219, 55, 55, 0.2);
           color: #ff7373; }
         .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger:active, .pt-dark .pt-button-group.pt-minimal .pt-button.pt-intent-danger.pt-active {
@@ -2805,9 +2814,9 @@ a.pt-button {
   padding: 0 10px;
   vertical-align: middle;
   font-size: 14px;
-  background: #f5f8fa;
-  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
   box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+  background-color: #f5f8fa;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
   color: #182026;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -2815,10 +2824,9 @@ a.pt-button {
   height: 30px;
   padding: 0 25px 0 10px; }
   .pt-select select:hover {
-    background: #ebf1f5;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-    background-clip: padding-box; }
+    background-clip: padding-box;
+    background-color: #ebf1f5; }
   .pt-select select:active, .pt-select select.pt-active {
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #d8e1e8;
@@ -2836,7 +2844,7 @@ a.pt-button {
 .pt-select.pt-minimal select {
   box-shadow: none;
   background: none; }
-  .pt-select.pt-minimal select:hover, .pt-select.pt-minimal select:focus {
+  .pt-select.pt-minimal select:hover {
     box-shadow: none;
     background: rgba(167, 182, 194, 0.3);
     text-decoration: none;
@@ -2871,7 +2879,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #106ba3; }
-    .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:focus {
+    .pt-select.pt-minimal select.pt-intent-primary:hover {
       background: rgba(19, 124, 189, 0.15);
       color: #106ba3; }
     .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
@@ -2884,7 +2892,7 @@ a.pt-button {
       stroke: #106ba3; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
       color: #48aff0; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-primary:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
         background: rgba(19, 124, 189, 0.2);
         color: #48aff0; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
@@ -2899,7 +2907,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #0d8050; }
-    .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:focus {
+    .pt-select.pt-minimal select.pt-intent-success:hover {
       background: rgba(15, 153, 96, 0.15);
       color: #0d8050; }
     .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
@@ -2912,7 +2920,7 @@ a.pt-button {
       stroke: #0d8050; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
       color: #3dcc91; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-success:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-success:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
         background: rgba(15, 153, 96, 0.2);
         color: #3dcc91; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
@@ -2927,7 +2935,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #bf7326; }
-    .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:focus {
+    .pt-select.pt-minimal select.pt-intent-warning:hover {
       background: rgba(217, 130, 43, 0.15);
       color: #bf7326; }
     .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
@@ -2940,7 +2948,7 @@ a.pt-button {
       stroke: #bf7326; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
       color: #ffb366; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-warning:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
         background: rgba(217, 130, 43, 0.2);
         color: #ffb366; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
@@ -2955,7 +2963,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #c23030; }
-    .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:focus {
+    .pt-select.pt-minimal select.pt-intent-danger:hover {
       background: rgba(219, 55, 55, 0.15);
       color: #c23030; }
     .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
@@ -2968,7 +2976,7 @@ a.pt-button {
       stroke: #c23030; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
       color: #ff7373; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-danger:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
         background: rgba(219, 55, 55, 0.2);
         color: #ff7373; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
@@ -2984,16 +2992,15 @@ a.pt-button {
   font-size: 16px; }
 
 .pt-dark .pt-select select {
-  background: #394b59;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+  background-color: #394b59;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
   color: #f5f8fa; }
   .pt-dark .pt-select select:hover, .pt-dark .pt-select select:active, .pt-dark .pt-select select.pt-active {
     color: #f5f8fa; }
   .pt-dark .pt-select select:hover {
-    background: #30404d;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
-    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+    background-color: #30404d; }
   .pt-dark .pt-select select:active, .pt-dark .pt-select select.pt-active {
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #202b33;
@@ -3028,7 +3035,7 @@ a.pt-button {
   right: 7px;
   line-height: 30px;
   color: #5c7080;
-  content: "\2304";
+  content: "\E6C6";
   pointer-events: none; }
   .pt-disabled.pt-select::after {
     color: rgba(92, 112, 128, 0.5); }
@@ -3169,9 +3176,9 @@ a.pt-button {
   padding: 0 10px;
   vertical-align: middle;
   font-size: 14px;
-  background: #f5f8fa;
-  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
   box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+  background-color: #f5f8fa;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
   color: #182026;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -3179,10 +3186,9 @@ a.pt-button {
   height: 30px;
   padding: 0 25px 0 10px; }
   .pt-select select:hover {
-    background: #ebf1f5;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-    background-clip: padding-box; }
+    background-clip: padding-box;
+    background-color: #ebf1f5; }
   .pt-select select:active, .pt-select select.pt-active {
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #d8e1e8;
@@ -3200,7 +3206,7 @@ a.pt-button {
 .pt-select.pt-minimal select {
   box-shadow: none;
   background: none; }
-  .pt-select.pt-minimal select:hover, .pt-select.pt-minimal select:focus {
+  .pt-select.pt-minimal select:hover {
     box-shadow: none;
     background: rgba(167, 182, 194, 0.3);
     text-decoration: none;
@@ -3235,7 +3241,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #106ba3; }
-    .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:focus {
+    .pt-select.pt-minimal select.pt-intent-primary:hover {
       background: rgba(19, 124, 189, 0.15);
       color: #106ba3; }
     .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
@@ -3248,7 +3254,7 @@ a.pt-button {
       stroke: #106ba3; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
       color: #48aff0; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-primary:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
         background: rgba(19, 124, 189, 0.2);
         color: #48aff0; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
@@ -3263,7 +3269,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #0d8050; }
-    .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:focus {
+    .pt-select.pt-minimal select.pt-intent-success:hover {
       background: rgba(15, 153, 96, 0.15);
       color: #0d8050; }
     .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
@@ -3276,7 +3282,7 @@ a.pt-button {
       stroke: #0d8050; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
       color: #3dcc91; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-success:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-success:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
         background: rgba(15, 153, 96, 0.2);
         color: #3dcc91; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
@@ -3291,7 +3297,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #bf7326; }
-    .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:focus {
+    .pt-select.pt-minimal select.pt-intent-warning:hover {
       background: rgba(217, 130, 43, 0.15);
       color: #bf7326; }
     .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
@@ -3304,7 +3310,7 @@ a.pt-button {
       stroke: #bf7326; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
       color: #ffb366; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-warning:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
         background: rgba(217, 130, 43, 0.2);
         color: #ffb366; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
@@ -3319,7 +3325,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #c23030; }
-    .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:focus {
+    .pt-select.pt-minimal select.pt-intent-danger:hover {
       background: rgba(219, 55, 55, 0.15);
       color: #c23030; }
     .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
@@ -3332,7 +3338,7 @@ a.pt-button {
       stroke: #c23030; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
       color: #ff7373; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-danger:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
         background: rgba(219, 55, 55, 0.2);
         color: #ff7373; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
@@ -3348,16 +3354,15 @@ a.pt-button {
   font-size: 16px; }
 
 .pt-dark .pt-select select {
-  background: #394b59;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+  background-color: #394b59;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
   color: #f5f8fa; }
   .pt-dark .pt-select select:hover, .pt-dark .pt-select select:active, .pt-dark .pt-select select.pt-active {
     color: #f5f8fa; }
   .pt-dark .pt-select select:hover {
-    background: #30404d;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
-    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+    background-color: #30404d; }
   .pt-dark .pt-select select:active, .pt-dark .pt-select select.pt-active {
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #202b33;
@@ -3392,7 +3397,7 @@ a.pt-button {
   right: 7px;
   line-height: 30px;
   color: #5c7080;
-  content: "\2304";
+  content: "\E6C6";
   pointer-events: none; }
   .pt-disabled.pt-select::after {
     color: rgba(92, 112, 128, 0.5); }
@@ -3405,9 +3410,9 @@ a.pt-button {
   padding: 0 10px;
   vertical-align: middle;
   font-size: 14px;
-  background: #f5f8fa;
-  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
   box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+  background-color: #f5f8fa;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
   color: #182026;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -3415,10 +3420,9 @@ a.pt-button {
   height: 30px;
   padding: 0 25px 0 10px; }
   .pt-select select:hover {
-    background: #ebf1f5;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-    background-clip: padding-box; }
+    background-clip: padding-box;
+    background-color: #ebf1f5; }
   .pt-select select:active, .pt-select select.pt-active {
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #d8e1e8;
@@ -3436,7 +3440,7 @@ a.pt-button {
 .pt-select.pt-minimal select {
   box-shadow: none;
   background: none; }
-  .pt-select.pt-minimal select:hover, .pt-select.pt-minimal select:focus {
+  .pt-select.pt-minimal select:hover {
     box-shadow: none;
     background: rgba(167, 182, 194, 0.3);
     text-decoration: none;
@@ -3471,7 +3475,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #106ba3; }
-    .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:focus {
+    .pt-select.pt-minimal select.pt-intent-primary:hover {
       background: rgba(19, 124, 189, 0.15);
       color: #106ba3; }
     .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
@@ -3484,7 +3488,7 @@ a.pt-button {
       stroke: #106ba3; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
       color: #48aff0; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-primary:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
         background: rgba(19, 124, 189, 0.2);
         color: #48aff0; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
@@ -3499,7 +3503,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #0d8050; }
-    .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:focus {
+    .pt-select.pt-minimal select.pt-intent-success:hover {
       background: rgba(15, 153, 96, 0.15);
       color: #0d8050; }
     .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
@@ -3512,7 +3516,7 @@ a.pt-button {
       stroke: #0d8050; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
       color: #3dcc91; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-success:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-success:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
         background: rgba(15, 153, 96, 0.2);
         color: #3dcc91; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
@@ -3527,7 +3531,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #bf7326; }
-    .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:focus {
+    .pt-select.pt-minimal select.pt-intent-warning:hover {
       background: rgba(217, 130, 43, 0.15);
       color: #bf7326; }
     .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
@@ -3540,7 +3544,7 @@ a.pt-button {
       stroke: #bf7326; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
       color: #ffb366; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-warning:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
         background: rgba(217, 130, 43, 0.2);
         color: #ffb366; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
@@ -3555,7 +3559,7 @@ a.pt-button {
       box-shadow: none;
       background: none;
       color: #c23030; }
-    .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:focus {
+    .pt-select.pt-minimal select.pt-intent-danger:hover {
       background: rgba(219, 55, 55, 0.15);
       color: #c23030; }
     .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
@@ -3568,7 +3572,7 @@ a.pt-button {
       stroke: #c23030; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
       color: #ff7373; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-danger:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
         background: rgba(219, 55, 55, 0.2);
         color: #ff7373; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
@@ -3584,16 +3588,15 @@ a.pt-button {
   font-size: 16px; }
 
 .pt-dark .pt-select select {
-  background: #394b59;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+  background-color: #394b59;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
   color: #f5f8fa; }
   .pt-dark .pt-select select:hover, .pt-dark .pt-select select:active, .pt-dark .pt-select select.pt-active {
     color: #f5f8fa; }
   .pt-dark .pt-select select:hover {
-    background: #30404d;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
-    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+    background-color: #30404d; }
   .pt-dark .pt-select select:active, .pt-dark .pt-select select.pt-active {
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #202b33;
@@ -3628,7 +3631,7 @@ a.pt-button {
   right: 7px;
   line-height: 30px;
   color: #5c7080;
-  content: "\2304";
+  content: "\E6C6";
   pointer-events: none; }
   .pt-disabled.pt-select::after {
     color: rgba(92, 112, 128, 0.5); }
@@ -3771,8 +3774,6 @@ a.pt-button {
     font-style: normal;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background: #f5f8fa;
-    background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
     position: absolute;
     top: 0;
     left: 0;
@@ -3780,6 +3781,8 @@ a.pt-button {
     border: none;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     background-clip: padding-box;
+    background-color: #f5f8fa;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
     cursor: pointer;
     width: 16px;
     height: 16px;
@@ -3792,17 +3795,15 @@ a.pt-button {
       position: relative;
       content: ""; }
   .pt-control input:checked ~ .pt-control-indicator, .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator {
-    background: #137cbd;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #137cbd;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
+    background-color: #137cbd;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
     color: #ffffff; }
   .pt-control:hover .pt-control-indicator {
-    background: #ebf1f5;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5; }
+    background-color: #ebf1f5; }
   .pt-control:hover input:checked ~ .pt-control-indicator, .pt-control:hover .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator, .pt-control.pt-checkbox .pt-control:hover input:indeterminate ~ .pt-control-indicator, .pt-control.pt-checkbox:hover input:indeterminate ~ .pt-control-indicator {
-    background: #106ba3;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #106ba3;
-    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2); }
+    box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.2);
+    background-color: #106ba3; }
   .pt-control input:not(:disabled):active ~ .pt-control-indicator {
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background: #d8e1e8; }
@@ -3934,14 +3935,13 @@ a.pt-button {
     .pt-dark .pt-control.pt-disabled {
       color: rgba(191, 204, 214, 0.5); }
     .pt-dark .pt-control .pt-control-indicator {
-      background: #394b59;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
-      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+      background-color: #394b59;
+      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)); }
     .pt-dark .pt-control input:checked ~ .pt-control-indicator, .pt-dark .pt-control.pt-checkbox input:indeterminate ~ .pt-control-indicator {
       box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
     .pt-dark .pt-control:hover .pt-control-indicator {
-      background: #30404d;
-      background: linear-gradient(to bottom, rgba(16, 22, 26, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d; }
+      background-color: #30404d; }
     .pt-dark .pt-control input:not(:disabled):active ~ .pt-control-indicator {
       box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background: #202b33; }
@@ -4094,9 +4094,9 @@ a.pt-button {
     color: rgba(92, 112, 128, 0.5);
     resize: none; }
   .pt-file-upload-input::after {
-    background: #f5f8fa;
-    background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+    background-color: #f5f8fa;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
     color: #182026;
     position: absolute;
     top: 0;
@@ -4113,10 +4113,9 @@ a.pt-button {
     line-height: 30px;
     content: "Browse"; }
     .pt-file-upload-input::after:hover {
-      background: #ebf1f5;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
       box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-      background-clip: padding-box; }
+      background-clip: padding-box;
+      background-color: #ebf1f5; }
     .pt-file-upload-input::after:active, .pt-file-upload-input::after.pt-active {
       box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #d8e1e8;
@@ -4131,10 +4130,9 @@ a.pt-button {
       .pt-file-upload-input::after:disabled.pt-active, .pt-file-upload-input::after.pt-disabled.pt-active {
         background: rgba(206, 217, 224, 0.7); }
   .pt-file-upload-input:hover::after {
-    background: #ebf1f5;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-    background-clip: padding-box; }
+    background-clip: padding-box;
+    background-color: #ebf1f5; }
   .pt-file-upload-input:active::after {
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #d8e1e8;
@@ -4172,16 +4170,15 @@ a.pt-button {
       background: rgba(57, 75, 89, 0.5);
       color: rgba(191, 204, 214, 0.5); }
     .pt-dark .pt-file-upload-input::after {
-      background: #394b59;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
       box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+      background-color: #394b59;
+      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
       color: #f5f8fa; }
       .pt-dark .pt-file-upload-input::after:hover, .pt-dark .pt-file-upload-input::after:active, .pt-dark .pt-file-upload-input::after.pt-active {
         color: #f5f8fa; }
       .pt-dark .pt-file-upload-input::after:hover {
-        background: #30404d;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
-        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
+        box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+        background-color: #30404d; }
       .pt-dark .pt-file-upload-input::after:active, .pt-dark .pt-file-upload-input::after.pt-active {
         box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
         background-color: #202b33;
@@ -4197,9 +4194,8 @@ a.pt-button {
         background: rgba(16, 22, 26, 0.5);
         stroke: #8a9ba8; }
     .pt-dark .pt-file-upload-input:hover::after {
-      background: #30404d;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
-      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+      background-color: #30404d; }
     .pt-dark .pt-file-upload-input:active::after {
       box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #202b33;
@@ -4634,9 +4630,9 @@ label.pt-label {
   padding: 0 10px;
   vertical-align: middle;
   font-size: 14px;
-  background: #f5f8fa;
-  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
   box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+  background-color: #f5f8fa;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
   color: #182026;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -4644,10 +4640,9 @@ label.pt-label {
   height: 30px;
   padding: 0 25px 0 10px; }
   .pt-select select:hover {
-    background: #ebf1f5;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-    background-clip: padding-box; }
+    background-clip: padding-box;
+    background-color: #ebf1f5; }
   .pt-select select:active, .pt-select select.pt-active {
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #d8e1e8;
@@ -4665,7 +4660,7 @@ label.pt-label {
 .pt-select.pt-minimal select {
   box-shadow: none;
   background: none; }
-  .pt-select.pt-minimal select:hover, .pt-select.pt-minimal select:focus {
+  .pt-select.pt-minimal select:hover {
     box-shadow: none;
     background: rgba(167, 182, 194, 0.3);
     text-decoration: none;
@@ -4700,7 +4695,7 @@ label.pt-label {
       box-shadow: none;
       background: none;
       color: #106ba3; }
-    .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal select.pt-intent-primary:focus {
+    .pt-select.pt-minimal select.pt-intent-primary:hover {
       background: rgba(19, 124, 189, 0.15);
       color: #106ba3; }
     .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal select.pt-intent-primary.pt-active {
@@ -4713,7 +4708,7 @@ label.pt-label {
       stroke: #106ba3; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-primary, .pt-select.pt-minimal .pt-dark select.pt-intent-primary {
       color: #48aff0; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-primary:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-primary:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:hover {
         background: rgba(19, 124, 189, 0.2);
         color: #48aff0; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-primary:active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary:active, .pt-dark .pt-select.pt-minimal select.pt-intent-primary.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-primary.pt-active {
@@ -4728,7 +4723,7 @@ label.pt-label {
       box-shadow: none;
       background: none;
       color: #0d8050; }
-    .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal select.pt-intent-success:focus {
+    .pt-select.pt-minimal select.pt-intent-success:hover {
       background: rgba(15, 153, 96, 0.15);
       color: #0d8050; }
     .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal select.pt-intent-success.pt-active {
@@ -4741,7 +4736,7 @@ label.pt-label {
       stroke: #0d8050; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-success, .pt-select.pt-minimal .pt-dark select.pt-intent-success {
       color: #3dcc91; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-success:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-success:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-success:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-success:hover {
         background: rgba(15, 153, 96, 0.2);
         color: #3dcc91; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-success:active, .pt-select.pt-minimal .pt-dark select.pt-intent-success:active, .pt-dark .pt-select.pt-minimal select.pt-intent-success.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-success.pt-active {
@@ -4756,7 +4751,7 @@ label.pt-label {
       box-shadow: none;
       background: none;
       color: #bf7326; }
-    .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal select.pt-intent-warning:focus {
+    .pt-select.pt-minimal select.pt-intent-warning:hover {
       background: rgba(217, 130, 43, 0.15);
       color: #bf7326; }
     .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal select.pt-intent-warning.pt-active {
@@ -4769,7 +4764,7 @@ label.pt-label {
       stroke: #bf7326; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-warning, .pt-select.pt-minimal .pt-dark select.pt-intent-warning {
       color: #ffb366; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-warning:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-warning:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:hover {
         background: rgba(217, 130, 43, 0.2);
         color: #ffb366; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-warning:active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning:active, .pt-dark .pt-select.pt-minimal select.pt-intent-warning.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-warning.pt-active {
@@ -4784,7 +4779,7 @@ label.pt-label {
       box-shadow: none;
       background: none;
       color: #c23030; }
-    .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal select.pt-intent-danger:focus {
+    .pt-select.pt-minimal select.pt-intent-danger:hover {
       background: rgba(219, 55, 55, 0.15);
       color: #c23030; }
     .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal select.pt-intent-danger.pt-active {
@@ -4797,7 +4792,7 @@ label.pt-label {
       stroke: #c23030; }
     .pt-dark .pt-select.pt-minimal select.pt-intent-danger, .pt-select.pt-minimal .pt-dark select.pt-intent-danger {
       color: #ff7373; }
-      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover, .pt-dark .pt-select.pt-minimal select.pt-intent-danger:focus, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:focus {
+      .pt-dark .pt-select.pt-minimal select.pt-intent-danger:hover, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:hover {
         background: rgba(219, 55, 55, 0.2);
         color: #ff7373; }
       .pt-dark .pt-select.pt-minimal select.pt-intent-danger:active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger:active, .pt-dark .pt-select.pt-minimal select.pt-intent-danger.pt-active, .pt-select.pt-minimal .pt-dark select.pt-intent-danger.pt-active {
@@ -4813,16 +4808,15 @@ label.pt-label {
   font-size: 16px; }
 
 .pt-dark .pt-select select {
-  background: #394b59;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+  background-color: #394b59;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
   color: #f5f8fa; }
   .pt-dark .pt-select select:hover, .pt-dark .pt-select select:active, .pt-dark .pt-select select.pt-active {
     color: #f5f8fa; }
   .pt-dark .pt-select select:hover {
-    background: #30404d;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
-    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+    background-color: #30404d; }
   .pt-dark .pt-select select:active, .pt-dark .pt-select select.pt-active {
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #202b33;
@@ -4857,7 +4851,7 @@ label.pt-label {
   right: 7px;
   line-height: 30px;
   color: #5c7080;
-  content: "\2304";
+  content: "\E6C6";
   pointer-events: none; }
   .pt-disabled.pt-select::after {
     color: rgba(92, 112, 128, 0.5); }
@@ -5787,9 +5781,9 @@ body.pt-overlay-open {
   background: #137cbd; }
 
 .pt-slider-handle {
-  background: #f5f8fa;
-  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #f5f8fa;
   box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+  background-color: #f5f8fa;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
   color: #182026;
   position: absolute;
   top: 0;
@@ -5800,10 +5794,9 @@ body.pt-overlay-open {
   width: 16px;
   height: 16px; }
   .pt-slider-handle:hover {
-    background: #ebf1f5;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-    background-clip: padding-box; }
+    background-clip: padding-box;
+    background-color: #ebf1f5; }
   .pt-slider-handle:active, .pt-slider-handle.pt-active {
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 1px 2px rgba(16, 22, 26, 0.2);
     background-color: #d8e1e8;
@@ -5820,10 +5813,9 @@ body.pt-overlay-open {
   .pt-slider-handle:focus {
     z-index: 1; }
   .pt-slider-handle:hover {
-    background: #ebf1f5;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #ebf1f5;
     box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     background-clip: padding-box;
+    background-color: #ebf1f5;
     z-index: 2;
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.2);
     cursor: -webkit-grab;
@@ -5842,16 +5834,15 @@ body.pt-overlay-open {
     background: #bfccd6;
     pointer-events: none; }
   .pt-dark .pt-slider-handle {
-    background: #394b59;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #394b59;
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+    background-color: #394b59;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
     color: #f5f8fa; }
     .pt-dark .pt-slider-handle:hover, .pt-dark .pt-slider-handle:active, .pt-dark .pt-slider-handle.pt-active {
       color: #f5f8fa; }
     .pt-dark .pt-slider-handle:hover {
-      background: #30404d;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) left no-repeat, center no-repeat #30404d;
-      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
+      box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4);
+      background-color: #30404d; }
     .pt-dark .pt-slider-handle:active, .pt-dark .pt-slider-handle.pt-active {
       box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.6), inset 0 1px 2px rgba(16, 22, 26, 0.2);
       background-color: #202b33;
@@ -6792,8 +6783,6 @@ table.pt-table {
 
 .pt-dark .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
   background-color: #137cbd; }
-
-/*# sourceMappingURL=blueprint.css.map */
 /*
  * Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
  */
@@ -6975,12 +6964,14 @@ h6,
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
 
 .pt-dark pre {
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   background-color: transparent;
   padding: 0; }
 
 html {
   -webkit-text-size-adjust: 100%;
+     -moz-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
           text-size-adjust: 100%; }
 
@@ -7051,14 +7042,17 @@ header {
 
 .pt-info {
   position: relative;
-  box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.4), 0 2px 6px rgba(16, 22, 26, 0.4);
+  -webkit-box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.4), 0 2px 6px rgba(16, 22, 26, 0.4);
+          box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.4), 0 2px 6px rgba(16, 22, 26, 0.4);
   background-color: #ffffff;
   padding: 0 0 90px; }
   .pt-info .pt-description {
     position: relative;
     margin-bottom: 100px;
-    box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+    -webkit-box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+            box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     background: #ffffff;
+    background-image: -webkit-gradient(linear, left top, right top, from(#ffffff), to(#ebf1f5));
     background-image: linear-gradient(to right, #ffffff, #ebf1f5);
     overflow: hidden;
     padding: 90px 0; }
@@ -7111,7 +7105,8 @@ header {
 
 .pt-getting-started {
   position: relative;
-  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.8);
+  -webkit-box-shadow: 0 1px 0 rgba(16, 22, 26, 0.8);
+          box-shadow: 0 1px 0 rgba(16, 22, 26, 0.8);
   background-image: radial-gradient(ellipse farthest-side at center -300px, rgba(32, 43, 51, 0) 0%, #202b33 100%);
   padding: 90px 0; }
   .pt-getting-started::before, .pt-getting-started::after {
@@ -7197,6 +7192,7 @@ header {
   text-align: left; }
   .pt-copyright::before {
     display: block;
+    background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), color-stop(50%, rgba(255, 255, 255, 0.3)), to(rgba(255, 255, 255, 0)));
     background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
     height: 1px;
     content: ""; }
@@ -7224,6 +7220,7 @@ header {
     padding-bottom: 80px; }
     .pt-info .pt-description {
       margin-bottom: 80px;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#ebf1f5));
       background-image: linear-gradient(to bottom, #ffffff, #ebf1f5);
       padding-top: 50px;
       padding-bottom: 250px; }

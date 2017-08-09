@@ -9,7 +9,7 @@ export * from "./alertExample";
 export * from "./buttonsExample";
 export * from "./collapseExample";
 export * from "./collapsibleListExample";
-export * from "./controlsExample";
+export * from "./controlExamples";
 export * from "./dialogExample";
 export * from "./contextMenuExample";
 export * from "./dropdownMenuExample";
