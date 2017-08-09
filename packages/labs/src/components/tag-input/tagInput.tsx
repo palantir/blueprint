@@ -171,7 +171,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         }
         const iconClass = classNames(
             Classes.TAG_INPUT_ICON,
-            useLarge ? CoreClasses.ICON_LARGE : CoreClasses.ICON_STANDARD ,
+            useLarge ? CoreClasses.ICON_LARGE : CoreClasses.ICON_STANDARD,
             CoreClasses.iconClass(leftIconName),
         );
         return <span className={iconClass} />;
