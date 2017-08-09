@@ -44,7 +44,7 @@ describe("<Icon>", () => {
 
     it("supports prefixed iconName with warning", () => {
         const warnSpy = sinon.spy(console, "warn");
-        shallow(<Icon iconName="pt-icon-add-column-right" />);
+        shallow(<Icon iconName={IconClasses.ADD_COLUMN_RIGHT} />);
         assert.isTrue(warnSpy.calledOnce);
         assert.match(warnSpy.args[0][0], /deprecated/);
         warnSpy.restore();

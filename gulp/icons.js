@@ -17,7 +17,6 @@ module.exports = (blueprint, gulp, plugins) => {
         // great big map for iteration
         "_icon-map.scss": [
             '@import "icon-variables";',
-            "",
             "$icons: (",
             ...ICONS.map(i => `  "${i.className.replace("pt-icon-", "")}": $${i.className},`),
             ");",
@@ -26,13 +25,13 @@ module.exports = (blueprint, gulp, plugins) => {
         // simple variable definitions
         "_icon-variables.scss": ICONS.map((icon) => `$${icon.className}: "${icon.content}";`),
 
-        // map name to className
-        "iconClasses.ts": buildTSObject("IconClasses", (icon) => icon.className),
+        // map ENUM_NAME to className (cast as string constant so it can be used as IconName)
+        "iconClasses.ts": buildTSObject("IconClasses", (icon) => `${icon.className}" as "${icon.className}`),
 
         // union type of all valid string names
         "iconName.ts": buildUnionType(),
 
-        // map name to character code
+        // map ENUM_NAME to unicode character
         "iconStrings.ts": buildTSObject("IconContents", (icon) => icon.content.replace("\\", "\\u")),
     }));
 
