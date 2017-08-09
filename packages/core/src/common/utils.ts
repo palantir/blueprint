@@ -91,18 +91,15 @@ export function countDecimalPlaces(num: number) {
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
-    let running = false;
-    /* istanbul ignore next: borrowed directly from MDN */
-    const func = (event: Event) => {
-        if (running) { return; }
-        running = true;
-        requestAnimationFrame(() => {
+    const throttledFunc = throttleHelper(
+        undefined,
+        undefined,
+        (event: Event) => {
             target.dispatchEvent(new CustomEvent(newEventName, event));
-            running = false;
-        });
-    };
-    target.addEventListener(eventName, func);
-    return func;
+        },
+    );
+    target.addEventListener(eventName, throttledFunc);
+    return throttledFunc;
 };
 
 export interface IThrottledReactEventOptions {
@@ -118,24 +115,43 @@ export function throttleReactEventCallback(
     callback: (event: React.SyntheticEvent<any>, ...otherArgs: any[]) => any,
     options: IThrottledReactEventOptions = {},
 ) {
+    const throttledFunc = throttleHelper(
+        (event2: React.SyntheticEvent<any>) => {
+            if (options.preventDefault) {
+                event2.preventDefault();
+            }
+        },
+        (event2: React.SyntheticEvent<any>) => {
+            // prevent React from reclaiming the event object before we reference it
+            event2.persist();
+        },
+        (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => {
+            callback(event2, ...otherArgs2);
+        },
+    );
+    return throttledFunc;
+}
+
+type ThrottleHelperCallback = (...args: any[]) => void;
+
+function throttleHelper(
+    onBeforeIsRunningCheck: ThrottleHelperCallback,
+    onAfterIsRunningCheck: ThrottleHelperCallback,
+    onAnimationFrameRequested: ThrottleHelperCallback,
+) {
     let isRunning = false;
-    const func = (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => {
-        // need to preventDefault synchronously and without regard to the rAF timeline,
-        // if we want it to work
-        if (options.preventDefault) {
-            event2.preventDefault();
-        }
+    const func = (...args: any[]) => {
+        safeInvoke(onBeforeIsRunningCheck, ...args);
 
         if (isRunning) {
             return;
         }
         isRunning = true;
 
-        // prevent React from reclaiming the event object before we reference it
-        event2.persist();
+        safeInvoke(onAfterIsRunningCheck, ...args);
 
         requestAnimationFrame(() => {
-            callback(event2, ...otherArgs2);
+            safeInvoke(onAnimationFrameRequested, ...args);
             isRunning = false;
         });
     };
