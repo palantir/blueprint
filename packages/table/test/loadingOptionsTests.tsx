@@ -75,7 +75,7 @@ class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTest
 }
 
 // TODO: FROZEN
-describe.skip("Loading Options", () => {
+describe("Loading Options", () => {
     const harness = new ReactHarness();
     const allTableLoadingOptions = generatePowerSet([
         TableLoadingOption.CELLS,
@@ -108,12 +108,13 @@ describe.skip("Loading Options", () => {
 
                 // only testing the first column of body cells because the second and third
                 // columns are meant to test column related loading combinations
+                const quadrantSelector = `.${Classes.TABLE_QUADRANT_MAIN}`;
                 const cells = tableHarness.element
-                    .queryAll(`.${Classes.TABLE_CELL}.${Classes.columnCellIndexClass(0)}`);
+                    .queryAll(`${quadrantSelector} .${Classes.TABLE_CELL}.${Classes.columnCellIndexClass(0)}`);
                 const columnHeaders = tableHarness.element
-                    .queryAll(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
+                    .queryAll(`${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
                 const rowHeaders = tableHarness.element
-                    .queryAll(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`);
+                    .queryAll(`${quadrantSelector} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`);
                 testLoadingOptionOverrides(
                     columnHeaders,
                     CellType.COLUMN_HEADER,
