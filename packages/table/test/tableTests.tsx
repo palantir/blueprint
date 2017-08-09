@@ -329,7 +329,7 @@ describe("<Table>", () => {
                 ReactDOM.unmountComponentAtNode(container);
             });
 
-            it("syncs quadrant scroll offsets when scrolling the main quadrant", () => {
+            it("syncs quadrant scroll offsets when scrolling the main quadrant", (done) => {
                 // simulating a "scroll" or "wheel" event doesn't seem to affect the
                 // scrollTop/scrollLeft the way it would in practice, so we need to tweak those
                 // explicitly before triggering.
@@ -337,46 +337,66 @@ describe("<Table>", () => {
                 mainScrollContainer.scrollTop = SCROLL_OFFSET_Y;
                 TestUtils.Simulate.scroll(mainScrollContainer);
 
-                assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
-                assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
-                assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+                // defer checks to make sure the throttled scroll logic executes first
+                delayToNextFrame(() => {
+                    assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+                    assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+                    assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+                    done();
+                });
             });
 
-            it("syncs quadrant scroll offsets when mouse-wheeling in the top quadrant", () => {
+            it("syncs quadrant scroll offsets when mouse-wheeling in the top quadrant", (done) => {
                 topScrollContainer.scrollLeft = SCROLL_OFFSET_X;
                 TestUtils.Simulate.wheel(topScrollContainer, {
                     deltaX: SCROLL_OFFSET_X,
                     deltaY: SCROLL_OFFSET_Y,
                 });
 
-                assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
-                assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
-                assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+                delayToNextFrame(() => {
+                    assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+                    assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+                    assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+                    done();
+                });
             });
 
-            it("syncs quadrant scroll offsets when mouse-wheeling in the left quadrant", () => {
+            it("syncs quadrant scroll offsets when mouse-wheeling in the left quadrant", (done) => {
                 leftScrollContainer.scrollTop = SCROLL_OFFSET_Y;
                 TestUtils.Simulate.wheel(leftScrollContainer, {
                     deltaX: SCROLL_OFFSET_X,
                     deltaY: SCROLL_OFFSET_Y,
                 });
 
-                assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
-                assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
-                assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+                delayToNextFrame(() => {
+                    assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+                    assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+                    assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+                    done();
+                });
             });
 
-            it("syncs quadrant scroll offsets when mouse-wheeling in the top-left quadrant", () => {
+            it("syncs quadrant scroll offsets when mouse-wheeling in the top-left quadrant", (done) => {
                 TestUtils.Simulate.wheel(topLeftScrollContainer, {
                     deltaX: SCROLL_OFFSET_X,
                     deltaY: SCROLL_OFFSET_Y,
                 });
 
-                assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
-                assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
-                assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+                delayToNextFrame(() => {
+                    assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+                    assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+                    assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+                    done();
+                });
             });
         });
+
+        // Clock management
+        // ================
+
+        function delayToNextFrame(callback: () => void) {
+            setTimeout(callback);
+        }
 
         // Test templates
         // ==============

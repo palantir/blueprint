@@ -536,7 +536,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     handleRowsReordering={this.handleRowsReordering}
                     isHorizontalScrollDisabled={this.shouldDisableHorizontalScroll()}
                     isRowHeaderShown={isRowHeaderShown}
-                    isVerticalScrollDisabled={this.shouldDisableHorizontalScroll()}
+                    isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
                     numFrozenColumns={this.getNumFrozenColumnsClamped()}
                     numFrozenRows={this.getNumFrozenRowsClamped()}
                     onScroll={this.handleBodyScroll}
