@@ -6,7 +6,6 @@
  */
 
 import * as classNames from "classnames";
-// TODO: popper.js declares export default, but webpack clobbers it
 import * as PopperJS from "popper.js";
 import * as React from "react";
 
@@ -52,8 +51,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
         canEscapeKeyClose: true,
         exampleIndex: 0,
         inheritDarkTheme: true,
-        // TODO: inline=false causes jump to top of page when popover opens; force-disabling
-        inline: true,
+        inline: false,
         interactionKind: PopoverInteractionKind.CLICK,
         isModal: false,
         modifiers: {
@@ -201,6 +199,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                         </select>
                     </div>
                 </Switch>,
+                <a href="https://popper.js.org/popper-documentation.html#modifiers">Popper.js docs</a>
             ],
         ];
     }
