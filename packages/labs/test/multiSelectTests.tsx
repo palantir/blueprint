@@ -80,7 +80,7 @@ function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererPr
     );
 };
 
-function renderTag (film: Film) {
+function renderTag(film: Film) {
     return film.title;
 };
 
