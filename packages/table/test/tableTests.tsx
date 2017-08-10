@@ -18,13 +18,17 @@ import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
-import { QuadrantType } from "../src/quadrants/tableQuadrant";
+import { QuadrantType, TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { IRegion, Regions } from "../src/regions";
 import { TableBody } from "../src/tableBody";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 
 describe("<Table>", () => {
+
+    const COLUMN_HEADER_SELECTOR =
+        `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
+
     const harness = new ReactHarness();
 
     afterEach(() => {
@@ -62,15 +66,14 @@ describe("<Table>", () => {
     });
 
     // TODO: FROZEN
-    it.skip("Renders without ghost cells", () => {
+    it("Renders without ghost cells", () => {
         const table = harness.mount(
             <Table>
                 <Column />
             </Table>,
         );
-
-        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).element).to.be.ok;
-        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).element).to.not.be.ok;
+        expect(table.find(COLUMN_HEADER_SELECTOR, 0).element).to.be.ok;
+        expect(table.find(COLUMN_HEADER_SELECTOR, 1).element).to.not.be.ok;
     });
 
     it("Renders ghost cells", () => {
@@ -80,8 +83,8 @@ describe("<Table>", () => {
             </Table>,
         );
 
-        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).element).to.be.ok;
-        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).element).to.be.ok;
+        expect(table.find(COLUMN_HEADER_SELECTOR, 0).element).to.be.ok;
+        expect(table.find(COLUMN_HEADER_SELECTOR, 1).element).to.be.ok;
     });
 
     it("Renders correctly with loading options", () => {
@@ -103,7 +106,7 @@ describe("<Table>", () => {
         cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
 
         const columnHeaders = tableHarness.element
-            .queryAll(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
+            .queryAll(COLUMN_HEADER_SELECTOR);
         columnHeaders.forEach((columnHeader) => expectCellLoading(columnHeader, CellType.COLUMN_HEADER));
 
         const rowHeaders = tableHarness.element.queryAll(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`);
@@ -149,7 +152,7 @@ describe("<Table>", () => {
     });
 
     // TODO: FROZEN
-    it.skip("Invokes onVisibleCellsChange on mount", () => {
+    it("Invokes onVisibleCellsChange on mount", () => {
         const onVisibleCellsChange = sinon.spy();
         const renderCell = () => <Cell>foo</Cell>;
         mount(
@@ -167,7 +170,7 @@ describe("<Table>", () => {
     });
 
     // TODO: FROZEN
-    it.skip("Invokes onVisibleCellsChange when the table body scrolls", () => {
+    it("Invokes onVisibleCellsChange when the table body scrolls", () => {
         const onVisibleCellsChange = sinon.spy();
         const renderCell = () => <Cell>foo</Cell>;
         const table = mount(
@@ -183,7 +186,7 @@ describe("<Table>", () => {
     });
 
     // TODO: FROZEN
-    describe.skip("Full-table selection", () => {
+    describe("Full-table selection", () => {
         const onFocus = sinon.spy();
         const onSelection = sinon.spy();
 
@@ -202,7 +205,7 @@ describe("<Table>", () => {
 
         it("selects and deselects column/row headers when selecting and deselecting the full table", () => {
             const table = mountTable();
-            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
+            const columnHeader = table.find(COLUMN_HEADER_SELECTOR).at(0);
             const rowHeader = table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
 
             // select the full table
@@ -232,7 +235,7 @@ describe("<Table>", () => {
         }
 
         function selectFullTable(table: ReactWrapper<any, {}>) {
-            const menu = table.find(`.${Classes.TABLE_MENU}`);
+            const menu = table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_MENU}`);
             menu.simulate("click");
         }
     });
@@ -717,7 +720,7 @@ describe("<Table>", () => {
         });
 
         // TODO: FROZEN
-        it.skip("Shows preview guide and invokes callback when columns reordered", () => {
+        it("Shows preview guide and invokes callback when columns reordered", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
@@ -735,7 +738,7 @@ describe("<Table>", () => {
         });
 
         // TODO: FROZEN
-        it.skip("Shows preview guide and invokes callback when rows reordered", () => {
+        it("Shows preview guide and invokes callback when rows reordered", () => {
             const table = mountTable({
                 isRowReorderable: true,
                 onRowsReordered,
@@ -777,7 +780,7 @@ describe("<Table>", () => {
         });
 
         // TODO: FROZEN
-        it.skip("Selecting a column via click and then reordering it works", () => {
+        it("Selecting a column via click and then reordering it works", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
@@ -801,7 +804,7 @@ describe("<Table>", () => {
         });
 
         // TODO: FROZEN
-        it.skip("Selecting multiple columns via click+drag and then reordering works", () => {
+        it("Selecting multiple columns via click+drag and then reordering works", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
@@ -823,7 +826,7 @@ describe("<Table>", () => {
         });
 
         // TODO: FROZEN
-        it.skip("Moves uncontrolled selection with reordered column when reordering is complete", () => {
+        it("Moves uncontrolled selection with reordered column when reordering is complete", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
@@ -1211,7 +1214,7 @@ describe("<Table>", () => {
     });
 
     // TODO: FROZEN
-    describe.skip("Autoscrolling when rows/columns decrease in count or size", () => {
+    describe("Autoscrolling when rows/columns decrease in count or size", () => {
         const COL_WIDTH = 400;
         const ROW_HEIGHT = 60;
 
@@ -1309,7 +1312,11 @@ describe("<Table>", () => {
                 COL_WIDTH,
                 ROW_HEIGHT,
             );
-            table.find(TableBody).simulate("scroll");
+            table
+                .find(TableQuadrant)
+                .first()
+                .find(TableBody)
+                .simulate("scroll");
         }
     });
 
