@@ -44,6 +44,7 @@ export interface IPopover2ExampleState {
     inline?: boolean;
     interactionKind?: PopoverInteractionKind;
     isModal?: boolean;
+    minimal?: boolean;
     modifiers?: PopperJS.Modifiers;
     placement?: PopperJS.Placement;
     sliderValue?: number;
@@ -57,6 +58,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
         inline: false,
         interactionKind: PopoverInteractionKind.CLICK,
         isModal: false,
+        minimal: false,
         modifiers: {
             arrow: { enabled: true },
             flip: { enabled: true },
@@ -98,6 +100,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
             this.setState({ inline });
         }
     });
+    private toggleMinimal = handleBooleanChange((minimal) => this.setState({ minimal }));
 
     protected renderExample() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
@@ -153,6 +156,12 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                     label="Inline"
                     key="inline"
                     onChange={this.toggleInline}
+                />,
+                <Switch
+                    checked={this.state.minimal}
+                    label="Minimal (no arrow, simple transition)"
+                    key="minimal"
+                    onChange={this.toggleMinimal}
                 />,
             ], [
                 <h5 key="int">Interactions</h5>,

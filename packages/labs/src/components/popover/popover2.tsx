@@ -27,8 +27,6 @@ import { PopoverArrow } from "./arrow";
 import { arrowOffsetModifier, getArrowRotation, getTransformOrigin } from "./popperUtils";
 
 export interface IPopover2Props extends IOverlayableProps, IProps {
-    arrow?: boolean;
-
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
@@ -95,6 +93,13 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
      * @default undefined
      */
     isOpen?: boolean;
+
+    /**
+     * Whether to apply minimal styles to this popover, which includes removing the arrow
+     * and adding the `.pt-minimal` class to minimize and accelerate the transitions.
+     * @default false
+     */
+    minimal?: boolean;
 
     /**
      * Popper modifier options, passed directly to internal Popper instance.
@@ -173,7 +178,6 @@ export interface IPopover2State {
 @PureRender
 export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> {
     public static defaultProps: IPopover2Props = {
-        arrow: true,
         defaultIsOpen: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
@@ -182,6 +186,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         interactionKind: PopoverInteractionKind.CLICK,
         isDisabled: false,
         isModal: false,
+        minimal: false,
         modifiers: {},
         openOnTargetFocus: true,
         placement: "auto",
@@ -339,9 +344,11 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
         const popoverClasses = classNames(Classes.POPOVER, {
             [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
+            [Classes.MINIMAL]: this.props.minimal,
         }, this.props.popoverClassName);
 
-        const isArrowEnabled = this.props.arrow
+        const isArrowEnabled = !this.props.minimal
+            // omitting `arrow` from `modifiers` uses Popper default, which does show an arrow.
             && (modifiers.arrow == null || modifiers.arrow.enabled);
         const allModifiers: PopperModifiers = {
             ...modifiers,

@@ -500,8 +500,8 @@ describe("<Popover2>", () => {
             assert.lengthOf(wrapper.find(Arrow), 0);
         });
 
-        it("arrow can be disabled via prop", () => {
-            wrapper = renderPopover({ arrow: false, isOpen: true });
+        it("arrow can be disabled via minimal prop", () => {
+            wrapper = renderPopover({ minimal: true, isOpen: true });
             assert.lengthOf(wrapper.find(Arrow), 0);
         });
 
@@ -518,7 +518,7 @@ describe("<Popover2>", () => {
         });
 
         it("computes transformOrigin without arrow", (done) => {
-            renderPopover({ arrow: false, isOpen: true })
+            renderPopover({ minimal: true, isOpen: true })
                 .then(() => assert.equal(wrapper.state("transformOrigin"), "center top"), done);
         });
     });
