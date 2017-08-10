@@ -13,20 +13,23 @@
 Dialog
 
 Markup:
-<div class="pt-dialog">
-  <div class="pt-dialog-header">
-    <span class="pt-icon-large pt-icon-inbox"></span>
-    <h5>Dialog header</h5>
-    <button aria-label="Close" class="pt-dialog-close-button pt-icon-small-cross"></button>
-  </div>
-  <div class="pt-dialog-body">
-    This dialog hasn't been wired up with any open or close interactions.
-    It's just an example of markup and styles.
-  </div>
-  <div class="pt-dialog-footer">
-    <div class="pt-dialog-footer-actions">
-      <button type="button" class="pt-button">Secondary button</button>
-      <button type="submit" class="pt-button pt-intent-primary">Primary button</button>
+<!-- this container element fills its parent and centers the .pt-dialog within it -->
+<div class="pt-dialog-container">
+  <div class="pt-dialog">
+    <div class="pt-dialog-header">
+      <span class="pt-icon-large pt-icon-inbox"></span>
+      <h5>Dialog header</h5>
+      <button aria-label="Close" class="pt-dialog-close-button pt-icon-small-cross"></button>
+    </div>
+    <div class="pt-dialog-body">
+      This dialog hasn't been wired up with any open or close interactions.
+      It's just an example of markup and styles.
+    </div>
+    <div class="pt-dialog-footer">
+      <div class="pt-dialog-footer-actions">
+        <button type="button" class="pt-button">Secondary button</button>
+        <button type="submit" class="pt-button pt-intent-primary">Primary button</button>
+      </div>
     </div>
   </div>
 </div>
