@@ -58,6 +58,13 @@ $dialog-padding: $pt-grid-size * 2 !default;
   width: 100%;
   min-height: 100%;
   pointer-events: none;
+
+  // LEGACY: override old (<= 1.24.0) dialog styles when inside a container to respect flex layout
+  .pt-dialog {
+    // stylelint-disable-next-line declaration-no-important
+    position: static !important;
+    transform: none;
+  }
 }
 
 .pt-dialog {
@@ -155,4 +162,20 @@ $dialog-padding: $pt-grid-size * 2 !default;
   .pt-button {
     margin-left: $pt-grid-size;
   }
+}
+
+// LEGACY: transition support for old (<= 1.24.0) Dialogs that don't use .pt-dialog-container
+.pt-overlay > span > .pt-dialog {
+  $dialog-transition-props: (
+    opacity: (0, 1),
+    transform: (translateX(50%) scale(0.5), translateX(50%) scale(1))
+  );
+
+  @include react-transition(
+    "pt-overlay",
+    $dialog-transition-props,
+    $duration: $pt-transition-duration * 3,
+    $easing: $pt-transition-ease-bounce,
+    $before: "&"
+  );
 }
