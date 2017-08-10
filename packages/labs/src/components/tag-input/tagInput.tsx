@@ -25,6 +25,9 @@ export interface ITagInputProps extends IProps {
     /** React props to pass to the `<input>` element */
     inputProps?: HTMLInputProps;
 
+    /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
+    leftIconName?: string;
+
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.
      * Receives the current value of the input field split by `separator` into an array.
@@ -45,8 +48,17 @@ export interface ITagInputProps extends IProps {
      *
      * This callback essentially implements basic `onAdd` and `onRemove` functionality and merges
      * the two handlers into one to simplify controlled usage.
+     *
+     * **Note about typed usage:** Your handler can declare a subset type of `React.ReactNode[]`,
+     * such as `string[]` or `Array<string | JSX.Element>`, to match the type of your `values` array:
+     * ```tsx
+     * <TagInput
+     *     onChange={(values: string[]) => this.setState({ values })}
+     *     values={["apple", "banana", "cherry"]}
+     * />
+     * ```
      */
-    onChange?: (values: string[]) => boolean | void;
+    onChange?: (values: React.ReactNode[]) => boolean | void;
 
     /**
      * Callback invoked when the user clicks the X button on a tag.
@@ -65,6 +77,12 @@ export interface ITagInputProps extends IProps {
     placeholder?: string;
 
     /**
+     * Element to render on right side of input.
+     * For best results, use a small minimal button, tag, or spinner.
+     */
+    rightElement?: JSX.Element;
+
+    /**
      * Separator pattern used to split input text into multiple values.
      * Explicit `false` value disables splitting (note that `onAdd` will still receive an array of length 1).
      * @default ","
@@ -78,10 +96,17 @@ export interface ITagInputProps extends IProps {
      * If you define `onRemove` here then you will have to implement your own tag removal
      * handling as `TagInput`'s own `onRemove` handler will never be invoked.
      */
-    tagProps?: ITagProps | ((value: string, index: number) => ITagProps);
+    tagProps?: ITagProps | ((value: React.ReactNode, index: number) => ITagProps);
 
-    /** Controlled tag values. */
-    values: string[];
+    /**
+     * Controlled tag values. Each value will be rendered inside a `Tag`, which can be customized
+     * using `tagProps`. Therefore, any valid React node can be used as a `TagInput` value.
+     *
+     * __Note about typed usage:__ If you know your `values` will always be of a certain `ReactNode`
+     * subtype, such as `string` or `ReactChild`, you can use that type on all your handlers
+     * to simplify type logic.
+     */
+    values: React.ReactNode[];
 }
 
 export interface ITagInputState {
@@ -138,6 +163,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 onBlur={this.handleBlur}
                 onClick={this.handleContainerClick}
             >
+                {this.maybeRenderLeftIcon(classes.indexOf(CoreClasses.LARGE) > NONE)}
                 {values.map(this.renderTag)}
                 <input
                     value={this.state.inputValue}
@@ -149,11 +175,25 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     ref={this.refHandlers.input}
                     className={classNames(Classes.INPUT_GHOST, inputProps.className)}
                 />
+                {this.props.rightElement}
             </div>
         );
     }
 
-    private renderTag = (tag: string, index: number) => {
+    private maybeRenderLeftIcon(useLarge: boolean) {
+        const { leftIconName } = this.props;
+        if (leftIconName == null) {
+            return undefined;
+        }
+        const iconClass = classNames(
+            Classes.TAG_INPUT_ICON,
+            useLarge ? CoreClasses.ICON_LARGE : CoreClasses.ICON_STANDARD,
+            CoreClasses.iconClass(leftIconName),
+        );
+        return <span className={iconClass} />;
+    }
+
+    private renderTag = (tag: React.ReactNode, index: number) => {
         const { tagProps } = this.props;
         const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
         return (

@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 
-import { Intent, Keys, Tag } from "@blueprintjs/core";
+import { Button, Classes, Intent, Keys, Tag } from "@blueprintjs/core";
 import { ITagInputProps, TagInput } from "../src/index";
 
 describe("<TagInput>", () => {
@@ -29,6 +29,26 @@ describe("<TagInput>", () => {
     it("renders a Tag for each value", () => {
         const wrapper = mount(<TagInput values={VALUES} />);
         assert.lengthOf(wrapper.find(Tag), VALUES.length);
+    });
+
+    it("values can be valid JSX nodes", () => {
+        const values = [<strong>Albert</strong>, ["Bar", <em key="thol">thol</em>, "omew"], "Casper"];
+        const wrapper = mount(<TagInput values={values} />);
+        assert.lengthOf(wrapper.find(Tag), values.length);
+        assert.lengthOf(wrapper.find("strong"), 1);
+        assert.lengthOf(wrapper.find("em"), 1);
+    });
+
+    it("leftIconName renders an icon as first child", () => {
+        const wrapper = mount(<TagInput leftIconName="add" values={VALUES} />);
+        assert.isTrue(wrapper.childAt(0).hasClass(Classes.ICON_STANDARD), "standard icon");
+        wrapper.setProps({ className: Classes.LARGE });
+        assert.isTrue(wrapper.childAt(0).hasClass(Classes.ICON_LARGE), "large icon");
+    });
+
+    it("rightElement appears as last child", () => {
+        const wrapper = mount(<TagInput rightElement={<Button />} values={VALUES} />);
+        assert.isTrue(wrapper.children().last().is(Button));
     });
 
     it("tagProps object is applied to each Tag", () => {

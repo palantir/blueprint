@@ -147,8 +147,8 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     <TagInput
-                        inputProps={defaultInputProps}
                         {...tagInputProps}
+                        inputProps={defaultInputProps}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         values={this.props.selectedItems.map(this.props.tagRenderer)}
                     />
