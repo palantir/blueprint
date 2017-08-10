@@ -262,9 +262,11 @@ describe("<TagInput>", () => {
     describe("placeholder", () => {
         it("appears only when values is empty", () => {
             const wrapper = shallow(<TagInput placeholder="hold the door" values={[]} />);
-            assert.strictEqual(wrapper.find("input").prop("placeholder"), "hold the door");
+            assert.strictEqual(wrapper.find("input").prop("placeholder"), "hold the door", "empty array");
+            wrapper.setProps({ values: [undefined] });
+            assert.strictEqual(wrapper.find("input").prop("placeholder"), "hold the door", "[undefined]");
             wrapper.setProps({ values: VALUES });
-            assert.isUndefined(wrapper.find("input").prop("placeholder"));
+            assert.isUndefined(wrapper.find("input").prop("placeholder"), "normal values");
         });
 
         it("inputProps.placeholder appears all the time", () => {
