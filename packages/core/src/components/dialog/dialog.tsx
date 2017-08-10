@@ -77,7 +77,7 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
                 className={Classes.OVERLAY_SCROLL_CONTAINER}
                 hasBackdrop={true}
             >
-                <div className={Classes.DIALOG_CONTAINER} onMouseDown={this.handleContainerClick}>
+                <div className={Classes.DIALOG_CONTAINER} onMouseDown={this.handleContainerMouseDown}>
                     <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
                         {this.maybeRenderHeader()}
                         {this.props.children}
@@ -127,9 +127,10 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
         );
     }
 
-    private handleContainerClick = (evt: React.MouseEvent<HTMLDivElement>) => {
+    private handleContainerMouseDown = (evt: React.MouseEvent<HTMLDivElement>) => {
         // quick re-implementation of canOutsideClickClose because .pt-dialog-container covers the backdrop
-        if (this.props.canOutsideClickClose && evt.currentTarget.closest(`.${Classes.DIALOG}`) == null) {
+        const isClickOutsideDialog = (evt.target as HTMLElement).closest(`.${Classes.DIALOG}`) == null;
+        if (isClickOutsideDialog && this.props.canOutsideClickClose) {
             safeInvoke(this.props.onClose, evt);
         }
     }
