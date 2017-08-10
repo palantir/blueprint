@@ -11,6 +11,7 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
+import { Icon, IconName } from "../icon/icon";
 
 export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps {
     /**
@@ -24,7 +25,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     inputRef?: (ref: HTMLInputElement) => any;
 
     /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
-    leftIconName?: string;
+    leftIconName?: IconName;
 
     /** Placeholder text in the absence of any value. */
     placeholder?: string;
@@ -60,7 +61,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
     };
 
     public render() {
-        const { className, intent } = this.props;
+        const { className, intent, leftIconName } = this.props;
         const classes = classNames(Classes.INPUT_GROUP, Classes.intentClass(intent), {
             [Classes.DISABLED]: this.props.disabled,
         }, className);
@@ -68,7 +69,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
 
         return (
             <div className={classes}>
-                {this.maybeRenderLeftIcon()}
+                <Icon iconName={leftIconName} iconSize="inherit" />
                 <input
                     type="text"
                     {...removeNonHTMLProps(this.props)}
@@ -87,15 +88,6 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
 
     public componentDidUpdate() {
         this.updateInputWidth();
-    }
-
-    private maybeRenderLeftIcon() {
-        const { leftIconName } = this.props;
-        if (leftIconName == null) {
-            return undefined;
-        }
-        const iconClass = Classes.iconClass(leftIconName);
-        return <span className={classNames("pt-icon", iconClass)} />;
     }
 
     private maybeRenderRightElement() {

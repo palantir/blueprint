@@ -12,6 +12,7 @@ import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
+import { Icon, IconName } from "../icon/icon";
 import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
 
 export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps {
@@ -31,7 +32,7 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
      * Name of the icon (the part after `pt-icon-`) to appear in the dialog's header.
      * Note that the header will only be rendered if `title` is provided.
      */
-    iconName?: string;
+    iconName?: IconName;
 
     /**
      * Whether to show the close button in the dialog's header.
@@ -106,18 +107,14 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
     }
 
     private maybeRenderHeader() {
-        if (this.props.title == null) {
+        const { iconName, title } = this.props;
+        if (title == null) {
             return undefined;
-        }
-
-        let maybeIcon: JSX.Element;
-        if (this.props.iconName != null) {
-            maybeIcon = <span className={classNames(Classes.ICON_LARGE, Classes.iconClass(this.props.iconName))} />;
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                {maybeIcon}
-                <h5>{this.props.title}</h5>
+                <Icon iconName={iconName} iconSize={20} />
+                <h5>{title}</h5>
                 {this.maybeRenderCloseButton()}
             </div>
         );

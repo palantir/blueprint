@@ -39,7 +39,7 @@ describe("MenuItem", () => {
             { iconName: "align-center", text: "Align Center" },
             { iconName: "align-right", text: "Align Right" },
         ];
-        const wrapper = shallow(<MenuItem iconName="align" text="Alignment" submenu={items} />);
+        const wrapper = shallow(<MenuItem iconName="align-left" text="Alignment" submenu={items} />);
         const submenu = findSubmenu(wrapper);
         assert.lengthOf(submenu.props.children, items.length);
     });
@@ -201,7 +201,7 @@ describe("MenuItem", () => {
                 { iconName: "align-right", text: "Align Right" },
             ];
             menuItem = ReactDOM.render((
-                <MenuItem iconName="align" text="Alignment" submenu={items} />
+                <MenuItem iconName="align-left" text="Alignment" submenu={items} />
             ), childContainer) as MenuItem;
             hoverOverTarget(0, () => {
                 assert.isNotNull(childContainer.query(`.${Classes.ALIGN_LEFT}`));
@@ -219,9 +219,15 @@ describe("MenuItem", () => {
                     { iconName: "align-right", text: "Align Right" },
                 ], text: "Align Right" },
             ];
-            menuItem = ReactDOM.render((
-                <MenuItem iconName="align" submenu={items} submenuViewportMargin={{ left: 150 }} text="Alignment" />
-            ), childContainer) as MenuItem;
+            menuItem = ReactDOM.render(
+                <MenuItem
+                    iconName="align-left"
+                    submenu={items}
+                    submenuViewportMargin={{ left: 150 }}
+                    text="Alignment"
+                />,
+                childContainer,
+            ) as MenuItem;
             hoverOverTarget(0, () => {
                 hoverOverTarget(3, () => {
                     assertClassNameCount(Classes.ALIGN_LEFT, 1);

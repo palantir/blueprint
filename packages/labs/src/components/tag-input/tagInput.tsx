@@ -13,6 +13,8 @@ import {
     AbstractComponent,
     Classes as CoreClasses,
     HTMLInputProps,
+    Icon,
+    IconName,
     IProps,
     ITagProps,
     Keys,
@@ -26,7 +28,7 @@ export interface ITagInputProps extends IProps {
     inputProps?: HTMLInputProps;
 
     /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
-    leftIconName?: string;
+    leftIconName?: IconName;
 
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.
@@ -147,11 +149,12 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     };
 
     public render() {
-        const { className, inputProps, placeholder, values } = this.props;
+        const { className, inputProps, leftIconName, placeholder, values } = this.props;
 
         const classes = classNames(CoreClasses.INPUT, Classes.TAG_INPUT, {
             [CoreClasses.ACTIVE]: this.state.isInputFocused,
         }, className);
+        const isLarge = classes.indexOf(CoreClasses.LARGE) > NONE;
 
         const resolvedPlaceholder = placeholder == null || values.length > 0
             ? inputProps.placeholder
@@ -163,7 +166,11 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 onBlur={this.handleBlur}
                 onClick={this.handleContainerClick}
             >
-                {this.maybeRenderLeftIcon(classes.indexOf(CoreClasses.LARGE) > NONE)}
+                <Icon
+                    className={Classes.TAG_INPUT_ICON}
+                    iconName={leftIconName}
+                    iconSize={isLarge ? 20 : 16}
+                />
                 {values.map(this.renderTag)}
                 <input
                     value={this.state.inputValue}
@@ -178,19 +185,6 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 {this.props.rightElement}
             </div>
         );
-    }
-
-    private maybeRenderLeftIcon(useLarge: boolean) {
-        const { leftIconName } = this.props;
-        if (leftIconName == null) {
-            return undefined;
-        }
-        const iconClass = classNames(
-            Classes.TAG_INPUT_ICON,
-            useLarge ? CoreClasses.ICON_LARGE : CoreClasses.ICON_STANDARD,
-            CoreClasses.iconClass(leftIconName),
-        );
-        return <span className={iconClass} />;
     }
 
     private renderTag = (tag: React.ReactNode, index: number) => {

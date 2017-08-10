@@ -9,7 +9,7 @@ import { assert } from "chai";
 import { shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 
-import { Alert, Button, Classes, Intent } from "../../src/index";
+import { Alert, Button, Classes, Icon, Intent } from "../../src/index";
 
 const NOOP: () => any = () => undefined;
 
@@ -48,7 +48,7 @@ describe("<Alert>", () => {
             </Alert>,
         );
 
-        assert.lengthOf(wrapper.find(".pt-icon"), 1);
+        assert.lengthOf(wrapper.find(Icon), 1);
     });
 
     describe("confirm button", () => {

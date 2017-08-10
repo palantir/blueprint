@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, Switch } from "@blueprintjs/core";
+import { Classes, Icon, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
 import * as moment from "moment";
 import * as React from "react";
@@ -75,7 +75,7 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
             />
             <div>
                 <Moment date={start} />
-                <span className={`${Classes.ICON_LARGE} ${Classes.iconClass("arrow-right")}`} />
+                <Icon iconName="arrow-right" iconSize={20} />
                 <Moment date={end} />
             </div>
         </div>;
