@@ -164,19 +164,3 @@ $dialog-padding: $pt-grid-size * 2 !default;
     margin-left: $pt-grid-size;
   }
 }
-
-// LEGACY: transition support for old (<= 1.24.0) Dialogs that don't use .pt-dialog-container
-.pt-overlay > span > .pt-dialog {
-  $dialog-transition-props: (
-    opacity: (0, 1),
-    transform: (translateX(50%) scale(0.5), translateX(50%) scale(1))
-  );
-
-  @include react-transition(
-    "pt-overlay",
-    $dialog-transition-props,
-    $duration: $pt-transition-duration * 3,
-    $easing: $pt-transition-ease-bounce,
-    $before: "&"
-  );
-}
