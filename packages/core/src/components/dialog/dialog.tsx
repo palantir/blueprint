@@ -12,6 +12,7 @@ import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
+import { safeInvoke } from "../../common/utils";
 import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
 
 export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps {
@@ -63,6 +64,7 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
 
 export class Dialog extends AbstractComponent<IDialogProps, {}> {
     public static defaultProps: IDialogProps = {
+        canOutsideClickClose: true,
         isOpen: false,
     };
 
@@ -75,7 +77,7 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
                 className={Classes.OVERLAY_SCROLL_CONTAINER}
                 hasBackdrop={true}
             >
-                <div className={Classes.DIALOG_CONTAINER}>
+                <div className={Classes.DIALOG_CONTAINER} onMouseDown={this.handleContainerClick}>
                     <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
                         {this.maybeRenderHeader()}
                         {this.props.children}
@@ -123,6 +125,13 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
                 {this.maybeRenderCloseButton()}
             </div>
         );
+    }
+
+    private handleContainerClick = (evt: React.MouseEvent<HTMLDivElement>) => {
+        // quick re-implementation of canOutsideClickClose because .pt-dialog-container covers the backdrop
+        if (this.props.canOutsideClickClose && evt.currentTarget.closest(`.${Classes.DIALOG}`) == null) {
+            safeInvoke(this.props.onClose, evt);
+        }
     }
 }
 
