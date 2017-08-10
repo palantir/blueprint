@@ -514,12 +514,12 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             // if the next element to receive focus is within the popover, we'll want to leave the
             // popover open. we must do this check *after* the next element focuses, so we use a
             // timeout of 0 to flush the rest of the event queue before proceeding.
-            this.setTimeout(() => {
+            requestAnimationFrame(() => {
                 const { popoverElement } = this;
                 if (popoverElement == null || !popoverElement.contains(document.activeElement)) {
                     this.handleMouseLeave(e);
                 }
-            }, 0);
+            });
         }
     }
 

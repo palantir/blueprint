@@ -120,6 +120,12 @@ $popover-width: $pt-grid-size * 35 !default;
   .pt-transition-container {
     @include popover-inline-position();
   }
+
+  // make sure inline overlays don't inherit from absolute positioning in cases
+  // where overlays are nested (i.e. Popover within Dialog)
+  .pt-overlay-inline {
+    position: static;
+  }
 }
 
 // fix positioning of popovers inside button groups (lots of extra nested elements)

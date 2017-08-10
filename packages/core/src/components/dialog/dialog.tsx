@@ -12,6 +12,7 @@ import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
+import { safeInvoke } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
 
@@ -64,6 +65,7 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
 
 export class Dialog extends AbstractComponent<IDialogProps, {}> {
     public static defaultProps: IDialogProps = {
+        canOutsideClickClose: true,
         isOpen: false,
     };
 
@@ -73,12 +75,14 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
         return (
             <Overlay
                 {...this.props}
-                className={classNames({ [Classes.OVERLAY_SCROLL_CONTAINER]: !this.props.inline })}
+                className={Classes.OVERLAY_SCROLL_CONTAINER}
                 hasBackdrop={true}
             >
-                <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
-                    {this.maybeRenderHeader()}
-                    {this.props.children}
+                <div className={Classes.DIALOG_CONTAINER} onMouseDown={this.handleContainerMouseDown}>
+                    <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
+                        {this.maybeRenderHeader()}
+                        {this.props.children}
+                    </div>
                 </div>
             </Overlay>
         );
@@ -118,6 +122,14 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
                 {this.maybeRenderCloseButton()}
             </div>
         );
+    }
+
+    private handleContainerMouseDown = (evt: React.MouseEvent<HTMLDivElement>) => {
+        // quick re-implementation of canOutsideClickClose because .pt-dialog-container covers the backdrop
+        const isClickOutsideDialog = (evt.target as HTMLElement).closest(`.${Classes.DIALOG}`) == null;
+        if (isClickOutsideDialog && this.props.canOutsideClickClose) {
+            safeInvoke(this.props.onClose, evt);
+        }
     }
 }
 

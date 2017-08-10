@@ -10,7 +10,7 @@
 $toast-height: $pt-button-height-large !default;
 $toast-min-width: $pt-grid-size * 30 !default;
 $toast-max-width: $pt-grid-size * 50 !default;
-$toast-margin: $pt-grid-size * 1.5 !default;
+$toast-margin: $pt-grid-size * 2 !default;
 
 .pt-toast {
   // toast transition properties
@@ -153,7 +153,6 @@ $toast-margin: $pt-grid-size * 1.5 !default;
   // #975 ensure toasts are on top of everything (esp dialogs)
   z-index: $pt-z-index-overlay * 2;
   // toasts have margin-top so omit it on container
-  padding: 0 $toast-margin $toast-margin;
 
   // container will not block clicks on elements behind it
   pointer-events: none;
@@ -163,13 +162,20 @@ $toast-margin: $pt-grid-size * 1.5 !default;
     display: flex;
     flex-direction: column;
     align-items: center;
+    // prevent container from scrolling as new toasts enter (from bottom)
+    overflow: hidden;
+    // ensure there's enough space for full box-shadow
+    padding: 0 $toast-margin $toast-margin;
   }
 
   &.pt-toast-container-top {
     top: 0;
+    // clear opposite side cuz .pt-overlay has all sides 0'ed
+    bottom: auto;
   }
 
   &.pt-toast-container-bottom {
+    top: auto;
     bottom: 0;
 
     > span {

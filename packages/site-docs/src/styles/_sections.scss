@@ -117,18 +117,6 @@
   }
 }
 
-#{reference("pt-dialog")} {
-  .docs-example {
-    height: $pt-grid-size * 27;
-  }
-
-  .pt-dialog {
-    top: $content-padding;
-    transform: translateX(50%);
-    z-index: $pt-z-index-base;
-  }
-}
-
 #{reference("pt-menu")},
 #{reference("pt-menu.pt-menu-header")} {
   justify-content: initial;

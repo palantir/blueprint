@@ -193,7 +193,14 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         };
 
         if (inline) {
-            return <span {...elementProps} ref={this.refHandlers.container}>{transitionGroup}</span>;
+            return (
+                <span
+                    {...elementProps}
+                    ref={this.refHandlers.container}
+                >
+                    {transitionGroup}
+                </span>
+            );
         } else {
             return (
                 <Portal
