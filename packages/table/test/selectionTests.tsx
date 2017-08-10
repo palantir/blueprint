@@ -16,9 +16,12 @@ import { createTableOfSize } from "./mocks/table";
 
 describe("Selection", () => {
     const harness = new ReactHarness();
-    const TH_SELECTOR = `.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
-    const ROW_TH_SELECTOR = `.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
-    const CELL_SELECTOR = `.${Classes.rowCellIndexClass(2)}.${Classes.columnCellIndexClass(0)}`;
+    const TH_SELECTOR =
+        `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
+    const ROW_TH_SELECTOR =
+        `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
+    const CELL_SELECTOR =
+        `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.rowCellIndexClass(2)}.${Classes.columnCellIndexClass(0)}`;
 
     afterEach(() => {
         harness.unmount();
@@ -74,7 +77,7 @@ describe("Selection", () => {
     });
 
     // TODO: FROZEN
-    it.skip("Row selection works when enabled", () => {
+    it("Row selection works when enabled", () => {
         const onSelection = sinon.spy();
         const selectionModes = [
             RegionCardinality.FULL_COLUMNS,
