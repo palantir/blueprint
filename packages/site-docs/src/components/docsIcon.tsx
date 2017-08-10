@@ -5,10 +5,9 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as classNames from "classnames";
 import * as React from "react";
 
-import { ContextMenuTarget, IconName, Menu, MenuItem } from "@blueprintjs/core";
+import { ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
 
 import { ClickToCopy } from "./clickToCopy";
 
@@ -25,10 +24,9 @@ const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/master/resources
 export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
     public render() {
         const { className, name, tags } = this.props;
-        // NOTE: not using `Icon` component here cuz className has pt-icon- prefix and causes warning
         return (
             <ClickToCopy className="docs-icon" data-tags={tags} value={className}>
-                <span className={classNames("pt-icon-large", className)} />
+                <Icon iconName={className} iconSize={Icon.SIZE_LARGE} />
                 <span className="docs-icon-detail">
                     <div className="docs-icon-name">{name}</div>
                     <div className="docs-icon-class-name pt-monospace-text">{className}</div>
