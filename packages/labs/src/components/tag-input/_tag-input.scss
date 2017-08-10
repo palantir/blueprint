@@ -10,7 +10,7 @@
 @import "~@blueprintjs/core/src/components/tag/common";
 
 $ti-padding: ($pt-input-height - $tag-height) / 2;
-$ti-right-padding: ($pt-input-height - $pt-button-height-small) / 2;
+$ti-padding-right: ($pt-input-height - $pt-button-height-small) / 2;
 
 $ti-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
 $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
@@ -21,7 +21,7 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
   align-items: center;
   cursor: text;
   height: auto;
-  padding: $ti-padding $ti-right-padding 0 0;
+  padding: $ti-padding $ti-padding-right 0 0;
 
   .pt-tag-input-icon {
     // stylelint-disable-next-line max-line-length
