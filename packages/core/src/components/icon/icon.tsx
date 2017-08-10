@@ -36,9 +36,9 @@ export interface IIconProps extends IIntentProps, IProps {
 export class Icon extends React.Component<IIconProps & React.HTMLAttributes<HTMLSpanElement>, never> {
     public static displayName = "Blueprint.Icon";
 
-    public static readonly SIZE_STANDARD = 16;
-    public static readonly SIZE_LARGE = 20;
-    public static readonly SIZE_INHERIT = "inherit";
+    public static readonly SIZE_STANDARD = 16 as 16;
+    public static readonly SIZE_LARGE = 20 as 20;
+    public static readonly SIZE_INHERIT = "inherit" as "inherit";
 
     public render() {
         if (this.props.iconName == null) {
