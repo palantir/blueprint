@@ -65,16 +65,15 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
     }
 
     public hide() {
-        const { onClose } = this.state;
-        this.setState({ isOpen: false, onClose: null });
-        safeInvoke(onClose);
+        safeInvoke(this.state.onClose);
+        this.setState({ isOpen: false, onClose: undefined });
     }
 
     private cancelContextMenu = (e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault();
 
     private handleBackdropContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-        // HACKHACK: React function to remove from the event pool (not sure why it's not in typings #66)
-        (e as any).persist();
+        // React function to remove from the event pool, useful when using a event within a callback
+        e.persist();
         e.preventDefault();
         // wait for backdrop to disappear so we can find the "real" element at event coordinates.
         // timeout duration is equivalent to transition duration so we know it's animated out.
@@ -89,7 +88,9 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
 
     private handlePopoverInteraction = (nextOpenState: boolean) => {
         if (!nextOpenState) {
-            this.hide();
+            // delay the actual hiding till the event queue clears
+            // to avoid flicker of opening twice
+            requestAnimationFrame(() => this.hide());
         }
     }
 }

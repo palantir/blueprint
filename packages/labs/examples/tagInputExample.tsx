@@ -8,18 +8,27 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Intent, ITagProps, Switch } from "@blueprintjs/core";
+import { Button, Classes, Intent, ITagProps, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 import { TagInput } from "../src";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
+
+const VALUES = [
+    // supports single JSX elements
+    <strong>Albert</strong>,
+    // supports JSX "fragments" (don't forget `key` on elements in arrays!)
+    ["Bar", <em key="thol">thol</em>, "omew"],
+    // and supports simple strings
+    "Casper",
+];
 
 export interface ITagInputExampleState {
     fill?: boolean;
     intent?: boolean;
     large?: boolean;
     minimal?: boolean;
-    values?: string[];
+    values?: React.ReactNode[];
 }
 
 export class TagInputExample extends BaseExample<ITagInputExampleState> {
@@ -28,7 +37,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         intent: false,
         large: false,
         minimal: false,
-        values: ["Albert", "Bartholomew", "Casper"],
+        values: VALUES,
     };
 
     private handleFillChange = handleBooleanChange((fill) => this.setState({ fill }));
@@ -44,6 +53,14 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
             [Classes.LARGE]: large,
         });
 
+        const clearButton = (
+            <Button
+                className={classNames(Classes.MINIMAL, Classes.SMALL)}
+                iconName={values.length > 0 ? "cross" : "refresh"}
+                onClick={this.handleClear}
+            />
+        );
+
         // define a new function every time so switch changes will cause it to re-render
         // NOTE: avoid this pattern in your app (use this.getTagProps instead); this is only for
         // example purposes!!
@@ -55,8 +72,10 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         return (
             <TagInput
                 className={classes}
-                onAdd={this.handleAdd}
-                onRemove={this.handleRemove}
+                rightElement={clearButton}
+                leftIconName="user"
+                onChange={this.handleChange}
+                placeholder="Separate values with commas..."
                 tagProps={getTagProps}
                 values={values}
             />
@@ -96,10 +115,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         ];
     }
 
-    private handleAdd = (newValue: string) => {
-        this.setState({ values: [...this.state.values, newValue] });
-    }
-    private handleRemove = (_removedValue: string, removedIndex: number) => {
-        this.setState({ values: this.state.values.filter((_, i) => i !== removedIndex) });
-    }
+    private handleChange = (values: React.ReactNode[]) => this.setState({ values });
+
+    private handleClear = () => this.handleChange(this.state.values.length > 0 ? [] : VALUES);
 }

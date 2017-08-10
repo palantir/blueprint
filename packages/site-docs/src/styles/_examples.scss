@@ -88,9 +88,9 @@
     $pt-transition-duration * 5,
     $before: "&"
   );
-  top: $overlay-example-width / 2;
+  top: 0;
   left: calc(50% - #{$overlay-example-width / 2});
-  z-index: $pt-z-index-overlay + 1;
+  margin: 10vh 0;
   width: $overlay-example-width;
 }
 

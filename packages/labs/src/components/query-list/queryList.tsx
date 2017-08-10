@@ -254,7 +254,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
                 event.preventDefault();
                 this.moveActiveIndex(1);
                 break;
-            default: return;
+            default: break;
         }
         Utils.safeInvoke(this.props.onKeyDown, event);
     }

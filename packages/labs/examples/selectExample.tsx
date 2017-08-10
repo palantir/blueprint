@@ -19,6 +19,7 @@ export interface ISelectExampleState {
     film?: Film;
     filterable?: boolean;
     minimal?: boolean;
+    resetOnClose?: boolean;
     resetOnSelect?: boolean;
 }
 
@@ -28,12 +29,14 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         film: TOP_100_FILMS[0],
         filterable: true,
         minimal: false,
+        resetOnClose: false,
         resetOnSelect: false,
     };
 
     private handleFilterableChange = this.handleSwitchChange("filterable");
     private handleMinimalChange = this.handleSwitchChange("minimal");
-    private handleResetChange = this.handleSwitchChange("resetOnSelect");
+    private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
+    private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     protected renderExample() {
         const { film, minimal, ...flags } = this.state;
@@ -48,7 +51,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 popoverProps={{ popoverClassName: minimal ? Classes.MINIMAL : "" }}
             >
                 <Button
-                    rightIconName="double-caret-vertical"
+                    rightIconName="caret-down"
                     text={film ? film.title : "(No selection)"}
                 />
             </FilmSelect>
@@ -65,10 +68,16 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                     onChange={this.handleFilterableChange}
                 />,
                 <Switch
-                    key="reset"
+                    key="resetOnClose"
+                    label="Reset on close"
+                    checked={this.state.resetOnClose}
+                    onChange={this.handleResetOnCloseChange}
+                />,
+                <Switch
+                    key="resetOnSelect"
                     label="Reset on select"
                     checked={this.state.resetOnSelect}
-                    onChange={this.handleResetChange}
+                    onChange={this.handleResetOnSelectChange}
                 />,
                 <Switch
                     key="minimal"

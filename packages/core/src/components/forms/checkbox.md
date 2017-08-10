@@ -8,6 +8,8 @@ Note that attribute modifiers (`:checked`, `:disabled`) are applied on the inter
 element. Further note that `:indeterminate` can only be set via JavaScript (the `Checkbox` React
 component supports it handily with a prop).
 
+@reactExample CheckboxExample
+
 @## CSS API
 
 @css pt-checkbox

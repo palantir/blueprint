@@ -11,6 +11,7 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
+import { Icon, IconName } from "../icon/icon";
 
 export interface INonIdealStateProps extends IProps {
     /**
@@ -31,7 +32,7 @@ export interface INonIdealStateProps extends IProps {
     /**
      * The name of a Blueprint icon to display or a JSX Element (such as `<Spinner/>`).
      */
-    visual?: string | JSX.Element;
+    visual?: IconName | JSX.Element;
 }
 
 @PureRender
@@ -78,7 +79,7 @@ export class NonIdealState extends React.Component<INonIdealStateProps, {}> {
         } else if (typeof visual === "string") {
             return (
                 <div className={classNames(Classes.NON_IDEAL_STATE_VISUAL, Classes.NON_IDEAL_STATE_ICON)}>
-                    <span className={classNames("pt-icon", Classes.iconClass(visual))}/>
+                    <Icon iconName={visual} iconSize="inherit" />
                 </div>
             );
         } else {

@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes as CoreClasses, IProps, Popover, Position } from "@blueprintjs/core";
+import { Icon, IProps, Popover, Position } from "@blueprintjs/core";
 
 import * as classNames from "classnames";
 import * as React from "react";
@@ -104,11 +104,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                 to: "window",
             }];
 
-            const iconClasses = classNames(
-                CoreClasses.ICON_STANDARD,
-                CoreClasses.iconClass("more"),
-            );
-
             return (
                 <div className={className}>
                     <div className={Classes.TABLE_TRUNCATED_VALUE} ref={this.handleContentDivRef}>{cellContent}</div>
@@ -119,7 +114,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                         position={Position.BOTTOM}
                         useSmartArrowPositioning
                     >
-                        <span className={iconClasses}/>
+                        <Icon iconName="more" />
                     </Popover>
                 </div>
             );

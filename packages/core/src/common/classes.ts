@@ -60,6 +60,7 @@ export const CONTROL_GROUP = "pt-control-group";
 export const CONTROL_INDICATOR = "pt-control-indicator";
 
 export const DIALOG = "pt-dialog";
+export const DIALOG_CONTAINER = "pt-dialog-container";
 export const DIALOG_BODY = "pt-dialog-body";
 export const DIALOG_CLOSE_BUTTON = "pt-dialog-close-button";
 export const DIALOG_FOOTER = "pt-dialog-footer";

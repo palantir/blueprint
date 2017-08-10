@@ -243,6 +243,7 @@ describe("<DateInput>", () => {
         const DATE_STR = "2016-04-04";
         const DATE2 = new Date(2015, Months.FEBRUARY, 1);
         const DATE2_STR = "2015-02-01";
+        const DATE2_DE_STR = "01.02.2015";
 
         it("Clicking a date invokes onChange callback with that date", () => {
             const onChange = sinon.spy();
@@ -294,6 +295,11 @@ describe("<DateInput>", () => {
             );
             root.find("input").simulate("change", { target: { value: "" }});
             assert.isTrue(onChange.calledWith(null));
+        });
+
+        it("Formats locale specific format strings properly", () => {
+            const wrapper = mount(<DateInput locale="de" format="L" value={DATE2}/>);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_DE_STR);
         });
     });
 
