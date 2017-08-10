@@ -157,9 +157,10 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         }, className);
         const isLarge = classes.indexOf(CoreClasses.LARGE) > NONE;
 
-        // use placeholder prop if defined and values list is empty or entirely falsy values
-        const resolvedPlaceholder = (placeholder != null && values.every((val) => !val))
-            ? placeholder : inputProps.placeholder;
+        // use placeholder prop only if it's defined and values list is empty or contains only falsy values
+        const isSomeValueDefined = values.some((val) => !!val);
+        const resolvedPlaceholder = (placeholder == null || isSomeValueDefined)
+            ? inputProps.placeholder : placeholder;
 
         return (
             <div
