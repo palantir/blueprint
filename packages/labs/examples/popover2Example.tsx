@@ -12,6 +12,7 @@ import * as React from "react";
 import {
     Button,
     Classes,
+    Icon,
     Intent,
     Menu,
     MenuDivider,
@@ -33,6 +34,8 @@ const INTERACTION_KINDS = [
 
 const PLACEMENTS = (PopperJS as any).placements
     .map((p: PopperJS.Placement) => <option key={p} value={p}>{p}</option>);
+
+const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
 
 export interface IPopover2ExampleState {
     canEscapeKeyClose?: boolean;
@@ -199,7 +202,11 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                         </select>
                     </div>
                 </Switch>,
-                <a href="https://popper.js.org/popper-documentation.html#modifiers">Popper.js docs</a>
+                <p key="docs-link">
+                    <a href={POPPER_DOCS} target="_blank">
+                        Popper.js docs <Icon iconName="share" />
+                    </a>
+                </p>,
             ],
         ];
     }
