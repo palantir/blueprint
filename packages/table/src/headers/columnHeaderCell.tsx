@@ -10,7 +10,8 @@ import * as React from "react";
 
 import {
     AbstractComponent,
-    Classes as CoreClasses,
+    Icon,
+    IconName,
     IProps,
     Popover,
     Position,
@@ -68,9 +69,9 @@ export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNamePro
 
     /**
      * The icon name for the header's menu button.
-     * @default 'chevron-down'
+     * @default "chevron-down"
      */
-    menuIconName?: string;
+    menuIconName?: IconName;
 }
 
 export interface IColumnHeaderCellState {
@@ -196,11 +197,6 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             return undefined;
         }
 
-        const popoverTargetClasses = classNames(
-            CoreClasses.ICON_STANDARD,
-            CoreClasses.iconClass(menuIconName),
-        );
-
         const constraints = [{
             attachment: "together",
             pin: true,
@@ -227,7 +223,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
                     popoverWillClose={this.handlePopoverWillClose}
                     useSmartArrowPositioning={true}
                 >
-                    <span className={popoverTargetClasses} />
+                    <Icon iconName={menuIconName} />
                 </Popover>
             </div>
         );

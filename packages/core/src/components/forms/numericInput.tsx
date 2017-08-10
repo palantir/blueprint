@@ -13,6 +13,7 @@ import {
     AbstractComponent,
     Classes,
     HTMLInputProps,
+    IconName,
     IIntentProps,
     IProps,
     Keys,
@@ -66,7 +67,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
      * Name of the icon (the part after `pt-icon-`) to render
      * on the left side of input.
      */
-    leftIconName?: string;
+    leftIconName?: IconName;
 
     /** The placeholder text in the absence of any value. */
     placeholder?: string;
@@ -153,8 +154,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     private static DECREMENT_KEY = "decrement";
     private static INCREMENT_KEY = "increment";
 
-    private static DECREMENT_ICON_NAME = "chevron-down";
-    private static INCREMENT_ICON_NAME = "chevron-up";
+    private static DECREMENT_ICON_NAME: IconName = "chevron-down";
+    private static INCREMENT_ICON_NAME: IconName = "chevron-up";
 
     /**
      * A regex that matches a string of length 1 (i.e. a standalone character)
@@ -320,7 +321,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     // Render Helpers
     // ==============
 
-    private renderButton(key: string, iconName: string, onClick: React.MouseEventHandler<HTMLElement>) {
+    private renderButton(key: string, iconName: IconName, onClick: React.MouseEventHandler<HTMLElement>) {
         // respond explicitly on key *up*, because onKeyDown triggers multiple
         // times and doesn't always receive modifier-key flags, leading to an
         // unintuitive/out-of-control incrementing experience.

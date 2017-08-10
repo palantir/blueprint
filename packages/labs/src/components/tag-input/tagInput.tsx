@@ -13,6 +13,8 @@ import {
     AbstractComponent,
     Classes as CoreClasses,
     HTMLInputProps,
+    Icon,
+    IconName,
     IProps,
     ITagProps,
     Keys,
@@ -24,6 +26,9 @@ import * as Classes from "../../common/classes";
 export interface ITagInputProps extends IProps {
     /** React props to pass to the `<input>` element */
     inputProps?: HTMLInputProps;
+
+    /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
+    leftIconName?: IconName;
 
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.
@@ -72,6 +77,12 @@ export interface ITagInputProps extends IProps {
      * when `values` is empty and the latter at all other times.
      */
     placeholder?: string;
+
+    /**
+     * Element to render on right side of input.
+     * For best results, use a small minimal button, tag, or spinner.
+     */
+    rightElement?: JSX.Element;
 
     /**
      * Separator pattern used to split input text into multiple values.
@@ -138,11 +149,12 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     };
 
     public render() {
-        const { className, inputProps, placeholder, values } = this.props;
+        const { className, inputProps, leftIconName, placeholder, values } = this.props;
 
         const classes = classNames(CoreClasses.INPUT, Classes.TAG_INPUT, {
             [CoreClasses.ACTIVE]: this.state.isInputFocused,
         }, className);
+        const isLarge = classes.indexOf(CoreClasses.LARGE) > NONE;
 
         const resolvedPlaceholder = placeholder == null || values.length > 0
             ? inputProps.placeholder
@@ -154,6 +166,11 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 onBlur={this.handleBlur}
                 onClick={this.handleContainerClick}
             >
+                <Icon
+                    className={Classes.TAG_INPUT_ICON}
+                    iconName={leftIconName}
+                    iconSize={isLarge ? 20 : 16}
+                />
                 {values.map(this.renderTag)}
                 <input
                     value={this.state.inputValue}
@@ -165,13 +182,12 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     ref={this.refHandlers.input}
                     className={classNames(Classes.INPUT_GHOST, inputProps.className)}
                 />
+                {this.props.rightElement}
             </div>
         );
     }
 
     private renderTag = (tag: React.ReactNode, index: number) => {
-        // ignore all falsy values
-        if (!tag) { return null; }
         const { tagProps } = this.props;
         const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
         return (

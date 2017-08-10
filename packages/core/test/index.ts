@@ -18,6 +18,7 @@ import "./controls/radioGroupTests";
 import "./dialog/dialogTests";
 import "./editable-text/editableTextTests";
 import "./hotkeys/hotkeysTests";
+import "./icon/iconTests";
 import "./menu/menuTests";
 import "./non-ideal-state/nonIdealStateTests";
 import "./overlay/overlayTests";
