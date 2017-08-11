@@ -1,8 +1,14 @@
+/*
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ */
+
 import * as PopperJS from "popper.js";
 
-//
 // Popper placement utils
-//
+// ======================
 
 /** Converts a full placement to one of the four positions by stripping text after the `-`. */
 export function getPosition(placement: PopperJS.Placement) {
@@ -34,9 +40,8 @@ export function getAlignment(placement: PopperJS.Placement) {
     }
 }
 
-//
 // Popper modifiers
-//
+// ================
 
 /** Modifier helper function to compute popper transform-origin based on arrow position */
 export function getTransformOrigin(data: PopperJS.PopperData) {
