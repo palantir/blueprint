@@ -73,18 +73,17 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   height: $pt-input-height;
-  padding-right: 0;
+  padding-right: $file-upload-button-width + $input-padding-horizontal;
   line-height: $pt-input-height;
   color: $pt-text-color-muted;
   user-select: none;
 
-  // we use ::before rather than ::after although the "Browse" button is visually
-  // positioned to the right since this allows for .pt-file-upload-input to be
-  // paired with .pt-text-overflow-ellipsis if desired.
-  &::before {
+  &::after {
     @include pt-button();
-    float: right;
-    margin-left: $input-padding-horizontal - $button-border-width;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-left: -$button-border-width;
     border-radius: $pt-border-radius;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -96,11 +95,11 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
     content: "Browse";
   }
 
-  &:hover::before {
+  &:hover::after {
     @include pt-button-hover();
   }
 
-  &:active::before {
+  &:active::after {
     @include pt-button-active();
   }
 
@@ -110,7 +109,7 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
     line-height: $pt-input-height-large;
     font-size: $pt-font-size-large;
 
-    &::before {
+    &::after {
       width: $file-upload-button-width-large;
       height: $pt-input-height-large;
       padding: $button-padding-large;
@@ -123,15 +122,15 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
     @include pt-dark-input();
     color: $pt-dark-text-color-muted;
 
-    &::before {
+    &::after {
       @include pt-dark-button();
     }
 
-    &:hover::before {
+    &:hover::after {
       @include pt-dark-button-hover();
     }
 
-    &:active::before {
+    &:active::after {
       @include pt-dark-button-active();
     }
   }
