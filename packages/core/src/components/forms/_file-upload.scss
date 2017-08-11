@@ -78,6 +78,7 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
   color: $pt-text-color-muted;
   user-select: none;
 
+  // ::after so that it's relatively easy to add an icon with ::before
   &::after {
     @include pt-button();
     position: absolute;
