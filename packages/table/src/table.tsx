@@ -1329,7 +1329,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     // no good way to call arrow-key keyboard events from tests
-    /* istanbul ignore next */
     private handleFocusMove = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
         e.preventDefault();
         e.stopPropagation();
@@ -1375,8 +1374,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.scrollBodyToFocusedCell(newFocusedCell);
     }
 
-    // no good way to call arrow-key keyboard events from tests
-    /* istanbul ignore next */
     private handleFocusMoveInternal = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
         e.preventDefault();
         e.stopPropagation();
