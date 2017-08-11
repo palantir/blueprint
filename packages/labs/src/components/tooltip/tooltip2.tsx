@@ -21,18 +21,6 @@ export interface ITooltip2Props extends IProps, IIntentProps {
     content: JSX.Element | string;
 
     /**
-     * Whether the tooltip is initially open.
-     * @default false
-     */
-    defaultIsOpen?: boolean;
-
-    /**
-     * Prevents the tooltip from appearing when `true`.
-     * @default false
-     */
-    disabled?: boolean;
-
-    /**
      * The amount of time in milliseconds the tooltip should remain open after the
      * user hovers off the trigger. The timer is canceled if the user mouses over the
      * target before it expires.
@@ -49,31 +37,11 @@ export interface ITooltip2Props extends IProps, IIntentProps {
     hoverOpenDelay?: number;
 
     /**
-     * Whether a non-inline tooltip should automatically inherit the dark theme from its parent.
-     * @default true
-     */
-    inheritDarkTheme?: boolean;
-
-    /**
-     * Whether the tooltip is rendered inline (as a sibling of the target element).
-     * If false, it is attached to a new element appended to `<body>`.
-     * @default false
-     */
-    inline?: boolean;
-
-    /**
      * Whether or not the tooltip is visible. Passing this property will put the tooltip in
      * controlled mode, where the only way to change visibility is by updating this property.
      * @default undefined
      */
     isOpen?: boolean;
-
-    /**
-     * Whether to apply minimal styles to this tooltip, which includes removing the arrow
-     * and adding the `.pt-minimal` class to minimize and accelerate the transitions.
-     * @default false
-     */
-    minimal?: boolean;
 
     /**
      * Popper modifier options, passed directly to internal Popper instance.
@@ -101,20 +69,6 @@ export interface ITooltip2Props extends IProps, IIntentProps {
     portalClassName?: string;
 
     /**
-     * The position (relative to the target) at which the popover should appear.
-     * The default value of `"auto"` will choose the best placement when opened and will allow
-     * the popover to reposition itself to remain onscreen as the user scrolls around.
-     * @default "auto"
-     */
-    placement?: Placement;
-
-    /**
-     * The name of the HTML tag to use when rendering the tooltip target wrapper element.
-     * @default "span"
-     */
-    rootElementTag?: string;
-
-    /**
      * A space-delimited string of class names that are applied to the tooltip.
      */
     tooltipClassName?: string;
@@ -134,17 +88,10 @@ export class Tooltip2 extends React.Component<ITooltip2Props, {}> {
     public static displayName = "Blueprint.Tooltip2";
 
     public static defaultProps: Partial<ITooltip2Props> = {
-        defaultIsOpen: false,
-        disabled: false,
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
-        inheritDarkTheme: true,
-        inline: false,
         isOpen: false,
-        minimal: false,
         openOnTargetFocus: true,
-        placement: "auto",
-        rootElementTag: "span",
         transitionDuration: 100,
     };
 

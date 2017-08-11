@@ -20,9 +20,10 @@ import {
     IProps,
     Overlay,
     PopoverInteractionKind,
-    Tooltip,
     Utils,
 } from "@blueprintjs/core";
+
+import { Tooltip2 } from "../tooltip/tooltip2";
 import { getArrowAngle, PopoverArrow } from "./arrow";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 
@@ -261,7 +262,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         const targetTabIndex = this.props.openOnTargetFocus && this.isHoverInteractionKind() ? 0 : undefined;
         const target = React.cloneElement(children.target,
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            (isOpen && children.target.type === Tooltip)
+            (isOpen && children.target.type === Tooltip2)
                 ? { disabled: true, tabIndex: targetTabIndex }
                 : { tabIndex: targetTabIndex },
         );
