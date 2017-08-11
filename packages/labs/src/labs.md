@@ -165,6 +165,8 @@ This interface is generic, accepting a type parameter `<T>` for an item in the l
 - ...except for the handful of Tether-specific props, which are now Popper.js-specific:
   - 🔥 `position: Position` &rarr; `placement: PopperJS.Placement`
   - 🔥 `tetherOptions: ITetherOptions` &rarr; `modifiers: PopperJS.Modifiers`
+  - 🔥 `isModal` &rarr; `hasBackdrop`
+  - 🔥 `isDisabled` &rarr; `disabled`
 - ...and one special addition:
   - 🌟 `minimal: boolean` applies minimal styles, which includes removing the arrow and minimizing the transition
 

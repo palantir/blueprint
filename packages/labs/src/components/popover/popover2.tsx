@@ -76,7 +76,7 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
      * Prevents the popover from appearing when `true`.
      * @default false
      */
-    isDisabled?: boolean;
+    disabled?: boolean;
 
     /**
      * Enables an invisible overlay beneath the popover that captures clicks and prevents
@@ -85,7 +85,7 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
      * When modal popovers are opened, they become focused.
      * @default false
      */
-    isModal?: boolean;
+    hasBackdrop?: boolean;
 
     /**
      * Whether the popover is visible. Passing this prop puts the popover in
@@ -177,15 +177,17 @@ export interface IPopover2State {
 
 @PureRender
 export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> {
+    public static displayName = "Blueprint.Popover2";
+
     public static defaultProps: IPopover2Props = {
         defaultIsOpen: false,
+        disabled: false,
+        hasBackdrop: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
         inheritDarkTheme: true,
         inline: false,
         interactionKind: PopoverInteractionKind.CLICK,
-        isDisabled: false,
-        isModal: false,
         minimal: false,
         modifiers: {},
         openOnTargetFocus: true,
@@ -193,8 +195,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         rootElementTag: "span",
         transitionDuration: 300,
     };
-
-    public static displayName = "Blueprint.Popover2";
 
     /**
      * DOM element that contains the popover.
@@ -217,7 +217,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     public constructor(props?: IPopover2Props, context?: any) {
         super(props, context);
 
-        let isOpen = props.defaultIsOpen && !props.isDisabled;
+        let isOpen = props.defaultIsOpen && !props.disabled;
         if (props.isOpen != null) {
             isOpen = props.isOpen;
         }
@@ -255,12 +255,12 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         const target = React.cloneElement(children.target,
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
             (isOpen && children.target.type === Tooltip)
-                ? { isDisabled: true, tabIndex: targetTabIndex }
+                ? { disabled: true, tabIndex: targetTabIndex }
                 : { tabIndex: targetTabIndex },
         );
 
         const isContentEmpty = (children.content == null);
-        if (isContentEmpty && !this.props.isDisabled && isOpen !== false && !Utils.isNodeEnv("production")) {
+        if (isContentEmpty && !this.props.disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
             console.warn("[Blueprint] Disabling <Popover> with empty/whitespace content...");
         }
 
@@ -276,7 +276,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                     className={this.props.portalClassName}
                     didOpen={this.handleContentMount}
                     enforceFocus={this.props.enforceFocus}
-                    hasBackdrop={this.props.isModal}
+                    hasBackdrop={this.props.hasBackdrop}
                     inline={this.props.inline}
                     isOpen={isOpen && !isContentEmpty}
                     onClose={this.handleOverlayClose}
@@ -296,8 +296,8 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     public componentWillReceiveProps(nextProps: IPopover2Props) {
         super.componentWillReceiveProps(nextProps);
 
-        if (nextProps.isOpen == null && nextProps.isDisabled && !this.props.isDisabled) {
-            // ok to use setOpenState here because isDisabled and isOpen are mutex.
+        if (nextProps.isOpen == null && nextProps.disabled && !this.props.disabled) {
+            // ok to use setOpenState here because disabled and isOpen are mutex.
             this.setOpenState(false);
         } else if (nextProps.isOpen !== this.props.isOpen) {
             // propagate isOpen prop directly to state, circumventing onInteraction callback
@@ -431,7 +431,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             && this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
             && !this.props.openOnTargetFocus) {
             this.handleMouseLeave(e);
-        } else if (!this.props.isDisabled) {
+        } else if (!this.props.disabled) {
             // only begin opening popover when it is enabled
             this.setOpenState(true, e, this.props.hoverOpenDelay);
         }
@@ -462,7 +462,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
     private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
-        if (!this.props.isDisabled && !this.isElementInPopover(e.target as HTMLElement)) {
+        if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
                 this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
             } else {

@@ -40,10 +40,10 @@ const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
 export interface IPopover2ExampleState {
     canEscapeKeyClose?: boolean;
     exampleIndex?: number;
+    hasBackdrop?: boolean;
     inheritDarkTheme?: boolean;
     inline?: boolean;
     interactionKind?: PopoverInteractionKind;
-    isModal?: boolean;
     minimal?: boolean;
     modifiers?: PopperJS.Modifiers;
     placement?: PopperJS.Placement;
@@ -54,10 +54,10 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
     public state: IPopover2ExampleState = {
         canEscapeKeyClose: true,
         exampleIndex: 0,
+        hasBackdrop: false,
         inheritDarkTheme: true,
         inline: false,
         interactionKind: PopoverInteractionKind.CLICK,
-        isModal: false,
         minimal: false,
         modifiers: {
             arrow: { enabled: true },
@@ -73,8 +73,8 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
 
     private handleExampleIndexChange = handleNumberChange((exampleIndex) => this.setState({ exampleIndex }));
     private handleInteractionChange = handleNumberChange((interactionKind) => {
-        const isModal = this.state.isModal && interactionKind === PopoverInteractionKind.CLICK;
-        this.setState({ interactionKind, isModal });
+        const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
+        this.setState({ interactionKind, hasBackdrop });
     });
 
     private handlePlacementChange = handleStringChange((placement: PopperJS.Placement) => this.setState({ placement }));
@@ -93,8 +93,8 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
         if (inline) {
             this.setState({
                 inline,
+                hasBackdrop: false,
                 inheritDarkTheme: false,
-                isModal: false,
             });
         } else {
             this.setState({ inline });
