@@ -161,12 +161,12 @@ This interface is generic, accepting a type parameter `<T>` for an item in the l
   - all the fancy flipping behavior you could want _enabled by default_
   - endlessly customizable if it isn't perfect _enough_ for you
   - look, it puts the arrow exactly where it's supposed to be. _every time._ what more could a blueprint dev want??
-- all the classic `Popover` features are still supported, with the same names...
-- ...except for the handful of Tether-specific props, which are now Popper.js-specific:
+- all the classic `Popover` features are still supported, with the same names except...
+    - 🔥 `isModal` &rarr; `hasBackdrop`
+    - 🔥 `isDisabled` &rarr; `disabled`
+- ...and except for the handful of Tether-specific props, which are now Popper.js-specific:
   - 🔥 `position: Position` &rarr; `placement: PopperJS.Placement`
   - 🔥 `tetherOptions: ITetherOptions` &rarr; `modifiers: PopperJS.Modifiers`
-  - 🔥 `isModal` &rarr; `hasBackdrop`
-  - 🔥 `isDisabled` &rarr; `disabled`
 - ...and one special addition:
   - 🌟 `minimal: boolean` applies minimal styles, which includes removing the arrow and minimizing the transition
 
