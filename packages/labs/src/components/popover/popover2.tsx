@@ -79,6 +79,13 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
     disabled?: boolean;
 
     /**
+     * Whether the popover is rendered inline (as a sibling of the target element).
+     * If false, it is attached to a new element appended to `<body>`.
+     * @default false
+     */
+    inline?: boolean;
+
+    /**
      * Enables an invisible overlay beneath the popover that captures clicks and prevents
      * interaction with the rest of the document until the popover is closed.
      * This prop is only available when `interactionKind` is `PopoverInteractionKind.CLICK`.

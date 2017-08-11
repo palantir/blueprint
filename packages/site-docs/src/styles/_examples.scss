@@ -199,6 +199,12 @@
   }
 }
 
+.docs-tooltip2-example {
+  > div {
+    margin-bottom: $pt-grid-size;
+  }
+}
+
 .docs-wiggle {
   animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
 }

@@ -225,3 +225,9 @@ Modifiers are the tool through which you customize Popper.js's behavior. It defi
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     To understand all the Popper.js modifiers available to you, you'll want to read [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers).
 </div>
+
+@## Tooltip 2.0
+
+@reactExample Tooltip2Example
+
+@interface ITooltip2Props
