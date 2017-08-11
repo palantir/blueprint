@@ -20,7 +20,6 @@ import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { QuadrantType, TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { IRegion, Regions } from "../src/regions";
-import { TableBody } from "../src/tableBody";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 
@@ -393,13 +392,6 @@ describe("<Table>", () => {
                 });
             });
         });
-
-        // Clock management
-        // ================
-
-        function delayToNextFrame(callback: () => void) {
-            setTimeout(callback);
-        }
 
         // Test templates
         // ==============
@@ -1237,51 +1229,51 @@ describe("<Table>", () => {
 
         it("when column count decreases", () => {
             const table = mountTable(NUM_COLS, 1);
-            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0);
+            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0, () => {
+                const newColumns = renderColumns(UPDATED_NUM_COLS);
+                table.setProps({ children: newColumns });
 
-            const newColumns = renderColumns(UPDATED_NUM_COLS);
-            table.setProps({ children: newColumns });
+                // the viewport should have auto-scrolled to fit the last column in view
+                const viewportRect = table.state("viewportRect");
+                expect(viewportRect.left).to.equal((UPDATED_NUM_COLS * COL_WIDTH) - viewportRect.width);
 
-            // the viewport should have auto-scrolled to fit the last column in view
-            const viewportRect = table.state("viewportRect");
-            expect(viewportRect.left).to.equal((UPDATED_NUM_COLS * COL_WIDTH) - viewportRect.width);
-
-            // this callback is invoked more than necessary in response to a single change.
-            // feel free to tighten the screws and reduce this expected count.
-            expect(onVisibleCellsChange.callCount).to.equal(5);
+                // this callback is invoked more than necessary in response to a single change.
+                // feel free to tighten the screws and reduce this expected count.
+                expect(onVisibleCellsChange.callCount).to.equal(5);
+            });
         });
 
         it("when row count decreases", () => {
             const table = mountTable(1, NUM_ROWS);
-            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT);
+            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT, () => {
+                table.setProps({ numRows: UPDATED_NUM_ROWS });
 
-            table.setProps({ numRows: UPDATED_NUM_ROWS });
-
-            const viewportRect = table.state("viewportRect");
-            expect(viewportRect.top).to.equal((UPDATED_NUM_ROWS * ROW_HEIGHT) - viewportRect.height);
-            expect(onVisibleCellsChange.callCount).to.equal(5);
+                const viewportRect = table.state("viewportRect");
+                expect(viewportRect.top).to.equal((UPDATED_NUM_ROWS * ROW_HEIGHT) - viewportRect.height);
+                expect(onVisibleCellsChange.callCount).to.equal(5);
+            });
         });
 
         it("when column widths decrease", () => {
             const table = mountTable(NUM_COLS, 1);
-            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0);
+            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0, () => {
+                table.setProps({ columnWidths: Array(NUM_COLS).fill(UPDATED_COL_WIDTH) });
 
-            table.setProps({ columnWidths: Array(NUM_COLS).fill(UPDATED_COL_WIDTH) });
-
-            const viewportRect = table.state("viewportRect");
-            expect(viewportRect.left).to.equal((NUM_COLS * UPDATED_COL_WIDTH) - viewportRect.width);
-            expect(onVisibleCellsChange.callCount).to.equal(5);
+                const viewportRect = table.state("viewportRect");
+                expect(viewportRect.left).to.equal((NUM_COLS * UPDATED_COL_WIDTH) - viewportRect.width);
+                expect(onVisibleCellsChange.callCount).to.equal(5);
+            });
         });
 
         it("when row heights decrease", () => {
             const table = mountTable(1, NUM_ROWS);
-            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT);
+            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT, () => {
+                table.setProps({ rowHeights: Array(NUM_ROWS).fill(UPDATED_ROW_HEIGHT) });
 
-            table.setProps({ rowHeights: Array(NUM_ROWS).fill(UPDATED_ROW_HEIGHT) });
-
-            const viewportRect = table.state("viewportRect");
-            expect(viewportRect.top).to.equal((NUM_ROWS * UPDATED_ROW_HEIGHT) - viewportRect.height);
-            expect(onVisibleCellsChange.callCount).to.equal(5);
+                const viewportRect = table.state("viewportRect");
+                expect(viewportRect.top).to.equal((NUM_ROWS * UPDATED_ROW_HEIGHT) - viewportRect.height);
+                expect(onVisibleCellsChange.callCount).to.equal(5);
+            });
         });
 
         function mountTable(numCols: number, numRows: number) {
@@ -1304,7 +1296,12 @@ describe("<Table>", () => {
             return <Column key={i} renderCell={renderCell}/>;
         }
 
-        function scrollTable(table: ReactWrapper<any, {}>, scrollLeft: number, scrollTop: number) {
+        function scrollTable(
+            table: ReactWrapper<any, {}>,
+            scrollLeft: number,
+            scrollTop: number,
+            callback: () => void,
+        ) {
             // make the viewport small enough to fit only one cell
             updateLocatorBodyElement(table,
                 scrollLeft,
@@ -1315,8 +1312,10 @@ describe("<Table>", () => {
             table
                 .find(TableQuadrant)
                 .first()
-                .find(TableBody)
                 .simulate("scroll");
+
+            // delay to next frame to let throttled scroll logic execute first
+            delayToNextFrame(callback);
         }
     });
 
@@ -1441,4 +1440,9 @@ describe("<Table>", () => {
             scrollTop,
         };
     }
+
+    function delayToNextFrame(callback: () => void) {
+        setTimeout(callback);
+    }
+
 });
