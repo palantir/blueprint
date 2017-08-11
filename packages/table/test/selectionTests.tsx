@@ -76,7 +76,6 @@ describe("Selection", () => {
         expect(onSelection.lastCall.args).to.deep.equal([[]]);
     });
 
-    // TODO: FROZEN
     it("Row selection works when enabled", () => {
         const onSelection = sinon.spy();
         const selectionModes = [

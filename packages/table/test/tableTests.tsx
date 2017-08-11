@@ -64,7 +64,6 @@ describe("<Table>", () => {
         expect(hasCustomClass).to.be.true;
     });
 
-    // TODO: FROZEN
     it("Renders without ghost cells", () => {
         const table = harness.mount(
             <Table>
@@ -150,7 +149,6 @@ describe("<Table>", () => {
         expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
     });
 
-    // TODO: FROZEN
     it("Invokes onVisibleCellsChange on mount", () => {
         const onVisibleCellsChange = sinon.spy();
         const renderCell = () => <Cell>foo</Cell>;
@@ -168,7 +166,6 @@ describe("<Table>", () => {
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
-    // TODO: FROZEN
     it("Invokes onVisibleCellsChange when the table body scrolls", () => {
         const onVisibleCellsChange = sinon.spy();
         const renderCell = () => <Cell>foo</Cell>;
@@ -184,7 +181,6 @@ describe("<Table>", () => {
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
-    // TODO: FROZEN
     describe("Full-table selection", () => {
         const onFocus = sinon.spy();
         const onSelection = sinon.spy();
@@ -711,7 +707,6 @@ describe("<Table>", () => {
             onSelection = sinon.spy();
         });
 
-        // TODO: FROZEN
         it("Shows preview guide and invokes callback when columns reordered", () => {
             const table = mountTable({
                 isColumnReorderable: true,
@@ -729,7 +724,6 @@ describe("<Table>", () => {
             expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
         });
 
-        // TODO: FROZEN
         it("Shows preview guide and invokes callback when rows reordered", () => {
             const table = mountTable({
                 isRowReorderable: true,
@@ -771,7 +765,6 @@ describe("<Table>", () => {
             expect(onColumnsReordered.called).to.be.false;
         });
 
-        // TODO: FROZEN
         it("Selecting a column via click and then reordering it works", () => {
             const table = mountTable({
                 isColumnReorderable: true,
@@ -795,7 +788,6 @@ describe("<Table>", () => {
             expect(onColumnsReordered.calledWith(OLD_INDEX, newIndex, length)).to.be.true;
         });
 
-        // TODO: FROZEN
         it("Selecting multiple columns via click+drag and then reordering works", () => {
             const table = mountTable({
                 isColumnReorderable: true,
@@ -817,7 +809,6 @@ describe("<Table>", () => {
             expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
         });
 
-        // TODO: FROZEN
         it("Moves uncontrolled selection with reordered column when reordering is complete", () => {
             const table = mountTable({
                 isColumnReorderable: true,
@@ -1205,7 +1196,6 @@ describe("<Table>", () => {
         }
     });
 
-    // TODO: FROZEN
     describe("Autoscrolling when rows/columns decrease in count or size", () => {
         const COL_WIDTH = 400;
         const ROW_HEIGHT = 60;

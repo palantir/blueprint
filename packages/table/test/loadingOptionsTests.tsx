@@ -74,7 +74,6 @@ class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTest
     }
 }
 
-// TODO: FROZEN
 describe("Loading Options", () => {
     const harness = new ReactHarness();
     const allTableLoadingOptions = generatePowerSet([
