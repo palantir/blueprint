@@ -6,7 +6,7 @@
  */
 
 import * as classNames from "classnames";
-import { Modifiers as PopperModifiers, Placement } from "popper.js";
+import { Modifiers as PopperModifiers } from "popper.js";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
