@@ -178,7 +178,7 @@ describe("<Table>", () => {
                 <Column name="Column0" renderCell={renderCell} />
             </Table>,
         );
-        table.find(`.${Classes.TABLE_BODY}`).simulate("scroll");
+        table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`).simulate("scroll");
         expect(onVisibleCellsChange.callCount).to.be.greaterThan(1);
         const rowIndices = { rowIndexStart: 0, rowIndexEnd: 2 } as IRowIndices;
         const columnIndices = { columnIndexStart: 0, columnIndexEnd: 0 } as IColumnIndices;
