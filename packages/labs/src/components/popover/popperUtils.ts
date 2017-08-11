@@ -1,7 +1,7 @@
 import * as PopperJS from "popper.js";
 
 //
-// Popper Placement Utils
+// Popper placement utils
 //
 
 /** Converts a full placement to one of the four positions by stripping text after the `-`. */
@@ -37,22 +37,6 @@ export function getAlignment(placement: PopperJS.Placement) {
 //
 // Popper modifiers
 //
-
-function getPositionRotation(side: PopperJS.Position) {
-    // can only be top/left/bottom/right - auto is resolved internally
-    switch (side) {
-        case "top": return -90;
-        case "left": return 180;
-        case "bottom": return 90;
-        default: return 0;
-    }
-}
-
-/** Modifier helper function to compute arrow rotate() transform */
-export function getArrowRotation(data: PopperJS.PopperData) {
-    const position = getPosition(data.placement);
-    return getPositionRotation(position);
-}
 
 /** Modifier helper function to compute popper transform-origin based on arrow position */
 export function getTransformOrigin(data: PopperJS.PopperData) {

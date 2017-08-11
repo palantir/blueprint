@@ -23,8 +23,8 @@ import {
     Tooltip,
     Utils,
 } from "@blueprintjs/core";
-import { PopoverArrow } from "./arrow";
-import { arrowOffsetModifier, getArrowRotation, getTransformOrigin } from "./popperUtils";
+import { getArrowAngle, PopoverArrow } from "./arrow";
+import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 
 export interface IPopover2Props extends IOverlayableProps, IProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
@@ -194,7 +194,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         transitionDuration: 300,
     };
 
-    public static displayName = "Blueprint.Popover";
+    public static displayName = "Blueprint.Popover2";
 
     /**
      * DOM element that contains the popover.
@@ -503,7 +503,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     private updatePopoverState: ModifierFn = (data) => {
         // pretty sure it's safe to always set these (and let sCU determine) because they're both strings
         this.setState({
-            arrowRotation: getArrowRotation(data),
+            arrowRotation: getArrowAngle(data.placement),
             transformOrigin: getTransformOrigin(data),
         });
         return data;
