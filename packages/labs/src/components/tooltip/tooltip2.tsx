@@ -58,7 +58,7 @@ export interface ITooltip2Props extends IProps, IIntentProps {
     /**
      * Whether the tooltip should open when its target is focused.
      * If `true`, target will render with `tabindex="0"` to make it focusable via keyboard navigation.
-     * @default: true
+     * @default true
      */
     openOnTargetFocus?: boolean;
 
