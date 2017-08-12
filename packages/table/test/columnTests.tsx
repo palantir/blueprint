@@ -56,7 +56,6 @@ describe("Column", () => {
         expect(table.find(selector, 2).text()).to.equal("C"); // default
     });
 
-    // TODO: Why was this test expecting four cells per column in a table with 5 rows?
     it("renders correctly with loading options", () => {
         const NUM_ROWS = 5;
         const cellValue = "my cell value";
