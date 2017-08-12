@@ -70,8 +70,6 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
   top: 0;
   right: 0;
   left: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
   height: $pt-input-height;
   padding-right: $file-upload-button-width + $input-padding-horizontal;
   line-height: $pt-input-height;
@@ -105,8 +103,8 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
   }
 
   .pt-large & {
-    margin-right: $file-upload-button-width-large;
     height: $pt-input-height-large;
+    padding-right: $file-upload-button-width-large + $input-padding-horizontal;
     line-height: $pt-input-height-large;
     font-size: $pt-font-size-large;
 
