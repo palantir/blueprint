@@ -269,7 +269,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
         const isContentEmpty = (children.content == null);
         if (isContentEmpty && !this.props.disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
-            console.warn("[Blueprint] Disabling <Popover> with empty/whitespace content...");
+            console.warn("[Blueprint] Disabling <Popover2> with empty/whitespace content...");
         }
 
         return (

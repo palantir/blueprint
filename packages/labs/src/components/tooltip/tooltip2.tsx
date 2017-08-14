@@ -37,13 +37,6 @@ export interface ITooltip2Props extends IProps, IIntentProps {
     hoverOpenDelay?: number;
 
     /**
-     * Whether or not the tooltip is visible. Passing this property will put the tooltip in
-     * controlled mode, where the only way to change visibility is by updating this property.
-     * @default undefined
-     */
-    isOpen?: boolean;
-
-    /**
      * Popper modifier options, passed directly to internal Popper instance.
      * See https://popper.js.org/popper-documentation.html#modifiers for complete details.
      */
@@ -90,18 +83,16 @@ export class Tooltip2 extends React.Component<ITooltip2Props, {}> {
     public static defaultProps: Partial<ITooltip2Props> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
-        isOpen: false,
-        openOnTargetFocus: true,
         transitionDuration: 100,
     };
 
     public render() {
-        const { children, intent, tooltipClassName } = this.props;
+        const { children, intent, tooltipClassName, ...restProps } = this.props;
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
 
         return (
             <Popover2
-                {...this.props}
+                {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
                 enforceFocus={false}
