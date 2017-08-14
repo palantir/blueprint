@@ -27,7 +27,7 @@ A highly interactive React `Table` component.
 npm install --save @blueprintjs/core @blueprintjs/table
 ```
 
-@## Making a table
+@## Basic usage
 
 To create a table, you must define the rows and columns. Add children to the `Table` to create columns,
 and change the `numRows` prop on the `Table` to set the number of rows.
@@ -60,7 +60,9 @@ const renderCell = (rowIndex: number) => {
 
 @reactExample TableDollarExample
 
-@## Sortable content
+@## Features
+
+@### Sorting
 
 Because the table is **data-agnostic**, you can display complex data in the
 table and perform arbitrary operations on it.
@@ -75,7 +77,7 @@ In the table below, try:
 
 @reactExample TableSortableExample
 
-@## Editable content
+@### Editing
 
 To make your table editable, use the `EditableCell` and
 `EditableName` components to create editable table cells and column names.
@@ -92,7 +94,7 @@ regular expression (`[a-zA-Z]`). If the content is invalid, a
 
 @reactExample TableEditableExample
 
-@## Reorderable content
+@### Reordering
 
 The table supports column and row reordering via the `isColumnReorderable` and `isRowReorderable`
 props, respectively. The table also requires the `FULL_COLUMNS` selection mode to be enabled for
@@ -112,7 +114,7 @@ the selected header cells to move them as a group.
 
 @reactExample TableReorderableExample
 
-@## Loading states
+@### Loading states
 
 When fetching or updating data, it may be desirable to show a loading state. The table components
 provide fine-grain loading control of loading row headers, column headers, or individual cells.
@@ -123,21 +125,21 @@ it belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELLS ]`. The 
 display a table of the largest potentially hazardous asteroid (based on absolute magnitude)
 discovered in a given year.
 
-@### Table loading states
+@#### Table loading states
 
 `Table` exposes a `loadingOptions` prop that allows you to control the loading state behavior of all
 column header, row header, and body cells. Try toggling the different options.
 
 @reactExample TableLoadingExample
 
-@### Column loading states
+@#### Column loading states
 
 `Column` exposes a `loadingOptions` prop that allows you to control the loading state behavior of an
 individual column's header and body cells. Try selecting a different column in the dropdown below.
 
 @reactExample ColumnLoadingExample
 
-@### Cells
+@#### Cells
 
 `Cell`, `EditableCell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
@@ -145,7 +147,7 @@ configuration.
 
 @reactExample CellLoadingExample
 
-@## Formatted content
+@### Formatting
 
 To display long strings or native JavaScript objects, we provide
 `<TruncatedFormat>` and `<JSONFormat>` components, which are designed to be used
