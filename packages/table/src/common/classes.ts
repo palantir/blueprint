@@ -73,6 +73,7 @@ export const TABLE_SELECTION_REGION = "bp-table-selection-region";
 export const TABLE_TH_MENU = "bp-table-th-menu";
 export const TABLE_TH_MENU_CONTAINER = "bp-table-th-menu-container";
 export const TABLE_TH_MENU_CONTAINER_BACKGROUND = "bp-table-th-menu-container-background";
+export const TABLE_TH_MENU_OPEN = "bp-table-th-menu-open";
 export const TABLE_THEAD = "bp-table-thead";
 export const TABLE_TOP_CONTAINER = "bp-table-top-container";
 export const TABLE_TRUNCATED_CELL = "bp-table-truncated-cell";

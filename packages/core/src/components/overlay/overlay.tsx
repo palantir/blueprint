@@ -193,7 +193,14 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         };
 
         if (inline) {
-            return <span {...elementProps} ref={this.refHandlers.container}>{transitionGroup}</span>;
+            return (
+                <span
+                    {...elementProps}
+                    ref={this.refHandlers.container}
+                >
+                    {transitionGroup}
+                </span>
+            );
         } else {
             return (
                 <Portal
@@ -249,15 +256,17 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", this.handleDocumentClick);
 
-        document.body.classList.remove(Classes.OVERLAY_OPEN);
-
         const { openStack } = Overlay;
         const stackIndex = openStack.indexOf(this);
         if (stackIndex !== -1) {
             openStack.splice(stackIndex, 1);
-            const lastOpenedOverlay = Overlay.getLastOpened();
-            if (openStack.length > 0 && lastOpenedOverlay.props.enforceFocus) {
-                document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
+            if (openStack.length > 0) {
+                const lastOpenedOverlay = Overlay.getLastOpened();
+                if (lastOpenedOverlay.props.enforceFocus) {
+                    document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
+                }
+            } else {
+                document.body.classList.remove(Classes.OVERLAY_OPEN);
             }
         }
     }
@@ -286,33 +295,41 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         }
     }
 
-    private bringFocusInsideOverlay = () => {
-        const { containerElement } = this;
+    private bringFocusInsideOverlay() {
+        // always delay focus manipulation to just before repaint to prevent scroll jumping
+        return requestAnimationFrame(() => {
+            const { containerElement } = this;
 
-        // container ref may be undefined between component mounting and Portal rendering
-        // activeElement may be undefined in some rare cases in IE
-        if (containerElement == null || document.activeElement == null || !this.props.isOpen) {
-            return;
-        }
-
-        const isFocusOutsideModal = !containerElement.contains(document.activeElement);
-        if (isFocusOutsideModal) {
-            // element marked autofocus has higher priority than the other clowns
-            const autofocusElement = containerElement.query("[autofocus]") as HTMLElement;
-            const wrapperElement = containerElement.query("[tabindex]") as HTMLElement;
-            if (autofocusElement != null) {
-                autofocusElement.focus();
-            } else if (wrapperElement != null) {
-                wrapperElement.focus();
+            // container ref may be undefined between component mounting and Portal rendering
+            // activeElement may be undefined in some rare cases in IE
+            if (containerElement == null || document.activeElement == null || !this.props.isOpen) {
+                return;
             }
-        }
+
+            const isFocusOutsideModal = !containerElement.contains(document.activeElement);
+            if (isFocusOutsideModal) {
+                // element marked autofocus has higher priority than the other clowns
+                const autofocusElement = containerElement.query("[autofocus]") as HTMLElement;
+                const wrapperElement = containerElement.query("[tabindex]") as HTMLElement;
+                if (autofocusElement != null) {
+                    autofocusElement.focus();
+                } else if (wrapperElement != null) {
+                    wrapperElement.focus();
+                }
+            }
+        });
     }
 
     private handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (this.props.canOutsideClickClose) {
-            safeInvoke(this.props.onClose, e);
+        const { backdropProps, canOutsideClickClose, enforceFocus, onClose } = this.props;
+        if (canOutsideClickClose) {
+            safeInvoke(onClose, e);
         }
-        safeInvoke(this.props.backdropProps.onMouseDown, e);
+        if (enforceFocus) {
+            // make sure document.activeElement is updated before bringing the focus back
+            this.bringFocusInsideOverlay();
+        }
+        safeInvoke(backdropProps.onMouseDown, e);
     }
 
     private handleDocumentClick = (e: MouseEvent) => {
@@ -339,6 +356,8 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         if (this.props.enforceFocus
                 && this.containerElement != null
                 && !this.containerElement.contains(e.target as HTMLElement)) {
+            // prevent default focus behavior (sometimes auto-scrolls the page)
+            e.preventDefault();
             e.stopImmediatePropagation();
             this.bringFocusInsideOverlay();
         }

@@ -124,7 +124,7 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
 
         const containerStyle = {
             height: showContents ? this.state.height : undefined,
-            overflowY: isAutoHeight ? "visible" : undefined,
+            overflowY: (isAutoHeight ? "visible" : undefined) as "visible" | undefined,
             transition: isAutoHeight ? "none" : undefined,
         };
 

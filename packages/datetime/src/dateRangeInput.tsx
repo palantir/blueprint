@@ -244,9 +244,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     public constructor(props: IDateRangeInputProps, context?: any) {
         super(props, context);
+        this.reset(props);
+    }
 
+    /**
+     * Public method intended for unit testing only. Do not use in feature work!
+     */
+    public reset(props: IDateRangeInputProps = this.props) {
         const [selectedStart, selectedEnd] = this.getInitialRange();
-
         this.state = {
             formattedMaxDateString: this.getFormattedMinMaxDateString(props, "maxDate"),
             formattedMinDateString: this.getFormattedMinMaxDateString(props, "minDate"),

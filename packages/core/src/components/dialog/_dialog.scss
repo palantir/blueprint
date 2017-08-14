@@ -13,20 +13,23 @@
 Dialog
 
 Markup:
-<div class="pt-dialog">
-  <div class="pt-dialog-header">
-    <span class="pt-icon-large pt-icon-inbox"></span>
-    <h5>Dialog header</h5>
-    <button aria-label="Close" class="pt-dialog-close-button pt-icon-small-cross"></button>
-  </div>
-  <div class="pt-dialog-body">
-    This dialog hasn't been wired up with any open or close interactions.
-    It's just an example of markup and styles.
-  </div>
-  <div class="pt-dialog-footer">
-    <div class="pt-dialog-footer-actions">
-      <button type="button" class="pt-button">Secondary button</button>
-      <button type="submit" class="pt-button pt-intent-primary">Primary button</button>
+<!-- this container element fills its parent and centers the .pt-dialog within it -->
+<div class="pt-dialog-container">
+  <div class="pt-dialog">
+    <div class="pt-dialog-header">
+      <span class="pt-icon-large pt-icon-inbox"></span>
+      <h5>Dialog header</h5>
+      <button aria-label="Close" class="pt-dialog-close-button pt-icon-small-cross"></button>
+    </div>
+    <div class="pt-dialog-body">
+      This dialog hasn't been wired up with any open or close interactions.
+      It's just an example of markup and styles.
+    </div>
+    <div class="pt-dialog-footer">
+      <div class="pt-dialog-footer-actions">
+        <button type="button" class="pt-button">Secondary button</button>
+        <button type="submit" class="pt-button pt-intent-primary">Primary button</button>
+      </div>
     </div>
   </div>
 </div>
@@ -35,12 +38,13 @@ Styleguide pt-dialog
 */
 
 $dialog-border-radius: $pt-border-radius * 2 !default;
+$dialog-margin: ($pt-grid-size * 3) 0 !default;
 $dialog-padding: $pt-grid-size * 2 !default;
 
-.pt-dialog {
+.pt-dialog-container {
   $dialog-transition-props: (
     opacity: (0, 1),
-    transform: (translateX(50%) scale(0.5), translateX(50%) scale(1))
+    transform: (scale(0.5), scale(1))
   );
 
   @include react-transition(
@@ -48,21 +52,34 @@ $dialog-padding: $pt-grid-size * 2 !default;
     $dialog-transition-props,
     $duration: $pt-transition-duration * 3,
     $easing: $pt-transition-ease-bounce,
-    $before: "&"
+    $before: "&",
+    $after: "> .pt-dialog"
   );
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  user-select: none;
+
+  // LEGACY: override old (<= 1.24.0) dialog styles when inside a container to respect flex layout
+  .pt-dialog {
+    // stylelint-disable-next-line declaration-no-important
+    position: static !important;
+    transform: none;
+  }
+}
+
+.pt-dialog {
+  display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 25%;
-  right: 50%;
-  z-index: $pt-z-index-overlay;
-  // add bottom margin for overflow scrolling scenarios
-  margin-bottom: $pt-grid-size * 2;
+  margin: $dialog-margin;
   border-radius: $dialog-border-radius;
   box-shadow: $pt-dialog-box-shadow;
   background: $light-gray4;
   width: $pt-grid-size * 50;
   padding-bottom: $pt-grid-size * 2;
+  user-select: initial;
 
   &:focus {
     outline: 0;

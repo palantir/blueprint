@@ -765,28 +765,36 @@ describe("<DateRangeInput>", () => {
             }
 
             let root: WrappedComponentRoot;
+            let rootInstance: DateRangeInput;
             let startInput: WrappedComponentInput;
             let endInput: WrappedComponentInput;
             let getDayElement: (dayNumber?: number, fromLeftMonth?: boolean) => WrappedComponentDayElement;
             let dayElement: WrappedComponentDayElement;
 
-            beforeEach(() => {
+            before(() => {
                 const result = wrap(<DateRangeInput
                     closeOnSelection={false}
                     defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]}
                 />);
 
                 root = result.root;
+                rootInstance = root.instance() as DateRangeInput;
                 getDayElement = result.getDayElement;
                 startInput = getStartInput(root);
                 endInput = getEndInput(root);
+            });
 
+            beforeEach(() => {
                 // clear the inputs to start from a fresh state, but do so
                 // *after* opening the popover so that the calendar doesn't
                 // move away from the view we expect for these tests.
                 root.setState({ isOpen: true });
                 changeInputText(startInput, "");
                 changeInputText(endInput, "");
+            });
+
+            afterEach(() => {
+                rootInstance.reset();
             });
 
             function setSelectedRangeForHoverTest(selectedDateConfigs: IHoverTextDateConfig[]) {
@@ -1990,6 +1998,11 @@ describe("<DateRangeInput>", () => {
                 value={DATE_RANGE}
             />);
             assertInputTextsEqual(root, START_STR, END_STR);
+        });
+
+        it("Setting value to [undefined, undefined] shows empty fields", () => {
+            const { root } = wrap(<DateRangeInput value={[undefined, undefined]} />);
+            assertInputTextsEqual(root, "", "");
         });
 
         it("Setting value to [null, null] shows empty fields", () => {

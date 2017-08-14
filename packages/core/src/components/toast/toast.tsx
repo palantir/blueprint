@@ -14,6 +14,7 @@ import * as Classes from "../../common/classes";
 import { IActionProps, IIntentProps, ILinkProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { AnchorButton, Button } from "../button/buttons";
+import { Icon, IconName } from "../icon/icon";
 
 export interface IToastProps extends IProps, IIntentProps {
     /**
@@ -25,7 +26,7 @@ export interface IToastProps extends IProps, IIntentProps {
     action?: IActionProps & ILinkProps;
 
     /** Name of the icon (the part after `pt-icon-`) to appear before the message. */
-    iconName?: string;
+    iconName?: IconName;
 
     /** Message to display in the body of the toast. */
     message: string | JSX.Element;
@@ -55,7 +56,7 @@ export class Toast extends AbstractComponent<IToastProps, {}> {
     public static displayName = "Blueprint.Toast";
 
     public render(): JSX.Element {
-        const { className, intent, message } = this.props;
+        const { className, iconName, intent, message } = this.props;
         return (
             <div
                 className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
@@ -65,7 +66,7 @@ export class Toast extends AbstractComponent<IToastProps, {}> {
                 onMouseLeave={this.startTimeout}
                 tabIndex={0}
             >
-                {this.maybeRenderIcon()}
+                <Icon iconName={iconName} />
                 <span className={Classes.TOAST_MESSAGE}>{message}</span>
                 <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
                     {this.maybeRenderActionButton()}
@@ -97,15 +98,6 @@ export class Toast extends AbstractComponent<IToastProps, {}> {
             return undefined;
         } else {
             return <AnchorButton {...action} intent={undefined} onClick={this.handleActionClick} />;
-        }
-    }
-
-    private maybeRenderIcon() {
-        const { iconName } = this.props;
-        if (iconName == null) {
-            return undefined;
-        } else {
-            return <span className={classNames(Classes.ICON_STANDARD, Classes.iconClass(iconName))} />;
         }
     }
 

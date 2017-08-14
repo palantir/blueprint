@@ -74,25 +74,75 @@ describe("<EditableText>", () => {
             assert.deepEqual(changeSpy.args[1], ["alphabet"], `unexpected argument "${changeSpy.args[1][0]}"`);
         });
 
-        it("calls onCancel when escape key pressed", () => {
+        it("calls onCancel, does not call onConfirm, and reverts value when escape key pressed", () => {
             const cancelSpy = sinon.spy();
-            shallow(
-                <EditableText isEditing={true} onCancel={cancelSpy} placeholder="Edit..." defaultValue="alphabet" />,
-            ).find("input")
-                .simulate("change", { target: { value: "hello" } })
+            const confirmSpy = sinon.spy();
+
+            const OLD_VALUE = "alphabet";
+            const NEW_VALUE = "hello";
+
+            const component = shallow(
+                <EditableText
+                    isEditing={true}
+                    onCancel={cancelSpy}
+                    onConfirm={confirmSpy}
+                    defaultValue={OLD_VALUE}
+                />,
+            );
+            component.find("input")
+                .simulate("change", { target: { value: NEW_VALUE } })
                 .simulate("keydown", { which: Keys.ESCAPE });
+
+            assert.isTrue(confirmSpy.notCalled, "onConfirm called");
             assert.isTrue(cancelSpy.calledOnce, "onCancel not called once");
-            assert.isTrue(cancelSpy.calledWith("alphabet"), `unexpected argument "${cancelSpy.args[0][0]}"`);
+            assert.isTrue(cancelSpy.calledWith(OLD_VALUE), `unexpected argument "${cancelSpy.args[0][0]}"`);
+            assert.strictEqual(component.state().value, OLD_VALUE, "did not revert to original value");
         });
 
-        it("calls onConfirm when enter key pressed", () => {
+        it("calls onConfirm, does not call onCancel, and saves value when enter key pressed", () => {
+            const cancelSpy = sinon.spy();
             const confirmSpy = sinon.spy();
-            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} defaultValue="alphabet" />)
-                .find("input")
-                .simulate("change", { target: { value: "hello" } })
+
+            const OLD_VALUE = "alphabet";
+            const NEW_VALUE = "hello";
+
+            const component = shallow(<EditableText
+                isEditing={true}
+                onCancel={cancelSpy}
+                onConfirm={confirmSpy}
+                defaultValue={OLD_VALUE}
+            />);
+            component.find("input")
+                .simulate("change", { target: { value: NEW_VALUE } })
                 .simulate("keydown", { which: Keys.ENTER });
+
+            assert.isTrue(cancelSpy.notCalled, "onCancel called");
             assert.isTrue(confirmSpy.calledOnce, "onConfirm not called once");
-            assert.isTrue(confirmSpy.calledWith("hello"), `unexpected argument "${confirmSpy.args[0][0]}"`);
+            assert.isTrue(confirmSpy.calledWith(NEW_VALUE), `unexpected argument "${confirmSpy.args[0][0]}"`);
+            assert.strictEqual(component.state().value, NEW_VALUE, "did not save new value");
+        });
+
+        it("calls onConfirm when enter key pressed even if value didn't change", () => {
+            const cancelSpy = sinon.spy();
+            const confirmSpy = sinon.spy();
+
+            const OLD_VALUE = "alphabet";
+            const NEW_VALUE = "hello";
+
+            const component = shallow(<EditableText
+                isEditing={true}
+                onCancel={cancelSpy}
+                onConfirm={confirmSpy}
+                defaultValue={OLD_VALUE}
+            />);
+            component.find("input")
+                .simulate("change", { target: { value: NEW_VALUE } }) // change
+                .simulate("change", { target: { value: OLD_VALUE } }) // revert
+                .simulate("keydown", { which: Keys.ENTER });
+
+            assert.isTrue(cancelSpy.notCalled, "onCancel called");
+            assert.isTrue(confirmSpy.calledOnce, "onConfirm not called once");
+            assert.isTrue(confirmSpy.calledWith(OLD_VALUE), `unexpected argument "${confirmSpy.args[0][0]}"`);
         });
 
         it("calls onEdit when entering edit mode", () => {

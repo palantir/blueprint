@@ -6,6 +6,9 @@
 @import "colors";
 @import "mixins";
 
+// This line can be removed when we upgrade to Bourbon 5.0
+$output-bourbon-deprecation-warnings: false;
+
 // easily the most important variable, so it comes first
 // (so other variables can use it to define themselves)
 $pt-grid-size: 10px !default;

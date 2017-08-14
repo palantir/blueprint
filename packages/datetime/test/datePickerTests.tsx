@@ -152,7 +152,7 @@ describe("<DatePicker>", () => {
                 <DatePicker defaultValue={new Date(2010, Months.FEBRUARY, 2)} value={value} />,
             );
             assert.lengthOf(getSelectedDays(), 1);
-            assert.equal(getSelectedDays().at(0).text(), value.getDate());
+            assert.equal(getSelectedDays().at(0).text(), value.getDate().toString());
         });
 
         it("selection does not update automatically", () => {
@@ -216,7 +216,7 @@ describe("<DatePicker>", () => {
             const today = new Date();
             const selectedDays = wrap(<DatePicker defaultValue={today} />).getSelectedDays();
             assert.lengthOf(selectedDays, 1);
-            assert.equal(selectedDays.at(0).text(), today.getDate());
+            assert.equal(selectedDays.at(0).text(), today.getDate().toString());
         });
 
         it("onChange fired when a day is clicked", () => {
@@ -262,13 +262,13 @@ describe("<DatePicker>", () => {
             months.simulate("change", { target: { value: Months.MARCH } });
             let selectedDayElements = getSelectedDays();
             assert.lengthOf(selectedDayElements, 1);
-            assert.equal(selectedDayElements.at(0).text(), minDate.getDate());
+            assert.equal(selectedDayElements.at(0).text(), minDate.getDate().toString());
 
             getDay(25).simulate("click");
             months.simulate("change", { target: { value: Months.NOVEMBER } });
             selectedDayElements = getSelectedDays();
             assert.lengthOf(selectedDayElements, 1);
-            assert.equal(selectedDayElements.at(0).text(), maxDate.getDate());
+            assert.equal(selectedDayElements.at(0).text(), maxDate.getDate().toString());
         });
 
         it("can change displayed date with the dropdowns in the caption", () => {

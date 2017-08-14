@@ -28,6 +28,7 @@ export * from "./forms/inputGroup";
 export * from "./forms/numericInput";
 export * from "./forms/radioGroup";
 export * from "./hotkeys/hotkeys";
+export * from "./icon/icon";
 export * from "./menu/menu";
 export * from "./menu/menuDivider";
 export * from "./menu/menuItem";

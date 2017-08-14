@@ -19,7 +19,7 @@ describe("<InputGroup>", () => {
     });
 
     it("renders right element inside .pt-input-action after input", () => {
-        const action = mount(<InputGroup rightElement={<address />} />).childAt(1);
+        const action = mount(<InputGroup rightElement={<address />} />).childAt(2);
         assert.isTrue(action.hasClass("pt-input-action"));
         assert.lengthOf(action.find("address"), 1);
     });

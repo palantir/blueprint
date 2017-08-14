@@ -12,12 +12,10 @@ import * as React from "react";
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuItem } from "../../src/index";
 
 const MENU_ITEMS = [
-    { iconName: "align-left", text: "Align Left" },
-    { iconName: "align-center", text: "Align Center" },
-    { iconName: "align-right", text: "Align Right" },
-].map((menuItem, i) => {
-    return <MenuItem key={i} {...menuItem} />;
-});
+    <MenuItem key="left" iconName="align-left" text="Align Left" />,
+    <MenuItem key="center" iconName="align-center" text="Align Center" />,
+    <MenuItem key="right" iconName="align-right" text="Align Right" />,
+];
 const MENU = <Menu>{MENU_ITEMS}</Menu>;
 
 describe("ContextMenu", () => {

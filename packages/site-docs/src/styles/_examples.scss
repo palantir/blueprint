@@ -88,9 +88,9 @@
     $pt-transition-duration * 5,
     $before: "&"
   );
-  top: $overlay-example-width / 2;
+  top: 0;
   left: calc(50% - #{$overlay-example-width / 2});
-  z-index: $pt-z-index-overlay + 1;
+  margin: 10vh 0;
   width: $overlay-example-width;
 }
 
@@ -175,6 +175,28 @@
 
 .pt-popover .docs-popover-example {
   padding: $pt-grid-size;
+}
+
+.docs-popover2-example {
+  .docs-react-example {
+    width: 100%;
+    height: 350px;
+    overflow: scroll;
+  }
+
+  .docs-popover2-example-scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba($black, 0.1);
+    min-width: 200%;
+    min-height: 200%;
+  }
+
+  .pt-popover & {
+    padding: $pt-grid-size;
+  }
 }
 
 .docs-wiggle {
