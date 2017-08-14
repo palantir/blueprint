@@ -159,6 +159,17 @@ and a `<JSONFormat>` component to show the timezone info object.
 
 @reactExample TableFormatsExample
 
+@### Freezing
+
+The table supports column and row freezing via the `numFrozenColumns` and `numFrozenRows` props,
+respectively. Passing `numFrozenColumns={n}` will freeze the `n` leftmost columns in place, while
+all other columns remain scrollable. Likewise, passing `numFrozenRows={m}` will freeze the `m`
+topmost rows in place, while all other rows remain scrollable.
+
+Here's an example of a table with 1 frozen columns and 2 frozen rows:
+
+@reactExample TableFreezingExample
+
 @## JavaScript API
 
 The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`

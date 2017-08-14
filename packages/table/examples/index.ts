@@ -10,6 +10,7 @@ export * from "./columnLoadingExample";
 export * from "./tableDollarExample";
 export * from "./tableEditableExample";
 export * from "./tableFormatsExample";
+export * from "./tableFreezingExample";
 export * from "./tableLoadingExample";
 export * from "./tableReorderableExample";
 export * from "./tableSortableExample";
