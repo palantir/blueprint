@@ -139,7 +139,7 @@ const LONG_TEXT_MAX_LENGTH = 40;
 const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const CELL_CONTENT_GENERATORS = {
-    [CellContent.CELL_NAMES]: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
+    [CellContent.CELL_NAMES]: Utils.toBase26CellName,
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
         const randomLength = getRandomInteger(LONG_TEXT_MIN_LENGTH, LONG_TEXT_MAX_LENGTH);

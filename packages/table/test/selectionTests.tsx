@@ -47,9 +47,7 @@ describe("Selection", () => {
     // TODO: Fix
     it.skip("Copies selected cells when keys are pressed", () => {
         const onCopy = sinon.spy();
-        const getCellClipboardData = (row: number, col: number) => {
-            return Utils.toBase26Alpha(col) + (row + 1);
-        };
+        const getCellClipboardData = Utils.toBase26CellName;
         const copyCellsStub = sinon.stub(Clipboard, "copyCells").returns(true);
         const table = harness.mount(createTableOfSize(3, 7, {}, {getCellClipboardData, onCopy}));
 
