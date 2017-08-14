@@ -460,6 +460,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         } = nextProps;
 
         const newChildArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
+        const numCols = newChildArray.length;
 
         // Try to maintain widths of columns by looking up the width of the
         // column that had the same `ID` prop. If none is found, use the
@@ -473,15 +474,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // as many existing widths/heights when possible. Also, apply the
         // sparse width/heights from props.
         let newColumnWidths = this.state.columnWidths;
-        newColumnWidths = Utils.arrayOfLength(newColumnWidths, newChildArray.length, defaultColumnWidth);
+        newColumnWidths = Utils.arrayOfLength(newColumnWidths, numCols, defaultColumnWidth);
         newColumnWidths = Utils.assignSparseValues(newColumnWidths, previousColumnWidths);
         newColumnWidths = Utils.assignSparseValues(newColumnWidths, columnWidths);
 
         let newRowHeights = this.state.rowHeights;
         newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
-
-        const numCols = newColumnWidths.length;
 
         let newSelectedRegions = selectedRegions;
         if (selectedRegions == null) {

@@ -18,13 +18,16 @@ import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
-import { QuadrantType } from "../src/quadrants/tableQuadrant";
+import { QuadrantType, TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { IRegion, Regions } from "../src/regions";
-import { TableBody } from "../src/tableBody";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 
 describe("<Table>", () => {
+
+    const COLUMN_HEADER_SELECTOR =
+        `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
+
     const harness = new ReactHarness();
 
     afterEach(() => {
@@ -61,16 +64,14 @@ describe("<Table>", () => {
         expect(hasCustomClass).to.be.true;
     });
 
-    // TODO: FROZEN
-    it.skip("Renders without ghost cells", () => {
+    it("Renders without ghost cells", () => {
         const table = harness.mount(
             <Table>
                 <Column />
             </Table>,
         );
-
-        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).element).to.be.ok;
-        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).element).to.not.be.ok;
+        expect(table.find(COLUMN_HEADER_SELECTOR, 0).element).to.be.ok;
+        expect(table.find(COLUMN_HEADER_SELECTOR, 1).element).to.not.be.ok;
     });
 
     it("Renders ghost cells", () => {
@@ -80,8 +81,8 @@ describe("<Table>", () => {
             </Table>,
         );
 
-        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).element).to.be.ok;
-        expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).element).to.be.ok;
+        expect(table.find(COLUMN_HEADER_SELECTOR, 0).element).to.be.ok;
+        expect(table.find(COLUMN_HEADER_SELECTOR, 1).element).to.be.ok;
     });
 
     it("Renders correctly with loading options", () => {
@@ -103,7 +104,7 @@ describe("<Table>", () => {
         cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
 
         const columnHeaders = tableHarness.element
-            .queryAll(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
+            .queryAll(COLUMN_HEADER_SELECTOR);
         columnHeaders.forEach((columnHeader) => expectCellLoading(columnHeader, CellType.COLUMN_HEADER));
 
         const rowHeaders = tableHarness.element.queryAll(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`);
@@ -148,8 +149,7 @@ describe("<Table>", () => {
         expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
     });
 
-    // TODO: FROZEN
-    it.skip("Invokes onVisibleCellsChange on mount", () => {
+    it("Invokes onVisibleCellsChange on mount", () => {
         const onVisibleCellsChange = sinon.spy();
         const renderCell = () => <Cell>foo</Cell>;
         mount(
@@ -166,8 +166,7 @@ describe("<Table>", () => {
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
-    // TODO: FROZEN
-    it.skip("Invokes onVisibleCellsChange when the table body scrolls", () => {
+    it("Invokes onVisibleCellsChange when the table body scrolls", () => {
         const onVisibleCellsChange = sinon.spy();
         const renderCell = () => <Cell>foo</Cell>;
         const table = mount(
@@ -175,15 +174,14 @@ describe("<Table>", () => {
                 <Column name="Column0" renderCell={renderCell} />
             </Table>,
         );
-        table.find(`.${Classes.TABLE_BODY}`).simulate("scroll");
+        table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`).simulate("scroll");
         expect(onVisibleCellsChange.callCount).to.be.greaterThan(1);
         const rowIndices = { rowIndexStart: 0, rowIndexEnd: 2 } as IRowIndices;
         const columnIndices = { columnIndexStart: 0, columnIndexEnd: 0 } as IColumnIndices;
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
-    // TODO: FROZEN
-    describe.skip("Full-table selection", () => {
+    describe("Full-table selection", () => {
         const onFocus = sinon.spy();
         const onSelection = sinon.spy();
 
@@ -202,7 +200,7 @@ describe("<Table>", () => {
 
         it("selects and deselects column/row headers when selecting and deselecting the full table", () => {
             const table = mountTable();
-            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
+            const columnHeader = table.find(COLUMN_HEADER_SELECTOR).at(0);
             const rowHeader = table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
 
             // select the full table
@@ -232,7 +230,7 @@ describe("<Table>", () => {
         }
 
         function selectFullTable(table: ReactWrapper<any, {}>) {
-            const menu = table.find(`.${Classes.TABLE_MENU}`);
+            const menu = table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_MENU}`);
             menu.simulate("click");
         }
     });
@@ -390,13 +388,6 @@ describe("<Table>", () => {
                 });
             });
         });
-
-        // Clock management
-        // ================
-
-        function delayToNextFrame(callback: () => void) {
-            setTimeout(callback);
-        }
 
         // Test templates
         // ==============
@@ -716,8 +707,7 @@ describe("<Table>", () => {
             onSelection = sinon.spy();
         });
 
-        // TODO: FROZEN
-        it.skip("Shows preview guide and invokes callback when columns reordered", () => {
+        it("Shows preview guide and invokes callback when columns reordered", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
@@ -734,8 +724,7 @@ describe("<Table>", () => {
             expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
         });
 
-        // TODO: FROZEN
-        it.skip("Shows preview guide and invokes callback when rows reordered", () => {
+        it("Shows preview guide and invokes callback when rows reordered", () => {
             const table = mountTable({
                 isRowReorderable: true,
                 onRowsReordered,
@@ -776,8 +765,7 @@ describe("<Table>", () => {
             expect(onColumnsReordered.called).to.be.false;
         });
 
-        // TODO: FROZEN
-        it.skip("Selecting a column via click and then reordering it works", () => {
+        it("Selecting a column via click and then reordering it works", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
@@ -800,8 +788,7 @@ describe("<Table>", () => {
             expect(onColumnsReordered.calledWith(OLD_INDEX, newIndex, length)).to.be.true;
         });
 
-        // TODO: FROZEN
-        it.skip("Selecting multiple columns via click+drag and then reordering works", () => {
+        it("Selecting multiple columns via click+drag and then reordering works", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
@@ -822,8 +809,7 @@ describe("<Table>", () => {
             expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
         });
 
-        // TODO: FROZEN
-        it.skip("Moves uncontrolled selection with reordered column when reordering is complete", () => {
+        it("Moves uncontrolled selection with reordered column when reordering is complete", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
@@ -1210,8 +1196,7 @@ describe("<Table>", () => {
         }
     });
 
-    // TODO: FROZEN
-    describe.skip("Autoscrolling when rows/columns decrease in count or size", () => {
+    describe("Autoscrolling when rows/columns decrease in count or size", () => {
         const COL_WIDTH = 400;
         const ROW_HEIGHT = 60;
 
@@ -1234,51 +1219,51 @@ describe("<Table>", () => {
 
         it("when column count decreases", () => {
             const table = mountTable(NUM_COLS, 1);
-            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0);
+            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0, () => {
+                const newColumns = renderColumns(UPDATED_NUM_COLS);
+                table.setProps({ children: newColumns });
 
-            const newColumns = renderColumns(UPDATED_NUM_COLS);
-            table.setProps({ children: newColumns });
+                // the viewport should have auto-scrolled to fit the last column in view
+                const viewportRect = table.state("viewportRect");
+                expect(viewportRect.left).to.equal((UPDATED_NUM_COLS * COL_WIDTH) - viewportRect.width);
 
-            // the viewport should have auto-scrolled to fit the last column in view
-            const viewportRect = table.state("viewportRect");
-            expect(viewportRect.left).to.equal((UPDATED_NUM_COLS * COL_WIDTH) - viewportRect.width);
-
-            // this callback is invoked more than necessary in response to a single change.
-            // feel free to tighten the screws and reduce this expected count.
-            expect(onVisibleCellsChange.callCount).to.equal(5);
+                // this callback is invoked more than necessary in response to a single change.
+                // feel free to tighten the screws and reduce this expected count.
+                expect(onVisibleCellsChange.callCount).to.equal(5);
+            });
         });
 
         it("when row count decreases", () => {
             const table = mountTable(1, NUM_ROWS);
-            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT);
+            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT, () => {
+                table.setProps({ numRows: UPDATED_NUM_ROWS });
 
-            table.setProps({ numRows: UPDATED_NUM_ROWS });
-
-            const viewportRect = table.state("viewportRect");
-            expect(viewportRect.top).to.equal((UPDATED_NUM_ROWS * ROW_HEIGHT) - viewportRect.height);
-            expect(onVisibleCellsChange.callCount).to.equal(5);
+                const viewportRect = table.state("viewportRect");
+                expect(viewportRect.top).to.equal((UPDATED_NUM_ROWS * ROW_HEIGHT) - viewportRect.height);
+                expect(onVisibleCellsChange.callCount).to.equal(5);
+            });
         });
 
         it("when column widths decrease", () => {
             const table = mountTable(NUM_COLS, 1);
-            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0);
+            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0, () => {
+                table.setProps({ columnWidths: Array(NUM_COLS).fill(UPDATED_COL_WIDTH) });
 
-            table.setProps({ columnWidths: Array(NUM_COLS).fill(UPDATED_COL_WIDTH) });
-
-            const viewportRect = table.state("viewportRect");
-            expect(viewportRect.left).to.equal((NUM_COLS * UPDATED_COL_WIDTH) - viewportRect.width);
-            expect(onVisibleCellsChange.callCount).to.equal(5);
+                const viewportRect = table.state("viewportRect");
+                expect(viewportRect.left).to.equal((NUM_COLS * UPDATED_COL_WIDTH) - viewportRect.width);
+                expect(onVisibleCellsChange.callCount).to.equal(5);
+            });
         });
 
         it("when row heights decrease", () => {
             const table = mountTable(1, NUM_ROWS);
-            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT);
+            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT, () => {
+                table.setProps({ rowHeights: Array(NUM_ROWS).fill(UPDATED_ROW_HEIGHT) });
 
-            table.setProps({ rowHeights: Array(NUM_ROWS).fill(UPDATED_ROW_HEIGHT) });
-
-            const viewportRect = table.state("viewportRect");
-            expect(viewportRect.top).to.equal((NUM_ROWS * UPDATED_ROW_HEIGHT) - viewportRect.height);
-            expect(onVisibleCellsChange.callCount).to.equal(5);
+                const viewportRect = table.state("viewportRect");
+                expect(viewportRect.top).to.equal((NUM_ROWS * UPDATED_ROW_HEIGHT) - viewportRect.height);
+                expect(onVisibleCellsChange.callCount).to.equal(5);
+            });
         });
 
         function mountTable(numCols: number, numRows: number) {
@@ -1301,7 +1286,12 @@ describe("<Table>", () => {
             return <Column key={i} renderCell={renderCell}/>;
         }
 
-        function scrollTable(table: ReactWrapper<any, {}>, scrollLeft: number, scrollTop: number) {
+        function scrollTable(
+            table: ReactWrapper<any, {}>,
+            scrollLeft: number,
+            scrollTop: number,
+            callback: () => void,
+        ) {
             // make the viewport small enough to fit only one cell
             updateLocatorBodyElement(table,
                 scrollLeft,
@@ -1309,7 +1299,13 @@ describe("<Table>", () => {
                 COL_WIDTH,
                 ROW_HEIGHT,
             );
-            table.find(TableBody).simulate("scroll");
+            table
+                .find(TableQuadrant)
+                .first()
+                .simulate("scroll");
+
+            // delay to next frame to let throttled scroll logic execute first
+            delayToNextFrame(callback);
         }
     });
 
@@ -1434,4 +1430,9 @@ describe("<Table>", () => {
             scrollTop,
         };
     }
+
+    function delayToNextFrame(callback: () => void) {
+        setTimeout(callback);
+    }
+
 });
