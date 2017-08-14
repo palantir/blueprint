@@ -46,6 +46,16 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
     locator: ILocator;
 
     /**
+     * The number of columns to freeze to the left side of the table, counting from the leftmost column.
+     */
+    numFrozenColumns?: number;
+
+    /**
+     * The number of rows to freeze to the top of the table, counting from the topmost row.
+     */
+    numFrozenRows?: number;
+
+    /**
      * The `Rect` bounds of the visible viewport with respect to its parent
      * scrollable pane.
      */
@@ -133,6 +143,8 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             columnIndexEnd,
             columnIndexStart,
             grid,
+            numFrozenColumns,
+            numFrozenRows,
             onFocus,
             onSelection,
             rowIndexEnd,
@@ -154,7 +166,12 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         }
 
         const cells: Array<React.ReactElement<any>> = this.batcher.getList();
-        const style = grid.getRect().sizeStyle();
+        const defaultStyle = grid.getRect().sizeStyle();
+
+        const style = {
+            height: (numFrozenRows != null) ? grid.getCumulativeHeightAt(numFrozenRows - 1) : defaultStyle.height,
+            width: (numFrozenColumns != null) ? grid.getCumulativeWidthAt(numFrozenColumns - 1) : defaultStyle.width,
+        };
 
         return (
             <DragSelectable

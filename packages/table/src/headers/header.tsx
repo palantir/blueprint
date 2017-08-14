@@ -9,7 +9,7 @@ import { Classes as CoreClasses, IconClasses } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Grid, Rect } from "../common";
+import { Grid } from "../common";
 import { Batcher } from "../common/batcher";
 import * as Classes from "../common/classes";
 import { Utils } from "../common/utils";
@@ -55,12 +55,6 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
      * @default false;
      */
     loading?: boolean;
-
-    /**
-     * The `Rect` bounds of the visible viewport with respect to its parent
-     * scrollable pane.
-     */
-    viewportRect: Rect;
 
     /**
      * This callback is called while the user is resizing a header cell. The guides
@@ -218,7 +212,6 @@ export interface IHeaderState {
 const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
     "endIndex",
     "startIndex",
-    "viewportRect",
 ];
 
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {

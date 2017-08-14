@@ -20,6 +20,17 @@ describe("Utils", () => {
         });
     });
 
+    describe("toBase26CellName", () => {
+        it("converts to spreadsheet-like base26 cell names", () => {
+            expect(Utils.toBase26CellName(0, 0)).to.equal("A1");
+            expect(Utils.toBase26CellName(25, 0)).to.equal("A26");
+            expect(Utils.toBase26CellName(0, 25)).to.equal("Z1");
+            expect(Utils.toBase26CellName(1, 27)).to.equal("AB2");
+            expect(Utils.toBase26CellName(99, (26 + 1) * 26 - 1)).to.equal("ZZ100");
+            expect(Utils.toBase26CellName(998, (26 + 1) * 26)).to.equal("AAA999");
+        });
+    });
+
     describe("binarySearch", () => {
         it("returns 0 for empty list", () => {
             const arr = [] as number[];

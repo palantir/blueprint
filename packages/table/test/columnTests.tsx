@@ -33,11 +33,11 @@ describe("Column", () => {
                 <Column />
             </Table>,
         );
-
-        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 0).element).to.exist;
-        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).element).to.exist;
-        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2).element).to.exist;
-        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 3).element).to.not.exist;
+        const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
+        expect(table.find(selector, 0).element).to.exist;
+        expect(table.find(selector, 1).element).to.exist;
+        expect(table.find(selector, 2).element).to.exist;
+        expect(table.find(selector, 3).element).to.not.exist;
     });
 
     it("passes column name to renderer or defaults if none specified", () => {
@@ -49,17 +49,19 @@ describe("Column", () => {
             </Table>,
         );
 
-        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 0).text()).to.equal("Zero");
-        expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text()).to.equal("One");
-        // TODO: re-enable once other PR merges
-        // expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2).text()).to.equal("C");
+        const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
+
+        expect(table.find(selector, 0).text()).to.equal("Zero"); // custom
+        expect(table.find(selector, 1).text()).to.equal("One"); // custom
+        expect(table.find(selector, 2).text()).to.equal("C"); // default
     });
 
     it("renders correctly with loading options", () => {
+        const NUM_ROWS = 5;
         const cellValue = "my cell value";
         const renderCell = () => <Cell>{cellValue}</Cell>;
         const table = harness.mount(
-            <Table numRows={5}>
+            <Table numRows={NUM_ROWS}>
                 <Column name="Zero" loadingOptions={[ ColumnLoadingOption.CELLS ]} renderCell={renderCell} />
                 <Column
                     name="One"
@@ -70,25 +72,30 @@ describe("Column", () => {
             </Table>,
         );
 
-        const columnHeaders = table.element.queryAll(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
+        const columnHeaders = table.element.queryAll(
+            `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
+
         expectCellLoading(columnHeaders[0], CellType.COLUMN_HEADER, false);
         expectCellLoading(columnHeaders[1], CellType.COLUMN_HEADER);
         expectCellLoading(columnHeaders[2], CellType.COLUMN_HEADER, false);
 
-        const col0CellsSelector = `.${Classes.columnCellIndexClass(0)}.${Classes.TABLE_CELL}`;
+        const col0CellsSelector =
+            `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(0)}.${Classes.TABLE_CELL}`;
         const col0cells = table.element.queryAll(col0CellsSelector);
         col0cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
-        expect(col0cells.length).to.equal(4);
+        expect(col0cells.length).to.equal(NUM_ROWS);
 
-        const col1CellsSelector = `.${Classes.columnCellIndexClass(1)}.${Classes.TABLE_CELL}`;
+        const col1CellsSelector =
+            `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(1)}.${Classes.TABLE_CELL}`;
         const col1cells = table.element.queryAll(col1CellsSelector);
         col1cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
-        expect(col1cells.length).to.equal(4);
+        expect(col1cells.length).to.equal(NUM_ROWS);
 
-        const col2CellsSelector = `.${Classes.columnCellIndexClass(2)}.${Classes.TABLE_CELL}`;
+        const col2CellsSelector =
+            `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(2)}.${Classes.TABLE_CELL}`;
         const col2cells = table.element.queryAll(col2CellsSelector);
         col2cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL, false));
-        expect(col2cells.length).to.equal(4);
+        expect(col2cells.length).to.equal(NUM_ROWS);
     });
 
     it("passes custom class name to renderer", () => {

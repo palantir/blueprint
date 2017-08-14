@@ -16,9 +16,12 @@ import { createTableOfSize } from "./mocks/table";
 
 describe("Selection", () => {
     const harness = new ReactHarness();
-    const TH_SELECTOR = `.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
-    const ROW_TH_SELECTOR = `.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
-    const CELL_SELECTOR = `.${Classes.rowCellIndexClass(2)}.${Classes.columnCellIndexClass(0)}`;
+    const TH_SELECTOR =
+        `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
+    const ROW_TH_SELECTOR =
+        `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
+    const CELL_SELECTOR =
+        `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.rowCellIndexClass(2)}.${Classes.columnCellIndexClass(0)}`;
 
     afterEach(() => {
         harness.unmount();
@@ -44,9 +47,7 @@ describe("Selection", () => {
     // TODO: Fix
     it.skip("Copies selected cells when keys are pressed", () => {
         const onCopy = sinon.spy();
-        const getCellClipboardData = (row: number, col: number) => {
-            return Utils.toBase26Alpha(col) + (row + 1);
-        };
+        const getCellClipboardData = Utils.toBase26CellName;
         const copyCellsStub = sinon.stub(Clipboard, "copyCells").returns(true);
         const table = harness.mount(createTableOfSize(3, 7, {}, {getCellClipboardData, onCopy}));
 

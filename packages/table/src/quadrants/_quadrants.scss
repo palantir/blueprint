@@ -1,0 +1,92 @@
+
+@import "../../core/src/common/mixins";
+@import "./common/variables";
+
+$table-quadrant-z-index-main: 0;
+$table-quadrant-z-index-top: $table-quadrant-z-index-main + 1;
+$table-quadrant-z-index-left: $table-quadrant-z-index-top + 1;
+$table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
+
+// we mask the scrollable container with a smaller parent div to hide the scrollbars in the TOP,
+// LEFT, and TOP_LEFT quadrants. this value specifies the distance the scroll containers should
+// overflow within their parents; it should be large enough to hide a scrollbar of typical width.
+$table-quadrant-scroll-container-overflow: 20px;
+
+.bp-table-quadrant {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: $table-background-color;
+  overflow: hidden;
+
+  .pt-dark & {
+    background-color: $dark-table-background-color;
+  }
+}
+
+.bp-table-quadrant-scroll-container {
+  @include force-hardware-acceleration();
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  user-select: none;
+
+  // We disable x or y scrolling when we are displaying "ghost" cells that
+  // overflow the body.
+
+  .bp-table-no-vertical-scroll & {
+    overflow-y: hidden;
+  }
+
+  .bp-table-no-horizontal-scroll & {
+    overflow-x: hidden;
+  }
+}
+
+.bp-table-quadrant-body-container {
+  position: relative;
+}
+
+.bp-table-quadrant-main {
+  right: 0;
+  bottom: 0;
+  z-index: $table-quadrant-z-index-main;
+
+  .bp-table-cell-client {
+    background: $white;
+  }
+}
+
+.bp-table-quadrant-top {
+  right: 0;
+  z-index: $table-quadrant-z-index-top;
+
+  .bp-table-quadrant-scroll-container {
+    bottom: -$table-quadrant-scroll-container-overflow;
+    overflow-y: hidden;
+  }
+}
+
+.bp-table-quadrant-left {
+  bottom: 0;
+  z-index: $table-quadrant-z-index-left;
+
+  .bp-table-quadrant-scroll-container {
+    right: -$table-quadrant-scroll-container-overflow;
+    overflow-x: hidden;
+  }
+}
+
+.bp-table-quadrant-top-left {
+  z-index: $table-quadrant-z-index-top-left;
+
+  .bp-table-quadrant-scroll-container {
+    right: -$table-quadrant-scroll-container-overflow;
+    bottom: -$table-quadrant-scroll-container-overflow;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+}

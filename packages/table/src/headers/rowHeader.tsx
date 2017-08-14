@@ -96,23 +96,26 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     }
 
     private wrapCells = (cells: Array<React.ReactElement<any>>) => {
-        const { grid, viewportRect } = this.props;
+        const { rowIndexStart, grid } = this.props;
 
-        // always set height so that the layout can push out the element unless it overflows.
+        const tableHeight = grid.getRect().height;
+        const scrollTopCorrection = this.props.grid.getCumulativeHeightBefore(rowIndexStart);
         const style: React.CSSProperties = {
-            height: `${grid.getRect().height}px`,
+            // reduce the height to clamp the sliding window as we approach the final headers; otherwise,
+            // we'll have tons of useless whitespace at the end.
+            height: tableHeight - scrollTopCorrection,
+            // only header cells in view will render, but we need to reposition them to stay in view
+            // as we scroll vertically.
+            transform: `translateY(${scrollTopCorrection || 0}px)`,
         };
 
-        // use CSS translation to offset the cells
-        if (viewportRect != null) {
-            const startIndex = this.getStartIndex();
-            const topOffset = grid.getRowRect(startIndex).top - viewportRect.top;
-            style.transform = `translate3d(0, ${topOffset}px, 0)`;
-        }
-
+        // add a wrapper set to the full-table height to ensure container styles stretch from the first
+        // cell all the way to the last
         return (
-            <div style={style}>
-                {cells}
+            <div style={{ height: tableHeight }}>
+                <div className={Classes.TABLE_ROW_HEADERS_CELLS_CONTAINER} style={style}>
+                    {cells}
+                </div>
             </div>
         );
     }
@@ -136,10 +139,6 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
 
     private getMouseCoordinate = (event: MouseEvent) => {
         return event.clientY;
-    }
-
-    private getStartIndex = () => {
-        return this.props.rowIndexStart;
     }
 
     private handleResizeEnd = (index: number, size: number) => {

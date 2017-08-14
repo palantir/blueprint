@@ -7,10 +7,11 @@
 
 import { expect } from "chai";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
+
 import { Utils } from "../src";
 import { Grid } from "../src/common/grid";
 import { Locator } from "../src/locator";
-import { ElementHarness, ReactHarness } from "./harness";
 
 const N_ROWS = 10;
 const N_COLS = 10;
@@ -19,15 +20,13 @@ const ROW_HEIGHT = 10;
 const COL_WIDTH = 20;
 
 describe("Locator", () => {
-    const harness = new ReactHarness();
-
     const test10s = Utils.times(N_ROWS, () => ROW_HEIGHT);
     const test20s = Utils.times(N_COLS, () => COL_WIDTH);
 
     const grid = new Grid(test10s, test20s);
 
     let locator: Locator;
-    let divs: ElementHarness;
+    let containerElement: HTMLElement;
 
     beforeEach(() => {
         // for some reason, the height is only 18px by default. need to manually increase it to fit
@@ -42,26 +41,29 @@ describe("Locator", () => {
             height: (N_ROWS + 1) * ROW_HEIGHT,
             width: (N_COLS + 1) * COL_WIDTH,
         };
-        divs = harness.mount(
+
+        // mount in the DOM to let us test scrolling behavior.
+        // ".body" will be the scrollable region.
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+        ReactDOM.render(
             <div className="table-wrapper" style={style}>
-                <div className="body">
-                    <div className="body-client">B</div>
+                <div className="body" style={style}>
+                    <div className="body-client" style={style}>B</div>
                 </div>
             </div>,
+            containerElement,
         );
+
         locator = new Locator(
-            divs.find(".table-wrapper").element as HTMLElement,
-            divs.find(".body").element as HTMLElement,
-            grid,
+            containerElement.query(".table-wrapper") as HTMLElement,
+            containerElement.query(".body") as HTMLElement,
         );
+        locator.setGrid(grid);
     });
 
     afterEach(() => {
-        harness.unmount();
-    });
-
-    after(() => {
-        harness.destroy();
+        ReactDOM.unmountComponentAtNode(containerElement);
     });
 
     it("constructs", () => {
@@ -71,7 +73,7 @@ describe("Locator", () => {
     describe("convertPointToColumn", () => {
         describe("when useMidpoint = false", () => {
             it("locates a column", () => {
-                const left = divs.find(".body").bounds().left;
+                const left = containerElement.query(".body").getBoundingClientRect().left;
                 expect(locator.convertPointToColumn(left + 10)).to.equal(0);
                 expect(locator.convertPointToColumn(left + 30)).to.equal(1);
                 expect(locator.convertPointToColumn(-1000)).to.equal(-1);
@@ -81,10 +83,10 @@ describe("Locator", () => {
         runTestSuiteForConvertPointToRowOrColumn(COL_WIDTH, N_COLS, "convertPointToColumn");
     });
 
-    describe("convertPointToRowTopBoundary", () => {
+    describe("convertPointToRow", () => {
         describe("when useMidpoint = false", () => {
             it("locates a row", () => {
-                const top = divs.find(".body").bounds().top;
+                const top = containerElement.query(".body").getBoundingClientRect().top;
                 expect(locator.convertPointToRow(top + 5)).to.equal(0);
                 expect(locator.convertPointToRow(top + 15)).to.equal(1);
                 expect(locator.convertPointToRow(top + (N_ROWS * ROW_HEIGHT) - (ROW_HEIGHT / 2))).to.equal(N_ROWS - 1);
@@ -93,6 +95,128 @@ describe("Locator", () => {
         });
 
         runTestSuiteForConvertPointToRowOrColumn(ROW_HEIGHT, N_ROWS, "convertPointToRow");
+    });
+
+    describe("convertPointToCell", () => {
+        describe("with frozen quadrants", () => {
+            let bodyElement: HTMLElement;
+
+            let originalOverflow: string;
+            let originalHeight: string;
+            let originalWidth: string;
+            let originalScrollLeft: number;
+            let originalScrollTop: number;
+
+            const NUM_FROZEN_COLUMNS = 1;
+            const NUM_FROZEN_ROWS = 1;
+
+            const NUM_COLUMNS_SCROLLED_OUT_OF_VIEW = 1;
+            const NUM_ROWS_SCROLLED_OUT_OF_VIEW = 1;
+
+            beforeEach(() => {
+                bodyElement = containerElement.query(".body") as HTMLElement;
+
+                originalOverflow = bodyElement.style.overflow;
+                originalHeight = bodyElement.style.height;
+                originalWidth = bodyElement.style.width;
+                originalScrollLeft = bodyElement.scrollLeft;
+                originalScrollTop = bodyElement.scrollTop;
+
+                // make the table smaller, then scroll it one column and one row over
+                bodyElement.style.height = `${(N_ROWS / 2) * ROW_HEIGHT}px`;
+                bodyElement.style.width = `${(N_COLS / 2) * COL_WIDTH}px`;
+                bodyElement.style.overflow = "auto";
+                bodyElement.scrollLeft = NUM_COLUMNS_SCROLLED_OUT_OF_VIEW * COL_WIDTH;
+                bodyElement.scrollTop = NUM_ROWS_SCROLLED_OUT_OF_VIEW * ROW_HEIGHT;
+            });
+
+            afterEach(() => {
+                locator.setNumFrozenColumns(0);
+                locator.setNumFrozenRows(0);
+                bodyElement.scrollLeft = originalScrollLeft;
+                bodyElement.scrollTop = originalScrollTop;
+                bodyElement.style.overflow = originalOverflow;
+                bodyElement.style.width = originalWidth;
+                bodyElement.style.height = originalHeight;
+            });
+
+            describe("when table is scrolled downward and rightward", () => {
+                describe("with frozen column(s) only", () => {
+                    beforeEach(() => {
+                        locator.setNumFrozenColumns(NUM_FROZEN_COLUMNS);
+                    });
+
+                    it("locates a cell in the frozen LEFT quadrant", () => {
+                        const { x, y } = getUnscrolledCellCoords(0, 0);
+                        // frozen column still moves vertically on scroll
+                        assertCellLocatedProperly(x, y, NUM_ROWS_SCROLLED_OUT_OF_VIEW, 0);
+                    });
+
+                    it("locates a scrolled cell in the MAIN quadrant", () => {
+                        const lastFrozenIndex = NUM_FROZEN_COLUMNS - 1;
+                        const unfrozenIndex = lastFrozenIndex + 1;
+
+                        const { x, y } = getUnscrolledCellCoords(0, unfrozenIndex);
+
+                        // unfrozen column moves horizontall and vertically on scroll
+                        const expectedRow = NUM_ROWS_SCROLLED_OUT_OF_VIEW;
+                        const expectedCol = unfrozenIndex + NUM_ROWS_SCROLLED_OUT_OF_VIEW;
+                        assertCellLocatedProperly(x, y, expectedRow, expectedCol);
+                    });
+                });
+
+                describe("with frozen rows(s) only", () => {
+                    beforeEach(() => {
+                        locator.setNumFrozenRows(NUM_FROZEN_ROWS);
+                    });
+
+                    it("locates a cell in the frozen TOP quadrant", () => {
+                        const { x, y } = getUnscrolledCellCoords(0, 0);
+                        // frozen row still moves horizontally on scroll
+                        assertCellLocatedProperly(x, y, 0, NUM_COLUMNS_SCROLLED_OUT_OF_VIEW);
+                    });
+
+                    it("locates a scrolled cell in the MAIN quadrant", () => {
+                        const lastFrozenIndex = NUM_FROZEN_ROWS - 1;
+                        const unfrozenIndex = lastFrozenIndex + 1;
+
+                        const { x, y } = getUnscrolledCellCoords(unfrozenIndex, 0);
+
+                        // unfrozen column moves horizontall and vertically on scroll
+                        const expectedRow = unfrozenIndex + NUM_COLUMNS_SCROLLED_OUT_OF_VIEW;
+                        const expectedCol = NUM_COLUMNS_SCROLLED_OUT_OF_VIEW;
+                        assertCellLocatedProperly(x, y, expectedRow, expectedCol);
+                    });
+                });
+
+                describe("with frozen row(s) AND column(s)", () => {
+                    beforeEach(() => {
+                        locator.setNumFrozenRows(NUM_FROZEN_ROWS);
+                        locator.setNumFrozenColumns(NUM_FROZEN_COLUMNS);
+                    });
+
+                    it("locates a cell in a frozen row AND column (TOP_LEFT quadrant)", () => {
+                        const { x, y } = getUnscrolledCellCoords(0, 0);
+                        // top-left frozen area doesn't move on scroll
+                        assertCellLocatedProperly(x, y, 0, 0);
+                    });
+
+                    it("locates a scrolled cell in the MAIN quadrant", () => {
+                        const lastFrozenRowIndex = NUM_FROZEN_ROWS - 1;
+                        const lastFrozenColumnIndex = NUM_FROZEN_COLUMNS - 1;
+                        const unfrozenRowIndex = lastFrozenRowIndex + 1;
+                        const unfrozenColumnIndex = lastFrozenColumnIndex + 1;
+
+                        const { x, y } = getUnscrolledCellCoords(unfrozenRowIndex, unfrozenColumnIndex);
+
+                        // unfrozen column moves horizontall and vertically on scroll
+                        const expectedRow = unfrozenRowIndex + NUM_COLUMNS_SCROLLED_OUT_OF_VIEW;
+                        const expectedCol = unfrozenColumnIndex + NUM_COLUMNS_SCROLLED_OUT_OF_VIEW;
+                        assertCellLocatedProperly(x, y, expectedRow, expectedCol);
+                    });
+                });
+            });
+        });
     });
 
     function runTestSuiteForConvertPointToRowOrColumn(
@@ -146,11 +270,35 @@ describe("Locator", () => {
 
         function runTest(clientCoord: number, expectedResult: number) {
             it(`${clientCoord}px => ${expectedResult}`, () => {
-                const { top, left } = divs.find(".body").bounds();
+                const { top, left } = containerElement.query(".body").getBoundingClientRect();
                 const baseOffset = (testFnName === "convertPointToColumn") ? left : top;
                 const actualResult = locator[testFnName](baseOffset + clientCoord, true);
                 expect(actualResult).to.equal(expectedResult);
             });
         }
+    }
+
+    function assertCellLocatedProperly(
+        clientX: number,
+        clientY: number,
+        expectedRow: number,
+        expectedCol: number,
+    ) {
+        const cell = locator.convertPointToCell(clientX, clientY);
+        expect(cell).to.deep.equal({ row: expectedRow, col: expectedCol });
+    }
+
+    function getUnscrolledCellCoords(row: number, col: number) {
+        const bodyRect = containerElement.query(".body").getBoundingClientRect();
+
+        const colMidpointOffset = COL_WIDTH / 2;
+        const rowMidpointOffset = ROW_HEIGHT / 2;
+
+        // return the midpoint of the desired cell within the table container as if the table
+        // weren't scrolled
+        return {
+            x: bodyRect.left + (col * COL_WIDTH) + colMidpointOffset,
+            y: bodyRect.top + (row * ROW_HEIGHT) + rowMidpointOffset,
+        };
     }
 });
