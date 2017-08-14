@@ -461,9 +461,27 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 return isSelectionModeEnabled && Regions.isRegionValidForTable(region, numRows, numCols);
             });
         }
-        const newFocusedCellCoordinates = (focusedCell == null)
-            ? this.state.focusedCell
-            : focusedCell;
+
+        // show a focused cell if necessary
+        let newFocusedCellCoordinates: IFocusedCellCoordinates;
+        if (enableFocus) {
+            if (focusedCell != null) {
+                // controlled mode
+                newFocusedCellCoordinates = focusedCell;
+            } else if (this.state.focusedCell != null) {
+                // use the current focus cell from state
+                newFocusedCellCoordinates = this.state.focusedCell;
+            } else if (this.state.selectedRegions.length > 0) {
+                // focus the top-left cell of the first selection
+                newFocusedCellCoordinates = {
+                    ...Regions.getFocusCellCoordinatesFromRegion(this.state.selectedRegions[0]),
+                    focusSelectionIndex: 0,
+                };
+            } else {
+                // focus the top-left cell of the table
+                newFocusedCellCoordinates = { col: 0, row: 0, focusSelectionIndex: 0 };
+            }
+        }
 
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
