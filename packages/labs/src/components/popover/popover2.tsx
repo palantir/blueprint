@@ -80,17 +80,10 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
     disabled?: boolean;
 
     /**
-     * Whether the popover is rendered inline (as a sibling of the target element).
-     * If false, it is attached to a new element appended to `<body>`.
-     * @default false
-     */
-    inline?: boolean;
-
-    /**
      * Enables an invisible overlay beneath the popover that captures clicks and prevents
      * interaction with the rest of the document until the popover is closed.
      * This prop is only available when `interactionKind` is `PopoverInteractionKind.CLICK`.
-     * When modal popovers are opened, they become focused.
+     * When popovers with backdrop are opened, they become focused.
      * @default false
      */
     hasBackdrop?: boolean;
@@ -260,12 +253,11 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
         const children = this.understandChildren();
         const targetTabIndex = this.props.openOnTargetFocus && this.isHoverInteractionKind() ? 0 : undefined;
-        const target: JSX.Element = React.cloneElement(children.target,
+        const target: JSX.Element = React.cloneElement(children.target, {
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            (isOpen && children.target.type === Tooltip2)
-                ? { disabled: true, tabIndex: targetTabIndex }
-                : { tabIndex: targetTabIndex },
-        );
+            disabled: isOpen && children.target.type === Tooltip2 ? true : this.props.disabled,
+            tabIndex: targetTabIndex,
+        });
 
         const isContentEmpty = (children.content == null);
         if (isContentEmpty && !this.props.disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
