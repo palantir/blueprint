@@ -102,7 +102,8 @@ export interface ITagInputProps extends IProps {
 
     /**
      * Controlled tag values. Each value will be rendered inside a `Tag`, which can be customized
-     * using `tagProps`. Therefore, any valid React node can be used as a `TagInput` value.
+     * using `tagProps`. Therefore, any valid React node can be used as a `TagInput` value; falsy
+     * values will not be rendered.
      *
      * __Note about typed usage:__ If you know your `values` will always be of a certain `ReactNode`
      * subtype, such as `string` or `ReactChild`, you can use that type on all your handlers
@@ -156,9 +157,10 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         }, className);
         const isLarge = classes.indexOf(CoreClasses.LARGE) > NONE;
 
-        const resolvedPlaceholder = placeholder == null || values.length > 0
-            ? inputProps.placeholder
-            : placeholder;
+        // use placeholder prop only if it's defined and values list is empty or contains only falsy values
+        const isSomeValueDefined = values.some((val) => !!val);
+        const resolvedPlaceholder = (placeholder == null || isSomeValueDefined)
+            ? inputProps.placeholder : placeholder;
 
         return (
             <div
@@ -171,7 +173,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     iconName={leftIconName}
                     iconSize={isLarge ? 20 : 16}
                 />
-                {values.map(this.renderTag)}
+                {values.map(this.maybeRenderTag)}
                 <input
                     value={this.state.inputValue}
                     {...inputProps}
@@ -187,7 +189,8 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         );
     }
 
-    private renderTag = (tag: React.ReactNode, index: number) => {
+    private maybeRenderTag = (tag: React.ReactNode, index: number) => {
+        if (!tag) { return null; }
         const { tagProps } = this.props;
         const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
         return (
@@ -205,20 +208,24 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     private getNextActiveIndex(direction: number) {
         const { activeIndex } = this.state;
-        const totalItems = this.props.values.length;
-
-        if (activeIndex === NONE && direction < 0) {
-            // nothing active, moving left: select last
-            return totalItems - 1;
-        } else if (activeIndex === NONE && direction > 0) {
-            // nothing active, moving right: do nothing
-            return NONE;
+        if (activeIndex === NONE) {
+            // nothing active & moving left: select last defined value. otherwise select nothing.
+            return direction < 0 ? this.findNextIndex(this.props.values.length, -1) : NONE;
         } else {
             // otherwise, move in direction and clamp to bounds.
             // note that upper bound allows going one beyond last item
             // so focus can move off the right end, into the text input.
-            return Utils.clamp(activeIndex + direction, 0, totalItems);
+            return this.findNextIndex(activeIndex, direction);
         }
+    }
+
+    private findNextIndex(startIndex: number, direction: number) {
+        const { values } = this.props;
+        let index = startIndex + direction;
+        while (index > 0 && index < values.length && !values[index]) {
+            index += direction;
+        }
+        return Utils.clamp(index, 0, values.length);
     }
 
     /**
@@ -264,12 +271,13 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const { selectionEnd, value } = event.currentTarget;
         if (event.which === Keys.ENTER && value.length > 0) {
+            const { onAdd, onChange, values } = this.props;
             // enter key on non-empty string invokes onAdd
             const newValues = this.getValues(value);
-            let shouldClearInput = Utils.safeInvoke(this.props.onAdd, newValues);
+            let shouldClearInput = Utils.safeInvoke(onAdd, newValues);
             // avoid a potentially expensive computation if this prop is omitted
-            if (Utils.isFunction(this.props.onChange)) {
-                shouldClearInput = shouldClearInput || this.props.onChange([...this.props.values, ...newValues]);
+            if (Utils.isFunction(onChange)) {
+                shouldClearInput = shouldClearInput || onChange([...values, ...newValues]);
             }
             // only explicit return false cancels text clearing
             if (shouldClearInput !== false) {
