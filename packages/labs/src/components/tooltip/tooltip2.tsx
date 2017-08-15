@@ -1,39 +1,36 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as classNames from "classnames";
+import { Modifiers as PopperModifiers, Placement } from "popper.js";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import * as Classes from "../../common/classes";
-import { Position } from "../../common/position";
-import { IIntentProps, IProps } from "../../common/props";
-import { ITetherConstraint } from "../../common/tetherUtils";
+import { Classes, IIntentProps, IProps, PopoverInteractionKind } from "@blueprintjs/core";
 
-import { Popover, PopoverInteractionKind } from "../popover/popover";
+import { Popover2 } from "../popover/popover2";
 
-export interface ITooltipProps extends IProps, IIntentProps {
+export interface ITooltip2Props extends IProps, IIntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
     content: JSX.Element | string;
 
     /**
-     * Constraints for the underlying Tether instance.
-     * See http://github.hubspot.com/tether/#constraints
-     * @deprecated since v1.12.0; use `tetherOptions` instead.
-     */
-    constraints?: ITetherConstraint[];
-
-    /**
-     * Whether the tooltip is initially open.
+     * Initial opened state when uncontrolled.
      * @default false
      */
     defaultIsOpen?: boolean;
+
+    /**
+     * Prevents the popover from appearing when `true`.
+     * @default false
+     */
+    disabled?: boolean;
 
     /**
      * The amount of time in milliseconds the tooltip should remain open after the
@@ -65,17 +62,17 @@ export interface ITooltipProps extends IProps, IIntentProps {
     inline?: boolean;
 
     /**
-     * Prevents the tooltip from appearing when `true`.
-     * @default false
-     */
-    isDisabled?: boolean;
-
-    /**
-     * Whether or not the tooltip is visible. Passing this property will put the tooltip in
+     * Whether the popover is visible. Passing this prop puts the popover in
      * controlled mode, where the only way to change visibility is by updating this property.
      * @default undefined
      */
     isOpen?: boolean;
+
+    /**
+     * Popper modifier options, passed directly to internal Popper instance.
+     * See https://popper.js.org/popper-documentation.html#modifiers for complete details.
+     */
+    modifiers?: PopperModifiers;
 
     /**
      * Callback invoked in controlled mode when the tooltip open state *would* change due to
@@ -97,25 +94,21 @@ export interface ITooltipProps extends IProps, IIntentProps {
     portalClassName?: string;
 
     /**
-     * The position (relative to the target) at which the tooltip should appear.
-     * @default Position.TOP
+     * The position (relative to the target) at which the popover should appear.
+     * The default value of `"auto"` will choose the best placement when opened and will allow
+     * the popover to reposition itself to remain onscreen as the user scrolls around.
+     * @default "auto"
      */
-    position?: Position;
+    placement?: Placement;
 
     /**
-     * The name of the HTML tag to use when rendering the tooltip target wrapper element.
+     * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).
      * @default "span"
      */
     rootElementTag?: string;
 
     /**
-     * Options for the underlying Tether instance.
-     * See http://tether.io/#options
-     */
-    tetherOptions?: Partial<Tether.ITetherOptions>;
-
-    /**
-     * A space-delimited string of class names that are applied to the tooltip (but not the target).
+     * A space-delimited string of class names that are applied to the tooltip.
      */
     tooltipClassName?: string;
 
@@ -127,58 +120,37 @@ export interface ITooltipProps extends IProps, IIntentProps {
      * @default 100
      */
     transitionDuration?: number;
-
-    /**
-     * Whether the arrow's offset should be computed such that it always points at the center
-     * of the target. If `false`, arrow position is hardcoded via CSS, which expects a 30px target.
-     * @default true
-     */
-    useSmartArrowPositioning?: boolean;
-
-    /**
-     * Whether the tooltip will try to reposition itself
-     * if there isn't room for it in its current position.
-     * @default false
-     */
-    useSmartPositioning?: boolean;
 }
 
 @PureRender
-export class Tooltip extends React.Component<ITooltipProps, {}> {
-    public static defaultProps: Partial<ITooltipProps> = {
+export class Tooltip2 extends React.Component<ITooltip2Props, {}> {
+    public static displayName = "Blueprint.Tooltip2";
+
+    public static defaultProps: Partial<ITooltip2Props> = {
+        defaultIsOpen: false,
+        disabled: false,
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
-        isDisabled: false,
         openOnTargetFocus: true,
-        position: Position.TOP,
-        rootElementTag: "span",
         transitionDuration: 100,
-        useSmartArrowPositioning: true,
-        useSmartPositioning: false,
     };
 
-    public static displayName = "Blueprint.Tooltip";
-
-    public render(): JSX.Element {
-        const { children, intent, openOnTargetFocus, tooltipClassName } = this.props;
+    public render() {
+        const { children, intent, tooltipClassName, ...restProps } = this.props;
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
 
         return (
-            <Popover
-                {...this.props}
-                arrowSize={22}
+            <Popover2
+                {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
                 enforceFocus={false}
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
-                openOnTargetFocus={openOnTargetFocus}
                 popoverClassName={classes}
             >
                 {children}
-            </Popover>
+            </Popover2>
         );
     }
 }
-
-export const TooltipFactory = React.createFactory(Tooltip);

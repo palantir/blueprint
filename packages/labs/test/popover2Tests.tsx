@@ -158,13 +158,13 @@ describe("<Popover2>", () => {
         assert.isNotNull(popover.matches(`.${Classes.DARK}`));
     });
 
-    it("isModal=false does not render backdrop element", () => {
-        const { popover } = renderPopover({ inline: false, isModal: false, isOpen: true });
+    it("hasBackdrop=false does not render backdrop element", () => {
+        const { popover } = renderPopover({ inline: false, hasBackdrop: false, isOpen: true });
         assert.lengthOf(popover.parentElement.getElementsByClassName(Classes.POPOVER_BACKDROP), 0);
     });
 
-    it("isModal=true renders backdrop element", () => {
-        const { popover } = renderPopover({ inline: false, isModal: true, isOpen: true });
+    it("hasBackdrop=true renders backdrop element", () => {
+        const { popover } = renderPopover({ inline: false, hasBackdrop: true, isOpen: true });
         const expectedBackdrop = popover.parentElement.previousElementSibling;
         assert.isTrue(expectedBackdrop.matches(`.${Classes.POPOVER_BACKDROP}`));
     });
@@ -309,8 +309,8 @@ describe("<Popover2>", () => {
                 .assertIsOpen();
         });
 
-        it("isDisabled is ignored", () => {
-            renderPopover({ isDisabled: true, isOpen: true }).assertIsOpen();
+        it("disabled is ignored", () => {
+            renderPopover({ disabled: true, isOpen: true }).assertIsOpen();
         });
 
         it("onClose is invoked with event when popover would close", () => {
@@ -339,8 +339,8 @@ describe("<Popover2>", () => {
             it("is invoked with `false` when open modal popover backdrop is clicked", () => {
                 renderPopover({
                     backdropProps: { className: "test-hook" },
+                    hasBackdrop: true,
                     inline: false,
-                    isModal: true,
                     isOpen: true,
                     onInteraction,
                 });
@@ -443,17 +443,17 @@ describe("<Popover2>", () => {
                 .sendEscapeKey().assertIsOpen(false);
         });
 
-        it("setting isDisabled=true prevents opening popover", () => {
+        it("setting disabled=true prevents opening popover", () => {
             renderPopover({
+                disabled: true,
                 interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-                isDisabled: true,
             }).simulateTarget("click").assertIsOpen(false);
         });
 
-        it("setting isDisabled=true hides open popover", () => {
+        it("setting disabled=true hides open popover", () => {
             renderPopover({ interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY })
                 .simulateTarget("click").assertIsOpen()
-                .setProps({ isDisabled: true }).assertIsOpen(false);
+                .setProps({ disabled: true }).assertIsOpen(false);
         });
 
         it.skip("console.warns if onInteraction is set", () => {

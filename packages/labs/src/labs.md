@@ -161,8 +161,10 @@ This interface is generic, accepting a type parameter `<T>` for an item in the l
   - all the fancy flipping behavior you could want _enabled by default_
   - endlessly customizable if it isn't perfect _enough_ for you
   - look, it puts the arrow exactly where it's supposed to be. _every time._ what more could a blueprint dev want??
-- all the classic `Popover` features are still supported, with the same names...
-- ...except for the handful of Tether-specific props, which are now Popper.js-specific:
+- all the classic `Popover` features are still supported, with the same names except...
+  - 🔥 `isModal` &rarr; `hasBackdrop`
+  - 🔥 `isDisabled` &rarr; `disabled`
+- ...and except for the handful of Tether-specific props, which are now Popper.js-specific:
   - 🔥 `position: Position` &rarr; `placement: PopperJS.Placement`
   - 🔥 `tetherOptions: ITetherOptions` &rarr; `modifiers: PopperJS.Modifiers`
 - ...and one special addition:
@@ -223,3 +225,11 @@ Modifiers are the tool through which you customize Popper.js's behavior. It defi
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     To understand all the Popper.js modifiers available to you, you'll want to read [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers).
 </div>
+
+@## Tooltip 2.0
+
+`Tooltip2` uses [`Popover2`](#labs.popover-2.0) under the hood. The public API is the same as [`Tooltip`](#core/components/tooltip), though note that the `isDisabled` prop has been renamed to `disabled`.
+
+@reactExample Tooltip2Example
+
+@interface ITooltip2Props
