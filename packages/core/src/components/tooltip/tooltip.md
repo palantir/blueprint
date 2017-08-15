@@ -1,5 +1,11 @@
 @# Tooltips
 
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    <h5>[Tooltip2 available in labs package](#labs.tooltip2)</h5>
+    [`Tooltip2`](#labs.tooltip2), the next iteration of this component, is available in the __labs__ package,
+    and uses a new positioning engine called Popper.js to provide much more reliable smart positioning.
+</div>
+
 Tooltips display a small string of text next to a target element.
 
 @reactExample TooltipExample
