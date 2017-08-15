@@ -6,7 +6,6 @@
  */
 
 import * as React from "react";
-import { PlatformType } from "../../common/platformType";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
 const KeyIcons = {
@@ -27,14 +26,13 @@ export interface IKeyComboProps {
     allowInInput?: boolean;
     combo: string;
     disabled?: boolean;
-    platformType?: PlatformType;
     preventDefault?: boolean;
     stopPropagation?: boolean;
 }
 
 export class KeyCombo extends React.Component<IKeyComboProps, {}> {
     public render() {
-        const keys = normalizeKeyCombo(this.props.combo, this.props.platformType);
+        const keys = normalizeKeyCombo(this.props.combo);
         const components = [] as JSX.Element[];
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i];

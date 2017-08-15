@@ -9,7 +9,6 @@ import * as React from "react";
 import { ReactElement } from "react";
 
 import { AbstractComponent } from "../../common";
-import { PlatformType } from "../../common/platformType";
 import { KeyCombo } from "./keyCombo";
 
 export interface IHotkeyProps {
@@ -49,14 +48,6 @@ export interface IHotkeyProps {
      * in a header at the start of the group of hotkeys.
      */
     group?: string;
-
-    /**
-     * The platform type on which the application is running. This informs how keys will be named
-     * within the hotkey dialog. For example, on `PlatformType.MAC`, the hotkey dialog will refer to
-     * the "meta" key as <kbd>Cmd</kbd>, while on Windows, the hotkey dialog will refer to the
-     * "meta" key as <kbd>Ctrl</kbd>.
-     */
-    platformType?: PlatformType;
 
     /**
      * When `true`, invokes `event.preventDefault()` before the respective `onKeyDown` and

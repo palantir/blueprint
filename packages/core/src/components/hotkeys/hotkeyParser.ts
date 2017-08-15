@@ -5,8 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { PlatformType } from "../../common/platformType";
-
 export interface IKeyCodeTable {
     [code: number]: string;
 }
@@ -114,7 +112,7 @@ export const Aliases = {
     command: "meta",
     escape: "esc",
     minus: "-",
-    mod: ((typeof navigator !== "undefined") && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) ? "meta" : "ctrl",
+    mod: isMac() ? "meta" : "ctrl",
     option: "alt",
     plus: "+",
     return: "enter",
@@ -273,26 +271,23 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
  *
  * Unlike the parseKeyCombo method, this method does NOT convert shifted
  * action keys. So `"@"` will NOT be converted to `["shift", "2"]`).
- *
- * Pass a platformType to return key names appropriate for the current
- * operating system. For instance, passing PlatformType.MAC will cause
- * the "meta" key to be returned as "cmd".
  */
-export const normalizeKeyCombo = (combo: string, platformType?: PlatformType): string[] => {
+export const normalizeKeyCombo = (combo: string, platformOverride?: string): string[] => {
     const keys = combo.replace(/\s/g, "").split("+");
     return keys.map((key) => {
         const keyName = (Aliases[key] != null) ? Aliases[key] : key;
         return (keyName === "meta")
-            ? getMetaKeyNameForPlatformType(platformType)
+            ? (isMac(platformOverride) ? "cmd" : "ctrl")
             : keyName;
     });
 };
 /* tslint:enable:no-string-literal */
 
-export const getMetaKeyNameForPlatformType = (platformType?: PlatformType) => {
-    switch (platformType) {
-        case PlatformType.WINDOWS: return "ctrl";
-        case PlatformType.MAC: return "cmd";
-        default: return "meta";
-    }
-};
+function isMac(platformOverride?: string) {
+    const platform = platformOverride != null
+        ? platformOverride
+        : (typeof navigator !== "undefined" ? navigator.platform : undefined);
+    return platform == null
+        ? false
+        : /Mac|iPod|iPhone|iPad/.test(platform);
+}

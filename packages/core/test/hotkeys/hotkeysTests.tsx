@@ -14,7 +14,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
-import { PlatformType } from "../../src/common/platformType";
 import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 import {
     comboMatches,
@@ -412,21 +411,19 @@ describe("Hotkeys", () => {
     });
 
     describe("normalizeKeyCombo", () => {
-        it("refers to meta key as 'meta' if platformType is not defined", () => {
-            expect(normalizeKeyCombo("meta + s")).to.deep.equal(["meta", "s"]);
-            expect(normalizeKeyCombo("meta + s", null)).to.deep.equal(["meta", "s"]);
-        });
-
         it("refers to meta key as 'ctrl' on Windows", () => {
-            expect(normalizeKeyCombo("meta + s", PlatformType.WINDOWS)).to.deep.equal(["ctrl", "s"]);
+            expect(normalizeKeyCombo("meta + s", "Win32")).to.deep.equal(["ctrl", "s"]);
         });
 
         it("refers to meta key as 'cmd' on Mac", () => {
-            expect(normalizeKeyCombo("meta + s", PlatformType.MAC)).to.deep.equal(["cmd", "s"]);
+            expect(normalizeKeyCombo("meta + s", "Mac")).to.deep.equal(["cmd", "s"]);
+            expect(normalizeKeyCombo("meta + s", "iPhone")).to.deep.equal(["cmd", "s"]);
+            expect(normalizeKeyCombo("meta + s", "iPod")).to.deep.equal(["cmd", "s"]);
+            expect(normalizeKeyCombo("meta + s", "iPad")).to.deep.equal(["cmd", "s"]);
         });
 
-        it("refers to meta key as 'meta' on Linux and other platforms", () => {
-            expect(normalizeKeyCombo("meta + s", PlatformType.OTHER)).to.deep.equal(["meta", "s"]);
+        it("refers to meta key as 'ctrl' on Linux and other platforms", () => {
+            expect(normalizeKeyCombo("meta + s", "linux")).to.deep.equal(["ctrl", "s"]);
         });
     });
 });
