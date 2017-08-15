@@ -1,5 +1,11 @@
 @# Popovers
 
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    <h5>[Popover 2.0 available in labs package](#labs.popover-2.0)</h5>
+    [`Popover2`](#labs.popover-2.0), the next iteration of this component, is available in the __labs__ package,
+    and uses a new positioning engine called Popper.js to provide much more reliable smart positioning.
+</div>
+
 Popovers display floating content next to a target element.
 
 @reactExample PopoverExample
