@@ -228,7 +228,7 @@ Modifiers are the tool through which you customize Popper.js's behavior. It defi
 
 @## Tooltip 2.0
 
-`Tooltip2` uses [`Popover2`](#labs.popover-2.0) under the hood. The public API is the same as [`Tooltip`](#core/components/tooltip), though note that the `isDisabled` prop has been renamed to `disabled`. Read
+`Tooltip2` uses [`Popover2`](#labs.popover-2.0) under the hood. The public API is the same as [`Tooltip`](#core/components/tooltip), though note that the `isDisabled` prop has been renamed to `disabled`.
 
 @reactExample Tooltip2Example
 
