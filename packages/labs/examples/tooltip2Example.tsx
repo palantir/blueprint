@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { Button, Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
+import { Button, Intent, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
 import { Popover2, Tooltip2 } from "../src";
