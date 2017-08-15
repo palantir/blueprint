@@ -1,4 +1,4 @@
-@# Tabs 2.0
+@# Tabs2
 
 Tabs allow the user to switch between panels of content.
 

@@ -153,22 +153,22 @@ This interface is generic, accepting a type parameter `<T>` for an item in the l
 
 @interface ITagInputProps
 
-@## Popover 2.0
+@## Popover2
 
 **Changes from original [`Popover`](#core/components/popover):**
 
-- 🌟 [Popper.js](https://popper.js.org) is a massive improvement over [Tether](http://tether.io/) in almost every way!
+- [Popper.js](https://popper.js.org) is a massive improvement over [Tether](http://tether.io/) in almost every way!
   - all the fancy flipping behavior you could want _enabled by default_
   - endlessly customizable if it isn't perfect _enough_ for you
-  - look, it puts the arrow exactly where it's supposed to be. _every time._ what more could a blueprint dev want??
+  - look, it puts the arrow exactly where it's supposed to be. _every time._
 - all the classic `Popover` features are still supported, with the same names except...
-  - 🔥 `isModal` &rarr; `hasBackdrop`
-  - 🔥 `isDisabled` &rarr; `disabled`
+  - `isModal` &rarr; `hasBackdrop` to match corresponding prop on `Overlay`
+  - `isDisabled` &rarr; `disabled` for consistency with HTML elements
 - ...and except for the handful of Tether-specific props, which are now Popper.js-specific:
-  - 🔥 `position: Position` &rarr; `placement: PopperJS.Placement`
-  - 🔥 `tetherOptions: ITetherOptions` &rarr; `modifiers: PopperJS.Modifiers`
+  - `position: Position` &rarr; [`placement: PopperJS.Placement`](#labs.placement)
+  - `tetherOptions: ITetherOptions` &rarr; [`modifiers: PopperJS.Modifiers`](#labs.modifiers)
 - ...and one special addition:
-  - 🌟 `minimal: boolean` applies minimal styles, which includes removing the arrow and minimizing the transition
+  - `minimal: boolean` applies minimal styles, which includes removing the arrow and minimizing the transition
 
 @reactExample Popover2Example
 
@@ -203,7 +203,7 @@ And `right-end` places the Popover along the right edge with their bottom sides 
 
 @### Modifiers
 
-Modifiers are the tool through which you customize Popper.js's behavior. It defines several of its own modifiers to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow. `Popover` defines a few additional modifiers to support itself. You can even define your own modifiers, and customize the Popper.js defaults, through the `modifiers` prop. (Note: it is not currently possible to configure `Popover`'s modifiers through the `modifiers` prop, nor can you define your own with the same name.)
+Modifiers are the tools through which you customize Popper.js's behavior. Popper.js defines several of its own modifiers to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow. `Popover2` defines a few additional modifiers to support itself. You can even define your own modifiers, and customize the Popper.js defaults, through the `modifiers` prop. (Note: it is not currently possible to configure `Popover2`'s modifiers through the `modifiers` prop, nor can you define your own with the same name.)
 
 **Popper.js modifiers, which can be customized via the `modifiers` prop:**
 
@@ -217,18 +217,18 @@ Modifiers are the tool through which you customize Popper.js's behavior. It defi
 - [`hide`](https://popper.js.org/popper-documentation.html#modifiers..hide) hides the popper when its reference element is outside of the popper boundaries.
 - [`computeStyle`](https://popper.js.org/popper-documentation.html#modifiers..computeStyle) generates the CSS styles to apply to the DOM
 
-**`Popover` modifiers, _which cannot be used by you_:**
+**`Popover2` modifiers, _which cannot be used by you_:**
 
 - `arrowOffset` moves the popper a little bit to make room for the arrow
-- `updatePopoverState` saves off some popper data to `Popover` React state for fancy things
+- `updatePopoverState` saves off some popper data to `Popover2` React state for fancy things
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     To understand all the Popper.js modifiers available to you, you'll want to read [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers).
 </div>
 
-@## Tooltip 2.0
+@## Tooltip2
 
-`Tooltip2` uses [`Popover2`](#labs.popover-2.0) under the hood. The public API is the same as [`Tooltip`](#core/components/tooltip), though note that the `isDisabled` prop has been renamed to `disabled`.
+`Tooltip2` simply passes its props to [`Popover2`](#labs.popover2) with some modified defaults. The public API is the same as [`Tooltip`](#core/components/tooltip), except for the changes noted in the `Popover2` introduction above.
 
 @reactExample Tooltip2Example
 
