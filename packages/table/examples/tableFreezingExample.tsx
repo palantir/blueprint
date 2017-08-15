@@ -7,8 +7,7 @@
 
 import * as React from "react";
 
-import { Classes as CoreClasses } from "@blueprintjs/core";
-import { BaseExample, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs";
 
 import { Cell, Column, Table, Utils } from "../src";
 
