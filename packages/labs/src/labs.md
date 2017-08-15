@@ -153,7 +153,7 @@ This interface is generic, accepting a type parameter `<T>` for an item in the l
 
 @interface ITagInputProps
 
-@## Popover 2.0
+@## Popover2
 
 **Changes from original [`Popover`](#core/components/popover):**
 
@@ -226,9 +226,9 @@ Modifiers are the tools through which you customize Popper.js's behavior. Popper
     To understand all the Popper.js modifiers available to you, you'll want to read [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers).
 </div>
 
-@## Tooltip 2.0
+@## Tooltip2
 
-`Tooltip2` simply passes its props to [`Popover2`](#labs.popover-2.0) with some modified defaults. The public API is the same as [`Tooltip`](#core/components/tooltip), except for the changes noted in the `Popover2` introduction above.
+`Tooltip2` simply passes its props to [`Popover2`](#labs.popover2) with some modified defaults. The public API is the same as [`Tooltip`](#core/components/tooltip), except for the changes noted in the `Popover2` introduction above.
 
 @reactExample Tooltip2Example
 

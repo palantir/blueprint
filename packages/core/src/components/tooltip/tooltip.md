@@ -1,8 +1,8 @@
 @# Tooltips
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>[Tooltip 2.0 available in labs packages](#labs.tooltip-2.0)</h5>
-    [`Tooltip2`](#labs.tooltip-2.0), the next iteration of this component, is available in the __labs__ package,
+    <h5>[Tooltip2 available in labs package](#labs.tooltip2)</h5>
+    [`Tooltip2`](#labs.tooltip2), the next iteration of this component, is available in the __labs__ package,
     and uses a new positioning engine called Popper.js to provide much more reliable smart positioning.
 </div>
 
