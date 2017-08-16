@@ -19,9 +19,10 @@ general:
 
 machine:
   environment:
-    YARN_VERSION: 0.27.5-1
+    YARN_VERSION: 0.28.4
+    PATH: $PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin
   node:
-    version: 6.1.0
+    version: 7.10.0
 
 dependencies:
   cache_directories:
@@ -41,7 +42,7 @@ dependencies:
     - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
     - sudo apt-get update && sudo apt-get install yarn=$YARN_VERSION
     # now do the blueprint thing
-    - yarn
+    - yarn install --pure-lockfile
     - echo "Checking if yarn.lock changed..." && git diff --exit-code
     - yarn bootstrap
     - yarn build:gulp

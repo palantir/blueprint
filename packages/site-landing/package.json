@@ -43,7 +43,7 @@
     "style-loader": "^0.18.2",
     "svgo": "^0.7.2",
     "ts-loader": "^1.3.3",
-    "typescript": "^2.1.5",
+    "typescript": "~2.2.1",
     "webpack": "^1.13.3"
   },
   "keywords": [
