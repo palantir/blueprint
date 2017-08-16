@@ -303,7 +303,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     }
 
     private renderCell = (index: number, extremaClasses: string[]) => {
-        const { getIndexClass, onSelection, selectedRegions } = this.props;
+        const { getIndexClass, selectedRegions } = this.props;
 
         const cell = this.props.renderHeaderCell(index);
 
@@ -312,7 +312,6 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const isEntireCellTargetReorderable = this.isEntireCellTargetReorderable(cell, isSelected);
 
         const className = classNames(extremaClasses, {
-            [Classes.TABLE_DRAGGABLE]: onSelection != null,
             [Classes.TABLE_HEADER_REORDERABLE]: isEntireCellTargetReorderable,
         }, this.props.getCellIndexClass(index), cell.props.className);
 

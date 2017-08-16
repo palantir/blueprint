@@ -20,7 +20,6 @@ export const TABLE_COLUMN_HEADERS = "bp-table-column-headers";
 export const TABLE_COLUMN_NAME = "bp-table-column-name";
 export const TABLE_COLUMN_NAME_TEXT = "bp-table-column-name-text";
 export const TABLE_CONTAINER = "bp-table-container";
-export const TABLE_DRAGGABLE = "bp-table-draggable";
 export const TABLE_DRAGGING = "bp-table-dragging";
 export const TABLE_EDITABLE_NAME = "bp-table-editable-name";
 export const TABLE_FOCUS_REGION = "bp-table-focus-region";
