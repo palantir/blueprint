@@ -98,13 +98,9 @@ object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
-popper.js@1.11.0:
+popper.js@1.11.0, popper.js@^1.10.8:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.11.0.tgz#0103f23ac0c9221d944e7f25e3aba4c2f73987de"
-
-popper.js@^1.10.8:
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.1.tgz#623f3c6124ffbc065c39c100b223d6bd4b659303"
 
 promise@^7.1.1:
   version "7.3.1"
