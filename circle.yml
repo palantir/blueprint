@@ -40,7 +40,7 @@ dependencies:
   # non-zero exit codes in `dependencies` group will fail the build early
   # so these following commands will block the build and prevent tests
   override:
-    - curl -o- -L https://yarnpkg.com/install.sh | bash -s --version $YARN_VERSION
+    - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
     - yarn install --pure-lockfile
     - echo "Checking if yarn.lock changed..." && git diff --exit-code
     - yarn bootstrap
