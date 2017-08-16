@@ -9,6 +9,8 @@ $resize-handle-padding: 2px !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 
+$reorder-handle-width: 15px !default;
+
 @mixin grabbable() {
   cursor: grab;
 
@@ -48,11 +50,25 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
   }
 }
 
+.bp-table-column-header-cell {
+  // break up this selector to reduce line length
+  &.bp-table-column-header-cell-has-reorder-handle {
+    &:not(.bp-table-column-header-cell-has-interaction-bar) .bp-table-column-name-text {
+      padding-left: $reorder-handle-width;
+    }
+  }
+}
+
 .bp-table-reorder-handle-target {
   @include grabbable();
   position: absolute;
   top: 0;
   left: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $reorder-handle-width;
   color: $gray3;
 
   &:hover {
@@ -61,11 +77,6 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
 
   &:active {
     color: $pt-text-color;
-  }
-
-  .bp-table-reorder-handle {
-    padding: 3px 6px 3px 1px;
-    line-height: 14px;
   }
 }
 
