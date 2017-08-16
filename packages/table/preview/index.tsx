@@ -163,7 +163,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             enableCellSelection: true,
             enableCellTruncation: false,
             enableColumnNameEditing: false,
-            enableColumnReordering: false,
+            enableColumnReordering: true,
             enableColumnResizing: false,
             enableColumnSelection: true,
             enableContextMenu: false,
