@@ -39,7 +39,7 @@ dependencies:
   override:
     # yarn install instructions from https://yarnpkg.com/lang/en/docs/install/#linux-tab
     - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    - echo "deb https://dl.yarnpkg.com/debian/ rc main" | sudo tee /etc/apt/sources.list.d/yarn.list
     - sudo apt-get update && sudo apt-get install yarn=$YARN_VERSION
     # now do the blueprint thing
     - yarn install --pure-lockfile
