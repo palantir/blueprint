@@ -158,7 +158,7 @@ export class HotkeyPiano extends BaseExample<IHotkeyPianoState> {
     /* tslint:disable:max-line-length */
     public renderHotkeys() {
         return <Hotkeys tabIndex={null}>
-            <Hotkey global label="Focus the piano" combo="shift + P" onKeyDown={this.focusPiano} />
+            <Hotkey global={true} label="Focus the piano" combo="shift + P" onKeyDown={this.focusPiano} />
 
             <Hotkey group="Piano" label="Play a C5"  combo="Q" onKeyDown={this.setKey(0, true)} onKeyUp={this.setKey(0, false)} />
             <Hotkey group="Piano" label="Play a C#5" combo="2" onKeyDown={this.setKey(1, true)} onKeyUp={this.setKey(1, false)} />

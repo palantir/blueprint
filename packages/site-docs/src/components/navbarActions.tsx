@@ -43,7 +43,7 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
                     target="_blank"
                     text="GitHub"
                 />
-                <Popover2 inline content={this.renderReleasesMenu()} placement="bottom-end">
+                <Popover2 inline={true} content={this.renderReleasesMenu()} placement="bottom-end">
                     <AnchorButton rightIconName="caret-down" text="Releases" />
                 </Popover2>
                 <AnchorButton

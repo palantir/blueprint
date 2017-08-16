@@ -112,7 +112,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                         tetherOptions={{ constraints }}
                         content={popoverContent}
                         position={Position.BOTTOM}
-                        useSmartArrowPositioning
+                        useSmartArrowPositioning={true}
                     >
                         <Icon iconName="more" />
                     </Popover>

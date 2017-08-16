@@ -18,7 +18,7 @@ module.exports = (blueprint, gulp, plugins) => {
                 // exclude nested dist directories (ex: table/preview/dist)
                 "!" + path.join(project.cwd, "*", "dist", "**", "*.{js,jsx,ts,tsx}"),
             ])
-                .pipe(plugins.tslint({ formatter: "verbose" }))
+                .pipe(plugins.tslint({ formatter: "codeFrame" }))
                 .pipe(plugins.tslint.report({ emitError: true }))
                 .pipe(plugins.count(`${project.id}: ## files tslinted`))
         ));
