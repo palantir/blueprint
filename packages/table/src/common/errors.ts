@@ -13,3 +13,15 @@ export const COLUMN_HEADER_CELL_MENU_DEPRECATED =
 
 export const ROW_HEADER_CELL_MENU_DEPRECATED =
     `${deprec} <RowHeaderCell> menu is deprecated. Use renderMenu instead.`;
+
+export const QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED =
+    `${ns} <TableQuadrant> onScroll need not be defined for any quadrant aside from the MAIN quadrant.`;
+
+export const TABLE_NON_COLUMN_CHILDREN_WARNING =
+    `${ns} <Table> Children of Table must be Columns"`;
+
+export const TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING =
+    `${ns} <Table> numFrozenColumns must be in [0, number of columns]`;
+
+export const TABLE_NUM_FROZEN_ROWS_BOUND_WARNING =
+    `${ns} <Table> numFrozenRows must be in [0, numRows]`;

@@ -7,6 +7,8 @@ classes `.pt-control.pt-radio`.
 Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>`
 element.
 
+@reactExample RadioExample
+
 @## CSS API
 
 @css pt-radio

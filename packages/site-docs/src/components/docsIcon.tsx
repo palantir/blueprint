@@ -5,37 +5,28 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as classNames from "classnames";
 import * as React from "react";
 
-import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
+import { ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
 
 import { ClickToCopy } from "./clickToCopy";
 
-export interface IIcon {
+export interface IDocsIconProps {
     group: string;
     name: string;
     tags: string;
-}
-
-export interface IFontIcon extends IIcon {
-    className: string;
-}
-
-export interface IIconProps {
-    icon?: IFontIcon;
+    className: IconName;
 }
 
 const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/master/resources/icons";
 
 @ContextMenuTarget
-export class Icon extends React.PureComponent<IIconProps, {}> {
+export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
     public render() {
-        const { className, name, tags } = this.props.icon;
-
+        const { className, name, tags } = this.props;
         return (
             <ClickToCopy className="docs-icon" data-tags={tags} value={className}>
-                <span className={classNames("pt-icon-large", className)} />
+                <Icon iconName={className} iconSize={Icon.SIZE_LARGE} />
                 <span className="docs-icon-detail">
                     <div className="docs-icon-name">{name}</div>
                     <div className="docs-icon-class-name pt-monospace-text">{className}</div>
@@ -49,7 +40,7 @@ export class Icon extends React.PureComponent<IIconProps, {}> {
     }
 
     public renderContextMenu() {
-        const { className } = this.props.icon;
+        const { className } = this.props;
         return (
             <Menu>
                 <MenuItem
@@ -68,7 +59,7 @@ export class Icon extends React.PureComponent<IIconProps, {}> {
         );
     }
 
-    private handleClick16 = () => window.open(`${GITHUB_PATH}/16px/${this.props.icon.className}.svg`);
+    private handleClick16 = () => window.open(`${GITHUB_PATH}/16px/${this.props.className}.svg`);
 
-    private handleClick20 = () => window.open(`${GITHUB_PATH}/20px/${this.props.icon.className}.svg`);
+    private handleClick20 = () => window.open(`${GITHUB_PATH}/20px/${this.props.className}.svg`);
 }

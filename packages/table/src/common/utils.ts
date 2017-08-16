@@ -98,6 +98,14 @@ export const Utils = {
     },
 
     /**
+     * Returns traditional spreadsheet-style cell names
+     * e.g. (A1, B2, ..., Z44, AA1) with rows 1-indexed.
+     */
+    toBase26CellName(rowIndex: number, columnIndex: number) {
+        return `${Utils.toBase26Alpha(columnIndex)}${rowIndex + 1}`;
+    },
+
+    /**
      * Performs the binary search algorithm to find the index of the `value`
      * parameter in a sorted list of numbers. If `value` is not in the list, the
      * index where `value` can be inserted to maintain the sort is returned.

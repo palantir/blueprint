@@ -9,17 +9,15 @@ import * as React from "react";
 
 import { smartSearch } from "@blueprintjs/docs";
 
-import { Icon, IFontIcon, IIcon } from "./icon";
+import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
 
 const ICONS_PER_ROW = 5;
+
+type GroupedIcons = Record<string, IIcon[]>;
 
 export interface IIconsState {
     filter: string;
 }
-
-interface IGroupedIcons {
-    [name: string]: IIcon[];
-};
 
 export interface IIconsProps {
     iconFilter?: (query: string, icon: IIcon) => boolean;
@@ -38,18 +36,18 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
         filter: "",
     };
 
-    private iconGroups: {[name: string]: IIcon[]};
+    private iconGroups: GroupedIcons;
 
     public constructor(props?: IIconsProps, context?: any) {
         super(props, context);
 
-        this.iconGroups = props.icons.reduce((groups: IGroupedIcons, icon: IIcon) => {
+        this.iconGroups = props.icons.reduce<GroupedIcons>((groups, icon: IIcon) => {
             if (groups[icon.group] == null) {
                 groups[icon.group] = [];
             }
             groups[icon.group].push(icon);
             return groups;
-        }, {} as IGroupedIcons);
+        }, {});
         for (const group of Object.keys(this.iconGroups)) {
             this.iconGroups[group].sort((a, b) => a.name.localeCompare(b.name));
         }
@@ -109,10 +107,10 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
     }
 }
 
-function isIconFiltered(query: string, icon: IFontIcon) {
+function isIconFiltered(query: string, icon: IIcon) {
     return smartSearch(query, icon.name, icon.className, icon.tags, icon.group);
 }
 
-function renderIcon(icon: IFontIcon, index: number) {
-    return <Icon icon={icon} key={index} />;
+function renderIcon(icon: IIcon, index: number) {
+    return <DocsIcon {...icon} key={index} />;
 }

@@ -103,7 +103,8 @@ $control-group-stack: (
     color: $input-placeholder-color;
   }
 
-  &:focus {
+  &:focus,
+  &.pt-active {
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
   }
 

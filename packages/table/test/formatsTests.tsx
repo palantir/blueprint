@@ -51,6 +51,9 @@ describe("Formats", () => {
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
 
+        // This test was super flaky. It started failing without clear cause when the Table Frozen
+        // Columns/Rows changes merged, even though nothing about the TruncatedFormat component
+        // changed. Adding the position: relative rule fixes it, but more investigation is needed.
         it("can automatically truncate and show popover when truncated and word wrapped", () => {
             const str = `
                 We are going to die, and that makes us the lucky ones. Most
@@ -68,7 +71,7 @@ describe("Formats", () => {
                 majority have never stirred?
             `;
 
-            const style = { height: "200px" };
+            const style = { height: "200px", position: "relative" };
 
             const comp = harness.mount(
                 <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>

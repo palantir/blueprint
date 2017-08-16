@@ -42,6 +42,17 @@ describe("<Dialog>", () => {
         assert.isTrue(onClose.calledOnce);
     });
 
+    it("attempts to close when .pt-dialog-container element is moused down", () => {
+        const onClose = sinon.spy();
+        const dialog = mount(
+            <Dialog inline={true} isOpen={true} onClose={onClose}>
+                {createDialogContents()}
+            </Dialog>,
+        );
+        dialog.find(`.${Classes.DIALOG_CONTAINER}`).simulate("mousedown");
+        assert.isTrue(onClose.calledOnce);
+    });
+
     it("doesn't close when canOutsideClickClose=false and .pt-overlay-backdrop element is moused down", () => {
         const onClose = sinon.spy();
         const dialog = mount(
