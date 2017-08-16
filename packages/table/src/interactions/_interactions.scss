@@ -50,11 +50,18 @@ $reorder-handle-width: 15px !default;
   }
 }
 
+// break up this selector to reduce line length
 .bp-table-column-header-cell {
-  // break up this selector to reduce line length
-  &.bp-table-column-header-cell-has-reorder-handle {
-    &:not(.bp-table-column-header-cell-has-interaction-bar) .bp-table-column-name-text {
+  &.bp-table-column-header-cell-has-reorder-handle:not(.bp-table-column-header-cell-has-interaction-bar) {
+    .bp-table-column-name-text {
       padding-left: $reorder-handle-width;
+    }
+
+    // keep the editable cell input flush with the cell's left border
+    .bp-table-column-name .bp-table-editable-name.pt-editable-text {
+      &::before {
+        left: -$reorder-handle-width;
+      }
     }
   }
 }
