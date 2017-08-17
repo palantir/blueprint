@@ -66,12 +66,12 @@ $reorder-handle-width: 15px !default;
 .bp-table-reorder-handle-target {
   @include grabbable();
   display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  align-items: center;
-  justify-content: center;
   width: $reorder-handle-width;
   color: $gray3;
 
