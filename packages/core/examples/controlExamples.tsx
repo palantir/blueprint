@@ -15,7 +15,7 @@ export class CheckboxExample extends BaseExample<{}> {
         return (
             <div>
                 <label className={Classes.LABEL}>Assign responsibility</label>
-                <Checkbox label="Gilad Gray" defaultIndeterminate />
+                <Checkbox label="Gilad Gray" defaultIndeterminate={true} />
                 <Checkbox label="Jason Killian" />
                 <Checkbox label="Antoine Llorca" />
             </div>
@@ -31,7 +31,7 @@ export class SwitchExample extends BaseExample<IRadioExampleState> {
                 <label className={Classes.LABEL}>Privacy setting</label>
                 <Switch labelElement={<strong>Enabled</strong>} />
                 <Switch labelElement={<em>Public</em>} />
-                <Switch labelElement={<u>Cooperative</u>} defaultChecked />
+                <Switch labelElement={<u>Cooperative</u>} defaultChecked={true} />
                 <small>This example uses <code>labelElement</code> to demonstrate JSX labels.</small>
             </div>
         );

@@ -78,7 +78,7 @@ describe("<Tabs2>", () => {
     });
 
     it("renderActiveTabPanelOnly only renders active tab panel", () => {
-        const wrapper = mount(<Tabs2 id={ID} renderActiveTabPanelOnly>{getTabsContents()}</Tabs2>);
+        const wrapper = mount(<Tabs2 id={ID} renderActiveTabPanelOnly={true}>{getTabsContents()}</Tabs2>);
         for (const selectedTabId of TAB_IDS) {
             wrapper.setState({ selectedTabId });
             assert.lengthOf(wrapper.find("strong"), 1);
@@ -130,7 +130,7 @@ describe("<Tabs2>", () => {
         const wrapper = mount(
             <Tabs2 id={ID}>
                 <Tab2 id="first" title="First" panel={<Panel title="first" />} />,
-                <Tab2 disabled id="second" title="Second" panel={<Panel title="second" />} />,
+                <Tab2 disabled={true} id="second" title="Second" panel={<Panel title="second" />} />,
                 <Tab2 id="third" title="Third" panel={<Panel title="third" />} />,
             </Tabs2>,
             { attachTo: testsContainerElement },

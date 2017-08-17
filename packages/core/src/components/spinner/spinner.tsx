@@ -53,14 +53,14 @@ export class Spinner extends React.Component<ISpinnerProps, {}> {
             d: SPINNER_TRACK,
             pathLength: PATH_LENGTH,
             style,
-        });
+        } as React.DOMAttributes<SVGPathElement>);
 
-        return this.renderContainer(classes,
+        return this.renderContainer(classes, (
             <svg viewBox={classes.indexOf(Classes.SMALL) >= 0 ? "-15 -15 130 130" : "0 0 100 100"}>
                 <path className="pt-spinner-track" d={SPINNER_TRACK} />
                 {headElement}
-            </svg>,
-        );
+            </svg>
+        ));
     }
 
     // abstract away the container elements so SVGSpinner can do its own thing

@@ -71,7 +71,7 @@ describe("Hotkeys", () => {
                     <Hotkey
                         {...this.props}
                         combo="2"
-                        global
+                        global={true}
                         label="global hotkey"
                         onKeyDown={globalKeyDownSpy}
                         onKeyUp={globalKeyUpSpy}
@@ -145,7 +145,7 @@ describe("Hotkeys", () => {
             class ComboComponent extends React.Component<{}, {}> {
                 public renderHotkeys() {
                     return <Hotkeys>
-                        <Hotkey label="global hotkey" global combo={combo} onKeyDown={handleKeyDown} />
+                        <Hotkey label="global hotkey" global={true} combo={combo} onKeyDown={handleKeyDown} />
                     </Hotkeys>;
                 }
 

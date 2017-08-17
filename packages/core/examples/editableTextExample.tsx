@@ -48,7 +48,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                 maxLength={this.state.maxLength}
                 maxLines={12}
                 minLines={3}
-                multiline
+                multiline={true}
                 placeholder="Edit report... (controlled)"
                 selectAllOnFocus={this.state.selectAllOnFocus}
                 confirmOnEnterKey={this.state.confirmOnEnterKey}

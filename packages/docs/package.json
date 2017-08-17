@@ -17,8 +17,8 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
-    "@types/fuzzaldrin-plus": "0.0.1",
-    "bourbon": "4.2.2"
+    "@types/fuzzaldrin-plus": "^0.0.1",
+    "bourbon": "^4.3.4"
   },
   "repository": {
     "type": "git",

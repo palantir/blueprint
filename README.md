@@ -34,13 +34,23 @@ The other packages (`site-docs` and `site-landing`) are not published to NPM as 
 We use [Lerna](https://lernajs.io/) to manage inter-package dependencies in this monorepo.
 Builds are orchestrated via [Gulp](http://gulpjs.com/) tasks.
 
-__Prerequisite__: Node.js v6 or v7
+__Prerequisites__: Node.js v6+, Yarn v0.28+
 
-1. `git clone` this repository (or fork if you lack permissions)
-1. `npm install` to install build dependencies
-1. `npm run bootstrap` to install and link each package using [Lerna](https://lernajs.io/)
-1. `npm run gulp` to compile and start the server and watcher
-1. Open your browser to [localhost:9000/packages/site-docs/dist/](http://localhost:9000/packages/site-docs/dist/)
+1. `git clone` this repository (or fork if you lack permissions).
+1. `yarn` to install dependencies at the root of the repo.
+1. `yarn bootstrap` to install package dependencies install and symlink them using [Lerna](https://lernajs.io/).
+1. `yarn gulp` to compile and start the server and watcher.
+1. Open your browser to [localhost:9000/packages/site-docs/dist/](http://localhost:9000/packages/site-docs/dist/).
+
+### Updating build dependencies
+
+1. `yarn add <package-name>` or `yarn upgrade <package-name>`.
+1. Commit the result.
+
+### Updating package dependencies
+
+1. Update the relevant `package.json` file. Make sure to retain the `^` semver range.
+1. Run `yarn bootstrap` and commit the result.
 
 ## Contributing
 

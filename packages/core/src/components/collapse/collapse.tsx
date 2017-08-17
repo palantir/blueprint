@@ -133,15 +133,16 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
             transition: isAutoHeight ? "none" : undefined,
         };
 
-        // quick type cast because there's no single overload that supports all three ReactTypes (str | Cmp | SFC)
-        return React.createElement(this.props.component as string, {
+        // HACKHACK: type cast because there's no single overload that supports all
+        // three ReactTypes (string | ComponentClass | StatelessComponent)
+        return React.createElement(this.props.component as any, {
             className: classNames(Classes.COLLAPSE, this.props.className),
             style: containerStyle,
-        },
+        }, (
             <div className="pt-collapse-body" ref={this.contentsRefHandler} style={contentsStyle}>
                 {showContents ? this.props.children : null}
-            </div>,
-        );
+            </div>
+        ));
     }
 
     public componentDidMount() {

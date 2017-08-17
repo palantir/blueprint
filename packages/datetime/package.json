@@ -14,11 +14,11 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
-    "bourbon": "4.2.6",
-    "react": "15.5.1",
-    "react-addons-css-transition-group": "15.5.1",
-    "react-dom": "15.5.1",
-    "react-test-renderer": "15.5.4"
+    "bourbon": "^4.3.4",
+    "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.0",
+    "react-dom": "^15.6.1",
+    "react-test-renderer": "^15.6.1"
   },
   "repository": {
     "type": "git",
