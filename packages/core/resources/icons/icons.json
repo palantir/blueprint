@@ -2773,7 +2773,7 @@
   },
   {
     "name": "Bank account",
-    "className": "pt-icon-banl-account",
+    "className": "pt-icon-bank-account",
     "tags": "money, finance, funds",
     "group": "miscellaneous",
     "content": "\\e76f"
