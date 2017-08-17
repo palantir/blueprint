@@ -62,19 +62,6 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
   &.pt-fill {
     width: 100%;
   }
-}
-
-.pt-file-upload-input {
-  @include pt-input();
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: $pt-input-height;
-  padding-right: $file-upload-button-width + $input-padding-horizontal;
-  line-height: $pt-input-height;
-  color: $pt-text-color-muted;
-  user-select: none;
 
   // ::after so that it's relatively easy to add an icon with ::before
   &::after {
@@ -94,14 +81,6 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
     content: "Browse";
   }
 
-  &:hover::after {
-    @include pt-button-hover();
-  }
-
-  &:active::after {
-    @include pt-button-active();
-  }
-
   .pt-large & {
     height: $pt-input-height-large;
     padding-right: $file-upload-button-width-large + $input-padding-horizontal;
@@ -117,10 +96,15 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
     }
   }
 
-  .pt-dark & {
-    @include pt-dark-input();
-    color: $pt-dark-text-color-muted;
+  &:hover::after {
+    @include pt-button-hover();
+  }
 
+  &:active::after {
+    @include pt-button-active();
+  }
+
+  .pt-dark & {
     &::after {
       @include pt-dark-button();
     }
@@ -132,5 +116,24 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
     &:active::after {
       @include pt-dark-button-active();
     }
+  }
+}
+
+.pt-file-upload-input {
+  @include pt-input();
+  @include overflow-ellipsis();
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: $pt-input-height;
+  padding-right: $file-upload-button-width + $input-padding-horizontal;
+  line-height: $pt-input-height;
+  color: $pt-text-color-muted;
+  user-select: none;
+
+  .pt-dark & {
+    @include pt-dark-input();
+    color: $pt-dark-text-color-muted;
   }
 }
