@@ -1,6 +1,6 @@
 {
   "name": "blueprint",
-  "version": "1.25.0",
+  "version": "1.25.1",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "scripts": {
@@ -108,5 +108,8 @@
     "url": "git@github.com:palantir/blueprint.git"
   },
   "author": "Palantir Technologies",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "lerna": "2.0.0-beta.30"
+  }
 }

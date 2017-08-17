@@ -6819,6 +6819,8 @@ table.pt-table {
 
 .pt-dark .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
   background-color: #137cbd; }
+
+/*# sourceMappingURL=blueprint.css.map */
 /*
  * Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
  */
@@ -7000,14 +7002,12 @@ h6,
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
 
 .pt-dark pre {
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   background-color: transparent;
   padding: 0; }
 
 html {
   -webkit-text-size-adjust: 100%;
-     -moz-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
           text-size-adjust: 100%; }
 
@@ -7078,17 +7078,14 @@ header {
 
 .pt-info {
   position: relative;
-  -webkit-box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.4), 0 2px 6px rgba(16, 22, 26, 0.4);
-          box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.4), 0 2px 6px rgba(16, 22, 26, 0.4);
+  box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.2), 0 1px 1px rgba(16, 22, 26, 0.4), 0 2px 6px rgba(16, 22, 26, 0.4);
   background-color: #ffffff;
   padding: 0 0 90px; }
   .pt-info .pt-description {
     position: relative;
     margin-bottom: 100px;
-    -webkit-box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-            box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+    box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.1);
     background: #ffffff;
-    background-image: -webkit-gradient(linear, left top, right top, from(#ffffff), to(#ebf1f5));
     background-image: linear-gradient(to right, #ffffff, #ebf1f5);
     overflow: hidden;
     padding: 90px 0; }
@@ -7141,8 +7138,7 @@ header {
 
 .pt-getting-started {
   position: relative;
-  -webkit-box-shadow: 0 1px 0 rgba(16, 22, 26, 0.8);
-          box-shadow: 0 1px 0 rgba(16, 22, 26, 0.8);
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.8);
   background-image: radial-gradient(ellipse farthest-side at center -300px, rgba(32, 43, 51, 0) 0%, #202b33 100%);
   padding: 90px 0; }
   .pt-getting-started::before, .pt-getting-started::after {
@@ -7228,7 +7224,6 @@ header {
   text-align: left; }
   .pt-copyright::before {
     display: block;
-    background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), color-stop(50%, rgba(255, 255, 255, 0.3)), to(rgba(255, 255, 255, 0)));
     background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
     height: 1px;
     content: ""; }
@@ -7256,7 +7251,6 @@ header {
     padding-bottom: 80px; }
     .pt-info .pt-description {
       margin-bottom: 80px;
-      background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#ebf1f5));
       background-image: linear-gradient(to bottom, #ffffff, #ebf1f5);
       padding-top: 50px;
       padding-bottom: 250px; }

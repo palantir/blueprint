@@ -7,7 +7,7 @@
   "style": "dist/blueprint-labs.css",
   "unpkg": "dist/labs.bundle.js",
   "dependencies": {
-    "@blueprintjs/core": "^1.25.0",
+    "@blueprintjs/core": "^1.25.1",
     "classnames": "^2.2",
     "popper.js": "1.11.0",
     "pure-render-decorator": "^1.2.1",
