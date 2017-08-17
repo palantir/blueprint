@@ -44,9 +44,9 @@ describe("<MultiSelect>", () => {
         assert.equal((input.getDOMNode() as HTMLInputElement).placeholder, placeholder);
     });
 
-    it("tags can be bolded", () => {
-        const wrapper = multiselect({ tagRenderer: (film) => <b>{film.title}</b>, selectedItems: [TOP_100_FILMS[0]] });
-        assert.equal(wrapper.find(Tag).find("b").length, 1);
+    it("tagRenderer can return JSX", () => {
+        const wrapper = multiselect({ tagRenderer: (film) => <strong>{film.title}</strong>, selectedItems: [TOP_100_FILMS[0]] });
+        assert.equal(wrapper.find(Tag).find("strong").length, 1);
     });
 
     it("clicking item invokes onSelectItem with placeholder", () => {
