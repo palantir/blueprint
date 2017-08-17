@@ -62,7 +62,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /** Props to spread to `TagInput`. */
     tagInputProps?: Partial<ITagInputProps> & object;
 
-    /** Custom renderer to transform an item into an element for tags. */
+    /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
 }
 
