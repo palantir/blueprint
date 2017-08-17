@@ -30,13 +30,13 @@ dependencies:
   cache_directories:
     - ~/yarn
     - ~/.cache/yarn
-    - ~/blueprint/packages/core/node_modules
-    - ~/blueprint/packages/datetime/node_modules
-    - ~/blueprint/packages/docs/node_modules
-    - ~/blueprint/packages/labs/node_modules
-    - ~/blueprint/packages/site-docs/node_modules
-    - ~/blueprint/packages/site-landing/node_modules
-    - ~/blueprint/packages/table/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/core/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/datetime/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/docs/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/labs/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/site-docs/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/site-landing/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/table/node_modules
   # non-zero exit codes in `dependencies` group will fail the build early
   # so these following commands will block the build and prevent tests
   override:
