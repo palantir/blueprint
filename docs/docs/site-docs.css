@@ -7,67 +7,76 @@ and https://github.com/palantir/blueprint/blob/master/PATENTS
 */
 
 /**
- * 1. Change the default font family in all browsers (opinionated).
- * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
+ * 1. Correct the line height in all browsers.
+ * 2. Prevent adjustments of font size after orientation changes in
+ *    IE on Windows Phone and in iOS.
  */
 html {
-  font-family: sans-serif;
+  line-height: 1.15;
   
   -ms-text-size-adjust: 100%;
   
   -webkit-text-size-adjust: 100%;
    }
+
 /**
  * Remove the margin in all browsers (opinionated).
  */
 body {
   margin: 0; }
-
 /**
  * Add the correct display in IE 9-.
- * 1. Add the correct display in Edge, IE, and Firefox.
- * 2. Add the correct display in IE.
  */
 article,
 aside,
-details,
-figcaption,
-figure,
 footer,
 header,
-main,
-menu,
 nav,
-section,
-summary {
+section {
+  display: block; }
+/**
+ * Correct the font size and margin on `h1` elements within `section` and
+ * `article` contexts in Chrome, Firefox, and Safari.
+ */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0; }
+
+/**
+ * Add the correct display in IE 9-.
+ * 1. Add the correct display in IE.
+ */
+figcaption,
+figure,
+main {
   
   display: block; }
 /**
- * Add the correct display in IE 9-.
+ * Add the correct margin in IE 8.
  */
-audio,
-canvas,
-progress,
-video {
-  display: inline-block; }
+figure {
+  margin: 1em 40px; }
 /**
- * Add the correct display in iOS 4-7.
+ * 1. Add the correct box sizing in Firefox.
+ * 2. Show the overflow in Edge and IE.
  */
-audio:not([controls]) {
-  display: none;
-  height: 0; }
+hr {
+  -moz-box-sizing: content-box;
+       box-sizing: content-box;
+  
+  height: 0;
+  
+  overflow: visible;
+   }
 /**
- * Add the correct vertical alignment in Chrome, Firefox, and Opera.
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
  */
-progress {
-  vertical-align: baseline; }
-/**
- * Add the correct display in IE 10-.
- * 1. Add the correct display in IE.
- */
-template,
-[hidden] {
-  display: none; }
+pre {
+  font-family: monospace, monospace;
+  
+  font-size: 1em;
+   }
 
 /**
  * 1. Remove the gray background on active links in IE 10.
@@ -79,15 +88,7 @@ a {
   -webkit-text-decoration-skip: objects;
    }
 /**
- * Remove the outline on focused links when they are also active or hovered
- * in all browsers (opinionated).
- */
-a:active,
-a:hover {
-  outline-width: 0; }
-
-/**
- * 1. Remove the bottom border in Firefox 39-.
+ * 1. Remove the bottom border in Chrome 57- and Firefox 39-.
  * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
  */
 abbr[title] {
@@ -112,17 +113,21 @@ b,
 strong {
   font-weight: bolder; }
 /**
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+code,
+kbd,
+samp {
+  font-family: monospace, monospace;
+  
+  font-size: 1em;
+   }
+/**
  * Add the correct font style in Android 4.3-.
  */
 dfn {
   font-style: italic; }
-/**
- * Correct the font size and margin on `h1` elements within `section` and
- * `article` contexts in Chrome, Firefox, and Safari.
- */
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0; }
 /**
  * Add the correct background and color in IE 9-.
  */
@@ -150,6 +155,18 @@ sup {
   top: -0.5em; }
 
 /**
+ * Add the correct display in IE 9-.
+ */
+audio,
+video {
+  display: inline-block; }
+/**
+ * Add the correct display in iOS 4-7.
+ */
+audio:not([controls]) {
+  display: none;
+  height: 0; }
+/**
  * Remove the border on images inside links in IE 10-.
  */
 img {
@@ -161,52 +178,22 @@ svg:not(:root) {
   overflow: hidden; }
 
 /**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
-code,
-kbd,
-pre,
-samp {
-  font-family: monospace, monospace;
-  
-  font-size: 1em;
-   }
-/**
- * Add the correct margin in IE 8.
- */
-figure {
-  margin: 1em 40px; }
-/**
- * 1. Add the correct box sizing in Firefox.
- * 2. Show the overflow in Edge and IE.
- */
-hr {
-  -moz-box-sizing: content-box;
-       box-sizing: content-box;
-  
-  height: 0;
-  
-  overflow: visible;
-   }
-
-/**
- * 1. Change font properties to `inherit` in all browsers (opinionated).
+ * 1. Change the font styles in all browsers (opinionated).
  * 2. Remove the margin in Firefox and Safari.
  */
 button,
 input,
+optgroup,
 select,
 textarea {
-  font: inherit;
+  font-family: sans-serif;
+  
+  font-size: 100%;
+  
+  line-height: 1.15;
   
   margin: 0;
    }
-/**
- * Restore the font weight unset by the previous rule.
- */
-optgroup {
-  font-weight: bold; }
 /**
  * Show the overflow in IE.
  * 1. Show the overflow in Edge.
@@ -252,12 +239,10 @@ button:-moz-focusring,
 [type="submit"]:-moz-focusring {
   outline: 1px dotted ButtonText; }
 /**
- * Change the border, margin, and padding in all browsers (opinionated).
+ * Correct the padding in Firefox.
  */
 fieldset {
-  border: 1px solid #c0c0c0;
-  margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em; }
+  padding: 0.35em 0.75em 0.625em; }
 /**
  * 1. Correct the text wrapping in Edge and IE.
  * 2. Correct the color inheritance from `fieldset` elements in IE.
@@ -277,6 +262,15 @@ legend {
   padding: 0;
   
   white-space: normal;
+   }
+/**
+ * 1. Add the correct display in IE 9-.
+ * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.
+ */
+progress {
+  display: inline-block;
+  
+  vertical-align: baseline;
    }
 /**
  * Remove the default vertical scrollbar in IE.
@@ -310,17 +304,11 @@ textarea {
   outline-offset: -2px;
    }
 /**
- * Remove the inner padding and cancel buttons in Chrome and Safari on OS X.
+ * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.
  */
 [type="search"]::-webkit-search-cancel-button,
 [type="search"]::-webkit-search-decoration {
   -webkit-appearance: none; }
-/**
- * Correct the text style of placeholders in Chrome, Edge, and Safari.
- */
-::-webkit-input-placeholder {
-  color: inherit;
-  opacity: 0.54; }
 /**
  * 1. Correct the inability to style clickable types in iOS and Safari.
  * 2. Change font properties to `inherit` in Safari.
@@ -330,6 +318,30 @@ textarea {
   
   font: inherit;
    }
+
+details,
+menu {
+  display: block; }
+
+summary {
+  display: list-item; }
+
+/**
+ * Add the correct display in IE 9-.
+ */
+canvas {
+  display: inline-block; }
+/**
+ * Add the correct display in IE.
+ */
+template {
+  display: none; }
+
+/**
+ * Add the correct display in IE 10-.
+ */
+[hidden] {
+  display: none; }
 /**
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
@@ -4722,7 +4734,7 @@ span.pt-icon::before {
   content: ""; }
 .pt-icon-paragraph::before {
   content: ""; }
-.pt-icon-banl-account::before {
+.pt-icon-bank-account::before {
   content: ""; }
 .pt-icon-cell-tower::before {
   content: ""; }
