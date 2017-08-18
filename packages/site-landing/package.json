@@ -22,7 +22,7 @@
     "watch": "onchange 'src/**' -- npm-run-all build:copy build:webpack"
   },
   "devDependencies": {
-    "@blueprintjs/core": "^1.14.0",
+    "@blueprintjs/core": "^1.25.1",
     "autoprefixer": "^7.1.2",
     "classnames": "^2.2.5",
     "css-loader": "^0.28.4",
