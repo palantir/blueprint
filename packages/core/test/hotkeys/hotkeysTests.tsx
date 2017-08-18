@@ -14,6 +14,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
+import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 import {
     comboMatches,
     getKeyCombo,
@@ -406,6 +407,23 @@ describe("Hotkeys", () => {
                 parseKeyCombo("win + F"),
                 parseKeyCombo("meta + f"),
             )).to.be.true;
+        });
+    });
+
+    describe("normalizeKeyCombo", () => {
+        it("refers to meta key as 'ctrl' on Windows", () => {
+            expect(normalizeKeyCombo("meta + s", "Win32")).to.deep.equal(["ctrl", "s"]);
+        });
+
+        it("refers to meta key as 'cmd' on Mac", () => {
+            expect(normalizeKeyCombo("meta + s", "Mac")).to.deep.equal(["cmd", "s"]);
+            expect(normalizeKeyCombo("meta + s", "iPhone")).to.deep.equal(["cmd", "s"]);
+            expect(normalizeKeyCombo("meta + s", "iPod")).to.deep.equal(["cmd", "s"]);
+            expect(normalizeKeyCombo("meta + s", "iPad")).to.deep.equal(["cmd", "s"]);
+        });
+
+        it("refers to meta key as 'ctrl' on Linux and other platforms", () => {
+            expect(normalizeKeyCombo("meta + s", "linux")).to.deep.equal(["ctrl", "s"]);
         });
     });
 });
