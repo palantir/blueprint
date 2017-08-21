@@ -124,8 +124,8 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
         } = this.props;
 
         const classes = classNames(spreadableProps.className, Classes.TABLE_COLUMN_HEADER_CELL, {
-            [Classes.TABLE_COLUMN_HEADER_CELL_HAS_INTERACTION_BAR]: useInteractionBar,
-            [Classes.TABLE_COLUMN_HEADER_CELL_HAS_REORDER_HANDLE]: this.props.reorderHandle != null,
+            [Classes.TABLE_HAS_INTERACTION_BAR]: useInteractionBar,
+            [Classes.TABLE_HAS_REORDER_HANDLE]: this.props.reorderHandle != null,
         });
 
         return (

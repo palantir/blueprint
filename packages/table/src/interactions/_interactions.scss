@@ -50,9 +50,7 @@ $reorder-handle-width: 15px !default;
   }
 }
 
-// we either need a long selector or a deeply nested selector here. prefer the former.
-// stylelint-disable max-line-length
-.bp-table-column-header-cell.bp-table-column-header-cell-has-reorder-handle:not(.bp-table-column-header-cell-has-interaction-bar) {
+.bp-table-column-header-cell.bp-table-has-reorder-handle:not(.bp-table-has-interaction-bar) {
   .bp-table-column-name-text {
     padding-left: $reorder-handle-width;
   }
