@@ -31,7 +31,6 @@ $table-quadrant-scroll-container-overflow: 20px;
 
 .bp-table-quadrant-scroll-container {
   @include force-hardware-acceleration();
-  flex: 1 1 100%;
   position: relative;
   top: 0;
   right: 0;
