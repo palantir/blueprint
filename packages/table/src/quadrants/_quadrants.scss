@@ -62,8 +62,7 @@ $table-quadrant-scroll-container-overflow: 20px;
   top: auto;
   left: auto;
   z-index: $table-quadrant-z-index-main;
-  // the MAIN quadrant's scroll bars should be visible and should be flush with the right and
-  // bottom edges of the table.
+  // the MAIN quadrant should fill the whole table so that ghost cells will be visible if enabled
   width: 100%;
   height: 100%;
 
