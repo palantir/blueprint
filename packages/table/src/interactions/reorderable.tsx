@@ -122,20 +122,19 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
 
             // cache for easy access later in the lifecycle
             const selectedInterval = isRowHeader ? selectedRegion.rows : selectedRegion.cols;
-
             this.selectedRegionStartIndex = selectedInterval[0];
             // add 1 because the selected interval is inclusive, which simple subtraction doesn't
             // account for (e.g. in a FULL_COLUMNS range from 3 to 6, 6 - 3 = 3, but the selection
             // actually includes four columns: 3, 4, 5, and 6)
             this.selectedRegionLength = selectedInterval[1] - selectedInterval[0] + 1;
         } else {
+            // select the new region to avoid complex and unintuitive UX w/r/t the existing selection
+            this.props.onSelection([region]);
+
             const regionRange = isRowHeader ? region.rows : region.cols;
             this.selectedRegionStartIndex = regionRange[0];
             this.selectedRegionLength = regionRange[1] - regionRange[0] + 1;
         }
-
-        // the region to be reordered becomes the only selection
-        this.props.onSelection([region]);
 
         return true;
     }
