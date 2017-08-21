@@ -81,11 +81,6 @@ $tab-indicator-width: 3px !default;
   > *:not(:last-child) {
     margin-right: $pt-grid-size * 2;
   }
-
-  &.pt-large > .pt-tab {
-    line-height: $pt-button-height-large;
-    font-size: $pt-font-size-large;
-  }
 }
 
 .pt-tab {
@@ -123,6 +118,11 @@ $tab-indicator-width: 3px !default;
 
   &:focus {
     -moz-outline-radius: 0;
+  }
+
+  .pt-large > & {
+    line-height: $pt-button-height-large;
+    font-size: $pt-font-size-large;
   }
 }
 
