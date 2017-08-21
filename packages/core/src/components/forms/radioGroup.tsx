@@ -20,6 +20,11 @@ export interface IRadioGroupProps extends IProps {
      */
     disabled?: boolean;
 
+    /**
+     * True if radio buttons are to be displayed inline horizontally.
+     */
+    inline?: boolean;
+
     /** Optional label text to display above the radio buttons. */
     label?: string;
 
@@ -89,11 +94,12 @@ export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
     }
 
     private getRadioProps(optionProps: IOptionProps) {
-        const { name } = this.props;
+        const { name, inline } = this.props;
         const { value, disabled } = optionProps;
         return {
             checked: value === this.props.selectedValue,
             disabled: disabled || this.props.disabled,
+            inline: inline == null ? false : inline,
             name: name == null ? this.autoGroupName : name,
             onChange: this.props.onChange,
         };

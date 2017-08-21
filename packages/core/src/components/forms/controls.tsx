@@ -34,6 +34,9 @@ export interface IControlProps extends IProps, HTMLInputProps {
     /** Ref handler that receives HTML `<input>` element backing this component. */
     inputRef?: (ref: HTMLInputElement) => any;
 
+    /** Whether the control is inline. */
+    inline?: boolean;
+
     /**
      * Text label for the control.
      *
@@ -72,6 +75,7 @@ export class Control<P extends IControlProps> extends React.Component<P, {}> {
             typeClassName,
             { [Classes.DISABLED]: this.props.disabled },
             this.props.className,
+            { [Classes.INLINE]: this.props.inline },
         );
         const inputProps = removeNonHTMLProps(this.props, INVALID_PROPS, true);
         return (
