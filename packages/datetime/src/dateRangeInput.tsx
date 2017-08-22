@@ -33,6 +33,7 @@ import {
     isMomentNull,
     isMomentValidAndInRange,
     MomentDateRange,
+    toLocalizedDateString,
 } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import {
@@ -797,11 +798,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             return this.props.invalidDateMessage;
         } else {
             const format = (formatOverride != null) ? formatOverride : this.props.format;
-            if (this.props.locale) {
-                return momentDate.locale(this.props.locale).format(format);
-            } else {
-                return momentDate.format(format);
-            }
+            return toLocalizedDateString(momentDate, format, this.props.locale);
         }
     }
 
