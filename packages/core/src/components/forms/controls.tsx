@@ -73,9 +73,11 @@ export class Control<P extends IControlProps> extends React.Component<P, {}> {
         const className = classNames(
             Classes.CONTROL,
             typeClassName,
-            { [Classes.DISABLED]: this.props.disabled },
+            {
+                [Classes.DISABLED]: this.props.disabled,
+                [Classes.INLINE]: this.props.inline,
+            },
             this.props.className,
-            { [Classes.INLINE]: this.props.inline },
         );
         const inputProps = removeNonHTMLProps(this.props, INVALID_PROPS, true);
         return (
