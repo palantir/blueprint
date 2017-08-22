@@ -297,7 +297,7 @@ describe("<DateInput>", () => {
             assert.isTrue(onChange.calledWith(null));
         });
 
-        it("Formats locale specific format strings properly", () => {
+        it("Formats locale-specific format strings properly", () => {
             const wrapper = mount(<DateInput locale="de" format="L" value={DATE2}/>);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_DE_STR);
         });
