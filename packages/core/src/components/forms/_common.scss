@@ -97,11 +97,7 @@ $control-group-stack: (
   transition: $input-transition;
   appearance: none;
 
-  &::placeholder {
-    // normalize.css sets an opacity less than 1, we don't want this
-    opacity: 1;
-    color: $input-placeholder-color;
-  }
+  @include pt-input-placeholder();
 
   &:focus,
   &.pt-active {
@@ -123,6 +119,14 @@ $control-group-stack: (
   &:disabled,
   &.pt-disabled {
     @include pt-input-disabled();
+  }
+}
+
+@mixin pt-input-placeholder() {
+  &::placeholder {
+    // normalize.css sets an opacity less than 1, we don't want this
+    opacity: 1;
+    color: $input-placeholder-color;
   }
 }
 
