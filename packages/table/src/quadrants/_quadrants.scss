@@ -1,6 +1,6 @@
 
-@import "../../core/src/common/mixins";
-@import "./common/variables";
+@import "~@blueprintjs/core/src/common/mixins";
+@import "../common/variables";
 
 $table-quadrant-z-index-main: 0;
 $table-quadrant-z-index-top: $table-quadrant-z-index-main + 1;
