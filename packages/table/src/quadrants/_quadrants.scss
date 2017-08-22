@@ -12,6 +12,11 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
 // overflow within their parents; it should be large enough to hide a scrollbar of typical width.
 $table-quadrant-scroll-container-overflow: 20px;
 
+.bp-table-quadrant-stack {
+  display: flex;
+  height: 100%;
+}
+
 .bp-table-quadrant {
   position: absolute;
   top: 0;
@@ -26,7 +31,7 @@ $table-quadrant-scroll-container-overflow: 20px;
 
 .bp-table-quadrant-scroll-container {
   @include force-hardware-acceleration();
-  position: absolute;
+  position: relative;
   top: 0;
   right: 0;
   bottom: 0;
@@ -51,9 +56,22 @@ $table-quadrant-scroll-container-overflow: 20px;
 }
 
 .bp-table-quadrant-main {
-  right: 0;
-  bottom: 0;
+  // use `relative` to ensure the table can size itself according to the MAIN quadrant's contents alone.
+  // other quadrants should remain `absolute` to ensure they're taken out of the document flow.
+  position: relative;
+  top: auto;
+  left: auto;
   z-index: $table-quadrant-z-index-main;
+  // the MAIN quadrant should fill the whole table so that ghost cells will be visible if enabled
+  width: 100%;
+  height: 100%;
+
+  .bp-table-quadrant-scroll-container {
+    // the MAIN quadrant's scroll bars should be visible and should be flush with the right and
+    // bottom edges of the table.
+    width: 100%;
+    height: 100%;
+  }
 
   .bp-table-cell-client {
     background: $white;
@@ -75,7 +93,11 @@ $table-quadrant-scroll-container-overflow: 20px;
   z-index: $table-quadrant-z-index-left;
 
   .bp-table-quadrant-scroll-container {
+    position: absolute;
+    top: 0;
     right: -$table-quadrant-scroll-container-overflow;
+    bottom: 0;
+    height: auto;
     overflow-x: hidden;
   }
 }

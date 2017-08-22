@@ -49,6 +49,7 @@ export const TABLE_QUADRANT_BODY_CONTAINER = "bp-table-quadrant-body-container";
 export const TABLE_QUADRANT_LEFT = "bp-table-quadrant-left";
 export const TABLE_QUADRANT_MAIN = "bp-table-quadrant-main";
 export const TABLE_QUADRANT_SCROLL_CONTAINER = "bp-table-quadrant-scroll-container";
+export const TABLE_QUADRANT_STACK = "bp-table-quadrant-stack";
 export const TABLE_QUADRANT_TOP = "bp-table-quadrant-top";
 export const TABLE_QUADRANT_TOP_LEFT = "bp-table-quadrant-top-left";
 export const TABLE_REGION = "bp-table-region";
