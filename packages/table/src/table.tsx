@@ -599,11 +599,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      *   CELLS:
      *   Scroll the top-left cell in the target region to the top-left corner of the viewport.
      *
-     *   FULL_COLUMNS:
-     *   Scroll the left-most column in the target region to the left side of the viewport.
-     *
      *   FULL_ROWS:
      *   Scroll the top-most row in the target region to the top of the viewport.
+     *
+     *   FULL_COLUMNS:
+     *   Scroll the left-most column in the target region to the left side of the viewport.
      *
      *   FULL_TABLE:
      *   Scroll the top-left cell to the top-left corner of the viewport.
@@ -612,8 +612,28 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * simply scroll the target region as close to the top-left as possible until the bottom-right
      * corner is reached.
      */
-    public scrollToRegion(region: IRegion, animated?: boolean = false) {
-        // TODO implement!
+    public scrollToRegion(region: IRegion, _animated: boolean = false) {
+        const { viewportRect } = this.state;
+        const nextViewportRect = this.getViewportRectForRegionScrollTarget(region, viewportRect);
+        this.updateViewportRect(nextViewportRect);
+    }
+
+    private getViewportRectForRegionScrollTarget(region: IRegion, viewportRect: Rect) {
+        const cardinality = Regions.getRegionCardinality(region);
+        if (cardinality === RegionCardinality.CELLS) {
+            const nextLeft = this.grid.getCumulativeWidthBefore(region.cols[0]);
+            const nextTop = this.grid.getCumulativeHeightBefore(region.rows[0]);
+            return new Rect(nextLeft, nextTop, viewportRect.width, viewportRect.height);
+        } else if (cardinality === RegionCardinality.FULL_ROWS) {
+            const nextTop = this.grid.getCumulativeHeightBefore(region.rows[0]);
+            return new Rect(viewportRect.left, nextTop, viewportRect.width, viewportRect.height);
+        } else if (cardinality === RegionCardinality.FULL_COLUMNS) {
+            const nextLeft = this.grid.getCumulativeWidthBefore(region.cols[0]);
+            return new Rect(nextLeft, viewportRect.top, viewportRect.width, viewportRect.height);
+        } else {
+            // FULL_TABLE
+            return new Rect(0, 0, viewportRect.width, viewportRect.height);
+        }
     }
 
     /**
