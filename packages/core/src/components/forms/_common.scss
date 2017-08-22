@@ -82,6 +82,8 @@ $control-group-stack: (
 }
 
 @mixin pt-input() {
+  @include pt-input-placeholder();
+
   outline: none;
   border: none;
   border-radius: $pt-border-radius;
@@ -96,8 +98,6 @@ $control-group-stack: (
   font-weight: $input-font-weight;
   transition: $input-transition;
   appearance: none;
-
-  @include pt-input-placeholder();
 
   &:focus,
   &.pt-active {
