@@ -2307,7 +2307,7 @@ describe("<DateRangeInput>", () => {
         });
 
         it("Formats locale-specific format strings properly", () => {
-            const { root } = wrap(<DateRangeInput locale="de" format="L" value={DATE_RANGE_2}/>);
+            const { root } = wrap(<DateRangeInput locale="de" format="L" value={DATE_RANGE_2} />);
             assertInputTextsEqual(root, START_DE_STR_2, END_DE_STR_2);
         });
     });
