@@ -256,6 +256,10 @@ describe("<Table>", () => {
     });
 
     describe("Quadrants", () => {
+        // constrain the container to a smaller size to force scrolling
+        const CONTAINER_HEIGHT = 500;
+        const CONTAINER_WIDTH = 500;
+
         const NUM_ROWS = 5;
         const NUM_COLUMNS = 5;
         const NUM_FROZEN_ROWS = 1;
@@ -562,13 +566,15 @@ describe("<Table>", () => {
             document.body.appendChild(containerElement);
 
             const tableComponent = ReactDOM.render(
-                <Table
-                    numRows={LARGE_NUM_ROWS}
-                    numFrozenColumns={NUM_FROZEN_COLUMNS}
-                    numFrozenRows={NUM_FROZEN_ROWS}
-                >
-                    {renderColumns({}, LARGE_NUM_COLUMNS)}
-                </Table>,
+                <div style={{ height: CONTAINER_HEIGHT, width: CONTAINER_WIDTH }}>
+                    <Table
+                        numRows={LARGE_NUM_ROWS}
+                        numFrozenColumns={NUM_FROZEN_COLUMNS}
+                        numFrozenRows={NUM_FROZEN_ROWS}
+                    >
+                        {renderColumns({}, LARGE_NUM_COLUMNS)}
+                    </Table>
+                </div>,
                 containerElement,
             ) as Table;
 
