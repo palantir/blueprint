@@ -45,7 +45,10 @@ describe("<MultiSelect>", () => {
     });
 
     it("tagRenderer can return JSX", () => {
-        const wrapper = multiselect({ tagRenderer: (film) => <strong>{film.title}</strong>, selectedItems: [TOP_100_FILMS[0]] });
+        const wrapper = multiselect({
+            selectedItems: [TOP_100_FILMS[0]],
+            tagRenderer: (film) => <strong>{film.title}</strong>,
+        });
         assert.equal(wrapper.find(Tag).find("strong").length, 1);
     });
 
