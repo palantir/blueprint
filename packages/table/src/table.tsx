@@ -590,6 +590,33 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     /**
+     * Scroll the viewport such that the target region ends up in the top-left corner. If `animated`
+     * is `true`, the table will animate the scroll. This can help users better understand how the
+     * table has shifted.
+     *
+     * Scrolling will behave for each region cardinality as follows:
+     *
+     *   CELLS:
+     *   Scroll the top-left cell in the target region to the top-left corner of the viewport.
+     *
+     *   FULL_COLUMNS:
+     *   Scroll the left-most column in the target region to the left side of the viewport.
+     *
+     *   FULL_ROWS:
+     *   Scroll the top-most row in the target region to the top of the viewport.
+     *
+     *   FULL_TABLE:
+     *   Scroll the top-left cell to the top-left corner of the viewport.
+     *
+     * If the target region is close to the bottom-right corner of the table, this function will
+     * simply scroll the target region as close to the top-left as possible until the bottom-right
+     * corner is reached.
+     */
+    public scrollToRegion(region: IRegion, animated?: boolean = false) {
+        // TODO implement!
+    }
+
+    /**
      * When the component mounts, the HTML Element refs will be available, so
      * we constructor the Locator, which queries the elements' bounding
      * ClientRects.
