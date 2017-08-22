@@ -9,7 +9,9 @@ $resize-handle-padding: 2px !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 
-$reorder-handle-width: 15px !default;
+// we want to square off the margin around the handle
+// so we need a special value based on the handle icon shape
+$reorder-handle-width: 22px !default;
 
 @mixin grabbable() {
   cursor: grab;
@@ -71,14 +73,14 @@ $reorder-handle-width: 15px !default;
   bottom: 0;
   left: 0;
   width: $reorder-handle-width;
-  color: $gray3;
+  color: $pt-text-color-disabled;
 
   &:hover {
-    color: $pt-text-color-muted;
+    color: $pt-icon-color-hover;
   }
 
   &:active {
-    color: $pt-text-color;
+    color: $pt-intent-primary;
   }
 }
 
