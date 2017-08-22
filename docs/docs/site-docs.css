@@ -7493,6 +7493,10 @@ table.pt-table.pt-interactive tbody tr:hover td {
   cursor: grabbing; }
 .bp-table-reordering .bp-table-reordering-cursor-overlay {
   pointer-events: all; }
+.bp-table-quadrant-stack {
+  display: -webkit-flex;
+  display: flex;
+  height: 100%; }
 .bp-table-quadrant {
   position: absolute;
   top: 0;
@@ -7504,7 +7508,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-quadrant-scroll-container {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  position: absolute;
+  position: relative;
   top: 0;
   right: 0;
   bottom: 0;
@@ -7521,9 +7525,15 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-quadrant-body-container {
   position: relative; }
 .bp-table-quadrant-main {
-  right: 0;
-  bottom: 0;
-  z-index: 0; }
+  position: relative;
+  top: auto;
+  left: auto;
+  z-index: 0;
+  width: 100%;
+  height: 100%; }
+.bp-table-quadrant-main .bp-table-quadrant-scroll-container {
+  width: 100%;
+  height: 100%; }
 .bp-table-quadrant-main .bp-table-cell-client {
   background: #ffffff; }
 .bp-table-quadrant-top {
@@ -7536,7 +7546,11 @@ table.pt-table.pt-interactive tbody tr:hover td {
   bottom: 0;
   z-index: 2; }
 .bp-table-quadrant-left .bp-table-quadrant-scroll-container {
+  position: absolute;
+  top: 0;
   right: -20px;
+  bottom: 0;
+  height: auto;
   overflow-x: hidden; }
 .bp-table-quadrant-top-left {
   z-index: 3; }
