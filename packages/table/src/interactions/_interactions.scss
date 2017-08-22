@@ -56,7 +56,7 @@ $reorder-handle-width: 15px !default;
   }
 
   // keep the editable cell input flush with the cell's left border
-  .bp-table-column-name .bp-table-editable-name.pt-editable-text::before {
+  .bp-table-editable-name::before {
     left: -$reorder-handle-width;
   }
 }

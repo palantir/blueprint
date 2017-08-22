@@ -699,9 +699,9 @@ describe("<Table>", () => {
         const OFFSET_X = (NEW_INDEX + LENGTH) * WIDTH_IN_PX - REORDER_HANDLE_WIDTH_IN_PX;
         const OFFSET_Y = (NEW_INDEX + LENGTH) * HEIGHT_IN_PX;
 
-        const onColumnsReordered: Sinon.SinonSpy = sinon.spy();
-        const onRowsReordered: Sinon.SinonSpy = sinon.spy();
-        const onSelection: Sinon.SinonSpy = sinon.spy();
+        const onColumnsReordered = sinon.spy();
+        const onRowsReordered = sinon.spy();
+        const onSelection = sinon.spy();
 
         afterEach(() => {
             onColumnsReordered.reset();
@@ -765,8 +765,7 @@ describe("<Table>", () => {
                 isColumnReorderable: true,
                 onColumnsReordered,
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
-            headerCell
+            getHeaderCell(getColumnHeadersWrapper(table), 0)
                 .mouse("mousedown")
                 .mouse("mousemove", OFFSET_X)
                 .mouse("mouseup", OFFSET_X);

@@ -143,7 +143,7 @@ describe("<ColumnHeaderCell>", () => {
     });
 
     describe("Reorder handle", () => {
-        const REORDER_HANDLE_CLASS = "bp-table-reorder-handle-target";
+        const REORDER_HANDLE_CLASS = Classes.TABLE_REORDER_HANDLE_TARGET;
 
         it("shows reorder handle in interaction bar if reordering and interaction bar are enabled", () => {
             const element = mount({ useInteractionBar: true, isColumnReorderable: true });
