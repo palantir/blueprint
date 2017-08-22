@@ -95,9 +95,8 @@ $table-quadrant-scroll-container-overflow: 20px;
   .bp-table-quadrant-scroll-container {
     position: absolute;
     right: -$table-quadrant-scroll-container-overflow;
-    overflow-x: hidden;
-    // stretch to the full height of the table
     height: 100%;
+    overflow-x: hidden;
   }
 }
 
