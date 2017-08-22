@@ -50,6 +50,6 @@ Styleguide pt-non-ideal-state
 
 .pt-non-ideal-state-title,
 .pt-non-ideal-state-description {
-  text-align: center;
   max-width: 100%; // for Internet Explorer (https://github.com/palantir/blueprint/issues/1193)
+  text-align: center;
 }
