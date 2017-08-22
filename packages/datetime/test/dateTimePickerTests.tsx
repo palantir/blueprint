@@ -8,7 +8,6 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-
 import { DateTimePicker } from "../src/dateTimePicker";
 import { Classes, DatePicker, TimePicker } from "../src/index";
 
@@ -101,6 +100,14 @@ describe("<DateTimePicker>", () => {
                 assert.isFalse(getSelectedDay().exists());
             });
         }
+
+        it("Passing the same value prop twice does not clear the selected date", () => {
+            const { root, getSelectedDay } = wrap(<DateTimePicker />);
+            assert.isTrue(getSelectedDay().exists());
+            root.setProps({ value: undefined });
+            assert.isNotNull(root.state("dateValue"));
+            assert.isTrue(getSelectedDay().exists());
+        });
     });
 
     function wrap(dtp: JSX.Element) {
@@ -116,4 +123,5 @@ describe("<DateTimePicker>", () => {
             root,
         };
     }
+
 });
