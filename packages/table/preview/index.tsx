@@ -153,6 +153,12 @@ const CELL_CONTENT_GENERATORS = {
 class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<string>();
 
+    private tableInstance: Table;
+
+    private refHandlers = {
+        table: (ref: Table) => this.tableInstance = ref,
+    };
+
     public constructor(props: any, context?: any) {
         super(props, context);
 
@@ -210,6 +216,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     isRowResizable={this.state.enableRowResizing}
                     loadingOptions={this.getEnabledLoadingOptions()}
                     numRows={this.state.numRows}
+                    ref={this.refHandlers.table}
                     renderBodyContextMenu={this.renderBodyContextMenu}
                     renderRowHeader={this.renderRowHeader}
                     selectionModes={this.getEnabledSelectionModes()}
@@ -237,6 +244,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public componentDidMount() {
+        if (typeof window !== "undefined") {
+            (window as any).tableInstance = this.tableInstance;
+        }
         this.syncFocusStyle();
     }
 
