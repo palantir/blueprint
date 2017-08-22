@@ -680,24 +680,22 @@ describe("<Table>", () => {
     });
 
     describe("Reordering", () => {
-        // Phantom renders the table at a fixed width regardless of the number of columns. if
-        // NEW_INDEX is too big, we risk simulating mouse events that fall outside of the table
-        // bounds, which causes tests to fail.
         const OLD_INDEX = 0;
         const NEW_INDEX = 1;
         const LENGTH = 2;
         const NUM_COLUMNS = 5;
         const NUM_ROWS = 5;
 
-        const REORDER_HANDLE_WIDTH_IN_PX = 15;
+        // considerations:
+        // - make the rows and columns fit exactly in the table dimensions; not trying to test scrolling.
+        // - ensure the columns are wide enough to fit their reorder handle.
+        const CONTAINER_WIDTH_IN_PX = 200;
+        const CONTAINER_HEIGHT_IN_PX = 200;
+        const ROW_HEIGHT_IN_PX = CONTAINER_HEIGHT_IN_PX / NUM_ROWS;
+        const COLUMN_WIDTH_IN_PX = CONTAINER_WIDTH_IN_PX / NUM_COLUMNS;
 
-        // table hardcodes itself to 60px tall in Phantom, so use small enough sizes to ensure
-        // all rows fit. also, ensure the columns are wide enough to fit their reorder handle.
-        const HEIGHT_IN_PX = 5;
-        const WIDTH_IN_PX = 20;
-
-        const OFFSET_X = (NEW_INDEX + LENGTH) * WIDTH_IN_PX - REORDER_HANDLE_WIDTH_IN_PX;
-        const OFFSET_Y = (NEW_INDEX + LENGTH) * HEIGHT_IN_PX;
+        const OFFSET_X = (NEW_INDEX + LENGTH) * COLUMN_WIDTH_IN_PX;
+        const OFFSET_Y = (NEW_INDEX + LENGTH) * ROW_HEIGHT_IN_PX;
 
         const onColumnsReordered = sinon.spy();
         const onRowsReordered = sinon.spy();
@@ -717,12 +715,12 @@ describe("<Table>", () => {
             });
             const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
             const reorderHandle = getReorderHandle(headerCell);
-            reorderHandle.mouse("mousedown").mouse("mousemove", OFFSET_X);
+            reorderHandle.mouse("mousedown").mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle));
 
             const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
             expect(guide).to.exist;
 
-            reorderHandle.mouse("mouseup", OFFSET_X);
+            reorderHandle.mouse("mouseup", getAdjustedOffsetX(OFFSET_X, reorderHandle));
             expect(onColumnsReordered.called).to.be.true;
             expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
         });
@@ -754,8 +752,8 @@ describe("<Table>", () => {
             const reorderHandle = getReorderHandle(headerCell);
             reorderHandle
                 .mouse("mousedown")
-                .mouse("mousemove", OFFSET_X)
-                .mouse("mouseup", OFFSET_X);
+                .mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle))
+                .mouse("mouseup", getAdjustedOffsetX(OFFSET_X, reorderHandle));
             expect(onColumnsReordered.called).to.be.true;
             expect(onSelection.firstCall.calledWith([Regions.column(0)]));
         });
@@ -785,10 +783,11 @@ describe("<Table>", () => {
             // now we can reorder the column one spot to the right
             const newIndex = 1;
             const length = 1;
-            const offsetX = (newIndex + length) * WIDTH_IN_PX - REORDER_HANDLE_WIDTH_IN_PX;
+            const offsetX = (newIndex + length) * COLUMN_WIDTH_IN_PX;
+            const adjustedOffsetX = getAdjustedOffsetX(offsetX, reorderHandle);
             reorderHandle.mouse("mousedown")
-                .mouse("mousemove", offsetX)
-                .mouse("mouseup", offsetX);
+                .mouse("mousemove", adjustedOffsetX)
+                .mouse("mouseup", adjustedOffsetX);
 
             // called once on mousedown (to select column 0), once on mouseup (to move the selection)
             expect(onSelection.calledTwice).to.be.true;
@@ -798,18 +797,20 @@ describe("<Table>", () => {
 
         function mountTable(props: Partial<ITableProps>) {
             const table = harness.mount(
-                <Table
-                    columnWidths={Array(NUM_COLUMNS).fill(WIDTH_IN_PX)}
-                    numRows={NUM_ROWS}
-                    rowHeights={Array(NUM_ROWS).fill(HEIGHT_IN_PX)}
-                    {...props}
-                >
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                </Table>,
+                <div style={{ width: CONTAINER_WIDTH_IN_PX, height: CONTAINER_HEIGHT_IN_PX }}>
+                    <Table
+                        columnWidths={Array(NUM_COLUMNS).fill(COLUMN_WIDTH_IN_PX)}
+                        numRows={NUM_ROWS}
+                        rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT_IN_PX)}
+                        {...props}
+                    >
+                        <Column renderCell={renderCell}/>
+                        <Column renderCell={renderCell}/>
+                        <Column renderCell={renderCell}/>
+                        <Column renderCell={renderCell}/>
+                        <Column renderCell={renderCell}/>
+                    </Table>
+                </div>,
             );
             return table;
         }
@@ -828,6 +829,11 @@ describe("<Table>", () => {
 
         function getReorderHandle(header: ElementHarness) {
             return header.find(`.${Classes.TABLE_REORDER_HANDLE_TARGET}`);
+        }
+
+        function getAdjustedOffsetX(offsetX: number, reorderHandle: ElementHarness) {
+            // adjust the x coordinate to account for the rendered width of the reorder handle
+            return offsetX - reorderHandle.element.getBoundingClientRect().width;
         }
     });
 
