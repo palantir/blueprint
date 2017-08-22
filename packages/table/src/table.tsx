@@ -1030,48 +1030,31 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows : rowIndices.rowIndexEnd;
 
         return (
-            // <div
-            //     className={classes}
-            //     onScroll={this.handleBodyScroll}
-            //     ref={this.setBodyRef}
-            // >
-            //     <div className={Classes.TABLE_BODY_SCROLL_CLIENT} style={style}>
+            <div>
+                <TableBody
+                    allowMultipleSelection={allowMultipleSelection}
+                    cellRenderer={this.bodyCellRenderer}
+                    grid={grid}
+                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
+                    locator={locator}
+                    onFocus={this.handleFocus}
+                    onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
+                    renderBodyContextMenu={renderBodyContextMenu}
+                    selectedRegions={selectedRegions}
+                    selectedRegionTransform={selectedRegionTransform}
+                    viewportRect={viewportRect}
 
-                // {...rowIndices}
-                // {...columnIndices}
-                <div>
-                    <TableBody
-                        allowMultipleSelection={allowMultipleSelection}
-                        cellRenderer={this.bodyCellRenderer}
-                        grid={grid}
-                        loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
-                        locator={locator}
-                        onFocus={this.handleFocus}
-                        onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
-                        renderBodyContextMenu={renderBodyContextMenu}
-                        selectedRegions={selectedRegions}
-                        selectedRegionTransform={selectedRegionTransform}
-                        viewportRect={viewportRect}
+                    columnIndexStart={columnIndexStart}
+                    columnIndexEnd={columnIndexEnd}
 
-                        columnIndexStart={columnIndexStart}
-                        columnIndexEnd={columnIndexEnd}
+                    rowIndexStart={rowIndexStart}
+                    rowIndexEnd={rowIndexEnd}
 
-                        rowIndexStart={rowIndexStart}
-                        rowIndexEnd={rowIndexEnd}
-
-                        numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumns : undefined}
-                        numFrozenRows={showFrozenRowsOnly ? numFrozenRows : undefined}
-                    />
-                    {this.maybeRenderRegions(this.styleBodyRegion, quadrantType)}
-                </div>
-                    // <div ref={this.setBodyRef} style={{ position: "relative" }}>
-                    // <GuideLayer
-                    //     className={Classes.TABLE_RESIZE_GUIDES}
-                    //     verticalGuides={verticalGuides}
-                    //     horizontalGuides={horizontalGuides}
-                    // />
-            //     </div>
-            // </div>
+                    numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumns : undefined}
+                    numFrozenRows={showFrozenRowsOnly ? numFrozenRows : undefined}
+                />
+                {this.maybeRenderRegions(this.styleBodyRegion, quadrantType)}
+            </div>
         );
     }
 
