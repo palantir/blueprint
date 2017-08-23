@@ -84,11 +84,8 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
 
   &.pt-large {
     &::after {
+      @include pt-button-large();
       width: $file-upload-button-width-large;
-      height: $pt-input-height-large;
-      padding: $button-padding-large;
-      line-height: $pt-button-height-large;
-      font-size: $pt-font-size-large;
     }
   }
 
