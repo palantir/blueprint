@@ -101,13 +101,14 @@ describe("<DateTimePicker>", () => {
             });
         }
 
-        it("Passing the same value prop twice does not clear the selected date", () => {
+        it("Passing an undefined value prop twice does not clear the selected date", () => {
             const { root, getSelectedDay } = wrap(<DateTimePicker />);
             assert.isTrue(getSelectedDay().exists());
             root.setProps({ value: undefined });
             assert.isNotNull(root.state("dateValue"));
             assert.isTrue(getSelectedDay().exists());
         });
+
     });
 
     function wrap(dtp: JSX.Element) {
