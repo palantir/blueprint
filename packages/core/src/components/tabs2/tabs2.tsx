@@ -153,7 +153,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     public componentDidUpdate(_prevProps: ITabs2Props, prevState: ITabs2State) {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
-        } else if (prevState !== undefined) {
+        } else if (prevState.selectedTabId !== undefined) {
             var selectedTabIdIndex = this.props.children.map(child => child.props.id).indexOf(this.state.selectedTabId);
             var prevSelectedTabIdIndex = _prevProps.children.map(child => child.props.id).indexOf(prevState.selectedTabId);
             if (selectedTabIdIndex !== prevSelectedTabIdIndex) {
