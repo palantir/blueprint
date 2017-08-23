@@ -34,6 +34,11 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     filterable?: boolean;
 
     /**
+     * React child to render when query is empty.
+     */
+    initialRenderer?: JSX.Element;
+
+    /**
      * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
      * this item is active (selected by keyboard arrows) and an `onClick` event handler that
      * should be attached to the returned element.
@@ -41,7 +46,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /** React child to render when filtering items returns zero results. */
-    noResults?: string | JSX.Element;
+    noResults?: JSX.Element;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
@@ -116,6 +121,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         // omit props specific to this component, spread the rest.
         const {
             filterable,
+            initialRenderer,
             itemRenderer,
             inputProps,
             noResults,
@@ -189,7 +195,10 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     }
 
     private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
-        const { itemRenderer, noResults } = this.props;
+        const { initialRenderer, itemRenderer, noResults } = this.props;
+        if (initialRenderer != null && this.isQueryEmpty()) {
+            return initialRenderer;
+        }
         if (filteredItems.length === 0) {
             return noResults;
         }
@@ -202,9 +211,13 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     }
 
     private maybeRenderInputClearButton() {
-        return this.state.query.length > 0
+        return !this.isQueryEmpty()
             ? <Button className={CoreClasses.MINIMAL} iconName="cross" onClick={this.resetQuery} />
             : undefined;
+    }
+
+    private isQueryEmpty = () => {
+        return !(this.state.query.length > 0);
     }
 
     private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
