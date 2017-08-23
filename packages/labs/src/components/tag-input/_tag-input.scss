@@ -45,7 +45,7 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
     line-height: $tag-height;
 
     // match padding of other input elements iff no tags are selected
-    &:not(first-child) {
+    &:not(:first-child) {
       padding: 0 ($input-padding-horizontal - $ti-padding);
     }
 
