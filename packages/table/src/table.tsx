@@ -645,30 +645,31 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         if (cardinality === RegionCardinality.CELLS) {
             // scroll to the top-left corner of the block of cells
-            nextTop = this.grid.getCumulativeHeightBefore(region.rows[0]);
-            nextLeft = this.grid.getCumulativeWidthBefore(region.cols[0]);
+            const topOffset = this.grid.getCumulativeHeightBefore(region.rows[0]);
+            const leftOffset = this.grid.getCumulativeWidthBefore(region.cols[0]);
+            nextTop = this.getAdjustedScrollPosition(topOffset, frozenRowsCumulativeHeight);
+            nextLeft = this.getAdjustedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
         } else if (cardinality === RegionCardinality.FULL_ROWS) {
             // scroll to the top of the row block
-            nextTop = this.grid.getCumulativeHeightBefore(region.rows[0]);
+            const topOffset = this.grid.getCumulativeHeightBefore(region.rows[0]);
+            nextTop = this.getAdjustedScrollPosition(topOffset, frozenRowsCumulativeHeight);
         } else if (cardinality === RegionCardinality.FULL_COLUMNS) {
             // scroll to the left side of the column block
-            nextLeft = this.grid.getCumulativeWidthBefore(region.cols[0]);
+            const leftOffset = this.grid.getCumulativeWidthBefore(region.cols[0]);
+            nextLeft = this.getAdjustedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
         } else {
             // if it's a FULL_TABLE region, scroll back to the first cell
             nextTop = 0;
             nextLeft = 0;
         }
 
-        // if we're scrolling to somewhere within the top/left frozen area, might as well just
-        // scroll back to 0. otherwise, clear the frozen area to keep the target region visible.
-        nextTop = (frozenRowsCumulativeHeight > 0 && nextTop < frozenRowsCumulativeHeight)
-            ? 0
-            : nextTop - frozenRowsCumulativeHeight;
-        nextLeft = (frozenColumnsCumulativeWidth > 0 && nextLeft < frozenColumnsCumulativeWidth)
-            ? 0
-            : nextLeft - frozenColumnsCumulativeWidth;
-
         return new Rect(nextLeft, nextTop, viewportRect.width, viewportRect.height);
+    }
+
+    private getAdjustedScrollPosition(scrollOffset: number, frozenRegionCumulativeSize: number) {
+        return scrollOffset < frozenRegionCumulativeSize
+            ? 0
+            : scrollOffset - frozenRegionCumulativeSize;
     }
 
     /**
