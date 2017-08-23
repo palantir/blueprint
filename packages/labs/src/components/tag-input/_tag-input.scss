@@ -42,12 +42,11 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
     margin-bottom: $ti-padding;
     // essentially a min-width, cuz flex allows it to grow or shrink:
     width: $pt-grid-size * 10;
-    padding: 0 ($input-padding-horizontal - $ti-padding);
     line-height: $tag-height;
 
     // match padding of other input elements iff no tags are selected
-    &:first-child {
-      padding: 0 $input-padding-horizontal;
+    &:not(first-child) {
+      padding: 0 ($input-padding-horizontal - $ti-padding);
     }
 
     ~ * {
@@ -100,7 +99,7 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
   border: none;
   box-shadow: none;
   background: none;
-  padding: 0;
+  padding: 0 $input-padding-horizontal;
 
   &:focus {
     // remove focus state too
