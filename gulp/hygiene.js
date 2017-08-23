@@ -19,7 +19,7 @@ module.exports = (blueprint, gulp, plugins) => {
 
     gulp.task("tslint-gulp", () => (
         gulp.src(["*.js", "gulp/**/*.js"])
-            .pipe(plugins.tslint({ formatter: "verbose" }))
+            .pipe(plugins.tslint({ formatter: "codeFrame" }))
             .pipe(plugins.tslint.report())
             .pipe(plugins.count("## javascript files linted"))
     ));

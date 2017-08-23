@@ -5,9 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-// This line can be removed when we upgrade to Bourbon 5.0
-$output-bourbon-deprecation-warnings: false;
-
 // Import files in the same order that they are documented in the docs
 @import "common/resets";
 @import "common/font-imports";
@@ -15,7 +12,6 @@ $output-bourbon-deprecation-warnings: false;
 @import "common/colors";
 
 @import "typography";
-@import "icons";
 @import "accessibility";
 
 @import "components/index";

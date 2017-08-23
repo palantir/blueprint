@@ -157,34 +157,34 @@ describe("<Overlay>", () => {
         const testsContainerElement = document.createElement("div");
         document.documentElement.appendChild(testsContainerElement);
 
-        it("brings focus to overlay if autoFocus=true", () => {
+        it("brings focus to overlay if autoFocus=true", (done) => {
             wrapper = mount(
                 <Overlay autoFocus={true} inline={false} isOpen={true}>
                     <input type="text" />
                 </Overlay>,
                 { attachTo: testsContainerElement },
             );
-            assert.equal(document.body.querySelector(".pt-overlay-backdrop"), document.activeElement);
+            assertFocus(".pt-overlay-backdrop", done);
         });
 
-        it("does not bring focus to overlay if autoFocus=false", () => {
+        it("does not bring focus to overlay if autoFocus=false", (done) => {
             wrapper = mount(
                 <Overlay autoFocus={false} inline={false} isOpen={true}>
                     <input type="text" />
                 </Overlay>,
                 { attachTo: testsContainerElement },
             );
-            assert.equal(document.body, document.activeElement);
+            assertFocus("body", done);
         });
 
-        it("autoFocus element inside overlay gets the focus", () => {
+        it("autoFocus element inside overlay gets the focus", (done) => {
             wrapper = mount(
                 <Overlay inline={false} isOpen={true}>
                     <input autoFocus={true} type="text" />
                 </Overlay>,
                 { attachTo: testsContainerElement },
             );
-            assert.equal(document.querySelector("input"), document.activeElement);
+            assertFocus("input", done);
         });
 
         /* tslint:disable:jsx-no-lambda */
@@ -192,15 +192,17 @@ describe("<Overlay>", () => {
             let buttonRef: HTMLElement;
             const focusBtnAndAssert = () => {
                 buttonRef.focus();
-                assert.notStrictEqual(buttonRef, document.activeElement);
-                done();
+                setTimeout(() => {
+                    assert.notStrictEqual(buttonRef, document.activeElement);
+                    done();
+                });
             };
 
             wrapper = mount(
                 <div>
                     <button ref={(ref) => buttonRef = ref}/>
                     <Overlay enforceFocus={true} inline={false} isOpen={true}>
-                        <input ref={(ref) => ref && setTimeout(focusBtnAndAssert)}/>
+                        <input ref={(ref) => ref && focusBtnAndAssert()}/>
                     </Overlay>
                 </div>,
                 { attachTo: testsContainerElement },
@@ -215,10 +217,7 @@ describe("<Overlay>", () => {
                 { attachTo: testsContainerElement },
             );
             wrapper.find(BACKDROP_SELECTOR).simulate("mousedown");
-            setTimeout(() => {
-                assert.equal(document.querySelector(`.${Classes.OVERLAY_CONTENT}`), document.activeElement);
-                done();
-            });
+            assertFocus(`.${Classes.OVERLAY_CONTENT}`, done);
         });
 
         it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
@@ -269,17 +268,17 @@ describe("<Overlay>", () => {
             );
         });
 
-        it("doesn't focus overlay if focus is already inside overlay", () => {
+        it("doesn't focus overlay if focus is already inside overlay", (done) => {
             wrapper = mount(
                 <Overlay inline={false} isOpen={true}>
                     <textarea ref={(ref) => ref && ref.focus()}/>
                 </Overlay>,
                 { attachTo: testsContainerElement },
             );
-            assert.equal(document.querySelector("textarea"), document.activeElement);
+            assertFocus("textarea", done);
         });
 
-        it("does not focus overlay when closed", () => {
+        it("does not focus overlay when closed", (done) => {
             wrapper = mount(
                 <div>
                     <button ref={(ref) => ref && ref.focus()}/>
@@ -287,9 +286,16 @@ describe("<Overlay>", () => {
                 </div>,
                 { attachTo: testsContainerElement },
             );
-            assert.equal(document.querySelector("button"), document.activeElement);
+            assertFocus("button", done);
         });
         /* tslint:enable:jsx-no-lambda */
+
+        function assertFocus(selector: string, done: MochaDone) {
+            setTimeout(() => {
+                assert.equal(document.querySelector(selector), document.activeElement);
+                done();
+            });
+        }
     });
 
     describe("Background scrolling", () => {

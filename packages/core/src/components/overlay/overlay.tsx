@@ -193,7 +193,14 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         };
 
         if (inline) {
-            return <span {...elementProps} ref={this.refHandlers.container}>{transitionGroup}</span>;
+            return (
+                <span
+                    {...elementProps}
+                    ref={this.refHandlers.container}
+                >
+                    {transitionGroup}
+                </span>
+            );
         } else {
             return (
                 <Portal
@@ -288,26 +295,29 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         }
     }
 
-    private bringFocusInsideOverlay = () => {
-        const { containerElement } = this;
+    private bringFocusInsideOverlay() {
+        // always delay focus manipulation to just before repaint to prevent scroll jumping
+        return requestAnimationFrame(() => {
+            const { containerElement } = this;
 
-        // container ref may be undefined between component mounting and Portal rendering
-        // activeElement may be undefined in some rare cases in IE
-        if (containerElement == null || document.activeElement == null || !this.props.isOpen) {
-            return;
-        }
-
-        const isFocusOutsideModal = !containerElement.contains(document.activeElement);
-        if (isFocusOutsideModal) {
-            // element marked autofocus has higher priority than the other clowns
-            const autofocusElement = containerElement.query("[autofocus]") as HTMLElement;
-            const wrapperElement = containerElement.query("[tabindex]") as HTMLElement;
-            if (autofocusElement != null) {
-                autofocusElement.focus();
-            } else if (wrapperElement != null) {
-                wrapperElement.focus();
+            // container ref may be undefined between component mounting and Portal rendering
+            // activeElement may be undefined in some rare cases in IE
+            if (containerElement == null || document.activeElement == null || !this.props.isOpen) {
+                return;
             }
-        }
+
+            const isFocusOutsideModal = !containerElement.contains(document.activeElement);
+            if (isFocusOutsideModal) {
+                // element marked autofocus has higher priority than the other clowns
+                const autofocusElement = containerElement.query("[autofocus]") as HTMLElement;
+                const wrapperElement = containerElement.query("[tabindex]") as HTMLElement;
+                if (autofocusElement != null) {
+                    autofocusElement.focus();
+                } else if (wrapperElement != null) {
+                    wrapperElement.focus();
+                }
+            }
+        });
     }
 
     private handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -317,7 +327,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         }
         if (enforceFocus) {
             // make sure document.activeElement is updated before bringing the focus back
-            requestAnimationFrame(() => this.bringFocusInsideOverlay());
+            this.bringFocusInsideOverlay();
         }
         safeInvoke(backdropProps.onMouseDown, e);
     }
@@ -346,6 +356,8 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         if (this.props.enforceFocus
                 && this.containerElement != null
                 && !this.containerElement.contains(e.target as HTMLElement)) {
+            // prevent default focus behavior (sometimes auto-scrolls the page)
+            e.preventDefault();
             e.stopImmediatePropagation();
             this.bringFocusInsideOverlay();
         }

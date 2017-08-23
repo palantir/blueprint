@@ -277,3 +277,11 @@ export function getDateNextMonth(date: Date): Date {
         return new Date(date.getFullYear(), date.getMonth() + 1);
     }
 }
+
+/**
+ * Returns a date string in the provided format localized to the provided locale.
+ */
+export function toLocalizedDateString(momentDate: moment.Moment, format: string, locale: string | undefined) {
+    const adjustedMomentDate = (locale != null) ? momentDate.locale(locale) : momentDate;
+    return adjustedMomentDate.format(format);
+}

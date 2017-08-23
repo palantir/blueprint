@@ -37,8 +37,10 @@ describe("<DateRangeInput>", () => {
 
     const START_DATE_2 = new Date(2017, Months.JANUARY, 1);
     const START_STR_2 = DateTestUtils.toHyphenatedDateString(START_DATE_2);
+    const START_DE_STR_2 = "01.01.2017";
     const END_DATE_2 = new Date(2017, Months.JANUARY, 31);
     const END_STR_2 = DateTestUtils.toHyphenatedDateString(END_DATE_2);
+    const END_DE_STR_2 = "31.01.2017";
     const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
 
     const INVALID_STR = "<this is an invalid date string>";
@@ -765,28 +767,36 @@ describe("<DateRangeInput>", () => {
             }
 
             let root: WrappedComponentRoot;
+            let rootInstance: DateRangeInput;
             let startInput: WrappedComponentInput;
             let endInput: WrappedComponentInput;
             let getDayElement: (dayNumber?: number, fromLeftMonth?: boolean) => WrappedComponentDayElement;
             let dayElement: WrappedComponentDayElement;
 
-            beforeEach(() => {
+            before(() => {
                 const result = wrap(<DateRangeInput
                     closeOnSelection={false}
                     defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]}
                 />);
 
                 root = result.root;
+                rootInstance = root.instance() as DateRangeInput;
                 getDayElement = result.getDayElement;
                 startInput = getStartInput(root);
                 endInput = getEndInput(root);
+            });
 
+            beforeEach(() => {
                 // clear the inputs to start from a fresh state, but do so
                 // *after* opening the popover so that the calendar doesn't
                 // move away from the view we expect for these tests.
                 root.setState({ isOpen: true });
                 changeInputText(startInput, "");
                 changeInputText(endInput, "");
+            });
+
+            afterEach(() => {
+                rootInstance.reset();
             });
 
             function setSelectedRangeForHoverTest(selectedDateConfigs: IHoverTextDateConfig[]) {
@@ -2294,6 +2304,11 @@ describe("<DateRangeInput>", () => {
 
             startInput.simulate("blur");
             assertInputTextsEqual(root, START_STR, "");
+        });
+
+        it("Formats locale-specific format strings properly", () => {
+            const { root } = wrap(<DateRangeInput locale="de" format="L" value={DATE_RANGE_2} />);
+            assertInputTextsEqual(root, START_DE_STR_2, END_DE_STR_2);
         });
     });
 

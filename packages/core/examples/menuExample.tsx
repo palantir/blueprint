@@ -31,7 +31,7 @@ export class MenuExample extends BaseExample<{}> {
                     <MenuItem iconName="duplicate" text="Copy" label="⌘C" />
                     <MenuItem iconName="clipboard" text="Paste" label="⌘V" disabled={true} />
                     <MenuDivider title="Text" />
-                    <MenuItem disabled iconName="align-left" text="Alignment">
+                    <MenuItem disabled={true} iconName="align-left" text="Alignment">
                         <MenuItem iconName="align-left" text="Left" />
                         <MenuItem iconName="align-center" text="Center" />
                         <MenuItem iconName="align-right" text="Right" />

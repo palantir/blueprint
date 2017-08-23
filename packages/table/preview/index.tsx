@@ -70,6 +70,8 @@ interface IMutableTableState {
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
     numCols?: number;
+    numFrozenCols?: number;
+    numFrozenRows?: number;
     numRows?: number;
     selectedFocusStyle?: FocusStyle;
     showCallbackLogs?: boolean;
@@ -105,6 +107,9 @@ const ROW_COUNTS = [
     100000,
 ];
 
+const FROZEN_COLUMN_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
+const FROZEN_ROW_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
+
 enum CellContent {
     EMPTY,
     CELL_NAMES,
@@ -123,15 +128,18 @@ const TRUNCATED_POPOVER_MODES = [
     TruncatedPopoverMode.WHEN_TRUNCATED,
 ] as TruncatedPopoverMode[];
 
-const COLUMN_COUNT_DEFAULT_INDEX = 2;
+const COLUMN_COUNT_DEFAULT_INDEX = 3;
 const ROW_COUNT_DEFAULT_INDEX = 3;
+
+const FROZEN_COLUMN_COUNT_DEFAULT_INDEX = 2;
+const FROZEN_ROW_COUNT_DEFAULT_INDEX = 2;
 
 const LONG_TEXT_MIN_LENGTH = 5;
 const LONG_TEXT_MAX_LENGTH = 40;
 const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const CELL_CONTENT_GENERATORS = {
-    [CellContent.CELL_NAMES]: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
+    [CellContent.CELL_NAMES]: Utils.toBase26CellName,
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
         const randomLength = getRandomInteger(LONG_TEXT_MIN_LENGTH, LONG_TEXT_MAX_LENGTH);
@@ -151,29 +159,31 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         this.state = {
             cellContent: CellContent.CELL_NAMES,
             cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
-            enableCellEditing: true,
+            enableCellEditing: false,
             enableCellSelection: true,
             enableCellTruncation: false,
             enableColumnNameEditing: false,
-            enableColumnReordering: true,
-            enableColumnResizing: true,
+            enableColumnReordering: false,
+            enableColumnResizing: false,
             enableColumnSelection: true,
-            enableContextMenu: true,
+            enableContextMenu: false,
             enableFullTableSelection: true,
             enableMultiSelection: true,
-            enableRowReordering: true,
-            enableRowResizing: true,
+            enableRowReordering: false,
+            enableRowResizing: false,
             enableRowSelection: true,
             numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
+            numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
+            numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
             selectedFocusStyle: FocusStyle.TAB,
             showCallbackLogs: false,
             showCellsLoading: false,
             showColumnHeadersLoading: false,
-            showColumnInteractionBar: true,
-            showColumnMenus: true,
+            showColumnInteractionBar: false,
+            showColumnMenus: false,
             showCustomRegions: false,
-            showFocusCell: true,
+            showFocusCell: false,
             showGhostCells: true,
             showInline: false,
             showRowHeaders: true,
@@ -195,6 +205,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     fillBodyWithGhostCells={this.state.showGhostCells}
                     isColumnResizable={this.state.enableColumnResizing}
                     isColumnReorderable={this.state.enableColumnReordering}
+                    isRowHeaderShown={this.state.showRowHeaders}
                     isRowReorderable={this.state.enableRowReordering}
                     isRowResizable={this.state.enableRowResizing}
                     loadingOptions={this.getEnabledLoadingOptions()}
@@ -202,7 +213,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     renderBodyContextMenu={this.renderBodyContextMenu}
                     renderRowHeader={this.renderRowHeader}
                     selectionModes={this.getEnabledSelectionModes()}
-                    isRowHeaderShown={this.state.showRowHeaders}
                     styledRegionGroups={this.getStyledRegionGroups()}
                     onSelection={this.onSelection}
                     onColumnsReordered={this.onColumnsReordered}
@@ -212,6 +222,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     onVisibleCellsChange={this.onVisibleCellsChange}
                     onRowHeightChanged={this.onRowHeightChanged}
                     onRowsReordered={this.onRowsReordered}
+                    numFrozenColumns={this.state.numFrozenCols}
+                    numFrozenRows={this.state.numFrozenRows}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -423,7 +435,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
-                {this.renderNumberSelectMenu("Number of columns", "numCols", COLUMN_COUNTS)}
+                {this.renderNumberSelectMenu("Num. columns", "numCols", COLUMN_COUNTS)}
+                {this.renderNumberSelectMenu("Num. frozen columns", "numFrozenCols", FROZEN_COLUMN_COUNTS)}
                 {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
                 {this.renderSwitch("Interaction bar", "showColumnInteractionBar")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
@@ -435,7 +448,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Rows</h4>
                 <h6>Display</h6>
-                {this.renderNumberSelectMenu("Number of rows", "numRows", ROW_COUNTS)}
+                {this.renderNumberSelectMenu("Num. rows", "numRows", ROW_COUNTS)}
+                {this.renderNumberSelectMenu("Num. frozen rows", "numFrozenRows", FROZEN_ROW_COUNTS)}
                 {this.renderSwitch("Headers", "showRowHeaders")}
                 {this.renderSwitch("Loading state", "showRowHeadersLoading")}
                 {this.renderSwitch("Zebra striping", "showZebraStriping")}

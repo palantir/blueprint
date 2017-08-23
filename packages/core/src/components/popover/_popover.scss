@@ -93,6 +93,10 @@ $popover-width: $pt-grid-size * 35 !default;
 
 .pt-transition-container {
   @include fade-transition();
+
+  // ensure element size exactly equals its children, no edge-case 4px spacing!
+  // (try removing this property with Slider content in example)
+  display: flex;
   z-index: $pt-z-index-overlay;
 
   &:focus {
@@ -119,6 +123,12 @@ $popover-width: $pt-grid-size * 35 !default;
   // position the transition container using CSS when it is inline
   .pt-transition-container {
     @include popover-inline-position();
+  }
+
+  // make sure inline overlays don't inherit from absolute positioning in cases
+  // where overlays are nested (i.e. Popover within Dialog)
+  .pt-overlay-inline {
+    position: static;
   }
 }
 

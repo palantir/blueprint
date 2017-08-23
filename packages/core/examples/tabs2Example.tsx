@@ -66,7 +66,7 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
                     <Tab2 id="rx" title="React" panel={<ReactPanel />} />
                     <Tab2 id="ng" title="Angular" panel={<AngularPanel />} />
                     <Tab2 id="mb" title="Ember" panel={<EmberPanel />} />
-                    <Tab2 id="bb" disabled title="Backbone" panel={<BackbonePanel />} />
+                    <Tab2 id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
                     <Tabs2.Expander />
                     <input className="pt-input" type="text" placeholder="Search..." />
                 </Tabs2>

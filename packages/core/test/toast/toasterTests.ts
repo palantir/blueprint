@@ -126,12 +126,15 @@ describe("Toaster", () => {
         before(() => {
             testsContainerElement = document.createElement("div");
             document.documentElement.appendChild(testsContainerElement);
-            toaster = Toaster.create({autoFocus: true}, testsContainerElement);
+            toaster = Toaster.create({ autoFocus: true }, testsContainerElement);
         });
 
-        it("focuses on newly created toast", () => {
+        it("focuses on newly created toast", (done) => {
             toaster.show({ message: "focus on me" });
-            assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);
+            setTimeout(() => {
+                assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);
+                done();
+            });
         });
     });
 });

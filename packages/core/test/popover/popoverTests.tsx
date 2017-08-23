@@ -98,7 +98,7 @@ describe("<Popover>", () => {
 
     it("empty content disables it and warns", () => {
         const warnSpy = sinon.spy(console, "warn");
-        const popover = mount(<Popover content={undefined} isOpen><button /></Popover>);
+        const popover = mount(<Popover content={undefined} isOpen={true}><button /></Popover>);
         assert.isFalse(popover.find(Overlay).prop("isOpen"));
 
         popover.setProps({ content: "    " });
@@ -475,8 +475,8 @@ describe("<Popover>", () => {
         let root: ReactWrapper<any, any>;
         beforeEach(() => {
             root = mount(
-                <Popover content="popover" hoverOpenDelay={0} hoverCloseDelay={0} inline>
-                    <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} inline>
+                <Popover content="popover" hoverOpenDelay={0} hoverCloseDelay={0} inline={true}>
+                    <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} inline={true}>
                         <button>Target</button>
                     </Tooltip>
                 </Popover>,
@@ -539,7 +539,7 @@ describe("<Popover>", () => {
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
         wrapper = mount(
-            <Popover inline {...props} content={<p>Text {content}</p>} hoverCloseDelay={0} hoverOpenDelay={0}>
+            <Popover inline={true} {...props} content={<p>Text {content}</p>} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>
             </Popover>,
             { attachTo: testsContainerElement },

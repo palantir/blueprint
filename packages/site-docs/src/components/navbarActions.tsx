@@ -14,9 +14,8 @@ import {
     Menu,
     MenuDivider,
     MenuItem,
-    Popover,
-    Position,
 } from "@blueprintjs/core";
+import { Popover2 } from "@blueprintjs/labs";
 
 import * as classNames from "classnames";
 import * as React from "react";
@@ -44,9 +43,9 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
                     target="_blank"
                     text="GitHub"
                 />
-                <Popover content={this.renderReleasesMenu()} position={Position.BOTTOM_RIGHT}>
+                <Popover2 inline={true} content={this.renderReleasesMenu()} placement="bottom-end">
                     <AnchorButton rightIconName="caret-down" text="Releases" />
-                </Popover>
+                </Popover2>
                 <AnchorButton
                     className="docs-dark-switch"
                     onClick={this.handleDarkSwitchChange}

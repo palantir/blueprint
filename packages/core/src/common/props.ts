@@ -7,6 +7,7 @@
 
 import * as React from "react";
 
+import { IconName } from "../generated/iconName";
 import { Intent } from "./intent";
 
 export type HTMLInputProps = React.HTMLProps<HTMLInputElement>;
@@ -33,7 +34,7 @@ export interface IActionProps extends IIntentProps, IProps {
     disabled?: boolean;
 
     /** Name of the icon (the part after `pt-icon-`) to add to the button. */
-    iconName?: string;
+    iconName?: IconName;
 
     /** Click event handler. */
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;
@@ -86,6 +87,7 @@ const INVALID_PROPS = [
     "iconName",
     "inputRef",
     "intent",
+    "inline",
     "loading",
     "leftIconName",
     "onChildrenMount",

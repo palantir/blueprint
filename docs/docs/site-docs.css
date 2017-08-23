@@ -7,76 +7,67 @@ and https://github.com/palantir/blueprint/blob/master/PATENTS
 */
 
 /**
- * 1. Correct the line height in all browsers.
- * 2. Prevent adjustments of font size after orientation changes in
- *    IE on Windows Phone and in iOS.
+ * 1. Change the default font family in all browsers (opinionated).
+ * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
 html {
-  line-height: 1.15;
+  font-family: sans-serif;
   
   -ms-text-size-adjust: 100%;
   
   -webkit-text-size-adjust: 100%;
    }
-
 /**
  * Remove the margin in all browsers (opinionated).
  */
 body {
   margin: 0; }
-/**
- * Add the correct display in IE 9-.
- */
-article,
-aside,
-footer,
-header,
-nav,
-section {
-  display: block; }
-/**
- * Correct the font size and margin on `h1` elements within `section` and
- * `article` contexts in Chrome, Firefox, and Safari.
- */
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0; }
 
 /**
  * Add the correct display in IE 9-.
- * 1. Add the correct display in IE.
+ * 1. Add the correct display in Edge, IE, and Firefox.
+ * 2. Add the correct display in IE.
  */
+article,
+aside,
+details,
 figcaption,
 figure,
-main {
+footer,
+header,
+main,
+menu,
+nav,
+section,
+summary {
   
   display: block; }
 /**
- * Add the correct margin in IE 8.
+ * Add the correct display in IE 9-.
  */
-figure {
-  margin: 1em 40px; }
+audio,
+canvas,
+progress,
+video {
+  display: inline-block; }
 /**
- * 1. Add the correct box sizing in Firefox.
- * 2. Show the overflow in Edge and IE.
+ * Add the correct display in iOS 4-7.
  */
-hr {
-  -moz-box-sizing: content-box;
-       box-sizing: content-box;
-  
-  height: 0;
-  
-  overflow: visible;
-   }
+audio:not([controls]) {
+  display: none;
+  height: 0; }
 /**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
+ * Add the correct vertical alignment in Chrome, Firefox, and Opera.
  */
-pre {
-  font-family: monospace, monospace;
-  
-  font-size: 1em;
-   }
+progress {
+  vertical-align: baseline; }
+/**
+ * Add the correct display in IE 10-.
+ * 1. Add the correct display in IE.
+ */
+template,
+[hidden] {
+  display: none; }
 
 /**
  * 1. Remove the gray background on active links in IE 10.
@@ -88,7 +79,15 @@ a {
   -webkit-text-decoration-skip: objects;
    }
 /**
- * 1. Remove the bottom border in Chrome 57- and Firefox 39-.
+ * Remove the outline on focused links when they are also active or hovered
+ * in all browsers (opinionated).
+ */
+a:active,
+a:hover {
+  outline-width: 0; }
+
+/**
+ * 1. Remove the bottom border in Firefox 39-.
  * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
  */
 abbr[title] {
@@ -113,21 +112,17 @@ b,
 strong {
   font-weight: bolder; }
 /**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
-code,
-kbd,
-samp {
-  font-family: monospace, monospace;
-  
-  font-size: 1em;
-   }
-/**
  * Add the correct font style in Android 4.3-.
  */
 dfn {
   font-style: italic; }
+/**
+ * Correct the font size and margin on `h1` elements within `section` and
+ * `article` contexts in Chrome, Firefox, and Safari.
+ */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0; }
 /**
  * Add the correct background and color in IE 9-.
  */
@@ -155,18 +150,6 @@ sup {
   top: -0.5em; }
 
 /**
- * Add the correct display in IE 9-.
- */
-audio,
-video {
-  display: inline-block; }
-/**
- * Add the correct display in iOS 4-7.
- */
-audio:not([controls]) {
-  display: none;
-  height: 0; }
-/**
  * Remove the border on images inside links in IE 10-.
  */
 img {
@@ -178,22 +161,52 @@ svg:not(:root) {
   overflow: hidden; }
 
 /**
- * 1. Change the font styles in all browsers (opinionated).
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  
+  font-size: 1em;
+   }
+/**
+ * Add the correct margin in IE 8.
+ */
+figure {
+  margin: 1em 40px; }
+/**
+ * 1. Add the correct box sizing in Firefox.
+ * 2. Show the overflow in Edge and IE.
+ */
+hr {
+  -moz-box-sizing: content-box;
+       box-sizing: content-box;
+  
+  height: 0;
+  
+  overflow: visible;
+   }
+
+/**
+ * 1. Change font properties to `inherit` in all browsers (opinionated).
  * 2. Remove the margin in Firefox and Safari.
  */
 button,
 input,
-optgroup,
 select,
 textarea {
-  font-family: sans-serif;
-  
-  font-size: 100%;
-  
-  line-height: 1.15;
+  font: inherit;
   
   margin: 0;
    }
+/**
+ * Restore the font weight unset by the previous rule.
+ */
+optgroup {
+  font-weight: bold; }
 /**
  * Show the overflow in IE.
  * 1. Show the overflow in Edge.
@@ -239,10 +252,12 @@ button:-moz-focusring,
 [type="submit"]:-moz-focusring {
   outline: 1px dotted ButtonText; }
 /**
- * Correct the padding in Firefox.
+ * Change the border, margin, and padding in all browsers (opinionated).
  */
 fieldset {
-  padding: 0.35em 0.75em 0.625em; }
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em; }
 /**
  * 1. Correct the text wrapping in Edge and IE.
  * 2. Correct the color inheritance from `fieldset` elements in IE.
@@ -262,15 +277,6 @@ legend {
   padding: 0;
   
   white-space: normal;
-   }
-/**
- * 1. Add the correct display in IE 9-.
- * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.
- */
-progress {
-  display: inline-block;
-  
-  vertical-align: baseline;
    }
 /**
  * Remove the default vertical scrollbar in IE.
@@ -304,11 +310,17 @@ textarea {
   outline-offset: -2px;
    }
 /**
- * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.
+ * Remove the inner padding and cancel buttons in Chrome and Safari on OS X.
  */
 [type="search"]::-webkit-search-cancel-button,
 [type="search"]::-webkit-search-decoration {
   -webkit-appearance: none; }
+/**
+ * Correct the text style of placeholders in Chrome, Edge, and Safari.
+ */
+::-webkit-input-placeholder {
+  color: inherit;
+  opacity: 0.54; }
 /**
  * 1. Correct the inability to style clickable types in iOS and Safari.
  * 2. Change font properties to `inherit` in Safari.
@@ -318,30 +330,6 @@ textarea {
   
   font: inherit;
    }
-
-details,
-menu {
-  display: block; }
-
-summary {
-  display: list-item; }
-
-/**
- * Add the correct display in IE 9-.
- */
-canvas {
-  display: inline-block; }
-/**
- * Add the correct display in IE.
- */
-template {
-  display: none; }
-
-/**
- * Add the correct display in IE 10-.
- */
-[hidden] {
-  display: none; }
 /**
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
@@ -591,859 +579,6 @@ ul {
   color: #f5f8fa; }
 .pt-dark h6 {
   color: #f5f8fa; }
-.pt-icon, .pt-icon-standard, .pt-icon-large {
-  display: inline-block; }
-.pt-icon.pt-intent-primary, .pt-icon-standard.pt-intent-primary, .pt-icon-large.pt-intent-primary {
-  color: #137cbd; }
-.pt-icon.pt-intent-success, .pt-icon-standard.pt-intent-success, .pt-icon-large.pt-intent-success {
-  color: #0f9960; }
-.pt-icon.pt-intent-warning, .pt-icon-standard.pt-intent-warning, .pt-icon-large.pt-intent-warning {
-  color: #d9822b; }
-.pt-icon.pt-intent-danger, .pt-icon-standard.pt-intent-danger, .pt-icon-large.pt-intent-danger {
-  color: #db3737; }
-span.pt-icon-standard {
-  line-height: 1;
-  font-family: "Icons16", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  font-style: normal;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased; }
-span.pt-icon-large {
-  line-height: 1;
-  font-family: "Icons20", sans-serif;
-  font-size: 20px;
-  font-weight: 400;
-  font-style: normal;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased; }
-span.pt-icon {
-  line-height: 1;
-  font-family: "Icons20";
-  font-size: inherit;
-  font-weight: 400;
-  font-style: normal; }
-span.pt-icon::before {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased; }
-.pt-icon-blank::before {
-  content: ""; }
-.pt-icon-style::before {
-  content: ""; }
-.pt-icon-align-left::before {
-  content: ""; }
-.pt-icon-align-center::before {
-  content: ""; }
-.pt-icon-align-right::before {
-  content: ""; }
-.pt-icon-align-justify::before {
-  content: ""; }
-.pt-icon-bold::before {
-  content: ""; }
-.pt-icon-italic::before {
-  content: ""; }
-.pt-icon-underline::before {
-  content: "⎁"; }
-.pt-icon-search-around::before {
-  content: ""; }
-.pt-icon-graph-remove::before {
-  content: ""; }
-.pt-icon-group-objects::before {
-  content: ""; }
-.pt-icon-merge-links::before {
-  content: ""; }
-.pt-icon-layout::before {
-  content: ""; }
-.pt-icon-layout-auto::before {
-  content: ""; }
-.pt-icon-layout-circle::before {
-  content: ""; }
-.pt-icon-layout-hierarchy::before {
-  content: ""; }
-.pt-icon-layout-grid::before {
-  content: ""; }
-.pt-icon-layout-group-by::before {
-  content: ""; }
-.pt-icon-layout-skew-grid::before {
-  content: ""; }
-.pt-icon-geosearch::before {
-  content: ""; }
-.pt-icon-heatmap::before {
-  content: ""; }
-.pt-icon-drive-time::before {
-  content: ""; }
-.pt-icon-select::before {
-  content: ""; }
-.pt-icon-predictive-analysis::before {
-  content: ""; }
-.pt-icon-layers::before {
-  content: ""; }
-.pt-icon-locate::before {
-  content: ""; }
-.pt-icon-bookmark::before {
-  content: ""; }
-.pt-icon-citation::before {
-  content: ""; }
-.pt-icon-tag::before {
-  content: ""; }
-.pt-icon-clipboard::before {
-  content: ""; }
-.pt-icon-selection::before {
-  content: "⦿"; }
-.pt-icon-timeline-events::before {
-  content: ""; }
-.pt-icon-timeline-line-chart::before {
-  content: ""; }
-.pt-icon-timeline-bar-chart::before {
-  content: ""; }
-.pt-icon-applications::before {
-  content: ""; }
-.pt-icon-projects::before {
-  content: ""; }
-.pt-icon-changes::before {
-  content: ""; }
-.pt-icon-notifications::before {
-  content: ""; }
-.pt-icon-lock::before {
-  content: ""; }
-.pt-icon-unlock::before {
-  content: ""; }
-.pt-icon-user::before {
-  content: ""; }
-.pt-icon-search-template::before {
-  content: ""; }
-.pt-icon-inbox::before {
-  content: ""; }
-.pt-icon-more::before {
-  content: ""; }
-.pt-icon-help::before {
-  content: "?"; }
-.pt-icon-calendar::before {
-  content: ""; }
-.pt-icon-media::before {
-  content: ""; }
-.pt-icon-link::before {
-  content: ""; }
-.pt-icon-share::before {
-  content: ""; }
-.pt-icon-download::before {
-  content: ""; }
-.pt-icon-document::before {
-  content: ""; }
-.pt-icon-properties::before {
-  content: ""; }
-.pt-icon-import::before {
-  content: ""; }
-.pt-icon-export::before {
-  content: ""; }
-.pt-icon-minimize::before {
-  content: ""; }
-.pt-icon-maximize::before {
-  content: ""; }
-.pt-icon-tick::before {
-  content: "✓"; }
-.pt-icon-cross::before {
-  content: "✗"; }
-.pt-icon-plus::before {
-  content: "+"; }
-.pt-icon-minus::before {
-  content: "−"; }
-.pt-icon-arrow-left::before {
-  content: "←"; }
-.pt-icon-arrow-right::before {
-  content: "→"; }
-.pt-icon-exchange::before {
-  content: ""; }
-.pt-icon-comparison::before {
-  content: ""; }
-.pt-icon-list::before {
-  content: "☰"; }
-.pt-icon-filter::before {
-  content: ""; }
-.pt-icon-confirm::before {
-  content: ""; }
-.pt-icon-fork::before {
-  content: ""; }
-.pt-icon-trash::before {
-  content: ""; }
-.pt-icon-person::before {
-  content: ""; }
-.pt-icon-people::before {
-  content: ""; }
-.pt-icon-add::before {
-  content: ""; }
-.pt-icon-remove::before {
-  content: ""; }
-.pt-icon-geolocation::before {
-  content: ""; }
-.pt-icon-zoom-in::before {
-  content: ""; }
-.pt-icon-zoom-out::before {
-  content: ""; }
-.pt-icon-refresh::before {
-  content: ""; }
-.pt-icon-delete::before {
-  content: ""; }
-.pt-icon-cog::before {
-  content: ""; }
-.pt-icon-flag::before {
-  content: "⚑"; }
-.pt-icon-pin::before {
-  content: ""; }
-.pt-icon-warning-sign::before {
-  content: ""; }
-.pt-icon-error::before {
-  content: ""; }
-.pt-icon-info-sign::before {
-  content: "ℹ"; }
-.pt-icon-credit-card::before {
-  content: ""; }
-.pt-icon-edit::before {
-  content: "✎"; }
-.pt-icon-history::before {
-  content: ""; }
-.pt-icon-search::before {
-  content: ""; }
-.pt-icon-log-out::before {
-  content: ""; }
-.pt-icon-star::before {
-  content: "★"; }
-.pt-icon-star-empty::before {
-  content: "☆"; }
-.pt-icon-sort-alphabetical::before {
-  content: ""; }
-.pt-icon-sort-numerical::before {
-  content: ""; }
-.pt-icon-sort::before {
-  content: ""; }
-.pt-icon-folder-open::before {
-  content: ""; }
-.pt-icon-folder-close::before {
-  content: ""; }
-.pt-icon-folder-shared::before {
-  content: ""; }
-.pt-icon-caret-up::before {
-  content: "⌃"; }
-.pt-icon-caret-right::before {
-  content: "〉"; }
-.pt-icon-caret-down::before {
-  content: "⌄"; }
-.pt-icon-caret-left::before {
-  content: "〈"; }
-.pt-icon-menu-open::before {
-  content: ""; }
-.pt-icon-menu-closed::before {
-  content: ""; }
-.pt-icon-feed::before {
-  content: ""; }
-.pt-icon-two-columns::before {
-  content: ""; }
-.pt-icon-one-column::before {
-  content: ""; }
-.pt-icon-dot::before {
-  content: "•"; }
-.pt-icon-property::before {
-  content: ""; }
-.pt-icon-time::before {
-  content: "⏲"; }
-.pt-icon-disable::before {
-  content: ""; }
-.pt-icon-unpin::before {
-  content: ""; }
-.pt-icon-flows::before {
-  content: ""; }
-.pt-icon-new-text-box::before {
-  content: ""; }
-.pt-icon-new-link::before {
-  content: ""; }
-.pt-icon-new-object::before {
-  content: ""; }
-.pt-icon-path-search::before {
-  content: ""; }
-.pt-icon-automatic-updates::before {
-  content: ""; }
-.pt-icon-page-layout::before {
-  content: ""; }
-.pt-icon-code::before {
-  content: ""; }
-.pt-icon-map::before {
-  content: ""; }
-.pt-icon-search-text::before {
-  content: ""; }
-.pt-icon-envelope::before {
-  content: "✉"; }
-.pt-icon-paperclip::before {
-  content: ""; }
-.pt-icon-label::before {
-  content: ""; }
-.pt-icon-globe::before {
-  content: ""; }
-.pt-icon-home::before {
-  content: "⌂"; }
-.pt-icon-th::before {
-  content: ""; }
-.pt-icon-th-list::before {
-  content: ""; }
-.pt-icon-th-derived::before {
-  content: ""; }
-.pt-icon-circle::before {
-  content: ""; }
-.pt-icon-draw::before {
-  content: ""; }
-.pt-icon-insert::before {
-  content: ""; }
-.pt-icon-helper-management::before {
-  content: ""; }
-.pt-icon-send-to::before {
-  content: ""; }
-.pt-icon-eye-open::before {
-  content: ""; }
-.pt-icon-folder-shared-open::before {
-  content: ""; }
-.pt-icon-social-media::before {
-  content: ""; }
-.pt-icon-arrow-up::before {
-  content: "↑"; }
-.pt-icon-arrow-down::before {
-  content: "↓"; }
-.pt-icon-arrows-horizontal::before {
-  content: "↔"; }
-.pt-icon-arrows-vertical::before {
-  content: "↕"; }
-.pt-icon-resolve::before {
-  content: ""; }
-.pt-icon-graph::before {
-  content: ""; }
-.pt-icon-briefcase::before {
-  content: ""; }
-.pt-icon-dollar::before {
-  content: "$"; }
-.pt-icon-ninja::before {
-  content: ""; }
-.pt-icon-delta::before {
-  content: "Δ"; }
-.pt-icon-barcode::before {
-  content: ""; }
-.pt-icon-torch::before {
-  content: ""; }
-.pt-icon-widget::before {
-  content: ""; }
-.pt-icon-unresolve::before {
-  content: ""; }
-.pt-icon-offline::before {
-  content: ""; }
-.pt-icon-zoom-to-fit::before {
-  content: ""; }
-.pt-icon-add-to-artifact::before {
-  content: ""; }
-.pt-icon-map-marker::before {
-  content: ""; }
-.pt-icon-chart::before {
-  content: ""; }
-.pt-icon-control::before {
-  content: ""; }
-.pt-icon-multi-select::before {
-  content: ""; }
-.pt-icon-direction-left::before {
-  content: ""; }
-.pt-icon-direction-right::before {
-  content: ""; }
-.pt-icon-database::before {
-  content: ""; }
-.pt-icon-pie-chart::before {
-  content: ""; }
-.pt-icon-full-circle::before {
-  content: ""; }
-.pt-icon-square::before {
-  content: ""; }
-.pt-icon-print::before {
-  content: "⎙"; }
-.pt-icon-presentation::before {
-  content: ""; }
-.pt-icon-ungroup-objects::before {
-  content: ""; }
-.pt-icon-chat::before {
-  content: ""; }
-.pt-icon-comment::before {
-  content: ""; }
-.pt-icon-circle-arrow-right::before {
-  content: ""; }
-.pt-icon-circle-arrow-left::before {
-  content: ""; }
-.pt-icon-circle-arrow-up::before {
-  content: ""; }
-.pt-icon-circle-arrow-down::before {
-  content: ""; }
-.pt-icon-upload::before {
-  content: ""; }
-.pt-icon-asterisk::before {
-  content: "*"; }
-.pt-icon-cloud::before {
-  content: "☁"; }
-.pt-icon-cloud-download::before {
-  content: ""; }
-.pt-icon-cloud-upload::before {
-  content: ""; }
-.pt-icon-repeat::before {
-  content: ""; }
-.pt-icon-move::before {
-  content: ""; }
-.pt-icon-chevron-left::before {
-  content: ""; }
-.pt-icon-chevron-right::before {
-  content: ""; }
-.pt-icon-chevron-up::before {
-  content: ""; }
-.pt-icon-chevron-down::before {
-  content: ""; }
-.pt-icon-random::before {
-  content: ""; }
-.pt-icon-fullscreen::before {
-  content: ""; }
-.pt-icon-log-in::before {
-  content: ""; }
-.pt-icon-heart::before {
-  content: "♥"; }
-.pt-icon-office::before {
-  content: ""; }
-.pt-icon-duplicate::before {
-  content: ""; }
-.pt-icon-ban-circle::before {
-  content: ""; }
-.pt-icon-camera::before {
-  content: ""; }
-.pt-icon-mobile-video::before {
-  content: ""; }
-.pt-icon-video::before {
-  content: ""; }
-.pt-icon-film::before {
-  content: ""; }
-.pt-icon-settings::before {
-  content: ""; }
-.pt-icon-volume-off::before {
-  content: ""; }
-.pt-icon-volume-down::before {
-  content: ""; }
-.pt-icon-volume-up::before {
-  content: ""; }
-.pt-icon-music::before {
-  content: ""; }
-.pt-icon-step-backward::before {
-  content: ""; }
-.pt-icon-fast-backward::before {
-  content: ""; }
-.pt-icon-pause::before {
-  content: ""; }
-.pt-icon-stop::before {
-  content: ""; }
-.pt-icon-play::before {
-  content: ""; }
-.pt-icon-fast-forward::before {
-  content: ""; }
-.pt-icon-step-forward::before {
-  content: ""; }
-.pt-icon-eject::before {
-  content: "⏏"; }
-.pt-icon-record::before {
-  content: ""; }
-.pt-icon-desktop::before {
-  content: ""; }
-.pt-icon-phone::before {
-  content: "☎"; }
-.pt-icon-lightbulb::before {
-  content: ""; }
-.pt-icon-glass::before {
-  content: ""; }
-.pt-icon-tint::before {
-  content: ""; }
-.pt-icon-flash::before {
-  content: ""; }
-.pt-icon-font::before {
-  content: ""; }
-.pt-icon-header::before {
-  content: ""; }
-.pt-icon-saved::before {
-  content: ""; }
-.pt-icon-floppy-disk::before {
-  content: ""; }
-.pt-icon-book::before {
-  content: ""; }
-.pt-icon-hand-right::before {
-  content: ""; }
-.pt-icon-hand-up::before {
-  content: ""; }
-.pt-icon-hand-down::before {
-  content: ""; }
-.pt-icon-hand-left::before {
-  content: ""; }
-.pt-icon-thumbs-up::before {
-  content: ""; }
-.pt-icon-thumbs-down::before {
-  content: ""; }
-.pt-icon-box::before {
-  content: ""; }
-.pt-icon-compressed::before {
-  content: ""; }
-.pt-icon-shopping-cart::before {
-  content: ""; }
-.pt-icon-shop::before {
-  content: ""; }
-.pt-icon-layout-linear::before {
-  content: ""; }
-.pt-icon-undo::before {
-  content: "⎌"; }
-.pt-icon-redo::before {
-  content: ""; }
-.pt-icon-code-block::before {
-  content: ""; }
-.pt-icon-double-caret-vertical::before {
-  content: ""; }
-.pt-icon-double-caret-horizontal::before {
-  content: ""; }
-.pt-icon-sort-alphabetical-desc::before {
-  content: ""; }
-.pt-icon-sort-numerical-desc::before {
-  content: ""; }
-.pt-icon-take-action::before {
-  content: ""; }
-.pt-icon-contrast::before {
-  content: ""; }
-.pt-icon-eye-off::before {
-  content: ""; }
-.pt-icon-timeline-area-chart::before {
-  content: ""; }
-.pt-icon-doughnut-chart::before {
-  content: ""; }
-.pt-icon-layer::before {
-  content: ""; }
-.pt-icon-grid::before {
-  content: ""; }
-.pt-icon-polygon-filter::before {
-  content: ""; }
-.pt-icon-add-to-folder::before {
-  content: ""; }
-.pt-icon-layout-balloon::before {
-  content: ""; }
-.pt-icon-layout-sorted-clusters::before {
-  content: ""; }
-.pt-icon-sort-asc::before {
-  content: ""; }
-.pt-icon-sort-desc::before {
-  content: ""; }
-.pt-icon-small-cross::before {
-  content: ""; }
-.pt-icon-small-tick::before {
-  content: ""; }
-.pt-icon-power::before {
-  content: ""; }
-.pt-icon-column-layout::before {
-  content: ""; }
-.pt-icon-arrow-top-left::before {
-  content: "↖"; }
-.pt-icon-arrow-top-right::before {
-  content: "↗"; }
-.pt-icon-arrow-bottom-right::before {
-  content: "↘"; }
-.pt-icon-arrow-bottom-left::before {
-  content: "↙"; }
-.pt-icon-mugshot::before {
-  content: ""; }
-.pt-icon-headset::before {
-  content: ""; }
-.pt-icon-text-highlight::before {
-  content: ""; }
-.pt-icon-hand::before {
-  content: ""; }
-.pt-icon-chevron-backward::before {
-  content: ""; }
-.pt-icon-chevron-forward::before {
-  content: ""; }
-.pt-icon-rotate-document::before {
-  content: ""; }
-.pt-icon-rotate-page::before {
-  content: ""; }
-.pt-icon-badge::before {
-  content: ""; }
-.pt-icon-grid-view::before {
-  content: ""; }
-.pt-icon-function::before {
-  content: ""; }
-.pt-icon-waterfall-chart::before {
-  content: ""; }
-.pt-icon-stacked-chart::before {
-  content: ""; }
-.pt-icon-pulse::before {
-  content: ""; }
-.pt-icon-new-person::before {
-  content: ""; }
-.pt-icon-exclude-row::before {
-  content: ""; }
-.pt-icon-pivot-table::before {
-  content: ""; }
-.pt-icon-segmented-control::before {
-  content: ""; }
-.pt-icon-highlight::before {
-  content: ""; }
-.pt-icon-filter-list::before {
-  content: ""; }
-.pt-icon-cut::before {
-  content: ""; }
-.pt-icon-annotation::before {
-  content: ""; }
-.pt-icon-pivot::before {
-  content: ""; }
-.pt-icon-ring::before {
-  content: ""; }
-.pt-icon-heat-grid::before {
-  content: ""; }
-.pt-icon-gantt-chart::before {
-  content: ""; }
-.pt-icon-variable::before {
-  content: ""; }
-.pt-icon-manual::before {
-  content: ""; }
-.pt-icon-add-row-top::before {
-  content: ""; }
-.pt-icon-add-row-bottom::before {
-  content: ""; }
-.pt-icon-add-column-left::before {
-  content: ""; }
-.pt-icon-add-column-right::before {
-  content: ""; }
-.pt-icon-remove-row-top::before {
-  content: ""; }
-.pt-icon-remove-row-bottom::before {
-  content: ""; }
-.pt-icon-remove-column-left::before {
-  content: ""; }
-.pt-icon-remove-column-right::before {
-  content: ""; }
-.pt-icon-double-chevron-left::before {
-  content: ""; }
-.pt-icon-double-chevron-right::before {
-  content: ""; }
-.pt-icon-double-chevron-up::before {
-  content: ""; }
-.pt-icon-double-chevron-down::before {
-  content: ""; }
-.pt-icon-key-control::before {
-  content: ""; }
-.pt-icon-key-command::before {
-  content: ""; }
-.pt-icon-key-shift::before {
-  content: ""; }
-.pt-icon-key-backspace::before {
-  content: ""; }
-.pt-icon-key-delete::before {
-  content: ""; }
-.pt-icon-key-escape::before {
-  content: ""; }
-.pt-icon-key-enter::before {
-  content: ""; }
-.pt-icon-calculator::before {
-  content: ""; }
-.pt-icon-horizontal-bar-chart::before {
-  content: ""; }
-.pt-icon-small-plus::before {
-  content: ""; }
-.pt-icon-small-minus::before {
-  content: ""; }
-.pt-icon-step-chart::before {
-  content: ""; }
-.pt-icon-euro::before {
-  content: "€"; }
-.pt-icon-drag-handle-vertical::before {
-  content: ""; }
-.pt-icon-drag-handle-horizontal::before {
-  content: ""; }
-.pt-icon-mobile-phone::before {
-  content: ""; }
-.pt-icon-sim-card::before {
-  content: ""; }
-.pt-icon-trending-up::before {
-  content: ""; }
-.pt-icon-trending-down::before {
-  content: ""; }
-.pt-icon-curved-range-chart::before {
-  content: ""; }
-.pt-icon-vertical-bar-chart-desc::before {
-  content: ""; }
-.pt-icon-horizontal-bar-chart-desc::before {
-  content: ""; }
-.pt-icon-document-open::before {
-  content: ""; }
-.pt-icon-document-share::before {
-  content: ""; }
-.pt-icon-horizontal-distribution::before {
-  content: ""; }
-.pt-icon-vertical-distribution::before {
-  content: ""; }
-.pt-icon-alignment-left::before {
-  content: ""; }
-.pt-icon-alignment-vertical-center::before {
-  content: ""; }
-.pt-icon-alignment-right::before {
-  content: ""; }
-.pt-icon-alignment-top::before {
-  content: ""; }
-.pt-icon-alignment-horizontal-center::before {
-  content: ""; }
-.pt-icon-alignment-bottom::before {
-  content: ""; }
-.pt-icon-git-pull::before {
-  content: ""; }
-.pt-icon-git-merge::before {
-  content: ""; }
-.pt-icon-git-branch::before {
-  content: ""; }
-.pt-icon-git-commit::before {
-  content: ""; }
-.pt-icon-git-push::before {
-  content: ""; }
-.pt-icon-build::before {
-  content: ""; }
-.pt-icon-symbol-circle::before {
-  content: ""; }
-.pt-icon-symbol-square::before {
-  content: ""; }
-.pt-icon-symbol-diamond::before {
-  content: ""; }
-.pt-icon-symbol-cross::before {
-  content: ""; }
-.pt-icon-symbol-triangle-up::before {
-  content: ""; }
-.pt-icon-symbol-triangle-down::before {
-  content: ""; }
-.pt-icon-wrench::before {
-  content: ""; }
-.pt-icon-application::before {
-  content: ""; }
-.pt-icon-send-to-graph::before {
-  content: ""; }
-.pt-icon-send-to-map::before {
-  content: ""; }
-.pt-icon-join-table::before {
-  content: ""; }
-.pt-icon-derive-column::before {
-  content: ""; }
-.pt-icon-image-rotate-left::before {
-  content: ""; }
-.pt-icon-image-rotate-right::before {
-  content: ""; }
-.pt-icon-known-vehicle::before {
-  content: ""; }
-.pt-icon-unknown-vehicle::before {
-  content: ""; }
-.pt-icon-scatter-plot::before {
-  content: ""; }
-.pt-icon-oil-field::before {
-  content: ""; }
-.pt-icon-rig::before {
-  content: ""; }
-.pt-icon-map-create::before {
-  content: ""; }
-.pt-icon-key-option::before {
-  content: ""; }
-.pt-icon-list-detail-view::before {
-  content: ""; }
-.pt-icon-swap-vertical::before {
-  content: ""; }
-.pt-icon-swap-horizontal::before {
-  content: ""; }
-.pt-icon-numbered-list::before {
-  content: ""; }
-.pt-icon-new-grid-item::before {
-  content: ""; }
-.pt-icon-git-repo::before {
-  content: ""; }
-.pt-icon-git-new-branch::before {
-  content: ""; }
-.pt-icon-manually-entered-data::before {
-  content: ""; }
-.pt-icon-airplane::before {
-  content: ""; }
-.pt-icon-merge-columns::before {
-  content: ""; }
-.pt-icon-split-columns::before {
-  content: ""; }
-.pt-icon-dashboard::before {
-  content: ""; }
-.pt-icon-publish-function::before {
-  content: ""; }
-.pt-icon-path::before {
-  content: ""; }
-.pt-icon-moon::before {
-  content: ""; }
-.pt-icon-remove-column::before {
-  content: ""; }
-.pt-icon-numerical::before {
-  content: ""; }
-.pt-icon-key-tab::before {
-  content: ""; }
-.pt-icon-regression-chart::before {
-  content: ""; }
-.pt-icon-translate::before {
-  content: ""; }
-.pt-icon-eye-on::before {
-  content: ""; }
-.pt-icon-vertical-bar-chart-asc::before {
-  content: ""; }
-.pt-icon-horizontal-bar-chart-asc::before {
-  content: ""; }
-.pt-icon-grouped-bar-chart::before {
-  content: ""; }
-.pt-icon-full-stacked-chart::before {
-  content: ""; }
-.pt-icon-endorsed::before {
-  content: ""; }
-.pt-icon-follower::before {
-  content: ""; }
-.pt-icon-following::before {
-  content: ""; }
-.pt-icon-menu::before {
-  content: ""; }
-.pt-icon-collapse-all::before {
-  content: ""; }
-.pt-icon-expand-all::before {
-  content: ""; }
-.pt-icon-intersection::before {
-  content: ""; }
-.pt-icon-blocked-person::before {
-  content: ""; }
-.pt-icon-slash::before {
-  content: ""; }
-.pt-icon-percentage::before {
-  content: ""; }
-.pt-icon-satellite::before {
-  content: ""; }
-.pt-icon-paragraph::before {
-  content: ""; }
-.pt-icon-banl-account::before {
-  content: ""; }
-.pt-icon-cell-tower::before {
-  content: ""; }
-.pt-icon-id-number::before {
-  content: ""; }
-.pt-icon-ip-address::before {
-  content: ""; }
-.pt-icon-eraser::before {
-  content: ""; }
-.pt-icon-issue::before {
-  content: ""; }
-.pt-icon-issue-new::before {
-  content: ""; }
-.pt-icon-issue-closed::before {
-  content: ""; }
-.pt-icon-panel-stats::before {
-  content: ""; }
-.pt-icon-panel-table::before {
-  content: ""; }
-.pt-icon-tick-circle::before {
-  content: ""; }
-.pt-icon-prescription::before {
-  content: ""; }
-.pt-icon-new-prescription::before {
-  content: ""; }
 :focus {
   outline: rgba(19, 124, 189, 0.5) auto 2px;
   outline-offset: 2px;
@@ -1909,8 +1044,7 @@ span.pt-icon::before {
   min-width: 24px;
   min-height: 24px;
   line-height: 24px;
-  padding: 0 7px;
-  font-size: 12px; }
+  padding: 0 7px; }
 .pt-button[class*="pt-icon-"]:empty {
   padding: 0; }
 .pt-button[class*="pt-icon-"]:empty::before {
@@ -2527,52 +1661,69 @@ a.pt-button.pt-disabled {
   display: block; }
 .pt-context-menu-popover-target {
   position: fixed; }
-.pt-dialog {
+.pt-dialog-container {
   opacity: 1;
-  -webkit-transform: translateX(50%) scale(1);
-  transform: translateX(50%) scale(1);
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+.pt-dialog-container.pt-overlay-enter > .pt-dialog, .pt-dialog-container.pt-overlay-appear > .pt-dialog {
+  opacity: 0;
+  -webkit-transform: scale(0.5);
+  transform: scale(0.5); }
+.pt-dialog-container.pt-overlay-enter-active > .pt-dialog, .pt-dialog-container.pt-overlay-appear-active > .pt-dialog {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  transition-property: opacity, -webkit-transform;
+  transition-property: opacity, transform;
+  transition-property: opacity, transform, -webkit-transform;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.54, 1.12, 0.38, 1.11);
+  transition-delay: 0; }
+.pt-dialog-container.pt-overlay-leave > .pt-dialog {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1); }
+.pt-dialog-container.pt-overlay-leave-active > .pt-dialog {
+  opacity: 0;
+  -webkit-transform: scale(0.5);
+  transform: scale(0.5);
+  transition-property: opacity, -webkit-transform;
+  transition-property: opacity, transform;
+  transition-property: opacity, transform, -webkit-transform;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.54, 1.12, 0.38, 1.11);
+  transition-delay: 0; }
+.pt-dialog-container .pt-dialog {
+  position: static !important;
+  -webkit-transform: none;
+  transform: none; }
+.pt-dialog {
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: column;
   flex-direction: column;
-  position: absolute;
-  top: 10%;
-  right: 50%;
-  z-index: 20;
-  margin-bottom: 20px;
+  margin: 30px 0;
   border-radius: 6px;
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 4px 8px rgba(16, 22, 26, 0.2), 0 18px 46px 6px rgba(16, 22, 26, 0.2);
   background: #ebf1f5;
   width: 500px;
-  padding-bottom: 20px; }
-.pt-dialog.pt-overlay-enter, .pt-dialog.pt-overlay-appear {
-  opacity: 0;
-  -webkit-transform: translateX(50%) scale(0.5);
-  transform: translateX(50%) scale(0.5); }
-.pt-dialog.pt-overlay-enter-active, .pt-dialog.pt-overlay-appear-active {
-  opacity: 1;
-  -webkit-transform: translateX(50%) scale(1);
-  transform: translateX(50%) scale(1);
-  transition-property: opacity, -webkit-transform;
-  transition-property: opacity, transform;
-  transition-property: opacity, transform, -webkit-transform;
-  transition-duration: 300ms;
-  transition-timing-function: cubic-bezier(0.54, 1.12, 0.38, 1.11);
-  transition-delay: 0; }
-.pt-dialog.pt-overlay-leave {
-  opacity: 1;
-  -webkit-transform: translateX(50%) scale(1);
-  transform: translateX(50%) scale(1); }
-.pt-dialog.pt-overlay-leave-active {
-  opacity: 0;
-  -webkit-transform: translateX(50%) scale(0.5);
-  transform: translateX(50%) scale(0.5);
-  transition-property: opacity, -webkit-transform;
-  transition-property: opacity, transform;
-  transition-property: opacity, transform, -webkit-transform;
-  transition-duration: 300ms;
-  transition-timing-function: cubic-bezier(0.54, 1.12, 0.38, 1.11);
-  transition-delay: 0; }
+  padding-bottom: 20px;
+  -webkit-user-select: initial;
+  -moz-user-select: initial;
+  -ms-user-select: initial;
+  user-select: initial; }
 .pt-dialog:focus {
   outline: 0; }
 .pt-dialog.pt-dark,
@@ -3892,7 +3043,7 @@ a.pt-button.pt-disabled {
 .pt-file-upload-input::placeholder {
   opacity: 1;
   color: rgba(92, 112, 128, 0.5); }
-.pt-file-upload-input:focus {
+.pt-file-upload-input:focus, .pt-file-upload-input.pt-active {
   box-shadow: 0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2); }
 .pt-file-upload-input[type="search"], .pt-file-upload-input.pt-round {
   border-radius: 30px;
@@ -4240,7 +3391,7 @@ a.pt-button.pt-disabled {
 .pt-input::placeholder {
   opacity: 1;
   color: rgba(92, 112, 128, 0.5); }
-.pt-input:focus {
+.pt-input:focus, .pt-input.pt-active {
   box-shadow: 0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2); }
 .pt-input[type="search"], .pt-input.pt-round {
   border-radius: 30px;
@@ -4744,6 +3895,859 @@ form {
   margin-left: 0; }
 .pt-hotkey:not(:last-child) {
   margin-bottom: 10px; }
+.pt-icon, .pt-icon-standard, .pt-icon-large {
+  display: inline-block; }
+.pt-icon.pt-intent-primary, .pt-icon-standard.pt-intent-primary, .pt-icon-large.pt-intent-primary {
+  color: #137cbd; }
+.pt-icon.pt-intent-success, .pt-icon-standard.pt-intent-success, .pt-icon-large.pt-intent-success {
+  color: #0f9960; }
+.pt-icon.pt-intent-warning, .pt-icon-standard.pt-intent-warning, .pt-icon-large.pt-intent-warning {
+  color: #d9822b; }
+.pt-icon.pt-intent-danger, .pt-icon-standard.pt-intent-danger, .pt-icon-large.pt-intent-danger {
+  color: #db3737; }
+span.pt-icon-standard {
+  line-height: 1;
+  font-family: "Icons16", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased; }
+span.pt-icon-large {
+  line-height: 1;
+  font-family: "Icons20", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  font-style: normal;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased; }
+span.pt-icon {
+  line-height: 1;
+  font-family: "Icons20";
+  font-size: inherit;
+  font-weight: 400;
+  font-style: normal; }
+span.pt-icon::before {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased; }
+.pt-icon-blank::before {
+  content: ""; }
+.pt-icon-style::before {
+  content: ""; }
+.pt-icon-align-left::before {
+  content: ""; }
+.pt-icon-align-center::before {
+  content: ""; }
+.pt-icon-align-right::before {
+  content: ""; }
+.pt-icon-align-justify::before {
+  content: ""; }
+.pt-icon-bold::before {
+  content: ""; }
+.pt-icon-italic::before {
+  content: ""; }
+.pt-icon-underline::before {
+  content: "⎁"; }
+.pt-icon-search-around::before {
+  content: ""; }
+.pt-icon-graph-remove::before {
+  content: ""; }
+.pt-icon-group-objects::before {
+  content: ""; }
+.pt-icon-merge-links::before {
+  content: ""; }
+.pt-icon-layout::before {
+  content: ""; }
+.pt-icon-layout-auto::before {
+  content: ""; }
+.pt-icon-layout-circle::before {
+  content: ""; }
+.pt-icon-layout-hierarchy::before {
+  content: ""; }
+.pt-icon-layout-grid::before {
+  content: ""; }
+.pt-icon-layout-group-by::before {
+  content: ""; }
+.pt-icon-layout-skew-grid::before {
+  content: ""; }
+.pt-icon-geosearch::before {
+  content: ""; }
+.pt-icon-heatmap::before {
+  content: ""; }
+.pt-icon-drive-time::before {
+  content: ""; }
+.pt-icon-select::before {
+  content: ""; }
+.pt-icon-predictive-analysis::before {
+  content: ""; }
+.pt-icon-layers::before {
+  content: ""; }
+.pt-icon-locate::before {
+  content: ""; }
+.pt-icon-bookmark::before {
+  content: ""; }
+.pt-icon-citation::before {
+  content: ""; }
+.pt-icon-tag::before {
+  content: ""; }
+.pt-icon-clipboard::before {
+  content: ""; }
+.pt-icon-selection::before {
+  content: "⦿"; }
+.pt-icon-timeline-events::before {
+  content: ""; }
+.pt-icon-timeline-line-chart::before {
+  content: ""; }
+.pt-icon-timeline-bar-chart::before {
+  content: ""; }
+.pt-icon-applications::before {
+  content: ""; }
+.pt-icon-projects::before {
+  content: ""; }
+.pt-icon-changes::before {
+  content: ""; }
+.pt-icon-notifications::before {
+  content: ""; }
+.pt-icon-lock::before {
+  content: ""; }
+.pt-icon-unlock::before {
+  content: ""; }
+.pt-icon-user::before {
+  content: ""; }
+.pt-icon-search-template::before {
+  content: ""; }
+.pt-icon-inbox::before {
+  content: ""; }
+.pt-icon-more::before {
+  content: ""; }
+.pt-icon-help::before {
+  content: "?"; }
+.pt-icon-calendar::before {
+  content: ""; }
+.pt-icon-media::before {
+  content: ""; }
+.pt-icon-link::before {
+  content: ""; }
+.pt-icon-share::before {
+  content: ""; }
+.pt-icon-download::before {
+  content: ""; }
+.pt-icon-document::before {
+  content: ""; }
+.pt-icon-properties::before {
+  content: ""; }
+.pt-icon-import::before {
+  content: ""; }
+.pt-icon-export::before {
+  content: ""; }
+.pt-icon-minimize::before {
+  content: ""; }
+.pt-icon-maximize::before {
+  content: ""; }
+.pt-icon-tick::before {
+  content: "✓"; }
+.pt-icon-cross::before {
+  content: "✗"; }
+.pt-icon-plus::before {
+  content: "+"; }
+.pt-icon-minus::before {
+  content: "−"; }
+.pt-icon-arrow-left::before {
+  content: "←"; }
+.pt-icon-arrow-right::before {
+  content: "→"; }
+.pt-icon-exchange::before {
+  content: ""; }
+.pt-icon-comparison::before {
+  content: ""; }
+.pt-icon-list::before {
+  content: "☰"; }
+.pt-icon-filter::before {
+  content: ""; }
+.pt-icon-confirm::before {
+  content: ""; }
+.pt-icon-fork::before {
+  content: ""; }
+.pt-icon-trash::before {
+  content: ""; }
+.pt-icon-person::before {
+  content: ""; }
+.pt-icon-people::before {
+  content: ""; }
+.pt-icon-add::before {
+  content: ""; }
+.pt-icon-remove::before {
+  content: ""; }
+.pt-icon-geolocation::before {
+  content: ""; }
+.pt-icon-zoom-in::before {
+  content: ""; }
+.pt-icon-zoom-out::before {
+  content: ""; }
+.pt-icon-refresh::before {
+  content: ""; }
+.pt-icon-delete::before {
+  content: ""; }
+.pt-icon-cog::before {
+  content: ""; }
+.pt-icon-flag::before {
+  content: "⚑"; }
+.pt-icon-pin::before {
+  content: ""; }
+.pt-icon-warning-sign::before {
+  content: ""; }
+.pt-icon-error::before {
+  content: ""; }
+.pt-icon-info-sign::before {
+  content: "ℹ"; }
+.pt-icon-credit-card::before {
+  content: ""; }
+.pt-icon-edit::before {
+  content: "✎"; }
+.pt-icon-history::before {
+  content: ""; }
+.pt-icon-search::before {
+  content: ""; }
+.pt-icon-log-out::before {
+  content: ""; }
+.pt-icon-star::before {
+  content: "★"; }
+.pt-icon-star-empty::before {
+  content: "☆"; }
+.pt-icon-sort-alphabetical::before {
+  content: ""; }
+.pt-icon-sort-numerical::before {
+  content: ""; }
+.pt-icon-sort::before {
+  content: ""; }
+.pt-icon-folder-open::before {
+  content: ""; }
+.pt-icon-folder-close::before {
+  content: ""; }
+.pt-icon-folder-shared::before {
+  content: ""; }
+.pt-icon-caret-up::before {
+  content: "⌃"; }
+.pt-icon-caret-right::before {
+  content: "〉"; }
+.pt-icon-caret-down::before {
+  content: "⌄"; }
+.pt-icon-caret-left::before {
+  content: "〈"; }
+.pt-icon-menu-open::before {
+  content: ""; }
+.pt-icon-menu-closed::before {
+  content: ""; }
+.pt-icon-feed::before {
+  content: ""; }
+.pt-icon-two-columns::before {
+  content: ""; }
+.pt-icon-one-column::before {
+  content: ""; }
+.pt-icon-dot::before {
+  content: "•"; }
+.pt-icon-property::before {
+  content: ""; }
+.pt-icon-time::before {
+  content: "⏲"; }
+.pt-icon-disable::before {
+  content: ""; }
+.pt-icon-unpin::before {
+  content: ""; }
+.pt-icon-flows::before {
+  content: ""; }
+.pt-icon-new-text-box::before {
+  content: ""; }
+.pt-icon-new-link::before {
+  content: ""; }
+.pt-icon-new-object::before {
+  content: ""; }
+.pt-icon-path-search::before {
+  content: ""; }
+.pt-icon-automatic-updates::before {
+  content: ""; }
+.pt-icon-page-layout::before {
+  content: ""; }
+.pt-icon-code::before {
+  content: ""; }
+.pt-icon-map::before {
+  content: ""; }
+.pt-icon-search-text::before {
+  content: ""; }
+.pt-icon-envelope::before {
+  content: "✉"; }
+.pt-icon-paperclip::before {
+  content: ""; }
+.pt-icon-label::before {
+  content: ""; }
+.pt-icon-globe::before {
+  content: ""; }
+.pt-icon-home::before {
+  content: "⌂"; }
+.pt-icon-th::before {
+  content: ""; }
+.pt-icon-th-list::before {
+  content: ""; }
+.pt-icon-th-derived::before {
+  content: ""; }
+.pt-icon-circle::before {
+  content: ""; }
+.pt-icon-draw::before {
+  content: ""; }
+.pt-icon-insert::before {
+  content: ""; }
+.pt-icon-helper-management::before {
+  content: ""; }
+.pt-icon-send-to::before {
+  content: ""; }
+.pt-icon-eye-open::before {
+  content: ""; }
+.pt-icon-folder-shared-open::before {
+  content: ""; }
+.pt-icon-social-media::before {
+  content: ""; }
+.pt-icon-arrow-up::before {
+  content: "↑"; }
+.pt-icon-arrow-down::before {
+  content: "↓"; }
+.pt-icon-arrows-horizontal::before {
+  content: "↔"; }
+.pt-icon-arrows-vertical::before {
+  content: "↕"; }
+.pt-icon-resolve::before {
+  content: ""; }
+.pt-icon-graph::before {
+  content: ""; }
+.pt-icon-briefcase::before {
+  content: ""; }
+.pt-icon-dollar::before {
+  content: "$"; }
+.pt-icon-ninja::before {
+  content: ""; }
+.pt-icon-delta::before {
+  content: "Δ"; }
+.pt-icon-barcode::before {
+  content: ""; }
+.pt-icon-torch::before {
+  content: ""; }
+.pt-icon-widget::before {
+  content: ""; }
+.pt-icon-unresolve::before {
+  content: ""; }
+.pt-icon-offline::before {
+  content: ""; }
+.pt-icon-zoom-to-fit::before {
+  content: ""; }
+.pt-icon-add-to-artifact::before {
+  content: ""; }
+.pt-icon-map-marker::before {
+  content: ""; }
+.pt-icon-chart::before {
+  content: ""; }
+.pt-icon-control::before {
+  content: ""; }
+.pt-icon-multi-select::before {
+  content: ""; }
+.pt-icon-direction-left::before {
+  content: ""; }
+.pt-icon-direction-right::before {
+  content: ""; }
+.pt-icon-database::before {
+  content: ""; }
+.pt-icon-pie-chart::before {
+  content: ""; }
+.pt-icon-full-circle::before {
+  content: ""; }
+.pt-icon-square::before {
+  content: ""; }
+.pt-icon-print::before {
+  content: "⎙"; }
+.pt-icon-presentation::before {
+  content: ""; }
+.pt-icon-ungroup-objects::before {
+  content: ""; }
+.pt-icon-chat::before {
+  content: ""; }
+.pt-icon-comment::before {
+  content: ""; }
+.pt-icon-circle-arrow-right::before {
+  content: ""; }
+.pt-icon-circle-arrow-left::before {
+  content: ""; }
+.pt-icon-circle-arrow-up::before {
+  content: ""; }
+.pt-icon-circle-arrow-down::before {
+  content: ""; }
+.pt-icon-upload::before {
+  content: ""; }
+.pt-icon-asterisk::before {
+  content: "*"; }
+.pt-icon-cloud::before {
+  content: "☁"; }
+.pt-icon-cloud-download::before {
+  content: ""; }
+.pt-icon-cloud-upload::before {
+  content: ""; }
+.pt-icon-repeat::before {
+  content: ""; }
+.pt-icon-move::before {
+  content: ""; }
+.pt-icon-chevron-left::before {
+  content: ""; }
+.pt-icon-chevron-right::before {
+  content: ""; }
+.pt-icon-chevron-up::before {
+  content: ""; }
+.pt-icon-chevron-down::before {
+  content: ""; }
+.pt-icon-random::before {
+  content: ""; }
+.pt-icon-fullscreen::before {
+  content: ""; }
+.pt-icon-log-in::before {
+  content: ""; }
+.pt-icon-heart::before {
+  content: "♥"; }
+.pt-icon-office::before {
+  content: ""; }
+.pt-icon-duplicate::before {
+  content: ""; }
+.pt-icon-ban-circle::before {
+  content: ""; }
+.pt-icon-camera::before {
+  content: ""; }
+.pt-icon-mobile-video::before {
+  content: ""; }
+.pt-icon-video::before {
+  content: ""; }
+.pt-icon-film::before {
+  content: ""; }
+.pt-icon-settings::before {
+  content: ""; }
+.pt-icon-volume-off::before {
+  content: ""; }
+.pt-icon-volume-down::before {
+  content: ""; }
+.pt-icon-volume-up::before {
+  content: ""; }
+.pt-icon-music::before {
+  content: ""; }
+.pt-icon-step-backward::before {
+  content: ""; }
+.pt-icon-fast-backward::before {
+  content: ""; }
+.pt-icon-pause::before {
+  content: ""; }
+.pt-icon-stop::before {
+  content: ""; }
+.pt-icon-play::before {
+  content: ""; }
+.pt-icon-fast-forward::before {
+  content: ""; }
+.pt-icon-step-forward::before {
+  content: ""; }
+.pt-icon-eject::before {
+  content: "⏏"; }
+.pt-icon-record::before {
+  content: ""; }
+.pt-icon-desktop::before {
+  content: ""; }
+.pt-icon-phone::before {
+  content: "☎"; }
+.pt-icon-lightbulb::before {
+  content: ""; }
+.pt-icon-glass::before {
+  content: ""; }
+.pt-icon-tint::before {
+  content: ""; }
+.pt-icon-flash::before {
+  content: ""; }
+.pt-icon-font::before {
+  content: ""; }
+.pt-icon-header::before {
+  content: ""; }
+.pt-icon-saved::before {
+  content: ""; }
+.pt-icon-floppy-disk::before {
+  content: ""; }
+.pt-icon-book::before {
+  content: ""; }
+.pt-icon-hand-right::before {
+  content: ""; }
+.pt-icon-hand-up::before {
+  content: ""; }
+.pt-icon-hand-down::before {
+  content: ""; }
+.pt-icon-hand-left::before {
+  content: ""; }
+.pt-icon-thumbs-up::before {
+  content: ""; }
+.pt-icon-thumbs-down::before {
+  content: ""; }
+.pt-icon-box::before {
+  content: ""; }
+.pt-icon-compressed::before {
+  content: ""; }
+.pt-icon-shopping-cart::before {
+  content: ""; }
+.pt-icon-shop::before {
+  content: ""; }
+.pt-icon-layout-linear::before {
+  content: ""; }
+.pt-icon-undo::before {
+  content: "⎌"; }
+.pt-icon-redo::before {
+  content: ""; }
+.pt-icon-code-block::before {
+  content: ""; }
+.pt-icon-double-caret-vertical::before {
+  content: ""; }
+.pt-icon-double-caret-horizontal::before {
+  content: ""; }
+.pt-icon-sort-alphabetical-desc::before {
+  content: ""; }
+.pt-icon-sort-numerical-desc::before {
+  content: ""; }
+.pt-icon-take-action::before {
+  content: ""; }
+.pt-icon-contrast::before {
+  content: ""; }
+.pt-icon-eye-off::before {
+  content: ""; }
+.pt-icon-timeline-area-chart::before {
+  content: ""; }
+.pt-icon-doughnut-chart::before {
+  content: ""; }
+.pt-icon-layer::before {
+  content: ""; }
+.pt-icon-grid::before {
+  content: ""; }
+.pt-icon-polygon-filter::before {
+  content: ""; }
+.pt-icon-add-to-folder::before {
+  content: ""; }
+.pt-icon-layout-balloon::before {
+  content: ""; }
+.pt-icon-layout-sorted-clusters::before {
+  content: ""; }
+.pt-icon-sort-asc::before {
+  content: ""; }
+.pt-icon-sort-desc::before {
+  content: ""; }
+.pt-icon-small-cross::before {
+  content: ""; }
+.pt-icon-small-tick::before {
+  content: ""; }
+.pt-icon-power::before {
+  content: ""; }
+.pt-icon-column-layout::before {
+  content: ""; }
+.pt-icon-arrow-top-left::before {
+  content: "↖"; }
+.pt-icon-arrow-top-right::before {
+  content: "↗"; }
+.pt-icon-arrow-bottom-right::before {
+  content: "↘"; }
+.pt-icon-arrow-bottom-left::before {
+  content: "↙"; }
+.pt-icon-mugshot::before {
+  content: ""; }
+.pt-icon-headset::before {
+  content: ""; }
+.pt-icon-text-highlight::before {
+  content: ""; }
+.pt-icon-hand::before {
+  content: ""; }
+.pt-icon-chevron-backward::before {
+  content: ""; }
+.pt-icon-chevron-forward::before {
+  content: ""; }
+.pt-icon-rotate-document::before {
+  content: ""; }
+.pt-icon-rotate-page::before {
+  content: ""; }
+.pt-icon-badge::before {
+  content: ""; }
+.pt-icon-grid-view::before {
+  content: ""; }
+.pt-icon-function::before {
+  content: ""; }
+.pt-icon-waterfall-chart::before {
+  content: ""; }
+.pt-icon-stacked-chart::before {
+  content: ""; }
+.pt-icon-pulse::before {
+  content: ""; }
+.pt-icon-new-person::before {
+  content: ""; }
+.pt-icon-exclude-row::before {
+  content: ""; }
+.pt-icon-pivot-table::before {
+  content: ""; }
+.pt-icon-segmented-control::before {
+  content: ""; }
+.pt-icon-highlight::before {
+  content: ""; }
+.pt-icon-filter-list::before {
+  content: ""; }
+.pt-icon-cut::before {
+  content: ""; }
+.pt-icon-annotation::before {
+  content: ""; }
+.pt-icon-pivot::before {
+  content: ""; }
+.pt-icon-ring::before {
+  content: ""; }
+.pt-icon-heat-grid::before {
+  content: ""; }
+.pt-icon-gantt-chart::before {
+  content: ""; }
+.pt-icon-variable::before {
+  content: ""; }
+.pt-icon-manual::before {
+  content: ""; }
+.pt-icon-add-row-top::before {
+  content: ""; }
+.pt-icon-add-row-bottom::before {
+  content: ""; }
+.pt-icon-add-column-left::before {
+  content: ""; }
+.pt-icon-add-column-right::before {
+  content: ""; }
+.pt-icon-remove-row-top::before {
+  content: ""; }
+.pt-icon-remove-row-bottom::before {
+  content: ""; }
+.pt-icon-remove-column-left::before {
+  content: ""; }
+.pt-icon-remove-column-right::before {
+  content: ""; }
+.pt-icon-double-chevron-left::before {
+  content: ""; }
+.pt-icon-double-chevron-right::before {
+  content: ""; }
+.pt-icon-double-chevron-up::before {
+  content: ""; }
+.pt-icon-double-chevron-down::before {
+  content: ""; }
+.pt-icon-key-control::before {
+  content: ""; }
+.pt-icon-key-command::before {
+  content: ""; }
+.pt-icon-key-shift::before {
+  content: ""; }
+.pt-icon-key-backspace::before {
+  content: ""; }
+.pt-icon-key-delete::before {
+  content: ""; }
+.pt-icon-key-escape::before {
+  content: ""; }
+.pt-icon-key-enter::before {
+  content: ""; }
+.pt-icon-calculator::before {
+  content: ""; }
+.pt-icon-horizontal-bar-chart::before {
+  content: ""; }
+.pt-icon-small-plus::before {
+  content: ""; }
+.pt-icon-small-minus::before {
+  content: ""; }
+.pt-icon-step-chart::before {
+  content: ""; }
+.pt-icon-euro::before {
+  content: "€"; }
+.pt-icon-drag-handle-vertical::before {
+  content: ""; }
+.pt-icon-drag-handle-horizontal::before {
+  content: ""; }
+.pt-icon-mobile-phone::before {
+  content: ""; }
+.pt-icon-sim-card::before {
+  content: ""; }
+.pt-icon-trending-up::before {
+  content: ""; }
+.pt-icon-trending-down::before {
+  content: ""; }
+.pt-icon-curved-range-chart::before {
+  content: ""; }
+.pt-icon-vertical-bar-chart-desc::before {
+  content: ""; }
+.pt-icon-horizontal-bar-chart-desc::before {
+  content: ""; }
+.pt-icon-document-open::before {
+  content: ""; }
+.pt-icon-document-share::before {
+  content: ""; }
+.pt-icon-horizontal-distribution::before {
+  content: ""; }
+.pt-icon-vertical-distribution::before {
+  content: ""; }
+.pt-icon-alignment-left::before {
+  content: ""; }
+.pt-icon-alignment-vertical-center::before {
+  content: ""; }
+.pt-icon-alignment-right::before {
+  content: ""; }
+.pt-icon-alignment-top::before {
+  content: ""; }
+.pt-icon-alignment-horizontal-center::before {
+  content: ""; }
+.pt-icon-alignment-bottom::before {
+  content: ""; }
+.pt-icon-git-pull::before {
+  content: ""; }
+.pt-icon-git-merge::before {
+  content: ""; }
+.pt-icon-git-branch::before {
+  content: ""; }
+.pt-icon-git-commit::before {
+  content: ""; }
+.pt-icon-git-push::before {
+  content: ""; }
+.pt-icon-build::before {
+  content: ""; }
+.pt-icon-symbol-circle::before {
+  content: ""; }
+.pt-icon-symbol-square::before {
+  content: ""; }
+.pt-icon-symbol-diamond::before {
+  content: ""; }
+.pt-icon-symbol-cross::before {
+  content: ""; }
+.pt-icon-symbol-triangle-up::before {
+  content: ""; }
+.pt-icon-symbol-triangle-down::before {
+  content: ""; }
+.pt-icon-wrench::before {
+  content: ""; }
+.pt-icon-application::before {
+  content: ""; }
+.pt-icon-send-to-graph::before {
+  content: ""; }
+.pt-icon-send-to-map::before {
+  content: ""; }
+.pt-icon-join-table::before {
+  content: ""; }
+.pt-icon-derive-column::before {
+  content: ""; }
+.pt-icon-image-rotate-left::before {
+  content: ""; }
+.pt-icon-image-rotate-right::before {
+  content: ""; }
+.pt-icon-known-vehicle::before {
+  content: ""; }
+.pt-icon-unknown-vehicle::before {
+  content: ""; }
+.pt-icon-scatter-plot::before {
+  content: ""; }
+.pt-icon-oil-field::before {
+  content: ""; }
+.pt-icon-rig::before {
+  content: ""; }
+.pt-icon-map-create::before {
+  content: ""; }
+.pt-icon-key-option::before {
+  content: ""; }
+.pt-icon-list-detail-view::before {
+  content: ""; }
+.pt-icon-swap-vertical::before {
+  content: ""; }
+.pt-icon-swap-horizontal::before {
+  content: ""; }
+.pt-icon-numbered-list::before {
+  content: ""; }
+.pt-icon-new-grid-item::before {
+  content: ""; }
+.pt-icon-git-repo::before {
+  content: ""; }
+.pt-icon-git-new-branch::before {
+  content: ""; }
+.pt-icon-manually-entered-data::before {
+  content: ""; }
+.pt-icon-airplane::before {
+  content: ""; }
+.pt-icon-merge-columns::before {
+  content: ""; }
+.pt-icon-split-columns::before {
+  content: ""; }
+.pt-icon-dashboard::before {
+  content: ""; }
+.pt-icon-publish-function::before {
+  content: ""; }
+.pt-icon-path::before {
+  content: ""; }
+.pt-icon-moon::before {
+  content: ""; }
+.pt-icon-remove-column::before {
+  content: ""; }
+.pt-icon-numerical::before {
+  content: ""; }
+.pt-icon-key-tab::before {
+  content: ""; }
+.pt-icon-regression-chart::before {
+  content: ""; }
+.pt-icon-translate::before {
+  content: ""; }
+.pt-icon-eye-on::before {
+  content: ""; }
+.pt-icon-vertical-bar-chart-asc::before {
+  content: ""; }
+.pt-icon-horizontal-bar-chart-asc::before {
+  content: ""; }
+.pt-icon-grouped-bar-chart::before {
+  content: ""; }
+.pt-icon-full-stacked-chart::before {
+  content: ""; }
+.pt-icon-endorsed::before {
+  content: ""; }
+.pt-icon-follower::before {
+  content: ""; }
+.pt-icon-following::before {
+  content: ""; }
+.pt-icon-menu::before {
+  content: ""; }
+.pt-icon-collapse-all::before {
+  content: ""; }
+.pt-icon-expand-all::before {
+  content: ""; }
+.pt-icon-intersection::before {
+  content: ""; }
+.pt-icon-blocked-person::before {
+  content: ""; }
+.pt-icon-slash::before {
+  content: ""; }
+.pt-icon-percentage::before {
+  content: ""; }
+.pt-icon-satellite::before {
+  content: ""; }
+.pt-icon-paragraph::before {
+  content: ""; }
+.pt-icon-bank-account::before {
+  content: ""; }
+.pt-icon-cell-tower::before {
+  content: ""; }
+.pt-icon-id-number::before {
+  content: ""; }
+.pt-icon-ip-address::before {
+  content: ""; }
+.pt-icon-eraser::before {
+  content: ""; }
+.pt-icon-issue::before {
+  content: ""; }
+.pt-icon-issue-new::before {
+  content: ""; }
+.pt-icon-issue-closed::before {
+  content: ""; }
+.pt-icon-panel-stats::before {
+  content: ""; }
+.pt-icon-panel-table::before {
+  content: ""; }
+.pt-icon-tick-circle::before {
+  content: ""; }
+.pt-icon-prescription::before {
+  content: ""; }
+.pt-icon-new-prescription::before {
+  content: ""; }
 .pt-submenu > .pt-popover-target {
   display: inherit; }
 .pt-submenu > .pt-popover-target > .pt-menu-item {
@@ -5094,6 +5098,28 @@ button.pt-menu-item {
   text-align: center; }
 body.pt-overlay-open {
   overflow: hidden; }
+.pt-overlay {
+  position: static;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20; }
+.pt-overlay:not(.pt-overlay-open) {
+  pointer-events: none; }
+.pt-overlay.pt-overlay-scroll-container {
+  position: fixed;
+  overflow: auto; }
+.pt-overlay.pt-overlay-scroll-container.pt-overlay-inline {
+  position: absolute; }
+.pt-overlay.pt-overlay-inline {
+  overflow: visible; }
+.pt-overlay-content {
+  position: fixed;
+  z-index: 20; }
+.pt-overlay-inline .pt-overlay-content,
+.pt-overlay-scroll-container .pt-overlay-content {
+  position: absolute; }
 .pt-overlay-backdrop {
   position: fixed;
   top: 0;
@@ -5103,7 +5129,11 @@ body.pt-overlay-open {
   opacity: 1;
   z-index: 20;
   background-color: rgba(16, 22, 26, 0.7);
-  overflow: auto; }
+  overflow: auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 .pt-overlay-backdrop.pt-overlay-enter, .pt-overlay-backdrop.pt-overlay-appear {
   opacity: 0; }
 .pt-overlay-backdrop.pt-overlay-enter-active, .pt-overlay-backdrop.pt-overlay-appear-active {
@@ -5122,20 +5152,7 @@ body.pt-overlay-open {
   transition-delay: 0; }
 .pt-overlay-backdrop:focus {
   outline: none; }
-.pt-overlay-content {
-  position: fixed; }
-.pt-overlay-inline .pt-overlay-backdrop,
-.pt-overlay-inline .pt-overlay-content {
-  position: absolute; }
-.pt-overlay-scroll-container.pt-overlay-open {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 20;
-  overflow: auto; }
-.pt-overlay-scroll-container.pt-overlay-open .pt-overlay-content {
+.pt-overlay-inline .pt-overlay-backdrop {
   position: absolute; }
 .pt-popover {
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 2px 4px rgba(16, 22, 26, 0.2), 0 8px 24px rgba(16, 22, 26, 0.2);
@@ -5328,6 +5345,8 @@ body.pt-overlay-open {
   background: rgba(255, 255, 255, 0); }
 .pt-transition-container {
   opacity: 1;
+  display: -webkit-flex;
+  display: flex;
   z-index: 20; }
 .pt-transition-container.pt-popover-enter, .pt-transition-container.pt-popover-appear {
   opacity: 0; }
@@ -5381,6 +5400,8 @@ body.pt-overlay-open {
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%); }
+.pt-popover-target .pt-overlay-inline {
+  position: static; }
 .pt-button-group.pt-vertical .pt-popover-target {
   display: block; }
 .pt-button-group:not(.pt-vertical) .pt-popover-target,
@@ -6002,7 +6023,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
   -webkit-align-items: flex-start;
   align-items: flex-start;
   position: relative !important;
-  margin: 15px 0 0;
+  margin: 20px 0 0;
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 2px 4px rgba(16, 22, 26, 0.2), 0 8px 24px rgba(16, 22, 26, 0.2);
   background-color: #ffffff;
@@ -6114,7 +6135,6 @@ table.pt-table.pt-interactive tbody tr:hover td {
   right: 0;
   left: 0;
   z-index: 40;
-  padding: 0 15px 15px;
   pointer-events: none; }
 .pt-toast-container > span {
   display: -webkit-flex;
@@ -6122,10 +6142,14 @@ table.pt-table.pt-interactive tbody tr:hover td {
   -webkit-flex-direction: column;
   flex-direction: column;
   -webkit-align-items: center;
-  align-items: center; }
+  align-items: center;
+  overflow: hidden;
+  padding: 0 20px 20px; }
 .pt-toast-container.pt-toast-container-top {
-  top: 0; }
+  top: 0;
+  bottom: auto; }
 .pt-toast-container.pt-toast-container-bottom {
+  top: auto;
   bottom: 0; }
 .pt-toast-container.pt-toast-container-bottom > span {
   -webkit-flex-direction: column-reverse;
@@ -6139,8 +6163,8 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .pt-toast-container-bottom .pt-toast.pt-toast-enter:not(.pt-toast-enter-active),
 .pt-toast-container-bottom .pt-toast.pt-toast-enter:not(.pt-toast-enter-active) ~ .pt-toast,
 .pt-toast-container-bottom .pt-toast.pt-toast-leave-active ~ .pt-toast {
-  -webkit-transform: translateY(55px);
-  transform: translateY(55px); }
+  -webkit-transform: translateY(60px);
+  transform: translateY(60px); }
 .pt-tooltip {
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 2px 4px rgba(16, 22, 26, 0.2), 0 8px 24px rgba(16, 22, 26, 0.2);
   -webkit-transform: scale(1);
@@ -6837,14 +6861,17 @@ table.pt-table.pt-interactive tbody tr:hover td {
   display: flex;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
+  -webkit-align-items: center;
+  align-items: center;
   cursor: text;
   height: auto;
-  padding: 5px 0 0 5px; }
+  padding: 5px 3px 0 0; }
+.pt-tag-input .pt-tag-input-icon {
+  margin: 0 2px 5px 7px;
+  color: #5c7080; }
 .pt-tag-input .pt-tag {
-  margin: 0 0 5px 0;
+  margin: 0 0 5px 5px;
   overflow-wrap: break-word; }
-.pt-tag-input .pt-tag:not(:last-of-type) {
-  margin-right: 5px; }
 .pt-tag-input .pt-input-ghost {
   -webkit-flex: 1 1 auto;
   flex: 1 1 auto;
@@ -6852,13 +6879,19 @@ table.pt-table.pt-interactive tbody tr:hover td {
   width: 100px;
   padding: 0 5px;
   line-height: 20px; }
+.pt-tag-input .pt-input-ghost ~ * {
+  margin-top: -5px; }
 .pt-tag-input.pt-large {
   height: auto; }
+.pt-tag-input.pt-large .pt-tag-input-icon {
+  margin: 0 7px 5px 12px; }
 .pt-tag-input.pt-large .pt-input-ghost {
   line-height: 30px; }
 .pt-tag-input.pt-active {
   box-shadow: 0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2);
   background-color: #ffffff; }
+.pt-dark .pt-tag-input .pt-tag-input-icon, .pt-tag-input.pt-dark .pt-tag-input-icon {
+  color: #bfccd6; }
 .pt-dark .pt-tag-input .pt-input-ghost, .pt-tag-input.pt-dark .pt-input-ghost {
   color: #f5f8fa; }
 .pt-dark .pt-tag-input.pt-active, .pt-tag-input.pt-dark.pt-active {
@@ -7000,8 +7033,6 @@ table.pt-table.pt-interactive tbody tr:hover td {
   white-space: normal; }
 .bp-table-container {
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.15); }
-.bp-table-top-container {
-  box-shadow: 0 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-menu {
   box-shadow: 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-header {
@@ -7020,19 +7051,11 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-column-headers .bp-table-header::before {
   right: 1px;
   bottom: 0; }
-.bp-table-column-headers .bp-table-header.bp-table-last-in-row {
-  box-shadow: 1px 0 0 rgba(16, 22, 26, 0.15); }
-.bp-table-column-headers .bp-table-header.bp-table-last-in-row::before {
-  right: 0; }
 .bp-table-row-headers .bp-table-header {
   box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15), 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-row-headers .bp-table-header::before {
   right: 0;
   bottom: 1px; }
-.bp-table-row-headers .bp-table-header.bp-table-last-in-column {
-  box-shadow: 1px 0 0 0 rgba(16, 22, 26, 0.15), 0 1px 0 0 rgba(16, 22, 26, 0.15); }
-.bp-table-row-headers .bp-table-header.bp-table-last-in-column::before {
-  bottom: 0; }
 .bp-table-body .bp-table-last-in-row {
   box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15), 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-body .bp-table-last-in-column {
@@ -7041,8 +7064,6 @@ table.pt-table.pt-interactive tbody tr:hover td {
   box-shadow: 1px 0 0 rgba(16, 22, 26, 0.15), 0 1px 0 rgba(16, 22, 26, 0.15); }
 .pt-dark .bp-table-container {
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
-.pt-dark .bp-table-top-container {
-  box-shadow: 0 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-menu {
   box-shadow: 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-header {
@@ -7061,19 +7082,11 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .pt-dark .bp-table-column-headers .bp-table-header::before {
   right: 1px;
   bottom: 0; }
-.pt-dark .bp-table-column-headers .bp-table-header.bp-table-last-in-row {
-  box-shadow: 1px 0 0 rgba(16, 22, 26, 0.4); }
-.pt-dark .bp-table-column-headers .bp-table-header.bp-table-last-in-row::before {
-  right: 0; }
 .pt-dark .bp-table-row-headers .bp-table-header {
   box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.4), 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-row-headers .bp-table-header::before {
   right: 0;
   bottom: 1px; }
-.pt-dark .bp-table-row-headers .bp-table-header.bp-table-last-in-column {
-  box-shadow: 1px 0 0 0 rgba(16, 22, 26, 0.4), 0 1px 0 0 rgba(16, 22, 26, 0.4); }
-.pt-dark .bp-table-row-headers .bp-table-header.bp-table-last-in-column::before {
-  bottom: 0; }
 .pt-dark .bp-table-body .bp-table-last-in-row {
   box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.4), 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-body .bp-table-last-in-column {
@@ -7391,13 +7404,13 @@ table.pt-table.pt-interactive tbody tr:hover td {
   opacity: 1; }
 .bp-table-resize-handle-target.bp-table-resize-vertical {
   top: 0;
-  right: -5px;
+  right: 0;
   bottom: -1px;
   cursor: ew-resize;
-  width: 10px; }
+  width: 5px; }
 .bp-table-resize-handle-target.bp-table-resize-horizontal {
   right: -1px;
-  bottom: -2.5px;
+  bottom: 0;
   left: 0;
   cursor: ns-resize;
   height: 5px; }
@@ -7410,21 +7423,21 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-resize-vertical .bp-table-resize-handle {
   top: 0;
   bottom: 0;
-  left: 3px;
+  left: 2px;
   width: 3px; }
 .bp-table-resize-horizontal .bp-table-resize-handle {
-  top: 0.5px;
+  top: 2px;
   right: 0;
   left: 0;
   height: 3px; }
 .bp-table-resize-guides .bp-table-horizontal-guide {
-  margin-top: -2px;
+  margin-top: -3px;
   background-color: #137cbd;
   height: 3px; }
 .bp-table-resize-guides .bp-table-horizontal-guide.bp-table-horizontal-guide-flush-top {
   margin-top: 0; }
 .bp-table-resize-guides .bp-table-vertical-guide {
-  margin-left: -2px;
+  margin-left: -3px;
   background-color: #137cbd;
   width: 3px; }
 .bp-table-resize-guides .bp-table-vertical-guide.bp-table-vertical-guide-flush-left {
@@ -7436,6 +7449,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
   bottom: 0;
   left: 0;
   z-index: 20;
+  overflow: hidden;
   pointer-events: none; }
 .bp-table-overlay {
   position: absolute; }
@@ -7467,6 +7481,58 @@ table.pt-table.pt-interactive tbody tr:hover td {
   cursor: grabbing; }
 .bp-table-reordering .bp-table-reordering-cursor-overlay {
   pointer-events: all; }
+.bp-table-quadrant {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #f5f8fa;
+  overflow: hidden; }
+.pt-dark .bp-table-quadrant {
+  background-color: #30404d; }
+.bp-table-quadrant-scroll-container {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+.bp-table-no-vertical-scroll .bp-table-quadrant-scroll-container {
+  overflow-y: hidden; }
+.bp-table-no-horizontal-scroll .bp-table-quadrant-scroll-container {
+  overflow-x: hidden; }
+.bp-table-quadrant-body-container {
+  position: relative; }
+.bp-table-quadrant-main {
+  right: 0;
+  bottom: 0;
+  z-index: 0; }
+.bp-table-quadrant-main .bp-table-cell-client {
+  background: #ffffff; }
+.bp-table-quadrant-top {
+  right: 0;
+  z-index: 1; }
+.bp-table-quadrant-top .bp-table-quadrant-scroll-container {
+  bottom: -20px;
+  overflow-y: hidden; }
+.bp-table-quadrant-left {
+  bottom: 0;
+  z-index: 2; }
+.bp-table-quadrant-left .bp-table-quadrant-scroll-container {
+  right: -20px;
+  overflow-x: hidden; }
+.bp-table-quadrant-top-left {
+  z-index: 3; }
+.bp-table-quadrant-top-left .bp-table-quadrant-scroll-container {
+  right: -20px;
+  bottom: -20px;
+  overflow-x: hidden;
+  overflow-y: hidden; }
 .bp-table-container {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
@@ -7541,18 +7607,6 @@ table.pt-table.pt-interactive tbody tr:hover td {
   position: relative;
   z-index: 10;
   overflow: scroll; }
-.bp-table-body.bp-table-no-vertical-scroll {
-  overflow-y: hidden; }
-.bp-table-body.bp-table-no-horizontal-scroll {
-  overflow-x: hidden; }
-.bp-table-body-scroll-client {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  position: relative;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
 .bp-table-body-virtual-client {
   position: relative; }
 .bp-table-cell-client {
@@ -8339,9 +8393,9 @@ label.docs-color-scheme-label {
 .docs-editable-text-example h1 {
     margin-bottom: 30px; }
 .docs-overlay-example-transition {
-  top: 200px;
+  top: 0;
   left: calc(50% - 200px);
-  z-index: 21;
+  margin: 10vh 0;
   width: 400px; }
 .docs-overlay-example-transition.pt-overlay-enter, .docs-overlay-example-transition.pt-overlay-appear {
     -webkit-transform: translateY(-50vh) rotate(-10deg);
@@ -8424,6 +8478,26 @@ label.docs-color-scheme-label {
   margin-bottom: 0; }
 .pt-popover .docs-popover-example {
   padding: 10px; }
+.docs-popover2-example .docs-react-example {
+  width: 100%;
+  height: 350px;
+  overflow: scroll; }
+.docs-popover2-example .docs-popover2-example-scroll {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  background: rgba(16, 22, 26, 0.1);
+  min-width: 200%;
+  min-height: 200%; }
+.pt-popover .docs-popover2-example {
+  padding: 10px; }
+.docs-tooltip2-example > div {
+  margin-bottom: 10px; }
 .docs-wiggle {
   -webkit-animation: docs-wiggle-rotate 100ms cubic-bezier(0.4, 1, 0.75, 0.9) infinite;
           animation: docs-wiggle-rotate 100ms cubic-bezier(0.4, 1, 0.75, 0.9) infinite; }
@@ -8682,13 +8756,6 @@ label.docs-color-scheme-label {
     -webkit-flex-basis: 250px;
             flex-basis: 250px;
     margin-right: 30px; }
-[data-reference="pt-dialog"] .docs-example {
-  height: 270px; }
-[data-reference="pt-dialog"] .pt-dialog {
-  top: 30px;
-  -webkit-transform: translateX(50%);
-          transform: translateX(50%);
-  z-index: 0; }
 [data-reference="pt-menu"],
 [data-reference="pt-menu.pt-menu-header"] {
   -webkit-justify-content: initial;

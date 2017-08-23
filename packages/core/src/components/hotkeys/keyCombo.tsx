@@ -10,6 +10,7 @@ import { normalizeKeyCombo } from "./hotkeyParser";
 
 const KeyIcons = {
     alt: "pt-icon-key-option",
+    cmd: "pt-icon-key-command",
     ctrl: "pt-icon-key-control",
     delete: "pt-icon-key-delete",
     down: "pt-icon-arrow-down",

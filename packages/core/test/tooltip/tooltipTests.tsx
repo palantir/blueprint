@@ -128,7 +128,7 @@ describe("<Tooltip>", () => {
 
     function renderTooltip(props?: Partial<ITooltipProps>) {
         return mount(
-            <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} inline>
+            <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} inline={true}>
                 <button>Target</button>
             </Tooltip>,
         );

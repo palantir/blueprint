@@ -9,38 +9,55 @@
 @import "~@blueprintjs/core/src/components/forms/common";
 @import "~@blueprintjs/core/src/components/tag/common";
 
-$tag-input-padding: ($pt-input-height - $tag-height) / 2;
+$ti-padding: ($pt-input-height - $tag-height) / 2;
+$ti-padding-right: ($pt-input-height - $pt-button-height-small) / 2;
+
+$ti-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
+$ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
 
 .pt-tag-input {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   cursor: text;
   height: auto;
-  padding: $tag-input-padding 0 0 $tag-input-padding;
+  padding: $ti-padding $ti-padding-right 0 0;
+
+  .pt-tag-input-icon {
+    // stylelint-disable-next-line max-line-length
+    margin: 0 ($ti-icon-padding - $ti-padding) $ti-padding $ti-icon-padding;
+    color: $pt-icon-color;
+  }
 
   .pt-tag {
-    margin: 0 0 $tag-input-padding 0;
+    margin: 0 0 $ti-padding $ti-padding;
     // NOTE: in order to wrap long words, you must set explicit width on TagInput,
     // or use .pt-fill CSS class modifier.
     overflow-wrap: break-word;
-
-    &:not(:last-of-type) {
-      margin-right: $tag-input-padding;
-    }
   }
 
   .pt-input-ghost {
     // input fills remaining line
     flex: 1 1 auto;
-    margin-bottom: $tag-input-padding;
+    margin-bottom: $ti-padding;
     // essentially a min-width, cuz flex allows it to grow or shrink:
     width: $pt-grid-size * 10;
-    padding: 0 ($input-padding-horizontal - $tag-input-padding);
+    padding: 0 ($input-padding-horizontal - $ti-padding);
     line-height: $tag-height;
+
+    ~ * {
+      // shift right element up (to ignore top padding) so flex box will center it correctly
+      margin-top: -$ti-padding;
+    }
   }
 
   &.pt-large {
     height: auto;
+
+    .pt-tag-input-icon {
+      // stylelint-disable-next-line max-line-length
+      margin: 0 ($ti-icon-padding-large - $ti-padding) $ti-padding $ti-icon-padding-large;
+    }
 
     .pt-input-ghost {
       line-height: $tag-height-large;
@@ -54,6 +71,10 @@ $tag-input-padding: ($pt-input-height - $tag-height) / 2;
 
   .pt-dark &,
   &.pt-dark {
+    .pt-tag-input-icon {
+      color: $pt-dark-icon-color;
+    }
+
     .pt-input-ghost {
       color: $dark-input-color;
     }

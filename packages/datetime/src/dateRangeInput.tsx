@@ -33,6 +33,7 @@ import {
     isMomentNull,
     isMomentValidAndInRange,
     MomentDateRange,
+    toLocalizedDateString,
 } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import {
@@ -244,9 +245,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
 
     public constructor(props: IDateRangeInputProps, context?: any) {
         super(props, context);
+        this.reset(props);
+    }
 
+    /**
+     * Public method intended for unit testing only. Do not use in feature work!
+     */
+    public reset(props: IDateRangeInputProps = this.props) {
         const [selectedStart, selectedEnd] = this.getInitialRange();
-
         this.state = {
             formattedMaxDateString: this.getFormattedMinMaxDateString(props, "maxDate"),
             formattedMinDateString: this.getFormattedMinMaxDateString(props, "minDate"),
@@ -683,7 +689,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         if (this.isInputEmpty(dateString)) {
             return moment(null);
         }
-        return moment(dateString, this.props.format);
+        return moment(dateString, this.props.format, this.props.locale);
     }
 
     private getInitialRange = (props = this.props) => {
@@ -785,13 +791,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             : this.refHandlers.endInputRef;
     }
 
-    private getFormattedDateString = (momentDate: moment.Moment, format?: string) => {
+    private getFormattedDateString = (momentDate: moment.Moment, formatOverride?: string) => {
         if (isMomentNull(momentDate)) {
             return "";
         } else if (!momentDate.isValid()) {
             return this.props.invalidDateMessage;
         } else {
-            return momentDate.format((format != null) ? format : this.props.format);
+            const format = (formatOverride != null) ? formatOverride : this.props.format;
+            return toLocalizedDateString(momentDate, format, this.props.locale);
         }
     }
 

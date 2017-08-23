@@ -112,7 +112,7 @@ export const Aliases = {
     command: "meta",
     escape: "esc",
     minus: "-",
-    mod: ((typeof navigator !== "undefined") && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) ? "meta" : "ctrl",
+    mod: isMac() ? "meta" : "ctrl",
     option: "alt",
     plus: "+",
     return: "enter",
@@ -272,8 +272,22 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
  * Unlike the parseKeyCombo method, this method does NOT convert shifted
  * action keys. So `"@"` will NOT be converted to `["shift", "2"]`).
  */
-export const normalizeKeyCombo = (combo: string): string[] => {
+export const normalizeKeyCombo = (combo: string, platformOverride?: string): string[] => {
     const keys = combo.replace(/\s/g, "").split("+");
-    return keys.map((key) => Aliases[key] != null ? Aliases[key] : key);
+    return keys.map((key) => {
+        const keyName = (Aliases[key] != null) ? Aliases[key] : key;
+        return (keyName === "meta")
+            ? (isMac(platformOverride) ? "cmd" : "ctrl")
+            : keyName;
+    });
 };
 /* tslint:enable:no-string-literal */
+
+function isMac(platformOverride?: string) {
+    const platform = platformOverride != null
+        ? platformOverride
+        : (typeof navigator !== "undefined" ? navigator.platform : undefined);
+    return platform == null
+        ? false
+        : /Mac|iPod|iPhone|iPad/.test(platform);
+}
