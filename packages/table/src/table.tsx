@@ -614,26 +614,61 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      */
     public scrollToRegion(region: IRegion, _animated: boolean = false) {
         const { viewportRect } = this.state;
-        const nextViewportRect = this.getViewportRectForRegionScrollTarget(region, viewportRect);
+
+        const numFrozenColumns = this.getNumFrozenColumnsClamped();
+        const numFrozenRows = this.getNumFrozenRowsClamped();
+
+        const frozenColumnsCumulativeWidth =
+            numFrozenColumns == null ? 0 : this.grid.getCumulativeWidthAt(numFrozenColumns);
+        const frozenRowsCumulativeHeight =
+            numFrozenRows == null ? 0 : this.grid.getCumulativeHeightAt(numFrozenRows);
+
+        const nextViewportRect = this.getViewportRectForRegionScrollTarget(
+            region,
+            viewportRect,
+            frozenRowsCumulativeHeight,
+            frozenColumnsCumulativeWidth,
+        );
         this.syncViewportPosition(nextViewportRect.left, nextViewportRect.top);
     }
 
-    private getViewportRectForRegionScrollTarget(region: IRegion, viewportRect: Rect) {
+    private getViewportRectForRegionScrollTarget(
+        region: IRegion,
+        viewportRect: Rect,
+        frozenRowsCumulativeHeight: number = 0,
+        frozenColumnsCumulativeWidth: number = 0,
+    ) {
         const cardinality = Regions.getRegionCardinality(region);
+
+        let nextTop = viewportRect.top;
+        let nextLeft = viewportRect.left;
+
         if (cardinality === RegionCardinality.CELLS) {
-            const nextLeft = this.grid.getCumulativeWidthBefore(region.cols[0]);
-            const nextTop = this.grid.getCumulativeHeightBefore(region.rows[0]);
-            return new Rect(nextLeft, nextTop, viewportRect.width, viewportRect.height);
+            // scroll to the top-left corner of the block of cells
+            nextTop = this.grid.getCumulativeHeightBefore(region.rows[0]);
+            nextLeft = this.grid.getCumulativeWidthBefore(region.cols[0]);
         } else if (cardinality === RegionCardinality.FULL_ROWS) {
-            const nextTop = this.grid.getCumulativeHeightBefore(region.rows[0]);
-            return new Rect(viewportRect.left, nextTop, viewportRect.width, viewportRect.height);
+            // scroll to the top of the row block
+            nextTop = this.grid.getCumulativeHeightBefore(region.rows[0]);
         } else if (cardinality === RegionCardinality.FULL_COLUMNS) {
-            const nextLeft = this.grid.getCumulativeWidthBefore(region.cols[0]);
-            return new Rect(nextLeft, viewportRect.top, viewportRect.width, viewportRect.height);
+            // scroll to the left side of the column block
+            nextLeft = this.grid.getCumulativeWidthBefore(region.cols[0]);
         } else {
-            // FULL_TABLE
-            return new Rect(0, 0, viewportRect.width, viewportRect.height);
+            // if it's a FULL_TABLE region, scroll back to the first cell
+            nextTop = 0;
+            nextLeft = 0;
         }
+
+        // if we're scrolling to somewhere within the top/left frozen area, might as well just
+        // scroll back to 0. otherwise, clear the frozen area to keep the target region visible.
+        nextTop = (frozenRowsCumulativeHeight > 0 && nextTop < frozenRowsCumulativeHeight)
+            ? 0
+            : nextTop - frozenRowsCumulativeHeight;
+        nextLeft = (frozenColumnsCumulativeWidth > 0 && nextLeft < frozenColumnsCumulativeWidth)
+            ? 0
+            : nextLeft - frozenColumnsCumulativeWidth;
+
+        return new Rect(nextLeft, nextTop, viewportRect.width, viewportRect.height);
     }
 
     /**
