@@ -5355,6 +5355,7 @@ button.pt-menu-item {
 
 .pt-non-ideal-state-title,
 .pt-non-ideal-state-description {
+  max-width: 100%;
   text-align: center; }
 
 body.pt-overlay-open {
@@ -6186,7 +6187,7 @@ table.pt-table {
     color: #106ba3; }
   .pt-tab:focus {
     -moz-outline-radius: 0; }
-  .pt-large .pt-tab {
+  .pt-large > .pt-tab {
     line-height: 40px;
     font-size: 16px; }
 
