@@ -66,6 +66,7 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
   // ::after so that it's relatively easy to add an icon with ::before
   &::after {
     @include pt-button();
+
     position: absolute;
     top: 0;
     right: 0;
@@ -81,12 +82,7 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
     content: "Browse";
   }
 
-  .pt-large & {
-    height: $pt-input-height-large;
-    padding-right: $file-upload-button-width-large + $input-padding-horizontal;
-    line-height: $pt-input-height-large;
-    font-size: $pt-font-size-large;
-
+  &.pt-large {
     &::after {
       width: $file-upload-button-width-large;
       height: $pt-input-height-large;
@@ -122,18 +118,24 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
 .pt-file-upload-input {
   @include pt-input();
   @include overflow-ellipsis();
+
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
-  height: $pt-input-height;
   padding-right: $file-upload-button-width + $input-padding-horizontal;
-  line-height: $pt-input-height;
   color: $pt-text-color-muted;
   user-select: none;
 
   .pt-dark & {
     @include pt-dark-input();
     color: $pt-dark-text-color-muted;
+  }
+
+  .pt-large & {
+    height: $pt-input-height-large;
+    padding-right: $file-upload-button-width-large + $input-padding-horizontal;
+    line-height: $pt-input-height-large;
+    font-size: $pt-font-size-large;
   }
 }
