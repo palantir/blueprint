@@ -11,6 +11,7 @@
 
 $ti-padding: ($pt-input-height - $tag-height) / 2;
 $ti-padding-right: ($pt-input-height - $pt-button-height-small) / 2;
+$ti-large-padding-right: ($pt-input-height-large - $pt-button-height-small) / 2;
 
 $ti-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
 $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
@@ -57,6 +58,7 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
 
   &.pt-large {
     height: auto;
+    padding-right: $ti-large-padding-right;
 
     .pt-tag-input-icon {
       // stylelint-disable-next-line max-line-length
