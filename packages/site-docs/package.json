@@ -1,6 +1,6 @@
 {
   "name": "blueprintjs.com/docs",
-  "version": "1.25.1",
+  "version": "1.26.0",
   "description": "Blueprint Docs",
   "private": true,
   "dependencies": {
