@@ -686,77 +686,82 @@ describe("<Table>", () => {
     });
 
     describe("Reordering", () => {
-        // Phantom renders the table at a fixed width regardless of the number of columns. if
-        // NEW_INDEX is too big, we risk simulating mouse events that fall outside of the table
-        // bounds, which causes tests to fail.
         const OLD_INDEX = 0;
         const NEW_INDEX = 1;
         const LENGTH = 2;
         const NUM_COLUMNS = 5;
         const NUM_ROWS = 5;
 
-        // table hardcodes itself to 60px tall in Phantom, so use a tiny sizes to ensure
-        // all rows fit.
-        const HEIGHT_IN_PX = 5;
-        const WIDTH_IN_PX = 5;
+        // considerations:
+        // - make the rows and columns fit exactly in the table dimensions; not trying to test scrolling.
+        // - ensure the columns are wide enough to fit their reorder handle.
+        const CONTAINER_WIDTH_IN_PX = 200;
+        const CONTAINER_HEIGHT_IN_PX = 200;
+        const ROW_HEIGHT_IN_PX = CONTAINER_HEIGHT_IN_PX / NUM_ROWS;
+        const COLUMN_WIDTH_IN_PX = CONTAINER_WIDTH_IN_PX / NUM_COLUMNS;
 
-        const OFFSET_X = (NEW_INDEX + LENGTH) * WIDTH_IN_PX;
-        const OFFSET_Y = (NEW_INDEX + LENGTH) * HEIGHT_IN_PX;
+        const OFFSET_X = (NEW_INDEX + LENGTH) * COLUMN_WIDTH_IN_PX;
+        const OFFSET_Y = (NEW_INDEX + LENGTH) * ROW_HEIGHT_IN_PX;
 
-        let onColumnsReordered: Sinon.SinonSpy;
-        let onRowsReordered: Sinon.SinonSpy;
-        let onSelection: Sinon.SinonSpy;
+        const onColumnsReordered = sinon.spy();
+        const onRowsReordered = sinon.spy();
+        const onSelection = sinon.spy();
 
-        beforeEach(() => {
-            onColumnsReordered = sinon.spy();
-            onRowsReordered = sinon.spy();
-            onSelection = sinon.spy();
+        afterEach(() => {
+            onColumnsReordered.reset();
+            onRowsReordered.reset();
+            onSelection.reset();
         });
 
-        it("Shows preview guide and invokes callback when columns reordered", () => {
+        it("Shows preview guide and invokes callback when selected columns reordered", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
                 selectedRegions: [Regions.column(OLD_INDEX, LENGTH - 1)],
             });
-            const header = getTableHeader(getColumnHeadersWrapper(table), 0);
-            header.mouse("mousedown").mouse("mousemove", OFFSET_X);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
+            const reorderHandle = getReorderHandle(headerCell);
+            reorderHandle.mouse("mousedown").mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle));
 
             const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
             expect(guide).to.exist;
 
-            header.mouse("mouseup", OFFSET_X);
+            reorderHandle.mouse("mouseup", getAdjustedOffsetX(OFFSET_X, reorderHandle));
             expect(onColumnsReordered.called).to.be.true;
             expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
         });
 
-        it("Shows preview guide and invokes callback when rows reordered", () => {
+        it("Shows preview guide and invokes callback when selected rows reordered", () => {
             const table = mountTable({
                 isRowReorderable: true,
                 onRowsReordered,
                 selectedRegions: [Regions.row(OLD_INDEX, LENGTH - 1)],
             });
-            const header = getTableHeader(getRowHeadersWrapper(table), 0);
-            header.mouse("mousedown").mouse("mousemove", 0, OFFSET_Y);
+            const headerCell = getHeaderCell(getRowHeadersWrapper(table), 0);
+            headerCell.mouse("mousedown").mouse("mousemove", 0, OFFSET_Y);
 
             const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
             expect(guide).to.exist;
 
-            header.mouse("mouseup", 0, OFFSET_Y);
+            headerCell.mouse("mouseup", 0, OFFSET_Y);
             expect(onRowsReordered.called).to.be.true;
             expect(onRowsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
         });
 
-        it("Doesn't work on columns if there is no selected region defined yet", () => {
+        it("Reorders an unselected column and selects it afterward", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
+                onSelection,
             });
-            getTableHeader(getColumnHeadersWrapper(table), 0)
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
+            const reorderHandle = getReorderHandle(headerCell);
+            reorderHandle
                 .mouse("mousedown")
-                .mouse("mousemove", OFFSET_X)
-                .mouse("mouseup", OFFSET_X);
-            expect(onColumnsReordered.called).to.be.false;
+                .mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle))
+                .mouse("mouseup", getAdjustedOffsetX(OFFSET_X, reorderHandle));
+            expect(onColumnsReordered.called).to.be.true;
+            expect(onSelection.firstCall.calledWith([Regions.column(0)]));
         });
 
         it("Doesn't work on rows if there is no selected region defined yet", () => {
@@ -764,97 +769,54 @@ describe("<Table>", () => {
                 isColumnReorderable: true,
                 onColumnsReordered,
             });
-            getTableHeader(getColumnHeadersWrapper(table), 0)
+            getHeaderCell(getColumnHeadersWrapper(table), 0)
                 .mouse("mousedown")
                 .mouse("mousemove", OFFSET_X)
                 .mouse("mouseup", OFFSET_X);
             expect(onColumnsReordered.called).to.be.false;
         });
 
-        it("Selecting a column via click and then reordering it works", () => {
+        it("Clears all selections except the reordered column after reordering", () => {
             const table = mountTable({
                 isColumnReorderable: true,
                 onColumnsReordered,
                 onSelection,
+                selectedRegions: [Regions.column(1)], // some other column
             });
-            const header = getTableHeader(getColumnHeadersWrapper(table), 0);
-
-             // "click" doesn't trigger DragHandler.onActivate
-            header.mouse("mousedown").mouse("mouseup");
-            expect(onSelection.called).to.be.true;
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
+            const reorderHandle = getReorderHandle(headerCell);
 
             // now we can reorder the column one spot to the right
             const newIndex = 1;
             const length = 1;
-            const offsetX = (newIndex + length) * WIDTH_IN_PX;
-            header.mouse("mousedown")
-                .mouse("mousemove", offsetX)
-                .mouse("mouseup", offsetX);
-            expect(onColumnsReordered.called).to.be.true;
-            expect(onColumnsReordered.calledWith(OLD_INDEX, newIndex, length)).to.be.true;
-        });
+            const offsetX = (newIndex + length) * COLUMN_WIDTH_IN_PX;
+            const adjustedOffsetX = getAdjustedOffsetX(offsetX, reorderHandle);
+            reorderHandle.mouse("mousedown")
+                .mouse("mousemove", adjustedOffsetX)
+                .mouse("mouseup", adjustedOffsetX);
 
-        it("Selecting multiple columns via click+drag and then reordering works", () => {
-            const table = mountTable({
-                isColumnReorderable: true,
-                onColumnsReordered,
-                onSelection,
-            });
-            const header = getTableHeader(getColumnHeadersWrapper(table), 0);
-            const selectionOffsetX = (OLD_INDEX + LENGTH) * WIDTH_IN_PX;
-            header
-                .mouse("mousedown")
-                .mouse("mousemove", selectionOffsetX)
-                .mouse("mouseup", selectionOffsetX);
-            expect(onSelection.called).to.be.true;
-
-            header.mouse("mousedown")
-                .mouse("mousemove", OFFSET_X)
-                .mouse("mouseup", OFFSET_X);
-            expect(onColumnsReordered.called).to.be.true;
-            expect(onColumnsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH)).to.be.true;
-        });
-
-        it("Moves uncontrolled selection with reordered column when reordering is complete", () => {
-            const table = mountTable({
-                isColumnReorderable: true,
-                onColumnsReordered,
-            });
-            const headers = getColumnHeadersWrapper(table);
-            const oldHeader = getTableHeader(headers, 0);
-            const newHeader = getTableHeader(headers, 1);
-
-            const newIndex = 1;
-            const length = 1;
-            const offsetX = (newIndex + length) * WIDTH_IN_PX;
-
-            // select the old header
-            oldHeader.mouse("mousedown").mouse("mouseup");
-
-            // show selection region while reordering
-            oldHeader.mouse("mousedown").mouse("mousemove", offsetX);
-            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
-
-            oldHeader.mouse("mouseup", offsetX);
-            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
-            expect(oldHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
-            expect(newHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
+            // called once on mousedown (to select column 0), once on mouseup (to move the selection)
+            expect(onSelection.calledTwice).to.be.true;
+            expect(onSelection.firstCall.calledWith([Regions.column(0)])).to.be.true;
+            expect(onSelection.secondCall.calledWith([Regions.column(newIndex)])).to.be.true;
         });
 
         function mountTable(props: Partial<ITableProps>) {
             const table = harness.mount(
-                <Table
-                    columnWidths={Array(NUM_COLUMNS).fill(WIDTH_IN_PX)}
-                    numRows={NUM_ROWS}
-                    rowHeights={Array(NUM_ROWS).fill(HEIGHT_IN_PX)}
-                    {...props}
-                >
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                    <Column renderCell={renderCell}/>
-                </Table>,
+                <div style={{ width: CONTAINER_WIDTH_IN_PX, height: CONTAINER_HEIGHT_IN_PX }}>
+                    <Table
+                        columnWidths={Array(NUM_COLUMNS).fill(COLUMN_WIDTH_IN_PX)}
+                        numRows={NUM_ROWS}
+                        rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT_IN_PX)}
+                        {...props}
+                    >
+                        <Column renderCell={renderCell}/>
+                        <Column renderCell={renderCell}/>
+                        <Column renderCell={renderCell}/>
+                        <Column renderCell={renderCell}/>
+                        <Column renderCell={renderCell}/>
+                    </Table>
+                </div>,
             );
             return table;
         }
@@ -867,8 +829,17 @@ describe("<Table>", () => {
             return table.find(`.${Classes.TABLE_ROW_HEADERS}`);
         }
 
-        function getTableHeader(headersWrapper: ElementHarness, columnIndex: number) {
-            return headersWrapper.find(`.${Classes.TABLE_HEADER}`, columnIndex);
+        function getHeaderCell(headersWrapper: ElementHarness, index: number) {
+            return headersWrapper.find(`.${Classes.TABLE_HEADER}`, index);
+        }
+
+        function getReorderHandle(header: ElementHarness) {
+            return header.find(`.${Classes.TABLE_REORDER_HANDLE_TARGET}`);
+        }
+
+        function getAdjustedOffsetX(offsetX: number, reorderHandle: ElementHarness) {
+            // adjust the x coordinate to account for the rendered width of the reorder handle
+            return offsetX - reorderHandle.element.getBoundingClientRect().width;
         }
     });
 

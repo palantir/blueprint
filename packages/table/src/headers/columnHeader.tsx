@@ -116,9 +116,7 @@ private wrapCells = (cells: Array<React.ReactElement<any>>) => {
         width: tableWidth - scrollLeftCorrection,
     };
 
-    const classes = classNames(Classes.TABLE_THEAD, Classes.TABLE_COLUMN_HEADER_TR, {
-        [Classes.TABLE_DRAGGABLE] : (this.props.onSelection != null),
-    });
+    const classes = classNames(Classes.TABLE_THEAD, Classes.TABLE_COLUMN_HEADER_TR);
 
     // add a wrapper set to the full-table width to ensure container styles stretch from the first
     // cell all the way to the last
