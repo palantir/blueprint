@@ -615,7 +615,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public scrollToRegion(region: IRegion, _animated: boolean = false) {
         const { viewportRect } = this.state;
         const nextViewportRect = this.getViewportRectForRegionScrollTarget(region, viewportRect);
-        this.updateViewportRect(nextViewportRect);
+        this.syncViewportPosition(nextViewportRect.left, nextViewportRect.top);
     }
 
     private getViewportRectForRegionScrollTarget(region: IRegion, viewportRect: Rect) {
@@ -1667,10 +1667,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (didScrollTopChange || didScrollLeftChange) {
             // we need to modify the body element explicitly for the viewport to shift
             if (didScrollTopChange) {
-                this.bodyElement.scrollTop = nextScrollTop;
+                this.scrollContainerElement.scrollTop = nextScrollTop;
             }
             if (didScrollLeftChange) {
-                this.bodyElement.scrollLeft = nextScrollLeft;
+                this.scrollContainerElement.scrollLeft = nextScrollLeft;
             }
 
             const nextViewportRect = new Rect(
