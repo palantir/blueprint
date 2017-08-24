@@ -1659,12 +1659,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const didScrollLeftChange = nextScrollLeft !== viewportRect.left;
 
         if (didScrollTopChange || didScrollLeftChange) {
-            // we need to modify the body element explicitly for the viewport to shift
+            // we need to modify the scroll container explicitly for the viewport to shift. in so
+            // doing, we add the size of the header elements, which are not technically part of the
+            // "grid" concept (the grid only consists of body cells at present).
             if (didScrollTopChange) {
-                this.scrollContainerElement.scrollTop = nextScrollTop;
+                this.scrollContainerElement.scrollTop = nextScrollTop + this.columnHeaderElement.clientHeight;
             }
             if (didScrollLeftChange) {
-                this.scrollContainerElement.scrollLeft = nextScrollLeft;
+                this.scrollContainerElement.scrollLeft = nextScrollLeft + this.rowHeaderElement.clientWidth;
             }
 
             const nextViewportRect = new Rect(
