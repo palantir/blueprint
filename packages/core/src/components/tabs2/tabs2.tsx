@@ -155,7 +155,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
             this.moveSelectionIndicator();
         } else if (prevState.selectedTabId != null) {
             const selectedTabIdIndex = this.getTabChildren().map(child => child.props.id).indexOf(this.state.selectedTabId);
-            const prevSelectedTabIdIndex = this.getTabChildren(prevProps).map(child => child.props.id).indexOf(prevState.selectedTabId);
+            const prevSelectedTabIdIndex = this.getTabChildren(prevProps.children).map(child => child.props.id).indexOf(prevState.selectedTabId);
             if (selectedTabIdIndex !== prevSelectedTabIdIndex) {
                 this.moveSelectionIndicator();
             }
@@ -186,8 +186,8 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     }
 
     /** Filters this.props.children to only `<Tab>`s */
-    private getTabChildren() {
-        return React.Children.toArray(this.props.children).filter(isTab) as TabElement[];
+    private getTabChildren(children = this.props.children) {
+        return React.Children.toArray(children).filter(isTab) as TabElement[];
     }
 
     /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
