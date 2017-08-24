@@ -185,7 +185,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         return undefined;
     }
 
-    /** Filters children to only `<Tab>`s */
+    /** Filters this.props.children to only `<Tab>`s */
     private getTabChildren() {
         return React.Children.toArray(this.props.children).filter(isTab) as TabElement[];
     }
