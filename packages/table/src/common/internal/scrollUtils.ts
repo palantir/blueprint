@@ -5,8 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IRegion, RegionCardinality, Regions } from "../regions";
-import { Grid } from "./grid";
+import { IRegion, RegionCardinality, Regions } from "../../regions";
+import { Grid } from "../grid";
 
 // Public
 // ======

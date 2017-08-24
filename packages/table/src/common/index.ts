@@ -13,4 +13,4 @@ export { Utils } from "./utils";
 
 // NOTE: The following are not exported in the public API:
 // - Errors
-// - ScrollUtils
+// - internal/
