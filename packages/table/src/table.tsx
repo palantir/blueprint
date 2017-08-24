@@ -626,8 +626,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { scrollLeft, scrollTop } =
             ScrollUtils.getScrollPositionForRegion(region, this.grid, left, top, numFrozenRows, numFrozenColumns);
 
+        const adjustedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : scrollLeft;
+        const adjustedScrollTop = this.shouldDisableVerticalScroll() ? 0 : scrollTop;
+
         // defer to the quadrant stack to keep all quadrant positions in sync
-        this.quadrantStackInstance.scrollToPosition(scrollLeft, scrollTop);
+        this.quadrantStackInstance.scrollToPosition(adjustedScrollLeft, adjustedScrollTop);
     }
 
     /**
