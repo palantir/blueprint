@@ -259,9 +259,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public componentDidMount() {
-        if (typeof window !== "undefined") {
-            (window as any).tableInstance = this.tableInstance;
-        }
         this.syncFocusStyle();
     }
 
