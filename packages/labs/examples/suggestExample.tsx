@@ -19,17 +19,20 @@ export interface ISuggestExampleState {
     closeOnSelect?: boolean;
     film?: Film;
     minimal?: boolean;
+    openOnKeyDown?: boolean;
 }
 
 export class SuggestExample extends BaseExample<ISuggestExampleState> {
 
     public state: ISuggestExampleState = {
-        closeOnSelect: false,
+        closeOnSelect: true,
         film: TOP_100_FILMS[0],
         minimal: true,
+        openOnKeyDown: false,
     };
 
     private handleCloseOnSelectChange = this.handleSwitchChange("closeOnSelect");
+    private handleOpenOnKeyDownChange = this.handleSwitchChange("openOnKeyDown");
     private handleMinimalChange = this.handleSwitchChange("minimal");
 
     protected renderExample() {
@@ -56,6 +59,12 @@ export class SuggestExample extends BaseExample<ISuggestExampleState> {
                     label="Close on select"
                     checked={this.state.closeOnSelect}
                     onChange={this.handleCloseOnSelectChange}
+                />,
+                <Switch
+                    key="openOnKeyDown"
+                    label="Open popover on key down"
+                    checked={this.state.openOnKeyDown}
+                    onChange={this.handleOpenOnKeyDownChange}
                 />,
                 <Switch
                     key="minimal"

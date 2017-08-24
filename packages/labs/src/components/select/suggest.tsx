@@ -55,6 +55,12 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     /** React child to render when filtering items returns zero results. */
     noResults?: string | JSX.Element;
 
+    /**
+     * Whether the popover opens on key down or when the input is focused.
+     * @default false
+     */
+    openOnKeyDown?: boolean;
+
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
 }
@@ -142,7 +148,6 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
                 <div
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
-                    onClick={this.handleInputClick}
                 >
                     <InputGroup
                         placeholder="Search..."
@@ -150,6 +155,7 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
                         {...htmlInputProps}
                         inputRef={this.refHandlers.input}
                         onChange={this.handleQueryChange}
+                        onFocus={this.handleInputFocus}
                     />
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
@@ -181,8 +187,16 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
         }
     }
 
-    private handleInputClick = (_event: React.SyntheticEvent<HTMLElement>) => {
+    private handleInputFocus = (event: React.SyntheticEvent<HTMLInputElement>) => {
+        const { openOnKeyDown, inputProps = {} } = this.props;
+
         this.selectText();
+
+        if (!openOnKeyDown) {
+            this.setState({ isOpen: true });
+        }
+
+        Utils.safeInvoke(inputProps.onFocus, event);
     }
 
     private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
