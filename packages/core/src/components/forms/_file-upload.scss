@@ -12,7 +12,7 @@ File upload
 Markup:
 <label class="pt-file-upload {{.modifier}}">
   <input type="file" {{:modifier}}/>
-  <span class="pt-file-upload-input">Choose file pt-file-upload wraps and hides the native element for better control over...</span>
+  <span class="pt-file-upload-input">Choose file...</span>
 </label>
 
 :disabled - Disabled
@@ -71,7 +71,7 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
   right: 0;
   left: 0;
   padding-right: $file-upload-button-width + $input-padding-horizontal;
-  color: $pt-text-color-muted;
+  color: $pt-placeholder-color;
   user-select: none;
 
   &::after {
