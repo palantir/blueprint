@@ -380,17 +380,12 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // use the more generic "scroll" event for the main quadrant, which captures both click+dragging
     // on the scrollbar and trackpad/mousewheel gestures
     private handleMainQuadrantScroll = (event: React.UIEvent<HTMLElement>) => {
-        console.log("[TableQuadrantStack] handleMainQuadrantScroll");
         if (this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback) {
-            console.log("  this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback == true.");
-            console.log("  Setting this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false. RETURNING");
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
             return;
         }
         const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop;
         const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft;
-        console.log("  nextScrollTop =", nextScrollTop);
-        console.log("  nextScrollLeft =", nextScrollLeft);
 
         this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
         this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
@@ -624,7 +619,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         quadrantType: QuadrantType,
         quadrantTypesToSync: QuadrantType[],
     ) => {
-        console.log("[TableQuadrantStack.handleDirectionalWheel]");
         const isHorizontal = direction === "horizontal";
 
         const scrollKey = isHorizontal
@@ -636,8 +630,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         if (!isScrollDisabled) {
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-
-            console.log("  setting this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true");
 
             // sync the corresponding scroll position of all dependent quadrants
             const nextScrollPosition = this.quadrantRefs[quadrantType].scrollContainer[scrollKey] + delta;
