@@ -199,7 +199,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const { scrollContainer } = this.quadrantRefs[QuadrantType.MAIN];
         this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
         // this will trigger the main quadrant's scroll callback below
-
         scrollContainer.scrollLeft = scrollLeft;
         scrollContainer.scrollTop = scrollTop;
     }
