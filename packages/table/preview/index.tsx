@@ -557,9 +557,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         label: string,
         stateKey: keyof IMutableTableState,
         prereqStateKey?: keyof IMutableTableState,
-        prereqStateKeyValues?: any[],
+        prereqStateKeyValue?: any,
     ) {
-        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValues);
+        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
 
         const child = <Switch
             checked={this.state[stateKey] as boolean}
@@ -570,7 +570,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         />;
 
         if (isDisabled) {
-            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValues);
+            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValue);
         } else {
             return child;
         }
@@ -612,9 +612,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         generateValueLabel: (value: any) => string,
         handleChange: IMutableStateUpdateCallback,
         prereqStateKey?: keyof IMutableTableState,
-        prereqStateKeyValues?: any[],
+        prereqStateKeyValue?: any,
     ) {
-        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValues);
+        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
 
         // need to explicitly cast generic type T to string
         const selectedValue = this.state[stateKey].toString();
@@ -642,7 +642,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
 
         if (isDisabled) {
-            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValues);
+            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValue);
         } else {
             return child;
         }
@@ -662,7 +662,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     ) {
         // Blueprint Tooltip affects the layout, so just show a native title on hover
         return (
-            <div title={`Requires ${prereqStateKey} to match one of ${prereqStateKeyValue.toString()}`}>
+            <div title={`Requires ${prereqStateKey}=${prereqStateKeyValue}`}>
                 {element}
             </div>
         );
