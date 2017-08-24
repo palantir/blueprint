@@ -95,6 +95,12 @@ const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRender
 
 `Suggest` behaves similarly to `Select`, except it renders a text input as Popover target instead of arbitrary children.
 
+@reactExample SuggestExample
+
+@interface ISuggestProps
+
+@interface ISelectItemRendererProps
+
 @## MultiSelect
 
 Use `MultiSelect<T>` for choosing multiple items in a list. The component renders a `TagInput` wrapped in a `Popover`. Similarly to `Select`, you can pass in a predicate to customize the filtering algorithm. Selection of a `MultiSelect<T>` is controlled: listen to changes with `onItemSelect`.
