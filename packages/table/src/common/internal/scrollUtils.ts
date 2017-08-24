@@ -6,40 +6,40 @@
  */
 
 import { IRegion, RegionCardinality, Regions } from "../../regions";
-import { Grid } from "../grid";
 
 // Public
 // ======
 
 export function getScrollPositionForRegion(
     region: IRegion,
-    grid: Grid,
-    scrollLeft: number,
-    scrollTop: number,
+    currScrollLeft: number,
+    currScrollTop: number,
+    getLeftOffset: (columnIndex: number) => number,
+    getTopOffset: (rowIndex: number) => number,
     numFrozenRows: number = 0,
     numFrozenColumns: number = 0,
 ) {
     const cardinality = Regions.getRegionCardinality(region);
 
-    let nextTop = scrollTop;
-    let nextLeft = scrollLeft;
+    let nextTop = currScrollTop;
+    let nextLeft = currScrollLeft;
 
-    const frozenColumnsCumulativeWidth = grid.getCumulativeWidthAt(numFrozenColumns);
-    const frozenRowsCumulativeHeight = grid.getCumulativeHeightAt(numFrozenRows);
+    const frozenColumnsCumulativeWidth = getLeftOffset(numFrozenColumns + 1);
+    const frozenRowsCumulativeHeight = getTopOffset(numFrozenRows + 1);
 
     if (cardinality === RegionCardinality.CELLS) {
         // scroll to the top-left corner of the block of cells
-        const topOffset = grid.getCumulativeHeightBefore(region.rows[0]);
-        const leftOffset = grid.getCumulativeWidthBefore(region.cols[0]);
+        const topOffset = getTopOffset(region.rows[0]);
+        const leftOffset = getLeftOffset(region.cols[0]);
         nextTop = getAdjustedScrollPosition(topOffset, frozenRowsCumulativeHeight);
         nextLeft = getAdjustedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
     } else if (cardinality === RegionCardinality.FULL_ROWS) {
         // scroll to the top of the row block
-        const topOffset = grid.getCumulativeHeightBefore(region.rows[0]);
+        const topOffset = getTopOffset(region.rows[0]);
         nextTop = getAdjustedScrollPosition(topOffset, frozenRowsCumulativeHeight);
     } else if (cardinality === RegionCardinality.FULL_COLUMNS) {
         // scroll to the left side of the column block
-        const leftOffset = grid.getCumulativeWidthBefore(region.cols[0]);
+        const leftOffset = getLeftOffset(region.cols[0]);
         nextLeft = getAdjustedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
     } else {
         // if it's a FULL_TABLE region, scroll back to the top-left cell of the table

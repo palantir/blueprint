@@ -618,13 +618,20 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * corner is reached.
      */
     public scrollToRegion(region: IRegion, _animated: boolean = false) {
-        const { left, top } = this.state.viewportRect;
+        const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
 
         const numFrozenRows = this.getNumFrozenRowsClamped();
         const numFrozenColumns = this.getNumFrozenColumnsClamped();
 
-        const { scrollLeft, scrollTop } =
-            ScrollUtils.getScrollPositionForRegion(region, this.grid, left, top, numFrozenRows, numFrozenColumns);
+        const { scrollLeft, scrollTop } = ScrollUtils.getScrollPositionForRegion(
+            region,
+            currScrollLeft,
+            currScrollTop,
+            this.grid.getCumulativeWidthBefore,
+            this.grid.getCumulativeHeightBefore,
+            numFrozenRows,
+            numFrozenColumns,
+        );
 
         const adjustedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : scrollLeft;
         const adjustedScrollTop = this.shouldDisableVerticalScroll() ? 0 : scrollTop;
