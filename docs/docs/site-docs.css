@@ -5095,6 +5095,7 @@ button.pt-menu-item {
   color: rgba(191, 204, 214, 0.5); }
 .pt-non-ideal-state-title,
 .pt-non-ideal-state-description {
+  max-width: 100%;
   text-align: center; }
 body.pt-overlay-open {
   overflow: hidden; }
@@ -5868,7 +5869,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
   color: #106ba3; }
 .pt-tab:focus {
   -moz-outline-radius: 0; }
-.pt-large .pt-tab {
+.pt-large > .pt-tab {
   line-height: 40px;
   font-size: 16px; }
 .pt-tab-panel {
@@ -6877,12 +6878,14 @@ table.pt-table.pt-interactive tbody tr:hover td {
   flex: 1 1 auto;
   margin-bottom: 5px;
   width: 100px;
-  padding: 0 5px;
   line-height: 20px; }
+.pt-tag-input .pt-input-ghost:not(:first-child) {
+  padding: 0 5px; }
 .pt-tag-input .pt-input-ghost ~ * {
   margin-top: -5px; }
 .pt-tag-input.pt-large {
-  height: auto; }
+  height: auto;
+  padding-right: 8px; }
 .pt-tag-input.pt-large .pt-tag-input-icon {
   margin: 0 7px 5px 12px; }
 .pt-tag-input.pt-large .pt-input-ghost {
@@ -6901,7 +6904,19 @@ table.pt-table.pt-interactive tbody tr:hover td {
   border: none;
   box-shadow: none;
   background: none;
-  padding: 0; }
+  padding: 0 10px; }
+.pt-input-ghost::-webkit-input-placeholder {
+  opacity: 1;
+  color: rgba(92, 112, 128, 0.5); }
+.pt-input-ghost::-moz-placeholder {
+  opacity: 1;
+  color: rgba(92, 112, 128, 0.5); }
+.pt-input-ghost:-ms-input-placeholder {
+  opacity: 1;
+  color: rgba(92, 112, 128, 0.5); }
+.pt-input-ghost::placeholder {
+  opacity: 1;
+  color: rgba(92, 112, 128, 0.5); }
 .pt-input-ghost:focus {
   outline: none !important; }
 
@@ -7373,25 +7388,34 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-selection-enabled .pt-editable-text::before,
 .bp-table-selection-enabled .pt-editable-content {
   cursor: cell; }
+.bp-table-column-header-cell.bp-table-has-reorder-handle:not(.bp-table-has-interaction-bar) .bp-table-column-name-text {
+  padding-left: 22px; }
+.bp-table-column-header-cell.bp-table-has-reorder-handle:not(.bp-table-has-interaction-bar) .bp-table-editable-name::before {
+  left: -22px; }
 .bp-table-reorder-handle-target {
   cursor: -webkit-grab;
   cursor: -moz-grab;
   cursor: grab;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   position: absolute;
   top: 0;
+  bottom: 0;
   left: 0;
-  color: #8a9ba8; }
+  width: 22px;
+  color: rgba(92, 112, 128, 0.5); }
 .bp-table-reorder-handle-target:active {
   cursor: -webkit-grabbing;
   cursor: -moz-grabbing;
   cursor: grabbing; }
 .bp-table-reorder-handle-target:hover {
-  color: #5c7080; }
-.bp-table-reorder-handle-target:active {
   color: #182026; }
-.bp-table-reorder-handle-target .bp-table-reorder-handle {
-  padding: 3px 6px 3px 1px;
-  line-height: 14px; }
+.bp-table-reorder-handle-target:active {
+  color: #137cbd; }
 .bp-table-resize-handle-target {
   position: absolute;
   opacity: 0;
@@ -7481,6 +7505,10 @@ table.pt-table.pt-interactive tbody tr:hover td {
   cursor: grabbing; }
 .bp-table-reordering .bp-table-reordering-cursor-overlay {
   pointer-events: all; }
+.bp-table-quadrant-stack {
+  display: -webkit-flex;
+  display: flex;
+  height: 100%; }
 .bp-table-quadrant {
   position: absolute;
   top: 0;
@@ -7492,7 +7520,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-quadrant-scroll-container {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  position: absolute;
+  position: relative;
   top: 0;
   right: 0;
   bottom: 0;
@@ -7509,9 +7537,15 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-quadrant-body-container {
   position: relative; }
 .bp-table-quadrant-main {
-  right: 0;
-  bottom: 0;
-  z-index: 0; }
+  position: relative;
+  top: auto;
+  left: auto;
+  z-index: 0;
+  width: 100%;
+  height: 100%; }
+.bp-table-quadrant-main .bp-table-quadrant-scroll-container {
+  width: 100%;
+  height: 100%; }
 .bp-table-quadrant-main .bp-table-cell-client {
   background: #ffffff; }
 .bp-table-quadrant-top {
@@ -7524,7 +7558,11 @@ table.pt-table.pt-interactive tbody tr:hover td {
   bottom: 0;
   z-index: 2; }
 .bp-table-quadrant-left .bp-table-quadrant-scroll-container {
+  position: absolute;
+  top: 0;
   right: -20px;
+  bottom: 0;
+  height: auto;
   overflow-x: hidden; }
 .bp-table-quadrant-top-left {
   z-index: 3; }

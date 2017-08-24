@@ -1806,43 +1806,45 @@
 	var warning = emptyFunction;
 
 	if (process.env.NODE_ENV !== 'production') {
-	  var printWarning = function printWarning(format) {
-	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	      args[_key - 1] = arguments[_key];
-	    }
-
-	    var argIndex = 0;
-	    var message = 'Warning: ' + format.replace(/%s/g, function () {
-	      return args[argIndex++];
-	    });
-	    if (typeof console !== 'undefined') {
-	      console.error(message);
-	    }
-	    try {
-	      // --- Welcome to debugging React ---
-	      // This error was thrown as a convenience so that you can use this stack
-	      // to find the callsite that caused this warning to fire.
-	      throw new Error(message);
-	    } catch (x) {}
-	  };
-
-	  warning = function warning(condition, format) {
-	    if (format === undefined) {
-	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	    }
-
-	    if (format.indexOf('Failed Composite propType: ') === 0) {
-	      return; // Ignore CompositeComponent proptype check.
-	    }
-
-	    if (!condition) {
-	      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-	        args[_key2 - 2] = arguments[_key2];
+	  (function () {
+	    var printWarning = function printWarning(format) {
+	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	        args[_key - 1] = arguments[_key];
 	      }
 
-	      printWarning.apply(undefined, [format].concat(args));
-	    }
-	  };
+	      var argIndex = 0;
+	      var message = 'Warning: ' + format.replace(/%s/g, function () {
+	        return args[argIndex++];
+	      });
+	      if (typeof console !== 'undefined') {
+	        console.error(message);
+	      }
+	      try {
+	        // --- Welcome to debugging React ---
+	        // This error was thrown as a convenience so that you can use this stack
+	        // to find the callsite that caused this warning to fire.
+	        throw new Error(message);
+	      } catch (x) {}
+	    };
+
+	    warning = function warning(condition, format) {
+	      if (format === undefined) {
+	        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+	      }
+
+	      if (format.indexOf('Failed Composite propType: ') === 0) {
+	        return; // Ignore CompositeComponent proptype check.
+	      }
+
+	      if (!condition) {
+	        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+	          args[_key2 - 2] = arguments[_key2];
+	        }
+
+	        printWarning.apply(undefined, [format].concat(args));
+	      }
+	    };
+	  })();
 	}
 
 	module.exports = warning;
@@ -5291,6 +5293,7 @@
 	    "iconName",
 	    "inputRef",
 	    "intent",
+	    "inline",
 	    "loading",
 	    "leftIconName",
 	    "onChildrenMount",
@@ -21757,11 +21760,18 @@
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
 	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
 	 *
 	 * @typechecks
 	 */
@@ -31349,7 +31359,10 @@
 	    // optional inputRef in case the component needs reference for itself (don't forget to invoke the prop!).
 	    Control.prototype.renderControl = function (type, typeClassName, inputRef) {
 	        if (inputRef === void 0) { inputRef = this.props.inputRef; }
-	        var className = classNames(Classes.CONTROL, typeClassName, (_a = {}, _a[Classes.DISABLED] = this.props.disabled, _a), this.props.className);
+	        var className = classNames(Classes.CONTROL, typeClassName, (_a = {},
+	            _a[Classes.DISABLED] = this.props.disabled,
+	            _a[Classes.INLINE] = this.props.inline,
+	            _a), this.props.className);
 	        var inputProps = props_1.removeNonHTMLProps(this.props, INVALID_PROPS, true);
 	        return (React.createElement("label", { className: className, style: this.props.style },
 	            React.createElement("input", tslib_1.__assign({}, inputProps, { ref: inputRef, type: type })),
@@ -31957,6 +31970,7 @@
 	        return {
 	            checked: value === this.props.selectedValue,
 	            disabled: disabled || this.props.disabled,
+	            inline: this.props.inline,
 	            name: name == null ? this.autoGroupName : name,
 	            onChange: this.props.onChange,
 	        };
@@ -32118,6 +32132,7 @@
 	var hotkeyParser_1 = __webpack_require__(263);
 	var KeyIcons = {
 	    alt: "pt-icon-key-option",
+	    cmd: "pt-icon-key-command",
 	    ctrl: "pt-icon-key-control",
 	    delete: "pt-icon-key-delete",
 	    down: "pt-icon-arrow-down",
@@ -32264,7 +32279,7 @@
 	    command: "meta",
 	    escape: "esc",
 	    minus: "-",
-	    mod: ((typeof navigator !== "undefined") && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) ? "meta" : "ctrl",
+	    mod: isMac() ? "meta" : "ctrl",
 	    option: "alt",
 	    plus: "+",
 	    return: "enter",
@@ -32425,11 +32440,24 @@
 	 * Unlike the parseKeyCombo method, this method does NOT convert shifted
 	 * action keys. So `"@"` will NOT be converted to `["shift", "2"]`).
 	 */
-	exports.normalizeKeyCombo = function (combo) {
+	exports.normalizeKeyCombo = function (combo, platformOverride) {
 	    var keys = combo.replace(/\s/g, "").split("+");
-	    return keys.map(function (key) { return exports.Aliases[key] != null ? exports.Aliases[key] : key; });
+	    return keys.map(function (key) {
+	        var keyName = (exports.Aliases[key] != null) ? exports.Aliases[key] : key;
+	        return (keyName === "meta")
+	            ? (isMac(platformOverride) ? "cmd" : "ctrl")
+	            : keyName;
+	    });
 	};
 	/* tslint:enable:no-string-literal */
+	function isMac(platformOverride) {
+	    var platform = platformOverride != null
+	        ? platformOverride
+	        : (typeof navigator !== "undefined" ? navigator.platform : undefined);
+	    return platform == null
+	        ? false
+	        : /Mac|iPod|iPhone|iPad/.test(platform);
+	}
 
 	//# sourceMappingURL=hotkeyParser.js.map
 
