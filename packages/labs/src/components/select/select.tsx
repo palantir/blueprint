@@ -36,7 +36,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
      * React child to render when query is empty.
      */
-    initialRenderer?: JSX.Element;
+    initialContent?: JSX.Element;
 
     /**
      * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
@@ -46,7 +46,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /** React child to render when filtering items returns zero results. */
-    noResults?: JSX.Element;
+    noResults?: React.ReactChild;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
@@ -121,7 +121,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         // omit props specific to this component, spread the rest.
         const {
             filterable,
-            initialRenderer,
+            initialContent,
             itemRenderer,
             inputProps,
             noResults,
@@ -195,9 +195,9 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     }
 
     private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
-        const { initialRenderer, itemRenderer, noResults } = this.props;
-        if (initialRenderer != null && this.isQueryEmpty()) {
-            return initialRenderer;
+        const { initialContent, itemRenderer, noResults } = this.props;
+        if (initialContent != null && this.isQueryEmpty()) {
+            return initialContent;
         }
         if (filteredItems.length === 0) {
             return noResults;
@@ -216,9 +216,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
             : undefined;
     }
 
-    private isQueryEmpty = () => {
-        return !(this.state.query.length > 0);
-    }
+    private isQueryEmpty = () => this.state.query.length === 0;
 
     private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
 

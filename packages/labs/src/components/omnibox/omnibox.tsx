@@ -33,7 +33,7 @@ export interface IOmniboxProps<T> extends IListItemsProps<T> {
     /**
      * React child to render when query is empty.
      */
-    initialRenderer?: JSX.Element;
+    initialContent?: JSX.Element;
 
     /**
      * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
@@ -43,7 +43,7 @@ export interface IOmniboxProps<T> extends IListItemsProps<T> {
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /** React child to render when filtering items returns zero results. */
-    noResults?: JSX.Element;
+    noResults?: React.ReactChild;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
@@ -105,7 +105,7 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
     public render() {
         // omit props specific to this component, spread the rest.
         const {
-            initialRenderer,
+            initialContent,
             isOpen,
             itemRenderer,
             inputProps,
@@ -184,13 +184,13 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
     }
 
     private maybeRenderMenu(listProps: IQueryListRendererProps<T>) {
-        const { initialRenderer } = this.props;
+        const { initialContent } = this.props;
         let menuChildren: any;
 
         if (!this.isQueryEmpty()) {
             menuChildren = this.renderItems(listProps);
-        } else if (initialRenderer != null) {
-            menuChildren = initialRenderer;
+        } else if (initialContent != null) {
+            menuChildren = initialContent;
         }
 
         if (menuChildren != null) {
@@ -204,9 +204,7 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
         return undefined;
     }
 
-    private isQueryEmpty = () => {
-        return !(this.state.query.length > 0);
-    }
+    private isQueryEmpty = () => this.state.query.length === 0;
 
     private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
 

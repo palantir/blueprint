@@ -45,7 +45,7 @@ Omitting both `itemPredicate` and `itemListPredicate` props will cause the compo
 
 @### Non-ideal states
 
-If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list. You also have the option to provide `initialRenderer`, which will render in place of the item list if the query is empty.
+If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list. You also have the option to provide `initialContent`, which will render in place of the item list if the query is empty.
 
 @### Controlled usage
 

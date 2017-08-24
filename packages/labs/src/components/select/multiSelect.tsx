@@ -35,7 +35,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /**
      * React child to render when query is empty.
      */
-    initialRenderer?: JSX.Element;
+    initialContent?: JSX.Element;
 
     /**
      * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
@@ -45,7 +45,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /** React child to render when filtering items returns zero results. */
-    noResults?: JSX.Element;
+    noResults?: React.ReactChild;
 
     /**
      * Whether the popover opens on key down or when `TagInput` is focused.
@@ -101,7 +101,7 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
     public render() {
         // omit props specific to this component, spread the rest.
         const {
-            initialRenderer,
+            initialContent,
             itemRenderer,
             noResults,
             openOnKeyDown,
@@ -169,9 +169,9 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
     }
 
     private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
-        const { initialRenderer, itemRenderer, noResults } = this.props;
-        if (initialRenderer != null && this.isQueryEmpty()) {
-            return initialRenderer;
+        const { initialContent, itemRenderer, noResults } = this.props;
+        if (initialContent != null && this.isQueryEmpty()) {
+            return initialContent;
         }
         if (filteredItems.length === 0) {
             return noResults;
@@ -184,9 +184,7 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
         }));
     }
 
-    private isQueryEmpty = () => {
-        return !(this.state.query.length > 0);
-    }
+    private isQueryEmpty = () => this.state.query.length === 0;
 
     private handleQueryChange = (e: React.FormEvent<HTMLInputElement>) => {
         const { tagInputProps = {}, openOnKeyDown } = this.props;

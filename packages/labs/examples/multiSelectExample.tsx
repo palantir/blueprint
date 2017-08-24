@@ -19,7 +19,7 @@ const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Int
 
 export interface IMultiSelectExampleState {
     films?: Film[];
-    initialRenderer?: boolean;
+    initialContent?: boolean;
     intent?: boolean;
     openOnKeyDown?: boolean;
     popoverMinimal?: boolean;
@@ -30,7 +30,7 @@ export interface IMultiSelectExampleState {
 export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
         films: [],
-        initialRenderer: false,
+        initialContent: false,
         intent: false,
         openOnKeyDown: false,
         popoverMinimal: true,
@@ -43,23 +43,23 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
     private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
     private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
     private handleIntentChange = this.handleSwitchChange("intent");
-    private handleInitialRendererChange = this.handleSwitchChange("initialRenderer");
+    private handleInitialRendererChange = this.handleSwitchChange("initialContent");
 
     protected renderExample() {
-        const { films, initialRenderer, tagMinimal, popoverMinimal, ...flags } = this.state;
+        const { films, initialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
         const getTagProps = (_value: string, index: number): ITagProps => ({
             className: tagMinimal ? Classes.MINIMAL : "",
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
         });
 
-        const initialRenderer = this.state.initialRenderer
+        const initialContent = this.state.initialContent
             ? <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
             : undefined;
 
         return (
             <FilmMultiSelect
                 {...flags}
-                initialRenderer={initialRenderer}
+                initialContent={initialContent}
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
@@ -89,9 +89,9 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                     onChange={this.handleResetChange}
                 />,
                 <Switch
-                    key="initialRenderer"
+                    key="initialContent"
                     label="Show initial renderer"
-                    checked={this.state.initialRenderer}
+                    checked={this.state.initialContent}
                     onChange={this.handleInitialRendererChange}
                 />,
             ],
