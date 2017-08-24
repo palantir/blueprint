@@ -47,7 +47,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
      * If you want to control the filter input, you can pass `value` and `onChange` here
-     * to override `Select`'s own behavior.
+     * to override `Suggest`'s own behavior.
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
@@ -135,7 +135,6 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
-                popoverWillOpen={this.handlePopoverWillOpen}
                 popoverDidOpen={this.handlePopoverDidOpen}
                 popoverWillClose={this.handlePopoverWillClose}
             >
@@ -182,15 +181,13 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
         }
     }
 
-    private handleInputClick = (event: React.SyntheticEvent<HTMLElement>) => {
+    private handleInputClick = (_event: React.SyntheticEvent<HTMLElement>) => {
         this.selectText();
     }
 
     private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
-        const { closeOnSelect } = this.props;
-
         this.selectText();
 
         this.setState({
@@ -220,27 +217,24 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
         Utils.safeInvoke(popoverProps.onInteraction, nextOpenState);
     })
 
-    private handlePopoverWillOpen = () => {
+    private handlePopoverDidOpen = () => {
         const { popoverProps = {} } = this.props;
 
-        Utils.safeInvoke(popoverProps.popoverWillOpen);
-    }
-
-    private handlePopoverDidOpen = () => {
         // scroll active item into view after popover transition completes and all dimensions are stable.
         if (this.queryList != null) {
             this.queryList.scrollActiveItemIntoView();
         }
 
-        const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.popoverDidOpen);
     }
 
     private handlePopoverWillClose = () => {
-        const { query, selectedItem } = this.state;
+        const { popoverProps = {} } = this.props;
 
         // resetting the query when the popover close
         this.setState({ query: "" });
+
+        Utils.safeInvoke(popoverProps.popoverDidOpen);
     }
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
