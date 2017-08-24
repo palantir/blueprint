@@ -122,8 +122,8 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
         const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
         const inputValue: string = isTyping
-            ? query : selectedItem
-                ? inputValueRenderer(selectedItem) : "";
+            ? query
+            : (selectedItem ? inputValueRenderer(selectedItem) : "");
 
         return (
             <Popover
