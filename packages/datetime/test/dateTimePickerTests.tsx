@@ -8,6 +8,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+
 import { DateTimePicker } from "../src/dateTimePicker";
 import { Classes, DatePicker, TimePicker } from "../src/index";
 
@@ -108,7 +109,6 @@ describe("<DateTimePicker>", () => {
             assert.isNotNull(root.state("dateValue"));
             assert.isTrue(getSelectedDay().exists());
         });
-
     });
 
     function wrap(dtp: JSX.Element) {
@@ -124,5 +124,4 @@ describe("<DateTimePicker>", () => {
             root,
         };
     }
-
 });
