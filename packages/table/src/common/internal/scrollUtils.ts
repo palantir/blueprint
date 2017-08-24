@@ -24,8 +24,10 @@ export function getScrollPositionForRegion(
     let nextTop = currScrollTop;
     let nextLeft = currScrollLeft;
 
-    const frozenColumnsCumulativeWidth = getLeftOffset(numFrozenColumns + 1);
-    const frozenRowsCumulativeHeight = getTopOffset(numFrozenRows + 1);
+    // if these were max-frozen-index values, we would have added 1 before passing to the get*Offset
+    // functions, but the counts are already 1-indexed, so we can just pass those.
+    const frozenColumnsCumulativeWidth = getLeftOffset(numFrozenColumns);
+    const frozenRowsCumulativeHeight = getTopOffset(numFrozenRows);
 
     if (cardinality === RegionCardinality.CELLS) {
         // scroll to the top-left corner of the block of cells
