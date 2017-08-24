@@ -42,9 +42,6 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
      */
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
-    /** React child to render when filtering items returns zero results. */
-    noResults?: string | JSX.Element;
-
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
      * If you want to control the filter input, you can pass `value` and `onChange` here
@@ -54,6 +51,9 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
+
+    /** React child to render when filtering items returns zero results. */
+    noResults?: string | JSX.Element;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
@@ -176,8 +176,7 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
 
     private selectText = () => {
         if (this.input != null) {
-            this.input.focus();
-            // wait until the input is focused to select the text inside of it
+            // wait until the input is properly focused to select the text inside of it
             requestAnimationFrame(() => this.input.setSelectionRange(0, this.input.value.length));
         }
     }
@@ -189,9 +188,20 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
     private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
-        this.selectText();
+        const { closeOnSelect } = this.props;
+        let nextOpenState: boolean;
+
+        if (!closeOnSelect) {
+            this.input.focus();
+            this.selectText();
+            nextOpenState = true;
+        } else {
+            this.input.blur();
+            nextOpenState = false;
+        }
 
         this.setState({
+            isOpen: nextOpenState,
             isTyping: false,
             query: "",
             selectedItem: item,
@@ -203,16 +213,9 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
     private handlePopoverInteraction = (nextOpenState: boolean) => requestAnimationFrame(() => {
         const { closeOnSelect, popoverProps = {} } = this.props;
 
-        if (this.input == null) {
-            return;
-        }
-
-        if (this.input !== document.activeElement) {
+        if (this.input != null && this.input !== document.activeElement) {
             // the input is no longer focused so we can close the popover
-            this.input.blur();
             this.setState({ isOpen: false });
-        } else {
-            this.setState({ isOpen: closeOnSelect ? nextOpenState : true });
         }
 
         Utils.safeInvoke(popoverProps.onInteraction, nextOpenState);
@@ -232,7 +235,8 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
     private handlePopoverWillClose = () => {
         const { popoverProps = {} } = this.props;
 
-        // resetting the query when the popover close
+        // reset the query when the popover close, make sure that the list
+        // isn't filtered on when the popover opens next
         this.setState({ query: "" });
 
         Utils.safeInvoke(popoverProps.popoverDidOpen);
