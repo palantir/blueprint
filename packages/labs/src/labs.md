@@ -93,7 +93,7 @@ const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRender
 
 @## Suggest
 
-`Suggest` behaves similarly to `Select`, except it renders a text input as Popover target instead of arbitrary children.
+`Suggest` behaves similarly to `Select`, except it renders a text input as the `Popover` target instead of arbitrary children.
 
 @reactExample SuggestExample
 
