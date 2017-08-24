@@ -12,14 +12,14 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {
+    Button,
     Classes,
     FocusStyleManager,
+    Intent,
     Menu,
     MenuDivider,
     MenuItem,
     Switch,
-    Button,
-    Intent,
 } from "@blueprintjs/core";
 
 import {
