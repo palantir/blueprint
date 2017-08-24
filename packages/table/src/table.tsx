@@ -382,9 +382,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private refHandlers = {
         columnHeader: (ref: HTMLElement) => this.columnHeaderElement = ref,
         mainQuadrant: (ref: HTMLElement) => this.mainQuadrantElement = ref,
+        quadrantStack: (ref: TableQuadrantStack) => this.quadrantStackInstance = ref,
         rowHeader: (ref: HTMLElement) => this.rowHeaderElement = ref,
         scrollContainer: (ref: HTMLElement) => this.scrollContainerElement = ref,
     };
+
+    private quadrantStackInstance: TableQuadrantStack;
 
     private columnHeaderElement: HTMLElement;
     private mainQuadrantElement: HTMLElement;
@@ -540,6 +543,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     numFrozenRows={this.getNumFrozenRowsClamped()}
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
+                    ref={this.refHandlers.quadrantStack}
                     renderBody={this.renderBody}
                     renderColumnHeader={this.renderColumnHeader}
                     renderMenu={this.renderMenu}
@@ -619,9 +623,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const numFrozenRows = this.getNumFrozenRowsClamped();
 
         const frozenColumnsCumulativeWidth =
-            numFrozenColumns == null ? 0 : this.grid.getCumulativeWidthAt(numFrozenColumns);
+            this.invokeOrDefault(this.grid.getCumulativeWidthAt, numFrozenColumns, 0);
         const frozenRowsCumulativeHeight =
-            numFrozenRows == null ? 0 : this.grid.getCumulativeHeightAt(numFrozenRows);
+            this.invokeOrDefault(this.grid.getCumulativeHeightAt, numFrozenRows, 0);
 
         const nextViewportRect = this.getViewportRectForRegionScrollTarget(
             region,
@@ -629,7 +633,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             frozenRowsCumulativeHeight,
             frozenColumnsCumulativeWidth,
         );
-        this.syncViewportPosition(nextViewportRect.left, nextViewportRect.top);
+
+        // defer to the quadrant stack to keep all quadrant positions in sync
+        this.quadrantStackInstance.scrollToPosition(nextViewportRect.left, nextViewportRect.top);
+    }
+
+    private invokeOrDefault<T>(callback: (v: T) => T, value: T | null | undefined, defaultValue: T) {
+        return value == null ? defaultValue : callback(value);
     }
 
     private getViewportRectForRegionScrollTarget(
