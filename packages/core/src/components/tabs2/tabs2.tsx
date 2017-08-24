@@ -154,7 +154,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         } else if (prevState.selectedTabId != null) {
-            const prevChildren = JSON.stringify(React.Children.map(prevProps.children, thisArg => JSON.stringify(thisArg.props, ["title", "id"])));
+            const prevChildren = JSON.stringify(prevProps.children.map(thisArg => JSON.stringify(thisArg.props, ["title", "id"])));
             const children = JSON.stringify(React.Children.map(this.props.children, thisArg => JSON.stringify(thisArg.props, ["title", "id"])));
             if (prevChildren !== children) {
                 this.moveSelectionIndicator();
