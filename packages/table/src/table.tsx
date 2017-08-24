@@ -617,7 +617,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * simply scroll the target region as close to the top-left as possible until the bottom-right
      * corner is reached.
      */
-    public scrollToRegion(region: IRegion, _animated: boolean = false) {
+    public scrollToRegion(region: IRegion) {
         const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
 
         const numFrozenRows = this.getNumFrozenRowsClamped();
