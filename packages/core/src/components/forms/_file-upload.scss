@@ -71,7 +71,6 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
   right: 0;
   left: 0;
   padding-right: $file-upload-button-width + $input-padding-horizontal;
-  color: $pt-placeholder-color;
   user-select: none;
 
   &::after {
