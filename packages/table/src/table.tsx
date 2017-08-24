@@ -18,6 +18,7 @@ import { Clipboard } from "./common/clipboard";
 import * as Errors from "./common/errors";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
+import * as ScrollUtils from "./common/scrollUtils";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
@@ -617,69 +618,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * corner is reached.
      */
     public scrollToRegion(region: IRegion, _animated: boolean = false) {
-        const { viewportRect } = this.state;
+        const { left, top } = this.state.viewportRect;
 
-        const numFrozenColumns = this.getNumFrozenColumnsClamped();
         const numFrozenRows = this.getNumFrozenRowsClamped();
+        const numFrozenColumns = this.getNumFrozenColumnsClamped();
 
-        const frozenColumnsCumulativeWidth =
-            this.invokeOrDefault(this.grid.getCumulativeWidthAt, numFrozenColumns, 0);
-        const frozenRowsCumulativeHeight =
-            this.invokeOrDefault(this.grid.getCumulativeHeightAt, numFrozenRows, 0);
-
-        const nextViewportRect = this.getViewportRectForRegionScrollTarget(
-            region,
-            viewportRect,
-            frozenRowsCumulativeHeight,
-            frozenColumnsCumulativeWidth,
-        );
+        const { scrollLeft, scrollTop } =
+            ScrollUtils.getScrollPositionForRegion(region, this.grid, left, top, numFrozenRows, numFrozenColumns);
 
         // defer to the quadrant stack to keep all quadrant positions in sync
-        this.quadrantStackInstance.scrollToPosition(nextViewportRect.left, nextViewportRect.top);
-    }
-
-    private invokeOrDefault<T>(callback: (v: T) => T, value: T | null | undefined, defaultValue: T) {
-        return value == null ? defaultValue : callback(value);
-    }
-
-    private getViewportRectForRegionScrollTarget(
-        region: IRegion,
-        viewportRect: Rect,
-        frozenRowsCumulativeHeight: number = 0,
-        frozenColumnsCumulativeWidth: number = 0,
-    ) {
-        const cardinality = Regions.getRegionCardinality(region);
-
-        let nextTop = viewportRect.top;
-        let nextLeft = viewportRect.left;
-
-        if (cardinality === RegionCardinality.CELLS) {
-            // scroll to the top-left corner of the block of cells
-            const topOffset = this.grid.getCumulativeHeightBefore(region.rows[0]);
-            const leftOffset = this.grid.getCumulativeWidthBefore(region.cols[0]);
-            nextTop = this.getAdjustedScrollPosition(topOffset, frozenRowsCumulativeHeight);
-            nextLeft = this.getAdjustedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
-        } else if (cardinality === RegionCardinality.FULL_ROWS) {
-            // scroll to the top of the row block
-            const topOffset = this.grid.getCumulativeHeightBefore(region.rows[0]);
-            nextTop = this.getAdjustedScrollPosition(topOffset, frozenRowsCumulativeHeight);
-        } else if (cardinality === RegionCardinality.FULL_COLUMNS) {
-            // scroll to the left side of the column block
-            const leftOffset = this.grid.getCumulativeWidthBefore(region.cols[0]);
-            nextLeft = this.getAdjustedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
-        } else {
-            // if it's a FULL_TABLE region, scroll back to the first cell
-            nextTop = 0;
-            nextLeft = 0;
-        }
-
-        return new Rect(nextLeft, nextTop, viewportRect.width, viewportRect.height);
-    }
-
-    private getAdjustedScrollPosition(scrollOffset: number, frozenRegionCumulativeSize: number) {
-        return scrollOffset < frozenRegionCumulativeSize
-            ? 0
-            : scrollOffset - frozenRegionCumulativeSize;
+        this.quadrantStackInstance.scrollToPosition(scrollLeft, scrollTop);
     }
 
     /**
