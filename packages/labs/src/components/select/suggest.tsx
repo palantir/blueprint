@@ -31,6 +31,7 @@ import * as Classes from "../../common/classes";
 export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
      * Whether the popover should close after selecting an item.
+     * @default true
      */
     closeOnSelect?: boolean;
 
