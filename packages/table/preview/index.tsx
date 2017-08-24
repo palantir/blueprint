@@ -18,6 +18,8 @@ import {
     MenuDivider,
     MenuItem,
     Switch,
+    Button,
+    Intent,
 } from "@blueprintjs/core";
 
 import {
@@ -73,6 +75,9 @@ interface IMutableTableState {
     numFrozenCols?: number;
     numFrozenRows?: number;
     numRows?: number;
+    scrollToColumnIndex?: number;
+    scrollToRegionType?: RegionCardinality;
+    scrollToRowIndex?: number;
     selectedFocusStyle?: FocusStyle;
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
@@ -109,6 +114,13 @@ const ROW_COUNTS = [
 
 const FROZEN_COLUMN_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
 const FROZEN_ROW_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
+
+const REGION_CARDINALITIES = [
+    RegionCardinality.CELLS,
+    RegionCardinality.FULL_ROWS,
+    RegionCardinality.FULL_COLUMNS,
+    RegionCardinality.FULL_TABLE,
+];
 
 enum CellContent {
     EMPTY,
@@ -182,6 +194,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
             numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
+            scrollToColumnIndex: 0,
+            scrollToRegionType: RegionCardinality.CELLS,
+            scrollToRowIndex: 0,
             selectedFocusStyle: FocusStyle.TAB,
             showCallbackLogs: false,
             showCellsLoading: false,
@@ -413,6 +428,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderSidebar() {
+        const { scrollToRegionType } = this.state;
         const cellContentMenu = this.renderSelectMenu(
             "Cell content",
             "cellContent",
@@ -427,7 +443,34 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             this.toTruncatedPopoverModeLabel,
             this.handleNumberStateChange,
             "enableCellTruncation",
-            true,
+            [true],
+        );
+
+        // Table: "Scroll to"
+        const scrollToRegionTypeSelectMenu = this.renderSelectMenu(
+            "Region type",
+            "scrollToRegionType",
+            REGION_CARDINALITIES,
+            this.getRegionCardinalityLabel,
+            this.handleRegionCardinalityChange,
+        );
+        const shouldShowRowSelectMenu =
+            contains([RegionCardinality.CELLS, RegionCardinality.FULL_ROWS], scrollToRegionType);
+        const shouldShowColumnSelectMenu =
+            contains([RegionCardinality.CELLS, RegionCardinality.FULL_COLUMNS], scrollToRegionType);
+        const scrollToRowSelectMenu = shouldShowRowSelectMenu && this.renderSelectMenu(
+            "Row",
+            "scrollToRowIndex",
+            Utils.times(this.state.numRows, (rowIndex) => rowIndex),
+            (rowIndex) => `${rowIndex + 1}`,
+            this.handleNumberStateChange,
+        );
+        const scrollToColumnSelectMenu = shouldShowColumnSelectMenu && this.renderSelectMenu(
+            "Column",
+            "scrollToColumnIndex",
+            Utils.times(this.state.numCols, (columnIndex) => columnIndex),
+            (columnIndex) => this.store.getColumnName(columnIndex),
+            this.handleNumberStateChange,
         );
 
         return (
@@ -442,6 +485,15 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Callback logs", "showCallbackLogs")}
                 {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
                 {this.renderSwitch("Multi-selection", "enableMultiSelection")}
+                <h6>Scroll to</h6>
+                {scrollToRegionTypeSelectMenu}
+                <div className="sidebar-indented-group">
+                    {scrollToRowSelectMenu}
+                    {scrollToColumnSelectMenu}
+                </div>
+                <Button intent={Intent.PRIMARY} className={Classes.FILL} onClick={this.handleScrollToButtonClick}>
+                    Scroll
+                </Button>
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
@@ -476,7 +528,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Interactions</h6>
                 {this.renderSwitch("Editing", "enableCellEditing")}
                 {this.renderSwitch("Selection", "enableCellSelection")}
-                {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", false)}
+                {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", [false])}
 
                 <div className="sidebar-indented-group">
                     {truncatedPopoverModeMenu}
@@ -489,13 +541,28 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
+    private getRegionCardinalityLabel(cardinality: RegionCardinality) {
+        switch (cardinality) {
+            case RegionCardinality.CELLS:
+                return "Cell";
+            case RegionCardinality.FULL_ROWS:
+                return "Row";
+            case RegionCardinality.FULL_COLUMNS:
+                return "Column";
+            case RegionCardinality.FULL_TABLE:
+                return "Full table";
+            default:
+                return "";
+        }
+    }
+
     private renderSwitch(
         label: string,
         stateKey: keyof IMutableTableState,
         prereqStateKey?: keyof IMutableTableState,
-        prereqStateKeyValue?: any,
+        prereqStateKeyValues?: any[],
     ) {
-        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
+        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValues);
 
         const child = <Switch
             checked={this.state[stateKey] as boolean}
@@ -506,7 +573,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         />;
 
         if (isDisabled) {
-            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValue);
+            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValues);
         } else {
             return child;
         }
@@ -548,9 +615,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         generateValueLabel: (value: any) => string,
         handleChange: IMutableStateUpdateCallback,
         prereqStateKey?: keyof IMutableTableState,
-        prereqStateKeyValue?: any,
+        prereqStateKeyValues?: any[],
     ) {
-        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
+        const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValues);
 
         // need to explicitly cast generic type T to string
         const selectedValue = this.state[stateKey].toString();
@@ -578,7 +645,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         );
 
         if (isDisabled) {
-            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValue);
+            return this.wrapDisabledControlWithTooltip(child, prereqStateKey, prereqStateKeyValues);
         } else {
             return child;
         }
@@ -587,8 +654,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // Disabled control helpers
     // ========================
 
-    private isPrereqStateKeySatisfied(key?: keyof IMutableTableState, value?: any) {
-        return key == null || this.state[key] === value;
+    private isPrereqStateKeySatisfied(key?: keyof IMutableTableState, values?: any[]) {
+        return key == null || values.indexOf(this.state[key]) >= 0;
     }
 
     private wrapDisabledControlWithTooltip(
@@ -598,7 +665,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     ) {
         // Blueprint Tooltip affects the layout, so just show a native title on hover
         return (
-            <div title={`Requires ${prereqStateKey}=${prereqStateKeyValue}`}>
+            <div title={`Requires ${prereqStateKey} to match one of ${prereqStateKeyValue.toString()}`}>
                 {element}
             </div>
         );
@@ -693,6 +760,30 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         this.store.setColumnName(columnIndex, value);
     }
 
+    private handleScrollToButtonClick = () => {
+        const { scrollToRowIndex, scrollToColumnIndex, scrollToRegionType } = this.state;
+
+        let region: IRegion;
+        switch (scrollToRegionType) {
+            case RegionCardinality.CELLS:
+                region = Regions.cell(scrollToRowIndex, scrollToColumnIndex);
+                break;
+            case RegionCardinality.FULL_ROWS:
+                region = Regions.row(scrollToRowIndex);
+                break;
+            case RegionCardinality.FULL_COLUMNS:
+                region = Regions.column(scrollToColumnIndex);
+                break;
+            case RegionCardinality.FULL_TABLE:
+                region = Regions.table();
+                break;
+            default:
+                return;
+        }
+
+        this.tableInstance.scrollToRegion(region);
+    }
+
     // State updates
     // =============
 
@@ -731,6 +822,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private handleNumberStateChange = (stateKey: keyof IMutableTableState) => {
+        return handleNumberChange((value) => this.setState({ [stateKey]: value }));
+    }
+
+    private handleRegionCardinalityChange = (stateKey: keyof IMutableTableState) => {
         return handleNumberChange((value) => this.setState({ [stateKey]: value }));
     }
 
@@ -830,4 +925,8 @@ function handleNumberChange(handler: (value: number) => void) {
 function getRandomInteger(min: number, max: number) {
     // min and max are inclusive
     return Math.floor(min + (Math.random() * (max - min + 1)));
+}
+
+function contains(arr: any[], value: any) {
+    return arr.indexOf(value) >= 0;
 }
