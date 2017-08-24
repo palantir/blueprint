@@ -1663,10 +1663,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             // doing, we add the size of the header elements, which are not technically part of the
             // "grid" concept (the grid only consists of body cells at present).
             if (didScrollTopChange) {
-                this.scrollContainerElement.scrollTop = nextScrollTop + this.columnHeaderElement.clientHeight;
+                const topCorrection = this.shouldDisableVerticalScroll() ? 0 : this.columnHeaderElement.clientHeight;
+                this.scrollContainerElement.scrollTop = nextScrollTop + topCorrection;
             }
             if (didScrollLeftChange) {
-                this.scrollContainerElement.scrollLeft = nextScrollLeft + this.rowHeaderElement.clientWidth;
+                const leftCorrection = this.shouldDisableHorizontalScroll() ? 0 : this.rowHeaderElement.clientWidth;
+                this.scrollContainerElement.scrollLeft = nextScrollLeft + leftCorrection;
             }
 
             const nextViewportRect = new Rect(
