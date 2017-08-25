@@ -628,7 +628,7 @@ describe("<Table>", () => {
         it("Resizes selected rows together", () => {
             const table = mountTable();
             const rows = getRowHeadersWrapper(table);
-            const resizeHandleTarget = getRowResizeHandle(rows, 0);
+            const resizeHandleTarget = getResizeHandle(rows, 0);
 
             resizeHandleTarget.mouse("mousemove")
                 .mouse("mousedown")
@@ -646,9 +646,22 @@ describe("<Table>", () => {
             expect(rows.find(`.${Classes.TABLE_HEADER}`, 8).bounds().height).to.equal(3);
         });
 
+        it("Resizes columns when row headers are hidden without throwing an error", () => {
+            const table = mountTable({ isRowHeaderShown: false });
+            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
+            const resizeHandleTarget = getResizeHandle(columnHeader, 0);
+
+            expect(() => {
+                resizeHandleTarget.mouse("mousemove")
+                    .mouse("mousedown")
+                    .mouse("mousemove", 0, 2)
+                    .mouse("mouseup");
+            }).not.to.throw();
+        });
+
         it("Hides selected-region styles while resizing", () => {
             const table = mountTable();
-            const resizeHandleTarget = getRowResizeHandle(getRowHeadersWrapper(table), 0);
+            const resizeHandleTarget = getResizeHandle(getRowHeadersWrapper(table), 0);
 
             resizeHandleTarget.mouse("mousemove")
                 .mouse("mousedown")
@@ -659,7 +672,7 @@ describe("<Table>", () => {
             expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
         });
 
-        function mountTable() {
+        function mountTable(tableProps: Partial<ITableProps> & object = {}) {
             return harness.mount(
                 // set the row height so small so they can all fit in the viewport and be rendered
                 <Table
@@ -668,6 +681,7 @@ describe("<Table>", () => {
                     minRowHeight={1}
                     numRows={10}
                     selectedRegions={[Regions.row(0, 1), Regions.row(4, 6), Regions.row(8)]}
+                    {...tableProps}
                 >
                     <Column renderCell={renderCell}/>
                     <Column renderCell={renderCell}/>
@@ -680,8 +694,8 @@ describe("<Table>", () => {
             return table.find(`.${Classes.TABLE_ROW_HEADERS}`);
         }
 
-        function getRowResizeHandle(rows: ElementHarness, rowIndex: number) {
-            return rows.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`, rowIndex);
+        function getResizeHandle(header: ElementHarness, index: number) {
+            return header.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`, index);
         }
     });
 
