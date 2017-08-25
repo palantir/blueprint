@@ -24,6 +24,8 @@ Styleguide pt-file-upload
 
 $file-upload-button-width: $pt-grid-size * 7;
 $file-upload-button-width-large: $pt-grid-size * 8.5;
+$file-upload-button-padding: ($pt-input-height - $pt-button-height-small) / 2;
+$file-upload-button-padding-large: ($pt-input-height-large - $pt-button-height) / 2;
 
 .pt-file-upload {
   display: inline-block;
@@ -75,11 +77,12 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
 
   &::after {
     @include pt-button();
+    @include pt-button-height($pt-button-height-small);
     position: absolute;
-    top: 0;
-    right: 0;
+    top: $file-upload-button-padding;
+    right: $file-upload-button-padding;
     margin-left: -$button-border-width;
-    border-radius: 0 $pt-border-radius $pt-border-radius 0;
+    border-radius: $pt-border-radius;
     width: $file-upload-button-width;
     text-align: center;
     content: "Browse";
@@ -98,11 +101,11 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
     padding-right: $file-upload-button-width-large + $input-padding-horizontal;
 
     &::after {
+      @include pt-button-height($pt-button-height);
+      top: $file-upload-button-padding-large;
+      right: $file-upload-button-padding-large;
       width: $file-upload-button-width-large;
-      height: $pt-input-height-large;
       padding: $button-padding-large;
-      line-height: $pt-button-height-large;
-      font-size: $pt-font-size-large;
     }
   }
 
