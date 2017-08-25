@@ -79,9 +79,9 @@ $file-upload-button-padding-large: ($pt-input-height-large - $pt-button-height) 
     @include pt-button();
     @include pt-button-height($pt-button-height-small);
     position: absolute;
-    top: $file-upload-button-padding;
-    right: $file-upload-button-padding;
-    margin-left: -$button-border-width;
+    top: 0;
+    right: 0;
+    margin: $file-upload-button-padding;
     border-radius: $pt-border-radius;
     width: $file-upload-button-width;
     text-align: center;
@@ -102,10 +102,8 @@ $file-upload-button-padding-large: ($pt-input-height-large - $pt-button-height) 
 
     &::after {
       @include pt-button-height($pt-button-height);
-      top: $file-upload-button-padding-large;
-      right: $file-upload-button-padding-large;
+      margin: $file-upload-button-padding-large;
       width: $file-upload-button-width-large;
-      padding: $button-padding-large;
     }
   }
 
