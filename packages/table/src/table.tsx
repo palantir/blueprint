@@ -439,6 +439,74 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         };
     }
 
+    // Instance methods
+    // ================
+
+    /**
+     * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
+     * If no indices are provided, default to using the tallest visible cell from all columns in view.
+     */
+    public resizeRowsByTallestCell(columnIndices?: number | number[]) {
+        let tallest = 0;
+        if (columnIndices == null) {
+            // Consider all columns currently in viewport
+            const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
+            for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
+                tallest = Math.max(tallest, this.locator.getTallestVisibleCellInColumn(col));
+            }
+        } else {
+            const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
+            const tallestByColumns = columnIndicesArray.map((col) => this.locator.getTallestVisibleCellInColumn(col));
+            tallest = Math.max(...tallestByColumns);
+        }
+        const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
+        this.invalidateGrid();
+        this.setState({ rowHeights });
+    }
+
+    /**
+     * Scrolls the table to the target region in a fashion appropriate to the target region's
+     * cardinality:
+     *
+     * - CELLS: Scroll the top-left cell in the target region to the top-left corner of the viewport.
+     * - FULL_ROWS: Scroll the top-most row in the target region to the top of the viewport.
+     * - FULL_COLUMNS: Scroll the left-most column in the target region to the left side of the viewport.
+     * - FULL_TABLE: Scroll the top-left cell in the table to the top-left corner of the viewport.
+     *
+     * If there are active frozen rows and/or columns, the target region will be positioned in the
+     * top-left corner of the non-frozen area (unless the target region itself is in the frozen
+     * area).
+     *
+     * If the target region is close to the bottom-right corner of the table, this function will
+     * simply scroll the target region as close to the top-left as possible until the bottom-right
+     * corner is reached.
+     */
+    public scrollToRegion(region: IRegion) {
+        const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
+
+        const numFrozenRows = this.getNumFrozenRowsClamped();
+        const numFrozenColumns = this.getNumFrozenColumnsClamped();
+
+        const { scrollLeft, scrollTop } = ScrollUtils.getScrollPositionForRegion(
+            region,
+            currScrollLeft,
+            currScrollTop,
+            this.grid.getCumulativeWidthBefore,
+            this.grid.getCumulativeHeightBefore,
+            numFrozenRows,
+            numFrozenColumns,
+        );
+
+        const adjustedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : scrollLeft;
+        const adjustedScrollTop = this.shouldDisableVerticalScroll() ? 0 : scrollTop;
+
+        // defer to the quadrant stack to keep all quadrant positions in sync
+        this.quadrantStackInstance.scrollToPosition(adjustedScrollLeft, adjustedScrollTop);
+    }
+
+    // React lifecycle
+    // ===============
+
     public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
         const propKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
         const stateKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST };
@@ -570,74 +638,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 {hotkeys.filter((element) => element !== undefined)}
             </Hotkeys>
         );
-    }
-
-    /**
-     * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
-     * If no indices are provided, default to using the tallest visible cell from all columns in view.
-     */
-    public resizeRowsByTallestCell(columnIndices?: number | number[]) {
-        let tallest = 0;
-        if (columnIndices == null) {
-            // Consider all columns currently in viewport
-            const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
-            for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
-                tallest = Math.max(tallest, this.locator.getTallestVisibleCellInColumn(col));
-            }
-        } else {
-            const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
-            const tallestByColumns = columnIndicesArray.map((col) => this.locator.getTallestVisibleCellInColumn(col));
-            tallest = Math.max(...tallestByColumns);
-        }
-        const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
-        this.invalidateGrid();
-        this.setState({ rowHeights });
-    }
-
-    /**
-     * Scroll the viewport such that the target region ends up in the top-left corner. If `animated`
-     * is `true`, the table will animate the scroll. This can help users better understand how the
-     * table has shifted.
-     *
-     * Scrolling will behave for each region cardinality as follows:
-     *
-     *   CELLS:
-     *   Scroll the top-left cell in the target region to the top-left corner of the viewport.
-     *
-     *   FULL_ROWS:
-     *   Scroll the top-most row in the target region to the top of the viewport.
-     *
-     *   FULL_COLUMNS:
-     *   Scroll the left-most column in the target region to the left side of the viewport.
-     *
-     *   FULL_TABLE:
-     *   Scroll the top-left cell to the top-left corner of the viewport.
-     *
-     * If the target region is close to the bottom-right corner of the table, this function will
-     * simply scroll the target region as close to the top-left as possible until the bottom-right
-     * corner is reached.
-     */
-    public scrollToRegion(region: IRegion) {
-        const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
-
-        const numFrozenRows = this.getNumFrozenRowsClamped();
-        const numFrozenColumns = this.getNumFrozenColumnsClamped();
-
-        const { scrollLeft, scrollTop } = ScrollUtils.getScrollPositionForRegion(
-            region,
-            currScrollLeft,
-            currScrollTop,
-            this.grid.getCumulativeWidthBefore,
-            this.grid.getCumulativeHeightBefore,
-            numFrozenRows,
-            numFrozenColumns,
-        );
-
-        const adjustedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : scrollLeft;
-        const adjustedScrollTop = this.shouldDisableVerticalScroll() ? 0 : scrollTop;
-
-        // defer to the quadrant stack to keep all quadrant positions in sync
-        this.quadrantStackInstance.scrollToPosition(adjustedScrollLeft, adjustedScrollTop);
     }
 
     /**
