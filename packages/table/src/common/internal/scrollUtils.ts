@@ -7,9 +7,6 @@
 
 import { IRegion, RegionCardinality, Regions } from "../../regions";
 
-// Public
-// ======
-
 export function getScrollPositionForRegion(
     region: IRegion,
     currScrollLeft: number,
@@ -55,14 +52,10 @@ export function getScrollPositionForRegion(
     };
 }
 
-// Private
-// =======
-
 /**
  * Adjust the scroll position to align content just beyond the frozen region, if necessary.
  */
 function getAdjustedScrollPosition(scrollOffset: number, frozenRegionCumulativeSize: number) {
-    return scrollOffset < frozenRegionCumulativeSize
-        ? 0
-        : scrollOffset - frozenRegionCumulativeSize;
+    // if the new scroll offset falls within the frozen region, clamp it to 0
+    return Math.max(scrollOffset - frozenRegionCumulativeSize, 0);
 }

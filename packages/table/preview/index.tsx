@@ -425,7 +425,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderSidebar() {
-        const { scrollToRegionType } = this.state;
         const cellContentMenu = this.renderSelectMenu(
             "Cell content",
             "cellContent",
@@ -443,33 +442,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             [true],
         );
 
-        // Table: "Scroll to"
-        const scrollToRegionTypeSelectMenu = this.renderSelectMenu(
-            "Region type",
-            "scrollToRegionType",
-            REGION_CARDINALITIES,
-            this.getRegionCardinalityLabel,
-            this.handleRegionCardinalityChange,
-        );
-        const shouldShowRowSelectMenu =
-            contains([RegionCardinality.CELLS, RegionCardinality.FULL_ROWS], scrollToRegionType);
-        const shouldShowColumnSelectMenu =
-            contains([RegionCardinality.CELLS, RegionCardinality.FULL_COLUMNS], scrollToRegionType);
-        const scrollToRowSelectMenu = shouldShowRowSelectMenu && this.renderSelectMenu(
-            "Row",
-            "scrollToRowIndex",
-            Utils.times(this.state.numRows, (rowIndex) => rowIndex),
-            (rowIndex) => `${rowIndex + 1}`,
-            this.handleNumberStateChange,
-        );
-        const scrollToColumnSelectMenu = shouldShowColumnSelectMenu && this.renderSelectMenu(
-            "Column",
-            "scrollToColumnIndex",
-            Utils.times(this.state.numCols, (columnIndex) => columnIndex),
-            (columnIndex) => this.store.getColumnName(columnIndex),
-            this.handleNumberStateChange,
-        );
-
         return (
             <div className="sidebar pt-elevation-0">
                 <h4>Table</h4>
@@ -483,14 +455,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
                 {this.renderSwitch("Multi-selection", "enableMultiSelection")}
                 <h6>Scroll to</h6>
-                {scrollToRegionTypeSelectMenu}
-                <div className="sidebar-indented-group">
-                    {scrollToRowSelectMenu}
-                    {scrollToColumnSelectMenu}
-                </div>
-                <Button intent={Intent.PRIMARY} className={Classes.FILL} onClick={this.handleScrollToButtonClick}>
-                    Scroll
-                </Button>
+                {this.renderScrollToSection()}
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
@@ -534,6 +499,51 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h4>Page</h4>
                 <h6>Display</h6>
                 {this.renderFocusStyleSelectMenu()}
+            </div>
+        );
+    }
+
+    private renderScrollToSection() {
+        const { scrollToRegionType } = this.state;
+
+        const scrollToRegionTypeSelectMenu = this.renderSelectMenu(
+            "Region type",
+            "scrollToRegionType",
+            REGION_CARDINALITIES,
+            this.getRegionCardinalityLabel,
+            this.handleRegionCardinalityChange,
+        );
+        const scrollToRowSelectMenu = this.renderSelectMenu(
+            "Row",
+            "scrollToRowIndex",
+            Utils.times(this.state.numRows, (rowIndex) => rowIndex),
+            (rowIndex) => `${rowIndex + 1}`,
+            this.handleNumberStateChange,
+        );
+        const scrollToColumnSelectMenu = this.renderSelectMenu(
+            "Column",
+            "scrollToColumnIndex",
+            Utils.times(this.state.numCols, (columnIndex) => columnIndex),
+            (columnIndex) => this.store.getColumnName(columnIndex),
+            this.handleNumberStateChange,
+        );
+
+        const ROW_MENU_CARDINALITIES = [RegionCardinality.CELLS, RegionCardinality.FULL_ROWS];
+        const COLUMN_MENU_CARDINALITIES = [RegionCardinality.CELLS, RegionCardinality.FULL_COLUMNS];
+
+        const shouldShowRowSelectMenu = contains(ROW_MENU_CARDINALITIES, scrollToRegionType);
+        const shouldShowColumnSelectMenu = contains(COLUMN_MENU_CARDINALITIES, scrollToRegionType);
+
+        return (
+            <div>
+                {scrollToRegionTypeSelectMenu}
+                <div className="sidebar-indented-group">
+                    {shouldShowRowSelectMenu ? scrollToRowSelectMenu : undefined}
+                    {shouldShowColumnSelectMenu ? scrollToColumnSelectMenu : undefined}
+                </div>
+                <Button intent={Intent.PRIMARY} className={Classes.FILL} onClick={this.handleScrollToButtonClick}>
+                    Scroll
+                </Button>
             </div>
         );
     }
@@ -651,8 +661,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // Disabled control helpers
     // ========================
 
-    private isPrereqStateKeySatisfied(key?: keyof IMutableTableState, values?: any[]) {
-        return key == null || values.indexOf(this.state[key]) >= 0;
+    private isPrereqStateKeySatisfied(key?: keyof IMutableTableState, value?: any) {
+        return key == null || this.state[key] === value;
     }
 
     private wrapDisabledControlWithTooltip(
