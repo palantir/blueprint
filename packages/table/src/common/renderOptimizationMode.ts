@@ -5,7 +5,7 @@
  * https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-enum RenderOptimizationMode {
+export enum RenderOptimizationMode {
     /**
      * Renders cells in batches across multiple animation frames. This improves
      * performance by spreading out work to keep a high FPS and avoid blocking

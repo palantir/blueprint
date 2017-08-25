@@ -18,6 +18,7 @@ import { Clipboard } from "./common/clipboard";
 import * as Errors from "./common/errors";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
+import { RenderOptimizationMode } from "./common/renderOptimizationMode";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
@@ -206,6 +207,15 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * represents the clicked cell.
      */
     renderBodyContextMenu?: IContextMenuRenderer;
+
+    /**
+     * Dictates how cells should be rendered. Supported modes are:
+     * - `RenderOptimizationMode.BATCH`: renders cells in batches to improve
+     *   performance
+     * - `RenderOptimizationMode.NONE`: renders cells synchronously all at once
+     * @default RenderOptimizationMode.BATCH
+     */
+    renderOptimizationMode?: RenderOptimizationMode;
 
     /**
      * Render each row's header cell.
