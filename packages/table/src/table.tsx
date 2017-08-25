@@ -354,6 +354,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         minColumnWidth: 50,
         minRowHeight: 20,
         numRows: 0,
+        renderOptimizationMode: RenderOptimizationMode.BATCH,
         renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
@@ -1022,6 +1023,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             fillBodyWithGhostCells,
             loadingOptions,
             renderBodyContextMenu,
+            renderOptimizationMode,
             selectedRegionTransform,
         } = this.props;
 
@@ -1059,6 +1061,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         onFocus={this.handleFocus}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}
+                        renderOptimizationMode={renderOptimizationMode}
                         selectedRegions={selectedRegions}
                         selectedRegionTransform={selectedRegionTransform}
                         viewportRect={viewportRect}
