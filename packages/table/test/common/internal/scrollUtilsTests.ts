@@ -140,7 +140,7 @@ describe("scrollUtils", () => {
             }
 
             it("scrolling to a frozen cell", () => {
-                const TARGET_ROW = 3
+                const TARGET_ROW = 3;
                 const TARGET_COLUMN = NUM_FROZEN_COLUMNS - 1;
                 const region = Regions.cell(TARGET_ROW, TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
