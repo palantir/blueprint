@@ -255,6 +255,117 @@ describe("<Table>", () => {
         expect(table.state("selectedRegions").length).to.equal(1);
     });
 
+    describe("scrollToRegion", () => {
+        const CONTAINER_WIDTH = 200;
+        const CONTAINER_HEIGHT = 200;
+
+        const ROW_HEIGHT = 300;
+        const COLUMN_WIDTH = 400;
+
+        const NUM_ROWS = 3;
+        const NUM_COLUMNS = 3;
+
+        const TARGET_ROW = 1;
+        const TARGET_COLUMN = 2;
+
+        let tableInstance: Table;
+
+        it("should calculate coordinates for scrolling to cell", () => {
+            mountTable();
+            checkInstanceMethod(
+                Regions.cell(TARGET_ROW, TARGET_COLUMN),
+                TARGET_COLUMN * COLUMN_WIDTH,
+                TARGET_ROW * ROW_HEIGHT,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to frozen cell", () => {
+            mountTable({ numFrozenRows: TARGET_ROW + 1, numFrozenColumns: TARGET_COLUMN + 1 });
+            checkInstanceMethod(
+                Regions.cell(TARGET_ROW, TARGET_COLUMN),
+                0,
+                0,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to row", () => {
+            mountTable();
+            checkInstanceMethod(
+                Regions.row(TARGET_ROW),
+                0,
+                TARGET_ROW * ROW_HEIGHT,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to frozen row", () => {
+            mountTable({ numFrozenRows: TARGET_ROW + 1 });
+            checkInstanceMethod(
+                Regions.row(TARGET_ROW),
+                0,
+                0,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to column", () => {
+            mountTable();
+            checkInstanceMethod(
+                Regions.column(TARGET_COLUMN),
+                TARGET_COLUMN * COLUMN_WIDTH,
+                0,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to frozen column", () => {
+            mountTable({ numFrozenColumns: TARGET_COLUMN + 1 });
+            checkInstanceMethod(
+                Regions.column(TARGET_COLUMN),
+                0,
+                0,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to full table", () => {
+            mountTable();
+            checkInstanceMethod(
+                Regions.table(),
+                0,
+                0,
+            );
+        });
+
+        function checkInstanceMethod(region: IRegion, expectedScrollLeft: number, expectedScrollTop: number) {
+            // cast as `any` to access private members
+            const spy = sinon.spy((tableInstance as any).quadrantStackInstance, "scrollToPosition");
+            tableInstance.scrollToRegion(region);
+            // just check that the scroll event would be triggered with the proper args; don't
+            // bother checking the result of the whole action
+            expect(spy.firstCall.args).to.deep.equal([expectedScrollLeft, expectedScrollTop]);
+            spy.restore();
+        }
+
+        function saveTable(ref: Table) {
+            tableInstance = ref;
+        }
+
+        function mountTable(tableProps: Partial<ITableProps> & object = {}) {
+            mount(
+                <div style={{ width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT }}>
+                    <Table
+                        columnWidths={Array(NUM_COLUMNS).fill(COLUMN_WIDTH)}
+                        numRows={NUM_ROWS}
+                        rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT)}
+                        ref={saveTable}
+                        {...tableProps}
+                    >
+                        <Column renderCell={renderCell} />
+                        <Column renderCell={renderCell} />
+                        <Column renderCell={renderCell} />
+                    </Table>
+                </div>,
+            );
+        }
+    });
+
     describe("Quadrants", () => {
         const NUM_ROWS = 5;
         const NUM_COLUMNS = 5;
