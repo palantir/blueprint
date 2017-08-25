@@ -439,7 +439,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             this.toTruncatedPopoverModeLabel,
             this.handleNumberStateChange,
             "enableCellTruncation",
-            [true],
+            true,
         );
 
         return (
@@ -490,7 +490,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Interactions</h6>
                 {this.renderSwitch("Editing", "enableCellEditing")}
                 {this.renderSwitch("Selection", "enableCellSelection")}
-                {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", [false])}
+                {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", false)}
 
                 <div className="sidebar-indented-group">
                     {truncatedPopoverModeMenu}
