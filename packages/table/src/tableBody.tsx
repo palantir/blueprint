@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
+import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
@@ -55,6 +55,11 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
      * The number of rows to freeze to the top of the table, counting from the topmost row.
      */
     numFrozenRows?: number;
+
+    /**
+     * An optional callback invoked when all cells in view have completely rendered.
+     */
+    onCompleteRender?: () => void;
 
     /**
      * The `Rect` bounds of the visible viewport with respect to its parent
@@ -130,6 +135,11 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
     private activationCell: ICellCoordinates;
     private batcher = new Batcher<JSX.Element>();
+    private isRenderingBatchedCells = false;
+
+    public componentDidMount() {
+        this.maybeInvokeOnCompleteRender();
+    }
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         const propKeysWhitelist = { include: UPDATE_PROPS_KEYS };
@@ -142,6 +152,10 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         if (shouldResetBatcher) {
             this.batcher.reset();
         }
+    }
+
+    public componentDidUpdate() {
+        this.maybeInvokeOnCompleteRender();
     }
 
     public componentWillUnmount() {
@@ -218,6 +232,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
         // render cells in batches
         this.batcher.startNewBatch();
+        this.isRenderingBatchedCells = true;
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
                 this.batcher.addArgsToBatch(rowIndex, columnIndex);
@@ -305,5 +320,19 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         const start = this.activationCell;
         const end = this.props.locator.convertPointToCell(coords.current[0], coords.current[1]);
         return Regions.cell(start.row, start.col, end.row, end.col);
+    }
+
+    private maybeInvokeOnCompleteRender() {
+        const { onCompleteRender, renderOptimizationMode } = this.props;
+
+        if (renderOptimizationMode === RenderOptimizationMode.BATCH
+            && this.isRenderingBatchedCells
+            && this.batcher.isDone()
+        ) {
+            this.isRenderingBatchedCells = false;
+            CoreUtils.safeInvoke(onCompleteRender);
+        } else if (renderOptimizationMode === RenderOptimizationMode.NONE) {
+            CoreUtils.safeInvoke(onCompleteRender);
+        }
     }
 }

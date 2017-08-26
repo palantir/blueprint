@@ -219,6 +219,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     numFrozenRows={this.state.numFrozenRows}
                     numRows={this.state.numRows}
                     onSelection={this.onSelection}
+                    onCompleteRender={this.onCompleteRender}
                     onColumnsReordered={this.onColumnsReordered}
                     onColumnWidthChanged={this.onColumnWidthChanged}
                     onCopy={this.onCopy}
@@ -637,6 +638,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     // Callbacks
     // =========
+
+    private onCompleteRender = () => {
+        this.maybeLogCallback("[onCompleteRender]");
+    }
 
     private onSelection = (selectedRegions: IRegion[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);

@@ -162,6 +162,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onColumnWidthChanged?: IIndexedResizeCallback;
 
     /**
+     * An optional callback invoked when all cells in view have completely rendered.
+     * Will be invoked on initial mount and whenever cells update (e.g., on scroll).
+     */
+    onCompleteRender?: () => void;
+
+    /**
      * If you want to do something after the copy or if you want to notify the
      * user if a copy fails, you may provide this optional callback.
      *
@@ -1058,6 +1064,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         grid={grid}
                         loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                         locator={locator}
+                        onCompleteRender={this.props.onCompleteRender}
                         onFocus={this.handleFocus}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}
