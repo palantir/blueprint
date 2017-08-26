@@ -113,7 +113,8 @@ export class Rect {
     }
 
     public equals(rect: Rect) {
-        return this.left === rect.left
+        return rect != null
+            && this.left === rect.left
             && this.top === rect.top
             && this.width === rect.width
             && this.height === rect.height;
