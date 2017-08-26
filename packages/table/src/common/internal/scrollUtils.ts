@@ -18,44 +18,50 @@ export function getScrollPositionForRegion(
 ) {
     const cardinality = Regions.getRegionCardinality(region);
 
-    let nextTop = currScrollTop;
-    let nextLeft = currScrollLeft;
+    let scrollTop = currScrollTop;
+    let scrollLeft = currScrollLeft;
 
     // if these were max-frozen-index values, we would have added 1 before passing to the get*Offset
     // functions, but the counts are already 1-indexed, so we can just pass those.
     const frozenColumnsCumulativeWidth = getLeftOffset(numFrozenColumns);
     const frozenRowsCumulativeHeight = getTopOffset(numFrozenRows);
 
-    if (cardinality === RegionCardinality.CELLS) {
-        // scroll to the top-left corner of the block of cells
-        const topOffset = getTopOffset(region.rows[0]);
-        const leftOffset = getLeftOffset(region.cols[0]);
-        nextTop = getAdjustedScrollPosition(topOffset, frozenRowsCumulativeHeight);
-        nextLeft = getAdjustedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
-    } else if (cardinality === RegionCardinality.FULL_ROWS) {
-        // scroll to the top of the row block
-        const topOffset = getTopOffset(region.rows[0]);
-        nextTop = getAdjustedScrollPosition(topOffset, frozenRowsCumulativeHeight);
-    } else if (cardinality === RegionCardinality.FULL_COLUMNS) {
-        // scroll to the left side of the column block
-        const leftOffset = getLeftOffset(region.cols[0]);
-        nextLeft = getAdjustedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
-    } else {
-        // if it's a FULL_TABLE region, scroll back to the top-left cell of the table
-        nextTop = 0;
-        nextLeft = 0;
+    switch (cardinality) {
+        case RegionCardinality.CELLS: {
+            // scroll to the top-left corner of the block of cells
+            const topOffset = getTopOffset(region.rows[0]);
+            const leftOffset = getLeftOffset(region.cols[0]);
+            scrollTop = getClampedScrollPosition(topOffset, frozenRowsCumulativeHeight);
+            scrollLeft = getClampedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
+            break;
+        }
+        case RegionCardinality.FULL_ROWS: {
+            // scroll to the top of the row block
+            const topOffset = getTopOffset(region.rows[0]);
+            scrollTop = getClampedScrollPosition(topOffset, frozenRowsCumulativeHeight);
+            break;
+        }
+        case RegionCardinality.FULL_COLUMNS: {
+            // scroll to the left side of the column block
+            const leftOffset = getLeftOffset(region.cols[0]);
+            scrollLeft = getClampedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
+            break;
+        }
+        default: {
+            // if it's a FULL_TABLE region, scroll back to the top-left cell of the table
+            scrollTop = 0;
+            scrollLeft = 0;
+            break;
+        }
     }
 
-    return {
-        scrollLeft: nextLeft,
-        scrollTop: nextTop,
-    };
+    return { scrollLeft, scrollTop };
 }
 
 /**
  * Adjust the scroll position to align content just beyond the frozen region, if necessary.
  */
-function getAdjustedScrollPosition(scrollOffset: number, frozenRegionCumulativeSize: number) {
+function getClampedScrollPosition(scrollOffset: number, frozenRegionCumulativeSize: number) {
     // if the new scroll offset falls within the frozen region, clamp it to 0
     return Math.max(scrollOffset - frozenRegionCumulativeSize, 0);
 }

@@ -389,7 +389,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     };
 
     private quadrantStackInstance: TableQuadrantStack;
-
     private columnHeaderElement: HTMLElement;
     private mainQuadrantElement: HTMLElement;
     private rowHeaderElement: HTMLElement;
@@ -497,11 +496,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             numFrozenColumns,
         );
 
-        const adjustedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : scrollLeft;
-        const adjustedScrollTop = this.shouldDisableVerticalScroll() ? 0 : scrollTop;
+        const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : scrollLeft;
+        const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : scrollTop;
 
         // defer to the quadrant stack to keep all quadrant positions in sync
-        this.quadrantStackInstance.scrollToPosition(adjustedScrollLeft, adjustedScrollTop);
+        this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
     }
 
     // React lifecycle
