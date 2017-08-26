@@ -36,7 +36,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
      * React child to render when query is empty.
      */
-    initialContent?: JSX.Element;
+    initialContent?: React.ReactChild;
 
     /**
      * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether

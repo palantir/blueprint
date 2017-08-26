@@ -19,7 +19,7 @@ const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Int
 
 export interface IMultiSelectExampleState {
     films?: Film[];
-    initialContent?: boolean;
+    hasInitialContent?: boolean;
     intent?: boolean;
     openOnKeyDown?: boolean;
     popoverMinimal?: boolean;
@@ -30,7 +30,7 @@ export interface IMultiSelectExampleState {
 export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
         films: [],
-        initialContent: false,
+        hasInitialContent: false,
         intent: false,
         openOnKeyDown: false,
         popoverMinimal: true,
@@ -43,16 +43,16 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
     private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
     private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
     private handleIntentChange = this.handleSwitchChange("intent");
-    private handleInitialRendererChange = this.handleSwitchChange("initialContent");
+    private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
 
     protected renderExample() {
-        const { films, initialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
+        const { films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
         const getTagProps = (_value: string, index: number): ITagProps => ({
             className: tagMinimal ? Classes.MINIMAL : "",
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
         });
 
-        const initialContent = this.state.initialContent
+        const initialContent = this.state.hasInitialContent
             ? <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
             : undefined;
 
@@ -89,10 +89,10 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                     onChange={this.handleResetChange}
                 />,
                 <Switch
-                    key="initialContent"
+                    key="hasInitialContent"
                     label="Show initial renderer"
-                    checked={this.state.initialContent}
-                    onChange={this.handleInitialRendererChange}
+                    checked={this.state.hasInitialContent}
+                    onChange={this.handleInitialContentChange}
                 />,
             ],
             [
