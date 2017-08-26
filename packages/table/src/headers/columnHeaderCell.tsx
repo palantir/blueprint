@@ -123,11 +123,17 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             ...spreadableProps,
         } = this.props;
 
+        const classes = classNames(spreadableProps.className, Classes.TABLE_COLUMN_HEADER_CELL, {
+            [Classes.TABLE_HAS_INTERACTION_BAR]: useInteractionBar,
+            [Classes.TABLE_HAS_REORDER_HANDLE]: this.props.reorderHandle != null,
+        });
+
         return (
             <HeaderCell
                 isReorderable={this.props.isColumnReorderable}
                 isSelected={this.props.isColumnSelected}
                 {...spreadableProps}
+                className={classes}
             >
                 {this.renderName()}
                 {this.maybeRenderContent()}
@@ -146,7 +152,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
     }
 
     private renderName() {
-        const { index, loading, name, renderName, useInteractionBar } = this.props;
+        const { index, loading, name, renderName, reorderHandle, useInteractionBar } = this.props;
 
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
@@ -161,7 +167,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
                     <div className={Classes.TABLE_INTERACTION_BAR}>
-                        {this.props.reorderHandle}
+                        {reorderHandle}
                         {dropdownMenu}
                     </div>
                     <HorizontalCellDivider />
@@ -171,6 +177,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
         } else {
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
+                    {reorderHandle}
                     {dropdownMenu}
                     <div className={Classes.TABLE_COLUMN_NAME_TEXT}>{nameComponent}</div>
                 </div>
