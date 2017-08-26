@@ -248,17 +248,26 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
 
     private handlePopoverWillClose = () => {
         const { popoverProps = {} } = this.props;
+        const { selectedItem } = this.state;
 
         // reset the query when the popover close, make sure that the list
         // isn't filtered on when the popover opens next
-        this.setState({ query: "" });
+        this.setState({
+            activeItem: selectedItem ? selectedItem : this.props.items[0],
+            query: "",
+        });
 
         Utils.safeInvoke(popoverProps.popoverDidOpen);
     }
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         const { inputProps = {} } = this.props;
-        this.setState({ query: event.currentTarget.value, isTyping: true });
+
+        this.setState({
+            isTyping: true,
+            query: event.currentTarget.value,
+        });
+
         Utils.safeInvoke(inputProps.onChange, event);
     }
 
@@ -267,13 +276,16 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
     ) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
             const { which } = e;
+            const { isTyping, selectedItem } = this.state;
 
-            if (which === Keys.ARROW_UP || which === Keys.ARROW_DOWN) {
-                this.setState({ isOpen: true });
-            }
             if (which === Keys.ESCAPE || which === Keys.TAB) {
                 this.input.blur();
-                this.setState({ isOpen: false });
+                this.setState({
+                    isOpen: false,
+                    selectedItem: isTyping ? undefined : selectedItem,
+                });
+            } else if (!(which === Keys.BACKSPACE || which === Keys.ARROW_LEFT || which === Keys.ARROW_RIGHT)) {
+                this.setState({ isOpen: true });
             }
 
             if (this.state.isOpen) {
