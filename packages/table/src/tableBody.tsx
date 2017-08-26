@@ -15,13 +15,13 @@ import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
+import { RenderOptimizationMode } from "./common/renderOptimizationMode";
 import { Utils } from "./common/utils";
 import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
 import { Regions } from "./regions";
-import { RenderOptimizationMode } from "./common/renderOptimizationMode";
 
 export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnIndices, IProps {
     /**
