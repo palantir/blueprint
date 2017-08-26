@@ -180,7 +180,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
             selectedFocusStyle: FocusStyle.TAB,
-            showCallbackLogs: false,
+            showCallbackLogs: true,
             showCellsLoading: false,
             showColumnHeadersLoading: false,
             showColumnInteractionBar: false,
