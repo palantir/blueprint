@@ -17,7 +17,7 @@ import { IRegion, RegionCardinality, Regions } from "../../regions";
  * @param getRegionStyle - a callback returning the basic style for a region
  * @param numFrozenColumns - the number of frozen columns
  */
-export function styleBodyOverlay(
+export function getBodyOverlayStyle(
     region: IRegion,
     quadrantType: QuadrantType,
     gridWidth: number,

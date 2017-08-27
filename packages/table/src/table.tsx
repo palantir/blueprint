@@ -1256,7 +1256,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private styleBodyRegion = (region: IRegion, quadrantType: QuadrantType): React.CSSProperties => {
-        return OverlayStyleUtils.styleBodyOverlay(
+        return OverlayStyleUtils.getBodyOverlayStyle(
             region,
             quadrantType,
             this.grid.getWidth(),
