@@ -12,6 +12,7 @@ import "./cellTests.tsx";
 import "./clipboardTests.ts";
 import "./columnHeaderCellTests.tsx";
 import "./columnTests.tsx";
+import "./common/internal/overlayStyleUtilsTests.tsx";
 import "./editableCellTests.tsx";
 import "./editableNameTests.tsx";
 import "./formatsTests.tsx";
