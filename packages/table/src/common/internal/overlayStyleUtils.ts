@@ -52,7 +52,7 @@ export function getBodyOverlayStyle(
                 style.right = alignmentCorrectionString;
             }
             return style;
-        case RegionCardinality.FULL_TABLE:
+        default:
             style.left = alignmentCorrectionString;
             style.top = alignmentCorrectionString;
             style.width = gridWidth + alignmentCorrection;
@@ -61,7 +61,5 @@ export function getBodyOverlayStyle(
                 style.right = alignmentCorrectionString;
             }
             return style;
-        default:
-            return { display: "none" };
     }
 };
