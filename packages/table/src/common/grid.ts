@@ -304,7 +304,7 @@ export class Grid {
         return [];
     }
 
-    public getRegionStyle(region: IRegion): CSSProperties {
+    public getRegionStyle = (region: IRegion): CSSProperties => {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {
             case RegionCardinality.CELLS: {
