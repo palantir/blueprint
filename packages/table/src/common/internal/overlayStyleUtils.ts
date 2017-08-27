@@ -8,6 +8,15 @@
 import { QuadrantType } from "../../quadrants/tableQuadrant";
 import { IRegion, RegionCardinality, Regions } from "../../regions";
 
+/**
+ * Returns the CSS styles for an overlay region in the table-body area.
+ * @param region - the region defining the overlay bounds
+ * @param quadrantType - the quadrant in which the overlay will be shown
+ * @param gridWidth - the width of the body region (excluding headers)
+ * @param gridHeight - the height of the body region (excluding headers)
+ * @param getRegionStyle - a callback returning the basic style for a region
+ * @param numFrozenColumns - the number of frozen columns
+ */
 export function styleBodyOverlay(
     region: IRegion,
     quadrantType: QuadrantType,
