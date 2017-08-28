@@ -143,21 +143,17 @@ describe("<ColumnHeaderCell>", () => {
     });
 
     describe("Reorder handle", () => {
-        const REORDER_HANDLE_CLASS = "reorder-handle";
+        const REORDER_HANDLE_CLASS = Classes.TABLE_REORDER_HANDLE_TARGET;
 
         it("shows reorder handle in interaction bar if reordering and interaction bar are enabled", () => {
             const element = mount({ useInteractionBar: true, isColumnReorderable: true });
-            expect(doesReorderHandleExist(element)).to.be.true;
+            expect(element.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
 
-        it("hides reorder handle if reordering enabled but interaction bar disabled", () => {
+        it("shows reorder handle next to column name if reordering enabled but interaction bar disabled", () => {
             const element = mount({ useInteractionBar: false, isColumnReorderable: true });
-            expect(doesReorderHandleExist(element)).to.be.false;
+            expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
-
-        function doesReorderHandleExist(element: ElementHarness) {
-            return element.find(`.${REORDER_HANDLE_CLASS}`).exists();
-        }
 
         function mount(props: Partial<IColumnHeaderCellProps> & object) {
             const element = harness.mount(

@@ -44,6 +44,7 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
+import { RenderMode } from "../src/common/renderMode";
 import { IRegion } from "../src/regions";
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 
@@ -58,6 +59,7 @@ type IMutableStateUpdateCallback =
 interface IMutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
+    enableBatchRendering?: boolean;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableCellTruncation?: boolean;
@@ -177,11 +179,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         this.state = {
             cellContent: CellContent.CELL_NAMES,
             cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
+            enableBatchRendering: true,
             enableCellEditing: false,
             enableCellSelection: true,
             enableCellTruncation: false,
             enableColumnNameEditing: false,
-            enableColumnReordering: false,
+            enableColumnReordering: true,
             enableColumnResizing: false,
             enableColumnSelection: true,
             enableContextMenu: false,
@@ -217,6 +220,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // ===============
 
     public render() {
+        const renderMode = this.state.enableBatchRendering
+            ? RenderMode.BATCH
+            : RenderMode.NONE;
         return (
             <div className="container">
                 <Table
@@ -230,12 +236,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     isRowReorderable={this.state.enableRowReordering}
                     isRowResizable={this.state.enableRowResizing}
                     loadingOptions={this.getEnabledLoadingOptions()}
+                    numFrozenColumns={this.state.numFrozenCols}
+                    numFrozenRows={this.state.numFrozenRows}
                     numRows={this.state.numRows}
-                    ref={this.refHandlers.table}
-                    renderBodyContextMenu={this.renderBodyContextMenu}
-                    renderRowHeader={this.renderRowHeader}
-                    selectionModes={this.getEnabledSelectionModes()}
-                    styledRegionGroups={this.getStyledRegionGroups()}
                     onSelection={this.onSelection}
                     onColumnsReordered={this.onColumnsReordered}
                     onColumnWidthChanged={this.onColumnWidthChanged}
@@ -244,8 +247,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     onVisibleCellsChange={this.onVisibleCellsChange}
                     onRowHeightChanged={this.onRowHeightChanged}
                     onRowsReordered={this.onRowsReordered}
-                    numFrozenColumns={this.state.numFrozenCols}
-                    numFrozenRows={this.state.numFrozenRows}
+                    ref={this.refHandlers.table}
+                    renderBodyContextMenu={this.renderBodyContextMenu}
+                    renderMode={renderMode}
+                    renderRowHeader={this.renderRowHeader}
+                    selectionModes={this.getEnabledSelectionModes()}
+                    styledRegionGroups={this.getStyledRegionGroups()}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -449,6 +456,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Inline", "showInline")}
                 {this.renderSwitch("Focus cell", "showFocusCell")}
                 {this.renderSwitch("Ghost cells", "showGhostCells")}
+                {this.renderSwitch("Batch rendering", "enableBatchRendering")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Body context menu", "enableContextMenu")}
                 {this.renderSwitch("Callback logs", "showCallbackLogs")}
@@ -721,11 +729,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.maybeLogCallback(`[onColumnsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
         this.store.reorderColumns(oldIndex, newIndex, length);
+        this.forceUpdate();
     }
 
     private onRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.maybeLogCallback(`[onRowsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
         this.store.reorderRows(oldIndex, newIndex, length);
+        this.forceUpdate();
     }
 
     private onColumnWidthChanged = (index: number, size: number) => {

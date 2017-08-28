@@ -27,6 +27,7 @@ import {
     isMomentInRange,
     isMomentNull,
     isMomentValidAndInRange,
+    toLocalizedDateString,
 } from "./common/dateUtils";
 import { DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS, DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
 import { DatePicker } from "./datePicker";
@@ -252,21 +253,13 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         return moment(valueString, this.props.format, this.props.locale);
     }
 
-    private localizedFormat(value: moment.Moment) {
-        if (this.props.locale) {
-            return value.locale(this.props.locale).format(this.props.format);
-        } else {
-            return value.format(this.props.format);
-        }
-    }
-
     private getDateString = (value: moment.Moment) => {
         if (isMomentNull(value)) {
             return "";
         }
         if (value.isValid()) {
             if (this.isMomentInRange(value)) {
-                return this.localizedFormat(value);
+                return toLocalizedDateString(value, this.props.format, this.props.locale);
             } else {
                 return this.props.outOfRangeMessage;
             }
@@ -333,7 +326,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         if (isMomentNull(this.state.value)) {
             valueString = "";
         } else {
-            valueString = this.localizedFormat(this.state.value);
+            valueString = toLocalizedDateString(this.state.value, this.props.format, this.props.locale);
         }
 
         if (this.props.openOnFocus) {

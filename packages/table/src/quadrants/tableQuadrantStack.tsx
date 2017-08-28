@@ -223,7 +223,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const { grid, isRowHeaderShown, renderBody } = this.props;
 
         return (
-            <div>
+            <div className={Classes.TABLE_QUADRANT_STACK}>
                 <TableQuadrant
                     bodyRef={this.props.bodyRef}
                     grid={grid}

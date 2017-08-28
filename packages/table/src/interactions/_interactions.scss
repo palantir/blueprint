@@ -9,6 +9,10 @@ $resize-handle-padding: 2px !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 
+// we want to square off the margin around the handle
+// so we need a special value based on the handle icon shape
+$reorder-handle-width: 22px !default;
+
 @mixin grabbable() {
   cursor: grab;
 
@@ -48,24 +52,35 @@ $resize-handle-dragging-color: $pt-intent-primary !default;
   }
 }
 
+.bp-table-column-header-cell.bp-table-has-reorder-handle:not(.bp-table-has-interaction-bar) {
+  .bp-table-column-name-text {
+    padding-left: $reorder-handle-width;
+  }
+
+  // keep the editable cell input flush with the cell's left border
+  .bp-table-editable-name::before {
+    left: -$reorder-handle-width;
+  }
+}
+
 .bp-table-reorder-handle-target {
   @include grabbable();
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   top: 0;
+  bottom: 0;
   left: 0;
-  color: $gray3;
+  width: $reorder-handle-width;
+  color: $pt-text-color-disabled;
 
   &:hover {
-    color: $pt-text-color-muted;
+    color: $pt-icon-color-hover;
   }
 
   &:active {
-    color: $pt-text-color;
-  }
-
-  .bp-table-reorder-handle {
-    padding: 3px 6px 3px 1px;
-    line-height: 14px;
+    color: $pt-intent-primary;
   }
 }
 
