@@ -47,18 +47,22 @@ export function getBodyOverlayStyle(
             return style;
         case RegionCardinality.FULL_ROWS:
             style.left = alignmentCorrectionString;
-            style.width = gridWidth + alignmentCorrection;
             if (canHideRightBorder) {
                 style.right = alignmentCorrectionString;
+                delete style.width;
+            } else {
+                style.width = gridWidth + alignmentCorrection;
             }
             return style;
         default:
             style.left = alignmentCorrectionString;
             style.top = alignmentCorrectionString;
-            style.width = gridWidth + alignmentCorrection;
             style.height = gridHeight + alignmentCorrection;
             if (canHideRightBorder) {
                 style.right = alignmentCorrectionString;
+                delete style.width;
+            } else {
+                style.width = gridWidth + alignmentCorrection;
             }
             return style;
     }

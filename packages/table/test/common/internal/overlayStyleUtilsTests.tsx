@@ -6,241 +6,192 @@
  */
 
 import { expect } from "chai";
-import { Grid } from "../../../src/common/grid";
 import * as OverlayStyleUtils from "../../../src/common/internal/overlayStyleUtils";
 import { QuadrantType } from "../../../src/quadrants/tableQuadrant";
 import { IRegion, Regions } from "../../../src/regions";
 
-describe.only("OverlayStyleUtils", () => {
+describe("OverlayStyleUtils", () => {
 
     describe("getBodyOverlayStyle", () => {
-
         const NUM_ROWS = 10;
         const NUM_COLUMNS = 10;
 
         const ROW_HEIGHT = 10;
         const COLUMN_WIDTH = 100;
 
-        const ROW_HEIGHTS = Array(NUM_ROWS).fill(ROW_HEIGHT);
-        const COLUMN_WIDTHS = Array(NUM_COLUMNS).fill(COLUMN_WIDTH);
+        const LAST_ROW_INDEX = NUM_ROWS - 1;
+        const LAST_COLUMN_INDEX = NUM_COLUMNS - 1;
 
-        const GRID_INSTANCE = new Grid(ROW_HEIGHTS, COLUMN_WIDTHS);
+        const GRID_HEIGHT = NUM_ROWS * ROW_HEIGHT;
+        const GRID_WIDTH = NUM_COLUMNS * COLUMN_WIDTH;
+
+        const NUM_FROZEN_COLUMNS = 3;
+
+        function getRegionStyle() {
+            // use a bunch of weird values to make them easy to detect. also,
+            // careful not to return the same object instance; it's mutated in
+            // getBodyOverlayStyle, which can have lingering effects across
+            // tests.
+            return {
+                height: 2190,
+                left: 299,
+                top: 174,
+                width: 5820,
+            };
+        }
 
         // shorthand
         function fn(region: IRegion, quadrantType: QuadrantType, numFrozenColumns?: number) {
             return OverlayStyleUtils.getBodyOverlayStyle(
                 region,
                 quadrantType,
-                GRID_INSTANCE.getWidth(),
-                GRID_INSTANCE.getHeight(),
-                GRID_INSTANCE.getRegionStyle,
+                GRID_WIDTH,
+                GRID_HEIGHT,
+                getRegionStyle,
                 numFrozenColumns,
             );
         }
 
         describe("MAIN quadrant", () => {
-
-            function fn2(region: IRegion, numFrozenColumns?: number) {
-                return fn(region, QuadrantType.MAIN, numFrozenColumns);
-            }
-
-            describe("CELLS region", () => {
-                it("within quadrant", () => {
-                    const region = Regions.cell(1, 1, NUM_ROWS - 2, NUM_COLUMNS - 2);
-                    const actualStyle = fn2(region);
-                    const expectedStyle = GRID_INSTANCE.getRegionStyle(region);
-                    expect(actualStyle).to.deep.equal(expectedStyle);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_ROWS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_COLUMNS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_TABLE region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-        });
-
-        describe("LEFT quadrant", () => {
-            describe("CELLS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_ROWS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_COLUMNS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_TABLE region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
+            runMainOrTopTests(QuadrantType.MAIN);
         });
 
         describe("TOP quadrant", () => {
-            describe("CELLS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
+            runMainOrTopTests(QuadrantType.TOP);
+        });
 
-            describe("FULL_ROWS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_COLUMNS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_TABLE region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
+        describe("LEFT quadrant", () => {
+            runLeftOrTopLeftTests(QuadrantType.LEFT);
         });
 
         describe("TOP_LEFT quadrant", () => {
-            describe("CELLS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_ROWS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_COLUMNS region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
-
-            describe("FULL_TABLE region", () => {
-                it("within quadrant", () => {
-                    expect(true).to.equal(false);
-                });
-                it("at quadrant boundary", () => {
-                    expect(true).to.equal(false);
-                });
-                it("beyond boundary", () => {
-                    expect(true).to.equal(false);
-                });
-            });
+            runLeftOrTopLeftTests(QuadrantType.TOP_LEFT);
         });
+
+        function runMainOrTopTests(quadrantType: QuadrantType.MAIN | QuadrantType.TOP) {
+            describe("no frozen columns", () => {
+                runTests(0);
+            });
+
+            describe("with frozen columns", () => {
+                runTests(NUM_FROZEN_COLUMNS);
+            });
+
+            function runTests(numFrozenColumns: number) {
+                it("CELLS region", () => {
+                    const region = Regions.cell(0, 0, LAST_ROW_INDEX, LAST_COLUMN_INDEX);
+                    const actualStyle = fn(region, quadrantType, numFrozenColumns);
+                    const expectedStyle = getRegionStyle();
+                    expect(actualStyle).to.deep.equal(expectedStyle);
+                });
+
+                it("FULL_ROWS region", () => {
+                    const region = Regions.row(0, LAST_ROW_INDEX);
+                    const actualStyle = fn(region, quadrantType, numFrozenColumns);
+                    const expectedStyle = {
+                        ...getRegionStyle(),
+                        left: "-1px",
+                        // TODO: should this be a string followed by "px"?
+                        width: GRID_WIDTH + 1,
+                    };
+                    expect(actualStyle).to.deep.equal(expectedStyle);
+                });
+
+                it("FULL_COLUMNS region", () => {
+                    const region = Regions.column(0, LAST_COLUMN_INDEX);
+                    const actualStyle = fn(region, quadrantType, numFrozenColumns);
+                    const expectedStyle = {
+                        ...getRegionStyle(),
+                        // TODO: should this be a string followed by "px"?
+                        height: GRID_HEIGHT + 1,
+                        top: "-1px",
+                    };
+                    expect(actualStyle).to.deep.equal(expectedStyle);
+                });
+
+                it("FULL_TABLE region", () => {
+                    const region = Regions.table();
+                    const actualStyle = fn(region, quadrantType, numFrozenColumns);
+                    const expectedStyle = {
+                        height: GRID_HEIGHT + 1,
+                        left: "-1px",
+                        top: "-1px",
+                        width: GRID_WIDTH + 1,
+                    };
+                    expect(actualStyle).to.deep.equal(expectedStyle);
+                });
+            }
+        }
+
+        function runLeftOrTopLeftTests(quadrantType: QuadrantType.LEFT | QuadrantType.TOP_LEFT) {
+            describe("no frozen columns", () => {
+                it("FULL_ROWS region", () => {
+                    const region = Regions.row(0, LAST_ROW_INDEX);
+                    const actualStyle = fn(region, quadrantType, /* numFrozenColumns */ 0);
+                    const expectedStyle = {
+                        ...getRegionStyle(),
+                        left: "-1px",
+                        width: GRID_WIDTH + 1,
+                    };
+                    expect(actualStyle).to.deep.equal(expectedStyle);
+                });
+
+                it("FULL_TABLE region", () => {
+                    const region = Regions.table();
+                    const actualStyle = fn(region, quadrantType, /* numFrozenColumns */ 0);
+                    const expectedStyle = {
+                        height: GRID_HEIGHT + 1,
+                        left: "-1px",
+                        top: "-1px",
+                        width: GRID_WIDTH + 1,
+                    };
+                    expect(actualStyle).to.deep.equal(expectedStyle);
+                });
+            });
+
+            describe("with frozen columns", () => {
+                it("CELLS region", () => {
+                    const region = Regions.cell(0, 0, LAST_ROW_INDEX, LAST_COLUMN_INDEX);
+                    const actualStyle = fn(region, quadrantType, NUM_FROZEN_COLUMNS);
+                    const expectedStyle = getRegionStyle();
+                    expect(actualStyle).to.deep.equal(expectedStyle);
+                });
+
+                it("FULL_ROWS region", () => {
+                    const region = Regions.row(0, LAST_ROW_INDEX);
+                    const actualStyle = fn(region, quadrantType, NUM_FROZEN_COLUMNS);
+                    const { width, ...defaultStyle } = getRegionStyle();
+                    const expectedStyle = {
+                        ...defaultStyle,
+                        left: "-1px",
+                        right: "-1px",
+                    };
+                    expect(actualStyle).to.deep.equal(expectedStyle);
+                });
+
+                it("FULL_COLUMNS region", () => {
+                    const region = Regions.column(0, LAST_COLUMN_INDEX);
+                    const actualStyle = fn(region, quadrantType, NUM_FROZEN_COLUMNS);
+                    const expectedStyle = {
+                        ...getRegionStyle(),
+                        height: GRID_HEIGHT + 1,
+                        top: "-1px",
+                    };
+                    expect(actualStyle).to.deep.equal(expectedStyle);
+                });
+
+                it("FULL_TABLE region", () => {
+                    const region = Regions.table();
+                    const actualStyle = fn(region, quadrantType, NUM_FROZEN_COLUMNS);
+                    const expectedStyle = {
+                        height: GRID_HEIGHT + 1,
+                        left: "-1px",
+                        right: "-1px",
+                        top: "-1px",
+                    };
+                    expect(actualStyle).to.deep.equal(expectedStyle);
+                });
+            });
+        }
     });
 });
