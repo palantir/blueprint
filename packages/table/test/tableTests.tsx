@@ -198,12 +198,11 @@ describe("<Table>", () => {
             expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
         });
 
-        it("selects and deselects column/row headers when selecting and deselecting the full table", () => {
+        it("Selects and deselects column/row headers when selecting and deselecting the full table", () => {
             const table = mountTable();
             const columnHeader = table.find(COLUMN_HEADER_SELECTOR).at(0);
             const rowHeader = table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
 
-            // select the full table
             selectFullTable(table);
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
@@ -212,6 +211,43 @@ describe("<Table>", () => {
             table.setProps({ selectedRegions: [] });
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
+        });
+
+        it("Aligns properly with the table borders", () => {
+            const table = mountTable();
+            selectFullTable(table);
+
+            // we'll pass this to parseInt as the radix argument.
+            const BASE_10 = 10;
+
+            // the test framework doesn't necessarily return the expected values
+            // via getBoundingClientRect(), so let's just grab the inline
+            // width/height styles from the bottom container.
+            const bottomContainer = table
+                .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
+                .find(`.${Classes.TABLE_BOTTOM_CONTAINER}`)
+                .getDOMNode() as HTMLElement;
+            const { width: expectedWidth, height: expectedHeight } = bottomContainer.style;
+            const [expectedWidthAsNumber, expectedHeightAsNumber] =
+                [expectedWidth, expectedHeight].map((n) => parseInt(n, BASE_10));
+
+            // use chained .find()'s instead of one long selector just for the
+            // sake of reducing line length
+            const selectionOverlay = table
+                .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
+                .find(`.${Classes.TABLE_QUADRANT_BODY_CONTAINER}`)
+                .find(`.${Classes.TABLE_SELECTION_REGION}`)
+                .getDOMNode() as HTMLElement;
+            const { width: actualWidth, height: actualHeight } = selectionOverlay.style;
+            const [actualWidthAsNumber, actualHeightAsNumber] =
+                [actualWidth, actualHeight].map((n) => parseInt(n, BASE_10));
+
+            // the "actual" selection width should be 1px greater than the
+            // "expected' table width, because of a correction necessary for
+            // maintaining proper alignment on the bottom/right sides of the
+            // selection region (see: styleBodyRegion() in table.tsx).
+            expect(actualWidthAsNumber).to.equal(expectedWidthAsNumber + 1);
+            expect(actualHeightAsNumber).to.equal(expectedHeightAsNumber + 1);
         });
 
         function mountTable() {

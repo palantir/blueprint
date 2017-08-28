@@ -1313,27 +1313,31 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const fixedHeight = this.grid.getHeight();
         const fixedWidth = this.grid.getWidth();
 
+        // include a correction in some cases to hide borders along quadrant boundaries
+        const alignmentCorrection = 1;
+        const alignmentCorrectionString = `-${alignmentCorrection}px`;
+
         switch (cardinality) {
             case RegionCardinality.CELLS:
                 return style;
             case RegionCardinality.FULL_COLUMNS:
-                style.top = "-1px";
-                style.height = fixedHeight;
+                style.top = alignmentCorrectionString;
+                style.height = fixedHeight + alignmentCorrection;
                 return style;
             case RegionCardinality.FULL_ROWS:
-                style.left = "-1px";
-                style.width = fixedWidth;
+                style.left = alignmentCorrectionString;
+                style.width = fixedWidth + alignmentCorrection;
                 if (canHideRightBorder) {
-                    style.right = "-1px";
+                    style.right = alignmentCorrectionString;
                 }
                 return style;
             case RegionCardinality.FULL_TABLE:
-                style.left = "-1px";
-                style.top = "-1px";
-                style.width = fixedWidth;
-                style.height = fixedHeight;
+                style.left = alignmentCorrectionString;
+                style.top = alignmentCorrectionString;
+                style.width = fixedWidth + alignmentCorrection;
+                style.height = fixedHeight + alignmentCorrection;
                 if (canHideRightBorder) {
-                    style.right = "-1px";
+                    style.right = alignmentCorrectionString;
                 }
                 return style;
             default:
