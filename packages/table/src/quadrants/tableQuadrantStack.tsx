@@ -585,11 +585,11 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         leftQuadrantElement.style.bottom = `${scrollbarHeight}px`;
 
         // resize top and top-left quadrant row headers if main quadrant scrolls
-        this.syncRowHeaderSize(topQuadrantRowHeaderElement, rowHeaderWidth);
-        this.syncRowHeaderSize(topLeftQuadrantRowHeaderElement, rowHeaderWidth);
+        this.maybeSyncRowHeaderSize(topQuadrantRowHeaderElement, rowHeaderWidth);
+        this.maybeSyncRowHeaderSize(topLeftQuadrantRowHeaderElement, rowHeaderWidth);
     }
 
-    private syncRowHeaderSize(rowHeaderElement: HTMLElement, width: number) {
+    private maybeSyncRowHeaderSize(rowHeaderElement: HTMLElement, width: number) {
         if (rowHeaderElement == null) {
             return;
         }
@@ -643,7 +643,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private adjustVerticalGuides(verticalGuides: number[], quadrantType: QuadrantType) {
         const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollLeft;
-        const rowHeaderWidth = this.quadrantRefs[quadrantType].rowHeader.clientWidth;
+        const rowHeaderWidth = this.getRowHeaderWidth(quadrantType);
 
         const adjustedVerticalGuides = verticalGuides != null
             ? verticalGuides.map((verticalGuide) => verticalGuide - scrollAmount + rowHeaderWidth)
@@ -661,5 +661,12 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             : horizontalGuides;
 
         return adjustedHorizontalGuides;
+    }
+
+    private getRowHeaderWidth(quadrantType: QuadrantType) {
+        // unlike the column header, the row header can be toggled, so we need to handle the case
+        // when it's not showing
+        const { rowHeader } = this.quadrantRefs[quadrantType];
+        return rowHeader == null ? 0 : rowHeader.clientWidth;
     }
 }
