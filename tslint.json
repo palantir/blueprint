@@ -7,6 +7,7 @@
       ["describe", "only"],
       ["it", "only"]
     ],
+    "jsx-wrap-multiline": false,
     "linebreak-style": [true, "LF"],
     "no-invalid-this": [true, "check-function-in-method"],
     "variable-name": [

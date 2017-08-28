@@ -39,13 +39,15 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 useDarkTheme={this.state.themeName === DARK_THEME}
             />
         );
-        return <Documentation
-            {...this.props}
-            className={this.state.themeName}
-            navbarLeft={navbarLeft}
-            navbarRight={navbarRight}
-            onComponentUpdate={this.handleComponentUpdate}
-        />;
+        return (
+            <Documentation
+                {...this.props}
+                className={this.state.themeName}
+                navbarLeft={navbarLeft}
+                navbarRight={navbarRight}
+                onComponentUpdate={this.handleComponentUpdate}
+            />
+        );
     }
 
     // This function is called whenever the documentation page changes and should be used to

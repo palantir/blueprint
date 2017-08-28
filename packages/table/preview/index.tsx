@@ -12,8 +12,10 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {
+    Button,
     Classes,
     FocusStyleManager,
+    Intent,
     Menu,
     MenuDivider,
     MenuItem,
@@ -42,6 +44,7 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
+import { RenderMode } from "../src/common/renderMode";
 import { IRegion } from "../src/regions";
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 
@@ -56,6 +59,7 @@ type IMutableStateUpdateCallback =
 interface IMutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
+    enableBatchRendering?: boolean;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableCellTruncation?: boolean;
@@ -70,7 +74,12 @@ interface IMutableTableState {
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
     numCols?: number;
+    numFrozenCols?: number;
+    numFrozenRows?: number;
     numRows?: number;
+    scrollToColumnIndex?: number;
+    scrollToRegionType?: RegionCardinality;
+    scrollToRowIndex?: number;
     selectedFocusStyle?: FocusStyle;
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
@@ -105,6 +114,16 @@ const ROW_COUNTS = [
     100000,
 ];
 
+const FROZEN_COLUMN_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
+const FROZEN_ROW_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
+
+const REGION_CARDINALITIES = [
+    RegionCardinality.CELLS,
+    RegionCardinality.FULL_ROWS,
+    RegionCardinality.FULL_COLUMNS,
+    RegionCardinality.FULL_TABLE,
+];
+
 enum CellContent {
     EMPTY,
     CELL_NAMES,
@@ -123,15 +142,18 @@ const TRUNCATED_POPOVER_MODES = [
     TruncatedPopoverMode.WHEN_TRUNCATED,
 ] as TruncatedPopoverMode[];
 
-const COLUMN_COUNT_DEFAULT_INDEX = 2;
+const COLUMN_COUNT_DEFAULT_INDEX = 3;
 const ROW_COUNT_DEFAULT_INDEX = 3;
+
+const FROZEN_COLUMN_COUNT_DEFAULT_INDEX = 2;
+const FROZEN_ROW_COUNT_DEFAULT_INDEX = 2;
 
 const LONG_TEXT_MIN_LENGTH = 5;
 const LONG_TEXT_MAX_LENGTH = 40;
 const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const CELL_CONTENT_GENERATORS = {
-    [CellContent.CELL_NAMES]: (row: number, col: number) => Utils.toBase26Alpha(col) + (row + 1),
+    [CellContent.CELL_NAMES]: Utils.toBase26CellName,
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
         const randomLength = getRandomInteger(LONG_TEXT_MIN_LENGTH, LONG_TEXT_MAX_LENGTH);
@@ -145,35 +167,47 @@ const CELL_CONTENT_GENERATORS = {
 class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<string>();
 
+    private tableInstance: Table;
+
+    private refHandlers = {
+        table: (ref: Table) => this.tableInstance = ref,
+    };
+
     public constructor(props: any, context?: any) {
         super(props, context);
 
         this.state = {
             cellContent: CellContent.CELL_NAMES,
             cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
-            enableCellEditing: true,
+            enableBatchRendering: true,
+            enableCellEditing: false,
             enableCellSelection: true,
             enableCellTruncation: false,
             enableColumnNameEditing: false,
             enableColumnReordering: true,
-            enableColumnResizing: true,
+            enableColumnResizing: false,
             enableColumnSelection: true,
-            enableContextMenu: true,
+            enableContextMenu: false,
             enableFullTableSelection: true,
             enableMultiSelection: true,
-            enableRowReordering: true,
-            enableRowResizing: true,
+            enableRowReordering: false,
+            enableRowResizing: false,
             enableRowSelection: true,
             numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
+            numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
+            numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
             numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
+            scrollToColumnIndex: 0,
+            scrollToRegionType: RegionCardinality.CELLS,
+            scrollToRowIndex: 0,
             selectedFocusStyle: FocusStyle.TAB,
             showCallbackLogs: false,
             showCellsLoading: false,
             showColumnHeadersLoading: false,
-            showColumnInteractionBar: true,
-            showColumnMenus: true,
+            showColumnInteractionBar: false,
+            showColumnMenus: false,
             showCustomRegions: false,
-            showFocusCell: true,
+            showFocusCell: false,
             showGhostCells: true,
             showInline: false,
             showRowHeaders: true,
@@ -186,6 +220,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // ===============
 
     public render() {
+        const renderMode = this.state.enableBatchRendering
+            ? RenderMode.BATCH
+            : RenderMode.NONE;
         return (
             <div className="container">
                 <Table
@@ -195,15 +232,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     fillBodyWithGhostCells={this.state.showGhostCells}
                     isColumnResizable={this.state.enableColumnResizing}
                     isColumnReorderable={this.state.enableColumnReordering}
+                    isRowHeaderShown={this.state.showRowHeaders}
                     isRowReorderable={this.state.enableRowReordering}
                     isRowResizable={this.state.enableRowResizing}
                     loadingOptions={this.getEnabledLoadingOptions()}
+                    numFrozenColumns={this.state.numFrozenCols}
+                    numFrozenRows={this.state.numFrozenRows}
                     numRows={this.state.numRows}
-                    renderBodyContextMenu={this.renderBodyContextMenu}
-                    renderRowHeader={this.renderRowHeader}
-                    selectionModes={this.getEnabledSelectionModes()}
-                    isRowHeaderShown={this.state.showRowHeaders}
-                    styledRegionGroups={this.getStyledRegionGroups()}
                     onSelection={this.onSelection}
                     onColumnsReordered={this.onColumnsReordered}
                     onColumnWidthChanged={this.onColumnWidthChanged}
@@ -212,6 +247,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     onVisibleCellsChange={this.onVisibleCellsChange}
                     onRowHeightChanged={this.onRowHeightChanged}
                     onRowsReordered={this.onRowsReordered}
+                    ref={this.refHandlers.table}
+                    renderBodyContextMenu={this.renderBodyContextMenu}
+                    renderMode={renderMode}
+                    renderRowHeader={this.renderRowHeader}
+                    selectionModes={this.getEnabledSelectionModes()}
+                    styledRegionGroups={this.getStyledRegionGroups()}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -415,15 +456,19 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Inline", "showInline")}
                 {this.renderSwitch("Focus cell", "showFocusCell")}
                 {this.renderSwitch("Ghost cells", "showGhostCells")}
+                {this.renderSwitch("Batch rendering", "enableBatchRendering")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Body context menu", "enableContextMenu")}
                 {this.renderSwitch("Callback logs", "showCallbackLogs")}
                 {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
                 {this.renderSwitch("Multi-selection", "enableMultiSelection")}
+                <h6>Scroll to</h6>
+                {this.renderScrollToSection()}
 
                 <h4>Columns</h4>
                 <h6>Display</h6>
-                {this.renderNumberSelectMenu("Number of columns", "numCols", COLUMN_COUNTS)}
+                {this.renderNumberSelectMenu("Num. columns", "numCols", COLUMN_COUNTS)}
+                {this.renderNumberSelectMenu("Num. frozen columns", "numFrozenCols", FROZEN_COLUMN_COUNTS)}
                 {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
                 {this.renderSwitch("Interaction bar", "showColumnInteractionBar")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
@@ -435,7 +480,8 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <h4>Rows</h4>
                 <h6>Display</h6>
-                {this.renderNumberSelectMenu("Number of rows", "numRows", ROW_COUNTS)}
+                {this.renderNumberSelectMenu("Num. rows", "numRows", ROW_COUNTS)}
+                {this.renderNumberSelectMenu("Num. frozen rows", "numFrozenRows", FROZEN_ROW_COUNTS)}
                 {this.renderSwitch("Headers", "showRowHeaders")}
                 {this.renderSwitch("Loading state", "showRowHeadersLoading")}
                 {this.renderSwitch("Zebra striping", "showZebraStriping")}
@@ -463,6 +509,66 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderFocusStyleSelectMenu()}
             </div>
         );
+    }
+
+    private renderScrollToSection() {
+        const { scrollToRegionType } = this.state;
+
+        const scrollToRegionTypeSelectMenu = this.renderSelectMenu(
+            "Region type",
+            "scrollToRegionType",
+            REGION_CARDINALITIES,
+            this.getRegionCardinalityLabel,
+            this.handleRegionCardinalityChange,
+        );
+        const scrollToRowSelectMenu = this.renderSelectMenu(
+            "Row",
+            "scrollToRowIndex",
+            Utils.times(this.state.numRows, (rowIndex) => rowIndex),
+            (rowIndex) => `${rowIndex + 1}`,
+            this.handleNumberStateChange,
+        );
+        const scrollToColumnSelectMenu = this.renderSelectMenu(
+            "Column",
+            "scrollToColumnIndex",
+            Utils.times(this.state.numCols, (columnIndex) => columnIndex),
+            (columnIndex) => this.store.getColumnName(columnIndex),
+            this.handleNumberStateChange,
+        );
+
+        const ROW_MENU_CARDINALITIES = [RegionCardinality.CELLS, RegionCardinality.FULL_ROWS];
+        const COLUMN_MENU_CARDINALITIES = [RegionCardinality.CELLS, RegionCardinality.FULL_COLUMNS];
+
+        const shouldShowRowSelectMenu = contains(ROW_MENU_CARDINALITIES, scrollToRegionType);
+        const shouldShowColumnSelectMenu = contains(COLUMN_MENU_CARDINALITIES, scrollToRegionType);
+
+        return (
+            <div>
+                {scrollToRegionTypeSelectMenu}
+                <div className="sidebar-indented-group">
+                    {shouldShowRowSelectMenu ? scrollToRowSelectMenu : undefined}
+                    {shouldShowColumnSelectMenu ? scrollToColumnSelectMenu : undefined}
+                </div>
+                <Button intent={Intent.PRIMARY} className={Classes.FILL} onClick={this.handleScrollToButtonClick}>
+                    Scroll
+                </Button>
+            </div>
+        );
+    }
+
+    private getRegionCardinalityLabel(cardinality: RegionCardinality) {
+        switch (cardinality) {
+            case RegionCardinality.CELLS:
+                return "Cell";
+            case RegionCardinality.FULL_ROWS:
+                return "Row";
+            case RegionCardinality.FULL_COLUMNS:
+                return "Column";
+            case RegionCardinality.FULL_TABLE:
+                return "Full table";
+            default:
+                return "";
+        }
     }
 
     private renderSwitch(
@@ -623,11 +729,13 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.maybeLogCallback(`[onColumnsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
         this.store.reorderColumns(oldIndex, newIndex, length);
+        this.forceUpdate();
     }
 
     private onRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.maybeLogCallback(`[onRowsReordered] oldIndex = ${oldIndex} newIndex = ${newIndex} length = ${length}`);
         this.store.reorderRows(oldIndex, newIndex, length);
+        this.forceUpdate();
     }
 
     private onColumnWidthChanged = (index: number, size: number) => {
@@ -669,6 +777,30 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         this.store.setColumnName(columnIndex, value);
     }
 
+    private handleScrollToButtonClick = () => {
+        const { scrollToRowIndex, scrollToColumnIndex, scrollToRegionType } = this.state;
+
+        let region: IRegion;
+        switch (scrollToRegionType) {
+            case RegionCardinality.CELLS:
+                region = Regions.cell(scrollToRowIndex, scrollToColumnIndex);
+                break;
+            case RegionCardinality.FULL_ROWS:
+                region = Regions.row(scrollToRowIndex);
+                break;
+            case RegionCardinality.FULL_COLUMNS:
+                region = Regions.column(scrollToColumnIndex);
+                break;
+            case RegionCardinality.FULL_TABLE:
+                region = Regions.table();
+                break;
+            default:
+                return;
+        }
+
+        this.tableInstance.scrollToRegion(region);
+    }
+
     // State updates
     // =============
 
@@ -707,6 +839,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private handleNumberStateChange = (stateKey: keyof IMutableTableState) => {
+        return handleNumberChange((value) => this.setState({ [stateKey]: value }));
+    }
+
+    private handleRegionCardinalityChange = (stateKey: keyof IMutableTableState) => {
         return handleNumberChange((value) => this.setState({ [stateKey]: value }));
     }
 
@@ -806,4 +942,8 @@ function handleNumberChange(handler: (value: number) => void) {
 function getRandomInteger(min: number, max: number) {
     // min and max are inclusive
     return Math.floor(min + (Math.random() * (max - min + 1)));
+}
+
+function contains(arr: any[], value: any) {
+    return arr.indexOf(value) >= 0;
 }

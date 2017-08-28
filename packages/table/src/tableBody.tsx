@@ -15,6 +15,7 @@ import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
+import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
 import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
@@ -46,6 +47,16 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
     locator: ILocator;
 
     /**
+     * The number of columns to freeze to the left side of the table, counting from the leftmost column.
+     */
+    numFrozenColumns?: number;
+
+    /**
+     * The number of rows to freeze to the top of the table, counting from the topmost row.
+     */
+    numFrozenRows?: number;
+
+    /**
      * The `Rect` bounds of the visible viewport with respect to its parent
      * scrollable pane.
      */
@@ -57,6 +68,15 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
      * containing the `IRegion`s of interest.
      */
     renderBodyContextMenu?: IContextMenuRenderer;
+
+    /**
+     * Dictates how cells should be rendered. Supported modes are:
+     * - `RenderMode.BATCH`: renders cells in batches to improve
+     *   performance
+     * - `RenderMode.NONE`: renders cells synchronously all at once
+     * @default RenderMode.BATCH
+     */
+    renderMode?: RenderMode;
 }
 
 /**
@@ -90,6 +110,7 @@ const RESET_CELL_KEYS_BLACKLIST: Array<keyof ITableBodyProps> = [
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
         loading: false,
+        renderMode: RenderMode.BATCH,
     };
 
     /**
@@ -130,31 +151,26 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     public render() {
         const {
             allowMultipleSelection,
-            columnIndexEnd,
-            columnIndexStart,
             grid,
+            numFrozenColumns,
+            numFrozenRows,
             onFocus,
             onSelection,
-            rowIndexEnd,
-            rowIndexStart,
+            renderMode,
             selectedRegions,
             selectedRegionTransform,
         } = this.props;
 
-        // render cells in batches
-        this.batcher.startNewBatch();
-        for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
-            for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-                this.batcher.addArgsToBatch(rowIndex, columnIndex);
-            }
-        }
-        this.batcher.removeOldAddNew(this.renderNewCell);
-        if (!this.batcher.isDone()) {
-            this.batcher.idleCallback(() => this.forceUpdate());
-        }
+        const cells = (renderMode === RenderMode.BATCH)
+            ? this.renderBatchedCells()
+            : this.renderAllCells();
 
-        const cells: Array<React.ReactElement<any>> = this.batcher.getList();
-        const style = grid.getRect().sizeStyle();
+        const defaultStyle = grid.getRect().sizeStyle();
+
+        const style = {
+            height: (numFrozenRows != null) ? grid.getCumulativeHeightAt(numFrozenRows - 1) : defaultStyle.height,
+            width: (numFrozenColumns != null) ? grid.getCumulativeWidthAt(numFrozenColumns - 1) : defaultStyle.width,
+        };
 
         return (
             <DragSelectable
@@ -189,6 +205,58 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return renderBodyContextMenu(new MenuContext(target, selectedRegions, grid.numRows, grid.numCols));
     }
 
+    // Render modes
+    // ============
+
+    private renderBatchedCells() {
+        const {
+            columnIndexEnd,
+            columnIndexStart,
+            rowIndexEnd,
+            rowIndexStart,
+        } = this.props;
+
+        // render cells in batches
+        this.batcher.startNewBatch();
+        for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
+            for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
+                this.batcher.addArgsToBatch(rowIndex, columnIndex);
+            }
+        }
+        this.batcher.removeOldAddNew(this.renderNewCell);
+        if (!this.batcher.isDone()) {
+            this.batcher.idleCallback(() => this.forceUpdate());
+        }
+
+        const cells: Array<React.ReactElement<any>> = this.batcher.getList();
+        return cells;
+    }
+
+    private renderAllCells() {
+        const {
+            columnIndexEnd,
+            columnIndexStart,
+            grid,
+            rowIndexEnd,
+            rowIndexStart,
+        } = this.props;
+
+        const cells: Array<React.ReactElement<any>> = [];
+
+        for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
+            for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
+                const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
+                const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
+                cells.push(this.renderCell(rowIndex, columnIndex, extremaClasses, isGhost));
+            }
+        }
+
+        return cells;
+    }
+
+    // Cell renderers
+    // ==============
+
     private renderNewCell = (row: number, col: number) => {
         const {
             columnIndexEnd,
@@ -220,6 +288,9 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         const style = { ...baseCell.props.style, ...Rect.style(rect) };
         return React.cloneElement(baseCell, { className, key, loading: cellLoading, style } as ICellProps);
     }
+
+    // Callbacks
+    // =========
 
     private handleSelectionEnd = () => {
         this.activationCell = null; // not strictly required, but good practice

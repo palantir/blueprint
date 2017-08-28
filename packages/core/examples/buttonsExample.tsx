@@ -51,36 +51,38 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
             [Classes.MINIMAL]: this.state.minimal,
         });
 
-        return <div className="docs-react-example-row">
-            <div className="docs-react-example-column">
-                <code>Button</code><br/><br/>
-                <Button
-                    className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
-                    disabled={this.state.disabled}
-                    active={this.state.active}
-                    iconName="refresh"
-                    intent={this.state.intent}
-                    loading={this.state.loading}
-                    onClick={this.beginWiggling}
-                    text="Click to wiggle"
-                />
+        return (
+            <div className="docs-react-example-row">
+                <div className="docs-react-example-column">
+                    <code>Button</code><br/><br/>
+                    <Button
+                        className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
+                        disabled={this.state.disabled}
+                        active={this.state.active}
+                        iconName="refresh"
+                        intent={this.state.intent}
+                        loading={this.state.loading}
+                        onClick={this.beginWiggling}
+                        text="Click to wiggle"
+                    />
+                </div>
+                <div className="docs-react-example-column">
+                    <code>AnchorButton</code><br/><br/>
+                    <AnchorButton
+                        className={classes}
+                        disabled={this.state.disabled}
+                        active={this.state.active}
+                        href="./"
+                        iconName="duplicate"
+                        intent={this.state.intent}
+                        loading={this.state.loading}
+                        rightIconName="share"
+                        target="_blank"
+                        text="Duplicate this page"
+                    />
+                </div>
             </div>
-            <div className="docs-react-example-column">
-                <code>AnchorButton</code><br/><br/>
-                <AnchorButton
-                    className={classes}
-                    disabled={this.state.disabled}
-                    active={this.state.active}
-                    href="./"
-                    iconName="duplicate"
-                    intent={this.state.intent}
-                    loading={this.state.loading}
-                    rightIconName="share"
-                    target="_blank"
-                    text="Duplicate this page"
-                />
-            </div>
-        </div>;
+        );
     }
 
     protected renderOptions() {

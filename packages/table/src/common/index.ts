@@ -10,4 +10,7 @@ export { Grid } from "./grid";
 export { Rect, AnyRect } from "./rect";
 export { RoundSize } from "./roundSize";
 export { Utils } from "./utils";
-// NOTE: Errors is not exported in public API
+
+// NOTE: The following are not exported in the public API:
+// - Errors
+// - internal/

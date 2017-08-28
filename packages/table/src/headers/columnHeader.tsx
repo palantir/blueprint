@@ -102,29 +102,32 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         );
     }
 
-    private wrapCells = (cells: Array<React.ReactElement<any>>) => {
-        const { grid, viewportRect, columnIndexStart } = this.props;
+private wrapCells = (cells: Array<React.ReactElement<any>>) => {
+    const { columnIndexStart, grid } = this.props;
 
-        // always set width so that the layout can push out the element unless it overflows.
-        const style: React.CSSProperties = {
-            width: `${grid.getRect().width}px`,
-        };
+    const tableWidth = grid.getRect().width;
+    const scrollLeftCorrection = this.props.grid.getCumulativeWidthBefore(columnIndexStart);
+    const style: React.CSSProperties = {
+        // only header cells in view will render, but we need to reposition them to stay in view
+        // as we scroll horizontally.
+        transform: `translateX(${scrollLeftCorrection || 0}px)`,
+        // reduce the width to clamp the sliding window as we approach the final headers; otherwise,
+        // we'll have tons of useless whitespace at the end.
+        width: tableWidth - scrollLeftCorrection,
+    };
 
-        // use CSS translation to offset the cells
-        if (viewportRect != null) {
-            style.transform = `translate3d(${grid.getColumnRect(columnIndexStart).left - viewportRect.left}px, 0, 0)`;
-        }
+    const classes = classNames(Classes.TABLE_THEAD, Classes.TABLE_COLUMN_HEADER_TR);
 
-        const classes = classNames(Classes.TABLE_THEAD, Classes.TABLE_COLUMN_HEADER_TR, {
-            [Classes.TABLE_DRAGGABLE] : (this.props.onSelection != null),
-        });
-
-        return (
+    // add a wrapper set to the full-table width to ensure container styles stretch from the first
+    // cell all the way to the last
+    return (
+        <div style={{ width: tableWidth }}>
             <div style={style} className={classes}>
                 {cells}
             </div>
-        );
-    }
+        </div>
+    );
+}
 
     private convertPointToColumn = (clientXOrY: number, useMidpoint?: boolean) => {
         const { locator } = this.props;

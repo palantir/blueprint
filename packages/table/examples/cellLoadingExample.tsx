@@ -121,7 +121,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             <ColumnHeaderCell
                 loading={this.isLoading(0, columnIndex + 1)}
                 name={formattedColumnName}
-                useInteractionBar
+                useInteractionBar={true}
             />
         );
     }

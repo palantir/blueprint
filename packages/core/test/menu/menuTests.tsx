@@ -46,7 +46,7 @@ describe("MenuItem", () => {
 
     it("disabled MenuItem will not show its submenu", () => {
         const wrapper = shallow(
-            <MenuItem disabled iconName="style" text="Style">
+            <MenuItem disabled={true} iconName="style" text="Style">
                 <MenuItem iconName="bold" text="Bold" />
                 <MenuItem iconName="italic" text="Italic" />
                 <MenuItem iconName="underline" text="Underline" />
@@ -74,7 +74,7 @@ describe("MenuItem", () => {
 
     it("Clicking disabled MenuItem does not trigger onClick prop", () => {
         const onClick = sinon.spy();
-        shallow(<MenuItem disabled text="Graph" onClick={onClick} />).find("a").simulate("click");
+        shallow(<MenuItem disabled={true} text="Graph" onClick={onClick} />).find("a").simulate("click");
         assert.isTrue(onClick.notCalled);
     });
 

@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, MenuItem } from "@blueprintjs/core";
+import { Classes, MenuItem, Tag } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount } from "enzyme";
@@ -42,6 +42,14 @@ describe("<MultiSelect>", () => {
 
         const input = multiselect({ tagInputProps: { inputProps: { placeholder } } }).find("input");
         assert.equal((input.getDOMNode() as HTMLInputElement).placeholder, placeholder);
+    });
+
+    it("tagRenderer can return JSX", () => {
+        const wrapper = multiselect({
+            selectedItems: [TOP_100_FILMS[0]],
+            tagRenderer: (film) => <strong>{film.title}</strong>,
+        });
+        assert.equal(wrapper.find(Tag).find("strong").length, 1);
     });
 
     it("clicking item invokes onSelectItem with placeholder", () => {

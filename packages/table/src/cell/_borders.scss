@@ -13,10 +13,6 @@ for all borders with minimal duplication. See the bottom of this file.
     box-shadow: 0 0 0 $border-width $border-color;
   }
 
-  .bp-table-top-container {
-    box-shadow: 0 $border-width 0 0 $border-color;
-  }
-
   .bp-table-menu {
     box-shadow: $border-width 0 0 $border-color;
   }
@@ -51,14 +47,6 @@ for all borders with minimal duplication. See the bottom of this file.
       right: $border-width;
       bottom: 0;
     }
-
-    &.bp-table-last-in-row {
-      box-shadow: $border-width 0 0 $border-color;
-
-      &::before {
-        right: 0;
-      }
-    }
   }
 
   .bp-table-row-headers .bp-table-header {
@@ -69,15 +57,6 @@ for all borders with minimal duplication. See the bottom of this file.
       // hover shadow
       right: 0;
       bottom: $border-width;
-    }
-
-    &.bp-table-last-in-column {
-      box-shadow: $border-width 0 0 0 $border-color,
-                  0 $border-width 0 0 $border-color;
-
-      &::before {
-        bottom: 0;
-      }
     }
   }
 

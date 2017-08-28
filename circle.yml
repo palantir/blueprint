@@ -16,27 +16,41 @@ general:
     - packages/table/preview
     # GH Pages content
     - docs
+
 machine:
+  pre:
+    - mkdir ~/yarn
+  environment:
+    YARN_VERSION: 0.28.4
+    PATH: $PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin
   node:
-    version: 6.1.0
+    version: 7.10.0
+
 dependencies:
   cache_directories:
-    - packages/core/node_modules
-    - packages/datetime/node_modules
-    - packages/docs/node_modules
-    - packages/labs/node_modules
-    - packages/site-docs/node_modules
-    - packages/site-landing/node_modules
-    - packages/table/node_modules
+    - ~/yarn
+    - ~/.cache/yarn
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/core/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/datetime/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/docs/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/labs/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/site-docs/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/site-landing/node_modules
+    - ~/$CIRCLE_PROJECT_REPONAME/packages/table/node_modules
   # non-zero exit codes in `dependencies` group will fail the build early
   # so these following commands will block the build and prevent tests
-  post:
-    - lerna bootstrap
-    - npm run build:gulp
+  override:
+    - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
+    - yarn install --pure-lockfile
+    - echo "Checking if yarn.lock changed..." && git diff --exit-code
+    - yarn bootstrap
+    - yarn build:gulp
+
 test:
   override:
     - gulp check
     - gulp test
+
 deployment:
   preview:
     branch: /.*/

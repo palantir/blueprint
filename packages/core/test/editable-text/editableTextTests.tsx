@@ -182,7 +182,7 @@ describe("<EditableText>", () => {
         });
 
         it("applies defaultValue only on initial render", () => {
-            const wrapper = mount(<EditableText isEditing defaultValue="default" placeholder="placeholder" />);
+            const wrapper = mount(<EditableText isEditing={true} defaultValue="default" placeholder="placeholder" />);
             assert.strictEqual(wrapper.state("value"), "default");
             // type new value, then change a prop to cause re-render
             wrapper.find("input").simulate("change", { target: { value: "hello" } });
@@ -202,12 +202,12 @@ describe("<EditableText>", () => {
 
     describe("multiline", () => {
         it("renders a <textarea> when editing", () => {
-            assert.lengthOf(shallow(<EditableText isEditing multiline />).find("textarea"), 1);
+            assert.lengthOf(shallow(<EditableText isEditing={true} multiline={true} />).find("textarea"), 1);
         });
 
         it("does not call onConfirm when enter key is pressed", () => {
             const confirmSpy = sinon.spy();
-            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} multiline />)
+            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />)
                 .find("textarea")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("keydown", { which: Keys.ENTER });
@@ -216,7 +216,7 @@ describe("<EditableText>", () => {
 
         it("calls onConfirm when cmd+, ctrl+, shift+, or alt+ enter is pressed", () => {
             const confirmSpy = sinon.spy();
-            const wrapper = mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline />);
+            const wrapper = mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />);
             simulateHelper(wrapper, "control", { ctrlKey: true, which: Keys.ENTER });
             wrapper.setState({ isEditing: true });
             simulateHelper(wrapper, "meta", { metaKey: true, which: Keys.ENTER });
@@ -243,7 +243,7 @@ describe("<EditableText>", () => {
         it("confirmOnEnterKey={true} calls onConfirm when enter is pressed", () => {
             const confirmSpy = sinon.spy();
             const wrapper = mount(
-                <EditableText isEditing={true} onConfirm={confirmSpy} multiline confirmOnEnterKey />,
+                <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
             simulateHelper(wrapper, "control", { which: Keys.ENTER });
             assert.isFalse(wrapper.state("isEditing"));
@@ -254,7 +254,7 @@ describe("<EditableText>", () => {
         it("confirmOnEnterKey={true} adds newline when cmd+, ctrl+, shift+, or alt+ enter is pressed", () => {
             const confirmSpy = sinon.spy();
             const wrapper = mount(
-                <EditableText isEditing={true} onConfirm={confirmSpy} multiline confirmOnEnterKey />,
+                <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
             const textarea = ReactDOM.findDOMNode(wrapper.instance()).query("textarea") as HTMLTextAreaElement;
             // pass "" as second argument since Phantom does not update cursor properly after a simulated value change
