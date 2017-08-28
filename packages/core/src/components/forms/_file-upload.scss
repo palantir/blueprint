@@ -24,6 +24,8 @@ Styleguide pt-file-upload
 
 $file-upload-button-width: $pt-grid-size * 7;
 $file-upload-button-width-large: $pt-grid-size * 8.5;
+$file-upload-button-padding: ($pt-input-height - $pt-button-height-small) / 2;
+$file-upload-button-padding-large: ($pt-input-height-large - $pt-button-height) / 2;
 
 .pt-file-upload {
   display: inline-block;
@@ -65,33 +67,24 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
 
 .pt-file-upload-input {
   @include pt-input();
+  @include overflow-ellipsis();
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
-  margin-right: $file-upload-button-width;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  height: $pt-input-height;
-  line-height: $pt-input-height;
-  color: $pt-text-color-muted;
+  padding-right: $file-upload-button-width + $input-padding-horizontal;
   user-select: none;
 
   &::after {
     @include pt-button();
+    @include pt-button-height($pt-button-height-small);
     position: absolute;
     top: 0;
     right: 0;
-    left: 100%;
-    margin-left: -$button-border-width;
+    margin: $file-upload-button-padding;
     border-radius: $pt-border-radius;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
     width: $file-upload-button-width;
-    height: $pt-input-height;
-    padding: $button-padding;
     text-align: center;
-    line-height: $pt-button-height;
     content: "Browse";
   }
 
@@ -104,17 +97,13 @@ $file-upload-button-width-large: $pt-grid-size * 8.5;
   }
 
   .pt-large & {
-    margin-right: $file-upload-button-width-large;
-    height: $pt-input-height-large;
-    line-height: $pt-input-height-large;
-    font-size: $pt-font-size-large;
+    @include pt-input-large();
+    padding-right: $file-upload-button-width-large + $input-padding-horizontal;
 
     &::after {
+      @include pt-button-height($pt-button-height);
+      margin: $file-upload-button-padding-large;
       width: $file-upload-button-width-large;
-      height: $pt-input-height-large;
-      padding: $button-padding-large;
-      line-height: $pt-button-height-large;
-      font-size: $pt-font-size-large;
     }
   }
 
