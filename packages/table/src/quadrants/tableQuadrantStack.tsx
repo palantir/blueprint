@@ -192,6 +192,17 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.throttledHandleWheel = CoreUtils.throttleReactEventCallback(this.handleWheel, { preventDefault: true });
     }
 
+    /**
+     * Scroll the main quadrant to the specified scroll offset, keeping all other quadrants in sync.
+     */
+    public scrollToPosition(scrollLeft: number, scrollTop: number) {
+        const { scrollContainer } = this.quadrantRefs[QuadrantType.MAIN];
+        this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+        // this will trigger the main quadrant's scroll callback below
+        scrollContainer.scrollLeft = scrollLeft;
+        scrollContainer.scrollTop = scrollTop;
+    }
+
     public componentDidMount() {
         this.emitRefs();
         this.syncQuadrantSizes();

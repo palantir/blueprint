@@ -17,6 +17,7 @@ import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
 import * as Errors from "./common/errors";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
+import * as ScrollUtils from "./common/internal/scrollUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
@@ -392,10 +393,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private refHandlers = {
         columnHeader: (ref: HTMLElement) => this.columnHeaderElement = ref,
         mainQuadrant: (ref: HTMLElement) => this.mainQuadrantElement = ref,
+        quadrantStack: (ref: TableQuadrantStack) => this.quadrantStackInstance = ref,
         rowHeader: (ref: HTMLElement) => this.rowHeaderElement = ref,
         scrollContainer: (ref: HTMLElement) => this.scrollContainerElement = ref,
     };
 
+    private quadrantStackInstance: TableQuadrantStack;
     private columnHeaderElement: HTMLElement;
     private mainQuadrantElement: HTMLElement;
     private rowHeaderElement: HTMLElement;
@@ -444,6 +447,74 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             selectedRegions,
         };
     }
+
+    // Instance methods
+    // ================
+
+    /**
+     * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
+     * If no indices are provided, default to using the tallest visible cell from all columns in view.
+     */
+    public resizeRowsByTallestCell(columnIndices?: number | number[]) {
+        let tallest = 0;
+        if (columnIndices == null) {
+            // Consider all columns currently in viewport
+            const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
+            for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
+                tallest = Math.max(tallest, this.locator.getTallestVisibleCellInColumn(col));
+            }
+        } else {
+            const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
+            const tallestByColumns = columnIndicesArray.map((col) => this.locator.getTallestVisibleCellInColumn(col));
+            tallest = Math.max(...tallestByColumns);
+        }
+        const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
+        this.invalidateGrid();
+        this.setState({ rowHeights });
+    }
+
+    /**
+     * Scrolls the table to the target region in a fashion appropriate to the target region's
+     * cardinality:
+     *
+     * - CELLS: Scroll the top-left cell in the target region to the top-left corner of the viewport.
+     * - FULL_ROWS: Scroll the top-most row in the target region to the top of the viewport.
+     * - FULL_COLUMNS: Scroll the left-most column in the target region to the left side of the viewport.
+     * - FULL_TABLE: Scroll the top-left cell in the table to the top-left corner of the viewport.
+     *
+     * If there are active frozen rows and/or columns, the target region will be positioned in the
+     * top-left corner of the non-frozen area (unless the target region itself is in the frozen
+     * area).
+     *
+     * If the target region is close to the bottom-right corner of the table, this function will
+     * simply scroll the target region as close to the top-left as possible until the bottom-right
+     * corner is reached.
+     */
+    public scrollToRegion(region: IRegion) {
+        const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
+
+        const numFrozenRows = this.getNumFrozenRowsClamped();
+        const numFrozenColumns = this.getNumFrozenColumnsClamped();
+
+        const { scrollLeft, scrollTop } = ScrollUtils.getScrollPositionForRegion(
+            region,
+            currScrollLeft,
+            currScrollTop,
+            this.grid.getCumulativeWidthBefore,
+            this.grid.getCumulativeHeightBefore,
+            numFrozenRows,
+            numFrozenColumns,
+        );
+
+        const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : scrollLeft;
+        const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : scrollTop;
+
+        // defer to the quadrant stack to keep all quadrant positions in sync
+        this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
+    }
+
+    // React lifecycle
+    // ===============
 
     public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
         const propKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
@@ -550,6 +621,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     numFrozenRows={this.getNumFrozenRowsClamped()}
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
+                    ref={this.refHandlers.quadrantStack}
                     renderBody={this.renderBody}
                     renderColumnHeader={this.renderColumnHeader}
                     renderMenu={this.renderMenu}
@@ -575,28 +647,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 {hotkeys.filter((element) => element !== undefined)}
             </Hotkeys>
         );
-    }
-
-    /**
-     * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
-     * If no indices are provided, default to using the tallest visible cell from all columns in view.
-     */
-    public resizeRowsByTallestCell(columnIndices?: number | number[]) {
-        let tallest = 0;
-        if (columnIndices == null) {
-            // Consider all columns currently in viewport
-            const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
-            for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
-                tallest = Math.max(tallest, this.locator.getTallestVisibleCellInColumn(col));
-            }
-        } else {
-            const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
-            const tallestByColumns = columnIndicesArray.map((col) => this.locator.getTallestVisibleCellInColumn(col));
-            tallest = Math.max(...tallestByColumns);
-        }
-        const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
-        this.invalidateGrid();
-        this.setState({ rowHeights });
     }
 
     /**
@@ -1041,49 +1091,32 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows : rowIndices.rowIndexEnd;
 
         return (
-            // <div
-            //     className={classes}
-            //     onScroll={this.handleBodyScroll}
-            //     ref={this.setBodyRef}
-            // >
-            //     <div className={Classes.TABLE_BODY_SCROLL_CLIENT} style={style}>
+            <div>
+                <TableBody
+                    allowMultipleSelection={allowMultipleSelection}
+                    cellRenderer={this.bodyCellRenderer}
+                    grid={grid}
+                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
+                    locator={locator}
+                    onFocus={this.handleFocus}
+                    onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
+                    renderBodyContextMenu={renderBodyContextMenu}
+                    renderMode={renderMode}
+                    selectedRegions={selectedRegions}
+                    selectedRegionTransform={selectedRegionTransform}
+                    viewportRect={viewportRect}
 
-                // {...rowIndices}
-                // {...columnIndices}
-                <div>
-                    <TableBody
-                        allowMultipleSelection={allowMultipleSelection}
-                        cellRenderer={this.bodyCellRenderer}
-                        grid={grid}
-                        loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
-                        locator={locator}
-                        onFocus={this.handleFocus}
-                        onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
-                        renderBodyContextMenu={renderBodyContextMenu}
-                        renderMode={renderMode}
-                        selectedRegions={selectedRegions}
-                        selectedRegionTransform={selectedRegionTransform}
-                        viewportRect={viewportRect}
+                    columnIndexStart={columnIndexStart}
+                    columnIndexEnd={columnIndexEnd}
 
-                        columnIndexStart={columnIndexStart}
-                        columnIndexEnd={columnIndexEnd}
+                    rowIndexStart={rowIndexStart}
+                    rowIndexEnd={rowIndexEnd}
 
-                        rowIndexStart={rowIndexStart}
-                        rowIndexEnd={rowIndexEnd}
-
-                        numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumns : undefined}
-                        numFrozenRows={showFrozenRowsOnly ? numFrozenRows : undefined}
-                    />
-                    {this.maybeRenderRegions(this.styleBodyRegion, quadrantType)}
-                </div>
-                    // <div ref={this.setBodyRef} style={{ position: "relative" }}>
-                    // <GuideLayer
-                    //     className={Classes.TABLE_RESIZE_GUIDES}
-                    //     verticalGuides={verticalGuides}
-                    //     horizontalGuides={horizontalGuides}
-                    // />
-            //     </div>
-            // </div>
+                    numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumns : undefined}
+                    numFrozenRows={showFrozenRowsOnly ? numFrozenRows : undefined}
+                />
+                {this.maybeRenderRegions(this.styleBodyRegion, quadrantType)}
+            </div>
         );
     }
 
@@ -1647,12 +1680,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const didScrollLeftChange = nextScrollLeft !== viewportRect.left;
 
         if (didScrollTopChange || didScrollLeftChange) {
-            // we need to modify the body element explicitly for the viewport to shift
+            // we need to modify the scroll container explicitly for the viewport to shift. in so
+            // doing, we add the size of the header elements, which are not technically part of the
+            // "grid" concept (the grid only consists of body cells at present).
             if (didScrollTopChange) {
-                this.bodyElement.scrollTop = nextScrollTop;
+                const topCorrection = this.shouldDisableVerticalScroll() ? 0 : this.columnHeaderElement.clientHeight;
+                this.scrollContainerElement.scrollTop = nextScrollTop + topCorrection;
             }
             if (didScrollLeftChange) {
-                this.bodyElement.scrollLeft = nextScrollLeft;
+                const leftCorrection = this.shouldDisableHorizontalScroll() ? 0 : this.rowHeaderElement.clientWidth;
+                this.scrollContainerElement.scrollLeft = nextScrollLeft + leftCorrection;
             }
 
             const nextViewportRect = new Rect(
