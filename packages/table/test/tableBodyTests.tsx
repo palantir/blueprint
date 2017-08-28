@@ -46,7 +46,7 @@ describe("TableBody", () => {
                 columnIndexEnd: 10,
                 onCompleteRender: onCompleteRenderSpy,
                 renderMode: RenderMode.NONE,
-                rowIndexEnd: 500,
+                rowIndexEnd: 50,
             });
 
             expect(onCompleteRenderSpy.calledOnce).to.be.true;
