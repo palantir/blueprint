@@ -198,12 +198,11 @@ describe("<Table>", () => {
             expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
         });
 
-        it("selects and deselects column/row headers when selecting and deselecting the full table", () => {
+        it("Selects and deselects column/row headers when selecting and deselecting the full table", () => {
             const table = mountTable();
             const columnHeader = table.find(COLUMN_HEADER_SELECTOR).at(0);
             const rowHeader = table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
 
-            // select the full table
             selectFullTable(table);
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
@@ -212,6 +211,43 @@ describe("<Table>", () => {
             table.setProps({ selectedRegions: [] });
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
+        });
+
+        it("Aligns properly with the table borders", () => {
+            const table = mountTable();
+            selectFullTable(table);
+
+            // we'll pass this to parseInt as the radix argument.
+            const BASE_10 = 10;
+
+            // the test framework doesn't necessarily return the expected values
+            // via getBoundingClientRect(), so let's just grab the inline
+            // width/height styles from the bottom container.
+            const bottomContainer = table
+                .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
+                .find(`.${Classes.TABLE_BOTTOM_CONTAINER}`)
+                .getDOMNode() as HTMLElement;
+            const { width: expectedWidth, height: expectedHeight } = bottomContainer.style;
+            const [expectedWidthAsNumber, expectedHeightAsNumber] =
+                [expectedWidth, expectedHeight].map((n) => parseInt(n, BASE_10));
+
+            // use chained .find()'s instead of one long selector just for the
+            // sake of reducing line length
+            const selectionOverlay = table
+                .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
+                .find(`.${Classes.TABLE_QUADRANT_BODY_CONTAINER}`)
+                .find(`.${Classes.TABLE_SELECTION_REGION}`)
+                .getDOMNode() as HTMLElement;
+            const { width: actualWidth, height: actualHeight } = selectionOverlay.style;
+            const [actualWidthAsNumber, actualHeightAsNumber] =
+                [actualWidth, actualHeight].map((n) => parseInt(n, BASE_10));
+
+            // the "actual" selection width should be 1px greater than the
+            // "expected' table width, because of a correction necessary for
+            // maintaining proper alignment on the bottom/right sides of the
+            // selection region (see: styleBodyRegion() in table.tsx).
+            expect(actualWidthAsNumber).to.equal(expectedWidthAsNumber + 1);
+            expect(actualHeightAsNumber).to.equal(expectedHeightAsNumber + 1);
         });
 
         function mountTable() {
@@ -253,6 +289,117 @@ describe("<Table>", () => {
         );
         table.setProps({ selectionModes: [] });
         expect(table.state("selectedRegions").length).to.equal(1);
+    });
+
+    describe("scrollToRegion", () => {
+        const CONTAINER_WIDTH = 200;
+        const CONTAINER_HEIGHT = 200;
+
+        const ROW_HEIGHT = 300;
+        const COLUMN_WIDTH = 400;
+
+        const NUM_ROWS = 3;
+        const NUM_COLUMNS = 3;
+
+        const TARGET_ROW = 1;
+        const TARGET_COLUMN = 2;
+
+        let tableInstance: Table;
+
+        it("should calculate coordinates for scrolling to cell", () => {
+            mountTable();
+            checkInstanceMethod(
+                Regions.cell(TARGET_ROW, TARGET_COLUMN),
+                TARGET_COLUMN * COLUMN_WIDTH,
+                TARGET_ROW * ROW_HEIGHT,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to frozen cell", () => {
+            mountTable({ numFrozenRows: TARGET_ROW + 1, numFrozenColumns: TARGET_COLUMN + 1 });
+            checkInstanceMethod(
+                Regions.cell(TARGET_ROW, TARGET_COLUMN),
+                0,
+                0,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to row", () => {
+            mountTable();
+            checkInstanceMethod(
+                Regions.row(TARGET_ROW),
+                0,
+                TARGET_ROW * ROW_HEIGHT,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to frozen row", () => {
+            mountTable({ numFrozenRows: TARGET_ROW + 1 });
+            checkInstanceMethod(
+                Regions.row(TARGET_ROW),
+                0,
+                0,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to column", () => {
+            mountTable();
+            checkInstanceMethod(
+                Regions.column(TARGET_COLUMN),
+                TARGET_COLUMN * COLUMN_WIDTH,
+                0,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to frozen column", () => {
+            mountTable({ numFrozenColumns: TARGET_COLUMN + 1 });
+            checkInstanceMethod(
+                Regions.column(TARGET_COLUMN),
+                0,
+                0,
+            );
+        });
+
+        it("should calculate coordinates for scrolling to full table", () => {
+            mountTable();
+            checkInstanceMethod(
+                Regions.table(),
+                0,
+                0,
+            );
+        });
+
+        function checkInstanceMethod(region: IRegion, expectedScrollLeft: number, expectedScrollTop: number) {
+            // cast as `any` to access private members
+            const spy = sinon.spy((tableInstance as any).quadrantStackInstance, "scrollToPosition");
+            tableInstance.scrollToRegion(region);
+            // just check that the scroll event would be triggered with the proper args; don't
+            // bother checking the result of the whole action
+            expect(spy.firstCall.args).to.deep.equal([expectedScrollLeft, expectedScrollTop]);
+            spy.restore();
+        }
+
+        function saveTable(ref: Table) {
+            tableInstance = ref;
+        }
+
+        function mountTable(tableProps: Partial<ITableProps> & object = {}) {
+            mount(
+                <div style={{ width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT }}>
+                    <Table
+                        columnWidths={Array(NUM_COLUMNS).fill(COLUMN_WIDTH)}
+                        numRows={NUM_ROWS}
+                        rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT)}
+                        ref={saveTable}
+                        {...tableProps}
+                    >
+                        <Column renderCell={renderCell} />
+                        <Column renderCell={renderCell} />
+                        <Column renderCell={renderCell} />
+                    </Table>
+                </div>,
+            );
+        }
     });
 
     describe("Quadrants", () => {
@@ -628,7 +775,7 @@ describe("<Table>", () => {
         it("Resizes selected rows together", () => {
             const table = mountTable();
             const rows = getRowHeadersWrapper(table);
-            const resizeHandleTarget = getRowResizeHandle(rows, 0);
+            const resizeHandleTarget = getResizeHandle(rows, 0);
 
             resizeHandleTarget.mouse("mousemove")
                 .mouse("mousedown")
@@ -646,9 +793,22 @@ describe("<Table>", () => {
             expect(rows.find(`.${Classes.TABLE_HEADER}`, 8).bounds().height).to.equal(3);
         });
 
+        it("Resizes columns when row headers are hidden without throwing an error", () => {
+            const table = mountTable({ isRowHeaderShown: false });
+            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
+            const resizeHandleTarget = getResizeHandle(columnHeader, 0);
+
+            expect(() => {
+                resizeHandleTarget.mouse("mousemove")
+                    .mouse("mousedown")
+                    .mouse("mousemove", 0, 2)
+                    .mouse("mouseup");
+            }).not.to.throw();
+        });
+
         it("Hides selected-region styles while resizing", () => {
             const table = mountTable();
-            const resizeHandleTarget = getRowResizeHandle(getRowHeadersWrapper(table), 0);
+            const resizeHandleTarget = getResizeHandle(getRowHeadersWrapper(table), 0);
 
             resizeHandleTarget.mouse("mousemove")
                 .mouse("mousedown")
@@ -659,7 +819,7 @@ describe("<Table>", () => {
             expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
         });
 
-        function mountTable() {
+        function mountTable(tableProps: Partial<ITableProps> & object = {}) {
             return harness.mount(
                 // set the row height so small so they can all fit in the viewport and be rendered
                 <Table
@@ -668,6 +828,7 @@ describe("<Table>", () => {
                     minRowHeight={1}
                     numRows={10}
                     selectedRegions={[Regions.row(0, 1), Regions.row(4, 6), Regions.row(8)]}
+                    {...tableProps}
                 >
                     <Column renderCell={renderCell}/>
                     <Column renderCell={renderCell}/>
@@ -680,8 +841,8 @@ describe("<Table>", () => {
             return table.find(`.${Classes.TABLE_ROW_HEADERS}`);
         }
 
-        function getRowResizeHandle(rows: ElementHarness, rowIndex: number) {
-            return rows.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`, rowIndex);
+        function getResizeHandle(header: ElementHarness, index: number) {
+            return header.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`, index);
         }
     });
 
