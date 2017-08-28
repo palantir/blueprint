@@ -14,7 +14,7 @@ import { Batcher } from "../src/common/batcher";
 import * as Classes from "../src/common/classes";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
-import { RenderOptimizationMode } from "../src/common/renderOptimizationMode";
+import { RenderMode } from "../src/common/renderMode";
 import { TableBody } from "../src/tableBody";
 
 describe("TableBody", () => {
@@ -30,7 +30,7 @@ describe("TableBody", () => {
         ]);
     });
 
-    describe("renderOptimizationMode", () => {
+    describe("renderMode", () => {
         // use enough rows that batching won't render all of them in one pass.
         // and careful: if this value is too big (~100), the batcher's reliance
         // on `requestIdleCallback` may cause the tests to run multiple times.
@@ -40,21 +40,21 @@ describe("TableBody", () => {
         const COLUMN_WIDTH = 100;
         const ROW_HEIGHT = 20;
 
-        it("renders all cells immediately if renderOptimizationMode === RenderOptimizationMode.NONE", () => {
-            const tableBody = mountTableBody(RenderOptimizationMode.NONE);
+        it("renders all cells immediately if renderMode === RenderMode.NONE", () => {
+            const tableBody = mountTableBody(RenderMode.NONE);
 
             // expect all cells to have rendered in one pass
             expect(tableBody.find(Cell).length).to.equal(LARGE_NUM_ROWS);
         });
 
-        it("uses batch rendering if renderOptimizationMode === RenderOptimizationMode.BATCH", () => {
-            const tableBody = mountTableBody(RenderOptimizationMode.BATCH);
+        it("uses batch rendering if renderMode === RenderMode.BATCH", () => {
+            const tableBody = mountTableBody(RenderMode.BATCH);
 
             // run this assertion immediately, expecting that the batching hasn't finished yet.
             expect(tableBody.find(Cell).length).to.equal(Batcher.DEFAULT_ADD_LIMIT);
         });
 
-        function mountTableBody(renderOptimizationMode: RenderOptimizationMode) {
+        function mountTableBody(renderMode: RenderMode) {
             const rowHeights = Array(LARGE_NUM_ROWS).fill(ROW_HEIGHT);
             const columnWidths = Array(NUM_COLUMNS).fill(COLUMN_WIDTH);
 
@@ -67,7 +67,7 @@ describe("TableBody", () => {
                     grid={grid}
                     loading={false}
                     locator={null}
-                    renderOptimizationMode={renderOptimizationMode}
+                    renderMode={renderMode}
                     viewportRect={viewportRect}
 
                     // ISelectableProps

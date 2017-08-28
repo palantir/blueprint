@@ -42,7 +42,7 @@ ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
-import { RenderOptimizationMode } from "../src/common/renderOptimizationMode";
+import { RenderMode } from "../src/common/renderMode";
 import { IRegion } from "../src/regions";
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 
@@ -199,9 +199,9 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     // ===============
 
     public render() {
-        const renderOptimizationMode = this.state.enableBatchRendering
-            ? RenderOptimizationMode.BATCH
-            : RenderOptimizationMode.NONE;
+        const renderMode = this.state.enableBatchRendering
+            ? RenderMode.BATCH
+            : RenderMode.NONE;
         return (
             <div className="container">
                 <Table
@@ -227,7 +227,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     onRowHeightChanged={this.onRowHeightChanged}
                     onRowsReordered={this.onRowsReordered}
                     renderBodyContextMenu={this.renderBodyContextMenu}
-                    renderOptimizationMode={renderOptimizationMode}
+                    renderMode={renderMode}
                     renderRowHeader={this.renderRowHeader}
                     selectionModes={this.getEnabledSelectionModes()}
                     styledRegionGroups={this.getStyledRegionGroups()}

@@ -15,7 +15,7 @@ import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
-import { RenderOptimizationMode } from "./common/renderOptimizationMode";
+import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
 import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
@@ -71,12 +71,12 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
 
     /**
      * Dictates how cells should be rendered. Supported modes are:
-     * - `RenderOptimizationMode.BATCH`: renders cells in batches to improve
+     * - `RenderMode.BATCH`: renders cells in batches to improve
      *   performance
-     * - `RenderOptimizationMode.NONE`: renders cells synchronously all at once
-     * @default RenderOptimizationMode.BATCH
+     * - `RenderMode.NONE`: renders cells synchronously all at once
+     * @default RenderMode.BATCH
      */
-    renderOptimizationMode?: RenderOptimizationMode;
+    renderMode?: RenderMode;
 }
 
 /**
@@ -110,7 +110,7 @@ const RESET_CELL_KEYS_BLACKLIST: Array<keyof ITableBodyProps> = [
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
         loading: false,
-        renderOptimizationMode: RenderOptimizationMode.BATCH,
+        renderMode: RenderMode.BATCH,
     };
 
     /**
@@ -156,12 +156,12 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             numFrozenRows,
             onFocus,
             onSelection,
-            renderOptimizationMode,
+            renderMode,
             selectedRegions,
             selectedRegionTransform,
         } = this.props;
 
-        const cells = (renderOptimizationMode === RenderOptimizationMode.BATCH)
+        const cells = (renderMode === RenderMode.BATCH)
             ? this.renderBatchedCells()
             : this.renderAllCells();
 
