@@ -322,15 +322,15 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private maybeInvokeOnCompleteRender() {
-        const { onCompleteRender, renderOptimizationMode } = this.props;
+        const { onCompleteRender, renderMode } = this.props;
 
-        if (renderOptimizationMode === RenderOptimizationMode.BATCH
+        if (renderMode === RenderMode.BATCH
             && this.isRenderingBatchedCells
             && this.batcher.isDone()
         ) {
             this.isRenderingBatchedCells = false;
             CoreUtils.safeInvoke(onCompleteRender);
-        } else if (renderOptimizationMode === RenderOptimizationMode.NONE) {
+        } else if (renderMode === RenderMode.NONE) {
             CoreUtils.safeInvoke(onCompleteRender);
         }
     }
