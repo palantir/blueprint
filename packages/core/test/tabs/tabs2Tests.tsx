@@ -10,6 +10,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import * as Classes from "../../src/common/classes";
 import * as Keys from "../../src/common/keys";
 import { Tab2 } from "../../src/components/tabs2/tab2";
 import { ITabs2Props, ITabs2State, Tabs2 } from "../../src/components/tabs2/tabs2";
@@ -75,6 +76,16 @@ describe("<Tabs2>", () => {
             // hidden unless it is active
             assert.equal(tabs.at(i).prop("aria-hidden"), i !== activeIndex);
         }
+    });
+
+    it("renders without `pt-large` when by default", () => {
+        const wrapper = mount(<Tabs2 id={ID}>{getTabsContents()}</Tabs2>);
+        assert.lengthOf(wrapper.find(`.${Classes.TAB_LIST}.${Classes.LARGE}`), 0);
+    });
+
+    it("renders using `pt-large` when large={true}", () => {
+        const wrapper = mount(<Tabs2 id={ID} large={true}>{getTabsContents()}</Tabs2>);
+        assert.lengthOf(wrapper.find(`.${Classes.TAB_LIST}.${Classes.LARGE}`), 1);
     });
 
     it("renderActiveTabPanelOnly only renders active tab panel", () => {
