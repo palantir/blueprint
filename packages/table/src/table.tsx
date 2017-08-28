@@ -18,6 +18,7 @@ import { Clipboard } from "./common/clipboard";
 import * as Errors from "./common/errors";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
+import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
@@ -208,6 +209,14 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     renderBodyContextMenu?: IContextMenuRenderer;
 
     /**
+     * Dictates how cells should be rendered. Supported modes are:
+     * - `RenderMode.BATCH`: renders cells in batches to improve performance
+     * - `RenderMode.NONE`: renders cells synchronously all at once
+     * @default RenderMode.BATCH
+     */
+    renderMode?: RenderMode;
+
+    /**
      * Render each row's header cell.
      */
     renderRowHeader?: IRowHeaderRenderer;
@@ -344,6 +353,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         minColumnWidth: 50,
         minRowHeight: 20,
         numRows: 0,
+        renderMode: RenderMode.BATCH,
         renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
@@ -1012,6 +1022,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             fillBodyWithGhostCells,
             loadingOptions,
             renderBodyContextMenu,
+            renderMode,
             selectedRegionTransform,
         } = this.props;
 
@@ -1049,6 +1060,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         onFocus={this.handleFocus}
                         onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                         renderBodyContextMenu={renderBodyContextMenu}
+                        renderMode={renderMode}
                         selectedRegions={selectedRegions}
                         selectedRegionTransform={selectedRegionTransform}
                         viewportRect={viewportRect}
