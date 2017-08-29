@@ -319,12 +319,12 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
     }
 
     private getTargetKeyUpHandler = (
-        handleQueryListKeyDown: React.EventHandler<React.KeyboardEvent<HTMLElement>>,
+        handleQueryListKeyUp: React.EventHandler<React.KeyboardEvent<HTMLElement>>,
     ) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
             const { inputProps = this.DEFAULT_PROPS.inputProps } = this.props;
             if (this.state.isOpen) {
-                Utils.safeInvoke(handleQueryListKeyDown, e);
+                Utils.safeInvoke(handleQueryListKeyUp, e);
             }
             Utils.safeInvoke(inputProps.onKeyUp, e);
         };
