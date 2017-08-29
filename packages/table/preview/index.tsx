@@ -201,7 +201,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             scrollToRegionType: RegionCardinality.CELLS,
             scrollToRowIndex: 0,
             selectedFocusStyle: FocusStyle.TAB,
-            showCallbackLogs: false,
+            showCallbackLogs: true,
             showCellsLoading: false,
             showColumnHeadersLoading: false,
             showColumnInteractionBar: false,
@@ -223,6 +223,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         const renderMode = this.state.enableBatchRendering
             ? RenderMode.BATCH
             : RenderMode.NONE;
+
         return (
             <div className="container">
                 <Table
@@ -240,6 +241,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     numFrozenRows={this.state.numFrozenRows}
                     numRows={this.state.numRows}
                     onSelection={this.onSelection}
+                    onCompleteRender={this.onCompleteRender}
                     onColumnsReordered={this.onColumnsReordered}
                     onColumnWidthChanged={this.onColumnWidthChanged}
                     onCopy={this.onCopy}
@@ -721,6 +723,10 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
 
     // Callbacks
     // =========
+
+    private onCompleteRender = () => {
+        this.maybeLogCallback("[onCompleteRender]");
+    }
 
     private onSelection = (selectedRegions: IRegion[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);

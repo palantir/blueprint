@@ -163,6 +163,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onColumnWidthChanged?: IIndexedResizeCallback;
 
     /**
+     * An optional callback invoked when all cells in view have completely rendered.
+     * Will be invoked on initial mount and whenever cells update (e.g., on scroll).
+     */
+    onCompleteRender?: () => void;
+
+    /**
      * If you want to do something after the copy or if you want to notify the
      * user if a copy fails, you may provide this optional callback.
      *
@@ -359,14 +365,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
-    // these blacklists are identical, but we still need two definitions due to the different typings
-
     private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
     ] as Array<keyof ITableProps>;
 
     private static SHALLOW_COMPARE_STATE_KEYS_BLACKLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
+        "viewportRect",
     ] as Array<keyof ITableState>;
 
     private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
@@ -522,8 +527,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         return !Utils.shallowCompareKeys(this.props, nextProps, propKeysBlacklist)
             || !Utils.shallowCompareKeys(this.state, nextState, stateKeysBlacklist)
-            || !Utils.deepCompareKeys(this.props, nextProps, ["selectedRegions"])
-            || !Utils.deepCompareKeys(this.state, nextState, ["selectedRegions"]);
+            || !Utils.deepCompareKeys(this.props, nextProps, Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST)
+            || !Utils.deepCompareKeys(this.state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST);
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
@@ -1090,6 +1095,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows : rowIndices.rowIndexEnd;
 
+        // the main quadrant contains all cells in the table, so listen only to that quadrant
+        const onCompleteRender = quadrantType === QuadrantType.MAIN
+            ? this.handleCompleteRender
+            : undefined;
+
         return (
             <div>
                 <TableBody
@@ -1098,6 +1108,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     grid={grid}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                     locator={locator}
+                    onCompleteRender={onCompleteRender}
                     onFocus={this.handleFocus}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                     renderBodyContextMenu={renderBodyContextMenu}
@@ -1205,6 +1216,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             );
         } else {
             return undefined;
+        }
+    }
+
+    private handleCompleteRender = () => {
+        // the first onCompleteRender is triggered before the viewportRect is
+        // defined and the second after the viewportRect has been set. the cells
+        // will only actually render once the viewportRect is defined though, so
+        // we defer invoking onCompleteRender until that check passes.
+        if (this.state.viewportRect != null) {
+            BlueprintUtils.safeInvoke(this.props.onCompleteRender);
         }
     }
 
@@ -1776,7 +1797,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private updateViewportRect = (nextViewportRect: Rect) => {
         this.setState({ viewportRect: nextViewportRect });
-        this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
+
+        const { viewportRect } = this.state;
+
+        const didViewportChange =
+            (viewportRect != null && !viewportRect.equals(nextViewportRect))
+            || (viewportRect == null && nextViewportRect != null);
+
+        if (didViewportChange) {
+            this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
+        }
     }
 
     private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {

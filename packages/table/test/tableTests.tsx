@@ -18,6 +18,7 @@ import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
+import { RenderMode } from "../src/common/renderMode";
 import { QuadrantType, TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { IRegion, Regions } from "../src/regions";
 import { CellType, expectCellLoading } from "./cellTestUtils";
@@ -289,6 +290,25 @@ describe("<Table>", () => {
         );
         table.setProps({ selectionModes: [] });
         expect(table.state("selectedRegions").length).to.equal(1);
+    });
+
+    describe("onCompleteRender", () => {
+        it("triggers onCompleteRender only once: when cells finish rendering in the MAIN quadrant", () => {
+            const onCompleteRenderSpy = sinon.spy();
+
+            // use RenderMode.NONE because it causes all cells to render synchronously
+            mount(
+                <Table
+                    numRows={100}
+                    onCompleteRender={onCompleteRenderSpy}
+                    renderMode={RenderMode.NONE}
+                >
+                    <Column renderCell={renderCell} />
+                </Table>,
+            );
+
+            expect(onCompleteRenderSpy.callCount).to.equal(1);
+        });
     });
 
     describe("scrollToRegion", () => {
@@ -1572,5 +1592,4 @@ describe("<Table>", () => {
     function delayToNextFrame(callback: () => void) {
         setTimeout(callback);
     }
-
 });
