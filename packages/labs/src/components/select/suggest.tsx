@@ -87,6 +87,18 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
         query: "",
     };
 
+    // not using defaultProps, because they're hard to type with generics (can't
+    // use <T> on static members). but we still want to keep default values in
+    // one, necessarily non-`static` place. note that Partial is necessary to
+    // avoid having to define all required props, and all of these values must
+    // be referenced manually in code.
+    private DEFAULT_PROPS: Partial<ISuggestProps<T>> = {
+        closeOnSelect: true,
+        inputProps: {},
+        openOnKeyDown: false,
+        popoverProps: {},
+    };
+
     private input: HTMLInputElement;
     private TypedQueryList = QueryList.ofType<T>();
     private queryList: QueryList<T>;
@@ -123,8 +135,11 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { inputValueRenderer, inputProps = {}, popoverProps = {} } = this.props;
+        const {
+            inputValueRenderer,
+            inputProps = this.DEFAULT_PROPS.inputProps,
+            popoverProps = this.DEFAULT_PROPS.popoverProps,
+         } = this.props;
         const { isTyping, selectedItem, query } = this.state;
         const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
@@ -188,7 +203,10 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
     }
 
     private handleInputFocus = (event: React.SyntheticEvent<HTMLInputElement>) => {
-        const { openOnKeyDown, inputProps = {} } = this.props;
+        const {
+            openOnKeyDown = this.DEFAULT_PROPS.openOnKeyDown,
+            inputProps = this.DEFAULT_PROPS.inputProps,
+        } = this.props;
 
         this.selectText();
 
@@ -202,9 +220,8 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
     private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
-        const { closeOnSelect } = this.props;
+        const { closeOnSelect = this.DEFAULT_PROPS.closeOnSelect } = this.props;
         let nextOpenState: boolean;
-
         if (!closeOnSelect) {
             this.input.focus();
             this.selectText();
@@ -261,7 +278,7 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
     }
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = {} } = this.props;
+        const { inputProps = this.DEFAULT_PROPS.inputProps } = this.props;
 
         this.setState({
             isTyping: true,
