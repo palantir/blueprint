@@ -6,4 +6,5 @@ import "./multiSelectTests";
 import "./popover2Tests";
 import "./queryListTests";
 import "./selectTests";
+import "./suggestTests";
 import "./tagInputTests";
