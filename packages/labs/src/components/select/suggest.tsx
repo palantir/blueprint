@@ -160,19 +160,16 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
                 popoverDidOpen={this.handlePopoverDidOpen}
                 popoverWillClose={this.handlePopoverWillClose}
             >
-                <div
+                <InputGroup
+                    placeholder="Search..."
+                    value={inputValue}
+                    {...htmlInputProps}
+                    inputRef={this.refHandlers.input}
+                    onChange={this.handleQueryChange}
+                    onFocus={this.handleInputFocus}
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
-                    onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
-                >
-                    <InputGroup
-                        placeholder="Search..."
-                        value={inputValue}
-                        {...htmlInputProps}
-                        inputRef={this.refHandlers.input}
-                        onChange={this.handleQueryChange}
-                        onFocus={this.handleInputFocus}
-                    />
-                </div>
+                    onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
+                />
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     <Menu ulRef={listProps.itemsParentRef}>
                         {this.renderItems(listProps)}
@@ -294,6 +291,10 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
         return (e: React.KeyboardEvent<HTMLElement>) => {
             const { which } = e;
             const { isTyping, selectedItem } = this.state;
+            const {
+                inputProps = this.DEFAULT_PROPS.inputProps,
+                openOnKeyDown = this.DEFAULT_PROPS.openOnKeyDown,
+            } = this.props;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
                 this.input.blur();
@@ -301,13 +302,31 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
                     isOpen: false,
                     selectedItem: isTyping ? undefined : selectedItem,
                 });
-            } else if (!(which === Keys.BACKSPACE || which === Keys.ARROW_LEFT || which === Keys.ARROW_RIGHT)) {
+            } else if (openOnKeyDown
+                && which !== Keys.BACKSPACE
+                && which !== Keys.ARROW_LEFT
+                && which !== Keys.ARROW_RIGHT
+            ) {
                 this.setState({ isOpen: true });
             }
 
             if (this.state.isOpen) {
                 Utils.safeInvoke(handleQueryListKeyDown, e);
             }
+
+            Utils.safeInvoke(inputProps.onKeyDown, e);
+        };
+    }
+
+    private getTargetKeyUpHandler = (
+        handleQueryListKeyDown: React.EventHandler<React.KeyboardEvent<HTMLElement>>,
+    ) => {
+        return (e: React.KeyboardEvent<HTMLElement>) => {
+            const { inputProps = this.DEFAULT_PROPS.inputProps } = this.props;
+            if (this.state.isOpen) {
+                Utils.safeInvoke(handleQueryListKeyDown, e);
+            }
+            Utils.safeInvoke(inputProps.onKeyUp, e);
         };
     }
 }

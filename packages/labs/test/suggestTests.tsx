@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, InputGroup, Popover, Keys } from "@blueprintjs/core";
+import { Classes, InputGroup, Keys, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
@@ -17,15 +17,15 @@ import { ISuggestProps, Suggest } from "../src/components/select/suggest";
 
 const FILM_ITEM_CLASS = "film-item";
 
-describe.only("Suggest", () => {
+describe("Suggest", () => {
     const FilmSuggest = Suggest.ofType<Film>();
     const defaultProps = {
-        inputValueRenderer: sinon.spy(inputValueRenderer),
         items: TOP_100_FILMS,
         popoverProps: { inline: true, isOpen: true },
         query: "",
     };
     let handlers: {
+        inputValueRenderer: Sinon.SinonSpy,
         itemPredicate: Sinon.SinonSpy,
         itemRenderer: Sinon.SinonSpy,
         onItemSelect: Sinon.SinonSpy,
@@ -33,11 +33,11 @@ describe.only("Suggest", () => {
 
     beforeEach(() => {
         handlers = {
+            inputValueRenderer: sinon.spy(inputValueRenderer),
             itemPredicate: sinon.spy(filterByYear),
             itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
-        defaultProps.inputValueRenderer.reset();
     });
 
     describe("Basic behavior", () => {
@@ -48,6 +48,72 @@ describe.only("Suggest", () => {
             assert.lengthOf(popover, 1, "should render Popover");
             assert.lengthOf(popover.find(`.${FILM_ITEM_CLASS}`), 100, "should render 100 items in popover");
         });
+
+        describe("when ESCAPE key pressed", () => {
+            runEscTabKeyDownTests(Keys.ESCAPE);
+        });
+
+        describe("when TAB key pressed", () => {
+            runEscTabKeyDownTests(Keys.TAB);
+        });
+
+        it("does not open popover on BACKSPACE, ARROW_LEFT, or ARROW_RIGHT", () => {
+            const wrapper = suggest({ openOnKeyDown: true });
+            simulateFocus(wrapper);
+            checkKeyDownDoesNotOpenPopover(wrapper, Keys.BACKSPACE);
+            checkKeyDownDoesNotOpenPopover(wrapper, Keys.ARROW_LEFT);
+            checkKeyDownDoesNotOpenPopover(wrapper, Keys.ARROW_RIGHT);
+        });
+
+        it("opens popover if any other key pressed", () => {
+            const wrapper = suggest({ openOnKeyDown: true });
+            simulateKeyDown(wrapper, Keys.SPACE);
+            assert.isTrue(wrapper.state().isOpen, "should open popover");
+        });
+
+        it("scrolls active item into view when popover opens", () => {
+            const wrapper = suggest();
+            const queryList = (wrapper.getNode() as any).queryList; // private ref
+            const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
+            wrapper.setState({ isOpen: false });
+            assert.isFalse(scrollActiveItemIntoViewSpy.called);
+            wrapper.setState({ isOpen: true });
+            assert.strictEqual(scrollActiveItemIntoViewSpy.callCount, 1, "should call scrollActiveItemIntoView");
+        });
+
+        function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, which: number) {
+            simulateKeyDown(wrapper, which);
+            assert.isFalse(wrapper.state().isOpen, "should not open popover");
+        }
+
+        function runEscTabKeyDownTests(which: number) {
+            it("closes popover", () => {
+                const wrapper = suggest();
+                simulateFocus(wrapper);
+                simulateKeyDown(wrapper, which);
+                assert.isFalse(wrapper.state().isOpen, "should close popover");
+            });
+
+            it("clears selected item if user has typed something", () => {
+                const ITEM_INDEX = 4;
+                const wrapper = suggest({ closeOnSelect: false });
+                simulateFocus(wrapper);
+                selectItem(wrapper, ITEM_INDEX);
+                simulateChange(wrapper, "new query"); // type something
+                simulateKeyDown(wrapper, which);
+                assert.isUndefined(wrapper.state().selectedItem, "should clear selected item");
+            });
+
+            it("maintains the selected item if user has not typed something", () => {
+                const ITEM_INDEX = 4;
+                const wrapper = suggest({ closeOnSelect: false });
+                simulateFocus(wrapper);
+                selectItem(wrapper, ITEM_INDEX);
+                simulateKeyDown(wrapper, which);
+                const selectedItem = TOP_100_FILMS[ITEM_INDEX];
+                assert.strictEqual(wrapper.state().selectedItem, selectedItem, "should keep selected item");
+            });
+        }
     });
 
     describe("closeOnSelect", () => {
@@ -86,13 +152,27 @@ describe.only("Suggest", () => {
             input.simulate("change");
             assert.isTrue(onChange.calledOnce);
         });
+
+        it("invokes inputProps.onKeyDown on input keydown", () => {
+            const onKeyDown = sinon.spy();
+            const wrapper = suggest({ inputProps: { onKeyDown }});
+            simulateKeyDown(wrapper);
+            assert.strictEqual(onKeyDown.callCount, 1, "should call inputProps.onKeyDown once");
+        });
+
+        it("invokes inputProps.onKeyUp on input keyup", () => {
+            const onKeyUp = sinon.spy();
+            const wrapper = suggest({ inputProps: { onKeyUp }});
+            simulateKeyUp(wrapper);
+            assert.strictEqual(onKeyUp.callCount, 1, "should call inputProps.onKeyUp once");
+        });
     });
 
     describe("inputValueRenderer", () => {
         it("invokes inputValueRenderer when rendering an item in the input field", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest();
-            const { inputValueRenderer } = defaultProps;
+            const { inputValueRenderer } = handlers;
 
             assert.isFalse(inputValueRenderer.called, "should not call inputValueRenderer before selection");
             selectItem(wrapper, ITEM_INDEX);
@@ -148,7 +228,7 @@ describe.only("Suggest", () => {
     describe("openOnKeyDown", () => {
         it("opens the popover on key down if openOnKeyDown=true", () => {
             const wrapper = suggest({ openOnKeyDown: true });
-            focusInput(wrapper);
+            simulateFocus(wrapper);
             assert.isFalse(wrapper.state().isOpen, "popover should not open on focus");
             simulateKeyDown(wrapper);
             assert.isTrue(wrapper.state().isOpen, "popover should open on key down");
@@ -156,15 +236,11 @@ describe.only("Suggest", () => {
 
         it("opens the popover on focus if openOnKeyDown=false", () => {
             const wrapper = suggest(); // openOnKeyDown=false by default
-            focusInput(wrapper);
+            simulateFocus(wrapper);
             assert.isTrue(wrapper.state().isOpen, "popover should open on focus");
             simulateKeyDown(wrapper);
             assert.isTrue(wrapper.state().isOpen, "popover should stay open on key down");
         });
-
-        function simulateKeyDown(wrapper: ReactWrapper<any, any>) {
-            wrapper.find(InputGroup).simulate("keydown", { which: Keys.SPACE });
-        }
     });
 
     describe("popoverProps", () => {
@@ -223,6 +299,18 @@ function inputValueRenderer(item: Film) {
     return item.title;
 }
 
-function focusInput(wrapper: ReactWrapper<any, any>) {
+function simulateChange(wrapper: ReactWrapper<any, any>, value: string) {
+    wrapper.find("input").simulate("change", { target: { value } });
+}
+
+function simulateFocus(wrapper: ReactWrapper<any, any>) {
     wrapper.find("input").simulate("focus");
+}
+
+function simulateKeyDown(wrapper: ReactWrapper<any, any>, which = Keys.SPACE) {
+    wrapper.find("input").simulate("keydown", { which });
+}
+
+function simulateKeyUp(wrapper: ReactWrapper<any, any>, which = Keys.SPACE) {
+    wrapper.find("input").simulate("keyup", { which });
 }
