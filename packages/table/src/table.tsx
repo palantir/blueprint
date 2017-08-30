@@ -17,6 +17,7 @@ import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
 import * as Errors from "./common/errors";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
+import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
@@ -428,15 +429,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
         const selectedRegions = (props.selectedRegions == null) ? [] as IRegion[] : props.selectedRegions;
-
-        let focusedCell: IFocusedCellCoordinates;
-        if (props.enableFocus) {
-            if (props.focusedCell != null) {
-                focusedCell = props.focusedCell;
-            } else {
-                focusedCell = { col: 0, row: 0, focusSelectionIndex: 0 };
-            }
-        }
+        const focusedCell = FocusedCellUtils.getInitialFocusedCell(
+            props.enableFocus,
+            props.focusedCell,
+            undefined,
+            selectedRegions,
+        );
 
         this.state = {
             columnWidths: newColumnWidths,
@@ -574,33 +572,19 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             });
         }
 
-        // show a focused cell if necessary
-        let newFocusedCellCoordinates: IFocusedCellCoordinates;
-        if (enableFocus) {
-            if (focusedCell != null) {
-                // controlled mode
-                newFocusedCellCoordinates = focusedCell;
-            } else if (this.state.focusedCell != null) {
-                // use the current focus cell from state
-                newFocusedCellCoordinates = this.state.focusedCell;
-            } else if (this.state.selectedRegions.length > 0) {
-                // focus the top-left cell of the first selection
-                newFocusedCellCoordinates = {
-                    ...Regions.getFocusCellCoordinatesFromRegion(this.state.selectedRegions[0]),
-                    focusSelectionIndex: 0,
-                };
-            } else {
-                // focus the top-left cell of the table
-                newFocusedCellCoordinates = { col: 0, row: 0, focusSelectionIndex: 0 };
-            }
-        }
+        const newFocusedCell = FocusedCellUtils.getInitialFocusedCell(
+            enableFocus,
+            focusedCell,
+            this.state.focusedCell,
+            newSelectedRegions,
+        );
 
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
         this.invalidateGrid();
         this.setState({
             columnWidths: newColumnWidths,
-            focusedCell: enableFocus ? newFocusedCellCoordinates : undefined,
+            focusedCell: newFocusedCell,
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });

@@ -8,17 +8,23 @@
 import { IRegion, Regions } from "../../regions";
 import { IFocusedCellCoordinates } from "../cell";
 
-export function getInitialFocusCell(
-    focusCellFromProps: IFocusedCellCoordinates,
-    focusCellFromState: IFocusedCellCoordinates,
+/**
+ * Returns the proper focused cell for the given set of initial conditions.
+ */
+export function getInitialFocusedCell(
+    enableFocus: boolean,
+    focusedCellFromProps: IFocusedCellCoordinates,
+    focusedCellFromState: IFocusedCellCoordinates,
     selectedRegions: IRegion[],
-) {
-    if (focusCellFromProps != null) {
+): IFocusedCellCoordinates {
+    if (!enableFocus) {
+        return undefined;
+    } else if (focusedCellFromProps != null) {
         // controlled mode
-        return focusCellFromProps;
-    } else if (focusCellFromState != null) {
-        // use the current focus cell from state
-        return focusCellFromState;
+        return focusedCellFromProps;
+    } else if (focusedCellFromState != null) {
+        // use the current focused cell from state
+        return focusedCellFromState;
     } else if (selectedRegions.length > 0) {
         // focus the top-left cell of the first selection
         return {

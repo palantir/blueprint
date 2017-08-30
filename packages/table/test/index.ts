@@ -12,7 +12,7 @@ import "./cellTests.tsx";
 import "./clipboardTests.ts";
 import "./columnHeaderCellTests.tsx";
 import "./columnTests.tsx";
-import "./common/internal/scrollUtilsTests.ts";
+import "./common/internal/";
 import "./editableCellTests.tsx";
 import "./editableNameTests.tsx";
 import "./formatsTests.tsx";
