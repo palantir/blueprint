@@ -21,10 +21,6 @@ for all borders with minimal duplication. See the bottom of this file.
     box-shadow: 0 $border-width 0 $border-color;
   }
 
-  .bp-table-column-headers {
-    box-shadow: 0 $border-width 0 0 $border-color;
-  }
-
   .bp-table-row-headers {
     box-shadow: inset 0 $border-width 0 $border-color;
   }
@@ -40,7 +36,8 @@ for all borders with minimal duplication. See the bottom of this file.
   }
 
   .bp-table-column-headers .bp-table-header {
-    box-shadow: inset (-$border-width) 0 0 $border-color;
+    box-shadow: inset (-$border-width) 0 0 $border-color,
+                0 $border-width 0 $border-color;
 
     &::before {
       // hover shadow
