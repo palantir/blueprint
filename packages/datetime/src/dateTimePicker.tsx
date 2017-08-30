@@ -96,7 +96,9 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
     }
 
     public componentWillReceiveProps(nextProps: IDatePickerProps) {
-        if (nextProps.value != null) {
+        if (this.props.value === nextProps.value) {
+            return;
+        } else if (nextProps.value != null) {
             this.setState({
                 dateValue: nextProps.value,
                 timeValue: nextProps.value,
