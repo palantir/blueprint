@@ -157,7 +157,7 @@ describe("<Overlay>", () => {
         const testsContainerElement = document.createElement("div");
         document.documentElement.appendChild(testsContainerElement);
 
-        it("brings focus to overlay if autoFocus=true", (done) => {
+        it.skip("brings focus to overlay if autoFocus=true", (done) => {
             wrapper = mount(
                 <Overlay autoFocus={true} inline={false} isOpen={true}>
                     <input type="text" />
