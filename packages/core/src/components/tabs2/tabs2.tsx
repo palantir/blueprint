@@ -46,6 +46,14 @@ export interface ITabs2Props extends IProps {
     id: TabId;
 
     /**
+     * If set to `true`, the tabs will display with larger styling.
+     * This is equivalent to setting `pt-large` on the `.pt-tab-list` element.
+     * This will apply large styles only to the tabs at this level, not to nested tabs.
+     * @default false
+     */
+    large?: boolean;
+
+    /**
      * Whether inactive tab panels should be removed from the DOM and unmounted in React.
      * This can be a performance enhancement when rendering many complex panels, but requires
      * careful support for unmounting and remounting.
@@ -86,6 +94,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
 
     public static defaultProps: Partial<ITabs2Props> = {
         animate: true,
+        large: false,
         renderActiveTabPanelOnly: false,
         vertical: false,
     };
@@ -121,11 +130,14 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         );
 
         const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical }, this.props.className);
+        const tabListClasses = classNames(Classes.TAB_LIST, {
+            [Classes.LARGE]: this.props.large,
+        });
 
         return (
             <div className={classes}>
                 <div
-                    className={Classes.TAB_LIST}
+                    className={tabListClasses}
                     onKeyDown={this.handleKeyDown}
                     onKeyPress={this.handleKeyPress}
                     ref={this.refHandlers.tablist}
