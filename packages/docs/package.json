@@ -7,7 +7,7 @@
   "style": "dist/docs.css",
   "unpkg": "dist/docs.bundle.js",
   "dependencies": {
-    "@blueprintjs/core": "^1.27.0",
+    "@blueprintjs/core": "^1.25.1",
     "classnames": "^2.2",
     "documentalist": "^0.0.7",
     "fuzzaldrin-plus": "^0.3.1",
