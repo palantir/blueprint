@@ -11,7 +11,7 @@ import { IFocusedCellCoordinates } from "../../../src/common/cell";
 import * as FocusedCellUtils from "../../../src/common/internal/focusedCellUtils";
 import { Regions } from "../../../src/regions";
 
-describe.only("focusCellUtils", () => {
+describe("focusCellUtils", () => {
     describe("getInitialFocusedCell", () => {
         const FOCUSED_CELL_FROM_PROPS = getFocusedCell(1, 2);
         const FOCUSED_CELL_FROM_STATE = getFocusedCell(3, 4);
