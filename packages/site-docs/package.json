@@ -1,14 +1,14 @@
 {
   "name": "blueprintjs.com/docs",
-  "version": "1.26.0",
+  "version": "1.27.0",
   "description": "Blueprint Docs",
   "private": true,
   "dependencies": {
-    "@blueprintjs/core": "^1.26.0",
+    "@blueprintjs/core": "^1.27.0",
     "@blueprintjs/datetime": "^1.21.0",
     "@blueprintjs/docs": "^1.1.1",
-    "@blueprintjs/labs": "^0.7.0",
-    "@blueprintjs/table": "^1.23.0",
+    "@blueprintjs/labs": "^0.8.0",
+    "@blueprintjs/table": "^1.24.0",
     "bourbon": "^4.2.2",
     "chroma-js": "^1.3.4",
     "classnames": "^2.2.5",
