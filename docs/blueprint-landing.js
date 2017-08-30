@@ -34172,12 +34172,15 @@
 	        var tabIndicator = (React.createElement("div", { className: "pt-tab-indicator-wrapper", style: indicatorWrapperStyle },
 	            React.createElement("div", { className: "pt-tab-indicator" })));
 	        var classes = classNames(Classes.TABS, (_b = {}, _b[Classes.VERTICAL] = this.props.vertical, _b), this.props.className);
+	        var tabListClasses = classNames(Classes.TAB_LIST, (_c = {},
+	            _c[Classes.LARGE] = this.props.large,
+	            _c));
 	        return (React.createElement("div", { className: classes },
-	            React.createElement("div", { className: Classes.TAB_LIST, onKeyDown: this.handleKeyDown, onKeyPress: this.handleKeyPress, ref: this.refHandlers.tablist, role: "tablist" },
+	            React.createElement("div", { className: tabListClasses, onKeyDown: this.handleKeyDown, onKeyPress: this.handleKeyPress, ref: this.refHandlers.tablist, role: "tablist" },
 	                this.props.animate ? tabIndicator : undefined,
 	                tabTitles),
 	            tabPanels));
-	        var _b;
+	        var _b, _c;
 	    };
 	    Tabs2.prototype.componentDidMount = function () {
 	        this.moveSelectionIndicator();
@@ -34258,6 +34261,7 @@
 	Tabs2.Tab = tab2_1.Tab2;
 	Tabs2.defaultProps = {
 	    animate: true,
+	    large: false,
 	    renderActiveTabPanelOnly: false,
 	    vertical: false,
 	};
