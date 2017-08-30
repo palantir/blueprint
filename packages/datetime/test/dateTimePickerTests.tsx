@@ -103,6 +103,25 @@ describe("<DateTimePicker>", () => {
         }
     });
 
+    describe("when uncontrolled", () => {
+        it("Passing an undefined value prop twice does not clear the selected date", () => {
+            const { root, getSelectedDay } = wrap(<DateTimePicker />);
+            assert.isTrue(getSelectedDay().exists());
+            root.setProps({ value: undefined });
+            assert.isNotNull(root.state("dateValue"));
+            assert.isTrue(getSelectedDay().exists());
+        });
+
+        it("Rerendering with an undefined value prop does not clear the selected date", () => {
+            const { root, getSelectedDay } = wrap(<DateTimePicker />);
+            assert.isNotNull(root.state("dateValue"));
+            assert.isTrue(getSelectedDay().exists());
+            root.update();
+            assert.isNotNull(root.state("dateValue"));
+            assert.isTrue(getSelectedDay().exists());
+        });
+    });
+
     function wrap(dtp: JSX.Element) {
         const root = mount(dtp);
         return {
