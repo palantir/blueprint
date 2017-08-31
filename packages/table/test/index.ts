@@ -18,7 +18,6 @@ import "./editableNameTests.tsx";
 import "./formatsTests.tsx";
 import "./gridTests.ts";
 import "./guidesTests.tsx";
-import "./indexTests.ts";
 import "./loadableContentTests.tsx";
 import "./loadingOptionsTests.tsx";
 import "./locatorTests.tsx";
