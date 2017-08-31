@@ -157,14 +157,16 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         // if the popover handle exists, take it into account
-        let popoverHandleAdjustmentFactor = this.state.isTruncated ? CONTENT_DIV_WIDTH_DELTA : 0;
-        // add a slight bit of buffer space where we don't show the popover, to deal with cases
-        // where everything isn't pixel perfect
-        popoverHandleAdjustmentFactor += .5;
+        const popoverHandleAdjustmentFactor = this.state.isTruncated ? CONTENT_DIV_WIDTH_DELTA : 0;
 
-        const isTruncated = this.contentDiv !== undefined &&
+        let isTruncated = this.contentDiv !== undefined &&
             (this.contentDiv.scrollWidth - popoverHandleAdjustmentFactor > this.contentDiv.clientWidth ||
             this.contentDiv.scrollHeight > this.contentDiv.clientHeight);
+        // don't remove the popover if the widths are equal, because this can cause issues with pixel-perfectness
+        if (this.contentDiv.scrollWidth - popoverHandleAdjustmentFactor === this.contentDiv.clientWidth &&
+            this.state.isTruncated) {
+                isTruncated = true;
+            }
         if (this.state.isTruncated !== isTruncated) {
             this.setState({ isTruncated });
         }
