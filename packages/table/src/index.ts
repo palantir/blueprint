@@ -39,6 +39,7 @@ export {
     Clipboard,
     Grid,
     Rect,
+    RenderMode,
     Utils,
 } from "./common/index";
 
