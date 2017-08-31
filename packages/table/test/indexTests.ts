@@ -73,14 +73,22 @@ describe("@blueprintjs/table", () => {
         runTypeExportTest<tableExports.ITruncatedFormatProps>("ITruncatedFormatProps");
     });
 
-    it("[meta] has a unit test for each exported key", () => {
-        let didFindUntestedKey = false;
-        Object.keys(tableExports).forEach((exportedKey) => {
-            if (knownKeys[exportedKey]) {
-                didFindUntestedKey = false;
-            }
+    // wrap in a `describe` block to ensure this runs in sequence *after* other
+    // `describe` blocks
+    describe("[meta]", () => {
+        it("has a unit test for each exported key", () => {
+            let didFindUntestedKey = false;
+            const missingKeys: string[] = [];
+
+            Object.keys(tableExports).forEach((exportedKey) => {
+                if (knownKeys[exportedKey] !== true) {
+                    didFindUntestedKey = true;
+                    missingKeys.push(exportedKey);
+                }
+            });
+
+            expect(didFindUntestedKey, `missing test(s) for ${missingKeys}`).to.be.false;
         });
-        expect(didFindUntestedKey).to.be.false;
     });
 
     function runValueExportTest(valueName: string, value: any) {
