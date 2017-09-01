@@ -308,22 +308,23 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderColumnHeaderCell = (columnIndex: number) => {
-        let renderName: (name: string) => JSX.Element;
-        if (this.state.enableColumnCustomHeaders) {
-            renderName = this.renderCustomColumnName;
-        } else if (this.state.enableColumnNameEditing) {
-            renderName = this.renderEditableColumnName;
-        } else {
-            renderName = undefined;
-        }
-
         return (<ColumnHeaderCell
             index={columnIndex}
             name={this.store.getColumnName(columnIndex)}
             renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
-            renderName={renderName}
+            renderName={this.getColumnNameRenderer()}
             useInteractionBar={this.state.showColumnInteractionBar}
         />);
+    }
+
+    private getColumnNameRenderer = () => {
+        if (this.state.enableColumnCustomHeaders) {
+            return this.renderCustomColumnName;
+        } else if (this.state.enableColumnNameEditing) {
+            return this.renderEditableColumnName;
+        } else {
+            return undefined;
+        }
     }
 
     private renderCustomColumnName = (name: string) => {
@@ -333,7 +334,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     {name}
                 </div>
                 <div className="tbl-custom-column-header-type">
-                    {"string"}
+                    string
                 </div>
             </div>
         )
