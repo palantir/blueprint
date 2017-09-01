@@ -337,7 +337,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     string
                 </div>
             </div>
-        )
+        );
     }
 
     private renderEditableColumnName = (name: string) => {
