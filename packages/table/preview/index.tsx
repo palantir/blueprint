@@ -63,6 +63,7 @@ interface IMutableTableState {
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableCellTruncation?: boolean;
+    enableColumnCustomHeaders?: boolean;
     enableColumnNameEditing?: boolean;
     enableColumnReordering?: boolean;
     enableColumnResizing?: boolean;
@@ -143,10 +144,10 @@ const TRUNCATED_POPOVER_MODES = [
 ] as TruncatedPopoverMode[];
 
 const COLUMN_COUNT_DEFAULT_INDEX = 3;
-const ROW_COUNT_DEFAULT_INDEX = 3;
+const ROW_COUNT_DEFAULT_INDEX = 4;
 
-const FROZEN_COLUMN_COUNT_DEFAULT_INDEX = 2;
-const FROZEN_ROW_COUNT_DEFAULT_INDEX = 2;
+const FROZEN_COLUMN_COUNT_DEFAULT_INDEX = 0;
+const FROZEN_ROW_COUNT_DEFAULT_INDEX = 0;
 
 const LONG_TEXT_MIN_LENGTH = 5;
 const LONG_TEXT_MAX_LENGTH = 40;
@@ -177,15 +178,16 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         super(props, context);
 
         this.state = {
-            cellContent: CellContent.CELL_NAMES,
+            cellContent: CellContent.LONG_TEXT,
             cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
             enableBatchRendering: true,
             enableCellEditing: false,
             enableCellSelection: true,
             enableCellTruncation: false,
+            enableColumnCustomHeaders: true,
             enableColumnNameEditing: false,
             enableColumnReordering: true,
-            enableColumnResizing: false,
+            enableColumnResizing: true,
             enableColumnSelection: true,
             enableContextMenu: false,
             enableFullTableSelection: true,
@@ -310,9 +312,32 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             index={columnIndex}
             name={this.store.getColumnName(columnIndex)}
             renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
-            renderName={this.state.enableColumnNameEditing ? this.renderEditableColumnName : undefined}
+            renderName={this.getColumnNameRenderer()}
             useInteractionBar={this.state.showColumnInteractionBar}
         />);
+    }
+
+    private getColumnNameRenderer = () => {
+        if (this.state.enableColumnCustomHeaders) {
+            return this.renderCustomColumnName;
+        } else if (this.state.enableColumnNameEditing) {
+            return this.renderEditableColumnName;
+        } else {
+            return undefined;
+        }
+    }
+
+    private renderCustomColumnName = (name: string) => {
+        return (
+            <div className="tbl-custom-column-header">
+                <div className="tbl-custom-column-header-name">
+                    {name}
+                </div>
+                <div className="tbl-custom-column-header-type">
+                    string
+                </div>
+            </div>
+        );
     }
 
     private renderEditableColumnName = (name: string) => {
