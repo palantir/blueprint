@@ -215,8 +215,24 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             return undefined;
         }
 
-        const target = this.locateClick(e.nativeEvent as MouseEvent);
-        return renderBodyContextMenu(new MenuContext(target, selectedRegions, grid.numRows, grid.numCols));
+        const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
+        const { numRows, numCols } = grid;
+
+        const menuContext = new MenuContext(targetRegion, selectedRegions, numRows, numCols);
+        const contextMenu = renderBodyContextMenu(menuContext);
+
+        if (contextMenu == null) {
+            return undefined;
+        }
+
+        // if the event did not happen within a selected region, clear all
+        // selections and select the right-clicked cell.
+        const foundIndex = Regions.findMatchingRegion(selectedRegions, targetRegion);
+        if (foundIndex < 0) {
+            this.props.onSelection([targetRegion]);
+        }
+
+        return contextMenu;
     }
 
     // Render modes
