@@ -227,7 +227,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
         // if the event did not happen within a selected region, clear all
         // selections and select the right-clicked cell.
-        const foundIndex = Regions.findMatchingRegion(selectedRegions, targetRegion);
+        const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
         if (foundIndex < 0) {
             this.props.onSelection([targetRegion]);
         }

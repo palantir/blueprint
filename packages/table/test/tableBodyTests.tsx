@@ -16,6 +16,7 @@ import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { ITableBodyProps, TableBody } from "../src/tableBody";
+import { IRegion, Regions } from "../src/regions";
 
 describe("TableBody", () => {
     // use enough rows that batching won't render all of them in one pass.
@@ -95,6 +96,66 @@ describe("TableBody", () => {
                 columnIndexEnd: NUM_COLUMNS - 1,
                 rowIndexEnd: LARGE_NUM_ROWS - 1,
             });
+        }
+    });
+
+    describe("renderBodyContextMenu", () => {
+         // 0-indexed coordinates
+        const TARGET_ROW = 1;
+        const TARGET_COLUMN = 1;
+        const TARGET_CELL_COORDS = { row: TARGET_ROW, col: TARGET_COLUMN };
+        const TARGET_REGION = Regions.cell(TARGET_ROW, TARGET_COLUMN);
+
+        const onSelection = sinon.spy();
+
+        afterEach(() => {
+            onSelection.reset();
+        })
+
+        it("should select a right-clicked cell if there is no active selection", () => {
+            const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
+            tableBody.simulate("contextmenu");
+            checkOnSelectionCallback([TARGET_REGION]);
+        });
+
+        it("should not change the selected regions if the right-clicked cell is contained in one", () => {
+            const selectedRegions = [
+                Regions.row(TARGET_ROW + 1), // some other row
+                Regions.cell(0, 0, TARGET_ROW + 1, TARGET_COLUMN + 1), // includes the target cell
+            ];
+            const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
+            tableBody.simulate("contextmenu");
+            expect(onSelection.called).to.be.false;
+        });
+
+        // tslint:disable-next-line:max-line-length
+        it("should clear selections and select the right-clicked cell if it isn't within any existing selection", () => {
+            const selectedRegions = [
+                Regions.row(TARGET_ROW + 1), // some other row
+                Regions.cell(TARGET_ROW + 1, TARGET_COLUMN + 1), // includes the target cell
+            ];
+            const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
+            tableBody.simulate("contextmenu");
+            checkOnSelectionCallback([TARGET_REGION]);
+        });
+
+        function mountTableBodyForContextMenuTests(
+            targetCellCoords: { row: number, col: number },
+            selectedRegions: IRegion[],
+        ) {
+            return mountTableBody({
+                locator: {
+                    convertPointToCell: sinon.stub().returns(targetCellCoords),
+                } as any,
+                renderBodyContextMenu: sinon.stub().returns(<div />),
+                selectedRegions,
+                onSelection,
+            });
+        }
+
+        function checkOnSelectionCallback(expectedSelectedRegions: IRegion[]) {
+            expect(onSelection.calledOnce).to.be.true;
+            expect(onSelection.firstCall.args[0]).to.deep.equal(expectedSelectedRegions);
         }
     });
 
