@@ -15,8 +15,8 @@ import * as Classes from "../src/common/classes";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
-import { ITableBodyProps, TableBody } from "../src/tableBody";
 import { IRegion, Regions } from "../src/regions";
+import { ITableBodyProps, TableBody } from "../src/tableBody";
 
 describe("TableBody", () => {
     // use enough rows that batching won't render all of them in one pass.
@@ -110,7 +110,7 @@ describe("TableBody", () => {
 
         afterEach(() => {
             onSelection.reset();
-        })
+        });
 
         it("should select a right-clicked cell if there is no active selection", () => {
             const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
