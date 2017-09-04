@@ -43,7 +43,7 @@ export function getInitialFocusedCell(
  * operation. This function is used, for instance, to expand a selected region
  * on shift+click.
  */
-export function expandRegions(
+export function expandRegion(
     focusedCell: IFocusedCellCoordinates,
     oldRegion: IRegion,
     newRegion: IRegion,

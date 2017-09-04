@@ -85,7 +85,7 @@ describe("FocusedCellUtils", () => {
         }
     });
 
-    describe.only("expandSelectedRegions", () => {
+    describe.only("expandFocusedRegion", () => {
         describe("Expands a FULL_COLUMNS selection", () => {
             describe("to another FULL_COLUMNS selection", () => {
                 it("leftward", fail);
