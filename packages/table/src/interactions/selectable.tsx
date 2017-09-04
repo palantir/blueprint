@@ -121,6 +121,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         const {
+            allowMultipleSelection,
             onSelection,
             selectedRegions,
             selectedRegionTransform,
@@ -154,11 +155,12 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         let focusSelectionIndex = null;
-        if (event.shiftKey && selectedRegions.length > 0) {
+
+        if (event.shiftKey && selectedRegions.length > 0 && allowMultipleSelection) {
             this.didExpandSelectionOnActivate = true;
             onSelection(expandSelectedRegions(selectedRegions, region));
             focusSelectionIndex = 0;
-        } else if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
+        } else if (DragEvents.isAdditive(event) && allowMultipleSelection) {
             onSelection(Regions.add(selectedRegions, region));
             // the focus should be in the newly created region,
             // which is at index of the current list of regions plus one,
