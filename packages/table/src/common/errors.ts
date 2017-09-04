@@ -25,3 +25,9 @@ export const TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING =
 
 export const TABLE_NUM_FROZEN_ROWS_BOUND_WARNING =
     `${ns} <Table> numFrozenRows must be in [0, numRows]`;
+
+export const TABLE_EXPAND_FOCUSED_SELECTION_MULTI_ROW_REGION =
+    `${ns} <Table> Cannot expand a FULL_COLUMNS selection using a multi-row region`;
+
+export const TABLE_EXPAND_FOCUSED_SELECTION_MULTI_COLUMN_REGION =
+    `${ns} <Table> Cannot expand a FULL_COLUMNS selection using a multi-column region`;

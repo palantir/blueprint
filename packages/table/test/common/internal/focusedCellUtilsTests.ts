@@ -86,28 +86,77 @@ describe("FocusedCellUtils", () => {
     });
 
     describe.only("expandFocusedRegion", () => {
+        // shorthand
+        const fn = FocusedCellUtils.expandFocusedRegion;
+
         describe("Expands a FULL_COLUMNS selection", () => {
+            const focusedCell = toCellCoords(3, 3);
+            const oldRegion = Regions.column(3);
+
             describe("to another FULL_COLUMNS selection", () => {
-                it("leftward", fail);
+                it("leftward", () => {
+                    const newRegion = Regions.column(1);
+                    const result = fn(focusedCell, oldRegion, newRegion);
+                    checkEqual(result, Regions.column(1, 3));
+                });
 
-                it("rightward", fail);
-            });
+                it("rightward", () => {
+                    const newRegion = Regions.column(5);
+                    const result = fn(focusedCell, oldRegion, newRegion);
+                    checkEqual(result, Regions.column(3, 5));
+                });
 
-            describe("to a FULL_ROWS selection", () => {
-                it("if focused cell is in same row", fail);
-
-                describe("if focused cell is in different row", () => {
-                    it("upward", fail);
-
-                    it("downward", fail);
+                it("to itself", () => {
+                    const newRegion = Regions.column(3);
+                    const result = fn(focusedCell, oldRegion, newRegion);
+                    checkEqual(result, Regions.column(3, 3));
                 });
             });
 
-            it("to a CELLS selection", fail);
+            describe("to a FULL_ROWS selection", () => {
+                it("if focused cell is in same row", () => {
+                    const newRegion = Regions.row(3);
+                    const result = fn(focusedCell, oldRegion, newRegion);
+                    checkEqual(result, Regions.row(3));
+                });
 
-            it("to a FULL_TABLE selection", fail);
+                describe("if focused cell is in different row", () => {
+                    it("upward", () => {
+                        const newRegion = Regions.row(1);
+                        const result = fn(focusedCell, oldRegion, newRegion);
+                        checkEqual(result, Regions.row(1, 3));
+                    });
 
-            it("to itself");
+                    it("downward", () => {
+                        const newRegion = Regions.row(5);
+                        const result = fn(focusedCell, oldRegion, newRegion);
+                        checkEqual(result, Regions.row(3, 5));
+                    });
+                });
+            });
+
+            describe("to a CELLS selection", () => {
+                it("toward bottom-right", () => {
+                    const newRegion = Regions.cell(5, 5);
+                    const result = fn(focusedCell, oldRegion, newRegion);
+                    checkEqual(result, Regions.cell(3, 3, 5, 5));
+                });
+
+                it("toward top-left", () => {
+                    const newRegion = Regions.cell(3, 1);
+                    const result = fn(focusedCell, oldRegion, newRegion);
+                    checkEqual(result, Regions.cell(3, 1, 3, 3));
+                });
+
+                // assume the other directions are fine too (there's no special
+                // logic governing strictly leftward/downward selections, e.g.)
+            });
+
+            it("to a FULL_TABLE selection", () => {
+                const newRegion = Regions.table();
+                const result = fn(focusedCell, oldRegion, newRegion);
+                checkEqual(result, Regions.table());
+            });
         });
 
         describe("Expands a FULL_ROWS selection", () => {
@@ -131,7 +180,7 @@ describe("FocusedCellUtils", () => {
 
             it("to a FULL_TABLE selection", fail);
 
-            it("to itself");
+            it("to itself", fail);
         });
 
         describe("Expands a CELLS selection", () => {
@@ -171,7 +220,7 @@ describe("FocusedCellUtils", () => {
 
             it("to a FULL_TABLE selection", fail);
 
-            it("to itself");
+            it("to itself", fail);
         });
 
         describe("Expands a FULL_TABLE selection", () => {
@@ -183,9 +232,17 @@ describe("FocusedCellUtils", () => {
 
             it("to a FULL_TABLE selection", fail);
         });
+
+        function checkEqual(result: IRegion, expected: IRegion) {
+            expect(result).to.deep.equal(expected);
+        }
     });
 
     function fail() {
         expect(true, "unimplemented test").to.be.false;
+    }
+
+    function toCellCoords(row: number, col: number): IFocusedCellCoordinates {
+        return { row, col, focusSelectionIndex: 0 };
     }
 });
