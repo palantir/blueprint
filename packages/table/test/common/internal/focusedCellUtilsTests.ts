@@ -94,7 +94,7 @@ describe("FocusedCellUtils", () => {
             });
 
             describe("to a FULL_ROWS selection", () => {
-                it("if focused cell is in same row");
+                it("if focused cell is in same row", fail);
 
                 describe("if focused cell is in different row", () => {
                     it("upward", fail);
@@ -118,7 +118,7 @@ describe("FocusedCellUtils", () => {
             });
 
             describe("to a FULL_COLUMNS selection", () => {
-                it("if focused cell is in same column");
+                it("if focused cell is in same column", fail);
 
                 describe("if focused cell is in different column", () => {
                     it("leftward", fail);
