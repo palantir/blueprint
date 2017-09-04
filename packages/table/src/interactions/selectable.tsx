@@ -131,6 +131,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         if (matchesExistingSelection) {
             this.handleUpdateExistingSelection(foundIndex, event);
+            // no need to listen for subsequent drags
             return false;
         } else if (this.shouldExpandSelection(event)) {
             this.handleExpandSelection(region);
@@ -253,17 +254,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
     }
 
-    private handleReplaceSelection = (region: IRegion) => {
-        const { onSelection } = this.props;
-
-        // clear all selections and retain only the new one
-        const nextSelectedRegions = [region];
-        onSelection(nextSelectedRegions);
-
-        // move the focused cell into the new selection
-        this.invokeOnFocusCallbackForRegion(region);
-    }
-
     private handleExpandSelection = (region: IRegion) => {
         const { onSelection, selectedRegions } = this.props;
         this.didExpandSelectionOnActivate = true;
@@ -284,6 +274,40 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         // put the focused cell in the new region
         this.invokeOnFocusCallbackForRegion(region, nextSelectedRegions.length - 1);
     }
+
+    private handleReplaceSelection = (region: IRegion) => {
+        const { onSelection } = this.props;
+
+        // clear all selections and retain only the new one
+        const nextSelectedRegions = [region];
+        onSelection(nextSelectedRegions);
+
+        // move the focused cell into the new selection
+        this.invokeOnFocusCallbackForRegion(region);
+    }
+
+    // Callbacks
+    // =========
+
+    private maybeInvokeSelectionCallback(nextSelectedRegions: IRegion[]) {
+        const { selectedRegions } = this.props;
+        // invoke only if the selection changed
+        if (!Utils.deepCompareKeys(selectedRegions, nextSelectedRegions)) {
+            this.props.onSelection(nextSelectedRegions);
+        }
+    }
+
+    private invokeOnFocusCallbackForRegion = (focusRegion: IRegion, focusSelectionIndex = 0) => {
+        const { onFocus } = this.props;
+        const nextFocusedCell = {
+            ...Regions.getFocusCellCoordinatesFromRegion(focusRegion),
+            focusSelectionIndex,
+        };
+        onFocus(nextFocusedCell);
+    }
+
+    // Other
+    // =====
 
     private finishInteraction = () => {
         this.didExpandSelectionOnActivate = false;
@@ -309,22 +333,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             : Regions.update(selectedRegions, region);
     }
 
-    private maybeInvokeSelectionCallback(nextSelectedRegions: IRegion[]) {
-        const { selectedRegions } = this.props;
-        // invoke only if the selection changed
-        if (!Utils.deepCompareKeys(selectedRegions, nextSelectedRegions)) {
-            this.props.onSelection(nextSelectedRegions);
-        }
-    }
-
-    private invokeOnFocusCallbackForRegion = (focusRegion: IRegion, focusSelectionIndex = 0) => {
-        const { onFocus } = this.props;
-        const nextFocusedCell = {
-            ...Regions.getFocusCellCoordinatesFromRegion(focusRegion),
-            focusSelectionIndex,
-        };
-        onFocus(nextFocusedCell);
-    }
 }
 
 function expandSelectedRegions(regions: IRegion[], region: IRegion) {
