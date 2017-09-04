@@ -11,6 +11,7 @@ import * as React from "react";
 
 import { Grid } from "../common";
 import { Batcher } from "../common/batcher";
+import { IFocusedCellCoordinates } from "../common/cell";
 import * as Classes from "../common/classes";
 import { Utils } from "../common/utils";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
@@ -25,6 +26,11 @@ import { IHeaderCellProps } from "./headerCell";
 export type IHeaderCellRenderer = (index: number) => React.ReactElement<IHeaderCellProps>;
 
 export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelectableProps {
+    /**
+     * The currently focused cell.
+     */
+    focusedCell?: IFocusedCellCoordinates;
+
     /**
      * The grid computes sizes of cells, rows, or columns from the
      * configurable `columnWidths` and `rowHeights`.
@@ -69,7 +75,6 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
  * They don't need to be exposed to the outside world.
  */
 export interface IInternalHeaderProps extends IHeaderProps {
-
     /**
      * The cardinality of a fully selected region. Should be FULL_COLUMNS for column headers and
      * FULL_ROWS for row headers.
@@ -216,6 +221,7 @@ export interface IHeaderState {
 }
 
 const SHALLOW_COMPARE_PROP_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
+    "focusedCell",
     "selectedRegions",
 ];
 
@@ -347,6 +353,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             <DragSelectable
                 allowMultipleSelection={this.props.allowMultipleSelection}
                 disabled={isEntireCellTargetReorderable}
+                focusedCell={this.props.focusedCell}
                 ignoredSelectors={[`.${Classes.TABLE_REORDER_HANDLE_TARGET}`]}
                 key={getIndexClass(index)}
                 locateClick={this.locateClick}

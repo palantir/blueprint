@@ -940,7 +940,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         showFrozenColumnsOnly: boolean = false,
     ) => {
         const { grid, locator } = this;
-        const { selectedRegions, viewportRect } = this.state;
+        const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -968,6 +968,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 <ColumnHeader
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
+                    focusedCell={focusedCell}
                     grid={grid}
                     isReorderable={isColumnReorderable}
                     isResizable={isColumnResizable}
@@ -1002,7 +1003,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         showFrozenRowsOnly: boolean = false,
     ) => {
         const { grid, locator } = this;
-        const { selectedRegions, viewportRect } = this.state;
+        const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -1030,6 +1031,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             >
                 <RowHeader
                     allowMultipleSelection={allowMultipleSelection}
+                    focusedCell={focusedCell}
                     grid={grid}
                     locator={locator}
                     isReorderable={isRowReorderable}
@@ -1074,6 +1076,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         showFrozenColumnsOnly: boolean = false,
     ) => {
         const { grid, locator } = this;
+        const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -1086,9 +1089,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const numFrozenColumns = this.getNumFrozenColumnsClamped();
         const numFrozenRows = this.getNumFrozenRowsClamped();
 
-        const { selectedRegions, viewportRect/*, verticalGuides, horizontalGuides*/ } = this.state;
-
-        // const style = grid.getRect().sizeStyle();
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
 
@@ -1107,6 +1107,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 <TableBody
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
+                    focusedCell={focusedCell}
                     grid={grid}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                     locator={locator}

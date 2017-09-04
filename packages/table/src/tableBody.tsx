@@ -89,6 +89,7 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
  * `ITableBodyProps` since those are only used when a context menu is launched.
  */
 const UPDATE_PROPS_KEYS: Array<keyof ITableBodyProps> = [
+    "focusedCell",
     "grid",
     "locator",
     "viewportRect",
@@ -165,6 +166,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     public render() {
         const {
             allowMultipleSelection,
+            focusedCell,
             grid,
             numFrozenColumns,
             numFrozenRows,
@@ -189,6 +191,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return (
             <DragSelectable
                 allowMultipleSelection={allowMultipleSelection}
+                focusedCell={focusedCell}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
                 onFocus={onFocus}

@@ -25,6 +25,11 @@ export interface ISelectableProps {
     allowMultipleSelection: boolean;
 
     /**
+     * The currently focused cell.
+     */
+    focusedCell?: IFocusedCellCoordinates;
+
+    /**
      * When the user focuses something, this callback is called with new
      * focused cell coordinates. This should be considered the new focused cell
      * state for the entire table.
@@ -255,12 +260,12 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleExpandSelection = (region: IRegion) => {
-        const { onSelection, selectedRegions } = this.props;
+        const { focusedCell, onSelection, selectedRegions } = this.props;
         this.didExpandSelectionOnActivate = true;
 
         // there should be only one selected region after expanding. do not
         // update the focused cell.
-        const nextSelectedRegions = expandSelectedRegions(selectedRegions, region);
+        const nextSelectedRegions = expandSelectedRegions(selectedRegions, region, focusedCell);
         onSelection(nextSelectedRegions);
     }
 
@@ -314,7 +319,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {
-        const { selectedRegions, selectedRegionTransform } = this.props;
+        const { focusedCell, selectedRegions, selectedRegionTransform } = this.props;
 
         let region = this.props.allowMultipleSelection
             ? this.props.locateDrag(event, coords)
@@ -329,16 +334,18 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         return this.didExpandSelectionOnActivate
-            ? expandSelectedRegions(selectedRegions, region)
+            ? expandSelectedRegions(selectedRegions, region, focusedCell)
             : Regions.update(selectedRegions, region);
     }
 
 }
 
-function expandSelectedRegions(regions: IRegion[], region: IRegion) {
+function expandSelectedRegions(regions: IRegion[], region: IRegion, focusedCell: IFocusedCellCoordinates) {
     if (regions.length === 0) {
         return [region];
     }
+
+    console.log("  [DragSelectable.expandSelectedRegions] focusedCell =", focusedCell);
 
     const lastRegion = regions[regions.length - 1];
     const lastRegionCardinality = Regions.getRegionCardinality(lastRegion);
