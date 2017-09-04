@@ -186,6 +186,31 @@ describe("DragSelectable", () => {
         expect(onFocus.args[0][0]).to.deep.equal({col: 2, row: 0, focusSelectionIndex: 0});
     });
 
+    it("does not expand the selection on shift+click if allowMultipleSelection=false", () => {
+        const onSelection = sinon.spy();
+        const onFocus = sinon.spy();
+        const locateClick = sinon.stub().returns(Regions.column(2));
+        const locateDrag = sinon.stub().throws();
+
+        const selectable = harness.mount(
+            <DragSelectable
+                allowMultipleSelection={false}
+                selectedRegions={[Regions.column(0)]}
+                onFocus={onFocus}
+                onSelection={onSelection}
+                locateClick={locateClick}
+                locateDrag={locateDrag}
+            >
+                {children}
+            </DragSelectable>,
+        );
+
+        const shiftKey = true;
+        selectable.find(".selectable", 0).mouse("mousedown", 0, 0, false, shiftKey).mouse("mouseup");
+        expect(onSelection.called).to.be.true;
+        expect(onSelection.args[0][0]).to.deep.equal([Regions.column(2, 2)]);
+    });
+
     it("re-select clears region", () => {
         const onSelection = sinon.spy();
         const onFocus = sinon.spy();
