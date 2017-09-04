@@ -13,8 +13,8 @@ import { IRowIndices } from "../common/grid";
 import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
-import { IRegion, RegionCardinality, Regions } from "../regions";
-import { Header, IHeaderProps, shouldHeaderComponentUpdate } from "./header";
+import { RegionCardinality, Regions } from "../regions";
+import { Header, IHeaderProps } from "./header";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
@@ -41,10 +41,6 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     public defaultProps = {
         renderRowHeader: renderDefaultRowHeader,
     };
-
-    public shouldComponentUpdate(nextProps: IRowHeaderProps) {
-        return shouldHeaderComponentUpdate(this.props, nextProps, this.isSelectedRegionRelevant);
-    }
 
     public render() {
         const {
@@ -174,12 +170,6 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     private toRegion = (index1: number, index2?: number) => {
         // the `this` value is messed up for Regions.row, so we have to have a wrapper function here
         return Regions.row(index1, index2);
-    }
-
-    private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
-        const regionCardinality = Regions.getRegionCardinality(selectedRegion);
-        return regionCardinality === RegionCardinality.FULL_ROWS
-            || regionCardinality === RegionCardinality.FULL_TABLE;
     }
 }
 

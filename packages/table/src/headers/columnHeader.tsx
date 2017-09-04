@@ -14,9 +14,9 @@ import { Utils } from "../common/index";
 import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
-import { IRegion, RegionCardinality, Regions } from "../regions";
+import { RegionCardinality, Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
-import { Header, IHeaderProps, shouldHeaderComponentUpdate } from "./header";
+import { Header, IHeaderProps } from "./header";
 
 export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
 
@@ -47,10 +47,6 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         isResizable: true,
         loading: false,
     };
-
-    public shouldComponentUpdate(nextProps: IColumnHeaderProps) {
-        return shouldHeaderComponentUpdate(this.props, nextProps, this.isSelectedRegionRelevant);
-    }
 
     public render() {
         const {
@@ -197,11 +193,5 @@ private wrapCells = (cells: Array<React.ReactElement<any>>) => {
 
     private toRegion = (index1: number, index2?: number) => {
         return Regions.column(index1, index2);
-    }
-
-    private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
-        const regionCardinality = Regions.getRegionCardinality(selectedRegion);
-        return regionCardinality === RegionCardinality.FULL_COLUMNS
-            || regionCardinality === RegionCardinality.FULL_TABLE;
     }
 }

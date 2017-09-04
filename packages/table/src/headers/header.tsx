@@ -114,6 +114,11 @@ export interface IInternalHeaderProps extends IHeaderProps {
     resizeOrientation: Orientation;
 
     /**
+     * An array containing the table's selection Regions.
+     */
+    selectedRegions: IRegion[];
+
+    /**
      * The lowest cell index to render.
      */
     startIndex: number;
@@ -209,6 +214,10 @@ export interface IHeaderState {
     hasSelectionEnded?: boolean;
 }
 
+const SHALLOW_COMPARE_PROP_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
+    "selectedRegions",
+];
+
 const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
     "endIndex",
     "startIndex",
@@ -244,6 +253,12 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         } else {
             this.setState({ hasSelectionEnded: false });
         }
+    }
+
+    public shouldComponentUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
+        return !Utils.shallowCompareKeys(this.state, nextState)
+            || !Utils.shallowCompareKeys(this.props, nextProps, { exclude: SHALLOW_COMPARE_PROP_KEYS_BLACKLIST })
+            || !Utils.deepCompareKeys(this.props, nextProps, SHALLOW_COMPARE_PROP_KEYS_BLACKLIST);
     }
 
     public componentWillUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
@@ -431,34 +446,4 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             // columns are reordered via a reorder handle, so drag-selection needn't be disabled
             && !this.isReorderHandleEnabled();
     }
-}
-
-/**
- * In the current architecture, ColumnHeaderCell and RowHeaderCell each need to include this same
- * shouldComponentUpdate code at their level. To avoid writing the same code in two places, we
- * expose this utility for each higher-level component to leverage in their own respective
- * shouldComponentUpdate functions.
- *
- * (See: https://github.com/palantir/blueprint/issues/1214)
- *
- * @param props - the current props
- * @param nextProps - the next props
- */
-export function shouldHeaderComponentUpdate<T extends IHeaderProps>(
-    props: T, nextProps: T, isSelectedRegionRelevant: (selectedRegion: IRegion) => boolean) {
-
-    if (!Utils.shallowCompareKeys(props, nextProps, { exclude: ["selectedRegions"] })) {
-        return true;
-    }
-
-    const relevantSelectedRegions = props.selectedRegions.filter(isSelectedRegionRelevant);
-    const nextRelevantSelectedRegions = nextProps.selectedRegions.filter(isSelectedRegionRelevant);
-
-    // ignore selection changes that didn't involve any relevant selected regions (FULL_COLUMNS
-    // for column headers, or FULL_ROWS for row headers)
-    if (relevantSelectedRegions.length > 0 || nextRelevantSelectedRegions.length > 0) {
-        return !Utils.deepCompareKeys(relevantSelectedRegions, nextRelevantSelectedRegions);
-    }
-
-    return false;
 }
