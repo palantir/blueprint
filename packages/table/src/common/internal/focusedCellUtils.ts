@@ -36,3 +36,20 @@ export function getInitialFocusedCell(
         return { col: 0, row: 0, focusSelectionIndex: 0 };
     }
 }
+
+/**
+ * Expands a set of selected regions to a new region in accordance with the
+ * current location of the focused cell.
+ *
+ * @param focusedCell the currently focused cell
+ * @param selectedRegions the currently selected regions
+ * @param newRegion the new region to expand to
+ */
+export function expandSelectedRegions(
+    focusedCell: IFocusedCellCoordinates,
+    selectedRegions: IRegion[],
+    newRegion: IRegion,
+): IRegion[] {
+    // TODO
+    return null;
+}
