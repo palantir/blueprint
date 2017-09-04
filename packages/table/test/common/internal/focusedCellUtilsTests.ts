@@ -85,7 +85,107 @@ describe("FocusedCellUtils", () => {
         }
     });
 
-    describe("", () => {
+    describe.only("expandSelectedRegions", () => {
+        describe("Expands a FULL_COLUMNS selection", () => {
+            describe("to another FULL_COLUMNS selection", () => {
+                it("leftward", fail);
 
+                it("rightward", fail);
+            });
+
+            describe("to a FULL_ROWS selection", () => {
+                it("if focused cell is in same row");
+
+                describe("if focused cell is in different row", () => {
+                    it("upward", fail);
+
+                    it("downward", fail);
+                });
+            });
+
+            it("to a CELLS selection", fail);
+
+            it("to a FULL_TABLE selection", fail);
+
+            it("to itself");
+        });
+
+        describe("Expands a FULL_ROWS selection", () => {
+            describe("to another FULL_ROWS selection", () => {
+                it("upward", fail);
+
+                it("downward", fail);
+            });
+
+            describe("to a FULL_COLUMNS selection", () => {
+                it("if focused cell is in same column");
+
+                describe("if focused cell is in different column", () => {
+                    it("leftward", fail);
+
+                    it("rightward", fail);
+                });
+            });
+
+            it("to a CELLS selection", fail);
+
+            it("to a FULL_TABLE selection", fail);
+
+            it("to itself");
+        });
+
+        describe("Expands a CELLS selection", () => {
+            describe("to another CELLS selection", () => {
+                it("toward top-left", fail);
+
+                it("toward top", fail);
+
+                it("toward top-right", fail);
+
+                it("toward right", fail);
+
+                it("toward bottom-right", fail);
+
+                it("toward bottom", fail);
+
+                it("toward bottom-left", fail);
+
+                it("toward left", fail);
+            });
+
+            describe("to a FULL_COLUMNS selection", () => {
+                it("upward", fail);
+
+                it("leftward", fail);
+
+                it("rightward", fail);
+            });
+
+            describe("to a FULL_ROWS selection", () => {
+                it("leftward", fail);
+
+                it("upward", fail);
+
+                it("downward", fail);
+            });
+
+            it("to a FULL_TABLE selection", fail);
+
+            it("to itself");
+        });
+
+        describe("Expands a FULL_TABLE selection", () => {
+            it("to a FULL_COLUMNS selection", fail);
+
+            it("to a FULL_ROWS selection", fail);
+
+            it("to a CELLS selection", fail);
+
+            it("to a FULL_TABLE selection", fail);
+        });
     });
+
+    function fail() {
+        expect(true, "unimplemented test").to.be.false;
+    }
 });
