@@ -233,7 +233,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     // ============
 
     private handleUpdateExistingSelection = (selectedRegionIndex: number, event: MouseEvent) => {
-        const { onFocus, onSelection, selectedRegions } = this.props;
+        const { onSelection, selectedRegions } = this.props;
 
         if (DragEvents.isAdditive(event)) {
             // remove just the clicked region, leaving other selected regions in place
@@ -245,11 +245,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             // most recent selection. otherwise, don't update it.
             if (nextSelectedRegions.length > 0) {
                 const lastIndex = nextSelectedRegions.length - 1;
-                const nextFocusedCell = {
-                    ...Regions.getFocusCellCoordinatesFromRegion(nextSelectedRegions[lastIndex]),
-                    focusSelectionIndex: lastIndex,
-                };
-                onFocus(nextFocusedCell);
+                this.invokeOnFocusCallbackForRegion(nextSelectedRegions[lastIndex], lastIndex);
             }
         } else {
             // clear all selections, but don't update the focused cell
@@ -258,44 +254,35 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleReplaceSelection = (region: IRegion) => {
-        const { onFocus, onSelection } = this.props;
+        const { onSelection } = this.props;
 
         // clear all selections and retain only the new one
         const nextSelectedRegions = [region];
         onSelection(nextSelectedRegions);
 
         // move the focused cell into the new selection
-        const nextFocusedCell = {
-            ...Regions.getFocusCellCoordinatesFromRegion(region),
-            focusSelectionIndex: 0,
-        };
-        onFocus(nextFocusedCell);
+        this.invokeOnFocusCallbackForRegion(region);
     }
 
     private handleExpandSelection = (region: IRegion) => {
         const { onSelection, selectedRegions } = this.props;
         this.didExpandSelectionOnActivate = true;
+
+        // there should be only one selected region after expanding. do not
+        // update the focused cell.
         const nextSelectedRegions = expandSelectedRegions(selectedRegions, region);
-
-        // there should be only one selected region after expanding.
         onSelection(nextSelectedRegions);
-
-        // do not update the focused cell
     }
 
     private handleAddDisjointSelection = (region: IRegion) => {
-        const { onFocus, onSelection, selectedRegions } = this.props;
+        const { onSelection, selectedRegions } = this.props;
 
         // add the new region to the existing selections
         const nextSelectedRegions = Regions.add(selectedRegions, region);
         onSelection(nextSelectedRegions);
 
         // put the focused cell in the new region
-        const nextFocusedCell = {
-            ...Regions.getFocusCellCoordinatesFromRegion(region),
-            focusSelectionIndex: nextSelectedRegions.length - 1,
-        };
-        onFocus(nextFocusedCell);
+        this.invokeOnFocusCallbackForRegion(region, nextSelectedRegions.length - 1);
     }
 
     private finishInteraction = () => {
@@ -328,6 +315,15 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         if (!Utils.deepCompareKeys(selectedRegions, nextSelectedRegions)) {
             this.props.onSelection(nextSelectedRegions);
         }
+    }
+
+    private invokeOnFocusCallbackForRegion = (focusRegion: IRegion, focusSelectionIndex = 0) => {
+        const { onFocus } = this.props;
+        const nextFocusedCell = {
+            ...Regions.getFocusCellCoordinatesFromRegion(focusRegion),
+            focusSelectionIndex,
+        };
+        onFocus(nextFocusedCell);
     }
 }
 
