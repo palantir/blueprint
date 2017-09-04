@@ -46,16 +46,16 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         const {
             // from IRowHeaderProps
             onRowHeightChanged,
-            renderRowHeader,
+            renderRowHeader: renderHeaderCell,
 
             // from IRowHeights
-            minRowHeight,
-            maxRowHeight,
+            minRowHeight: minSize,
+            maxRowHeight: maxSize,
             defaultRowHeight,
 
             // from IRowIndices
-            rowIndexStart,
-            rowIndexEnd,
+            rowIndexStart: indexStart,
+            rowIndexEnd: indexEnd,
 
             // from IHeaderProps
             ...spreadableProps,
@@ -64,7 +64,6 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         return (
             <Header
                 convertPointToIndex={this.convertPointToRow}
-                endIndex={this.props.rowIndexEnd}
                 fullRegionCardinality={RegionCardinality.FULL_ROWS}
                 getCellExtremaClasses={this.getCellExtremaClasses}
                 getCellIndexClass={Classes.rowCellIndexClass}
@@ -76,14 +75,15 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 handleSizeChanged={this.handleSizeChanged}
                 headerCellIsReorderablePropName={"isRowReorderable"}
                 headerCellIsSelectedPropName={"isRowSelected"}
+                indexEnd={indexEnd}
+                indexStart={indexStart}
                 isCellSelected={this.isCellSelected}
                 isGhostIndex={this.isGhostIndex}
-                maxSize={this.props.maxRowHeight}
-                minSize={this.props.minRowHeight}
+                maxSize={maxSize}
+                minSize={minSize}
                 renderGhostCell={this.renderGhostCell}
-                renderHeaderCell={this.props.renderRowHeader}
+                renderHeaderCell={renderHeaderCell}
                 resizeOrientation={Orientation.HORIZONTAL}
-                startIndex={this.props.rowIndexStart}
                 toRegion={this.toRegion}
                 wrapCells={this.wrapCells}
                 {...spreadableProps}
@@ -121,8 +121,8 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
         return locator != null ? locator.convertPointToRow(clientXOrY, useMidpoint) : null;
     }
 
-    private getCellExtremaClasses = (index: number, endIndex: number) => {
-        return this.props.grid.getExtremaClasses(index, 0, endIndex, 1);
+    private getCellExtremaClasses = (index: number, indexEnd: number) => {
+        return this.props.grid.getExtremaClasses(index, 0, indexEnd, 1);
     }
 
     private getRowHeight = (index: number) => {

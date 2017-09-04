@@ -69,10 +69,6 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
  * They don't need to be exposed to the outside world.
  */
 export interface IInternalHeaderProps extends IHeaderProps {
-    /**
-     * The highest cell index to render.
-     */
-    endIndex: number;
 
     /**
      * The cardinality of a fully selected region. Should be FULL_COLUMNS for column headers and
@@ -94,6 +90,16 @@ export interface IInternalHeaderProps extends IHeaderProps {
      * The name of the header-cell prop specifying whether the header cell is selected or not.
      */
     headerCellIsSelectedPropName: string;
+
+    /**
+     * The highest cell index to render.
+     */
+    indexEnd: number;
+
+    /**
+     * The lowest cell index to render.
+     */
+    indexStart: number;
 
     /**
      * The maximum permitted size of the header in pixels. Corresponds to a width for column headers and
@@ -119,11 +125,6 @@ export interface IInternalHeaderProps extends IHeaderProps {
     selectedRegions: IRegion[];
 
     /**
-     * The lowest cell index to render.
-     */
-    startIndex: number;
-
-    /**
      * Converts a point on the screen to a row or column index in the table grid.
      */
     convertPointToIndex?: (clientXOrY: number, useMidpoint?: boolean) => number;
@@ -131,7 +132,7 @@ export interface IInternalHeaderProps extends IHeaderProps {
     /**
      * Provides any extrema classes for the provided index range in the table grid.
      */
-    getCellExtremaClasses: (index: number, endIndex: number) => string[];
+    getCellExtremaClasses: (index: number, indexEnd: number) => string[];
 
     /**
      * Provides the index class for the cell. Should be Classes.columnCellIndexClass for column
@@ -219,8 +220,8 @@ const SHALLOW_COMPARE_PROP_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
 ];
 
 const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
-    "endIndex",
-    "startIndex",
+    "indexEnd",
+    "indexStart",
 ];
 
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
@@ -282,9 +283,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData): IRegion => {
         const coord = this.props.getDragCoordinate(coords.current);
-        const startIndex = this.activationIndex;
-        const endIndex = this.props.convertPointToIndex(coord);
-        return this.props.toRegion(startIndex, endIndex);
+        const indexStart = this.activationIndex;
+        const indexEnd = this.props.convertPointToIndex(coord);
+        return this.props.toRegion(indexStart, indexEnd);
     }
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
@@ -294,11 +295,10 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     }
 
     private renderCells = () => {
-        const startIndex = this.props.startIndex;
-        const endIndex = this.props.endIndex;
+        const { indexStart, indexEnd } = this.props;
 
         this.batcher.startNewBatch();
-        for (let index = startIndex; index <= endIndex; index++) {
+        for (let index = indexStart; index <= indexEnd; index++) {
             this.batcher.addArgsToBatch(index);
         }
         this.batcher.removeOldAddNew(this.renderNewCell);
@@ -310,7 +310,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     }
 
     private renderNewCell = (index: number) => {
-        const extremaClasses = this.props.getCellExtremaClasses(index, this.props.endIndex);
+        const extremaClasses = this.props.getCellExtremaClasses(index, this.props.indexEnd);
         const renderer = this.props.isGhostIndex(index)
             ? this.props.renderGhostCell
             : this.renderCell;
