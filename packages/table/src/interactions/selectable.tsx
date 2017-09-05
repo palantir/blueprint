@@ -9,6 +9,7 @@ import { Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
+import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
 import { Utils } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
@@ -340,44 +341,46 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
 }
 
-function expandSelectedRegions(regions: IRegion[], region: IRegion, focusedCell: IFocusedCellCoordinates) {
+function expandSelectedRegions(regions: IRegion[], region: IRegion, focusedCell?: IFocusedCellCoordinates) {
     if (regions.length === 0) {
         return [region];
-    }
-
-    console.log("  [DragSelectable.expandSelectedRegions] focusedCell =", focusedCell);
-
-    const lastRegion = regions[regions.length - 1];
-    const lastRegionCardinality = Regions.getRegionCardinality(lastRegion);
-    const regionCardinality = Regions.getRegionCardinality(region);
-
-    if (regionCardinality !== lastRegionCardinality) {
-        // TODO: add proper handling for expanding regions from one cardinality to another depending
-        // on the focused cell (see: https://github.com/palantir/blueprint/issues/823). for now,
-        // just return the new region by itself.
-        return [region];
-    }
-
-    // simplified algorithm: expand the most recently selected region, and clear all others.
-    // TODO: pass the current focused cell into DragSelectable via props, then update this logic
-    // to leverage the focus cell's coordinates appropriately.
-    // (see: https://github.com/palantir/blueprint/issues/823)
-    if (regionCardinality === RegionCardinality.FULL_ROWS) {
-        const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
-        const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
-        return [Regions.row(rowStart, rowEnd)];
-    } else if (regionCardinality === RegionCardinality.FULL_COLUMNS) {
-        const colStart = Math.min(lastRegion.cols[0], region.cols[0]);
-        const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
-        return [Regions.column(colStart, colEnd)];
-    } else if (regionCardinality === RegionCardinality.CELLS) {
-        const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
-        const colStart = Math.min(lastRegion.cols[0], region.cols[0]);
-        const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
-        const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
-        return [Regions.cell(rowStart, colStart, rowEnd, colEnd)];
+    } else if (focusedCell != null) {
+        console.log("  [DragSelectable.expandSelectedRegions] focusedCell =", focusedCell);
+        const expandedRegion = FocusedCellUtils.expandFocusedRegion(focusedCell, region);
+        return Regions.update(regions, expandedRegion);
     } else {
-        // if we've selected the FULL_TABLE, no need to expand it further.
-        return [region];
+        const lastRegion = regions[regions.length - 1];
+        const lastRegionCardinality = Regions.getRegionCardinality(lastRegion);
+        const regionCardinality = Regions.getRegionCardinality(region);
+
+        if (regionCardinality !== lastRegionCardinality) {
+            // TODO: add proper handling for expanding regions from one cardinality to another depending
+            // on the focused cell (see: https://github.com/palantir/blueprint/issues/823). for now,
+            // just return the new region by itself.
+            return [region];
+        }
+
+        // simplified algorithm: expand the most recently selected region, and clear all others.
+        // TODO: pass the current focused cell into DragSelectable via props, then update this logic
+        // to leverage the focus cell's coordinates appropriately.
+        // (see: https://github.com/palantir/blueprint/issues/823)
+        if (regionCardinality === RegionCardinality.FULL_ROWS) {
+            const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
+            const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
+            return [Regions.row(rowStart, rowEnd)];
+        } else if (regionCardinality === RegionCardinality.FULL_COLUMNS) {
+            const colStart = Math.min(lastRegion.cols[0], region.cols[0]);
+            const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
+            return [Regions.column(colStart, colEnd)];
+        } else if (regionCardinality === RegionCardinality.CELLS) {
+            const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
+            const colStart = Math.min(lastRegion.cols[0], region.cols[0]);
+            const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
+            const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
+            return [Regions.cell(rowStart, colStart, rowEnd, colEnd)];
+        } else {
+            // if we've selected the FULL_TABLE, no need to expand it further.
+            return [region];
+        }
     }
 }
