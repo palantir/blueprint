@@ -219,8 +219,8 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     // ==============
 
     private shouldExpandSelection = (event: MouseEvent) => {
-        const { allowMultipleSelection, selectedRegions } = this.props;
-        return event.shiftKey && selectedRegions.length > 0 && allowMultipleSelection;
+        const { allowMultipleSelection } = this.props;
+        return event.shiftKey && allowMultipleSelection;
     }
 
     private shouldAddDisjointSelection = (event: MouseEvent) => {
