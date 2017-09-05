@@ -843,7 +843,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             <div
                 className={classes}
                 ref={refHandler}
-                onClick={this.selectAll}
+                onMouseDown={this.selectAll}
             >
                 {this.maybeRenderRegions(this.styleMenuRegion)}
             </div>
