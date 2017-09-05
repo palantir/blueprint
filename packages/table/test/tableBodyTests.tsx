@@ -15,6 +15,7 @@ import * as Classes from "../src/common/classes";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
+import { MenuContext } from "../src/interactions/menus/menuContext";
 import { IRegion, Regions } from "../src/regions";
 import { ITableBodyProps, TableBody } from "../src/tableBody";
 
@@ -107,15 +108,24 @@ describe("TableBody", () => {
         const TARGET_REGION = Regions.cell(TARGET_ROW, TARGET_COLUMN);
 
         const onSelection = sinon.spy();
+        const renderBodyContextMenu = sinon.stub().returns(<div />);
 
         afterEach(() => {
             onSelection.reset();
+            renderBodyContextMenu.reset();
         });
 
         it("should select a right-clicked cell if there is no active selection", () => {
             const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
             tableBody.simulate("contextmenu");
             checkOnSelectionCallback([TARGET_REGION]);
+        });
+
+        it("should render context menu using new selection if selection changed on right-click", () => {
+            const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
+            tableBody.simulate("contextmenu");
+            const menuContext = renderBodyContextMenu.firstCall.args[0] as MenuContext;
+            expect(menuContext.getSelectedRegions()).to.deep.equal([TARGET_REGION]);
         });
 
         it("should not change the selected regions if the right-clicked cell is contained in one", () => {
@@ -147,7 +157,7 @@ describe("TableBody", () => {
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
-                renderBodyContextMenu: sinon.stub().returns(<div />),
+                renderBodyContextMenu,
                 selectedRegions,
                 onSelection,
             });

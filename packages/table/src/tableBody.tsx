@@ -21,7 +21,7 @@ import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
-import { Regions } from "./regions";
+import { Regions, IRegion } from "./regions";
 
 export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnIndices, IProps {
     /**
@@ -218,21 +218,20 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
         const { numRows, numCols } = grid;
 
-        const menuContext = new MenuContext(targetRegion, selectedRegions, numRows, numCols);
-        const contextMenu = renderBodyContextMenu(menuContext);
-
-        if (contextMenu == null) {
-            return undefined;
-        }
+        let nextSelectedRegions: IRegion[] = selectedRegions;
 
         // if the event did not happen within a selected region, clear all
         // selections and select the right-clicked cell.
         const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
         if (foundIndex < 0) {
-            this.props.onSelection([targetRegion]);
+            nextSelectedRegions = [targetRegion];
+            this.props.onSelection(nextSelectedRegions);
         }
 
-        return contextMenu;
+        const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
+        const contextMenu = renderBodyContextMenu(menuContext);
+
+        return contextMenu == null ? undefined : contextMenu;
     }
 
     // Render modes
