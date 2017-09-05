@@ -85,7 +85,7 @@ describe("FocusedCellUtils", () => {
         }
     });
 
-    describe.only("expandFocusedRegion", () => {
+    describe("expandFocusedRegion", () => {
         const FOCUSED_ROW = 3;
         const FOCUSED_COL = 3;
 
