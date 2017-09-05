@@ -44,20 +44,7 @@ export function getInitialFocusedCell(
  * operation. This function is used, for instance, to expand a selected region
  * on shift+click.
  */
-export function expandFocusedRegion(focusedCell: IFocusedCellCoordinates, oldRegion: IRegion, newRegion: IRegion) {
-    switch (Regions.getRegionCardinality(oldRegion)) {
-        case RegionCardinality.CELLS:
-            return expandCellRegion(focusedCell, newRegion);
-        case RegionCardinality.FULL_COLUMNS:
-            return expandColumnRegion(focusedCell, newRegion);
-        case RegionCardinality.FULL_ROWS:
-            return expandRowRegion(focusedCell, newRegion);
-        default:
-            return expandFullTableRegion(focusedCell, newRegion);
-    }
-}
-
-function expandColumnRegion(focusedCell: IFocusedCellCoordinates, newRegion: IRegion) {
+export function expandFocusedRegion(focusedCell: IFocusedCellCoordinates, newRegion: IRegion) {
     switch (Regions.getRegionCardinality(newRegion)) {
         case RegionCardinality.FULL_COLUMNS: {
             const [indexStart, indexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "col", "cols");
@@ -76,18 +63,6 @@ function expandColumnRegion(focusedCell: IFocusedCellCoordinates, newRegion: IRe
     }
 }
 
-function expandRowRegion(_focusedCell: IFocusedCellCoordinates, _newRegion: IRegion) {
-    // TODO
-}
-
-function expandCellRegion(_focusedCell: IFocusedCellCoordinates, _newRegion: IRegion) {
-    // TODO
-}
-
-function expandFullTableRegion(_focusedCell: IFocusedCellCoordinates, _newRegion: IRegion) {
-    // TODO
-}
-
 function getExpandedRegionIndices(
     focusedCell: IFocusedCellCoordinates,
     newRegion: IRegion,
@@ -103,9 +78,6 @@ function getExpandedRegionIndices(
             throw new Error(Errors.TABLE_EXPAND_FOCUSED_REGION_MULTI_COLUMN_REGION);
         }
     }
-    return sortIndices(srcIndex, dstIndex);
+    return srcIndex <= dstIndex ? [srcIndex, dstIndex] : [dstIndex, srcIndex];
 }
 
-function sortIndices(index1?: number, index2?: number) {
-    return index1 <= index2 ? [index1, index2] : [index2, index1];
-}
