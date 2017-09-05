@@ -10,7 +10,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
-import { ICellCoordinates } from "./common/cell";
+import { ICellCoordinates, IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
@@ -21,7 +21,7 @@ import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
-import { Regions, IRegion } from "./regions";
+import { IRegion, Regions } from "./regions";
 
 export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnIndices, IProps {
     /**
@@ -209,14 +209,14 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
-        const { selectedRegions, renderBodyContextMenu, grid } = this.props;
+        const { grid, onFocus, onSelection, renderBodyContextMenu, selectedRegions } = this.props;
+        const { numRows, numCols } = grid;
 
         if (renderBodyContextMenu == null) {
             return undefined;
         }
 
         const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
-        const { numRows, numCols } = grid;
 
         let nextSelectedRegions: IRegion[] = selectedRegions;
 
@@ -225,7 +225,14 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
         if (foundIndex < 0) {
             nextSelectedRegions = [targetRegion];
-            this.props.onSelection(nextSelectedRegions);
+            onSelection(nextSelectedRegions);
+
+            // move the focused cell to the new region.
+            const nextFocusedCell = {
+                ...Regions.getFocusCellCoordinatesFromRegion(targetRegion),
+                focusSelectionIndex: 0,
+            };
+            onFocus(nextFocusedCell);
         }
 
         const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
