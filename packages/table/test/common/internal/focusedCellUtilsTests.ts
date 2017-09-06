@@ -7,7 +7,7 @@
 
 import { expect } from "chai";
 
-import { IFocusedCellCoordinates, ICellCoordinates } from "../../../src/common/cell";
+import { ICellCoordinates, IFocusedCellCoordinates } from "../../../src/common/cell";
 import * as FocusedCellUtils from "../../../src/common/internal/focusedCellUtils";
 import { IRegion, Regions } from "../../../src/regions";
 
@@ -50,17 +50,18 @@ describe("FocusedCellUtils", () => {
             expect(focusedCell).to.deep.equal(FOCUSED_CELL_FROM_STATE);
         });
 
-        it("returns the focused cell for the first selected region if " +
-           "focusedCellFromState and focusedCellFromProps not defined", () => {
+        // tslint:disable-next-line:max-line-length
+        it("returns the focused cell for the last selected region if focusedCell not provided", () => {
             const focusedCell = FocusedCellUtils.getInitialFocusedCell(
                 true,
                 null,
                 null,
                 SELECTED_REGIONS,
             );
+            const lastIndex = SELECTED_REGIONS.length - 1;
             const expectedFocusedCell = {
-                ...Regions.getFocusCellCoordinatesFromRegion(SELECTED_REGIONS[0]),
-                focusSelectionIndex: 0,
+                ...Regions.getFocusCellCoordinatesFromRegion(SELECTED_REGIONS[lastIndex]),
+                focusSelectionIndex: lastIndex,
             };
             expect(focusedCell).to.deep.equal(expectedFocusedCell);
         });

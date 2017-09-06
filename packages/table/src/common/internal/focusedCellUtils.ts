@@ -27,10 +27,11 @@ export function getInitialFocusedCell(
         // use the current focused cell from state
         return focusedCellFromState;
     } else if (selectedRegions.length > 0) {
-        // focus the top-left cell of the first selection
+        // focus the top-left cell of the last selection
+        const lastIndex = selectedRegions.length - 1;
         return {
-            ...Regions.getFocusCellCoordinatesFromRegion(selectedRegions[0]),
-            focusSelectionIndex: 0,
+            ...Regions.getFocusCellCoordinatesFromRegion(selectedRegions[lastIndex]),
+            focusSelectionIndex: lastIndex,
         };
     } else {
         // focus the top-left cell of the table
