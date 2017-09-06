@@ -7,7 +7,7 @@
 
 import { expect } from "chai";
 
-import { IFocusedCellCoordinates } from "../../../src/common/cell";
+import { IFocusedCellCoordinates, ICellCoordinates } from "../../../src/common/cell";
 import * as FocusedCellUtils from "../../../src/common/internal/focusedCellUtils";
 import { IRegion, Regions } from "../../../src/regions";
 
@@ -202,5 +202,20 @@ describe("FocusedCellUtils", () => {
         function toCellCoords(row: number, col: number): IFocusedCellCoordinates {
             return { row, col, focusSelectionIndex: 0 };
         }
+    });
+
+    describe("toFullCoordinates", () => {
+        it("applies focusSelectionIndex=0 by default", () => {
+            const cellCoords: ICellCoordinates = { row: 2, col: 3 };
+            const result = FocusedCellUtils.toFullCoordinates(cellCoords);
+            expect(result).to.deep.equal({ ...result, focusSelectionIndex: 0 });
+        });
+
+        it("applies a custom focusSelectionIndex if provided", () => {
+            const cellCoords: ICellCoordinates = { row: 2, col: 3 };
+            const INDEX = 1;
+            const result = FocusedCellUtils.toFullCoordinates(cellCoords, INDEX);
+            expect(result).to.deep.equal({ ...result, focusSelectionIndex: INDEX });
+        });
     });
 });

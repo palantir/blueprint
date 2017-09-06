@@ -6,7 +6,7 @@
  */
 
 import { IRegion, RegionCardinality, Regions } from "../../regions";
-import { IFocusedCellCoordinates } from "../cell";
+import { ICellCoordinates, IFocusedCellCoordinates } from "../cell";
 import * as Errors from "../errors";
 
 /**
@@ -36,6 +36,17 @@ export function getInitialFocusedCell(
         // focus the top-left cell of the table
         return { col: 0, row: 0, focusSelectionIndex: 0 };
     }
+}
+
+/**
+ * Returns a new cell-coordinates object that includes a focusSelectionIndex property.
+ * The returned object will have the proper IFocusedCellCoordinates type.
+ */
+export function toFullCoordinates(
+    cellCoords: ICellCoordinates,
+    focusSelectionIndex: number = 0,
+): IFocusedCellCoordinates {
+    return { ...cellCoords, focusSelectionIndex };
 }
 
 /**
