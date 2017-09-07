@@ -38,8 +38,8 @@ straightforward names (see the [Icons section](#core/icons) for the full list of
 
 Variables are also provided for the two icon font families and their pixel sizes:
 
-- `@icons16Family`
-- `@icons20Family`
+- `$icons16-family`
+- `$icons20-family`
 - `$pt-icon-size-standard`
 - `$pt-icon-size-large`
 
