@@ -37,6 +37,9 @@ interface IProject {
     // whether to compile typescript sources
     typescript?: true;
 
+    // paths to .scss files to concatenate and export as variables.{scss,less,ts}
+    variables?: string[];
+
     webpack?: {
         // webpack bundle config:
         entry: string;
@@ -60,6 +63,13 @@ const projects = [
         karma: true,
         sass: "compile",
         typescript: true,
+        // sass files to concatenate and export as `variables.{scss,less,ts}`
+        variables: [
+            "src/common/_colors.scss",
+            "src/common/_color-aliases.scss",
+            "src/common/_variables.scss",
+            "src/generated/_icon-variables.scss",
+        ],
     }, {
         id: "datetime",
         cwd: "packages/datetime/",
