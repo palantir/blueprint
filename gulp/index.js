@@ -92,6 +92,7 @@ module.exports = (gulp, config) => {
         "karma",
         "sass",
         "typescript",
+        "variables",
         "webpack",
         "watch",
     ].forEach((taskGroup) => {
