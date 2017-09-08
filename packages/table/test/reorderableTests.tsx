@@ -264,6 +264,7 @@ describe("DragReorderable", () => {
         return {
             locateClick: sinon.stub(),
             locateDrag: sinon.stub(),
+            onFocus: sinon.stub(),
             onReordered: sinon.stub(),
             onReordering: sinon.stub(),
             onSelection: sinon.stub(),
