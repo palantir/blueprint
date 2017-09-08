@@ -47,6 +47,12 @@ describe("<Select>", () => {
         assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
+    it("disabled=false disables Popover", () => {
+        const wrapper = select({ disabled: true, popoverProps: {} });
+        wrapper.find("table").simulate("click");
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+    });
+
     it("itemRenderer is called for each filtered child", () => {
         select({}, "1999");
         // each item rendered before setting query, then 4 items filtered rendered twice (TODO: why)
