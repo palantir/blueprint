@@ -102,7 +102,15 @@ export class Cell extends React.Component<ICellProps, {}> {
             },
         );
 
-        const content = <div className={textClasses}>{this.props.children}</div>;
+        const modifiedChildren = React.Children.map(this.props.children, (child) => {
+            if (React.isValidElement(child)) {
+                return React.cloneElement(child as React.ReactElement<any>,
+                    {parentCellHeight: style.height, parentCellWidth: style.width});
+            }
+            return child;
+        });
+
+        const content = <div className={textClasses}>{modifiedChildren}</div>;
 
         return (
             <div className={classes} style={style} title={tooltip}>
