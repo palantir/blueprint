@@ -10,8 +10,8 @@
   - `isModal` &rarr; `hasBackdrop` to match corresponding prop on `Overlay`
   - `isDisabled` &rarr; `disabled` for consistency with HTML elements
 - ...and except for the handful of Tether-specific props, which are now Popper.js-specific:
-  - `position: Position` &rarr; [`placement: PopperJS.Placement`](#labs.placement)
-  - `tetherOptions: ITetherOptions` &rarr; [`modifiers: PopperJS.Modifiers`](#labs.modifiers)
+  - `position: Position` &rarr; [`placement: PopperJS.Placement`](#labs/popover2.placement)
+  - `tetherOptions: ITetherOptions` &rarr; [`modifiers: PopperJS.Modifiers`](#labs/popover2.modifiers)
 - ...and one special addition:
   - `minimal: boolean` applies minimal styles, which includes removing the arrow and minimizing the transition
 
