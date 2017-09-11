@@ -6,7 +6,7 @@
  */
 
 import { expect } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
 import { Cell } from "../src/cell/cell";
@@ -117,46 +117,64 @@ describe("TableBody", () => {
             renderBodyContextMenu.reset();
         });
 
-        it("selects a right-clicked cell if there is no active selection", () => {
-            const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
-            tableBody.simulate("contextmenu");
-            checkOnSelectionCallback([TARGET_REGION]);
+        describe("on right-click", () => {
+            const simulateAction = (tableBody: ReactWrapper<any, any>) => {
+                tableBody.simulate("contextmenu");
+            };
+            runTestSuite(simulateAction);
         });
 
-        it("doesn't change the selected regions if the right-clicked cell is contained in one", () => {
-            const selectedRegions = [
-                Regions.row(TARGET_ROW + 1), // some other row
-                Regions.cell(0, 0, TARGET_ROW + 1, TARGET_COLUMN + 1), // includes the target cell
-            ];
-            const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
-            tableBody.simulate("contextmenu");
-            expect(onSelection.called).to.be.false;
+        // TODO: make this work (tracked in https://github.com/palantir/blueprint/issues/1549)
+        describe.skip("on ctrl+click", () => {
+            // ctrl+click should also triggers the context menu and should behave in the exact same way
+            const simulateAction = (tableBody: ReactWrapper<any, any>) => {
+                tableBody.simulate("mousedown", { ctrlKey: true });
+            };
+            runTestSuite(simulateAction);
         });
 
-        // tslint:disable-next-line:max-line-length
-        it("clears selections and select the right-clicked cell if it isn't within any existing selection", () => {
-            const selectedRegions = [
-                Regions.row(TARGET_ROW + 1), // some other row
-                Regions.cell(TARGET_ROW + 1, TARGET_COLUMN + 1), // includes the target cell
-            ];
-            const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
-            tableBody.simulate("contextmenu");
-            checkOnSelectionCallback([TARGET_REGION]);
-        });
+        function runTestSuite(simulateAction: (tableBody: ReactWrapper<any, any>) => void) {
+            it("selects a right-clicked cell if there is no active selection", () => {
+                const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
+                simulateAction(tableBody);
+                checkOnSelectionCallback([TARGET_REGION]);
+            });
 
-        it("renders context menu using new selection if selection changed on right-click", () => {
-            const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
-            tableBody.simulate("contextmenu");
-            const menuContext = renderBodyContextMenu.firstCall.args[0] as MenuContext;
-            expect(menuContext.getSelectedRegions()).to.deep.equal([TARGET_REGION]);
-        });
+            it("doesn't change the selected regions if the right-clicked cell is contained in one", () => {
+                const selectedRegions = [
+                    Regions.row(TARGET_ROW + 1), // some other row
+                    Regions.cell(0, 0, TARGET_ROW + 1, TARGET_COLUMN + 1), // includes the target cell
+                ];
+                const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
+                simulateAction(tableBody);
+                expect(onSelection.called).to.be.false;
+            });
 
-        it("moves focused cell to right-clicked cell if selection changed on right-click", () => {
-            const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
-            tableBody.simulate("contextmenu");
-            expect(onFocus.calledOnce).to.be.true;
-            expect(onFocus.firstCall.args[0]).to.deep.equal({ ...TARGET_CELL_COORDS, focusSelectionIndex: 0 });
-        });
+            // tslint:disable-next-line:max-line-length
+            it("clears selections and select the right-clicked cell if it isn't within any existing selection", () => {
+                const selectedRegions = [
+                    Regions.row(TARGET_ROW + 1), // some other row
+                    Regions.cell(TARGET_ROW + 1, TARGET_COLUMN + 1), // includes the target cell
+                ];
+                const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
+                simulateAction(tableBody);
+                checkOnSelectionCallback([TARGET_REGION]);
+            });
+
+            it("renders context menu using new selection if selection changed on right-click", () => {
+                const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
+                simulateAction(tableBody);
+                const menuContext = renderBodyContextMenu.firstCall.args[0] as MenuContext;
+                expect(menuContext.getSelectedRegions()).to.deep.equal([TARGET_REGION]);
+            });
+
+            it("moves focused cell to right-clicked cell if selection changed on right-click", () => {
+                const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
+                simulateAction(tableBody);
+                expect(onFocus.calledOnce).to.be.true;
+                expect(onFocus.firstCall.args[0]).to.deep.equal({ ...TARGET_CELL_COORDS, focusSelectionIndex: 0 });
+            });
+        }
 
         function mountTableBodyForContextMenuTests(
             targetCellCoords: { row: number, col: number },
