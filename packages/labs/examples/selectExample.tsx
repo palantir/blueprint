@@ -18,6 +18,7 @@ const FilmSelect = Select.ofType<Film>();
 export interface ISelectExampleState {
     film?: Film;
     filterable?: boolean;
+    hasInitialContent?: boolean;
     minimal?: boolean;
     resetOnClose?: boolean;
     resetOnSelect?: boolean;
@@ -28,6 +29,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
     public state: ISelectExampleState = {
         film: TOP_100_FILMS[0],
         filterable: true,
+        hasInitialContent: false,
         minimal: false,
         resetOnClose: false,
         resetOnSelect: false,
@@ -37,12 +39,19 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
     private handleMinimalChange = this.handleSwitchChange("minimal");
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
+    private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
 
     protected renderExample() {
         const { film, minimal, ...flags } = this.state;
+
+        const initialContent = this.state.hasInitialContent
+            ? <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
+            : undefined;
+
         return (
             <FilmSelect
                 {...flags}
+                initialContent={initialContent}
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
@@ -84,6 +93,12 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                     label="Minimal popover style"
                     checked={this.state.minimal}
                     onChange={this.handleMinimalChange}
+                />,
+                <Switch
+                    key="hasInitialContent"
+                    label="Show initial renderer"
+                    checked={this.state.hasInitialContent}
+                    onChange={this.handleInitialContentChange}
                 />,
             ],
         ];
