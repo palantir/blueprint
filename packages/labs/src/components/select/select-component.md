@@ -2,6 +2,13 @@
 
 Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a `Popover` that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
 
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    <h5>Disabling a Select</h5>
+    <p>Disabling the component requires setting the `disabled` prop to `true`
+    and separately disabling the component's children as appropriate (because `Select` accepts arbitrary children).</p>
+    <p>For example, `<Select ... disabled={true}><Button ... disabled={true} /></Select>`</p>
+</div>
+
 @reactExample SelectExample
 
 ```tsx

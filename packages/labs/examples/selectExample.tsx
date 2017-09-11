@@ -21,11 +21,13 @@ export interface ISelectExampleState {
     minimal?: boolean;
     resetOnClose?: boolean;
     resetOnSelect?: boolean;
+    disabled?: boolean;
 }
 
 export class SelectExample extends BaseExample<ISelectExampleState> {
 
     public state: ISelectExampleState = {
+        disabled: false,
         film: TOP_100_FILMS[0],
         filterable: true,
         minimal: false,
@@ -37,12 +39,14 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
     private handleMinimalChange = this.handleSwitchChange("minimal");
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
+    private handleDisabledChange = this.handleSwitchChange("disabled");
 
     protected renderExample() {
-        const { film, minimal, ...flags } = this.state;
+        const { film, minimal, disabled, ...flags } = this.state;
         return (
             <FilmSelect
                 {...flags}
+                disabled={disabled}
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
@@ -53,6 +57,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 <Button
                     rightIconName="caret-down"
                     text={film ? film.title : "(No selection)"}
+                    disabled={disabled}
                 />
             </FilmSelect>
         );
@@ -84,6 +89,12 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                     label="Minimal popover style"
                     checked={this.state.minimal}
                     onChange={this.handleMinimalChange}
+                />,
+                <Switch
+                    key="disabled"
+                    label="Disabled"
+                    checked={this.state.disabled}
+                    onChange={this.handleDisabledChange}
                 />,
             ],
         ];
