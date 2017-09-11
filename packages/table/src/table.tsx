@@ -17,7 +17,10 @@ import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
 import * as Errors from "./common/errors";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
+import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
+import * as ScrollUtils from "./common/internal/scrollUtils";
 import { Rect } from "./common/rect";
+import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
@@ -161,6 +164,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onColumnWidthChanged?: IIndexedResizeCallback;
 
     /**
+     * An optional callback invoked when all cells in view have completely rendered.
+     * Will be invoked on initial mount and whenever cells update (e.g., on scroll).
+     */
+    onCompleteRender?: () => void;
+
+    /**
      * If you want to do something after the copy or if you want to notify the
      * user if a copy fails, you may provide this optional callback.
      *
@@ -206,6 +215,14 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * represents the clicked cell.
      */
     renderBodyContextMenu?: IContextMenuRenderer;
+
+    /**
+     * Dictates how cells should be rendered. Supported modes are:
+     * - `RenderMode.BATCH`: renders cells in batches to improve performance
+     * - `RenderMode.NONE`: renders cells synchronously all at once
+     * @default RenderMode.BATCH
+     */
+    renderMode?: RenderMode;
 
     /**
      * Render each row's header cell.
@@ -344,11 +361,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         minColumnWidth: 50,
         minRowHeight: 20,
         numRows: 0,
+        renderMode: RenderMode.BATCH,
         renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
-
-    // these blacklists are identical, but we still need two definitions due to the different typings
 
     private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
@@ -356,6 +372,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private static SHALLOW_COMPARE_STATE_KEYS_BLACKLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
+        "viewportRect",
     ] as Array<keyof ITableState>;
 
     private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
@@ -382,10 +399,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private refHandlers = {
         columnHeader: (ref: HTMLElement) => this.columnHeaderElement = ref,
         mainQuadrant: (ref: HTMLElement) => this.mainQuadrantElement = ref,
+        quadrantStack: (ref: TableQuadrantStack) => this.quadrantStackInstance = ref,
         rowHeader: (ref: HTMLElement) => this.rowHeaderElement = ref,
         scrollContainer: (ref: HTMLElement) => this.scrollContainerElement = ref,
     };
 
+    private quadrantStackInstance: TableQuadrantStack;
     private columnHeaderElement: HTMLElement;
     private mainQuadrantElement: HTMLElement;
     private rowHeaderElement: HTMLElement;
@@ -415,15 +434,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
         const selectedRegions = (props.selectedRegions == null) ? [] as IRegion[] : props.selectedRegions;
-
-        let focusedCell: IFocusedCellCoordinates;
-        if (props.enableFocus) {
-            if (props.focusedCell != null) {
-                focusedCell = props.focusedCell;
-            } else {
-                focusedCell = { col: 0, row: 0, focusSelectionIndex: 0 };
-            }
-        }
+        const focusedCell = FocusedCellUtils.getInitialFocusedCell(
+            props.enableFocus,
+            props.focusedCell,
+            undefined,
+            selectedRegions,
+        );
 
         this.state = {
             columnWidths: newColumnWidths,
@@ -435,14 +451,82 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         };
     }
 
+    // Instance methods
+    // ================
+
+    /**
+     * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
+     * If no indices are provided, default to using the tallest visible cell from all columns in view.
+     */
+    public resizeRowsByTallestCell(columnIndices?: number | number[]) {
+        let tallest = 0;
+        if (columnIndices == null) {
+            // Consider all columns currently in viewport
+            const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
+            for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
+                tallest = Math.max(tallest, this.locator.getTallestVisibleCellInColumn(col));
+            }
+        } else {
+            const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
+            const tallestByColumns = columnIndicesArray.map((col) => this.locator.getTallestVisibleCellInColumn(col));
+            tallest = Math.max(...tallestByColumns);
+        }
+        const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
+        this.invalidateGrid();
+        this.setState({ rowHeights });
+    }
+
+    /**
+     * Scrolls the table to the target region in a fashion appropriate to the target region's
+     * cardinality:
+     *
+     * - CELLS: Scroll the top-left cell in the target region to the top-left corner of the viewport.
+     * - FULL_ROWS: Scroll the top-most row in the target region to the top of the viewport.
+     * - FULL_COLUMNS: Scroll the left-most column in the target region to the left side of the viewport.
+     * - FULL_TABLE: Scroll the top-left cell in the table to the top-left corner of the viewport.
+     *
+     * If there are active frozen rows and/or columns, the target region will be positioned in the
+     * top-left corner of the non-frozen area (unless the target region itself is in the frozen
+     * area).
+     *
+     * If the target region is close to the bottom-right corner of the table, this function will
+     * simply scroll the target region as close to the top-left as possible until the bottom-right
+     * corner is reached.
+     */
+    public scrollToRegion(region: IRegion) {
+        const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
+
+        const numFrozenRows = this.getNumFrozenRowsClamped();
+        const numFrozenColumns = this.getNumFrozenColumnsClamped();
+
+        const { scrollLeft, scrollTop } = ScrollUtils.getScrollPositionForRegion(
+            region,
+            currScrollLeft,
+            currScrollTop,
+            this.grid.getCumulativeWidthBefore,
+            this.grid.getCumulativeHeightBefore,
+            numFrozenRows,
+            numFrozenColumns,
+        );
+
+        const correctedScrollLeft = this.shouldDisableHorizontalScroll() ? 0 : scrollLeft;
+        const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : scrollTop;
+
+        // defer to the quadrant stack to keep all quadrant positions in sync
+        this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
+    }
+
+    // React lifecycle
+    // ===============
+
     public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
         const propKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
         const stateKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST };
 
         return !Utils.shallowCompareKeys(this.props, nextProps, propKeysBlacklist)
             || !Utils.shallowCompareKeys(this.state, nextState, stateKeysBlacklist)
-            || !Utils.deepCompareKeys(this.props, nextProps, ["selectedRegions"])
-            || !Utils.deepCompareKeys(this.state, nextState, ["selectedRegions"]);
+            || !Utils.deepCompareKeys(this.props, nextProps, Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST)
+            || !Utils.deepCompareKeys(this.state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST);
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
@@ -492,16 +576,20 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 return isSelectionModeEnabled && Regions.isRegionValidForTable(region, numRows, numCols);
             });
         }
-        const newFocusedCellCoordinates = (focusedCell == null)
-            ? this.state.focusedCell
-            : focusedCell;
+
+        const newFocusedCell = FocusedCellUtils.getInitialFocusedCell(
+            enableFocus,
+            focusedCell,
+            this.state.focusedCell,
+            newSelectedRegions,
+        );
 
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
         this.invalidateGrid();
         this.setState({
             columnWidths: newColumnWidths,
-            focusedCell: enableFocus ? newFocusedCellCoordinates : undefined,
+            focusedCell: newFocusedCell,
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });
@@ -540,6 +628,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     numFrozenRows={this.getNumFrozenRowsClamped()}
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
+                    ref={this.refHandlers.quadrantStack}
                     renderBody={this.renderBody}
                     renderColumnHeader={this.renderColumnHeader}
                     renderMenu={this.renderMenu}
@@ -565,28 +654,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 {hotkeys.filter((element) => element !== undefined)}
             </Hotkeys>
         );
-    }
-
-    /**
-     * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
-     * If no indices are provided, default to using the tallest visible cell from all columns in view.
-     */
-    public resizeRowsByTallestCell(columnIndices?: number | number[]) {
-        let tallest = 0;
-        if (columnIndices == null) {
-            // Consider all columns currently in viewport
-            const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
-            for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
-                tallest = Math.max(tallest, this.locator.getTallestVisibleCellInColumn(col));
-            }
-        } else {
-            const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
-            const tallestByColumns = columnIndicesArray.map((col) => this.locator.getTallestVisibleCellInColumn(col));
-            tallest = Math.max(...tallestByColumns);
-        }
-        const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
-        this.invalidateGrid();
-        this.setState({ rowHeights });
     }
 
     /**
@@ -1012,6 +1079,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             fillBodyWithGhostCells,
             loadingOptions,
             renderBodyContextMenu,
+            renderMode,
             selectedRegionTransform,
         } = this.props;
 
@@ -1029,49 +1097,39 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows : rowIndices.rowIndexEnd;
 
+        // the main quadrant contains all cells in the table, so listen only to that quadrant
+        const onCompleteRender = quadrantType === QuadrantType.MAIN
+            ? this.handleCompleteRender
+            : undefined;
+
         return (
-            // <div
-            //     className={classes}
-            //     onScroll={this.handleBodyScroll}
-            //     ref={this.setBodyRef}
-            // >
-            //     <div className={Classes.TABLE_BODY_SCROLL_CLIENT} style={style}>
+            <div>
+                <TableBody
+                    allowMultipleSelection={allowMultipleSelection}
+                    cellRenderer={this.bodyCellRenderer}
+                    grid={grid}
+                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
+                    locator={locator}
+                    onCompleteRender={onCompleteRender}
+                    onFocus={this.handleFocus}
+                    onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
+                    renderBodyContextMenu={renderBodyContextMenu}
+                    renderMode={renderMode}
+                    selectedRegions={selectedRegions}
+                    selectedRegionTransform={selectedRegionTransform}
+                    viewportRect={viewportRect}
 
-                // {...rowIndices}
-                // {...columnIndices}
-                <div>
-                    <TableBody
-                        allowMultipleSelection={allowMultipleSelection}
-                        cellRenderer={this.bodyCellRenderer}
-                        grid={grid}
-                        loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
-                        locator={locator}
-                        onFocus={this.handleFocus}
-                        onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
-                        renderBodyContextMenu={renderBodyContextMenu}
-                        selectedRegions={selectedRegions}
-                        selectedRegionTransform={selectedRegionTransform}
-                        viewportRect={viewportRect}
+                    columnIndexStart={columnIndexStart}
+                    columnIndexEnd={columnIndexEnd}
 
-                        columnIndexStart={columnIndexStart}
-                        columnIndexEnd={columnIndexEnd}
+                    rowIndexStart={rowIndexStart}
+                    rowIndexEnd={rowIndexEnd}
 
-                        rowIndexStart={rowIndexStart}
-                        rowIndexEnd={rowIndexEnd}
-
-                        numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumns : undefined}
-                        numFrozenRows={showFrozenRowsOnly ? numFrozenRows : undefined}
-                    />
-                    {this.maybeRenderRegions(this.styleBodyRegion, quadrantType)}
-                </div>
-                    // <div ref={this.setBodyRef} style={{ position: "relative" }}>
-                    // <GuideLayer
-                    //     className={Classes.TABLE_RESIZE_GUIDES}
-                    //     verticalGuides={verticalGuides}
-                    //     horizontalGuides={horizontalGuides}
-                    // />
-            //     </div>
-            // </div>
+                    numFrozenColumns={showFrozenColumnsOnly ? numFrozenColumns : undefined}
+                    numFrozenRows={showFrozenRowsOnly ? numFrozenRows : undefined}
+                />
+                {this.maybeRenderRegions(this.styleBodyRegion, quadrantType)}
+            </div>
         );
     }
 
@@ -1160,6 +1218,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             );
         } else {
             return undefined;
+        }
+    }
+
+    private handleCompleteRender = () => {
+        // the first onCompleteRender is triggered before the viewportRect is
+        // defined and the second after the viewportRect has been set. the cells
+        // will only actually render once the viewportRect is defined though, so
+        // we defer invoking onCompleteRender until that check passes.
+        if (this.state.viewportRect != null) {
+            BlueprintUtils.safeInvoke(this.props.onCompleteRender);
         }
     }
 
@@ -1268,27 +1336,31 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const fixedHeight = this.grid.getHeight();
         const fixedWidth = this.grid.getWidth();
 
+        // include a correction in some cases to hide borders along quadrant boundaries
+        const alignmentCorrection = 1;
+        const alignmentCorrectionString = `-${alignmentCorrection}px`;
+
         switch (cardinality) {
             case RegionCardinality.CELLS:
                 return style;
             case RegionCardinality.FULL_COLUMNS:
-                style.top = "-1px";
-                style.height = fixedHeight;
+                style.top = alignmentCorrectionString;
+                style.height = fixedHeight + alignmentCorrection;
                 return style;
             case RegionCardinality.FULL_ROWS:
-                style.left = "-1px";
-                style.width = fixedWidth;
+                style.left = alignmentCorrectionString;
+                style.width = fixedWidth + alignmentCorrection;
                 if (canHideRightBorder) {
-                    style.right = "-1px";
+                    style.right = alignmentCorrectionString;
                 }
                 return style;
             case RegionCardinality.FULL_TABLE:
-                style.left = "-1px";
-                style.top = "-1px";
-                style.width = fixedWidth;
-                style.height = fixedHeight;
+                style.left = alignmentCorrectionString;
+                style.top = alignmentCorrectionString;
+                style.width = fixedWidth + alignmentCorrection;
+                style.height = fixedHeight + alignmentCorrection;
                 if (canHideRightBorder) {
-                    style.right = "-1px";
+                    style.right = alignmentCorrectionString;
                 }
                 return style;
             default:
@@ -1635,12 +1707,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const didScrollLeftChange = nextScrollLeft !== viewportRect.left;
 
         if (didScrollTopChange || didScrollLeftChange) {
-            // we need to modify the body element explicitly for the viewport to shift
+            // we need to modify the scroll container explicitly for the viewport to shift. in so
+            // doing, we add the size of the header elements, which are not technically part of the
+            // "grid" concept (the grid only consists of body cells at present).
             if (didScrollTopChange) {
-                this.bodyElement.scrollTop = nextScrollTop;
+                const topCorrection = this.shouldDisableVerticalScroll() ? 0 : this.columnHeaderElement.clientHeight;
+                this.scrollContainerElement.scrollTop = nextScrollTop + topCorrection;
             }
             if (didScrollLeftChange) {
-                this.bodyElement.scrollLeft = nextScrollLeft;
+                const leftCorrection = this.shouldDisableHorizontalScroll() ? 0 : this.rowHeaderElement.clientWidth;
+                this.scrollContainerElement.scrollLeft = nextScrollLeft + leftCorrection;
             }
 
             const nextViewportRect = new Rect(
@@ -1723,7 +1799,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private updateViewportRect = (nextViewportRect: Rect) => {
         this.setState({ viewportRect: nextViewportRect });
-        this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
+
+        const { viewportRect } = this.state;
+
+        const didViewportChange =
+            (viewportRect != null && !viewportRect.equals(nextViewportRect))
+            || (viewportRect == null && nextViewportRect != null);
+
+        if (didViewportChange) {
+            this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
+        }
     }
 
     private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {

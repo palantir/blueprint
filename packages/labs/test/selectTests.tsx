@@ -63,7 +63,7 @@ describe("<Select>", () => {
         assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
     });
 
-    it("clicking item invokes onSelectItem", () => {
+    it("clicking item invokes onItemSelect", () => {
         const wrapper = select();
         wrapper.find("a").at(4).simulate("click");
         assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
