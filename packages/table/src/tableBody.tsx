@@ -10,7 +10,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
-import { ICellCoordinates, IFocusedCellCoordinates } from "./common/cell";
+import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
