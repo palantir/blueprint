@@ -156,19 +156,38 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             return;
         }
 
-        // if the popover handle exists, take it into account
-        const popoverHandleAdjustmentFactor = this.state.isTruncated ? CONTENT_DIV_WIDTH_DELTA : 0;
+        if (this.contentDiv === undefined) {
+            this.setState({ isTruncated: false });
+            return;
+        }
 
-        let isTruncated = this.contentDiv !== undefined &&
-            (this.contentDiv.scrollWidth - popoverHandleAdjustmentFactor > this.contentDiv.clientWidth ||
-            this.contentDiv.scrollHeight > this.contentDiv.clientHeight);
-        // don't remove the popover if the widths are equal, because this can cause issues with pixel-perfectness
-        if (this.contentDiv.scrollWidth - popoverHandleAdjustmentFactor === this.contentDiv.clientWidth &&
-            this.state.isTruncated) {
-                isTruncated = true;
-            }
-        if (this.state.isTruncated !== isTruncated) {
-            this.setState({ isTruncated });
+        const { isTruncated } = this.state;
+
+        // take all measurements at once to avoid excessive DOM reflows.
+        const {
+            clientHeight: containerHeight,
+            clientWidth: containerWidth,
+            scrollHeight: actualContentHeight,
+            scrollWidth: contentWidth,
+        } = this.contentDiv;
+
+        // if the content is truncated, then a popover handle will be present as a
+        // sibling of the content. we don't want to consider that handle when
+        // calculating the width of the actual content, so subtract it.
+        const actualContentWidth = isTruncated
+            ? contentWidth - CONTENT_DIV_WIDTH_DELTA
+            : contentWidth;
+
+        // we of course truncate the content if it doesn't fit in the container. but we
+        // also aggressively truncate if they're the same size with truncation enabled;
+        // this addresses browser-crashing stack-overflow bugs at various zoom levels.
+        // (see: https://github.com/palantir/blueprint/pull/1519)
+        const shouldTruncate = (isTruncated && actualContentWidth === containerWidth)
+            || actualContentWidth > containerWidth
+            || actualContentHeight > containerHeight;
+
+        if (isTruncated !== shouldTruncate) {
+            this.setState({ isTruncated: shouldTruncate });
         }
     }
 }
