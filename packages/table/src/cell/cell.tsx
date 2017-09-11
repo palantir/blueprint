@@ -103,7 +103,7 @@ export class Cell extends React.Component<ICellProps, {}> {
         );
 
         const modifiedChildren = React.Children.map(this.props.children, (child) => {
-            if (React.isValidElement(child)) {
+            if (style != null && React.isValidElement(child)) {
                 return React.cloneElement(child as React.ReactElement<any>,
                     {parentCellHeight: style.height, parentCellWidth: style.width});
             }
