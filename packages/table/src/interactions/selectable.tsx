@@ -10,8 +10,8 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
 import { Utils } from "../common/utils";
-import { DragEvents } from "../interactions/dragEvents";
-import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
+import { DragEvents } from "./dragEvents";
+import { Draggable, ICoordinateData, IDraggableProps } from "./draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
 
 export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coords?: ICoordinateData) => IRegion;

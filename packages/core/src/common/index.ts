@@ -12,8 +12,8 @@ export * from "./position";
 export * from "./props";
 export * from "./tetherUtils"
 
-import * as classes from "../common/classes";
-import * as keys from "../common/keys";
+import * as classes from "./classes";
+import * as keys from "./keys";
 import * as utils from "./utils";
 
 export const Classes = classes;
