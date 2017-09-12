@@ -268,7 +268,7 @@ describe("<Table>", () => {
 
         function selectFullTable(table: ReactWrapper<any, {}>) {
             const menu = table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_MENU}`);
-            menu.simulate("click");
+            menu.simulate("mousedown").simulate("mouseup");
         }
     });
 

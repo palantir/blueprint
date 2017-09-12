@@ -122,6 +122,8 @@ export class ElementHarness {
             isMetaKeyDown = this.defaultValue(offsetXOrOptions.metaKey, false);
             isShiftKeyDown = this.defaultValue(offsetXOrOptions.shiftKey, false);
             button = this.defaultValue(offsetXOrOptions.button, 0);
+        } else {
+            offsetX = offsetXOrOptions as number;
         }
 
         const bounds = this.bounds();
