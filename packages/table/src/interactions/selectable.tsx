@@ -252,6 +252,11 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         // update the focused cell.
         const nextSelectedRegions = this.expandSelectedRegions(selectedRegions, region, focusedCell);
         onSelection(nextSelectedRegions);
+
+        // move the focused cell into the new region if there were no selections before
+        if (selectedRegions == null || selectedRegions.length === 0) {
+            this.invokeOnFocusCallbackForRegion(region);
+        }
     }
 
     private handleAddDisjointSelection = (region: IRegion) => {
