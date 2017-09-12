@@ -45,6 +45,13 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      */
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
+    /**
+     * Whether the component is non-interactive.
+     * Note that you'll also need to disable the component's children, if appropriate.
+     * @default false
+     */
+    disabled?: boolean;
+
     /** React child to render when filtering items returns zero results. */
     noResults?: React.ReactChild;
 
@@ -148,7 +155,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { filterable = true, inputProps = {}, popoverProps = {} } = this.props;
+        const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
         const { ref, ...htmlInputProps } = inputProps;
         const input = (
@@ -170,6 +177,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
+                isDisabled={disabled}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}

@@ -22,11 +22,13 @@ export interface ISelectExampleState {
     minimal?: boolean;
     resetOnClose?: boolean;
     resetOnSelect?: boolean;
+    disabled?: boolean;
 }
 
 export class SelectExample extends BaseExample<ISelectExampleState> {
 
     public state: ISelectExampleState = {
+        disabled: false,
         film: TOP_100_FILMS[0],
         filterable: true,
         hasInitialContent: false,
@@ -40,9 +42,10 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
+    private handleDisabledChange = this.handleSwitchChange("disabled");
 
     protected renderExample() {
-        const { film, minimal, ...flags } = this.state;
+        const { disabled, film, minimal, ...flags } = this.state;
 
         const initialContent = this.state.hasInitialContent
             ? <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
@@ -51,6 +54,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         return (
             <FilmSelect
                 {...flags}
+                disabled={disabled}
                 initialContent={initialContent}
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
@@ -62,6 +66,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 <Button
                     rightIconName="caret-down"
                     text={film ? film.title : "(No selection)"}
+                    disabled={disabled}
                 />
             </FilmSelect>
         );
@@ -93,6 +98,12 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                     label="Minimal popover style"
                     checked={this.state.minimal}
                     onChange={this.handleMinimalChange}
+                />,
+                <Switch
+                    key="disabled"
+                    label="Disabled"
+                    checked={this.state.disabled}
+                    onChange={this.handleDisabledChange}
                 />,
                 <Switch
                     key="hasInitialContent"
