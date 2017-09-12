@@ -12,17 +12,15 @@ import * as React from "react";
 
 import {
     AbstractComponent,
+    Button,
     Classes as CoreClasses,
-    InputGroup,
     IProps,
-    Menu,
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
 import {
-    IQueryListRendererProps,
-    Popover2,
-    QueryList,
+    ISelectItemRendererProps,
+    Select,
 } from "..";
 import * as Classes from "../../common/classes";
 
@@ -35,12 +33,10 @@ export interface ITimezone {
 }
 
 export interface ITimezoneInputState {
-    activeItem?: ITimezone;
-    query?: string;
-    isOpen?: boolean;
+    selectedItem?: ITimezone;
 }
 
-const TypedQueryList = QueryList.ofType<ITimezone>();
+const TimezoneSelect = Select.ofType<ITimezone>();
 
 @PureRender
 export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimezoneInputState> {
@@ -48,100 +44,57 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
     public static defaultProps: Partial<ITimezoneInputProps> = {};
 
-    public state: ITimezoneInputState = {
-        isOpen: false,
-        query: "",
-    };
-
-    private queryList: QueryList<ITimezone>;
-    private refHandlers = {
-        queryList: (ref: QueryList<ITimezone>) => this.queryList = ref,
-    };
+    public state: ITimezoneInputState = {};
 
     private items: ITimezone[] = moment.tz.names().map((name) => ({ name }));
 
     public render() {
         const { className } = this.props;
+        const { selectedItem } = this.state;
 
         return (
-            <TypedQueryList
+            <TimezoneSelect
                 className={classNames(Classes.TIMEZONE_INPUT, className)}
                 items={this.items}
-                activeItem={this.state.activeItem}
-                onActiveItemChange={this.handleActiveItemChange}
+                itemPredicate={this.filterTimezones}
+                itemRenderer={this.renderTimezone}
+                noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleItemSelect}
-                query={this.state.query}
-                ref={this.refHandlers.queryList}
-                renderer={this.renderQueryList}
+                resetOnSelect={true}
+            >
+                <Button
+                    className={CoreClasses.MINIMAL}
+                    rightIconName="caret-down"
+                    text={moment.tz(selectedItem ? selectedItem.name : moment.tz.guess()).format("Z")}
+                />
+            </TimezoneSelect>
+        );
+    }
+
+    private filterTimezones(query: string, timezone: ITimezone) {
+        return timezone.name.toLowerCase().indexOf(query.toLowerCase()) >= 0;
+    }
+
+    private renderTimezone(itemProps: ISelectItemRendererProps<ITimezone>) {
+        const classes = classNames({
+            [CoreClasses.ACTIVE]: itemProps.isActive,
+            [CoreClasses.INTENT_PRIMARY]: itemProps.isActive,
+        });
+        const timezone = itemProps.item.name;
+        const offset = moment.tz(timezone).format("Z");
+        return (
+            <MenuItem
+                key={timezone}
+                className={classes}
+                text={timezone}
+                label={offset}
+                onClick={itemProps.handleClick}
             />
         );
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<ITimezone>) => {
-        const { query, activeItem, isOpen } = this.state;
-
-        return (
-            <Popover2
-                className={listProps.className}
-                popoverClassName={Classes.SELECT_POPOVER}
-                placement="bottom-start"
-                isOpen={isOpen}
-                onInteraction={this.handlePopoverInteraction}
-                autoFocus={false}
-                enforceFocus={false}
-            >
-                <InputGroup
-                    placeholder="Select a timezone..."
-                    value={isOpen ? query : activeItem ? activeItem.name : ""}
-                    onChange={this.handleQueryChange}
-                    onKeyDown={listProps.handleKeyDown}
-                    onKeyUp={listProps.handleKeyUp}
-                />
-
-                <Menu ulRef={listProps.itemsParentRef}>
-                    {this.renderItems(listProps)}
-                </Menu>
-            </Popover2>
-        );
-    }
-
-    private renderItems(listProps: IQueryListRendererProps<ITimezone>) {
-        const { activeItem } = this.state;
-
-        return listProps.filteredItems.map((item, index) => {
-            const classes = classNames({
-                [CoreClasses.ACTIVE]: item === activeItem,
-            });
-            const handleClick = (event: React.SyntheticEvent<HTMLElement>) => {
-                listProps.handleItemSelect(item, event);
-            };
-
-            return (
-                <MenuItem
-                    key={index}
-                    className={classes}
-                    text={item.name}
-                    onClick={handleClick}
-                />
-            );
-        });
-    }
-
-    private handleActiveItemChange = (activeItem: ITimezone) => {
-        this.setState({ activeItem });
-    }
-
     private handleItemSelect = (item: ITimezone, event?: React.SyntheticEvent<HTMLElement>) => {
-        this.setState({ isOpen: false });
+        this.setState({ selectedItem: item });
         Utils.safeInvoke(this.props.onTimezoneSelect, item, event);
-    }
-
-    private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const query = event.currentTarget.value;
-        this.setState({ query });
-    }
-
-    private handlePopoverInteraction = (isOpen: boolean) => {
-        this.setState({ isOpen });
     }
 }
