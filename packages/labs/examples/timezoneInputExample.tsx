@@ -11,35 +11,68 @@ import * as React from "react";
 import { Classes, Icon, Tag } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
-import { ITimezone, TimezoneInput } from "../src";
+import { TimezoneFormat, TimezoneInput } from "../src";
 
 export interface ITimezoneInputExampleState {
     date?: Date;
-    timezone?: ITimezone;
+    timezone?: string;
+    format?: TimezoneFormat;
 }
 
 export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState> {
     public state: ITimezoneInputExampleState = {
         date: new Date(),
+        format: TimezoneFormat.OFFSET,
     };
 
     protected renderExample() {
-        const { date, timezone } = this.state;
+        const { date, timezone, format } = this.state;
+
         return (
             <div>
                 <TimezoneInput
                     date={date}
+                    selectedTimezoneFormat={format}
                     onTimezoneSelect={this.handleTimezoneSelect}
                 />
 
                 <Tag className={classNames(Classes.MINIMAL, Classes.LARGE)} style={{ marginLeft: 10 }}>
-                    <Icon iconName="time" /> {timezone ? timezone.name : "No timezone selected"}
+                    <Icon iconName="time" /> {timezone || "No timezone selected"}
                 </Tag>
             </div>
         );
     }
 
-    private handleTimezoneSelect = (timezone: ITimezone) => {
+    protected renderOptions() {
+        return [
+            this.renderFormatSelect(),
+        ];
+    }
+
+    private renderFormatSelect() {
+        return (
+            <label key="format-select" className={Classes.LABEL}>
+                Selected timezone format
+                <div className={Classes.SELECT}>
+                    <select
+                        value={this.state.format}
+                        onChange={this.handleFormatChange}
+                    >
+                        <option value={TimezoneFormat.ABBREVIATION.toString()}>Abbreviation</option>
+                        <option value={TimezoneFormat.NAME.toString()}>Name</option>
+                        <option value={TimezoneFormat.OFFSET.toString()}>Offset</option>
+                    </select>
+                </div>
+            </label>
+        );
+    }
+
+    private handleTimezoneSelect = (timezone: string) => {
         this.setState({ timezone });
+    }
+
+    private handleFormatChange = (e: React.FormEvent<HTMLSelectElement>) => {
+        const format = e.currentTarget.value as TimezoneFormat;
+        this.setState({ format });
     }
 }

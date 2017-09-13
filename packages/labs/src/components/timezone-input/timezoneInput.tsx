@@ -14,6 +14,7 @@ import {
     AbstractComponent,
     Button,
     Classes as CoreClasses,
+    IPopoverProps,
     IProps,
     MenuItem,
     Utils,
@@ -25,19 +26,57 @@ import {
 import * as Classes from "../../common/classes";
 
 export interface ITimezoneInputProps extends IProps {
+    /**
+     * Date to use when determining timezone offsets.
+     * A timezone usually has more than one offset from UTC due to daylight saving time.
+     * https://momentjs.com/guides/#/lib-concepts/timezone-offset/
+     * http://momentjs.com/timezone/docs/#/using-timezones/parsing-ambiguous-inputs/
+     */
     date: Date;
-    onTimezoneSelect: (timezone: ITimezone | undefined, event?: React.SyntheticEvent<HTMLElement>) => void;
+
+    /**
+     * Callback invoked when a timezone from the list is selected,
+     * typically by clicking or pressing `enter` key.
+     */
+    onTimezoneSelect: (timezone: string | undefined, event?: React.SyntheticEvent<HTMLElement>) => void;
+
+    /** Initial timezone that will display as selected. */
+    defaultTimezone?: string;
+
+    /**
+     * Format to use when rendering the selected (or default) timezone.
+     * Only affects the target, not anything in the dropdown list.
+     * @default TimezoneFormat.OFFSET
+     */
+    selectedTimezoneFormat?: TimezoneFormat;
+
+    /**
+     * Whether this input is non-interactive.
+     * @default false
+     */
+    disabled?: boolean;
+
+    showUserTimezoneGuess?: boolean; // TODO
+    popoverProps?: Partial<IPopoverProps> & object; // TODO
+    placeholder?: string; // TODO
 }
 
-export interface ITimezone {
+export type TimezoneFormat = "offset" | "abbreviation" | "name";
+export const TimezoneFormat = {
+    ABBREVIATION: "abbreviation" as "abbreviation",
+    NAME: "name" as "name",
+    OFFSET: "offset" as "offset",
+};
+
+export interface ITimezoneInputState {
+    selectedTimezone?: string;
+}
+
+interface ITimezone {
     name: string;
     abbreviation: string;
     offset: number;
     offsetAsString: string;
-}
-
-export interface ITimezoneInputState {
-    selectedItem?: ITimezone;
 }
 
 const TimezoneSelect = Select.ofType<ITimezone>();
@@ -46,39 +85,38 @@ const TimezoneSelect = Select.ofType<ITimezone>();
 export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimezoneInputState> {
     public static displayName = "Blueprint.TimezoneInput";
 
-    public static defaultProps: Partial<ITimezoneInputProps> = {};
-
     public state: ITimezoneInputState = {};
 
-    private items: ITimezone[];
-    private initialItems: ITimezone[];
+    private timezones: ITimezone[];
+    private initialTimezones: ITimezone[];
 
     constructor(props: ITimezoneInputProps, context?: any) {
         super(props, context);
 
-        this.items = getTimezones(props.date);
-        this.initialItems = getRepresentativeTimezones(props.date);
+        this.timezones = getTimezones(props.date);
+        this.initialTimezones = getInitialTimezones(props.date);
     }
 
     public render() {
-        const { className } = this.props;
-        const { selectedItem } = this.state;
+        const { className, disabled } = this.props;
 
         return (
             <TimezoneSelect
                 className={classNames(Classes.TIMEZONE_INPUT, className)}
-                items={this.items}
+                items={this.timezones}
                 itemListPredicate={this.filterTimezones}
                 itemRenderer={this.renderTimezone}
                 noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleItemSelect}
                 resetOnSelect={true}
                 popoverProps={{ popoverClassName: Classes.TIMEZONE_INPUT_POPOVER }}
+                disabled={disabled}
             >
                 <Button
                     className={CoreClasses.MINIMAL}
                     rightIconName="caret-down"
-                    text={moment.tz(selectedItem ? selectedItem.name : moment.tz.guess()).format("Z")}
+                    text={this.getSelectedTimezoneDisplayText() || "Select a timezone"}
+                    disabled={disabled}
                 />
             </TimezoneSelect>
         );
@@ -86,14 +124,37 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
     public componentWillReceiveProps(nextProps: ITimezoneInputProps) {
         if (this.props.date.getTime() !== nextProps.date.getTime()) {
-            this.items = getTimezones(nextProps.date);
-            this.initialItems = getRepresentativeTimezones(nextProps.date);
+            this.timezones = getTimezones(nextProps.date);
+            this.initialTimezones = getInitialTimezones(nextProps.date);
         }
+    }
+
+    private getSelectedTimezoneDisplayText(): string | undefined {
+        const { date, selectedTimezoneFormat = TimezoneFormat.OFFSET, defaultTimezone } = this.props;
+        const { selectedTimezone } = this.state;
+        const timestamp = date.getTime();
+        const timezone = selectedTimezone || defaultTimezone;
+        const timezoneExists = timezone && moment.tz.zone(timezone) != null;
+
+        if (timezoneExists) {
+            switch (selectedTimezoneFormat) {
+                case TimezoneFormat.ABBREVIATION:
+                    return moment.tz(timestamp, timezone).format("z");
+                case TimezoneFormat.NAME:
+                    return timezone;
+                case TimezoneFormat.OFFSET:
+                    return moment.tz(timestamp, timezone).format("Z");
+                default:
+                    assertNever(selectedTimezoneFormat);
+            }
+        }
+
+        return undefined;
     }
 
     private filterTimezones = (query: string, items: ITimezone[]): ITimezone[] => {
         if (!query) {
-            return this.initialItems;
+            return this.initialTimezones;
         }
 
         return items.filter((item) => {
@@ -120,9 +181,9 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         );
     }
 
-    private handleItemSelect = (item: ITimezone, event?: React.SyntheticEvent<HTMLElement>) => {
-        this.setState({ selectedItem: item });
-        Utils.safeInvoke(this.props.onTimezoneSelect, item, event);
+    private handleItemSelect = (timezone: ITimezone, event?: React.SyntheticEvent<HTMLElement>) => {
+        this.setState({ selectedTimezone: timezone.name });
+        Utils.safeInvoke(this.props.onTimezoneSelect, timezone.name, event);
     }
 }
 
@@ -130,7 +191,7 @@ function getTimezones(date: Date): ITimezone[] {
     return moment.tz.names().map((name) => createTimezone(date.getTime(), name));
 }
 
-function getRepresentativeTimezones(date: Date): ITimezone[] {
+function getInitialTimezones(date: Date): ITimezone[] {
     interface IZoneWithMeta {
         name: string;
         offset: number;
@@ -204,4 +265,8 @@ function getAbbreviation(timestamp: number, timezoneName: string): string {
     }
 
     return "";
+}
+
+function assertNever(x: never): never {
+    throw new Error("Unexpected value: " + x);
 }
