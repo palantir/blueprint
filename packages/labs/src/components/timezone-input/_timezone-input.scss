@@ -9,4 +9,11 @@
 @import "~@blueprintjs/core/src/components/forms/common";
 @import "~@blueprintjs/core/src/components/tag/common";
 
-.pt-timezone-input {}
+.pt-timezone-input {
+  .pt-timezone-menu-item-label {
+    float: left;
+    margin-right: 7px;
+    margin-left: 0;
+    min-width: 90px;
+  }
+}

@@ -15,3 +15,6 @@ export const SELECT_POPOVER = `${SELECT}-popover`;
 export const TAG_INPUT = "pt-tag-input";
 export const TAG_INPUT_ICON = `${TAG_INPUT}-icon`;
 export const TIMEZONE_INPUT = "pt-timezone-input";
+export const TIMEZONE_MENU_ITEM = "pt-timezone-menu-item";
+export const TIMEZONE_MENU_ITEM_TEXT = "pt-timezone-menu-item-text";
+export const TIMEZONE_MENU_ITEM_LABEL = "pt-timezone-menu-item-label";

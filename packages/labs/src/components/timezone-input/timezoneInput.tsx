@@ -73,6 +73,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleItemSelect}
                 resetOnSelect={true}
+                popoverProps={{ popoverClassName: Classes.TIMEZONE_INPUT }}
             >
                 <Button
                     className={CoreClasses.MINIMAL}
@@ -101,20 +102,28 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     private renderTimezone(itemProps: ISelectItemRendererProps<ITimezone>) {
-        const classes = classNames({
+        const timezone = itemProps.item;
+        const classes = classNames(Classes.TIMEZONE_MENU_ITEM, CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
             [CoreClasses.ACTIVE]: itemProps.isActive,
             [CoreClasses.INTENT_PRIMARY]: itemProps.isActive,
         });
-        const timezone = itemProps.item.name;
-        const offset = moment.tz(timezone).format("Z");
+
         return (
-            <MenuItem
-                key={timezone}
-                className={classes}
-                text={timezone}
-                label={offset}
-                onClick={itemProps.handleClick}
-            />
+            <li key={timezone.name}>
+                <a
+                    className={classes}
+                    onClick={itemProps.handleClick}
+                    tabIndex={0}
+                >
+                    <span className={classNames(Classes.TIMEZONE_MENU_ITEM_LABEL, CoreClasses.MENU_ITEM_LABEL)}>
+                        {timezone.offsetAsString}{timezone.abbreviation ? ` ${timezone.abbreviation}` : ""}
+                    </span>
+
+                    <span className={Classes.TIMEZONE_MENU_ITEM_TEXT}>
+                        {timezone.name}
+                    </span>
+                </a>
+            </li>
         );
     }
 
