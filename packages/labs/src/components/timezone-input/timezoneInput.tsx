@@ -44,6 +44,13 @@ export interface ITimezoneInputProps extends IProps {
     defaultTimezone?: string;
 
     /**
+     * Whether to guess the user's timezone and show it at the top of the list of initial timezone suggestions.
+     * https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/
+     * @default true
+     */
+    showUserTimezoneGuess?: boolean;
+
+    /**
      * Format to use when displaying the selected (or default) timezone.
      * Only affects the target, not anything in the dropdown list.
      * @default TimezoneFormat.OFFSET
@@ -57,16 +64,13 @@ export interface ITimezoneInputProps extends IProps {
     disabled?: boolean;
 
     /**
-     * Whether to guess the user's timezone and show it at the top of the list of initial timezone suggestions.
-     * https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/
-     * @default true
+     * Text to show when no timezone has been selected and there is no default.
+     * @default "Select timezone..."
      */
-    showUserTimezoneGuess?: boolean;
+    placeholder?: string;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
-
-    placeholder?: string; // TODO
 }
 
 export type TimezoneFormat = "offset" | "abbreviation" | "name";
@@ -96,6 +100,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
     public static defaultProps: Partial<ITimezoneInputProps> = {
         disabled: false,
+        placeholder: "Select timezone...",
         popoverProps: {},
         showUserTimezoneGuess: true,
     };
@@ -113,7 +118,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     public render() {
-        const { className, disabled, popoverProps } = this.props;
+        const { className, placeholder, disabled, popoverProps } = this.props;
         const finalPopoverProps: Partial<IPopoverProps> & object = {
             ...popoverProps,
             popoverClassName: classNames(popoverProps.popoverClassName, Classes.TIMEZONE_INPUT_POPOVER),
@@ -134,7 +139,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 <Button
                     className={CoreClasses.MINIMAL}
                     rightIconName="caret-down"
-                    text={this.getSelectedTimezoneDisplayText() || "Select a timezone"}
+                    text={this.getSelectedTimezoneDisplayText() || placeholder}
                     disabled={disabled}
                 />
             </TypedSelect>
