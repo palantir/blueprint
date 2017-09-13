@@ -81,10 +81,10 @@ function getExpandedRegionIndices(
     focusedCellDimension: "row" | "col",
     regionDimension: "rows" | "cols",
 ) {
-    const srcIndex = focusedCell[focusedCellDimension];
-    const [dstIndex, dstIndexEnd] = newRegion[regionDimension];
+    const sourceIndex = focusedCell[focusedCellDimension];
+    const [destinationIndex, destinationIndexEnd] = newRegion[regionDimension];
 
-    if (dstIndex !== dstIndexEnd) {
+    if (destinationIndex !== destinationIndexEnd) {
         if (regionDimension === "rows") {
             throw new Error(Errors.TABLE_EXPAND_FOCUSED_REGION_MULTI_ROW_REGION);
         } else if (regionDimension === "cols") {
@@ -92,7 +92,7 @@ function getExpandedRegionIndices(
         }
     }
 
-    return srcIndex <= dstIndex
-        ? [srcIndex, dstIndex]
-        : [dstIndex, srcIndex];
+    return sourceIndex <= destinationIndex
+        ? [sourceIndex, destinationIndex]
+        : [destinationIndex, sourceIndex];
 }
