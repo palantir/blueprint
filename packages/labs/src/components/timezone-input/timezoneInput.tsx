@@ -109,21 +109,14 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         });
 
         return (
-            <li key={timezone.name}>
-                <a
-                    className={classes}
-                    onClick={itemProps.handleClick}
-                    tabIndex={0}
-                >
-                    <span className={classNames(Classes.TIMEZONE_MENU_ITEM_LABEL, CoreClasses.MENU_ITEM_LABEL)}>
-                        {timezone.offsetAsString}{timezone.abbreviation ? ` ${timezone.abbreviation}` : ""}
-                    </span>
-
-                    <span className={Classes.TIMEZONE_MENU_ITEM_TEXT}>
-                        {timezone.name}
-                    </span>
-                </a>
-            </li>
+            <MenuItem
+                key={timezone.name}
+                className={classes}
+                label={`${timezone.offsetAsString}${timezone.abbreviation ? ` ${timezone.abbreviation}` : ""}`}
+                text={timezone.name}
+                onClick={itemProps.handleClick}
+                shouldDismissPopover={false}
+            />
         );
     }
 
