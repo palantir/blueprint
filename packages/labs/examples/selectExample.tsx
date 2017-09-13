@@ -107,7 +107,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 />,
                 <Switch
                     key="hasInitialContent"
-                    label="Show initial renderer"
+                    label="Use initial content"
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
                 />,
