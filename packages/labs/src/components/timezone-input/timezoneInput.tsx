@@ -35,6 +35,12 @@ export interface ITimezoneInputProps extends IProps {
     date: Date;
 
     /**
+     * Selected timezone, for controlled usage.
+     * Providing this prop will put the component in controlled mode.
+     */
+    selectedTimezone?: string;
+
+    /**
      * Callback invoked when a timezone from the list is selected,
      * typically by clicking or pressing `enter` key.
      */
@@ -108,14 +114,16 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         showUserTimezoneGuess: true,
     };
 
-    public state: ITimezoneInputState = {};
-
     private timezones: ITimezoneWithMetadata[];
     private timezoneToQueryCandidates: { [timezone: string]: string[] };
     private initialTimezones: ITimezoneWithMetadata[];
 
     constructor(props: ITimezoneInputProps, context?: any) {
         super(props, context);
+
+        this.state = {
+            selectedTimezone: props.selectedTimezone,
+        };
 
         this.updateTimezones(props);
         this.updateInitialTimezones(props);
@@ -159,6 +167,9 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         if (this.props.date.getTime() !== nextProps.date.getTime() ||
             this.props.showUserTimezoneGuess !== nextProps.showUserTimezoneGuess) {
             this.updateInitialTimezones(nextProps);
+        }
+        if (this.state.selectedTimezone !== nextProps.selectedTimezone) {
+            this.setState({ selectedTimezone: nextProps.selectedTimezone });
         }
     }
 
@@ -233,7 +244,9 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     private handleItemSelect = (timezone: ITimezoneWithMetadata, event?: React.SyntheticEvent<HTMLElement>) => {
-        this.setState({ selectedTimezone: timezone.timezone });
+        if (this.props.selectedTimezone === undefined) {
+            this.setState({ selectedTimezone: timezone.timezone });
+        }
         Utils.safeInvoke(this.props.onTimezoneSelect, timezone.timezone, event);
     }
 

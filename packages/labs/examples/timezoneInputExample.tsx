@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Icon, Switch, Tag } from "@blueprintjs/core";
+import { Button, Classes, Icon, Switch, Tag } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
 import { TimezoneFormat, TimezoneInput } from "../src";
@@ -22,12 +22,15 @@ export interface ITimezoneInputExampleState {
     useDefault?: boolean;
 }
 
+const EXAMPLE_DEFAULT_TIMEZONE = "Pacific/Honolulu";
+
 export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState> {
     public state: ITimezoneInputExampleState = {
         date: new Date(),
         disabled: false,
         showUserTimezoneGuess: true,
         targetFormat: TimezoneFormat.OFFSET,
+        timezone: "",
         useDefault: false,
     };
 
@@ -44,11 +47,17 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
             <div>
                 <TimezoneInput
                     date={date}
+                    selectedTimezone={timezone}
                     onTimezoneSelect={this.handleTimezoneSelect}
                     targetFormat={targetFormat}
                     showUserTimezoneGuess={showUserTimezoneGuess}
                     disabled={disabled}
-                    defaultTimezone={useDefault ? "Pacific/Honolulu" : undefined}
+                    defaultTimezone={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
+                />
+                <Button
+                    className={Classes.MINIMAL}
+                    text="Clear"
+                    onClick={this.handleClearClick}
                 />
 
                 <Tag className={classNames(Classes.MINIMAL, Classes.LARGE)} style={{ marginLeft: 20 }}>
@@ -106,5 +115,9 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
 
     private handleTimezoneSelect = (timezone: string) => {
         this.setState({ timezone });
+    }
+
+    private handleClearClick = () => {
+        this.setState({ timezone: "" });
     }
 }
