@@ -14,7 +14,9 @@ import * as Classes from "../../common/classes";
 
 // amount in pixels that the content div width changes when truncated vs when
 // not truncated. Note: could be modified by styles
-const CONTENT_DIV_WIDTH_DELTA = 26;
+// Note 2: this doesn't come from the width of the popover element, but the "right" style
+// on the div, which comes from styles
+const CONTENT_DIV_WIDTH_DELTA = 25;
 
 export enum TruncatedPopoverMode {
     ALWAYS,
@@ -33,7 +35,14 @@ export interface ITruncatedFormatProps extends IProps {
      */
     detectTruncation?: boolean;
 
+    /**
+     * Height of the parent cell. Used by shouldComponentUpdate only
+     */
     parentCellHeight?: string;
+
+    /**
+     * Width of the parent cell. Used by shouldComponentUpdate only
+     */
     parentCellWidth?: string;
 
     /**
@@ -132,8 +141,8 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         this.setTruncationState();
     }
 
-    public componentDidUpdate(prevProps: ITruncatedFormatProps) {
-        this.setTruncationState(prevProps);
+    public componentDidUpdate() {
+        this.setTruncationState();
     }
 
     private handleContentDivRef = (ref: HTMLDivElement) => this.contentDiv = ref;
@@ -155,27 +164,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
     }
 
-    private setTruncationState(prevProps?: ITruncatedFormatProps) {
-        const {
-            detectTruncation,
-            parentCellHeight,
-            parentCellWidth,
-            showPopover: popoverMode,
-        } = this.props;
-
-        // this is where we get our savings from the injected parent-size props.
-        // if they haven't changed between updates, then no need to remeasure!
-        if (!detectTruncation
-            || popoverMode !== TruncatedPopoverMode.WHEN_TRUNCATED
-            || (
-                prevProps != null
-                && prevProps.parentCellHeight === parentCellHeight
-                && prevProps.parentCellWidth === parentCellWidth
-            )
-        ) {
-            return;
-        }
-
+    private setTruncationState() {
         if (this.contentDiv === undefined) {
             this.setState({ isTruncated: false });
             return;

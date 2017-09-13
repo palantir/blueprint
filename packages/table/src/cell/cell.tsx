@@ -102,6 +102,8 @@ export class Cell extends React.Component<ICellProps, {}> {
             },
         );
 
+        // add width and height to the children, for use in shouldComponentUpdate in truncatedFormat
+        // note: these aren't actually used by truncated format, just in shouldComponentUpdate
         const modifiedChildren = React.Children.map(this.props.children, (child) => {
             if (style != null && React.isValidElement(child)) {
                 return React.cloneElement(child as React.ReactElement<any>,
