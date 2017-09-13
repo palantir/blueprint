@@ -73,7 +73,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleItemSelect}
                 resetOnSelect={true}
-                popoverProps={{ popoverClassName: Classes.TIMEZONE_INPUT }}
+                popoverProps={{ popoverClassName: Classes.TIMEZONE_INPUT_POPOVER }}
             >
                 <Button
                     className={CoreClasses.MINIMAL}
@@ -103,7 +103,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
     private renderTimezone(itemProps: ISelectItemRendererProps<ITimezone>) {
         const timezone = itemProps.item;
-        const classes = classNames(Classes.TIMEZONE_MENU_ITEM, CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
+        const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
             [CoreClasses.ACTIVE]: itemProps.isActive,
             [CoreClasses.INTENT_PRIMARY]: itemProps.isActive,
         });
