@@ -112,8 +112,8 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
             <MenuItem
                 key={timezone.name}
                 className={classes}
-                label={`${timezone.offsetAsString}${timezone.abbreviation ? ` ${timezone.abbreviation}` : ""}`}
-                text={timezone.name}
+                label={timezone.offsetAsString}
+                text={timezone.name + (timezone.abbreviation ? ` (${timezone.abbreviation})` : "")}
                 onClick={itemProps.handleClick}
                 shouldDismissPopover={false}
             />
