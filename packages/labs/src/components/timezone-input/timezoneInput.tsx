@@ -63,7 +63,9 @@ export interface ITimezoneInputProps extends IProps {
      */
     showUserTimezoneGuess?: boolean;
 
-    popoverProps?: Partial<IPopoverProps> & object; // TODO
+    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<IPopoverProps> & object;
+
     placeholder?: string; // TODO
 }
 
@@ -94,6 +96,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
     public static defaultProps: Partial<ITimezoneInputProps> = {
         disabled: false,
+        popoverProps: {},
         showUserTimezoneGuess: true,
     };
 
@@ -110,7 +113,11 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     public render() {
-        const { className, disabled } = this.props;
+        const { className, disabled, popoverProps } = this.props;
+        const finalPopoverProps: Partial<IPopoverProps> & object = {
+            ...popoverProps,
+            popoverClassName: classNames(popoverProps.popoverClassName, Classes.TIMEZONE_INPUT_POPOVER),
+        };
 
         return (
             <TypedSelect
@@ -121,7 +128,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleItemSelect}
                 resetOnSelect={true}
-                popoverProps={{ popoverClassName: Classes.TIMEZONE_INPUT_POPOVER }}
+                popoverProps={finalPopoverProps}
                 disabled={disabled}
             >
                 <Button

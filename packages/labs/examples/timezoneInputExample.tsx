@@ -45,7 +45,9 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
 
     protected renderOptions() {
         return [
-            this.renderFormatSelect(),
+            [
+                this.renderFormatSelect(),
+            ],
         ];
     }
 
