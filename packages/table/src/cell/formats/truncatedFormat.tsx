@@ -6,12 +6,11 @@
  */
 
 import { Icon, IProps, Popover, Position } from "@blueprintjs/core";
-
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { Utils } from "../../common/utils";
 
 // amount in pixels that the content div width changes when truncated vs when
 // not truncated. Note: could be modified by styles
@@ -74,6 +73,7 @@ export interface ITruncatedFormatState {
     isTruncated: boolean;
 }
 
+@PureRender
 export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
         detectTruncation: true,
@@ -134,11 +134,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
 
     public componentDidUpdate(prevProps: ITruncatedFormatProps) {
         this.setTruncationState(prevProps);
-    }
-
-    public shouldComponentUpdate(nextProps: ITruncatedFormatProps, nextState: ITruncatedFormatState) {
-        return !Utils.shallowCompareKeys(this.props, nextProps)
-            || !Utils.shallowCompareKeys(this.state, nextState);
     }
 
     private handleContentDivRef = (ref: HTMLDivElement) => this.contentDiv = ref;
