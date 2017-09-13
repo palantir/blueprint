@@ -14,6 +14,23 @@ import * as ReactDOM from "react-dom";
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave" ;
 export type KeyboardEventType = "keypress" | "keydown" |  "keyup" ;
 
+export interface IHarnessMouseOptions {
+    /** @default 0 */
+    offsetX?: number;
+
+    /** @default 0 */
+    offsetY?: number;
+
+    /** @default false */
+    metaKey?: boolean;
+
+    /** @default false */
+    shiftKey?: boolean;
+
+    /** @default 0 */
+    button?: number;
+}
+
 function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, modKey = false) {
     const event = document.createEvent("KeyboardEvent");
     const keyCode = key.charCodeAt(0);
@@ -91,10 +108,24 @@ export class ElementHarness {
     }
 
     public mouse(eventType: MouseEventType = "click",
-                 offsetX = 0,
+                 offsetXOrOptions: number | IHarnessMouseOptions = 0, // TODO: Change all tests to the object API
                  offsetY = 0,
                  isMetaKeyDown = false,
-                 isShiftKeyDown = false) {
+                 isShiftKeyDown = false,
+                 button: number = 0) {
+
+        let offsetX: number;
+
+        if (typeof offsetXOrOptions === "object") {
+            offsetX = this.defaultValue(offsetXOrOptions.offsetX, 0);
+            offsetY = this.defaultValue(offsetXOrOptions.offsetY, 0);
+            isMetaKeyDown = this.defaultValue(offsetXOrOptions.metaKey, false);
+            isShiftKeyDown = this.defaultValue(offsetXOrOptions.shiftKey, false);
+            button = this.defaultValue(offsetXOrOptions.button, 0);
+        } else {
+            offsetX = offsetXOrOptions as number;
+        }
+
         const bounds = this.bounds();
         const x = bounds.left + bounds.width / 2 + offsetX;
         const y = bounds.top + bounds.height / 2 + offsetY;
@@ -111,7 +142,7 @@ export class ElementHarness {
             eventType, true, true, window,
             null, 0, 0, x, y,
             isMetaKeyDown, false, isShiftKeyDown, isMetaKeyDown,
-            0, null,
+            button, null,
         );
         this.element.dispatchEvent(event);
         return this;
@@ -141,6 +172,11 @@ export class ElementHarness {
         } else {
             return this.element.querySelector(query);
         }
+    }
+
+    /** Returns the default value if the provided value is not defined. */
+    private defaultValue(value: any | null | undefined, defaultValue: any) {
+        return value != null ? value : defaultValue;
     }
 }
 

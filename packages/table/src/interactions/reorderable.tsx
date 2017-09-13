@@ -46,8 +46,9 @@ export interface IReorderableProps {
 
     /**
      * An array containing the table's selection Regions.
+     * @default []
      */
-    selectedRegions: IRegion[];
+    selectedRegions?: IRegion[];
 }
 
 export interface IDragReorderable extends IReorderableProps {
@@ -79,6 +80,10 @@ export interface IDragReorderable extends IReorderableProps {
 
 @PureRender
 export class DragReorderable extends React.Component<IDragReorderable, {}> {
+    public static defaultProps: Partial<IDragReorderable> = {
+        selectedRegions: [],
+    };
+
     private selectedRegionStartIndex: number;
     private selectedRegionLength: number;
 

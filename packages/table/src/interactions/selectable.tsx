@@ -9,10 +9,11 @@ import { Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
+import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
 import { Utils } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
-import { IRegion, RegionCardinality, Regions } from "../regions";
+import { IRegion, Regions } from "../regions";
 
 export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coords?: ICoordinateData) => IRegion;
 
@@ -21,8 +22,14 @@ export interface ISelectableProps {
      * If `false`, only a single region of a single column/row/cell may be
      * selected at one time. Using `ctrl` or `meta` key will have no effect,
      * and a mouse drag will select the current column/row/cell only.
+     * @default false
      */
-    allowMultipleSelection: boolean;
+    allowMultipleSelection?: boolean;
+
+    /**
+     * The currently focused cell.
+     */
+    focusedCell?: IFocusedCellCoordinates;
 
     /**
      * When the user focuses something, this callback is called with new
@@ -47,8 +54,9 @@ export interface ISelectableProps {
 
     /**
      * An array containing the table's selection Regions.
+     * @default []
      */
-    selectedRegions: IRegion[];
+    selectedRegions?: IRegion[];
 
     /**
      * An optional transform function that will be applied to the located
@@ -84,11 +92,17 @@ export interface IDragSelectableProps extends ISelectableProps {
      * coordinate data representing a drag. If no valid region can be found,
      * `null` may be returned.
      */
-    locateDrag: (event: MouseEvent, coords: ICoordinateData) => IRegion;
+    locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => IRegion;
 }
 
 @PureRender
 export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
+    public static defaultProps: Partial<IDragSelectableProps> = {
+        allowMultipleSelection: false,
+        disabled: false,
+        selectedRegions: [],
+    };
+
     private didExpandSelectionOnActivate = false;
 
     public render() {
@@ -110,142 +124,92 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleActivate = (event: MouseEvent) => {
+        const { locateClick, selectedRegions, selectedRegionTransform } = this.props;
         if (this.shouldIgnoreMouseDown(event)) {
             return false;
         }
 
-        let region = this.props.locateClick(event);
+        let region = locateClick(event);
 
         if (!Regions.isValid(region)) {
             return false;
         }
 
-        const {
-            onSelection,
-            selectedRegions,
-            selectedRegionTransform,
-        } = this.props;
-
-        const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(region);
         if (selectedRegionTransform != null) {
             region = selectedRegionTransform(region, event);
         }
 
         const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
-        if (foundIndex !== -1) {
-            // If re-clicking on an existing region, we either carefully
-            // remove it if the meta key is used or otherwise we clear the
-            // selection entirely.
-            if (DragEvents.isAdditive(event)) {
-                const newSelectedRegions = selectedRegions.slice();
-                newSelectedRegions.splice(foundIndex, 1);
-                onSelection(newSelectedRegions);
-            } else {
-                onSelection([]);
-            }
-            const fullFocusCellCoordinates: IFocusedCellCoordinates = {
-                col: focusCellCoordinates.col,
-                focusSelectionIndex: null,
-                row: focusCellCoordinates.row,
-            };
-            this.props.onFocus(fullFocusCellCoordinates);
+        const matchesExistingSelection = foundIndex !== -1;
 
+        if (matchesExistingSelection) {
+            this.handleUpdateExistingSelection(foundIndex, event);
+            // no need to listen for subsequent drags
             return false;
-        }
-
-        let focusSelectionIndex = null;
-        if (event.shiftKey && selectedRegions.length > 0) {
-            this.didExpandSelectionOnActivate = true;
-            onSelection(expandSelectedRegions(selectedRegions, region));
-            focusSelectionIndex = 0;
-        } else if (DragEvents.isAdditive(event) && this.props.allowMultipleSelection) {
-            onSelection(Regions.add(selectedRegions, region));
-            // the focus should be in the newly created region,
-            // which is at index of the current list of regions plus one,
-            // which is the length of the current list of regions
-            focusSelectionIndex = selectedRegions.length;
+        } else if (this.shouldExpandSelection(event)) {
+            this.handleExpandSelection(region);
+        } else if (this.shouldAddDisjointSelection(event)) {
+            this.handleAddDisjointSelection(region);
         } else {
-            onSelection([region]);
-            focusSelectionIndex = 0;
+            this.handleReplaceSelection(region);
         }
-
-        const fullFocusCellCoordinates: IFocusedCellCoordinates = {
-            col: focusCellCoordinates.col,
-            focusSelectionIndex,
-            row: focusCellCoordinates.row,
-        };
-        this.props.onFocus(fullFocusCellCoordinates);
 
         return true;
     }
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
-        const nextSelectedRegions = this.getDragSelectedRegions(event, coords);
-        if (nextSelectedRegions == null) {
-            return;
-        }
-        this.maybeInvokeSelectionCallback(nextSelectedRegions);
+        const {
+            allowMultipleSelection,
+            focusedCell,
+            locateClick,
+            locateDrag,
+            selectedRegions,
+            selectedRegionTransform,
+        } = this.props;
 
-        if (!this.props.allowMultipleSelection) {
-            // have the focused cell follow the selected region
-            const mostRecentRegion = nextSelectedRegions[nextSelectedRegions.length - 1];
-            const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(mostRecentRegion);
-            const fullFocusCellCoordinates: IFocusedCellCoordinates = {
-                col: focusCellCoordinates.col,
-                focusSelectionIndex: nextSelectedRegions.length - 1,
-                row: focusCellCoordinates.row,
-            };
-            this.props.onFocus(fullFocusCellCoordinates);
-        }
-    }
-
-    private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
-        const nextSelectedRegions = this.getDragSelectedRegions(event, coords);
-        if (nextSelectedRegions == null) {
-            return;
-        }
-        this.maybeInvokeSelectionCallback(nextSelectedRegions);
-        BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
-        this.finishInteraction();
-    }
-
-    private handleClick = (event: MouseEvent) => {
-        if (this.shouldIgnoreMouseDown(event)) {
-            return false;
-        }
-
-        let region = this.props.locateClick(event);
-        const { selectedRegions } = this.props;
+        let region = allowMultipleSelection
+            ? locateDrag(event, coords, /* returnEndOnly? */ this.didExpandSelectionOnActivate)
+            : locateClick(event);
 
         if (!Regions.isValid(region)) {
-            this.maybeInvokeSelectionCallback([]);
-            BlueprintUtils.safeInvoke(this.props.onSelectionEnd, []);
-            return false;
+            return;
+        } else if (selectedRegionTransform != null) {
+            region = selectedRegionTransform(region, event, coords);
         }
 
-        if (this.props.selectedRegionTransform != null) {
-            region = this.props.selectedRegionTransform(region, event);
-        }
-
-        let nextSelectedRegions: IRegion[];
-        if (this.didExpandSelectionOnActivate) {
-            // we already expanded the selection in handleActivate,
-            // so we don't want to overwrite it here
-            nextSelectedRegions = selectedRegions;
-        } else if (selectedRegions.length > 0) {
-            nextSelectedRegions = Regions.update(selectedRegions, region);
-        } else {
-            nextSelectedRegions = [region];
-        }
+        const nextSelectedRegions = this.didExpandSelectionOnActivate
+            ? this.expandSelectedRegions(selectedRegions, region, focusedCell)
+            : Regions.update(selectedRegions, region);
 
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
-        BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
-        this.finishInteraction();
-        return false;
+
+        if (!allowMultipleSelection) {
+            // move the focused cell with the selected region
+            const lastIndex = nextSelectedRegions.length - 1;
+            const mostRecentRegion = nextSelectedRegions[lastIndex];
+            this.invokeOnFocusCallbackForRegion(mostRecentRegion, lastIndex);
+        }
     }
 
-    private finishInteraction = () => {
-        this.didExpandSelectionOnActivate = false;
+    private handleDragEnd = () => {
+        this.finishInteraction();
+    }
+
+    private handleClick = () => {
+        this.finishInteraction();
+    }
+
+    // Boolean checks
+    // ==============
+
+    private shouldExpandSelection = (event: MouseEvent) => {
+        const { allowMultipleSelection } = this.props;
+        return allowMultipleSelection && event.shiftKey;
+    }
+
+    private shouldAddDisjointSelection = (event: MouseEvent) => {
+        const { allowMultipleSelection } = this.props;
+        return allowMultipleSelection && DragEvents.isAdditive(event);
     }
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
@@ -256,71 +220,103 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             || ignoredSelectors.some((selector: string) => element.closest(selector) != null);
     }
 
-    private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {
-        const { selectedRegions, selectedRegionTransform } = this.props;
+    // Update logic
+    // ============
 
-        let region = this.props.allowMultipleSelection
-            ? this.props.locateDrag(event, coords)
-            : this.props.locateClick(event);
+    private handleUpdateExistingSelection = (selectedRegionIndex: number, event: MouseEvent) => {
+        const { onSelection, selectedRegions } = this.props;
 
-        if (!Regions.isValid(region)) {
-            return undefined;
+        if (DragEvents.isAdditive(event)) {
+            // remove just the clicked region, leaving other selected regions in place
+            const nextSelectedRegions = selectedRegions.slice();
+            nextSelectedRegions.splice(selectedRegionIndex, 1);
+            onSelection(nextSelectedRegions);
+
+            // if there are still any selections, move the focused cell to the
+            // most recent selection. otherwise, don't update it.
+            if (nextSelectedRegions.length > 0) {
+                const lastIndex = nextSelectedRegions.length - 1;
+                this.invokeOnFocusCallbackForRegion(nextSelectedRegions[lastIndex], lastIndex);
+            }
+        } else {
+            // clear all selections, but don't update the focused cell
+            onSelection([]);
         }
-
-        if (selectedRegionTransform != null) {
-            region = selectedRegionTransform(region, event, coords);
-        }
-
-        return this.didExpandSelectionOnActivate
-            ? expandSelectedRegions(selectedRegions, region)
-            : Regions.update(selectedRegions, region);
     }
+
+    private handleExpandSelection = (region: IRegion) => {
+        const { focusedCell, onSelection, selectedRegions } = this.props;
+        this.didExpandSelectionOnActivate = true;
+
+        // there should be only one selected region after expanding. do not
+        // update the focused cell.
+        const nextSelectedRegions = this.expandSelectedRegions(selectedRegions, region, focusedCell);
+        onSelection(nextSelectedRegions);
+
+        // move the focused cell into the new region if there were no selections before
+        if (selectedRegions == null || selectedRegions.length === 0) {
+            this.invokeOnFocusCallbackForRegion(region);
+        }
+    }
+
+    private handleAddDisjointSelection = (region: IRegion) => {
+        const { onSelection, selectedRegions } = this.props;
+
+        // add the new region to the existing selections
+        const nextSelectedRegions = Regions.add(selectedRegions, region);
+        onSelection(nextSelectedRegions);
+
+        // put the focused cell in the new region
+        this.invokeOnFocusCallbackForRegion(region, nextSelectedRegions.length - 1);
+    }
+
+    private handleReplaceSelection = (region: IRegion) => {
+        const { onSelection } = this.props;
+
+        // clear all selections and retain only the new one
+        const nextSelectedRegions = [region];
+        onSelection(nextSelectedRegions);
+
+        // move the focused cell into the new selection
+        this.invokeOnFocusCallbackForRegion(region);
+    }
+
+    // Callbacks
+    // =========
 
     private maybeInvokeSelectionCallback(nextSelectedRegions: IRegion[]) {
-        const { selectedRegions } = this.props;
-        // invoke only if the selection changed
+        const { onSelection, selectedRegions } = this.props;
+        // invoke only if the selection changed. this is useful only on
+        // mousemove; there's special handling for mousedown interactions that
+        // target an already-selected region.
         if (!Utils.deepCompareKeys(selectedRegions, nextSelectedRegions)) {
-            this.props.onSelection(nextSelectedRegions);
+            onSelection(nextSelectedRegions);
         }
     }
-}
 
-function expandSelectedRegions(regions: IRegion[], region: IRegion) {
-    if (regions.length === 0) {
-        return [region];
+    private invokeOnFocusCallbackForRegion = (focusRegion: IRegion, focusSelectionIndex = 0) => {
+        const { onFocus } = this.props;
+        const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(focusRegion);
+        onFocus(FocusedCellUtils.toFullCoordinates(focusedCellCoords, focusSelectionIndex));
     }
 
-    const lastRegion = regions[regions.length - 1];
-    const lastRegionCardinality = Regions.getRegionCardinality(lastRegion);
-    const regionCardinality = Regions.getRegionCardinality(region);
+    // Other
+    // =====
 
-    if (regionCardinality !== lastRegionCardinality) {
-        // TODO: add proper handling for expanding regions from one cardinality to another depending
-        // on the focused cell (see: https://github.com/palantir/blueprint/issues/823). for now,
-        // just return the new region by itself.
-        return [region];
+    private finishInteraction = () => {
+        BlueprintUtils.safeInvoke(this.props.onSelectionEnd, this.props.selectedRegions);
+        this.didExpandSelectionOnActivate = false;
     }
 
-    // simplified algorithm: expand the most recently selected region, and clear all others.
-    // TODO: pass the current focused cell into DragSelectable via props, then update this logic
-    // to leverage the focus cell's coordinates appropriately.
-    // (see: https://github.com/palantir/blueprint/issues/823)
-    if (regionCardinality === RegionCardinality.FULL_ROWS) {
-        const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
-        const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
-        return [Regions.row(rowStart, rowEnd)];
-    } else if (regionCardinality === RegionCardinality.FULL_COLUMNS) {
-        const colStart = Math.min(lastRegion.cols[0], region.cols[0]);
-        const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
-        return [Regions.column(colStart, colEnd)];
-    } else if (regionCardinality === RegionCardinality.CELLS) {
-        const rowStart = Math.min(lastRegion.rows[0], region.rows[0]);
-        const colStart = Math.min(lastRegion.cols[0], region.cols[0]);
-        const rowEnd = Math.max(lastRegion.rows[1], region.rows[1]);
-        const colEnd = Math.max(lastRegion.cols[1], region.cols[1]);
-        return [Regions.cell(rowStart, colStart, rowEnd, colEnd)];
-    } else {
-        // if we've selected the FULL_TABLE, no need to expand it further.
-        return [region];
+    private expandSelectedRegions(regions: IRegion[], region: IRegion, focusedCell?: IFocusedCellCoordinates) {
+        if (regions.length === 0) {
+            return [region];
+        } else if (focusedCell != null) {
+            const expandedRegion = FocusedCellUtils.expandFocusedRegion(focusedCell, region);
+            return Regions.update(regions, expandedRegion);
+        } else {
+            const expandedRegion = Regions.expandRegion(regions[regions.length - 1], region);
+            return Regions.update(regions, expandedRegion);
+        }
     }
 }

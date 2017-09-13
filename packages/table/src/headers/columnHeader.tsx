@@ -14,9 +14,9 @@ import { Utils } from "../common/index";
 import { IClientCoordinates } from "../interactions/draggable";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
-import { IRegion, RegionCardinality, Regions } from "../regions";
+import { RegionCardinality, Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
-import { Header, IHeaderProps, shouldHeaderComponentUpdate } from "./header";
+import { Header, IHeaderProps } from "./header";
 
 export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
 
@@ -48,24 +48,20 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         loading: false,
     };
 
-    public shouldComponentUpdate(nextProps: IColumnHeaderProps) {
-        return shouldHeaderComponentUpdate(this.props, nextProps, this.isSelectedRegionRelevant);
-    }
-
     public render() {
         const {
             // from IColumnHeaderProps
-            cellRenderer,
+            cellRenderer: renderHeaderCell,
             onColumnWidthChanged,
 
             // from IColumnWidths
-            minColumnWidth,
-            maxColumnWidth,
+            minColumnWidth: minSize,
+            maxColumnWidth: maxSize,
             defaultColumnWidth,
 
             // from IColumnIndices
-            columnIndexStart,
-            columnIndexEnd,
+            columnIndexStart: indexStart,
+            columnIndexEnd: indexEnd,
 
             // from IHeaderProps
             ...spreadableProps,
@@ -74,7 +70,6 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         return (
             <Header
                 convertPointToIndex={this.convertPointToColumn}
-                endIndex={this.props.columnIndexEnd}
                 fullRegionCardinality={RegionCardinality.FULL_COLUMNS}
                 getCellExtremaClasses={this.getCellExtremaClasses}
                 getCellIndexClass={Classes.columnCellIndexClass}
@@ -87,14 +82,15 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 handleSizeChanged={this.handleSizeChanged}
                 headerCellIsReorderablePropName={"isColumnReorderable"}
                 headerCellIsSelectedPropName={"isColumnSelected"}
+                indexEnd={indexEnd}
+                indexStart={indexStart}
                 isCellSelected={this.isCellSelected}
                 isGhostIndex={this.isGhostIndex}
-                maxSize={this.props.maxColumnWidth}
-                minSize={this.props.minColumnWidth}
+                maxSize={maxSize}
+                minSize={minSize}
                 renderGhostCell={this.renderGhostCell}
-                renderHeaderCell={this.props.cellRenderer}
+                renderHeaderCell={renderHeaderCell}
                 resizeOrientation={Orientation.VERTICAL}
-                startIndex={this.props.columnIndexStart}
                 toRegion={this.toRegion}
                 wrapCells={this.wrapCells}
                 {...spreadableProps}
@@ -134,8 +130,8 @@ private wrapCells = (cells: Array<React.ReactElement<any>>) => {
         return locator != null ? locator.convertPointToColumn(clientXOrY, useMidpoint) : null;
     }
 
-    private getCellExtremaClasses = (index: number, endIndex: number) => {
-        return this.props.grid.getExtremaClasses(0, index, 1, endIndex);
+    private getCellExtremaClasses = (index: number, indexEnd: number) => {
+        return this.props.grid.getExtremaClasses(0, index, 1, indexEnd);
     }
 
     private getColumnWidth = (index: number) => {
@@ -197,11 +193,5 @@ private wrapCells = (cells: Array<React.ReactElement<any>>) => {
 
     private toRegion = (index1: number, index2?: number) => {
         return Regions.column(index1, index2);
-    }
-
-    private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
-        const regionCardinality = Regions.getRegionCardinality(selectedRegion);
-        return regionCardinality === RegionCardinality.FULL_COLUMNS
-            || regionCardinality === RegionCardinality.FULL_TABLE;
     }
 }
