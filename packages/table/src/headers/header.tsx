@@ -393,6 +393,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                 onReordered={this.props.onReordered}
                 onReordering={this.props.onReordering}
                 onSelection={this.props.onSelection}
+                onFocus={this.props.onFocus}
                 selectedRegions={this.props.selectedRegions}
                 toRegion={this.props.toRegion}
             >
