@@ -120,7 +120,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     public render() {
-        const { className, placeholder, disabled, popoverProps, targetClassName } = this.props;
+        const { className, disabled, popoverProps, targetClassName } = this.props;
         const finalPopoverProps: Partial<IPopoverProps> & object = {
             ...popoverProps,
             popoverClassName: classNames(popoverProps.popoverClassName, Classes.TIMEZONE_INPUT_POPOVER),
