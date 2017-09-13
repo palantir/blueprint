@@ -102,7 +102,17 @@ export class Cell extends React.Component<ICellProps, {}> {
             },
         );
 
-        const content = <div className={textClasses}>{this.props.children}</div>;
+        // add width and height to the children, for use in shouldComponentUpdate in truncatedFormat
+        // note: these aren't actually used by truncated format, just in shouldComponentUpdate
+        const modifiedChildren = React.Children.map(this.props.children, (child) => {
+            if (style != null && React.isValidElement(child)) {
+                return React.cloneElement(child as React.ReactElement<any>,
+                    {parentCellHeight: style.height, parentCellWidth: style.width});
+            }
+            return child;
+        });
+
+        const content = <div className={textClasses}>{modifiedChildren}</div>;
 
         return (
             <div className={classes} style={style} title={tooltip}>
