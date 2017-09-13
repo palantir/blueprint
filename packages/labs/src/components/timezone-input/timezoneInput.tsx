@@ -56,7 +56,13 @@ export interface ITimezoneInputProps extends IProps {
      */
     disabled?: boolean;
 
-    showUserTimezoneGuess?: boolean; // TODO
+    /**
+     * Whether to guess the user's timezone and show it at the top of the list of initial timezone suggestions.
+     * https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/
+     * @default true
+     */
+    showUserTimezoneGuess?: boolean;
+
     popoverProps?: Partial<IPopoverProps> & object; // TODO
     placeholder?: string; // TODO
 }
@@ -77,6 +83,7 @@ interface ITimezoneWithMetadata {
     abbreviation: string;
     offset: number;
     offsetAsString: string;
+    isUserTimezoneGuess: boolean;
 }
 
 const TypedSelect = Select.ofType<ITimezoneWithMetadata>();
@@ -84,6 +91,11 @@ const TypedSelect = Select.ofType<ITimezoneWithMetadata>();
 @PureRender
 export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimezoneInputState> {
     public static displayName = "Blueprint.TimezoneInput";
+
+    public static defaultProps: Partial<ITimezoneInputProps> = {
+        disabled: false,
+        showUserTimezoneGuess: true,
+    };
 
     public state: ITimezoneInputState = {};
 
@@ -94,7 +106,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         super(props, context);
 
         this.timezones = getTimezones(props.date);
-        this.initialTimezones = getInitialTimezones(props.date);
+        this.initialTimezones = getInitialTimezones(props.date, props.showUserTimezoneGuess);
     }
 
     public render() {
@@ -125,7 +137,10 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     public componentWillReceiveProps(nextProps: ITimezoneInputProps) {
         if (this.props.date.getTime() !== nextProps.date.getTime()) {
             this.timezones = getTimezones(nextProps.date);
-            this.initialTimezones = getInitialTimezones(nextProps.date);
+        }
+        if (this.props.date.getTime() !== nextProps.date.getTime() ||
+            this.props.showUserTimezoneGuess !== nextProps.showUserTimezoneGuess) {
+            this.initialTimezones = getInitialTimezones(nextProps.date, nextProps.showUserTimezoneGuess);
         }
     }
 
@@ -162,19 +177,28 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         });
     }
 
-    private renderTimezone(itemProps: ISelectItemRendererProps<ITimezoneWithMetadata>) {
+    private renderTimezone = (itemProps: ISelectItemRendererProps<ITimezoneWithMetadata>) => {
+        const { showUserTimezoneGuess } = this.props;
         const timezone = itemProps.item;
         const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
             [CoreClasses.ACTIVE]: itemProps.isActive,
             [CoreClasses.INTENT_PRIMARY]: itemProps.isActive,
         });
+        const isGuess = showUserTimezoneGuess && timezone.isUserTimezoneGuess;
+        const iconName = isGuess
+            ? "locate"
+            : undefined;
+        const text = isGuess
+            ? "Current timezone"
+            : timezone.timezone + (timezone.abbreviation ? ` (${timezone.abbreviation})` : "");
 
         return (
             <MenuItem
                 key={timezone.timezone}
                 className={classes}
+                iconName={iconName}
+                text={text}
                 label={timezone.offsetAsString}
-                text={timezone.timezone + (timezone.abbreviation ? ` (${timezone.abbreviation})` : "")}
                 onClick={itemProps.handleClick}
                 shouldDismissPopover={false}
             />
@@ -192,7 +216,16 @@ function getTimezones(date: Date): ITimezoneWithMetadata[] {
     return moment.tz.names().map((timezone) => toTimezoneWithMetadata(timestamp, timezone));
 }
 
-function getInitialTimezones(date: Date): ITimezoneWithMetadata[] {
+function getInitialTimezones(date: Date, includeGuess: boolean): ITimezoneWithMetadata[] {
+    const popularTimezones = getPopularTimezones(date);
+    const guessedTimezone = includeGuess ? getGuessedTimezone(date) : undefined;
+    return guessedTimezone ? [
+        guessedTimezone,
+        ...popularTimezones.filter((popularTimezone) => popularTimezone.timezone !== guessedTimezone.timezone),
+    ] : popularTimezones;
+}
+
+function getPopularTimezones(date: Date): ITimezoneWithMetadata[] {
     const timezones = getTimezones(date)
         .filter(({ timezone }) => (
             // Filter out noisy timezones
@@ -236,12 +269,18 @@ function getInitialTimezones(date: Date): ITimezoneWithMetadata[] {
     return initialTimezones;
 }
 
+function getGuessedTimezone(date: Date): ITimezoneWithMetadata | undefined {
+    const timezone = moment.tz.guess();
+    return timezone ? toTimezoneWithMetadata(date.getTime(), timezone) : undefined;
+}
+
 function toTimezoneWithMetadata(timestamp: number, timezone: string): ITimezoneWithMetadata {
     const zonedDate = moment.tz(timestamp, timezone);
     const offset = zonedDate.utcOffset();
     const offsetAsString = zonedDate.format("Z");
     const abbreviation = getAbbreviation(timestamp, timezone);
-    return { timezone, abbreviation, offset, offsetAsString };
+    const isUserTimezoneGuess = moment.tz.guess() === timezone;
+    return { timezone, abbreviation, offset, offsetAsString, isUserTimezoneGuess };
 }
 
 function getAbbreviation(timestamp: number, timezoneName: string): string {
