@@ -14,7 +14,7 @@ import * as Classes from "../../common/classes";
 
 // amount in pixels that the content div width changes when truncated vs when
 // not truncated. Note: could be modified by styles
-const CONTENT_DIV_WIDTH_DELTA = 25;
+const CONTENT_DIV_WIDTH_DELTA = 26;
 
 export enum TruncatedPopoverMode {
     ALWAYS,
