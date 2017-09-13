@@ -870,18 +870,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private selectAll = () => {
-        const { enableFocus } = this.props;
-
         const selectionHandler = this.getEnabledSelectionHandler(RegionCardinality.FULL_TABLE);
         // clicking on upper left hand corner sets selection to "all"
         // regardless of current selection state (clicking twice does not deselect table)
         selectionHandler([Regions.table()]);
 
-        // move the focus cell to the top left
-        if (enableFocus) {
-            const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(Regions.table());
-            this.handleFocus(FocusedCellUtils.toFullCoordinates(newFocusedCellCoordinates));
-        }
+        const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(Regions.table());
+        this.handleFocus(FocusedCellUtils.toFullCoordinates(newFocusedCellCoordinates));
     }
 
     private handleSelectAllHotkey = (e: KeyboardEvent) => {

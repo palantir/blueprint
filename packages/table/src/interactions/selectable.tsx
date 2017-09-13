@@ -286,7 +286,9 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
     private maybeInvokeSelectionCallback(nextSelectedRegions: IRegion[]) {
         const { onSelection, selectedRegions } = this.props;
-        // invoke only if the selection changed
+        // invoke only if the selection changed. this is useful only on
+        // mousemove; there's special handling for mousedown interactions that
+        // target an already-selected region.
         if (!Utils.deepCompareKeys(selectedRegions, nextSelectedRegions)) {
             onSelection(nextSelectedRegions);
         }
