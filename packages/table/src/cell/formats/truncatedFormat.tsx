@@ -165,6 +165,10 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
     }
 
     private setTruncationState() {
+        if (!this.props.detectTruncation || this.props.showPopover !== TruncatedPopoverMode.WHEN_TRUNCATED) {
+            return;
+        }
+
         if (this.contentDiv === undefined) {
             this.setState({ isTruncated: false });
             return;
