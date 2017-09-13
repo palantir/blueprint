@@ -51,11 +51,13 @@ export interface ITimezoneInputProps extends IProps {
     showUserTimezoneGuess?: boolean;
 
     /**
-     * Format to use when displaying the selected (or default) timezone.
-     * Only affects the target, not anything in the dropdown list.
+     * Format to use when displaying the selected (or default) timezone within the target element.
      * @default TimezoneFormat.OFFSET
      */
-    selectedTimezoneFormat?: TimezoneFormat;
+    targetFormat?: TimezoneFormat;
+
+    /** A space-delimited list of class names to pass along to the target element. */
+    targetClassName?: string;
 
     /**
      * Whether this input is non-interactive.
@@ -118,7 +120,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     public render() {
-        const { className, placeholder, disabled, popoverProps } = this.props;
+        const { className, placeholder, disabled, popoverProps, targetClassName } = this.props;
         const finalPopoverProps: Partial<IPopoverProps> & object = {
             ...popoverProps,
             popoverClassName: classNames(popoverProps.popoverClassName, Classes.TIMEZONE_INPUT_POPOVER),
@@ -137,9 +139,9 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 disabled={disabled}
             >
                 <Button
-                    className={CoreClasses.MINIMAL}
+                    className={classNames(CoreClasses.MINIMAL, targetClassName)}
                     rightIconName="caret-down"
-                    text={this.getSelectedTimezoneDisplayText() || placeholder}
+                    text={this.getTargetText()}
                     disabled={disabled}
                 />
             </TypedSelect>
@@ -156,27 +158,26 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         }
     }
 
-    private getSelectedTimezoneDisplayText(): string | undefined {
-        const { date, selectedTimezoneFormat = TimezoneFormat.OFFSET, defaultTimezone } = this.props;
+    private getTargetText(): string {
+        const { date, defaultTimezone, targetFormat = TimezoneFormat.OFFSET, placeholder } = this.props;
         const { selectedTimezone } = this.state;
-        const timestamp = date.getTime();
         const timezone = selectedTimezone || defaultTimezone;
         const timezoneExists = timezone && moment.tz.zone(timezone) != null;
 
         if (timezoneExists) {
-            switch (selectedTimezoneFormat) {
+            switch (targetFormat) {
                 case TimezoneFormat.ABBREVIATION:
-                    return moment.tz(timestamp, timezone).format("z");
+                    return moment.tz(date.getTime(), timezone).format("z");
                 case TimezoneFormat.NAME:
                     return timezone;
                 case TimezoneFormat.OFFSET:
-                    return moment.tz(timestamp, timezone).format("Z");
+                    return moment.tz(date.getTime(), timezone).format("Z");
                 default:
-                    assertNever(selectedTimezoneFormat);
+                    assertNever(targetFormat);
             }
         }
 
-        return undefined;
+        return placeholder;
     }
 
     private filterTimezones = (query: string, items: ITimezoneWithMetadata[]): ITimezoneWithMetadata[] => {
