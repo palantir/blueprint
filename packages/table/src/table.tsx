@@ -843,11 +843,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             <div
                 className={classes}
                 ref={refHandler}
-                onMouseDown={this.selectAll}
+                onMouseDown={this.handleMenuMouseDown}
             >
                 {this.maybeRenderRegions(this.styleMenuRegion)}
             </div>
         );
+    }
+
+    private handleMenuMouseDown = (e: React.MouseEvent<HTMLElement>) => {
+        // the shift+click interaction expands the region from the focused cell.
+        // thus, if shift is pressed we shouldn't move the focused cell.
+        this.selectAll(!e.shiftKey);
     }
 
     private maybeScrollTableIntoView() {
@@ -869,14 +875,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.syncViewportPosition(nextScrollLeft, nextScrollTop);
     }
 
-    private selectAll = () => {
+    private selectAll = (shouldUpdateFocusedCell: boolean) => {
         const selectionHandler = this.getEnabledSelectionHandler(RegionCardinality.FULL_TABLE);
         // clicking on upper left hand corner sets selection to "all"
         // regardless of current selection state (clicking twice does not deselect table)
         selectionHandler([Regions.table()]);
 
-        const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(Regions.table());
-        this.handleFocus(FocusedCellUtils.toFullCoordinates(newFocusedCellCoordinates));
+        if (shouldUpdateFocusedCell) {
+            const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(Regions.table());
+            this.handleFocus(FocusedCellUtils.toFullCoordinates(newFocusedCellCoordinates));
+        }
     }
 
     private handleSelectAllHotkey = (e: KeyboardEvent) => {
@@ -884,7 +892,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.preventDefault();
         e.stopPropagation();
 
-        this.selectAll();
+        // selecting-all via the keyboard should not move the focused cell.
+        this.selectAll(false);
     }
 
     private getColumnProps(columnIndex: number) {
