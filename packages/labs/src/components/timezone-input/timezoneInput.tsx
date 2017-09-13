@@ -84,6 +84,7 @@ export const TimezoneFormat = {
 
 export interface ITimezoneInputState {
     selectedTimezone?: string;
+    query?: string;
 }
 
 interface ITimezoneWithMetadata {
@@ -122,6 +123,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
     public render() {
         const { className, disabled, popoverProps, targetClassName } = this.props;
+        const { query } = this.state;
         const finalPopoverProps: Partial<IPopoverProps> & object = {
             ...popoverProps,
             popoverClassName: classNames(popoverProps.popoverClassName, Classes.TIMEZONE_INPUT_POPOVER),
@@ -130,7 +132,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         return (
             <TypedSelect
                 className={classNames(Classes.TIMEZONE_INPUT, className)}
-                items={this.timezones}
+                items={query ? this.timezones : this.initialTimezones}
                 itemListPredicate={this.filterTimezones}
                 itemRenderer={this.renderTimezone}
                 noResults={<MenuItem disabled text="No matching timezones." />}
@@ -138,6 +140,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 resetOnSelect={true}
                 popoverProps={finalPopoverProps}
                 disabled={disabled}
+                inputProps={{ onChange: this.handleQueryInputChange }}
             >
                 <Button
                     className={classNames(CoreClasses.MINIMAL, targetClassName)}
@@ -192,10 +195,6 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     private filterTimezones = (query: string, items: ITimezoneWithMetadata[]): ITimezoneWithMetadata[] => {
-        if (!query) {
-            return this.initialTimezones;
-        }
-
         const normalizedQuery = normalizeText(query);
         return items.filter((item) => {
             const candidates = this.timezoneToQueryCandidates[item.timezone] || [normalizeText(item.timezone)];
@@ -205,16 +204,18 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
     private renderTimezone = (itemProps: ISelectItemRendererProps<ITimezoneWithMetadata>) => {
         const { showUserTimezoneGuess } = this.props;
+        const { query } = this.state;
         const timezone = itemProps.item;
+
         const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
             [CoreClasses.ACTIVE]: itemProps.isActive,
             [CoreClasses.INTENT_PRIMARY]: itemProps.isActive,
         });
-        const isGuess = showUserTimezoneGuess && timezone.isUserTimezoneGuess;
-        const iconName = isGuess
+        const showGuess = !query && showUserTimezoneGuess && timezone.isUserTimezoneGuess;
+        const iconName = showGuess
             ? "locate"
             : undefined;
-        const text = isGuess
+        const text = showGuess
             ? "Current timezone"
             : timezone.timezone + (timezone.abbreviation ? ` (${timezone.abbreviation})` : "");
 
@@ -234,6 +235,11 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     private handleItemSelect = (timezone: ITimezoneWithMetadata, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ selectedTimezone: timezone.timezone });
         Utils.safeInvoke(this.props.onTimezoneSelect, timezone.timezone, event);
+    }
+
+    private handleQueryInputChange = (event: React.FormEvent<HTMLInputElement>) => {
+        const query = event.currentTarget.value;
+        this.setState({ query });
     }
 }
 
