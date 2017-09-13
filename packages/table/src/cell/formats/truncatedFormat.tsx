@@ -195,8 +195,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             || actualContentWidth > containerWidth
             || actualContentHeight > containerHeight;
 
-        if (isTruncated !== shouldTruncate) {
-            this.setState({ isTruncated: shouldTruncate });
-        }
+        this.setState({ isTruncated: shouldTruncate });
     }
 }
