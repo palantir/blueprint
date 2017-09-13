@@ -8,35 +8,41 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Icon, Tag } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { Classes, Icon, Switch, Tag } from "@blueprintjs/core";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
 import { TimezoneFormat, TimezoneInput } from "../src";
 
 export interface ITimezoneInputExampleState {
     date?: Date;
     timezone?: string;
-    format?: TimezoneFormat;
+    targetFormat?: TimezoneFormat;
+    disabled?: boolean;
 }
 
 export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState> {
     public state: ITimezoneInputExampleState = {
         date: new Date(),
-        format: TimezoneFormat.OFFSET,
+        disabled: false,
+        targetFormat: TimezoneFormat.OFFSET,
     };
 
+    private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
+    private handleFormatChange = handleStringChange((targetFormat: TimezoneFormat) => this.setState({ targetFormat }));
+
     protected renderExample() {
-        const { date, timezone, format } = this.state;
+        const { date, timezone, targetFormat, disabled } = this.state;
 
         return (
             <div>
                 <TimezoneInput
                     date={date}
-                    selectedTimezoneFormat={format}
                     onTimezoneSelect={this.handleTimezoneSelect}
+                    targetFormat={targetFormat}
+                    disabled={disabled}
                 />
 
-                <Tag className={classNames(Classes.MINIMAL, Classes.LARGE)} style={{ marginLeft: 10 }}>
+                <Tag className={classNames(Classes.MINIMAL, Classes.LARGE)} style={{ marginLeft: 20 }}>
                     <Icon iconName="time" /> {timezone || "No timezone selected"}
                 </Tag>
             </div>
@@ -46,6 +52,14 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
     protected renderOptions() {
         return [
             [
+                <Switch
+                    checked={this.state.disabled}
+                    label="Disabled"
+                    key="disabled"
+                    onChange={this.handleDisabledChange}
+                />,
+            ],
+            [
                 this.renderFormatSelect(),
             ],
         ];
@@ -54,10 +68,10 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
     private renderFormatSelect() {
         return (
             <label key="format-select" className={Classes.LABEL}>
-                Selected timezone format
+                Target format
                 <div className={Classes.SELECT}>
                     <select
-                        value={this.state.format}
+                        value={this.state.targetFormat}
                         onChange={this.handleFormatChange}
                     >
                         <option value={TimezoneFormat.ABBREVIATION.toString()}>Abbreviation</option>
@@ -71,10 +85,5 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
 
     private handleTimezoneSelect = (timezone: string) => {
         this.setState({ timezone });
-    }
-
-    private handleFormatChange = (e: React.FormEvent<HTMLSelectElement>) => {
-        const format = e.currentTarget.value as TimezoneFormat;
-        this.setState({ format });
     }
 }
