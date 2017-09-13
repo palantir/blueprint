@@ -21,7 +21,7 @@ import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
-import { Regions } from "./regions";
+import { IRegion, Regions } from "./regions";
 
 export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnIndices, IProps {
     /**
@@ -209,14 +209,36 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
-        const { selectedRegions, renderBodyContextMenu, grid } = this.props;
+        const { grid, onFocus, onSelection, renderBodyContextMenu, selectedRegions } = this.props;
+        const { numRows, numCols } = grid;
 
         if (renderBodyContextMenu == null) {
             return undefined;
         }
 
-        const target = this.locateClick(e.nativeEvent as MouseEvent);
-        return renderBodyContextMenu(new MenuContext(target, selectedRegions, grid.numRows, grid.numCols));
+        const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
+
+        let nextSelectedRegions: IRegion[] = selectedRegions;
+
+        // if the event did not happen within a selected region, clear all
+        // selections and select the right-clicked cell.
+        const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
+        if (foundIndex < 0) {
+            nextSelectedRegions = [targetRegion];
+            onSelection(nextSelectedRegions);
+
+            // move the focused cell to the new region.
+            const nextFocusedCell = {
+                ...Regions.getFocusCellCoordinatesFromRegion(targetRegion),
+                focusSelectionIndex: 0,
+            };
+            onFocus(nextFocusedCell);
+        }
+
+        const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
+        const contextMenu = renderBodyContextMenu(menuContext);
+
+        return contextMenu == null ? undefined : contextMenu;
     }
 
     // Render modes
