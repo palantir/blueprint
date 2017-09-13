@@ -132,8 +132,8 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         this.setTruncationState();
     }
 
-    public componentDidUpdate() {
-        this.setTruncationState();
+    public componentDidUpdate(prevProps: ITruncatedFormatProps) {
+        this.setTruncationState(prevProps);
     }
 
     public shouldComponentUpdate(nextProps: ITruncatedFormatProps, nextState: ITruncatedFormatState) {
@@ -160,8 +160,24 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
     }
 
-    private setTruncationState() {
-        if (!this.props.detectTruncation || this.props.showPopover !== TruncatedPopoverMode.WHEN_TRUNCATED) {
+    private setTruncationState(prevProps?: ITruncatedFormatProps) {
+        const {
+            detectTruncation,
+            parentCellHeight,
+            parentCellWidth,
+            showPopover: popoverMode,
+        } = this.props;
+
+        // this is where we get our savings from the injected parent-size props.
+        // if they haven't changed between updates, then no need to remeasure!
+        if (!detectTruncation
+            || popoverMode !== TruncatedPopoverMode.WHEN_TRUNCATED
+            || (
+                prevProps != null
+                && prevProps.parentCellHeight === parentCellHeight
+                && prevProps.parentCellWidth === parentCellWidth
+            )
+        ) {
             return;
         }
 
