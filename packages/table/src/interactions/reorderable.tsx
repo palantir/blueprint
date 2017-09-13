@@ -137,13 +137,8 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         } else {
             // select the new region to avoid complex and unintuitive UX w/r/t the existing selection
             this.props.onSelection([region]);
-            const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(region);
-            const fullFocusCellCoordinates: IFocusedCellCoordinates = {
-                col: focusCellCoordinates.col,
-                focusSelectionIndex: 1,
-                row: focusCellCoordinates.row,
-            };
-            this.props.onFocus(fullFocusCellCoordinates);
+            // move the focused cell into the newly selected region
+            this.props.onFocus({ ...Regions.getFocusCellCoordinatesFromRegion(region), focusSelectionIndex: 0 });
 
             const regionRange = isRowHeader ? region.rows : region.cols;
             this.selectedRegionStartIndex = regionRange[0];
@@ -171,14 +166,9 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
 
         // the newly reordered region becomes the only selection
         const newRegion = this.props.toRegion(reorderedIndex, reorderedIndex + length - 1);
-        this.props.onSelection(Regions.update([], newRegion));
-        const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(newRegion);
-        const fullFocusCellCoordinates: IFocusedCellCoordinates = {
-            col: focusCellCoordinates.col,
-            focusSelectionIndex: 1,
-            row: focusCellCoordinates.row,
-        };
-        this.props.onFocus(fullFocusCellCoordinates);
+        this.props.onSelection([newRegion]);
+        // move the focused cell into the newly selected region
+        this.props.onFocus({ ...Regions.getFocusCellCoordinatesFromRegion(newRegion), focusSelectionIndex: 0 });
 
         // resetting is not strictly required, but it's cleaner
         this.selectedRegionStartIndex = undefined;
