@@ -110,13 +110,14 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     public state: ITimezoneInputState = {};
 
     private timezones: ITimezoneWithMetadata[];
+    private timezoneToQueryCandidates: { [timezone: string]: string[] };
     private initialTimezones: ITimezoneWithMetadata[];
 
     constructor(props: ITimezoneInputProps, context?: any) {
         super(props, context);
 
-        this.timezones = getTimezones(props.date);
-        this.initialTimezones = getInitialTimezones(props.date, props.showUserTimezoneGuess);
+        this.updateTimezones(props);
+        this.updateInitialTimezones(props);
     }
 
     public render() {
@@ -150,12 +151,22 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
     public componentWillReceiveProps(nextProps: ITimezoneInputProps) {
         if (this.props.date.getTime() !== nextProps.date.getTime()) {
-            this.timezones = getTimezones(nextProps.date);
+            this.updateTimezones(nextProps);
         }
         if (this.props.date.getTime() !== nextProps.date.getTime() ||
             this.props.showUserTimezoneGuess !== nextProps.showUserTimezoneGuess) {
-            this.initialTimezones = getInitialTimezones(nextProps.date, nextProps.showUserTimezoneGuess);
+            this.updateInitialTimezones(nextProps);
         }
+    }
+
+    private updateTimezones(props: ITimezoneInputProps): void {
+        const timezones = getTimezones(props.date);
+        this.timezones = timezones;
+        this.timezoneToQueryCandidates = getTimezoneQueryCandidates(timezones);
+    }
+
+    private updateInitialTimezones(props: ITimezoneInputProps): void {
+        this.initialTimezones = getInitialTimezones(props.date, props.showUserTimezoneGuess);
     }
 
     private getTargetText(): string {
@@ -185,8 +196,10 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
             return this.initialTimezones;
         }
 
+        const normalizedQuery = normalizeText(query);
         return items.filter((item) => {
-            return item.timezone.toLowerCase().indexOf(query.toLowerCase()) >= 0;
+            const candidates = this.timezoneToQueryCandidates[item.timezone] || [normalizeText(item.timezone)];
+            return candidates.some((candidate) => isQueryMatch(normalizedQuery, candidate));
         });
     }
 
@@ -287,6 +300,27 @@ function getGuessedTimezone(date: Date): ITimezoneWithMetadata | undefined {
     return timezone ? toTimezoneWithMetadata(date.getTime(), timezone) : undefined;
 }
 
+function getTimezoneQueryCandidates(timezones: ITimezoneWithMetadata[]): { [timezone: string]: string[] } {
+    const timezoneToQueryCandidates: { [timezone: string]: string[] } = {};
+
+    for (const { timezone, abbreviation, offsetAsString } of timezones) {
+        const candidates = [
+            timezone,
+            // For example, "America/Los_Angeles" -> "America Los Angeles"
+            timezone.split(/[/_]/).join(" "),
+            abbreviation,
+            offsetAsString,
+            // For example, "-07:00" -> "-7:00"
+            offsetAsString.replace(/^([+-])0(\d:\d{2})$/, "$1$2"),
+        ].map(normalizeText);
+
+        timezoneToQueryCandidates[timezone] = timezoneToQueryCandidates[timezone] || [];
+        timezoneToQueryCandidates[timezone].push(...candidates);
+    }
+
+    return timezoneToQueryCandidates;
+}
+
 function toTimezoneWithMetadata(timestamp: number, timezone: string): ITimezoneWithMetadata {
     const zonedDate = moment.tz(timestamp, timezone);
     const offset = zonedDate.utcOffset();
@@ -308,6 +342,14 @@ function getAbbreviation(timestamp: number, timezoneName: string): string {
     }
 
     return "";
+}
+
+function isQueryMatch(query: string, candidate: string) {
+    return candidate.indexOf(query) >= 0;
+}
+
+function normalizeText(text: string): string {
+    return text.toLowerCase();
 }
 
 function assertNever(x: never): never {
