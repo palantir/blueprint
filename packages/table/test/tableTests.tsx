@@ -962,7 +962,7 @@ describe("<Table>", () => {
                 isColumnReorderable: true,
                 onColumnsReordered,
                 onSelection,
-                selectedRegions: [Regions.column(1)], // some other column
+                selectedRegions: [Regions.column(2)], // some other column
             });
             const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
             const reorderHandle = getReorderHandle(headerCell);
