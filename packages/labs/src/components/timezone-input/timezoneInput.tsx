@@ -133,7 +133,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 items={this.timezones}
                 itemListPredicate={this.filterTimezones}
                 itemRenderer={this.renderTimezone}
-                noResults={<MenuItem disabled text="No results." />}
+                noResults={<MenuItem disabled text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
                 resetOnSelect={true}
                 popoverProps={finalPopoverProps}
