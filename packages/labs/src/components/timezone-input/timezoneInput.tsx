@@ -25,6 +25,7 @@ import {
 import * as Classes from "../../common/classes";
 
 export interface ITimezoneInputProps extends IProps {
+    date: Date;
     onTimezoneSelect: (timezone: ITimezone | undefined, event?: React.SyntheticEvent<HTMLElement>) => void;
 }
 
@@ -46,7 +47,15 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
     public state: ITimezoneInputState = {};
 
-    private items: ITimezone[] = moment.tz.names().map((name) => ({ name }));
+    private items: ITimezone[];
+    private initialItems: ITimezone[];
+
+    constructor(props: ITimezoneInputProps, context?: any) {
+        super(props, context);
+
+        this.items = getTimezones();
+        this.initialItems = getRepresentativeTimezones(props.date);
+    }
 
     public render() {
         const { className } = this.props;
@@ -56,7 +65,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
             <TimezoneSelect
                 className={classNames(Classes.TIMEZONE_INPUT, className)}
                 items={this.items}
-                itemPredicate={this.filterTimezones}
+                itemListPredicate={this.filterTimezones}
                 itemRenderer={this.renderTimezone}
                 noResults={<MenuItem disabled text="No results." />}
                 onItemSelect={this.handleItemSelect}
@@ -71,8 +80,20 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         );
     }
 
-    private filterTimezones(query: string, timezone: ITimezone) {
-        return timezone.name.toLowerCase().indexOf(query.toLowerCase()) >= 0;
+    public componentWillReceiveProps(nextProps: ITimezoneInputProps) {
+        if (this.props.date.valueOf() !== nextProps.date.valueOf()) {
+            this.initialItems = getRepresentativeTimezones(nextProps.date);
+        }
+    }
+
+    private filterTimezones = (query: string, items: ITimezone[]): ITimezone[] => {
+        if (!query) {
+            return this.initialItems;
+        }
+
+        return items.filter((item) => {
+            return item.name.toLowerCase().indexOf(query.toLowerCase()) >= 0;
+        });
     }
 
     private renderTimezone(itemProps: ISelectItemRendererProps<ITimezone>) {
@@ -97,4 +118,59 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         this.setState({ selectedItem: item });
         Utils.safeInvoke(this.props.onTimezoneSelect, item, event);
     }
+}
+
+function getTimezones(): ITimezone[] {
+    return moment.tz.names().map((name) => ({ name }));
+}
+
+function getRepresentativeTimezones(date: Date): ITimezone[] {
+    interface IZoneWithMeta {
+        name: string;
+        offset: number;
+        offsetStr: string;
+        population: number;
+    }
+
+    const zones: IZoneWithMeta[] = moment.tz.names()
+        .filter((name) => (
+            // https://github.com/moment/moment-timezone/issues/227
+            /\//.test(name) &&
+            !/Etc\//.test(name)
+        ))
+        .map((name) => {
+            const zone = moment.tz.zone(name);
+            const zonedDate = moment.tz(date, name);
+
+            const offset = zonedDate.utcOffset();
+            const offsetStr = zonedDate.format("Z");
+
+            const population = (zone as any).population || 0;
+
+            return { name, offset, offsetStr, population };
+        });
+
+    const zonesByOffset: { [offset: string]: IZoneWithMeta[] } = {};
+    for (const zone of zones) {
+        zonesByOffset[zone.offsetStr] = zonesByOffset[zone.offsetStr] || [];
+        zonesByOffset[zone.offsetStr].push(zone);
+    }
+
+    const offsetZones: IZoneWithMeta[] = [];
+    for (const offset of Object.keys(zonesByOffset)) {
+        if (zonesByOffset[offset].length > 0) {
+            zonesByOffset[offset].sort((tz1, tz2) => {
+                if (tz1.population === tz2.population) {
+                    return tz1.name < tz2.name ? -1 : 1;
+                }
+                return tz2.population - tz1.population;
+            });
+
+            offsetZones.push(zonesByOffset[offset][0]);
+        }
+    }
+
+    offsetZones.sort((tz1, tz2) => tz1.offset - tz2.offset);
+
+    return offsetZones.map(({ name }) => ({ name }));
 }

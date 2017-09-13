@@ -14,17 +14,21 @@ import { BaseExample } from "@blueprintjs/docs";
 import { ITimezone, TimezoneInput } from "../src";
 
 export interface ITimezoneInputExampleState {
+    date?: Date;
     timezone?: ITimezone;
 }
 
 export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState> {
-    public state: ITimezoneInputExampleState = {};
+    public state: ITimezoneInputExampleState = {
+        date: new Date(),
+    };
 
     protected renderExample() {
-        const { timezone } = this.state;
+        const { date, timezone } = this.state;
         return (
             <div>
                 <TimezoneInput
+                    date={date}
                     onTimezoneSelect={this.handleTimezoneSelect}
                 />
 
