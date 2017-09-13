@@ -31,6 +31,9 @@ export interface ITimezoneInputProps extends IProps {
 
 export interface ITimezone {
     name: string;
+    abbreviation: string;
+    offset: number;
+    offsetAsString: string;
 }
 
 export interface ITimezoneInputState {
@@ -53,7 +56,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     constructor(props: ITimezoneInputProps, context?: any) {
         super(props, context);
 
-        this.items = getTimezones();
+        this.items = getTimezones(props.date);
         this.initialItems = getRepresentativeTimezones(props.date);
     }
 
@@ -81,7 +84,8 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     public componentWillReceiveProps(nextProps: ITimezoneInputProps) {
-        if (this.props.date.valueOf() !== nextProps.date.valueOf()) {
+        if (this.props.date.getTime() !== nextProps.date.getTime()) {
+            this.items = getTimezones(nextProps.date);
             this.initialItems = getRepresentativeTimezones(nextProps.date);
         }
     }
@@ -120,8 +124,8 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 }
 
-function getTimezones(): ITimezone[] {
-    return moment.tz.names().map((name) => ({ name }));
+function getTimezones(date: Date): ITimezone[] {
+    return moment.tz.names().map((name) => createTimezone(date.getTime(), name));
 }
 
 function getRepresentativeTimezones(date: Date): ITimezone[] {
@@ -172,5 +176,30 @@ function getRepresentativeTimezones(date: Date): ITimezone[] {
 
     offsetZones.sort((tz1, tz2) => tz1.offset - tz2.offset);
 
-    return offsetZones.map(({ name }) => ({ name }));
+    return offsetZones.map(({ name }) => createTimezone(date.getTime(), name));
+}
+
+function createTimezone(timestamp: number, timezoneName: string): ITimezone {
+    const zonedDate = moment.tz(timestamp, timezoneName);
+    const offset = zonedDate.utcOffset();
+    const offsetAsString = zonedDate.format("Z");
+    const abbreviation = getAbbreviation(timestamp, timezoneName);
+    return {
+        name: timezoneName,
+        abbreviation,
+        offset,
+        offsetAsString,
+    };
+}
+
+function getAbbreviation(timestamp: number, timezoneName: string): string {
+    const zone = moment.tz.zone(timezoneName);
+    if (zone) {
+        const abbreviation = zone.abbr(timestamp);
+        if (abbreviation.length > 0 && abbreviation[0] !== "-" && abbreviation[0] !== "+") {
+            return abbreviation;
+        }
+    }
+
+    return "";
 }
