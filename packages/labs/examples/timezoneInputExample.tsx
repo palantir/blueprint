@@ -6,16 +6,20 @@
  */
 
 import * as classNames from "classnames";
+import * as moment from "moment-timezone";
 import * as React from "react";
 
-import { Button, Classes, Icon, Switch, Tag } from "@blueprintjs/core";
+import { Classes, Icon, Switch, Tag } from "@blueprintjs/core";
+import { DatePicker, TimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
 import { TimezoneFormat, TimezoneInput } from "../src";
 
 export interface ITimezoneInputExampleState {
     date?: Date;
+    time?: Date;
     timezone?: string;
+    dateTime?: Date;
     targetFormat?: TimezoneFormat;
     disabled?: boolean;
     showUserTimezoneGuess?: boolean;
@@ -28,10 +32,12 @@ const EXAMPLE_DEFAULT_TIMEZONE = "Pacific/Honolulu";
 export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState> {
     public state: ITimezoneInputExampleState = {
         date: new Date(),
+        dateTime: new Date(),
         defaultToUserTimezoneGuess: false,
         disabled: false,
         showUserTimezoneGuess: true,
         targetFormat: TimezoneFormat.OFFSET,
+        time: new Date(),
         timezone: "",
         useDefault: false,
     };
@@ -47,7 +53,9 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
     protected renderExample() {
         const {
             date,
+            time,
             timezone,
+            dateTime,
             targetFormat,
             disabled,
             showUserTimezoneGuess,
@@ -55,27 +63,51 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
             defaultToUserTimezoneGuess,
         } = this.state;
 
+        const selection = dateTime && timezone
+            ? toISOString(dateTime, timezone)
+            : "Select a date, time, and timezone";
+
         return (
             <div>
-                <TimezoneInput
-                    date={date}
-                    selectedTimezone={timezone}
-                    onTimezoneSelect={this.handleTimezoneSelect}
-                    targetFormat={targetFormat}
-                    showUserTimezoneGuess={showUserTimezoneGuess}
-                    disabled={disabled}
-                    defaultTimezone={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
-                    defaultToUserTimezoneGuess={defaultToUserTimezoneGuess}
-                />
-                <Button
-                    className={Classes.MINIMAL}
-                    text="Clear"
-                    onClick={this.handleClearClick}
-                />
+                <div
+                    className={Classes.ELEVATION_1}
+                    style={{ display: "inline-block", background: "white", borderRadius: 3 }}
+                >
+                    <DatePicker
+                        value={date}
+                        onChange={this.handleDateChange}
+                        canClearSelection={false}
+                    />
 
-                <Tag className={classNames(Classes.MINIMAL, Classes.LARGE)} style={{ marginLeft: 20 }}>
-                    <Icon iconName="time" /> {timezone || "No timezone selected"}
-                </Tag>
+                    <div style={{ padding: 10, display: "flex", justifyContent: "center" }}>
+                        <TimePicker
+                            value={time}
+                            onChange={this.handleTimeChange}
+                            precision={TimePickerPrecision.SECOND}
+                        />
+
+                        <TimezoneInput
+                            date={date}
+                            selectedTimezone={timezone}
+                            onTimezoneSelect={this.handleTimezoneSelect}
+                            targetFormat={targetFormat}
+                            showUserTimezoneGuess={showUserTimezoneGuess}
+                            disabled={disabled}
+                            defaultTimezone={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
+                            defaultToUserTimezoneGuess={defaultToUserTimezoneGuess}
+                        />
+                    </div>
+                </div>
+
+                <div style={{ marginTop: 20 }}>
+                    <Tag
+                        className={classNames(Classes.MINIMAL, Classes.LARGE)}
+                        onRemove={this.reset}
+                    >
+                        <Icon iconName="time" />
+                        <span style={{ marginLeft: 10 }}>{selection}</span>
+                    </Tag>
+                </div>
             </div>
         );
     }
@@ -132,11 +164,35 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
         );
     }
 
+    private handleDateChange = (date: Date) => {
+        this.setState({ date, dateTime: toDateTime(date, this.state.time) });
+    }
+
+    private handleTimeChange = (time: Date) => {
+        this.setState({ time, dateTime: toDateTime(this.state.date, time) });
+    }
+
     private handleTimezoneSelect = (timezone: string) => {
         this.setState({ timezone });
     }
 
-    private handleClearClick = () => {
-        this.setState({ timezone: "" });
+    private reset = () => {
+        this.setState({ date: null, time: null, timezone: "", dateTime: null });
     }
+}
+
+function toDateTime(date: Date, time: Date): Date {
+    return date && time
+        ? new Date(
+            date.getFullYear(), date.getMonth(), date.getDate(),
+            time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds())
+        : null;
+}
+
+const DATE_FORMAT_WITHOUT_TIMEZONE = "MMM DD YYYY HH:mm:ss";
+const DATE_FORMAT_ISO = "YYYY-MM-DDTHH:mm:ssZ";
+function toISOString(date: Date, timezone: string) {
+    const dateStringWithoutTimezone = moment(date).format(DATE_FORMAT_WITHOUT_TIMEZONE);
+    const zonedDate = moment.tz(dateStringWithoutTimezone, DATE_FORMAT_WITHOUT_TIMEZONE, timezone);
+    return zonedDate.format(DATE_FORMAT_ISO);
 }
