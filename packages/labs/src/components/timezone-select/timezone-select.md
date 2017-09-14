@@ -1,6 +1,6 @@
-@# Timezone Input
+@# Timezone Select
 
-`TimezoneInput` allows the user select from a list of timezones.
+`TimezoneSelect` allows the user select from a list of timezones.
 
 [Moment Timezone](http://momentjs.com/timezone/) is used internally,
 for the list of available timezones and timezone metadata.
@@ -28,10 +28,10 @@ In other browsers, Date methods and a population heuristic are used.
 See [Moment Timezone's documentation](https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/)
 for more information.
 
-@reactExample TimezoneInputExample
+@reactExample TimezoneSelectExample
 
 ```tsx
-import { TimezoneInput } from "@blueprintjs/core";
+import { TimezoneSelect } from "@blueprintjs/core";
 
 export interface ITimezoneExampleState {
     date: Date;
@@ -44,7 +44,7 @@ export class TimezoneExample extends React.PureComponent<{}, ITimezoneExampleSta
 
     public render() {
         return (
-            <TimezoneInput
+            <TimezoneSelect
                 date={this.state.date}
                 onTimezoneSelect={this.handleTimezoneSelect}
             />
@@ -59,4 +59,4 @@ export class TimezoneExample extends React.PureComponent<{}, ITimezoneExampleSta
 
 @## JavaScript API
 
-@interface ITimezoneInputProps
+@interface ITimezoneSelectProps

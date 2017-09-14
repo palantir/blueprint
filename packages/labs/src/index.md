@@ -25,7 +25,7 @@ reference: labs
 
 - [`Tooltip2`](#labs/tooltip2) is like [`Tooltip`](#core/components/tooltip), but uses [`Popover2`](#labs/popover2).
 
-- [`Timezone Input`](#labs/timezone-input) for inputting timezones.
+- [`Timezone Select`](#labs/timezone-select) for selecting timezones.
 
 @page select-component
 @page suggest
@@ -35,4 +35,4 @@ reference: labs
 @page tag-input
 @page popover2
 @page tooltip2
-@page timezone-input
+@page timezone-select

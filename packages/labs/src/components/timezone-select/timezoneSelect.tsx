@@ -26,7 +26,7 @@ import {
 } from "..";
 import * as Classes from "../../common/classes";
 
-export interface ITimezoneInputProps extends IProps {
+export interface ITimezoneSelectProps extends IProps {
     /**
      * The currently selected timezone (IANA time zone identifier).
      * If this prop is provided, the component acts in a controlled manner.
@@ -36,7 +36,7 @@ export interface ITimezoneInputProps extends IProps {
     /**
      * Callback invoked when the user changes the timezone.
      */
-    onChange: (timezone: string) => void;
+    onChange?: (timezone: string) => void;
 
     /**
      * The date to use when determining timezone offsets.
@@ -66,7 +66,7 @@ export interface ITimezoneInputProps extends IProps {
 
     /**
      * Format to use when displaying the selected (or default) timezone within the target element.
-     * @default TimezoneFormat.OFFSET
+     * @default TimezoneDisplayFormat.OFFSET
      */
     targetDisplayFormat?: TimezoneDisplayFormat;
 
@@ -87,7 +87,9 @@ export interface ITimezoneInputProps extends IProps {
      */
     placeholder?: string;
 
-    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    /**
+     * Props to spread to `Popover`. Note that `content` cannot be changed.
+     */
     popoverProps?: Partial<IPopoverProps> & object;
 }
 
@@ -98,7 +100,7 @@ export const TimezoneDisplayFormat = {
     OFFSET: "offset" as "offset",
 };
 
-export interface ITimezoneInputState {
+export interface ITimezoneSelectState {
     selectedTimezone?: string;
     query?: string;
 }
@@ -116,10 +118,11 @@ const TypedSelect = Select.ofType<ITimezoneItem>();
 const PLACEHOLDER_TIMEZONE = "GMT";
 
 @PureRender
-export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimezoneInputState> {
-    public static displayName = "Blueprint.TimezoneInput";
+export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITimezoneSelectState> {
+    public static displayName = "Blueprint.TimezoneSelect";
 
-    public static defaultProps: Partial<ITimezoneInputProps> = {
+    public static defaultProps: Partial<ITimezoneSelectProps> = {
+        date: new Date(),
         defaultToLocalTimezone: false,
         disabled: false,
         popoverProps: {},
@@ -130,7 +133,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     private timezoneToQueryCandidates: { [timezone: string]: string[] };
     private initialTimezones: ITimezoneItem[];
 
-    constructor(props: ITimezoneInputProps, context?: any) {
+    constructor(props: ITimezoneSelectProps, context?: any) {
         super(props, context);
 
         this.state = {
@@ -147,7 +150,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         const { query } = this.state;
         const finalPopoverProps: Partial<IPopoverProps> & object = {
             ...popoverProps,
-            popoverClassName: classNames(popoverProps.popoverClassName, Classes.TIMEZONE_INPUT_POPOVER),
+            popoverClassName: classNames(popoverProps.popoverClassName, Classes.TIMEZONE_SELECT_POPOVER),
         };
         const isPlaceholder = !selectedTimezone;
         const targetTextClasses = classNames({ [CoreClasses.TEXT_MUTED]: isPlaceholder });
@@ -155,7 +158,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
         return (
             <TypedSelect
-                className={classNames(Classes.TIMEZONE_INPUT, className)}
+                className={classNames(Classes.TIMEZONE_SELECT, className)}
                 items={query ? this.timezones : this.initialTimezones}
                 itemListPredicate={this.filterTimezones}
                 itemRenderer={this.renderItem}
@@ -168,7 +171,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 onQueryChange={this.handleQueryChange}
             >
                 <button
-                    className={classNames(Classes.TIMEZONE_INPUT_TARGET, CoreClasses.INPUT, targetClassName)}
+                    className={classNames(Classes.TIMEZONE_SELECT_TARGET, CoreClasses.INPUT, targetClassName)}
                     disabled={disabled}
                 >
                     <span className={targetTextClasses}>{this.getTargetText()}</span>
@@ -178,7 +181,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         );
     }
 
-    public componentWillReceiveProps(nextProps: ITimezoneInputProps) {
+    public componentWillReceiveProps(nextProps: ITimezoneSelectProps) {
         if (this.props.date.getTime() !== nextProps.date.getTime()) {
             this.updateTimezones(nextProps);
         }
@@ -191,13 +194,13 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         }
     }
 
-    private updateTimezones(props: ITimezoneInputProps): void {
+    private updateTimezones(props: ITimezoneSelectProps): void {
         const timezones = getTimezoneItems(props.date);
         this.timezones = timezones;
         this.timezoneToQueryCandidates = getTimezoneQueryCandidates(timezones, props.date);
     }
 
-    private updateInitialTimezones(props: ITimezoneInputProps): void {
+    private updateInitialTimezones(props: ITimezoneSelectProps): void {
         this.initialTimezones = getInitialTimezoneItems(props.date, props.showLocalTimezone);
     }
 

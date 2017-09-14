@@ -13,9 +13,9 @@ import { Classes, Icon, Switch, Tag } from "@blueprintjs/core";
 import { DatePicker, TimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
-import { TimezoneDisplayFormat, TimezoneInput } from "../src";
+import { TimezoneDisplayFormat, TimezoneSelect } from "../src";
 
-export interface ITimezoneInputExampleState {
+export interface ITimezoneSelectExampleState {
     date?: Date;
     time?: Date;
     timezone?: string;
@@ -29,8 +29,8 @@ export interface ITimezoneInputExampleState {
 
 const EXAMPLE_DEFAULT_TIMEZONE = "Pacific/Honolulu";
 
-export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState> {
-    public state: ITimezoneInputExampleState = {
+export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleState> {
+    public state: ITimezoneSelectExampleState = {
         date: new Date(),
         dateTime: new Date(),
         defaultToUserTimezoneGuess: false,
@@ -89,7 +89,7 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
                             precision={TimePickerPrecision.SECOND}
                         />
 
-                        <TimezoneInput
+                        <TimezoneSelect
                             date={date}
                             value={timezone}
                             onChange={this.handleTimezoneSelect}
