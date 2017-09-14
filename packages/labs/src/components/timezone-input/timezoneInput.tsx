@@ -14,6 +14,7 @@ import {
     AbstractComponent,
     Button,
     Classes as CoreClasses,
+    IconName,
     IPopoverProps,
     IProps,
     MenuItem,
@@ -93,15 +94,15 @@ export interface ITimezoneInputState {
     query?: string;
 }
 
-interface ITimezoneWithMetadata {
+interface ITimezoneItem {
+    key: string;
+    text: string;
+    label: string;
+    iconName: IconName | undefined;
     timezone: string;
-    abbreviation: string;
-    offset: number;
-    offsetAsString: string;
-    isUserTimezoneGuess: boolean;
 }
 
-const TypedSelect = Select.ofType<ITimezoneWithMetadata>();
+const TypedSelect = Select.ofType<ITimezoneItem>();
 
 @PureRender
 export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimezoneInputState> {
@@ -114,9 +115,9 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         showUserTimezoneGuess: true,
     };
 
-    private timezones: ITimezoneWithMetadata[];
+    private timezones: ITimezoneItem[];
     private timezoneToQueryCandidates: { [timezone: string]: string[] };
-    private initialTimezones: ITimezoneWithMetadata[];
+    private initialTimezones: ITimezoneItem[];
 
     constructor(props: ITimezoneInputProps, context?: any) {
         super(props, context);
@@ -142,10 +143,11 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 className={classNames(Classes.TIMEZONE_INPUT, className)}
                 items={query ? this.timezones : this.initialTimezones}
                 itemListPredicate={this.filterTimezones}
-                itemRenderer={this.renderTimezone}
+                itemRenderer={this.renderItem}
                 noResults={<MenuItem disabled text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
                 resetOnSelect={true}
+                resetOnClose={true}
                 popoverProps={finalPopoverProps}
                 disabled={disabled}
                 inputProps={{ onChange: this.handleQueryInputChange }}
@@ -174,13 +176,13 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     private updateTimezones(props: ITimezoneInputProps): void {
-        const timezones = getTimezones(props.date);
+        const timezones = getTimezoneItems(props.date);
         this.timezones = timezones;
-        this.timezoneToQueryCandidates = getTimezoneQueryCandidates(timezones);
+        this.timezoneToQueryCandidates = getTimezoneQueryCandidates(timezones, props.date);
     }
 
     private updateInitialTimezones(props: ITimezoneInputProps): void {
-        this.initialTimezones = getInitialTimezones(props.date, props.showUserTimezoneGuess);
+        this.initialTimezones = getInitialTimezoneItems(props.date, props.showUserTimezoneGuess);
     }
 
     private getTargetText(): string {
@@ -205,7 +207,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         return placeholder;
     }
 
-    private filterTimezones = (query: string, items: ITimezoneWithMetadata[]): ITimezoneWithMetadata[] => {
+    private filterTimezones = (query: string, items: ITimezoneItem[]): ITimezoneItem[] => {
         const normalizedQuery = normalizeText(query);
         return items.filter((item) => {
             const candidates = this.timezoneToQueryCandidates[item.timezone] || [normalizeText(item.timezone)];
@@ -213,37 +215,27 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         });
     }
 
-    private renderTimezone = (itemProps: ISelectItemRendererProps<ITimezoneWithMetadata>) => {
-        const { showUserTimezoneGuess } = this.props;
-        const { query } = this.state;
-        const timezone = itemProps.item;
-
+    private renderItem = (itemProps: ISelectItemRendererProps<ITimezoneItem>) => {
+        const { item, isActive, handleClick } = itemProps;
         const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
-            [CoreClasses.ACTIVE]: itemProps.isActive,
-            [CoreClasses.INTENT_PRIMARY]: itemProps.isActive,
+            [CoreClasses.ACTIVE]: isActive,
+            [CoreClasses.INTENT_PRIMARY]: isActive,
         });
-        const showGuess = !query && showUserTimezoneGuess && timezone.isUserTimezoneGuess;
-        const iconName = showGuess
-            ? "locate"
-            : undefined;
-        const text = showGuess
-            ? "Current timezone"
-            : timezone.timezone + (timezone.abbreviation ? ` (${timezone.abbreviation})` : "");
 
         return (
             <MenuItem
-                key={timezone.timezone}
+                key={item.key}
                 className={classes}
-                iconName={iconName}
-                text={text}
-                label={timezone.offsetAsString}
-                onClick={itemProps.handleClick}
+                iconName={item.iconName}
+                text={item.text}
+                label={item.label}
+                onClick={handleClick}
                 shouldDismissPopover={false}
             />
         );
     }
 
-    private handleItemSelect = (timezone: ITimezoneWithMetadata, event?: React.SyntheticEvent<HTMLElement>) => {
+    private handleItemSelect = (timezone: ITimezoneItem, event?: React.SyntheticEvent<HTMLElement>) => {
         if (this.props.selectedTimezone === undefined) {
             this.setState({ selectedTimezone: timezone.timezone });
         }
@@ -256,79 +248,92 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 }
 
-function getTimezones(date: Date): ITimezoneWithMetadata[] {
-    const timestamp = date.getTime();
-    return moment.tz.names().map((timezone) => toTimezoneWithMetadata(timestamp, timezone));
+function getTimezoneItems(date: Date): ITimezoneItem[] {
+    return moment.tz.names().map((timezone) => toTimezoneItem(timezone, date));
 }
 
-function getInitialTimezones(date: Date, includeGuess: boolean): ITimezoneWithMetadata[] {
-    const popularTimezones = getPopularTimezones(date);
-    const guessedTimezone = includeGuess ? getGuessedTimezone(date) : undefined;
-    return guessedTimezone ? [
-        guessedTimezone,
-        ...popularTimezones.filter((popularTimezone) => popularTimezone.timezone !== guessedTimezone.timezone),
-    ] : popularTimezones;
+function getInitialTimezoneItems(date: Date, includeGuess: boolean): ITimezoneItem[] {
+    const popular = getPopularTimezoneItems(date);
+    const guess = includeGuess ? getGuessedTimezoneItem(date) : undefined;
+    return guess ? [guess, ...popular] : popular;
 }
 
-function getPopularTimezones(date: Date): ITimezoneWithMetadata[] {
-    const timezones = getTimezones(date)
-        .filter(({ timezone }) => (
+function getPopularTimezoneItems(date: Date): ITimezoneItem[] {
+    const timezones = moment.tz.names()
+        .filter((timezone) => (
             // Filter out noisy timezones
             // See https://github.com/moment/moment-timezone/issues/227
             /\//.test(timezone) &&
             !/Etc\//.test(timezone)
         ));
 
-    const timezoneToPopulation: { [timezone: string]: number } = {};
-    for (const { timezone } of timezones) {
-        const zone = moment.tz.zone(timezone);
-        const population = (zone && (zone as any).population) || 0;
-        timezoneToPopulation[timezone] = population;
+    const timezoneToMetadata: { [timezone: string]: ITimezoneMetadata } = {};
+    for (const timezone of timezones) {
+        timezoneToMetadata[timezone] = getTimezoneMetadata(timezone, date);
     }
 
     // Order by offset ascending, population descending, timezone name ascending
-    timezones.sort((tz1, tz2) => {
-        const population1 = timezoneToPopulation[tz1.timezone];
-        const population2 = timezoneToPopulation[tz2.timezone];
-        if (tz1.offset === tz2.offset) {
+    timezones.sort((timezone1, timezone2) => {
+        const { offset: offset1, population: population1 } = timezoneToMetadata[timezone1];
+        const { offset: offset2, population: population2 } = timezoneToMetadata[timezone2];
+        if (offset1 === offset2) {
             if (population1 === population2) {
                 // Fall back to sorting alphabetically
-                return tz1.timezone < tz2.timezone ? -1 : 1;
+                return timezone1 < timezone2 ? -1 : 1;
             }
             // Descending order of population
             return population2 - population1;
         }
         // Ascending order of offset
-        return tz1.offset - tz2.offset;
+        return offset1 - offset2;
     });
 
     // Choose the most populous locations for each offset
-    const initialTimezones: ITimezoneWithMetadata[] = [];
-    let curOffset: number;
+    const initialTimezones: ITimezoneItem[] = [];
+    let prevOffset: number;
     for (const timezone of timezones) {
-        if (curOffset === undefined || curOffset !== timezone.offset) {
-            initialTimezones.push(timezone);
-            curOffset = timezone.offset;
+        const curOffset = timezoneToMetadata[timezone].offset;
+        if (prevOffset === undefined || prevOffset !== curOffset) {
+            initialTimezones.push(toTimezoneItem(timezone, date));
+            prevOffset = curOffset;
         }
     }
     return initialTimezones;
 }
 
-function getGuessedTimezone(date: Date): ITimezoneWithMetadata | undefined {
+function getGuessedTimezoneItem(date: Date): ITimezoneItem | undefined {
     const timezone = moment.tz.guess();
-    return timezone ? toTimezoneWithMetadata(date.getTime(), timezone) : undefined;
+    if (timezone) {
+        const timestamp = date.getTime();
+        const zonedDate = moment.tz(timestamp, timezone);
+        const offsetAsString = zonedDate.format("Z");
+        return {
+            iconName: "locate",
+            key: `${timezone}-guess`,
+            label: offsetAsString,
+            text: "Current timezone",
+            timezone,
+        };
+    } else {
+        return undefined;
+    }
 }
 
-function getTimezoneQueryCandidates(timezones: ITimezoneWithMetadata[]): { [timezone: string]: string[] } {
+function getTimezoneQueryCandidates(timezones: ITimezoneItem[], date: Date): { [timezone: string]: string[] } {
     const timezoneToQueryCandidates: { [timezone: string]: string[] } = {};
 
-    for (const { timezone, abbreviation, offsetAsString } of timezones) {
+    for (const { timezone } of timezones) {
+        const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
         const candidates = [
             timezone,
-            // For example, "America/Los_Angeles" -> "America Los Angeles"
-            timezone.split(/[/_]/).join(" "),
             abbreviation,
             offsetAsString,
+
+            // Split timezone string.
+            // For example, "America/Los_Angeles" -> "America Los Angeles"
+            timezone.split(/[/_]/).join(" "),
+
+            // Don't require leading offset 0.
             // For example, "-07:00" -> "-7:00"
             offsetAsString.replace(/^([+-])0(\d:\d{2})$/, "$1$2"),
         ].map(normalizeText);
@@ -340,17 +345,45 @@ function getTimezoneQueryCandidates(timezones: ITimezoneWithMetadata[]): { [time
     return timezoneToQueryCandidates;
 }
 
-function toTimezoneWithMetadata(timestamp: number, timezone: string): ITimezoneWithMetadata {
+function toTimezoneItem(timezone: string, date: Date): ITimezoneItem {
+    const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
+    return {
+        iconName: undefined,
+        key: timezone,
+        label: offsetAsString,
+        text: timezone + (abbreviation ? ` (${abbreviation})` : ""),
+        timezone,
+    };
+}
+
+interface ITimezoneMetadata {
+    timezone: string;
+    abbreviation: string;
+    offset: number;
+    offsetAsString: string;
+    population: number;
+}
+
+function getTimezoneMetadata(timezone: string, date: Date): ITimezoneMetadata {
+    const timestamp = date.getTime();
+    const zone = moment.tz.zone(timezone);
     const zonedDate = moment.tz(timestamp, timezone);
     const offset = zonedDate.utcOffset();
     const offsetAsString = zonedDate.format("Z");
-    const abbreviation = getAbbreviation(timestamp, timezone);
-    const isUserTimezoneGuess = moment.tz.guess() === timezone;
-    return { timezone, abbreviation, offset, offsetAsString, isUserTimezoneGuess };
+    const abbreviation = getAbbreviation(timezone, timestamp);
+    const population = (zone && (zone as any).population) || 0;
+
+    return {
+        timezone,
+        abbreviation,
+        offset,
+        offsetAsString,
+        population,
+    };
 }
 
-function getAbbreviation(timestamp: number, timezoneName: string): string {
-    const zone = moment.tz.zone(timezoneName);
+function getAbbreviation(timezone: string, timestamp: number): string {
+    const zone = moment.tz.zone(timezone);
     if (zone) {
         const abbreviation = zone.abbr(timestamp);
 
