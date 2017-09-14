@@ -12,8 +12,8 @@ import * as React from "react";
 
 import {
     AbstractComponent,
-    Button,
     Classes as CoreClasses,
+    Icon,
     IconName,
     IPopoverProps,
     IProps,
@@ -30,8 +30,6 @@ export interface ITimezoneInputProps extends IProps {
     /**
      * Date to use when determining timezone offsets.
      * A timezone usually has more than one offset from UTC due to daylight saving time.
-     * https://momentjs.com/guides/#/lib-concepts/timezone-offset/
-     * http://momentjs.com/timezone/docs/#/using-timezones/parsing-ambiguous-inputs/
      */
     date: Date;
 
@@ -59,7 +57,6 @@ export interface ITimezoneInputProps extends IProps {
 
     /**
      * Whether to guess the user's timezone and show it at the top of the list of initial timezone suggestions.
-     * https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/
      * @default true
      */
     showUserTimezoneGuess?: boolean;
@@ -160,12 +157,13 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 disabled={disabled}
                 onQueryChange={this.handleQueryChange}
             >
-                <Button
-                    className={classNames(CoreClasses.MINIMAL, targetClassName)}
-                    rightIconName="caret-down"
-                    text={this.getTargetText()}
+                <button
+                    className={classNames(Classes.TIMEZONE_INPUT_TARGET, CoreClasses.INPUT, targetClassName)}
                     disabled={disabled}
-                />
+                >
+                    <span>{this.getTargetText()}</span>
+                    <Icon iconName="caret-down" className={CoreClasses.ALIGN_RIGHT} />
+                </button>
             </TypedSelect>
         );
     }
