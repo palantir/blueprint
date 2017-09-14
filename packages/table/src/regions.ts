@@ -572,6 +572,43 @@ export class Regions {
     }
 
     /**
+     * Expands an old region to the minimal bounding region that also contains
+     * the new region. If the regions have different cardinalities, then the new
+     * region is returned. Useful for expanding a selected region on
+     * shift+click, for instance.
+     */
+    public static expandRegion(oldRegion: IRegion, newRegion: IRegion): IRegion {
+        const oldRegionCardinality = Regions.getRegionCardinality(oldRegion);
+        const newRegionCardinality = Regions.getRegionCardinality(newRegion);
+
+        if (newRegionCardinality !== oldRegionCardinality) {
+            return newRegion;
+        }
+
+        switch (newRegionCardinality) {
+            case RegionCardinality.FULL_ROWS: {
+                const rowStart = Math.min(oldRegion.rows[0], newRegion.rows[0]);
+                const rowEnd = Math.max(oldRegion.rows[1], newRegion.rows[1]);
+                return Regions.row(rowStart, rowEnd);
+            }
+            case RegionCardinality.FULL_COLUMNS: {
+                const colStart = Math.min(oldRegion.cols[0], newRegion.cols[0]);
+                const colEnd = Math.max(oldRegion.cols[1], newRegion.cols[1]);
+                return Regions.column(colStart, colEnd);
+            }
+            case RegionCardinality.CELLS: {
+                const rowStart = Math.min(oldRegion.rows[0], newRegion.rows[0]);
+                const colStart = Math.min(oldRegion.cols[0], newRegion.cols[0]);
+                const rowEnd = Math.max(oldRegion.rows[1], newRegion.rows[1]);
+                const colEnd = Math.max(oldRegion.cols[1], newRegion.cols[1]);
+                return Regions.cell(rowStart, colStart, rowEnd, colEnd);
+            }
+            default:
+                return Regions.table();
+        }
+    }
+
+    /**
      * Iterates over the cells within an `IRegion`, invoking the callback with
      * each cell's coordinates.
      */

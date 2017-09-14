@@ -843,11 +843,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             <div
                 className={classes}
                 ref={refHandler}
-                onClick={this.selectAll}
+                onMouseDown={this.handleMenuMouseDown}
             >
                 {this.maybeRenderRegions(this.styleMenuRegion)}
             </div>
         );
+    }
+
+    private handleMenuMouseDown = (e: React.MouseEvent<HTMLElement>) => {
+        // the shift+click interaction expands the region from the focused cell.
+        // thus, if shift is pressed we shouldn't move the focused cell.
+        this.selectAll(!e.shiftKey);
     }
 
     private maybeScrollTableIntoView() {
@@ -869,20 +875,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.syncViewportPosition(nextScrollLeft, nextScrollTop);
     }
 
-    private selectAll = () => {
+    private selectAll = (shouldUpdateFocusedCell: boolean) => {
         const selectionHandler = this.getEnabledSelectionHandler(RegionCardinality.FULL_TABLE);
         // clicking on upper left hand corner sets selection to "all"
         // regardless of current selection state (clicking twice does not deselect table)
         selectionHandler([Regions.table()]);
 
-        // move the focus cell to the top left
-        const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(Regions.table());
-        const fullFocusCellCoordinates: IFocusedCellCoordinates = {
-            col: newFocusedCellCoordinates.col,
-            focusSelectionIndex: 0,
-            row: newFocusedCellCoordinates.row,
-        };
-        this.handleFocus(fullFocusCellCoordinates);
+        if (shouldUpdateFocusedCell) {
+            const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(Regions.table());
+            this.handleFocus(FocusedCellUtils.toFullCoordinates(newFocusedCellCoordinates));
+        }
     }
 
     private handleSelectAllHotkey = (e: KeyboardEvent) => {
@@ -890,7 +892,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.preventDefault();
         e.stopPropagation();
 
-        this.selectAll();
+        // selecting-all via the keyboard should not move the focused cell.
+        this.selectAll(false);
     }
 
     private getColumnProps(columnIndex: number) {
@@ -940,7 +943,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         showFrozenColumnsOnly: boolean = false,
     ) => {
         const { grid, locator } = this;
-        const { selectedRegions, viewportRect } = this.state;
+        const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -968,6 +971,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 <ColumnHeader
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
+                    focusedCell={focusedCell}
                     grid={grid}
                     isReorderable={isColumnReorderable}
                     isResizable={isColumnResizable}
@@ -1002,7 +1006,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         showFrozenRowsOnly: boolean = false,
     ) => {
         const { grid, locator } = this;
-        const { selectedRegions, viewportRect } = this.state;
+        const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -1030,6 +1034,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             >
                 <RowHeader
                     allowMultipleSelection={allowMultipleSelection}
+                    focusedCell={focusedCell}
                     grid={grid}
                     locator={locator}
                     isReorderable={isRowReorderable}
@@ -1074,6 +1079,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         showFrozenColumnsOnly: boolean = false,
     ) => {
         const { grid, locator } = this;
+        const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -1086,9 +1092,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const numFrozenColumns = this.getNumFrozenColumnsClamped();
         const numFrozenRows = this.getNumFrozenRowsClamped();
 
-        const { selectedRegions, viewportRect/*, verticalGuides, horizontalGuides*/ } = this.state;
-
-        // const style = grid.getRect().sizeStyle();
         const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
 
@@ -1107,6 +1110,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 <TableBody
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
+                    focusedCell={focusedCell}
                     grid={grid}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                     locator={locator}
