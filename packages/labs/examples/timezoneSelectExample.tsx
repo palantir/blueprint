@@ -170,7 +170,7 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
             <button
                 className={Classes.INPUT}
                 disabled={disabled}
-                style={{ cursor: "text" }}
+                style={{ cursor: !disabled ? "text" : undefined }}
             >
                 <span className={targetTextClasses}>
                     {displayValue || defaultDisplayValue || placeholder}
