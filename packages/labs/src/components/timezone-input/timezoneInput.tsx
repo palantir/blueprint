@@ -78,7 +78,7 @@ export interface ITimezoneInputProps extends IProps {
 
     /**
      * Text to show when no timezone has been selected and there is no default.
-     * @default "Select timezone..."
+     * @default GMT timezone formatted according to `targetFormat`
      */
     placeholder?: string;
 
@@ -108,6 +108,8 @@ interface ITimezoneItem {
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
+const PLACEHOLDER_TIMEZONE = "GMT";
+
 @PureRender
 export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimezoneInputState> {
     public static displayName = "Blueprint.TimezoneInput";
@@ -115,7 +117,6 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     public static defaultProps: Partial<ITimezoneInputProps> = {
         defaultToUserTimezoneGuess: false,
         disabled: false,
-        placeholder: "Select timezone...",
         popoverProps: {},
         showUserTimezoneGuess: true,
     };
@@ -137,11 +138,15 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
 
     public render() {
         const { className, disabled, popoverProps, targetClassName } = this.props;
+        const { selectedTimezone } = this.state;
         const { query } = this.state;
         const finalPopoverProps: Partial<IPopoverProps> & object = {
             ...popoverProps,
             popoverClassName: classNames(popoverProps.popoverClassName, Classes.TIMEZONE_INPUT_POPOVER),
         };
+        const isPlaceholder = !selectedTimezone;
+        const targetTextClasses = classNames({ [CoreClasses.TEXT_MUTED]: isPlaceholder });
+        const targetIconClasses = classNames(CoreClasses.ALIGN_RIGHT, { [CoreClasses.TEXT_MUTED]: isPlaceholder });
 
         return (
             <TypedSelect
@@ -161,8 +166,8 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                     className={classNames(Classes.TIMEZONE_INPUT_TARGET, CoreClasses.INPUT, targetClassName)}
                     disabled={disabled}
                 >
-                    <span>{this.getTargetText()}</span>
-                    <Icon iconName="caret-down" className={CoreClasses.ALIGN_RIGHT} />
+                    <span className={targetTextClasses}>{this.getTargetText()}</span>
+                    <Icon iconName="caret-down" className={targetIconClasses} />
                 </button>
             </TypedSelect>
         );
@@ -204,19 +209,12 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         const timezoneExists = timezone && moment.tz.zone(timezone) != null;
 
         if (timezoneExists) {
-            switch (targetFormat) {
-                case TimezoneFormat.ABBREVIATION:
-                    return moment.tz(date.getTime(), timezone).format("z");
-                case TimezoneFormat.NAME:
-                    return timezone;
-                case TimezoneFormat.OFFSET:
-                    return moment.tz(date.getTime(), timezone).format("Z");
-                default:
-                    assertNever(targetFormat);
-            }
+            return formatTimezone(timezone, date, targetFormat);
+        } else if (placeholder !== undefined) {
+            return placeholder;
+        } else {
+            return formatTimezone(PLACEHOLDER_TIMEZONE, date, targetFormat);
         }
-
-        return placeholder;
     }
 
     private filterTimezones = (query: string, items: ITimezoneItem[]): ITimezoneItem[] => {
@@ -409,6 +407,20 @@ function getAbbreviation(timezone: string, timestamp: number): string {
     }
 
     return "";
+}
+
+function formatTimezone(timezone: string, date: Date, targetFormat: TimezoneFormat): string {
+    switch (targetFormat) {
+        case TimezoneFormat.ABBREVIATION:
+            return moment.tz(date.getTime(), timezone).format("z");
+        case TimezoneFormat.NAME:
+            return timezone;
+        case TimezoneFormat.OFFSET:
+            return moment.tz(date.getTime(), timezone).format("Z");
+        default:
+            assertNever(targetFormat);
+            return "";
+    }
 }
 
 function isQueryMatch(query: string, candidate: string) {
