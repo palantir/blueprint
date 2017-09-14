@@ -30,6 +30,8 @@ for more information.
 
 @reactExample TimezoneSelectExample
 
+@## Basic Usage
+
 ```tsx
 import { TimezoneSelect } from "@blueprintjs/core";
 

@@ -84,7 +84,6 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
                     <DatePicker
                         value={date}
                         onChange={this.handleDateChange}
-                        canClearSelection={false}
                     />
 
                     <div style={{ padding: 10, display: "flex", justifyContent: "center" }}>
@@ -163,9 +162,9 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
 
     private targetRenderer: ITimezoneSelectTargetRenderer = (targetProps) => {
         const { value, displayValue, defaultDisplayValue, placeholder, disabled } = targetProps;
-        const hasValue = value != null;
-        const targetTextClasses = classNames({ [Classes.TEXT_MUTED]: !hasValue });
-        const targetIconClasses = classNames(Classes.ALIGN_RIGHT, { [Classes.TEXT_MUTED]: !hasValue });
+        const emptyValue = !value;
+        const targetTextClasses = classNames({ [Classes.TEXT_MUTED]: emptyValue });
+        const targetIconClasses = classNames(Classes.ALIGN_RIGHT, { [Classes.TEXT_MUTED]: emptyValue });
 
         return (
             <button

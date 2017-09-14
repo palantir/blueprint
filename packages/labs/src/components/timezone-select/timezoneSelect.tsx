@@ -132,6 +132,7 @@ export const TimezoneDisplayFormat = {
 };
 
 export interface ITimezoneSelectState {
+    date?: Date;
     value?: string;
     query?: string;
 }
@@ -153,7 +154,6 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
     public static displayName = "Blueprint.TimezoneSelect";
 
     public static defaultProps: Partial<ITimezoneSelectProps> = {
-        date: new Date(),
         defaultToLocalTimezone: false,
         disabled: false,
         popoverProps: {},
@@ -167,12 +167,11 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
     constructor(props: ITimezoneSelectProps, context?: any) {
         super(props, context);
 
-        this.state = {
-            value: props.value,
-        };
+        const date = props.date || new Date();
+        this.state = { date, value: props.value };
 
-        this.updateTimezones(props);
-        this.updateInitialTimezones(props);
+        this.updateTimezones(date);
+        this.initialTimezones = getInitialTimezoneItems(date, props.showLocalTimezone);
     }
 
     public render() {
@@ -204,21 +203,28 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
     }
 
     public componentWillReceiveProps(nextProps: ITimezoneSelectProps) {
-        if (this.props.date.getTime() !== nextProps.date.getTime()) {
-            this.updateTimezones(nextProps);
+        const nextDate = nextProps.date || new Date();
+        const dateChanged = this.state.date.getTime() !== nextDate.getTime();
+
+        if (dateChanged) {
+            this.updateTimezones(nextDate);
         }
-        if (this.props.date.getTime() !== nextProps.date.getTime() ||
-            this.props.showLocalTimezone !== nextProps.showLocalTimezone) {
-            this.updateInitialTimezones(nextProps);
+        if (dateChanged || this.props.showLocalTimezone !== nextProps.showLocalTimezone) {
+            this.initialTimezones = getInitialTimezoneItems(nextDate, nextProps.showLocalTimezone);
+        }
+
+        const nextState: ITimezoneSelectState = {};
+        if (dateChanged) {
+            nextState.date = nextDate;
         }
         if (this.state.value !== nextProps.value) {
-            this.setState({ value: nextProps.value });
+            nextState.value = nextProps.value;
         }
+        this.setState(nextState);
     }
 
     private renderTarget() {
         const {
-            date,
             disabled,
             targetRenderer,
             targetDisplayFormat = TimezoneDisplayFormat.OFFSET,
@@ -226,7 +232,7 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
             defaultToLocalTimezone,
             placeholder,
         } = this.props;
-        const { value } = this.state;
+        const { date, value } = this.state;
 
         const finalDefaultValue = defaultValue || (defaultToLocalTimezone && getLocalTimezone());
 
@@ -260,14 +266,10 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
         );
     }
 
-    private updateTimezones(props: ITimezoneSelectProps): void {
-        const timezones = getTimezoneItems(props.date);
+    private updateTimezones(date: Date): void {
+        const timezones = getTimezoneItems(date);
         this.timezones = timezones;
-        this.timezoneToQueryCandidates = getTimezoneQueryCandidates(timezones, props.date);
-    }
-
-    private updateInitialTimezones(props: ITimezoneSelectProps): void {
-        this.initialTimezones = getInitialTimezoneItems(props.date, props.showLocalTimezone);
+        this.timezoneToQueryCandidates = getTimezoneQueryCandidates(timezones, date);
     }
 
     private filterTimezones = (query: string, items: ITimezoneItem[]): ITimezoneItem[] => {
@@ -314,9 +316,9 @@ function getTimezoneItems(date: Date): ITimezoneItem[] {
     return moment.tz.names().map((timezone) => toTimezoneItem(timezone, date));
 }
 
-function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolean): ITimezoneItem[] {
+function getInitialTimezoneItems(date: Date, showLocalTimezone: boolean): ITimezoneItem[] {
     const populous = getPopulousTimezoneItems(date);
-    const local = includeLocalTimezone ? getLocalTimezoneItem(date) : undefined;
+    const local = showLocalTimezone ? getLocalTimezoneItem(date) : undefined;
     return local ? [local, ...populous] : populous;
 }
 
