@@ -254,11 +254,15 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
 
     private defaultTargetRenderer: ITimezoneSelectTargetRenderer = (targetProps) => {
         const { targetClassName } = this.props;
-        const { displayValue, defaultDisplayValue, placeholder, disabled } = targetProps;
+        const { value, displayValue, defaultDisplayValue, placeholder, disabled } = targetProps;
+        const isPlaceholder = !value;
+        const classes = classNames(Classes.TIMEZONE_SELECT_TARGET, targetClassName, {
+            [Classes.TIMEZONE_SELECT_TARGET_PLACEHOLDER]: isPlaceholder,
+        });
 
         return (
             <Button
-                className={classNames(Classes.TIMEZONE_SELECT_TARGET, targetClassName)}
+                className={classes}
                 text={displayValue || defaultDisplayValue || placeholder}
                 rightIconName="caret-down"
                 disabled={disabled}

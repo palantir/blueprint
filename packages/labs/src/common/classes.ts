@@ -16,4 +16,5 @@ export const TAG_INPUT = "pt-tag-input";
 export const TAG_INPUT_ICON = `${TAG_INPUT}-icon`;
 export const TIMEZONE_SELECT = "pt-timezone-select";
 export const TIMEZONE_SELECT_TARGET = `${TIMEZONE_SELECT}-target`;
+export const TIMEZONE_SELECT_TARGET_PLACEHOLDER = `${TIMEZONE_SELECT_TARGET}-placeholder`;
 export const TIMEZONE_SELECT_POPOVER = `${TIMEZONE_SELECT}-popover`;
