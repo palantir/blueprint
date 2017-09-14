@@ -20,6 +20,7 @@ export interface ITimezoneInputExampleState {
     disabled?: boolean;
     showUserTimezoneGuess?: boolean;
     useDefault?: boolean;
+    defaultToUserTimezoneGuess?: boolean;
 }
 
 const EXAMPLE_DEFAULT_TIMEZONE = "Pacific/Honolulu";
@@ -27,6 +28,7 @@ const EXAMPLE_DEFAULT_TIMEZONE = "Pacific/Honolulu";
 export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState> {
     public state: ITimezoneInputExampleState = {
         date: new Date(),
+        defaultToUserTimezoneGuess: false,
         disabled: false,
         showUserTimezoneGuess: true,
         targetFormat: TimezoneFormat.OFFSET,
@@ -38,10 +40,20 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
     private handleShowUserTimezoneGuessChange = handleBooleanChange(
         (showUserTimezoneGuess) => this.setState({ showUserTimezoneGuess }));
     private handleUseDefaultChange = handleBooleanChange((useDefault) => this.setState({ useDefault }));
+    private handleDefaultToUserTimezoneGuessChange = handleBooleanChange(
+        (defaultToUserTimezoneGuess) => this.setState({ defaultToUserTimezoneGuess }));
     private handleFormatChange = handleStringChange((targetFormat: TimezoneFormat) => this.setState({ targetFormat }));
 
     protected renderExample() {
-        const { date, timezone, targetFormat, disabled, showUserTimezoneGuess, useDefault } = this.state;
+        const {
+            date,
+            timezone,
+            targetFormat,
+            disabled,
+            showUserTimezoneGuess,
+            useDefault,
+            defaultToUserTimezoneGuess,
+        } = this.state;
 
         return (
             <div>
@@ -53,6 +65,7 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
                     showUserTimezoneGuess={showUserTimezoneGuess}
                     disabled={disabled}
                     defaultTimezone={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
+                    defaultToUserTimezoneGuess={defaultToUserTimezoneGuess}
                 />
                 <Button
                     className={Classes.MINIMAL}
@@ -87,6 +100,12 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
                     label="Use a default timezone"
                     key="use-default"
                     onChange={this.handleUseDefaultChange}
+                />,
+                <Switch
+                    checked={this.state.defaultToUserTimezoneGuess}
+                    label="Default to the user's guessed timezone"
+                    key="default-to-user-timezone-guess"
+                    onChange={this.handleDefaultToUserTimezoneGuessChange}
                 />,
             ],
             [

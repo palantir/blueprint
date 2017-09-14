@@ -51,6 +51,13 @@ export interface ITimezoneInputProps extends IProps {
     defaultTimezone?: string;
 
     /**
+     * Guess the user's timezone and use that as the default timezone.
+     * Note `defaultTimezone` takes precedence over the value of this prop.
+     * @default false
+     */
+    defaultToUserTimezoneGuess?: boolean;
+
+    /**
      * Whether to guess the user's timezone and show it at the top of the list of initial timezone suggestions.
      * https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/
      * @default true
@@ -109,6 +116,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     public static displayName = "Blueprint.TimezoneInput";
 
     public static defaultProps: Partial<ITimezoneInputProps> = {
+        defaultToUserTimezoneGuess: false,
         disabled: false,
         placeholder: "Select timezone...",
         popoverProps: {},
@@ -186,9 +194,15 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     private getTargetText(): string {
-        const { date, defaultTimezone, targetFormat = TimezoneFormat.OFFSET, placeholder } = this.props;
+        const {
+            date,
+            defaultTimezone,
+            defaultToUserTimezoneGuess,
+            targetFormat = TimezoneFormat.OFFSET,
+            placeholder,
+        } = this.props;
         const { selectedTimezone } = this.state;
-        const timezone = selectedTimezone || defaultTimezone;
+        const timezone = selectedTimezone || defaultTimezone || (defaultToUserTimezoneGuess && getUserTimezoneGuess());
         const timezoneExists = timezone && moment.tz.zone(timezone) != null;
 
         if (timezoneExists) {
@@ -301,7 +315,7 @@ function getPopularTimezoneItems(date: Date): ITimezoneItem[] {
 }
 
 function getGuessedTimezoneItem(date: Date): ITimezoneItem | undefined {
-    const timezone = moment.tz.guess();
+    const timezone = getUserTimezoneGuess();
     if (timezone) {
         const timestamp = date.getTime();
         const zonedDate = moment.tz(timestamp, timezone);
@@ -316,6 +330,10 @@ function getGuessedTimezoneItem(date: Date): ITimezoneItem | undefined {
     } else {
         return undefined;
     }
+}
+
+function getUserTimezoneGuess(): string {
+    return moment.tz.guess();
 }
 
 function getTimezoneQueryCandidates(timezones: ITimezoneItem[], date: Date): { [timezone: string]: string[] } {
