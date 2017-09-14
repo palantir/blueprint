@@ -12,8 +12,8 @@ import * as React from "react";
 
 import {
     AbstractComponent,
+    Button,
     Classes as CoreClasses,
-    Icon,
     IconName,
     IPopoverProps,
     IProps,
@@ -65,6 +65,11 @@ export interface ITimezoneSelectProps extends IProps {
     showLocalTimezone?: boolean;
 
     /**
+     * Custom renderer for the target element.
+     */
+    targetRenderer?: ITimezoneSelectTargetRenderer;
+
+    /**
      * Format to use when displaying the selected (or default) timezone within the target element.
      * @default TimezoneDisplayFormat.OFFSET
      */
@@ -72,6 +77,7 @@ export interface ITimezoneSelectProps extends IProps {
 
     /**
      * A space-delimited list of class names to pass along to the target element.
+     * This prop is ignored when a `targetRenderer` is provided.
      */
     targetClassName?: string;
 
@@ -93,6 +99,31 @@ export interface ITimezoneSelectProps extends IProps {
     popoverProps?: Partial<IPopoverProps> & object;
 }
 
+export type ITimezoneSelectTargetRenderer = (targetProps: ITimezoneSelectTargetProps) => JSX.Element | null;
+
+export interface ITimezoneSelectTargetProps {
+    /** The currently selected timezone. */
+    value: string | undefined;
+
+    /** Initial timezone, when none is selected. */
+    defaultValue: string | undefined;
+
+    /** Display version of the currently selected timezone. */
+    displayValue: string | undefined;
+
+    /** Display version of the default timezone. */
+    defaultDisplayValue: string | undefined;
+
+    /** Placeholder for when no timezone has been selected and there is no default. */
+    placeholder: string;
+
+    /** Whether the target is intended to be non-interactive. */
+    disabled: boolean;
+
+    /** Date to use when determining timezone offsets. */
+    date: Date;
+}
+
 export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name";
 export const TimezoneDisplayFormat = {
     ABBREVIATION: "abbreviation" as "abbreviation",
@@ -101,7 +132,7 @@ export const TimezoneDisplayFormat = {
 };
 
 export interface ITimezoneSelectState {
-    selectedTimezone?: string;
+    value?: string;
     query?: string;
 }
 
@@ -137,7 +168,7 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
         super(props, context);
 
         this.state = {
-            selectedTimezone: props.value,
+            value: props.value,
         };
 
         this.updateTimezones(props);
@@ -145,16 +176,13 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
     }
 
     public render() {
-        const { className, disabled, popoverProps, targetClassName } = this.props;
-        const { selectedTimezone } = this.state;
+        const { className, disabled, popoverProps } = this.props;
         const { query } = this.state;
+
         const finalPopoverProps: Partial<IPopoverProps> & object = {
             ...popoverProps,
             popoverClassName: classNames(popoverProps.popoverClassName, Classes.TIMEZONE_SELECT_POPOVER),
         };
-        const isPlaceholder = !selectedTimezone;
-        const targetTextClasses = classNames({ [CoreClasses.TEXT_MUTED]: isPlaceholder });
-        const targetIconClasses = classNames(CoreClasses.ALIGN_RIGHT, { [CoreClasses.TEXT_MUTED]: isPlaceholder });
 
         return (
             <TypedSelect
@@ -170,13 +198,7 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
                 disabled={disabled}
                 onQueryChange={this.handleQueryChange}
             >
-                <button
-                    className={classNames(Classes.TIMEZONE_SELECT_TARGET, CoreClasses.INPUT, targetClassName)}
-                    disabled={disabled}
-                >
-                    <span className={targetTextClasses}>{this.getTargetText()}</span>
-                    <Icon iconName="caret-down" className={targetIconClasses} />
-                </button>
+                {this.renderTarget()}
             </TypedSelect>
         );
     }
@@ -189,9 +211,53 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
             this.props.showLocalTimezone !== nextProps.showLocalTimezone) {
             this.updateInitialTimezones(nextProps);
         }
-        if (this.state.selectedTimezone !== nextProps.value) {
-            this.setState({ selectedTimezone: nextProps.value });
+        if (this.state.value !== nextProps.value) {
+            this.setState({ value: nextProps.value });
         }
+    }
+
+    private renderTarget() {
+        const {
+            date,
+            disabled,
+            targetRenderer,
+            targetDisplayFormat = TimezoneDisplayFormat.OFFSET,
+            defaultValue,
+            defaultToLocalTimezone,
+            placeholder,
+        } = this.props;
+        const { value } = this.state;
+
+        const finalDefaultValue = defaultValue || (defaultToLocalTimezone && getLocalTimezone());
+
+        const finalPlaceholder = placeholder !== undefined
+            ? placeholder
+            : formatTimezone(PLACEHOLDER_TIMEZONE, date, targetDisplayFormat);
+
+        const finalTargetRenderer = targetRenderer || this.defaultTargetRenderer;
+        return finalTargetRenderer({
+            date,
+            defaultDisplayValue: formatTimezone(finalDefaultValue, date, targetDisplayFormat),
+            defaultValue: finalDefaultValue,
+            disabled,
+            displayValue: formatTimezone(value, date, targetDisplayFormat),
+            placeholder: finalPlaceholder,
+            value,
+        });
+    }
+
+    private defaultTargetRenderer: ITimezoneSelectTargetRenderer = (targetProps) => {
+        const { targetClassName } = this.props;
+        const { displayValue, defaultDisplayValue, placeholder, disabled } = targetProps;
+
+        return (
+            <Button
+                className={classNames(Classes.TIMEZONE_SELECT_TARGET, targetClassName)}
+                text={displayValue || defaultDisplayValue || placeholder}
+                rightIconName="caret-down"
+                disabled={disabled}
+            />
+        );
     }
 
     private updateTimezones(props: ITimezoneSelectProps): void {
@@ -202,27 +268,6 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
 
     private updateInitialTimezones(props: ITimezoneSelectProps): void {
         this.initialTimezones = getInitialTimezoneItems(props.date, props.showLocalTimezone);
-    }
-
-    private getTargetText(): string {
-        const {
-            date,
-            defaultValue,
-            defaultToLocalTimezone,
-            targetDisplayFormat = TimezoneDisplayFormat.OFFSET,
-            placeholder,
-        } = this.props;
-        const { selectedTimezone } = this.state;
-        const timezone = selectedTimezone || defaultValue || (defaultToLocalTimezone && getLocalTimezone());
-        const timezoneExists = timezone && moment.tz.zone(timezone) != null;
-
-        if (timezoneExists) {
-            return formatTimezone(timezone, date, targetDisplayFormat);
-        } else if (placeholder !== undefined) {
-            return placeholder;
-        } else {
-            return formatTimezone(PLACEHOLDER_TIMEZONE, date, targetDisplayFormat);
-        }
     }
 
     private filterTimezones = (query: string, items: ITimezoneItem[]): ITimezoneItem[] => {
@@ -255,7 +300,7 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
 
     private handleItemSelect = (timezone: ITimezoneItem) => {
         if (this.props.value === undefined) {
-            this.setState({ selectedTimezone: timezone.timezone });
+            this.setState({ value: timezone.timezone });
         }
         Utils.safeInvoke(this.props.onChange, timezone.timezone);
     }
@@ -423,7 +468,15 @@ function getAbbreviation(timezone: string, timestamp: number): string {
     return "";
 }
 
-function formatTimezone(timezone: string, date: Date, targetDisplayFormat: TimezoneDisplayFormat): string {
+function formatTimezone(
+    timezone: string | undefined,
+    date: Date,
+    targetDisplayFormat: TimezoneDisplayFormat,
+): string | undefined {
+    if (!timezone || moment.tz.zone(timezone) == null) {
+        return undefined;
+    }
+
     switch (targetDisplayFormat) {
         case TimezoneDisplayFormat.ABBREVIATION:
             return moment.tz(date.getTime(), timezone).format("z");

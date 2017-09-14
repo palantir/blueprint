@@ -13,7 +13,7 @@ import { Classes, Icon, Switch, Tag } from "@blueprintjs/core";
 import { DatePicker, TimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
-import { TimezoneDisplayFormat, TimezoneSelect } from "../src";
+import { ITimezoneSelectTargetRenderer, TimezoneDisplayFormat, TimezoneSelect } from "../src";
 
 export interface ITimezoneSelectExampleState {
     date?: Date;
@@ -25,6 +25,7 @@ export interface ITimezoneSelectExampleState {
     showUserTimezoneGuess?: boolean;
     useDefault?: boolean;
     defaultToUserTimezoneGuess?: boolean;
+    useCustomRenderer?: boolean;
 }
 
 const EXAMPLE_DEFAULT_TIMEZONE = "Pacific/Honolulu";
@@ -39,6 +40,7 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
         targetDisplayFormat: TimezoneDisplayFormat.OFFSET,
         time: new Date(),
         timezone: "",
+        useCustomRenderer: true,
         useDefault: false,
     };
 
@@ -50,6 +52,8 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
         this.setState({ useDefault }));
     private handleDefaultToUserTimezoneGuessChange = handleBooleanChange((defaultToUserTimezoneGuess) =>
         this.setState({ defaultToUserTimezoneGuess }));
+    private handleUseCustomRendererChange = handleBooleanChange((useCustomRenderer) =>
+        this.setState({ useCustomRenderer }));
     private handleFormatChange = handleStringChange((targetDisplayFormat: TimezoneDisplayFormat) =>
         this.setState({ targetDisplayFormat }));
 
@@ -62,6 +66,7 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
             targetDisplayFormat,
             disabled,
             showUserTimezoneGuess,
+            useCustomRenderer,
             useDefault,
             defaultToUserTimezoneGuess,
         } = this.state;
@@ -98,6 +103,7 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
                             disabled={disabled}
                             defaultValue={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
                             defaultToLocalTimezone={defaultToUserTimezoneGuess}
+                            targetRenderer={useCustomRenderer ? this.targetRenderer : undefined}
                         />
                     </div>
                 </div>
@@ -142,11 +148,37 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
                     key="default-to-user-timezone-guess"
                     onChange={this.handleDefaultToUserTimezoneGuessChange}
                 />,
+                <Switch
+                    checked={this.state.useCustomRenderer}
+                    label="Use a custom target renderer"
+                    key="use-custom-renderer"
+                    onChange={this.handleUseCustomRendererChange}
+                />,
             ],
             [
                 this.renderFormatSelect(),
             ],
         ];
+    }
+
+    private targetRenderer: ITimezoneSelectTargetRenderer = (targetProps) => {
+        const { value, displayValue, defaultDisplayValue, placeholder, disabled } = targetProps;
+        const hasValue = value != null;
+        const targetTextClasses = classNames({ [Classes.TEXT_MUTED]: !hasValue });
+        const targetIconClasses = classNames(Classes.ALIGN_RIGHT, { [Classes.TEXT_MUTED]: !hasValue });
+
+        return (
+            <button
+                className={Classes.INPUT}
+                disabled={disabled}
+                style={{ cursor: "text" }}
+            >
+                <span className={targetTextClasses}>
+                    {displayValue || defaultDisplayValue || placeholder}
+                </span>
+                <Icon iconName="caret-down" className={targetIconClasses} />
+            </button>
+        );
     }
 
     private renderFormatSelect() {

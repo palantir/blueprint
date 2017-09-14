@@ -60,3 +60,5 @@ export class TimezoneExample extends React.PureComponent<{}, ITimezoneExampleSta
 @## JavaScript API
 
 @interface ITimezoneSelectProps
+
+@interface ITimezoneSelectTargetProps
