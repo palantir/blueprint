@@ -13,14 +13,14 @@ import { Classes, Icon, Switch, Tag } from "@blueprintjs/core";
 import { DatePicker, TimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
-import { TimezoneFormat, TimezoneInput } from "../src";
+import { TimezoneDisplayFormat, TimezoneInput } from "../src";
 
 export interface ITimezoneInputExampleState {
     date?: Date;
     time?: Date;
     timezone?: string;
     dateTime?: Date;
-    targetFormat?: TimezoneFormat;
+    targetDisplayFormat?: TimezoneDisplayFormat;
     disabled?: boolean;
     showUserTimezoneGuess?: boolean;
     useDefault?: boolean;
@@ -36,19 +36,22 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
         defaultToUserTimezoneGuess: false,
         disabled: false,
         showUserTimezoneGuess: true,
-        targetFormat: TimezoneFormat.OFFSET,
+        targetDisplayFormat: TimezoneDisplayFormat.OFFSET,
         time: new Date(),
         timezone: "",
         useDefault: false,
     };
 
-    private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
-    private handleShowUserTimezoneGuessChange = handleBooleanChange(
-        (showUserTimezoneGuess) => this.setState({ showUserTimezoneGuess }));
-    private handleUseDefaultChange = handleBooleanChange((useDefault) => this.setState({ useDefault }));
-    private handleDefaultToUserTimezoneGuessChange = handleBooleanChange(
-        (defaultToUserTimezoneGuess) => this.setState({ defaultToUserTimezoneGuess }));
-    private handleFormatChange = handleStringChange((targetFormat: TimezoneFormat) => this.setState({ targetFormat }));
+    private handleDisabledChange = handleBooleanChange((disabled) =>
+        this.setState({ disabled }));
+    private handleShowUserTimezoneGuessChange = handleBooleanChange((showUserTimezoneGuess) =>
+        this.setState({ showUserTimezoneGuess }));
+    private handleUseDefaultChange = handleBooleanChange((useDefault) =>
+        this.setState({ useDefault }));
+    private handleDefaultToUserTimezoneGuessChange = handleBooleanChange((defaultToUserTimezoneGuess) =>
+        this.setState({ defaultToUserTimezoneGuess }));
+    private handleFormatChange = handleStringChange((targetDisplayFormat: TimezoneDisplayFormat) =>
+        this.setState({ targetDisplayFormat }));
 
     protected renderExample() {
         const {
@@ -56,7 +59,7 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
             time,
             timezone,
             dateTime,
-            targetFormat,
+            targetDisplayFormat,
             disabled,
             showUserTimezoneGuess,
             useDefault,
@@ -88,13 +91,13 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
 
                         <TimezoneInput
                             date={date}
-                            selectedTimezone={timezone}
-                            onTimezoneSelect={this.handleTimezoneSelect}
-                            targetFormat={targetFormat}
-                            showUserTimezoneGuess={showUserTimezoneGuess}
+                            value={timezone}
+                            onChange={this.handleTimezoneSelect}
+                            targetDisplayFormat={targetDisplayFormat}
+                            showLocalTimezone={showUserTimezoneGuess}
                             disabled={disabled}
-                            defaultTimezone={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
-                            defaultToUserTimezoneGuess={defaultToUserTimezoneGuess}
+                            defaultValue={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
+                            defaultToLocalTimezone={defaultToUserTimezoneGuess}
                         />
                     </div>
                 </div>
@@ -152,12 +155,12 @@ export class TimezoneInputExample extends BaseExample<ITimezoneInputExampleState
                 Target format
                 <div className={Classes.SELECT}>
                     <select
-                        value={this.state.targetFormat}
+                        value={this.state.targetDisplayFormat}
                         onChange={this.handleFormatChange}
                     >
-                        <option value={TimezoneFormat.ABBREVIATION.toString()}>Abbreviation</option>
-                        <option value={TimezoneFormat.NAME.toString()}>Name</option>
-                        <option value={TimezoneFormat.OFFSET.toString()}>Offset</option>
+                        <option value={TimezoneDisplayFormat.ABBREVIATION.toString()}>Abbreviation</option>
+                        <option value={TimezoneDisplayFormat.NAME.toString()}>Name</option>
+                        <option value={TimezoneDisplayFormat.OFFSET.toString()}>Offset</option>
                     </select>
                 </div>
             </label>

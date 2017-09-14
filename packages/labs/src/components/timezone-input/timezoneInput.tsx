@@ -28,57 +28,62 @@ import * as Classes from "../../common/classes";
 
 export interface ITimezoneInputProps extends IProps {
     /**
-     * Date to use when determining timezone offsets.
+     * The currently selected timezone (IANA time zone identifier).
+     * If this prop is provided, the component acts in a controlled manner.
+     */
+    value?: string;
+
+    /**
+     * Callback invoked when the user changes the timezone.
+     */
+    onChange: (timezone: string) => void;
+
+    /**
+     * The date to use when determining timezone offsets.
      * A timezone usually has more than one offset from UTC due to daylight saving time.
+     * @default now
      */
-    date: Date;
+    date?: Date;
 
     /**
-     * Selected timezone, for controlled usage.
-     * Providing this prop will put the component in controlled mode.
+     * Initial timezone that will display as selected.
+     * This should not be set if `value` is set.
      */
-    selectedTimezone?: string;
+    defaultValue?: string;
 
     /**
-     * Callback invoked when a timezone from the list is selected,
-     * typically by clicking or pressing `enter` key.
-     */
-    onTimezoneSelect: (timezone: string | undefined, event?: React.SyntheticEvent<HTMLElement>) => void;
-
-    /** Initial timezone that will display as selected. */
-    defaultTimezone?: string;
-
-    /**
-     * Guess the user's timezone and use that as the default timezone.
-     * Note `defaultTimezone` takes precedence over the value of this prop.
+     * Use the local timezone as the default timezone.
+     * Note that `defaultValue` takes precedence over this prop.
      * @default false
      */
-    defaultToUserTimezoneGuess?: boolean;
+    defaultToLocalTimezone?: boolean;
 
     /**
-     * Whether to guess the user's timezone and show it at the top of the list of initial timezone suggestions.
+     * Whether to show the local timezone at the top of the list of initial timezone suggestions.
      * @default true
      */
-    showUserTimezoneGuess?: boolean;
+    showLocalTimezone?: boolean;
 
     /**
      * Format to use when displaying the selected (or default) timezone within the target element.
      * @default TimezoneFormat.OFFSET
      */
-    targetFormat?: TimezoneFormat;
+    targetDisplayFormat?: TimezoneDisplayFormat;
 
-    /** A space-delimited list of class names to pass along to the target element. */
+    /**
+     * A space-delimited list of class names to pass along to the target element.
+     */
     targetClassName?: string;
 
     /**
-     * Whether this input is non-interactive.
+     * Whether this component is non-interactive.
      * @default false
      */
     disabled?: boolean;
 
     /**
      * Text to show when no timezone has been selected and there is no default.
-     * @default GMT timezone formatted according to `targetFormat`
+     * @default GMT timezone formatted according to `targetDisplayFormat`
      */
     placeholder?: string;
 
@@ -86,8 +91,8 @@ export interface ITimezoneInputProps extends IProps {
     popoverProps?: Partial<IPopoverProps> & object;
 }
 
-export type TimezoneFormat = "offset" | "abbreviation" | "name";
-export const TimezoneFormat = {
+export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name";
+export const TimezoneDisplayFormat = {
     ABBREVIATION: "abbreviation" as "abbreviation",
     NAME: "name" as "name",
     OFFSET: "offset" as "offset",
@@ -115,10 +120,10 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     public static displayName = "Blueprint.TimezoneInput";
 
     public static defaultProps: Partial<ITimezoneInputProps> = {
-        defaultToUserTimezoneGuess: false,
+        defaultToLocalTimezone: false,
         disabled: false,
         popoverProps: {},
-        showUserTimezoneGuess: true,
+        showLocalTimezone: true,
     };
 
     private timezones: ITimezoneItem[];
@@ -129,7 +134,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         super(props, context);
 
         this.state = {
-            selectedTimezone: props.selectedTimezone,
+            selectedTimezone: props.value,
         };
 
         this.updateTimezones(props);
@@ -178,11 +183,11 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
             this.updateTimezones(nextProps);
         }
         if (this.props.date.getTime() !== nextProps.date.getTime() ||
-            this.props.showUserTimezoneGuess !== nextProps.showUserTimezoneGuess) {
+            this.props.showLocalTimezone !== nextProps.showLocalTimezone) {
             this.updateInitialTimezones(nextProps);
         }
-        if (this.state.selectedTimezone !== nextProps.selectedTimezone) {
-            this.setState({ selectedTimezone: nextProps.selectedTimezone });
+        if (this.state.selectedTimezone !== nextProps.value) {
+            this.setState({ selectedTimezone: nextProps.value });
         }
     }
 
@@ -193,27 +198,27 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
     }
 
     private updateInitialTimezones(props: ITimezoneInputProps): void {
-        this.initialTimezones = getInitialTimezoneItems(props.date, props.showUserTimezoneGuess);
+        this.initialTimezones = getInitialTimezoneItems(props.date, props.showLocalTimezone);
     }
 
     private getTargetText(): string {
         const {
             date,
-            defaultTimezone,
-            defaultToUserTimezoneGuess,
-            targetFormat = TimezoneFormat.OFFSET,
+            defaultValue,
+            defaultToLocalTimezone,
+            targetDisplayFormat = TimezoneDisplayFormat.OFFSET,
             placeholder,
         } = this.props;
         const { selectedTimezone } = this.state;
-        const timezone = selectedTimezone || defaultTimezone || (defaultToUserTimezoneGuess && getUserTimezoneGuess());
+        const timezone = selectedTimezone || defaultValue || (defaultToLocalTimezone && getLocalTimezone());
         const timezoneExists = timezone && moment.tz.zone(timezone) != null;
 
         if (timezoneExists) {
-            return formatTimezone(timezone, date, targetFormat);
+            return formatTimezone(timezone, date, targetDisplayFormat);
         } else if (placeholder !== undefined) {
             return placeholder;
         } else {
-            return formatTimezone(PLACEHOLDER_TIMEZONE, date, targetFormat);
+            return formatTimezone(PLACEHOLDER_TIMEZONE, date, targetDisplayFormat);
         }
     }
 
@@ -245,11 +250,11 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         );
     }
 
-    private handleItemSelect = (timezone: ITimezoneItem, event?: React.SyntheticEvent<HTMLElement>) => {
-        if (this.props.selectedTimezone === undefined) {
+    private handleItemSelect = (timezone: ITimezoneItem) => {
+        if (this.props.value === undefined) {
             this.setState({ selectedTimezone: timezone.timezone });
         }
-        Utils.safeInvoke(this.props.onTimezoneSelect, timezone.timezone, event);
+        Utils.safeInvoke(this.props.onChange, timezone.timezone);
     }
 
     private handleQueryChange = (query: string) => {
@@ -261,13 +266,13 @@ function getTimezoneItems(date: Date): ITimezoneItem[] {
     return moment.tz.names().map((timezone) => toTimezoneItem(timezone, date));
 }
 
-function getInitialTimezoneItems(date: Date, includeGuess: boolean): ITimezoneItem[] {
-    const popular = getPopularTimezoneItems(date);
-    const guess = includeGuess ? getGuessedTimezoneItem(date) : undefined;
-    return guess ? [guess, ...popular] : popular;
+function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolean): ITimezoneItem[] {
+    const populous = getPopulousTimezoneItems(date);
+    const local = includeLocalTimezone ? getLocalTimezoneItem(date) : undefined;
+    return local ? [local, ...populous] : populous;
 }
 
-function getPopularTimezoneItems(date: Date): ITimezoneItem[] {
+function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
     const timezones = moment.tz.names()
         .filter((timezone) => (
             // Filter out noisy timezones
@@ -310,15 +315,15 @@ function getPopularTimezoneItems(date: Date): ITimezoneItem[] {
     return initialTimezones;
 }
 
-function getGuessedTimezoneItem(date: Date): ITimezoneItem | undefined {
-    const timezone = getUserTimezoneGuess();
+function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
+    const timezone = getLocalTimezone();
     if (timezone) {
         const timestamp = date.getTime();
         const zonedDate = moment.tz(timestamp, timezone);
         const offsetAsString = zonedDate.format("Z");
         return {
             iconName: "locate",
-            key: `${timezone}-guess`,
+            key: `${timezone}-local`,
             label: offsetAsString,
             text: "Current timezone",
             timezone,
@@ -328,7 +333,13 @@ function getGuessedTimezoneItem(date: Date): ITimezoneItem | undefined {
     }
 }
 
-function getUserTimezoneGuess(): string {
+/**
+ * Get the local timezone.
+ * Note that we are not guaranteed to get the correct timezone in all browsers,
+ * so this is a best guess.
+ * https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/
+ */
+function getLocalTimezone(): string {
     return moment.tz.guess();
 }
 
@@ -409,16 +420,16 @@ function getAbbreviation(timezone: string, timestamp: number): string {
     return "";
 }
 
-function formatTimezone(timezone: string, date: Date, targetFormat: TimezoneFormat): string {
-    switch (targetFormat) {
-        case TimezoneFormat.ABBREVIATION:
+function formatTimezone(timezone: string, date: Date, targetDisplayFormat: TimezoneDisplayFormat): string {
+    switch (targetDisplayFormat) {
+        case TimezoneDisplayFormat.ABBREVIATION:
             return moment.tz(date.getTime(), timezone).format("z");
-        case TimezoneFormat.NAME:
+        case TimezoneDisplayFormat.NAME:
             return timezone;
-        case TimezoneFormat.OFFSET:
+        case TimezoneDisplayFormat.OFFSET:
             return moment.tz(date.getTime(), timezone).format("Z");
         default:
-            assertNever(targetFormat);
+            assertNever(targetDisplayFormat);
             return "";
     }
 }
