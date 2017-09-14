@@ -74,6 +74,12 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * @default false
      */
     resetOnClose?: boolean;
+
+    /**
+     * Callback invoked when the query value changes,
+     * through user input or when the filter is reset.
+     */
+    onQueryChange?: (query: string) => void;
 }
 
 export interface ISelectItemRendererProps<T> {
@@ -276,10 +282,17 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     }
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = {} } = this.props;
-        this.setState({ query: event.currentTarget.value });
+        const { inputProps = {}, onQueryChange } = this.props;
+        const query = event.currentTarget.value;
+        this.setState({ query });
         Utils.safeInvoke(inputProps.onChange, event);
+        Utils.safeInvoke(onQueryChange, query);
     }
 
-    private resetQuery = () => this.setState({ activeItem: this.props.items[0], query: "" });
+    private resetQuery = () => {
+        const { items, onQueryChange } = this.props;
+        const query = "";
+        this.setState({ activeItem: items[0], query });
+        Utils.safeInvoke(onQueryChange, query);
+    }
 }
