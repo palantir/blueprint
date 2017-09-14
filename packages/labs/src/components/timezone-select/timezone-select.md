@@ -28,36 +28,40 @@ In other browsers, Date methods and a population heuristic are used.
 See [Moment Timezone's documentation](https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/)
 for more information.
 
-@reactExample TimezoneSelectExample
+@## Basic example
 
-@## Basic Usage
+@reactExample TimezoneSelectBasicExample
+
+@## Basic usage
 
 ```tsx
 import { TimezoneSelect } from "@blueprintjs/core";
 
 export interface ITimezoneExampleState {
-    date: Date;
+    timezone: string;
 }
 
 export class TimezoneExample extends React.PureComponent<{}, ITimezoneExampleState> {
-    public state: ITimezoneExampleState = {
-        date: new Date(),
-    };
+    public state: ITimezoneExampleState = {};
 
     public render() {
         return (
             <TimezoneSelect
-                date={this.state.date}
-                onTimezoneSelect={this.handleTimezoneSelect}
+                value={this.state.timezone}
+                onChange={this.handleTimezoneChange}
             />
         );
     }
 
-    private handleTimezoneSelect = (timezone: string) => {
-        console.log("Selected timezone:", timezone);
+    private handleTimezoneChange = (timezone: string) => {
+        this.setState({ timezone });
     }
 }
 ```
+
+@## Extended example
+
+@reactExample TimezoneSelectExtendedExample
 
 @## JavaScript API
 

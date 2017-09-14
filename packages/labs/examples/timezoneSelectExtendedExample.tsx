@@ -15,14 +15,14 @@ import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprint
 
 import { ITimezoneSelectTargetRenderer, TimezoneDisplayFormat, TimezoneSelect } from "../src";
 
-export interface ITimezoneSelectExampleState {
+export interface ITimezoneSelectExtendedExampleState {
     date?: Date;
     time?: Date;
     timezone?: string;
     dateTime?: Date;
     targetDisplayFormat?: TimezoneDisplayFormat;
     disabled?: boolean;
-    showUserTimezoneGuess?: boolean;
+    showLocalTimezone?: boolean;
     useDefault?: boolean;
     defaultToUserTimezoneGuess?: boolean;
     useCustomRenderer?: boolean;
@@ -30,13 +30,13 @@ export interface ITimezoneSelectExampleState {
 
 const EXAMPLE_DEFAULT_TIMEZONE = "Pacific/Honolulu";
 
-export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleState> {
-    public state: ITimezoneSelectExampleState = {
+export class TimezoneSelectExtendedExample extends BaseExample<ITimezoneSelectExtendedExampleState> {
+    public state: ITimezoneSelectExtendedExampleState = {
         date: new Date(),
         dateTime: new Date(),
         defaultToUserTimezoneGuess: false,
         disabled: false,
-        showUserTimezoneGuess: true,
+        showLocalTimezone: true,
         targetDisplayFormat: TimezoneDisplayFormat.OFFSET,
         time: new Date(),
         timezone: "",
@@ -46,8 +46,8 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
 
     private handleDisabledChange = handleBooleanChange((disabled) =>
         this.setState({ disabled }));
-    private handleShowUserTimezoneGuessChange = handleBooleanChange((showUserTimezoneGuess) =>
-        this.setState({ showUserTimezoneGuess }));
+    private handleShowLocalTimezoneChange = handleBooleanChange((showLocalTimezone) =>
+        this.setState({ showLocalTimezone }));
     private handleUseDefaultChange = handleBooleanChange((useDefault) =>
         this.setState({ useDefault }));
     private handleDefaultToUserTimezoneGuessChange = handleBooleanChange((defaultToUserTimezoneGuess) =>
@@ -65,7 +65,7 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
             dateTime,
             targetDisplayFormat,
             disabled,
-            showUserTimezoneGuess,
+            showLocalTimezone,
             useCustomRenderer,
             useDefault,
             defaultToUserTimezoneGuess,
@@ -96,9 +96,9 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
                         <TimezoneSelect
                             date={date}
                             value={timezone}
-                            onChange={this.handleTimezoneSelect}
+                            onChange={this.handleTimezoneChange}
                             targetDisplayFormat={targetDisplayFormat}
-                            showLocalTimezone={showUserTimezoneGuess}
+                            showLocalTimezone={showLocalTimezone}
                             disabled={disabled}
                             defaultValue={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
                             defaultToLocalTimezone={defaultToUserTimezoneGuess}
@@ -130,10 +130,10 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
                     onChange={this.handleDisabledChange}
                 />,
                 <Switch
-                    checked={this.state.showUserTimezoneGuess}
+                    checked={this.state.showLocalTimezone}
                     label="Show user timezone guess"
                     key="show-user-timezone-guess"
-                    onChange={this.handleShowUserTimezoneGuessChange}
+                    onChange={this.handleShowLocalTimezoneChange}
                 />,
                 <Switch
                     checked={this.state.useDefault}
@@ -183,7 +183,7 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
     private renderFormatSelect() {
         return (
             <label key="format-select" className={Classes.LABEL}>
-                Target format
+                Target display format
                 <div className={Classes.SELECT}>
                     <select
                         value={this.state.targetDisplayFormat}
@@ -206,7 +206,7 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
         this.setState({ time, dateTime: toDateTime(this.state.date, time) });
     }
 
-    private handleTimezoneSelect = (timezone: string) => {
+    private handleTimezoneChange = (timezone: string) => {
         this.setState({ timezone });
     }
 
