@@ -150,7 +150,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
                 resetOnClose={true}
                 popoverProps={finalPopoverProps}
                 disabled={disabled}
-                inputProps={{ onChange: this.handleQueryInputChange }}
+                onQueryChange={this.handleQueryChange}
             >
                 <Button
                     className={classNames(CoreClasses.MINIMAL, targetClassName)}
@@ -242,8 +242,7 @@ export class TimezoneInput extends AbstractComponent<ITimezoneInputProps, ITimez
         Utils.safeInvoke(this.props.onTimezoneSelect, timezone.timezone, event);
     }
 
-    private handleQueryInputChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const query = event.currentTarget.value;
+    private handleQueryChange = (query: string) => {
         this.setState({ query });
     }
 }
