@@ -9,8 +9,8 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
 import { Utils } from "../common/utils";
-import { Draggable, ICoordinateData, IDraggableProps } from "./draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
+import { Draggable, ICoordinateData, IDraggableProps } from "./draggable";
 
 export interface IReorderableProps {
     /**
