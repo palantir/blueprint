@@ -181,7 +181,7 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
 
         const finalPopoverProps: Partial<IPopoverProps> & object = {
             ...popoverProps,
-            popoverClassName: classNames(popoverProps.popoverClassName, Classes.TIMEZONE_SELECT_POPOVER),
+            popoverClassName: classNames(Classes.TIMEZONE_SELECT_POPOVER, popoverProps.popoverClassName),
         };
 
         return (
