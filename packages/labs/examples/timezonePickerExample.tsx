@@ -5,10 +5,9 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Icon, Switch, Tag } from "@blueprintjs/core";
+import { Classes, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
 import { TimezoneDisplayFormat, TimezonePicker } from "../src";
@@ -57,30 +56,16 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
         } = this.state;
 
         return (
-            <div>
-                <TimezonePicker
-                    date={date}
-                    value={timezone}
-                    onChange={this.handleTimezoneChange}
-                    targetDisplayFormat={targetDisplayFormat}
-                    showLocalTimezone={showLocalTimezone}
-                    disabled={disabled}
-                    defaultValue={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
-                    defaultToLocalTimezone={defaultToLocalTimezone}
-                />
-
-                <div style={{ marginTop: 20 }}>
-                    <Tag
-                        className={classNames(Classes.MINIMAL, Classes.LARGE)}
-                        onRemove={this.handleTimezoneClear}
-                    >
-                        <Icon iconName="time" />
-                        <span style={{ marginLeft: 10 }}>
-                            {timezone ? timezone : "Select a timezone"}
-                        </span>
-                    </Tag>
-                </div>
-            </div>
+            <TimezonePicker
+                date={date}
+                value={timezone}
+                onChange={this.handleTimezoneChange}
+                targetDisplayFormat={targetDisplayFormat}
+                showLocalTimezone={showLocalTimezone}
+                disabled={disabled}
+                defaultValue={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
+                defaultToLocalTimezone={defaultToLocalTimezone}
+            />
         );
     }
 
@@ -138,9 +123,5 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
 
     private handleTimezoneChange = (timezone: string) => {
         this.setState({ timezone });
-    }
-
-    private handleTimezoneClear = () => {
-        this.setState({ timezone: "" });
     }
 }
