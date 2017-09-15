@@ -19,10 +19,7 @@ export interface ITimezonePickerExampleState {
     showLocalTimezone?: boolean;
     targetDisplayFormat?: TimezoneDisplayFormat;
     timezone?: string;
-    useDefault?: boolean;
 }
-
-const EXAMPLE_DEFAULT_TIMEZONE = "Pacific/Honolulu";
 
 export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleState> {
     public state: ITimezonePickerExampleState = {
@@ -32,7 +29,6 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
         showLocalTimezone: true,
         targetDisplayFormat: TimezoneDisplayFormat.OFFSET,
         timezone: "",
-        useDefault: false,
     };
 
     private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
@@ -51,7 +47,6 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
             targetDisplayFormat,
             disabled,
             showLocalTimezone,
-            useDefault,
             defaultToLocalTimezone,
         } = this.state;
 
@@ -63,7 +58,6 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                 targetDisplayFormat={targetDisplayFormat}
                 showLocalTimezone={showLocalTimezone}
                 disabled={disabled}
-                defaultValue={useDefault ? EXAMPLE_DEFAULT_TIMEZONE : undefined}
                 defaultToLocalTimezone={defaultToLocalTimezone}
             />
         );
@@ -79,26 +73,20 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                     onChange={this.handleShowLocalTimezoneChange}
                 />,
                 <Switch
-                    checked={this.state.disabled}
-                    label="Disabled"
-                    key="disabled"
-                    onChange={this.handleDisabledChange}
-                />,
-                this.renderDisplayFormatSelect(),
-            ],
-            [
-                <Switch
-                    checked={this.state.useDefault}
-                    label={`Use ${EXAMPLE_DEFAULT_TIMEZONE} as the default timezone`}
-                    key="use-default"
-                    onChange={this.handleUseDefaultChange}
-                />,
-                <Switch
                     checked={this.state.defaultToLocalTimezone}
                     label="Default to the local timezone"
                     key="default-to-local-timezone"
                     onChange={this.handleDefaultToLocalTimezoneChange}
                 />,
+                <Switch
+                    checked={this.state.disabled}
+                    label="Disabled"
+                    key="disabled"
+                    onChange={this.handleDisabledChange}
+                />,
+            ],
+            [
+                this.renderDisplayFormatSelect(),
             ],
         ];
     }
