@@ -54,13 +54,6 @@ export interface ITimezonePickerProps extends IProps {
     defaultValue?: string;
 
     /**
-     * Use the local timezone as the default timezone value.
-     * Note that `defaultValue` takes precedence over this prop.
-     * @default false
-     */
-    defaultToLocalTimezone?: boolean;
-
-    /**
      * Whether to show the local timezone at the top of the list of initial timezone suggestions.
      * @default true
      */
@@ -119,7 +112,6 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     public static displayName = "Blueprint.TimezonePicker";
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
-        defaultToLocalTimezone: false,
         disabled: false,
         placeholder: "Select timezone...",
         popoverProps: {},
@@ -194,19 +186,12 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
             disabled,
             valueDisplayFormat = TimezoneDisplayFormat.OFFSET,
             defaultValue,
-            defaultToLocalTimezone,
             placeholder,
             buttonProps = {},
         } = this.props;
         const { date, value } = this.state;
 
-        let finalDefaultValue: string | undefined;
-        if (defaultValue !== undefined) {
-            finalDefaultValue = defaultValue;
-        } else if (defaultToLocalTimezone) {
-            finalDefaultValue = getLocalTimezone();
-        }
-        const finalValue = value ? value : finalDefaultValue;
+        const finalValue = value ? value : defaultValue;
         const displayValue = finalValue ? formatTimezone(finalValue, date, valueDisplayFormat) : undefined;
 
         return (

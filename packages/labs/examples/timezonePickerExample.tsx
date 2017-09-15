@@ -14,7 +14,6 @@ import { TimezoneDisplayFormat, TimezonePicker } from "../src";
 
 export interface ITimezonePickerExampleState {
     date?: Date;
-    defaultToLocalTimezone?: boolean;
     disabled?: boolean;
     showLocalTimezone?: boolean;
     targetDisplayFormat?: TimezoneDisplayFormat;
@@ -24,7 +23,6 @@ export interface ITimezonePickerExampleState {
 export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleState> {
     public state: ITimezonePickerExampleState = {
         date: new Date(),
-        defaultToLocalTimezone: false,
         disabled: false,
         showLocalTimezone: true,
         targetDisplayFormat: TimezoneDisplayFormat.OFFSET,
@@ -34,8 +32,6 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
     private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
     private handleShowLocalTimezoneChange = handleBooleanChange((showLocalTimezone) =>
         this.setState({ showLocalTimezone }));
-    private handleDefaultToLocalTimezoneChange = handleBooleanChange((defaultToLocalTimezone) =>
-        this.setState({ defaultToLocalTimezone }));
     private handleFormatChange = handleStringChange((targetDisplayFormat: TimezoneDisplayFormat) =>
         this.setState({ targetDisplayFormat }));
 
@@ -46,7 +42,6 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
             targetDisplayFormat,
             disabled,
             showLocalTimezone,
-            defaultToLocalTimezone,
         } = this.state;
 
         return (
@@ -57,7 +52,6 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                 valueDisplayFormat={targetDisplayFormat}
                 showLocalTimezone={showLocalTimezone}
                 disabled={disabled}
-                defaultToLocalTimezone={defaultToLocalTimezone}
                 buttonProps={{ intent: Intent.PRIMARY }}
             />
         );
@@ -71,12 +65,6 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                     label="Show local timezone in initial list"
                     key="show-local-timezone"
                     onChange={this.handleShowLocalTimezoneChange}
-                />,
-                <Switch
-                    checked={this.state.defaultToLocalTimezone}
-                    label="Default to the local timezone"
-                    key="default-to-local-timezone"
-                    onChange={this.handleDefaultToLocalTimezoneChange}
                 />,
                 <Switch
                     checked={this.state.disabled}
