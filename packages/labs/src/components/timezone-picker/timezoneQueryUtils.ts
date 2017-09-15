@@ -33,7 +33,7 @@ export function getTimezoneQueryCandidates(timezones: string[], date: Date): ITi
             // Don't require leading offset 0.
             // For example, "-07:00" -> "-7:00"
             offsetAsString.replace(/^([+-])0(\d:\d{2})$/, "$1$2"),
-        ];
+        ].filter((candidate) => candidate !== undefined);
 
         timezoneToQueryCandidates[timezone] = timezoneToQueryCandidates[timezone] || [];
         timezoneToQueryCandidates[timezone].push(...candidates);

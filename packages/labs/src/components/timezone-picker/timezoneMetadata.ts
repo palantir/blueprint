@@ -9,10 +9,10 @@ import * as moment from "moment-timezone";
 
 export interface ITimezoneMetadata {
     timezone: string;
-    abbreviation: string;
+    abbreviation: string | undefined;
     offset: number;
     offsetAsString: string;
-    population: number;
+    population: number | undefined;
 }
 
 export function getTimezoneMetadata(timezone: string, date: Date): ITimezoneMetadata {
@@ -23,7 +23,9 @@ export function getTimezoneMetadata(timezone: string, date: Date): ITimezoneMeta
     const offsetAsString = zonedDate.format("Z");
     const abbreviation = getAbbreviation(timezone, timestamp);
     // TODO: amend moment-timezone typings to include the population field
-    const population = (zone && (zone as any).population) || 0;
+    const population = zone && (zone as any).population !== undefined
+        ? (zone as any).population
+        : undefined;
 
     return {
         timezone,
@@ -34,7 +36,13 @@ export function getTimezoneMetadata(timezone: string, date: Date): ITimezoneMeta
     };
 }
 
-function getAbbreviation(timezone: string, timestamp: number): string {
+/**
+ * Get the abbreviation for a timezone.
+ * We need this utility because moment-timezone's `abbr` will not always give the abbreviated time zone name,
+ * since it falls back to the time offsets for each region.
+ * https://momentjs.com/timezone/docs/#/using-timezones/formatting/
+ */
+function getAbbreviation(timezone: string, timestamp: number): string | undefined {
     const zone = moment.tz.zone(timezone);
     if (zone) {
         const abbreviation = zone.abbr(timestamp);
@@ -45,5 +53,5 @@ function getAbbreviation(timezone: string, timestamp: number): string {
         }
     }
 
-    return "";
+    return undefined;
 }

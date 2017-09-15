@@ -6,10 +6,12 @@
  */
 
 import * as moment from "moment-timezone";
+import { getTimezoneMetadata } from "./timezoneMetadata";
 
-export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name";
+export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name" | "composite";
 export const TimezoneDisplayFormat = {
     ABBREVIATION: "abbreviation" as "abbreviation",
+    COMPOSITE: "composite" as "composite",
     NAME: "name" as "name",
     OFFSET: "offset" as "offset",
 };
@@ -23,16 +25,20 @@ export function formatTimezone(
         return undefined;
     }
 
+    const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
     switch (displayFormat) {
         case TimezoneDisplayFormat.ABBREVIATION:
-            return moment.tz(date.getTime(), timezone).format("z");
+            // Fall back to the offset in regions where there is no abbreviation.
+            return abbreviation ? abbreviation : offsetAsString;
         case TimezoneDisplayFormat.NAME:
             return timezone;
         case TimezoneDisplayFormat.OFFSET:
-            return moment.tz(date.getTime(), timezone).format("Z");
+            return offsetAsString;
+        case TimezoneDisplayFormat.COMPOSITE:
+            return `${timezone}${abbreviation ? ` (${abbreviation})` : ""} ${offsetAsString}`;
         default:
             assertNever(displayFormat);
-            return "";
+            return undefined;
     }
 }
 

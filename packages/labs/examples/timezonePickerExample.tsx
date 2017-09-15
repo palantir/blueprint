@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { Classes, Intent, Radio, RadioGroup, Switch } from "@blueprintjs/core";
+import { Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
 import { TimezoneDisplayFormat, TimezonePicker } from "../src";
@@ -86,9 +86,10 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                 onChange={this.handleFormatChange}
                 selectedValue={this.state.targetDisplayFormat}
             >
-                <Radio label="Abbreviation" value={TimezoneDisplayFormat.ABBREVIATION.toString()} />
-                <Radio label="Name" value={TimezoneDisplayFormat.NAME.toString()} />
-                <Radio label="Offset" value={TimezoneDisplayFormat.OFFSET.toString()} />
+                <Radio label="Abbreviation" value={TimezoneDisplayFormat.ABBREVIATION} />
+                <Radio label="Name" value={TimezoneDisplayFormat.NAME} />
+                <Radio label="Offset" value={TimezoneDisplayFormat.OFFSET} />
+                <Radio label="Composite" value={TimezoneDisplayFormat.COMPOSITE} />
             </RadioGroup>
         );
     }
