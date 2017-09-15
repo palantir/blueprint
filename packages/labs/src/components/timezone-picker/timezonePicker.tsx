@@ -206,13 +206,8 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         } else if (defaultToLocalTimezone) {
             finalDefaultValue = getLocalTimezone();
         }
-
         const finalValue = value ? value : finalDefaultValue;
         const displayValue = finalValue ? formatTimezone(finalValue, date, valueDisplayFormat) : undefined;
-
-        const classes = classNames(Classes.TIMEZONE_PICKER_TARGET, {
-            [Classes.TIMEZONE_PICKER_TARGET_PLACEHOLDER]: !finalValue,
-        }, buttonProps.className);
 
         return (
             <Button
@@ -220,7 +215,6 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
                 disabled={disabled}
                 text={displayValue || placeholder}
                 {...buttonProps}
-                className={classes}
             />
         );
     }

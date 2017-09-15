@@ -9,12 +9,6 @@
 @import "~@blueprintjs/core/src/components/forms/common";
 @import "~@blueprintjs/core/src/components/tag/common";
 
-.pt-timezone-picker-target {
-  &.pt-timezone-picker-target-placeholder {
-    color: $pt-text-color-muted;
-  }
-}
-
 .pt-timezone-picker-popover {
   min-width: 370px;
 }
