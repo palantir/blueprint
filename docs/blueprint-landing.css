@@ -4977,6 +4977,33 @@ span.pt-icon {
 .pt-icon-new-prescription::before {
   content: "\E78B"; }
 
+.pt-icon-filter-keep::before {
+  content: "\E78C"; }
+
+.pt-icon-filter-remove::before {
+  content: "\E78D"; }
+
+.pt-icon-key::before {
+  content: "\E78E"; }
+
+.pt-icon-feed-subscribed::before {
+  content: "\E78F"; }
+
+.pt-icon-widget-button::before {
+  content: "\E790"; }
+
+.pt-icon-widget-header::before {
+  content: "\E791"; }
+
+.pt-icon-widget-footer::before {
+  content: "\E792"; }
+
+.pt-icon-header-one::before {
+  content: "\E793"; }
+
+.pt-icon-header-two::before {
+  content: "\E794"; }
+
 .pt-submenu > .pt-popover-target {
   display: inherit; }
   .pt-submenu > .pt-popover-target > .pt-menu-item {
