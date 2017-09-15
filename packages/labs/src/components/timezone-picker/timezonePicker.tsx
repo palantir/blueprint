@@ -28,7 +28,7 @@ import {
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
-import { getTimezoneQueryCandidates, isQueryMatch, ITimezoneQueryCandidates } from "./timezoneQueryUtils";
+import { createTimezoneQueryEngine, ITimezoneQueryEngine } from "./timezoneQueryEngine";
 
 export { TimezoneDisplayFormat };
 
@@ -118,7 +118,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     };
 
     private timezoneItems: ITimezoneItem[];
-    private timezoneToQueryCandidates: ITimezoneQueryCandidates;
+    private timezoneQueryEngine: ITimezoneQueryEngine;
     private initialTimezones: ITimezoneItem[];
 
     constructor(props: ITimezonePickerProps, context?: any) {
@@ -148,7 +148,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
             <TypedSelect
                 className={classNames(Classes.TIMEZONE_PICKER, className)}
                 items={query ? this.timezoneItems : this.initialTimezones}
-                itemListPredicate={this.filterTimezones}
+                itemPredicate={this.filterTimezone}
                 itemRenderer={this.renderItem}
                 noResults={<MenuItem disabled text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
@@ -209,19 +209,12 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     }
 
     private updateTimezones(date: Date): void {
-        const timezoneItems = getTimezoneItems(date);
-        const timezones = timezoneItems.map(({ timezone }) => timezone);
-        this.timezoneItems = timezoneItems;
-        this.timezoneToQueryCandidates = getTimezoneQueryCandidates(timezones, date);
+        this.timezoneItems = getTimezoneItems(date);
+        this.timezoneQueryEngine = createTimezoneQueryEngine(date);
     }
 
-    private filterTimezones = (query: string, items: ITimezoneItem[]): ITimezoneItem[] => {
-        return items.filter((item) => {
-            const candidates = this.timezoneToQueryCandidates[item.timezone] !== undefined
-                ? this.timezoneToQueryCandidates[item.timezone]
-                : [item.timezone];
-            return candidates.some((candidate) => isQueryMatch(query, candidate));
-        });
+    private filterTimezone = (query: string, { timezone }: ITimezoneItem): boolean => {
+        return this.timezoneQueryEngine.isMatch(timezone, query);
     }
 
     private renderItem = (itemProps: ISelectItemRendererProps<ITimezoneItem>) => {
