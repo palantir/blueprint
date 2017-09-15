@@ -1,8 +1,8 @@
-@# Timezone Select
+@# TimezonePicker
 
-`TimezoneSelect` allows the user to select from a list of timezones.
+`TimezonePicker` allows the user to select from a list of timezones.
 
-@reactExample TimezoneSelectExample
+@reactExample TimezonePickerExample
 
 @## JavaScript API
 
@@ -36,7 +36,7 @@ Moment Timezone uses a similar heuristic for
 </div>
 
 ```tsx
-import { TimezoneSelect } from "@blueprintjs/core";
+import { TimezonePicker } from "@blueprintjs/labs";
 
 export interface ITimezoneExampleState {
     timezone: string;
@@ -49,7 +49,7 @@ export class TimezoneExample extends React.PureComponent<{}, ITimezoneExampleSta
 
     public render() {
         return (
-            <TimezoneSelect
+            <TimezonePicker
                 value={this.state.timezone}
                 onChange={this.handleTimezoneChange}
             />
@@ -60,4 +60,4 @@ export class TimezoneExample extends React.PureComponent<{}, ITimezoneExampleSta
 }
 ```
 
-@interface ITimezoneSelectProps
+@interface ITimezonePickerProps

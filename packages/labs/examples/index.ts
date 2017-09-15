@@ -12,4 +12,4 @@ export * from "./selectExample";
 export * from "./suggestExample";
 export * from "./tagInputExample";
 export * from "./tooltip2Example";
-export * from "./timezoneSelectExample";
+export * from "./timezonePickerExample";

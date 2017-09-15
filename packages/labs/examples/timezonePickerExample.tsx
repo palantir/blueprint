@@ -11,9 +11,9 @@ import * as React from "react";
 import { Classes, Icon, Switch, Tag } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
-import { TimezoneDisplayFormat, TimezoneSelect } from "../src";
+import { TimezoneDisplayFormat, TimezonePicker } from "../src";
 
-export interface ITimezoneSelectExampleState {
+export interface ITimezonePickerExampleState {
     date?: Date;
     defaultToLocalTimezone?: boolean;
     disabled?: boolean;
@@ -25,8 +25,8 @@ export interface ITimezoneSelectExampleState {
 
 const EXAMPLE_DEFAULT_TIMEZONE = "Pacific/Honolulu";
 
-export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleState> {
-    public state: ITimezoneSelectExampleState = {
+export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleState> {
+    public state: ITimezonePickerExampleState = {
         date: new Date(),
         defaultToLocalTimezone: false,
         disabled: false,
@@ -58,7 +58,7 @@ export class TimezoneSelectExample extends BaseExample<ITimezoneSelectExampleSta
 
         return (
             <div>
-                <TimezoneSelect
+                <TimezonePicker
                     date={date}
                     value={timezone}
                     onChange={this.handleTimezoneChange}
