@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { Classes, Intent, Switch } from "@blueprintjs/core";
+import { Classes, Intent, Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
 import { TimezoneDisplayFormat, TimezonePicker } from "../src";
@@ -73,26 +73,23 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                 />,
             ],
             [
-                this.renderDisplayFormatSelect(),
+                this.renderDisplayFormatOption(),
             ],
         ];
     }
 
-    private renderDisplayFormatSelect() {
+    private renderDisplayFormatOption() {
         return (
-            <label key="display-format-select" className={Classes.LABEL}>
-                Target display format
-                <div className={Classes.SELECT}>
-                    <select
-                        value={this.state.targetDisplayFormat}
-                        onChange={this.handleFormatChange}
-                    >
-                        <option value={TimezoneDisplayFormat.ABBREVIATION.toString()}>Abbreviation</option>
-                        <option value={TimezoneDisplayFormat.NAME.toString()}>Name</option>
-                        <option value={TimezoneDisplayFormat.OFFSET.toString()}>Offset</option>
-                    </select>
-                </div>
-            </label>
+            <RadioGroup
+                key="display-format"
+                label="Display format"
+                onChange={this.handleFormatChange}
+                selectedValue={this.state.targetDisplayFormat}
+            >
+                <Radio label="Abbreviation" value={TimezoneDisplayFormat.ABBREVIATION.toString()} />
+                <Radio label="Name" value={TimezoneDisplayFormat.NAME.toString()} />
+                <Radio label="Offset" value={TimezoneDisplayFormat.OFFSET.toString()} />
+            </RadioGroup>
         );
     }
 
