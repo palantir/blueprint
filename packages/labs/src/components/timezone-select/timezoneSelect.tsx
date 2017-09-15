@@ -28,13 +28,14 @@ import * as Classes from "../../common/classes";
 
 export interface ITimezoneSelectProps extends IProps {
     /**
-     * The currently selected timezone (IANA time zone identifier).
+     * The currently selected timezone, e.g. "Pacific/Honolulu".
      * If this prop is provided, the component acts in a controlled manner.
+     * https://en.wikipedia.org/wiki/Tz_database#Names_of_time_zones
      */
     value?: string;
 
     /**
-     * Callback invoked when the user changes the timezone.
+     * Callback invoked when the user selects a timezone.
      */
     onChange?: (timezone: string) => void;
 
@@ -46,13 +47,13 @@ export interface ITimezoneSelectProps extends IProps {
     date?: Date;
 
     /**
-     * Initial timezone that will display as selected.
+     * Initial timezone that will display as selected, when the component is uncontrolled.
      * This should not be set if `value` is set.
      */
     defaultValue?: string;
 
     /**
-     * Use the local timezone as the default timezone.
+     * Use the local timezone as the default timezone value.
      * Note that `defaultValue` takes precedence over this prop.
      * @default false
      */
