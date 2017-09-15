@@ -330,18 +330,15 @@ function getTimezoneItems(date: Date): ITimezoneItem[] {
 
 function getInitialTimezoneItems(date: Date, showLocalTimezone: boolean): ITimezoneItem[] {
     const populous = getPopulousTimezoneItems(date);
-    const local = showLocalTimezone ? getLocalTimezoneItem(date) : undefined;
-    return local ? [local, ...populous] : populous;
+    const local = getLocalTimezoneItem(date);
+    return showLocalTimezone && local !== undefined
+        ? [local, ...populous]
+        : populous;
 }
 
 function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
-    const timezones = moment.tz.names()
-        .filter((timezone) => (
-            // Filter out noisy timezones
-            // See https://github.com/moment/moment-timezone/issues/227
-            /\//.test(timezone) &&
-            !/Etc\//.test(timezone)
-        ));
+    // Filter out noisy timezones. See https://github.com/moment/moment-timezone/issues/227
+    const timezones = moment.tz.names().filter((timezone) => /\//.test(timezone) && !/Etc\//.test(timezone));
 
     const timezoneToMetadata: { [timezone: string]: ITimezoneMetadata } = {};
     for (const timezone of timezones) {
@@ -379,7 +376,7 @@ function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
 
 function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
     const timezone = getLocalTimezone();
-    if (timezone) {
+    if (timezone !== undefined) {
         const timestamp = date.getTime();
         const zonedDate = moment.tz(timestamp, timezone);
         const offsetAsString = zonedDate.format("Z");
@@ -400,8 +397,9 @@ function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
  * Note that we are not guaranteed to get the correct timezone in all browsers,
  * so this is a best guess.
  * https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/
+ * https://github.com/moment/moment-timezone/blob/develop/moment-timezone.js#L328-L361
  */
-function getLocalTimezone(): string {
+function getLocalTimezone(): string | undefined {
     return moment.tz.guess();
 }
 
