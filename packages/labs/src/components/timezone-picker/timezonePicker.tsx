@@ -13,7 +13,9 @@ import {
     AbstractComponent,
     Button,
     Classes as CoreClasses,
+    HTMLInputProps,
     IButtonProps,
+    IInputGroupProps,
     IPopoverProps,
     IProps,
     MenuItem,
@@ -83,6 +85,14 @@ export interface ITimezonePickerProps extends IProps {
     /** Props to spread to the target `Button`. */
     buttonProps?: Partial<IButtonProps>;
 
+    /**
+     * Props to spread to the filter `InputGroup`.
+     * All props are supported except `ref` (use `inputRef` instead).
+     * If you want to control the filter input, you can pass `value` and `onChange` here
+     * to override `Select`'s own behavior.
+     */
+    inputProps?: IInputGroupProps & HTMLInputProps;
+
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
 }
@@ -101,6 +111,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
         disabled: false,
+        inputProps: {},
         placeholder: "Select timezone...",
         popoverProps: {},
         showLocalTimezone: true,
@@ -121,9 +132,13 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     }
 
     public render() {
-        const { className, disabled, popoverProps } = this.props;
+        const { className, disabled, inputProps, popoverProps } = this.props;
         const { query } = this.state;
 
+        const finalInputProps: IInputGroupProps & HTMLInputProps = {
+            placeholder: "Search for timezones...",
+            ...inputProps,
+        };
         const finalPopoverProps: Partial<IPopoverProps> & object = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
@@ -140,6 +155,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
                 resetOnSelect={true}
                 resetOnClose={true}
                 popoverProps={finalPopoverProps}
+                inputProps={finalInputProps}
                 disabled={disabled}
                 onQueryChange={this.handleQueryChange}
             >
