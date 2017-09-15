@@ -2,6 +2,10 @@
 
 `TimezoneSelect` allows the user to select from a list of timezones.
 
+@reactExample TimezoneSelectExample
+
+@## JavaScript API
+
 [Moment Timezone](http://momentjs.com/timezone/) is used internally
 for the list of available timezones and timezone metadata.
 
@@ -31,8 +35,6 @@ Moment Timezone uses a similar heuristic for
     for more information.
 </div>
 
-@reactExample TimezoneSelectExample
-
 ```tsx
 import { TimezoneSelect } from "@blueprintjs/core";
 
@@ -57,7 +59,5 @@ export class TimezoneExample extends React.PureComponent<{}, ITimezoneExampleSta
     private handleTimezoneChange = (timezone: string) => this.setState({ timezone });
 }
 ```
-
-@## JavaScript API
 
 @interface ITimezoneSelectProps
