@@ -52,7 +52,6 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                 valueDisplayFormat={targetDisplayFormat}
                 showLocalTimezone={showLocalTimezone}
                 disabled={disabled}
-                buttonProps={{ intent: Intent.PRIMARY }}
             />
         );
     }
