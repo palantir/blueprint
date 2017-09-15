@@ -142,7 +142,7 @@ interface ITimezoneItem {
     key: string;
     text: string;
     label: string;
-    iconName: IconName | undefined;
+    iconName?: IconName;
     timezone: string;
 }
 
@@ -427,7 +427,6 @@ function getTimezoneQueryCandidates(timezones: ITimezoneItem[], date: Date): { [
 function toTimezoneItem(timezone: string, date: Date): ITimezoneItem {
     const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
     return {
-        iconName: undefined,
         key: timezone,
         label: offsetAsString,
         text: timezone + (abbreviation ? ` (${abbreviation})` : ""),
