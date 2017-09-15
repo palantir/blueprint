@@ -14,6 +14,7 @@ import {
     AbstractComponent,
     Button,
     Classes as CoreClasses,
+    IButtonProps,
     IconName,
     IPopoverProps,
     IProps,
@@ -66,21 +67,10 @@ export interface ITimezonePickerProps extends IProps {
     showLocalTimezone?: boolean;
 
     /**
-     * Custom renderer for the target element.
-     */
-    targetRenderer?: ITimezonePickerTargetRenderer;
-
-    /**
      * Format to use when displaying the selected (or default) timezone within the target element.
      * @default TimezoneDisplayFormat.OFFSET
      */
-    targetDisplayFormat?: TimezoneDisplayFormat;
-
-    /**
-     * A space-delimited list of class names to pass along to the target element.
-     * This prop is ignored when a `targetRenderer` is provided.
-     */
-    targetClassName?: string;
+    valueDisplayFormat?: TimezoneDisplayFormat;
 
     /**
      * Whether this component is non-interactive.
@@ -90,39 +80,15 @@ export interface ITimezonePickerProps extends IProps {
 
     /**
      * Text to show when no timezone has been selected and there is no default.
-     * @default GMT timezone formatted according to `targetDisplayFormat`
+     * @default "Select timezone..."
      */
     placeholder?: string;
 
-    /**
-     * Props to spread to `Popover`. Note that `content` cannot be changed.
-     */
+    /** Props to spread to the target `Button`. */
+    buttonProps?: Partial<IButtonProps>;
+
+    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
-}
-
-export type ITimezonePickerTargetRenderer = (targetProps: ITimezonePickerTargetProps) => JSX.Element | null;
-
-export interface ITimezonePickerTargetProps {
-    /** The currently selected timezone. */
-    value: string | undefined;
-
-    /** Initial timezone, when none is selected. */
-    defaultValue: string | undefined;
-
-    /** Display version of the currently selected timezone. */
-    displayValue: string | undefined;
-
-    /** Display version of the default timezone. */
-    defaultDisplayValue: string | undefined;
-
-    /** Placeholder for when no timezone has been selected and there is no default. */
-    placeholder: string;
-
-    /** Whether the target is intended to be non-interactive. */
-    disabled: boolean;
-
-    /** Date to use when determining timezone offsets. */
-    date: Date;
 }
 
 export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name";
@@ -148,8 +114,6 @@ interface ITimezoneItem {
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
-const PLACEHOLDER_TIMEZONE = "GMT";
-
 @PureRender
 export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITimezonePickerState> {
     public static displayName = "Blueprint.TimezonePicker";
@@ -157,6 +121,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     public static defaultProps: Partial<ITimezonePickerProps> = {
         defaultToLocalTimezone: false,
         disabled: false,
+        placeholder: "Select timezone...",
         popoverProps: {},
         showLocalTimezone: true,
     };
@@ -198,7 +163,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
                 disabled={disabled}
                 onQueryChange={this.handleQueryChange}
             >
-                {this.renderTarget()}
+                {this.renderButton()}
             </TypedSelect>
         );
     }
@@ -224,14 +189,14 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         this.setState(nextState);
     }
 
-    private renderTarget() {
+    private renderButton() {
         const {
             disabled,
-            targetRenderer,
-            targetDisplayFormat = TimezoneDisplayFormat.OFFSET,
+            valueDisplayFormat = TimezoneDisplayFormat.OFFSET,
             defaultValue,
             defaultToLocalTimezone,
             placeholder,
+            buttonProps = {},
         } = this.props;
         const { date, value } = this.state;
 
@@ -242,36 +207,20 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
             finalDefaultValue = getLocalTimezone();
         }
 
-        const finalPlaceholder = placeholder !== undefined
-            ? placeholder
-            : formatTimezone(PLACEHOLDER_TIMEZONE, date, targetDisplayFormat);
+        const finalValue = value ? value : finalDefaultValue;
+        const displayValue = finalValue ? formatTimezone(finalValue, date, valueDisplayFormat) : undefined;
 
-        const finalTargetRenderer = targetRenderer ? targetRenderer : this.defaultTargetRenderer;
-        return finalTargetRenderer({
-            date,
-            defaultDisplayValue: formatTimezone(finalDefaultValue, date, targetDisplayFormat),
-            defaultValue: finalDefaultValue,
-            disabled,
-            displayValue: formatTimezone(value, date, targetDisplayFormat),
-            placeholder: finalPlaceholder,
-            value,
-        });
-    }
-
-    private defaultTargetRenderer: ITimezonePickerTargetRenderer = (targetProps) => {
-        const { targetClassName } = this.props;
-        const { value, displayValue, defaultDisplayValue, placeholder, disabled } = targetProps;
-        const isPlaceholder = !value;
-        const classes = classNames(Classes.TIMEZONE_PICKER_TARGET, targetClassName, {
-            [Classes.TIMEZONE_PICKER_TARGET_PLACEHOLDER]: isPlaceholder,
-        });
+        const classes = classNames(Classes.TIMEZONE_PICKER_TARGET, {
+            [Classes.TIMEZONE_PICKER_TARGET_PLACEHOLDER]: !finalValue,
+        }, buttonProps.className);
 
         return (
             <Button
-                className={classes}
-                text={displayValue || defaultDisplayValue || placeholder}
                 rightIconName="caret-down"
                 disabled={disabled}
+                text={displayValue || placeholder}
+                {...buttonProps}
+                className={classes}
             />
         );
     }

@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { Classes, Switch } from "@blueprintjs/core";
+import { Classes, Intent, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
 import { TimezoneDisplayFormat, TimezonePicker } from "../src";
@@ -34,7 +34,6 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
     private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
     private handleShowLocalTimezoneChange = handleBooleanChange((showLocalTimezone) =>
         this.setState({ showLocalTimezone }));
-    private handleUseDefaultChange = handleBooleanChange((useDefault) => this.setState({ useDefault }));
     private handleDefaultToLocalTimezoneChange = handleBooleanChange((defaultToLocalTimezone) =>
         this.setState({ defaultToLocalTimezone }));
     private handleFormatChange = handleStringChange((targetDisplayFormat: TimezoneDisplayFormat) =>
@@ -55,10 +54,11 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                 date={date}
                 value={timezone}
                 onChange={this.handleTimezoneChange}
-                targetDisplayFormat={targetDisplayFormat}
+                valueDisplayFormat={targetDisplayFormat}
                 showLocalTimezone={showLocalTimezone}
                 disabled={disabled}
                 defaultToLocalTimezone={defaultToLocalTimezone}
+                buttonProps={{ intent: Intent.PRIMARY }}
             />
         );
     }
