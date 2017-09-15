@@ -168,11 +168,11 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
     constructor(props: ITimezoneSelectProps, context?: any) {
         super(props, context);
 
-        const date = props.date || new Date();
-        this.state = { date, value: props.value };
+        const { value, date = new Date(), showLocalTimezone } = props;
+        this.state = { date, value };
 
         this.updateTimezones(date);
-        this.initialTimezones = getInitialTimezoneItems(date, props.showLocalTimezone);
+        this.initialTimezones = getInitialTimezoneItems(date, showLocalTimezone);
     }
 
     public render() {
@@ -204,7 +204,7 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
     }
 
     public componentWillReceiveProps(nextProps: ITimezoneSelectProps) {
-        const nextDate = nextProps.date || new Date();
+        const { date: nextDate = new Date() } = nextProps;
         const dateChanged = this.state.date.getTime() !== nextDate.getTime();
 
         if (dateChanged) {
@@ -235,13 +235,18 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
         } = this.props;
         const { date, value } = this.state;
 
-        const finalDefaultValue = defaultValue || (defaultToLocalTimezone && getLocalTimezone());
+        let finalDefaultValue: string | undefined;
+        if (defaultValue !== undefined) {
+            finalDefaultValue = defaultValue;
+        } else if (defaultToLocalTimezone) {
+            finalDefaultValue = getLocalTimezone();
+        }
 
         const finalPlaceholder = placeholder !== undefined
             ? placeholder
             : formatTimezone(PLACEHOLDER_TIMEZONE, date, targetDisplayFormat);
 
-        const finalTargetRenderer = targetRenderer || this.defaultTargetRenderer;
+        const finalTargetRenderer = targetRenderer ? targetRenderer : this.defaultTargetRenderer;
         return finalTargetRenderer({
             date,
             defaultDisplayValue: formatTimezone(finalDefaultValue, date, targetDisplayFormat),
@@ -280,7 +285,9 @@ export class TimezoneSelect extends AbstractComponent<ITimezoneSelectProps, ITim
     private filterTimezones = (query: string, items: ITimezoneItem[]): ITimezoneItem[] => {
         const normalizedQuery = normalizeText(query);
         return items.filter((item) => {
-            const candidates = this.timezoneToQueryCandidates[item.timezone] || [normalizeText(item.timezone)];
+            const candidates = this.timezoneToQueryCandidates[item.timezone] !== undefined
+                ? this.timezoneToQueryCandidates[item.timezone]
+                : [normalizeText(item.timezone)];
             return candidates.some((candidate) => isQueryMatch(normalizedQuery, candidate));
         });
     }
@@ -479,7 +486,7 @@ function formatTimezone(
     date: Date,
     targetDisplayFormat: TimezoneDisplayFormat,
 ): string | undefined {
-    if (!timezone || moment.tz.zone(timezone) == null) {
+    if (!timezone || !moment.tz.zone(timezone)) {
         return undefined;
     }
 
