@@ -315,28 +315,28 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     private renderMainQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.MAIN].columnHeader;
         const resizeHandler = this.handleColumnResizeGuideMain;
-        const reorderingHandler = this.handleColumnsReorderingMain;
+        const reorderingHandler = this.handleColumnsReordering;
         return this.props.renderColumnHeader(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
     }
 
     private renderTopQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.TOP].columnHeader;
         const resizeHandler = this.handleColumnResizeGuideTop;
-        const reorderingHandler = this.handleColumnsReorderingTop;
+        const reorderingHandler = this.handleColumnsReordering;
         return this.props.renderColumnHeader(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
     }
 
     private renderLeftQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.LEFT].columnHeader;
         const resizeHandler = this.handleColumnResizeGuideLeft;
-        const reorderingHandler = this.handleColumnsReorderingLeft;
+        const reorderingHandler = this.handleColumnsReordering;
         return this.props.renderColumnHeader(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
     }
 
     private renderTopLeftQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.TOP_LEFT].columnHeader;
         const resizeHandler = this.handleColumnResizeGuideTopLeft;
-        const reorderingHandler = this.handleColumnsReorderingTopLeft;
+        const reorderingHandler = this.handleColumnsReordering;
         return this.props.renderColumnHeader(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
     }
 
@@ -345,28 +345,28 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     private renderMainQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.MAIN].rowHeader;
         const resizeHandler = this.handleRowResizeGuideMain;
-        const reorderingHandler = this.handleRowsReorderingMain;
+        const reorderingHandler = this.handleRowsReordering;
         return this.props.renderRowHeader(refHandler, resizeHandler, reorderingHandler, showFrozenRowsOnly);
     }
 
     private renderTopQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.TOP].rowHeader;
         const resizeHandler = this.handleRowResizeGuideTop;
-        const reorderingHandler = this.handleRowsReorderingTop;
+        const reorderingHandler = this.handleRowsReordering;
         return this.props.renderRowHeader(refHandler, resizeHandler, reorderingHandler, showFrozenRowsOnly);
     }
 
     private renderLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.LEFT].rowHeader;
         const resizeHandler = this.handleRowResizeGuideLeft;
-        const reorderingHandler = this.handleRowsReorderingLeft;
+        const reorderingHandler = this.handleRowsReordering;
         return this.props.renderRowHeader(refHandler, resizeHandler, reorderingHandler, showFrozenRowsOnly);
     }
 
     private renderTopLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.TOP_LEFT].rowHeader;
         const resizeHandler = this.handleRowResizeGuideTopLeft;
-        const reorderingHandler = this.handleRowsReorderingTopLeft;
+        const reorderingHandler = this.handleRowsReordering;
         return this.props.renderRowHeader(refHandler, resizeHandler, reorderingHandler, showFrozenRowsOnly);
     }
 
@@ -456,23 +456,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     // Columns
 
-    private handleColumnsReorderingMain = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
-    }
-
-    private handleColumnsReorderingTop = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
-    }
-
-    private handleColumnsReorderingLeft = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
-    }
-
-    private handleColumnsReorderingTopLeft = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
-    }
-
-    private invokeColumnsReorderingHandler = (oldIndex: number, newIndex: number, length: number) => {
+    private handleColumnsReordering = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const leftOffset = this.props.grid.getCumulativeWidthBefore(guideIndex);
         const quadrantType = guideIndex <= this.props.numFrozenColumns ? QuadrantType.TOP_LEFT : QuadrantType.TOP;
@@ -482,23 +466,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     // Rows
 
-    private handleRowsReorderingMain = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
-    }
-
-    private handleRowsReorderingTop = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
-    }
-
-    private handleRowsReorderingLeft = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
-    }
-
-    private handleRowsReorderingTopLeft = (oldIndex: number, newIndex: number, length: number) => {
-        this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
-    }
-
-    private invokeRowsReorderingHandler = (oldIndex: number, newIndex: number, length: number) => {
+    private handleRowsReordering = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
         const topOffset = this.props.grid.getCumulativeHeightBefore(guideIndex);
         const quadrantType = guideIndex <= this.props.numFrozenRows ? QuadrantType.TOP_LEFT : QuadrantType.LEFT;
