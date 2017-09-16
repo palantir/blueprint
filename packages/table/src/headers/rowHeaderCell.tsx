@@ -5,7 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as classNames from "classnames";
 import * as React from "react";
 
 import { AbstractComponent, IProps } from "@blueprintjs/core";
