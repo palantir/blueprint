@@ -146,6 +146,10 @@ export interface ITableQuadrantStackProps extends IProps {
 }
 
 export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackProps, {}> {
+
+    // Static variables
+    // ================
+
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantStackProps> = {
@@ -153,6 +157,14 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         isRowHeaderShown: true,
         isVerticalScrollDisabled: false,
     };
+
+    // the debounce delay for updating the view on scroll. elements will be
+    // resized and rejiggered once scroll has ceased for at least this long,
+    // but not before.
+    private static VIEW_SYNC_DEBOUNCE_DELAY = 250;
+
+    // Instance variables
+    // ==================
 
     private quadrantRefs = {
         [QuadrantType.MAIN]: {} as IQuadrantRefs,
@@ -172,11 +184,17 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // callback was triggered from a manual scrollTop/scrollLeft update within an onWheel.
     private wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
 
-    // Throttled event callbacks
-    // =========================
-
+    // keep throttled event callbacks around as instance variables, so we don't
+    // have to continually reinstantiate them.
     private throttledHandleMainQuadrantScroll: (event: React.UIEvent<HTMLElement>) => any;
     private throttledHandleWheel: (event: React.WheelEvent<HTMLElement>) => any;
+
+    // the interval instance that we maintain to enable debouncing of view
+    // updates on scroll
+    private debouncedViewSyncInterval: number;
+
+    // Public
+    // ======
 
     public constructor(props: ITableQuadrantStackProps, context?: any) {
         super(props, context);
