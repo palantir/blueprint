@@ -36,6 +36,8 @@ export enum QuadrantType {
     TOP_LEFT,
 }
 
+export const QUADRANT_TYPES = [QuadrantType.MAIN, QuadrantType.TOP, QuadrantType.LEFT, QuadrantType.TOP_LEFT];
+
 export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that receives a `ref` to the quadrant's body-wrapping element. Will need to be

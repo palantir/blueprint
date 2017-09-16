@@ -11,7 +11,7 @@ import * as React from "react";
 import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
 import { Utils } from "../common/utils";
-import { QuadrantType, TableQuadrant } from "./tableQuadrant";
+import { QuadrantType, QUADRANT_TYPES, TableQuadrant } from "./tableQuadrant";
 
 interface IQuadrantRefMap<T> {
     columnHeader?: T;
@@ -145,6 +145,11 @@ export interface ITableQuadrantStackProps extends IProps {
     scrollContainerRef?: (ref: HTMLElement) => void;
 }
 
+interface IQuadrantScrollOffsetMap {
+    scrollLeft: number;
+    scrollTop: number;
+}
+
 export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackProps, {}> {
 
     // Static variables
@@ -193,6 +198,13 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // updates on scroll
     private debouncedViewSyncInterval: number;
 
+    private cachedRowHeaderWidth: number;
+    private cachedColumnHeaderHeight: number;
+    private cachedMainQuadrantScrollOffsets: IQuadrantScrollOffsetMap;
+    private cachedTopQuadrantScrollOffsets: IQuadrantScrollOffsetMap;
+    private cachedLeftQuadrantScrollOffsets: IQuadrantScrollOffsetMap;
+    private cachedTopLeftQuadrantScrollOffsets: IQuadrantScrollOffsetMap;
+
     // Public
     // ======
 
@@ -208,6 +220,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         //   this keeps every sync'd quadrant visually aligned in each animation frame.
         this.throttledHandleMainQuadrantScroll = CoreUtils.throttleReactEventCallback(this.handleMainQuadrantScroll);
         this.throttledHandleWheel = CoreUtils.throttleReactEventCallback(this.handleWheel, { preventDefault: true });
+
+        this.resetCache();
     }
 
     /**
@@ -451,6 +465,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             });
         }
     }
+
     // Resizing
     // --------
 
@@ -576,6 +591,16 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const rightScrollBarWidth = measureScrollBarThickness(mainScrollContainer, "vertical");
         const bottomScrollBarHeight = measureScrollBarThickness(mainScrollContainer, "horizontal");
 
+        // Update cache: let's read now whatever values we might need later.
+        // prevents unnecessary reflows in the future.
+        this.setCachedRowHeaderWidth(rowHeaderWidth);
+        this.setCachedColumnHeaderHeight(columnHeaderHeight);
+        QUADRANT_TYPES.forEach((quadrantType) => {
+            const { scrollContainer } = this.quadrantRefs[quadrantType];
+            this.setCachedQuadrantScrollOffset(quadrantType, "scrollLeft", scrollContainer.scrollLeft);
+            this.setCachedQuadrantScrollOffset(quadrantType, "scrollTop", scrollContainer.scrollTop);
+        });
+
         //
         // Writes (batched to avoid DOM thrashing)
         //
@@ -588,6 +613,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.setQuadrantSize(QuadrantType.TOP_LEFT, "height", nextTopQuadrantHeight);
         this.setQuadrantOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
         this.setQuadrantOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
+
     }
 
     private setQuadrantSize = (quadrantType: QuadrantType, dimension: "width" | "height", value: number) => {
@@ -643,11 +669,63 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         return numFrozen > 0 ? getterFn(numFrozen - 1) : BORDER_WIDTH_CORRECTION;
     }
 
+    // Cache
+
+    private resetCache = () => {
+        this.cachedRowHeaderWidth = 0;
+        this.cachedColumnHeaderHeight = 0;
+        this.cachedMainQuadrantScrollOffsets = { scrollLeft: 0, scrollTop: 0 };
+        this.cachedTopQuadrantScrollOffsets = { scrollLeft: 0, scrollTop: 0 };
+        this.cachedLeftQuadrantScrollOffsets = { scrollLeft: 0, scrollTop: 0 };
+        this.cachedTopLeftQuadrantScrollOffsets = { scrollLeft: 0, scrollTop: 0 };
+    }
+
+    private setCachedColumnHeaderHeight = (height: number) => {
+        this.cachedColumnHeaderHeight = height;
+    }
+
+    private setCachedRowHeaderWidth = (width: number) => {
+        this.cachedRowHeaderWidth = width;
+    }
+
+    private setCachedQuadrantScrollOffset = (
+        quadrantType: QuadrantType,
+        scrollKey: "scrollLeft" | "scrollTop",
+        offset: number,
+    ) => {
+        this.getCachedQuadrantScrollOffsetMap(quadrantType)[scrollKey] = offset;
+    }
+
+    private getCachedQuadrantScrollOffsetMap = (quadrantType: QuadrantType) => {
+        switch (quadrantType) {
+            case QuadrantType.MAIN:
+                return this.cachedMainQuadrantScrollOffsets;
+            case QuadrantType.TOP:
+                return this.cachedTopQuadrantScrollOffsets;
+            case QuadrantType.LEFT:
+                return this.cachedLeftQuadrantScrollOffsets;
+            default: // i.e. case QuadrantType.TOP_LEFT:
+                return this.cachedTopLeftQuadrantScrollOffsets;
+        }
+    }
+
+    private getCachedQuadrantScrollOffset = (quadrantType: QuadrantType, scrollKey: "scrollLeft" | "scrollTop") => {
+        return this.getCachedQuadrantScrollOffsetMap(quadrantType)[scrollKey];
+    }
+
+    private getCachedRowHeaderWidth = () => {
+        return this.cachedRowHeaderWidth;
+    }
+
+    private getCachedColumnHeaderHeight = () => {
+        return this.cachedColumnHeaderHeight;
+    }
+
     // Resizing
 
     private adjustVerticalGuides(verticalGuides: number[], quadrantType: QuadrantType) {
-        const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollLeft;
-        const rowHeaderWidth = this.getRowHeaderWidth(quadrantType);
+        const scrollAmount = this.getCachedQuadrantScrollOffset(quadrantType, "scrollLeft");
+        const rowHeaderWidth = this.getCachedRowHeaderWidth();
 
         const adjustedVerticalGuides = verticalGuides != null
             ? verticalGuides.map((verticalGuide) => verticalGuide - scrollAmount + rowHeaderWidth)
@@ -657,21 +735,14 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     }
 
     private adjustHorizontalGuides(horizontalGuides: number[], quadrantType: QuadrantType) {
-        const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollTop;
-        const columnHeaderHeight = this.quadrantRefs[quadrantType].columnHeader.clientHeight;
+        const scrollAmount = this.getCachedQuadrantScrollOffset(quadrantType, "scrollTop");
+        const columnHeaderHeight = this.getCachedColumnHeaderHeight();
 
         const adjustedHorizontalGuides = horizontalGuides != null
             ? horizontalGuides.map((horizontalGuide) => horizontalGuide - scrollAmount + columnHeaderHeight)
             : horizontalGuides;
 
         return adjustedHorizontalGuides;
-    }
-
-    private getRowHeaderWidth(quadrantType: QuadrantType) {
-        // unlike the column header, the row header can be toggled, so we need to handle the case
-        // when it's not showing
-        const { rowHeader } = this.quadrantRefs[quadrantType];
-        return rowHeader == null ? 0 : rowHeader.clientWidth;
     }
 }
 
