@@ -389,24 +389,26 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public grid: Grid;
     public locator: Locator;
 
-    private bodyElement: HTMLElement;
     private childrenArray: Array<React.ReactElement<IColumnProps>>;
     private columnIdToIndex: {[key: string]: number};
 
     private resizeSensorDetach: () => void;
-    private rootTableElement: HTMLElement;
 
     private refHandlers = {
+        cellContainer: (ref: HTMLElement) => this.cellContainerElement = ref,
         columnHeader: (ref: HTMLElement) => this.columnHeaderElement = ref,
         mainQuadrant: (ref: HTMLElement) => this.mainQuadrantElement = ref,
         quadrantStack: (ref: TableQuadrantStack) => this.quadrantStackInstance = ref,
+        rootTable: (ref: HTMLElement) => this.rootTableElement = ref,
         rowHeader: (ref: HTMLElement) => this.rowHeaderElement = ref,
         scrollContainer: (ref: HTMLElement) => this.scrollContainerElement = ref,
     };
 
-    private quadrantStackInstance: TableQuadrantStack;
+    private cellContainerElement: HTMLElement;
     private columnHeaderElement: HTMLElement;
     private mainQuadrantElement: HTMLElement;
+    private quadrantStackInstance: TableQuadrantStack;
+    private rootTableElement: HTMLElement;
     private rowHeaderElement: HTMLElement;
     private scrollContainerElement: HTMLElement;
 
@@ -610,11 +612,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return (
             <div
                 className={classes}
-                ref={this.setRootTableRef}
+                ref={this.refHandlers.rootTable}
                 onScroll={this.handleRootScroll}
             >
                 <TableQuadrantStack
-                    bodyRef={this.setBodyRef}
+                    bodyRef={this.refHandlers.cellContainer}
                     columnHeaderRef={this.refHandlers.columnHeader}
                     grid={this.grid}
                     handleColumnResizeGuide={this.handleColumnResizeGuide}
@@ -664,7 +666,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public componentDidMount() {
         this.validateGrid();
 
-        this.locator = new Locator(this.mainQuadrantElement, this.scrollContainerElement);
+        this.locator = new Locator(
+            this.mainQuadrantElement,
+            this.scrollContainerElement,
+            this.cellContainerElement,
+        );
         this.updateLocator();
         this.updateViewportRect(this.locator.getViewportRect());
 
@@ -1789,16 +1795,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private updateLocator() {
-        const rowHeaderWidth =
-            this.rowHeaderElement == null ? 0 : this.rowHeaderElement.getBoundingClientRect().width;
-        const columnHeaderHeight =
-            this.columnHeaderElement == null ? 0 : this.columnHeaderElement.getBoundingClientRect().height;
-
-        this.locator.setGrid(this.grid)
+        this.locator
+            .setGrid(this.grid)
             .setNumFrozenRows(this.getNumFrozenRowsClamped())
-            .setNumFrozenColumns(this.getNumFrozenColumnsClamped())
-            .setRowHeaderWidth(rowHeaderWidth)
-            .setColumnHeaderHeight(columnHeaderHeight);
+            .setNumFrozenColumns(this.getNumFrozenColumnsClamped());
     }
 
     private updateViewportRect = (nextViewportRect: Rect) => {
@@ -1849,7 +1849,4 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
         this.setState({ horizontalGuides } as ITableState);
     }
-
-    private setBodyRef = (ref: HTMLElement) => this.bodyElement = ref;
-    private setRootTableRef = (ref: HTMLElement) => this.rootTableElement = ref;
 }

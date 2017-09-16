@@ -59,7 +59,8 @@ export class Locator implements ILocator {
 
     public constructor(
         private tableElement: HTMLElement,
-        private bodyElement: HTMLElement,
+        private scrollContainerElement: HTMLElement,
+        private cellContainerElement: HTMLElement,
     ) {
         // empty constructor
     }
@@ -97,15 +98,15 @@ export class Locator implements ILocator {
 
     public getViewportRect() {
         return new Rect(
-            this.bodyElement.scrollLeft,
-            this.bodyElement.scrollTop,
-            this.bodyElement.clientWidth,
-            this.bodyElement.clientHeight,
+            this.scrollContainerElement.scrollLeft,
+            this.scrollContainerElement.scrollTop,
+            this.scrollContainerElement.clientWidth,
+            this.scrollContainerElement.clientHeight,
         );
     }
 
     public getWidestVisibleCellInColumn(columnIndex: number): number {
-        const cells = this.tableElement.getElementsByClassName(Classes.columnCellIndexClass(columnIndex));
+        const cells = this.cellContainerElement.getElementsByClassName(Classes.columnCellIndexClass(columnIndex));
         let max = 0;
         for (let i = 0; i < cells.length; i++) {
             const contentWidth = Utils.measureElementTextContent(cells.item(i)).width;
@@ -118,7 +119,7 @@ export class Locator implements ILocator {
     }
 
     public getTallestVisibleCellInColumn(columnIndex: number): number {
-        const cells = this.tableElement
+        const cells = this.cellContainerElement
             .getElementsByClassName(`${Classes.columnCellIndexClass(columnIndex)} ${Classes.TABLE_CELL}`);
         let max = 0;
         for (let i = 0; i < cells.length; i++) {
@@ -204,10 +205,9 @@ export class Locator implements ILocator {
     }
 
     private toGridX = (clientX: number) => {
-        const tableOffsetFromPageLeft = this.tableElement.getBoundingClientRect().left;
-        const cursorOffsetFromTableLeft = clientX - tableOffsetFromPageLeft;
-        const cursorOffsetFromGridLeft = cursorOffsetFromTableLeft - this.rowHeaderWidth;
-        const scrollOffsetFromTableLeft = this.bodyElement.scrollLeft;
+        const gridOffsetFromPageLeft = this.cellContainerElement.getBoundingClientRect().left;
+        const scrollOffsetFromGridLeft = this.scrollContainerElement.scrollLeft;
+        const cursorOffsetFromGridLeft = clientX - (gridOffsetFromPageLeft + scrollOffsetFromGridLeft);
 
         const isCursorWithinFrozenColumns = this.numFrozenColumns != null
             && this.numFrozenColumns > 0
@@ -216,14 +216,13 @@ export class Locator implements ILocator {
         // the frozen-column region doesn't scroll, so ignore the scroll distance in that case
         return isCursorWithinFrozenColumns
             ? cursorOffsetFromGridLeft
-            : cursorOffsetFromGridLeft + scrollOffsetFromTableLeft;
+            : cursorOffsetFromGridLeft + scrollOffsetFromGridLeft;
     }
 
     private toGridY = (clientY: number) => {
-        const tableOffsetFromPageTop = this.tableElement.getBoundingClientRect().top;
-        const cursorOffsetFromTableTop = clientY - tableOffsetFromPageTop;
-        const cursorOffsetFromGridTop = cursorOffsetFromTableTop - this.columnHeaderHeight;
-        const scrollOffsetFromTableTop = this.bodyElement.scrollTop;
+        const gridOffsetFromPageTop = this.cellContainerElement.getBoundingClientRect().top;
+        const scrollOffsetFromGridTop = this.scrollContainerElement.scrollTop;
+        const cursorOffsetFromGridTop = clientY - (gridOffsetFromPageTop + scrollOffsetFromGridTop);
 
         const isCursorWithinFrozenRows = this.numFrozenRows != null
             && this.numFrozenRows > 0
@@ -231,6 +230,6 @@ export class Locator implements ILocator {
 
         return isCursorWithinFrozenRows
             ? cursorOffsetFromGridTop
-            : cursorOffsetFromGridTop + scrollOffsetFromTableTop;
+            : cursorOffsetFromGridTop + scrollOffsetFromGridTop;
     }
 }
