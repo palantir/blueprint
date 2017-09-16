@@ -8,57 +8,85 @@
 import { getTimezoneMetadata } from "./timezoneMetadata";
 
 export interface ITimezoneQueryEngine {
-    isMatch(timezone: string, query: string): boolean;
+    filterAndRankItems<T extends { timezone: string }>(query: string, items: T[]): T[];
 }
 
 export function createTimezoneQueryEngine(date: Date): ITimezoneQueryEngine {
     return new TimezoneQueryEngine(date);
 }
 
+interface ITimezoneQueryCandidate {
+    value: string;
+    score: number;
+}
+
 class TimezoneQueryEngine implements ITimezoneQueryEngine {
     /** Date to use when determining timezone offsets. */
     private date: Date;
     /** Map from timezone to a list of queryable strings. */
-    private timezoneToQueryCandidates: { [timezone: string]: string[] };
+    private timezoneToQueryCandidates: { [timezone: string]: ITimezoneQueryCandidate[] };
 
     constructor(date: Date) {
         this.date = date;
         this.timezoneToQueryCandidates = {};
     }
 
-    public isMatch(timezone: string, query: string): boolean {
+    public filterAndRankItems<T extends { timezone: string }>(query: string, items: T[]): T[] {
+        return items
+            .map((item) => ({ item, score: this.getMatchScore(item.timezone, query) }))
+            .filter(({ score }) => score !== -1)
+            .sort((result1, result2) => result2.score - result1.score)
+            .map(({ item }) => item);
+    }
+
+    private getMatchScore(timezone: string, query: string): number {
         if (this.timezoneToQueryCandidates[timezone] === undefined) {
             this.timezoneToQueryCandidates[timezone] = this.getQueryCandidates(timezone);
         }
 
+        let maxMatchScore = -1;
         const candidates = this.timezoneToQueryCandidates[timezone];
-        const normalizedQuery = this.normalizeText(query);
-        return candidates.some((candidate) => {
-            return candidate.indexOf(normalizedQuery) >= 0;
-        });
+        for (const candidate of candidates) {
+            if (this.isExactQueryMatch(candidate, query)) {
+                maxMatchScore = Math.max(candidate.score * 2, maxMatchScore);
+            } else if (this.isQueryMatch(candidate, query)) {
+                maxMatchScore = Math.max(candidate.score, maxMatchScore);
+            }
+        }
+        return maxMatchScore;
     }
 
-    private getQueryCandidates(timezone: string): string[] {
+    private getQueryCandidates(timezone: string): ITimezoneQueryCandidate[] {
         const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, this.date);
-        const rawCandidates = [
-            timezone,
-            abbreviation,
-            offsetAsString,
+        const candidates: Array<ITimezoneQueryCandidate | undefined> = [
+            { value: timezone, score: 1 },
+            abbreviation !== undefined ? { value: abbreviation, score: 1 } : undefined,
+            { value: offsetAsString, score: 1 },
 
             // Split timezone string.
             // For example, "America/Los_Angeles" -> "America Los Angeles"
-            timezone.split(/[/_]/).join(" "),
+            { value: timezone.split(/[/_]/).join(" "), score: 1 },
 
             // Don't require leading offset 0.
             // For example, "-07:00" -> "-7:00"
-            offsetAsString.replace(/^([+-])0(\d:\d{2})$/, "$1$2"),
+            { value: offsetAsString.replace(/^([+-])0(\d:\d{2})$/, "$1$2"), score: 1 },
         ];
-        return rawCandidates
+        return candidates
             .filter((candidate) => candidate !== undefined)
-            .map((candidate) => this.normalizeText(candidate));
+            .map((candidate) => ({ ...candidate, value: this.normalizeText(candidate.value) }));
+    }
+
+    private isQueryMatch(candidate: ITimezoneQueryCandidate, query: string): boolean {
+        const normalizedQuery = this.normalizeText(query);
+        return candidate.value.indexOf(normalizedQuery) >= 0;
+    }
+
+    private isExactQueryMatch(candidate: ITimezoneQueryCandidate, query: string): boolean {
+        const normalizedQuery = this.normalizeText(query);
+        return candidate.value === normalizedQuery;
     }
 
     private normalizeText(text: string): string {
-        return text.toLowerCase();
+        return text.toLowerCase().trim();
     }
 }
