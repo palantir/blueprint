@@ -51,9 +51,6 @@ export class Locator implements ILocator {
 
     private grid: Grid;
 
-    private rowHeaderWidth = 0;
-    private columnHeaderHeight = 0;
-
     private numFrozenRows = 0;
     private numFrozenColumns = 0;
 
@@ -80,16 +77,6 @@ export class Locator implements ILocator {
 
     public setNumFrozenColumns(numFrozenColumns: number) {
         this.numFrozenColumns = numFrozenColumns;
-        return this;
-    }
-
-    public setColumnHeaderHeight(columnHeaderHeight: number) {
-        this.columnHeaderHeight = columnHeaderHeight;
-        return this;
-    }
-
-    public setRowHeaderWidth(rowHeaderWidth: number) {
-        this.rowHeaderWidth = rowHeaderWidth;
         return this;
     }
 
