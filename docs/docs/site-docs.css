@@ -4746,6 +4746,24 @@ span.pt-icon::before {
   content: ""; }
 .pt-icon-new-prescription::before {
   content: ""; }
+.pt-icon-filter-keep::before {
+  content: ""; }
+.pt-icon-filter-remove::before {
+  content: ""; }
+.pt-icon-key::before {
+  content: ""; }
+.pt-icon-feed-subscribed::before {
+  content: ""; }
+.pt-icon-widget-button::before {
+  content: ""; }
+.pt-icon-widget-header::before {
+  content: ""; }
+.pt-icon-widget-footer::before {
+  content: ""; }
+.pt-icon-header-one::before {
+  content: ""; }
+.pt-icon-header-two::before {
+  content: ""; }
 .pt-submenu > .pt-popover-target {
   display: inherit; }
 .pt-submenu > .pt-popover-target > .pt-menu-item {
@@ -7050,8 +7068,6 @@ table.pt-table.pt-interactive tbody tr:hover td {
   box-shadow: 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-header {
   box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15); }
-.bp-table-column-headers {
-  box-shadow: 0 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-row-headers {
   box-shadow: inset 0 1px 0 rgba(16, 22, 26, 0.15); }
 .bp-table-cell {
@@ -7060,7 +7076,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
   box-shadow: inset 0 1px 0 rgba(16, 22, 26, 0.15);
   height: 1px; }
 .bp-table-column-headers .bp-table-header {
-  box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.15); }
+  box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.15), 0 1px 0 rgba(16, 22, 26, 0.15); }
 .bp-table-column-headers .bp-table-header::before {
   right: 1px;
   bottom: 0; }
@@ -7081,8 +7097,6 @@ table.pt-table.pt-interactive tbody tr:hover td {
   box-shadow: 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-header {
   box-shadow: 0 1px 0 rgba(16, 22, 26, 0.4); }
-.pt-dark .bp-table-column-headers {
-  box-shadow: 0 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-row-headers {
   box-shadow: inset 0 1px 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-cell {
@@ -7091,7 +7105,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
   box-shadow: inset 0 1px 0 rgba(16, 22, 26, 0.4);
   height: 1px; }
 .pt-dark .bp-table-column-headers .bp-table-header {
-  box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.4); }
+  box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.4), 0 1px 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-column-headers .bp-table-header::before {
   right: 1px;
   bottom: 0; }
