@@ -401,13 +401,17 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
             return;
         }
-        const nextScrollTop = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop;
-        const nextScrollLeft = this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft;
+
+        const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
+        const nextScrollTop = mainScrollContainer.scrollTop;
+        const nextScrollLeft = mainScrollContainer.scrollLeft;
+
+        // invoke onScroll - which may read current scroll position - before
+        // forcing a reflow with upcoming .scroll{Top,Left} setters.
+        this.props.onScroll(event);
 
         this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
         this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
-
-        this.props.onScroll(event);
     }
 
     // recall that we've already invoked event.preventDefault() when defining the throttled versions
@@ -415,9 +419,12 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // position too.
 
     private handleWheel = (event: React.WheelEvent<HTMLElement>) => {
+        // again, let the listener read the current scroll position before we
+        // force a reflow by resizing or repositioning stuff.
+        this.props.onScroll(event);
+
         this.handleDirectionalWheel("horizontal", event.deltaX, QuadrantType.MAIN, [QuadrantType.TOP]);
         this.handleDirectionalWheel("vertical", event.deltaY, QuadrantType.MAIN, [QuadrantType.LEFT]);
-        this.props.onScroll(event);
     }
 
     // Resizing
