@@ -235,6 +235,16 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.syncQuadrantViews();
     }
 
+    public componentDidUpdate(prevProps: ITableQuadrantStackProps) {
+        // sync'ing quadrant views triggers expensive reflows, so we only call
+        // it when layout-affecting props change.
+        if (this.props.numFrozenColumns !== prevProps.numFrozenColumns
+            || this.props.numFrozenRows !== prevProps.numFrozenRows
+            || this.props.isRowHeaderShown !== prevProps.isRowHeaderShown) {
+            this.syncQuadrantViews();
+        }
+    }
+
     public render() {
         const { grid, isRowHeaderShown, renderBody } = this.props;
 
