@@ -412,6 +412,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
         this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
+
+        this.syncQuadrantViewsDebounced();
     }
 
     // recall that we've already invoked event.preventDefault() when defining the throttled versions
@@ -425,6 +427,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         this.handleDirectionalWheel("horizontal", event.deltaX, QuadrantType.MAIN, [QuadrantType.TOP]);
         this.handleDirectionalWheel("vertical", event.deltaY, QuadrantType.MAIN, [QuadrantType.LEFT]);
+
+        this.syncQuadrantViewsDebounced();
     }
 
     // Resizing
@@ -511,6 +515,11 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     // Size syncing
     // ============
+
+    private syncQuadrantViewsDebounced = (delay: number = TableQuadrantStack.VIEW_SYNC_DEBOUNCE_DELAY) => {
+        clearInterval(this.debouncedViewSyncInterval);
+        this.debouncedViewSyncInterval = setTimeout(this.syncQuadrantViews /* TODO: Implement */, delay);
+    }
 
     private syncQuadrantMenuElementWidths() {
         this.syncQuadrantMenuElementWidth(QuadrantType.MAIN);
