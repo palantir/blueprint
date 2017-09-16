@@ -30,6 +30,11 @@ export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolea
         : populous;
 }
 
+/**
+ * Get one timezone item per offset, using the most populous region when there is more
+ * than one region for the offset.
+ * @param date the date to use when determining timezone offsets
+ */
 function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
     // Filter out noisy timezones. See https://github.com/moment/moment-timezone/issues/227
     const timezones = moment.tz.names().filter((timezone) => /\//.test(timezone) && !/Etc\//.test(timezone));

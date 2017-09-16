@@ -28,7 +28,7 @@ import {
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
-import { createTimezoneQueryEngine, ITimezoneQueryEngine } from "./timezoneQueryEngine";
+import { createTimezoneQueryEngine, IItemQueryEngine } from "./timezoneQueryEngine";
 
 export { TimezoneDisplayFormat };
 
@@ -118,7 +118,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     };
 
     private timezoneItems: ITimezoneItem[];
-    private timezoneQueryEngine: ITimezoneQueryEngine;
+    private timezoneQueryEngine: IItemQueryEngine<ITimezoneItem>;
     private initialTimezoneItems: ITimezoneItem[];
 
     constructor(props: ITimezonePickerProps, context?: any) {

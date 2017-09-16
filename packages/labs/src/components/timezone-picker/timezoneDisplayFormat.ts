@@ -10,9 +10,13 @@ import { getTimezoneMetadata } from "./timezoneMetadata";
 
 export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name" | "composite";
 export const TimezoneDisplayFormat = {
+    /** Abbreviation format i.e. "GMT" */
     ABBREVIATION: "abbreviation" as "abbreviation",
+    /** Composite format i.e. "Pacific/Honolulu (HST) -10:00" */
     COMPOSITE: "composite" as "composite",
+    /** Name format i.e. "Pacific/Honolulu" */
     NAME: "name" as "name",
+    /** Offset format i.e. "-07:00" */
     OFFSET: "offset" as "offset",
 };
 
