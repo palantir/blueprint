@@ -224,8 +224,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     public componentDidMount() {
         this.emitRefs();
         this.syncQuadrantViews();
-        CoreUtils.safeInvoke(this.props.columnHeaderRef, this.findColumnHeader(QuadrantType.MAIN));
-        CoreUtils.safeInvoke(this.props.rowHeaderRef, this.findRowHeader(QuadrantType.MAIN));
     }
 
     public render() {
@@ -622,16 +620,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     // Helpers
     // =======
-
-    private findColumnHeader(quadrantType: QuadrantType) {
-        const quadrantElement = this.quadrantRefs[quadrantType].quadrant;
-        return quadrantElement.querySelector(`.${Classes.TABLE_COLUMN_HEADERS}`) as HTMLElement;
-    }
-
-    private findRowHeader(quadrantType: QuadrantType) {
-        const quadrantElement = this.quadrantRefs[quadrantType].quadrant;
-        return quadrantElement.querySelector(`.${Classes.TABLE_ROW_HEADERS}`) as HTMLElement;
-    }
 
     /**
      * Returns the width or height of *only the grid* in the secondary quadrants
