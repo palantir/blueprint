@@ -11,8 +11,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 
-import { Classes, IMenuItemProps, IMenuProps, Menu, MenuDivider, MenuItem, Popover } from "../../src/index";
-import { MenuDividerFactory, MenuFactory, MenuItemFactory } from "../../src/index";
+import { Classes, IMenuItemProps, IMenuProps, Menu, MenuItem, Popover, PopoverInteractionKind } from "../../src/index";
+import { MenuDivider, MenuDividerFactory, MenuFactory, MenuItemFactory } from "../../src/index";
 
 describe("MenuItem", () => {
     it("React renders MenuItem", () => {
@@ -94,6 +94,26 @@ describe("MenuItem", () => {
         const wrapper = shallow(MenuItemFactory({ iconName: "graph", text: "Object" }));
         assert.lengthOf(wrapper.find(".pt-icon-graph"), 1);
         assert.strictEqual(wrapper.text(), "Object");
+    });
+
+    it("popover can be controlled with popoverProps", () => {
+        // Ensures that popover props are passed to Popover component, except content property
+        const popoverProps = {
+            content: "CUSTOM_CONTENT",
+            inline: false,
+            interactionKind: PopoverInteractionKind.CLICK,
+            popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
+        };
+        const wrapper = shallow(
+            <MenuItem iconName="style" text="Style" popoverProps={popoverProps}>
+                <MenuItem text="one" />
+                <MenuItem text="two" />
+            </MenuItem>,
+        );
+        assert.strictEqual(wrapper.find(Popover).prop("inline"), popoverProps.inline);
+        assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
+        assert.notStrictEqual(wrapper.find(Popover).prop("popoverClassName").indexOf(popoverProps.popoverClassName), 0);
+        assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
     });
 
     /**
