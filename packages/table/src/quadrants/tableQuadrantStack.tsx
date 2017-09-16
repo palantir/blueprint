@@ -223,16 +223,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     public componentDidMount() {
         this.emitRefs();
-        this.syncQuadrantSizes();
-        this.syncQuadrantMenuElementWidths();
-        CoreUtils.safeInvoke(this.props.columnHeaderRef, this.findColumnHeader(QuadrantType.MAIN));
-        CoreUtils.safeInvoke(this.props.rowHeaderRef, this.findRowHeader(QuadrantType.MAIN));
-    }
-
-    public componentDidUpdate() {
-        this.emitRefs();
-        this.syncQuadrantSizes();
-        this.syncQuadrantMenuElementWidths();
+        this.syncQuadrantViews();
         CoreUtils.safeInvoke(this.props.columnHeaderRef, this.findColumnHeader(QuadrantType.MAIN));
         CoreUtils.safeInvoke(this.props.rowHeaderRef, this.findRowHeader(QuadrantType.MAIN));
     }
@@ -413,6 +404,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
         this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
 
+        // syncs the quadrants only after scrolling has stopped for a short time
         this.syncQuadrantViewsDebounced();
     }
 
@@ -521,84 +513,85 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.debouncedViewSyncInterval = setTimeout(this.syncQuadrantViews /* TODO: Implement */, delay);
     }
 
-    private syncQuadrantMenuElementWidths() {
-        this.syncQuadrantMenuElementWidth(QuadrantType.MAIN);
-        this.syncQuadrantMenuElementWidth(QuadrantType.TOP);
-        this.syncQuadrantMenuElementWidth(QuadrantType.LEFT);
-        this.syncQuadrantMenuElementWidth(QuadrantType.TOP_LEFT);
+    private syncQuadrantViews() {
+        const mainRefs = this.quadrantRefs[QuadrantType.MAIN];
+        const mainRowHeader = mainRefs.rowHeader;
+        const mainColumnHeader = mainRefs.columnHeader;
+        const mainScrollContainer = mainRefs.scrollContainer;
+
+        // (alas, we must force a reflow to measure the row header's "desired" width)
+        mainRowHeader.style.width = "auto";
+
+        //
+        // Reads (batched to avoid DOM thrashing)
+        //
+
+        // Row-header resizing: resize the row header to be as wide as its
+        // widest contents require it to be.
+        const rowHeaderWidth = mainRowHeader.clientWidth;
+
+        // Menu-element resizing: keep the menu element's borders flush with
+        // thsoe of the the row and column headers.
+        const columnHeaderHeight = mainColumnHeader == null ? 0 : mainColumnHeader.clientHeight;
+        const nextMenuElementWidth = rowHeaderWidth;
+        const nextMenuElementHeight = columnHeaderHeight;
+
+        // Quadrant-size sync'ing: make the quadrants precisely as big as they
+        // need to be to fit their variable-sized headers and/or frozen areas.
+        const leftQuadrantGridWidth = this.getSecondaryQuadrantSize("width");
+        const topQuadrantGridHeight = this.getSecondaryQuadrantSize("height");
+        const nextLeftQuadrantWidth = rowHeaderWidth + leftQuadrantGridWidth;
+        const nextTopQuadrantHeight = columnHeaderHeight + topQuadrantGridHeight;
+
+        // Scrollbar clearance: tweak the quadrant bottom/right offsets to
+        // reveal the MAIN-quadrant scrollbars if they're visible.
+        const rightScrollBarWidth = measureScrollBarThickness(mainScrollContainer, "vertical");
+        const bottomScrollBarHeight = measureScrollBarThickness(mainScrollContainer, "horizontal");
+
+        //
+        // Writes (batched to avoid DOM thrashing)
+        //
+
+        this.setQuadrantRowHeaderSizes(rowHeaderWidth);
+        this.setQuadrantMenuElementSizes(nextMenuElementWidth, nextMenuElementHeight);
+        this.setQuadrantSize(QuadrantType.LEFT, "width", nextLeftQuadrantWidth);
+        this.setQuadrantSize(QuadrantType.TOP, "height", nextTopQuadrantHeight);
+        this.setQuadrantSize(QuadrantType.TOP_LEFT, "width", nextLeftQuadrantWidth);
+        this.setQuadrantSize(QuadrantType.TOP_LEFT, "height", nextTopQuadrantHeight);
+        this.setQuadrantOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
+        this.setQuadrantOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
     }
 
-    private syncQuadrantMenuElementWidth(quadrantType: QuadrantType) {
-        const mainQuadrantMenu = this.quadrantRefs[QuadrantType.MAIN].menu;
-        const mainQuadrantRowHeader = this.quadrantRefs[QuadrantType.MAIN].rowHeader;
+    private setQuadrantSize = (quadrantType: QuadrantType, dimension: "width" | "height", value: number) => {
+        this.quadrantRefs[quadrantType].quadrant.style[dimension] = `${value}px`;
+    }
+
+    private setQuadrantOffset = (quadrantType: QuadrantType, side: "right" | "bottom", value: number) => {
+        this.quadrantRefs[quadrantType].quadrant.style[side] = `${value}px`;
+    }
+
+    private setQuadrantRowHeaderSizes = (width: number) => {
+        const widthString = `${width}px`;
+        this.quadrantRefs[QuadrantType.MAIN].rowHeader.style.width = widthString;
+        this.quadrantRefs[QuadrantType.TOP].rowHeader.style.width = widthString;
+        this.quadrantRefs[QuadrantType.LEFT].rowHeader.style.width = widthString;
+        this.quadrantRefs[QuadrantType.TOP_LEFT].rowHeader.style.width = widthString;
+    }
+
+    private setQuadrantMenuElementSizes(width: number, height: number) {
+        this.setQuadrantMenuElementSize(QuadrantType.MAIN, width, height);
+        this.setQuadrantMenuElementSize(QuadrantType.TOP, width, height);
+        this.setQuadrantMenuElementSize(QuadrantType.LEFT, width, height);
+        this.setQuadrantMenuElementSize(QuadrantType.TOP_LEFT, width, height);
+    }
+
+    private setQuadrantMenuElementSize(quadrantType: QuadrantType, width: number, height: number) {
         const quadrantMenu = this.quadrantRefs[quadrantType].menu;
-
-        // the main quadrant menu informs the size of every other quadrant menu
-        if (mainQuadrantMenu != null && mainQuadrantRowHeader != null && quadrantMenu != null) {
-            const { width } = mainQuadrantRowHeader.getBoundingClientRect();
-            quadrantMenu.style.width = `${width}px`;
-
-            // no need to use the main quadrant's menu to set its *own* height
-            if (quadrantType !== QuadrantType.MAIN) {
-                const { height } = mainQuadrantMenu.getBoundingClientRect();
-                quadrantMenu.style.height = `${height}px`;
-            }
-        }
-    }
-
-    private syncQuadrantSizes() {
-        const mainQuadrantScrollElement = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
-        const topQuadrantElement = this.quadrantRefs[QuadrantType.TOP].quadrant;
-        const topQuadrantRowHeaderElement = this.quadrantRefs[QuadrantType.TOP].rowHeader;
-        const leftQuadrantElement = this.quadrantRefs[QuadrantType.LEFT].quadrant;
-        const topLeftQuadrantElement = this.quadrantRefs[QuadrantType.TOP_LEFT].quadrant;
-        const topLeftQuadrantRowHeaderElement = this.quadrantRefs[QuadrantType.TOP_LEFT].rowHeader;
-
-        const { grid, numFrozenColumns, numFrozenRows } = this.props;
-
-        // if there are no frozen rows or columns, we still want the quadrant to be 1px bigger to
-        // reveal the header border.
-        const BORDER_WIDTH_CORRECTION = 1;
-
-        const leftQuadrantGridContentWidth = numFrozenColumns > 0
-            ? grid.getCumulativeWidthAt(numFrozenColumns - 1)
-            : BORDER_WIDTH_CORRECTION;
-        const topQuadrantGridContentHeight = numFrozenRows > 0
-            ? grid.getCumulativeHeightAt(numFrozenRows - 1)
-            : BORDER_WIDTH_CORRECTION;
-
-        // all menus are the same size, so arbitrarily use the one from the main quadrant.
-        // assumes that the menu element width has already been sync'd after the last render
-
-        const { rowHeader, columnHeader } = this.quadrantRefs[QuadrantType.MAIN];
-        const rowHeaderWidth = rowHeader == null ? 0 : rowHeader.getBoundingClientRect().width;
-        const columnHeaderHeight = columnHeader == null ? 0 : columnHeader.getBoundingClientRect().height;
-
-        // no need to sync the main quadrant, because it fills the entire viewport
-        topQuadrantElement.style.height = `${topQuadrantGridContentHeight + columnHeaderHeight}px`;
-        leftQuadrantElement.style.width = `${leftQuadrantGridContentWidth + rowHeaderWidth}px`;
-        topLeftQuadrantElement.style.width = `${leftQuadrantGridContentWidth + rowHeaderWidth}px`;
-        topLeftQuadrantElement.style.height = `${topQuadrantGridContentHeight + columnHeaderHeight}px`;
-
-        // resize the top and left quadrants to keep the main quadrant's scrollbar visible
-        const scrollbarWidth = mainQuadrantScrollElement.offsetWidth - mainQuadrantScrollElement.clientWidth;
-        const scrollbarHeight = mainQuadrantScrollElement.offsetHeight - mainQuadrantScrollElement.clientHeight;
-        topQuadrantElement.style.right = `${scrollbarWidth}px`;
-        leftQuadrantElement.style.bottom = `${scrollbarHeight}px`;
-
-        // resize top and top-left quadrant row headers if main quadrant scrolls
-        this.maybeSyncRowHeaderSize(topQuadrantRowHeaderElement, rowHeaderWidth);
-        this.maybeSyncRowHeaderSize(topLeftQuadrantRowHeaderElement, rowHeaderWidth);
-    }
-
-    private maybeSyncRowHeaderSize(rowHeaderElement: HTMLElement, width: number) {
-        if (rowHeaderElement == null) {
+        if (quadrantMenu == null) {
             return;
         }
-        const selector = `.${Classes.TABLE_ROW_HEADERS_CELLS_CONTAINER}`;
-        // this child element dictates the width of all row-header cells
-        const elementToResize = rowHeaderElement.querySelector(selector) as HTMLElement;
-        elementToResize.style.width = `${width}px`;
+        quadrantMenu.style.width = `${width}px`;
+        quadrantMenu.style.height = `${height}px`;
     }
 
     // Helpers
@@ -612,6 +605,24 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     private findRowHeader(quadrantType: QuadrantType) {
         const quadrantElement = this.quadrantRefs[quadrantType].quadrant;
         return quadrantElement.querySelector(`.${Classes.TABLE_ROW_HEADERS}`) as HTMLElement;
+    }
+
+    /**
+     * Returns the width or height of *only the grid* in the secondary quadrants
+     * (TOP, LEFT, TOP_LEFT), based on the number of frozen rows and columns.
+     */
+    private getSecondaryQuadrantSize(dimension: "width" | "height") {
+        const { grid, numFrozenColumns, numFrozenRows } = this.props;
+
+        const numFrozen = dimension === "width" ? numFrozenColumns : numFrozenRows;
+        const getterFn = dimension === "width" ? grid.getCumulativeWidthAt : grid.getCumulativeHeightAt;
+
+        // if there are no frozen rows or columns, we still want the quadrant to be 1px bigger to
+        // reveal the header border.
+        const BORDER_WIDTH_CORRECTION = 1;
+
+        // both getter functions do O(1) lookups.
+        return numFrozen > 0 ? getterFn(numFrozen - 1) : BORDER_WIDTH_CORRECTION;
     }
 
     private handleDirectionalWheel = (
