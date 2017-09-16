@@ -423,6 +423,32 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.syncQuadrantViewsDebounced();
     }
 
+    private handleDirectionalWheel = (
+        direction: "horizontal" | "vertical",
+        delta: number,
+        quadrantType: QuadrantType,
+        quadrantTypesToSync: QuadrantType[],
+    ) => {
+        const isHorizontal = direction === "horizontal";
+
+        const scrollKey = isHorizontal
+            ? "scrollLeft"
+            : "scrollTop";
+        const isScrollDisabled = isHorizontal
+            ? this.props.isHorizontalScrollDisabled
+            : this.props.isVerticalScrollDisabled;
+
+        if (!isScrollDisabled) {
+            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
+
+            // sync the corresponding scroll position of all dependent quadrants
+            const nextScrollPosition = this.quadrantRefs[quadrantType].scrollContainer[scrollKey] + delta;
+            this.quadrantRefs[quadrantType].scrollContainer[scrollKey] = nextScrollPosition;
+            quadrantTypesToSync.forEach((quadrantTypeToSync) => {
+                this.quadrantRefs[quadrantTypeToSync].scrollContainer[scrollKey] = nextScrollPosition;
+            });
+        }
+    }
     // Resizing
     // --------
 
@@ -623,33 +649,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         // both getter functions do O(1) lookups.
         return numFrozen > 0 ? getterFn(numFrozen - 1) : BORDER_WIDTH_CORRECTION;
-    }
-
-    private handleDirectionalWheel = (
-        direction: "horizontal" | "vertical",
-        delta: number,
-        quadrantType: QuadrantType,
-        quadrantTypesToSync: QuadrantType[],
-    ) => {
-        const isHorizontal = direction === "horizontal";
-
-        const scrollKey = isHorizontal
-            ? "scrollLeft"
-            : "scrollTop";
-        const isScrollDisabled = isHorizontal
-            ? this.props.isHorizontalScrollDisabled
-            : this.props.isVerticalScrollDisabled;
-
-        if (!isScrollDisabled) {
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-
-            // sync the corresponding scroll position of all dependent quadrants
-            const nextScrollPosition = this.quadrantRefs[quadrantType].scrollContainer[scrollKey] + delta;
-            this.quadrantRefs[quadrantType].scrollContainer[scrollKey] = nextScrollPosition;
-            quadrantTypesToSync.forEach((quadrantTypeToSync) => {
-                this.quadrantRefs[quadrantTypeToSync].scrollContainer[scrollKey] = nextScrollPosition;
-            });
-        }
     }
 
     // Resizing
