@@ -538,10 +538,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private syncQuadrantViewsDebounced = (delay: number = TableQuadrantStack.VIEW_SYNC_DEBOUNCE_DELAY) => {
         clearInterval(this.debouncedViewSyncInterval);
-        this.debouncedViewSyncInterval = setTimeout(this.syncQuadrantViews /* TODO: Implement */, delay);
+        this.debouncedViewSyncInterval = setTimeout(this.syncQuadrantViews, delay);
     }
 
-    private syncQuadrantViews() {
+    private syncQuadrantViews = () => {
         const mainRefs = this.quadrantRefs[QuadrantType.MAIN];
         const mainRowHeader = mainRefs.rowHeader;
         const mainColumnHeader = mainRefs.columnHeader;
@@ -606,14 +606,14 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.quadrantRefs[QuadrantType.TOP_LEFT].rowHeader.style.width = widthString;
     }
 
-    private setQuadrantMenuElementSizes(width: number, height: number) {
+    private setQuadrantMenuElementSizes = (width: number, height: number) => {
         this.setQuadrantMenuElementSize(QuadrantType.MAIN, width, height);
         this.setQuadrantMenuElementSize(QuadrantType.TOP, width, height);
         this.setQuadrantMenuElementSize(QuadrantType.LEFT, width, height);
         this.setQuadrantMenuElementSize(QuadrantType.TOP_LEFT, width, height);
     }
 
-    private setQuadrantMenuElementSize(quadrantType: QuadrantType, width: number, height: number) {
+    private setQuadrantMenuElementSize = (quadrantType: QuadrantType, width: number, height: number) => {
         const quadrantMenu = this.quadrantRefs[quadrantType].menu;
         if (quadrantMenu == null) {
             return;
