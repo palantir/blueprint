@@ -410,16 +410,20 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             return;
         }
 
-        const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
-        const nextScrollTop = mainScrollContainer.scrollTop;
-        const nextScrollLeft = mainScrollContainer.scrollLeft;
-
         // invoke onScroll - which may read current scroll position - before
         // forcing a reflow with upcoming .scroll{Top,Left} setters.
         this.props.onScroll(event);
 
+        const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
+        const nextScrollTop = mainScrollContainer.scrollTop;
+        const nextScrollLeft = mainScrollContainer.scrollLeft;
+
         this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
         this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
+
+        // update the cache immediately
+        this.cache.setQuadrantScrollOffset(QuadrantType.LEFT, "scrollTop", nextScrollTop);
+        this.cache.setQuadrantScrollOffset(QuadrantType.TOP, "scrollLeft", nextScrollLeft);
 
         // syncs the quadrants only after scrolling has stopped for a short time
         this.syncQuadrantViewsDebounced();
@@ -458,11 +462,15 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         if (!isScrollDisabled) {
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
 
+            const nextScrollOffset = this.quadrantRefs[quadrantType].scrollContainer[scrollKey] + delta;
+
+            this.quadrantRefs[quadrantType].scrollContainer[scrollKey] = nextScrollOffset;
+            this.cache.setQuadrantScrollOffset(quadrantType, scrollKey, nextScrollOffset);
+
             // sync the corresponding scroll position of all dependent quadrants
-            const nextScrollPosition = this.quadrantRefs[quadrantType].scrollContainer[scrollKey] + delta;
-            this.quadrantRefs[quadrantType].scrollContainer[scrollKey] = nextScrollPosition;
             quadrantTypesToSync.forEach((quadrantTypeToSync) => {
-                this.quadrantRefs[quadrantTypeToSync].scrollContainer[scrollKey] = nextScrollPosition;
+                this.quadrantRefs[quadrantTypeToSync].scrollContainer[scrollKey] = nextScrollOffset;
+                this.cache.setQuadrantScrollOffset(quadrantTypeToSync, scrollKey, nextScrollOffset);
             });
         }
     }
