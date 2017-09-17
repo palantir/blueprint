@@ -5,15 +5,12 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
-import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
-import { Batcher } from "./common/batcher";
+
 import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
-import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
@@ -22,25 +19,9 @@ import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
 import { IRegion, Regions } from "./regions";
+import { ITableBodyCellsProps, TableBodyCells } from "./tableBodyCells";
 
-export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnIndices, IProps {
-    /**
-     * A cell renderer for the cells in the body.
-     */
-    cellRenderer: ICellRenderer;
-
-    /**
-     * The grid computes sizes of cells, rows, or columns from the
-     * configurable `columnWidths` and `rowHeights`.
-     */
-    grid: Grid;
-
-    /**
-     * If true, all `Cell`s render their loading state except for those who have
-     * their `loading` prop explicitly set to false.
-     */
-    loading: boolean;
-
+export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps {
     /**
      * Locates the row/column/cell given a mouse event.
      */
@@ -57,11 +38,6 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
     numFrozenRows?: number;
 
     /**
-     * An optional callback invoked when all cells in view have completely rendered.
-     */
-    onCompleteRender?: () => void;
-
-    /**
      * The `Rect` bounds of the visible viewport with respect to its parent
      * scrollable pane.
      */
@@ -73,44 +49,13 @@ export interface ITableBodyProps extends ISelectableProps, IRowIndices, IColumnI
      * containing the `IRegion`s of interest.
      */
     renderBodyContextMenu?: IContextMenuRenderer;
-
-    /**
-     * Dictates how cells should be rendered. Supported modes are:
-     * - `RenderMode.BATCH`: renders cells in batches to improve
-     *   performance
-     * - `RenderMode.NONE`: renders cells synchronously all at once
-     * @default RenderMode.BATCH
-     */
-    renderMode?: RenderMode;
 }
 
-/**
- * For perf, we want to ignore changes to the `ISelectableProps` part of the
- * `ITableBodyProps` since those are only used when a context menu is launched.
- */
-const UPDATE_PROPS_KEYS: Array<keyof ITableBodyProps> = [
-    "focusedCell",
-    "grid",
-    "locator",
-    "viewportRect",
-    "cellRenderer",
-    "rowIndexStart",
-    "rowIndexEnd",
-    "columnIndexStart",
-    "columnIndexEnd",
-    "selectedRegions",
-];
+const SHALLOW_COMPARE_BLACKLIST: Array<keyof ITableBodyProps> = ["selectedRegions", "viewportRect"];
 
-/**
- * We don't want to reset the batcher when this set of keys changes. Any other
- * changes should reset the batcher's internal cache.
- */
-const RESET_CELL_KEYS_BLACKLIST: Array<keyof ITableBodyProps> = [
-    "columnIndexEnd",
-    "columnIndexStart",
-    "rowIndexEnd",
-    "rowIndexStart",
-    "viewportRect",
+const DEEP_COMPARE_WHITELIST: Array<keyof ITableBodyProps> = [
+    "selectedRegions",
+    // viewportRect is not a plain object, so we need more nuanced logic to compare it.
 ];
 
 export class TableBody extends React.Component<ITableBodyProps, {}> {
@@ -119,62 +64,36 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         renderMode: RenderMode.BATCH,
     };
 
-    /**
-     * Returns the array of class names that must be applied to each table
-     * cell so that we can locate any cell based on its coordinate.
-     */
-    public static cellClassNames(rowIndex: number, columnIndex: number) {
-        return [Classes.rowCellIndexClass(rowIndex), Classes.columnCellIndexClass(columnIndex)];
-    }
-
-    private static cellReactKey(rowIndex: number, columnIndex: number) {
-        return `cell-${rowIndex}-${columnIndex}`;
-    }
-
     private activationCell: ICellCoordinates;
-    private batcher = new Batcher<JSX.Element>();
-    private isRenderingBatchedCells = false;
-
-    public componentDidMount() {
-        this.maybeInvokeOnCompleteRender();
-    }
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
-        const propKeysWhitelist = { include: UPDATE_PROPS_KEYS };
-        return !Utils.shallowCompareKeys(this.props, nextProps, propKeysWhitelist);
-    }
-
-    public componentWillUpdate(nextProps?: ITableBodyProps) {
-        const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
-        const shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
-        if (shouldResetBatcher) {
-            this.batcher.reset();
-        }
-    }
-
-    public componentDidUpdate() {
-        this.maybeInvokeOnCompleteRender();
-    }
-
-    public componentWillUnmount() {
-        this.batcher.cancelOutstandingCallback();
+        return (
+            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: SHALLOW_COMPARE_BLACKLIST }) ||
+            !Utils.deepCompareKeys(this.props, nextProps, DEEP_COMPARE_WHITELIST) ||
+            !nextProps.viewportRect.equals(this.props.viewportRect)
+        );
     }
 
     public render() {
         const {
             allowMultipleSelection,
+            cellRenderer,
+            columnIndexEnd,
+            columnIndexStart,
             focusedCell,
             grid,
+            loading,
             numFrozenColumns,
             numFrozenRows,
+            onCompleteRender,
             onFocus,
             onSelection,
             renderMode,
+            rowIndexEnd,
+            rowIndexStart,
             selectedRegions,
             selectedRegionTransform,
         } = this.props;
-
-        const cells = renderMode === RenderMode.BATCH ? this.renderBatchedCells() : this.renderAllCells();
 
         const defaultStyle = grid.getRect().sizeStyle();
 
@@ -200,7 +119,17 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                     renderContextMenu={this.renderContextMenu}
                     style={style}
                 >
-                    {cells}
+                    <TableBodyCells
+                        cellRenderer={cellRenderer}
+                        grid={grid}
+                        loading={loading}
+                        onCompleteRender={onCompleteRender}
+                        renderMode={renderMode}
+                        columnIndexStart={columnIndexStart}
+                        columnIndexEnd={columnIndexEnd}
+                        rowIndexStart={rowIndexStart}
+                        rowIndexEnd={rowIndexEnd}
+                    />
                 </ContextMenuTargetWrapper>
             </DragSelectable>
         );
@@ -239,75 +168,6 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         return contextMenu == null ? undefined : contextMenu;
     };
 
-    // Render modes
-    // ============
-
-    private renderBatchedCells() {
-        const { columnIndexEnd, columnIndexStart, rowIndexEnd, rowIndexStart } = this.props;
-
-        // render cells in batches
-        this.batcher.startNewBatch();
-        for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
-            for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-                this.batcher.addArgsToBatch(rowIndex, columnIndex);
-            }
-        }
-        this.batcher.removeOldAddNew(this.renderNewCell);
-        if (!this.batcher.isDone()) {
-            this.batcher.idleCallback(() => this.forceUpdate());
-        }
-
-        const cells: Array<React.ReactElement<any>> = this.batcher.getList();
-        return cells;
-    }
-
-    private renderAllCells() {
-        const { columnIndexEnd, columnIndexStart, grid, rowIndexEnd, rowIndexStart } = this.props;
-
-        const cells: Array<React.ReactElement<any>> = [];
-
-        for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
-            for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-                const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
-                const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
-                cells.push(this.renderCell(rowIndex, columnIndex, extremaClasses, isGhost));
-            }
-        }
-
-        return cells;
-    }
-
-    // Cell renderers
-    // ==============
-
-    private renderNewCell = (row: number, col: number) => {
-        const { columnIndexEnd, grid, rowIndexEnd } = this.props;
-        const extremaClasses = grid.getExtremaClasses(row, col, rowIndexEnd, columnIndexEnd);
-        const isGhost = grid.isGhostIndex(row, col);
-        return this.renderCell(row, col, extremaClasses, isGhost);
-    };
-
-    private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
-        const { cellRenderer, loading, grid } = this.props;
-        const baseCell = isGhost ? emptyCellRenderer() : cellRenderer(rowIndex, columnIndex);
-        const className = classNames(
-            TableBody.cellClassNames(rowIndex, columnIndex),
-            extremaClasses,
-            {
-                [Classes.TABLE_CELL_GHOST]: isGhost,
-                [Classes.TABLE_CELL_LEDGER_ODD]: rowIndex % 2 === 1,
-                [Classes.TABLE_CELL_LEDGER_EVEN]: rowIndex % 2 === 0,
-            },
-            baseCell.props.className,
-        );
-        const key = TableBody.cellReactKey(rowIndex, columnIndex);
-        const rect = isGhost ? grid.getGhostCellRect(rowIndex, columnIndex) : grid.getCellRect(rowIndex, columnIndex);
-        const cellLoading = baseCell.props.loading != null ? baseCell.props.loading : loading;
-
-        const style = { ...baseCell.props.style, ...Rect.style(rect) };
-        return React.cloneElement(baseCell, { className, key, loading: cellLoading, style } as ICellProps);
-    };
-
     // Callbacks
     // =========
 
@@ -325,15 +185,4 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         const end = this.props.locator.convertPointToCell(coords.current[0], coords.current[1]);
         return returnEndOnly ? Regions.cell(end.row, end.col) : Regions.cell(start.row, start.col, end.row, end.col);
     };
-
-    private maybeInvokeOnCompleteRender() {
-        const { onCompleteRender, renderMode } = this.props;
-
-        if (renderMode === RenderMode.BATCH && this.isRenderingBatchedCells && this.batcher.isDone()) {
-            this.isRenderingBatchedCells = false;
-            CoreUtils.safeInvoke(onCompleteRender);
-        } else if (renderMode === RenderMode.NONE) {
-            CoreUtils.safeInvoke(onCompleteRender);
-        }
-    }
 }
