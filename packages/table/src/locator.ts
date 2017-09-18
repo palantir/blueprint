@@ -51,15 +51,33 @@ export class Locator implements ILocator {
 
     private grid: Grid;
 
-    private numFrozenRows = 0;
-    private numFrozenColumns = 0;
+    // these values affect how we map a mouse coordinate to a cell coordinate.
+    // for instance, a click at (0px,0px) in the grid could map to an arbitrary
+    // cell if table is scrolled, but it will always map to cell (0,0) if there
+    // are active frozen rows and columns.
+    private numFrozenRows: number;
+    private numFrozenColumns: number;
+
+    // the root table element within which a click is deemed valid and relevant.
+    private tableElement: HTMLElement;
+
+    // the scrollable element that wraps the cell container.
+    private scrollContainerElement: HTMLElement;
+
+    // the element containing all body cells in the grid (excluding headers).
+    private cellContainerElement: HTMLElement;
 
     public constructor(
-        private tableElement: HTMLElement,
-        private scrollContainerElement: HTMLElement,
-        private cellContainerElement: HTMLElement,
+        tableElement: HTMLElement,
+        scrollContainerElement: HTMLElement,
+        cellContainerElement: HTMLElement,
     ) {
-        // empty constructor
+        this.numFrozenRows = 0;
+        this.numFrozenColumns = 0;
+
+        this.tableElement = tableElement;
+        this.scrollContainerElement = scrollContainerElement;
+        this.cellContainerElement = cellContainerElement;
     }
 
     // Setters
