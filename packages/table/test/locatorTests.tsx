@@ -58,6 +58,7 @@ describe("Locator", () => {
         locator = new Locator(
             containerElement.query(".table-wrapper") as HTMLElement,
             containerElement.query(".body") as HTMLElement,
+            containerElement.query(".body-client") as HTMLElement,
         );
         locator.setGrid(grid);
     });
