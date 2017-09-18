@@ -568,12 +568,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private syncQuadrantViews = () => {
         const mainRefs = this.quadrantRefs[QuadrantType.MAIN];
-        const mainRowHeader = mainRefs.rowHeader;
         const mainColumnHeader = mainRefs.columnHeader;
         const mainScrollContainer = mainRefs.scrollContainer;
-
-        // (alas, we must force a reflow to measure the row header's "desired" width)
-        mainRowHeader.style.width = "auto";
 
         //
         // Reads (batched to avoid DOM thrashing)
@@ -581,7 +577,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         // Row-header resizing: resize the row header to be as wide as its
         // widest contents require it to be.
-        const rowHeaderWidth = mainRowHeader.clientWidth;
+        const rowHeaderWidth = this.measureDesiredRowHeaderWidth();
 
         // Menu-element resizing: keep the menu element's borders flush with
         // thsoe of the the row and column headers.
@@ -623,7 +619,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.setQuadrantSize(QuadrantType.TOP_LEFT, "height", nextTopQuadrantHeight);
         this.setQuadrantOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
         this.setQuadrantOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
-
     }
 
     private setQuadrantSize = (quadrantType: QuadrantType, dimension: "width" | "height", value: number) => {
@@ -635,6 +630,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     }
 
     private setQuadrantRowHeaderSizes = (width: number) => {
+        if (!this.props.isRowHeaderShown) {
+            return;
+        }
+
         const widthString = `${width}px`;
         this.quadrantRefs[QuadrantType.MAIN].rowHeader.style.width = widthString;
         this.quadrantRefs[QuadrantType.TOP].rowHeader.style.width = widthString;
@@ -677,6 +676,21 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         // both getter functions do O(1) lookups.
         return numFrozen > 0 ? getterFn(numFrozen - 1) : BORDER_WIDTH_CORRECTION;
+    }
+
+    private measureDesiredRowHeaderWidth() {
+        if (!this.props.isRowHeaderShown) {
+            return 0;
+        } else {
+            // the MAIN row header serves as the source of truth
+            const mainRowHeader = this.quadrantRefs[QuadrantType.MAIN].rowHeader;
+
+            // (alas, we must force a reflow to measure the row header's "desired" width)
+            mainRowHeader.style.width = "auto";
+
+            const desiredRowHeaderWidth = mainRowHeader.clientWidth;
+            return desiredRowHeaderWidth;
+        }
     }
 
     // Resizing
