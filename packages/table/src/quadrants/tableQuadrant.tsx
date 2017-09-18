@@ -80,7 +80,7 @@ export interface ITableQuadrantProps extends IProps {
      * The quadrant type. Informs the values of the parameters that will be passed to the
      * `render...` callbacks, assuming an expected stacking order of the four quadrants.
      */
-    quadrantType: QuadrantType;
+    quadrantType?: QuadrantType;
 
     /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
@@ -101,7 +101,7 @@ export interface ITableQuadrantProps extends IProps {
      * A callback that renders either all of or just frozen sections of the table body.
      */
     renderBody: (
-        quadrantType: QuadrantType,
+        quadrantType?: QuadrantType,
         showFrozenRowsOnly?: boolean,
         showFrozenColumnsOnly?: boolean,
     ) => JSX.Element;
@@ -109,7 +109,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.
      */
-    scrollContainerRef: React.Ref<HTMLElement>;
+    scrollContainerRef?: React.Ref<HTMLElement>;
 
     /**
      * CSS styles to apply to the quadrant's outermost element.
@@ -125,7 +125,7 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
     };
 
     public render() {
-        const { isRowHeaderShown, quadrantType } = this.props;
+        const { grid, isRowHeaderShown, quadrantType } = this.props;
 
         const showFrozenRowsOnly = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
         const showFrozenColumnsOnly = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
@@ -138,8 +138,8 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
 
         // need to set bottom container size to prevent overlay clipping on scroll
         const bottomContainerStyle = {
-            height: this.props.grid.getHeight(),
-            width: this.props.grid.getWidth(),
+            height: grid.getHeight(),
+            width: grid.getWidth(),
         };
 
         return (
@@ -170,7 +170,7 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
 
     protected validateProps(nextProps: ITableQuadrantProps) {
         const { quadrantType } = nextProps;
-        if (nextProps.onScroll != null && quadrantType !== QuadrantType.MAIN) {
+        if (nextProps.onScroll != null && quadrantType != null && quadrantType !== QuadrantType.MAIN) {
             console.warn(Errors.QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED);
         }
     }
