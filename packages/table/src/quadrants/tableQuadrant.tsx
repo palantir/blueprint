@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps } from "@blueprintjs/core";
+import { AbstractComponent, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -125,16 +125,19 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
     };
 
     public render() {
-        const { grid, isRowHeaderShown, quadrantType } = this.props;
+        const { grid, isRowHeaderShown, quadrantType, renderBody } = this.props;
 
         const showFrozenRowsOnly = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
         const showFrozenColumnsOnly = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
 
         const className = classNames(Classes.TABLE_QUADRANT, this.getQuadrantCssClass(), this.props.className);
 
-        const maybeMenu = isRowHeaderShown ? this.props.renderMenu() : undefined;
-        const maybeRowHeader = isRowHeaderShown ? this.props.renderRowHeader(showFrozenRowsOnly) : undefined;
-        const columnHeader = this.props.renderColumnHeader(showFrozenColumnsOnly);
+        const maybeMenu = isRowHeaderShown && CoreUtils.safeInvoke(this.props.renderMenu);
+        const maybeRowHeader = isRowHeaderShown && CoreUtils.safeInvoke(this.props.renderRowHeader, showFrozenRowsOnly);
+        const maybeColumnHeader = CoreUtils.safeInvoke(this.props.renderColumnHeader, showFrozenColumnsOnly);
+        const body = quadrantType != null
+            ? renderBody(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly)
+            : renderBody();
 
         // need to set bottom container size to prevent overlay clipping on scroll
         const bottomContainerStyle = {
@@ -152,7 +155,7 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
                 >
                     <div className={Classes.TABLE_TOP_CONTAINER}>
                         {maybeMenu}
-                        {columnHeader}
+                        {maybeColumnHeader}
                     </div>
                     <div className={Classes.TABLE_BOTTOM_CONTAINER} style={bottomContainerStyle}>
                         {maybeRowHeader}
@@ -160,7 +163,7 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
                             className={Classes.TABLE_QUADRANT_BODY_CONTAINER}
                             ref={this.props.bodyRef}
                         >
-                            {this.props.renderBody(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly)}
+                            {body}
                         </div>
                     </div>
                 </div>

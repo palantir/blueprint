@@ -22,6 +22,7 @@ import "./loadableContentTests.tsx";
 import "./loadingOptionsTests.tsx";
 import "./locatorTests.tsx";
 import "./menusTests.tsx";
+import "./quadrants/tableQuadrantTests.tsx";
 import "./rectTests.ts";
 import "./regionsTests.ts";
 import "./reorderableTests.tsx";
