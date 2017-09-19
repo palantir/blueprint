@@ -261,6 +261,9 @@ $dark-selectable-header-menu-selected-hover-background:
 
 .bp-table-row-headers .bp-table-header {
   min-width: $row-header-min-width;
+  // prevent text from leaking out of the cell during scroll, before the header
+  // width is updated on scroll end.
+  overflow: hidden;
   line-height: $cell-height;
 }
 
