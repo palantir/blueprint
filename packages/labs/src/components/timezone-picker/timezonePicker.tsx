@@ -120,8 +120,9 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     constructor(props: ITimezonePickerProps, context?: any) {
         super(props, context);
 
-        const { value, date = new Date(), showLocalTimezone } = props;
-        this.state = { date, value };
+        const { value, date = new Date(), showLocalTimezone, inputProps = {} } = props;
+        const query = inputProps.value !== undefined ? inputProps.value : "";
+        this.state = { date, value, query };
 
         this.timezoneItems = getTimezoneItems(date);
         this.initialTimezoneItems = getInitialTimezoneItems(date, showLocalTimezone);
@@ -161,7 +162,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     }
 
     public componentWillReceiveProps(nextProps: ITimezonePickerProps) {
-        const { date: nextDate = new Date() } = nextProps;
+        const { date: nextDate = new Date(), inputProps: nextInputProps = {} } = nextProps;
         const dateChanged = this.state.date.getTime() !== nextDate.getTime();
 
         if (dateChanged) {
@@ -177,6 +178,9 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         }
         if (this.state.value !== nextProps.value) {
             nextState.value = nextProps.value;
+        }
+        if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
+            nextState.query = nextInputProps.value;
         }
         this.setState(nextState);
     }
