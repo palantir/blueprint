@@ -970,7 +970,7 @@ describe("<Table>", () => {
             dispatchMouseEvent(tableBodyNode, "mousedown", activationX, activationY);
 
             // scroll the next cell into view
-            updateLocatorBodyElement(table,
+            updateLocatorElements(table,
                 grid.getCumulativeWidthBefore(nextCellCoords.col),
                 grid.getCumulativeHeightBefore(nextCellCoords.row),
                 prevViewportRect.height,
@@ -1011,7 +1011,7 @@ describe("<Table>", () => {
                 </Table>);
 
             // scroll to the activation cell
-            updateLocatorBodyElement(table,
+            updateLocatorElements(table,
                 ACTIVATION_CELL_COORDS.col * colWidth,
                 ACTIVATION_CELL_COORDS.row * rowHeight,
                 colWidth,
@@ -1123,7 +1123,7 @@ describe("<Table>", () => {
             callback: () => void,
         ) {
             // make the viewport small enough to fit only one cell
-            updateLocatorBodyElement(table,
+            updateLocatorElements(table,
                 scrollLeft,
                 scrollTop,
                 COL_WIDTH,
@@ -1246,18 +1246,29 @@ describe("<Table>", () => {
         return <Cell>gg</Cell>;
     }
 
-    function updateLocatorBodyElement(table: ReactWrapper<any, {}>,
-                                      scrollLeft: number,
-                                      scrollTop: number,
-                                      clientWidth: number,
-                                      clientHeight: number) {
-        // bodyElement is private, so we need to cast as `any` to access it
-        (table.instance() as any).locator.bodyElement = {
-            clientHeight,
-            clientWidth,
+    function updateLocatorElements(
+        table: ReactWrapper<any, {}>,
+        scrollLeft: number,
+        scrollTop: number,
+        clientWidth: number,
+        clientHeight: number,
+    ) {
+        const locator = (table.instance() as any).locator;
+        const baseStyles = { clientHeight, clientWidth };
+
+        locator.scrollContainerElement = {
+            ...baseStyles,
             getBoundingClientRect: () => ({ left: 0, top: 0 }),
             scrollLeft,
             scrollTop,
+        };
+
+        // the scrollContainerElement *contains* the cellContainerElement, so
+        // when we scroll the former, the latter's bounding rect offsets change
+        // commensurately.
+        locator.cellContainerElement = {
+            ...baseStyles,
+            getBoundingClientRect: () => ({ left: 0 - scrollLeft, top: 0 - scrollTop }),
         };
     }
 
