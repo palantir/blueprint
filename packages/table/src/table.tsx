@@ -659,11 +659,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public componentDidMount() {
         this.validateGrid();
 
-        this.locator = new Locator(
-            this.mainQuadrantElement,
-            this.scrollContainerElement,
-            this.cellContainerElement,
-        );
+        this.locator = new Locator(this.mainQuadrantElement, this.scrollContainerElement, this.cellContainerElement);
         this.updateLocator();
         this.updateViewportRect(this.locator.getViewportRect());
 

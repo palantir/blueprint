@@ -336,6 +336,5 @@ describe("scrollUtils", () => {
                 containerElement,
             ) as HTMLElement;
         }
-
     });
 });

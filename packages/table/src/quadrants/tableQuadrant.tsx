@@ -135,9 +135,8 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
         const maybeMenu = isRowHeaderShown && CoreUtils.safeInvoke(this.props.renderMenu);
         const maybeRowHeader = isRowHeaderShown && CoreUtils.safeInvoke(this.props.renderRowHeader, showFrozenRowsOnly);
         const maybeColumnHeader = CoreUtils.safeInvoke(this.props.renderColumnHeader, showFrozenColumnsOnly);
-        const body = quadrantType != null
-            ? renderBody(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly)
-            : renderBody();
+        const body =
+            quadrantType != null ? renderBody(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly) : renderBody();
 
         // need to set bottom container size to prevent overlay clipping on scroll
         const bottomContainerStyle = {

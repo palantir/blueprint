@@ -79,7 +79,8 @@ export class TableQuadrantStackCache {
                 return this.cachedTopQuadrantScrollOffsets;
             case QuadrantType.LEFT:
                 return this.cachedLeftQuadrantScrollOffsets;
-            default: // i.e. case QuadrantType.TOP_LEFT:
+            default:
+                // i.e. case QuadrantType.TOP_LEFT:
                 return this.cachedTopLeftQuadrantScrollOffsets;
         }
     }

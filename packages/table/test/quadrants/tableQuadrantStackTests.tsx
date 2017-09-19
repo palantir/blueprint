@@ -68,7 +68,6 @@ describe("TableQuadrantStack", () => {
                 rowHeaderRef={rowHeaderRef}
                 columnHeaderRef={columnHeaderRef}
                 scrollContainerRef={scrollContainerRef}
-
                 renderColumnHeader={renderColumnHeader}
                 renderRowHeader={rendeRowHeader}
             />,
@@ -84,7 +83,6 @@ describe("TableQuadrantStack", () => {
         expect(isMainQuadrantChild(rowHeaderRef)).to.be.true;
         expect(isMainQuadrantChild(columnHeaderRef)).to.be.true;
         expect(isMainQuadrantChild(scrollContainerRef)).to.be.true;
-
     });
 
     it("on row resize, doesn't throw an error if handleRowResizeGuide not provided", () => {
@@ -97,21 +95,26 @@ describe("TableQuadrantStack", () => {
         let callCount = 0;
         const renderRowHeader = (_a: any, resizeHandler: any) => {
             switch (callCount) {
-                case 0: resizeHandlerMain = resizeHandler; break;
-                case 1: resizeHandlerTop = resizeHandler; break;
-                case 2: resizeHandlerLeft = resizeHandler; break;
-                case 3: resizeHandlerTopLeft = resizeHandler; break;
-                default: break;
+                case 0:
+                    resizeHandlerMain = resizeHandler;
+                    break;
+                case 1:
+                    resizeHandlerTop = resizeHandler;
+                    break;
+                case 2:
+                    resizeHandlerLeft = resizeHandler;
+                    break;
+                case 3:
+                    resizeHandlerTopLeft = resizeHandler;
+                    break;
+                default:
+                    break;
             }
             callCount += 1;
             return <div />;
         };
 
-        mount(<TableQuadrantStack
-            grid={grid}
-            renderBody={sinon.spy()}
-            renderRowHeader={renderRowHeader}
-        />);
+        mount(<TableQuadrantStack grid={grid} renderBody={sinon.spy()} renderRowHeader={renderRowHeader} />);
 
         const HORIZONTAL_GUIDES = [1, 2, 3];
         expect(() => resizeHandlerMain(HORIZONTAL_GUIDES)).not.to.throw();
@@ -134,10 +137,7 @@ describe("TableQuadrantStack", () => {
 
         const { container } = renderIntoDom(
             <div style={containerStyle}>
-                <TableQuadrantStack
-                    grid={grid}
-                    renderBody={sinon.stub().returns(<div style={bodyStyle} />)}
-                />
+                <TableQuadrantStack grid={grid} renderBody={sinon.stub().returns(<div style={bodyStyle} />)} />
             </div>,
         );
         const { mainQuadrant, topQuadrant, leftQuadrant } = findQuadrants(container);
@@ -175,10 +175,7 @@ describe("TableQuadrantStack", () => {
 
         const { container } = renderIntoDom(
             <div style={containerStyle}>
-                <TableQuadrantStack
-                    grid={grid}
-                    renderBody={sinon.stub().returns(<div style={bodyStyle} />)}
-                />
+                <TableQuadrantStack grid={grid} renderBody={sinon.stub().returns(<div style={bodyStyle} />)} />
             </div>,
         );
 
@@ -210,33 +207,21 @@ describe("TableQuadrantStack", () => {
         it("invokes renderMenu once for each quadrant on mount", () => {
             const renderBody = sinon.spy();
             const renderMenu = sinon.spy();
-            mount(<TableQuadrantStack
-                grid={grid}
-                renderBody={renderBody}
-                renderMenu={renderMenu}
-            />);
+            mount(<TableQuadrantStack grid={grid} renderBody={renderBody} renderMenu={renderMenu} />);
             expect(renderMenu.callCount).to.equal(4);
         });
 
         it("invokes renderColumnHeader once for each quadrant on mount", () => {
             const renderBody = sinon.spy();
             const renderColumnHeader = sinon.spy();
-            mount(<TableQuadrantStack
-                grid={grid}
-                renderBody={renderBody}
-                renderColumnHeader={renderColumnHeader}
-            />);
+            mount(<TableQuadrantStack grid={grid} renderBody={renderBody} renderColumnHeader={renderColumnHeader} />);
             expect(renderColumnHeader.callCount).to.equal(4);
         });
 
         it("invokes renderRowHeader once for each quadrant on mount", () => {
             const renderBody = sinon.spy();
             const renderRowHeader = sinon.spy();
-            mount(<TableQuadrantStack
-                grid={grid}
-                renderBody={renderBody}
-                renderRowHeader={renderRowHeader}
-            />);
+            mount(<TableQuadrantStack grid={grid} renderBody={renderBody} renderRowHeader={renderRowHeader} />);
             expect(renderRowHeader.callCount).to.equal(4);
         });
     });
@@ -253,22 +238,26 @@ describe("TableQuadrantStack", () => {
 
         describe("on column resize", () => {
             it("doesn't throw an error if handleColumnResizeGuide not provided", () => {
-                mount(<TableQuadrantStack
-                    grid={grid}
-                    renderBody={sinon.spy()}
-                    renderColumnHeader={renderRowOrColumnHeader}
-                />);
+                mount(
+                    <TableQuadrantStack
+                        grid={grid}
+                        renderBody={sinon.spy()}
+                        renderColumnHeader={renderRowOrColumnHeader}
+                    />,
+                );
                 expect(() => resizeHandler([])).not.to.throw();
             });
 
             it("invokes props.handleColumnResizeGuide if provided", () => {
                 const handleColumnResizeGuide = sinon.spy();
-                mount(<TableQuadrantStack
-                    grid={grid}
-                    handleColumnResizeGuide={handleColumnResizeGuide}
-                    renderBody={sinon.spy()}
-                    renderColumnHeader={renderRowOrColumnHeader}
-                />);
+                mount(
+                    <TableQuadrantStack
+                        grid={grid}
+                        handleColumnResizeGuide={handleColumnResizeGuide}
+                        renderBody={sinon.spy()}
+                        renderColumnHeader={renderRowOrColumnHeader}
+                    />,
+                );
                 resizeHandler([]);
                 expect(handleColumnResizeGuide.calledOnce).to.be.true;
             });
@@ -276,22 +265,26 @@ describe("TableQuadrantStack", () => {
 
         describe("on row resize", () => {
             it("doesn't throw an error if handleRowResizeGuide not provided", () => {
-                mount(<TableQuadrantStack
-                    grid={grid}
-                    renderBody={sinon.spy()}
-                    renderRowHeader={renderRowOrColumnHeader}
-                />);
+                mount(
+                    <TableQuadrantStack
+                        grid={grid}
+                        renderBody={sinon.spy()}
+                        renderRowHeader={renderRowOrColumnHeader}
+                    />,
+                );
                 expect(() => resizeHandler([])).not.to.throw();
             });
 
             it("invokes props.handleRowResizeGuide if provided", () => {
                 const handleRowResizeGuide = sinon.spy();
-                mount(<TableQuadrantStack
-                    grid={grid}
-                    handleRowResizeGuide={handleRowResizeGuide}
-                    renderBody={sinon.spy()}
-                    renderRowHeader={renderRowOrColumnHeader}
-                />);
+                mount(
+                    <TableQuadrantStack
+                        grid={grid}
+                        handleRowResizeGuide={handleRowResizeGuide}
+                        renderBody={sinon.spy()}
+                        renderRowHeader={renderRowOrColumnHeader}
+                    />,
+                );
                 resizeHandler([]);
                 expect(handleRowResizeGuide.calledOnce).to.be.true;
             });
@@ -310,22 +303,26 @@ describe("TableQuadrantStack", () => {
 
         describe("on column resize", () => {
             it("doesn't throw an error if handleColumnsReordering not provided", () => {
-                mount(<TableQuadrantStack
-                    grid={grid}
-                    renderBody={sinon.spy()}
-                    renderColumnHeader={renderRowOrColumnHeader}
-                />);
+                mount(
+                    <TableQuadrantStack
+                        grid={grid}
+                        renderBody={sinon.spy()}
+                        renderColumnHeader={renderRowOrColumnHeader}
+                    />,
+                );
                 expect(() => reorderingHandler(1, 2, 3)).not.to.throw();
             });
 
             it("invokes props.handleColumnsReordering if provided", () => {
                 const handleColumnsReordering = sinon.spy();
-                mount(<TableQuadrantStack
-                    grid={grid}
-                    handleColumnsReordering={handleColumnsReordering}
-                    renderBody={sinon.spy()}
-                    renderColumnHeader={renderRowOrColumnHeader}
-                />);
+                mount(
+                    <TableQuadrantStack
+                        grid={grid}
+                        handleColumnsReordering={handleColumnsReordering}
+                        renderBody={sinon.spy()}
+                        renderColumnHeader={renderRowOrColumnHeader}
+                    />,
+                );
                 reorderingHandler(1, 2, 3);
                 expect(handleColumnsReordering.calledOnce).to.be.true;
             });
@@ -333,22 +330,26 @@ describe("TableQuadrantStack", () => {
 
         describe("on row resize", () => {
             it("doesn't throw an error if handleRowsReordering not provided", () => {
-                mount(<TableQuadrantStack
-                    grid={grid}
-                    renderBody={sinon.spy()}
-                    renderRowHeader={renderRowOrColumnHeader}
-                />);
+                mount(
+                    <TableQuadrantStack
+                        grid={grid}
+                        renderBody={sinon.spy()}
+                        renderRowHeader={renderRowOrColumnHeader}
+                    />,
+                );
                 expect(() => reorderingHandler(1, 2, 3)).not.to.throw();
             });
 
             it("invokes props.handleRowsReordering if provided", () => {
                 const handleRowsReordering = sinon.spy();
-                mount(<TableQuadrantStack
-                    grid={grid}
-                    handleRowsReordering={handleRowsReordering}
-                    renderBody={sinon.spy()}
-                    renderRowHeader={renderRowOrColumnHeader}
-                />);
+                mount(
+                    <TableQuadrantStack
+                        grid={grid}
+                        handleRowsReordering={handleRowsReordering}
+                        renderBody={sinon.spy()}
+                        renderRowHeader={renderRowOrColumnHeader}
+                    />,
+                );
                 reorderingHandler(1, 2, 3);
                 expect(handleRowsReordering.calledOnce).to.be.true;
             });
@@ -411,12 +412,14 @@ describe("TableQuadrantStack", () => {
                 />,
             );
 
-            const expectedWidth = numFrozenColumns === 0
-                ? ROW_HEADER_WIDTH + EXPECTED_HEADER_BORDER_WIDTH
-                : ROW_HEADER_WIDTH + (numFrozenColumns * COLUMN_WIDTH);
-            const expectedHeight = numFrozenRows === 0
-                ? COLUMN_HEADER_HEIGHT + EXPECTED_HEADER_BORDER_WIDTH
-                : COLUMN_HEADER_HEIGHT + (numFrozenRows * ROW_HEIGHT);
+            const expectedWidth =
+                numFrozenColumns === 0
+                    ? ROW_HEADER_WIDTH + EXPECTED_HEADER_BORDER_WIDTH
+                    : ROW_HEADER_WIDTH + numFrozenColumns * COLUMN_WIDTH;
+            const expectedHeight =
+                numFrozenRows === 0
+                    ? COLUMN_HEADER_HEIGHT + EXPECTED_HEADER_BORDER_WIDTH
+                    : COLUMN_HEADER_HEIGHT + numFrozenRows * ROW_HEIGHT;
             assertNonMainQuadrantSizesCorrect(container, expectedWidth + PHANTOM_WIDTH_CORRECTION, expectedHeight);
         }
 
@@ -436,14 +439,11 @@ describe("TableQuadrantStack", () => {
                 />,
             );
             // add explicit 0 to communicate that we're considering the zero-width row headers
-            const expectedWidth = numFrozenColumns === 0
-                ? EXPECTED_HEADER_BORDER_WIDTH
-                : 0 + (numFrozenColumns * COLUMN_WIDTH);
-            const expectedHeight = COLUMN_HEADER_HEIGHT + (
-                numFrozenRows === 0
-                    ? EXPECTED_HEADER_BORDER_WIDTH
-                    : numFrozenRows * ROW_HEIGHT
-                );
+            const expectedWidth =
+                numFrozenColumns === 0 ? EXPECTED_HEADER_BORDER_WIDTH : 0 + numFrozenColumns * COLUMN_WIDTH;
+            const expectedHeight =
+                COLUMN_HEADER_HEIGHT +
+                (numFrozenRows === 0 ? EXPECTED_HEADER_BORDER_WIDTH : numFrozenRows * ROW_HEIGHT);
             assertNonMainQuadrantSizesCorrect(container, expectedWidth, expectedHeight);
         }
 
@@ -463,11 +463,7 @@ describe("TableQuadrantStack", () => {
             assertStyleEquals(topLeftQuadrant, "height", expectedHeightString);
         }
 
-        function assertStyleEquals(
-            element: HTMLElement,
-            key: keyof React.CSSProperties,
-            expectedValue: any,
-        ) {
+        function assertStyleEquals(element: HTMLElement, key: keyof React.CSSProperties, expectedValue: any) {
             // key's type should be okay, but TS was throwing error TS7015, hence the `any` cast
             expect(toHtmlElement(element).style[key as any]).to.equal(expectedValue);
         }
@@ -650,11 +646,16 @@ describe("TableQuadrantStack", () => {
 
         function getQuadrantCssClass(quadrantType: QuadrantType) {
             switch (quadrantType) {
-                case QuadrantType.MAIN: return Classes.TABLE_QUADRANT_MAIN;
-                case QuadrantType.TOP: return Classes.TABLE_QUADRANT_TOP;
-                case QuadrantType.LEFT: return Classes.TABLE_QUADRANT_LEFT;
-                case QuadrantType.TOP_LEFT: return Classes.TABLE_QUADRANT_TOP_LEFT;
-                default: return undefined;
+                case QuadrantType.MAIN:
+                    return Classes.TABLE_QUADRANT_MAIN;
+                case QuadrantType.TOP:
+                    return Classes.TABLE_QUADRANT_TOP;
+                case QuadrantType.LEFT:
+                    return Classes.TABLE_QUADRANT_LEFT;
+                case QuadrantType.TOP_LEFT:
+                    return Classes.TABLE_QUADRANT_TOP_LEFT;
+                default:
+                    return undefined;
             }
         }
     });
