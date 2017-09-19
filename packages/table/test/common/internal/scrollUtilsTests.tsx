@@ -271,7 +271,7 @@ describe("scrollUtils", () => {
         }
     });
 
-    describe.only("measureScrollBarThickness", () => {
+    describe("measureScrollBarThickness", () => {
         const PARENT_WIDTH = 100;
         const PARENT_HEIGHT = 100;
 
@@ -301,8 +301,8 @@ describe("scrollUtils", () => {
             containerElement = undefined;
         });
 
-        // we make the content size much bigger or much smaller to ensure
-        // Phantom measures correctly.
+        // make the content size much bigger or much smaller than the container
+        // to ensure Phantom shows/hides scrollbars correctly.
 
         it("measures correctly when neither scrollbar is showing", () => {
             const element = mountElementsWithContentSize(PARENT_WIDTH / 2, PARENT_HEIGHT / 2);

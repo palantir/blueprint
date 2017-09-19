@@ -6,7 +6,7 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
@@ -199,7 +199,7 @@ describe("TableQuadrantStack", () => {
         it("renders four quadrants (one of each type)", () => {
             const renderBody = sinon.spy();
             const component = mount(<TableQuadrantStack grid={grid} renderBody={renderBody} />);
-            const element = getDomNode(component);
+            const element = component.getDOMNode() as HTMLElement;
             expect(element.classList.contains(Classes.TABLE_QUADRANT_STACK));
             expect(element.children.item(0).classList.contains(Classes.TABLE_QUADRANT_MAIN));
             expect(element.children.item(1).classList.contains(Classes.TABLE_QUADRANT_TOP));
@@ -356,6 +356,9 @@ describe("TableQuadrantStack", () => {
     });
 
     describe("Size syncing", () => {
+        // phantom loses two pixels somehow when measuring the row-header width. :/
+        const PHANTOM_WIDTH_CORRECTION = -2;
+
         describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
             runQuadrantSizeTestSuite(0, 0);
         });
@@ -371,6 +374,111 @@ describe("TableQuadrantStack", () => {
         describe("if numFrozenRows > 0 && numFrozenColumns > 0", () => {
             runQuadrantSizeTestSuite(NUM_FROZEN_ROWS, NUM_FROZEN_COLUMNS);
         });
+
+        function runQuadrantSizeTestSuite(numFrozenRows: number, numFrozenColumns: number) {
+            it("syncs initial quadrant sizes properly", () => {
+                assertDefaultQuadrantSizesCorrect(numFrozenRows, numFrozenColumns);
+            });
+
+            it("syncs quadrants sizes properly when row header hidden", () => {
+                assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows, numFrozenColumns);
+            });
+        }
+
+        function assertDefaultQuadrantSizesCorrect(numFrozenRows: number, numFrozenColumns: number) {
+            const renderRowHeader = (refHandler: (ref: HTMLElement) => void) => {
+                // need to set the width on a child so the header maintains its size
+                // when the component measures the "desired" row-header width (by
+                // setting width:auto on the parent here).
+                return (
+                    <div ref={refHandler} style={{ height: "100%" }}>
+                        <div style={{ width: ROW_HEADER_WIDTH }} />
+                    </div>
+                );
+            };
+            const renderColumnHeader = (refHandler: (ref: HTMLElement) => void) => {
+                return <div ref={refHandler} style={{ height: COLUMN_HEADER_HEIGHT, width: "100%" }} />;
+            };
+
+            const { container } = renderIntoDom(
+                <TableQuadrantStack
+                    grid={grid}
+                    numFrozenColumns={numFrozenColumns}
+                    numFrozenRows={numFrozenRows}
+                    renderBody={renderGridBody()}
+                    renderRowHeader={renderRowHeader}
+                    renderColumnHeader={renderColumnHeader}
+                />,
+            );
+
+            const expectedWidth = numFrozenColumns === 0
+                ? ROW_HEADER_WIDTH + EXPECTED_HEADER_BORDER_WIDTH
+                : ROW_HEADER_WIDTH + (numFrozenColumns * COLUMN_WIDTH);
+            const expectedHeight = numFrozenRows === 0
+                ? COLUMN_HEADER_HEIGHT + EXPECTED_HEADER_BORDER_WIDTH
+                : COLUMN_HEADER_HEIGHT + (numFrozenRows * ROW_HEIGHT);
+            assertNonMainQuadrantSizesCorrect(container, expectedWidth + PHANTOM_WIDTH_CORRECTION, expectedHeight);
+        }
+
+        function assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows: number, numFrozenColumns: number) {
+            const renderColumnHeader = (refHandler: (ref: HTMLElement) => void) => {
+                return <div ref={refHandler} style={{ height: COLUMN_HEADER_HEIGHT, width: "100%" }} />;
+            };
+
+            const { container } = renderIntoDom(
+                <TableQuadrantStack
+                    grid={grid}
+                    isRowHeaderShown={false}
+                    numFrozenColumns={numFrozenColumns}
+                    numFrozenRows={numFrozenRows}
+                    renderBody={renderGridBody()}
+                    renderColumnHeader={renderColumnHeader}
+                />,
+            );
+            // add explicit 0 to communicate that we're considering the zero-width row headers
+            const expectedWidth = numFrozenColumns === 0
+                ? EXPECTED_HEADER_BORDER_WIDTH
+                : 0 + (numFrozenColumns * COLUMN_WIDTH);
+            const expectedHeight = COLUMN_HEADER_HEIGHT + (
+                numFrozenRows === 0
+                    ? EXPECTED_HEADER_BORDER_WIDTH
+                    : numFrozenRows * ROW_HEIGHT
+                );
+            assertNonMainQuadrantSizesCorrect(container, expectedWidth, expectedHeight);
+        }
+
+        function assertNonMainQuadrantSizesCorrect(
+            component: HTMLElement,
+            expectedWidth: number,
+            expectedHeight: number,
+        ) {
+            const expectedWidthString = toPxString(expectedWidth);
+            const expectedHeightString = toPxString(expectedHeight);
+
+            const { topQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(component);
+
+            assertStyleEquals(leftQuadrant, "width", expectedWidthString);
+            assertStyleEquals(topQuadrant, "height", expectedHeightString);
+            assertStyleEquals(topLeftQuadrant, "width", expectedWidthString);
+            assertStyleEquals(topLeftQuadrant, "height", expectedHeightString);
+        }
+
+        function assertStyleEquals(
+            element: HTMLElement,
+            key: keyof React.CSSProperties,
+            expectedValue: any,
+        ) {
+            // key's type should be okay, but TS was throwing error TS7015, hence the `any` cast
+            expect(toHtmlElement(element).style[key as any]).to.equal(expectedValue);
+        }
+
+        function toPxString(value: number) {
+            return `${value}px`;
+        }
+
+        function toHtmlElement(element: Element) {
+            return element as HTMLElement;
+        }
     });
 
     describe("Scroll syncing", () => {
@@ -517,122 +625,39 @@ describe("TableQuadrantStack", () => {
             assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
             assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
         });
+
+        function assertScrollPositionEquals(element: Element, scrollLeft: number, scrollTop: number) {
+            expect(element.scrollLeft).to.equal(scrollLeft);
+            expect(element.scrollTop).to.equal(scrollTop);
+        }
+
+        function findQuadrantScrollContainers(element: HTMLElement) {
+            // this order is clearer than alphabetical order
+            // tslint:disable:object-literal-sort-keys
+            return {
+                leftScrollContainer: findQuadrantScrollContainer(element, QuadrantType.LEFT),
+                mainScrollContainer: findQuadrantScrollContainer(element, QuadrantType.MAIN),
+                topScrollContainer: findQuadrantScrollContainer(element, QuadrantType.TOP),
+                topLeftScrollContainer: findQuadrantScrollContainer(element, QuadrantType.TOP_LEFT),
+            };
+            // tslint:enable:object-literal-sort-keys
+        }
+
+        function findQuadrantScrollContainer(element: HTMLElement, quadrantType: QuadrantType) {
+            const quadrantClass = getQuadrantCssClass(quadrantType);
+            return element.query(`.${quadrantClass} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`) as HTMLElement;
+        }
+
+        function getQuadrantCssClass(quadrantType: QuadrantType) {
+            switch (quadrantType) {
+                case QuadrantType.MAIN: return Classes.TABLE_QUADRANT_MAIN;
+                case QuadrantType.TOP: return Classes.TABLE_QUADRANT_TOP;
+                case QuadrantType.LEFT: return Classes.TABLE_QUADRANT_LEFT;
+                case QuadrantType.TOP_LEFT: return Classes.TABLE_QUADRANT_TOP_LEFT;
+                default: return undefined;
+            }
+        }
     });
-
-    // Test templates
-    // ==============
-
-    function runQuadrantSizeTestSuite(numFrozenRows: number, numFrozenColumns: number) {
-        it("syncs initial quadrant sizes properly", () => {
-            assertDefaultQuadrantSizesCorrect(numFrozenRows, numFrozenColumns);
-        });
-
-        it("syncs quadrants sizes properly when row header hidden", () => {
-            assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows, numFrozenColumns);
-        });
-    }
-
-    // Assertions
-    // ==========
-
-    function assertDefaultQuadrantSizesCorrect(numFrozenRows: number, numFrozenColumns: number) {
-        const renderRowHeader = (refHandler: (ref: HTMLElement) => void) => {
-            // need to set the width on a child so the header maintains its size
-            // when the component measures the "desired" row-header width (by
-            // setting width:auto on the parent here).
-            return (
-                <div ref={refHandler} style={{ height: "100%" }}>
-                    <div style={{ width: ROW_HEADER_WIDTH }} />
-                </div>
-            );
-        };
-        const renderColumnHeader = (refHandler: (ref: HTMLElement) => void) => {
-            return <div ref={refHandler} style={{ height: COLUMN_HEADER_HEIGHT, width: "100%" }} />;
-        };
-
-        const { container } = renderIntoDom(
-            <TableQuadrantStack
-                grid={grid}
-                numFrozenColumns={numFrozenColumns}
-                numFrozenRows={numFrozenRows}
-                renderBody={renderGridBody()}
-                renderRowHeader={renderRowHeader}
-                renderColumnHeader={renderColumnHeader}
-            />,
-        );
-
-        const expectedWidth = numFrozenColumns === 0
-            ? ROW_HEADER_WIDTH + EXPECTED_HEADER_BORDER_WIDTH
-            : ROW_HEADER_WIDTH + (numFrozenColumns * COLUMN_WIDTH);
-        const expectedHeight = numFrozenRows === 0
-            ? COLUMN_HEADER_HEIGHT + EXPECTED_HEADER_BORDER_WIDTH
-            : COLUMN_HEADER_HEIGHT + (numFrozenRows * ROW_HEIGHT);
-        assertNonMainQuadrantSizesCorrect(container, expectedWidth, expectedHeight);
-    }
-
-    function assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows: number, numFrozenColumns: number) {
-        const renderColumnHeader = (refHandler: (ref: HTMLElement) => void) => {
-            return <div ref={refHandler} style={{ height: COLUMN_HEADER_HEIGHT, width: "100%" }} />;
-        };
-
-        const { container } = renderIntoDom(
-            <TableQuadrantStack
-                grid={grid}
-                isRowHeaderShown={false}
-                numFrozenColumns={numFrozenColumns}
-                numFrozenRows={numFrozenRows}
-                renderBody={renderGridBody()}
-                renderColumnHeader={renderColumnHeader}
-            />,
-        );
-        // add explicit 0 to communicate that we're considering the zero-width row headers
-        const expectedWidth = numFrozenColumns === 0
-            ? EXPECTED_HEADER_BORDER_WIDTH
-            : 0 + (numFrozenColumns * COLUMN_WIDTH);
-        const expectedHeight = COLUMN_HEADER_HEIGHT + (
-            numFrozenRows === 0
-                ? EXPECTED_HEADER_BORDER_WIDTH
-                : numFrozenRows * ROW_HEIGHT
-            );
-        assertNonMainQuadrantSizesCorrect(container, expectedWidth, expectedHeight);
-    }
-
-    function assertNonMainQuadrantSizesCorrect(
-        component: HTMLElement,
-        expectedWidth: number,
-        expectedHeight: number,
-    ) {
-        const expectedWidthString = toPxString(expectedWidth);
-        const expectedHeightString = toPxString(expectedHeight);
-
-        const { topQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(component);
-
-        assertStyleEquals(leftQuadrant, "width", expectedWidthString);
-        assertStyleEquals(topQuadrant, "height", expectedHeightString);
-        assertStyleEquals(topLeftQuadrant, "width", expectedWidthString);
-        assertStyleEquals(topLeftQuadrant, "height", expectedHeightString);
-    }
-
-    function assertScrollPositionEquals(container: Element, scrollLeft: number, scrollTop: number) {
-        expect(container.scrollLeft).to.equal(scrollLeft);
-        expect(container.scrollTop).to.equal(scrollTop);
-    }
-
-    function assertStyleEquals(
-        element: HTMLElement,
-        key: keyof React.CSSProperties,
-        expectedValue: any,
-    ) {
-        // key's type should be okay, but TS was throwing error TS7015, hence the `any` cast
-        expect(toHtmlElement(element).style[key as any]).to.equal(expectedValue);
-    }
-
-    // Helpers
-    // =======
-
-    function getDomNode(component: ReactWrapper<any, any>) {
-        return component.getDOMNode() as HTMLElement;
-    }
 
     function findQuadrants(element: Element) {
         const htmlElement = element as HTMLElement;
@@ -647,33 +672,6 @@ describe("TableQuadrantStack", () => {
         // tslint:enable:object-literal-sort-keys
     }
 
-    function findQuadrantScrollContainers(container: HTMLElement) {
-        // this order is clearer than alphabetical order
-        // tslint:disable:object-literal-sort-keys
-        return {
-            leftScrollContainer: findQuadrantScrollContainer(container, QuadrantType.LEFT),
-            mainScrollContainer: findQuadrantScrollContainer(container, QuadrantType.MAIN),
-            topScrollContainer: findQuadrantScrollContainer(container, QuadrantType.TOP),
-            topLeftScrollContainer: findQuadrantScrollContainer(container, QuadrantType.TOP_LEFT),
-        };
-        // tslint:enable:object-literal-sort-keys
-    }
-
-    function findQuadrantScrollContainer(container: HTMLElement, quadrantType: QuadrantType) {
-        const quadrantClass = getQuadrantCssClass(quadrantType);
-        return container.query(`.${quadrantClass} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`) as HTMLElement;
-    }
-
-    function getQuadrantCssClass(quadrantType: QuadrantType) {
-        switch (quadrantType) {
-            case QuadrantType.MAIN: return Classes.TABLE_QUADRANT_MAIN;
-            case QuadrantType.TOP: return Classes.TABLE_QUADRANT_TOP;
-            case QuadrantType.LEFT: return Classes.TABLE_QUADRANT_LEFT;
-            case QuadrantType.TOP_LEFT: return Classes.TABLE_QUADRANT_TOP_LEFT;
-            default: return undefined;
-        }
-    }
-
     function renderIntoDom(element: JSX.Element) {
         const containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
@@ -682,14 +680,6 @@ describe("TableQuadrantStack", () => {
             component: component as TableQuadrantStack,
             container: containerElement,
         };
-    }
-
-    function toHtmlElement(element: Element) {
-        return element as HTMLElement;
-    }
-
-    function toPxString(value: number) {
-        return `${value}px`;
     }
 
     function renderGridBody() {
