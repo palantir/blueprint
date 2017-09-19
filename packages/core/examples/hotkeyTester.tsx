@@ -18,13 +18,11 @@ export class HotkeyTester extends BaseExample<IHotkeyTesterState> {
     public state: IHotkeyTesterState = { combo: null };
 
     protected renderExample() {
-        return <div
-            className="hotkey-tester-example"
-            onKeyDown={this.handleKeyDown}
-            tabIndex={0}
-        >
-            {this.renderKeyCombo()}
-        </div>;
+        return (
+            <div className="hotkey-tester-example" onKeyDown={this.handleKeyDown} tabIndex={0}>
+                {this.renderKeyCombo()}
+            </div>
+        );
     }
 
     private renderKeyCombo(): React.ReactNode {
@@ -32,7 +30,11 @@ export class HotkeyTester extends BaseExample<IHotkeyTesterState> {
         if (combo == null) {
             return "Click here then press a key combo";
         } else {
-            return <div><KeyCombo combo={combo} /> or <code>{combo}</code></div>;
+            return (
+                <div>
+                    <KeyCombo combo={combo} /> or <code>{combo}</code>
+                </div>
+            );
         }
     }
 
@@ -42,5 +44,5 @@ export class HotkeyTester extends BaseExample<IHotkeyTesterState> {
 
         const combo = getKeyComboString(e.nativeEvent as KeyboardEvent);
         this.setState({ combo });
-    }
+    };
 }

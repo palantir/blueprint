@@ -11,7 +11,11 @@ import { IPopoverProps, Popover } from "./popover";
 
 export class SVGPopover extends React.Component<IPopoverProps, {}> {
     public render() {
-        return <Popover rootElementTag="g" {...this.props}>{this.props.children}</Popover>;
+        return (
+            <Popover rootElementTag="g" {...this.props}>
+                {this.props.children}
+            </Popover>
+        );
     }
 }
 

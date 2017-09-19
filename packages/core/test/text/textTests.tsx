@@ -34,9 +34,7 @@ describe("<Text>", () => {
             const children = (
                 <span>
                     {"computed text "}
-                    <span>
-                        text in a span
-                    </span>
+                    <span>text in a span</span>
                 </span>
             );
             const textContent = "computed text text in a span";

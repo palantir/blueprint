@@ -209,10 +209,7 @@ export interface IHeaderState {
     hasSelectionEnded?: boolean;
 }
 
-const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
-    "endIndex",
-    "startIndex",
-];
+const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["endIndex", "startIndex"];
 
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
     public state: IHeaderState = {
@@ -263,20 +260,20 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const coord = this.props.getMouseCoordinate(event);
         this.activationIndex = this.props.convertPointToIndex(coord);
         return this.props.toRegion(this.activationIndex);
-    }
+    };
 
     private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData): IRegion => {
         const coord = this.props.getDragCoordinate(coords.current);
         const startIndex = this.activationIndex;
         const endIndex = this.props.convertPointToIndex(coord);
         return this.props.toRegion(startIndex, endIndex);
-    }
+    };
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
         const coord = this.props.getDragCoordinate(coords.current);
         const guideIndex = this.props.convertPointToIndex(coord, true);
-        return (guideIndex < 0) ? undefined : guideIndex;
-    }
+        return guideIndex < 0 ? undefined : guideIndex;
+    };
 
     private renderCells = () => {
         const startIndex = this.props.startIndex;
@@ -292,15 +289,13 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             this.batcher.idleCallback(() => this.forceUpdate());
         }
         return this.batcher.getList();
-    }
+    };
 
     private renderNewCell = (index: number) => {
         const extremaClasses = this.props.getCellExtremaClasses(index, this.props.endIndex);
-        const renderer = this.props.isGhostIndex(index)
-            ? this.props.renderGhostCell
-            : this.renderCell;
+        const renderer = this.props.isGhostIndex(index) ? this.props.renderGhostCell : this.renderCell;
         return renderer(index, extremaClasses);
-    }
+    };
 
     private renderCell = (index: number, extremaClasses: string[]) => {
         const { getIndexClass, selectedRegions } = this.props;
@@ -311,9 +306,14 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const isSelected = this.props.isCellSelected(index);
         const isEntireCellTargetReorderable = this.isEntireCellTargetReorderable(isSelected);
 
-        const className = classNames(extremaClasses, {
-            [Classes.TABLE_HEADER_REORDERABLE]: isEntireCellTargetReorderable,
-        }, this.props.getCellIndexClass(index), cell.props.className);
+        const className = classNames(
+            extremaClasses,
+            {
+                [Classes.TABLE_HEADER_REORDERABLE]: isEntireCellTargetReorderable,
+            },
+            this.props.getCellIndexClass(index),
+            cell.props.className,
+        );
 
         const cellProps: IHeaderCellProps = {
             className,
@@ -361,7 +361,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         return this.isReorderHandleEnabled()
             ? baseChildren // reordering will be handled by interacting with the reorder handle
             : this.wrapInDragReorderable(index, baseChildren, !isEntireCellTargetReorderable);
-    }
+    };
 
     private isReorderHandleEnabled() {
         // the reorder handle can only appear in the column interaction bar
@@ -371,12 +371,14 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     private maybeRenderReorderHandle(index: number) {
         return !this.isReorderHandleEnabled()
             ? undefined
-            : this.wrapInDragReorderable(index,
-                <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
-                    <div className={Classes.TABLE_REORDER_HANDLE}>
-                        <span className={classNames(CoreClasses.ICON_STANDARD, IconClasses.DRAG_HANDLE_VERTICAL)} />
-                    </div>
-                </div>);
+            : this.wrapInDragReorderable(
+                  index,
+                  <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
+                      <div className={Classes.TABLE_REORDER_HANDLE}>
+                          <span className={classNames(CoreClasses.ICON_STANDARD, IconClasses.DRAG_HANDLE_VERTICAL)} />
+                      </div>
+                  </div>,
+              );
     }
 
     private isColumnHeader() {
@@ -404,33 +406,35 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     private handleDragSelectableSelection = (selectedRegions: IRegion[]) => {
         this.props.onSelection(selectedRegions);
         this.setState({ hasSelectionEnded: false });
-    }
+    };
 
     private handleDragSelectableSelectionEnd = () => {
         this.activationIndex = null; // not strictly required, but good practice
         this.setState({ hasSelectionEnded: true });
-    }
+    };
 
     private isEntireCellTargetReorderable = (isSelected: boolean) => {
         const { selectedRegions } = this.props;
         // although reordering may be generally enabled for this row/column (via props.isReorderable), the
         // row/column shouldn't actually become reorderable from a user perspective until a few other
         // conditions are true:
-        return this.props.isReorderable
+        return (
+            this.props.isReorderable &&
             // the row/column should be the only selection (or it should be part of the only selection),
             // because reordering multiple disjoint row/column selections is a UX morass with no clear best
             // behavior.
-            && isSelected
-            && this.state.hasSelectionEnded
-            && Regions.getRegionCardinality(selectedRegions[0]) === this.props.fullRegionCardinality
+            isSelected &&
+            this.state.hasSelectionEnded &&
+            Regions.getRegionCardinality(selectedRegions[0]) === this.props.fullRegionCardinality &&
             // selected regions can be updated during mousedown+drag and before mouseup; thus, we
             // add a final check to make sure we don't enable reordering until the selection
             // interaction is complete. this prevents one click+drag interaction from triggering
             // both selection and reordering behavior.
-            && selectedRegions.length === 1
+            selectedRegions.length === 1 &&
             // columns are reordered via a reorder handle, so drag-selection needn't be disabled
-            && !this.isReorderHandleEnabled();
-    }
+            !this.isReorderHandleEnabled()
+        );
+    };
 }
 
 /**
@@ -445,8 +449,10 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
  * @param nextProps - the next props
  */
 export function shouldHeaderComponentUpdate<T extends IHeaderProps>(
-    props: T, nextProps: T, isSelectedRegionRelevant: (selectedRegion: IRegion) => boolean) {
-
+    props: T,
+    nextProps: T,
+    isSelectedRegionRelevant: (selectedRegion: IRegion) => boolean,
+) {
     if (!Utils.shallowCompareKeys(props, nextProps, { exclude: ["selectedRegions"] })) {
         return true;
     }

@@ -57,14 +57,19 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
 
     private rightElement: HTMLElement;
     private refHandlers = {
-        rightElement: (ref: HTMLSpanElement) => this.rightElement = ref,
+        rightElement: (ref: HTMLSpanElement) => (this.rightElement = ref),
     };
 
     public render() {
         const { className, intent, leftIconName } = this.props;
-        const classes = classNames(Classes.INPUT_GROUP, Classes.intentClass(intent), {
-            [Classes.DISABLED]: this.props.disabled,
-        }, className);
+        const classes = classNames(
+            Classes.INPUT_GROUP,
+            Classes.intentClass(intent),
+            {
+                [Classes.DISABLED]: this.props.disabled,
+            },
+            className,
+        );
         const style: React.CSSProperties = { paddingRight: this.state.rightElementWidth };
 
         return (
@@ -95,7 +100,11 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
         if (rightElement == null) {
             return undefined;
         }
-        return <span className="pt-input-action" ref={this.refHandlers.rightElement}>{rightElement}</span>;
+        return (
+            <span className="pt-input-action" ref={this.refHandlers.rightElement}>
+                {rightElement}
+            </span>
+        );
     }
 
     private updateInputWidth() {

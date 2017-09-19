@@ -48,11 +48,14 @@ describe("DragSelectable", () => {
             </DragSelectable>,
         );
 
-        selectable.find(".selectable", 0).mouse("mousedown").mouse("mouseup");
+        selectable
+            .find(".selectable", 0)
+            .mouse("mousedown")
+            .mouse("mouseup");
         expect(onSelection.called).to.be.true;
         expect(onSelection.args[0][0]).to.deep.equal([Regions.column(0)]);
         expect(onFocus.called).to.be.true;
-        expect(onFocus.args[0][0]).to.deep.equal({col: 0, row: 0, focusSelectionIndex: 0});
+        expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
     });
 
     it("restricts to single selection when allowMultipleSelection={false}", () => {
@@ -76,7 +79,10 @@ describe("DragSelectable", () => {
 
         locateClick.onCall(0).returns(Regions.column(0));
         locateClick.onCall(1).returns(Regions.column(0));
-        selectable.find(".selectable", 0).mouse("mousedown").mouse("mouseup");
+        selectable
+            .find(".selectable", 0)
+            .mouse("mousedown")
+            .mouse("mouseup");
         expect(onSelection.called).to.be.true;
         expect(onSelection.lastCall.args[0]).to.deep.equal([Regions.column(0)]);
 
@@ -85,7 +91,10 @@ describe("DragSelectable", () => {
         locateClick.onCall(1).returns(Regions.column(2));
         locateClick.onCall(2).returns(Regions.column(2));
         selectable.find(".selectable", 1).mouse("mousedown");
-        selectable.find(".selectable", 2).mouse("mousemove").mouse("mouseup");
+        selectable
+            .find(".selectable", 2)
+            .mouse("mousemove")
+            .mouse("mouseup");
         expect(onSelection.lastCall.args[0]).to.deep.equal([Regions.column(2)]);
     });
 
@@ -113,13 +122,16 @@ describe("DragSelectable", () => {
 
         selectable.find(".selectable", 0).mouse("mousedown");
         selectable.find(".selectable", 1).mouse("mousemove");
-        selectable.find(".selectable", 2).mouse("mousemove").mouse("mouseup");
+        selectable
+            .find(".selectable", 2)
+            .mouse("mousemove")
+            .mouse("mouseup");
 
         expect(onFocus.callCount).to.equal(4);
-        expect(onFocus.args[0][0]).to.deep.equal({col: 0, row: 0, focusSelectionIndex: 0});
-        expect(onFocus.args[1][0]).to.deep.equal({col: 1, row: 0, focusSelectionIndex: 0});
-        expect(onFocus.args[2][0]).to.deep.equal({col: 2, row: 0, focusSelectionIndex: 0});
-        expect(onFocus.args[3][0]).to.deep.equal({col: 2, row: 0, focusSelectionIndex: 0});
+        expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
+        expect(onFocus.args[1][0]).to.deep.equal({ col: 1, row: 0, focusSelectionIndex: 0 });
+        expect(onFocus.args[2][0]).to.deep.equal({ col: 2, row: 0, focusSelectionIndex: 0 });
+        expect(onFocus.args[3][0]).to.deep.equal({ col: 2, row: 0, focusSelectionIndex: 0 });
     });
 
     it("does drag selection", () => {
@@ -147,14 +159,17 @@ describe("DragSelectable", () => {
 
         selectable.find(".selectable", 0).mouse("mousedown");
         selectable.find(".selectable", 1).mouse("mousemove");
-        selectable.find(".selectable", 2).mouse("mousemove").mouse("mouseup");
+        selectable
+            .find(".selectable", 2)
+            .mouse("mousemove")
+            .mouse("mouseup");
 
         expect(onSelection.callCount).to.equal(3);
         expect(onSelection.args[0][0]).to.deep.equal([Regions.column(0, 0)]);
         expect(onSelection.args[1][0]).to.deep.equal([Regions.column(0, 1)]);
         expect(onSelection.args[2][0]).to.deep.equal([Regions.column(0, 2)]);
         expect(onFocus.callCount).to.equal(1);
-        expect(onFocus.args[0][0]).to.deep.equal({col: 0, row: 0, focusSelectionIndex: 0});
+        expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
     });
 
     it("expands the selection on shift+click", () => {
@@ -177,13 +192,16 @@ describe("DragSelectable", () => {
         );
 
         const shiftKey = true;
-        selectable.find(".selectable", 0).mouse("mousedown", 0, 0, false, shiftKey).mouse("mouseup");
+        selectable
+            .find(".selectable", 0)
+            .mouse("mousedown", 0, 0, false, shiftKey)
+            .mouse("mouseup");
         expect(onSelection.called).to.be.true;
         expect(onSelection.args[0][0]).to.deep.equal([Regions.column(0, 2)]);
         expect(onFocus.called).to.be.true;
         // this isn't proper behavior in the long run, but we'll address focus-cell stuff later
         // (see: https://github.com/palantir/blueprint/issues/823)
-        expect(onFocus.args[0][0]).to.deep.equal({col: 2, row: 0, focusSelectionIndex: 0});
+        expect(onFocus.args[0][0]).to.deep.equal({ col: 2, row: 0, focusSelectionIndex: 0 });
     });
 
     it("re-select clears region", () => {
@@ -205,10 +223,16 @@ describe("DragSelectable", () => {
             </DragSelectable>,
         );
 
-        selectable.find(".selectable", 0).mouse("mousedown").mouse("mouseup");
+        selectable
+            .find(".selectable", 0)
+            .mouse("mousedown")
+            .mouse("mouseup");
         expect(onSelection.lastCall.args[0]).to.deep.equal([], "no meta clears everything");
 
-        selectable.find(".selectable", 0).mouse("mousedown", 0, 0, true).mouse("mouseup", 0, 0, true);
+        selectable
+            .find(".selectable", 0)
+            .mouse("mousedown", 0, 0, true)
+            .mouse("mouseup", 0, 0, true);
         expect(onSelection.lastCall.args[0]).to.deep.equal([Regions.column(2)], "meta only clears exact region");
     });
 
@@ -232,7 +256,10 @@ describe("DragSelectable", () => {
                 </DragSelectable>,
             );
 
-            selectable.find(".selectable", 0).mouse("mousedown").mouse("mouseup");
+            selectable
+                .find(".selectable", 0)
+                .mouse("mousedown")
+                .mouse("mouseup");
             expect(onSelection.called).to.be.false;
             expect(onFocus.called).to.be.false;
         });
@@ -259,7 +286,10 @@ describe("DragSelectable", () => {
                 </DragSelectable>,
             );
 
-            selectable.find(".selectable", 0).mouse("mousedown").mouse("mouseup");
+            selectable
+                .find(".selectable", 0)
+                .mouse("mousedown")
+                .mouse("mouseup");
             expect(onSelection.callCount).to.equal(1);
             expect(onSelection.args[0][0]).to.deep.equal([Regions.column(0)]);
         });
@@ -287,7 +317,10 @@ describe("DragSelectable", () => {
             );
 
             selectable.find(".selectable", 0).mouse("mousedown");
-            selectable.find(".selectable", 1).mouse("mousemove").mouse("mouseup");
+            selectable
+                .find(".selectable", 1)
+                .mouse("mousemove")
+                .mouse("mouseup");
 
             expect(onSelection.callCount).to.equal(1);
             expect(onSelection.args[0][0]).to.deep.equal([Regions.column(0)]);

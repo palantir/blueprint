@@ -102,58 +102,58 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         );
     }
 
-private wrapCells = (cells: Array<React.ReactElement<any>>) => {
-    const { columnIndexStart, grid } = this.props;
+    private wrapCells = (cells: Array<React.ReactElement<any>>) => {
+        const { columnIndexStart, grid } = this.props;
 
-    const tableWidth = grid.getRect().width;
-    const scrollLeftCorrection = this.props.grid.getCumulativeWidthBefore(columnIndexStart);
-    const style: React.CSSProperties = {
-        // only header cells in view will render, but we need to reposition them to stay in view
-        // as we scroll horizontally.
-        transform: `translateX(${scrollLeftCorrection || 0}px)`,
-        // reduce the width to clamp the sliding window as we approach the final headers; otherwise,
-        // we'll have tons of useless whitespace at the end.
-        width: tableWidth - scrollLeftCorrection,
-    };
+        const tableWidth = grid.getRect().width;
+        const scrollLeftCorrection = this.props.grid.getCumulativeWidthBefore(columnIndexStart);
+        const style: React.CSSProperties = {
+            // only header cells in view will render, but we need to reposition them to stay in view
+            // as we scroll horizontally.
+            transform: `translateX(${scrollLeftCorrection || 0}px)`,
+            // reduce the width to clamp the sliding window as we approach the final headers; otherwise,
+            // we'll have tons of useless whitespace at the end.
+            width: tableWidth - scrollLeftCorrection,
+        };
 
-    const classes = classNames(Classes.TABLE_THEAD, Classes.TABLE_COLUMN_HEADER_TR);
+        const classes = classNames(Classes.TABLE_THEAD, Classes.TABLE_COLUMN_HEADER_TR);
 
-    // add a wrapper set to the full-table width to ensure container styles stretch from the first
-    // cell all the way to the last
-    return (
-        <div style={{ width: tableWidth }}>
-            <div style={style} className={classes}>
-                {cells}
+        // add a wrapper set to the full-table width to ensure container styles stretch from the first
+        // cell all the way to the last
+        return (
+            <div style={{ width: tableWidth }}>
+                <div style={style} className={classes}>
+                    {cells}
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+    };
 
     private convertPointToColumn = (clientXOrY: number, useMidpoint?: boolean) => {
         const { locator } = this.props;
         return locator != null ? locator.convertPointToColumn(clientXOrY, useMidpoint) : null;
-    }
+    };
 
     private getCellExtremaClasses = (index: number, endIndex: number) => {
         return this.props.grid.getExtremaClasses(0, index, 1, endIndex);
-    }
+    };
 
     private getColumnWidth = (index: number) => {
         return this.props.grid.getColumnRect(index).width;
-    }
+    };
 
     private getDragCoordinate = (clientCoords: IClientCoordinates) => {
         return clientCoords[0]; // x-coordinate
-    }
+    };
 
     private getMouseCoordinate = (event: MouseEvent) => {
         return event.clientX;
-    }
+    };
 
     private handleResizeEnd = (index: number, size: number) => {
         this.props.onResizeGuide(null);
         this.props.onColumnWidthChanged(index, size);
-    }
+    };
 
     private handleResizeDoubleClick = (index: number) => {
         const { minColumnWidth, maxColumnWidth } = this.props;
@@ -163,20 +163,20 @@ private wrapCells = (cells: Array<React.ReactElement<any>>) => {
 
         this.props.onResizeGuide(null);
         this.props.onColumnWidthChanged(index, clampedWidth);
-    }
+    };
 
     private handleSizeChanged = (index: number, size: number) => {
         const rect = this.props.grid.getColumnRect(index);
         this.props.onResizeGuide([rect.left + size]);
-    }
+    };
 
     private isCellSelected = (index: number) => {
         return Regions.hasFullColumn(this.props.selectedRegions, index);
-    }
+    };
 
     private isGhostIndex = (index: number) => {
         return this.props.grid.isGhostIndex(-1, index);
-    }
+    };
 
     private renderGhostCell = (index: number, extremaClasses: string[]) => {
         const { grid, loading } = this.props;
@@ -192,16 +192,18 @@ private wrapCells = (cells: Array<React.ReactElement<any>>) => {
                 key={Classes.columnIndexClass(index)}
                 loading={loading}
                 style={style}
-            />);
-    }
+            />
+        );
+    };
 
     private toRegion = (index1: number, index2?: number) => {
         return Regions.column(index1, index2);
-    }
+    };
 
     private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
         const regionCardinality = Regions.getRegionCardinality(selectedRegion);
-        return regionCardinality === RegionCardinality.FULL_COLUMNS
-            || regionCardinality === RegionCardinality.FULL_TABLE;
-    }
+        return (
+            regionCardinality === RegionCardinality.FULL_COLUMNS || regionCardinality === RegionCardinality.FULL_TABLE
+        );
+    };
 }

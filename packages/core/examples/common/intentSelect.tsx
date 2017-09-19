@@ -22,12 +22,16 @@ export interface IIntentSelectProps {
     onChange: React.FormEventHandler<HTMLSelectElement>;
 }
 
-export const IntentSelect: React.SFC<IIntentSelectProps> = (props) => (
+export const IntentSelect: React.SFC<IIntentSelectProps> = props => (
     <label className={Classes.LABEL}>
         Intent
         <div className={Classes.SELECT}>
             <select value={props.intent} onChange={props.onChange}>
-                {INTENTS.map((opt, i) => <option key={i} value={opt.value}>{opt.label}</option>)}
+                {INTENTS.map((opt, i) => (
+                    <option key={i} value={opt.value}>
+                        {opt.label}
+                    </option>
+                ))}
             </select>
         </div>
     </label>

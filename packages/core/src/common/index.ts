@@ -10,7 +10,7 @@ export * from "./colors";
 export * from "./intent";
 export * from "./position";
 export * from "./props";
-export * from "./tetherUtils"
+export * from "./tetherUtils";
 
 import * as classes from "../common/classes";
 import * as keys from "../common/keys";

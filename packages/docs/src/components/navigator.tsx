@@ -58,8 +58,8 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
     private inputRef: HTMLElement;
     private menuRef: HTMLElement;
     private refHandlers = {
-        input: (ref: HTMLElement) => this.inputRef = ref,
-        menu: (ref: HTMLElement) => this.menuRef = ref,
+        input: (ref: HTMLElement) => (this.inputRef = ref),
+        menu: (ref: HTMLElement) => (this.menuRef = ref),
     };
 
     // this guy must be defined before he's used in handleQueryChange
@@ -115,21 +115,23 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
     }
 
     public renderHotkeys() {
-         return <Hotkeys>
-             <Hotkey
-                 global={true}
-                 combo="shift + s"
-                 label="Focus documentation search box"
-                 onKeyDown={this.handleFocusSearch}
-             />
-         </Hotkeys>;
+        return (
+            <Hotkeys>
+                <Hotkey
+                    global={true}
+                    combo="shift + s"
+                    label="Focus documentation search box"
+                    onKeyDown={this.handleFocusSearch}
+                />
+            </Hotkeys>
+        );
     }
 
     public componentDidMount() {
         this.sections = [];
         eachLayoutNode(this.props.items, (node, parents) => {
             const { route, title } = node;
-            const path = parents.map((p) => p.title).reverse();
+            const path = parents.map(p => p.title).reverse();
             const filterKey = [...path, title].join("/");
             this.sections.push({ filterKey, path, route, title });
         });
@@ -140,7 +142,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
             const selectedElement = this.menuRef.querySelector(`.${Classes.INTENT_PRIMARY}`) as HTMLElement;
             const { offsetTop: selectedTop, offsetHeight: selectedHeight } = selectedElement;
             const { scrollTop: menuScrollTop, clientHeight: menuHeight } = this.menuRef;
-            if (selectedTop + selectedHeight  > menuScrollTop + menuHeight) {
+            if (selectedTop + selectedHeight > menuScrollTop + menuHeight) {
                 // offscreen bottom: scroll such that one full item is visible above + menu padding
                 this.menuRef.scrollTop = selectedTop - selectedHeight - MENU_PADDING;
             } else if (selectedTop < menuScrollTop) {
@@ -186,7 +188,11 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
                 </a>,
             ];
         }
-        return <div className={Classes.MENU} ref={this.refHandlers.menu}>{items}</div>;
+        return (
+            <div className={Classes.MENU} ref={this.refHandlers.menu}>
+                {items}
+            </div>
+        );
     }
 
     private handleFocusSearch = (e: KeyboardEvent) => {
@@ -194,13 +200,13 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
             e.preventDefault();
             this.inputRef.focus();
         }
-    }
+    };
 
     private handlePopoverInteraction = (nextOpenState: boolean) => {
         if (!nextOpenState) {
             this.resetState();
         }
-    }
+    };
 
     private handleResultHover = (e: React.MouseEvent<HTMLAnchorElement>) => {
         const el = e.currentTarget as HTMLElement;
@@ -208,7 +214,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
             const selectedIndex: number = Array.prototype.indexOf.call(el.parentElement.children, el);
             this.setState({ ...this.state, selectedIndex });
         }
-    }
+    };
 
     private selectNext(direction = 1) {
         return () => {

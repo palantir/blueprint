@@ -29,9 +29,7 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
 
 export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
     public render() {
-        const loadableContentDivClasses = classNames(
-            Classes.TABLE_ROW_NAME_TEXT,
-            Classes.TABLE_TRUNCATED_TEXT);
+        const loadableContentDivClasses = classNames(Classes.TABLE_ROW_NAME_TEXT, Classes.TABLE_TRUNCATED_TEXT);
 
         const {
             // from IRowHeaderCellProps
@@ -50,9 +48,7 @@ export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
             >
                 <div className={Classes.TABLE_ROW_NAME}>
                     <LoadableContent loading={spreadableProps.loading}>
-                        <div className={loadableContentDivClasses}>
-                            {spreadableProps.name}
-                        </div>
+                        <div className={loadableContentDivClasses}>{spreadableProps.name}</div>
                     </LoadableContent>
                 </div>
                 {this.props.children}

@@ -40,8 +40,12 @@ export class Hotkeys extends AbstractComponent<IHotkeysProps, {}> {
 
         // sort by group label alphabetically, globals first
         hotkeys.sort((a, b) => {
-            if (a.global) { return b.global ? 0 : -1; }
-            if (b.global) { return 1; }
+            if (a.global) {
+                return b.global ? 0 : -1;
+            }
+            if (b.global) {
+                return 1;
+            }
             return a.group.localeCompare(b.group);
         });
 
@@ -50,7 +54,11 @@ export class Hotkeys extends AbstractComponent<IHotkeysProps, {}> {
         for (const hotkey of hotkeys) {
             const groupLabel = hotkey.group;
             if (groupLabel !== lastGroup) {
-                elems.push(<h4 key={`group-${elems.length}`} className="pt-hotkey-group">{groupLabel}</h4>);
+                elems.push(
+                    <h4 key={`group-${elems.length}`} className="pt-hotkey-group">
+                        {groupLabel}
+                    </h4>,
+                );
                 lastGroup = groupLabel;
             }
             elems.push(<Hotkey key={elems.length} {...hotkey} />);
@@ -60,7 +68,7 @@ export class Hotkeys extends AbstractComponent<IHotkeysProps, {}> {
     }
 
     protected validateProps(props: IHotkeysProps & { children: React.ReactNode }) {
-        Children.forEach(props.children, (child) => {
+        Children.forEach(props.children, child => {
             if (!Hotkey.isInstance(child)) {
                 throw new Error(HOTKEYS_HOTKEY_CHILDREN);
             }

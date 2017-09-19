@@ -30,14 +30,10 @@ export class ColumnLoadingExample extends BaseExample<IColumnLoadingExampleState
 
     protected className = "docs-column-loading-example";
 
-    private handleLoadingColumnChange = handleNumberChange((loadingColumn) => this.setState({ loadingColumn }));
+    private handleLoadingColumnChange = handleNumberChange(loadingColumn => this.setState({ loadingColumn }));
 
     public renderExample() {
-        return (
-            <Table numRows={bigSpaceRocks.length}>
-                {this.renderColumns()}
-            </Table>
-        );
+        return <Table numRows={bigSpaceRocks.length}>{this.renderColumns()}</Table>;
     }
 
     protected renderOptions() {
@@ -82,22 +78,16 @@ export class ColumnLoadingExample extends BaseExample<IColumnLoadingExampleState
 
     private renderCell = (rowIndex: number, columnIndex: number) => {
         const bigSpaceRock = bigSpaceRocks[rowIndex];
-        return (
-            <Cell>
-                {bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}
-            </Cell>
-        );
-    }
+        return <Cell>{bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}</Cell>;
+    };
 
     private formatColumnName = (columnName: string) => {
-        return columnName
-            .replace(/([A-Z])/g, " $1")
-            .replace(/^./, (firstCharacter) => firstCharacter.toUpperCase());
-    }
+        return columnName.replace(/([A-Z])/g, " $1").replace(/^./, firstCharacter => firstCharacter.toUpperCase());
+    };
 
     private loadingOptions = (columnIndex: number) => {
         return columnIndex === this.state.loadingColumn
-            ? [ ColumnLoadingOption.HEADER, ColumnLoadingOption.CELLS ]
+            ? [ColumnLoadingOption.HEADER, ColumnLoadingOption.CELLS]
             : undefined;
-    }
+    };
 }

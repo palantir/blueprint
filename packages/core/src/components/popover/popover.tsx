@@ -23,9 +23,11 @@ import { Tooltip } from "../tooltip/tooltip";
 
 import * as Arrows from "./arrows";
 
-const SVG_SHADOW_PATH = "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
+const SVG_SHADOW_PATH =
+    "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
     "-.868-3.357-1.888-4.297L.925 17.09c-1.237-1.14-1.233-3.034 0-4.17L8.11 6.302z";
-const SVG_ARROW_PATH = "M8.787 7.036c1.22-1.125 2.21-3.376 2.21-5.03V0v30-2.005" +
+const SVG_ARROW_PATH =
+    "M8.787 7.036c1.22-1.125 2.21-3.376 2.21-5.03V0v30-2.005" +
     "c0-1.654-.983-3.9-2.21-5.03l-7.183-6.616c-.81-.746-.802-1.96 0-2.7l7.183-6.614z";
 
 const SMART_POSITIONING = {
@@ -293,32 +295,40 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
                 onMouseEnter: this.handleMouseEnter,
                 onMouseLeave: this.handleMouseLeave,
             };
-        // any one of the CLICK* values
+            // any one of the CLICK* values
         } else {
             targetProps = {
                 onClick: this.handleTargetClick,
             };
         }
-        targetProps.className = classNames(Classes.POPOVER_TARGET, {
-            [Classes.POPOVER_OPEN]: isOpen,
-        }, className);
+        targetProps.className = classNames(
+            Classes.POPOVER_TARGET,
+            {
+                [Classes.POPOVER_OPEN]: isOpen,
+            },
+            className,
+        );
         targetProps.ref = this.refHandlers.target;
 
         const children = this.understandChildren();
         const targetTabIndex = this.props.openOnTargetFocus && this.isHoverInteractionKind() ? 0 : undefined;
-        const target = React.cloneElement(children.target,
+        const target = React.cloneElement(
+            children.target,
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            (isOpen && children.target.type === Tooltip)
+            isOpen && children.target.type === Tooltip
                 ? { isDisabled: true, tabIndex: targetTabIndex }
                 : { tabIndex: targetTabIndex },
         );
 
-        const isContentEmpty = (children.content == null);
+        const isContentEmpty = children.content == null;
         if (isContentEmpty && !this.props.isDisabled && isOpen !== false && !Utils.isNodeEnv("production")) {
             console.warn(Errors.POPOVER_WARN_EMPTY_CONTENT);
         }
 
-        return React.createElement(this.props.rootElementTag, targetProps, target,
+        return React.createElement(
+            this.props.rootElementTag,
+            targetProps,
+            target,
             <Overlay
                 autoFocus={this.props.autoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
@@ -354,7 +364,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         } else if (nextProps.isOpen !== this.props.isOpen) {
             // propagate isOpen prop directly to state, circumventing onInteraction callback
             // (which would be invoked if this went through setOpenState)
-            this.setState({ isOpen: nextProps.isOpen});
+            this.setState({ isOpen: nextProps.isOpen });
         }
     }
 
@@ -376,7 +386,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         this.destroyTether();
     }
 
-    protected validateProps(props: IPopoverProps & {children?: React.ReactNode}) {
+    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
         if (props.useSmartPositioning || props.constraints != null) {
             console.warn(Errors.POPOVER_WARN_DEPRECATED_CONSTRAINTS);
         }
@@ -430,17 +440,23 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
         };
-        if ((interactionKind === PopoverInteractionKind.HOVER)
-            || (inline && interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY)) {
+        if (
+            interactionKind === PopoverInteractionKind.HOVER ||
+            (inline && interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY)
+        ) {
             popoverHandlers.onMouseEnter = this.handleMouseEnter;
             popoverHandlers.onMouseLeave = this.handleMouseLeave;
         }
 
         const positionClasses = TetherUtils.getAttachmentClasses(this.props.position).join(" ");
         const containerClasses = classNames(Classes.TRANSITION_CONTAINER, { [positionClasses]: inline });
-        const popoverClasses = classNames(Classes.POPOVER, {
-            [Classes.DARK]: this.props.inheritDarkTheme && this.hasDarkParent && !inline,
-        }, this.props.popoverClassName);
+        const popoverClasses = classNames(
+            Classes.POPOVER,
+            {
+                [Classes.DARK]: this.props.inheritDarkTheme && this.hasDarkParent && !inline,
+            },
+            this.props.popoverClassName,
+        );
 
         const styles = this.getArrowPositionStyles();
         const transform = { transformOrigin: this.getPopoverTransformOrigin() };
@@ -454,9 +470,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
                             <path className={Classes.POPOVER_ARROW + "-fill"} d={SVG_ARROW_PATH} />
                         </svg>
                     </div>
-                    <div className={Classes.POPOVER_CONTENT}>
-                        {content}
-                    </div>
+                    <div className={Classes.POPOVER_CONTENT}>{content}</div>
                 </div>
             </div>
         );
@@ -474,11 +488,16 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         };
     }
 
-    private getArrowPositionStyles(): { arrow?: React.CSSProperties, container?: React.CSSProperties } {
+    private getArrowPositionStyles(): { arrow?: React.CSSProperties; container?: React.CSSProperties } {
         if (this.props.useSmartArrowPositioning) {
             const dimensions = { height: this.state.targetHeight, width: this.state.targetWidth };
-            return Arrows.getArrowPositionStyles(this.props.position,
-                this.props.arrowSize, this.state.ignoreTargetDimensions, dimensions, this.props.inline);
+            return Arrows.getArrowPositionStyles(
+                this.props.position,
+                this.props.arrowSize,
+                this.state.ignoreTargetDimensions,
+                dimensions,
+                this.props.inline,
+            );
         } else {
             return {};
         }
@@ -489,8 +508,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         // on the correct side and cannot override it in JS. (https://github.com/HubSpot/tether/issues/154)
         if (this.props.useSmartArrowPositioning && !this.props.useSmartPositioning) {
             const dimensions = { height: this.state.targetHeight, width: this.state.targetWidth };
-            return Arrows.getPopoverTransformOrigin(this.props.position,
-                this.props.arrowSize, dimensions);
+            return Arrows.getPopoverTransformOrigin(this.props.position, this.props.arrowSize, dimensions);
         } else {
             return undefined;
         }
@@ -501,13 +519,13 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             this.props.popoverDidOpen();
             this.isContentMounting = false;
         }
-    }
+    };
 
     private handleTargetFocus = (e?: React.FormEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             this.handleMouseEnter(e);
         }
-    }
+    };
 
     private handleTargetBlur = (e?: React.FormEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
@@ -521,26 +539,28 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
                 }
             });
         }
-    }
+    };
 
     private handleMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
         // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
         // trigger the mouse leave event, as hovering over the popover shouldn't count.
-        if (this.props.inline
-            && this.isElementInPopover(e.target as Element)
-            && this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
-            && !this.props.openOnTargetFocus) {
+        if (
+            this.props.inline &&
+            this.isElementInPopover(e.target as Element) &&
+            this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY &&
+            !this.props.openOnTargetFocus
+        ) {
             this.handleMouseLeave(e);
         } else if (!this.props.isDisabled) {
             // only begin opening popover when it is enabled
             this.setOpenState(true, e, this.props.hoverOpenDelay);
         }
-    }
+    };
 
     private handleMouseLeave = (e: React.SyntheticEvent<HTMLElement>) => {
         // user-configurable closing delay is helpful when moving mouse from target to popover
         this.setOpenState(false, e, this.props.hoverCloseDelay);
-    }
+    };
 
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
@@ -549,27 +569,26 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         if (shouldDismiss && !overrideDismiss) {
             this.setOpenState(false, e);
         }
-    }
+    };
 
     private handleOverlayClose = (e: React.SyntheticEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
-        if (!Utils.elementIsOrContains(this.targetElement, eventTarget)
-                || e.nativeEvent instanceof KeyboardEvent) {
+        if (!Utils.elementIsOrContains(this.targetElement, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
             this.setOpenState(false, e);
         }
-    }
+    };
 
     private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
         if (!this.props.isDisabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
-                this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
+                this.setState(prevState => ({ isOpen: !prevState.isOpen }));
             } else {
                 this.setOpenState(!this.props.isOpen, e);
             }
         }
-    }
+    };
 
     private updateArrowPosition() {
         if (this.popoverElement != null) {
@@ -577,15 +596,15 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             const centerWidth = (this.state.targetWidth + arrow.clientWidth) / 2;
             const centerHeight = (this.state.targetHeight + arrow.clientHeight) / 2;
 
-            const ignoreWidth = centerWidth > this.popoverElement.clientWidth
-                && PosUtils.isPositionHorizontal(this.props.position);
-            const ignoreHeight = centerHeight > this.popoverElement.clientHeight
-                && PosUtils.isPositionVertical(this.props.position);
+            const ignoreWidth =
+                centerWidth > this.popoverElement.clientWidth && PosUtils.isPositionHorizontal(this.props.position);
+            const ignoreHeight =
+                centerHeight > this.popoverElement.clientHeight && PosUtils.isPositionVertical(this.props.position);
 
             if (!this.state.ignoreTargetDimensions && (ignoreWidth || ignoreHeight)) {
-                this.setState({ignoreTargetDimensions: true});
+                this.setState({ ignoreTargetDimensions: true });
             } else if (this.state.ignoreTargetDimensions && !ignoreWidth && !ignoreHeight) {
-                this.setState({ignoreTargetDimensions: false});
+                this.setState({ ignoreTargetDimensions: false });
             }
         }
     }
@@ -600,15 +619,15 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             const target = findDOMNode(this).childNodes[0];
 
             // constraints is deprecated but must still be supported through tetherOptions until v2.0
-            const options = (constraints == null && !useSmartPositioning)
-                ? tetherOptions
-                : {
-                    ...tetherOptions,
-                    constraints: useSmartPositioning ? [SMART_POSITIONING] : constraints,
-                };
+            const options =
+                constraints == null && !useSmartPositioning
+                    ? tetherOptions
+                    : {
+                          ...tetherOptions,
+                          constraints: useSmartPositioning ? [SMART_POSITIONING] : constraints,
+                      };
 
-            const finalTetherOptions =
-                TetherUtils.createTetherOptions(this.popoverElement, target, position, options);
+            const finalTetherOptions = TetherUtils.createTetherOptions(this.popoverElement, target, position, options);
             if (this.tether == null) {
                 this.tether = new Tether(finalTetherOptions);
             } else {
@@ -653,8 +672,10 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private isHoverInteractionKind() {
-        return this.props.interactionKind === PopoverInteractionKind.HOVER
-            || this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
+        return (
+            this.props.interactionKind === PopoverInteractionKind.HOVER ||
+            this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
+        );
     }
 }
 

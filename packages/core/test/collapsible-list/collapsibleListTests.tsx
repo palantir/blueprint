@@ -43,12 +43,24 @@ describe("<CollapsibleList>", () => {
 
     it("CollapseFrom.START renders popover target first", () => {
         const list = renderCollapsibleList(5, { collapseFrom: CollapseFrom.START });
-        assert.isTrue(list.children().first().childAt(0).is(Popover));
+        assert.isTrue(
+            list
+                .children()
+                .first()
+                .childAt(0)
+                .is(Popover),
+        );
     });
 
     it("CollapseFrom.END renders popover target last", () => {
         const list = renderCollapsibleList(5, { collapseFrom: CollapseFrom.END });
-        assert.isTrue(list.children().last().childAt(0).is(Popover));
+        assert.isTrue(
+            list
+                .children()
+                .last()
+                .childAt(0)
+                .is(Popover),
+        );
     });
 
     it("shows all items when visibleItemCount > number of children", () => {
@@ -88,7 +100,7 @@ describe("<CollapsibleList>", () => {
         it("is called with absolute index of item in props array when CollapseFrom.START", () => {
             const renderVisibleItem = sinon.spy();
             renderCollapsibleList(7, { renderVisibleItem, visibleItemCount: 3 });
-            renderVisibleItem.args.map((arg) => {
+            renderVisibleItem.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
                 const absoluteIndex = +props.text.slice(5); // "Item #"
                 assert.equal(absoluteIndex, arg[1]);
@@ -98,7 +110,7 @@ describe("<CollapsibleList>", () => {
         it("is called with absolute index of item in props array when CollapseFrom.END", () => {
             const renderVisibleItem = sinon.spy();
             renderCollapsibleList(6, { collapseFrom: CollapseFrom.END, renderVisibleItem, visibleItemCount: 3 });
-            renderVisibleItem.args.map((arg) => {
+            renderVisibleItem.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
                 const absoluteIndex = +props.text.slice(5); // "Item #"
                 assert.equal(absoluteIndex, arg[1]);

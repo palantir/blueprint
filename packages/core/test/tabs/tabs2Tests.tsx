@@ -39,14 +39,16 @@ describe("<Tabs2>", () => {
     });
 
     it("supports non-existent children", () => {
-        assert.doesNotThrow(() => mount(
-            <Tabs2 id={ID}>
-                {null}
-                <Tab2 id="one" />
-                {undefined}
-                <Tab2 id="two" />
-            </Tabs2>,
-        ));
+        assert.doesNotThrow(() =>
+            mount(
+                <Tabs2 id={ID}>
+                    {null}
+                    <Tab2 id="one" />
+                    {undefined}
+                    <Tab2 id="two" />
+                </Tabs2>,
+            ),
+        );
     });
 
     it("default selectedTabId is first non-null Tab id", () => {
@@ -84,12 +86,20 @@ describe("<Tabs2>", () => {
     });
 
     it("renders using `pt-large` when large={true}", () => {
-        const wrapper = mount(<Tabs2 id={ID} large={true}>{getTabsContents()}</Tabs2>);
+        const wrapper = mount(
+            <Tabs2 id={ID} large={true}>
+                {getTabsContents()}
+            </Tabs2>,
+        );
         assert.lengthOf(wrapper.find(`.${Classes.TAB_LIST}.${Classes.LARGE}`), 1);
     });
 
     it("renderActiveTabPanelOnly only renders active tab panel", () => {
-        const wrapper = mount(<Tabs2 id={ID} renderActiveTabPanelOnly={true}>{getTabsContents()}</Tabs2>);
+        const wrapper = mount(
+            <Tabs2 id={ID} renderActiveTabPanelOnly={true}>
+                {getTabsContents()}
+            </Tabs2>,
+        );
         for (const selectedTabId of TAB_IDS) {
             wrapper.setState({ selectedTabId });
             assert.lengthOf(wrapper.find("strong"), 1);
@@ -98,7 +108,7 @@ describe("<Tabs2>", () => {
 
     it("sets aria-* attributes with matching IDs", () => {
         const wrapper = mount(<Tabs2 id={ID}>{getTabsContents()}</Tabs2>);
-        wrapper.find(TAB).forEach((title) => {
+        wrapper.find(TAB).forEach(title => {
             // title "controls" tab element
             const titleControls = title.prop("aria-controls");
             const tab = wrapper.find(`#${titleControls}`);
@@ -112,7 +122,9 @@ describe("<Tabs2>", () => {
         const tabId = TAB_IDS[0];
         const changeSpy = sinon.spy();
         const wrapper = mount(
-            <Tabs2 defaultSelectedTabId={tabId} id={ID} onChange={changeSpy}>{getTabsContents()}</Tabs2>,
+            <Tabs2 defaultSelectedTabId={tabId} id={ID} onChange={changeSpy}>
+                {getTabsContents()}
+            </Tabs2>,
             { attachTo: testsContainerElement },
         );
         findTabById(wrapper, tabId).simulate("click");
@@ -132,7 +144,10 @@ describe("<Tabs2>", () => {
         );
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
         // last Tab is inside nested
-        wrapper.find(TAB).last().simulate("click");
+        wrapper
+            .find(TAB)
+            .last()
+            .simulate("click");
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
         assert.isTrue(changeSpy.notCalled, "onChange invoked");
     });
@@ -164,7 +179,9 @@ describe("<Tabs2>", () => {
     it("enter and space keys click focused tab", () => {
         const changeSpy = sinon.spy();
         const wrapper = mount(
-            <Tabs2 id={ID} onChange={changeSpy}>{getTabsContents()}</Tabs2>,
+            <Tabs2 id={ID} onChange={changeSpy}>
+                {getTabsContents()}
+            </Tabs2>,
             { attachTo: testsContainerElement },
         );
         const tabList = wrapper.find(TAB_LIST);
@@ -180,7 +197,11 @@ describe("<Tabs2>", () => {
     });
 
     it("animate=false removes moving indicator element", () => {
-        const wrapper = mount(<Tabs2 id={ID} animate={false}>{getTabsContents()}</Tabs2>);
+        const wrapper = mount(
+            <Tabs2 id={ID} animate={false}>
+                {getTabsContents()}
+            </Tabs2>,
+        );
         assertIndicatorPosition(wrapper, TAB_IDS[0]);
         assert.equal(wrapper.find(".pt-tab-indicator").length, 0);
     });
@@ -198,7 +219,11 @@ describe("<Tabs2>", () => {
         });
 
         it("unknown tab ID hides moving indicator element", () => {
-            const wrapper = mount(<Tabs2 id={ID} defaultSelectedTabId="unknown">{getTabsContents()}</Tabs2>);
+            const wrapper = mount(
+                <Tabs2 id={ID} defaultSelectedTabId="unknown">
+                    {getTabsContents()}
+                </Tabs2>,
+            );
             const style = wrapper.state().indicatorWrapperStyle;
             assert.deepEqual(style, { display: "none" });
         });
@@ -277,13 +302,17 @@ describe("<Tabs2>", () => {
         });
 
         it("state is synced with selectedTabId prop", () => {
-            const tabs = mount(<Tabs2 id={ID} selectedTabId={SELECTED_TAB_ID}>{getTabsContents()}</Tabs2>);
+            const tabs = mount(
+                <Tabs2 id={ID} selectedTabId={SELECTED_TAB_ID}>
+                    {getTabsContents()}
+                </Tabs2>,
+            );
             assert.deepEqual(tabs.state("selectedTabId"), SELECTED_TAB_ID);
             tabs.setProps({ selectedTabId: TAB_ID_TO_SELECT });
             assert.deepEqual(tabs.state("selectedTabId"), TAB_ID_TO_SELECT);
         });
 
-        it("indicator moves correctly if tabs switch externally via the selectedTabId prop", (done) => {
+        it("indicator moves correctly if tabs switch externally via the selectedTabId prop", done => {
             const wrapper = mount(
                 <Tabs2 id={ID} selectedTabId={SELECTED_TAB_ID}>
                     {getTabsContents()}
@@ -312,7 +341,7 @@ describe("<Tabs2>", () => {
     }
 
     function getTabsContents(): Array<React.ReactElement<any>> {
-        return TAB_IDS.map((id) => <Tab2 id={id} key={id} panel={<Panel title={id} />} title={id} />);
+        return TAB_IDS.map(id => <Tab2 id={id} key={id} panel={<Panel title={id} />} title={id} />);
     }
 });
 

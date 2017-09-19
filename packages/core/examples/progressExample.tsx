@@ -26,8 +26,8 @@ export class ProgressExample extends BaseExample<IProgressExampleState> {
 
     protected className = "docs-progress-example";
 
-    private handleIndeterminateChange = handleBooleanChange((hasValue) => this.setState({ hasValue }));
-    private handleModifierChange = handleNumberChange((intent) => this.setState({ intent }));
+    private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
+    private handleModifierChange = handleNumberChange(intent => this.setState({ intent }));
 
     protected renderExample() {
         const { hasValue, intent, value } = this.state;

@@ -134,7 +134,7 @@ export class Checkbox extends Control<ICheckboxProps> {
     private handleInputRef = (ref: HTMLInputElement) => {
         this.input = ref;
         safeInvoke(this.props.inputRef, ref);
-    }
+    };
 }
 
 export interface ISwitchProps extends IControlProps {}

@@ -4,14 +4,7 @@
 
 import * as React from "react";
 
-import {
-    Cell,
-    Column,
-    IColumnProps,
-    ITableProps,
-    Table,
-    Utils,
-} from "../../src";
+import { Cell, Column, IColumnProps, ITableProps, Table, Utils } from "../../src";
 
 export function createTableOfSize(numColumns: number, numRows: number, columnProps?: any, tableProps?: any) {
     const columns = Utils.times(numColumns, Utils.toBase26Alpha);
@@ -34,17 +27,11 @@ export function createTableWithData(columnNames: string[], data: string[][], col
     const tablePropsWithDefaults = {
         numRows: data.length,
         ...tableProps,
-     } as ITableProps;
+    } as ITableProps;
 
     const SampleColumns = columnNames.map((name, index) => {
-        return (
-             <Column key={index} name={name} {...columnPropsWithDefaults} />
-        );
+        return <Column key={index} name={name} {...columnPropsWithDefaults} />;
     });
 
-    return (
-        <Table {...tablePropsWithDefaults}>
-            {SampleColumns}
-        </Table>
-    );
+    return <Table {...tablePropsWithDefaults}>{SampleColumns}</Table>;
 }

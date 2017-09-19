@@ -27,7 +27,11 @@ export function renderContentsBlock(
             return renderer(node, i, tagRenderers, page);
         } catch (ex) {
             console.error(ex.message);
-            return <h3><code>{ex.message}</code></h3>;
+            return (
+                <h3>
+                    <code>{ex.message}</code>
+                </h3>
+            );
         }
     });
 }

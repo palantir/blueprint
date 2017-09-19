@@ -26,9 +26,7 @@ describe("<Slider>", () => {
     afterEach(() => testsContainerElement.remove());
 
     it(`renders a .${Classes.SLIDER}`, () => {
-        assert.lengthOf(
-            renderSlider(<Slider className="foo" />).find(`.${Classes.SLIDER}.foo`),
-            1);
+        assert.lengthOf(renderSlider(<Slider className="foo" />).find(`.${Classes.SLIDER}.foo`), 1);
     });
 
     it("renders label for value and for each labelStepSize", () => {
@@ -39,7 +37,7 @@ describe("<Slider>", () => {
 
     it("renders all labels even when floating point approx would cause the last one to be skipped", () => {
         // [0  0.14  0.28  0.42  0.56  0.70]  +  value
-        const wrapper = renderSlider(<Slider min={0} max={0.7} labelStepSize={0.14}/>);
+        const wrapper = renderSlider(<Slider min={0} max={0.7} labelStepSize={0.14} />);
         assert.lengthOf(wrapper.find(`.${Classes.SLIDER}-label`), 7);
     });
 
@@ -67,18 +65,16 @@ describe("<Slider>", () => {
 
     it("moving mouse calls onChange with nearest value", () => {
         const changeSpy = sinon.spy();
-        const slider = renderSlider(<Slider onChange={changeSpy} />)
-            .simulate("mousedown", { clientX: 0 });
+        const slider = renderSlider(<Slider onChange={changeSpy} />).simulate("mousedown", { clientX: 0 });
         mouseMove(slider.state("tickSize"), 5);
         // called 4 times, for the move to 1, 2, 3, and 4
         assert.equal(changeSpy.callCount, 4);
-        assert.deepEqual(changeSpy.args.map((arg) => arg[0]), [1, 2, 3, 4]);
+        assert.deepEqual(changeSpy.args.map(arg => arg[0]), [1, 2, 3, 4]);
     });
 
     it("releasing mouse calls onRelease with nearest value", () => {
         const releaseSpy = sinon.spy();
-        const slider = renderSlider(<Slider onRelease={releaseSpy} />)
-            .simulate("mousedown", { clientX: 0 });
+        const slider = renderSlider(<Slider onRelease={releaseSpy} />).simulate("mousedown", { clientX: 0 });
         mouseMove(slider.state("tickSize"), 1);
         mouseUp(slider.state("tickSize"));
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
@@ -87,18 +83,20 @@ describe("<Slider>", () => {
 
     it("moving touch calls onChange with nearest value", () => {
         const changeSpy = sinon.spy();
-        const slider = renderSlider(<Slider onChange={changeSpy} />)
-            .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
+        const slider = renderSlider(<Slider onChange={changeSpy} />).simulate("touchstart", {
+            changedTouches: [{ clientX: 0 }],
+        });
         touchMove(slider.state("tickSize"), 5);
         // called 4 times, for the move to 1, 2, 3, and 4
         assert.equal(changeSpy.callCount, 4);
-        assert.deepEqual(changeSpy.args.map((arg) => arg[0]), [1, 2, 3, 4]);
+        assert.deepEqual(changeSpy.args.map(arg => arg[0]), [1, 2, 3, 4]);
     });
 
     it("releasing touch calls onRelease with nearest value", () => {
         const releaseSpy = sinon.spy();
-        const slider = renderSlider(<Slider onRelease={releaseSpy} />)
-            .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
+        const slider = renderSlider(<Slider onRelease={releaseSpy} />).simulate("touchstart", {
+            changedTouches: [{ clientX: 0 }],
+        });
         touchMove(slider.state("tickSize"), 1);
         touchEnd(slider.state("tickSize"));
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
@@ -132,16 +130,18 @@ describe("<Slider>", () => {
 
     it("disabled slider does not respond to mouse movement", () => {
         const changeSpy = sinon.spy();
-        const slider = renderSlider(<Slider disabled={true} onChange={changeSpy} />)
-            .simulate("mousedown", { clientX: 0 });
+        const slider = renderSlider(<Slider disabled={true} onChange={changeSpy} />).simulate("mousedown", {
+            clientX: 0,
+        });
         mouseMove(slider.state("tickSize"), 5);
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
 
     it("disabled slider does not respond to touch movement", () => {
         const changeSpy = sinon.spy();
-        const slider = renderSlider(<Slider disabled={true} onChange={changeSpy} />)
-            .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
+        const slider = renderSlider(<Slider disabled={true} onChange={changeSpy} />).simulate("touchstart", {
+            changedTouches: [{ clientX: 0 }],
+        });
         touchMove(slider.state("tickSize"), 5);
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
@@ -159,8 +159,7 @@ describe("<Slider>", () => {
         const slider = renderSlider(<Slider disabled={true} />);
         // spy on instance method instead of onChange because we can't supply nativeEvent
         const trackClickSpy = sinon.spy(slider.instance(), "handleTrackClick");
-        slider.find(trackSelector)
-            .simulate("mousedown", { target: testsContainerElement.query(trackSelector) });
+        slider.find(trackSelector).simulate("mousedown", { target: testsContainerElement.query(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackClick was called when disabled");
     });
 
@@ -169,8 +168,7 @@ describe("<Slider>", () => {
         const slider = renderSlider(<Slider disabled={true} />);
         // spy on instance method instead of onChange because we can't supply nativeEvent
         const trackClickSpy = sinon.spy(slider.instance(), "handleTrackTouch");
-        slider.find(trackSelector)
-            .simulate("touchstart", { target: testsContainerElement.query(trackSelector) });
+        slider.find(trackSelector).simulate("touchstart", { target: testsContainerElement.query(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackTouch was called when disabled");
     });
 
@@ -193,7 +191,8 @@ describe("<Slider>", () => {
 
     it("fill does not exceed bounds if initialValue outside bounds of min/max", () => {
         const style = renderSlider(<Slider initialValue={-10} min={0} value={5} />)
-            .find(".pt-slider-progress").prop("style") as React.CSSProperties;
+            .find(".pt-slider-progress")
+            .prop("style") as React.CSSProperties;
         assert.strictEqual(style.left, 0);
     });
 

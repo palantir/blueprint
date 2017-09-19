@@ -49,7 +49,11 @@ export class BaseExample<S> extends React.PureComponent<IBaseExampleProps, S> {
     private actuallyRenderOptions(): JSX.Element | JSX.Element[] {
         const options = this.renderOptions();
         if (Array.isArray(options)) {
-            return options.map((column, i) => <div className="docs-react-options-column" key={i}>{column}</div>);
+            return options.map((column, i) => (
+                <div className="docs-react-options-column" key={i}>
+                    {column}
+                </div>
+            ));
         } else {
             return options;
         }
@@ -68,5 +72,5 @@ export function handleStringChange(handler: (value: string) => void) {
 
 /** Event handler that exposes the target element's value as a number. */
 export function handleNumberChange(handler: (value: number) => void) {
-    return handleStringChange((value) => handler(+value));
+    return handleStringChange(value => handler(+value));
 }

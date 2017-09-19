@@ -27,9 +27,7 @@ interface IContextMenuState {
 }
 
 const TETHER_OPTIONS = {
-    constraints: [
-        { attachment: "together", pin: true, to: "window" },
-    ],
+    constraints: [{ attachment: "together", pin: true, to: "window" }],
 };
 const TRANSITION_DURATION = 100;
 
@@ -84,7 +82,7 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
             const newTarget = document.elementFromPoint(e.clientX, e.clientY);
             newTarget.dispatchEvent(new MouseEvent("contextmenu", e));
         }, TRANSITION_DURATION);
-    }
+    };
 
     private handlePopoverInteraction = (nextOpenState: boolean) => {
         if (!nextOpenState) {
@@ -92,7 +90,7 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
             // to avoid flicker of opening twice
             requestAnimationFrame(() => this.hide());
         }
-    }
+    };
 }
 
 let contextMenu: ContextMenu;

@@ -101,12 +101,14 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private getDraggableProps(): IDraggableProps {
-        return this.props.onSelection == null ? {} : {
-            onActivate: this.handleActivate,
-            onClick: this.handleClick,
-            onDragEnd: this.handleDragEnd,
-            onDragMove: this.handleDragMove,
-        };
+        return this.props.onSelection == null
+            ? {}
+            : {
+                  onActivate: this.handleActivate,
+                  onClick: this.handleClick,
+                  onDragEnd: this.handleDragEnd,
+                  onDragMove: this.handleDragMove,
+              };
     }
 
     private handleActivate = (event: MouseEvent) => {
@@ -120,11 +122,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             return false;
         }
 
-        const {
-            onSelection,
-            selectedRegions,
-            selectedRegionTransform,
-        } = this.props;
+        const { onSelection, selectedRegions, selectedRegionTransform } = this.props;
 
         const focusCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(region);
         if (selectedRegionTransform != null) {
@@ -177,7 +175,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         this.props.onFocus(fullFocusCellCoordinates);
 
         return true;
-    }
+    };
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
         const nextSelectedRegions = this.getDragSelectedRegions(event, coords);
@@ -197,7 +195,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             };
             this.props.onFocus(fullFocusCellCoordinates);
         }
-    }
+    };
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
         const nextSelectedRegions = this.getDragSelectedRegions(event, coords);
@@ -207,7 +205,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
         BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
         this.finishInteraction();
-    }
+    };
 
     private handleClick = (event: MouseEvent) => {
         if (this.shouldIgnoreMouseDown(event)) {
@@ -242,18 +240,20 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         BlueprintUtils.safeInvoke(this.props.onSelectionEnd, nextSelectedRegions);
         this.finishInteraction();
         return false;
-    }
+    };
 
     private finishInteraction = () => {
         this.didExpandSelectionOnActivate = false;
-    }
+    };
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
         const { ignoredSelectors = [] } = this.props;
         const element = event.target as HTMLElement;
-        return !Utils.isLeftClick(event)
-            || this.props.disabled
-            || ignoredSelectors.some((selector: string) => element.closest(selector) != null);
+        return (
+            !Utils.isLeftClick(event) ||
+            this.props.disabled ||
+            ignoredSelectors.some((selector: string) => element.closest(selector) != null)
+        );
     }
 
     private getDragSelectedRegions(event: MouseEvent, coords: ICoordinateData) {

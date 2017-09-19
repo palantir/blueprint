@@ -83,11 +83,7 @@ export class NonIdealState extends React.Component<INonIdealStateProps, {}> {
                 </div>
             );
         } else {
-            return (
-                <div className={Classes.NON_IDEAL_STATE_VISUAL}>
-                    {visual}
-                </div>
-            );
+            return <div className={Classes.NON_IDEAL_STATE_VISUAL}>{visual}</div>;
         }
     }
 }

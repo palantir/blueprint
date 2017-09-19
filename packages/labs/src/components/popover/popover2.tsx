@@ -211,8 +211,8 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     private cancelOpenTimeout: () => void;
 
     private refHandlers = {
-        popover: (ref: HTMLDivElement) => this.popoverElement = ref,
-        target: (ref: HTMLElement) => this.targetElement = ref,
+        popover: (ref: HTMLDivElement) => (this.popoverElement = ref),
+        target: (ref: HTMLElement) => (this.targetElement = ref),
     };
 
     public constructor(props?: IPopover2Props, context?: any) {
@@ -241,15 +241,19 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                 onMouseEnter: this.handleMouseEnter,
                 onMouseLeave: this.handleMouseLeave,
             };
-        // any one of the CLICK* values
+            // any one of the CLICK* values
         } else {
             targetProps = {
                 onClick: this.handleTargetClick,
             };
         }
-        targetProps.className = classNames(Classes.POPOVER_TARGET, {
-            [Classes.POPOVER_OPEN]: isOpen,
-        }, className);
+        targetProps.className = classNames(
+            Classes.POPOVER_TARGET,
+            {
+                [Classes.POPOVER_OPEN]: isOpen,
+            },
+            className,
+        );
 
         const children = this.understandChildren();
         const targetTabIndex = this.props.openOnTargetFocus && this.isHoverInteractionKind() ? 0 : undefined;
@@ -259,14 +263,16 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             tabIndex: targetTabIndex,
         });
 
-        const isContentEmpty = (children.content == null);
+        const isContentEmpty = children.content == null;
         if (isContentEmpty && !this.props.disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
             console.warn("[Blueprint] Disabling <Popover2> with empty/whitespace content...");
         }
 
         return (
             <Manager tag={this.props.rootElementTag}>
-                <Target {...targetProps} innerRef={this.refHandlers.target}>{target}</Target>
+                <Target {...targetProps} innerRef={this.refHandlers.target}>
+                    {target}
+                </Target>
                 <Overlay
                     autoFocus={this.props.autoFocus}
                     backdropClassName={Classes.POPOVER_BACKDROP}
@@ -302,7 +308,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         } else if (nextProps.isOpen !== this.props.isOpen) {
             // propagate isOpen prop directly to state, circumventing onInteraction callback
             // (which would be invoked if this went through setOpenState)
-            this.setState({ isOpen: nextProps.isOpen});
+            this.setState({ isOpen: nextProps.isOpen });
         }
     }
 
@@ -336,20 +342,27 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
         };
-        if ((interactionKind === PopoverInteractionKind.HOVER)
-            || (inline && interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY)) {
+        if (
+            interactionKind === PopoverInteractionKind.HOVER ||
+            (inline && interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY)
+        ) {
             popoverHandlers.onMouseEnter = this.handleMouseEnter;
             popoverHandlers.onMouseLeave = this.handleMouseLeave;
         }
 
-        const popoverClasses = classNames(Classes.POPOVER, {
-            [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
-            [Classes.MINIMAL]: this.props.minimal,
-        }, this.props.popoverClassName);
+        const popoverClasses = classNames(
+            Classes.POPOVER,
+            {
+                [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
+                [Classes.MINIMAL]: this.props.minimal,
+            },
+            this.props.popoverClassName,
+        );
 
-        const isArrowEnabled = !this.props.minimal
+        const isArrowEnabled =
+            !this.props.minimal &&
             // omitting `arrow` from `modifiers` uses Popper default, which does show an arrow.
-            && (modifiers.arrow == null || modifiers.arrow.enabled);
+            (modifiers.arrow == null || modifiers.arrow.enabled);
         const allModifiers: PopperModifiers = {
             ...modifiers,
             arrowOffset: {
@@ -365,11 +378,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         };
 
         return (
-            <Popper
-                className={Classes.TRANSITION_CONTAINER}
-                placement={this.props.placement}
-                modifiers={allModifiers}
-            >
+            <Popper className={Classes.TRANSITION_CONTAINER} placement={this.props.placement} modifiers={allModifiers}>
                 <div
                     className={popoverClasses}
                     ref={this.refHandlers.popover}
@@ -377,9 +386,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                     {...popoverHandlers}
                 >
                     {isArrowEnabled ? <PopoverArrow angle={this.state.arrowRotation} /> : undefined}
-                    <div className={Classes.POPOVER_CONTENT}>
-                        {content}
-                    </div>
+                    <div className={Classes.POPOVER_CONTENT}>{content}</div>
                 </div>
             </Popper>
         );
@@ -402,13 +409,13 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             Utils.safeInvoke(this.props.popoverDidOpen);
             this.isContentMounting = false;
         }
-    }
+    };
 
     private handleTargetFocus = (e?: React.FormEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             this.handleMouseEnter(e);
         }
-    }
+    };
 
     private handleTargetBlur = (e?: React.FormEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
@@ -421,26 +428,28 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                 }
             });
         }
-    }
+    };
 
     private handleMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
         // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
         // trigger the mouse leave event, as hovering over the popover shouldn't count.
-        if (this.props.inline
-            && this.isElementInPopover(e.target as Element)
-            && this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
-            && !this.props.openOnTargetFocus) {
+        if (
+            this.props.inline &&
+            this.isElementInPopover(e.target as Element) &&
+            this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY &&
+            !this.props.openOnTargetFocus
+        ) {
             this.handleMouseLeave(e);
         } else if (!this.props.disabled) {
             // only begin opening popover when it is enabled
             this.setOpenState(true, e, this.props.hoverOpenDelay);
         }
-    }
+    };
 
     private handleMouseLeave = (e: React.SyntheticEvent<HTMLElement>) => {
         // user-configurable closing delay is helpful when moving mouse from target to popover
         this.setOpenState(false, e, this.props.hoverCloseDelay);
-    }
+    };
 
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
@@ -449,27 +458,26 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         if (shouldDismiss && !overrideDismiss) {
             this.setOpenState(false, e);
         }
-    }
+    };
 
     private handleOverlayClose = (e: React.SyntheticEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
-        if (!Utils.elementIsOrContains(this.targetElement, eventTarget)
-                || e.nativeEvent instanceof KeyboardEvent) {
+        if (!Utils.elementIsOrContains(this.targetElement, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
             this.setOpenState(false, e);
         }
-    }
+    };
 
     private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
         if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
-                this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
+                this.setState(prevState => ({ isOpen: !prevState.isOpen }));
             } else {
                 this.setOpenState(!this.props.isOpen, e);
             }
         }
-    }
+    };
 
     // a wrapper around setState({isOpen}) that will call props.onInteraction instead when in controlled mode.
     // starts a timeout to delay changing the state if a non-zero duration is provided.
@@ -495,19 +503,21 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     private isHoverInteractionKind() {
-        return this.props.interactionKind === PopoverInteractionKind.HOVER
-            || this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
+        return (
+            this.props.interactionKind === PopoverInteractionKind.HOVER ||
+            this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
+        );
     }
 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
-    private updatePopoverState: ModifierFn = (data) => {
+    private updatePopoverState: ModifierFn = data => {
         // pretty sure it's safe to always set these (and let sCU determine) because they're both strings
         this.setState({
             arrowRotation: getArrowAngle(data.placement),
             transformOrigin: getTransformOrigin(data),
         });
         return data;
-    }
+    };
 }
 
 /**

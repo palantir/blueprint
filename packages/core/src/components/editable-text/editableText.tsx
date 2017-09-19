@@ -136,7 +136,7 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
     public constructor(props?: IEditableTextProps, context?: any) {
         super(props, context);
 
-        const value = (props.value == null) ? props.defaultValue : props.value;
+        const value = props.value == null ? props.defaultValue : props.value;
         this.state = {
             inputHeight: 0,
             inputWidth: 0,
@@ -148,8 +148,8 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
 
     public render() {
         const { disabled, multiline } = this.props;
-        const value = (this.props.value == null ? this.state.value : this.props.value);
-        const hasValue = (value != null && value !== "");
+        const value = this.props.value == null ? this.state.value : this.props.value;
+        const hasValue = value != null && value !== "";
 
         const classes = classNames(
             Classes.EDITABLE_TEXT,
@@ -206,7 +206,7 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
         if (nextProps.value != null) {
             state.value = nextProps.value;
         }
-        if (nextProps.isEditing != null)  {
+        if (nextProps.isEditing != null) {
             state.isEditing = nextProps.isEditing;
         }
         if (nextProps.disabled || (nextProps.disabled == null && this.props.disabled)) {
@@ -222,7 +222,7 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
             safeInvoke(this.props.onChange, lastValue);
         }
         safeInvoke(this.props.onCancel, lastValue);
-    }
+    };
 
     public toggleEditing = () => {
         if (this.state.isEditing) {
@@ -232,20 +232,22 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
-    }
+    };
 
     private handleFocus = () => {
         if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
-    }
+    };
 
     private handleTextChange = (event: React.FormEvent<HTMLElement>) => {
         const value = (event.target as HTMLInputElement).value;
         // state value should be updated only when uncontrolled
-        if (this.props.value == null) { this.setState({ value }); }
+        if (this.props.value == null) {
+            this.setState({ value });
+        }
         safeInvoke(this.props.onChange, value);
-    }
+    };
 
     private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
         const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
@@ -273,7 +275,7 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
                 this.toggleEditing();
             }
         }
-    }
+    };
 
     private maybeRenderInput(value: string) {
         const { maxLength, multiline } = this.props;
@@ -327,7 +329,7 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
             });
             // synchronizes the ::before pseudo-element's height while editing for Chrome 53
             if (multiline && this.state.isEditing) {
-                this.setTimeout(() => parentElement.style.height = `${scrollHeight}px`);
+                this.setTimeout(() => (parentElement.style.height = `${scrollHeight}px`));
             }
         }
     }

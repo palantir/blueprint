@@ -25,7 +25,6 @@ export interface ISelectExampleState {
 }
 
 export class SelectExample extends BaseExample<ISelectExampleState> {
-
     public state: ISelectExampleState = {
         disabled: false,
         film: TOP_100_FILMS[0],
@@ -54,11 +53,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 onItemSelect={this.handleValueChange}
                 popoverProps={{ popoverClassName: minimal ? Classes.MINIMAL : "" }}
             >
-                <Button
-                    rightIconName="caret-down"
-                    text={film ? film.title : "(No selection)"}
-                    disabled={disabled}
-                />
+                <Button rightIconName="caret-down" text={film ? film.title : "(No selection)"} disabled={disabled} />
             </FilmSelect>
         );
     }

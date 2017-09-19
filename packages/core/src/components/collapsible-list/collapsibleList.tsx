@@ -74,7 +74,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
         const [visibleChildren, collapsedChildren] = this.partitionChildren();
 
         const visibleItems = visibleChildren.map((child: CollapsibleItem, index: number) => {
-            const absoluteIndex = (collapseFrom === CollapseFrom.START ? childrenLength - 1 - index : index);
+            const absoluteIndex = collapseFrom === CollapseFrom.START ? childrenLength - 1 - index : index;
             return (
                 <li className={this.props.visibleItemClassName} key={absoluteIndex}>
                     {this.props.renderVisibleItem(child.props, absoluteIndex)}
@@ -89,7 +89,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
         // construct dropdown menu for collapsed items
         let collapsedPopover: JSX.Element;
         if (collapsedChildren.length > 0) {
-            const position = (collapseFrom === CollapseFrom.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT);
+            const position = collapseFrom === CollapseFrom.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
             collapsedPopover = (
                 <li className={this.props.visibleItemClassName}>
                     <Popover
@@ -128,10 +128,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
             childrenArray.reverse();
         }
         const { visibleItemCount } = this.props;
-        return [
-            childrenArray.slice(0, visibleItemCount),
-            childrenArray.slice(visibleItemCount),
-        ];
+        return [childrenArray.slice(0, visibleItemCount), childrenArray.slice(visibleItemCount)];
     }
 }
 

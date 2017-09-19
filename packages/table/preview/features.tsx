@@ -12,13 +12,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import {
-    Button,
-    Intent,
-    Menu,
-    MenuDivider,
-    MenuItem,
-} from "@blueprintjs/core";
+import { Button, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 
 import {
     Cell,
@@ -48,7 +42,7 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
         return Utils.toBase26Alpha(col) + (row + 1);
     };
 
-    const tablePropsWithDefaults = {numRows, getCellClipboardData, enableFocus: true, ...tableProps};
+    const tablePropsWithDefaults = { numRows, getCellClipboardData, enableFocus: true, ...tableProps };
 
     // combine column overrides
     const columnPropsWithDefaults = {
@@ -57,39 +51,28 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
         },
         ...columnProps,
     };
-    const columns = Utils.times(numCols, (index) => {
+    const columns = Utils.times(numCols, index => {
         return <Column key={index} {...columnPropsWithDefaults} />;
     });
     return <Table {...tablePropsWithDefaults}>{columns}</Table>;
-};
+}
 
 // tslint:disable:no-console jsx-no-lambda
 const testMenu = (
     <Menu>
-        <MenuItem
-            iconName="export"
-            onClick={() => console.log("Beam me up!")}
-            text="Teleport"
-        />
+        <MenuItem iconName="export" onClick={() => console.log("Beam me up!")} text="Teleport" />
         <MenuItem
             iconName="sort-alphabetical-desc"
             onClick={() => console.log("ZA is the worst")}
             text="Down with ZA!"
         />
         <MenuDivider />
-        <MenuItem
-            iconName="curved-range-chart"
-            onClick={() => console.log("You clicked the trident!")}
-            text="Psi"
-        />
+        <MenuItem iconName="curved-range-chart" onClick={() => console.log("You clicked the trident!")} text="Psi" />
     </Menu>
 );
 // tslint:enable:no-console jsx-no-lambda
 
-ReactDOM.render(
-    getTableComponent(3, 7),
-    document.getElementById("table-0"),
-);
+ReactDOM.render(getTableComponent(3, 7), document.getElementById("table-0"));
 
 class FormatsTable extends React.Component<{}, {}> {
     private static ROWS = 1000;
@@ -97,20 +80,25 @@ class FormatsTable extends React.Component<{}, {}> {
     private objects = Utils.times(FormatsTable.ROWS, (row: number) => {
         // tslint:disable-next-line:switch-default
         switch (row) {
-            case 1: return "string";
-            case 2: return 3.14;
-            case 5: return undefined;
-            case 6: return null;
-            case 8: return "this is a very long string";
+            case 1:
+                return "string";
+            case 2:
+                return 3.14;
+            case 5:
+                return undefined;
+            case 6:
+                return null;
+            case 8:
+                return "this is a very long string";
         }
-        const obj: {[key: string]: string} = {};
+        const obj: { [key: string]: string } = {};
         for (let i = 0; i < 1000; i++) {
             obj[`KEY-${(Math.random() * 10000).toFixed(2)}`] = (Math.random() * 10000).toFixed(2);
         }
         return obj;
     });
 
-    private strings = Utils.times(FormatsTable.ROWS, () => ("ABC " + (Math.random() * 10000)));
+    private strings = Utils.times(FormatsTable.ROWS, () => "ABC " + Math.random() * 10000);
     private formatsTable: Table;
 
     public render() {
@@ -120,11 +108,11 @@ class FormatsTable extends React.Component<{}, {}> {
 
         return (
             <Table ref={saveTable} numRows={FormatsTable.ROWS} isRowResizable={true}>
-                <Column name="Default" renderCell={this.renderDefaultCell}/>
-                <Column name="Wrapped Text" renderCell={this.renderDefaultCellWrapped}/>
-                <Column name="JSON" renderCell={this.renderJSONCell}/>
-                <Column name="JSON wrapped text" renderCell={this.renderJSONCellWrappedText}/>
-                <Column name="JSON wrapped cell" renderCell={this.renderJSONWrappedCell}/>
+                <Column name="Default" renderCell={this.renderDefaultCell} />
+                <Column name="Wrapped Text" renderCell={this.renderDefaultCellWrapped} />
+                <Column name="JSON" renderCell={this.renderJSONCell} />
+                <Column name="JSON wrapped text" renderCell={this.renderJSONCellWrappedText} />
+                <Column name="JSON wrapped cell" renderCell={this.renderJSONWrappedCell} />
             </Table>
         );
     }
@@ -152,33 +140,35 @@ class FormatsTable extends React.Component<{}, {}> {
 
     private renderDefaultCell = (row: number) => <Cell>{this.strings[row]}</Cell>;
     private renderDefaultCellWrapped = (row: number) => <Cell wrapText={true}>{this.strings[row]}</Cell>;
-    private renderJSONCell = (row: number) =>
-        <Cell><JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat></Cell>;
-    private renderJSONCellWrappedText = (row: number) =>
-        <Cell wrapText={true}><JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat></Cell>;
-    private renderJSONWrappedCell = (row: number) =>
-        <Cell><JSONFormat preformatted={false}>{this.objects[row]}</JSONFormat></Cell>;
+    private renderJSONCell = (row: number) => (
+        <Cell>
+            <JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat>
+        </Cell>
+    );
+    private renderJSONCellWrappedText = (row: number) => (
+        <Cell wrapText={true}>
+            <JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat>
+        </Cell>
+    );
+    private renderJSONWrappedCell = (row: number) => (
+        <Cell>
+            <JSONFormat preformatted={false}>{this.objects[row]}</JSONFormat>
+        </Cell>
+    );
 }
 
-ReactDOM.render(
-    <FormatsTable />,
-    document.getElementById("table-formats"),
-);
+ReactDOM.render(<FormatsTable />, document.getElementById("table-formats"));
 
 class EditableTable extends React.Component<{}, {}> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
-    }
+    };
 
     public state = {
-        intents : [] as Intent[],
-        names: [
-            "Please",
-            "Rename",
-            "Me",
-        ] as string[],
-        sparseCellData : {} as {[key: string]: string},
-        sparseCellIntent : {} as {[key: string]: Intent},
+        intents: [] as Intent[],
+        names: ["Please", "Rename", "Me"] as string[],
+        sparseCellData: {} as { [key: string]: string },
+        sparseCellIntent: {} as { [key: string]: Intent },
     };
     public render() {
         const columns = this.state.names.map((_, index) => (
@@ -194,32 +184,38 @@ class EditableTable extends React.Component<{}, {}> {
     public renderCell = (rowIndex: number, columnIndex: number) => {
         const dataKey = EditableTable.dataKey(rowIndex, columnIndex);
         const value = this.state.sparseCellData[dataKey];
-        return (<EditableCell
-            value={value == null ? "" : value}
-            intent={this.state.sparseCellIntent[dataKey]}
-            onCancel={this.cellValidator(rowIndex, columnIndex)}
-            onChange={this.cellValidator(rowIndex, columnIndex)}
-            onConfirm={this.cellSetter(rowIndex, columnIndex)}
-        />);
-    }
+        return (
+            <EditableCell
+                value={value == null ? "" : value}
+                intent={this.state.sparseCellIntent[dataKey]}
+                onCancel={this.cellValidator(rowIndex, columnIndex)}
+                onChange={this.cellValidator(rowIndex, columnIndex)}
+                onConfirm={this.cellSetter(rowIndex, columnIndex)}
+            />
+        );
+    };
 
     public renderColumnHeader = (columnIndex: number) => {
         const renderName = (name: string) => {
-            return (<EditableName
-                name={name}
-                intent={this.state.intents[columnIndex]}
-                onChange={this.nameValidator(columnIndex)}
-                onCancel={this.nameValidator(columnIndex)}
-                onConfirm={this.nameSetter(columnIndex)}
-            />);
+            return (
+                <EditableName
+                    name={name}
+                    intent={this.state.intents[columnIndex]}
+                    onChange={this.nameValidator(columnIndex)}
+                    onCancel={this.nameValidator(columnIndex)}
+                    onConfirm={this.nameSetter(columnIndex)}
+                />
+            );
         };
-        return (<ColumnHeaderCell
-            menu={testMenu}
-            name={this.state.names[columnIndex]}
-            renderName={renderName}
-            useInteractionBar={true}
-        />);
-    }
+        return (
+            <ColumnHeaderCell
+                menu={testMenu}
+                name={this.state.names[columnIndex]}
+                renderName={renderName}
+                useInteractionBar={true}
+            />
+        );
+    };
 
     private isValidValue(value: string) {
         return /^[a-zA-Z]*$/.test(value);
@@ -231,13 +227,13 @@ class EditableTable extends React.Component<{}, {}> {
             this.setArrayState("intents", index, intent);
             this.setArrayState("names", index, name);
         };
-    }
+    };
 
     private nameSetter = (index: number) => {
         return (name: string) => {
             this.setArrayState("names", index, name);
         };
-    }
+    };
 
     private cellValidator = (rowIndex: number, columnIndex: number) => {
         const dataKey = EditableTable.dataKey(rowIndex, columnIndex);
@@ -246,7 +242,7 @@ class EditableTable extends React.Component<{}, {}> {
             this.setSparseState("sparseCellIntent", dataKey, intent);
             this.setSparseState("sparseCellData", dataKey, value);
         };
-    }
+    };
 
     private cellSetter = (rowIndex: number, columnIndex: number) => {
         const dataKey = EditableTable.dataKey(rowIndex, columnIndex);
@@ -255,81 +251,97 @@ class EditableTable extends React.Component<{}, {}> {
             this.setSparseState("sparseCellData", dataKey, value);
             this.setSparseState("sparseCellIntent", dataKey, intent);
         };
-    }
+    };
 
-    private setArrayState<T>(key: string, index: number, value: T)  {
+    private setArrayState<T>(key: string, index: number, value: T) {
         const values = (this.state as any)[key].slice() as T[];
         values[index] = value;
-        this.setState({ [key] : values });
+        this.setState({ [key]: values });
     }
 
-    private setSparseState<T>(stateKey: string, dataKey: string, value: T)  {
+    private setSparseState<T>(stateKey: string, dataKey: string, value: T) {
         const stateData = (this.state as any)[stateKey] as { [key: string]: T };
         const values = { ...stateData, [dataKey]: value };
-        this.setState({ [stateKey] : values });
+        this.setState({ [stateKey]: values });
     }
 }
 
-ReactDOM.render(
-    <EditableTable />,
-    document.getElementById("table-editable-names"),
-);
+ReactDOM.render(<EditableTable />, document.getElementById("table-editable-names"));
 
 ReactDOM.render(
-    getTableComponent(2, 2, {}, {
-        fillBodyWithGhostCells: true,
-        selectionModes: SelectionModes.ALL,
-    }),
+    getTableComponent(
+        2,
+        2,
+        {},
+        {
+            fillBodyWithGhostCells: true,
+            selectionModes: SelectionModes.ALL,
+        },
+    ),
     document.getElementById("table-ghost"),
 );
 
 ReactDOM.render(
-    getTableComponent(2, 2, {}, {
-        fillBodyWithGhostCells: true,
-        selectionModes: SelectionModes.ALL,
-    }),
+    getTableComponent(
+        2,
+        2,
+        {},
+        {
+            fillBodyWithGhostCells: true,
+            selectionModes: SelectionModes.ALL,
+        },
+    ),
     document.getElementById("table-inline-ghost"),
 );
 
 ReactDOM.render(
-    getTableComponent(200, 100 * 1000, {} , {
-        fillBodyWithGhostCells: true,
-        selectionModes: SelectionModes.ALL,
-    }),
+    getTableComponent(
+        200,
+        100 * 1000,
+        {},
+        {
+            fillBodyWithGhostCells: true,
+            selectionModes: SelectionModes.ALL,
+        },
+    ),
     document.getElementById("table-big"),
 );
 
 class RowSelectableTable extends React.Component<{}, {}> {
     public state = {
-        selectedRegions: [ Regions.row(2) ],
+        selectedRegions: [Regions.row(2)],
     };
 
     public render() {
-        return (<div>
-            <Table
-                renderBodyContextMenu={renderBodyContextMenu}
-                numRows={7}
-                isRowHeaderShown={false}
-                onSelection={this.handleSelection}
-                selectedRegions={this.state.selectedRegions}
-                selectedRegionTransform={this.selectedRegionTransform}
-            >
-                <Column name="Cells" />
-                <Column name="Select" />
-                <Column name="Rows" />
-            </Table>
-            <br/>
-            <Button onClick={this.handleClear} intent={Intent.PRIMARY}>Clear Selection</Button>
-        </div>);
+        return (
+            <div>
+                <Table
+                    renderBodyContextMenu={renderBodyContextMenu}
+                    numRows={7}
+                    isRowHeaderShown={false}
+                    onSelection={this.handleSelection}
+                    selectedRegions={this.state.selectedRegions}
+                    selectedRegionTransform={this.selectedRegionTransform}
+                >
+                    <Column name="Cells" />
+                    <Column name="Select" />
+                    <Column name="Rows" />
+                </Table>
+                <br />
+                <Button onClick={this.handleClear} intent={Intent.PRIMARY}>
+                    Clear Selection
+                </Button>
+            </div>
+        );
     }
 
     private handleClear = () => {
         this.setState({ selectedRegions: [] });
-    }
+    };
 
     private handleSelection = (selectedRegions: IRegion[]) => {
         this.setState({ selectedRegions });
-    }
+    };
 
     private selectedRegionTransform = (region: IRegion) => {
         // convert cell selection to row selection
@@ -338,27 +350,18 @@ class RowSelectableTable extends React.Component<{}, {}> {
         }
 
         return region;
-    }
+    };
 }
 
-ReactDOM.render(
-    <RowSelectableTable/>,
-    document.getElementById("table-select-rows"),
-);
+ReactDOM.render(<RowSelectableTable />, document.getElementById("table-select-rows"));
 
 document.getElementById("table-ledger").classList.add("bp-table-striped");
 
-ReactDOM.render(
-    getTableComponent(3, 7, {}, { className: "" }),
-    document.getElementById("table-ledger"),
-);
+ReactDOM.render(getTableComponent(3, 7, {}, { className: "" }), document.getElementById("table-ledger"));
 
 class AdjustableColumnsTable extends React.Component<{}, {}> {
     public state = {
-        columns: [
-            <Column name="First" key={0} id={0}/>,
-            <Column name="Second" key={1} id={1}/>,
-        ],
+        columns: [<Column name="First" key={0} id={0} />, <Column name="Second" key={1} id={1} />],
     };
 
     public render() {
@@ -379,7 +382,7 @@ class AdjustableColumnsTable extends React.Component<{}, {}> {
 
     private add() {
         const columns = this.state.columns.slice();
-        columns.push(<Column key={columns.length} id={columns.length}/>);
+        columns.push(<Column key={columns.length} id={columns.length} />);
         this.setState({ columns });
     }
 
@@ -401,21 +404,23 @@ class AdjustableColumnsTable extends React.Component<{}, {}> {
     }
 }
 
-ReactDOM.render(
-    <AdjustableColumnsTable />,
-    document.getElementById("table-cols"),
-);
+ReactDOM.render(<AdjustableColumnsTable />, document.getElementById("table-cols"));
 
 ReactDOM.render(
-    getTableComponent(3, 7, {
-        renderCell(rowIndex: number, columnIndex: number) {
-            return <Cell intent={rowIndex as Intent}>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
+    getTableComponent(
+        3,
+        7,
+        {
+            renderCell(rowIndex: number, columnIndex: number) {
+                return <Cell intent={rowIndex as Intent}>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
+            },
         },
-    }, {
-        isColumnResizable: false,
-        isRowResizable: false,
-        selectionModes: SelectionModes.NONE,
-    }),
+        {
+            isColumnResizable: false,
+            isRowResizable: false,
+            selectionModes: SelectionModes.NONE,
+        },
+    ),
     document.getElementById("table-1"),
 );
 
@@ -426,107 +431,117 @@ const renderBodyContextMenu = (context: IMenuContext) => {
 
     return (
         <Menu>
-            <CopyCellsMenuItem
-                context={context}
-                getCellData={getCellData}
-                text="Copy Cells"
-            />
+            <CopyCellsMenuItem context={context} getCellData={getCellData} text="Copy Cells" />
         </Menu>
     );
 };
 
 ReactDOM.render(
-    getTableComponent(3, 7, {}, {
-        allowMultipleSelection: true,
-        isColumnResizable: true,
-        isRowResizable: true,
-        renderBodyContextMenu,
-        selectionModes: SelectionModes.ALL,
-    }),
+    getTableComponent(
+        3,
+        7,
+        {},
+        {
+            allowMultipleSelection: true,
+            isColumnResizable: true,
+            isRowResizable: true,
+            renderBodyContextMenu,
+            selectionModes: SelectionModes.ALL,
+        },
+    ),
     document.getElementById("table-2"),
 );
 
 ReactDOM.render(
-    getTableComponent(3, 7, {}, {
-        defaultColumnWidth: 60,
-        isRowHeaderShown: false,
-    }),
+    getTableComponent(
+        3,
+        7,
+        {},
+        {
+            defaultColumnWidth: 60,
+            isRowHeaderShown: false,
+        },
+    ),
     document.getElementById("table-3"),
 );
 
-const customRowHeaders = [
-    "Superman",
-    "Harry James Potter",
-    "Deadpool",
-    "Ben Folds",
-    "Bitcoin",
-    "Thorsday",
-    ".",
-];
+const customRowHeaders = ["Superman", "Harry James Potter", "Deadpool", "Ben Folds", "Bitcoin", "Thorsday", "."];
 ReactDOM.render(
-    getTableComponent(3, 7, {}, {
-        renderRowHeaderCell: (rowIndex: number) => {
-            return <RowHeaderCell name={customRowHeaders[rowIndex]} />;
+    getTableComponent(
+        3,
+        7,
+        {},
+        {
+            renderRowHeaderCell: (rowIndex: number) => {
+                return <RowHeaderCell name={customRowHeaders[rowIndex]} />;
+            },
         },
-    }),
+    ),
     document.getElementById("table-4"),
 );
 
 ReactDOM.render(
-    getTableComponent(3, 7, {
-        renderColumnHeader: (columnIndex: number) => {
-            return <ColumnHeaderCell name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
-        },
-    }, {
-        styledRegionGroups: [
-            {
-                className: "my-group",
-                regions: [
-                    Regions.cell(0, 0),
-                    Regions.row(2),
-                    Regions.cell(1, 2, 5, 2),
-                ],
+    getTableComponent(
+        3,
+        7,
+        {
+            renderColumnHeader: (columnIndex: number) => {
+                return <ColumnHeaderCell name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
             },
-        ],
-    }),
+        },
+        {
+            styledRegionGroups: [
+                {
+                    className: "my-group",
+                    regions: [Regions.cell(0, 0), Regions.row(2), Regions.cell(1, 2, 5, 2)],
+                },
+            ],
+        },
+    ),
     document.getElementById("table-5"),
 );
 
 ReactDOM.render(
-    getTableComponent(10, 70, {
-        renderColumnHeader: (columnIndex: number) => {
-            const alpha = Utils.toBase26Alpha(columnIndex);
-            return (
-                <ColumnHeaderCell name={`${alpha} Column with a substantially long header name`} menu={testMenu}>
-                    <h4>Header {alpha}</h4>
-                    <p>Whatever interactive header content goes here lorem ipsum.</p>
-                </ColumnHeaderCell>
-            );
+    getTableComponent(
+        10,
+        70,
+        {
+            renderColumnHeader: (columnIndex: number) => {
+                const alpha = Utils.toBase26Alpha(columnIndex);
+                return (
+                    <ColumnHeaderCell name={`${alpha} Column with a substantially long header name`} menu={testMenu}>
+                        <h4>Header {alpha}</h4>
+                        <p>Whatever interactive header content goes here lorem ipsum.</p>
+                    </ColumnHeaderCell>
+                );
+            },
         },
-    }, {
-        renderRowHeaderCell : (rowIndex: number) => {
-            return <RowHeaderCell name={`${rowIndex + 1}`} menu={testMenu} />;
+        {
+            renderRowHeaderCell: (rowIndex: number) => {
+                return <RowHeaderCell name={`${rowIndex + 1}`} menu={testMenu} />;
+            },
         },
-    }),
+    ),
     document.getElementById("table-6"),
 );
 
 class CustomHeaderCell extends React.Component<IColumnHeaderCellProps, {}> {
     public render() {
-        return (
-            <ColumnHeaderCell {...this.props}>
-                Hey dawg.
-            </ColumnHeaderCell>
-        );
+        return <ColumnHeaderCell {...this.props}>Hey dawg.</ColumnHeaderCell>;
     }
 }
 
 ReactDOM.render(
-    getTableComponent(2, 5, {
-        renderColumnHeader: () => <CustomHeaderCell name="sup"/>,
-    }, {
-        allowMultipleSelection: false,
-    }),
+    getTableComponent(
+        2,
+        5,
+        {
+            renderColumnHeader: () => <CustomHeaderCell name="sup" />,
+        },
+        {
+            allowMultipleSelection: false,
+        },
+    ),
     document.getElementById("table-7"),
 );
 
@@ -538,22 +553,31 @@ const longContentRenderCell = () => {
 ReactDOM.render(
     <Table numRows={4}>
         <Column name="My" />
-        <Column name="Table" renderCell={longContentRenderCell}/>
+        <Column name="Table" renderCell={longContentRenderCell} />
     </Table>,
     document.getElementById("table-8"),
 );
 
 ReactDOM.render(
-    <div style={{position: "relative"}}>
-        <div style={{zIndex: 0}} className="stack-fill">Z = 0</div>
-        <div style={{zIndex: 1}} className="stack-fill">Z = 1</div>
-        <div style={{zIndex: 2}} className="stack-fill"><br/>Z = 2</div>
+    <div style={{ position: "relative" }}>
+        <div style={{ zIndex: 0 }} className="stack-fill">
+            Z = 0
+        </div>
+        <div style={{ zIndex: 1 }} className="stack-fill">
+            Z = 1
+        </div>
+        <div style={{ zIndex: 2 }} className="stack-fill">
+            <br />Z = 2
+        </div>
         <Table numRows={3}>
-            <Column name="A"/>
-            <Column name="B"/>
-            <Column name="C"/>
+            <Column name="A" />
+            <Column name="B" />
+            <Column name="C" />
         </Table>
-        <div className="stack-fill"><br/><br/>after</div>
+        <div className="stack-fill">
+            <br />
+            <br />after
+        </div>
     </div>,
     document.getElementById("table-9"),
 );
@@ -608,18 +632,19 @@ class ReorderableTableExample extends React.Component<{}, IReorderableTableExamp
     private renderCityCell = (row: number) => <Cell>{this.state.data[row].city}</Cell>;
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        if (oldIndex === newIndex) { return; }
+        if (oldIndex === newIndex) {
+            return;
+        }
         const nextChildren = Utils.reorderArray(this.state.children, oldIndex, newIndex, length);
         this.setState({ children: nextChildren });
-    }
+    };
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        if (oldIndex === newIndex) { return; }
+        if (oldIndex === newIndex) {
+            return;
+        }
         this.setState({ data: Utils.reorderArray(this.state.data, oldIndex, newIndex, length) });
-    }
+    };
 }
 
-ReactDOM.render(
-    <ReorderableTableExample />,
-    document.getElementById("table-10"),
-);
+ReactDOM.render(<ReorderableTableExample />, document.getElementById("table-10"));

@@ -118,46 +118,46 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 </div>
             </div>
         );
-    }
+    };
 
     private convertPointToRow = (clientXOrY: number, useMidpoint?: boolean) => {
         const { locator } = this.props;
         return locator != null ? locator.convertPointToRow(clientXOrY, useMidpoint) : null;
-    }
+    };
 
     private getCellExtremaClasses = (index: number, endIndex: number) => {
         return this.props.grid.getExtremaClasses(index, 0, endIndex, 1);
-    }
+    };
 
     private getRowHeight = (index: number) => {
         return this.props.grid.getRowRect(index).height;
-    }
+    };
 
     private getDragCoordinate = (clientCoords: IClientCoordinates) => {
         return clientCoords[1]; // y-coordinate
-    }
+    };
 
     private getMouseCoordinate = (event: MouseEvent) => {
         return event.clientY;
-    }
+    };
 
     private handleResizeEnd = (index: number, size: number) => {
         this.props.onResizeGuide(null);
         this.props.onRowHeightChanged(index, size);
-    }
+    };
 
     private handleSizeChanged = (index: number, size: number) => {
         const rect = this.props.grid.getRowRect(index);
         this.props.onResizeGuide([rect.top + size]);
-    }
+    };
 
     private isCellSelected = (index: number) => {
         return Regions.hasFullRow(this.props.selectedRegions, index);
-    }
+    };
 
     private isGhostIndex = (index: number) => {
         return this.props.grid.isGhostIndex(index, -1);
-    }
+    };
 
     private renderGhostCell = (index: number, extremaClasses: string[]) => {
         const rect = this.props.grid.getGhostCellRect(index, 0);
@@ -168,19 +168,19 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 key={Classes.rowIndexClass(index)}
                 loading={this.props.loading}
                 style={{ height: `${rect.height}px` }}
-            />);
-    }
+            />
+        );
+    };
 
     private toRegion = (index1: number, index2?: number) => {
         // the `this` value is messed up for Regions.row, so we have to have a wrapper function here
         return Regions.row(index1, index2);
-    }
+    };
 
     private isSelectedRegionRelevant = (selectedRegion: IRegion) => {
         const regionCardinality = Regions.getRegionCardinality(selectedRegion);
-        return regionCardinality === RegionCardinality.FULL_ROWS
-            || regionCardinality === RegionCardinality.FULL_TABLE;
-    }
+        return regionCardinality === RegionCardinality.FULL_ROWS || regionCardinality === RegionCardinality.FULL_TABLE;
+    };
 }
 
 /**
@@ -188,5 +188,5 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
  * numbers for each row.
  */
 export function renderDefaultRowHeader(rowIndex: number) {
-    return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`}/>;
+    return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} />;
 }

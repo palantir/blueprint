@@ -11,8 +11,8 @@ import { Browser } from "@blueprintjs/core/dist/compatibility";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave" ;
-export type KeyboardEventType = "keypress" | "keydown" |  "keyup" ;
+export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave";
+export type KeyboardEventType = "keypress" | "keydown" | "keyup";
 
 function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, modKey = false) {
     const event = document.createEvent("KeyboardEvent");
@@ -22,7 +22,7 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
     let metaKey = false;
 
     if (modKey) {
-        if ((typeof navigator !== "undefined") && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) {
+        if (typeof navigator !== "undefined" && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) {
             metaKey = true;
         } else {
             ctrlKey = true;
@@ -90,11 +90,13 @@ export class ElementHarness {
         return this;
     }
 
-    public mouse(eventType: MouseEventType = "click",
-                 offsetX = 0,
-                 offsetY = 0,
-                 isMetaKeyDown = false,
-                 isShiftKeyDown = false) {
+    public mouse(
+        eventType: MouseEventType = "click",
+        offsetX = 0,
+        offsetY = 0,
+        isMetaKeyDown = false,
+        isShiftKeyDown = false,
+    ) {
         const bounds = this.bounds();
         const x = bounds.left + bounds.width / 2 + offsetX;
         const y = bounds.top + bounds.height / 2 + offsetY;
@@ -108,17 +110,27 @@ export class ElementHarness {
         //     button, relatedTarget
         // );
         event.initMouseEvent(
-            eventType, true, true, window,
-            null, 0, 0, x, y,
-            isMetaKeyDown, false, isShiftKeyDown, isMetaKeyDown,
-            0, null,
+            eventType,
+            true,
+            true,
+            window,
+            null,
+            0,
+            0,
+            x,
+            y,
+            isMetaKeyDown,
+            false,
+            isShiftKeyDown,
+            isMetaKeyDown,
+            0,
+            null,
         );
         this.element.dispatchEvent(event);
         return this;
     }
 
     public keyboard(eventType: KeyboardEventType = "keypress", key = "", modKey = false) {
-
         dispatchTestKeyboardEvent(this.element, eventType, key, modKey);
         return this;
     }
@@ -150,7 +162,7 @@ export class ReactHarness {
     constructor() {
         this.container = document.createElement("div");
         document.documentElement.appendChild(this.container);
-    };
+    }
 
     public mount(component: React.ReactElement<any>) {
         ReactDOM.render(component, this.container);

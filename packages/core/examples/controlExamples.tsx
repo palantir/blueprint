@@ -32,7 +32,9 @@ export class SwitchExample extends BaseExample<IRadioExampleState> {
                 <Switch labelElement={<strong>Enabled</strong>} />
                 <Switch labelElement={<em>Public</em>} />
                 <Switch labelElement={<u>Cooperative</u>} defaultChecked={true} />
-                <small>This example uses <code>labelElement</code> to demonstrate JSX labels.</small>
+                <small>
+                    This example uses <code>labelElement</code> to demonstrate JSX labels.
+                </small>
             </div>
         );
     }
@@ -46,7 +48,7 @@ export interface IRadioExampleState {
 export class RadioExample extends BaseExample<IRadioExampleState> {
     public state: IRadioExampleState = {};
 
-    private handleRadioChange = handleStringChange((radioValue) => this.setState({ radioValue }));
+    private handleRadioChange = handleStringChange(radioValue => this.setState({ radioValue }));
 
     protected renderExample() {
         return (

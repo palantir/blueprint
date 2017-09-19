@@ -15,10 +15,7 @@ describe("focusCellUtils", () => {
     describe("getInitialFocusedCell", () => {
         const FOCUSED_CELL_FROM_PROPS = getFocusedCell(1, 2);
         const FOCUSED_CELL_FROM_STATE = getFocusedCell(3, 4);
-        const SELECTED_REGIONS = [
-            Regions.cell(1, 1, 4, 5),
-            Regions.cell(5, 1, 6, 2),
-        ];
+        const SELECTED_REGIONS = [Regions.cell(1, 1, 4, 5), Regions.cell(5, 1, 6, 2)];
 
         it("returns undefined if enableFocus=false", () => {
             const focusedCell = FocusedCellUtils.getInitialFocusedCell(
@@ -50,28 +47,21 @@ describe("focusCellUtils", () => {
             expect(focusedCell).to.deep.equal(FOCUSED_CELL_FROM_STATE);
         });
 
-        it("returns the focused cell for the first selected region if " +
-           "focusedCellFromState and focusedCellFromProps not defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-                true,
-                null,
-                null,
-                SELECTED_REGIONS,
-            );
-            const expectedFocusedCell = {
-                ...Regions.getFocusCellCoordinatesFromRegion(SELECTED_REGIONS[0]),
-                focusSelectionIndex: 0,
-            };
-            expect(focusedCell).to.deep.equal(expectedFocusedCell);
-        });
+        it(
+            "returns the focused cell for the first selected region if " +
+                "focusedCellFromState and focusedCellFromProps not defined",
+            () => {
+                const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, SELECTED_REGIONS);
+                const expectedFocusedCell = {
+                    ...Regions.getFocusCellCoordinatesFromRegion(SELECTED_REGIONS[0]),
+                    focusSelectionIndex: 0,
+                };
+                expect(focusedCell).to.deep.equal(expectedFocusedCell);
+            },
+        );
 
         it("returns cell (0, 0) if nothing else is defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-                true,
-                null,
-                null,
-                [],
-            );
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, []);
             const expectedFocusedCell = {
                 col: 0,
                 focusSelectionIndex: 0,

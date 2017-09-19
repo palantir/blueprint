@@ -77,8 +77,10 @@ export class Cell extends React.Component<ICellProps, {}> {
 
     public shouldComponentUpdate(nextProps: ICellProps) {
         // deeply compare "style," because a new but identical object might have been provided.
-        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
-            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
+        return (
+            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
+            !Utils.deepCompareKeys(this.props.style, nextProps.style)
+        );
     }
 
     public render() {
@@ -95,12 +97,10 @@ export class Cell extends React.Component<ICellProps, {}> {
             className,
         );
 
-        const textClasses = classNames(
-            {
-                [Classes.TABLE_TRUNCATED_TEXT]: truncated,
-                [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
-            },
-        );
+        const textClasses = classNames({
+            [Classes.TABLE_TRUNCATED_TEXT]: truncated,
+            [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
+        });
 
         const content = <div className={textClasses}>{this.props.children}</div>;
 

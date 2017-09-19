@@ -31,14 +31,16 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         }
         // shallow-comparing guide arrays leads to tons of unnecessary re-renders, so we check the
         // array contents explicitly.
-        return !Utils.arraysEqual(this.props.verticalGuides, nextProps.verticalGuides)
-            || !Utils.arraysEqual(this.props.horizontalGuides, nextProps.horizontalGuides);
+        return (
+            !Utils.arraysEqual(this.props.verticalGuides, nextProps.verticalGuides) ||
+            !Utils.arraysEqual(this.props.horizontalGuides, nextProps.horizontalGuides)
+        );
     }
 
     public render() {
         const { verticalGuides, horizontalGuides, className } = this.props;
-        const verticals = (verticalGuides == null) ? undefined : verticalGuides.map(this.renderVerticalGuide);
-        const horizontals = (horizontalGuides == null) ? undefined : horizontalGuides.map(this.renderHorizontalGuide);
+        const verticals = verticalGuides == null ? undefined : verticalGuides.map(this.renderVerticalGuide);
+        const horizontals = horizontalGuides == null ? undefined : horizontalGuides.map(this.renderHorizontalGuide);
         return (
             <div className={classNames(className, Classes.TABLE_OVERLAY_LAYER)}>
                 {verticals}
@@ -54,10 +56,8 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE, {
             "bp-table-vertical-guide-flush-left": offset === 0,
         });
-        return (
-            <div className={className} key={index} style={style} />
-        );
-    }
+        return <div className={className} key={index} style={style} />;
+    };
 
     private renderHorizontalGuide = (offset: number, index: number) => {
         const style = {
@@ -66,8 +66,6 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE, {
             "bp-table-horizontal-guide-flush-top": offset === 0,
         });
-        return (
-            <div className={className} key={index} style={style} />
-        );
-    }
+        return <div className={className} key={index} style={style} />;
+    };
 }

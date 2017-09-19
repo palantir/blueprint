@@ -106,7 +106,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
 
     private renderTag = (film: Film) => {
         return film.title;
-    }
+    };
 
     private renderFilm = ({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) => {
         const classes = classNames({
@@ -125,7 +125,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                 shouldDismissPopover={false}
             />
         );
-    }
+    };
 
     private filterFilm(query: string, film: Film, index: number) {
         return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
@@ -133,7 +133,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
 
     private handleTagRemove = (_tag: string, index: number) => {
         this.deselectFilm(index);
-    }
+    };
 
     private getSelectedFilmIndex(film: Film) {
         return this.state.films.indexOf(film);
@@ -157,7 +157,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         } else {
             this.deselectFilm(this.getSelectedFilmIndex(film));
         }
-    }
+    };
 
     private handleSwitchChange(prop: keyof IMultiSelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {

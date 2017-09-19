@@ -102,9 +102,7 @@ export interface IDateRangePickerState {
     value?: DateRange;
 }
 
-export class DateRangePicker
-    extends AbstractComponent<IDateRangePickerProps, IDateRangePickerState> {
-
+export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, IDateRangePickerState> {
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
@@ -121,12 +119,12 @@ export class DateRangePicker
 
     // these will get merged with the user's own
     private modifiers: IDatePickerModifiers = {
-        [SELECTED_RANGE_MODIFIER]: (day) => {
+        [SELECTED_RANGE_MODIFIER]: day => {
             const { value } = this.state;
             return value[0] != null && value[1] != null && DateUtils.isDayInRange(day, value, true);
         },
-        [`${SELECTED_RANGE_MODIFIER}-start`]: (day) => DateUtils.areSameDay(this.state.value[0], day),
-        [`${SELECTED_RANGE_MODIFIER}-end`]: (day) => DateUtils.areSameDay(this.state.value[1], day),
+        [`${SELECTED_RANGE_MODIFIER}-start`]: day => DateUtils.areSameDay(this.state.value[0], day),
+        [`${SELECTED_RANGE_MODIFIER}-end`]: day => DateUtils.areSameDay(this.state.value[1], day),
 
         [HOVERED_RANGE_MODIFIER]: (day: Date) => {
             const { hoverValue, value } = this.state;
@@ -141,7 +139,7 @@ export class DateRangePicker
         },
         [`${HOVERED_RANGE_MODIFIER}-start`]: (day: Date) => {
             const { hoverValue } = this.state;
-            if (hoverValue == null ||  hoverValue[0] == null) {
+            if (hoverValue == null || hoverValue[0] == null) {
                 return false;
             }
             return DateUtils.areSameDay(hoverValue[0], day);
@@ -265,21 +263,18 @@ export class DateRangePicker
         super.componentWillReceiveProps(nextProps);
 
         if (!DateUtils.areRangesEqual(this.props.value, nextProps.value)) {
-            const nextState = getStateChange(this.props.value, nextProps.value, this.state,
-                nextProps.contiguousCalendarMonths);
+            const nextState = getStateChange(
+                this.props.value,
+                nextProps.value,
+                this.state,
+                nextProps.contiguousCalendarMonths,
+            );
             this.setState(nextState);
         }
     }
 
     protected validateProps(props: IDateRangePickerProps) {
-        const {
-            defaultValue,
-            initialMonth,
-            maxDate,
-            minDate,
-            boundaryToModify,
-            value,
-        } = props;
+        const { defaultValue, initialMonth, maxDate, minDate, boundaryToModify, value } = props;
         const dateRange: DateRange = [minDate, maxDate];
 
         if (defaultValue != null && !DateUtils.isDayRangeInRange(defaultValue, dateRange)) {
@@ -290,10 +285,7 @@ export class DateRangePicker
             throw new Error(Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
         }
 
-        if (maxDate != null
-                && minDate != null
-                && maxDate < minDate
-                && !DateUtils.areSameDay(maxDate, minDate)) {
+        if (maxDate != null && minDate != null && maxDate < minDate && !DateUtils.areSameDay(maxDate, minDate)) {
             throw new Error(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         }
 
@@ -301,9 +293,11 @@ export class DateRangePicker
             throw new Error(Errors.DATERANGEPICKER_VALUE_INVALID);
         }
 
-        if (boundaryToModify != null
-            && boundaryToModify !== DateRangeBoundary.START
-            && boundaryToModify !== DateRangeBoundary.END) {
+        if (
+            boundaryToModify != null &&
+            boundaryToModify !== DateRangeBoundary.START &&
+            boundaryToModify !== DateRangeBoundary.END
+        ) {
             throw new Error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID);
         }
     }
@@ -327,11 +321,7 @@ export class DateRangePicker
             );
         });
 
-        return (
-            <Menu className={DateClasses.DATERANGEPICKER_SHORTCUTS}>
-                {shortcutElements}
-            </Menu>
-        );
+        return <Menu className={DateClasses.DATERANGEPICKER_SHORTCUTS}>{shortcutElements}</Menu>;
     }
 
     private renderSingleCaption = (captionProps: DayPicker.CaptionElementProps) => (
@@ -342,7 +332,7 @@ export class DateRangePicker
             onMonthChange={this.handleLeftMonthSelectChange}
             onYearChange={this.handleLeftYearSelectChange}
         />
-    )
+    );
 
     private renderLeftCaption = (captionProps: DayPicker.CaptionElementProps) => (
         <DatePickerCaption
@@ -352,7 +342,7 @@ export class DateRangePicker
             onMonthChange={this.handleLeftMonthSelectChange}
             onYearChange={this.handleLeftYearSelectChange}
         />
-    )
+    );
 
     private renderRightCaption = (captionProps: DayPicker.CaptionElementProps) => (
         <DatePickerCaption
@@ -362,21 +352,29 @@ export class DateRangePicker
             onMonthChange={this.handleRightMonthSelectChange}
             onYearChange={this.handleRightYearSelectChange}
         />
-    )
+    );
 
     private handleDayMouseEnter = (day: Date, modifiers: DayPicker.DayModifiers) => {
-        if (modifiers.disabled) { return; }
+        if (modifiers.disabled) {
+            return;
+        }
         const { dateRange, boundary } = DateRangeSelectionStrategy.getNextState(
-            this.state.value, day, this.props.allowSingleDayRange, this.props.boundaryToModify);
+            this.state.value,
+            day,
+            this.props.allowSingleDayRange,
+            this.props.boundaryToModify,
+        );
         this.setState({ hoverValue: dateRange });
         Utils.safeInvoke(this.props.onHoverChange, dateRange, day, boundary);
-    }
+    };
 
     private handleDayMouseLeave = (day: Date, modifiers: DayPicker.DayModifiers) => {
-        if (modifiers.disabled) { return; }
+        if (modifiers.disabled) {
+            return;
+        }
         this.setState({ hoverValue: undefined });
         Utils.safeInvoke(this.props.onHoverChange, undefined, day, undefined);
-    }
+    };
 
     private handleDayClick = (day: Date, modifiers: DayPicker.DayModifiers) => {
         if (modifiers.disabled) {
@@ -386,14 +384,18 @@ export class DateRangePicker
         }
 
         const nextValue = DateRangeSelectionStrategy.getNextState(
-            this.state.value, day, this.props.allowSingleDayRange, this.props.boundaryToModify).dateRange;
+            this.state.value,
+            day,
+            this.props.allowSingleDayRange,
+            this.props.boundaryToModify,
+        ).dateRange;
 
         // update the hovered date range after click to show the newly selected
         // state, at leasts until the mouse moves again
         this.handleDayMouseEnter(day, modifiers);
 
         this.handleNextState(nextValue);
-    }
+    };
 
     private getShorcutClickHandler(nextValue: DateRange) {
         return () => this.handleNextState(nextValue);
@@ -413,22 +415,22 @@ export class DateRangePicker
     private handleLeftMonthChange = (newDate: Date) => {
         const leftView = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
         this.updateLeftView(leftView);
-    }
+    };
 
     private handleRightMonthChange = (newDate: Date) => {
         const rightView = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
         this.updateRightView(rightView);
-    }
+    };
 
     private handleLeftMonthSelectChange = (leftMonth: number) => {
         const leftView = new MonthAndYear(leftMonth, this.state.leftView.getYear());
         this.updateLeftView(leftView);
-    }
+    };
 
     private handleRightMonthSelectChange = (rightMonth: number) => {
         const rightView = new MonthAndYear(rightMonth, this.state.rightView.getYear());
         this.updateRightView(rightView);
-    }
+    };
 
     private updateLeftView(leftView: MonthAndYear) {
         let rightView = this.state.rightView.clone();
@@ -473,7 +475,7 @@ export class DateRangePicker
         }
 
         this.setViews(leftView, rightView);
-    }
+    };
 
     private handleRightYearSelectChange = (rightDisplayYear: number) => {
         let rightView = new MonthAndYear(this.state.rightView.getMonth(), rightDisplayYear);
@@ -495,7 +497,7 @@ export class DateRangePicker
         }
 
         this.setViews(leftView, rightView);
-    }
+    };
 
     private setViews(leftView: MonthAndYear, rightView: MonthAndYear) {
         this.setState({ leftView, rightView });
@@ -506,10 +508,12 @@ export class DateRangePicker
     }
 }
 
-function getStateChange(value: DateRange,
-                        nextValue: DateRange,
-                        state: IDateRangePickerState,
-                        contiguousCalendarMonths: boolean): IDateRangePickerState {
+function getStateChange(
+    value: DateRange,
+    nextValue: DateRange,
+    state: IDateRangePickerState,
+    contiguousCalendarMonths: boolean,
+): IDateRangePickerState {
     let returnVal: IDateRangePickerState;
 
     if (value != null && nextValue == null) {
@@ -535,15 +539,17 @@ function getStateChange(value: DateRange,
                     leftView = rightView.getPreviousMonth();
                 }
             }
-        /*
+            /*
         * Only start date selected.
         * If the newly selected start date isn't in either of the displayed months, then
         *   - set the left DayPicker to the month of the selected start date
         *   - ensure the right DayPicker is before the left, changing if needed
         */
         } else if (nextValueStart != null && nextValueEnd == null) {
-            const nextValueStartMonthAndYear =
-                new MonthAndYear(nextValueStart.getMonth(), nextValueStart.getFullYear());
+            const nextValueStartMonthAndYear = new MonthAndYear(
+                nextValueStart.getMonth(),
+                nextValueStart.getFullYear(),
+            );
 
             if (!nextValueStartMonthAndYear.isSame(leftView) && !nextValueStartMonthAndYear.isSame(rightView)) {
                 leftView = nextValueStartMonthAndYear;
@@ -551,14 +557,15 @@ function getStateChange(value: DateRange,
                     rightView = leftView.getNextMonth();
                 }
             }
-        /*
+            /*
         * Both start date and end date selected.
         */
         } else if (nextValueStart != null && nextValueEnd != null) {
-            const nextValueStartMonthAndYear =
-                new MonthAndYear(nextValueStart.getMonth(), nextValueStart.getFullYear());
-            const nextValueEndMonthAndYear =
-                new MonthAndYear(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
+            const nextValueStartMonthAndYear = new MonthAndYear(
+                nextValueStart.getMonth(),
+                nextValueStart.getFullYear(),
+            );
+            const nextValueEndMonthAndYear = new MonthAndYear(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
 
             /*
             * Both start and end date months are identical
@@ -576,7 +583,7 @@ function getStateChange(value: DateRange,
                     leftView = nextValueStartMonthAndYear;
                     rightView = nextValueStartMonthAndYear.getNextMonth();
                 }
-            /*
+                /*
             * Different start and end date months, adjust display months.
             */
             } else {
@@ -615,12 +622,12 @@ function createDefaultShortcuts() {
         return returnVal;
     };
 
-    const oneWeekAgo = makeDate((d) => d.setDate(d.getDate() - 7));
-    const oneMonthAgo = makeDate((d) => d.setMonth(d.getMonth() - 1));
-    const threeMonthsAgo = makeDate((d) => d.setMonth(d.getMonth() - 3));
-    const sixMonthsAgo = makeDate((d) => d.setMonth(d.getMonth() - 6));
-    const oneYearAgo = makeDate((d) => d.setFullYear(d.getFullYear() - 1));
-    const twoYearsAgo = makeDate((d) => d.setFullYear(d.getFullYear() - 2));
+    const oneWeekAgo = makeDate(d => d.setDate(d.getDate() - 7));
+    const oneMonthAgo = makeDate(d => d.setMonth(d.getMonth() - 1));
+    const threeMonthsAgo = makeDate(d => d.setMonth(d.getMonth() - 3));
+    const sixMonthsAgo = makeDate(d => d.setMonth(d.getMonth() - 6));
+    const oneYearAgo = makeDate(d => d.setFullYear(d.getFullYear() - 1));
+    const twoYearsAgo = makeDate(d => d.setFullYear(d.getFullYear() - 2));
 
     return [
         createShortcut("Past week", [oneWeekAgo, today]),

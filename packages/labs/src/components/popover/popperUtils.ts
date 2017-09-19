@@ -23,10 +23,14 @@ export function isVerticalPosition(side: PopperJS.Position) {
 /** Returns the opposite position. */
 export function getOppositePosition(side: PopperJS.Position) {
     switch (side) {
-        case "top": return "bottom";
-        case "left": return "right";
-        case "bottom": return "top";
-        default: return "left";
+        case "top":
+            return "bottom";
+        case "left":
+            return "right";
+        case "bottom":
+            return "top";
+        default:
+            return "left";
     }
 }
 
@@ -34,9 +38,12 @@ export function getOppositePosition(side: PopperJS.Position) {
 export function getAlignment(placement: PopperJS.Placement) {
     const align = placement.split("-")[1] as "start" | "end" | undefined;
     switch (align) {
-        case "start": return "left";
-        case "end": return "right";
-        default: return "center";
+        case "start":
+            return "left";
+        case "end":
+            return "right";
+        default:
+            return "center";
     }
 }
 
@@ -65,7 +72,7 @@ export function getTransformOrigin(data: PopperJS.PopperData) {
 const ARROW_SPACING = 4;
 
 /** Popper modifier that offsets popper and arrow so arrow points out of the correct side */
-export const arrowOffsetModifier: PopperJS.ModifierFn = (data) => {
+export const arrowOffsetModifier: PopperJS.ModifierFn = data => {
     if (data.arrowElement == null) {
         return data;
     }

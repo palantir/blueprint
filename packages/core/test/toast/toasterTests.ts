@@ -58,7 +58,7 @@ describe("Toaster", () => {
         const key = toaster.show({ message: "two" });
         toaster.show({ message: "six" });
         toaster.dismiss(key);
-        assert.deepEqual(toaster.getToasts().map((t) => t.message), ["six", "one"]);
+        assert.deepEqual(toaster.getToasts().map(t => t.message), ["six", "one"]);
     });
 
     it("clear() removes all toasts", () => {
@@ -116,10 +116,7 @@ describe("Toaster", () => {
         const toast = { message: "repeat" };
         toaster.show(toast);
         toaster.show(toast);
-        assert.isFalse(
-            errorSpy.calledWithMatch("two children with the same key"),
-            "mutation side effect!",
-        );
+        assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
     });
 
     describe("with autoFocus set to true", () => {
@@ -129,7 +126,7 @@ describe("Toaster", () => {
             toaster = Toaster.create({ autoFocus: true }, testsContainerElement);
         });
 
-        it("focuses on newly created toast", (done) => {
+        it("focuses on newly created toast", done => {
             toaster.show({ message: "focus on me" });
             setTimeout(() => {
                 assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);

@@ -10,7 +10,7 @@ import { TagRenderer } from "./";
 
 export interface IDocsMap {
     [name: string]: React.ComponentClass<{}>;
-};
+}
 
 export class ReactDocsTagRenderer {
     constructor(private docs: IDocsMap) {}
@@ -30,5 +30,5 @@ export class ReactDocsTagRenderer {
             throw new Error(`Unknown @reactDocs component: ${componentName}`);
         }
         return React.createElement(docsComponent, { key });
-    }
+    };
 }

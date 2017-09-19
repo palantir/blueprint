@@ -90,7 +90,8 @@ describe("Resizable", () => {
         expect(target.element).to.exist;
 
         // drag resize handle to the right by 10 pixels
-        target.mouse("mousemove")
+        target
+            .mouse("mousemove")
             .mouse("mousedown")
             .mouse("mousemove", 10)
             .mouse("mouseup", 10);
@@ -108,7 +109,8 @@ describe("Resizable", () => {
         onSizeChanged.reset();
 
         // double click the resize handle
-        target.mouse("mousemove")
+        target
+            .mouse("mousemove")
             .mouse("mousedown")
             .mouse("mouseup", 10)
             .mouse("mousedown")

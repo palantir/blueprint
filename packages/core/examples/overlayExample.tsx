@@ -8,15 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import {
-    Button,
-    Classes,
-    IBackdropProps,
-    Intent,
-    IOverlayableProps,
-    Overlay,
-    Switch,
-} from "@blueprintjs/core";
+import { Button, Classes, IBackdropProps, Intent, IOverlayableProps, Overlay, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
@@ -38,23 +30,18 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
 
     private button: HTMLButtonElement;
     private refHandlers = {
-        button: (ref: HTMLButtonElement) => this.button = ref,
+        button: (ref: HTMLButtonElement) => (this.button = ref),
     };
 
-    private handleAutoFocusChange    = handleBooleanChange((autoFocus) => this.setState({ autoFocus }));
-    private handleBackdropChange     = handleBooleanChange((hasBackdrop) => this.setState({ hasBackdrop }));
-    private handleEnforceFocusChange = handleBooleanChange((enforceFocus) => this.setState({ enforceFocus }));
-    private handleEscapeKeyChange    = handleBooleanChange((canEscapeKeyClose) => this.setState({ canEscapeKeyClose }));
-    private handleInlineChange       = handleBooleanChange((inline) => this.setState({ inline }));
-    private handleOutsideClickChange = handleBooleanChange((val) => this.setState({ canOutsideClickClose: val }));
+    private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+    private handleBackdropChange = handleBooleanChange(hasBackdrop => this.setState({ hasBackdrop }));
+    private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
+    private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+    private handleInlineChange = handleBooleanChange(inline => this.setState({ inline }));
+    private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     protected renderExample() {
-        const classes = classNames(
-            Classes.CARD,
-            Classes.ELEVATION_4,
-            OVERLAY_EXAMPLE_CLASS,
-            this.props.themeName,
-        );
+        const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS, this.props.themeName);
 
         return (
             <div className="docs-dialog-example">
@@ -65,19 +52,23 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
                     <div className={classes}>
                         <h3>I'm an Overlay!</h3>
                         <p>
-                            This is a simple container with some inline styles to position it on the screen.
-                            Its CSS transitions are customized for this example only to demonstrate how
-                            easily custom transitions can be implemented.
+                            This is a simple container with some inline styles to position it on the screen. Its CSS
+                            transitions are customized for this example only to demonstrate how easily custom
+                            transitions can be implemented.
                         </p>
                         <p>
-                            Click the right button below to transfer focus to the "Show overlay" trigger
-                            button outside of this overlay. If persistent focus is enabled, focus will
-                            be constrained to the overlay. Use the <code>tab</code> key to move to the
-                            next focusable element to illustrate this effect.
+                            Click the right button below to transfer focus to the "Show overlay" trigger button outside
+                            of this overlay. If persistent focus is enabled, focus will be constrained to the overlay.
+                            Use the <code>tab</code> key to move to the next focusable element to illustrate this
+                            effect.
                         </p>
                         <br />
-                        <Button intent={Intent.DANGER} onClick={this.handleClose}>Close</Button>
-                        <Button onClick={this.focusButton} style={{ float: "right" }}>Focus button</Button>
+                        <Button intent={Intent.DANGER} onClick={this.handleClose}>
+                            Close
+                        </Button>
+                        <Button onClick={this.focusButton} style={{ float: "right" }}>
+                            Focus button
+                        </Button>
                     </div>
                 </Overlay>
             </div>
@@ -100,13 +91,9 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
                     label="Enforce focus"
                     onChange={this.handleEnforceFocusChange}
                 />,
-                <Switch
-                    checked={inline}
-                    key="inline"
-                    label="Render inline"
-                    onChange={this.handleInlineChange}
-                />,
-            ], [
+                <Switch checked={inline} key="inline" label="Render inline" onChange={this.handleInlineChange} />,
+            ],
+            [
                 <Switch
                     checked={this.state.canOutsideClickClose}
                     key="click"
@@ -129,7 +116,7 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
         ];
     }
 
-    protected handleOpen  = () => this.setState({ isOpen: true });
+    protected handleOpen = () => this.setState({ isOpen: true });
     protected handleClose = () => this.setState({ isOpen: false });
 
     private focusButton = () => this.button.focus();

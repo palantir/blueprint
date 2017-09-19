@@ -13,15 +13,15 @@ import { BaseExample } from "@blueprintjs/docs";
 export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
     public state = {
         isOpen: false,
-     };
+    };
 
     protected renderExample() {
         // using JSX instead of strings for all content so the Tooltips will re-render
         // with every update for dark theme inheritance.
         const lotsOfText = (
             <span>
-                In facilisis scelerisque dui vel dignissim.
-                Sed nunc orci, ultricies congue vehicula quis, facilisis a orci.
+                In facilisis scelerisque dui vel dignissim. Sed nunc orci, ultricies congue vehicula quis, facilisis a
+                orci.
             </span>
         );
         return (
@@ -30,23 +30,21 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                     Inline text can have&nbsp;
                     <Tooltip
                         className="pt-tooltip-indicator"
-                        content={<em>This tooltip contains an <strong>em</strong> tag.</em>}
+                        content={
+                            <em>
+                                This tooltip contains an <strong>em</strong> tag.
+                            </em>
+                        }
                     >
-                       a tooltip.
+                        a tooltip.
                     </Tooltip>
                 </p>
                 <p>
-                    <Tooltip content={lotsOfText}>
-                        Or, hover anywhere over this whole line.
-                    </Tooltip>
+                    <Tooltip content={lotsOfText}>Or, hover anywhere over this whole line.</Tooltip>
                 </p>
                 <p>
                     This line's tooltip&nbsp;
-                    <Tooltip
-                        className="pt-tooltip-indicator"
-                        content={<span>disabled</span>}
-                        isDisabled={true}
-                    >
+                    <Tooltip className="pt-tooltip-indicator" content={<span>disabled</span>} isDisabled={true}>
                         is disabled.
                     </Tooltip>
                 </p>
@@ -104,7 +102,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         visual intents!
                     </Tooltip>
                 </div>
-                <br/>
+                <br />
                 <Popover
                     content={<h1>Popover!</h1>}
                     popoverClassName="pt-popover-content-sizing"
@@ -124,5 +122,5 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
 
     private toggleControlledTooltip = () => {
         this.setState({ isOpen: !this.state.isOpen });
-    }
+    };
 }
