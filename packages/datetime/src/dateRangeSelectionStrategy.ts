@@ -1,3 +1,10 @@
+/*
+ * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ */
+
 import { areSameDay, DateRange, DateRangeBoundary } from "./common/dateUtils";
 
 export interface IDateRangeSelectionState {
@@ -37,7 +44,7 @@ export class DateRangeSelectionStrategy {
         day: Date,
         allowSingleDayRange: boolean,
         boundary: DateRangeBoundary,
-    ) {
+    ): IDateRangeSelectionState {
         const boundaryDate = this.getBoundaryDate(boundary, currentRange);
         const otherBoundary = this.getOtherBoundary(boundary);
         const otherBoundaryDate = this.getBoundaryDate(otherBoundary, currentRange);
@@ -93,10 +100,14 @@ export class DateRangeSelectionStrategy {
             }
         }
 
-        return { dateRange: nextDateRange, boundary: nextBoundary } as IDateRangeSelectionState;
+        return { dateRange: nextDateRange, boundary: nextBoundary };
     }
 
-    private static getDefaultNextState(selectedRange: DateRange, day: Date, allowSingleDayRange: boolean) {
+    private static getDefaultNextState(
+        selectedRange: DateRange,
+        day: Date,
+        allowSingleDayRange: boolean,
+    ): IDateRangeSelectionState {
         const [start, end] = selectedRange;
 
         let nextDateRange: DateRange;
@@ -121,7 +132,7 @@ export class DateRangeSelectionStrategy {
             }
         }
 
-        return { dateRange: nextDateRange } as IDateRangeSelectionState;
+        return { dateRange: nextDateRange };
     }
 
     private static getOtherBoundary(boundary: DateRangeBoundary) {
