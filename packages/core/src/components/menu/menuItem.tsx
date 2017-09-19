@@ -14,7 +14,7 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
-import { Popover, PopoverInteractionKind } from "../popover/popover";
+import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Menu } from "./menu";
 
 export interface IMenuItemProps extends IActionProps, ILinkProps {
@@ -26,6 +26,9 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * Right-aligned label content, useful for displaying hotkeys.
      */
     label?: string | JSX.Element;
+
+    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Whether an enabled, non-submenu item should automatically close the
@@ -76,6 +79,7 @@ const REACT_CONTEXT_TYPES: React.ValidationMap<IMenuItemState> = {
 export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> {
     public static defaultProps: IMenuItemProps = {
         disabled: false,
+        popoverProps: {},
         shouldDismissPopover: true,
         submenuViewportMargin: {},
         text: "",
@@ -94,7 +98,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
     private liElement: HTMLElement;
 
     public render() {
-        const { children, disabled, label, submenu } = this.props;
+        const { children, disabled, label, submenu, popoverProps } = this.props;
         const hasSubmenu = children != null || submenu != null;
         const liClasses = classNames({
             [Classes.MENU_SUBMENU]: hasSubmenu,
@@ -126,21 +130,25 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
         if (hasSubmenu) {
             const measureSubmenu = (this.props.useSmartPositioning) ? this.measureSubmenu : null;
             const submenuElement = <Menu ref={measureSubmenu}>{this.renderChildren()}</Menu>;
-            const popoverClasses = classNames({
-                [Classes.ALIGN_LEFT]: this.state.alignLeft,
-            });
+            const popoverClasses = classNames(
+                Classes.MINIMAL,
+                Classes.MENU_SUBMENU,
+                popoverProps.popoverClassName,
+                { [Classes.ALIGN_LEFT]: this.state.alignLeft },
+            );
 
             content = (
                 <Popover
-                    content={submenuElement}
                     isDisabled={disabled}
                     enforceFocus={false}
                     hoverCloseDelay={0}
                     inline={true}
                     interactionKind={PopoverInteractionKind.HOVER}
                     position={this.state.alignLeft ? Position.LEFT_TOP : Position.RIGHT_TOP}
-                    popoverClassName={classNames(Classes.MINIMAL, Classes.MENU_SUBMENU, popoverClasses)}
                     useSmartArrowPositioning={false}
+                    {...popoverProps}
+                    content={submenuElement}
+                    popoverClassName={popoverClasses}
                 >
                     {content}
                 </Popover>
