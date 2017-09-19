@@ -136,12 +136,9 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
         if (hasSubmenu) {
             const measureSubmenu = this.props.useSmartPositioning ? this.measureSubmenu : null;
             const submenuElement = <Menu ref={measureSubmenu}>{this.renderChildren()}</Menu>;
-            const popoverClasses = classNames(
-                Classes.MINIMAL,
-                Classes.MENU_SUBMENU,
-                popoverProps.popoverClassName,
-                { [Classes.ALIGN_LEFT]: this.state.alignLeft },
-            );
+            const popoverClasses = classNames(Classes.MINIMAL, Classes.MENU_SUBMENU, popoverProps.popoverClassName, {
+                [Classes.ALIGN_LEFT]: this.state.alignLeft,
+            });
 
             content = (
                 <Popover
