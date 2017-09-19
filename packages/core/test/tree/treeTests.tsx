@@ -64,12 +64,12 @@ describe("<Tree>", () => {
         const contents = [
             // tslint:disable-next-line:max-line-length
             {
-                id: 1,
+                childNodes: [{ id: 4, label: "" }],
                 className: "c0",
                 hasCaret: true,
+                id: 1,
                 isExpanded: false,
                 label: "",
-                childNodes: [{ id: 4, label: "" }],
             },
             { id: 0, className: "c1", hasCaret: true, isExpanded: true, label: "" },
             { id: 2, className: "c2", hasCaret: true, isExpanded: false, label: "" },

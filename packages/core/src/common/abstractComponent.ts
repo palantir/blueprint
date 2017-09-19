@@ -60,14 +60,14 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
     };
 
     /**
-    * Ensures that the props specified for a component are valid.
-    * Implementations should check that props are valid and usually throw an Error if they are not.
-    * Implementations should not duplicate checks that the type system already guarantees.
-    *
-    * This method should be used instead of React's
-    * [propTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) feature.
-    * In contrast to propTypes, these runtime checks are _always_ run, not just in development mode.
-    */
+     * Ensures that the props specified for a component are valid.
+     * Implementations should check that props are valid and usually throw an Error if they are not.
+     * Implementations should not duplicate checks that the type system already guarantees.
+     *
+     * This method should be used instead of React's
+     * [propTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) feature.
+     * In contrast to propTypes, these runtime checks are _always_ run, not just in development mode.
+     */
     protected validateProps(_: P & { children?: React.ReactNode }) {
         // implement in subclass
     }
