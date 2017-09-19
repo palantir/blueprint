@@ -119,7 +119,13 @@ describe("MenuItem", () => {
         );
         assert.strictEqual(wrapper.find(Popover).prop("inline"), popoverProps.inline);
         assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
-        assert.notStrictEqual(wrapper.find(Popover).prop("popoverClassName").indexOf(popoverProps.popoverClassName), 0);
+        assert.notStrictEqual(
+            wrapper
+                .find(Popover)
+                .prop("popoverClassName")
+                .indexOf(popoverProps.popoverClassName),
+            0,
+        );
         assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
     });
 
