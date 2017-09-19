@@ -11,7 +11,11 @@ import { ITooltipProps, Tooltip } from "./tooltip";
 
 export class SVGTooltip extends React.Component<ITooltipProps, {}> {
     public render() {
-        return <Tooltip rootElementTag="g" {...this.props}>{this.props.children}</Tooltip>;
+        return (
+            <Tooltip rootElementTag="g" {...this.props}>
+                {this.props.children}
+            </Tooltip>
+        );
     }
 }
 

@@ -25,10 +25,10 @@ describe("Suggest", () => {
         query: "",
     };
     let handlers: {
-        inputValueRenderer: Sinon.SinonSpy,
-        itemPredicate: Sinon.SinonSpy,
-        itemRenderer: Sinon.SinonSpy,
-        onItemSelect: Sinon.SinonSpy,
+        inputValueRenderer: Sinon.SinonSpy;
+        itemPredicate: Sinon.SinonSpy;
+        itemRenderer: Sinon.SinonSpy;
+        onItemSelect: Sinon.SinonSpy;
     };
 
     beforeEach(() => {
@@ -135,7 +135,7 @@ describe("Suggest", () => {
     describe("itemRenderer", () => {
         it("itemRenderer is called for each filtered child", () => {
             suggest();
-            const { callCount } = handlers.itemRenderer;
+            const { callCount } = handlers.itemRenderer;
             const numItems = TOP_100_FILMS.length;
             assert.strictEqual(callCount, numItems, "should invoke itemRenderer 100 times on render");
         });
@@ -155,14 +155,14 @@ describe("Suggest", () => {
 
         it("invokes inputProps.onKeyDown on input keydown", () => {
             const onKeyDown = sinon.spy();
-            const wrapper = suggest({ inputProps: { onKeyDown }});
+            const wrapper = suggest({ inputProps: { onKeyDown } });
             simulateKeyDown(wrapper);
             assert.strictEqual(onKeyDown.callCount, 1, "should call inputProps.onKeyDown once");
         });
 
         it("invokes inputProps.onKeyUp on input keyup", () => {
             const onKeyUp = sinon.spy();
-            const wrapper = suggest({ inputProps: { onKeyUp }});
+            const wrapper = suggest({ inputProps: { onKeyUp } });
             simulateKeyUp(wrapper);
             assert.strictEqual(onKeyUp.callCount, 1, "should call inputProps.onKeyUp once");
         });
@@ -199,7 +199,10 @@ describe("Suggest", () => {
             });
 
             function getListContainerElement(wrapper: ReactWrapper<any, any>) {
-                return wrapper.find(Popover).find(`.${Classes.MENU}`).getDOMNode();
+                return wrapper
+                    .find(Popover)
+                    .find(`.${Classes.MENU}`)
+                    .getDOMNode();
             }
         });
 
@@ -283,7 +286,9 @@ function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererPr
         [Classes.INTENT_PRIMARY]: isActive,
     });
     return (
-        <a className={classes} key={film.rank} onClick={handleClick}>{film.rank}. {film.title}</a>
+        <a className={classes} key={film.rank} onClick={handleClick}>
+            {film.rank}. {film.title}
+        </a>
     );
 }
 
@@ -292,7 +297,10 @@ function filterByYear(query: string, film: Film) {
 }
 
 function selectItem(wrapper: ReactWrapper<any, any>, index: number) {
-    wrapper.find("a").at(index).simulate("click");
+    wrapper
+        .find("a")
+        .at(index)
+        .simulate("click");
 }
 
 function inputValueRenderer(item: Film) {

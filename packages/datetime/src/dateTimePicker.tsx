@@ -45,10 +45,10 @@ export interface IDateTimePickerProps extends IProps {
      */
     value?: Date;
 
-   /**
-    * Allows the user to clear the selection by clicking the currently selected day.
-    * @default true
-    */
+    /**
+     * Allows the user to clear the selection by clicking the currently selected day.
+     * @default true
+     */
     canClearSelection?: boolean;
 }
 
@@ -69,7 +69,7 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
     public constructor(props?: IDateTimePickerProps, context?: any) {
         super(props, context);
 
-        const initialValue = (this.props.value !== undefined) ? this.props.value : this.props.defaultValue;
+        const initialValue = this.props.value !== undefined ? this.props.value : this.props.defaultValue;
         this.state = {
             dateValue: initialValue,
             timeValue: initialValue,
@@ -86,11 +86,7 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
                     onChange={this.handleDateChange}
                     value={value}
                 />
-                <TimePicker
-                    {...this.props.timePickerProps}
-                    onChange={this.handleTimeChange}
-                    value={value}
-                />
+                <TimePicker {...this.props.timePickerProps} onChange={this.handleTimeChange} value={value} />
             </div>
         );
     }
@@ -115,7 +111,7 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
         }
         const value = DateUtils.getDateTime(dateValue, this.state.timeValue);
         Utils.safeInvoke(this.props.onChange, value, isUserChange);
-    }
+    };
 
     public handleTimeChange = (timeValue: Date) => {
         if (this.props.value === undefined) {
@@ -123,5 +119,5 @@ export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDat
         }
         const value = DateUtils.getDateTime(this.state.dateValue, timeValue);
         Utils.safeInvoke(this.props.onChange, value, true);
-    }
+    };
 }

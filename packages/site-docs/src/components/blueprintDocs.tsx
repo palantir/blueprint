@@ -1,4 +1,3 @@
-
 import { setHotkeysDialogProps } from "@blueprintjs/core";
 import { Documentation, IDocumentationProps } from "@blueprintjs/docs";
 import * as React from "react";
@@ -29,8 +28,12 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     public render() {
         const navbarLeft = [
             <a className="docs-logo" href="/" key="_logo" />,
-            <div className="pt-navbar-heading docs-heading" key="_title">Blueprint</div>,
-            <div className="pt-text-muted" key="_version">v{this.props.versions[0].version}</div>,
+            <div className="pt-navbar-heading docs-heading" key="_title">
+                Blueprint
+            </div>,
+            <div className="pt-text-muted" key="_version">
+                v{this.props.versions[0].version}
+            </div>,
         ];
         const navbarRight = (
             <NavbarActions
@@ -57,12 +60,12 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         document.queryAll(".pt-checkbox input[indeterminate]").forEach((el: HTMLInputElement) => {
             el.indeterminate = true;
         });
-    }
+    };
 
     private handleToggleDark = (useDark: boolean) => {
         const themeName = useDark ? DARK_THEME : LIGHT_THEME;
         setTheme(themeName);
         setHotkeysDialogProps({ className: this.state.themeName });
         this.setState({ themeName });
-    }
+    };
 }

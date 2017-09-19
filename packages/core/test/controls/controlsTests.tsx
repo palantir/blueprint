@@ -17,7 +17,7 @@ describe("Controls:", () => {
     controlsTests(Checkbox, "checkbox", "pt-checkbox", () => {
         describe("indeterminate", () => {
             let input: HTMLInputElement;
-            const handleInputRef = (ref: HTMLInputElement) => input = ref;
+            const handleInputRef = (ref: HTMLInputElement) => (input = ref);
 
             it("prop sets element state", () => {
                 mount(<Checkbox indeterminate={true} inputRef={handleInputRef} />);

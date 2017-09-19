@@ -14,6 +14,8 @@ module.exports = (blueprint, gulp, plugins) => {
     }, (project, taskName) => {
         gulp.task(taskName, () => (
             gulp.src([
+                // we might consider excluding src/generated/** from linting in the future, but for now it
+                // conforms to our code style
                 path.join(project.cwd, "!(coverage|dist|node_modules|typings)", "**", "*.{js,jsx,ts,tsx}"),
                 // exclude nested dist directories (ex: table/preview/dist)
                 "!" + path.join(project.cwd, "*", "dist", "**", "*.{js,jsx,ts,tsx}"),

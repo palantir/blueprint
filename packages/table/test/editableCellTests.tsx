@@ -49,12 +49,9 @@ describe("<EditableCell>", () => {
         const onCancel = sinon.spy();
         const onChange = sinon.spy();
         const onConfirm = sinon.spy();
-        const elem = harness.mount(<EditableCell
-            value="test-value-5000"
-            onCancel={onCancel}
-            onChange={onChange}
-            onConfirm={onConfirm}
-        />);
+        const elem = harness.mount(
+            <EditableCell value="test-value-5000" onCancel={onCancel} onChange={onChange} onConfirm={onConfirm} />,
+        );
 
         // double click to edit
         doubleClickToEdit(elem);
@@ -83,13 +80,15 @@ describe("<EditableCell>", () => {
         const ROW_INDEX = 17;
         const COLUMN_INDEX = 44;
 
-        const elem = harness.mount(<EditableCell
-            rowIndex={ROW_INDEX}
-            columnIndex={COLUMN_INDEX}
-            onCancel={onCancelSpy}
-            onChange={onChangeSpy}
-            onConfirm={onConfirmSpy}
-        />);
+        const elem = harness.mount(
+            <EditableCell
+                rowIndex={ROW_INDEX}
+                columnIndex={COLUMN_INDEX}
+                onCancel={onCancelSpy}
+                onChange={onChangeSpy}
+                onConfirm={onConfirmSpy}
+            />,
+        );
 
         doubleClickToEdit(elem);
 
@@ -104,7 +103,8 @@ describe("<EditableCell>", () => {
     });
 
     function doubleClickToEdit(elem: ElementHarness) {
-        elem.find(".pt-editable-content")
+        elem
+            .find(".pt-editable-content")
             .mouse("mousedown")
             .mouse("mouseup")
             .mouse("mousedown")

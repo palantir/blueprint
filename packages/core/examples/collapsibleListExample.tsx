@@ -35,7 +35,7 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
         visibleItemCount: 3,
     };
 
-    private handleChangeCollapse = handleNumberChange((collapseFrom) => this.setState({ collapseFrom }));
+    private handleChangeCollapse = handleNumberChange(collapseFrom => this.setState({ collapseFrom }));
 
     protected renderExample() {
         return (
@@ -58,7 +58,9 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
     protected renderOptions() {
         return [
             [
-                <label className={Classes.LABEL} key="visible-label">Visible items</label>,
+                <label className={Classes.LABEL} key="visible-label">
+                    Visible items
+                </label>,
                 <Slider
                     key="visible"
                     max={6}
@@ -66,7 +68,8 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
                     showTrackFill={false}
                     value={this.state.visibleItemCount}
                 />,
-           ], [
+            ],
+            [
                 <RadioGroup
                     key="collapseFrom"
                     name="collapseFrom"

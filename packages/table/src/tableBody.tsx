@@ -124,10 +124,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
      * cell so that we can locate any cell based on its coordinate.
      */
     public static cellClassNames(rowIndex: number, columnIndex: number) {
-        return [
-            Classes.rowCellIndexClass(rowIndex),
-            Classes.columnCellIndexClass(columnIndex),
-        ];
+        return [Classes.rowCellIndexClass(rowIndex), Classes.columnCellIndexClass(columnIndex)];
     }
 
     private static cellReactKey(rowIndex: number, columnIndex: number) {
@@ -177,15 +174,13 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             selectedRegionTransform,
         } = this.props;
 
-        const cells = (renderMode === RenderMode.BATCH)
-            ? this.renderBatchedCells()
-            : this.renderAllCells();
+        const cells = renderMode === RenderMode.BATCH ? this.renderBatchedCells() : this.renderAllCells();
 
         const defaultStyle = grid.getRect().sizeStyle();
 
         const style = {
-            height: (numFrozenRows != null) ? grid.getCumulativeHeightAt(numFrozenRows - 1) : defaultStyle.height,
-            width: (numFrozenColumns != null) ? grid.getCumulativeWidthAt(numFrozenColumns - 1) : defaultStyle.width,
+            height: numFrozenRows != null ? grid.getCumulativeHeightAt(numFrozenRows - 1) : defaultStyle.height,
+            width: numFrozenColumns != null ? grid.getCumulativeWidthAt(numFrozenColumns - 1) : defaultStyle.width,
         };
 
         return (
@@ -242,18 +237,13 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         const contextMenu = renderBodyContextMenu(menuContext);
 
         return contextMenu == null ? undefined : contextMenu;
-    }
+    };
 
     // Render modes
     // ============
 
     private renderBatchedCells() {
-        const {
-            columnIndexEnd,
-            columnIndexStart,
-            rowIndexEnd,
-            rowIndexStart,
-        } = this.props;
+        const { columnIndexEnd, columnIndexStart, rowIndexEnd, rowIndexStart } = this.props;
 
         // render cells in batches
         this.batcher.startNewBatch();
@@ -272,13 +262,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     private renderAllCells() {
-        const {
-            columnIndexEnd,
-            columnIndexStart,
-            grid,
-            rowIndexEnd,
-            rowIndexStart,
-        } = this.props;
+        const { columnIndexEnd, columnIndexStart, grid, rowIndexEnd, rowIndexStart } = this.props;
 
         const cells: Array<React.ReactElement<any>> = [];
 
@@ -297,15 +281,11 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     // ==============
 
     private renderNewCell = (row: number, col: number) => {
-        const {
-            columnIndexEnd,
-            grid,
-            rowIndexEnd,
-        } = this.props;
+        const { columnIndexEnd, grid, rowIndexEnd } = this.props;
         const extremaClasses = grid.getExtremaClasses(row, col, rowIndexEnd, columnIndexEnd);
         const isGhost = grid.isGhostIndex(row, col);
         return this.renderCell(row, col, extremaClasses, isGhost);
-    }
+    };
 
     private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
         const { cellRenderer, loading, grid } = this.props;
@@ -315,8 +295,8 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
             extremaClasses,
             {
                 [Classes.TABLE_CELL_GHOST]: isGhost,
-                [Classes.TABLE_CELL_LEDGER_ODD]: (rowIndex % 2) === 1,
-                [Classes.TABLE_CELL_LEDGER_EVEN]: (rowIndex % 2) === 0,
+                [Classes.TABLE_CELL_LEDGER_ODD]: rowIndex % 2 === 1,
+                [Classes.TABLE_CELL_LEDGER_EVEN]: rowIndex % 2 === 0,
             },
             baseCell.props.className,
         );
@@ -326,35 +306,30 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
         const style = { ...baseCell.props.style, ...Rect.style(rect) };
         return React.cloneElement(baseCell, { className, key, loading: cellLoading, style } as ICellProps);
-    }
+    };
 
     // Callbacks
     // =========
 
     private handleSelectionEnd = () => {
         this.activationCell = null; // not strictly required, but good practice
-    }
+    };
 
     private locateClick = (event: MouseEvent) => {
         this.activationCell = this.props.locator.convertPointToCell(event.clientX, event.clientY);
         return Regions.cell(this.activationCell.row, this.activationCell.col);
-    }
+    };
 
     private locateDrag = (_event: MouseEvent, coords: ICoordinateData, returnEndOnly = false) => {
         const start = this.activationCell;
         const end = this.props.locator.convertPointToCell(coords.current[0], coords.current[1]);
-        return returnEndOnly
-            ? Regions.cell(end.row, end.col)
-            : Regions.cell(start.row, start.col, end.row, end.col);
-    }
+        return returnEndOnly ? Regions.cell(end.row, end.col) : Regions.cell(start.row, start.col, end.row, end.col);
+    };
 
     private maybeInvokeOnCompleteRender() {
         const { onCompleteRender, renderMode } = this.props;
 
-        if (renderMode === RenderMode.BATCH
-            && this.isRenderingBatchedCells
-            && this.batcher.isDone()
-        ) {
+        if (renderMode === RenderMode.BATCH && this.isRenderingBatchedCells && this.batcher.isDone()) {
             this.isRenderingBatchedCells = false;
             CoreUtils.safeInvoke(onCompleteRender);
         } else if (renderMode === RenderMode.NONE) {

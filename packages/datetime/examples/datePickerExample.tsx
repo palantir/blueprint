@@ -15,10 +15,14 @@ import { DatePicker } from "../src";
 
 const FORMAT = "dddd, LL";
 
-export const Moment: React.SFC<{ date: Date, format?: string }> = ({ date, format = FORMAT }) => {
+export const Moment: React.SFC<{ date: Date; format?: string }> = ({ date, format = FORMAT }) => {
     const m = moment(date);
     if (m.isValid()) {
-        return <Tag className={Classes.LARGE} intent={Intent.PRIMARY}>{m.format(format)}</Tag>;
+        return (
+            <Tag className={Classes.LARGE} intent={Intent.PRIMARY}>
+                {m.format(format)}
+            </Tag>
+        );
     } else {
         return <Tag className={classNames(Classes.LARGE, Classes.MINIMAL)}>no date</Tag>;
     }
@@ -35,17 +39,19 @@ export class DatePickerExample extends BaseExample<IDatePickerExampleState> {
         showActionsBar: false,
     };
 
-    private toggleActionsBar = handleBooleanChange((showActionsBar) => this.setState({ showActionsBar }));
+    private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
 
     protected renderExample() {
-        return <div className="docs-datetime-example">
-            <DatePicker
-                className={Classes.ELEVATION_1}
-                onChange={this.handleDateChange}
-                showActionsBar={this.state.showActionsBar}
-            />
-            <Moment date={this.state.date} />
-        </div>;
+        return (
+            <div className="docs-datetime-example">
+                <DatePicker
+                    className={Classes.ELEVATION_1}
+                    onChange={this.handleDateChange}
+                    showActionsBar={this.state.showActionsBar}
+                />
+                <Moment date={this.state.date} />
+            </div>
+        );
     }
 
     protected renderOptions() {

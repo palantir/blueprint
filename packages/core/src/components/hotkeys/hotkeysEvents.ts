@@ -28,8 +28,7 @@ export interface IHotkeyAction {
 export class HotkeysEvents {
     private actions = [] as IHotkeyAction[];
 
-    public constructor(private scope: HotkeyScope) {
-    }
+    public constructor(private scope: HotkeyScope) {}
 
     public count() {
         return this.actions.length;
@@ -60,7 +59,7 @@ export class HotkeysEvents {
             if (isHotkeysDialogShowing()) {
                 hideHotkeysDialogAfterDelay();
             } else {
-                showHotkeysDialog(this.actions.map((action) => action.props));
+                showHotkeysDialog(this.actions.map(action => action.props));
             }
             return;
         } else if (isHotkeysDialogShowing()) {
@@ -68,14 +67,14 @@ export class HotkeysEvents {
         }
 
         this.invokeNamedCallbackIfComboRecognized(combo, "onKeyDown", e);
-    }
+    };
 
     public handleKeyUp = (e: KeyboardEvent) => {
         if (isHotkeysDialogShowing()) {
             return;
         }
         this.invokeNamedCallbackIfComboRecognized(getKeyCombo(e), "onKeyUp", e);
-    }
+    };
 
     private invokeNamedCallbackIfComboRecognized(
         combo: IKeyCombo,

@@ -16,9 +16,7 @@ export class SVGSpinner extends spinner.Spinner {
     protected renderContainer(classes: string, content: JSX.Element) {
         return (
             <g className={classNames(Classes.SVG_SPINNER, classes)}>
-                <g className="pt-svg-spinner-transform-group">
-                    {content}
-                </g>
+                <g className="pt-svg-spinner-transform-group">{content}</g>
             </g>
         );
     }

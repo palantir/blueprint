@@ -5,16 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import {
-    AnchorButton,
-    Classes,
-    Hotkey,
-    Hotkeys,
-    HotkeysTarget,
-    Menu,
-    MenuDivider,
-    MenuItem,
-} from "@blueprintjs/core";
+import { AnchorButton, Classes, Hotkey, Hotkeys, HotkeysTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/labs";
 
 import * as classNames from "classnames";
@@ -38,11 +29,7 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
     public render() {
         return (
             <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
-                <AnchorButton
-                    href="https://github.com/palantir/blueprint"
-                    target="_blank"
-                    text="GitHub"
-                />
+                <AnchorButton href="https://github.com/palantir/blueprint" target="_blank" text="GitHub" />
                 <Popover2 inline={true} content={this.renderReleasesMenu()} placement="bottom-end">
                     <AnchorButton rightIconName="caret-down" text="Releases" />
                 </Popover2>
@@ -56,14 +43,16 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
     }
 
     public renderHotkeys() {
-        return <Hotkeys>
-            <Hotkey
-                global={true}
-                combo="shift + d"
-                label="Toggle dark theme"
-                onKeyDown={this.handleDarkSwitchChange}
-            />
-        </Hotkeys>;
+        return (
+            <Hotkeys>
+                <Hotkey
+                    global={true}
+                    combo="shift + d"
+                    label="Toggle dark theme"
+                    onKeyDown={this.handleDarkSwitchChange}
+                />
+            </Hotkeys>
+        );
     }
 
     /**
@@ -72,13 +61,7 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
      */
     private renderReleasesMenu() {
         const menuItems = this.props.releases.map((version: IPackageInfo, index: number) => (
-            <MenuItem
-                href={version.url}
-                key={index}
-                label={version.version}
-                target="_blank"
-                text={version.name}
-            />
+            <MenuItem href={version.url} key={index} label={version.version} target="_blank" text={version.name} />
         ));
         return (
             <Menu>
@@ -96,5 +79,5 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
 
     private handleDarkSwitchChange = () => {
         this.props.onToggleDark(!this.props.useDarkTheme);
-    }
+    };
 }

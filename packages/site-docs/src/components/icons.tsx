@@ -57,7 +57,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
         const groupElements = Object.keys(this.iconGroups)
             .sort()
             .map(this.maybeRenderIconGroup, this)
-            .filter((group) => group != null);
+            .filter(group => group != null);
         return (
             <div className="docs-icons">
                 <div className="pt-input-group pt-large pt-fill">
@@ -79,7 +79,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
     private maybeRenderIconGroup(groupName: string, index: number) {
         const icons = this.iconGroups[groupName];
         const { iconFilter, iconRenderer } = this.props;
-        const iconElements = icons.filter((icon) => iconFilter(this.state.filter, icon)).map(iconRenderer);
+        const iconElements = icons.filter(icon => iconFilter(this.state.filter, icon)).map(iconRenderer);
 
         if (iconElements.length > 0) {
             let padIndex = icons.length;
@@ -104,7 +104,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
     private handleFilterChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const filter = (e.target as HTMLInputElement).value;
         this.setState({ filter });
-    }
+    };
 }
 
 function isIconFiltered(query: string, icon: IIcon) {

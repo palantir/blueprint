@@ -23,7 +23,6 @@ export interface ISuggestExampleState {
 }
 
 export class SuggestExample extends BaseExample<ISuggestExampleState> {
-
     public state: ISuggestExampleState = {
         closeOnSelect: true,
         film: TOP_100_FILMS[0],
@@ -94,7 +93,7 @@ export class SuggestExample extends BaseExample<ISuggestExampleState> {
 
     private renderInputValue = (film: Film) => {
         return film.title;
-    }
+    };
 
     private filterFilm(query: string, film: Film, index: number) {
         return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;

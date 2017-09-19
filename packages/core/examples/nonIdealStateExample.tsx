@@ -12,7 +12,11 @@ import { BaseExample } from "@blueprintjs/docs";
 
 export class NonIdealStateExample extends BaseExample<{}> {
     protected renderExample() {
-        const description = <span>Your search didn't match any files.<br />Try searching for something else.</span>;
+        const description = (
+            <span>
+                Your search didn't match any files.<br />Try searching for something else.
+            </span>
+        );
         return (
             <NonIdealState
                 visual="search"

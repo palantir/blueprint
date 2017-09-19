@@ -17,9 +17,10 @@ const fakeFocusEngine = {
 };
 
 /* istanbul ignore next */
-const focusEngine = typeof document !== "undefined"
-    ? new InteractionModeEngine(document.documentElement, FOCUS_DISABLED_CLASS)
-    : fakeFocusEngine;
+const focusEngine =
+    typeof document !== "undefined"
+        ? new InteractionModeEngine(document.documentElement, FOCUS_DISABLED_CLASS)
+        : fakeFocusEngine;
 
 // this is basically meaningless to unit test; it requires manual UI testing
 /* istanbul ignore next */

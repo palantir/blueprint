@@ -52,5 +52,5 @@ export class CopyCellsMenuItem extends React.Component<ICopyCellsMenuItemProps, 
         if (onCopy != null) {
             onCopy(success);
         }
-    }
+    };
 }

@@ -45,9 +45,7 @@ export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
             >
                 <div className={Classes.TABLE_ROW_NAME}>
                     <LoadableContent loading={spreadableProps.loading}>
-                        <div className={Classes.TABLE_ROW_NAME_TEXT}>
-                            {spreadableProps.name}
-                        </div>
+                        <div className={Classes.TABLE_ROW_NAME_TEXT}>{spreadableProps.name}</div>
                     </LoadableContent>
                 </div>
                 {this.props.children}

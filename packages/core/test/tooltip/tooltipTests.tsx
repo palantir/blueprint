@@ -100,7 +100,8 @@ describe("<Tooltip>", () => {
             it("is invoked with `true` when closed tooltip target is hovered", () => {
                 const handleInteraction = sinon.spy();
                 renderTooltip({ isOpen: false, onInteraction: handleInteraction })
-                    .find(Popover).simulate("mouseenter");
+                    .find(Popover)
+                    .simulate("mouseenter");
                 assert.isTrue(handleInteraction.calledOnce);
                 assert.isTrue(handleInteraction.calledWith(true));
             });

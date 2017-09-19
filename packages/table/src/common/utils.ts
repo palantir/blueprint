@@ -19,23 +19,21 @@ export interface ClassDictionary {
     [id: string]: boolean;
 }
 
-export interface ClassArray extends Array<ClassValue> {};
+export interface ClassArray extends Array<ClassValue> {}
 // tslint:enable
 
 /**
  * Since Firefox doesn't provide a computed "font" property, we manually
  * construct it using the ordered properties that can be specifed in CSS.
  */
-const CSS_FONT_PROPERTIES = [
-    "font-style",
-    "font-variant",
-    "font-weight",
-    "font-size",
-    "font-family",
-];
+const CSS_FONT_PROPERTIES = ["font-style", "font-variant", "font-weight", "font-size", "font-family"];
 
-export interface IKeyWhitelist<T> { include: Array<keyof T>; }
-export interface IKeyBlacklist<T> { exclude: Array<keyof T>; }
+export interface IKeyWhitelist<T> {
+    include: Array<keyof T>;
+}
+export interface IKeyBlacklist<T> {
+    exclude: Array<keyof T>;
+}
 
 export const Utils = {
     /**
@@ -45,7 +43,7 @@ export const Utils = {
      */
     assignClasses<P extends IProps>(elem: React.ReactElement<P>, ...extendedClasses: ClassValue[]) {
         const classes = classNames(elem.props.className, ...extendedClasses);
-        return React.cloneElement(elem, {className : classes} as IProps);
+        return React.cloneElement(elem, { className: classes } as IProps);
     },
 
     /**
@@ -93,7 +91,7 @@ export const Utils = {
             if (num <= 0) {
                 return str;
             }
-            num = (num / 26) - 1;
+            num = num / 26 - 1;
         }
     },
 
@@ -193,7 +191,7 @@ export const Utils = {
     measureElementTextContent(element: Element) {
         const context = document.createElement("canvas").getContext("2d");
         const style = getComputedStyle(element, null);
-        context.font = CSS_FONT_PROPERTIES.map((prop) => style.getPropertyValue(prop)).join(" ");
+        context.font = CSS_FONT_PROPERTIES.map(prop => style.getPropertyValue(prop)).join(" ");
         return context.measureText(element.textContent);
     },
 
@@ -232,8 +230,10 @@ export const Utils = {
             // shallowly compare all keys from both objects
             const keysA = Object.keys(objA) as Array<keyof T>;
             const keysB = Object.keys(objB) as Array<keyof T>;
-            return _shallowCompareKeys(objA, objB, { include: keysA })
-                && _shallowCompareKeys(objA, objB, { include: keysB });
+            return (
+                _shallowCompareKeys(objA, objB, { include: keysA }) &&
+                _shallowCompareKeys(objA, objB, { include: keysB })
+            );
         }
     },
 
@@ -276,15 +276,13 @@ export const Utils = {
      */
     getShallowUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
         // default param values let null values pass through, so we have to take this more thorough approach
-        const definedObjA = (objA == null) ? {} : objA;
-        const definedObjB = (objB == null) ? {} : objB;
+        const definedObjA = objA == null ? {} : objA;
+        const definedObjB = objB == null ? {} : objB;
 
         const filteredKeys = _filterKeys(definedObjA, definedObjB, keys == null ? { exclude: [] } : keys);
-        return _getUnequalKeyValues(
-            definedObjA,
-            definedObjB,
-            filteredKeys,
-            (a, b, key) => Utils.shallowCompareKeys(a, b, { include: [key] }));
+        return _getUnequalKeyValues(definedObjA, definedObjB, filteredKeys, (a, b, key) =>
+            Utils.shallowCompareKeys(a, b, { include: [key] }),
+        );
     },
 
     /**
@@ -292,15 +290,13 @@ export const Utils = {
      * provided objects. Useful for debugging shouldComponentUpdate.
      */
     getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
-        const definedObjA = (objA == null) ? {} as T : objA;
-        const definedObjB = (objB == null) ? {} as T : objB;
+        const definedObjA = objA == null ? {} as T : objA;
+        const definedObjB = objB == null ? {} as T : objB;
 
-        const filteredKeys = (keys == null) ? _unionKeys(definedObjA, definedObjB) : keys;
-        return _getUnequalKeyValues(
-            definedObjA,
-            definedObjB,
-            filteredKeys,
-            (a, b, key) => Utils.deepCompareKeys(a, b, [key]));
+        const filteredKeys = keys == null ? _unionKeys(definedObjA, definedObjB) : keys;
+        return _getUnequalKeyValues(definedObjA, definedObjB, filteredKeys, (a, b, key) =>
+            Utils.deepCompareKeys(a, b, [key]),
+        );
     },
 
     /**
@@ -358,7 +354,7 @@ export const Utils = {
      * the original ordering.
      */
     reorderedIndexToGuideIndex(oldIndex: number, newIndex: number, length: number) {
-        return (newIndex <= oldIndex) ? newIndex : newIndex + length;
+        return newIndex <= oldIndex ? newIndex : newIndex + length;
     },
 
     /**
@@ -446,9 +442,8 @@ export const Utils = {
  * Partial shallow comparison between objects using the given list of keys.
  */
 function _shallowCompareKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-    return _filterKeys(objA, objB, keys).every((key) => {
-        return objA.hasOwnProperty(key) === objB.hasOwnProperty(key)
-            && objA[key] === objB[key];
+    return _filterKeys(objA, objB, keys).every(key => {
+        return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && objA[key] === objB[key];
     });
 }
 
@@ -456,16 +451,13 @@ function _shallowCompareKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyW
  * Partial deep comparison between objects using the given list of keys.
  */
 function _deepCompareKeys(objA: any, objB: any, keys: string[]): boolean {
-    return keys.every((key) => {
-        return objA.hasOwnProperty(key) === objB.hasOwnProperty(key)
-            && Utils.deepCompareKeys(objA[key], objB[key]);
+    return keys.every(key => {
+        return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && Utils.deepCompareKeys(objA[key], objB[key]);
     });
 }
 
 function _isSimplePrimitiveType(value: any) {
-    return typeof value === "number"
-        || typeof value === "string"
-        || typeof value === "boolean";
+    return typeof value === "number" || typeof value === "string" || typeof value === "boolean";
 }
 
 function _filterKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
@@ -479,7 +471,7 @@ function _filterKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist
         const keySet = _arrayToObject(keysA.concat(keysB));
 
         // delete blacklisted keys from the key set
-        keys.exclude.forEach((key) => delete keySet[key]);
+        keys.exclude.forEach(key => delete keySet[key]);
 
         // return the remaining keys as an array
         return Object.keys(keySet) as Array<keyof T>;
@@ -503,8 +495,8 @@ function _getUnequalKeyValues<T extends object>(
     keys: Array<keyof T>,
     compareFn: (objA: any, objB: any, key: keyof T) => boolean,
 ) {
-    const unequalKeys = keys.filter((key) => !compareFn(objA, objB, key));
-    const unequalKeyValues = unequalKeys.map((key) => ({
+    const unequalKeys = keys.filter(key => !compareFn(objA, objB, key));
+    const unequalKeyValues = unequalKeys.map(key => ({
         key,
         valueA: objA[key],
         valueB: objB[key],

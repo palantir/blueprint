@@ -53,7 +53,9 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
 
     protected renderFill() {
         const [leftValue, rightValue] = this.props.value;
-        if (leftValue === rightValue) { return undefined; }
+        if (leftValue === rightValue) {
+            return undefined;
+        }
         // expand by 1px in each direction so it sits under the handle border
         let left = Math.round((leftValue - this.props.min) * this.state.tickSize) - 1;
         let width = Math.round((rightValue - leftValue) * this.state.tickSize) + 2;
@@ -84,19 +86,23 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
     }
 
     protected handleTrackClick(event: React.MouseEvent<HTMLElement>) {
-        this.handles.reduce((min, handle) => {
-            // find closest handle to the mouse position
-            const value = handle.clientToValue(event.clientX);
-            return this.nearestHandleForValue(value, min, handle);
-        }).beginHandleMovement(event);
+        this.handles
+            .reduce((min, handle) => {
+                // find closest handle to the mouse position
+                const value = handle.clientToValue(event.clientX);
+                return this.nearestHandleForValue(value, min, handle);
+            })
+            .beginHandleMovement(event);
     }
 
     protected handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
-        this.handles.reduce((min, handle) => {
-            // find closest handle to the touch position
-            const value = handle.clientToValue(handle.touchEventClientX(event));
-            return this.nearestHandleForValue(value, min, handle);
-        }).beginHandleTouchMovement(event);
+        this.handles
+            .reduce((min, handle) => {
+                // find closest handle to the touch position
+                const value = handle.clientToValue(handle.touchEventClientX(event));
+                return this.nearestHandleForValue(value, min, handle);
+            })
+            .beginHandleTouchMovement(event);
     }
 
     protected nearestHandleForValue(value: number, firstHandle: Handle, secondHandle: Handle) {
@@ -116,7 +122,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         if (ref != null) {
             this.handles.push(ref);
         }
-    }
+    };
 
     private getHandlerForIndex = (index: RangeEnd, callback: (value: NumberRange) => any) => (newValue: number) => {
         if (isFunction(callback)) {
@@ -127,7 +133,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
                 callback([leftValue, Math.max(newValue, leftValue)]);
             }
         }
-    }
+    };
 
     private handleChange = (newValue: NumberRange) => {
         const [leftValue, rightValue] = this.props.value;
@@ -135,7 +141,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         if ((leftValue !== newLeftValue || rightValue !== newRightValue) && isFunction(this.props.onChange)) {
             this.props.onChange(newValue);
         }
-    }
+    };
 }
 
 export const RangeSliderFactory = React.createFactory(RangeSlider);

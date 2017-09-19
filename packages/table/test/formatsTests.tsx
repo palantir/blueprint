@@ -97,8 +97,9 @@ describe("Formats", () => {
             `;
 
             const comp = harness.mount(<TruncatedFormat detectTruncation={false}>{str}</TruncatedFormat>);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text().length)
-                .to.equal(TruncatedFormat.defaultProps.truncateLength + 3);
+            expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text().length).to.equal(
+                TruncatedFormat.defaultProps.truncateLength + 3,
+            );
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
 
@@ -163,8 +164,8 @@ describe("Formats", () => {
     describe("JSON Format", () => {
         it("stringifies JSON", () => {
             const obj = {
-                "help": "me",
-                "i'm" : 1234,
+                help: "me",
+                "i'm": 1234,
             };
             const str = JSON.stringify(obj, null, 2);
             const comp = harness.mount(<JSONFormat>{obj}</JSONFormat>);
@@ -202,5 +203,4 @@ describe("Formats", () => {
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
         });
     });
-
 });

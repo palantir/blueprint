@@ -29,19 +29,18 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
         openOnFocus: true,
     };
 
-    private toggleFocus = handleBooleanChange((openOnFocus) => this.setState({ openOnFocus }));
-    private toggleSelection = handleBooleanChange((closeOnSelection) => this.setState({ closeOnSelection }));
-    private toggleDisabled = handleBooleanChange((disabled) => this.setState({ disabled }));
-    private toggleFormat = handleStringChange((format) => this.setState({ format }));
-    private toggleTimePrecision = handleNumberChange((timePrecision) =>
+    private toggleFocus = handleBooleanChange(openOnFocus => this.setState({ openOnFocus }));
+    private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
+    private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
+    private toggleFormat = handleStringChange(format => this.setState({ format }));
+    private toggleTimePrecision = handleNumberChange(timePrecision =>
         this.setState({
             timePrecision: timePrecision < 0 ? undefined : timePrecision,
-        }));
+        }),
+    );
 
     protected renderExample() {
-        return (
-            <DateInput {...this.state} defaultValue={new Date()} />
-        );
+        return <DateInput {...this.state} defaultValue={new Date()} />;
     }
 
     protected renderOptions() {
@@ -59,12 +58,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     key="Selection"
                     onChange={this.toggleSelection}
                 />,
-                <Switch
-                    checked={this.state.disabled}
-                    label="Disabled"
-                    key="Disabled"
-                    onChange={this.toggleDisabled}
-                />,
+                <Switch checked={this.state.disabled} label="Disabled" key="Disabled" onChange={this.toggleDisabled} />,
                 <PrecisionSelect
                     label="Time Precision"
                     key="precision"
@@ -72,13 +66,8 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     value={this.state.timePrecision}
                     onChange={this.toggleTimePrecision}
                 />,
-            ], [
-                <FormatSelect
-                    key="Format"
-                    onChange={this.toggleFormat}
-                    selectedValue={this.state.format}
-                />,
             ],
+            [<FormatSelect key="Format" onChange={this.toggleFormat} selectedValue={this.state.format} />],
         ];
     }
 }

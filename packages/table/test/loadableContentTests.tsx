@@ -27,36 +27,34 @@ describe("LoadableContent", () => {
     it("can render single child", () => {
         const someText = "some text";
         const loadableContentHarness = harness.mount(
-           <LoadableContent loading={false}>
-               <span>{someText}</span>
-           </LoadableContent>,
+            <LoadableContent loading={false}>
+                <span>{someText}</span>
+            </LoadableContent>,
         );
 
         expect(loadableContentHarness.element.textContent).to.equal(someText);
     });
 
     it("throws error on string content", () => {
-        expect(() => harness.mount(
-            <LoadableContent loading={false}>
-                some text
-            </LoadableContent>,
-        )).to.throw(Error);
+        expect(() => harness.mount(<LoadableContent loading={false}>some text</LoadableContent>)).to.throw(Error);
     });
 
     it("throws error on multiple children", () => {
-        expect(() => harness.mount(
-            <LoadableContent loading={false}>
-                <span>some</span>
-                <span>text</span>
-            </LoadableContent>,
-        )).to.throw(Error);
+        expect(() =>
+            harness.mount(
+                <LoadableContent loading={false}>
+                    <span>some</span>
+                    <span>text</span>
+                </LoadableContent>,
+            ),
+        ).to.throw(Error);
     });
 
     it("renders skeleton instead of child when loading", () => {
         const loadableContentHarness = harness.mount(
-           <LoadableContent loading={true}>
-               <span>some text</span>
-           </LoadableContent>,
+            <LoadableContent loading={true}>
+                <span>some text</span>
+            </LoadableContent>,
         );
         const skeletonElement = loadableContentHarness.element.children[0];
 

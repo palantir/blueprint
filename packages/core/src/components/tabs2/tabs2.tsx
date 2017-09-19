@@ -103,7 +103,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
 
     private tablistElement: HTMLDivElement;
     private refHandlers = {
-        tablist: (tabElement: HTMLDivElement) => this.tablistElement = tabElement,
+        tablist: (tabElement: HTMLDivElement) => (this.tablistElement = tabElement),
     };
 
     constructor(props?: ITabs2Props) {
@@ -115,12 +115,13 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     public render() {
         const { indicatorWrapperStyle, selectedTabId } = this.state;
 
-        const tabTitles = React.Children.map(this.props.children, (child) => (
-            isTab(child) ? this.renderTabTitle(child) : child
-        ));
+        const tabTitles = React.Children.map(
+            this.props.children,
+            child => (isTab(child) ? this.renderTabTitle(child) : child),
+        );
 
         const tabPanels = this.getTabChildren()
-            .filter(this.props.renderActiveTabPanelOnly ? (tab) => tab.props.id === selectedTabId : () => true)
+            .filter(this.props.renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
             .map(this.renderTabPanel);
 
         const tabIndicator = (
@@ -207,11 +208,12 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const focusedElement = document.activeElement.closest(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
-        if (focusedElement == null) { return; }
+        if (focusedElement == null) {
+            return;
+        }
 
         // must rely on DOM state because we have no way of mapping `focusedElement` to a JSX.Element
-        const enabledTabElements = this.getTabElements()
-            .filter((el) => el.getAttribute("aria-disabled") === "false");
+        const enabledTabElements = this.getTabElements().filter(el => el.getAttribute("aria-disabled") === "false");
         const focusedIndex = enabledTabElements.indexOf(focusedElement);
         const direction = this.getKeyCodeDirection(e);
 
@@ -222,7 +224,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
             const nextFocusedIndex = (focusedIndex + direction + length) % length;
             (enabledTabElements[nextFocusedIndex] as HTMLElement).focus();
         }
-    }
+    };
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
@@ -230,21 +232,23 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
             e.preventDefault();
             targetTabElement.click();
         }
-    }
+    };
 
     private handleTabClick = (newTabId: TabId, event: React.MouseEvent<HTMLElement>) => {
         safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId, event);
         if (this.props.selectedTabId === undefined) {
             this.setState({ selectedTabId: newTabId });
         }
-    }
+    };
 
     /**
      * Calculate the new height, width, and position of the tab indicator.
      * Store the CSS values so the transition animation can start.
      */
     private moveSelectionIndicator() {
-        if (this.tablistElement === undefined) { return; }
+        if (this.tablistElement === undefined) {
+            return;
+        }
 
         const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
         const selectedTabElement = this.tablistElement.query(tabIdSelector) as HTMLElement;
@@ -278,7 +282,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
                 {panel}
             </div>
         );
-    }
+    };
 
     private renderTabTitle = (tab: TabElement) => {
         const { id } = tab.props;
@@ -290,7 +294,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
                 selected={id === this.state.selectedTabId}
             />
         );
-    }
+    };
 }
 
 export const Tabs2Factory = React.createFactory(Tabs2);

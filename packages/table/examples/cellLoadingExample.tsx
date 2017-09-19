@@ -19,11 +19,7 @@ interface IBigSpaceRock {
 // tslint:disable-next-line:no-var-requires
 const bigSpaceRocks = require("./potentiallyHazardousAsteroids.json") as IBigSpaceRock[];
 
-export type CellsLoadingConfiguration = "all"
-    | "first-column"
-    | "first-row"
-    | "none"
-    | "random";
+export type CellsLoadingConfiguration = "all" | "first-column" | "first-row" | "none" | "random";
 export const CellsLoadingConfiguration = {
     ALL: "all" as CellsLoadingConfiguration,
     FIRST_COLUMN: "first-column" as CellsLoadingConfiguration,
@@ -41,8 +37,8 @@ const CONFIGURATIONS = [
 ];
 
 export interface ICellLoadingExampleState {
-   configuration?: CellsLoadingConfiguration;
-   randomNumbers?: number[];
+    configuration?: CellsLoadingConfiguration;
+    randomNumbers?: number[];
 }
 
 export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
@@ -52,7 +48,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
 
     protected className = "docs-cell-loading-example";
 
-    private handleConfigurationChange = handleStringChange((configuration) => {
+    private handleConfigurationChange = handleStringChange(configuration => {
         if (configuration === CellsLoadingConfiguration.RANDOM) {
             // calculate random numbers just once instead of inside renderCell which is called during table scrolling
             const randomNumbers: number[] = [];
@@ -87,10 +83,10 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
     private renderColumns() {
         const columns: JSX.Element[] = [];
 
-        Object.keys(bigSpaceRocks[0]).forEach((columnName) => {
+        Object.keys(bigSpaceRocks[0]).forEach(columnName => {
             const formattedColumnName = columnName
                 .replace(/([A-Z])/g, " $1")
-                .replace(/^./, (firstCharacter) => firstCharacter.toUpperCase());
+                .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
             columns.push(
                 <Column
                     key={formattedColumnName}
@@ -110,13 +106,13 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
                 {bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}
             </Cell>
         );
-    }
+    };
 
     private renderColumnHeaderCell = (columnIndex: number) => {
         const columnName = Object.keys(bigSpaceRocks[0])[columnIndex];
         const formattedColumnName = columnName
-                .replace(/([A-Z])/g, " $1")
-                .replace(/^./, (firstCharacter) => firstCharacter.toUpperCase());
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
         return (
             <ColumnHeaderCell
                 loading={this.isLoading(0, columnIndex + 1)}
@@ -124,11 +120,11 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
                 useInteractionBar={true}
             />
         );
-    }
+    };
 
     private renderRowHeaderCell = (rowIndex: number) => {
         return <RowHeaderCell loading={this.isLoading(rowIndex + 1, 0)} name={`${rowIndex + 1}`} />;
-    }
+    };
 
     private isLoading = (rowIndex: number, columnIndex: number) => {
         switch (this.state.configuration) {
@@ -146,5 +142,5 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             default:
                 throw new Error(`Unexpected value: ${this.state.configuration}`);
         }
-    }
+    };
 }

@@ -96,9 +96,7 @@ export class DenseGridMutableStore<T> {
 
     public get(rowIndex: number, columnIndex: number) {
         const columnKey = this.orderedColumnKeys[columnIndex];
-        return (this.data[rowIndex] == null)
-            ? this.DEFAULT_CELL_VALUE
-            : this.data[rowIndex][columnKey];
+        return this.data[rowIndex] == null ? this.DEFAULT_CELL_VALUE : this.data[rowIndex][columnKey];
     }
 
     public getColumnKey(columnIndex: number) {
@@ -127,9 +125,12 @@ export class DenseGridMutableStore<T> {
     // ===============
 
     private createRow() {
-        return this.orderedColumnKeys.reduce((agg, columnKey) => {
-            agg[columnKey] = this.DEFAULT_CELL_VALUE;
-            return agg;
-        }, {} as IDataRow<T>);
+        return this.orderedColumnKeys.reduce(
+            (agg, columnKey) => {
+                agg[columnKey] = this.DEFAULT_CELL_VALUE;
+                return agg;
+            },
+            {} as IDataRow<T>,
+        );
     }
 }

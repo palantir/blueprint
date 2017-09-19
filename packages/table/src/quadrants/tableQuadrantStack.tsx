@@ -332,7 +332,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private generateQuadrantRefHandlers(quadrantType: QuadrantType): IQuadrantRefHandlers {
         const reducer = (agg: IQuadrantRefHandlers, key: keyof IQuadrantRefHandlers) => {
-            agg[key] = (ref: HTMLElement) => this.quadrantRefs[quadrantType][key] = ref;
+            agg[key] = (ref: HTMLElement) => (this.quadrantRefs[quadrantType][key] = ref);
             return agg;
         };
         return ["columnHeader", "menu", "quadrant", "rowHeader", "scrollContainer"].reduce(reducer, {});
@@ -521,19 +521,19 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private handleColumnResizeGuideMain = (verticalGuides: number[]) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.MAIN);
-    }
+    };
 
     private handleColumnResizeGuideTop = (verticalGuides: number[]) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.TOP);
-    }
+    };
 
     private handleColumnResizeGuideLeft = (verticalGuides: number[]) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.LEFT);
-    }
+    };
 
     private handleColumnResizeGuideTopLeft = (verticalGuides: number[]) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.TOP_LEFT);
-    }
+    };
 
     private invokeColumnResizeHandler = (verticalGuides: number[], quadrantType: QuadrantType) => {
         const adjustedGuides = this.adjustVerticalGuides(verticalGuides, quadrantType);
@@ -544,19 +544,19 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private handleRowResizeGuideMain = (verticalGuides: number[]) => {
         this.invokeRowResizeHandler(verticalGuides, QuadrantType.MAIN);
-    }
+    };
 
     private handleRowResizeGuideTop = (verticalGuides: number[]) => {
         this.invokeRowResizeHandler(verticalGuides, QuadrantType.TOP);
-    }
+    };
 
     private handleRowResizeGuideLeft = (verticalGuides: number[]) => {
         this.invokeRowResizeHandler(verticalGuides, QuadrantType.LEFT);
-    }
+    };
 
     private handleRowResizeGuideTopLeft = (verticalGuides: number[]) => {
         this.invokeRowResizeHandler(verticalGuides, QuadrantType.TOP_LEFT);
-    }
+    };
 
     private invokeRowResizeHandler = (verticalGuides: number[], quadrantType: QuadrantType) => {
         const adjustedGuides = this.adjustHorizontalGuides(verticalGuides, quadrantType);
@@ -737,7 +737,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             const desiredRowHeaderWidth = mainRowHeader.clientWidth;
             return desiredRowHeaderWidth;
         }
-    }
+    };
 
     // Resizing
 
@@ -745,9 +745,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const scrollAmount = this.cache.getQuadrantScrollOffset(quadrantType, "scrollLeft");
         const rowHeaderWidth = this.cache.getRowHeaderWidth();
 
-        const adjustedVerticalGuides = verticalGuides != null
-            ? verticalGuides.map((verticalGuide) => verticalGuide - scrollAmount + rowHeaderWidth)
-            : verticalGuides;
+        const adjustedVerticalGuides =
+            verticalGuides != null
+                ? verticalGuides.map(verticalGuide => verticalGuide - scrollAmount + rowHeaderWidth)
+                : verticalGuides;
 
         return adjustedVerticalGuides;
     }
@@ -756,9 +757,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const scrollAmount = this.cache.getQuadrantScrollOffset(quadrantType, "scrollTop");
         const columnHeaderHeight = this.cache.getColumnHeaderHeight();
 
-        const adjustedHorizontalGuides = horizontalGuides != null
-            ? horizontalGuides.map((horizontalGuide) => horizontalGuide - scrollAmount + columnHeaderHeight)
-            : horizontalGuides;
+        const adjustedHorizontalGuides =
+            horizontalGuides != null
+                ? horizontalGuides.map(horizontalGuide => horizontalGuide - scrollAmount + columnHeaderHeight)
+                : horizontalGuides;
 
         return adjustedHorizontalGuides;
     }

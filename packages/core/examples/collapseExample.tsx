@@ -18,15 +18,13 @@ export class CollapseExample extends BaseExample<{ isOpen: boolean }> {
     protected renderExample() {
         return (
             <div>
-                <Button onClick={this.handleClick}>
-                    {this.state.isOpen ? "Hide" : "Show"} build logs
-                </Button>
+                <Button onClick={this.handleClick}>{this.state.isOpen ? "Hide" : "Show"} build logs</Button>
                 <Collapse isOpen={this.state.isOpen}>
                     <pre>
-                        [11:53:30] Finished 'typescript-bundle-blueprint' after 769 ms<br/>
-                        [11:53:30] Starting 'typescript-typings-blueprint'...<br/>
-                        [11:53:30] Finished 'typescript-typings-blueprint' after 198 ms<br/>
-                        [11:53:30] write ./blueprint.css<br/>
+                        [11:53:30] Finished 'typescript-bundle-blueprint' after 769 ms<br />
+                        [11:53:30] Starting 'typescript-typings-blueprint'...<br />
+                        [11:53:30] Finished 'typescript-typings-blueprint' after 198 ms<br />
+                        [11:53:30] write ./blueprint.css<br />
                         [11:53:30] Finished 'sass-compile-blueprint' after 2.84 s
                     </pre>
                 </Collapse>
@@ -35,6 +33,6 @@ export class CollapseExample extends BaseExample<{ isOpen: boolean }> {
     }
 
     private handleClick = () => {
-        this.setState({isOpen: !this.state.isOpen});
-    }
+        this.setState({ isOpen: !this.state.isOpen });
+    };
 }

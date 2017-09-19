@@ -176,8 +176,8 @@ export class Grid {
             return results;
         }
 
-        const {rowIndexStart, rowIndexEnd} = this.getRowIndicesInRect(rect);
-        const {columnIndexStart, columnIndexEnd} = this.getColumnIndicesInRect(rect);
+        const { rowIndexStart, rowIndexEnd } = this.getRowIndicesInRect(rect);
+        const { columnIndexStart, columnIndexEnd } = this.getColumnIndicesInRect(rect);
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
                 results.push(callback(rowIndex, columnIndex));
@@ -197,7 +197,7 @@ export class Grid {
             return results;
         }
 
-        const {rowIndexStart, rowIndexEnd} = this.getRowIndicesInRect(rect);
+        const { rowIndexStart, rowIndexEnd } = this.getRowIndicesInRect(rect);
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             results.push(callback(rowIndex));
         }
@@ -215,7 +215,7 @@ export class Grid {
             return results;
         }
 
-        const {columnIndexStart, columnIndexEnd} = this.getColumnIndicesInRect(rect);
+        const { columnIndexStart, columnIndexEnd } = this.getColumnIndicesInRect(rect);
         for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
             results.push(callback(columnIndex));
         }
@@ -226,14 +226,9 @@ export class Grid {
      * Returns the start and end indices of rows that intersect with the given
      * `Rect` argument.
      */
-    public getRowIndicesInRect(
-        rect: Rect,
-        includeGhostCells = false,
-        limit = Grid.DEFAULT_MAX_ROWS,
-    ): IRowIndices {
-
+    public getRowIndicesInRect(rect: Rect, includeGhostCells = false, limit = Grid.DEFAULT_MAX_ROWS): IRowIndices {
         if (rect == null) {
-            return {rowIndexEnd: 0, rowIndexStart: 0};
+            return { rowIndexEnd: 0, rowIndexStart: 0 };
         }
 
         const searchEnd = includeGhostCells ? Math.max(this.numRows, Grid.DEFAULT_MAX_ROWS) : this.numRows;
@@ -244,9 +239,7 @@ export class Grid {
             !includeGhostCells,
             this.getCumulativeHeightAt,
         );
-        const rowIndexEnd = (limit > 0 && end - start > limit)
-            ? start + limit
-            : end;
+        const rowIndexEnd = limit > 0 && end - start > limit ? start + limit : end;
 
         return {
             rowIndexEnd,
@@ -263,9 +256,8 @@ export class Grid {
         includeGhostCells = false,
         limit = Grid.DEFAULT_MAX_COLUMNS,
     ): IColumnIndices {
-
         if (rect == null) {
-            return {columnIndexEnd: 0, columnIndexStart: 0};
+            return { columnIndexEnd: 0, columnIndexStart: 0 };
         }
 
         const searchEnd = includeGhostCells ? Math.max(this.numCols, Grid.DEFAULT_MAX_COLUMNS) : this.numCols;
@@ -277,9 +269,7 @@ export class Grid {
             this.getCumulativeWidthAt,
         );
 
-        const columnIndexEnd = (limit > 0 && end - start > limit)
-            ? start + limit
-            : end;
+        const columnIndexEnd = limit > 0 && end - start > limit ? start + limit : end;
 
         return {
             columnIndexEnd,
@@ -288,7 +278,7 @@ export class Grid {
     }
 
     public isGhostIndex(rowIndex: number, columnIndex: number) {
-        return (rowIndex >= this.numRows || columnIndex >= this.numCols);
+        return rowIndex >= this.numRows || columnIndex >= this.numCols;
     }
 
     public getExtremaClasses(rowIndex: number, columnIndex: number, rowEnd: number, columnEnd: number) {
@@ -345,7 +335,7 @@ export class Grid {
                     top: 0,
                     width: rect.width + offsetLeft,
                 };
-              }
+            }
 
             case RegionCardinality.FULL_ROWS: {
                 const [rowStart, rowEnd] = region.rows;
@@ -376,13 +366,14 @@ export class Grid {
                     top: 0,
                 };
 
-            default: return { display: "none" };
+            default:
+                return { display: "none" };
         }
     }
 
     public getCumulativeWidthBefore = (index: number) => {
-        return (index === 0) ? 0 : this.getCumulativeWidthAt(index - 1);
-    }
+        return index === 0 ? 0 : this.getCumulativeWidthAt(index - 1);
+    };
 
     public getCumulativeWidthAt = (index: number) => {
         if (this.numCols === 0) {
@@ -392,11 +383,11 @@ export class Grid {
         } else {
             return this.cumulativeColumnWidths[index];
         }
-    }
+    };
 
     public getCumulativeHeightBefore = (index: number) => {
-        return (index === 0) ? 0 : this.getCumulativeHeightAt(index - 1);
-    }
+        return index === 0 ? 0 : this.getCumulativeHeightAt(index - 1);
+    };
 
     public getCumulativeHeightAt = (index: number) => {
         if (this.numRows === 0) {
@@ -406,7 +397,7 @@ export class Grid {
         } else {
             return this.cumulativeRowHeights[index];
         }
-    }
+    };
 
     private getIndicesInInterval(
         min: number,
@@ -430,6 +421,6 @@ export class Grid {
         } else {
             end = Math.min(count - 1, end);
         }
-        return {start, end};
+        return { start, end };
     }
 }

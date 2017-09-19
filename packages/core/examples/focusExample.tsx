@@ -19,7 +19,7 @@ export class FocusExample extends BaseExample<IFocusExampleState> {
         isFocusActive: true,
     };
 
-    private toggleFocus = handleBooleanChange((enabled) => {
+    private toggleFocus = handleBooleanChange(enabled => {
         if (enabled) {
             FocusStyleManager.onlyShowFocusOnTabs();
         } else {

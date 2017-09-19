@@ -152,27 +152,23 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     public render() {
         const { className, inputProps, leftIconName, placeholder, values } = this.props;
 
-        const classes = classNames(CoreClasses.INPUT, Classes.TAG_INPUT, {
-            [CoreClasses.ACTIVE]: this.state.isInputFocused,
-        }, className);
+        const classes = classNames(
+            CoreClasses.INPUT,
+            Classes.TAG_INPUT,
+            {
+                [CoreClasses.ACTIVE]: this.state.isInputFocused,
+            },
+            className,
+        );
         const isLarge = classes.indexOf(CoreClasses.LARGE) > NONE;
 
         // use placeholder prop only if it's defined and values list is empty or contains only falsy values
-        const isSomeValueDefined = values.some((val) => !!val);
-        const resolvedPlaceholder = (placeholder == null || isSomeValueDefined)
-            ? inputProps.placeholder : placeholder;
+        const isSomeValueDefined = values.some(val => !!val);
+        const resolvedPlaceholder = placeholder == null || isSomeValueDefined ? inputProps.placeholder : placeholder;
 
         return (
-            <div
-                className={classes}
-                onBlur={this.handleBlur}
-                onClick={this.handleContainerClick}
-            >
-                <Icon
-                    className={Classes.TAG_INPUT_ICON}
-                    iconName={leftIconName}
-                    iconSize={isLarge ? 20 : 16}
-                />
+            <div className={classes} onBlur={this.handleBlur} onClick={this.handleContainerClick}>
+                <Icon className={Classes.TAG_INPUT_ICON} iconName={leftIconName} iconSize={isLarge ? 20 : 16} />
                 {values.map(this.maybeRenderTag)}
                 <input
                     value={this.state.inputValue}
@@ -190,7 +186,9 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     }
 
     private maybeRenderTag = (tag: React.ReactNode, index: number) => {
-        if (!tag) { return null; }
+        if (!tag) {
+            return null;
+        }
         const { tagProps } = this.props;
         const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
         return (
@@ -204,7 +202,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 {tag}
             </Tag>
         );
-    }
+    };
 
     private getNextActiveIndex(direction: number) {
         const { activeIndex } = this.state;
@@ -238,35 +236,35 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         // NOTE: split() typings define two overrides for string and RegExp.
         // this does not play well with our union prop type, so we'll just declare it as a valid type.
         return (separator === false ? [inputValue] : inputValue.split(separator as string))
-                .map((val) => val.trim())
-                .filter((val) => val.length > 0);
-
+            .map(val => val.trim())
+            .filter(val => val.length > 0);
     }
 
     private handleContainerClick = () => {
         if (this.inputElement != null) {
             this.inputElement.focus();
         }
-    }
+    };
 
-    private handleBlur = () => requestAnimationFrame(() => {
-        // this event is attached to the container element to capture all blur events from inside.
-        // we only need to "unfocus" if the blur event is leaving the container.
-        // defer this check using rAF so activeElement will have updated.
-        if (this.inputElement != null && !this.inputElement.parentElement.contains(document.activeElement)) {
-            this.setState({ activeIndex: NONE, isInputFocused: false });
-        }
-    })
+    private handleBlur = () =>
+        requestAnimationFrame(() => {
+            // this event is attached to the container element to capture all blur events from inside.
+            // we only need to "unfocus" if the blur event is leaving the container.
+            // defer this check using rAF so activeElement will have updated.
+            if (this.inputElement != null && !this.inputElement.parentElement.contains(document.activeElement)) {
+                this.setState({ activeIndex: NONE, isInputFocused: false });
+            }
+        });
 
     private handleInputFocus = (event: React.FocusEvent<HTMLElement>) => {
         this.setState({ isInputFocused: true });
         Utils.safeInvoke(this.props.inputProps.onFocus, event);
-    }
+    };
 
     private handleInputChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
         this.setState({ activeIndex: NONE, inputValue: event.currentTarget.value });
         Utils.safeInvoke(this.props.inputProps.onChange, event);
-    }
+    };
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const { selectionEnd, value } = event.currentTarget;
@@ -297,13 +295,13 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             }
         }
         Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
-    }
+    };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {
         // using data attribute to simplify callback logic -- one handler for all children
         const index = +event.currentTarget.parentElement.getAttribute("data-tag-index");
         this.removeIndexFromValues(index);
-    }
+    };
 
     private handleBackspaceToRemove(event: React.KeyboardEvent<HTMLInputElement>) {
         const previousActiveIndex = this.state.activeIndex;

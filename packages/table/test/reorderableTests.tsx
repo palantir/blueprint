@@ -59,7 +59,10 @@ describe("DragReorderable", () => {
             );
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
-            element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
+            element
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
             expect(callbacks.onReordering.called).to.be.false;
             expect(callbacks.onReordered.called).to.be.false;
             expect(callbacks.onSelection.called).to.be.false;
@@ -72,17 +75,16 @@ describe("DragReorderable", () => {
             callbacks.locateDrag.returns(OLD_INDEX);
 
             const reorderable = harness.mount(
-                <DragReorderable
-                    {...callbacks}
-                    selectedRegions={[Regions.table()]}
-                    toRegion={toFullColumnRegion}
-                >
+                <DragReorderable {...callbacks} selectedRegions={[Regions.table()]} toRegion={toFullColumnRegion}>
                     {children}
                 </DragReorderable>,
             );
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
-            element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
+            element
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
             expect(callbacks.onReordering.called).to.be.false;
             expect(callbacks.onReordered.called).to.be.false;
             expect(callbacks.onSelection.called).to.be.false;
@@ -105,7 +107,10 @@ describe("DragReorderable", () => {
             );
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
-            element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
+            element
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
             expect(callbacks.onReordering.called).to.be.false;
             expect(callbacks.onReordered.called).to.be.false;
             expect(callbacks.onSelection.called).to.be.false;
@@ -119,17 +124,16 @@ describe("DragReorderable", () => {
             callbacks.locateDrag.returns(OLD_INDEX);
 
             const reorderable = harness.mount(
-                <DragReorderable
-                    {...callbacks}
-                    selectedRegions={[]}
-                    toRegion={toFullColumnRegion}
-                >
+                <DragReorderable {...callbacks} selectedRegions={[]} toRegion={toFullColumnRegion}>
                     {children}
                 </DragReorderable>,
             );
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
-            element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
+            element
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
             expect(callbacks.onReordering.called).to.be.true;
             expect(callbacks.onReordered.called).to.be.true;
             expect(callbacks.onSelection.called).to.be.true;
@@ -207,9 +211,8 @@ describe("DragReorderable", () => {
 
             element.mouse("mouseup");
             expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
-            expect(callbacks.onSelection.calledWith([
-                Regions.column(NEW_INDEX, NEW_INDEX + MULTI_LENGTH - 1),
-            ])).to.be.true;
+            expect(callbacks.onSelection.calledWith([Regions.column(NEW_INDEX, NEW_INDEX + MULTI_LENGTH - 1)])).to.be
+                .true;
         });
 
         it("for a disjoint selection, reorders just the clicked region and clears all other selections", () => {
@@ -225,11 +228,7 @@ describe("DragReorderable", () => {
             ];
 
             const reorderable = harness.mount(
-                <DragReorderable
-                    {...callbacks}
-                    selectedRegions={selectedRegions}
-                    toRegion={toFullColumnRegion}
-                >
+                <DragReorderable {...callbacks} selectedRegions={selectedRegions} toRegion={toFullColumnRegion}>
                     {children}
                 </DragReorderable>,
             );
@@ -240,9 +239,8 @@ describe("DragReorderable", () => {
 
             element.mouse("mouseup");
             expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
-            expect(callbacks.onSelection.calledWith([
-                Regions.column(NEW_INDEX, NEW_INDEX + MULTI_LENGTH - 1),
-            ])).to.be.true;
+            expect(callbacks.onSelection.calledWith([Regions.column(NEW_INDEX, NEW_INDEX + MULTI_LENGTH - 1)])).to.be
+                .true;
         });
 
         it("does not invoke callbacks if nothing was reordered after drag", () => {

@@ -159,10 +159,7 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
                     </div>
                     <div className={Classes.TABLE_BOTTOM_CONTAINER} style={bottomContainerStyle}>
                         {maybeRowHeader}
-                        <div
-                            className={Classes.TABLE_QUADRANT_BODY_CONTAINER}
-                            ref={this.props.bodyRef}
-                        >
+                        <div className={Classes.TABLE_QUADRANT_BODY_CONTAINER} ref={this.props.bodyRef}>
                             {body}
                         </div>
                     </div>

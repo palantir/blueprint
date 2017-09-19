@@ -101,13 +101,9 @@ export interface IDragHandler {
     stopPropagation?: boolean;
 }
 
-export interface IDraggableProps extends IProps, IDragHandler {
-}
+export interface IDraggableProps extends IProps, IDragHandler {}
 
-const REATTACH_PROPS_KEYS = [
-    "stopPropagation",
-    "preventDefault",
-] as Array<keyof IDraggableProps>;
+const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof IDraggableProps>;
 
 /**
  * This component provides a simple interface for combined drag and/or click

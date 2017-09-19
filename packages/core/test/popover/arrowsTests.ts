@@ -51,8 +51,13 @@ describe("Arrows", () => {
             const position: Position = +key;
             it(`Position.${Position[position]}`, () => {
                 const [expectedArrow, expectedContainer] = styles[position];
-                const {arrow, container} =
-                    Arrows.getArrowPositionStyles(position, arrowSize, false, dimensions, false);
+                const { arrow, container } = Arrows.getArrowPositionStyles(
+                    position,
+                    arrowSize,
+                    false,
+                    dimensions,
+                    false,
+                );
                 assert.deepEqual(arrow, expectedArrow, "incorrect arrow styles");
                 assert.deepEqual(container, expectedContainer, "incorrect container styles");
             });

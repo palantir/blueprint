@@ -6,13 +6,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import {
-    Classes,
-    Intent,
-    NumericInput,
-    Position,
-    Switch,
-} from "@blueprintjs/core";
+import { Classes, Intent, NumericInput, Position, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -67,7 +61,6 @@ const BUTTON_POSITIONS: ISelectOption[] = [
 ];
 
 export class NumericInputBasicExample extends BaseExample<INumericInputBasicExampleState> {
-
     public state: INumericInputBasicExampleState = {
         buttonPositionIndex: 2,
         intent: Intent.NONE,
@@ -90,22 +83,22 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         value: "",
     };
 
-    private handleMaxValueChange = handleNumberChange((maxValueIndex) => this.setState({ maxValueIndex }));
-    private handleMinValueChange = handleNumberChange((minValueIndex) => this.setState({ minValueIndex }));
+    private handleMaxValueChange = handleNumberChange(maxValueIndex => this.setState({ maxValueIndex }));
+    private handleMinValueChange = handleNumberChange(minValueIndex => this.setState({ minValueIndex }));
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
 
-    private handleButtonPositionChange = handleNumberChange((buttonPositionIndex) => {
+    private handleButtonPositionChange = handleNumberChange(buttonPositionIndex => {
         this.setState({ buttonPositionIndex });
     });
 
-    private toggleDisabled = handleBooleanChange((showDisabled) => this.setState({ showDisabled }));
-    private toggleLeftIcon = handleBooleanChange((showLeftIcon) => this.setState({ showLeftIcon }));
-    private toggleReadOnly = handleBooleanChange((showReadOnly) => this.setState({ showReadOnly }));
-    private toggleFullWidth = handleBooleanChange((showFullWidth) => this.setState({ showFullWidth }));
-    private toggleLargeSize = handleBooleanChange((showLargeSize) => this.setState({ showLargeSize }));
-    private toggleNumericCharsOnly = handleBooleanChange((numericCharsOnly) => this.setState({ numericCharsOnly }));
-    private toggleSelectAllOnFocus = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
-    private toggleSelectAllOnIncrement = handleBooleanChange((selectAllOnIncrement) => {
+    private toggleDisabled = handleBooleanChange(showDisabled => this.setState({ showDisabled }));
+    private toggleLeftIcon = handleBooleanChange(showLeftIcon => this.setState({ showLeftIcon }));
+    private toggleReadOnly = handleBooleanChange(showReadOnly => this.setState({ showReadOnly }));
+    private toggleFullWidth = handleBooleanChange(showFullWidth => this.setState({ showFullWidth }));
+    private toggleLargeSize = handleBooleanChange(showLargeSize => this.setState({ showLargeSize }));
+    private toggleNumericCharsOnly = handleBooleanChange(numericCharsOnly => this.setState({ numericCharsOnly }));
+    private toggleSelectAllOnFocus = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
+    private toggleSelectAllOnIncrement = handleBooleanChange(selectAllOnIncrement => {
         this.setState({ selectAllOnIncrement });
     });
 
@@ -127,7 +120,9 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
 
         return [
             [
-                <label className={Classes.LABEL} key="modifierslabel">Modifiers</label>,
+                <label className={Classes.LABEL} key="modifierslabel">
+                    Modifiers
+                </label>,
                 this.renderSwitch("Numeric characters only", numericCharsOnly, this.toggleNumericCharsOnly),
                 this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus),
                 this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement),
@@ -136,12 +131,18 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                 this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
                 this.renderSwitch("Full width", showFullWidth, this.toggleFullWidth),
                 this.renderSwitch("Large", showLargeSize, this.toggleLargeSize),
-            ], [
+            ],
+            [
                 this.renderSelectMenu("Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange),
                 this.renderSelectMenu("Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange),
-            ], [
+            ],
+            [
                 this.renderSelectMenu(
-                    "Button position", buttonPositionIndex, BUTTON_POSITIONS, this.handleButtonPositionChange),
+                    "Button position",
+                    buttonPositionIndex,
+                    BUTTON_POSITIONS,
+                    this.handleButtonPositionChange,
+                ),
                 <IntentSelect intent={intent} key="intent" onChange={this.handleIntentChange} />,
             ],
         ];
@@ -155,18 +156,14 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                 className={classNames({ [Classes.FILL]: this.state.showFullWidth })}
                 intent={this.state.intent}
                 large={this.state.showLargeSize}
-
                 min={MIN_VALUES[this.state.minValueIndex].value}
                 max={MAX_VALUES[this.state.maxValueIndex].value}
-
                 disabled={this.state.showDisabled}
                 readOnly={this.state.showReadOnly}
                 leftIconName={this.state.showLeftIcon ? "dollar" : null}
                 placeholder="Enter a number..."
-
                 selectAllOnFocus={this.state.selectAllOnFocus}
                 selectAllOnIncrement={this.state.selectAllOnIncrement}
-
                 onValueChange={this.handleValueChange}
                 value={this.state.value}
             />
@@ -174,14 +171,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
     }
 
     private renderSwitch(label: string, checked: boolean, onChange: React.FormEventHandler<HTMLElement>) {
-       return (
-            <Switch
-                checked={checked}
-                label={label}
-                key={label}
-                onChange={onChange}
-            />
-        );
+        return <Switch checked={checked} label={label} key={label} onChange={onChange} />;
     }
 
     private renderSelectMenu(
@@ -204,11 +194,15 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
 
     private renderSelectMenuOptions(options: ISelectOption[]) {
         return options.map((option, index) => {
-            return <option key={index} value={index}>{option.label}</option>;
+            return (
+                <option key={index} value={index}>
+                    {option.label}
+                </option>
+            );
         });
     }
 
     private handleValueChange = (_valueAsNumber: number, valueAsString: string) => {
         this.setState({ value: valueAsString });
-    }
+    };
 }

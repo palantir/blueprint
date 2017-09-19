@@ -37,23 +37,35 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
 
         // build the list of available months, limiting based on minDate and maxDate as necessary
         const months = localeUtils.getMonths(locale);
-        const startMonth = (displayYear === minYear) ? minDate.getMonth() : 0;
-        const endMonth = (displayYear === maxYear) ? maxDate.getMonth() + 1 : undefined;
-        const monthOptionElements = months.map((name, i) => {
-            return <option key={i} value={i.toString()}>{name}</option>;
-        }).slice(startMonth, endMonth);
+        const startMonth = displayYear === minYear ? minDate.getMonth() : 0;
+        const endMonth = displayYear === maxYear ? maxDate.getMonth() + 1 : undefined;
+        const monthOptionElements = months
+            .map((name, i) => {
+                return (
+                    <option key={i} value={i.toString()}>
+                        {name}
+                    </option>
+                );
+            })
+            .slice(startMonth, endMonth);
 
         const years = [minYear];
         for (let year = minYear + 1; year <= maxYear; ++year) {
             years.push(year);
         }
         const yearOptionElements = years.map((year, i) => {
-            return <option key={i} value={year.toString()}>{year}</option>;
+            return (
+                <option key={i} value={year.toString()}>
+                    {year}
+                </option>
+            );
         });
         // allow out-of-bounds years but disable the option. this handles the Dec 2016 case in #391.
         if (displayYear > maxYear) {
             yearOptionElements.push(
-                <option key="next" disabled={true} value={displayYear.toString()}>{displayYear}</option>,
+                <option key="next" disabled={true} value={displayYear.toString()}>
+                    {displayYear}
+                </option>,
             );
         }
 
@@ -62,10 +74,7 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
 
         const caretClasses = classNames("pt-icon-standard", "pt-icon-caret-down", Classes.DATEPICKER_CAPTION_CARET);
         return (
-            <div
-                className={Classes.DATEPICKER_CAPTION}
-                ref={this.containerRefHandler}
-            >
+            <div className={Classes.DATEPICKER_CAPTION} ref={this.containerRefHandler}>
                 <div className={Classes.DATEPICKER_CAPTION_SELECT}>
                     <select
                         className={Classes.DATEPICKER_MONTH_SELECT}
@@ -74,10 +83,7 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
                     >
                         {monthOptionElements}
                     </select>
-                    <span
-                        className={caretClasses}
-                        ref={this.monthArrowRefHandler}
-                    />
+                    <span className={caretClasses} ref={this.monthArrowRefHandler} />
                 </div>
                 <div className={Classes.DATEPICKER_CAPTION_SELECT}>
                     <select
@@ -87,10 +93,7 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
                     >
                         {yearOptionElements}
                     </select>
-                    <span
-                        className={caretClasses}
-                        ref={this.yearArrowRefHandler}
-                    />
+                    <span className={caretClasses} ref={this.yearArrowRefHandler} />
                 </div>
             </div>
         );
@@ -104,9 +107,9 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
         this.positionArrows();
     }
 
-    private containerRefHandler = (r: HTMLElement) => this.containerElement = r;
-    private monthArrowRefHandler = (r: HTMLElement) => this.monthArrowElement = r;
-    private yearArrowRefHandler = (r: HTMLElement) => this.yearArrowElement = r;
+    private containerRefHandler = (r: HTMLElement) => (this.containerElement = r);
+    private monthArrowRefHandler = (r: HTMLElement) => (this.monthArrowElement = r);
+    private yearArrowRefHandler = (r: HTMLElement) => (this.yearArrowElement = r);
 
     private positionArrows() {
         // pass our container element to the measureTextWidth utility to ensure
@@ -122,10 +125,10 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
     private handleMonthSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {
         const month = parseInt((e.target as HTMLSelectElement).value, 10);
         BlueprintUtils.safeInvoke(this.props.onMonthChange, month);
-    }
+    };
 
     private handleYearSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {
         const year = parseInt((e.target as HTMLSelectElement).value, 10);
         BlueprintUtils.safeInvoke(this.props.onYearChange, year);
-    }
+    };
 }

@@ -17,8 +17,7 @@ describe("<TagInput>", () => {
 
     it("passes inputProps to input element", () => {
         const onBlur = sinon.spy();
-        const input = shallow(<TagInput values={VALUES} inputProps={{ autoFocus: true, onBlur }} />)
-            .find("input");
+        const input = shallow(<TagInput values={VALUES} inputProps={{ autoFocus: true, onBlur }} />).find("input");
         assert.isTrue(input.prop("autoFocus"));
         // check that event handler is proxied
         const fakeEvent = { flag: "yes" };
@@ -49,12 +48,17 @@ describe("<TagInput>", () => {
 
     it("rightElement appears as last child", () => {
         const wrapper = mount(<TagInput rightElement={<Button />} values={VALUES} />);
-        assert.isTrue(wrapper.children().last().is(Button));
+        assert.isTrue(
+            wrapper
+                .children()
+                .last()
+                .is(Button),
+        );
     });
 
     it("tagProps object is applied to each Tag", () => {
         const wrapper = mount(<TagInput tagProps={{ intent: Intent.PRIMARY }} values={VALUES} />);
-        const intents = wrapper.find(Tag).map((tag) => tag.prop("intent"));
+        const intents = wrapper.find(Tag).map(tag => tag.prop("intent"));
         assert.deepEqual(intents, [Intent.PRIMARY, Intent.PRIMARY, Intent.PRIMARY]);
     });
 
@@ -68,7 +72,10 @@ describe("<TagInput>", () => {
         const onRemove = sinon.spy();
         // requires full mount to support data attributes and parentElement
         const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
-        wrapper.find("button").at(1).simulate("click");
+        wrapper
+            .find("button")
+            .at(1)
+            .simulate("click");
         assert.isTrue(onRemove.calledOnce);
         assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
     });
@@ -148,8 +155,7 @@ describe("<TagInput>", () => {
         it("pressing backspace focuses last item", () => {
             const onRemove = sinon.spy();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
-            wrapper.find("input")
-                .simulate("keydown", { which: Keys.BACKSPACE });
+            wrapper.find("input").simulate("keydown", { which: Keys.BACKSPACE });
 
             assert.equal(wrapper.state("activeIndex"), VALUES.length - 1);
             assert.isTrue(onRemove.notCalled);
@@ -158,7 +164,8 @@ describe("<TagInput>", () => {
         it("pressing backspace again removes last item", () => {
             const onRemove = sinon.spy();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
-            wrapper.find("input")
+            wrapper
+                .find("input")
                 .simulate("keydown", { which: Keys.BACKSPACE })
                 .simulate("keydown", { which: Keys.BACKSPACE });
 
@@ -172,7 +179,8 @@ describe("<TagInput>", () => {
             const onRemove = sinon.spy();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
             // select and remove middle item
-            wrapper.find("input")
+            wrapper
+                .find("input")
                 .simulate("keydown", { which: Keys.ARROW_LEFT })
                 .simulate("keydown", { which: Keys.ARROW_LEFT })
                 .simulate("keydown", { which: Keys.BACKSPACE });
@@ -184,8 +192,7 @@ describe("<TagInput>", () => {
 
         it("pressing right arrow key in initial state does nothing", () => {
             const wrapper = mount(<TagInput values={VALUES} />);
-            wrapper.find("input")
-                .simulate("keydown", { which: Keys.ARROW_RIGHT });
+            wrapper.find("input").simulate("keydown", { which: Keys.ARROW_RIGHT });
             assert.equal(wrapper.state("activeIndex"), -1);
         });
     });
@@ -219,7 +226,10 @@ describe("<TagInput>", () => {
         it("is invoked when a tag is removed by clicking", () => {
             const onChange = sinon.stub();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
-            wrapper.find("button").at(1).simulate("click");
+            wrapper
+                .find("button")
+                .at(1)
+                .simulate("click");
             assert.isTrue(onChange.calledOnce);
             assert.deepEqual(onChange.args[0][0], [VALUES[0], VALUES[2]]);
         });
@@ -227,7 +237,8 @@ describe("<TagInput>", () => {
         it("is invoked when a tag is removed by backspace", () => {
             const onChange = sinon.stub();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
-            wrapper.find("input")
+            wrapper
+                .find("input")
                 .simulate("keydown", { which: Keys.BACKSPACE })
                 .simulate("keydown", { which: Keys.BACKSPACE });
             assert.isTrue(onChange.calledOnce);
@@ -325,8 +336,11 @@ describe("<TagInput>", () => {
         keydownAndAssertIndex(Keys.BACKSPACE, 1);
 
         assert.isTrue(onChange.calledOnce);
-        assert.lengthOf(onChange.args[0][0], MIXED_VALUES.length - 1,
-            "should remove one item and preserve other falsy values");
+        assert.lengthOf(
+            onChange.args[0][0],
+            MIXED_VALUES.length - 1,
+            "should remove one item and preserve other falsy values",
+        );
     });
 
     function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {

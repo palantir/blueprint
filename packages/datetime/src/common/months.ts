@@ -18,4 +18,4 @@ export const enum Months {
     OCTOBER,
     NOVEMBER,
     DECEMBER,
-};
+}

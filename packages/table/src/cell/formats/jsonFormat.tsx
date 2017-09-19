@@ -34,7 +34,7 @@ export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
         detectTruncation: true,
         omitQuotesOnStrings: true,
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
-        stringify: (obj: any) => (JSON.stringify(obj, null, 2)),
+        stringify: (obj: any) => JSON.stringify(obj, null, 2),
     };
 
     public render() {
@@ -58,11 +58,7 @@ export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
         }
 
         return (
-            <TruncatedFormat
-                {...this.props}
-                className={className}
-                showPopover={showPopover}
-            >
+            <TruncatedFormat {...this.props} className={className} showPopover={showPopover}>
                 {displayValue}
             </TruncatedFormat>
         );

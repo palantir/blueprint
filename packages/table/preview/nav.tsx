@@ -32,8 +32,12 @@ export class Nav extends React.Component<INavProps, {}> {
                     <div className="pt-navbar-heading">Blueprint Table</div>
                 </div>
                 <div className="pt-navbar-group pt-align-right">
-                    <a href="index.html" className="pt-button pt-minimal">Home</a>
-                    <a href="features.html" className="pt-button pt-minimal">Features (Legacy)</a>
+                    <a href="index.html" className="pt-button pt-minimal">
+                        Home
+                    </a>
+                    <a href="features.html" className="pt-button pt-minimal">
+                        Features (Legacy)
+                    </a>
                     <span className="pt-navbar-divider" />
                     <Switch style={darkThemeToggleStyles} label="Dark theme" onChange={this.handleToggleDarkTheme} />
                 </div>
