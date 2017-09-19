@@ -159,14 +159,14 @@ export interface ITableQuadrantStackProps extends IProps {
      * synchronizing quadrant sizes and offsets after the user has stopped
      * scrolling. If this value is negative, the updates will happen
      * synchronously (this is helpful for unit testing).
-     * @default 250
+     * @default 500
      */
     viewSyncDelay?: number;
 }
 
 // the debounce delay for updating the view on scroll. elements will be resized
 // and rejiggered once scroll has ceased for at least this long, but not before.
-const DEFAULT_VIEW_SYNC_DELAY = 250;
+const DEFAULT_VIEW_SYNC_DELAY = 500;
 
 export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackProps, {}> {
 
