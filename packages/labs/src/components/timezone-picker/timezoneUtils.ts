@@ -29,11 +29,7 @@ export function getLocalTimezone(): string | undefined {
  */
 export function getTimezoneQueryCandidates(timezone: string, date: Date): string[] {
     const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
-    return [
-        timezone,
-        abbreviation,
-        offsetAsString,
-    ].filter((candidate) => candidate !== undefined);
+    return [timezone, abbreviation, offsetAsString].filter(candidate => candidate !== undefined);
 }
 
 /**
@@ -58,7 +54,7 @@ export function filterWithQueryCandidates<T>(
     const queryCandidates = [];
     for (const item of items) {
         const key = getItemKey(item);
-        queryCandidates.push(...getItemQueryCandidates(item).map((value) => ({ key, [filterKey]: value })));
+        queryCandidates.push(...getItemQueryCandidates(item).map(value => ({ key, [filterKey]: value })));
     }
 
     const results = filter(queryCandidates, query, { key: filterKey });

@@ -21,10 +21,7 @@ import {
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
-import {
-    ISelectItemRendererProps,
-    Select,
-} from "..";
+import { ISelectItemRendererProps, Select } from "..";
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
@@ -213,9 +210,13 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         }
 
         const { date } = this.state;
-        return filterWithQueryCandidates(items, query, (item) => item.timezone,
-            (item) => getTimezoneQueryCandidates(item.timezone, date));
-    }
+        return filterWithQueryCandidates(
+            items,
+            query,
+            item => item.timezone,
+            item => getTimezoneQueryCandidates(item.timezone, date),
+        );
+    };
 
     private renderItem = (itemProps: ISelectItemRendererProps<ITimezoneItem>) => {
         const { item, isActive, handleClick } = itemProps;
@@ -235,16 +236,16 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
                 shouldDismissPopover={false}
             />
         );
-    }
+    };
 
     private handleItemSelect = (timezone: ITimezoneItem) => {
         if (this.props.value === undefined) {
             this.setState({ value: timezone.timezone });
         }
         Utils.safeInvoke(this.props.onChange, timezone.timezone);
-    }
+    };
 
     private handleQueryChange = (query: string) => {
         this.setState({ query });
-    }
+    };
 }

@@ -309,5 +309,5 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         const query = "";
         this.setState({ activeItem: items[0], query });
         Utils.safeInvoke(onQueryChange, query);
-    }
+    };
 }

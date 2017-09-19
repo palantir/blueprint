@@ -23,9 +23,7 @@ export function getTimezoneMetadata(timezone: string, date: Date): ITimezoneMeta
     const offsetAsString = zonedDate.format("Z");
     const abbreviation = getAbbreviation(timezone, timestamp);
     // TODO: amend moment-timezone typings to include the population field
-    const population = zone && (zone as any).population !== undefined
-        ? (zone as any).population
-        : undefined;
+    const population = zone && (zone as any).population !== undefined ? (zone as any).population : undefined;
 
     return {
         timezone,

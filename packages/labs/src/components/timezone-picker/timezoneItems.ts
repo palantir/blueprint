@@ -19,15 +19,13 @@ export interface ITimezoneItem {
 }
 
 export function getTimezoneItems(date: Date): ITimezoneItem[] {
-    return moment.tz.names().map((timezone) => toTimezoneItem(timezone, date));
+    return moment.tz.names().map(timezone => toTimezoneItem(timezone, date));
 }
 
 export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolean): ITimezoneItem[] {
     const populous = getPopulousTimezoneItems(date);
     const local = getLocalTimezoneItem(date);
-    return includeLocalTimezone && local !== undefined
-        ? [local, ...populous]
-        : populous;
+    return includeLocalTimezone && local !== undefined ? [local, ...populous] : populous;
 }
 
 /**
@@ -37,7 +35,7 @@ export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolea
  */
 function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
     // Filter out noisy timezones. See https://github.com/moment/moment-timezone/issues/227
-    const timezones = moment.tz.names().filter((timezone) => /\//.test(timezone) && !/Etc\//.test(timezone));
+    const timezones = moment.tz.names().filter(timezone => /\//.test(timezone) && !/Etc\//.test(timezone));
 
     const timezoneToMetadata: { [timezone: string]: ITimezoneMetadata } = {};
     for (const timezone of timezones) {

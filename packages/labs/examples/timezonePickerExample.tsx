@@ -29,20 +29,16 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
         timezone: "",
     };
 
-    private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
-    private handleShowLocalTimezoneChange = handleBooleanChange((showLocalTimezone) =>
-        this.setState({ showLocalTimezone }));
+    private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+    private handleShowLocalTimezoneChange = handleBooleanChange(showLocalTimezone =>
+        this.setState({ showLocalTimezone }),
+    );
     private handleFormatChange = handleStringChange((targetDisplayFormat: TimezoneDisplayFormat) =>
-        this.setState({ targetDisplayFormat }));
+        this.setState({ targetDisplayFormat }),
+    );
 
     protected renderExample() {
-        const {
-            date,
-            timezone,
-            targetDisplayFormat,
-            disabled,
-            showLocalTimezone,
-        } = this.state;
+        const { date, timezone, targetDisplayFormat, disabled, showLocalTimezone } = this.state;
 
         return (
             <TimezonePicker
@@ -72,9 +68,7 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                     onChange={this.handleDisabledChange}
                 />,
             ],
-            [
-                this.renderDisplayFormatOption(),
-            ],
+            [this.renderDisplayFormatOption()],
         ];
     }
 
@@ -96,5 +90,5 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
 
     private handleTimezoneChange = (timezone: string) => {
         this.setState({ timezone });
-    }
+    };
 }
