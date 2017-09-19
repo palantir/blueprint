@@ -21,26 +21,26 @@ export enum TimePickerPrecision {
 
 export interface ITimePickerProps extends IProps {
     /**
-    * Initial time the `TimePicker` will display.
-    * This should not be set if `value` is set.
-    */
+     * Initial time the `TimePicker` will display.
+     * This should not be set if `value` is set.
+     */
     defaultValue?: Date;
 
     /**
-    * Whether the time picker is non-interactive.
-    * @default false
-    */
+     * Whether the time picker is non-interactive.
+     * @default false
+     */
     disabled?: boolean;
 
     /**
-    * Callback invoked when the user changes the time.
-    */
+     * Callback invoked when the user changes the time.
+     */
     onChange?: (newTime: Date) => void;
 
     /**
-    * The precision of time the user can set.
-    * @default TimePickerPrecision.MINUTE
-    */
+     * The precision of time the user can set.
+     * @default TimePickerPrecision.MINUTE
+     */
     precision?: TimePickerPrecision;
 
     /**
@@ -50,9 +50,9 @@ export interface ITimePickerProps extends IProps {
     selectAllOnFocus?: boolean;
 
     /**
-    * Whether to show arrows buttons for changing the time.
-    * @default false
-    */
+     * Whether to show arrows buttons for changing the time.
+     * @default false
+     */
     showArrowButtons?: boolean;
 
     /**
@@ -74,9 +74,9 @@ export interface ITimePickerProps extends IProps {
     minTime?: Date;
 
     /**
-    * The currently set time.
-    * If this prop is provided, the component acts in a controlled manner.
-    */
+     * The currently set time.
+     * If this prop is provided, the component acts in a controlled manner.
+     */
     value?: Date;
 }
 
@@ -306,8 +306,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     // begin method definitions: state modification
 
     /**
-    * Generates a full ITimePickerState object with all text fields set to formatted strings based on value
-    */
+     * Generates a full ITimePickerState object with all text fields set to formatted strings based on value
+     */
     private getFullStateFromValue(value: Date): ITimePickerState {
         const timeInRange = DateUtils.getTimeInRange(value, this.props.minTime, this.props.maxTime);
         /* tslint:disable:object-literal-sort-keys */
