@@ -12,7 +12,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 
 import { Film, TOP_100_FILMS } from "../examples/data";
-import { ISelectItemRendererProps, ISelectProps, Select, Popover2 } from "../src/index";
+import { ISelectItemRendererProps, ISelectProps, Popover2, Select } from "../src/index";
 
 describe("<Select>", () => {
     const FilmSelect = Select.ofType<Film>();
