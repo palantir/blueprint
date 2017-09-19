@@ -10,13 +10,13 @@ import { getTimezoneMetadata } from "./timezoneMetadata";
 
 export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name" | "composite";
 export const TimezoneDisplayFormat = {
-    /** Abbreviation format i.e. "GMT" */
+    /** Abbreviation format i.e. "HST" */
     ABBREVIATION: "abbreviation" as "abbreviation",
     /** Composite format i.e. "Pacific/Honolulu (HST) -10:00" */
     COMPOSITE: "composite" as "composite",
     /** Name format i.e. "Pacific/Honolulu" */
     NAME: "name" as "name",
-    /** Offset format i.e. "-07:00" */
+    /** Offset format i.e. "-10:00" */
     OFFSET: "offset" as "offset",
 };
 
@@ -32,7 +32,7 @@ export function formatTimezone(
     const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
     switch (displayFormat) {
         case TimezoneDisplayFormat.ABBREVIATION:
-            // Fall back to the offset in regions where there is no abbreviation.
+            // Fall back to the offset when there is no abbreviation.
             return abbreviation ? abbreviation : offsetAsString;
         case TimezoneDisplayFormat.NAME:
             return timezone;
