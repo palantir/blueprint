@@ -144,4 +144,42 @@ describe("Regions", () => {
         // normal deep equals doesn't work here so we use JSON.stringify
         expect(JSON.stringify(sparse)).to.equal(JSON.stringify([["X", "X"], ["X", null], ["X", null]]));
     });
+
+    describe("expandRegion", () => {
+        it("returns new region if cardinalities are different", () => {
+            const oldRegion = Regions.cell(0, 0);
+            const newRegion = Regions.table();
+            const result = Regions.expandRegion(oldRegion, newRegion);
+            // should have returned the newRegion instance
+            expect(result).to.equal(newRegion);
+        });
+
+        it("expands a FULL_ROWS region", () => {
+            const oldRegion = Regions.row(1, 2);
+            const newRegion = Regions.row(9, 10);
+            const result = Regions.expandRegion(oldRegion, newRegion);
+            expect(result).to.deep.equal(Regions.row(1, 10));
+        });
+
+        it("expands a FULL_COLUMNS region", () => {
+            const oldRegion = Regions.column(9, 10);
+            const newRegion = Regions.column(1, 2);
+            const result = Regions.expandRegion(oldRegion, newRegion);
+            expect(result).to.deep.equal(Regions.column(1, 10));
+        });
+
+        it("expands a CELLS region", () => {
+            const oldRegion = Regions.cell(1, 2);
+            const newRegion = Regions.cell(9, 10);
+            const result = Regions.expandRegion(oldRegion, newRegion);
+            expect(result).to.deep.equal(Regions.cell(1, 2, 9, 10));
+        });
+
+        it("expands a FULL_TABLE region", () => {
+            const oldRegion = Regions.table();
+            const newRegion = Regions.table();
+            const result = Regions.expandRegion(oldRegion, newRegion);
+            expect(result).to.deep.equal(Regions.table());
+        });
+    });
 });

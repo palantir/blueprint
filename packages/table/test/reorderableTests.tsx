@@ -43,119 +43,130 @@ describe("DragReorderable", () => {
         harness.destroy();
     });
 
-    it("does not work if clicked region is invalid", () => {
-        const callbacks = initCallbackStubs();
-        callbacks.locateClick.returns(Regions.column(-1));
+    describe("has no effect if", () => {
+        it("clicked region is invalid", () => {
+            const callbacks = initCallbackStubs();
+            callbacks.locateClick.returns(Regions.column(-1));
 
-        const reorderable = harness.mount(
-            <DragReorderable {...callbacks} selectedRegions={[Regions.column(OLD_INDEX)]} toRegion={toFullColumnRegion}>
-                {children}
-            </DragReorderable>,
-        );
-        const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
+            const reorderable = harness.mount(
+                <DragReorderable
+                    {...callbacks}
+                    selectedRegions={[Regions.column(OLD_INDEX)]}
+                    toRegion={toFullColumnRegion}
+                >
+                    {children}
+                </DragReorderable>,
+            );
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
-        element
-            .mouse("mousedown")
-            .mouse("mousemove")
-            .mouse("mouseup");
-        expect(callbacks.onReordering.called).to.be.false;
-        expect(callbacks.onReordered.called).to.be.false;
-        expect(callbacks.onSelection.called).to.be.false;
+            element
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
+            expect(callbacks.onReordering.called).to.be.false;
+            expect(callbacks.onReordered.called).to.be.false;
+            expect(callbacks.onSelection.called).to.be.false;
+        });
+
+        // tslint:disable-next-line:max-line-length
+        it("an existing selection contains the clicked region but has a different cardinality (e.g. FULL_TABLE)", () => {
+            const callbacks = initCallbackStubs();
+            callbacks.locateClick.returns(Regions.column(OLD_INDEX));
+            callbacks.locateDrag.returns(OLD_INDEX);
+
+            const reorderable = harness.mount(
+                <DragReorderable {...callbacks} selectedRegions={[Regions.table()]} toRegion={toFullColumnRegion}>
+                    {children}
+                </DragReorderable>,
+            );
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
+
+            element
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
+            expect(callbacks.onReordering.called).to.be.false;
+            expect(callbacks.onReordered.called).to.be.false;
+            expect(callbacks.onSelection.called).to.be.false;
+        });
+
+        it("disabled=true", () => {
+            const callbacks = initCallbackStubs();
+            callbacks.locateClick.returns(Regions.column(OLD_INDEX));
+            callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
+
+            const reorderable = harness.mount(
+                <DragReorderable
+                    {...callbacks}
+                    disabled={true}
+                    selectedRegions={[Regions.column(OLD_INDEX)]}
+                    toRegion={toFullColumnRegion}
+                >
+                    {children}
+                </DragReorderable>,
+            );
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
+
+            element
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
+            expect(callbacks.onReordering.called).to.be.false;
+            expect(callbacks.onReordered.called).to.be.false;
+            expect(callbacks.onSelection.called).to.be.false;
+        });
     });
 
-    it("does not work on a selection with FULL_TABLE cardinality", () => {
-        const callbacks = initCallbackStubs();
-        callbacks.locateClick.returns(Regions.column(OLD_INDEX));
-        callbacks.locateDrag.returns(OLD_INDEX);
+    describe("general behavior", () => {
+        it("selects the clicked region if the clicked region is not currently selected", () => {
+            const callbacks = initCallbackStubs();
+            callbacks.locateClick.returns(Regions.column(OLD_INDEX));
+            callbacks.locateDrag.returns(OLD_INDEX);
 
-        const reorderable = harness.mount(
-            <DragReorderable {...callbacks} selectedRegions={[Regions.table()]} toRegion={toFullColumnRegion}>
-                {children}
-            </DragReorderable>,
-        );
-        const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
+            const reorderable = harness.mount(
+                <DragReorderable {...callbacks} selectedRegions={[]} toRegion={toFullColumnRegion}>
+                    {children}
+                </DragReorderable>,
+            );
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
-        element
-            .mouse("mousedown")
-            .mouse("mousemove")
-            .mouse("mouseup");
-        expect(callbacks.onReordering.called).to.be.false;
-        expect(callbacks.onReordered.called).to.be.false;
-        expect(callbacks.onSelection.called).to.be.false;
-    });
+            element
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
+            expect(callbacks.onReordering.called).to.be.true;
+            expect(callbacks.onReordered.called).to.be.true;
+            expect(callbacks.onSelection.called).to.be.true;
+        });
 
-    it("if enabled, selects the clicked region if the clicked region is not currently selected", () => {
-        const callbacks = initCallbackStubs();
-        callbacks.locateClick.returns(Regions.column(OLD_INDEX));
-        callbacks.locateDrag.returns(OLD_INDEX);
+        it("invokes callbacks appropriately throughout the drag-reorder interaction", () => {
+            const callbacks = initCallbackStubs();
+            callbacks.locateClick.returns(Regions.column(OLD_INDEX));
+            callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
 
-        const reorderable = harness.mount(
-            <DragReorderable {...callbacks} selectedRegions={[]} toRegion={toFullColumnRegion}>
-                {children}
-            </DragReorderable>,
-        );
-        const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
+            const reorderable = harness.mount(
+                <DragReorderable
+                    {...callbacks}
+                    selectedRegions={[Regions.column(OLD_INDEX)]}
+                    toRegion={toFullColumnRegion}
+                >
+                    {children}
+                </DragReorderable>,
+            );
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
-        element
-            .mouse("mousedown")
-            .mouse("mousemove")
-            .mouse("mouseup");
-        expect(callbacks.onReordering.called).to.be.true;
-        expect(callbacks.onReordered.called).to.be.true;
-        expect(callbacks.onSelection.called).to.be.true;
-    });
+            element.mouse("mousedown").mouse("mousemove");
+            expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
+            expect(callbacks.onReordered.called).to.be.false;
+            expect(callbacks.onSelection.called).to.be.false;
 
-    it("does nothing if disabled", () => {
-        const callbacks = initCallbackStubs();
-        callbacks.locateClick.returns(Regions.column(OLD_INDEX));
-        callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
+            element.mouse("mouseup");
+            expect(callbacks.onReordering.callCount).to.equal(2); // called on drag end too
+            expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
+            expect(callbacks.onSelection.calledWith([Regions.column(NEW_INDEX)])).to.be.true;
+        });
 
-        const reorderable = harness.mount(
-            <DragReorderable
-                {...callbacks}
-                disabled={true}
-                selectedRegions={[Regions.column(OLD_INDEX)]}
-                toRegion={toFullColumnRegion}
-            >
-                {children}
-            </DragReorderable>,
-        );
-        const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
-
-        element
-            .mouse("mousedown")
-            .mouse("mousemove")
-            .mouse("mouseup");
-        expect(callbacks.onReordering.called).to.be.false;
-        expect(callbacks.onReordered.called).to.be.false;
-        expect(callbacks.onSelection.called).to.be.false;
-    });
-
-    it("invokes callbacks appropriately throughout the drag-reorder interaction", () => {
-        const callbacks = initCallbackStubs();
-        callbacks.locateClick.returns(Regions.column(OLD_INDEX));
-        callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
-
-        const reorderable = harness.mount(
-            <DragReorderable {...callbacks} selectedRegions={[Regions.column(OLD_INDEX)]} toRegion={toFullColumnRegion}>
-                {children}
-            </DragReorderable>,
-        );
-        const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
-
-        element.mouse("mousedown").mouse("mousemove");
-        expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
-        expect(callbacks.onReordered.called).to.be.false;
-        expect(callbacks.onSelection.called).to.be.false;
-
-        element.mouse("mouseup");
-        expect(callbacks.onReordering.callCount).to.equal(2); // called on drag end too
-        expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
-        expect(callbacks.onSelection.calledWith([Regions.column(NEW_INDEX)])).to.be.true;
-    });
-
-    describe("columns", () => {
-        it("works for one selected column", () => {
+        it("reorders a selection of one single element", () => {
             const callbacks = initCallbackStubs();
             callbacks.locateClick.returns(Regions.column(OLD_INDEX));
             callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
@@ -179,7 +190,7 @@ describe("DragReorderable", () => {
             expect(callbacks.onSelection.calledWith([Regions.column(NEW_INDEX)])).to.be.true;
         });
 
-        it("works for a selection of multiple contiguous columns", () => {
+        it("reorders a selection of multiple contiguous elements", () => {
             const callbacks = initCallbackStubs();
             callbacks.locateClick.returns(Regions.column(OLD_INDEX));
             callbacks.locateDrag.returns(GUIDE_INDEX_MULTI_CASE);
@@ -203,40 +214,21 @@ describe("DragReorderable", () => {
             expect(callbacks.onSelection.calledWith([Regions.column(NEW_INDEX, NEW_INDEX + MULTI_LENGTH - 1)])).to.be
                 .true;
         });
-    });
 
-    describe("rows", () => {
-        it("works for one selected row", () => {
+        it("for a disjoint selection, reorders just the clicked region and clears all other selections", () => {
             const callbacks = initCallbackStubs();
-            callbacks.locateClick.returns(Regions.row(OLD_INDEX));
-            callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
-
-            const reorderable = harness.mount(
-                <DragReorderable {...callbacks} selectedRegions={[Regions.row(OLD_INDEX)]} toRegion={toFullRowRegion}>
-                    {children}
-                </DragReorderable>,
-            );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
-
-            element.mouse("mousedown").mouse("mousemove");
-            expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
-
-            element.mouse("mouseup");
-            expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
-            expect(callbacks.onSelection.calledWith([Regions.row(NEW_INDEX)])).to.be.true;
-        });
-
-        it("works for a selection of multiple contiguous rows", () => {
-            const callbacks = initCallbackStubs();
-            callbacks.locateClick.returns(Regions.row(OLD_INDEX));
+            callbacks.locateClick.returns(Regions.column(OLD_INDEX));
             callbacks.locateDrag.returns(GUIDE_INDEX_MULTI_CASE);
 
+            // try moving a contiguous multi-column selection
+            const selectedRegions = [
+                Regions.column(OLD_INDEX, OLD_INDEX + MULTI_LENGTH - 1),
+                Regions.column(NEW_INDEX),
+                Regions.column(NEW_INDEX + 1),
+            ];
+
             const reorderable = harness.mount(
-                <DragReorderable
-                    {...callbacks}
-                    selectedRegions={[Regions.row(OLD_INDEX, OLD_INDEX + MULTI_LENGTH - 1)]}
-                    toRegion={toFullRowRegion}
-                >
+                <DragReorderable {...callbacks} selectedRegions={selectedRegions} toRegion={toFullColumnRegion}>
                     {children}
                 </DragReorderable>,
             );
@@ -247,7 +239,92 @@ describe("DragReorderable", () => {
 
             element.mouse("mouseup");
             expect(callbacks.onReordered.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
-            expect(callbacks.onSelection.calledWith([Regions.row(NEW_INDEX, NEW_INDEX + MULTI_LENGTH - 1)])).to.be.true;
+            expect(callbacks.onSelection.calledWith([Regions.column(NEW_INDEX, NEW_INDEX + MULTI_LENGTH - 1)])).to.be
+                .true;
+        });
+
+        it("does not invoke callbacks if nothing was reordered after drag", () => {
+            const callbacks = initCallbackStubs();
+            callbacks.locateClick.returns(Regions.column(OLD_INDEX));
+            callbacks.locateDrag.returns(OLD_INDEX); // same index
+
+            const reorderable = harness.mount(
+                <DragReorderable
+                    {...callbacks}
+                    selectedRegions={[Regions.column(OLD_INDEX)]}
+                    toRegion={toFullColumnRegion}
+                >
+                    {children}
+                </DragReorderable>,
+            );
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
+
+            element
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
+            expect(callbacks.onSelection.called).to.be.false;
+            expect(callbacks.onFocus.called).to.be.false;
+        });
+    });
+
+    describe("focused cell", () => {
+        it("moves the focused cell into the region on mousedown if region was not already selected", () => {
+            const SELECTED_INDEX = NEW_INDEX;
+            const UNSELECTED_INDEX = OLD_INDEX;
+
+            const callbacks = initCallbackStubs();
+            callbacks.locateClick.returns(Regions.column(UNSELECTED_INDEX));
+            callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
+
+            const reorderable = harness.mount(
+                <DragReorderable
+                    {...callbacks}
+                    selectedRegions={[Regions.column(SELECTED_INDEX)]}
+                    toRegion={toFullColumnRegion}
+                >
+                    {children}
+                </DragReorderable>,
+            );
+            const element = reorderable.find(ELEMENT_SELECTOR, UNSELECTED_INDEX);
+
+            element.mouse("mousedown");
+            expect(callbacks.onFocus.called).to.be.true;
+            expect(callbacks.onFocus.firstCall.args[0]).to.deep.equal({
+                col: UNSELECTED_INDEX,
+                focusSelectionIndex: 0,
+                row: 0,
+            });
+        });
+
+        it("moves the focused cell into the newly selected region on drag end", () => {
+            const callbacks = initCallbackStubs();
+            callbacks.locateClick.returns(Regions.column(NEW_INDEX));
+            callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
+
+            const reorderable = harness.mount(
+                <DragReorderable
+                    {...callbacks}
+                    selectedRegions={[Regions.column(OLD_INDEX)]}
+                    toRegion={toFullColumnRegion}
+                >
+                    {children}
+                </DragReorderable>,
+            );
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
+
+            element
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
+
+            // called once on mousedown and again on mouseup
+            expect(callbacks.onFocus.calledTwice).to.be.true;
+            expect(callbacks.onFocus.secondCall.args[0]).to.deep.equal({
+                col: NEW_INDEX,
+                focusSelectionIndex: 0,
+                row: 0,
+            });
         });
     });
 
@@ -255,6 +332,7 @@ describe("DragReorderable", () => {
         return {
             locateClick: sinon.stub(),
             locateDrag: sinon.stub(),
+            onFocus: sinon.stub(),
             onReordered: sinon.stub(),
             onReordering: sinon.stub(),
             onSelection: sinon.stub(),
@@ -266,9 +344,5 @@ describe("DragReorderable", () => {
 
     function toFullColumnRegion(index1: number, index2?: number) {
         return Regions.column(index1, index2);
-    }
-
-    function toFullRowRegion(index1: number, index2?: number) {
-        return Regions.row(index1, index2);
     }
 });

@@ -18,6 +18,7 @@ const FilmSelect = Select.ofType<Film>();
 export interface ISelectExampleState {
     film?: Film;
     filterable?: boolean;
+    hasInitialContent?: boolean;
     minimal?: boolean;
     resetOnClose?: boolean;
     resetOnSelect?: boolean;
@@ -29,6 +30,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         disabled: false,
         film: TOP_100_FILMS[0],
         filterable: true,
+        hasInitialContent: false,
         minimal: false,
         resetOnClose: false,
         resetOnSelect: false,
@@ -38,14 +40,23 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
     private handleMinimalChange = this.handleSwitchChange("minimal");
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
+    private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
     private handleDisabledChange = this.handleSwitchChange("disabled");
 
     protected renderExample() {
-        const { film, minimal, disabled, ...flags } = this.state;
+        const { disabled, film, minimal, ...flags } = this.state;
+
+        const initialContent = this.state.hasInitialContent ? (
+            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
+        ) : (
+            undefined
+        );
+
         return (
             <FilmSelect
                 {...flags}
                 disabled={disabled}
+                initialContent={initialContent}
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
@@ -90,6 +101,12 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                     label="Disabled"
                     checked={this.state.disabled}
                     onChange={this.handleDisabledChange}
+                />,
+                <Switch
+                    key="hasInitialContent"
+                    label="Use initial content"
+                    checked={this.state.hasInitialContent}
+                    onChange={this.handleInitialContentChange}
                 />,
             ],
         ];

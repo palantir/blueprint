@@ -25,6 +25,11 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     selectedItems?: T[];
 
     /**
+     * React child to render when query is empty.
+     */
+    initialContent?: React.ReactChild;
+
+    /**
      * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
      * this item is active (selected by keyboard arrows) and an `onClick` event handler that
      * should be attached to the returned element.
@@ -32,7 +37,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /** React child to render when filtering items returns zero results. */
-    noResults?: string | JSX.Element;
+    noResults?: React.ReactChild;
 
     /**
      * Whether the popover opens on key down or when `TagInput` is focused.
@@ -88,6 +93,7 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
     public render() {
         // omit props specific to this component, spread the rest.
         const {
+            initialContent,
             itemRenderer,
             noResults,
             openOnKeyDown,
@@ -155,7 +161,10 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
     };
 
     private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
-        const { itemRenderer, noResults } = this.props;
+        const { initialContent, itemRenderer, noResults } = this.props;
+        if (initialContent != null && this.isQueryEmpty()) {
+            return initialContent;
+        }
         if (filteredItems.length === 0) {
             return noResults;
         }
@@ -169,10 +178,12 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
         );
     }
 
+    private isQueryEmpty = () => this.state.query.length === 0;
+
     private handleQueryChange = (e: React.FormEvent<HTMLInputElement>) => {
         const { tagInputProps = {}, openOnKeyDown } = this.props;
         const query = e.currentTarget.value;
-        this.setState({ query, isOpen: query.length > 0 || !openOnKeyDown });
+        this.setState({ query, isOpen: !this.isQueryEmpty() || !openOnKeyDown });
 
         if (tagInputProps.inputProps != null) {
             Utils.safeInvoke(tagInputProps.inputProps.onChange, e);
@@ -183,7 +194,7 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
         this.input.focus();
         // make sure the query is valid by checking if activeItem is defined
         if (this.state.activeItem != null) {
-            if (this.props.resetOnSelect && this.state.query.length > 0) {
+            if (this.props.resetOnSelect && !this.isQueryEmpty()) {
                 this.setState({
                     activeItem: this.props.items[0],
                     query: "",

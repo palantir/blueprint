@@ -196,6 +196,14 @@ describe("<Table>", () => {
             expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
         });
 
+        it("Does not move focused cell on shift+click", () => {
+            const table = mountTable();
+            selectFullTable(table, { shiftKey: true });
+
+            expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
+            expect(onFocus.called).to.be.false;
+        });
+
         it("Selects and deselects column/row headers when selecting and deselecting the full table", () => {
             const table = mountTable();
             const columnHeader = table.find(COLUMN_HEADER_SELECTOR).at(0);
@@ -260,9 +268,9 @@ describe("<Table>", () => {
             );
         }
 
-        function selectFullTable(table: ReactWrapper<any, {}>) {
+        function selectFullTable(table: ReactWrapper<any, {}>, ...mouseEventArgs: any[]) {
             const menu = table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_MENU}`);
-            menu.simulate("click");
+            menu.simulate("mousedown", ...mouseEventArgs).simulate("mouseup", ...mouseEventArgs);
         }
     });
 
@@ -939,7 +947,7 @@ describe("<Table>", () => {
                 isColumnReorderable: true,
                 onColumnsReordered,
                 onSelection,
-                selectedRegions: [Regions.column(1)], // some other column
+                selectedRegions: [Regions.column(2)], // some other column
             });
             const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
             const reorderHandle = getReorderHandle(headerCell);

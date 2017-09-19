@@ -11,6 +11,7 @@ import * as React from "react";
 
 import { Grid } from "../common";
 import { Batcher } from "../common/batcher";
+import { IFocusedCellCoordinates } from "../common/cell";
 import * as Classes from "../common/classes";
 import { Utils } from "../common/utils";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
@@ -25,6 +26,11 @@ import { IHeaderCellProps } from "./headerCell";
 export type IHeaderCellRenderer = (index: number) => React.ReactElement<IHeaderCellProps>;
 
 export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelectableProps {
+    /**
+     * The currently focused cell.
+     */
+    focusedCell?: IFocusedCellCoordinates;
+
     /**
      * The grid computes sizes of cells, rows, or columns from the
      * configurable `columnWidths` and `rowHeights`.
@@ -70,11 +76,6 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
  */
 export interface IInternalHeaderProps extends IHeaderProps {
     /**
-     * The highest cell index to render.
-     */
-    endIndex: number;
-
-    /**
      * The cardinality of a fully selected region. Should be FULL_COLUMNS for column headers and
      * FULL_ROWS for row headers.
      */
@@ -96,6 +97,16 @@ export interface IInternalHeaderProps extends IHeaderProps {
     headerCellIsSelectedPropName: string;
 
     /**
+     * The highest cell index to render.
+     */
+    indexEnd: number;
+
+    /**
+     * The lowest cell index to render.
+     */
+    indexStart: number;
+
+    /**
      * The maximum permitted size of the header in pixels. Corresponds to a width for column headers and
      * a height for row headers.
      */
@@ -114,9 +125,9 @@ export interface IInternalHeaderProps extends IHeaderProps {
     resizeOrientation: Orientation;
 
     /**
-     * The lowest cell index to render.
+     * An array containing the table's selection Regions.
      */
-    startIndex: number;
+    selectedRegions: IRegion[];
 
     /**
      * Converts a point on the screen to a row or column index in the table grid.
@@ -126,7 +137,7 @@ export interface IInternalHeaderProps extends IHeaderProps {
     /**
      * Provides any extrema classes for the provided index range in the table grid.
      */
-    getCellExtremaClasses: (index: number, endIndex: number) => string[];
+    getCellExtremaClasses: (index: number, indexEnd: number) => string[];
 
     /**
      * Provides the index class for the cell. Should be Classes.columnCellIndexClass for column
@@ -209,7 +220,9 @@ export interface IHeaderState {
     hasSelectionEnded?: boolean;
 }
 
-const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["endIndex", "startIndex"];
+const SHALLOW_COMPARE_PROP_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["focusedCell", "selectedRegions"];
+
+const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["indexEnd", "indexStart"];
 
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
     public state: IHeaderState = {
@@ -243,6 +256,14 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         }
     }
 
+    public shouldComponentUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
+        return (
+            !Utils.shallowCompareKeys(this.state, nextState) ||
+            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: SHALLOW_COMPARE_PROP_KEYS_BLACKLIST }) ||
+            !Utils.deepCompareKeys(this.props, nextProps, SHALLOW_COMPARE_PROP_KEYS_BLACKLIST)
+        );
+    }
+
     public componentWillUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
         const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
         let shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
@@ -262,11 +283,11 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         return this.props.toRegion(this.activationIndex);
     };
 
-    private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData): IRegion => {
+    private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData, returnEndOnly = false): IRegion => {
         const coord = this.props.getDragCoordinate(coords.current);
-        const startIndex = this.activationIndex;
-        const endIndex = this.props.convertPointToIndex(coord);
-        return this.props.toRegion(startIndex, endIndex);
+        const indexStart = this.activationIndex;
+        const indexEnd = this.props.convertPointToIndex(coord);
+        return returnEndOnly ? this.props.toRegion(indexEnd) : this.props.toRegion(indexStart, indexEnd);
     };
 
     private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
@@ -276,11 +297,10 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     };
 
     private renderCells = () => {
-        const startIndex = this.props.startIndex;
-        const endIndex = this.props.endIndex;
+        const { indexStart, indexEnd } = this.props;
 
         this.batcher.startNewBatch();
-        for (let index = startIndex; index <= endIndex; index++) {
+        for (let index = indexStart; index <= indexEnd; index++) {
             this.batcher.addArgsToBatch(index);
         }
         this.batcher.removeOldAddNew(this.renderNewCell);
@@ -292,7 +312,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     };
 
     private renderNewCell = (index: number) => {
-        const extremaClasses = this.props.getCellExtremaClasses(index, this.props.endIndex);
+        const extremaClasses = this.props.getCellExtremaClasses(index, this.props.indexEnd);
         const renderer = this.props.isGhostIndex(index) ? this.props.renderGhostCell : this.renderCell;
         return renderer(index, extremaClasses);
     };
@@ -332,6 +352,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             <DragSelectable
                 allowMultipleSelection={this.props.allowMultipleSelection}
                 disabled={isEntireCellTargetReorderable}
+                focusedCell={this.props.focusedCell}
                 ignoredSelectors={[`.${Classes.TABLE_REORDER_HANDLE_TARGET}`]}
                 key={getIndexClass(index)}
                 locateClick={this.locateClick}
@@ -395,6 +416,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                 onReordered={this.props.onReordered}
                 onReordering={this.props.onReordering}
                 onSelection={this.props.onSelection}
+                onFocus={this.props.onFocus}
                 selectedRegions={this.props.selectedRegions}
                 toRegion={this.props.toRegion}
             >
@@ -435,36 +457,4 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             !this.isReorderHandleEnabled()
         );
     };
-}
-
-/**
- * In the current architecture, ColumnHeaderCell and RowHeaderCell each need to include this same
- * shouldComponentUpdate code at their level. To avoid writing the same code in two places, we
- * expose this utility for each higher-level component to leverage in their own respective
- * shouldComponentUpdate functions.
- *
- * (See: https://github.com/palantir/blueprint/issues/1214)
- *
- * @param props - the current props
- * @param nextProps - the next props
- */
-export function shouldHeaderComponentUpdate<T extends IHeaderProps>(
-    props: T,
-    nextProps: T,
-    isSelectedRegionRelevant: (selectedRegion: IRegion) => boolean,
-) {
-    if (!Utils.shallowCompareKeys(props, nextProps, { exclude: ["selectedRegions"] })) {
-        return true;
-    }
-
-    const relevantSelectedRegions = props.selectedRegions.filter(isSelectedRegionRelevant);
-    const nextRelevantSelectedRegions = nextProps.selectedRegions.filter(isSelectedRegionRelevant);
-
-    // ignore selection changes that didn't involve any relevant selected regions (FULL_COLUMNS
-    // for column headers, or FULL_ROWS for row headers)
-    if (relevantSelectedRegions.length > 0 || nextRelevantSelectedRegions.length > 0) {
-        return !Utils.deepCompareKeys(relevantSelectedRegions, nextRelevantSelectedRegions);
-    }
-
-    return false;
 }

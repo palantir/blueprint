@@ -6038,6 +6038,15 @@
 	    TICK_CIRCLE: "pt-icon-tick-circle",
 	    PRESCRIPTION: "pt-icon-prescription",
 	    NEW_PRESCRIPTION: "pt-icon-new-prescription",
+	    FILTER_KEEP: "pt-icon-filter-keep",
+	    FILTER_REMOVE: "pt-icon-filter-remove",
+	    KEY: "pt-icon-key",
+	    FEED_SUBSCRIBED: "pt-icon-feed-subscribed",
+	    WIDGET_BUTTON: "pt-icon-widget-button",
+	    WIDGET_HEADER: "pt-icon-widget-header",
+	    WIDGET_FOOTER: "pt-icon-widget-footer",
+	    HEADER_ONE: "pt-icon-header-one",
+	    HEADER_TWO: "pt-icon-header-two",
 	};
 
 	//# sourceMappingURL=iconClasses.js.map
@@ -6463,6 +6472,15 @@
 	    TICK_CIRCLE: "\ue779",
 	    PRESCRIPTION: "\ue78a",
 	    NEW_PRESCRIPTION: "\ue78b",
+	    FILTER_KEEP: "\ue78c",
+	    FILTER_REMOVE: "\ue78d",
+	    KEY: "\ue78e",
+	    FEED_SUBSCRIBED: "\ue78f",
+	    WIDGET_BUTTON: "\ue790",
+	    WIDGET_HEADER: "\ue791",
+	    WIDGET_FOOTER: "\ue792",
+	    HEADER_ONE: "\ue793",
+	    HEADER_TWO: "\ue794",
 	};
 
 	//# sourceMappingURL=iconStrings.js.map
