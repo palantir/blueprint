@@ -53,13 +53,15 @@ export function filterWithQueryCandidates<T>(
     getItemKey: (item: T) => string,
     getItemQueryCandidates: (item: T) => string[],
 ): T[] {
+    const filterKey = "value";
+
     const queryCandidates = [];
     for (const item of items) {
         const key = getItemKey(item);
-        queryCandidates.push(...getItemQueryCandidates(item).map((value) => ({ key, value })));
+        queryCandidates.push(...getItemQueryCandidates(item).map((value) => ({ key, [filterKey]: value })));
     }
 
-    const results = filter(queryCandidates, query, { key: "value" });
+    const results = filter(queryCandidates, query, { key: filterKey });
 
     const keyToItem: { [key: string]: T } = {};
     for (const item of items) {
