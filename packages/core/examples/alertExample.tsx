@@ -22,7 +22,11 @@ export class AlertExample extends BaseExample<{}> {
     };
 
     private toaster: IToaster;
-    private message: JSX.Element = (<div><strong>filename</strong> was moved to Trash</div>);
+    private message: JSX.Element = (
+        <div>
+            <strong>filename</strong> was moved to Trash
+        </div>
+    );
 
     public componentWillMount() {
         this.toaster = Toaster.create();
@@ -39,8 +43,8 @@ export class AlertExample extends BaseExample<{}> {
                     onConfirm={this.handleCloseError}
                 >
                     <p>
-                        Couldn't create the file because the containing folder doesn't exist anymore.
-                        You will be redirected to your user folder.
+                        Couldn't create the file because the containing folder doesn't exist anymore. You will be
+                        redirected to your user folder.
                     </p>
                 </Alert>
                 <Button onClick={this.handleOpen} text="Open file deletion alert" />
@@ -54,8 +58,8 @@ export class AlertExample extends BaseExample<{}> {
                     onCancel={this.handleClose}
                 >
                     <p>
-                        Are you sure you want to move <b>filename</b> to Trash? You will be able to restore
-                        it later, but it will become private to you.
+                        Are you sure you want to move <b>filename</b> to Trash? You will be able to restore it later,
+                        but it will become private to you.
                     </p>
                 </Alert>
             </div>
@@ -71,6 +75,6 @@ export class AlertExample extends BaseExample<{}> {
             className: this.props.themeName,
             message: this.message,
         });
-    }
+    };
     private handleClose = () => this.setState({ isOpen: false });
 }

@@ -12,16 +12,7 @@ import * as React from "react";
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
-import {
-    Cell,
-    Column,
-    ColumnHeaderCell,
-    CopyCellsMenuItem,
-    IMenuContext,
-    SelectionModes,
-    Table,
-    Utils,
-} from "../src";
+import { Cell, Column, ColumnHeaderCell, CopyCellsMenuItem, IMenuContext, SelectionModes, Table, Utils } from "../src";
 
 // tslint:disable-next-line:no-var-requires
 const sumo = require("./sumo.json") as any[];
@@ -34,24 +25,14 @@ export interface ISortableColumn {
 }
 
 abstract class AbstractSortableColumn implements ISortableColumn {
-    constructor(protected name: string, protected index: number) {
-    }
+    constructor(protected name: string, protected index: number) {}
 
     public getColumn(getCellData: ICellLookup, sortColumn: ISortCallback) {
         const menu = this.renderMenu(sortColumn);
-        const renderCell = (rowIndex: number, columnIndex: number) => (
-            <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
-        );
-        const renderColumnHeader = () => (
-            <ColumnHeaderCell name={this.name} menu={menu} />
-        );
+        const renderCell = (rowIndex: number, columnIndex: number) => <Cell>{getCellData(rowIndex, columnIndex)}</Cell>;
+        const renderColumnHeader = () => <ColumnHeaderCell name={this.name} menu={menu} />;
         return (
-            <Column
-                key={this.index}
-                name={this.name}
-                renderCell={renderCell}
-                renderColumnHeader={renderColumnHeader}
-            />
+            <Column key={this.index} name={this.name} renderCell={renderCell} renderColumnHeader={renderColumnHeader} />
         );
     }
 
@@ -60,12 +41,14 @@ abstract class AbstractSortableColumn implements ISortableColumn {
 
 class TextSortableColumn extends AbstractSortableColumn {
     protected renderMenu(sortColumn: ISortCallback) {
-        const sortAsc = () => sortColumn(this.index, (a, b) => (this.compare(a, b)));
-        const sortDesc = () => sortColumn(this.index, (a, b) => (this.compare(b, a)));
-        return (<Menu>
-            <MenuItem iconName="sort-asc" onClick={sortAsc} text="Sort Asc" />
-            <MenuItem iconName="sort-desc" onClick={sortDesc} text="Sort Desc" />
-        </Menu>);
+        const sortAsc = () => sortColumn(this.index, (a, b) => this.compare(a, b));
+        const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
+        return (
+            <Menu>
+                <MenuItem iconName="sort-asc" onClick={sortAsc} text="Sort Asc" />
+                <MenuItem iconName="sort-desc" onClick={sortDesc} text="Sort Desc" />
+            </Menu>
+        );
     }
 
     private compare(a: any, b: any) {
@@ -75,7 +58,7 @@ class TextSortableColumn extends AbstractSortableColumn {
 
 class RankSortableColumn extends AbstractSortableColumn {
     private static RANK_PATTERN = /([YOSKMJ])([0-9]+)(e|w)/i;
-    private static TITLES: {[key: string]: number} = {
+    private static TITLES: { [key: string]: number } = {
         J: 5, // Juryo
         K: 3, // Komusubi
         M: 4, // Maegashira
@@ -85,12 +68,14 @@ class RankSortableColumn extends AbstractSortableColumn {
     };
 
     protected renderMenu(sortColumn: ISortCallback) {
-        const sortAsc = () => sortColumn(this.index, (a, b) => (this.compare(a, b)));
-        const sortDesc = () => sortColumn(this.index, (a, b) => (this.compare(b, a)));
-        return (<Menu>
-            <MenuItem iconName="sort-asc" onClick={sortAsc} text="Sort Rank Asc" />
-            <MenuItem iconName="sort-desc" onClick={sortDesc} text="Sort Rank Desc" />
-        </Menu>);
+        const sortAsc = () => sortColumn(this.index, (a, b) => this.compare(a, b));
+        const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
+        return (
+            <Menu>
+                <MenuItem iconName="sort-asc" onClick={sortAsc} text="Sort Rank Asc" />
+                <MenuItem iconName="sort-desc" onClick={sortDesc} text="Sort Rank Desc" />
+            </Menu>
+        );
     }
 
     private toRank(str: string) {
@@ -99,7 +84,7 @@ class RankSortableColumn extends AbstractSortableColumn {
             return 1000;
         }
         const [title, rank, side] = match.slice(1);
-        return RankSortableColumn.TITLES[title] * 100 + (side === "e" ? 0 : 1) + (parseInt(rank, 10) * 2);
+        return RankSortableColumn.TITLES[title] * 100 + (side === "e" ? 0 : 1) + parseInt(rank, 10) * 2;
     }
 
     private compare(a: any, b: any) {
@@ -112,62 +97,64 @@ class RecordSortableColumn extends AbstractSortableColumn {
 
     protected renderMenu(sortColumn: ISortCallback) {
         // tslint:disable:jsx-no-lambda
-        return (<Menu>
-            <MenuItem
-                iconName="sort-asc"
-                onClick={() => (sortColumn(this.index, this.transformCompare(this.toWins, false)))}
-                text="Sort Wins Asc"
-            />
-            <MenuItem
-                iconName="sort-desc"
-                onClick={() => (sortColumn(this.index, this.transformCompare(this.toWins, true)))}
-                text="Sort Wins Desc"
-            />
-            <MenuItem
-                iconName="sort-asc"
-                onClick={() => (sortColumn(this.index, this.transformCompare(this.toLosses, false)))}
-                text="Sort Losses Asc"
-            />
-            <MenuItem
-                iconName="sort-desc"
-                onClick={() => (sortColumn(this.index, this.transformCompare(this.toLosses, true)))}
-                text="Sort Losses Desc"
-            />
-            <MenuItem
-                iconName="sort-asc"
-                onClick={() => (sortColumn(this.index, this.transformCompare(this.toTies, false)))}
-                text="Sort Ties Asc"
-            />
-            <MenuItem
-                iconName="sort-desc"
-                onClick={() => (sortColumn(this.index, this.transformCompare(this.toTies, true)))}
-                text="Sort Ties Desc"
-            />
-        </Menu>);
+        return (
+            <Menu>
+                <MenuItem
+                    iconName="sort-asc"
+                    onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, false))}
+                    text="Sort Wins Asc"
+                />
+                <MenuItem
+                    iconName="sort-desc"
+                    onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, true))}
+                    text="Sort Wins Desc"
+                />
+                <MenuItem
+                    iconName="sort-asc"
+                    onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, false))}
+                    text="Sort Losses Asc"
+                />
+                <MenuItem
+                    iconName="sort-desc"
+                    onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, true))}
+                    text="Sort Losses Desc"
+                />
+                <MenuItem
+                    iconName="sort-asc"
+                    onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, false))}
+                    text="Sort Ties Asc"
+                />
+                <MenuItem
+                    iconName="sort-desc"
+                    onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, true))}
+                    text="Sort Ties Desc"
+                />
+            </Menu>
+        );
         // tslint:enable:jsx-no-lambda
     }
 
     private transformCompare(transform: (a: any) => any, reverse: boolean) {
         if (reverse) {
-            return (a: any, b: any) => (transform(b) - transform(a));
+            return (a: any, b: any) => transform(b) - transform(a);
         } else {
-            return (a: any, b: any) => (transform(a) - transform(b));
+            return (a: any, b: any) => transform(a) - transform(b);
         }
     }
 
     private toWins(a: any) {
         const match = RecordSortableColumn.WIN_LOSS_PATTERN.exec(a);
-        return (match == null) ? -1 : parseInt(match[1], 10);
+        return match == null ? -1 : parseInt(match[1], 10);
     }
 
     private toTies(a: any) {
         const match = RecordSortableColumn.WIN_LOSS_PATTERN.exec(a);
-        return (match == null || match[3] == null) ? -1 : parseInt(match[3], 10);
+        return match == null || match[3] == null ? -1 : parseInt(match[3], 10);
     }
 
     private toLosses(a: any) {
         const match = RecordSortableColumn.WIN_LOSS_PATTERN.exec(a);
-        return (match == null) ? -1 : parseInt(match[5], 10);
+        return match == null ? -1 : parseInt(match[5], 10);
     }
 }
 
@@ -189,12 +176,12 @@ export class TableSortableExample extends BaseExample<{}> {
             new RecordSortableColumn("Record - Kyūshū Basho", 12),
         ] as ISortableColumn[],
         data: sumo,
-        sortedIndexMap : [] as number[],
+        sortedIndexMap: [] as number[],
     };
 
     public render() {
         const numRows = this.state.data.length;
-        const columns = this.state.columns.map((col) => (col.getColumn(this.getCellData, this.sortColumn)));
+        const columns = this.state.columns.map(col => col.getColumn(this.getCellData, this.sortColumn));
         return (
             <Table
                 numRows={numRows}
@@ -212,27 +199,22 @@ export class TableSortableExample extends BaseExample<{}> {
             rowIndex = sortedRowIndex;
         }
         return this.state.data[rowIndex][columnIndex];
-    }
+    };
 
     private renderBodyContextMenu = (context: IMenuContext) => {
-        return (<Menu>
-            <CopyCellsMenuItem
-                context={context}
-                getCellData={this.getCellData}
-                text="Copy"
-            />
-        </Menu>);
-    }
+        return (
+            <Menu>
+                <CopyCellsMenuItem context={context} getCellData={this.getCellData} text="Copy" />
+            </Menu>
+        );
+    };
 
     private sortColumn = (columnIndex: number, comparator: (a: any, b: any) => number) => {
         const { data } = this.state;
-        const sortedIndexMap = Utils.times(data.length, (i: number) => (i));
+        const sortedIndexMap = Utils.times(data.length, (i: number) => i);
         sortedIndexMap.sort((a: number, b: number) => {
-            return comparator(
-                data[a][columnIndex],
-                data[b][columnIndex],
-            );
+            return comparator(data[a][columnIndex], data[b][columnIndex]);
         });
         this.setState({ sortedIndexMap });
-    }
+    };
 }

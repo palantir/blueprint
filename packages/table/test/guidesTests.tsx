@@ -23,17 +23,13 @@ describe("Guides", () => {
     });
 
     it("defaults to no guides", () => {
-        const guides = harness.mount(
-            <GuideLayer/>,
-        );
+        const guides = harness.mount(<GuideLayer />);
         expect(guides.find(`.${Classes.TABLE_VERTICAL_GUIDE}`).element).to.not.exist;
         expect(guides.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`).element).to.not.exist;
     });
 
     it("displays vertical guides", () => {
-        const guides = harness.mount(
-            <GuideLayer verticalGuides={[0, 10, 100]} />,
-        );
+        const guides = harness.mount(<GuideLayer verticalGuides={[0, 10, 100]} />);
         expect(guides.find(`.${Classes.TABLE_VERTICAL_GUIDE}`, 0).style().left).to.equal("0px");
         expect(guides.find(`.${Classes.TABLE_VERTICAL_GUIDE}`, 1).style().left).to.equal("10px");
         expect(guides.find(`.${Classes.TABLE_VERTICAL_GUIDE}`, 2).style().left).to.equal("100px");
@@ -41,9 +37,7 @@ describe("Guides", () => {
     });
 
     it("displays horizontal guides", () => {
-        const guides = harness.mount(
-            <GuideLayer horizontalGuides={[22, 33, 11]} />,
-        );
+        const guides = harness.mount(<GuideLayer horizontalGuides={[22, 33, 11]} />);
         expect(guides.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`, 0).style().top).to.equal("22px");
         expect(guides.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`, 1).style().top).to.equal("33px");
         expect(guides.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`, 2).style().top).to.equal("11px");

@@ -20,12 +20,24 @@ export class TagExample extends BaseExample<{ showTag?: boolean }> {
     protected renderExample() {
         return (
             <div>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>@jkillian</Tag>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>@adahiya</Tag>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>@ggray</Tag>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>@allorca</Tag>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>@bdwyer</Tag>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>@piotrk</Tag>
+                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
+                    @jkillian
+                </Tag>
+                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
+                    @adahiya
+                </Tag>
+                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
+                    @ggray
+                </Tag>
+                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
+                    @allorca
+                </Tag>
+                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
+                    @bdwyer
+                </Tag>
+                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
+                    @piotrk
+                </Tag>
                 {this.maybeRenderTag()}
             </div>
         );
@@ -33,7 +45,11 @@ export class TagExample extends BaseExample<{ showTag?: boolean }> {
 
     private maybeRenderTag() {
         if (this.state.showTag) {
-            return <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY} onRemove={this.deleteTag}>@dlipowicz</Tag>;
+            return (
+                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY} onRemove={this.deleteTag}>
+                    @dlipowicz
+                </Tag>
+            );
         } else {
             return undefined;
         }

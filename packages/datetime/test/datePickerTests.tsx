@@ -73,9 +73,11 @@ describe("<DatePicker>", () => {
             const maxDate = new Date(2005, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const { root } = wrap(<DatePicker maxDate={maxDate} minDate={minDate} />);
-            assert.isTrue(DateUtils.isDayInRange(
-                new Date(root.state("displayYear"), root.state("displayMonth")),
-                [minDate, maxDate]),
+            assert.isTrue(
+                DateUtils.isDayInRange(new Date(root.state("displayYear"), root.state("displayMonth")), [
+                    minDate,
+                    maxDate,
+                ]),
             );
         });
 
@@ -96,33 +98,60 @@ describe("<DatePicker>", () => {
         const MIN_DATE = new Date(2015, Months.JANUARY, 7);
         const MAX_DATE = new Date(2015, Months.JANUARY, 12);
         it("maxDate must be later than minDate", () => {
-            assert.throws(() => wrap(
-                <DatePicker maxDate={MIN_DATE} minDate={MAX_DATE} />,
-            ), Errors.DATEPICKER_MAX_DATE_INVALID);
+            assert.throws(
+                () => wrap(<DatePicker maxDate={MIN_DATE} minDate={MAX_DATE} />),
+                Errors.DATEPICKER_MAX_DATE_INVALID,
+            );
         });
 
         it("an error is thrown if defaultValue is outside bounds", () => {
-            assert.throws(() => wrap(
-                <DatePicker defaultValue={new Date(2015, Months.JANUARY, 5)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
-            ), Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
+            assert.throws(
+                () =>
+                    wrap(
+                        <DatePicker
+                            defaultValue={new Date(2015, Months.JANUARY, 5)}
+                            minDate={MIN_DATE}
+                            maxDate={MAX_DATE}
+                        />,
+                    ),
+                Errors.DATEPICKER_DEFAULT_VALUE_INVALID,
+            );
         });
 
         it("an error is thrown if value is outside bounds", () => {
-            assert.throws(() => wrap(
-                <DatePicker value={new Date(2015, Months.JANUARY, 20)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
-            ), Errors.DATEPICKER_VALUE_INVALID);
+            assert.throws(
+                () =>
+                    wrap(
+                        <DatePicker value={new Date(2015, Months.JANUARY, 20)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
+                    ),
+                Errors.DATEPICKER_VALUE_INVALID,
+            );
         });
 
         it("an error is thrown if initialMonth is outside month bounds", () => {
-            assert.throws(() => wrap(
-                <DatePicker initialMonth={new Date(2015, Months.FEBRUARY, 12)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
-            ), Errors.DATEPICKER_INITIAL_MONTH_INVALID);
+            assert.throws(
+                () =>
+                    wrap(
+                        <DatePicker
+                            initialMonth={new Date(2015, Months.FEBRUARY, 12)}
+                            minDate={MIN_DATE}
+                            maxDate={MAX_DATE}
+                        />,
+                    ),
+                Errors.DATEPICKER_INITIAL_MONTH_INVALID,
+            );
         });
 
         it("an error is not thrown if initialMonth is outside day bounds but inside month bounds", () => {
-            assert.doesNotThrow(() => wrap(
-                <DatePicker initialMonth={new Date(2015, Months.JANUARY, 12)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
-            ));
+            assert.doesNotThrow(() =>
+                wrap(
+                    <DatePicker
+                        initialMonth={new Date(2015, Months.JANUARY, 12)}
+                        minDate={MIN_DATE}
+                        maxDate={MAX_DATE}
+                    />,
+                ),
+            );
         });
 
         it("only days outside bounds have disabled class", () => {
@@ -152,7 +181,12 @@ describe("<DatePicker>", () => {
                 <DatePicker defaultValue={new Date(2010, Months.FEBRUARY, 2)} value={value} />,
             );
             assert.lengthOf(getSelectedDays(), 1);
-            assert.equal(getSelectedDays().at(0).text(), value.getDate().toString());
+            assert.equal(
+                getSelectedDays()
+                    .at(0)
+                    .text(),
+                value.getDate().toString(),
+            );
         });
 
         it("selection does not update automatically", () => {
@@ -200,7 +234,8 @@ describe("<DatePicker>", () => {
 
         it("can change displayed date with the dropdowns in the caption", () => {
             const { months, root, years } = wrap(
-                <DatePicker initialMonth={new Date(2015, Months.MARCH, 2)} value={null} />);
+                <DatePicker initialMonth={new Date(2015, Months.MARCH, 2)} value={null} />,
+            );
             assert.equal(root.state("displayMonth"), Months.MARCH);
             assert.equal(root.state("displayYear"), 2015);
 
@@ -228,10 +263,10 @@ describe("<DatePicker>", () => {
         });
 
         it("selected day updates are automatic", () => {
-            const { getDay, getSelectedDays } = wrap(<DatePicker  />);
+            const { getDay, getSelectedDays } = wrap(<DatePicker />);
             assert.lengthOf(getSelectedDays(), 0);
             getDay(3).simulate("click");
-            assert.deepEqual(getSelectedDays().map((d) => d.text()), ["3"]);
+            assert.deepEqual(getSelectedDays().map(d => d.text()), ["3"]);
         });
 
         it("selected day is preserved when selections are changed", () => {
@@ -239,7 +274,7 @@ describe("<DatePicker>", () => {
             const { getDay, getSelectedDays, months } = wrap(<DatePicker initialMonth={initialMonth} />);
             getDay(31).simulate("click");
             months.simulate("change", { target: { value: Months.AUGUST } });
-            assert.deepEqual(getSelectedDays().map((d) => d.text()), ["31"]);
+            assert.deepEqual(getSelectedDays().map(d => d.text()), ["31"]);
         });
 
         it("selected day is changed if necessary when selections are changed", () => {
@@ -247,7 +282,7 @@ describe("<DatePicker>", () => {
             const { getDay, getSelectedDays, root } = wrap(<DatePicker initialMonth={initialMonth} />);
             getDay(31).simulate("click");
             root.find(".DayPicker-NavButton--prev").simulate("click");
-            assert.deepEqual(getSelectedDays().map((d) => d.text()), ["30"]);
+            assert.deepEqual(getSelectedDays().map(d => d.text()), ["30"]);
         });
 
         it("selected day is changed to minDate or maxDate if selections are changed outside bounds", () => {
@@ -303,7 +338,11 @@ describe("<DatePicker>", () => {
 
     it("selects the current day when Today is clicked", () => {
         const { root } = wrap(<DatePicker showActionsBar={true} />);
-        root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).first().simulate("click");
+        root
+            .find({ className: Classes.DATEPICKER_FOOTER })
+            .find(Button)
+            .first()
+            .simulate("click");
 
         const today = new Date();
         const value = root.state("value");
@@ -315,7 +354,11 @@ describe("<DatePicker>", () => {
     it("clears the value when Clear is clicked", () => {
         const { getDay, root } = wrap(<DatePicker showActionsBar={true} />);
         getDay().simulate("click");
-        root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).last().simulate("click");
+        root
+            .find({ className: Classes.DATEPICKER_FOOTER })
+            .find(Button)
+            .last()
+            .simulate("click");
         assert.isNull(root.state("value"));
     });
 
@@ -325,8 +368,7 @@ describe("<DatePicker>", () => {
             getDay: (dayNumber = 1) => {
                 return wrapper
                     .find(`.${Classes.DATEPICKER_DAY}`)
-                    .filterWhere((day) => day.text() === "" + dayNumber &&
-                        !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE));
+                    .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE));
             },
             getSelectedDays: () => wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`),
             months: wrapper.find(`.${Classes.DATEPICKER_MONTH_SELECT}`),

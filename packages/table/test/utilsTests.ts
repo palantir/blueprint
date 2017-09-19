@@ -324,13 +324,13 @@ describe("Utils", () => {
             describe("returns true if only the specified values are shallowly equal", () => {
                 runTest(true, { a: 1 }, { a: 1 }, wl(["a", "b", "c", "d"]));
                 runTest(true, { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, wl(["a", "c"]));
-                runTest(true, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, wl(["a", "b"]));
+                runTest(true, { a: 1, b: "2", c: { a: 1 } }, { a: 1, b: "2", c: { a: 1 } }, wl(["a", "b"]));
             });
 
             describe("returns false if any specified values are not shallowly equal", () => {
                 runTest(false, { a: [1, "2", true] }, { a: [1, "2", true] }, wl(["a"]));
-                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, wl(["a", "b", "c"]));
-                runTest(false, { a: 1, c: { a: 1 }}, { a: 1, b: "2" }, wl(["a", "b"]));
+                runTest(false, { a: 1, b: "2", c: { a: 1 } }, { a: 1, b: "2", c: { a: 1 } }, wl(["a", "b", "c"]));
+                runTest(false, { a: 1, c: { a: 1 } }, { a: 1, b: "2" }, wl(["a", "b"]));
             });
 
             describe("edge cases that return true", () => {
@@ -346,10 +346,12 @@ describe("Utils", () => {
                 runTest(false, [], [], wl([]));
             });
 
-            function runTest(expectedResult: boolean,
-                             a: any,
-                             b: any,
-                             keys: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>) {
+            function runTest(
+                expectedResult: boolean,
+                a: any,
+                b: any,
+                keys: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>,
+            ) {
                 it(getCompareTestDescription(a, b), () => {
                     expect(Utils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
@@ -360,13 +362,13 @@ describe("Utils", () => {
             describe("returns true if only the specified values are shallowly equal", () => {
                 runTest(true, { a: 1 }, { a: 1 }, bl(["b", "c", "d"]));
                 runTest(true, { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, bl(["b"]));
-                runTest(true, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, bl(["c"]));
+                runTest(true, { a: 1, b: "2", c: { a: 1 } }, { a: 1, b: "2", c: { a: 1 } }, bl(["c"]));
             });
 
             describe("returns false if any specified values are not shallowly equal", () => {
                 runTest(false, { a: [1, "2", true] }, { a: [1, "2", true] }, bl(["b, c"]));
-                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, bl(["a", "b", "d"]));
-                runTest(false, { a: 1, c: { a: 1 }}, { a: 1, b: "2" }, bl(["c"]));
+                runTest(false, { a: 1, b: "2", c: { a: 1 } }, { a: 1, b: "2", c: { a: 1 } }, bl(["a", "b", "d"]));
+                runTest(false, { a: 1, c: { a: 1 } }, { a: 1, b: "2" }, bl(["c"]));
             });
 
             describe("edge cases that return true", () => {
@@ -382,10 +384,12 @@ describe("Utils", () => {
                 runTest(false, [], [], bl([]));
             });
 
-            function runTest(expectedResult: boolean,
-                             a: any,
-                             b: any,
-                             keys: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>) {
+            function runTest(
+                expectedResult: boolean,
+                a: any,
+                b: any,
+                keys: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>,
+            ) {
                 it(getCompareTestDescription(a, b), () => {
                     expect(Utils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
@@ -394,7 +398,7 @@ describe("Utils", () => {
 
         describe("with `keys` not defined", () => {
             describe("returns true if values are shallowly equal", () => {
-                runTest(true, { a: 1, b: "2", c: true}, { a: 1, b: "2", c: true});
+                runTest(true, { a: 1, b: "2", c: true }, { a: 1, b: "2", c: true });
                 runTest(true, undefined, undefined);
                 runTest(true, null, undefined);
             });
@@ -403,13 +407,13 @@ describe("Utils", () => {
                 runTest(false, undefined, {});
                 runTest(false, null, {});
                 runTest(false, {}, []);
-                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }});
+                runTest(false, { a: 1, b: "2", c: { a: 1 } }, { a: 1, b: "2", c: { a: 1 } });
             });
 
             describe("returns false if keys are different", () => {
                 runTest(false, {}, { a: 1 });
                 runTest(false, { a: 1, b: "2" }, { b: "2" });
-                runTest(false, { a: 1, b: "2", c: true}, { b: "2", c: true, d: 3 });
+                runTest(false, { a: 1, b: "2", c: true }, { b: "2", c: true, d: 3 });
             });
 
             describe("returns true if same deeply-comparable instance is reused in both objects", () => {
@@ -430,11 +434,15 @@ describe("Utils", () => {
     describe("deepCompareKeys", () => {
         // tslint:disable:max-classes-per-file
         class DVD {
-            public constructor() { /* Empty */ }
+            public constructor() {
+                /* Empty */
+            }
         }
 
         class VHSTape {
-            public constructor() { /* Empty */ }
+            public constructor() {
+                /* Empty */
+            }
         }
         // tslint:enable:max-classes-per-file
 
@@ -446,7 +454,7 @@ describe("Utils", () => {
                 runTest(true, { a: 1 }, { a: 1 }, ["a", "b", "c", "d"]);
                 runTest(true, { a: customInstance1 }, { a: customInstance2 }, ["a"]);
                 runTest(true, { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, ["b", "c"]);
-                runTest(true, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 1 }}, ["b", "c"]);
+                runTest(true, { a: 1, b: "2", c: { a: 1 } }, { a: 1, b: "2", c: { a: 1 } }, ["b", "c"]);
             });
 
             describe("returns false if any specified values are not deeply equal", () => {
@@ -455,7 +463,7 @@ describe("Utils", () => {
 
                 runTest(false, { a: [1, "2", true] }, { a: [1, "2", false] }, ["a"]);
                 runTest(false, { a: customInstance1 }, { a: customInstance2 }, ["a"]);
-                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: 2 }}, ["a", "b", "c"]);
+                runTest(false, { a: 1, b: "2", c: { a: 1 } }, { a: 1, b: "2", c: { a: 2 } }, ["a", "b", "c"]);
             });
 
             describe("edge cases that return true", () => {
@@ -499,14 +507,14 @@ describe("Utils", () => {
                 runTest(false, undefined, {});
                 runTest(false, null, {});
                 runTest(false, {}, []);
-                runTest(false, { a: 1, b: "2", c: { a: 1 }}, { a: 1, b: "2", c: { a: "1" }});
+                runTest(false, { a: 1, b: "2", c: { a: 1 } }, { a: 1, b: "2", c: { a: "1" } });
                 runTest(false, customInstance1, customInstance2);
             });
 
             describe("returns false if keys are different", () => {
                 runTest(false, {}, { a: 1 });
                 runTest(false, { a: 1, b: "2" }, { b: "2" });
-                runTest(false, { a: 1, b: "2", c: true}, { b: "2", c: true, d: 3 });
+                runTest(false, { a: 1, b: "2", c: true }, { b: "2", c: true, d: 3 });
             });
 
             describe("returns true if same deeply-comparable instance is reused in both objects", () => {
@@ -524,7 +532,7 @@ describe("Utils", () => {
         });
     });
 
-    describe("getShallowUnequalKeyValues" , () => {
+    describe("getShallowUnequalKeyValues", () => {
         describe("with `keys` defined as whitelist", () => {
             describe("returns empty array if the specified values are shallowly equal", () => {
                 runTest([], { a: 1, b: [1, 2, 3], c: "3" }, { b: [1, 2, 3], a: 1, c: "3" }, wl(["a", "c"]));
@@ -536,13 +544,10 @@ describe("Utils", () => {
                     [{ key: "a", valueA: [1, "2", true], valueB: [1, "2", true] }],
                     { a: [1, "2", true] },
                     { a: [1, "2", true] },
-                    wl(["a"]));
+                    wl(["a"]),
+                );
                 // different primitive-type values
-                runTest(
-                    [{ key: "a", valueA: 1, valueB: 2 }],
-                    { a: 1 },
-                    { a: 2 },
-                    wl(["a"]));
+                runTest([{ key: "a", valueA: 1, valueB: 2 }], { a: 1 }, { a: 2 }, wl(["a"]));
             });
         });
 
@@ -556,18 +561,15 @@ describe("Utils", () => {
                     [{ key: "a", valueA: [1, "2", true], valueB: [1, "2", true] }],
                     { a: [1, "2", true] },
                     { a: [1, "2", true] },
-                    bl(["b", "c"]));
-                runTest(
-                    [{ key: "a", valueA: 1, valueB: 2 }],
-                    { a: 1 },
-                    { a: 2 },
-                    bl(["b"]));
+                    bl(["b", "c"]),
+                );
+                runTest([{ key: "a", valueA: 1, valueB: 2 }], { a: 1 }, { a: 2 }, bl(["b"]));
             });
         });
 
         describe("with `keys` not defined", () => {
             describe("returns empty array if values are shallowly equal", () => {
-                runTest([], { a: 1, b: "2", c: true}, { a: 1, b: "2", c: true});
+                runTest([], { a: 1, b: "2", c: true }, { a: 1, b: "2", c: true });
                 runTest([], undefined, undefined);
                 runTest([], null, undefined);
             });
@@ -577,12 +579,7 @@ describe("Utils", () => {
             });
         });
 
-        function runTest(
-            expectedResult: any[],
-            a: any,
-            b: any,
-            keys?: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>,
-        ) {
+        function runTest(expectedResult: any[], a: any, b: any, keys?: IKeyBlacklist<IKeys> | IKeyWhitelist<IKeys>) {
             it(getCompareTestDescription(a, b, keys), () => {
                 expect(Utils.getShallowUnequalKeyValues(a, b, keys)).to.deep.equal(expectedResult);
             });
@@ -597,13 +594,11 @@ describe("Utils", () => {
 
             describe("returns unequal key/values if any specified values are not deeply equal", () => {
                 runTest(
-                    [
-                        { key: "a", valueA: 2, valueB: 1 },
-                        { key: "b", valueA: [2, 3, 4], valueB: [1, 2, 3] },
-                    ],
+                    [{ key: "a", valueA: 2, valueB: 1 }, { key: "b", valueA: [2, 3, 4], valueB: [1, 2, 3] }],
                     { a: 2, b: [2, 3, 4], c: "3" },
                     { b: [1, 2, 3], a: 1, c: "3" },
-                    ["a", "b"]);
+                    ["a", "b"],
+                );
             });
         });
 
@@ -616,16 +611,12 @@ describe("Utils", () => {
                 runTest(
                     [{ key: "a", valueA: [1, "2", true], valueB: [1, "2", false] }],
                     { a: [1, "2", true] },
-                    { a: [1, "2", false] });
+                    { a: [1, "2", false] },
+                );
             });
         });
 
-        function runTest(
-            expectedResult: any[],
-            a: any,
-            b: any,
-            keys?: string[],
-        ) {
+        function runTest(expectedResult: any[], a: any, b: any, keys?: string[]) {
             it(getCompareTestDescription(a, b, keys), () => {
                 expect(Utils.getDeepUnequalKeyValues(a, b, keys)).to.deep.equal(expectedResult);
             });
@@ -672,9 +663,7 @@ describe("Utils", () => {
 
 function getCompareTestDescription(a?: any, b?: any, keys?: any) {
     const baseResult = `${JSON.stringify(a)} and ${JSON.stringify(b)}`;
-    return (keys != null)
-        ? baseResult + ` (keys: ${JSON.stringify(keys)})`
-        : baseResult;
+    return keys != null ? baseResult + ` (keys: ${JSON.stringify(keys)})` : baseResult;
 }
 
 interface IKeys {

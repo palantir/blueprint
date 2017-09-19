@@ -42,10 +42,10 @@ function getLuminance(hex: string) {
 const DARK_LUMA_CUTOFF = 111;
 
 // a single swatch of color, name on left & hex on right. click to copy hex.
-const ColorSwatch: React.SFC<{ colorName: string, hexCode: string }> = ({ colorName, hexCode }) => {
+const ColorSwatch: React.SFC<{ colorName: string; hexCode: string }> = ({ colorName, hexCode }) => {
     const style = {
         backgroundColor: hexCode,
-        color: (getLuminance(hexCode) < DARK_LUMA_CUTOFF ? Colors.WHITE : Colors.BLACK),
+        color: getLuminance(hexCode) < DARK_LUMA_CUTOFF ? Colors.WHITE : Colors.BLACK,
     };
     return (
         <ClickToCopy className="docs-color-swatch" style={style} value={hexCode}>
@@ -67,7 +67,7 @@ const ColorPalette: React.SFC<{ colors: string[] }> = ({ colors }) => (
 // no text in swatch; display all hex codes underneath
 export const ColorBar: React.SFC<{ colors: string[] }> = ({ colors }) => {
     const hexString = colors.map(getHexCode).join(", ");
-    const jsonString = `[${colors.map((c) => `"${getHexCode(c)}"`).join(", ")}]`;
+    const jsonString = `[${colors.map(c => `"${getHexCode(c)}"`).join(", ")}]`;
 
     const swatches = colors.map((name, i) => (
         <div className="docs-color-swatch" key={i} style={{ backgroundColor: getHexCode(name) }} />
@@ -76,9 +76,7 @@ export const ColorBar: React.SFC<{ colors: string[] }> = ({ colors }) => {
     return (
         <ClickToCopy value={jsonString}>
             <div className="docs-color-bar">
-                <div className="docs-color-bar-swatches">
-                    {swatches}
-                </div>
+                <div className="docs-color-bar-swatches">{swatches}</div>
                 <pre
                     className="docs-color-bar-hexes docs-clipboard-message pt-text-overflow-ellipsis"
                     data-hover-message="Click to copy JSON array of hex colors"
@@ -98,20 +96,12 @@ function createPaletteBook(palettes: string[][], className?: string): React.SFC<
     );
 }
 
-export const GrayscalePalette = createPaletteBook([
-    ["black"],
-    ["white"],
-    expand("dark-gray"),
-    expand("gray"),
-    expand("light-gray"),
-], "docs-color-book-grayscale");
+export const GrayscalePalette = createPaletteBook(
+    [["black"], ["white"], expand("dark-gray"), expand("gray"), expand("light-gray")],
+    "docs-color-book-grayscale",
+);
 
-export const CoreColorsPalette = createPaletteBook([
-    expand("blue"),
-    expand("green"),
-    expand("orange"),
-    expand("red"),
-]);
+export const CoreColorsPalette = createPaletteBook([expand("blue"), expand("green"), expand("orange"), expand("red")]);
 
 export const ExtendedColorsPalette = createPaletteBook([
     expand("vermilion"),

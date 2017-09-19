@@ -7,15 +7,7 @@
 
 import * as React from "react";
 
-import {
-    Cell,
-    Column,
-    ColumnHeaderCell,
-    ColumnLoadingOption,
-    RowHeaderCell,
-    Table,
-    TableLoadingOption,
-} from "../src";
+import { Cell, Column, ColumnHeaderCell, ColumnLoadingOption, RowHeaderCell, Table, TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
@@ -34,19 +26,19 @@ class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTest
         } else {
             return undefined;
         }
-    }
+    };
 
     private static renderCell = (rowIndex: number) => {
         return <Cell loading={TableLoadingOptionsTester.isCellLoading(rowIndex)}>some cell text</Cell>;
-    }
+    };
 
     private static renderColumnHeader = (columnIndex: number) => {
         return <ColumnHeaderCell loading={TableLoadingOptionsTester.isCellLoading(columnIndex)} name="column header" />;
-    }
+    };
 
     private static renderRowHeader = (rowIndex: number) => {
         return <RowHeaderCell loading={TableLoadingOptionsTester.isCellLoading(rowIndex)} name="row header" />;
-    }
+    };
 
     public render() {
         const { columnLoadingOptions, tableLoadingOptions } = this.props;
@@ -81,10 +73,7 @@ describe("Loading Options", () => {
         TableLoadingOption.COLUMN_HEADERS,
         TableLoadingOption.ROW_HEADERS,
     ]);
-    const allColumnLoadingOptions = generatePowerSet([
-        ColumnLoadingOption.CELLS,
-        ColumnLoadingOption.HEADER,
-    ]);
+    const allColumnLoadingOptions = generatePowerSet([ColumnLoadingOption.CELLS, ColumnLoadingOption.HEADER]);
 
     afterEach(() => {
         harness.unmount();
@@ -95,8 +84,8 @@ describe("Loading Options", () => {
     });
 
     // Below is an exhaustive set of tests of all possible combinations of loading options
-    allTableLoadingOptions.forEach((tableLoadingOptions) => {
-        allColumnLoadingOptions.forEach((columnLoadingOptions) => {
+    allTableLoadingOptions.forEach(tableLoadingOptions => {
+        allColumnLoadingOptions.forEach(columnLoadingOptions => {
             it(`table: [${tableLoadingOptions}], column: [${columnLoadingOptions}]`, () => {
                 const tableHarness = harness.mount(
                     <TableLoadingOptionsTester
@@ -108,12 +97,15 @@ describe("Loading Options", () => {
                 // only testing the first column of body cells because the second and third
                 // columns are meant to test column related loading combinations
                 const quadrantSelector = `.${Classes.TABLE_QUADRANT_MAIN}`;
-                const cells = tableHarness.element
-                    .queryAll(`${quadrantSelector} .${Classes.TABLE_CELL}.${Classes.columnCellIndexClass(0)}`);
-                const columnHeaders = tableHarness.element
-                    .queryAll(`${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
-                const rowHeaders = tableHarness.element
-                    .queryAll(`${quadrantSelector} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`);
+                const cells = tableHarness.element.queryAll(
+                    `${quadrantSelector} .${Classes.TABLE_CELL}.${Classes.columnCellIndexClass(0)}`,
+                );
+                const columnHeaders = tableHarness.element.queryAll(
+                    `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
+                );
+                const rowHeaders = tableHarness.element.queryAll(
+                    `${quadrantSelector} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`,
+                );
                 testLoadingOptionOverrides(
                     columnHeaders,
                     CellType.COLUMN_HEADER,
@@ -143,7 +135,7 @@ describe("Loading Options", () => {
 function generatePowerSet<T>(list: T[]) {
     const base2 = (number: number) => number.toString(2);
     const numberOfSubsets = Math.pow(2, list.length);
-    const listOfSubsets: T[][] = [ undefined ];
+    const listOfSubsets: T[][] = [undefined];
 
     for (let i = 1; i < numberOfSubsets; i++) {
         const subset: T[] = [];
@@ -185,9 +177,10 @@ function testLoadingOptionOverrides(
             expectCellLoading(cell, cellType, true);
         } else if (cellLoading(i) === false) {
             expectCellLoading(cell, cellType, false);
-        } else if ((cellType === CellType.BODY_CELL || cellType === CellType.COLUMN_HEADER)
-            && columnLoadingOptions != null) {
-
+        } else if (
+            (cellType === CellType.BODY_CELL || cellType === CellType.COLUMN_HEADER) &&
+            columnLoadingOptions != null
+        ) {
             // cast is safe because cellType is guaranteed to not be TableLoadingOption.ROW_HEADERS
             const loading = columnLoadingOptions.indexOf(cellType as ColumnLoadingOption) >= 0;
             expectCellLoading(cell, cellType, loading);

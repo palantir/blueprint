@@ -64,9 +64,11 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     public shouldComponentUpdate(nextProps: IEditableCellProps, nextState: IEditableCellState) {
-        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
-            || !Utils.shallowCompareKeys(this.state, nextState)
-            || !Utils.deepCompareKeys(this.props, nextProps, ["style"]);
+        return (
+            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
+            !Utils.shallowCompareKeys(this.state, nextState) ||
+            !Utils.deepCompareKeys(this.props, nextProps, ["style"])
+        );
     }
 
     public componentWillReceiveProps(nextProps: IEditableCellProps) {
@@ -75,12 +77,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     public render() {
-        const {
-            onCancel,
-            onChange,
-            onConfirm,
-            ...spreadableProps,
-        } = this.props;
+        const { onCancel, onChange, onConfirm, ...spreadableProps } = this.props;
 
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
@@ -112,23 +109,23 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
 
     private handleEdit = () => {
         this.setState({ isEditing: true, dirtyValue: this.state.savedValue });
-    }
+    };
 
     private handleCancel = (value: string) => {
         // don't strictly need to clear the dirtyValue, but it's better hygiene
         this.setState({ isEditing: false, dirtyValue: undefined });
         this.invokeCallback(this.props.onCancel, value);
-    }
+    };
 
     private handleChange = (value: string) => {
         this.setState({ dirtyValue: value });
         this.invokeCallback(this.props.onChange, value);
-    }
+    };
 
     private handleConfirm = (value: string) => {
         this.setState({ isEditing: false, savedValue: value, dirtyValue: undefined });
         this.invokeCallback(this.props.onConfirm, value);
-    }
+    };
 
     private invokeCallback(callback: (value: string, rowIndex?: number, columnIndex?: number) => void, value: string) {
         // pass through the row and column indices if they were provided as props by the consumer
@@ -142,7 +139,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             document.activeElement.blur();
         }
         return true;
-    }
+    };
 
     private handleCellDoubleClick = (_event: MouseEvent) => {
         const cellElement = ReactDOM.findDOMNode(this) as HTMLElement;
@@ -150,9 +147,9 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             return;
         }
 
-        const focusable = (cellElement.querySelector(".pt-editable-text") as HTMLElement);
+        const focusable = cellElement.querySelector(".pt-editable-text") as HTMLElement;
         if (focusable.focus != null) {
             focusable.focus();
         }
-    }
+    };
 }

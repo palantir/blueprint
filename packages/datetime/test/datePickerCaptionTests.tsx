@@ -14,8 +14,20 @@ import { Classes, IDatePickerLocaleUtils } from "../src/index";
 
 describe("<DatePickerCaption>", () => {
     const LOCALE_UTILS: IDatePickerLocaleUtils = {
-        getMonths: () => ["January", "February", "March", "April", "May", "June", "July",
-                          "August", "September", "October", "November", "December"],
+        getMonths: () => [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ],
     } as any;
 
     it("renders month and year choosers", () => {
@@ -44,8 +56,8 @@ describe("<DatePickerCaption>", () => {
         const minDate = new Date(2014, 11, 20);
         const maxDate = new Date(2015, 0, 12);
         const { month, year } = renderDatePickerCaption({ maxDate, minDate });
-        assert.deepEqual(month.find("option").map((mo) => mo.text()), ["January"]);
-        assert.deepEqual(year.find("option").map((yr) => yr.text()), ["2014", "2015"]);
+        assert.deepEqual(month.find("option").map(mo => mo.text()), ["January"]);
+        assert.deepEqual(year.find("option").map(yr => yr.text()), ["2014", "2015"]);
     });
 
     it("out-of-bounds year adds disabled year option", () => {
@@ -54,7 +66,7 @@ describe("<DatePickerCaption>", () => {
         const maxDate = new Date(2016, 11, 31);
         const { year } = renderDatePickerCaption({ date, maxDate, minDate });
         const options = year.find("option");
-        assert.deepEqual(options.map((yr) => yr.text()), ["2015", "2016", "2017"]);
+        assert.deepEqual(options.map(yr => yr.text()), ["2015", "2016", "2017"]);
         assert.isTrue(options.last().prop("disabled"), "2017 is not disabled");
     });
 
@@ -76,5 +88,4 @@ describe("<DatePickerCaption>", () => {
             year: wrapper.find(`.${Classes.DATEPICKER_YEAR_SELECT}`),
         };
     }
-
 });

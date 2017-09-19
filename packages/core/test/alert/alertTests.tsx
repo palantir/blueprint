@@ -37,12 +37,7 @@ describe("<Alert>", () => {
 
     it("renders the icon correctly", () => {
         const wrapper = shallow(
-            <Alert
-                iconName="warning-sign"
-                isOpen={true}
-                confirmButtonText="Delete"
-                onConfirm={NOOP}
-            >
+            <Alert iconName="warning-sign" isOpen={true} confirmButtonText="Delete" onConfirm={NOOP}>
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,

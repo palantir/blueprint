@@ -20,17 +20,18 @@ import { reactExamples } from "./tags/reactExamples";
 /* tslint:disable:no-var-requires */
 const docs = require<IDocsData>("./generated/docs.json");
 
-const releases = require<IPackageInfo[]>("./generated/releases.json")
-    .map((pkg) => {
-        pkg.url = `https://www.npmjs.com/package/${pkg.name}`;
-        return pkg;
-    });
+const releases = require<IPackageInfo[]>("./generated/releases.json").map(pkg => {
+    pkg.url = `https://www.npmjs.com/package/${pkg.name}`;
+    return pkg;
+});
 
-const versions = require<string[]>("./generated/versions.json")
-    .map((version) => ({
-        url: `https://palantir.github.io/blueprint/docs/${version}`,
-        version,
-    } as IPackageInfo));
+const versions = require<string[]>("./generated/versions.json").map(
+    version =>
+        ({
+            url: `https://palantir.github.io/blueprint/docs/${version}`,
+            version,
+        } as IPackageInfo),
+);
 /* tslint:enable:no-var-requires */
 
 const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);

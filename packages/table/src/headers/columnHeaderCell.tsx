@@ -8,15 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import {
-    AbstractComponent,
-    Icon,
-    IconName,
-    IProps,
-    Popover,
-    Position,
-    Utils as CoreUtils,
-} from "@blueprintjs/core";
+import { AbstractComponent, Icon, IconName, IProps, Popover, Position, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -97,10 +89,12 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
      * their mouse events.
      */
     public static isHeaderMouseTarget(target: HTMLElement) {
-        return target.classList.contains(Classes.TABLE_HEADER)
-            || target.classList.contains(Classes.TABLE_COLUMN_NAME)
-            || target.classList.contains(Classes.TABLE_INTERACTION_BAR)
-            || target.classList.contains(Classes.TABLE_HEADER_CONTENT);
+        return (
+            target.classList.contains(Classes.TABLE_HEADER) ||
+            target.classList.contains(Classes.TABLE_COLUMN_NAME) ||
+            target.classList.contains(Classes.TABLE_INTERACTION_BAR) ||
+            target.classList.contains(Classes.TABLE_HEADER_CONTENT)
+        );
     }
 
     public state = {
@@ -190,11 +184,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             return undefined;
         }
 
-        return (
-            <div className={Classes.TABLE_HEADER_CONTENT}>
-                {this.props.children}
-            </div>
-        );
+        return <div className={Classes.TABLE_HEADER_CONTENT}>{this.props.children}</div>;
     }
 
     private maybeRenderDropdownMenu() {
@@ -204,19 +194,19 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             return undefined;
         }
 
-        const constraints = [{
-            attachment: "together",
-            pin: true,
-            to: "window",
-        }];
+        const constraints = [
+            {
+                attachment: "together",
+                pin: true,
+                to: "window",
+            },
+        ];
         const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, {
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
         });
 
         // prefer renderMenu if it's defined
-        const content = CoreUtils.isFunction(renderMenu)
-            ? renderMenu(index)
-            : menu;
+        const content = CoreUtils.isFunction(renderMenu) ? renderMenu(index) : menu;
 
         return (
             <div className={classes}>
@@ -238,9 +228,9 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
 
     private handlePopoverDidOpen = () => {
         this.setState({ isActive: true });
-    }
+    };
 
     private handlePopoverWillClose = () => {
         this.setState({ isActive: false });
-    }
+    };
 }

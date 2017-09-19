@@ -140,7 +140,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     private itemsParentRef: HTMLElement;
     private refHandlers = {
-        itemsParent: (ref: HTMLElement) => this.itemsParentRef = ref,
+        itemsParent: (ref: HTMLElement) => (this.itemsParentRef = ref),
     };
 
     /**
@@ -167,10 +167,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
-        if (nextProps.items !== this.props.items
-            || nextProps.itemListPredicate !== this.props.itemListPredicate
-            || nextProps.itemPredicate !== this.props.itemPredicate
-            || nextProps.query !== this.props.query
+        if (
+            nextProps.items !== this.props.items ||
+            nextProps.itemListPredicate !== this.props.itemListPredicate ||
+            nextProps.itemPredicate !== this.props.itemPredicate ||
+            nextProps.query !== this.props.query
         ) {
             this.shouldCheckActiveItemInViewport = true;
             this.setState({ filteredItems: getFilteredItems(nextProps) });
@@ -187,8 +188,10 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
         // reset active item (in the same step) if it's no longer valid
         // Also don't fire the event if the active item is already undefined and there is nothing to pick
-        if (this.getActiveIndex() < 0 &&
-            (this.state.filteredItems.length !== 0 || this.props.activeItem !== undefined)) {
+        if (
+            this.getActiveIndex() < 0 &&
+            (this.state.filteredItems.length !== 0 || this.props.activeItem !== undefined)
+        ) {
             Utils.safeInvoke(this.props.onActiveItemChange, this.state.filteredItems[0]);
         }
     }
@@ -242,7 +245,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
         Utils.safeInvoke(this.props.onActiveItemChange, item);
         Utils.safeInvoke(this.props.onItemSelect, item, event);
-    }
+    };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         switch (event.keyCode) {
@@ -254,10 +257,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
                 event.preventDefault();
                 this.moveActiveIndex(1);
                 break;
-            default: break;
+            default:
+                break;
         }
         Utils.safeInvoke(this.props.onKeyDown, event);
-    }
+    };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
         const { activeItem, onItemSelect, onKeyUp } = this.props;
@@ -269,7 +273,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             Utils.safeInvoke(onItemSelect, activeItem, event);
         }
         Utils.safeInvoke(onKeyUp, event);
-    }
+    };
 
     private moveActiveIndex(direction: number) {
         // indicate that the active item may need to be scrolled into view after update.

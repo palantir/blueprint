@@ -53,7 +53,9 @@ export interface IRadioGroupProps extends IProps {
 }
 
 let counter = 0;
-function nextName() { return `${RadioGroup.displayName}-${counter++}`; }
+function nextName() {
+    return `${RadioGroup.displayName}-${counter++}`;
+}
 
 export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
     public static displayName = "Blueprint.RadioGroup";
@@ -78,7 +80,7 @@ export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
     }
 
     private renderChildren() {
-        return React.Children.map(this.props.children, (child) => {
+        return React.Children.map(this.props.children, child => {
             if (isRadio(child)) {
                 return React.cloneElement(child, this.getRadioProps(child.props));
             } else {
@@ -88,7 +90,7 @@ export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
     }
 
     private renderOptions() {
-        return this.props.options.map((option) => (
+        return this.props.options.map(option => (
             <Radio {...option} {...this.getRadioProps(option)} key={option.value} />
         ));
     }
@@ -104,7 +106,7 @@ export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
             onChange: this.props.onChange,
         };
     }
-};
+}
 
 function isRadio(child: any): child is JSX.Element {
     return child != null && (child as JSX.Element).type === Radio;

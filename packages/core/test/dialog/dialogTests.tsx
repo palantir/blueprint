@@ -26,7 +26,7 @@ describe("<Dialog>", () => {
             Classes.DIALOG_FOOTER_ACTIONS,
             Classes.DIALOG_HEADER,
             Classes.OVERLAY_BACKDROP,
-        ].forEach((className) => {
+        ].forEach(className => {
             assert.lengthOf(dialog.find(`.${className}`), 1, `missing ${className}`);
         });
     });
@@ -110,7 +110,7 @@ describe("<Dialog>", () => {
     });
 
     it("only adds its className in one location", () => {
-        const dialog = mount(<Dialog className="foo" inline={true} isOpen={true} title="title"/>);
+        const dialog = mount(<Dialog className="foo" inline={true} isOpen={true} title="title" />);
         assert.lengthOf(dialog.find(".foo"), 1);
     });
 
@@ -119,19 +119,21 @@ describe("<Dialog>", () => {
     function createDialogContents(): JSX.Element[] {
         return [
             <div className={Classes.DIALOG_HEADER} key={0}>
-                <span className="pt-icon-large pt-icon-inbox"/>
+                <span className="pt-icon-large pt-icon-inbox" />
                 <h4>Dialog header</h4>
             </div>,
             <div className={Classes.DIALOG_BODY} key={1}>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                    labore et dolore magna alqua. Ut enim ad minimum veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna alqua. Ut enim ad minimum veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip ex ea commodo consequat.
                 </p>
             </div>,
             <div className={Classes.DIALOG_FOOTER} key={2}>
                 <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                    <button type="button" className="pt-button">Secondary</button>
+                    <button type="button" className="pt-button">
+                        Secondary
+                    </button>
                     <button className="pt-button pt-intent-primary" type="submit">
                         Primary
                     </button>

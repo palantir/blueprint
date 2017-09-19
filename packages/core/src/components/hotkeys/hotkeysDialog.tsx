@@ -29,9 +29,9 @@ export interface IHotkeysDialogProps extends IDialogProps {
 const DELAY_IN_MS = 10;
 
 class HotkeysDialog {
-    public componentProps = {
+    public componentProps = ({
         globalHotkeysGroup: "Global hotkeys",
-    } as any as IHotkeysDialogProps;
+    } as any) as IHotkeysDialogProps;
 
     private container: HTMLElement;
     private hotkeysQueue = [] as IHotkeyProps[][];
@@ -78,12 +78,12 @@ class HotkeysDialog {
     public show = () => {
         this.isDialogShowing = true;
         this.render();
-    }
+    };
 
     public hide = () => {
         this.isDialogShowing = false;
         this.render();
-    }
+    };
 
     public isShowing() {
         return this.isDialogShowing;
@@ -114,8 +114,8 @@ class HotkeysDialog {
     private renderHotkeys() {
         const hotkeys = this.emptyHotkeyQueue();
         const elements = hotkeys.map((hotkey, index) => {
-            const group = (hotkey.global === true && hotkey.group == null) ?
-                this.componentProps.globalHotkeysGroup : hotkey.group;
+            const group =
+                hotkey.global === true && hotkey.group == null ? this.componentProps.globalHotkeysGroup : hotkey.group;
 
             return <Hotkey key={index} {...hotkey} group={group} />;
         });
@@ -125,7 +125,7 @@ class HotkeysDialog {
 
     private emptyHotkeyQueue() {
         // flatten then empty the hotkeys queue
-        const hotkeys = this.hotkeysQueue.reduce(((arr, queued) => arr.concat(queued)), []);
+        const hotkeys = this.hotkeysQueue.reduce((arr, queued) => arr.concat(queued), []);
         this.hotkeysQueue.length = 0;
         return hotkeys;
     }

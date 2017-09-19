@@ -30,10 +30,7 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
                 <span className="docs-icon-detail">
                     <div className="docs-icon-name">{name}</div>
                     <div className="docs-icon-class-name pt-monospace-text">{className}</div>
-                    <div
-                        className="docs-clipboard-message pt-text-muted"
-                        data-hover-message="Click to copy"
-                    />
+                    <div className="docs-clipboard-message pt-text-muted" data-hover-message="Click to copy" />
                 </span>
             </ClickToCopy>
         );

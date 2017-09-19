@@ -61,6 +61,8 @@ module.exports = (blueprint, gulp, plugins) => {
             arr.push(`"${className}"`, `"${className.replace("pt-icon-", "")}"`);
             return arr;
         }, []).sort();
-        return [`export type IconName = ${iconNames.join(" |\n    ")};`];
+        return [
+            `export type IconName =\n    | ${iconNames.join("\n    | ")};`,
+        ];
     }
 };

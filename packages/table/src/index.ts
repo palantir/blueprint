@@ -7,41 +7,17 @@
 
 import "es6-shim";
 
-export {
-    Cell,
-    ICellProps,
-    ICellRenderer,
-} from "./cell/cell";
+export { Cell, ICellProps, ICellRenderer } from "./cell/cell";
 
-export {
-    EditableCell,
-    IEditableCellProps,
-} from "./cell/editableCell";
+export { EditableCell, IEditableCellProps } from "./cell/editableCell";
 
-export {
-    JSONFormat,
-    IJSONFormatProps,
-} from "./cell/formats/jsonFormat";
+export { JSONFormat, IJSONFormatProps } from "./cell/formats/jsonFormat";
 
-export {
-    TruncatedPopoverMode,
-    TruncatedFormat,
-    ITruncatedFormatProps,
-} from "./cell/formats/truncatedFormat";
+export { TruncatedPopoverMode, TruncatedFormat, ITruncatedFormatProps } from "./cell/formats/truncatedFormat";
 
-export {
-    Column,
-    IColumnProps
-} from "./column";
+export { Column, IColumnProps } from "./column";
 
-export {
-    AnyRect,
-    Clipboard,
-    Grid,
-    Rect,
-    RenderMode,
-    Utils,
-} from "./common/index";
+export { AnyRect, Clipboard, Grid, Rect, RenderMode, Utils } from "./common/index";
 
 export {
     IClientCoordinates,
@@ -51,44 +27,19 @@ export {
     Draggable,
 } from "./interactions/draggable";
 
-export {
-    CopyCellsMenuItem,
-    IContextMenuRenderer,
-    IMenuContext,
-} from "./interactions/menus";
+export { CopyCellsMenuItem, IContextMenuRenderer, IMenuContext } from "./interactions/menus";
 
-export {
-    ILockableLayout,
-    IResizeHandleProps,
-    Orientation,
-    ResizeHandle,
-} from "./interactions/resizeHandle";
+export { ILockableLayout, IResizeHandleProps, Orientation, ResizeHandle } from "./interactions/resizeHandle";
 
-export {
-    ISelectableProps,
-    IDragSelectableProps,
-    DragSelectable,
-} from "./interactions/selectable";
+export { ISelectableProps, IDragSelectableProps, DragSelectable } from "./interactions/selectable";
 
-export {
-    IColumnHeaderRenderer,
-} from "./headers/columnHeader";
+export { IColumnHeaderRenderer } from "./headers/columnHeader";
 
-export {
-    ColumnHeaderCell,
-    IColumnHeaderCellProps,
-    HorizontalCellDivider,
-} from "./headers/columnHeaderCell";
+export { ColumnHeaderCell, IColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
 
-export {
-    IRowHeaderCellProps,
-    RowHeaderCell,
-} from "./headers/rowHeaderCell";
+export { IRowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
 
-export {
-    IEditableNameProps,
-    EditableName,
-} from "./headers/editableName";
+export { IEditableNameProps, EditableName } from "./headers/editableName";
 
 export {
     ColumnLoadingOption,
@@ -102,7 +53,4 @@ export {
     TableLoadingOption,
 } from "./regions";
 
-export {
-    ITableProps,
-    Table,
-} from "./table";
+export { ITableProps, Table } from "./table";

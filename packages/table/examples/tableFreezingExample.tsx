@@ -24,11 +24,7 @@ const NUM_FROZEN_COLUMNS = 1;
 export class TableFreezingExample extends BaseExample<ITableFreezingExampleState> {
     public render() {
         return (
-            <Table
-                numRows={NUM_ROWS}
-                numFrozenRows={NUM_FROZEN_ROWS}
-                numFrozenColumns={NUM_FROZEN_COLUMNS}
-            >
+            <Table numRows={NUM_ROWS} numFrozenRows={NUM_FROZEN_ROWS} numFrozenColumns={NUM_FROZEN_COLUMNS}>
                 {this.renderColumns()}
             </Table>
         );
@@ -36,7 +32,7 @@ export class TableFreezingExample extends BaseExample<ITableFreezingExampleState
 
     public renderCell = (rowIndex: number, columnIndex: number) => {
         return <Cell>{Utils.toBase26CellName(rowIndex, columnIndex)}</Cell>;
-    }
+    };
 
     public renderColumns = () => {
         return Utils.times(NUM_COLUMNS, (columnIndex: number) => {
@@ -48,5 +44,5 @@ export class TableFreezingExample extends BaseExample<ITableFreezingExampleState
                 />
             );
         });
-    }
+    };
 }

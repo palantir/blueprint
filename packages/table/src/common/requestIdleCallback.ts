@@ -22,7 +22,7 @@ const IDLE_STATE = {
 
 const handleIdle = (event: MessageEvent) => {
     if (event.source !== window || event.data !== MESSAGE_EVENT_DATA) {
-       return;
+        return;
     }
 
     IDLE_STATE.triggered = false;

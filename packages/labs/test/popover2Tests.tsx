@@ -35,14 +35,19 @@ describe("<Popover2>", () => {
     });
 
     describe.skip("validation:", () => {
-
         it("throws error if given no target", () => {
             assert.throws(() => shallow(<Popover2 />), Errors.POPOVER_REQUIRES_TARGET);
         });
 
         it("warns if given > 2 target elements", () => {
             const warnSpy = sinon.spy(console, "warn");
-            shallow(<Popover2><h1 /><h2 />{"h3"}</Popover2>);
+            shallow(
+                <Popover2>
+                    <h1 />
+                    <h2 />
+                    {"h3"}
+                </Popover2>,
+            );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
             warnSpy.restore();
         });
@@ -56,7 +61,12 @@ describe("<Popover2>", () => {
 
         it("warns if given two children and content prop", () => {
             const warnSpy = sinon.spy(console, "warn");
-            shallow(<Popover2 content="boom">{"pow"}{"jab"}</Popover2>);
+            shallow(
+                <Popover2 content="boom">
+                    {"pow"}
+                    {"jab"}
+                </Popover2>,
+            );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
             warnSpy.restore();
         });
@@ -91,7 +101,11 @@ describe("<Popover2>", () => {
 
     it("empty content disables it and warns", () => {
         const warnSpy = sinon.spy(console, "warn");
-        const popover = mount(<Popover2 content={undefined} isOpen={true}><button /></Popover2>);
+        const popover = mount(
+            <Popover2 content={undefined} isOpen={true}>
+                <button />
+            </Popover2>,
+        );
         assert.isFalse(popover.find(Overlay).prop("isOpen"));
 
         popover.setProps({ content: "    " });
@@ -103,11 +117,14 @@ describe("<Popover2>", () => {
 
     it("lifecycle methods are called appropriately", () => {
         const popoverWillOpen = sinon.spy(() =>
-            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 0));
+            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 0),
+        );
         const popoverDidOpen = sinon.spy(() =>
-            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1));
+            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1),
+        );
         const popoverWillClose = sinon.spy(() =>
-            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1));
+            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1),
+        );
 
         wrapper = renderPopover({
             interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
@@ -176,11 +193,11 @@ describe("<Popover2>", () => {
 
     describe("openOnTargetFocus", () => {
         describe("if true (default)", () => {
-            it("adds tabindex=\"0\" to target's child node when interactionKind is HOVER", () => {
+            it('adds tabindex="0" to target\'s child node when interactionKind is HOVER', () => {
                 assertPopoverTargetTabIndex(PopoverInteractionKind.HOVER, true, true);
             });
 
-            it("adds tabindex=\"0\" to target's child node when interactionKind is HOVER_TARGET_ONLY", () => {
+            it('adds tabindex="0" to target\'s child node when interactionKind is HOVER_TARGET_ONLY', () => {
                 assertPopoverTargetTabIndex(PopoverInteractionKind.HOVER_TARGET_ONLY, true, true);
             });
 
@@ -259,9 +276,11 @@ describe("<Popover2>", () => {
             });
         });
 
-        function assertPopoverOpenStateForInteractionKind(interactionKind: PopoverInteractionKind,
-                                                          isOpen: boolean,
-                                                          openOnTargetFocus?: boolean) {
+        function assertPopoverOpenStateForInteractionKind(
+            interactionKind: PopoverInteractionKind,
+            isOpen: boolean,
+            openOnTargetFocus?: boolean,
+        ) {
             wrapper = renderPopover({
                 inline: false,
                 interactionKind,
@@ -272,9 +291,11 @@ describe("<Popover2>", () => {
             assert.equal(wrapper.state("isOpen"), isOpen);
         }
 
-        function assertPopoverTargetTabIndex(interactionKind: PopoverInteractionKind,
-                                             shouldTabIndexExist: boolean,
-                                             openOnTargetFocus?: boolean) {
+        function assertPopoverTargetTabIndex(
+            interactionKind: PopoverInteractionKind,
+            shouldTabIndexExist: boolean,
+            openOnTargetFocus?: boolean,
+        ) {
             wrapper = renderPopover({ inline: false, interactionKind, openOnTargetFocus });
             const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
             // accessing an html attribute in enyzme is a pain (see
@@ -300,9 +321,11 @@ describe("<Popover2>", () => {
         });
 
         it("state does not update on user interaction", () => {
-            renderPopover({ isOpen: true }).simulateTarget("click")
+            renderPopover({ isOpen: true })
+                .simulateTarget("click")
                 .assertIsOpen()
-                .setProps({ isOpen: false }).simulateTarget("click")
+                .setProps({ isOpen: false })
+                .simulateTarget("click")
                 .assertIsOpen(false);
             renderPopover({ canEscapeKeyClose: true, isOpen: true })
                 .sendEscapeKey()
@@ -322,7 +345,7 @@ describe("<Popover2>", () => {
 
         describe("onInteraction()", () => {
             let onInteraction: Sinon.SinonSpy;
-            beforeEach(() => onInteraction = sinon.spy());
+            beforeEach(() => (onInteraction = sinon.spy()));
 
             it("is invoked with `true` when closed popover target is clicked", () => {
                 renderPopover({ isOpen: false, onInteraction }).simulateTarget("click");
@@ -350,9 +373,12 @@ describe("<Popover2>", () => {
             });
 
             it("is invoked with `false` when clicking .pt-popover-dismiss", () => {
-                renderPopover({ isOpen: true, onInteraction },
-                    <button className="pt-button pt-popover-dismiss">Dismiss</button>)
-                    .findClass(Classes.POPOVER_DISMISS).simulate("click");
+                renderPopover(
+                    { isOpen: true, onInteraction },
+                    <button className="pt-button pt-popover-dismiss">Dismiss</button>,
+                )
+                    .findClass(Classes.POPOVER_DISMISS)
+                    .simulate("click");
                 assert.isTrue(onInteraction.calledOnce);
                 assert.isTrue(onInteraction.calledWith(false));
             });
@@ -372,20 +398,26 @@ describe("<Popover2>", () => {
         });
 
         it("with defaultIsOpen=true, popover can still be closed", () => {
-            renderPopover({ defaultIsOpen: true }).assertIsOpen()
-                .simulateTarget("click").assertIsOpen(false);
+            renderPopover({ defaultIsOpen: true })
+                .assertIsOpen()
+                .simulateTarget("click")
+                .assertIsOpen(false);
         });
 
         it("CLICK_TARGET_ONLY works properly", () => {
             renderPopover({ interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY })
-                .simulateTarget("click").assertIsOpen()
-                .simulateTarget("click").assertIsOpen(false);
+                .simulateTarget("click")
+                .assertIsOpen()
+                .simulateTarget("click")
+                .assertIsOpen(false);
         });
 
         it("HOVER_TARGET_ONLY works properly", () => {
             renderPopover({ inline: false, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
-                .simulateTarget("mouseenter").assertIsOpen()
-                .simulateTarget("mouseleave").assertIsOpen(false);
+                .simulateTarget("mouseenter")
+                .assertIsOpen()
+                .simulateTarget("mouseleave")
+                .assertIsOpen(false);
         });
 
         it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", () => {
@@ -414,10 +446,13 @@ describe("<Popover2>", () => {
         });
 
         it("clicking .pt-popover-dismiss closes popover when inline=false", () => {
-            wrapper = renderPopover({
-                inline: false,
-                interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-            }, <button className="pt-button pt-popover-dismiss">Dismiss</button>);
+            wrapper = renderPopover(
+                {
+                    inline: false,
+                    interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
+                },
+                <button className="pt-button pt-popover-dismiss">Dismiss</button>,
+            );
 
             wrapper.simulateTarget("click").assertIsOpen();
 
@@ -426,10 +461,13 @@ describe("<Popover2>", () => {
         });
 
         it("clicking .pt-popover-dismiss closes popover when inline=true", () => {
-            wrapper = renderPopover({
-                inline: true,
-                interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-            }, <button className="pt-button pt-popover-dismiss">Dismiss</button>);
+            wrapper = renderPopover(
+                {
+                    inline: true,
+                    interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
+                },
+                <button className="pt-button pt-popover-dismiss">Dismiss</button>,
+            );
 
             wrapper.simulateTarget("click").assertIsOpen();
 
@@ -439,21 +477,27 @@ describe("<Popover2>", () => {
 
         it("pressing Escape closes popover when canEscapeKeyClose=true and inline=true", () => {
             renderPopover({ canEscapeKeyClose: true, inline: true })
-                .simulateTarget("click").assertIsOpen()
-                .sendEscapeKey().assertIsOpen(false);
+                .simulateTarget("click")
+                .assertIsOpen()
+                .sendEscapeKey()
+                .assertIsOpen(false);
         });
 
         it("setting disabled=true prevents opening popover", () => {
             renderPopover({
                 disabled: true,
                 interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-            }).simulateTarget("click").assertIsOpen(false);
+            })
+                .simulateTarget("click")
+                .assertIsOpen(false);
         });
 
         it("setting disabled=true hides open popover", () => {
             renderPopover({ interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY })
-                .simulateTarget("click").assertIsOpen()
-                .setProps({ disabled: true }).assertIsOpen(false);
+                .simulateTarget("click")
+                .assertIsOpen()
+                .setProps({ disabled: true })
+                .assertIsOpen(false);
         });
 
         it.skip("console.warns if onInteraction is set", () => {
@@ -479,12 +523,18 @@ describe("<Popover2>", () => {
         afterEach(() => root.detach());
 
         it("shows tooltip on hover", () => {
-            root.find(`.${Classes.POPOVER_TARGET}`).last().simulate("mouseenter");
+            root
+                .find(`.${Classes.POPOVER_TARGET}`)
+                .last()
+                .simulate("mouseenter");
             assert.lengthOf(root.find(`.${Classes.TOOLTIP}`), 1);
         });
 
         it("shows popover on click", () => {
-            root.find(`.${Classes.POPOVER_TARGET}`).first().simulate("click");
+            root
+                .find(`.${Classes.POPOVER_TARGET}`)
+                .first()
+                .simulate("click");
             assert.lengthOf(root.find(`.${Classes.POPOVER}`), 1);
         });
     });
@@ -505,21 +555,24 @@ describe("<Popover2>", () => {
             assert.lengthOf(wrapper.find(Arrow), 0);
         });
 
-        it("computes arrow rotation", (done) => {
-            renderPopover({ isOpen: true, placement: "top" })
-                .then(() => assert.equal(wrapper.state("arrowRotation"), 90), done);
+        it("computes arrow rotation", done => {
+            renderPopover({ isOpen: true, placement: "top" }).then(
+                () => assert.equal(wrapper.state("arrowRotation"), 90),
+                done,
+            );
         });
 
-        it("computes transformOrigin with arrow", (done) => {
+        it("computes transformOrigin with arrow", done => {
             // unreliable to test actual state value as it depends on browser (chrome and karma behave differently).
             // so we'll just check that state was set _at all_ (it starts undefined).
-            renderPopover({ isOpen: true })
-                .then(() => assert.isDefined(wrapper.state("transformOrigin")), done);
+            renderPopover({ isOpen: true }).then(() => assert.isDefined(wrapper.state("transformOrigin")), done);
         });
 
-        it("computes transformOrigin without arrow", (done) => {
-            renderPopover({ minimal: true, isOpen: true })
-                .then(() => assert.equal(wrapper.state("transformOrigin"), "center top"), done);
+        it("computes transformOrigin without arrow", done => {
+            renderPopover({ minimal: true, isOpen: true }).then(
+                () => assert.equal(wrapper.state("transformOrigin"), "center top"),
+                done,
+            );
         });
     });
 

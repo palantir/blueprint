@@ -42,7 +42,7 @@ export const Clipboard = {
             }
         }
 
-        const tsv = cells.map((row) => row.join("\t")).join("\n");
+        const tsv = cells.map(row => row.join("\t")).join("\n");
         return Clipboard.copyElement(table, tsv);
     },
 

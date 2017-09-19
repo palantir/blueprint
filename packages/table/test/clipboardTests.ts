@@ -10,10 +10,7 @@ import { Clipboard } from "../src/common/clipboard";
 
 describe("Clipboard", () => {
     it("copies cells (disabled on phantom)", () => {
-        const success = Clipboard.copyCells([
-            ["A", "B", "C"],
-            ["D", "E", "F"],
-        ]);
+        const success = Clipboard.copyCells([["A", "B", "C"], ["D", "E", "F"]]);
         expect(success).to.be.false;
     });
 

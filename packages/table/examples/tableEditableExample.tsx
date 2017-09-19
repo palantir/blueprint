@@ -13,17 +13,12 @@ import { BaseExample } from "@blueprintjs/docs";
 import { Column, ColumnHeaderCell, EditableCell, EditableName, Table } from "../src";
 
 export class TableEditableExample extends BaseExample<{}> {
-
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
-    }
+    };
 
     public state = {
-        columnNames: [
-            "Please",
-            "Rename",
-            "Me",
-        ],
+        columnNames: ["Please", "Rename", "Me"],
         sparseCellData: {
             "1-1": "editable",
             "3-1": "validation 123",
@@ -36,39 +31,45 @@ export class TableEditableExample extends BaseExample<{}> {
 
     public render() {
         const columns = this.state.columnNames.map((_: string, index: number) => {
-            return (<Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />);
+            return <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />;
         });
-        return (<Table numRows={7}>{columns}</Table>);
+        return <Table numRows={7}>{columns}</Table>;
     }
 
     public renderCell = (rowIndex: number, columnIndex: number) => {
         const dataKey = TableEditableExample.dataKey(rowIndex, columnIndex);
         const value = this.state.sparseCellData[dataKey];
-        return (<EditableCell
-            value={value == null ? "" : value}
-            intent={this.state.sparseCellIntent[dataKey]}
-            onCancel={this.cellValidator(rowIndex, columnIndex)}
-            onChange={this.cellValidator(rowIndex, columnIndex)}
-            onConfirm={this.cellSetter(rowIndex, columnIndex)}
-        />);
-    }
+        return (
+            <EditableCell
+                value={value == null ? "" : value}
+                intent={this.state.sparseCellIntent[dataKey]}
+                onCancel={this.cellValidator(rowIndex, columnIndex)}
+                onChange={this.cellValidator(rowIndex, columnIndex)}
+                onConfirm={this.cellSetter(rowIndex, columnIndex)}
+            />
+        );
+    };
 
     public renderColumnHeader = (columnIndex: number) => {
         const renderName = (name: string) => {
-            return (<EditableName
-                name={name}
-                intent={this.state.sparseColumnIntents[columnIndex]}
-                onChange={this.nameValidator(columnIndex)}
-                onCancel={this.nameValidator(columnIndex)}
-                onConfirm={this.nameSetter(columnIndex)}
-            />);
+            return (
+                <EditableName
+                    name={name}
+                    intent={this.state.sparseColumnIntents[columnIndex]}
+                    onChange={this.nameValidator(columnIndex)}
+                    onCancel={this.nameValidator(columnIndex)}
+                    onConfirm={this.nameSetter(columnIndex)}
+                />
+            );
         };
-        return (<ColumnHeaderCell
-            name={this.state.columnNames[columnIndex]}
-            renderName={renderName}
-            useInteractionBar={true}
-        />);
-    }
+        return (
+            <ColumnHeaderCell
+                name={this.state.columnNames[columnIndex]}
+                renderName={renderName}
+                useInteractionBar={true}
+            />
+        );
+    };
 
     private isValidValue(value: string) {
         return /^[a-zA-Z]*$/.test(value);
@@ -80,13 +81,13 @@ export class TableEditableExample extends BaseExample<{}> {
             this.setArrayState("sparseColumnIntents", index, intent);
             this.setArrayState("columnNames", index, name);
         };
-    }
+    };
 
     private nameSetter = (index: number) => {
         return (name: string) => {
             this.setArrayState("columnNames", index, name);
         };
-    }
+    };
 
     private cellValidator = (rowIndex: number, columnIndex: number) => {
         const dataKey = TableEditableExample.dataKey(rowIndex, columnIndex);
@@ -95,7 +96,7 @@ export class TableEditableExample extends BaseExample<{}> {
             this.setSparseState("sparseCellIntent", dataKey, intent);
             this.setSparseState("sparseCellData", dataKey, value);
         };
-    }
+    };
 
     private cellSetter = (rowIndex: number, columnIndex: number) => {
         const dataKey = TableEditableExample.dataKey(rowIndex, columnIndex);
@@ -104,15 +105,15 @@ export class TableEditableExample extends BaseExample<{}> {
             this.setSparseState("sparseCellData", dataKey, value);
             this.setSparseState("sparseCellIntent", dataKey, intent);
         };
-    }
+    };
 
-    private setArrayState<T>(key: string, index: number, value: T)  {
+    private setArrayState<T>(key: string, index: number, value: T) {
         const values = (this.state as any)[key].slice() as T[];
         values[index] = value;
-        this.setState({ [key] : values });
+        this.setState({ [key]: values });
     }
 
-    private setSparseState<T>(stateKey: string, dataKey: string, value: T)  {
+    private setSparseState<T>(stateKey: string, dataKey: string, value: T) {
         const stateData = (this.state as any)[stateKey] as { [key: string]: T };
         const values = { ...stateData, [dataKey]: value };
         this.setState({ [stateKey]: values });

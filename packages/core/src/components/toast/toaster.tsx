@@ -20,7 +20,7 @@ import { isNodeEnv, safeInvoke } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
 
-export type IToastOptions = IToastProps & {key?: string};
+export type IToastOptions = IToastProps & { key?: string };
 
 export interface IToaster {
     /** Show a new toast to the user. Returns the unique key of the new toast. */
@@ -98,7 +98,7 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
-        return ReactDOM.render(<Toaster {...props} inline={true} /> , containerElement) as Toaster;
+        return ReactDOM.render(<Toaster {...props} inline={true} />, containerElement) as Toaster;
     }
 
     public state = {
@@ -110,7 +110,7 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
 
     public show(props: IToastProps) {
         const options = this.createToastOptions(props);
-        this.setState((prevState) => ({
+        this.setState(prevState => ({
             toasts: [options, ...prevState.toasts],
         }));
         return options.key;
@@ -118,14 +118,14 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
 
     public update(key: string, props: IToastProps) {
         const options = this.createToastOptions(props, key);
-        this.setState((prevState) => ({
-            toasts: prevState.toasts.map((t) => t.key === key ? options : t),
+        this.setState(prevState => ({
+            toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
         }));
     }
 
     public dismiss(key: string, timeoutExpired = false) {
         this.setState(({ toasts }) => ({
-            toasts: toasts.filter((t) => {
+            toasts: toasts.filter(t => {
                 const matchesKey = t.key === key;
                 if (matchesKey) {
                     safeInvoke(t.onDismiss, timeoutExpired);
@@ -136,7 +136,7 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
     }
 
     public clear() {
-        this.state.toasts.map((t) => safeInvoke(t.onDismiss, false));
+        this.state.toasts.map(t => safeInvoke(t.onDismiss, false));
         this.setState({ toasts: [] });
     }
 
@@ -184,17 +184,17 @@ export class Toaster extends AbstractComponent<IToasterProps, IToasterState> imp
     private getPositionClasses() {
         const positions = Position[this.props.position].split("_");
         // NOTE that there is no -center class because that's the default style
-        return positions.map((p) => `${Classes.TOAST_CONTAINER}-${p.toLowerCase()}`);
+        return positions.map(p => `${Classes.TOAST_CONTAINER}-${p.toLowerCase()}`);
     }
 
     private getDismissHandler = (toast: IToastOptions) => (timeoutExpired: boolean) => {
         this.dismiss(toast.key, timeoutExpired);
-    }
+    };
 
     private handleClose = (e: React.KeyboardEvent<HTMLElement>) => {
         // NOTE that `e` isn't always a KeyboardEvent but that's the only type we care about
         if (e.which === ESCAPE) {
             this.clear();
         }
-    }
+    };
 }

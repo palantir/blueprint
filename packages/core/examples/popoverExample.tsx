@@ -85,22 +85,22 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
 
     protected className = "docs-popover-example";
 
-    private handleConstraintChange = handleStringChange((constraints) => {
+    private handleConstraintChange = handleStringChange(constraints => {
         this.setState({ tetherConstraints: JSON.parse(constraints) });
     });
-    private handleExampleIndexChange = handleNumberChange((exampleIndex) => this.setState({ exampleIndex }));
-    private handleInteractionChange = handleNumberChange((interactionKind) => {
+    private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
+    private handleInteractionChange = handleNumberChange(interactionKind => {
         const isModal = this.state.isModal && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, isModal });
     });
-    private handlePositionChange = handleNumberChange((position) => this.setState({ position }));
+    private handlePositionChange = handleNumberChange(position => this.setState({ position }));
 
-    private toggleArrows = handleBooleanChange((useSmartArrowPositioning) => {
+    private toggleArrows = handleBooleanChange(useSmartArrowPositioning => {
         this.setState({ useSmartArrowPositioning });
     });
-    private toggleEscapeKey = handleBooleanChange((canEscapeKeyClose) => this.setState({ canEscapeKeyClose }));
-    private toggleInheritDarkTheme = handleBooleanChange((inheritDarkTheme) => this.setState({ inheritDarkTheme }));
-    private toggleInline = handleBooleanChange((inline) => {
+    private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+    private toggleInheritDarkTheme = handleBooleanChange(inheritDarkTheme => this.setState({ inheritDarkTheme }));
+    private toggleInline = handleBooleanChange(inline => {
         if (inline) {
             this.setState({
                 inline,
@@ -112,7 +112,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
             this.setState({ inline });
         }
     });
-    private toggleModal = handleBooleanChange((isModal) => this.setState({ isModal }));
+    private toggleModal = handleBooleanChange(isModal => this.setState({ isModal }));
 
     protected renderExample() {
         const constraints = this.state.tetherConstraints;
@@ -132,8 +132,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
     }
 
     protected renderOptions() {
-        const isModalDisabled = this.state.inline
-            || this.state.interactionKind !== PopoverInteractionKind.CLICK;
+        const isModalDisabled = this.state.inline || this.state.interactionKind !== PopoverInteractionKind.CLICK;
         const inheritDarkThemeDisabled = this.state.inline;
 
         return [
@@ -166,7 +165,8 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     options={INTERACTION_KINDS}
                     onChange={this.handleInteractionChange}
                 />,
-            ], [
+            ],
+            [
                 <label className={Classes.LABEL} key="position">
                     Popover position
                     <div className={Classes.SELECT}>
@@ -198,12 +198,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     key="escape"
                     onChange={this.toggleEscapeKey}
                 />,
-                <Switch
-                    checked={this.state.inline}
-                    label="Inline"
-                    key="inline"
-                    onChange={this.toggleInline}
-                />,
+                <Switch checked={this.state.inline} label="Inline" key="inline" onChange={this.toggleInline} />,
                 <Switch
                     checked={this.state.inheritDarkTheme}
                     disabled={inheritDarkThemeDisabled}
@@ -229,27 +224,18 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
             <div>
                 <h5>Popover title</h5>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.
                 </p>
                 <button className={classNames(Classes.BUTTON, Classes.POPOVER_DISMISS)}>Dismiss</button>
             </div>,
             <div>
                 <label className={Classes.LABEL}>
                     Enter some text
-                    <input
-                        autoFocus={true}
-                        className={Classes.INPUT}
-                        type="text"
-                    />
+                    <input autoFocus={true} className={Classes.INPUT} type="text" />
                 </label>
             </div>,
-            <Slider
-                min={0}
-                max={10}
-                onChange={this.handleSliderChange}
-                value={this.state.sliderValue}
-            />,
+            <Slider min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
             <Menu>
                 <MenuDivider title="Edit" />
                 <MenuItem iconName="cut" text="Cut" label="⌘X" />

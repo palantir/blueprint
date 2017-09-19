@@ -42,10 +42,10 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         values: VALUES,
     };
 
-    private handleFillChange = handleBooleanChange((fill) => this.setState({ fill }));
-    private handleIntentChange = handleBooleanChange((intent) => this.setState({ intent }));
-    private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
-    private handleMinimalChange = handleBooleanChange((minimal) => this.setState({ minimal }));
+    private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
+    private handleIntentChange = handleBooleanChange(intent => this.setState({ intent }));
+    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+    private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
 
     protected renderExample() {
         const { fill, large, values } = this.state;
@@ -93,14 +93,12 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                     key="fill"
                     onChange={this.handleFillChange}
                 />,
-                <Switch
-                    checked={this.state.large}
-                    label="Large"
-                    key="large"
-                    onChange={this.handleLargeChange}
-                />,
-            ], [
-                <label key="heading" className={Classes.LABEL}>Tag props</label>,
+                <Switch checked={this.state.large} label="Large" key="large" onChange={this.handleLargeChange} />,
+            ],
+            [
+                <label key="heading" className={Classes.LABEL}>
+                    Tag props
+                </label>,
                 <Switch
                     checked={this.state.minimal}
                     label="Use minimal tags"

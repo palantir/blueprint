@@ -143,7 +143,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
     // an HTMLElement that contains the backdrop and any children, to query for focus target
     private containerElement: HTMLElement;
     private refHandlers = {
-        container: (ref: HTMLDivElement) => this.containerElement = ref,
+        container: (ref: HTMLDivElement) => (this.containerElement = ref),
     };
 
     public constructor(props?: IOverlayProps, context?: any) {
@@ -182,10 +182,14 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             </CSSTransitionGroup>
         );
 
-        const mergedClassName = classNames(Classes.OVERLAY, {
-            [Classes.OVERLAY_OPEN]: isOpen,
-            [Classes.OVERLAY_INLINE]: inline,
-        }, className);
+        const mergedClassName = classNames(
+            Classes.OVERLAY,
+            {
+                [Classes.OVERLAY_OPEN]: isOpen,
+                [Classes.OVERLAY_INLINE]: inline,
+            },
+            className,
+        );
 
         const elementProps = {
             className: mergedClassName,
@@ -194,10 +198,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
 
         if (inline) {
             return (
-                <span
-                    {...elementProps}
-                    ref={this.refHandlers.container}
-                >
+                <span {...elementProps} ref={this.refHandlers.container}>
                     {transitionGroup}
                 </span>
             );
@@ -330,18 +331,17 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             this.bringFocusInsideOverlay();
         }
         safeInvoke(backdropProps.onMouseDown, e);
-    }
+    };
 
     private handleDocumentClick = (e: MouseEvent) => {
         const { isOpen, onClose } = this.props;
         const eventTarget = e.target as HTMLElement;
-        const isClickInOverlay = this.containerElement != null
-            && this.containerElement.contains(eventTarget);
+        const isClickInOverlay = this.containerElement != null && this.containerElement.contains(eventTarget);
         if (isOpen && this.props.canOutsideClickClose && !isClickInOverlay) {
             // casting to any because this is a native event
             safeInvoke(onClose, e as any);
         }
-    }
+    };
 
     private handleContentMount = () => {
         if (this.props.isOpen) {
@@ -350,18 +350,20 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         if (this.props.autoFocus) {
             this.bringFocusInsideOverlay();
         }
-    }
+    };
 
     private handleDocumentFocus = (e: FocusEvent) => {
-        if (this.props.enforceFocus
-                && this.containerElement != null
-                && !this.containerElement.contains(e.target as HTMLElement)) {
+        if (
+            this.props.enforceFocus &&
+            this.containerElement != null &&
+            !this.containerElement.contains(e.target as HTMLElement)
+        ) {
             // prevent default focus behavior (sometimes auto-scrolls the page)
             e.preventDefault();
             e.stopImmediatePropagation();
             this.bringFocusInsideOverlay();
         }
-    }
+    };
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
         const { canEscapeKeyClose, onClose } = this.props;
@@ -370,7 +372,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             // prevent browser-specific escape key behavior (Safari exits fullscreen)
             e.preventDefault();
         }
-    }
+    };
 }
 
 export const OverlayFactory = React.createFactory(Overlay);

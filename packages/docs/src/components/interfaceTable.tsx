@@ -15,9 +15,12 @@ import { renderContentsBlock } from "./block";
 
 // HACKHACK support `code` blocks until we get real markdown parsing in ts-quick-docs
 function dirtyMarkdown(text: string) {
-    return { __html: text.replace("<", "&lt;")
-        .replace(/```([^`]+)```/g, (_, code) => `<pre>${code}</pre>`)
-        .replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`) };
+    return {
+        __html: text
+            .replace("<", "&lt;")
+            .replace(/```([^`]+)```/g, (_, code) => `<pre>${code}</pre>`)
+            .replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`),
+    };
 }
 
 function propTag(intent: Intent, title: string, ...children: React.ReactNode[]) {
@@ -48,9 +51,8 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
         tags.push(propTag(Intent.SUCCESS, "Required"));
     }
     if (deprecated) {
-        const maybeMessage = typeof deprecated === "string"
-            ? <span dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} />
-            : "";
+        const maybeMessage =
+            typeof deprecated === "string" ? <span dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} /> : "";
         tags.push(propTag(Intent.DANGER, "Deprecated", maybeMessage));
     }
     if (inheritedFrom != null) {
@@ -61,14 +63,17 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
 
     // TODO: this ignores tags in prop docs, but that's kind of OK cuz they all get processed
     // into prop.tags by the TS compiler.
-    const html = documentation.contents.reduce<string>((a, b) => typeof b === "string" ? a + b : a, "");
+    const html = documentation.contents.reduce<string>((a, b) => (typeof b === "string" ? a + b : a), "");
 
     return (
         <tr key={name}>
-            <td className={classes}><code>{name}</code></td>
+            <td className={classes}>
+                <code>{name}</code>
+            </td>
             <td className="docs-prop-details">
                 <code className="docs-prop-type">
-                    <strong>{formattedType}</strong><em className="docs-prop-default pt-text-muted">{defaultValue}</em>
+                    <strong>{formattedType}</strong>
+                    <em className="docs-prop-default pt-text-muted">{defaultValue}</em>
                 </code>
                 <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: html }} />
                 <p className="docs-prop-tags">{tags}</p>
@@ -95,9 +100,7 @@ export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({ iface, props, 
                         <th>Description</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {props.map(renderPropRow)}
-                </tbody>
+                <tbody>{props.map(renderPropRow)}</tbody>
             </table>
         </div>
     );

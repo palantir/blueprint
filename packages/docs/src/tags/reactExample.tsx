@@ -17,14 +17,14 @@ export interface IExample {
 // packageName must match directory name as it is used to generate sourceUrl.
 export interface IExampleMap {
     [componentName: string]: IExample;
-};
+}
 
 export interface IExampleProps {
     example: IExample;
     name: string;
 }
 
-export const ReactExample: React.SFC<IExampleProps> = (props) => (
+export const ReactExample: React.SFC<IExampleProps> = props => (
     <div className="docs-example-wrapper">
         {props.example.render({ id: props.name })}
         <a className="view-example-source" href={props.example.sourceUrl} target="_blank">
@@ -52,5 +52,5 @@ export class ReactExampleTagRenderer {
             throw new Error(`Unknown @example component: ${exampleName}`);
         }
         return <ReactExample example={example} key={key} name={exampleName} />;
-    }
+    };
 }

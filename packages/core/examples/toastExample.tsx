@@ -30,57 +30,68 @@ export class ToastExample extends BaseExample<IToasterProps> {
         position: Position.TOP,
     };
 
-    private TOAST_BUILDERS: IToastDemo[] = [{
-        action: {
-            href: "https://www.google.com/search?q=toast&source=lnms&tbm=isch",
-            target: "_blank",
-            text: "Yum",
+    private TOAST_BUILDERS: IToastDemo[] = [
+        {
+            action: {
+                href: "https://www.google.com/search?q=toast&source=lnms&tbm=isch",
+                target: "_blank",
+                text: "Yum",
+            },
+            button: "Procure toast",
+            intent: Intent.PRIMARY,
+            message: (
+                <span>
+                    One toast created. <em>Toasty.</em>
+                </span>
+            ),
         },
-        button: "Procure toast",
-        intent: Intent.PRIMARY,
-        message: <span>One toast created. <em>Toasty.</em></span>,
-    }, {
-        action: {
-            onClick: () => this.addToast({
-                iconName: "ban-circle",
-                intent: Intent.DANGER,
-                message: "You cannot undo the past.",
-            }),
-            text: "Undo",
+        {
+            action: {
+                onClick: () =>
+                    this.addToast({
+                        iconName: "ban-circle",
+                        intent: Intent.DANGER,
+                        message: "You cannot undo the past.",
+                    }),
+                text: "Undo",
+            },
+            button: "Move files",
+            iconName: "tick",
+            intent: Intent.SUCCESS,
+            message: "Moved 6 files.",
         },
-        button: "Move files",
-        iconName: "tick",
-        intent: Intent.SUCCESS,
-        message: "Moved 6 files.",
-    }, {
-        action: {
-            onClick: () => this.addToast(this.TOAST_BUILDERS[2]),
-            text: "Retry",
-        },
-        button: "Delete root",
-        iconName: "warning-sign",
-        intent: Intent.DANGER,
-        message: "You do not have permissions to perform this action. \
+        {
+            action: {
+                onClick: () => this.addToast(this.TOAST_BUILDERS[2]),
+                text: "Retry",
+            },
+            button: "Delete root",
+            iconName: "warning-sign",
+            intent: Intent.DANGER,
+            message:
+                "You do not have permissions to perform this action. \
     Please contact your system administrator to request the appropriate access rights.",
-    }, {
-        action: {
-            onClick: () => this.addToast({ message: "Isn't parting just the sweetest sorrow?" }),
-            text: "Adieu",
         },
-        button: "Log out",
-        iconName: "hand",
-        intent: Intent.WARNING,
-        message: "Goodbye, old friend.",
-    }];
+        {
+            action: {
+                onClick: () => this.addToast({ message: "Isn't parting just the sweetest sorrow?" }),
+                text: "Adieu",
+            },
+            button: "Log out",
+            iconName: "hand",
+            intent: Intent.WARNING,
+            message: "Goodbye, old friend.",
+        },
+    ];
 
     private toaster: Toaster;
     private refHandlers = {
-        toaster: (ref: Toaster) => this.toaster = ref,
+        toaster: (ref: Toaster) => (this.toaster = ref),
     };
 
-    private handlePositionChange = handleNumberChange((position) => this.setState({ position }));
-    private toggleAutoFocus = handleBooleanChange((autoFocus) => this.setState({ autoFocus }));
-    private toggleEscapeKey = handleBooleanChange((canEscapeKeyClear) => this.setState({ canEscapeKeyClear }));
+    private handlePositionChange = handleNumberChange(position => this.setState({ position }));
+    private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+    private toggleEscapeKey = handleBooleanChange(canEscapeKeyClear => this.setState({ canEscapeKeyClear }));
 
     protected renderExample() {
         return (
@@ -161,5 +172,5 @@ export class ToastExample extends BaseExample<IToasterProps> {
                 this.toaster.update(key, this.renderProgress(progress));
             }
         }, 1000);
-    }
+    };
 }

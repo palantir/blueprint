@@ -48,11 +48,11 @@ export class InteractionModeEngine {
             this.reset();
             this.container.addEventListener("mousedown", this.handleMouseDown);
         }
-    }
+    };
 
     private handleMouseDown = () => {
         this.reset();
         this.container.classList.add(this.className);
         this.container.addEventListener("keydown", this.handleKeyDown);
-    }
+    };
 }

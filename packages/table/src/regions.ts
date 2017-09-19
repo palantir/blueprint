@@ -47,21 +47,11 @@ export const SelectionModes = {
         RegionCardinality.FULL_ROWS,
         RegionCardinality.CELLS,
     ],
-    COLUMNS_AND_CELLS: [
-        RegionCardinality.FULL_COLUMNS,
-        RegionCardinality.CELLS,
-    ],
-    COLUMNS_ONLY: [
-        RegionCardinality.FULL_COLUMNS,
-    ],
+    COLUMNS_AND_CELLS: [RegionCardinality.FULL_COLUMNS, RegionCardinality.CELLS],
+    COLUMNS_ONLY: [RegionCardinality.FULL_COLUMNS],
     NONE: [] as RegionCardinality[],
-    ROWS_AND_CELLS: [
-        RegionCardinality.FULL_ROWS,
-        RegionCardinality.CELLS,
-    ],
-    ROWS_ONLY: [
-        RegionCardinality.FULL_ROWS,
-    ],
+    ROWS_AND_CELLS: [RegionCardinality.FULL_ROWS, RegionCardinality.CELLS],
+    ROWS_ONLY: [RegionCardinality.FULL_ROWS],
 };
 
 export type ColumnLoadingOption = "cells" | "column-header";
@@ -196,7 +186,7 @@ export class Regions {
     /**
      * Returns a region containing the entire table.
      */
-    public static table(): IRegion  {
+    public static table(): IRegion {
         return {};
     }
 
@@ -362,8 +352,7 @@ export class Regions {
                     }
                     continue;
                 case RegionCardinality.CELLS:
-                    if (intervalCompareFn(region.cols, query.cols)
-                        && intervalCompareFn(region.rows, query.rows)) {
+                    if (intervalCompareFn(region.cols, query.cols) && intervalCompareFn(region.rows, query.rows)) {
                         return true;
                     }
                     continue;
@@ -380,10 +369,10 @@ export class Regions {
             return;
         }
 
-        const seen: {[col: number]: boolean} = {};
+        const seen: { [col: number]: boolean } = {};
         regions.forEach((region: IRegion) => {
             if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_COLUMNS) {
-                const [ start, end ] = region.cols;
+                const [start, end] = region.cols;
                 for (let col = start; col <= end; col++) {
                     if (!seen[col]) {
                         seen[col] = true;
@@ -399,10 +388,10 @@ export class Regions {
             return;
         }
 
-        const seen: {[row: number]: boolean} = {};
+        const seen: { [row: number]: boolean } = {};
         regions.forEach((region: IRegion) => {
             if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_ROWS) {
-                const [ start, end ] = region.rows;
+                const [start, end] = region.rows;
                 for (let row = start; row <= end; row++) {
                     if (!seen[row]) {
                         seen[row] = true;
@@ -418,17 +407,12 @@ export class Regions {
      * returns an ordered array of every unique cell that exists in those
      * regions.
      */
-    public static enumerateUniqueCells(
-        regions: IRegion[],
-        numRows: number,
-        numCols: number,
-    ): ICellCoordinate[] {
-
+    public static enumerateUniqueCells(regions: IRegion[], numRows: number, numCols: number): ICellCoordinate[] {
         if (regions == null || regions.length === 0) {
             return [];
         }
 
-        const seen: {[key: string]: boolean} = {};
+        const seen: { [key: string]: boolean } = {};
         const list: ICellCoordinate[] = [];
         for (const region of regions) {
             Regions.eachCellInRegion(region, numRows, numCols, (row: number, col: number) => {
@@ -476,10 +460,7 @@ export class Regions {
      * invoke the mapper callback only on the cells in the supplied coordinate
      * array and store the result. Returns the resulting 2-dimensional array.
      */
-    public static sparseMapCells<T>(
-        cells: ICellCoordinate[],
-        mapper: (row: number, col: number) => T,
-    ): T[][] {
+    public static sparseMapCells<T>(cells: ICellCoordinate[], mapper: (row: number, col: number) => T): T[][] {
         const bounds = Regions.getBoundingRegion(cells);
         if (bounds == null) {
             return null;
@@ -504,10 +485,10 @@ export class Regions {
         let minCol: number;
         let maxCol: number;
         for (const [row, col] of cells) {
-            minRow = (minRow == null || row < minRow) ? row : minRow;
-            maxRow = (maxRow == null || row > maxRow) ? row : maxRow;
-            minCol = (minCol == null || col < minCol) ? col : minCol;
-            maxCol = (maxCol == null || col > maxCol) ? col : maxCol;
+            minRow = minRow == null || row < minRow ? row : minRow;
+            maxRow = maxRow == null || row > maxRow ? row : maxRow;
+            minCol = minCol == null || col < minCol ? col : minCol;
+            maxCol = maxCol == null || col > maxCol ? col : maxCol;
         }
         if (minRow == null) {
             return null;
@@ -522,10 +503,10 @@ export class Regions {
         if (region == null) {
             return false;
         }
-        if ((region.rows != null) && (region.rows[0] < 0 || region.rows[1] < 0)) {
+        if (region.rows != null && (region.rows[0] < 0 || region.rows[1] < 0)) {
             return false;
         }
-        if ((region.cols != null) && (region.cols[0] < 0 || region.cols[1] < 0)) {
+        if (region.cols != null && (region.cols[0] < 0 || region.cols[1] < 0)) {
             return false;
         }
         return true;
@@ -567,8 +548,7 @@ export class Regions {
     }
 
     public static regionsEqual(regionA: IRegion, regionB: IRegion) {
-        return Regions.intervalsEqual(regionA.rows, regionB.rows)
-            && Regions.intervalsEqual(regionA.cols, regionB.cols);
+        return Regions.intervalsEqual(regionA.rows, regionB.rows) && Regions.intervalsEqual(regionA.cols, regionB.cols);
     }
 
     /**

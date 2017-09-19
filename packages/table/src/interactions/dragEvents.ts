@@ -49,11 +49,14 @@ export class DragEvents {
     }
 
     private isValidDragHandler(handler: IDragHandler) {
-        return handler != null && (handler.onActivate != null
-            || handler.onDragMove != null
-            || handler.onDragEnd != null
-            || handler.onClick != null
-            || handler.onDoubleClick != null);
+        return (
+            handler != null &&
+            (handler.onActivate != null ||
+                handler.onDragMove != null ||
+                handler.onDragEnd != null ||
+                handler.onClick != null ||
+                handler.onDoubleClick != null)
+        );
     }
 
     private attachDocumentEventListeners() {
@@ -119,7 +122,7 @@ export class DragEvents {
         // we preemptively detach to avoid duplicate listeners.
         this.detachDocumentEventListeners();
         this.attachDocumentEventListeners();
-    }
+    };
 
     private handleMouseMove = (event: MouseEvent) => {
         this.maybeAlterEventChain(event);
@@ -135,7 +138,7 @@ export class DragEvents {
                 this.handler.onDragMove(event, coords);
             }
         }
-    }
+    };
 
     private handleMouseUp = (event: MouseEvent) => {
         this.maybeAlterEventChain(event);
@@ -153,7 +156,6 @@ export class DragEvents {
                 }
             } else if (this.isActivated) {
                 if (this.handler.onDoubleClick != null) {
-
                     if (this.doubleClickTimeoutToken == null) {
                         // if this the first click of a possible double-click,
                         // we delay the firing of the click event by the
@@ -172,15 +174,14 @@ export class DragEvents {
                         delete this.doubleClickTimeoutToken;
                         this.handler.onDoubleClick(event);
                     }
-
                 } else if (this.handler.onClick != null) {
                     this.handler.onClick(event);
                 }
             }
-         }
+        }
 
         this.isActivated = false;
         this.isDragging = false;
         this.detachDocumentEventListeners();
-    }
+    };
 }

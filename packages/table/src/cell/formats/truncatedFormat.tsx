@@ -112,14 +112,18 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT);
-            const constraints = [{
-                attachment: "together",
-                to: "window",
-            }];
+            const constraints = [
+                {
+                    attachment: "together",
+                    to: "window",
+                },
+            ];
 
             return (
                 <div className={className}>
-                    <div className={Classes.TABLE_TRUNCATED_VALUE} ref={this.handleContentDivRef}>{cellContent}</div>
+                    <div className={Classes.TABLE_TRUNCATED_VALUE} ref={this.handleContentDivRef}>
+                        {cellContent}
+                    </div>
                     <Popover
                         className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                         tetherOptions={{ constraints }}
@@ -133,7 +137,11 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             );
         } else {
             const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT_TEXT);
-            return <div className={className} ref={this.handleContentDivRef}>{cellContent}</div>;
+            return (
+                <div className={className} ref={this.handleContentDivRef}>
+                    {cellContent}
+                </div>
+            );
         }
     }
 
@@ -145,7 +153,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         this.setTruncationState();
     }
 
-    private handleContentDivRef = (ref: HTMLDivElement) => this.contentDiv = ref;
+    private handleContentDivRef = (ref: HTMLDivElement) => (this.contentDiv = ref);
 
     private shouldShowPopover(content: string) {
         const { detectTruncation, showPopover, truncateLength } = this.props;
@@ -158,7 +166,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             case TruncatedPopoverMode.WHEN_TRUNCATED:
                 return detectTruncation
                     ? this.state.isTruncated
-                    : (truncateLength > 0 && content.length > truncateLength);
+                    : truncateLength > 0 && content.length > truncateLength;
             default:
                 return false;
         }
@@ -187,17 +195,16 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         // if the content is truncated, then a popover handle will be present as a
         // sibling of the content. we don't want to consider that handle when
         // calculating the width of the actual content, so subtract it.
-        const actualContentWidth = isTruncated
-            ? contentWidth - CONTENT_DIV_WIDTH_DELTA
-            : contentWidth;
+        const actualContentWidth = isTruncated ? contentWidth - CONTENT_DIV_WIDTH_DELTA : contentWidth;
 
         // we of course truncate the content if it doesn't fit in the container. but we
         // also aggressively truncate if they're the same size with truncation enabled;
         // this addresses browser-crashing stack-overflow bugs at various zoom levels.
         // (see: https://github.com/palantir/blueprint/pull/1519)
-        const shouldTruncate = (isTruncated && actualContentWidth === containerWidth)
-            || actualContentWidth > containerWidth
-            || actualContentHeight > containerHeight;
+        const shouldTruncate =
+            (isTruncated && actualContentWidth === containerWidth) ||
+            actualContentWidth > containerWidth ||
+            actualContentHeight > containerHeight;
 
         this.setState({ isTruncated: shouldTruncate });
     }
