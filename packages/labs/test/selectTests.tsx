@@ -5,14 +5,14 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, InputGroup, Popover } from "@blueprintjs/core";
+import { Classes, InputGroup } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount } from "enzyme";
 import * as React from "react";
 
 import { Film, TOP_100_FILMS } from "../examples/data";
-import { ISelectItemRendererProps, ISelectProps, Select } from "../src/index";
+import { ISelectItemRendererProps, ISelectProps, Select, Popover2 } from "../src/index";
 
 describe("<Select>", () => {
     const FilmSelect = Select.ofType<Film>();
@@ -38,19 +38,19 @@ describe("<Select>", () => {
     it("renders a Popover around children that contains InputGroup and items", () => {
         const wrapper = select();
         assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
-        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
+        assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover");
     });
 
     it("filterable=false hides InputGroup", () => {
         const wrapper = select({ filterable: false });
         assert.lengthOf(wrapper.find(InputGroup), 0, "should not render InputGroup");
-        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
+        assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover");
     });
 
     it("disabled=false disables Popover", () => {
         const wrapper = select({ disabled: true, popoverProps: {} });
         wrapper.find("table").simulate("click");
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), false);
     });
 
     it("itemRenderer is called for each filtered child", () => {
@@ -112,10 +112,10 @@ describe("<Select>", () => {
     it("popover can be controlled with popoverProps", () => {
         // Select defines its own popoverWillOpen so this ensures that the passthrough happens
         const popoverWillOpen = sinon.spy();
-        const tetherOptions = {}; // our own instance
-        const wrapper = select({ popoverProps: { isOpen: undefined, popoverWillOpen, tetherOptions } });
+        const modifiers = {}; // our own instance
+        const wrapper = select({ popoverProps: { isOpen: undefined, popoverWillOpen, modifiers } });
         wrapper.find("table").simulate("click");
-        assert.strictEqual(wrapper.find(Popover).prop("tetherOptions"), tetherOptions);
+        assert.strictEqual(wrapper.find(Popover2).prop("modifiers"), modifiers);
         assert.isTrue(popoverWillOpen.calledOnce);
     });
 
