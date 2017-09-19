@@ -10,22 +10,61 @@ import * as moment from "moment-timezone";
 import { getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
 import { getLocalTimezone } from "./timezoneUtils";
 
+/** Timezone-specific QueryList item */
 export interface ITimezoneItem {
+    /** Key to be used as the rendered react key. */
     key: string;
+    /** Text for the timezone. */
     text: string;
+    /** Label for the timezone. */
     label: string;
+    /** Optional icon for the timezone. */
     iconName?: IconName;
+    /** The actual timezone. */
     timezone: string;
 }
 
+/**
+ * Get a list of all timezone items.
+ * @param date the date to use when determining timezone offsets
+ */
 export function getTimezoneItems(date: Date): ITimezoneItem[] {
     return moment.tz.names().map(timezone => toTimezoneItem(timezone, date));
 }
 
+/**
+ * Get a list of timezone items where there is one timezone per offset
+ * and optionally the local timezone as the first item.
+ * The most populous timezone for each offset is chosen.
+ * @param date the date to use when determining timezone offsets
+ * @param includeLocalTimezone whether to include the local timezone
+ */
 export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolean): ITimezoneItem[] {
     const populous = getPopulousTimezoneItems(date);
     const local = getLocalTimezoneItem(date);
     return includeLocalTimezone && local !== undefined ? [local, ...populous] : populous;
+}
+
+/**
+ * Get the timezone item for the user's local timezone.
+ * @param date the date to use when determining timezone offsets
+ */
+export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
+    const timezone = getLocalTimezone();
+    if (timezone !== undefined) {
+        const timestamp = date.getTime();
+        const zonedDate = moment.tz(timestamp, timezone);
+        const offsetAsString = zonedDate.format("Z");
+        return {
+            iconName: "locate",
+            key: `${timezone}-local`,
+            label: offsetAsString,
+            text: "Current timezone",
+            timezone,
+        };
+    } else {
+        return undefined;
+    }
 }
 
 /**
@@ -69,24 +108,6 @@ function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
         }
     }
     return initialTimezones;
-}
-
-function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
-    const timezone = getLocalTimezone();
-    if (timezone !== undefined) {
-        const timestamp = date.getTime();
-        const zonedDate = moment.tz(timestamp, timezone);
-        const offsetAsString = zonedDate.format("Z");
-        return {
-            iconName: "locate",
-            key: `${timezone}-local`,
-            label: offsetAsString,
-            text: "Current timezone",
-            timezone,
-        };
-    } else {
-        return undefined;
-    }
 }
 
 function toTimezoneItem(timezone: string, date: Date): ITimezoneItem {
