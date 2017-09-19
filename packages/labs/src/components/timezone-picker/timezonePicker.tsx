@@ -28,7 +28,7 @@ import {
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
-import { createTimezoneQueryEngine, IItemQueryEngine } from "./timezoneQueryEngine";
+import { filterWithQueryCandidates, getTimezoneQueryCandidates } from "./timezoneUtils";
 
 export { TimezoneDisplayFormat };
 
@@ -118,7 +118,6 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     };
 
     private timezoneItems: ITimezoneItem[];
-    private timezoneQueryEngine: IItemQueryEngine<ITimezoneItem>;
     private initialTimezoneItems: ITimezoneItem[];
 
     constructor(props: ITimezonePickerProps, context?: any) {
@@ -127,7 +126,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         const { value, date = new Date(), showLocalTimezone } = props;
         this.state = { date, value };
 
-        this.updateTimezones(date);
+        this.timezoneItems = getTimezoneItems(date);
         this.initialTimezoneItems = getInitialTimezoneItems(date, showLocalTimezone);
     }
 
@@ -169,7 +168,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         const dateChanged = this.state.date.getTime() !== nextDate.getTime();
 
         if (dateChanged) {
-            this.updateTimezones(nextDate);
+            this.timezoneItems = getTimezoneItems(nextDate);
         }
         if (dateChanged || this.props.showLocalTimezone !== nextProps.showLocalTimezone) {
             this.initialTimezoneItems = getInitialTimezoneItems(nextDate, nextProps.showLocalTimezone);
@@ -208,14 +207,14 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         );
     }
 
-    private updateTimezones(date: Date): void {
-        this.timezoneItems = getTimezoneItems(date);
-        this.timezoneQueryEngine = createTimezoneQueryEngine(date);
-    }
-
     private filterItems = (query: string, items: ITimezoneItem[]): ITimezoneItem[] => {
-        // Only filter and rank the non-initial items
-        return items === this.initialTimezoneItems ? items : this.timezoneQueryEngine.filterAndRankItems(query, items);
+        if (query === "") {
+            return items;
+        }
+
+        const { date } = this.state;
+        return filterWithQueryCandidates(items, query, (item) => item.timezone,
+            (item) => getTimezoneQueryCandidates(item.timezone, date));
     }
 
     private renderItem = (itemProps: ISelectItemRendererProps<ITimezoneItem>) => {
