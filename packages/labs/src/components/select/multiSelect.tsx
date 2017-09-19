@@ -170,10 +170,10 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
         }
         return filteredItems.map((item, index) =>
             itemRenderer({
-                index,
-                item,
                 handleClick: e => handleItemSelect(item, e),
+                index,
                 isActive: item === activeItem,
+                item,
             }),
         );
     }

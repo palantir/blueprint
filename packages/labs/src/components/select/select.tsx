@@ -212,10 +212,10 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         }
         return filteredItems.map((item, index) =>
             itemRenderer({
-                index,
-                item,
                 handleClick: e => handleItemSelect(item, e),
+                index,
                 isActive: item === activeItem,
+                item,
             }),
         );
     }

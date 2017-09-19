@@ -161,10 +161,10 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
         }
         return filteredItems.map((item, index) =>
             itemRenderer({
-                index,
-                item,
                 handleClick: e => handleItemSelect(item, e),
+                index,
                 isActive: item === activeItem,
+                item,
             }),
         );
     }
