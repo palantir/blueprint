@@ -31,7 +31,11 @@
     "no-invalid-this": {
       "options": ["check-function-in-method"]
     },
-    "no-submodule-imports": true,
+    "no-submodule-imports": {
+      "options": [
+        "documentalist"
+      ]
+    },
     "no-unnecessary-callback-wrapper": true,
     "no-unnecessary-initializer": true,
     "prefer-conditional-expression": false,
