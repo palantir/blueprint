@@ -14,6 +14,7 @@ $table-quadrant-scroll-container-overflow: 20px;
 
 .bp-table-quadrant-stack {
   display: flex;
+  position: relative;
   height: 100%;
 }
 
