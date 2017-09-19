@@ -80,7 +80,7 @@
     "phantomjs-prebuilt": "^2.1.14",
     "postcss-import": "^10.0.0",
     "postcss-url": "^7.1.1",
-    "prettier": "^1.6.1",
+    "prettier": "^1.7.0",
     "react": "^15.5.1",
     "react-dom": "^15.5.1",
     "react-test-renderer": "^15.5.4",
