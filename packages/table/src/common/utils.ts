@@ -43,7 +43,8 @@ export const Utils = {
      */
     assignClasses<P extends IProps>(elem: React.ReactElement<P>, ...extendedClasses: ClassValue[]) {
         const classes = classNames(elem.props.className, ...extendedClasses);
-        return React.cloneElement(elem, { className: classes } as IProps);
+        const props: IProps = { className: classes };
+        return React.cloneElement(elem, props);
     },
 
     /**
@@ -290,8 +291,8 @@ export const Utils = {
      * provided objects. Useful for debugging shouldComponentUpdate.
      */
     getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
-        const definedObjA = objA == null ? {} as T : objA;
-        const definedObjB = objB == null ? {} as T : objB;
+        const definedObjA = objA == null ? ({} as any) as T : objA;
+        const definedObjB = objB == null ? ({} as any) as T : objB;
 
         const filteredKeys = keys == null ? _unionKeys(definedObjA, definedObjB) : keys;
         return _getUnequalKeyValues(definedObjA, definedObjB, filteredKeys, (a, b, key) =>

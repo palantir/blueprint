@@ -8,6 +8,7 @@
 import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
 import { ICellCoordinates } from "./common/cell";
@@ -305,7 +306,13 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         const cellLoading = baseCell.props.loading != null ? baseCell.props.loading : loading;
 
         const style = { ...baseCell.props.style, ...Rect.style(rect) };
-        return React.cloneElement(baseCell, { className, key, loading: cellLoading, style } as ICellProps);
+        const cellProps: ICellProps = {
+            className,
+            key,
+            loading: cellLoading,
+            style,
+        };
+        return React.cloneElement(baseCell, cellProps);
     };
 
     // Callbacks
