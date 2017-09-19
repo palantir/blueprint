@@ -4,7 +4,6 @@
         "**/build": true,
         "**/dist": true,
         "**/coverage": true,
-        "**/generated": true,
         "docs": true
     },
     "editor.insertSpaces": true,

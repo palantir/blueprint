@@ -114,7 +114,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         }
     }
 
-    protected validateProps(props: ITabsProps & {children?: React.ReactNode}) {
+    protected validateProps(props: ITabsProps & { children?: React.ReactNode }) {
         if (React.Children.count(props.children) > 0) {
             const child = React.Children.toArray(props.children)[0] as React.ReactElement<any>;
             if (child != null && child.type !== TabList) {
@@ -129,7 +129,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
 
     private handleClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
         this.handleTabSelectingEvent(e);
-    }
+    };
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const insideTab = (e.target as HTMLElement).closest(`.${Classes.TAB}`) != null;
@@ -137,15 +137,19 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
             e.preventDefault();
             this.handleTabSelectingEvent(e);
         }
-    }
+    };
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         // don't want to handle keyDown events inside a tab panel
         const insideTabList = (e.target as HTMLElement).closest(`.${Classes.TAB_LIST}`) != null;
-        if (!insideTabList) { return; }
+        if (!insideTabList) {
+            return;
+        }
 
         const focusedTabIndex = this.getFocusedTabIndex();
-        if (focusedTabIndex === -1) { return; }
+        if (focusedTabIndex === -1) {
+            return;
+        }
 
         if (e.which === Keys.ARROW_LEFT) {
             e.preventDefault();
@@ -180,20 +184,22 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
                 this.focusTab(newTabIndex);
             }
         }
-    }
+    };
 
     private handleTabSelectingEvent = (e: React.SyntheticEvent<HTMLDivElement>) => {
         const tabElement = (e.target as HTMLElement).closest(TAB_CSS_SELECTOR) as HTMLElement;
 
         // select only if Tab is one of us and is enabled
-        if (tabElement != null
-                && this.tabIds.indexOf(tabElement.id) >= 0
-                && tabElement.getAttribute("aria-disabled") !== "true") {
+        if (
+            tabElement != null &&
+            this.tabIds.indexOf(tabElement.id) >= 0 &&
+            tabElement.getAttribute("aria-disabled") !== "true"
+        ) {
             const index = tabElement.parentElement.queryAll(TAB_CSS_SELECTOR).indexOf(tabElement);
 
             this.setSelectedTabIndex(index);
         }
-    }
+    };
 
     /**
      * Calculate the new height, width, and position of the tab indicator.
@@ -241,7 +247,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
         });
     }
 
-    private cloneTabList(child: React.ReactElement<ITabListProps & {children?: React.ReactNode}>) {
+    private cloneTabList(child: React.ReactElement<ITabListProps & { children?: React.ReactNode }>) {
         let tabIndex = 0;
         const tabs = React.Children.map(child.props.children, (tab: React.ReactElement<any>) => {
             // can be null if conditionally rendering Tab

@@ -9,8 +9,7 @@ import * as tags from "./";
 
 import { IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/client";
 
-export interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {
-}
+export interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {}
 
 export function createDefaultRenderers(docs: IDocsData) {
     const css = new tags.CssTagRenderer(docs);

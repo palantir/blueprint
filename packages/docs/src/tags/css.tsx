@@ -21,7 +21,7 @@ const CssExample: React.SFC<IKssExample> = ({ markup, markupHtml, modifiers, ref
         {modifiers.length > 0 ? <ModifierTable modifiers={modifiers} /> : undefined}
         <div className="docs-example-wrapper" data-reference={reference}>
             {renderMarkupForModifier(markup, DEFAULT_MODIFIER)}
-            {modifiers.map((mod) => renderMarkupForModifier(markup, mod))}
+            {modifiers.map(mod => renderMarkupForModifier(markup, mod))}
         </div>
         <div className="docs-markup" dangerouslySetInnerHTML={{ __html: markupHtml }} />
     </div>
@@ -55,5 +55,5 @@ export class CssTagRenderer {
             throw new Error(`Unknown @css reference: ${reference}`);
         }
         return <CssExample {...example} key={key} />;
-    }
+    };
 }

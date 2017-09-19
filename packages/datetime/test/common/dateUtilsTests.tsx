@@ -214,12 +214,12 @@ describe("dateUtils", () => {
         });
 
         it("returns given maxTime, if minTime === maxTime", () => {
-          const minTime = createTimeObject(11, 20);
-          const maxTime = createTimeObject(11, 20);
+            const minTime = createTimeObject(11, 20);
+            const maxTime = createTimeObject(11, 20);
 
-          const time = DateUtils.getTimeInRange(createTimeObject(10, 20), minTime, maxTime);
+            const time = DateUtils.getTimeInRange(createTimeObject(10, 20), minTime, maxTime);
 
-          assertTimeIs(time, 11, 20);
+            assertTimeIs(time, 11, 20);
         });
     });
 });

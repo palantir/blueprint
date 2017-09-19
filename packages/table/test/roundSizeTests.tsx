@@ -23,11 +23,13 @@ describe("RoundSize", () => {
     });
 
     it("displays regular content", () => {
-        const rounded = harness.mount((
+        const rounded = harness.mount(
             <RoundSize>
-                <div className="inner" style={{height: "20px", width: "30px"}}>...</div>
-            </RoundSize>
-        ));
+                <div className="inner" style={{ height: "20px", width: "30px" }}>
+                    ...
+                </div>
+            </RoundSize>,
+        );
         const inner = rounded.find(".inner").bounds();
         expect(inner.width).to.equal(30);
 
@@ -36,11 +38,13 @@ describe("RoundSize", () => {
     });
 
     it("rounds irregular content", () => {
-        const rounded = harness.mount((
+        const rounded = harness.mount(
             <RoundSize>
-                <div className="inner" style={{height: "20px", width: "30.5px"}}>...</div>
-            </RoundSize>
-        ));
+                <div className="inner" style={{ height: "20px", width: "30.5px" }}>
+                    ...
+                </div>
+            </RoundSize>,
+        );
         const inner = rounded.find(".inner").bounds();
         expect(inner.width).to.equal(30.5);
 

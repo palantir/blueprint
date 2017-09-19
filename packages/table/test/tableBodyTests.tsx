@@ -31,12 +31,12 @@ describe("TableBody", () => {
 
     it("cellClassNames", () => {
         expect(TableBody.cellClassNames(0, 0)).to.deep.equal([
-          Classes.rowCellIndexClass(0),
-          Classes.columnCellIndexClass(0),
+            Classes.rowCellIndexClass(0),
+            Classes.columnCellIndexClass(0),
         ]);
         expect(TableBody.cellClassNames(4096, 1024)).to.deep.equal([
-          Classes.rowCellIndexClass(4096),
-          Classes.columnCellIndexClass(1024),
+            Classes.rowCellIndexClass(4096),
+            Classes.columnCellIndexClass(1024),
         ]);
     });
 
@@ -177,7 +177,7 @@ describe("TableBody", () => {
         }
 
         function mountTableBodyForContextMenuTests(
-            targetCellCoords: { row: number, col: number },
+            targetCellCoords: { row: number; col: number },
             selectedRegions: IRegion[],
         ) {
             return mountTableBody({
@@ -216,19 +216,15 @@ describe("TableBody", () => {
                 loading={false}
                 locator={null}
                 viewportRect={viewportRect}
-
                 // ISelectableProps
                 allowMultipleSelection={true}
                 onFocus={noop}
                 onSelection={noop}
                 selectedRegions={[]}
-
                 // IRowIndices
                 rowIndexStart={0}
-
                 // IColumnIndices
                 columnIndexStart={0}
-
                 // missing: columnIndexEnd
                 // missing: renderMode
                 // missing: rowIndexEnd

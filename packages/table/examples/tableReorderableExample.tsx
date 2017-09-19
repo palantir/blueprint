@@ -10,12 +10,7 @@ import * as React from "react";
 import { Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 
-import {
-    Cell,
-    Column,
-    Table,
-    Utils,
-} from "../src";
+import { Cell, Column, Table, Utils } from "../src";
 
 export interface ITableReorderableExampleState {
     columns?: JSX.Element[];
@@ -37,7 +32,7 @@ export class TableReorderableExample extends BaseExample<ITableReorderableExampl
         useInteractionBar: false,
     };
 
-    private toggleUseInteractionBar = handleBooleanChange((useInteractionBar) => this.setState({ useInteractionBar }));
+    private toggleUseInteractionBar = handleBooleanChange(useInteractionBar => this.setState({ useInteractionBar }));
 
     public componentDidMount() {
         const { useInteractionBar } = this.state;
@@ -94,13 +89,17 @@ export class TableReorderableExample extends BaseExample<ITableReorderableExampl
     private renderCityCell = (row: number) => <Cell>{this.state.data[row].city}</Cell>;
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        if (oldIndex === newIndex) { return; }
+        if (oldIndex === newIndex) {
+            return;
+        }
         const nextChildren = Utils.reorderArray(this.state.columns, oldIndex, newIndex, length);
         this.setState({ columns: nextChildren });
-    }
+    };
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        if (oldIndex === newIndex) { return; }
+        if (oldIndex === newIndex) {
+            return;
+        }
         this.setState({ data: Utils.reorderArray(this.state.data, oldIndex, newIndex, length) });
-    }
+    };
 }

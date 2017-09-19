@@ -14,7 +14,7 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
-import { Popover, PopoverInteractionKind } from "../popover/popover";
+import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Menu } from "./menu";
 
 export interface IMenuItemProps extends IActionProps, ILinkProps {
@@ -26,6 +26,9 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * Right-aligned label content, useful for displaying hotkeys.
      */
     label?: string | JSX.Element;
+
+    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Whether an enabled, non-submenu item should automatically close the
@@ -47,7 +50,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * Note that these values are not CSS properties; they are used in
      * internal math to determine when to flip sides.
      */
-    submenuViewportMargin?: { left?: number, right?: number };
+    submenuViewportMargin?: { left?: number; right?: number };
 
     /**
      * Whether a submenu popover will try to reposition itself
@@ -76,6 +79,7 @@ const REACT_CONTEXT_TYPES: React.ValidationMap<IMenuItemState> = {
 export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> {
     public static defaultProps: IMenuItemProps = {
         disabled: false,
+        popoverProps: {},
         shouldDismissPopover: true,
         submenuViewportMargin: {},
         text: "",
@@ -94,16 +98,22 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
     private liElement: HTMLElement;
 
     public render() {
-        const { children, disabled, label, submenu } = this.props;
+        const { children, disabled, label, submenu, popoverProps } = this.props;
         const hasSubmenu = children != null || submenu != null;
         const liClasses = classNames({
             [Classes.MENU_SUBMENU]: hasSubmenu,
         });
-        const anchorClasses = classNames(Classes.MENU_ITEM, Classes.intentClass(this.props.intent), {
-            [Classes.DISABLED]: disabled,
-            // prevent popover from closing when clicking on submenu trigger or disabled item
-            [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !disabled && !hasSubmenu,
-        }, Classes.iconClass(this.props.iconName), this.props.className);
+        const anchorClasses = classNames(
+            Classes.MENU_ITEM,
+            Classes.intentClass(this.props.intent),
+            {
+                [Classes.DISABLED]: disabled,
+                // prevent popover from closing when clicking on submenu trigger or disabled item
+                [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !disabled && !hasSubmenu,
+            },
+            Classes.iconClass(this.props.iconName),
+            this.props.className,
+        );
 
         let labelElement: JSX.Element;
         if (label != null) {
@@ -124,23 +134,27 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
         );
 
         if (hasSubmenu) {
-            const measureSubmenu = (this.props.useSmartPositioning) ? this.measureSubmenu : null;
+            const measureSubmenu = this.props.useSmartPositioning ? this.measureSubmenu : null;
             const submenuElement = <Menu ref={measureSubmenu}>{this.renderChildren()}</Menu>;
-            const popoverClasses = classNames({
-                [Classes.ALIGN_LEFT]: this.state.alignLeft,
-            });
+            const popoverClasses = classNames(
+                Classes.MINIMAL,
+                Classes.MENU_SUBMENU,
+                popoverProps.popoverClassName,
+                { [Classes.ALIGN_LEFT]: this.state.alignLeft },
+            );
 
             content = (
                 <Popover
-                    content={submenuElement}
                     isDisabled={disabled}
                     enforceFocus={false}
                     hoverCloseDelay={0}
                     inline={true}
                     interactionKind={PopoverInteractionKind.HOVER}
                     position={this.state.alignLeft ? Position.LEFT_TOP : Position.RIGHT_TOP}
-                    popoverClassName={classNames(Classes.MINIMAL, Classes.MENU_SUBMENU, popoverClasses)}
                     useSmartArrowPositioning={false}
+                    {...popoverProps}
+                    content={submenuElement}
+                    popoverClassName={popoverClasses}
                 >
                     {content}
                 </Popover>
@@ -148,10 +162,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
         }
 
         return (
-            <li
-                className={liClasses}
-                ref={this.liRefHandler}
-            >
+            <li className={liClasses} ref={this.liRefHandler}>
                 {content}
             </li>
         );
@@ -161,13 +172,13 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
         return { alignLeft: this.state.alignLeft };
     }
 
-    protected validateProps(props: IMenuItemProps & {children?: React.ReactNode}) {
+    protected validateProps(props: IMenuItemProps & { children?: React.ReactNode }) {
         if (props.children != null && props.submenu != null) {
             console.warn(Errors.MENU_WARN_CHILDREN_SUBMENU_MUTEX);
         }
     }
 
-    private liRefHandler = (r: HTMLElement) => this.liElement = r;
+    private liRefHandler = (r: HTMLElement) => (this.liElement = r);
 
     private measureSubmenu = (el: Menu) => {
         if (el != null) {
@@ -185,9 +196,11 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
 
             const { left = 0 } = this.props.submenuViewportMargin;
             let { right = 0 } = this.props.submenuViewportMargin;
-            if (typeof document !== "undefined"
-                && typeof document.documentElement !== "undefined"
-                && Number(document.documentElement.clientWidth)) {
+            if (
+                typeof document !== "undefined" &&
+                typeof document.documentElement !== "undefined" &&
+                Number(document.documentElement.clientWidth)
+            ) {
                 // we're in a browser context and the clientWidth is available,
                 // use it to set calculate 'right'
                 right = document.documentElement.clientWidth - right;
@@ -195,7 +208,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
             // uses context to prioritize the previous positioning
             let alignLeft = this.context.alignLeft || false;
             if (alignLeft) {
-                if ((submenuLeft - adjustmentWidth) <= left) {
+                if (submenuLeft - adjustmentWidth <= left) {
                     alignLeft = false;
                 }
             } else {
@@ -205,7 +218,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
             }
             this.setState({ alignLeft });
         }
-    }
+    };
 
     private renderChildren = () => {
         const { children, submenu } = this.props;
@@ -224,7 +237,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
         } else {
             return undefined;
         }
-    }
+    };
 
     /**
      * Evalutes this.props and cascades prop values into new props when:
@@ -244,7 +257,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
         }
 
         return newProps;
-    }
+    };
 }
 
 export function renderMenuItem(props: IMenuItemProps, key: string | number) {

@@ -97,11 +97,13 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     private getDraggableProps(): IDraggableProps {
-        return this.props.onReordered == null ? {} : {
-            onActivate: this.handleActivate,
-            onDragEnd: this.handleDragEnd,
-            onDragMove: this.handleDragMove,
-        };
+        return this.props.onReordered == null
+            ? {}
+            : {
+                  onActivate: this.handleActivate,
+                  onDragEnd: this.handleDragEnd,
+                  onDragMove: this.handleDragMove,
+              };
     }
 
     private handleActivate = (event: MouseEvent) => {
@@ -149,7 +151,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         }
 
         return true;
-    }
+    };
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
         const oldIndex = this.selectedRegionStartIndex;
@@ -157,7 +159,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const length = this.selectedRegionLength;
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
         this.props.onReordering(oldIndex, reorderedIndex, length);
-    }
+    };
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
         const oldIndex = this.selectedRegionStartIndex;
@@ -174,7 +176,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         // resetting is not strictly required, but it's cleaner
         this.selectedRegionStartIndex = undefined;
         this.selectedRegionLength = undefined;
-    }
+    };
 
     private maybeSelectRegion(region: IRegion) {
         const nextSelectedRegions = [region];

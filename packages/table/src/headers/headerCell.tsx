@@ -8,12 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import {
-    Classes as CoreClasses,
-    ContextMenuTarget,
-    IProps,
-    Utils as CoreUtils,
-} from "@blueprintjs/core";
+import { Classes as CoreClasses, ContextMenuTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as Classes from "../common/classes";
 import { Utils } from "../common/utils";
 import { ResizeHandle } from "../interactions/resizeHandle";
@@ -98,8 +93,10 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
     };
 
     public shouldComponentUpdate(nextProps: IHeaderCellProps) {
-        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
-            || !Utils.deepCompareKeys(this.props, nextProps, ["style"]);
+        return (
+            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
+            !Utils.deepCompareKeys(this.props, nextProps, ["style"])
+        );
     }
 
     public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
@@ -117,11 +114,15 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
     }
 
     public render() {
-        const classes = classNames(Classes.TABLE_HEADER, {
-            [Classes.TABLE_HEADER_ACTIVE]: this.props.isActive || this.state.isActive,
-            [Classes.TABLE_HEADER_SELECTED]: this.props.isSelected,
-            [CoreClasses.LOADING]: this.props.loading,
-        }, this.props.className);
+        const classes = classNames(
+            Classes.TABLE_HEADER,
+            {
+                [Classes.TABLE_HEADER_ACTIVE]: this.props.isActive || this.state.isActive,
+                [Classes.TABLE_HEADER_SELECTED]: this.props.isSelected,
+                [CoreClasses.LOADING]: this.props.loading,
+            },
+            this.props.className,
+        );
 
         return (
             <div className={classes} style={this.props.style}>

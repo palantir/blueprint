@@ -291,7 +291,6 @@ describe("DragSelectable", () => {
             });
 
             it("using the clicked region by default", () => {
-
                 const component = mountDragSelectable({
                     selectedRegions: [REGION],
                 });
@@ -328,7 +327,9 @@ describe("DragSelectable", () => {
 
             // be sure to test "click"s as sequentional "mousedown"-"mouseup"s, because those
             // are the events we actually listen for deep in DragEvents.
-            getItem(component).mouse("mousedown").mouse("mouseup");
+            getItem(component)
+                .mouse("mousedown")
+                .mouse("mouseup");
 
             expect(onSelectionEnd.calledOnce).to.be.true;
             expect(onSelectionEnd.firstCall.args[0] === selectedRegions).to.be.true; // check for same instance
@@ -446,7 +447,9 @@ describe("DragSelectable", () => {
                 selectedRegions: [REGION],
             });
 
-            getItem(component).mouse("mousedown").mouse("mousemove");
+            getItem(component)
+                .mouse("mousedown")
+                .mouse("mousemove");
 
             expect(onSelection.calledTwice, "calls onSelection on mousemove").to.be.true;
             expect(
@@ -472,14 +475,9 @@ describe("DragSelectable", () => {
             expect(locateClick.calledTwice, "calls locateClick on mousemove").to.be.true;
             expect(locateDrag.called, "doesn't call locateDrag on mousemove").to.be.false;
             expect(onSelection.calledTwice, "calls onSelection on mousemove").to.be.true;
-            expect(
-                onSelection.secondCall.calledWith([REGION_3]),
-                "calls onSelection on mousemove with proper args",
-            ).to.be.true;
-            expect(
-                onFocus.secondCall.calledWith(toFocusedCell(REGION_3)),
-                "moves focusedCell with the selection",
-            );
+            expect(onSelection.secondCall.calledWith([REGION_3]), "calls onSelection on mousemove with proper args").to
+                .be.true;
+            expect(onFocus.secondCall.calledWith(toFocusedCell(REGION_3)), "moves focusedCell with the selection");
         });
 
         it("doesn't invoke onSelection if the selection didn't change", () => {
@@ -567,17 +565,19 @@ describe("DragSelectable", () => {
 
     function expectOnSelectionCalledWith(selectedRegions: IRegion[]) {
         expect(onSelection.called, "should call onSelection").to.be.true;
-        expect(onSelection.firstCall.args[0], "should call onSelection with correct arg")
-            .to.deep.equal(selectedRegions);
+        expect(onSelection.firstCall.args[0], "should call onSelection with correct arg").to.deep.equal(
+            selectedRegions,
+        );
     }
 
     function expectOnFocusCalledWith(regionOrCoords: IRegion | IFocusedCellCoordinates, focusSelectionIndex: number) {
         expect(onFocus.called, "should call onFocus").to.be.true;
 
         const region = regionOrCoords as IRegion;
-        const expectedCoords = region.rows != null
-            ? { col: region.cols[0], row: region.rows[0] }
-            : regionOrCoords as IFocusedCellCoordinates;
+        const expectedCoords =
+            region.rows != null
+                ? { col: region.cols[0], row: region.rows[0] }
+                : regionOrCoords as IFocusedCellCoordinates;
         expect(onFocus.firstCall.args[0], "should call onFocus with correct arg").to.deep.equal({
             ...expectedCoords,
             focusSelectionIndex,

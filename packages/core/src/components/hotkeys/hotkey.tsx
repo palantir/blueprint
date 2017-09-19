@@ -89,10 +89,12 @@ export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
 
     public render() {
         const { label, ...spreadableProps } = this.props;
-        return <div className="pt-hotkey">
-            <div className="pt-hotkey-label">{label}</div>
-            <KeyCombo {...spreadableProps} />
-        </div>;
+        return (
+            <div className="pt-hotkey">
+                <div className="pt-hotkey-label">{label}</div>
+                <KeyCombo {...spreadableProps} />
+            </div>
+        );
     }
 
     protected validateProps(props: IHotkeyProps) {

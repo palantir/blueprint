@@ -1,4 +1,3 @@
-
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
@@ -43,8 +42,8 @@ describe("Column", () => {
     it("passes column name to renderer or defaults if none specified", () => {
         const table = harness.mount(
             <Table numRows={5}>
-                <Column name="Zero"/>
-                <Column name="One"/>
+                <Column name="Zero" />
+                <Column name="One" />
                 <Column />
             </Table>,
         );
@@ -62,10 +61,10 @@ describe("Column", () => {
         const renderCell = () => <Cell>{cellValue}</Cell>;
         const table = harness.mount(
             <Table numRows={NUM_ROWS}>
-                <Column name="Zero" loadingOptions={[ ColumnLoadingOption.CELLS ]} renderCell={renderCell} />
+                <Column name="Zero" loadingOptions={[ColumnLoadingOption.CELLS]} renderCell={renderCell} />
                 <Column
                     name="One"
-                    loadingOptions={[ ColumnLoadingOption.CELLS, ColumnLoadingOption.HEADER ]}
+                    loadingOptions={[ColumnLoadingOption.CELLS, ColumnLoadingOption.HEADER]}
                     renderCell={renderCell}
                 />
                 <Column name="Two" renderCell={renderCell} />
@@ -73,28 +72,32 @@ describe("Column", () => {
         );
 
         const columnHeaders = table.element.queryAll(
-            `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`);
+            `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
+        );
 
         expectCellLoading(columnHeaders[0], CellType.COLUMN_HEADER, false);
         expectCellLoading(columnHeaders[1], CellType.COLUMN_HEADER);
         expectCellLoading(columnHeaders[2], CellType.COLUMN_HEADER, false);
 
-        const col0CellsSelector =
-            `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(0)}.${Classes.TABLE_CELL}`;
+        const col0CellsSelector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(
+            0,
+        )}.${Classes.TABLE_CELL}`;
         const col0cells = table.element.queryAll(col0CellsSelector);
-        col0cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
+        col0cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL));
         expect(col0cells.length).to.equal(NUM_ROWS);
 
-        const col1CellsSelector =
-            `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(1)}.${Classes.TABLE_CELL}`;
+        const col1CellsSelector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(
+            1,
+        )}.${Classes.TABLE_CELL}`;
         const col1cells = table.element.queryAll(col1CellsSelector);
-        col1cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL));
+        col1cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL));
         expect(col1cells.length).to.equal(NUM_ROWS);
 
-        const col2CellsSelector =
-            `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(2)}.${Classes.TABLE_CELL}`;
+        const col2CellsSelector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(
+            2,
+        )}.${Classes.TABLE_CELL}`;
         const col2cells = table.element.queryAll(col2CellsSelector);
-        col2cells.forEach((cell) => expectCellLoading(cell, CellType.BODY_CELL, false));
+        col2cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL, false));
         expect(col2cells.length).to.equal(NUM_ROWS);
     });
 

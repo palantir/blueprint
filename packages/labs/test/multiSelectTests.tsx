@@ -24,9 +24,9 @@ describe("<MultiSelect>", () => {
         tagRenderer: renderTag,
     };
     let handlers: {
-        itemPredicate: Sinon.SinonSpy,
-        itemRenderer: Sinon.SinonSpy,
-        onItemSelect: Sinon.SinonSpy,
+        itemPredicate: Sinon.SinonSpy;
+        itemRenderer: Sinon.SinonSpy;
+        onItemSelect: Sinon.SinonSpy;
     };
 
     beforeEach(() => {
@@ -47,7 +47,7 @@ describe("<MultiSelect>", () => {
     it("tagRenderer can return JSX", () => {
         const wrapper = multiselect({
             selectedItems: [TOP_100_FILMS[0]],
-            tagRenderer: (film) => <strong>{film.title}</strong>,
+            tagRenderer: film => <strong>{film.title}</strong>,
         });
         assert.equal(wrapper.find(Tag).find("strong").length, 1);
     });
@@ -56,13 +56,21 @@ describe("<MultiSelect>", () => {
         const placeholder = "look here";
 
         const wrapper = multiselect({ tagInputProps: { inputProps: { placeholder } } });
-        wrapper.setState({activeItem: TOP_100_FILMS[4]});
-        wrapper.find(MenuItem).at(4).find("a").simulate("click");
+        wrapper.setState({ activeItem: TOP_100_FILMS[4] });
+        wrapper
+            .find(MenuItem)
+            .at(4)
+            .find("a")
+            .simulate("click");
         assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
     });
 
     function multiselect(props: Partial<IMultiSelectProps<Film>> = {}, query?: string) {
-        const wrapper = mount(<FilmMultiSelect {...defaultProps} {...handlers} {...props}><table /></FilmMultiSelect>);
+        const wrapper = mount(
+            <FilmMultiSelect {...defaultProps} {...handlers} {...props}>
+                <table />
+            </FilmMultiSelect>,
+        );
         if (query !== undefined) {
             wrapper.setState({ query });
         }
@@ -86,11 +94,11 @@ function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererPr
             shouldDismissPopover={false}
         />
     );
-};
+}
 
 function renderTag(film: Film) {
     return film.title;
-};
+}
 
 function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;

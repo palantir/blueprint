@@ -27,7 +27,6 @@ import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
 export interface INumericInputProps extends IIntentProps, IProps {
-
     /**
      * Whether to allow only floating-point number characters in the field,
      * mimicking the native `input[type="number"]`.
@@ -193,9 +192,10 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const didMaxChange = nextProps.max !== this.props.max;
         const didBoundsChange = didMinChange || didMaxChange;
 
-        const sanitizedValue = (value !== NumericInput.VALUE_EMPTY)
-            ? this.getSanitizedValue(value, /* delta */ 0, nextProps.min, nextProps.max)
-            : NumericInput.VALUE_EMPTY;
+        const sanitizedValue =
+            value !== NumericInput.VALUE_EMPTY
+                ? this.getSanitizedValue(value, /* delta */ 0, nextProps.min, nextProps.max)
+                : NumericInput.VALUE_EMPTY;
 
         const stepMaxPrecision = this.getStepMaxPrecision(nextProps);
 
@@ -212,20 +212,24 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
     public render() {
         const { buttonPosition, className, large } = this.props;
 
-        const inputGroupHtmlProps = removeNonHTMLProps(this.props, [
-            "allowNumericCharactersOnly",
-            "buttonPosition",
-            "clampValueOnBlur",
-            "className",
-            "large",
-            "majorStepSize",
-            "minorStepSize",
-            "onButtonClick",
-            "onValueChange",
-            "selectAllOnFocus",
-            "selectAllOnIncrement",
-            "stepSize",
-        ], true);
+        const inputGroupHtmlProps = removeNonHTMLProps(
+            this.props,
+            [
+                "allowNumericCharactersOnly",
+                "buttonPosition",
+                "clampValueOnBlur",
+                "className",
+                "large",
+                "majorStepSize",
+                "minorStepSize",
+                "onButtonClick",
+                "onValueChange",
+                "selectAllOnFocus",
+                "selectAllOnIncrement",
+                "stepSize",
+            ],
+            true,
+        );
 
         const inputGroup = (
             <InputGroup
@@ -253,16 +257,18 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             // text field with squared border-radii on the left side, causing it
             // to look weird. This problem goes away if we simply don't nest within
             // a control group.
-            return (
-                <div className={className}>
-                    {inputGroup}
-                </div>
-            );
+            return <div className={className}>{inputGroup}</div>;
         } else {
             const incrementButton = this.renderButton(
-                NumericInput.INCREMENT_KEY, NumericInput.INCREMENT_ICON_NAME, this.handleIncrementButtonClick);
+                NumericInput.INCREMENT_KEY,
+                NumericInput.INCREMENT_ICON_NAME,
+                this.handleIncrementButtonClick,
+            );
             const decrementButton = this.renderButton(
-                NumericInput.DECREMENT_KEY, NumericInput.DECREMENT_ICON_NAME, this.handleDecrementButtonClick);
+                NumericInput.DECREMENT_KEY,
+                NumericInput.DECREMENT_ICON_NAME,
+                this.handleDecrementButtonClick,
+            );
 
             const buttonGroup = (
                 <div key="button-group" className={classNames(Classes.BUTTON_GROUP, Classes.VERTICAL, Classes.FIXED)}>
@@ -271,19 +277,18 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
                 </div>
             );
 
-            const inputElems = (buttonPosition === Position.LEFT)
-                ? [buttonGroup, inputGroup]
-                : [inputGroup, buttonGroup];
+            const inputElems = buttonPosition === Position.LEFT ? [buttonGroup, inputGroup] : [inputGroup, buttonGroup];
 
-            const classes = classNames(Classes.NUMERIC_INPUT, Classes.CONTROL_GROUP, {
-                [Classes.LARGE]: large,
-            }, className);
-
-            return (
-                <div className={classes}>
-                    {inputElems}
-                </div>
+            const classes = classNames(
+                Classes.NUMERIC_INPUT,
+                Classes.CONTROL_GROUP,
+                {
+                    [Classes.LARGE]: large,
+                },
+                className,
             );
+
+            return <div className={classes}>{inputElems}</div>;
         }
     }
 
@@ -344,7 +349,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
     private inputRef = (input: HTMLInputElement) => {
         this.inputElement = input;
-    }
+    };
 
     // Callbacks - Buttons
     // ===================
@@ -353,25 +358,26 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         const delta = this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
         const nextValue = this.incrementValue(delta);
         this.invokeValueCallback(nextValue, this.props.onButtonClick);
-    }
+    };
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
         const delta = this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
         const nextValue = this.incrementValue(delta);
         this.invokeValueCallback(nextValue, this.props.onButtonClick);
-    }
+    };
 
     private handleButtonFocus = () => {
         this.setState({ isButtonGroupFocused: true });
-    }
+    };
 
     private handleButtonBlur = () => {
         this.setState({ isButtonGroupFocused: false });
-    }
+    };
 
-    private handleButtonKeyUp =
-        (e: React.KeyboardEvent<HTMLInputElement>, onClick: React.MouseEventHandler<HTMLInputElement>) => {
-
+    private handleButtonKeyUp = (
+        e: React.KeyboardEvent<HTMLInputElement>,
+        onClick: React.MouseEventHandler<HTMLInputElement>,
+    ) => {
         if (e.keyCode === Keys.SPACE || e.keyCode === Keys.ENTER) {
             // prevent the page from scrolling (this is the default browser
             // behavior for shift + space or alt + space).
@@ -387,7 +393,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
             };
             onClick(fakeClickEvent as React.MouseEvent<HTMLInputElement>);
         }
-    }
+    };
 
     // Callbacks - Input
     // =================
@@ -396,7 +402,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         this.shouldSelectAfterUpdate = this.props.selectAllOnFocus;
         this.setState({ isInputGroupFocused: true });
         Utils.safeInvoke(this.props.onFocus, e);
-    }
+    };
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         // explicitly set `shouldSelectAfterUpdate` to `false` to prevent focus
@@ -416,7 +422,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         }
 
         Utils.safeInvoke(this.props.onBlur, e);
-    }
+    };
 
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (this.props.disabled || this.props.readOnly) {
@@ -446,7 +452,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         }
 
         Utils.safeInvoke(this.props.onKeyDown, e);
-    }
+    };
 
     private handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
@@ -456,12 +462,12 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         }
 
         Utils.safeInvoke(this.props.onKeyPress, e);
-    }
+    };
 
     private handleInputPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
         this.didPasteEventJustOccur = true;
         Utils.safeInvoke(this.props.onPaste, e);
-    }
+    };
 
     private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         const value = (e.target as HTMLInputElement).value;
@@ -481,7 +487,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         this.shouldSelectAfterUpdate = false;
         this.setState({ value: nextValue });
         this.invokeValueCallback(nextValue, this.props.onValueChange);
-    }
+    };
 
     private invokeValueCallback(value: string, callback: (valueAsNumber: number, valueAsString: string) => void) {
         Utils.safeInvoke(callback, +value, value);
@@ -523,15 +529,15 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         // defaultProps won't work if the user passes in null, so just default
         // to +/- infinity here instead, as a catch-all.
-        const adjustedMin = (min != null) ? min : -Infinity;
-        const adjustedMax = (max != null) ? max : Infinity;
+        const adjustedMin = min != null ? min : -Infinity;
+        const adjustedMax = max != null ? max : Infinity;
         nextValue = Utils.clamp(nextValue, adjustedMin, adjustedMax);
 
         return nextValue.toString();
     }
 
     private getValueOrEmptyValue(value: number | string) {
-        return (value != null) ? value.toString() : NumericInput.VALUE_EMPTY;
+        return value != null ? value.toString() : NumericInput.VALUE_EMPTY;
     }
 
     private isValueNumeric(value: string) {
@@ -541,7 +547,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         // parsed numeric value from the string representation of the value. we
         // need to cast the value to the `any` type to allow this operation
         // between dissimilar types.
-        return value != null && ((value as any) - parseFloat(value) + 1) >= 0;
+        return value != null && (value as any) - parseFloat(value) + 1 >= 0;
     }
 
     private isKeyboardEventDisabledForBasicNumericEntry(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -552,7 +558,7 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
 
         // allow modified key strokes that may involve letters and other
         // non-numeric/invalid characters (Cmd + A, Cmd + C, Cmd + V, Cmd + X).
-        if (e.ctrlKey || e.altKey || e.metaKey)  {
+        if (e.ctrlKey || e.altKey || e.metaKey) {
             return false;
         }
 

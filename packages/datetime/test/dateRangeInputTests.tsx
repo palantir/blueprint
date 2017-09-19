@@ -18,13 +18,13 @@ type WrappedComponentRoot = ReactWrapper<any, {}>;
 type WrappedComponentInput = ReactWrapper<React.HTMLAttributes<{}>, any>;
 type WrappedComponentDayElement = ReactWrapper<React.HTMLAttributes<{}>, any>;
 
-type OutOfRangeTestFunction = (input: WrappedComponentInput,
-                               inputString: string,
-                               boundary?: DateRangeBoundary) => void;
+type OutOfRangeTestFunction = (input: WrappedComponentInput, inputString: string, boundary?: DateRangeBoundary) => void;
 
-type InvalidDateTestFunction = (input: WrappedComponentInput,
-                                boundary: DateRangeBoundary,
-                                otherInput: WrappedComponentInput) => void;
+type InvalidDateTestFunction = (
+    input: WrappedComponentInput,
+    boundary: DateRangeBoundary,
+    otherInput: WrappedComponentInput,
+) => void;
 
 describe("<DateRangeInput>", () => {
     const START_DAY = 22;
@@ -87,21 +87,22 @@ describe("<DateRangeInput>", () => {
     });
 
     describe("startInputProps and endInputProps", () => {
-
         describe("startInputProps", () => {
-            runTestSuite(getStartInput, (inputGroupProps) => {
+            runTestSuite(getStartInput, inputGroupProps => {
                 return mount(<DateRangeInput startInputProps={inputGroupProps} />);
             });
         });
 
         describe("endInputProps", () => {
-            runTestSuite(getEndInput, (inputGroupProps) => {
+            runTestSuite(getEndInput, inputGroupProps => {
                 return mount(<DateRangeInput endInputProps={inputGroupProps} />);
             });
         });
 
-        function runTestSuite(inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
-                              mountFn: (inputGroupProps: HTMLInputProps & IInputGroupProps) => any) {
+        function runTestSuite(
+            inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
+            mountFn: (inputGroupProps: HTMLInputProps & IInputGroupProps) => any,
+        ) {
             it("allows custom placeholder text", () => {
                 const { root } = mountFn({ placeholder: "Hello" });
                 expect(getInputPlaceholderText(inputGetterFn(root))).to.equal("Hello");
@@ -231,7 +232,6 @@ describe("<DateRangeInput>", () => {
     });
 
     describe("selectAllOnFocus", () => {
-
         it("if false (the default), does not select any text on focus", () => {
             const attachTo = document.createElement("div");
             const { root } = wrap(<DateRangeInput defaultValue={[START_DATE, null]} />, attachTo);
@@ -247,10 +247,9 @@ describe("<DateRangeInput>", () => {
         it.skip("if true, selects all text on focus", () => {
             const attachTo = document.createElement("div");
             const { root } = wrap(
-                <DateRangeInput
-                    defaultValue={[START_DATE, null]}
-                    selectAllOnFocus={true}
-                />, attachTo);
+                <DateRangeInput defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
+                attachTo,
+            );
 
             const startInput = getStartInput(root);
             startInput.simulate("focus");
@@ -263,10 +262,9 @@ describe("<DateRangeInput>", () => {
         it.skip("if true, selects all text on day mouseenter in calendar", () => {
             const attachTo = document.createElement("div");
             const { root, getDayElement } = wrap(
-                <DateRangeInput
-                    defaultValue={[START_DATE, null]}
-                    selectAllOnFocus={true}
-                />, attachTo);
+                <DateRangeInput defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
+                attachTo,
+            );
 
             root.setState({ isOpen: true });
             // getDay is 0-indexed, but getDayElement is 1-indexed
@@ -280,10 +278,9 @@ describe("<DateRangeInput>", () => {
 
     describe("allowSingleDayRange", () => {
         it("allows start and end to be the same day when clicking", () => {
-            const { root, getDayElement } = wrap(<DateRangeInput
-                allowSingleDayRange={true}
-                defaultValue={[START_DATE, END_DATE]}
-            />);
+            const { root, getDayElement } = wrap(
+                <DateRangeInput allowSingleDayRange={true} defaultValue={[START_DATE, END_DATE]} />,
+            );
             getEndInput(root).simulate("focus");
             getDayElement(END_DAY).simulate("click");
             getDayElement(START_DAY).simulate("click");
@@ -291,10 +288,7 @@ describe("<DateRangeInput>", () => {
         });
 
         it("allows start and end to be the same day when typing", () => {
-            const { root } = wrap(<DateRangeInput
-                allowSingleDayRange={true}
-                defaultValue={[START_DATE, END_DATE]}
-            />);
+            const { root } = wrap(<DateRangeInput allowSingleDayRange={true} defaultValue={[START_DATE, END_DATE]} />);
             changeEndInputText(root, "");
             changeEndInputText(root, START_STR);
             assertInputTextsEqual(root, START_STR, START_STR);
@@ -364,11 +358,9 @@ describe("<DateRangeInput>", () => {
             const defaultValue = [START_DATE, null] as DateRange;
 
             const onChange = sinon.spy();
-            const { root, getDayElement } = wrap(<DateRangeInput
-                closeOnSelection={false}
-                defaultValue={defaultValue}
-                onChange={onChange}
-            />);
+            const { root, getDayElement } = wrap(
+                <DateRangeInput closeOnSelection={false} defaultValue={defaultValue} onChange={onChange} />,
+            );
             root.setState({ isOpen: true });
 
             getDayElement(END_DAY).simulate("click");
@@ -431,13 +423,15 @@ describe("<DateRangeInput>", () => {
                 onError = sinon.spy();
 
                 // use defaultValue to specify the calendar months in view
-                const result = wrap(<DateRangeInput
-                    defaultValue={DATE_RANGE}
-                    minDate={OUT_OF_RANGE_TEST_MIN}
-                    maxDate={OUT_OF_RANGE_TEST_MAX}
-                    onError={onError}
-                    outOfRangeMessage={OUT_OF_RANGE_MESSAGE}
-                />);
+                const result = wrap(
+                    <DateRangeInput
+                        defaultValue={DATE_RANGE}
+                        minDate={OUT_OF_RANGE_TEST_MIN}
+                        maxDate={OUT_OF_RANGE_TEST_MAX}
+                        onError={onError}
+                        outOfRangeMessage={OUT_OF_RANGE_MESSAGE}
+                    />,
+                );
                 root = result.root;
 
                 // clear the fields *before* setting up an onChange callback to
@@ -466,9 +460,8 @@ describe("<DateRangeInput>", () => {
 
             describe("calls onError with invalid date on blur", () => {
                 runTestForEachScenario((input, inputString, boundary) => {
-                    const expectedRange = (boundary === DateRangeBoundary.START)
-                        ? [inputString, null]
-                        : [null, inputString];
+                    const expectedRange =
+                        boundary === DateRangeBoundary.START ? [inputString, null] : [null, inputString];
                     input.simulate("focus");
                     changeInputText(input, inputString);
                     expect(onError.called).to.be.false;
@@ -519,11 +512,9 @@ describe("<DateRangeInput>", () => {
                 onChange = sinon.spy();
                 onError = sinon.spy();
 
-                const result = wrap(<DateRangeInput
-                    defaultValue={DATE_RANGE}
-                    invalidDateMessage={INVALID_MESSAGE}
-                    onError={onError}
-                />);
+                const result = wrap(
+                    <DateRangeInput defaultValue={DATE_RANGE} invalidDateMessage={INVALID_MESSAGE} onError={onError} />,
+                );
                 root = result.root;
 
                 // clear the fields *before* setting up an onChange callback to
@@ -534,7 +525,7 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("shows the error message on blur", () => {
-                runTestForEachScenario((input) => {
+                runTestForEachScenario(input => {
                     input.simulate("focus");
                     changeInputText(input, INVALID_STR);
                     input.simulate("blur");
@@ -543,7 +534,7 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("keeps showing the error message on next focus", () => {
-                runTestForEachScenario((input) => {
+                runTestForEachScenario(input => {
                     input.simulate("focus");
                     changeInputText(input, INVALID_STR);
                     input.simulate("blur");
@@ -561,13 +552,13 @@ describe("<DateRangeInput>", () => {
                     expect(onError.calledOnce).to.be.true;
 
                     const dateRange = onError.getCall(0).args[0];
-                    const dateIndex = (boundary === DateRangeBoundary.START) ? 0 : 1;
+                    const dateIndex = boundary === DateRangeBoundary.START ? 0 : 1;
                     expect((dateRange[dateIndex] as Date).valueOf()).to.be.NaN;
                 });
             });
 
             describe("does NOT call onChange before OR after blur", () => {
-                runTestForEachScenario((input) => {
+                runTestForEachScenario(input => {
                     input.simulate("focus");
                     changeInputText(input, INVALID_STR);
                     expect(onChange.called).to.be.false;
@@ -577,7 +568,7 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("removes error message if input is changed to an in-range date again", () => {
-                runTestForEachScenario((input) => {
+                runTestForEachScenario(input => {
                     input.simulate("focus");
                     changeInputText(input, INVALID_STR);
                     input.simulate("blur");
@@ -606,9 +597,10 @@ describe("<DateRangeInput>", () => {
                     expect(onChange.calledOnce).to.be.true; // because latest date is valid
 
                     const actualRange = onChange.getCall(0).args[0];
-                    const expectedRange = (boundary === DateRangeBoundary.START)
-                        ? [VALID_STR, UNDEFINED_DATE_STR]
-                        : [UNDEFINED_DATE_STR, VALID_STR];
+                    const expectedRange =
+                        boundary === DateRangeBoundary.START
+                            ? [VALID_STR, UNDEFINED_DATE_STR]
+                            : [UNDEFINED_DATE_STR, VALID_STR];
 
                     assertDateRangesEqual(actualRange, expectedRange);
                 });
@@ -633,12 +625,14 @@ describe("<DateRangeInput>", () => {
                 onChange = sinon.spy();
                 onError = sinon.spy();
 
-                const result = wrap(<DateRangeInput
-                    defaultValue={DATE_RANGE}
-                    overlappingDatesMessage={OVERLAPPING_DATES_MESSAGE}
-                    onChange={onChange}
-                    onError={onError}
-                />);
+                const result = wrap(
+                    <DateRangeInput
+                        defaultValue={DATE_RANGE}
+                        overlappingDatesMessage={OVERLAPPING_DATES_MESSAGE}
+                        onChange={onChange}
+                        onError={onError}
+                    />,
+                );
                 root = result.root;
 
                 startInput = getStartInput(root);
@@ -774,10 +768,9 @@ describe("<DateRangeInput>", () => {
             let dayElement: WrappedComponentDayElement;
 
             before(() => {
-                const result = wrap(<DateRangeInput
-                    closeOnSelection={false}
-                    defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]}
-                />);
+                const result = wrap(
+                    <DateRangeInput closeOnSelection={false} defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]} />,
+                );
 
                 root = result.root;
                 rootInstance = root.instance() as DateRangeInput;
@@ -801,8 +794,8 @@ describe("<DateRangeInput>", () => {
 
             function setSelectedRangeForHoverTest(selectedDateConfigs: IHoverTextDateConfig[]) {
                 const [startConfig, endConfig] = selectedDateConfigs;
-                changeInputText(startInput, (startConfig == null) ? "" : startConfig.str);
-                changeInputText(endInput, (endConfig == null) ? "" : endConfig.str);
+                changeInputText(startInput, startConfig == null ? "" : startConfig.str);
+                changeInputText(endInput, endConfig == null ? "" : endConfig.str);
             }
 
             describe("when selected date range is [null, null]", () => {
@@ -1995,10 +1988,7 @@ describe("<DateRangeInput>", () => {
 
     describe("when controlled", () => {
         it("Setting value causes defaultValue to be ignored", () => {
-            const { root } = wrap(<DateRangeInput
-                defaultValue={DATE_RANGE_2}
-                value={DATE_RANGE}
-            />);
+            const { root } = wrap(<DateRangeInput defaultValue={DATE_RANGE_2} value={DATE_RANGE} />);
             assertInputTextsEqual(root, START_STR, END_STR);
         });
 
@@ -2094,22 +2084,23 @@ describe("<DateRangeInput>", () => {
                 onChange = sinon.spy();
                 onError = sinon.spy();
 
-                const result = wrap(<DateRangeInput
-                    minDate={OUT_OF_RANGE_TEST_MIN}
-                    maxDate={OUT_OF_RANGE_TEST_MAX}
-                    onChange={onChange}
-                    onError={onError}
-                    outOfRangeMessage={OUT_OF_RANGE_MESSAGE}
-                    value={[null, null]}
-                />);
+                const result = wrap(
+                    <DateRangeInput
+                        minDate={OUT_OF_RANGE_TEST_MIN}
+                        maxDate={OUT_OF_RANGE_TEST_MAX}
+                        onChange={onChange}
+                        onError={onError}
+                        outOfRangeMessage={OUT_OF_RANGE_MESSAGE}
+                        value={[null, null]}
+                    />,
+                );
                 root = result.root;
             });
 
             describe("calls onError with invalid date on blur", () => {
                 runTestForEachScenario((input, inputString, boundary) => {
-                    const expectedRange = (boundary === DateRangeBoundary.START)
-                        ? [inputString, null]
-                        : [null, inputString];
+                    const expectedRange =
+                        boundary === DateRangeBoundary.START ? [inputString, null] : [null, inputString];
                     input.simulate("focus");
                     changeInputText(input, inputString);
                     expect(onError.called).to.be.false;
@@ -2147,11 +2138,9 @@ describe("<DateRangeInput>", () => {
                 onChange = sinon.spy();
                 onError = sinon.spy();
 
-                const result = wrap(<DateRangeInput
-                    invalidDateMessage={INVALID_MESSAGE}
-                    onError={onError}
-                    value={DATE_RANGE}
-                />);
+                const result = wrap(
+                    <DateRangeInput invalidDateMessage={INVALID_MESSAGE} onError={onError} value={DATE_RANGE} />,
+                );
                 root = result.root;
 
                 changeStartInputText(root, "");
@@ -2168,13 +2157,13 @@ describe("<DateRangeInput>", () => {
                     expect(onError.calledOnce).to.be.true;
 
                     const dateRange = onError.getCall(0).args[0];
-                    const dateIndex = (boundary === DateRangeBoundary.START) ? 0 : 1;
+                    const dateIndex = boundary === DateRangeBoundary.START ? 0 : 1;
                     expect((dateRange[dateIndex] as Date).valueOf()).to.be.NaN;
                 });
             });
 
             describe("does NOT call onChange before OR after blur", () => {
-                runTestForEachScenario((input) => {
+                runTestForEachScenario(input => {
                     input.simulate("focus");
                     changeInputText(input, INVALID_STR);
                     expect(onChange.called).to.be.false;
@@ -2200,12 +2189,14 @@ describe("<DateRangeInput>", () => {
                 onChange = sinon.spy();
                 onError = sinon.spy();
 
-                const result = wrap(<DateRangeInput
-                    overlappingDatesMessage={OVERLAPPING_DATES_MESSAGE}
-                    onChange={onChange}
-                    onError={onError}
-                    value={DATE_RANGE}
-                />);
+                const result = wrap(
+                    <DateRangeInput
+                        overlappingDatesMessage={OVERLAPPING_DATES_MESSAGE}
+                        onChange={onChange}
+                        onError={onError}
+                        value={DATE_RANGE}
+                    />,
+                );
                 root = result.root;
 
                 startInput = getStartInput(root);
@@ -2248,7 +2239,6 @@ describe("<DateRangeInput>", () => {
                     endInput.simulate("blur");
                     expect(onChange.called).to.be.false;
                 });
-
             });
         });
 
@@ -2313,11 +2303,17 @@ describe("<DateRangeInput>", () => {
     });
 
     function getStartInput(root: WrappedComponentRoot): WrappedComponentInput {
-        return root.find(InputGroup).first().find("input");
+        return root
+            .find(InputGroup)
+            .first()
+            .find("input");
     }
 
     function getEndInput(root: WrappedComponentRoot): WrappedComponentInput {
-        return root.find(InputGroup).last().find("input");
+        return root
+            .find(InputGroup)
+            .last()
+            .find("input");
     }
 
     function getInputText(input: WrappedComponentInput) {
@@ -2347,7 +2343,7 @@ describe("<DateRangeInput>", () => {
     }
 
     function changeInputText(input: WrappedComponentInput, value: string) {
-        input.simulate("change", { target: { value }});
+        input.simulate("change", { target: { value } });
     }
 
     function assertStartInputFocused(root: WrappedComponentRoot) {
@@ -2371,11 +2367,11 @@ describe("<DateRangeInput>", () => {
         const [expectedStart, expectedEnd] = expected;
         const [actualStart, actualEnd] = actual.map((date: Date) => {
             if (date == null) {
-               return null;
+                return null;
             } else if (isNaN(date.valueOf())) {
-               return UNDEFINED_DATE_STR;
+                return UNDEFINED_DATE_STR;
             } else {
-               return DateTestUtils.toHyphenatedDateString(date);
+                return DateTestUtils.toHyphenatedDateString(date);
             }
         });
         expect(actualStart).to.equal(expectedStart);
@@ -2388,9 +2384,8 @@ describe("<DateRangeInput>", () => {
             getDayElement: (dayNumber = 1, fromLeftMonth = true) => {
                 const monthElement = wrapper.find(".DayPicker-Month").at(fromLeftMonth ? 0 : 1);
                 const dayElements = monthElement.find(`.${DateClasses.DATEPICKER_DAY}`);
-                return dayElements.filterWhere((d) => {
-                    return d.text() === dayNumber.toString()
-                        && !d.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE);
+                return dayElements.filterWhere(d => {
+                    return d.text() === dayNumber.toString() && !d.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE);
                 });
             },
             root: wrapper,

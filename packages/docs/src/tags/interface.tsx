@@ -24,6 +24,6 @@ export class InterfaceTagRenderer {
         if (iface === undefined) {
             throw new Error(`Unknown @interface ${name}`);
         }
-        return <InterfaceTable key={key} iface={iface} props={props} tagRenderers={tagRenderers}/>;
-    }
+        return <InterfaceTable key={key} iface={iface} props={props} tagRenderers={tagRenderers} />;
+    };
 }

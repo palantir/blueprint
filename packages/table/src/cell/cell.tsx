@@ -77,8 +77,10 @@ export class Cell extends React.Component<ICellProps, {}> {
 
     public shouldComponentUpdate(nextProps: ICellProps) {
         // deeply compare "style," because a new but identical object might have been provided.
-        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
-            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
+        return (
+            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
+            !Utils.deepCompareKeys(this.props.style, nextProps.style)
+        );
     }
 
     public render() {
@@ -95,19 +97,19 @@ export class Cell extends React.Component<ICellProps, {}> {
             className,
         );
 
-        const textClasses = classNames(
-            {
-                [Classes.TABLE_TRUNCATED_TEXT]: truncated,
-                [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
-            },
-        );
+        const textClasses = classNames({
+            [Classes.TABLE_TRUNCATED_TEXT]: truncated,
+            [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
+        });
 
         // add width and height to the children, for use in shouldComponentUpdate in truncatedFormat
         // note: these aren't actually used by truncated format, just in shouldComponentUpdate
-        const modifiedChildren = React.Children.map(this.props.children, (child) => {
+        const modifiedChildren = React.Children.map(this.props.children, child => {
             if (style != null && React.isValidElement(child)) {
-                return React.cloneElement(child as React.ReactElement<any>,
-                    {parentCellHeight: style.height, parentCellWidth: style.width});
+                return React.cloneElement(child as React.ReactElement<any>, {
+                    parentCellHeight: style.height,
+                    parentCellWidth: style.width,
+                });
             }
             return child;
         });

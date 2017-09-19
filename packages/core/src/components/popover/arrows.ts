@@ -19,9 +19,11 @@ export function computeArrowOffset(sideLength: number, arrowSize: number, minimu
     return Math.max(Math.round((sideLength - arrowSize) / 2), minimum);
 }
 
-export function getPopoverTransformOrigin(position: Position,
-                                          arrowSize: number,
-                                          targetDimensions: IDimensions): string {
+export function getPopoverTransformOrigin(
+    position: Position,
+    arrowSize: number,
+    targetDimensions: IDimensions,
+): string {
     const offsetX = computeArrowOffset(targetDimensions.width, arrowSize);
     const offsetY = computeArrowOffset(targetDimensions.height, arrowSize);
     switch (position) {
@@ -46,11 +48,13 @@ export function getPopoverTransformOrigin(position: Position,
     }
 }
 
-export function getArrowPositionStyles(position: Position,
-                                       arrowSize: number,
-                                       ignoreTargetDimensions: boolean,
-                                       targetDimensions: IDimensions,
-                                       inline: boolean): IArrowPositionStyles {
+export function getArrowPositionStyles(
+    position: Position,
+    arrowSize: number,
+    ignoreTargetDimensions: boolean,
+    targetDimensions: IDimensions,
+    inline: boolean,
+): IArrowPositionStyles {
     // compute the offset to center an arrow with given hypotenuse in a side of the given length
     const popoverOffset = (sideLength: number) => {
         const offset = computeArrowOffset(sideLength, arrowSize, 0);
@@ -82,7 +86,7 @@ export function getArrowPositionStyles(position: Position,
         case Position.LEFT_BOTTOM:
             return {
                 arrow: ignoreTargetDimensions ? {} : { bottom: computeArrowOffset(targetDimensions.height, arrowSize) },
-                container: inline ? { bottom: -popoverOffsetY} : { marginTop: popoverOffsetY },
+                container: inline ? { bottom: -popoverOffsetY } : { marginTop: popoverOffsetY },
             };
         default:
             return {};

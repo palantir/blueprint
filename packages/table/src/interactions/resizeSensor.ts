@@ -37,7 +37,7 @@ export class ResizeSensor {
         const shrink = resizeSensor.childNodes[1] as HTMLElement;
 
         const reset = () => {
-            expandChild.style.width  = "100000px";
+            expandChild.style.width = "100000px";
             expandChild.style.height = "100000px";
             expand.scrollLeft = 100000;
             expand.scrollTop = 100000;

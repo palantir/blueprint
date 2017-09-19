@@ -12,35 +12,26 @@ import * as React from "react";
 import { Classes, Icon, IconClasses, IIconProps, Intent } from "../../src/index";
 
 describe("<Icon>", () => {
-    it("iconSize=16 renders standard size", () => assertIconClass(
-        <Icon iconName="vertical-distribution" iconSize={Icon.SIZE_STANDARD} />,
-        Classes.ICON_STANDARD,
-    ));
+    it("iconSize=16 renders standard size", () =>
+        assertIconClass(
+            <Icon iconName="vertical-distribution" iconSize={Icon.SIZE_STANDARD} />,
+            Classes.ICON_STANDARD,
+        ));
 
-    it("iconSize=20 renders large size", () => assertIconClass(
-        <Icon iconName="vertical-distribution" iconSize={Icon.SIZE_LARGE} />,
-        Classes.ICON_LARGE,
-    ));
+    it("iconSize=20 renders large size", () =>
+        assertIconClass(<Icon iconName="vertical-distribution" iconSize={Icon.SIZE_LARGE} />, Classes.ICON_LARGE));
 
-    it("iconSize=inherit renders auto-size", () => assertIconClass(
-        <Icon iconName="vertical-distribution" iconSize="inherit" />,
-        Classes.ICON,
-    ));
+    it("iconSize=inherit renders auto-size", () =>
+        assertIconClass(<Icon iconName="vertical-distribution" iconSize="inherit" />, Classes.ICON));
 
-    it("renders intent class", () => assertIconClass(
-        <Icon iconName="add" intent={Intent.DANGER} />,
-        Classes.INTENT_DANGER,
-    ));
+    it("renders intent class", () =>
+        assertIconClass(<Icon iconName="add" intent={Intent.DANGER} />, Classes.INTENT_DANGER));
 
-    it("renders iconName class", () => assertIconClass(
-        <Icon iconName="vertical-distribution" />,
-        IconClasses.VERTICAL_DISTRIBUTION,
-    ));
+    it("renders iconName class", () =>
+        assertIconClass(<Icon iconName="vertical-distribution" />, IconClasses.VERTICAL_DISTRIBUTION));
 
-    it("supports prefixed iconName", () => assertIconClass(
-        <Icon iconName={IconClasses.AIRPLANE} />,
-        IconClasses.AIRPLANE,
-    ));
+    it("supports prefixed iconName", () =>
+        assertIconClass(<Icon iconName={IconClasses.AIRPLANE} />, IconClasses.AIRPLANE));
 
     it("iconName=undefined renders nothing", () => {
         const icon = shallow(<Icon iconName={undefined} />);

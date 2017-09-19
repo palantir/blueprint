@@ -30,32 +30,34 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
     };
 
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
-    private toggleSelectAll = handleBooleanChange((selectAllOnFocus) => this.setState({ selectAllOnFocus }));
-    private toggleSwap = handleBooleanChange((confirmOnEnterKey) => this.setState({ confirmOnEnterKey }));
+    private toggleSelectAll = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
+    private toggleSwap = handleBooleanChange(confirmOnEnterKey => this.setState({ confirmOnEnterKey }));
 
     protected renderExample() {
-        return <div className="docs-editable-text-example">
-            <h1>
+        return (
+            <div className="docs-editable-text-example">
+                <h1>
+                    <EditableText
+                        intent={this.state.intent}
+                        maxLength={this.state.maxLength}
+                        placeholder="Edit title..."
+                        selectAllOnFocus={this.state.selectAllOnFocus}
+                    />
+                </h1>
                 <EditableText
                     intent={this.state.intent}
                     maxLength={this.state.maxLength}
-                    placeholder="Edit title..."
+                    maxLines={12}
+                    minLines={3}
+                    multiline={true}
+                    placeholder="Edit report... (controlled)"
                     selectAllOnFocus={this.state.selectAllOnFocus}
+                    confirmOnEnterKey={this.state.confirmOnEnterKey}
+                    value={this.state.report}
+                    onChange={this.handleReportChange}
                 />
-            </h1>
-            <EditableText
-                intent={this.state.intent}
-                maxLength={this.state.maxLength}
-                maxLines={12}
-                minLines={3}
-                multiline={true}
-                placeholder="Edit report... (controlled)"
-                selectAllOnFocus={this.state.selectAllOnFocus}
-                confirmOnEnterKey={this.state.confirmOnEnterKey}
-                value={this.state.report}
-                onChange={this.handleReportChange}
-            />
-        </div>;
+            </div>
+        );
     }
 
     protected renderOptions() {
@@ -63,7 +65,9 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
             [
                 <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />,
                 <div className={Classes.FORM_GROUP} key="maxlength">
-                    <label className={Classes.LABEL} htmlFor={INPUT_ID}>Max length</label>
+                    <label className={Classes.LABEL} htmlFor={INPUT_ID}>
+                        Max length
+                    </label>
                     <NumericInput
                         id={INPUT_ID}
                         className={classNames(Classes.FORM_CONTENT, Classes.FILL)}
@@ -74,7 +78,8 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                         value={this.state.maxLength || ""}
                     />
                 </div>,
-            ], [
+            ],
+            [
                 <Switch
                     checked={this.state.selectAllOnFocus}
                     label="Select all on focus"
@@ -99,5 +104,5 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
             const report = this.state.report.slice(0, maxLength);
             this.setState({ maxLength, report });
         }
-    }
+    };
 }

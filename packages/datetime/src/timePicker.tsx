@@ -20,27 +20,27 @@ export enum TimePickerPrecision {
 }
 
 export interface ITimePickerProps extends IProps {
-   /**
-    * Initial time the `TimePicker` will display.
-    * This should not be set if `value` is set.
-    */
+    /**
+     * Initial time the `TimePicker` will display.
+     * This should not be set if `value` is set.
+     */
     defaultValue?: Date;
 
-   /**
-    * Whether the time picker is non-interactive.
-    * @default false
-    */
+    /**
+     * Whether the time picker is non-interactive.
+     * @default false
+     */
     disabled?: boolean;
 
-   /**
-    * Callback invoked when the user changes the time.
-    */
+    /**
+     * Callback invoked when the user changes the time.
+     */
     onChange?: (newTime: Date) => void;
 
-   /**
-    * The precision of time the user can set.
-    * @default TimePickerPrecision.MINUTE
-    */
+    /**
+     * The precision of time the user can set.
+     * @default TimePickerPrecision.MINUTE
+     */
     precision?: TimePickerPrecision;
 
     /**
@@ -49,10 +49,10 @@ export interface ITimePickerProps extends IProps {
      */
     selectAllOnFocus?: boolean;
 
-   /**
-    * Whether to show arrows buttons for changing the time.
-    * @default false
-    */
+    /**
+     * Whether to show arrows buttons for changing the time.
+     * @default false
+     */
     showArrowButtons?: boolean;
 
     /**
@@ -73,10 +73,10 @@ export interface ITimePickerProps extends IProps {
      */
     minTime?: Date;
 
-   /**
-    * The currently set time.
-    * If this prop is provided, the component acts in a controlled manner.
-    */
+    /**
+     * The currently set time.
+     * If this prop is provided, the component acts in a controlled manner.
+     */
     value?: Date;
 }
 
@@ -141,25 +141,53 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         return (
             <div className={classes}>
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
-                    {this.maybeRenderArrowButton(true, Classes.TIMEPICKER_HOUR, () => this.incrementTime(TimeUnit.HOUR))}
-                    {this.maybeRenderArrowButton(true, Classes.TIMEPICKER_MINUTE, () => this.incrementTime(TimeUnit.MINUTE))}
-                    {shouldRenderSeconds ? this.maybeRenderArrowButton(true, Classes.TIMEPICKER_SECOND, () => this.incrementTime(TimeUnit.SECOND)) : null}
-                    {shouldRenderMilliseconds ? this.maybeRenderArrowButton(true, Classes.TIMEPICKER_MILLISECOND, () => this.incrementTime(TimeUnit.MS)) : null}
+                    {this.maybeRenderArrowButton(true, Classes.TIMEPICKER_HOUR, () =>
+                        this.incrementTime(TimeUnit.HOUR),
+                    )}
+                    {this.maybeRenderArrowButton(true, Classes.TIMEPICKER_MINUTE, () =>
+                        this.incrementTime(TimeUnit.MINUTE),
+                    )}
+                    {shouldRenderSeconds
+                        ? this.maybeRenderArrowButton(true, Classes.TIMEPICKER_SECOND, () =>
+                              this.incrementTime(TimeUnit.SECOND),
+                          )
+                        : null}
+                    {shouldRenderMilliseconds
+                        ? this.maybeRenderArrowButton(true, Classes.TIMEPICKER_MILLISECOND, () =>
+                              this.incrementTime(TimeUnit.MS),
+                          )
+                        : null}
                 </div>
                 <div className={Classes.TIMEPICKER_INPUT_ROW}>
                     {this.renderInput(Classes.TIMEPICKER_HOUR, TimeUnit.HOUR, this.state.hourText)}
                     {this.renderDivider()}
                     {this.renderInput(Classes.TIMEPICKER_MINUTE, TimeUnit.MINUTE, this.state.minuteText)}
                     {shouldRenderSeconds ? this.renderDivider() : null}
-                    {shouldRenderSeconds ? this.renderInput(Classes.TIMEPICKER_SECOND, TimeUnit.SECOND, this.state.secondText) : null}
+                    {shouldRenderSeconds
+                        ? this.renderInput(Classes.TIMEPICKER_SECOND, TimeUnit.SECOND, this.state.secondText)
+                        : null}
                     {shouldRenderMilliseconds ? this.renderDivider(".") : null}
-                    {shouldRenderMilliseconds ? this.renderInput(Classes.TIMEPICKER_MILLISECOND, TimeUnit.MS, this.state.millisecondText) : null}
+                    {shouldRenderMilliseconds
+                        ? this.renderInput(Classes.TIMEPICKER_MILLISECOND, TimeUnit.MS, this.state.millisecondText)
+                        : null}
                 </div>
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
-                    {this.maybeRenderArrowButton(false, Classes.TIMEPICKER_HOUR, () => this.decrementTime(TimeUnit.HOUR))}
-                    {this.maybeRenderArrowButton(false, Classes.TIMEPICKER_MINUTE, () => this.decrementTime(TimeUnit.MINUTE))}
-                    {shouldRenderSeconds ? this.maybeRenderArrowButton(false, Classes.TIMEPICKER_SECOND, () => this.decrementTime(TimeUnit.SECOND)) : null}
-                    {shouldRenderMilliseconds ? this.maybeRenderArrowButton(false, Classes.TIMEPICKER_MILLISECOND, () => this.decrementTime(TimeUnit.MS)) : null}
+                    {this.maybeRenderArrowButton(false, Classes.TIMEPICKER_HOUR, () =>
+                        this.decrementTime(TimeUnit.HOUR),
+                    )}
+                    {this.maybeRenderArrowButton(false, Classes.TIMEPICKER_MINUTE, () =>
+                        this.decrementTime(TimeUnit.MINUTE),
+                    )}
+                    {shouldRenderSeconds
+                        ? this.maybeRenderArrowButton(false, Classes.TIMEPICKER_SECOND, () =>
+                              this.decrementTime(TimeUnit.SECOND),
+                          )
+                        : null}
+                    {shouldRenderMilliseconds
+                        ? this.maybeRenderArrowButton(false, Classes.TIMEPICKER_MILLISECOND, () =>
+                              this.decrementTime(TimeUnit.MS),
+                          )
+                        : null}
                 </div>
             </div>
         );
@@ -192,7 +220,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
             "pt-icon-chevron-down": !isDirectionUp,
             "pt-icon-chevron-up": isDirectionUp,
         });
-        return this.props.showArrowButtons ? <span className={classes} onClick={onClick}/> : null;
+        return this.props.showArrowButtons ? <span className={classes} onClick={onClick} /> : null;
     }
 
     private renderDivider(text = ":") {
@@ -218,7 +246,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     private getInputBlurHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
         const text = getStringValueFromInputEvent(e);
         this.updateTime(parseInt(text, 10), unit);
-    }
+    };
 
     private getInputChangeHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
         const TWO_DIGITS = /^\d{0,2}$/;
@@ -241,14 +269,23 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
         if (isValid) {
             switch (unit) {
-                case TimeUnit.HOUR: this.updateState({ hourText: text }); break;
-                case TimeUnit.MINUTE: this.updateState({ minuteText: text }); break;
-                case TimeUnit.SECOND: this.updateState({ secondText: text }); break;
-                case TimeUnit.MS: this.updateState({ millisecondText: text }); break;
-                default: throw Error("Invalid TimeUnit");
+                case TimeUnit.HOUR:
+                    this.updateState({ hourText: text });
+                    break;
+                case TimeUnit.MINUTE:
+                    this.updateState({ minuteText: text });
+                    break;
+                case TimeUnit.SECOND:
+                    this.updateState({ secondText: text });
+                    break;
+                case TimeUnit.MS:
+                    this.updateState({ millisecondText: text });
+                    break;
+                default:
+                    throw Error("Invalid TimeUnit");
             }
         }
-    }
+    };
 
     private getInputKeyDownHandler = (unit: TimeUnit) => (e: React.KeyboardEvent<HTMLInputElement>) => {
         handleKeyEvent(e, {
@@ -258,19 +295,19 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 (e.currentTarget as HTMLInputElement).blur();
             },
         });
-    }
+    };
 
     private handleFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
         if (this.props.selectAllOnFocus) {
             e.currentTarget.select();
         }
-    }
+    };
 
     // begin method definitions: state modification
 
-   /**
-    * Generates a full ITimePickerState object with all text fields set to formatted strings based on value
-    */
+    /**
+     * Generates a full ITimePickerState object with all text fields set to formatted strings based on value
+     */
     private getFullStateFromValue(value: Date): ITimePickerState {
         const timeInRange = DateUtils.getTimeInRange(value, this.props.minTime, this.props.maxTime);
         /* tslint:disable:object-literal-sort-keys */
@@ -319,8 +356,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     private updateState(state: ITimePickerState) {
         let newState = state;
-        const hasNewValue = newState.value != null
-            && !DateUtils.areSameTime(newState.value, this.state.value);
+        const hasNewValue = newState.value != null && !DateUtils.areSameTime(newState.value, this.state.value);
 
         if (this.props.value == null) {
             // component is uncontrolled
@@ -374,15 +410,22 @@ function getStringValueFromInputEvent(e: React.SyntheticEvent<HTMLInputElement>)
 
 function getTimeUnit(date: Date, unit: TimeUnit) {
     switch (unit) {
-        case TimeUnit.HOUR: return date.getHours();
-        case TimeUnit.MINUTE: return date.getMinutes();
-        case TimeUnit.SECOND: return date.getSeconds();
-        case TimeUnit.MS: return date.getMilliseconds();
-        default: throw Error("Invalid TimeUnit");
+        case TimeUnit.HOUR:
+            return date.getHours();
+        case TimeUnit.MINUTE:
+            return date.getMinutes();
+        case TimeUnit.SECOND:
+            return date.getSeconds();
+        case TimeUnit.MS:
+            return date.getMilliseconds();
+        default:
+            throw Error("Invalid TimeUnit");
     }
 }
 
-interface IKeyEventMap { [key: number]: () => void; }
+interface IKeyEventMap {
+    [key: number]: () => void;
+}
 
 function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>, actions: IKeyEventMap, preventDefault = true) {
     for (const k of Object.keys(actions)) {
@@ -434,11 +477,20 @@ function maxTime(unit: TimeUnit) {
 
 function setTimeUnit(time: number, date: Date, unit: TimeUnit) {
     switch (unit) {
-        case TimeUnit.HOUR: date.setHours(time); break;
-        case TimeUnit.MINUTE: date.setMinutes(time); break;
-        case TimeUnit.SECOND: date.setSeconds(time); break;
-        case TimeUnit.MS: date.setMilliseconds(time); break;
-        default: throw Error("Invalid TimeUnit");
+        case TimeUnit.HOUR:
+            date.setHours(time);
+            break;
+        case TimeUnit.MINUTE:
+            date.setMinutes(time);
+            break;
+        case TimeUnit.SECOND:
+            date.setSeconds(time);
+            break;
+        case TimeUnit.MS:
+            date.setMilliseconds(time);
+            break;
+        default:
+            throw Error("Invalid TimeUnit");
     }
 }
 

@@ -12,7 +12,6 @@ import * as React from "react";
 import { Classes, IPortalProps, Portal } from "../../src";
 
 describe("<Portal>", () => {
-
     let portal: ReactWrapper<IPortalProps, {}>;
 
     afterEach(() => {
@@ -52,7 +51,7 @@ describe("<Portal>", () => {
             <Portal>
                 <p>test</p>
             </Portal>,
-            {context: {blueprintPortalClassName: CLASS_TO_TEST}},
+            { context: { blueprintPortalClassName: CLASS_TO_TEST } },
         );
 
         const portalElement = document.querySelector(`.${CLASS_TO_TEST}`);

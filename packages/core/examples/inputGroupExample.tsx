@@ -40,10 +40,10 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
         tagValue: "",
     };
 
-    private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
-    private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
-    private handleFilterChange = handleStringChange((filterValue) => this.setState({ filterValue }));
-    private handleTagChange = handleStringChange((tagValue) => this.setState({ tagValue }));
+    private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+    private handleFilterChange = handleStringChange(filterValue => this.setState({ filterValue }));
+    private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     protected renderExample() {
         const { disabled, filterValue, showPassword, tagValue } = this.state;
@@ -66,18 +66,23 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
 
         const permissionsMenu = (
             <Popover
-                content={<Menu><MenuItem text="can edit" /><MenuItem text="can view" /></Menu>}
+                content={
+                    <Menu>
+                        <MenuItem text="can edit" />
+                        <MenuItem text="can view" />
+                    </Menu>
+                }
                 isDisabled={disabled}
                 position={Position.BOTTOM_RIGHT}
             >
-                <Button className={Classes.MINIMAL} disabled={disabled} rightIconName="caret-down">can edit</Button>
+                <Button className={Classes.MINIMAL} disabled={disabled} rightIconName="caret-down">
+                    can edit
+                </Button>
             </Popover>
         );
 
         const resultsTag = (
-            <Tag className={Classes.MINIMAL}>
-                {Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}
-            </Tag>
+            <Tag className={Classes.MINIMAL}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>
         );
 
         return (

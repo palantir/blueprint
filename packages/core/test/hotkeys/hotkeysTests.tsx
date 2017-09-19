@@ -25,18 +25,30 @@ import {
     HotkeysTarget,
     IKeyCombo,
     parseKeyCombo,
- } from "../../src/index";
+} from "../../src/index";
 import { dispatchTestKeyboardEvent } from "../common/utils";
 
 describe("Hotkeys", () => {
     it("throws error if given non-Hotkey child", () => {
-        expect(() => mount(<Hotkeys><div /></Hotkeys>)).to.throw(HOTKEYS_HOTKEY_CHILDREN, "element");
+        expect(() =>
+            mount(
+                <Hotkeys>
+                    <div />
+                </Hotkeys>,
+            ),
+        ).to.throw(HOTKEYS_HOTKEY_CHILDREN, "element");
         expect(() => mount(<Hotkeys>string contents</Hotkeys>)).to.throw(HOTKEYS_HOTKEY_CHILDREN, "string");
-        expect(() => mount(<Hotkeys>{undefined}{null}</Hotkeys>)).to.throw(HOTKEYS_HOTKEY_CHILDREN, "undefined");
+        expect(() =>
+            mount(
+                <Hotkeys>
+                    {undefined}
+                    {null}
+                </Hotkeys>,
+            ),
+        ).to.throw(HOTKEYS_HOTKEY_CHILDREN, "undefined");
     });
 
     describe("Local/Global @HotkeysTarget", () => {
-
         let localKeyDownSpy: Sinon.SinonSpy = null;
         let localKeyUpSpy: Sinon.SinonSpy = null;
 
@@ -60,24 +72,26 @@ describe("Hotkeys", () => {
             };
 
             public renderHotkeys() {
-                return <Hotkeys>
-                    <Hotkey
-                        {...this.props}
-                        combo="1"
-                        group="test"
-                        label="local hotkey"
-                        onKeyDown={localKeyDownSpy}
-                        onKeyUp={localKeyUpSpy}
-                    />
-                    <Hotkey
-                        {...this.props}
-                        combo="2"
-                        global={true}
-                        label="global hotkey"
-                        onKeyDown={globalKeyDownSpy}
-                        onKeyUp={globalKeyUpSpy}
-                    />
-                </Hotkeys>;
+                return (
+                    <Hotkeys>
+                        <Hotkey
+                            {...this.props}
+                            combo="1"
+                            group="test"
+                            label="local hotkey"
+                            onKeyDown={localKeyDownSpy}
+                            onKeyUp={localKeyUpSpy}
+                        />
+                        <Hotkey
+                            {...this.props}
+                            combo="2"
+                            global={true}
+                            label="global hotkey"
+                            onKeyDown={globalKeyDownSpy}
+                            onKeyUp={globalKeyUpSpy}
+                        />
+                    </Hotkeys>
+                );
             }
 
             public render() {
@@ -119,7 +133,7 @@ describe("Hotkeys", () => {
         });
 
         // this works only on keydown, so don't put it in the test suite
-        it("triggers non-inline hotkey dialog with \"?\"", (done) => {
+        it('triggers non-inline hotkey dialog with "?"', done => {
             const TEST_TIMEOUT_DURATION = 30;
 
             comp = mount(<TestComponent />, { attachTo });
@@ -145,9 +159,11 @@ describe("Hotkeys", () => {
             @HotkeysTarget
             class ComboComponent extends React.Component<{}, {}> {
                 public renderHotkeys() {
-                    return <Hotkeys>
-                        <Hotkey label="global hotkey" global={true} combo={combo} onKeyDown={handleKeyDown} />
-                    </Hotkeys>;
+                    return (
+                        <Hotkeys>
+                            <Hotkey label="global hotkey" global={true} combo={combo} onKeyDown={handleKeyDown} />
+                        </Hotkeys>
+                    );
                 }
 
                 public render() {
@@ -179,7 +195,13 @@ describe("Hotkeys", () => {
             });
 
             it("triggers only global hotkey when not focused", () => {
-                comp = mount(<div><TestComponent /><div className="unhotkeyed" tabIndex={2} /></div>, { attachTo });
+                comp = mount(
+                    <div>
+                        <TestComponent />
+                        <div className="unhotkeyed" tabIndex={2} />
+                    </div>,
+                    { attachTo },
+                );
                 const unhotkeyed = ReactDOM.findDOMNode(comp.instance()).querySelector(".unhotkeyed");
                 (unhotkeyed as HTMLElement).focus();
 
@@ -326,63 +348,59 @@ describe("Hotkeys", () => {
 
         it("matches lowercase alphabet chars", () => {
             const alpha = 65;
-            verifyCombos(Array.apply(null, Array(26)).map((_: any, i: number) => {
-                const combo = String.fromCharCode(alpha + i).toLowerCase();
-                const event = { which: alpha + i } as KeyboardEvent;
-                return makeComboTest(combo, event);
-            }));
+            verifyCombos(
+                Array.apply(null, Array(26)).map((_: any, i: number) => {
+                    const combo = String.fromCharCode(alpha + i).toLowerCase();
+                    const event = { which: alpha + i } as KeyboardEvent;
+                    return makeComboTest(combo, event);
+                }),
+            );
         });
 
         it("bare alphabet chars ignore case", () => {
             const alpha = 65;
-            verifyCombos(Array.apply(null, Array(26)).map((_: any, i: number) => {
-                const combo = String.fromCharCode(alpha + i).toUpperCase();
-                const event = { which: alpha + i } as KeyboardEvent;
-                return makeComboTest(combo, event);
-            }), false); // don't compare string combos
+            verifyCombos(
+                Array.apply(null, Array(26)).map((_: any, i: number) => {
+                    const combo = String.fromCharCode(alpha + i).toUpperCase();
+                    const event = { which: alpha + i } as KeyboardEvent;
+                    return makeComboTest(combo, event);
+                }),
+                false,
+            ); // don't compare string combos
         });
 
         it("matches uppercase alphabet chars using shift", () => {
             const alpha = 65;
-            verifyCombos(Array.apply(null, Array(26)).map((_: any, i: number) => {
-                const combo = "shift + " + String.fromCharCode(alpha + i).toLowerCase();
-                const event = { shiftKey: true, which: alpha + i } as KeyboardEvent;
-                return makeComboTest(combo, event);
-            }));
+            verifyCombos(
+                Array.apply(null, Array(26)).map((_: any, i: number) => {
+                    const combo = "shift + " + String.fromCharCode(alpha + i).toLowerCase();
+                    const event = { shiftKey: true, which: alpha + i } as KeyboardEvent;
+                    return makeComboTest(combo, event);
+                }),
+            );
         });
 
         it("matches modifiers only", () => {
             const tests = [] as IComboTest[];
             const ignored = 16;
-            tests.push(makeComboTest(
-                "shift",
-                { shiftKey: true, which: ignored } as KeyboardEvent,
-            ));
-            tests.push(makeComboTest(
-                "ctrl + alt + shift",
-                { altKey: true, ctrlKey: true, shiftKey: true, which: ignored } as KeyboardEvent,
-            ));
-            tests.push(makeComboTest(
-                "ctrl + meta",
-                { ctrlKey: true, metaKey: true, which: ignored } as KeyboardEvent,
-            ));
+            tests.push(makeComboTest("shift", { shiftKey: true, which: ignored } as KeyboardEvent));
+            tests.push(
+                makeComboTest("ctrl + alt + shift", {
+                    altKey: true,
+                    ctrlKey: true,
+                    shiftKey: true,
+                    which: ignored,
+                } as KeyboardEvent),
+            );
+            tests.push(makeComboTest("ctrl + meta", { ctrlKey: true, metaKey: true, which: ignored } as KeyboardEvent));
             verifyCombos(tests);
         });
 
         it("adds shift to keys that imply it", () => {
             const tests = [] as IComboTest[];
-            tests.push(makeComboTest(
-                "!",
-                { shiftKey: true, which: 49 } as KeyboardEvent,
-            ));
-            tests.push(makeComboTest(
-                "@",
-                { shiftKey: true, which: 50 } as KeyboardEvent,
-            ));
-            tests.push(makeComboTest(
-                "{",
-                { shiftKey: true, which: 219 } as KeyboardEvent,
-            ));
+            tests.push(makeComboTest("!", { shiftKey: true, which: 49 } as KeyboardEvent));
+            tests.push(makeComboTest("@", { shiftKey: true, which: 50 } as KeyboardEvent));
+            tests.push(makeComboTest("{", { shiftKey: true, which: 219 } as KeyboardEvent));
             // don't verify the strings because these will be converted to
             // `shift + 1`, etc.
             verifyCombos(tests, false);
@@ -391,22 +409,13 @@ describe("Hotkeys", () => {
         it("handles plus", () => {
             expect(() => parseKeyCombo("ctrl + +")).to.throw(/failed to parse/i);
 
-            expect(comboMatches(
-                parseKeyCombo("cmd + plus"),
-                parseKeyCombo("meta + plus"),
-            )).to.be.true;
+            expect(comboMatches(parseKeyCombo("cmd + plus"), parseKeyCombo("meta + plus"))).to.be.true;
         });
 
         it("applies aliases", () => {
-            expect(comboMatches(
-                parseKeyCombo("return"),
-                parseKeyCombo("enter"),
-            )).to.be.true;
+            expect(comboMatches(parseKeyCombo("return"), parseKeyCombo("enter"))).to.be.true;
 
-            expect(comboMatches(
-                parseKeyCombo("win + F"),
-                parseKeyCombo("meta + f"),
-            )).to.be.true;
+            expect(comboMatches(parseKeyCombo("win + F"), parseKeyCombo("meta + f"))).to.be.true;
         });
     });
 

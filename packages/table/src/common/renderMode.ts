@@ -20,4 +20,4 @@ export enum RenderMode {
      * on tables with complex cells.
      */
     NONE,
-};
+}

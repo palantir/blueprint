@@ -70,7 +70,8 @@ export function expandFocusedRegion(focusedCell: IFocusedCellCoordinates, newReg
             const [rowIndexStart, rowIndexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "row", "rows");
             const [colIndexStart, colIndexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "col", "cols");
             return Regions.cell(rowIndexStart, colIndexStart, rowIndexEnd, colIndexEnd);
-        default: // i.e. `case RegionCardinality.FULL_TABLE:`
+        default:
+            // i.e. `case RegionCardinality.FULL_TABLE:`
             return Regions.table();
     }
 }
@@ -92,7 +93,5 @@ function getExpandedRegionIndices(
         }
     }
 
-    return sourceIndex <= destinationIndex
-        ? [sourceIndex, destinationIndex]
-        : [destinationIndex, sourceIndex];
+    return sourceIndex <= destinationIndex ? [sourceIndex, destinationIndex] : [destinationIndex, sourceIndex];
 }

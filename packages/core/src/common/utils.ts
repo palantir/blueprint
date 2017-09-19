@@ -91,20 +91,16 @@ export function countDecimalPlaces(num: number) {
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
-    const throttledFunc = throttleHelper(
-        undefined,
-        undefined,
-        (event: Event) => {
-            target.dispatchEvent(new CustomEvent(newEventName, event));
-        },
-    );
+    const throttledFunc = throttleHelper(undefined, undefined, (event: Event) => {
+        target.dispatchEvent(new CustomEvent(newEventName, event));
+    });
     target.addEventListener(eventName, throttledFunc);
     return throttledFunc;
-};
+}
 
 export interface IThrottledReactEventOptions {
     preventDefault?: boolean;
-};
+}
 
 /**
  * Throttle a callback by wrapping it in a `requestAnimationFrame` call. Returns the throttled
@@ -143,7 +139,7 @@ function throttleHelper(
     const func = (...args: any[]) => {
         // don't use safeInvoke, because we might have more than its max number of typed params
         if (isFunction(onBeforeIsRunningCheck)) {
-             onBeforeIsRunningCheck(...args);
+            onBeforeIsRunningCheck(...args);
         }
 
         if (isRunning) {

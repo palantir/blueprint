@@ -38,10 +38,7 @@ export class TabList extends AbstractComponent<ITabListProps, {}> {
 
     public render() {
         return (
-            <ul
-                className={classNames(Classes.TAB_LIST, this.props.className)}
-                role="tablist"
-            >
+            <ul className={classNames(Classes.TAB_LIST, this.props.className)} role="tablist">
                 <div
                     className={classNames("pt-tab-indicator-wrapper", { "pt-no-animation": !this.state.shouldAnimate })}
                     style={this.props.indicatorWrapperStyle}

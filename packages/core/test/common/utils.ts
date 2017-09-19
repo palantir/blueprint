@@ -60,7 +60,7 @@ function detectBrowser() {
     }
 
     // Internet Explorer 6-11
-    if (/*@cc_on!@*/false || !!(document as any).documentMode) {
+    if (/*@cc_on!@*/ false || !!(document as any).documentMode) {
         return Browser.IE;
     }
 
@@ -87,8 +87,14 @@ export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) 
         true /* cancelable */,
         window,
         null,
-        0, 0, clientX, clientY, /* coordinates */
-        false, false, false, false, /* modifier keys */
+        0,
+        0,
+        clientX,
+        clientY /* coordinates */,
+        false,
+        false,
+        false,
+        false /* modifier keys */,
         0 /* left */,
         null,
     );
@@ -97,14 +103,14 @@ export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) 
 
 export function dispatchMouseEvent(target: EventTarget, eventType = "click", clientX = 0, clientY = 0) {
     target.dispatchEvent(createMouseEvent(eventType, clientX, clientY));
-};
+}
 
 // PhantomJS doesn't support touch events yet https://github.com/ariya/phantomjs/issues/11571
 // so we simulate it with mouse events
 export function createTouchEvent(eventType = "touchstart", clientX = 0, clientY = 0) {
     const event = createMouseEvent(eventType, clientX, clientY);
     const touches = [{ clientX, clientY }];
-    ["touches", "targetTouches", "changedTouches"].forEach((prop) => {
+    ["touches", "targetTouches", "changedTouches"].forEach(prop => {
         Object.defineProperty(event, prop, { value: touches });
     });
     return event;

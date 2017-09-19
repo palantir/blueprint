@@ -2889,5 +2889,40 @@
     "tags": "rss, feed, tick, check",
     "group": "interface",
     "content": "\\e78f"
+  },
+  {
+    "name": "Widget: button",
+    "className": "pt-icon-widget-button",
+    "tags": "element, click, press",
+    "group": "interface",
+    "content": "\\e790"
+  },
+  {
+    "name": "Widget: header",
+    "className": "pt-icon-widget-header",
+    "tags": "element, layout, top",
+    "group": "interface",
+    "content": "\\e791"
+  },
+  {
+    "name": "Widget: footer",
+    "className": "pt-icon-widget-footer",
+    "tags": "element, layout, bottom",
+    "group": "interface",
+    "content": "\\e792"
+  },
+  {
+    "name": "Header: one",
+    "className": "pt-icon-header-one",
+    "tags": "paragraph styling, formatting",
+    "group": "editor",
+    "content": "\\e793"
+  },
+  {
+    "name": "Header: two",
+    "className": "pt-icon-header-two",
+    "tags": "paragraph styling, formatting",
+    "group": "editor",
+    "content": "\\e794"
   }
 ]

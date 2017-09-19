@@ -42,7 +42,7 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
 
     private toaster: Toaster;
     private refHandlers = {
-        toaster: (ref: Toaster) => this.toaster = ref,
+        toaster: (ref: Toaster) => (this.toaster = ref),
     };
 
     public renderHotkeys() {
@@ -72,15 +72,9 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
                     onClose={this.handleClose}
                     inputProps={{ onBlur: this.handleBlur }}
                 />
-                <Toaster
-                    position={Position.TOP}
-                    ref={this.refHandlers.toaster}
-                />
+                <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
                 <span>
-                    <Button
-                        text="Click to show Omnibox"
-                        onClick={this.handleClick}
-                    />
+                    <Button text="Click to show Omnibox" onClick={this.handleClick} />
                     {" or press "}
                     <span className="pt-key-combo">
                         <kbd className="pt-key pt-modifier-key">
@@ -129,15 +123,19 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
 
     private handleClick = (_event: React.MouseEvent<HTMLElement>) => {
         this.setState({ isOpen: true });
-    }
+    };
 
     private handleItemSelect = (film: Film) => {
         this.setState({ isOpen: false });
 
         this.toaster.show({
-            message: <span>You selected <strong>{film.title}</strong>.</span>,
+            message: (
+                <span>
+                    You selected <strong>{film.title}</strong>.
+                </span>
+            ),
         } as IToastProps);
-    }
+    };
 
     private handleSwitchChange(prop: keyof IOmniboxExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {

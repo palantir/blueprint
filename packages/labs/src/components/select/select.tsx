@@ -126,7 +126,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     private TypedQueryList = QueryList.ofType<T>();
     private list: QueryList<T>;
     private refHandlers = {
-        queryList: (ref: QueryList<T>) => this.list = ref,
+        queryList: (ref: QueryList<T>) => (this.list = ref),
     };
     private previousFocusedElement: HTMLElement;
 
@@ -142,15 +142,17 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
             ...restProps,
         } = this.props;
 
-        return <this.TypedQueryList
-            {...restProps}
-            activeItem={this.state.activeItem}
-            onActiveItemChange={this.handleActiveItemChange}
-            onItemSelect={this.handleItemSelect}
-            query={this.state.query}
-            ref={this.refHandlers.queryList}
-            renderer={this.renderQueryList}
-        />;
+        return (
+            <this.TypedQueryList
+                {...restProps}
+                activeItem={this.state.activeItem}
+                onActiveItemChange={this.handleActiveItemChange}
+                onItemSelect={this.handleItemSelect}
+                query={this.state.query}
+                ref={this.refHandlers.queryList}
+                renderer={this.renderQueryList}
+            />
+        );
     }
 
     public componentDidUpdate(_prevProps: ISelectProps<T>, prevState: ISelectState<T>) {
@@ -200,13 +202,11 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
-                    <Menu ulRef={listProps.itemsParentRef}>
-                        {this.renderItems(listProps)}
-                    </Menu>
+                    <Menu ulRef={listProps.itemsParentRef}>{this.renderItems(listProps)}</Menu>
                 </div>
             </Popover>
         );
-    }
+    };
 
     private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
         const { initialContent, itemRenderer, noResults } = this.props;
@@ -216,18 +216,22 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         if (filteredItems.length === 0) {
             return noResults;
         }
-        return filteredItems.map((item, index) => itemRenderer({
-            index,
-            item,
-            handleClick: (e) => handleItemSelect(item, e),
-            isActive: item === activeItem,
-        }));
+        return filteredItems.map((item, index) =>
+            itemRenderer({
+                index,
+                item,
+                handleClick: e => handleItemSelect(item, e),
+                isActive: item === activeItem,
+            }),
+        );
     }
 
     private maybeRenderInputClearButton() {
-        return !this.isQueryEmpty()
-            ? <Button className={CoreClasses.MINIMAL} iconName="cross" onClick={this.resetQuery} />
-            : undefined;
+        return !this.isQueryEmpty() ? (
+            <Button className={CoreClasses.MINIMAL} iconName="cross" onClick={this.resetQuery} />
+        ) : (
+            undefined
+        );
     }
 
     private isQueryEmpty = () => this.state.query.length === 0;
@@ -239,7 +243,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         if (event.which === Keys.ARROW_UP || event.which === Keys.ARROW_DOWN) {
             this.setState({ isOpen: true });
         }
-    }
+    };
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
@@ -247,14 +251,14 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
             this.resetQuery();
         }
         Utils.safeInvoke(this.props.onItemSelect, item, event);
-    }
+    };
 
     private handlePopoverInteraction = (isOpen: boolean) => {
         this.setState({ isOpen });
 
         const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.onInteraction, isOpen);
-    }
+    };
 
     private handlePopoverWillOpen = () => {
         const { popoverProps = {}, resetOnClose } = this.props;
@@ -266,7 +270,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         }
 
         Utils.safeInvoke(popoverProps.popoverWillOpen);
-    }
+    };
 
     private handlePopoverDidOpen = () => {
         // scroll active item into view after popover transition completes and all dimensions are stable.
@@ -276,7 +280,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
         const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.popoverDidOpen);
-    }
+    };
 
     private handlePopoverWillClose = () => {
         // restore focus to saved element.
@@ -290,7 +294,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
         const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.popoverWillClose);
-    }
+    };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         const { inputProps = {}, onQueryChange } = this.props;
@@ -298,7 +302,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         this.setState({ query });
         Utils.safeInvoke(inputProps.onChange, event);
         Utils.safeInvoke(onQueryChange, query);
-    }
+    };
 
     private resetQuery = () => {
         const { items, onQueryChange } = this.props;

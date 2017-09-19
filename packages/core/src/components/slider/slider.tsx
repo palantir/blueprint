@@ -86,7 +86,7 @@ export class Slider extends CoreSlider<ISliderProps> {
 
     private handleHandleRef = (ref: Handle) => {
         this.handle = ref;
-    }
+    };
 }
 
 export const SliderFactory = React.createFactory(Slider);

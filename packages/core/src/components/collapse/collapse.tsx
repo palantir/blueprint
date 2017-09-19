@@ -135,14 +135,16 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
 
         // HACKHACK: type cast because there's no single overload that supports all
         // three ReactTypes (string | ComponentClass | StatelessComponent)
-        return React.createElement(this.props.component as any, {
-            className: classNames(Classes.COLLAPSE, this.props.className),
-            style: containerStyle,
-        }, (
+        return React.createElement(
+            this.props.component as any,
+            {
+                className: classNames(Classes.COLLAPSE, this.props.className),
+                style: containerStyle,
+            },
             <div className="pt-collapse-body" ref={this.contentsRefHandler} style={contentsStyle}>
                 {showContents ? this.props.children : null}
-            </div>
-        ));
+            </div>,
+        );
     }
 
     public componentDidMount() {
@@ -156,10 +158,12 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
 
     public componentDidUpdate() {
         if (this.state.animationState === AnimationStates.CLOSING_START) {
-            this.setTimeout(() => this.setState({
-                animationState: AnimationStates.CLOSING_END,
-                height: "0px",
-            }));
+            this.setTimeout(() =>
+                this.setState({
+                    animationState: AnimationStates.CLOSING_END,
+                    height: "0px",
+                }),
+            );
             this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
         }
     }
@@ -173,7 +177,7 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
                 height: `${this.height}px`,
             });
         }
-    }
+    };
 
     private onDelayedStateChange() {
         switch (this.state.animationState) {

@@ -54,7 +54,7 @@ export interface IAlertProps extends IProps {
      * Handler invoked when the confirm button is clicked.
      */
     onConfirm(e: React.MouseEvent<HTMLButtonElement>): void;
- }
+}
 
 export class Alert extends AbstractComponent<IAlertProps, {}> {
     public static defaultProps: IAlertProps = {
@@ -71,9 +71,7 @@ export class Alert extends AbstractComponent<IAlertProps, {}> {
             <Dialog className={classNames(Classes.ALERT, className)} isOpen={isOpen} style={style}>
                 <div className={Classes.ALERT_BODY}>
                     <Icon iconName={iconName} iconSize="inherit" intent={Intent.DANGER} />
-                    <div className={Classes.ALERT_CONTENTS}>
-                        {children}
-                    </div>
+                    <div className={Classes.ALERT_CONTENTS}>{children}</div>
                 </div>
                 <div className={Classes.ALERT_FOOTER}>
                     <Button intent={intent} text={confirmButtonText} onClick={onConfirm} />
@@ -84,8 +82,10 @@ export class Alert extends AbstractComponent<IAlertProps, {}> {
     }
 
     protected validateProps(props: IAlertProps) {
-        if (props.cancelButtonText != null && props.onCancel == null ||
-            props.cancelButtonText == null && props.onCancel != null ) {
+        if (
+            (props.cancelButtonText != null && props.onCancel == null) ||
+            (props.cancelButtonText == null && props.onCancel != null)
+        ) {
             console.warn(ALERT_WARN_CANCEL_PROPS);
         }
     }

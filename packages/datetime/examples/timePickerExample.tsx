@@ -28,10 +28,10 @@ enum MinimumHours {
 }
 
 enum MaximumHours {
-  NONE = 0,
-  SIX_PM = 18,
-  NINE_PM = 21,
-  TWO_AM = 2,
+    NONE = 0,
+    SIX_PM = 18,
+    NINE_PM = 21,
+    TWO_AM = 2,
 }
 
 export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
@@ -42,7 +42,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
         showArrowButtons: false,
     };
 
-    private handlePrecisionChange = handleNumberChange((precision) => this.setState({ precision }));
+    private handlePrecisionChange = handleNumberChange(precision => this.setState({ precision }));
 
     protected renderExample() {
         return <TimePicker {...this.state} />;
@@ -51,11 +51,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     protected renderOptions() {
         return [
             [
-                <PrecisionSelect
-                    value={this.state.precision}
-                    onChange={this.handlePrecisionChange}
-                    key="precision"
-                />,
+                <PrecisionSelect value={this.state.precision} onChange={this.handlePrecisionChange} key="precision" />,
                 <Switch
                     checked={this.state.selectAllOnFocus}
                     label="Select all on focus"
@@ -68,31 +64,38 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                     key="arrows"
                     onChange={this.toggleShowArrowButtons}
                 />,
-                <Switch
-                    checked={this.state.disabled}
-                    label="Disabled"
-                    key="disabled"
-                    onChange={this.toggleDisabled}
-                />,
+                <Switch checked={this.state.disabled} label="Disabled" key="disabled" onChange={this.toggleDisabled} />,
             ],
             [
                 <label key={0} className={Classes.LABEL}>
                     Minimum time
                     <div className={Classes.SELECT}>
                         <select onChange={handleNumberChange(this.changeMinHour)}>
-                            <option key={0} value={MinimumHours.NONE}>None</option>
-                            <option key={1} value={MinimumHours.SIX_PM}>6pm (18:00)</option>
+                            <option key={0} value={MinimumHours.NONE}>
+                                None
+                            </option>
+                            <option key={1} value={MinimumHours.SIX_PM}>
+                                6pm (18:00)
+                            </option>
                         </select>
                     </div>
                 </label>,
-                <label key={1}  className={Classes.LABEL}>
+                <label key={1} className={Classes.LABEL}>
                     Maximum time
                     <div className={Classes.SELECT}>
                         <select onChange={handleNumberChange(this.changeMaxHour)}>
-                            <option key={0} value={MaximumHours.NONE}>None</option>
-                            <option key={1} value={MaximumHours.SIX_PM}>6pm (18:00)</option>
-                            <option key={2} value={MaximumHours.NINE_PM}>9pm (21:00)</option>
-                            <option key={3} value={MaximumHours.TWO_AM}>2am (02:00)</option>
+                            <option key={0} value={MaximumHours.NONE}>
+                                None
+                            </option>
+                            <option key={1} value={MaximumHours.SIX_PM}>
+                                6pm (18:00)
+                            </option>
+                            <option key={2} value={MaximumHours.NINE_PM}>
+                                9pm (21:00)
+                            </option>
+                            <option key={3} value={MaximumHours.TWO_AM}>
+                                2am (02:00)
+                            </option>
                         </select>
                     </div>
                 </label>,
@@ -102,15 +105,15 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
 
     private toggleShowArrowButtons = () => {
         this.setState({ showArrowButtons: !this.state.showArrowButtons });
-    }
+    };
 
     private toggleSelectAllOnFocus = () => {
         this.setState({ selectAllOnFocus: !this.state.selectAllOnFocus });
-    }
+    };
 
     private toggleDisabled = () => {
         this.setState({ disabled: !this.state.disabled });
-    }
+    };
 
     private changeMinHour = (hour: MinimumHours) => {
         let minTime = new Date(1995, 6, 30, hour);
@@ -120,7 +123,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
         }
 
         this.setState({ minTime });
-    }
+    };
 
     private changeMaxHour = (hour: MaximumHours) => {
         let maxTime = new Date(1995, 6, 30, hour);
@@ -130,5 +133,5 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
         }
 
         this.setState({ maxTime });
-    }
+    };
 }

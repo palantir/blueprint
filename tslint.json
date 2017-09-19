@@ -1,21 +1,25 @@
 {
-  "extends": ["tslint:latest", "tslint-react"],
+  "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier", "tslint-plugin-prettier"],
   "rules": {
-    "ban": [true,
+    "ban": [
+      true,
       ["Object", "assign", "use TS2.1 object spread { ...a, ...b }"],
       ["Object", "getOwnPropertyNames", "use Object.keys()"],
       ["describe", "only"],
       ["it", "only"]
     ],
+    "file-header": {
+      "options": ["@license Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved."]
+    },
     "jsx-wrap-multiline": false,
     "linebreak-style": [true, "LF"],
     "no-invalid-this": [true, "check-function-in-method"],
-    "variable-name": [
-      "ban-keywords",
-      "check-format",
-      "allow-leading-underscore",
-      "allow-pascal-case"
-    ]
+    "prettier": [true, {
+      "printWidth": 120,
+      "tabWidth": 4,
+      "trailingComma": "all"
+     }],
+    "variable-name": ["ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"]
   },
   "jsRules": {
     "object-literal-shorthand": true,

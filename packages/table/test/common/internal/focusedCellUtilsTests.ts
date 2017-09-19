@@ -15,10 +15,7 @@ describe("FocusedCellUtils", () => {
     describe("getInitialFocusedCell", () => {
         const FOCUSED_CELL_FROM_PROPS = getFocusedCell(1, 2);
         const FOCUSED_CELL_FROM_STATE = getFocusedCell(3, 4);
-        const SELECTED_REGIONS = [
-            Regions.cell(1, 1, 4, 5),
-            Regions.cell(5, 1, 6, 2),
-        ];
+        const SELECTED_REGIONS = [Regions.cell(1, 1, 4, 5), Regions.cell(5, 1, 6, 2)];
 
         it("returns undefined if enableFocus=false", () => {
             const focusedCell = FocusedCellUtils.getInitialFocusedCell(
@@ -52,12 +49,7 @@ describe("FocusedCellUtils", () => {
 
         // tslint:disable-next-line:max-line-length
         it("returns the focused cell for the last selected region if focusedCell not provided", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-                true,
-                null,
-                null,
-                SELECTED_REGIONS,
-            );
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, SELECTED_REGIONS);
             const lastIndex = SELECTED_REGIONS.length - 1;
             const expectedFocusedCell = {
                 ...Regions.getFocusCellCoordinatesFromRegion(SELECTED_REGIONS[lastIndex]),
@@ -67,12 +59,7 @@ describe("FocusedCellUtils", () => {
         });
 
         it("returns cell (0, 0) if nothing else is defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-                true,
-                null,
-                null,
-                [],
-            );
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, []);
             const expectedFocusedCell = {
                 col: 0,
                 focusSelectionIndex: 0,

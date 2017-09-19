@@ -283,7 +283,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private generateQuadrantRefHandlers(quadrantType: QuadrantType): IQuadrantRefHandlers {
         const reducer = (agg: IQuadrantRefHandlers, key: keyof IQuadrantRefHandlers) => {
-            agg[key] = (ref: HTMLElement) => this.quadrantRefs[quadrantType][key] = ref;
+            agg[key] = (ref: HTMLElement) => (this.quadrantRefs[quadrantType][key] = ref);
             return agg;
         };
         return ["columnHeader", "menu", "quadrant", "rowHeader", "scrollContainer"].reduce(reducer, {});
@@ -296,19 +296,19 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private renderMainQuadrantMenu = () => {
         return this.props.renderMenu(this.quadrantRefHandlers[QuadrantType.MAIN].menu);
-    }
+    };
 
     private renderTopQuadrantMenu = () => {
         return this.props.renderMenu(this.quadrantRefHandlers[QuadrantType.TOP].menu);
-    }
+    };
 
     private renderLeftQuadrantMenu = () => {
         return this.props.renderMenu(this.quadrantRefHandlers[QuadrantType.LEFT].menu);
-    }
+    };
 
     private renderTopLeftQuadrantMenu = () => {
         return this.props.renderMenu(this.quadrantRefHandlers[QuadrantType.TOP_LEFT].menu);
-    }
+    };
 
     // Column header
 
@@ -317,28 +317,28 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const resizeHandler = this.handleColumnResizeGuideMain;
         const reorderingHandler = this.handleColumnsReorderingMain;
         return this.props.renderColumnHeader(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
-    }
+    };
 
     private renderTopQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.TOP].columnHeader;
         const resizeHandler = this.handleColumnResizeGuideTop;
         const reorderingHandler = this.handleColumnsReorderingTop;
         return this.props.renderColumnHeader(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
-    }
+    };
 
     private renderLeftQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.LEFT].columnHeader;
         const resizeHandler = this.handleColumnResizeGuideLeft;
         const reorderingHandler = this.handleColumnsReorderingLeft;
         return this.props.renderColumnHeader(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
-    }
+    };
 
     private renderTopLeftQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.TOP_LEFT].columnHeader;
         const resizeHandler = this.handleColumnResizeGuideTopLeft;
         const reorderingHandler = this.handleColumnsReorderingTopLeft;
         return this.props.renderColumnHeader(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
-    }
+    };
 
     // Row header
 
@@ -347,28 +347,28 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const resizeHandler = this.handleRowResizeGuideMain;
         const reorderingHandler = this.handleRowsReorderingMain;
         return this.props.renderRowHeader(refHandler, resizeHandler, reorderingHandler, showFrozenRowsOnly);
-    }
+    };
 
     private renderTopQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.TOP].rowHeader;
         const resizeHandler = this.handleRowResizeGuideTop;
         const reorderingHandler = this.handleRowsReorderingTop;
         return this.props.renderRowHeader(refHandler, resizeHandler, reorderingHandler, showFrozenRowsOnly);
-    }
+    };
 
     private renderLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.LEFT].rowHeader;
         const resizeHandler = this.handleRowResizeGuideLeft;
         const reorderingHandler = this.handleRowsReorderingLeft;
         return this.props.renderRowHeader(refHandler, resizeHandler, reorderingHandler, showFrozenRowsOnly);
-    }
+    };
 
     private renderTopLeftQuadrantRowHeader = (showFrozenRowsOnly: boolean) => {
         const refHandler = this.quadrantRefHandlers[QuadrantType.TOP_LEFT].rowHeader;
         const resizeHandler = this.handleRowResizeGuideTopLeft;
         const reorderingHandler = this.handleRowsReorderingTopLeft;
         return this.props.renderRowHeader(refHandler, resizeHandler, reorderingHandler, showFrozenRowsOnly);
-    }
+    };
 
     // Event handlers
     // ==============
@@ -390,7 +390,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
 
         this.props.onScroll(event);
-    }
+    };
 
     // recall that we've already invoked event.preventDefault() when defining the throttled versions
     // of these onWheel callbacks, so now we need to manually update the affected quadrant's scroll
@@ -400,7 +400,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.handleDirectionalWheel("horizontal", event.deltaX, QuadrantType.MAIN, [QuadrantType.TOP]);
         this.handleDirectionalWheel("vertical", event.deltaY, QuadrantType.MAIN, [QuadrantType.LEFT]);
         this.props.onScroll(event);
-    }
+    };
 
     // Resizing
     // --------
@@ -409,47 +409,47 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private handleColumnResizeGuideMain = (verticalGuides: number[]) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.MAIN);
-    }
+    };
 
     private handleColumnResizeGuideTop = (verticalGuides: number[]) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.TOP);
-    }
+    };
 
     private handleColumnResizeGuideLeft = (verticalGuides: number[]) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.LEFT);
-    }
+    };
 
     private handleColumnResizeGuideTopLeft = (verticalGuides: number[]) => {
         this.invokeColumnResizeHandler(verticalGuides, QuadrantType.TOP_LEFT);
-    }
+    };
 
     private invokeColumnResizeHandler = (verticalGuides: number[], quadrantType: QuadrantType) => {
         const adjustedGuides = this.adjustVerticalGuides(verticalGuides, quadrantType);
         this.props.handleColumnResizeGuide(adjustedGuides);
-    }
+    };
 
     // Rows
 
     private handleRowResizeGuideMain = (verticalGuides: number[]) => {
         this.invokeRowResizeHandler(verticalGuides, QuadrantType.MAIN);
-    }
+    };
 
     private handleRowResizeGuideTop = (verticalGuides: number[]) => {
         this.invokeRowResizeHandler(verticalGuides, QuadrantType.TOP);
-    }
+    };
 
     private handleRowResizeGuideLeft = (verticalGuides: number[]) => {
         this.invokeRowResizeHandler(verticalGuides, QuadrantType.LEFT);
-    }
+    };
 
     private handleRowResizeGuideTopLeft = (verticalGuides: number[]) => {
         this.invokeRowResizeHandler(verticalGuides, QuadrantType.TOP_LEFT);
-    }
+    };
 
     private invokeRowResizeHandler = (verticalGuides: number[], quadrantType: QuadrantType) => {
         const adjustedGuides = this.adjustHorizontalGuides(verticalGuides, quadrantType);
         this.props.handleRowResizeGuide(adjustedGuides);
-    }
+    };
 
     // Reordering
     // ----------
@@ -458,19 +458,19 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private handleColumnsReorderingMain = (oldIndex: number, newIndex: number, length: number) => {
         this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
-    }
+    };
 
     private handleColumnsReorderingTop = (oldIndex: number, newIndex: number, length: number) => {
         this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
-    }
+    };
 
     private handleColumnsReorderingLeft = (oldIndex: number, newIndex: number, length: number) => {
         this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
-    }
+    };
 
     private handleColumnsReorderingTopLeft = (oldIndex: number, newIndex: number, length: number) => {
         this.invokeColumnsReorderingHandler(oldIndex, newIndex, length);
-    }
+    };
 
     private invokeColumnsReorderingHandler = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
@@ -478,25 +478,25 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const quadrantType = guideIndex <= this.props.numFrozenColumns ? QuadrantType.TOP_LEFT : QuadrantType.TOP;
         const verticalGuides = this.adjustVerticalGuides([leftOffset], quadrantType);
         this.props.handleColumnsReordering(verticalGuides);
-    }
+    };
 
     // Rows
 
     private handleRowsReorderingMain = (oldIndex: number, newIndex: number, length: number) => {
         this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
-    }
+    };
 
     private handleRowsReorderingTop = (oldIndex: number, newIndex: number, length: number) => {
         this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
-    }
+    };
 
     private handleRowsReorderingLeft = (oldIndex: number, newIndex: number, length: number) => {
         this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
-    }
+    };
 
     private handleRowsReorderingTopLeft = (oldIndex: number, newIndex: number, length: number) => {
         this.invokeRowsReorderingHandler(oldIndex, newIndex, length);
-    }
+    };
 
     private invokeRowsReorderingHandler = (oldIndex: number, newIndex: number, length: number) => {
         const guideIndex = Utils.reorderedIndexToGuideIndex(oldIndex, newIndex, length);
@@ -504,7 +504,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const quadrantType = guideIndex <= this.props.numFrozenRows ? QuadrantType.TOP_LEFT : QuadrantType.LEFT;
         const horizontalGuides = this.adjustHorizontalGuides([topOffset], quadrantType);
         this.props.handleRowsReordering(horizontalGuides);
-    }
+    };
 
     // Emitters
     // ========
@@ -558,12 +558,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // reveal the header border.
         const BORDER_WIDTH_CORRECTION = 1;
 
-        const leftQuadrantGridContentWidth = numFrozenColumns > 0
-            ? grid.getCumulativeWidthAt(numFrozenColumns - 1)
-            : BORDER_WIDTH_CORRECTION;
-        const topQuadrantGridContentHeight = numFrozenRows > 0
-            ? grid.getCumulativeHeightAt(numFrozenRows - 1)
-            : BORDER_WIDTH_CORRECTION;
+        const leftQuadrantGridContentWidth =
+            numFrozenColumns > 0 ? grid.getCumulativeWidthAt(numFrozenColumns - 1) : BORDER_WIDTH_CORRECTION;
+        const topQuadrantGridContentHeight =
+            numFrozenRows > 0 ? grid.getCumulativeHeightAt(numFrozenRows - 1) : BORDER_WIDTH_CORRECTION;
 
         // all menus are the same size, so arbitrarily use the one from the main quadrant.
         // assumes that the menu element width has already been sync'd after the last render
@@ -620,9 +618,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     ) => {
         const isHorizontal = direction === "horizontal";
 
-        const scrollKey = isHorizontal
-            ? "scrollLeft"
-            : "scrollTop";
+        const scrollKey = isHorizontal ? "scrollLeft" : "scrollTop";
         const isScrollDisabled = isHorizontal
             ? this.props.isHorizontalScrollDisabled
             : this.props.isVerticalScrollDisabled;
@@ -633,11 +629,11 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             // sync the corresponding scroll position of all dependent quadrants
             const nextScrollPosition = this.quadrantRefs[quadrantType].scrollContainer[scrollKey] + delta;
             this.quadrantRefs[quadrantType].scrollContainer[scrollKey] = nextScrollPosition;
-            quadrantTypesToSync.forEach((quadrantTypeToSync) => {
+            quadrantTypesToSync.forEach(quadrantTypeToSync => {
                 this.quadrantRefs[quadrantTypeToSync].scrollContainer[scrollKey] = nextScrollPosition;
             });
         }
-    }
+    };
 
     // Resizing
 
@@ -645,9 +641,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollLeft;
         const rowHeaderWidth = this.getRowHeaderWidth(quadrantType);
 
-        const adjustedVerticalGuides = verticalGuides != null
-            ? verticalGuides.map((verticalGuide) => verticalGuide - scrollAmount + rowHeaderWidth)
-            : verticalGuides;
+        const adjustedVerticalGuides =
+            verticalGuides != null
+                ? verticalGuides.map(verticalGuide => verticalGuide - scrollAmount + rowHeaderWidth)
+                : verticalGuides;
 
         return adjustedVerticalGuides;
     }
@@ -656,9 +653,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const scrollAmount = this.quadrantRefs[quadrantType].scrollContainer.scrollTop;
         const columnHeaderHeight = this.quadrantRefs[quadrantType].columnHeader.clientHeight;
 
-        const adjustedHorizontalGuides = horizontalGuides != null
-            ? horizontalGuides.map((horizontalGuide) => horizontalGuide - scrollAmount + columnHeaderHeight)
-            : horizontalGuides;
+        const adjustedHorizontalGuides =
+            horizontalGuides != null
+                ? horizontalGuides.map(horizontalGuide => horizontalGuide - scrollAmount + columnHeaderHeight)
+                : horizontalGuides;
 
         return adjustedHorizontalGuides;
     }
