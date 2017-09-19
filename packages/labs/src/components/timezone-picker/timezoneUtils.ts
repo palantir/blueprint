@@ -33,14 +33,6 @@ export function getTimezoneQueryCandidates(timezone: string, date: Date): string
         timezone,
         abbreviation,
         offsetAsString,
-
-        // Split timezone string.
-        // For example, "America/Los_Angeles" -> "America Los Angeles"
-        timezone.split(/[/_]/).join(" "),
-
-        // Don't require leading offset 0.
-        // For example, "-07:00" -> "-7:00"
-        offsetAsString.replace(/^([+-])0(\d:\d{2})$/, "$1$2"),
     ].filter((candidate) => candidate !== undefined);
 }
 
