@@ -271,7 +271,7 @@ describe("scrollUtils", () => {
         }
     });
 
-    describe("measureScrollBarThickness", () => {
+    describe.only("measureScrollBarThickness", () => {
         const PARENT_WIDTH = 100;
         const PARENT_HEIGHT = 100;
 
@@ -301,26 +301,29 @@ describe("scrollUtils", () => {
             containerElement = undefined;
         });
 
+        // we make the content size much bigger or much smaller to ensure
+        // Phantom measures correctly.
+
         it("measures correctly when neither scrollbar is showing", () => {
-            const element = mountElementsWithContentSize(PARENT_WIDTH, PARENT_HEIGHT);
+            const element = mountElementsWithContentSize(PARENT_WIDTH / 2, PARENT_HEIGHT / 2);
             expect(fn(element, "vertical"), VERTICAL_ERROR).to.equal(0);
             expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.equal(0);
         });
 
         it("measures correctly when only vertical scrollbar is showing", () => {
-            const element = mountElementsWithContentSize(PARENT_WIDTH, PARENT_HEIGHT + 1);
+            const element = mountElementsWithContentSize(PARENT_WIDTH / 2, PARENT_HEIGHT * 2);
             expect(fn(element, "vertical"), VERTICAL_ERROR).to.be.greaterThan(0);
             expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.equal(0);
         });
 
         it("measures correctly when only horizontal scrollbar is showing", () => {
-            const element = mountElementsWithContentSize(PARENT_WIDTH + 1, PARENT_HEIGHT);
+            const element = mountElementsWithContentSize(PARENT_WIDTH * 2, PARENT_HEIGHT / 2);
             expect(fn(element, "vertical"), VERTICAL_ERROR).to.equal(0);
             expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.be.greaterThan(0);
         });
 
         it("measures correctly when both scrollbars are showing", () => {
-            const element = mountElementsWithContentSize(PARENT_WIDTH + 1, PARENT_HEIGHT + 1);
+            const element = mountElementsWithContentSize(PARENT_WIDTH * 2, PARENT_HEIGHT * 2);
             expect(fn(element, "vertical"), VERTICAL_ERROR).to.be.greaterThan(0);
             expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.be.greaterThan(0);
         });
