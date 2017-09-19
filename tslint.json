@@ -14,15 +14,11 @@
     "jsx-wrap-multiline": false,
     "linebreak-style": [true, "LF"],
     "no-invalid-this": [true, "check-function-in-method"],
-    "prettier": {
-      "options": [
-        {
-          "printWidth": 120,
-          "tabWidth": 4,
-          "trailingComma": "all"
-        }
-      ]
-    },
+    "prettier": [true, {
+      "printWidth": 120,
+      "tabWidth": 4,
+      "trailingComma": "all"
+     }],
     "variable-name": ["ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"]
   },
   "jsRules": {
