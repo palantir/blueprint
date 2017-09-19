@@ -93,6 +93,9 @@ $table-quadrant-scroll-container-overflow: 20px;
   bottom: 0;
   z-index: $table-quadrant-z-index-left;
 
+  // animate width changes on scroll end
+  transition: width $pt-transition-duration $pt-transition-ease;
+
   .bp-table-quadrant-scroll-container {
     position: absolute;
     top: 0;
@@ -105,6 +108,9 @@ $table-quadrant-scroll-container-overflow: 20px;
 
 .bp-table-quadrant-top-left {
   z-index: $table-quadrant-z-index-top-left;
+
+  // animate width changes on scroll end
+  transition: width $pt-transition-duration $pt-transition-ease;
 
   .bp-table-quadrant-scroll-container {
     right: -$table-quadrant-scroll-container-overflow;
