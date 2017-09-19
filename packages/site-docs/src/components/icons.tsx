@@ -29,6 +29,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
     public static defaultProps: IIconsProps = {
         iconFilter: isIconFiltered,
         iconRenderer: renderIcon,
+        // tslint:disable-next-line:no-submodule-imports
         icons: require<IIcon[]>("@blueprintjs/core/resources/icons/icons.json"),
     };
 
