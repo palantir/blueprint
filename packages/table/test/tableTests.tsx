@@ -1548,6 +1548,16 @@ describe("<Table>", () => {
                 expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
             });
 
+            it("throws an error if numFrozenRows < 0", () => {
+                const renderErroneousTable = () => shallow(<Table numFrozenRows={-1} />);
+                expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+            });
+
+            it("throws an error if numFrozenColumns < 0", () => {
+                const renderErroneousTable = () => shallow(<Table numFrozenColumns={-1} />);
+                expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+            });
+
             it("throws an error if rowHeights.length !== numRows", () => {
                 const renderErroneousTable = () => shallow(<Table numRows={3} rowHeights={[1, 2]} />);
                 expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
@@ -1572,6 +1582,18 @@ describe("<Table>", () => {
                 const table = shallow(<Table numRows={1} />);
                 const updateErroneously = () => table.setProps({ numRows: -1 });
                 expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
+            });
+
+            it("on numFrozenRows update, throws an error if numFrozenRows < 0", () => {
+                const table = shallow(<Table numFrozenRows={0} />);
+                const updateErroneously = () => table.setProps({ numFrozenRows: -1 });
+                expect(updateErroneously).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+            });
+
+            it("on numFrozenColumns update, throws an error if numFrozenColumns < 0", () => {
+                const table = shallow(<Table numFrozenColumns={0} />);
+                const updateErroneously = () => table.setProps({ numFrozenColumns: -1 });
+                expect(updateErroneously).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
             });
 
             it("on numRows update, throws an error if rowHeights.length !== numRows", () => {
@@ -1610,6 +1632,15 @@ describe("<Table>", () => {
                 expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
             });
         });
+
+        // function renderTableWithColumns(numColumns: number, columnWidthsLength: number) {
+        //     // monotonically increasing numbers starting at 0.
+        //     const columnWidths = Array(columnWidthsLength)
+        //         .fill(0)
+        //         .reduce((result, _d, index) => result.push(index));
+        //     const columns = Array(numColumns).fill(<Column />);
+        //     return shallow(<Table columnWidths={columnWidths}>{columns}</Table>);
+        // }
     });
 
     xit("Accepts a sparse array of column widths", () => {

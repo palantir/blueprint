@@ -694,11 +694,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (numRows != null && numRows < 0) {
             throw new Error(Errors.TABLE_NUM_ROWS_NEGATIVE);
         }
-        if (numFrozenColumns != null && (numFrozenColumns < 0 || numFrozenColumns > numColumns)) {
-            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
+        if (numFrozenRows != null && numFrozenRows < 0) {
+            throw new Error(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
         }
-        if (numFrozenRows != null && (numFrozenRows < 0 || (numRows != null && numFrozenRows > numRows))) {
+        if (numFrozenColumns != null && numFrozenColumns < 0) {
+            throw new Error(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+        }
+        if (numFrozenRows != null && numRows != null && numFrozenRows > numRows) {
             console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
+        }
+        if (numFrozenColumns != null && numFrozenColumns > numColumns) {
+            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
         if (numRows != null && rowHeights != null && rowHeights.length !== numRows) {
             throw new Error(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
