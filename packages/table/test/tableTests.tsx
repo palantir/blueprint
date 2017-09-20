@@ -733,11 +733,6 @@ describe("<Table>", () => {
     });
 
     describe("Freezing", () => {
-        it("clamps out-of-bounds numFrozenColumns if < 0", () => {
-            const table = mount(<Table numFrozenColumns={-1} />);
-            expect(getNumClamped(table, "numFrozenColumns")).to.equal(0);
-        });
-
         it("clamps out-of-bounds numFrozenColumns if > number of columns", () => {
             const table1 = mount(<Table numFrozenColumns={1} />);
             expect(getNumClamped(table1, "numFrozenColumns")).to.equal(0);
@@ -747,11 +742,6 @@ describe("<Table>", () => {
                 </Table>,
             );
             expect(getNumClamped(table2, "numFrozenColumns")).to.equal(1);
-        });
-
-        it("clamps out-of-bounds numFrozenRows if < 0", () => {
-            const table = mount(<Table numFrozenRows={-1} />);
-            expect(getNumClamped(table, "numFrozenRows")).to.equal(0);
         });
 
         it("clamps out-of-bounds numFrozenRows if > numRows", () => {
@@ -1541,7 +1531,7 @@ describe("<Table>", () => {
         }
     });
 
-    describe.only("Validation", () => {
+    describe("Validation", () => {
         describe("on mount", () => {
             describe("errors", () => {
                 it("throws an error if numRows < 0", () => {
@@ -1576,19 +1566,40 @@ describe("<Table>", () => {
                     };
                     expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
                 });
+
+                it("throws an error if a non-<Column> child is provided", () => {
+                    // we were printing a warning before, but the Table would
+                    // eventually throw an error from deep inside, so might as
+                    // well just throw a clear error at the outset.
+                    const renderErroneousTable = () => {
+                        shallow(<Table>I'm a string, not a column</Table>);
+                    };
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
+                });
             });
 
             describe("warnings", () => {
-                it("should print a warning when numFrozenRows > numRows", () => {
-                    const consoleWarn = sinon.spy(console, "warn");
-                    shallow(<Table numRows={1} numFrozenRows={2} />);
-                    expect(consoleWarn.calledOnce);
-                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
+                let consoleWarn: Sinon.SinonSpy;
+
+                before(() => {
+                    consoleWarn = sinon.spy(console, "warn");
+                });
+
+                afterEach(() => {
+                    consoleWarn.reset();
+                });
+
+                after(() => {
                     consoleWarn.restore();
                 });
 
+                it("should print a warning when numFrozenRows > numRows", () => {
+                    shallow(<Table numRows={1} numFrozenRows={2} />);
+                    expect(consoleWarn.calledOnce);
+                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
+                });
+
                 it("should print a warning when numFrozenColumns > num <Column>s", () => {
-                    const consoleWarn = sinon.spy(console, "warn");
                     shallow(
                         <Table numFrozenColumns={2}>
                             <Column />
@@ -1596,7 +1607,6 @@ describe("<Table>", () => {
                     );
                     expect(consoleWarn.calledOnce);
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
-                    consoleWarn.restore();
                 });
             });
         });
@@ -1633,7 +1643,7 @@ describe("<Table>", () => {
                     expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
                 });
 
-                it("on num <Column>s update, throws an error if columnWidths.length !== number of <Column>s", () => {
+                it("on children update, throws an error if columnWidths.length !== number of <Column>s", () => {
                     const table = shallow(
                         <Table columnWidths={[1, 2, 3]}>
                             <Column />
@@ -1656,30 +1666,50 @@ describe("<Table>", () => {
                     const updateErroneously = () => table.setProps({ columnWidths: [1, 2, 3, 4] });
                     expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
                 });
+
+                it("on children update, throws an error if a non-<Column> child is provided", () => {
+                    const table = shallow(
+                        <Table>
+                            <Column />
+                        </Table>,
+                    );
+                    const updateErroneously = () => table.setProps({ children: [<Cell />] });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
+                });
             });
 
             describe("warnings", () => {
+                let consoleWarn: Sinon.SinonSpy;
+
+                before(() => {
+                    consoleWarn = sinon.spy(console, "warn");
+                });
+
+                afterEach(() => {
+                    consoleWarn.reset();
+                });
+
+                after(() => {
+                    consoleWarn.restore();
+                });
+
                 it("on numFrozenRows update, should print a warning when numFrozenRows > numRows", () => {
-                    const consoleWarn = sinon.spy(console, "warn");
                     const table = shallow(<Table numRows={1} numFrozenRows={1} />);
                     expect(consoleWarn.called).to.be.false;
                     table.setProps({ numFrozenRows: 2 });
                     expect(consoleWarn.calledOnce).to.be.true;
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
-                    consoleWarn.restore();
                 });
 
                 it("on numRows update, should print a warning when numFrozenRows > numRows", () => {
-                    const consoleWarn = sinon.spy(console, "warn");
                     const table = shallow(<Table numRows={1} numFrozenRows={1} />);
                     expect(consoleWarn.called).to.be.false;
                     table.setProps({ numRows: 0 });
                     expect(consoleWarn.calledOnce).to.be.true;
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
-                    consoleWarn.restore();
                 });
+
                 it("on numFrozenColumns update, should print a warning when numFrozenColumns > num <Column>s", () => {
-                    const consoleWarn = sinon.spy(console, "warn");
                     const table = shallow(
                         <Table numFrozenColumns={1}>
                             <Column />
@@ -1689,11 +1719,9 @@ describe("<Table>", () => {
                     table.setProps({ numFrozenColumns: 2 });
                     expect(consoleWarn.calledOnce).to.be.true;
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
-                    consoleWarn.restore();
                 });
 
-                it("on num <Column>s update, should print a warning when numFrozenColumns > num <Column>s", () => {
-                    const consoleWarn = sinon.spy(console, "warn");
+                it("on children update, should print a warning when numFrozenColumns > num <Column>s", () => {
                     const table = shallow(
                         <Table numFrozenColumns={1}>
                             <Column />
@@ -1703,11 +1731,9 @@ describe("<Table>", () => {
                     table.setProps({ children: [] });
                     expect(consoleWarn.calledOnce).to.be.true;
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
-                    consoleWarn.restore();
                 });
 
                 it("should print a warning when numFrozenColumns > num <Column>s", () => {
-                    const consoleWarn = sinon.spy(console, "warn");
                     shallow(
                         <Table numFrozenColumns={2}>
                             <Column />
@@ -1715,19 +1741,9 @@ describe("<Table>", () => {
                     );
                     expect(consoleWarn.calledOnce);
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
-                    consoleWarn.restore();
                 });
             });
         });
-
-        // function renderTableWithColumns(numColumns: number, columnWidthsLength: number) {
-        //     // monotonically increasing numbers starting at 0.
-        //     const columnWidths = Array(columnWidthsLength)
-        //         .fill(0)
-        //         .reduce((result, _d, index) => result.push(index));
-        //     const columns = Array(numColumns).fill(<Column />);
-        //     return shallow(<Table columnWidths={columnWidths}>{columns}</Table>);
-        // }
     });
 
     xit("Accepts a sparse array of column widths", () => {
