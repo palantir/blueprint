@@ -20,11 +20,14 @@ import {
     IProps,
     Overlay,
     PopoverInteractionKind,
+    Position,
     Utils,
 } from "@blueprintjs/core";
 
+import * as Errors from "../../common/errors";
 import { Tooltip2 } from "../tooltip/tooltip2";
 import { getArrowAngle, PopoverArrow } from "./arrow";
+import { migratePosition, resolvePropValue } from "./popoverMigrations";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 
 export interface IPopover2Props extends IOverlayableProps, IProps {
@@ -80,6 +83,12 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
     disabled?: boolean;
 
     /**
+     * Prevents the popover from appearing when `true`.
+     * @deprecated use `disabled`
+     */
+    isDisabled?: boolean;
+
+    /**
      * Enables an invisible overlay beneath the popover that captures clicks and prevents
      * interaction with the rest of the document until the popover is closed.
      * This prop is only available when `interactionKind` is `PopoverInteractionKind.CLICK`.
@@ -87,6 +96,13 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
      * @default false
      */
     hasBackdrop?: boolean;
+
+    /**
+     * Enables an invisible overlay beneath the popover that captures clicks and prevents
+     * interaction with the rest of the document until the popover is closed.
+     * @deprecated use `hasBackdrop`
+     */
+    isModal?: boolean;
 
     /**
      * Whether the popover is visible. Passing this prop puts the popover in
@@ -121,6 +137,12 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
      * @default true
      */
     openOnTargetFocus?: boolean;
+
+    /**
+     * The position (relative to the target) at which the popover should appear.
+     * @deprecated use `placement`
+     */
+    position?: Position;
 
     /**
      * A space-delimited string of class names that are applied to the popover (but not the target).
@@ -182,8 +204,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
     public static defaultProps: IPopover2Props = {
         defaultIsOpen: false,
-        disabled: false,
-        hasBackdrop: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
         inheritDarkTheme: true,
@@ -192,9 +212,12 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         minimal: false,
         modifiers: {},
         openOnTargetFocus: true,
-        placement: "auto",
         rootElementTag: "span",
         transitionDuration: 300,
+        // Migrated props excluded from default props:
+        // For `disabled`, see `getDisabled`.
+        // For `hasBackdrop`, see `getHasBackdrop`.
+        // For `placement`, see `getPlacement`.
     };
 
     /**
@@ -218,7 +241,8 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     public constructor(props?: IPopover2Props, context?: any) {
         super(props, context);
 
-        let isOpen = props.defaultIsOpen && !props.disabled;
+        const disabled = getDisabled(props);
+        let isOpen = props.defaultIsOpen && !disabled;
         if (props.isOpen != null) {
             isOpen = props.isOpen;
         }
@@ -232,6 +256,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     public render() {
         const { className } = this.props;
         const { isOpen } = this.state;
+        const disabled = getDisabled(this.props);
 
         let targetProps: React.HTMLAttributes<HTMLElement>;
         if (this.isHoverInteractionKind()) {
@@ -264,7 +289,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         });
 
         const isContentEmpty = children.content == null;
-        if (isContentEmpty && !this.props.disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
+        if (isContentEmpty && !disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
             console.warn("[Blueprint] Disabling <Popover2> with empty/whitespace content...");
         }
 
@@ -282,7 +307,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                     className={this.props.portalClassName}
                     didOpen={this.handleContentMount}
                     enforceFocus={this.props.enforceFocus}
-                    hasBackdrop={this.props.hasBackdrop}
+                    hasBackdrop={getHasBackdrop(this.props)}
                     inline={this.props.inline}
                     isOpen={isOpen && !isContentEmpty}
                     onClose={this.handleOverlayClose}
@@ -302,7 +327,10 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     public componentWillReceiveProps(nextProps: IPopover2Props) {
         super.componentWillReceiveProps(nextProps);
 
-        if (nextProps.isOpen == null && nextProps.disabled && !this.props.disabled) {
+        const disabled = getDisabled(this.props);
+        const nextDisabled = getDisabled(nextProps);
+
+        if (nextProps.isOpen == null && nextDisabled && !disabled) {
             // ok to use setOpenState here because disabled and isOpen are mutex.
             this.setOpenState(false);
         } else if (nextProps.isOpen !== this.props.isOpen) {
@@ -329,6 +357,18 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         super.componentWillUnmount();
     }
 
+    protected validateProps(props: IPopover2Props & { children?: React.ReactNode }) {
+        if (props.isDisabled !== undefined) {
+            console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_DISABLED);
+        }
+        if (props.isModal !== undefined) {
+            console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_MODAL);
+        }
+        if (props.position !== undefined) {
+            console.warn(Errors.POPOVER_WARN_DEPRECATED_POSITION);
+        }
+    }
+
     private updateDarkParent() {
         if (!this.props.inline) {
             const hasDarkParent = this.targetElement.closest(`.${Classes.DARK}`) != null;
@@ -338,6 +378,8 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
     private renderPopper(content: JSX.Element) {
         const { inline, interactionKind, modifiers } = this.props;
+        const placement = getPlacement(this.props);
+
         const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
@@ -378,7 +420,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         };
 
         return (
-            <Popper className={Classes.TRANSITION_CONTAINER} placement={this.props.placement} modifiers={allModifiers}>
+            <Popper className={Classes.TRANSITION_CONTAINER} placement={placement} modifiers={allModifiers}>
                 <div
                     className={popoverClasses}
                     ref={this.refHandlers.popover}
@@ -440,7 +482,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             !this.props.openOnTargetFocus
         ) {
             this.handleMouseLeave(e);
-        } else if (!this.props.disabled) {
+        } else if (!getDisabled(this.props)) {
             // only begin opening popover when it is enabled
             this.setOpenState(true, e, this.props.hoverOpenDelay);
         }
@@ -470,7 +512,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
     private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
-        if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
+        if (!getDisabled(this.props) && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
                 this.setState(prevState => ({ isOpen: !prevState.isOpen }));
             } else {
@@ -534,4 +576,22 @@ function ensureElement(child: React.ReactChild | undefined) {
     } else {
         return child;
     }
+}
+
+function getDisabled(props: IPopover2Props): boolean {
+    return resolvePropValue([props.disabled, props.isDisabled], false);
+}
+
+function getHasBackdrop(props: IPopover2Props): boolean {
+    return resolvePropValue([props.hasBackdrop, props.isModal], false);
+}
+
+function getPlacement(props: IPopover2Props): Placement {
+    let placement: Placement = "auto";
+    if (props.placement !== undefined) {
+        placement = props.placement;
+    } else if (props.position !== undefined) {
+        placement = migratePosition(props.position);
+    }
+    return placement;
 }
