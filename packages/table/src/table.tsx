@@ -688,6 +688,20 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
         const numColumns = React.Children.count(children);
 
+        // do cheap checks first
+        if (numFrozenColumns != null && (numFrozenColumns < 0 || numFrozenColumns > numColumns)) {
+            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
+        }
+        if (numFrozenRows != null && (numFrozenRows < 0 || (numRows != null && numFrozenRows > numRows))) {
+            console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
+        }
+        if (numRows != null && rowHeights != null && rowHeights.length !== numRows) {
+            throw new Error(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+        }
+        if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
+            throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+        }
+
         React.Children.forEach(children, (child: React.ReactElement<any>) => {
             // save as a variable so that union type narrowing works
             const childType = child.type;
@@ -701,19 +715,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 }
             }
         });
-
-        if (numFrozenColumns != null && (numFrozenColumns < 0 || numFrozenColumns > numColumns)) {
-            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
-        }
-        if (numFrozenRows != null && (numFrozenRows < 0 || (numRows != null && numFrozenRows > numRows))) {
-            console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
-        }
-        if (numRows != null && rowHeights != null && rowHeights.length !== numRows) {
-            throw new Error(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
-        }
-        if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
-            throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
-        }
     }
 
     // Quadrant refs
