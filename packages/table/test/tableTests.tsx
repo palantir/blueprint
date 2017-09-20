@@ -1543,6 +1543,11 @@ describe("<Table>", () => {
 
     describe.only("Validation", () => {
         describe("on mount", () => {
+            it("throws an error if numRows < 0", () => {
+                const renderErroneousTable = () => shallow(<Table numRows={-1} />);
+                expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
+            });
+
             it("throws an error if rowHeights.length !== numRows", () => {
                 const renderErroneousTable = () => shallow(<Table numRows={3} rowHeights={[1, 2]} />);
                 expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
@@ -1563,6 +1568,12 @@ describe("<Table>", () => {
         });
 
         describe("on update", () => {
+            it("on numRows update, throws an error if numRows < 0", () => {
+                const table = shallow(<Table numRows={1} />);
+                const updateErroneously = () => table.setProps({ numRows: -1 });
+                expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
+            });
+
             it("on numRows update, throws an error if rowHeights.length !== numRows", () => {
                 const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
                 const updateErroneously = () => table.setProps({ numRows: 4 });

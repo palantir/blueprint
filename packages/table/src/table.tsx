@@ -691,6 +691,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const numColumns = React.Children.count(children);
 
         // do cheap checks first
+        if (numRows != null && numRows < 0) {
+            throw new Error(Errors.TABLE_NUM_ROWS_NEGATIVE);
+        }
         if (numFrozenColumns != null && (numFrozenColumns < 0 || numFrozenColumns > numColumns)) {
             console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
