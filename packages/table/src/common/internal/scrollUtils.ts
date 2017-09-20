@@ -67,16 +67,11 @@ export function getScrollPositionForRegion(
  * If the target scroll bar is not present, 0 is returned.
  */
 export function measureScrollBarThickness(element: HTMLElement, direction: "horizontal" | "vertical") {
-    const isHorizontal = direction === "horizontal";
-
-    // measure the *height* of horizontal scroll bars.
-    // measure the *width* of vertical scroll bars.
-    const offsetSize = isHorizontal ? element.offsetHeight : element.offsetWidth;
-    const clientSize = isHorizontal ? element.clientHeight : element.clientWidth;
-
     // offset size includes the scroll bar. client size does not.
-    // the difference gives the width of the scroll bar.
-    return offsetSize - clientSize;
+    // the difference gives the thickness of the scroll bar.
+    return direction === "horizontal"
+        ? element.offsetHeight - element.clientHeight
+        : element.offsetWidth - element.clientWidth;
 }
 
 /**

@@ -7,7 +7,7 @@
 
 import { QuadrantType } from "./tableQuadrant";
 
-interface IScrollOffsetMap {
+export interface IScrollOffsetMap {
     scrollLeft: number;
     scrollTop: number;
 }
@@ -37,7 +37,7 @@ export class TableQuadrantStackCache {
     // Getters
     // =======
 
-    public getQuadrantScrollOffset(quadrantType: QuadrantType, scrollKey: "scrollLeft" | "scrollTop") {
+    public getQuadrantScrollOffset(quadrantType: QuadrantType, scrollKey: keyof IScrollOffsetMap) {
         return this.getQuadrantScrollOffsetMap(quadrantType)[scrollKey];
     }
 
@@ -60,7 +60,7 @@ export class TableQuadrantStackCache {
         this.cachedRowHeaderWidth = width;
     }
 
-    public setQuadrantScrollOffset(quadrantType: QuadrantType, scrollKey: "scrollLeft" | "scrollTop", offset: number) {
+    public setQuadrantScrollOffset(quadrantType: QuadrantType, scrollKey: keyof IScrollOffsetMap, offset: number) {
         this.getQuadrantScrollOffsetMap(quadrantType)[scrollKey] = offset;
     }
 

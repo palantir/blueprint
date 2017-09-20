@@ -58,19 +58,13 @@ export class Locator implements ILocator {
     private numFrozenRows: number;
     private numFrozenColumns: number;
 
-    // the root table element within which a click is deemed valid and relevant.
-    private tableElement: HTMLElement;
-
-    // the scrollable element that wraps the cell container.
-    private scrollContainerElement: HTMLElement;
-
-    // the element containing all body cells in the grid (excluding headers).
-    private cellContainerElement: HTMLElement;
-
     public constructor(
-        tableElement: HTMLElement,
-        scrollContainerElement: HTMLElement,
-        cellContainerElement: HTMLElement,
+        /* The root table element within which a click is deemed valid and relevant. */
+        private tableElement: HTMLElement,
+        /* The scrollable element that wraps the cell container. */
+        private scrollContainerElement: HTMLElement,
+        /* The element containing all body cells in the grid (excluding headers). */
+        private cellContainerElement: HTMLElement,
     ) {
         this.numFrozenRows = 0;
         this.numFrozenColumns = 0;

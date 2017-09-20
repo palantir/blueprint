@@ -271,6 +271,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const onMainQuadrantScroll = throttleScrolling
             ? this.throttledHandleMainQuadrantScroll
             : this.handleMainQuadrantScroll;
+        const onWheel = throttleScrolling ? this.throttledHandleWheel : this.handleWheel;
 
         return (
             <div className={Classes.TABLE_QUADRANT_STACK}>
@@ -279,7 +280,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                     grid={grid}
                     isRowHeaderShown={isRowHeaderShown}
                     onScroll={onMainQuadrantScroll}
-                    onWheel={throttleScrolling ? this.throttledHandleWheel : this.handleWheel}
+                    onWheel={onWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.MAIN].quadrant}
                     quadrantType={QuadrantType.MAIN}
                     renderBody={renderBody}
@@ -291,7 +292,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 <TableQuadrant
                     grid={grid}
                     isRowHeaderShown={isRowHeaderShown}
-                    onWheel={throttleScrolling ? this.throttledHandleWheel : this.handleWheel}
+                    onWheel={onWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP].quadrant}
                     quadrantType={QuadrantType.TOP}
                     renderBody={renderBody}
@@ -303,7 +304,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 <TableQuadrant
                     grid={grid}
                     isRowHeaderShown={isRowHeaderShown}
-                    onWheel={throttleScrolling ? this.throttledHandleWheel : this.handleWheel}
+                    onWheel={onWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
                     quadrantType={QuadrantType.LEFT}
                     renderBody={renderBody}
@@ -315,7 +316,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 <TableQuadrant
                     grid={grid}
                     isRowHeaderShown={isRowHeaderShown}
-                    onWheel={throttleScrolling ? this.throttledHandleWheel : this.handleWheel}
+                    onWheel={onWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].quadrant}
                     quadrantType={QuadrantType.TOP_LEFT}
                     renderBody={renderBody}
