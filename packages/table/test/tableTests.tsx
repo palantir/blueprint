@@ -628,9 +628,8 @@ describe("<Table>", () => {
                 .mouse("mouseup", adjustedOffsetX);
 
             // called once on mousedown (to select column 0), once on mouseup (to move the selection)
-            expect(onSelection.calledTwice).to.be.true;
-            expect(onSelection.firstCall.calledWith([Regions.column(0)])).to.be.true;
-            expect(onSelection.secondCall.calledWith([Regions.column(newIndex)])).to.be.true;
+            expect(onSelection.callCount).to.equal(2);
+            expect(onSelection.getCall(1).args).to.deep.equal([[Regions.column(newIndex)]]);
         });
 
         function mountTable(props: Partial<ITableProps>) {
@@ -1314,12 +1313,15 @@ describe("<Table>", () => {
             scrollTop,
         };
 
+        const rowHeadersElement = table.getDOMNode().querySelector(`.${Classes.TABLE_ROW_HEADERS}`) as HTMLElement;
+        const rowHeaderWidth = rowHeadersElement == null ? 0 : parseInt(rowHeadersElement.style.width, 10);
+
         // the scrollContainerElement *contains* the cellContainerElement, so
         // when we scroll the former, the latter's bounding rect offsets change
         // commensurately.
         locator.cellContainerElement = {
             ...baseStyles,
-            getBoundingClientRect: () => ({ left: 0 - scrollLeft, top: 0 - scrollTop }),
+            getBoundingClientRect: () => ({ left: rowHeaderWidth - scrollLeft, top: 0 - scrollTop }),
         };
     }
 
