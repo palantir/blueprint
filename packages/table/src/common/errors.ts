@@ -20,3 +20,4 @@ export const TABLE_NON_COLUMN_CHILDREN_WARNING = `${ns} <Table> Children of Tabl
 export const TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING = `${ns} <Table> numFrozenColumns must be in [0, number of columns].`;
 export const TABLE_NUM_FROZEN_ROWS_BOUND_WARNING = `${ns} <Table> numFrozenRows must be in [0, numRows].`;
 export const TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH = `${ns} <Table> requires rowHeights.length to equal numRows when both props are provided.`;
+export const TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH = `${ns} <Table> requires columnWidths.length to equal the number of <Column>s if provided.`;

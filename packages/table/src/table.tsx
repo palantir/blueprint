@@ -685,7 +685,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
-        const { children, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
+        const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
         const numColumns = React.Children.count(children);
 
         React.Children.forEach(children, (child: React.ReactElement<any>) => {
@@ -710,6 +710,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
         if (numRows != null && rowHeights != null && rowHeights.length !== numRows) {
             throw new Error(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+        }
+        if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
+            throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
     }
 
