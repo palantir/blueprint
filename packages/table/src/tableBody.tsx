@@ -19,7 +19,7 @@ import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
 import { IRegion, Regions } from "./regions";
-import { ITableBodyCellsProps, TableBodyCells } from "./tableBodyCells";
+import { cellClassNames, ITableBodyCellsProps, TableBodyCells } from "./tableBodyCells";
 
 export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps {
     /**
@@ -63,6 +63,10 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         loading: false,
         renderMode: RenderMode.BATCH,
     };
+
+    public static cellClassNames(rowIndex: number, columnIndex: number) {
+        return cellClassNames(rowIndex, columnIndex);
+    }
 
     private activationCell: ICellCoordinates;
 

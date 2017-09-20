@@ -68,14 +68,6 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
         renderMode: RenderMode.BATCH,
     };
 
-    /**
-     * Returns the array of class names that must be applied to each table
-     * cell so that we can locate any cell based on its coordinate.
-     */
-    private static cellClassNames(rowIndex: number, columnIndex: number) {
-        return [Classes.rowCellIndexClass(rowIndex), Classes.columnCellIndexClass(columnIndex)];
-    }
-
     private static cellReactKey(rowIndex: number, columnIndex: number) {
         return `cell-${rowIndex}-${columnIndex}`;
     }
@@ -161,7 +153,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
         const { cellRenderer, loading, grid } = this.props;
         const baseCell = isGhost ? emptyCellRenderer() : cellRenderer(rowIndex, columnIndex);
         const className = classNames(
-            TableBodyCells.cellClassNames(rowIndex, columnIndex),
+            cellClassNames(rowIndex, columnIndex),
             extremaClasses,
             {
                 [Classes.TABLE_CELL_GHOST]: isGhost,
@@ -191,4 +183,12 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
             CoreUtils.safeInvoke(onCompleteRender);
         }
     }
+}
+
+/**
+ * Returns the array of class names that must be applied to each table
+ * cell so that we can locate any cell based on its coordinate.
+ */
+export function cellClassNames(rowIndex: number, columnIndex: number) {
+    return [Classes.rowCellIndexClass(rowIndex), Classes.columnCellIndexClass(columnIndex)];
 }
