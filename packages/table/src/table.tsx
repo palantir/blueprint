@@ -690,7 +690,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
         const numColumns = React.Children.count(children);
 
-        // do cheap checks first
+        // do cheap error-checking first.
         if (numRows != null && numRows < 0) {
             throw new Error(Errors.TABLE_NUM_ROWS_NEGATIVE);
         }
@@ -700,12 +700,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (numFrozenColumns != null && numFrozenColumns < 0) {
             throw new Error(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
         }
-        if (numFrozenRows != null && numRows != null && numFrozenRows > numRows) {
-            console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
-        }
-        if (numFrozenColumns != null && numFrozenColumns > numColumns) {
-            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
-        }
         if (numRows != null && rowHeights != null && rowHeights.length !== numRows) {
             throw new Error(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
         }
@@ -713,6 +707,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
 
+        // these are recoverable scenarios, so just print a warning.
+        if (numFrozenRows != null && numRows != null && numFrozenRows > numRows) {
+            console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
+        }
+        if (numFrozenColumns != null && numFrozenColumns > numColumns) {
+            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
+        }
         React.Children.forEach(children, (child: React.ReactElement<any>) => {
             // save as a variable so that union type narrowing works
             const childType = child.type;
