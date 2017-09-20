@@ -1543,94 +1543,102 @@ describe("<Table>", () => {
 
     describe.only("Validation", () => {
         describe("on mount", () => {
-            it("throws an error if numRows < 0", () => {
-                const renderErroneousTable = () => shallow(<Table numRows={-1} />);
-                expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
+            describe("errors", () => {
+                it("throws an error if numRows < 0", () => {
+                    const renderErroneousTable = () => shallow(<Table numRows={-1} />);
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
+                });
+
+                it("throws an error if numFrozenRows < 0", () => {
+                    const renderErroneousTable = () => shallow(<Table numFrozenRows={-1} />);
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+                });
+
+                it("throws an error if numFrozenColumns < 0", () => {
+                    const renderErroneousTable = () => shallow(<Table numFrozenColumns={-1} />);
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+                });
+
+                it("throws an error if rowHeights.length !== numRows", () => {
+                    const renderErroneousTable = () => shallow(<Table numRows={3} rowHeights={[1, 2]} />);
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+                });
+
+                it("throws an error if columnWidths.length !== number of <Column>s", () => {
+                    const renderErroneousTable = () => {
+                        shallow(
+                            <Table columnWidths={[1, 2]}>
+                                <Column />
+                                <Column />
+                                <Column />
+                            </Table>,
+                        );
+                    };
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+                });
             });
 
-            it("throws an error if numFrozenRows < 0", () => {
-                const renderErroneousTable = () => shallow(<Table numFrozenRows={-1} />);
-                expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
-            });
+            describe("warnings", () => {});
+        });
 
-            it("throws an error if numFrozenColumns < 0", () => {
-                const renderErroneousTable = () => shallow(<Table numFrozenColumns={-1} />);
-                expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
-            });
+        describe("on update", () => {
+            describe("errors", () => {
+                it("on numRows update, throws an error if numRows < 0", () => {
+                    const table = shallow(<Table numRows={1} />);
+                    const updateErroneously = () => table.setProps({ numRows: -1 });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
+                });
 
-            it("throws an error if rowHeights.length !== numRows", () => {
-                const renderErroneousTable = () => shallow(<Table numRows={3} rowHeights={[1, 2]} />);
-                expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
-            });
+                it("on numFrozenRows update, throws an error if numFrozenRows < 0", () => {
+                    const table = shallow(<Table numFrozenRows={0} />);
+                    const updateErroneously = () => table.setProps({ numFrozenRows: -1 });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+                });
 
-            it("throws an error if columnWidths.length !== number of <Column>s", () => {
-                const renderErroneousTable = () => {
-                    shallow(
-                        <Table columnWidths={[1, 2]}>
+                it("on numFrozenColumns update, throws an error if numFrozenColumns < 0", () => {
+                    const table = shallow(<Table numFrozenColumns={0} />);
+                    const updateErroneously = () => table.setProps({ numFrozenColumns: -1 });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+                });
+
+                it("on numRows update, throws an error if rowHeights.length !== numRows", () => {
+                    const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
+                    const updateErroneously = () => table.setProps({ numRows: 4 });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+                });
+
+                it("on rowHeights update, throws an error if rowHeights.length !== numRows", () => {
+                    const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
+                    const updateErroneously = () => table.setProps({ rowHeights: [1, 2, 3, 4] });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+                });
+
+                it("on num <Column>s update, throws an error if columnWidths.length !== number of <Column>s", () => {
+                    const table = shallow(
+                        <Table columnWidths={[1, 2, 3]}>
                             <Column />
                             <Column />
                             <Column />
                         </Table>,
                     );
-                };
-                expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
-            });
-        });
+                    const updateErroneously = () => table.setProps({ children: [<Column />, <Column />] });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+                });
 
-        describe("on update", () => {
-            it("on numRows update, throws an error if numRows < 0", () => {
-                const table = shallow(<Table numRows={1} />);
-                const updateErroneously = () => table.setProps({ numRows: -1 });
-                expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
-            });
-
-            it("on numFrozenRows update, throws an error if numFrozenRows < 0", () => {
-                const table = shallow(<Table numFrozenRows={0} />);
-                const updateErroneously = () => table.setProps({ numFrozenRows: -1 });
-                expect(updateErroneously).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
-            });
-
-            it("on numFrozenColumns update, throws an error if numFrozenColumns < 0", () => {
-                const table = shallow(<Table numFrozenColumns={0} />);
-                const updateErroneously = () => table.setProps({ numFrozenColumns: -1 });
-                expect(updateErroneously).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+                it("on columnWidths update, throws an error if columnWidths.length !== number of <Column>s", () => {
+                    const table = shallow(
+                        <Table columnWidths={[1, 2, 3]}>
+                            <Column />
+                            <Column />
+                            <Column />
+                        </Table>,
+                    );
+                    const updateErroneously = () => table.setProps({ columnWidths: [1, 2, 3, 4] });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+                });
             });
 
-            it("on numRows update, throws an error if rowHeights.length !== numRows", () => {
-                const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
-                const updateErroneously = () => table.setProps({ numRows: 4 });
-                expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
-            });
-
-            it("on rowHeights update, throws an error if rowHeights.length !== numRows", () => {
-                const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
-                const updateErroneously = () => table.setProps({ rowHeights: [1, 2, 3, 4] });
-                expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
-            });
-
-            it("on num <Column>s update, throws an error if columnWidths.length !== number of <Column>s", () => {
-                const table = shallow(
-                    <Table columnWidths={[1, 2, 3]}>
-                        <Column />
-                        <Column />
-                        <Column />
-                    </Table>,
-                );
-                const updateErroneously = () => table.setProps({ children: [<Column />, <Column />] });
-                expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
-            });
-
-            it("on columnWidths update, throws an error if columnWidths.length !== number of <Column>s", () => {
-                const table = shallow(
-                    <Table columnWidths={[1, 2, 3]}>
-                        <Column />
-                        <Column />
-                        <Column />
-                    </Table>,
-                );
-                const updateErroneously = () => table.setProps({ columnWidths: [1, 2, 3, 4] });
-                expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
-            });
+            describe("warnings", () => {});
         });
 
         // function renderTableWithColumns(numColumns: number, columnWidthsLength: number) {
