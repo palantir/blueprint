@@ -6,7 +6,7 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
@@ -16,6 +16,7 @@ import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { Cell, Column, IColumnProps, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
+import * as Errors from "../src/common/errors";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
@@ -1538,6 +1539,66 @@ describe("<Table>", () => {
             // delay to next frame to let throttled scroll logic execute first
             delayToNextFrame(callback);
         }
+    });
+
+    describe.only("Validation", () => {
+        describe("on mount", () => {
+            it("throws an error if rowHeights.length !== numRows", () => {
+                const renderErroneousTable = () => shallow(<Table numRows={3} rowHeights={[1, 2]} />);
+                expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+            });
+
+            it("throws an error if columnWidths.length !== number of <Column>s", () => {
+                const renderErroneousTable = () => {
+                    shallow(
+                        <Table columnWidths={[1, 2]}>
+                            <Column />
+                            <Column />
+                            <Column />
+                        </Table>,
+                    );
+                };
+                expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+            });
+        });
+
+        describe("on update", () => {
+            it("on numRows update, throws an error if rowHeights.length !== numRows", () => {
+                const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
+                const updateErroneously = () => table.setProps({ numRows: 4 });
+                expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+            });
+
+            it("on rowHeights update, throws an error if rowHeights.length !== numRows", () => {
+                const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
+                const updateErroneously = () => table.setProps({ rowHeights: [1, 2, 3, 4] });
+                expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+            });
+
+            it("on num <Column>s update, throws an error if columnWidths.length !== number of <Column>s", () => {
+                const table = shallow(
+                    <Table columnWidths={[1, 2, 3]}>
+                        <Column />
+                        <Column />
+                        <Column />
+                    </Table>,
+                );
+                const updateErroneously = () => table.setProps({ children: [<Column />, <Column />] });
+                expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+            });
+
+            it("on columnWidths update, throws an error if columnWidths.length !== number of <Column>s", () => {
+                const table = shallow(
+                    <Table columnWidths={[1, 2, 3]}>
+                        <Column />
+                        <Column />
+                        <Column />
+                    </Table>,
+                );
+                const updateErroneously = () => table.setProps({ columnWidths: [1, 2, 3, 4] });
+                expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+            });
+        });
     });
 
     xit("Accepts a sparse array of column widths", () => {

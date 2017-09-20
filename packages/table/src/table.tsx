@@ -524,6 +524,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
+        super.componentWillReceiveProps(nextProps);
+
         const {
             children,
             columnWidths,
