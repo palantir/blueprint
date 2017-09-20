@@ -14,12 +14,9 @@ export const ROW_HEADER_CELL_MENU_DEPRECATED = `${deprec} <RowHeaderCell> menu i
 
 export const QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED = `${ns} <TableQuadrant> onScroll need not be defined for any quadrant aside from the MAIN quadrant.`;
 
+export const TABLE_EXPAND_FOCUSED_REGION_MULTI_COLUMN_REGION = `${ns} <Table> Cannot expand a FULL_COLUMNS selection using a multi-column region.`;
+export const TABLE_EXPAND_FOCUSED_REGION_MULTI_ROW_REGION = `${ns} <Table> Cannot expand a FULL_COLUMNS selection using a multi-row region.`;
 export const TABLE_NON_COLUMN_CHILDREN_WARNING = `${ns} <Table> Children of Table must be Columns"`;
-
-export const TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING = `${ns} <Table> numFrozenColumns must be in [0, number of columns]`;
-
-export const TABLE_NUM_FROZEN_ROWS_BOUND_WARNING = `${ns} <Table> numFrozenRows must be in [0, numRows]`;
-
-export const TABLE_EXPAND_FOCUSED_REGION_MULTI_ROW_REGION = `${ns} <Table> Cannot expand a FULL_COLUMNS selection using a multi-row region`;
-
-export const TABLE_EXPAND_FOCUSED_REGION_MULTI_COLUMN_REGION = `${ns} <Table> Cannot expand a FULL_COLUMNS selection using a multi-column region`;
+export const TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING = `${ns} <Table> numFrozenColumns must be in [0, number of columns].`;
+export const TABLE_NUM_FROZEN_ROWS_BOUND_WARNING = `${ns} <Table> numFrozenRows must be in [0, numRows].`;
+export const TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH = `${ns} <Table> requires rowHeights.length to equal numRows when both props are provided.`;
