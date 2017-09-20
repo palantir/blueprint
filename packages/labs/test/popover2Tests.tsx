@@ -8,13 +8,14 @@
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
+import { Popper } from "react-popper";
 
-import { Classes, Keys, Overlay, PopoverInteractionKind, Tooltip, Utils } from "@blueprintjs/core";
+import { Classes, Keys, Overlay, PopoverInteractionKind, Position, Tooltip, Utils } from "@blueprintjs/core";
 import * as Errors from "@blueprintjs/core/src/common/errors";
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 
 import { Arrow } from "react-popper";
-import { IPopover2Props, IPopover2State, Popover2 } from "../src/index";
+import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../src/index";
 
 describe("<Popover2>", () => {
     let testsContainerElement: HTMLElement;
@@ -72,7 +73,7 @@ describe("<Popover2>", () => {
         });
     });
 
-    it("propogates class names correctly", () => {
+    it("propagates class names correctly", () => {
         wrapper = renderPopover({
             className: "bar",
             interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
@@ -573,6 +574,97 @@ describe("<Popover2>", () => {
                 () => assert.equal(wrapper.state("transformOrigin"), "center top"),
                 done,
             );
+        });
+    });
+
+    describe("deprecated prop shims", () => {
+        it("should convert position to placement", () => {
+            const popover = shallow(
+                <Popover2 inline={true} position={Position.BOTTOM_LEFT}>
+                    child
+                </Popover2>,
+            );
+            {
+                const actual: Placement = popover.find(Popper).prop("placement");
+                const expected: Placement = "bottom-start";
+                assert.strictEqual(actual, expected);
+            }
+
+            popover.setProps({ position: Position.LEFT_BOTTOM });
+            {
+                const actual: Placement = popover.find(Popper).prop("placement");
+                const expected: Placement = "left-end";
+                assert.strictEqual(actual, expected);
+            }
+        });
+
+        it("should convert isModal to hasBackdrop", () => {
+            const popover = shallow(
+                <Popover2 inline={true} isModal={true}>
+                    child
+                </Popover2>,
+            );
+            assert.isTrue(popover.find(Overlay).prop("hasBackdrop"));
+
+            popover.setProps({ isModal: false });
+            assert.isFalse(popover.find(Overlay).prop("hasBackdrop"));
+        });
+
+        it("should convert isDisabled to disabled", () => {
+            renderPopover({
+                interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
+                isDisabled: true,
+            })
+                .simulateTarget("click")
+                .assertIsOpen(false)
+                .setProps({ isDisabled: false })
+                .simulateTarget("click")
+                .assertIsOpen(true);
+        });
+
+        it("placement should take precedence over position", () => {
+            const popover = shallow(
+                <Popover2 inline={true} placement="left-end" position={Position.BOTTOM_LEFT}>
+                    child
+                </Popover2>,
+            );
+            {
+                const actual: Placement = popover.find(Popper).prop("placement");
+                const expected: Placement = "left-end";
+                assert.strictEqual(actual, expected);
+            }
+
+            popover.setProps({ placement: "bottom-start", position: Position.LEFT_BOTTOM });
+            {
+                const actual: Placement = popover.find(Popper).prop("placement");
+                const expected: Placement = "bottom-start";
+                assert.strictEqual(actual, expected);
+            }
+        });
+
+        it("hasBackdrop should take precedence over isModal", () => {
+            const popover = shallow(
+                <Popover2 inline={true} hasBackdrop={true} isModal={false}>
+                    child
+                </Popover2>,
+            );
+            assert.isTrue(popover.find(Overlay).prop("hasBackdrop"));
+
+            popover.setProps({ hasBackdrop: false, isModal: true });
+            assert.isFalse(popover.find(Overlay).prop("hasBackdrop"));
+        });
+
+        it("disabled should take precedence over isDisabled", () => {
+            renderPopover({
+                disabled: true,
+                interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
+                isDisabled: false,
+            })
+                .simulateTarget("click")
+                .assertIsOpen(false)
+                .setProps({ disabled: false, isDisabled: true })
+                .simulateTarget("click")
+                .assertIsOpen(true);
         });
     });
 
