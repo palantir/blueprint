@@ -346,7 +346,8 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
         const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
         const modifiedHandleResizeEnd = (size: number) => this.props.handleResizeEnd(index, size);
-        const modifiedHandleResizeHandleDoubleClick = () => CoreUtils.safeInvoke(this.props.handleResizeDoubleClick, index);
+        const modifiedHandleResizeHandleDoubleClick = () =>
+            CoreUtils.safeInvoke(this.props.handleResizeDoubleClick, index);
 
         const baseChildren = (
             <DragSelectable
