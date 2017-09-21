@@ -102,7 +102,7 @@ export class Locator implements ILocator {
 
     public getWidestVisibleCellInColumn(columnIndex: number): number {
         const columnCellSelector = this.getColumnCellSelector(columnIndex);
-        const columnHeaderAndBodyCells = this.cellContainerElement.querySelectorAll(columnCellSelector);
+        const columnHeaderAndBodyCells = this.tableElement.querySelectorAll(columnCellSelector);
 
         let maxWidth = 0;
         for (let i = 0; i < columnHeaderAndBodyCells.length; i++) {
@@ -118,9 +118,7 @@ export class Locator implements ILocator {
     public getTallestVisibleCellInColumn(columnIndex: number): number {
         // consider only body cells, hence the extra Classes.TABLE_CELL specificity
         const columnCellSelector = this.getColumnCellSelector(columnIndex);
-        const columnBodyCells = this.cellContainerElement.querySelectorAll(
-            `${columnCellSelector}.${Classes.TABLE_CELL}`,
-        );
+        const columnBodyCells = this.tableElement.querySelectorAll(`${columnCellSelector}.${Classes.TABLE_CELL}`);
 
         let maxHeight = 0;
         for (let i = 0; i < columnBodyCells.length; i++) {
