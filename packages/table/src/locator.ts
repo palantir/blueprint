@@ -68,10 +68,6 @@ export class Locator implements ILocator {
     ) {
         this.numFrozenRows = 0;
         this.numFrozenColumns = 0;
-
-        this.tableElement = tableElement;
-        this.scrollContainerElement = scrollContainerElement;
-        this.cellContainerElement = cellContainerElement;
     }
 
     // Setters
