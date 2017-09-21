@@ -14,12 +14,16 @@ import { getLocalTimezone } from "./timezoneUtils";
 export interface ITimezoneItem {
     /** Key to be used as the rendered react key. */
     key: string;
+
     /** Text for the timezone. */
     text: string;
+
     /** Label for the timezone. */
     label: string;
+
     /** Optional icon for the timezone. */
     iconName?: IconName;
+
     /** The actual timezone. */
     timezone: string;
 }

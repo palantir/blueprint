@@ -33,7 +33,7 @@ export function formatTimezone(
     switch (displayFormat) {
         case TimezoneDisplayFormat.ABBREVIATION:
             // Fall back to the offset when there is no abbreviation.
-            return abbreviation ? abbreviation : offsetAsString;
+            return abbreviation !== undefined ? abbreviation : offsetAsString;
         case TimezoneDisplayFormat.NAME:
             return timezone;
         case TimezoneDisplayFormat.OFFSET:
