@@ -296,17 +296,31 @@ describe("<Table>", () => {
     });
 
     describe("onCompleteRender", () => {
-        it("triggers onCompleteRender only once: when cells finish rendering in the MAIN quadrant", () => {
+        it("triggers immediately on mount/update with RenderMode.NONE", () => {
             const onCompleteRenderSpy = sinon.spy();
-
-            // use RenderMode.NONE because it causes all cells to render synchronously
-            mount(
+            const table = mount(
                 <Table numRows={100} onCompleteRender={onCompleteRenderSpy} renderMode={RenderMode.NONE}>
                     <Column renderCell={renderCell} />
                 </Table>,
             );
-
             expect(onCompleteRenderSpy.callCount).to.equal(1);
+            table.setProps({ numRows: 101 });
+            expect(onCompleteRenderSpy.callCount).to.equal(2);
+        });
+
+        it("triggers immediately on mount/update with RenderMode.BATCH for very small batches", () => {
+            const onCompleteRenderSpy = sinon.spy();
+            const numRows = 1;
+
+            // RenderMode.BATCH is the default
+            const table = mount(
+                <Table numRows={numRows} onCompleteRender={onCompleteRenderSpy}>
+                    <Column renderCell={renderCell} />
+                </Table>,
+            );
+            expect(onCompleteRenderSpy.callCount).to.equal(1);
+            table.setProps({ numRows: 2 }); // still small enough to fit in one batch
+            expect(onCompleteRenderSpy.callCount).to.equal(2);
         });
     });
 
