@@ -64,6 +64,10 @@ export function filterWithQueryCandidates<T>(
         keyToItem[getItemKey(item)] = item;
     }
 
+    // We send multiple query candidates for each item into `filter`,
+    // but we want each item to appear only once in the final filtered list.
+    // So, we take the highest scoring position for each item and ignore
+    // later occurrences.
     const filteredItems: T[] = [];
     const seenItem: { [key: string]: boolean } = {};
     for (const { key } of results) {

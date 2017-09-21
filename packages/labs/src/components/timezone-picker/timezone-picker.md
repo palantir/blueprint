@@ -6,9 +6,6 @@
 
 @## JavaScript API
 
-[Moment Timezone](http://momentjs.com/timezone/) is used internally
-for the list of available timezones and timezone metadata.
-
 This component can be used in controlled or uncontrolled mode.
 Use the `onChange` prop to listen for changes to the selected timezone.
 You can control the selected timezone by setting the `value` prop.
@@ -24,6 +21,9 @@ The initial list (shown before filtering) shows one timezone per timezone offset
 using the most populous location for each offset.
 Moment Timezone uses a similar heuristic for
 [guessing](http://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/) the user's timezone.
+
+[Moment Timezone](http://momentjs.com/timezone/) is used internally for the list of available timezones and 
+timezone metadata.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
     <h5>Local timezone detection</h5>
