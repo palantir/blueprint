@@ -48,20 +48,17 @@ type InputGroupShallowWrapper = ShallowWrapper<IInputGroupProps, IInputGroupStat
 
 describe("<TimezonePicker>", () => {
     it("clicking on button target opens popover", () => {
-        const timezonePicker = mount(<TimezonePicker popoverProps={getPopoverProps({ isOpen: false })} />);
+        const timezonePicker = mount(<TimezonePicker popoverProps={getPopoverProps({}, ["isOpen"])} />);
         timezonePicker.find(Button).simulate("click");
-        const popover = timezonePicker.find(Popover);
-        assert.isTrue(popover.prop("isOpen"));
+        assert.isTrue(timezonePicker.find(Popover).prop("isOpen"));
     });
 
     it("if disabled=true, clicking on button target does not open popover", () => {
         const timezonePicker = mount(
             <TimezonePicker disabled={true} popoverProps={getPopoverProps({ isOpen: false })} />,
         );
-        const button = timezonePicker.find(Button);
-        button.simulate("click");
-        const popover = timezonePicker.find(Popover);
-        assert.isFalse(popover.prop("isOpen"));
+        timezonePicker.find(Button).simulate("click");
+        assert.isFalse(timezonePicker.find(Popover).prop("isOpen"));
     });
 
     it("if placeholder is non-empty, the filter placeholder text is changed", () => {
@@ -262,12 +259,21 @@ describe("<TimezonePicker>", () => {
         }
     });
 
-    function getPopoverProps(overrides: Partial<IPopoverProps> = {}): Partial<IPopoverProps> {
-        return {
+    function getPopoverProps(
+        overrides: Partial<IPopoverProps> = {},
+        keysToUnset: Array<keyof IPopoverProps> = [],
+    ): Partial<IPopoverProps> {
+        const popoverProps: Partial<IPopoverProps> = {
             inline: true,
             isOpen: true,
             ...overrides,
         };
+
+        for (const key of keysToUnset) {
+            delete popoverProps[key];
+        }
+
+        return popoverProps;
     }
 
     function findSelect(timezonePicker: TimezonePickerShallowWrapper): SelectShallowWrapper {
