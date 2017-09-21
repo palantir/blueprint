@@ -214,12 +214,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         }
 
         const { date } = this.state;
-        return filterWithQueryCandidates(
-            items,
-            query,
-            item => item.timezone,
-            item => getTimezoneQueryCandidates(item.timezone, date),
-        );
+        return filterWithQueryCandidates(items, query, item => getTimezoneQueryCandidates(item.timezone, date));
     };
 
     private renderItem = (itemProps: ISelectItemRendererProps<ITimezoneItem>) => {
