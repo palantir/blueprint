@@ -6,7 +6,7 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -15,6 +15,7 @@ import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
+import * as Errors from "../src/common/errors";
 import { IColumnIndices, IRowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
@@ -411,11 +412,6 @@ describe("<Table>", () => {
     });
 
     describe("Freezing", () => {
-        it("clamps out-of-bounds numFrozenColumns if < 0", () => {
-            const table = mount(<Table numFrozenColumns={-1} />);
-            expect(getNumClamped(table, "numFrozenColumns")).to.equal(0);
-        });
-
         it("clamps out-of-bounds numFrozenColumns if > number of columns", () => {
             const table1 = mount(<Table numFrozenColumns={1} />);
             expect(getNumClamped(table1, "numFrozenColumns")).to.equal(0);
@@ -425,11 +421,6 @@ describe("<Table>", () => {
                 </Table>,
             );
             expect(getNumClamped(table2, "numFrozenColumns")).to.equal(1);
-        });
-
-        it("clamps out-of-bounds numFrozenRows if < 0", () => {
-            const table = mount(<Table numFrozenRows={-1} />);
-            expect(getNumClamped(table, "numFrozenRows")).to.equal(0);
         });
 
         it("clamps out-of-bounds numFrozenRows if > numRows", () => {
@@ -1216,6 +1207,221 @@ describe("<Table>", () => {
             // delay to next frame to let throttled scroll logic execute first
             delayToNextFrame(callback);
         }
+    });
+
+    describe("Validation", () => {
+        describe("on mount", () => {
+            describe("errors", () => {
+                it("throws an error if numRows < 0", () => {
+                    const renderErroneousTable = () => shallow(<Table numRows={-1} />);
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
+                });
+
+                it("throws an error if numFrozenRows < 0", () => {
+                    const renderErroneousTable = () => shallow(<Table numFrozenRows={-1} />);
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+                });
+
+                it("throws an error if numFrozenColumns < 0", () => {
+                    const renderErroneousTable = () => shallow(<Table numFrozenColumns={-1} />);
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+                });
+
+                it("throws an error if rowHeights.length !== numRows", () => {
+                    const renderErroneousTable = () => shallow(<Table numRows={3} rowHeights={[1, 2]} />);
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+                });
+
+                it("throws an error if columnWidths.length !== number of <Column>s", () => {
+                    const renderErroneousTable = () => {
+                        shallow(
+                            <Table columnWidths={[1, 2]}>
+                                <Column />
+                                <Column />
+                                <Column />
+                            </Table>,
+                        );
+                    };
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+                });
+
+                it("throws an error if a non-<Column> child is provided", () => {
+                    // we were printing a warning before, but the Table would
+                    // eventually throw an error from deep inside, so might as
+                    // well just throw a clear error at the outset.
+                    const renderErroneousTable = () => {
+                        shallow(<Table>I'm a string, not a column</Table>);
+                    };
+                    expect(renderErroneousTable).to.throw(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
+                });
+            });
+
+            describe("warnings", () => {
+                let consoleWarn: Sinon.SinonSpy;
+
+                before(() => {
+                    consoleWarn = sinon.spy(console, "warn");
+                });
+
+                afterEach(() => {
+                    consoleWarn.reset();
+                });
+
+                after(() => {
+                    consoleWarn.restore();
+                });
+
+                it("should print a warning when numFrozenRows > numRows", () => {
+                    shallow(<Table numRows={1} numFrozenRows={2} />);
+                    expect(consoleWarn.calledOnce);
+                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
+                });
+
+                it("should print a warning when numFrozenColumns > num <Column>s", () => {
+                    shallow(
+                        <Table numFrozenColumns={2}>
+                            <Column />
+                        </Table>,
+                    );
+                    expect(consoleWarn.calledOnce);
+                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
+                });
+            });
+        });
+
+        describe("on update", () => {
+            describe("errors", () => {
+                it("on numRows update, throws an error if numRows < 0", () => {
+                    const table = shallow(<Table numRows={1} />);
+                    const updateErroneously = () => table.setProps({ numRows: -1 });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
+                });
+
+                it("on numFrozenRows update, throws an error if numFrozenRows < 0", () => {
+                    const table = shallow(<Table numFrozenRows={0} />);
+                    const updateErroneously = () => table.setProps({ numFrozenRows: -1 });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+                });
+
+                it("on numFrozenColumns update, throws an error if numFrozenColumns < 0", () => {
+                    const table = shallow(<Table numFrozenColumns={0} />);
+                    const updateErroneously = () => table.setProps({ numFrozenColumns: -1 });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+                });
+
+                it("on numRows update, throws an error if rowHeights.length !== numRows", () => {
+                    const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
+                    const updateErroneously = () => table.setProps({ numRows: 4 });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+                });
+
+                it("on rowHeights update, throws an error if rowHeights.length !== numRows", () => {
+                    const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
+                    const updateErroneously = () => table.setProps({ rowHeights: [1, 2, 3, 4] });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+                });
+
+                it("on children update, throws an error if columnWidths.length !== number of <Column>s", () => {
+                    const table = shallow(
+                        <Table columnWidths={[1, 2, 3]}>
+                            <Column />
+                            <Column />
+                            <Column />
+                        </Table>,
+                    );
+                    const updateErroneously = () => table.setProps({ children: [<Column />, <Column />] });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+                });
+
+                it("on columnWidths update, throws an error if columnWidths.length !== number of <Column>s", () => {
+                    const table = shallow(
+                        <Table columnWidths={[1, 2, 3]}>
+                            <Column />
+                            <Column />
+                            <Column />
+                        </Table>,
+                    );
+                    const updateErroneously = () => table.setProps({ columnWidths: [1, 2, 3, 4] });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+                });
+
+                it("on children update, throws an error if a non-<Column> child is provided", () => {
+                    const table = shallow(
+                        <Table>
+                            <Column />
+                        </Table>,
+                    );
+                    const updateErroneously = () => table.setProps({ children: [<Cell />] });
+                    expect(updateErroneously).to.throw(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
+                });
+            });
+
+            describe("warnings", () => {
+                let consoleWarn: Sinon.SinonSpy;
+
+                before(() => {
+                    consoleWarn = sinon.spy(console, "warn");
+                });
+
+                afterEach(() => {
+                    consoleWarn.reset();
+                });
+
+                after(() => {
+                    consoleWarn.restore();
+                });
+
+                it("on numFrozenRows update, should print a warning when numFrozenRows > numRows", () => {
+                    const table = shallow(<Table numRows={1} numFrozenRows={1} />);
+                    expect(consoleWarn.called).to.be.false;
+                    table.setProps({ numFrozenRows: 2 });
+                    expect(consoleWarn.calledOnce).to.be.true;
+                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
+                });
+
+                it("on numRows update, should print a warning when numFrozenRows > numRows", () => {
+                    const table = shallow(<Table numRows={1} numFrozenRows={1} />);
+                    expect(consoleWarn.called).to.be.false;
+                    table.setProps({ numRows: 0 });
+                    expect(consoleWarn.calledOnce).to.be.true;
+                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
+                });
+
+                it("on numFrozenColumns update, should print a warning when numFrozenColumns > num <Column>s", () => {
+                    const table = shallow(
+                        <Table numFrozenColumns={1}>
+                            <Column />
+                        </Table>,
+                    );
+                    expect(consoleWarn.called).to.be.false;
+                    table.setProps({ numFrozenColumns: 2 });
+                    expect(consoleWarn.calledOnce).to.be.true;
+                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
+                });
+
+                it("on children update, should print a warning when numFrozenColumns > num <Column>s", () => {
+                    const table = shallow(
+                        <Table numFrozenColumns={1}>
+                            <Column />
+                        </Table>,
+                    );
+                    expect(consoleWarn.called).to.be.false;
+                    table.setProps({ children: [] });
+                    expect(consoleWarn.calledOnce).to.be.true;
+                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
+                });
+
+                it("should print a warning when numFrozenColumns > num <Column>s", () => {
+                    shallow(
+                        <Table numFrozenColumns={2}>
+                            <Column />
+                        </Table>,
+                    );
+                    expect(consoleWarn.calledOnce);
+                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
+                });
+            });
+        });
     });
 
     xit("Accepts a sparse array of column widths", () => {

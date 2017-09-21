@@ -526,6 +526,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
+        super.componentWillReceiveProps(nextProps);
+
         const {
             children,
             columnWidths,
@@ -687,28 +689,48 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
-        const { children, numFrozenColumns, numFrozenRows, numRows } = props;
+        const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
         const numColumns = React.Children.count(children);
 
+        // do cheap error-checking first.
+        if (numRows != null && numRows < 0) {
+            throw new Error(Errors.TABLE_NUM_ROWS_NEGATIVE);
+        }
+        if (numFrozenRows != null && numFrozenRows < 0) {
+            throw new Error(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+        }
+        if (numFrozenColumns != null && numFrozenColumns < 0) {
+            throw new Error(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+        }
+        if (numRows != null && rowHeights != null && rowHeights.length !== numRows) {
+            throw new Error(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+        }
+        if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
+            throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+        }
         React.Children.forEach(children, (child: React.ReactElement<any>) => {
             // save as a variable so that union type narrowing works
             const childType = child.type;
 
-            if (typeof childType === "string") {
-                console.warn(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
+            // the second part of this conditional will never be true, but it
+            // informs the TS compiler that we won't be invoking
+            // childType.prototype on a "string" element.
+            if (typeof child === "string" || typeof childType === "string") {
+                throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
             } else {
                 const isColumn = childType.prototype === Column.prototype || Column.prototype.isPrototypeOf(childType);
                 if (!isColumn) {
-                    console.warn(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
+                    throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
                 }
             }
         });
 
-        if (numFrozenColumns != null && (numFrozenColumns < 0 || numFrozenColumns > numColumns)) {
-            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
-        }
-        if (numFrozenRows != null && (numFrozenRows < 0 || (numRows != null && numFrozenRows > numRows))) {
+        // these are recoverable scenarios, so just print a warning.
+        if (numFrozenRows != null && numRows != null && numFrozenRows > numRows) {
             console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
+        }
+        if (numFrozenColumns != null && numFrozenColumns > numColumns) {
+            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
     }
 
