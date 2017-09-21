@@ -73,7 +73,6 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     }
 
     private batcher = new Batcher<JSX.Element>();
-    private isRenderingBatchedCells = false;
 
     public componentDidMount() {
         this.maybeInvokeOnCompleteRender();
@@ -176,10 +175,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     private maybeInvokeOnCompleteRender() {
         const { onCompleteRender, renderMode } = this.props;
 
-        if (renderMode === RenderMode.BATCH && this.isRenderingBatchedCells && this.batcher.isDone()) {
-            this.isRenderingBatchedCells = false;
-            CoreUtils.safeInvoke(onCompleteRender);
-        } else if (renderMode === RenderMode.NONE) {
+        if (renderMode === RenderMode.NONE || (renderMode === RenderMode.BATCH && this.batcher.isDone())) {
             CoreUtils.safeInvoke(onCompleteRender);
         }
     }
