@@ -12,14 +12,14 @@ export * from "./position";
 export * from "./props";
 export * from "./tetherUtils";
 
-import * as classes from "../common/classes";
-import * as keys from "../common/keys";
-import * as utils from "./utils";
-
-export const Classes = classes;
-export const Keys = keys;
-export const Utils = utils;
+import * as Classes from "../common/classes";
+import * as Keys from "../common/keys";
+import * as Utils from "./utils";
 // NOTE: Errors is not exported in public API
+
+import * as Variables from "../generated/variables";
+
+export { Classes, Keys, Utils, Variables };
 
 export { IconClasses } from "../generated/iconClasses";
 export { IconName } from "../generated/iconName";

@@ -38,7 +38,7 @@ module.exports = (blueprint, gulp, plugins) => {
             typeRoots: ["node_modules/@types"],
         });
 
-        gulp.task(taskName, ["icons", ...depTaskNames], () => typescriptCompile(project, false));
+        gulp.task(taskName, ["icons", "variables", ...depTaskNames], () => typescriptCompile(project, false));
         gulp.task(`${taskName}:only`, () => typescriptCompile(project, true));
     });
 
