@@ -112,6 +112,7 @@ describe("<Table>", () => {
     it("Gets and sets the tallest cell by columns correctly", () => {
         const DEFAULT_RESIZE_HEIGHT = 20;
         const MAX_HEIGHT = 40;
+
         const renderCellLong = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
         const renderCellShort = () => <Cell wrapText={false}>short value</Cell>;
 
@@ -126,25 +127,20 @@ describe("<Table>", () => {
             </Table>,
         );
 
-        // Resize by first column
         table.resizeRowsByTallestCell(0);
-        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
+        expect(table.state.rowHeights[0], "resizes by first column").to.equal(MAX_HEIGHT);
 
-        // Resize by second column
         table.resizeRowsByTallestCell(1);
-        expect(table.state.rowHeights[0]).to.equal(DEFAULT_RESIZE_HEIGHT);
+        expect(table.state.rowHeights[0], "resizes by second column").to.equal(DEFAULT_RESIZE_HEIGHT);
 
-        // Resize by both columns
         table.resizeRowsByTallestCell([0, 1]);
-        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
+        expect(table.state.rowHeights[0], "resizes by both column").to.equal(MAX_HEIGHT);
 
-        // Resize by second column via array
         table.resizeRowsByTallestCell([1]);
-        expect(table.state.rowHeights[0]).to.equal(DEFAULT_RESIZE_HEIGHT);
+        expect(table.state.rowHeights[0], "resizes by second column via array").to.equal(DEFAULT_RESIZE_HEIGHT);
 
-        // Resize by visible columns
         table.resizeRowsByTallestCell();
-        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
+        expect(table.state.rowHeights[0], "resizes by visible columns").to.equal(MAX_HEIGHT);
     });
 
     it("Invokes onVisibleCellsChange on mount", () => {
