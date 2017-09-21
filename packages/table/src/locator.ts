@@ -101,28 +101,37 @@ export class Locator implements ILocator {
     }
 
     public getWidestVisibleCellInColumn(columnIndex: number): number {
-        const cells = this.cellContainerElement.getElementsByClassName(Classes.columnCellIndexClass(columnIndex));
-        let max = 0;
-        for (let i = 0; i < cells.length; i++) {
-            const contentWidth = Utils.measureElementTextContent(cells.item(i)).width;
+        const columnCellSelector = this.getColumnCellSelector(columnIndex);
+        const columnHeaderAndBodyCells = this.cellContainerElement.querySelectorAll(columnCellSelector);
+
+        let maxWidth = 0;
+        for (let i = 0; i < columnHeaderAndBodyCells.length; i++) {
+            const contentWidth = Utils.measureElementTextContent(columnHeaderAndBodyCells.item(i)).width;
             const cellWidth = Math.ceil(contentWidth) + Locator.CELL_HORIZONTAL_PADDING * 2;
-            if (cellWidth > max) {
-                max = cellWidth;
+            if (cellWidth > maxWidth) {
+                maxWidth = cellWidth;
             }
         }
-        return max;
+        return maxWidth;
     }
 
     public getTallestVisibleCellInColumn(columnIndex: number): number {
-        const cells = this.cellContainerElement.getElementsByClassName(
-            `${Classes.columnCellIndexClass(columnIndex)} ${Classes.TABLE_CELL}`,
+        // consider only body cells, hence the extra Classes.TABLE_CELL specificity
+        const columnCellSelector = this.getColumnCellSelector(columnIndex);
+        const columnBodyCells = this.cellContainerElement.querySelectorAll(
+            `${columnCellSelector}.${Classes.TABLE_CELL}`,
         );
-        let max = 0;
-        for (let i = 0; i < cells.length; i++) {
-            const cellValue = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
-            const cellTruncatedFormatText = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`);
-            const cellTruncatedText = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_TEXT}`);
+
+        let maxHeight = 0;
+        for (let i = 0; i < columnBodyCells.length; i++) {
+            const cell = columnBodyCells.item(i);
+
+            const cellValue = cell.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            const cellTruncatedFormatText = cell.querySelector(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`);
+            const cellTruncatedText = cell.querySelector(`.${Classes.TABLE_TRUNCATED_TEXT}`);
+
             let height = 0;
+
             if (cellValue != null) {
                 height = cellValue.scrollHeight;
             } else if (cellTruncatedFormatText != null) {
@@ -131,13 +140,14 @@ export class Locator implements ILocator {
                 height = cellTruncatedText.scrollHeight;
             } else {
                 // it's not anything we recognize, just use the current height of the cell
-                height = cells.item(i).scrollHeight;
+                height = cell.scrollHeight;
             }
-            if (height > max) {
-                max = height;
+
+            if (height > maxHeight) {
+                maxHeight = height;
             }
         }
-        return max;
+        return maxHeight;
     }
 
     // Converters
@@ -175,6 +185,15 @@ export class Locator implements ILocator {
 
     // Private helpers
     // ===============
+
+    private getColumnCellSelector(columnIndex: number) {
+        // measure frozen columns in the LEFT quadrant; otherwise, they might
+        // have been scrolled out of view, leading to wonky measurements (#1561)
+        const isFrozenColumnIndex = columnIndex < this.numFrozenColumns;
+        const quadrantClass = isFrozenColumnIndex ? Classes.TABLE_QUADRANT_LEFT : Classes.TABLE_QUADRANT_MAIN;
+        const cellClass = Classes.columnCellIndexClass(columnIndex);
+        return `.${quadrantClass} .${cellClass}`;
+    }
 
     private getTableRect() {
         return Rect.wrap(this.tableElement.getBoundingClientRect());
