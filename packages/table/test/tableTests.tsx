@@ -539,6 +539,62 @@ describe("<Table>", () => {
             expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
         });
 
+        it("resizes frozen column on double-click when corresponding MAIN-quadrant column not in view", () => {
+            const CONTAINER_WIDTH = 500;
+            const CONTAINER_HEIGHT = 500;
+            const EXPECTED_COLUMN_WIDTH = 216;
+            const FROZEN_COLUMN_INDEX = 0;
+
+            const renderCell = () => <Cell wrapText={false}>my cell value with lots and lots of words</Cell>;
+
+            // huge values that will force scrolling
+            const LARGE_COLUMN_WIDTH = 1000;
+            // need 5 columns to ensure the first column won't be included
+            // in the 3 "bleed" columns once we scroll rightward.
+            const columnWidths = Array(5).fill(LARGE_COLUMN_WIDTH);
+
+            // create a container element to enforce a maximum viewport size
+            // small enough to cause scrolling.
+            const containerElement = document.createElement("div");
+            containerElement.style.width = `${CONTAINER_WIDTH}px`;
+            containerElement.style.height = `${CONTAINER_HEIGHT}px`;
+            document.body.appendChild(containerElement);
+
+            // need to mount directly into the DOM for this test to work
+            let table: Table;
+            const saveTable = (ref: Table) => (table = ref);
+            const tableElement = harness.mount(
+                <Table ref={saveTable} numRows={1} numFrozenColumns={1} columnWidths={columnWidths}>
+                    <Column name="Column0" renderCell={renderCell} />
+                    <Column name="Column1" renderCell={renderCell} />
+                    <Column name="Column2" renderCell={renderCell} />
+                    <Column name="Column3" renderCell={renderCell} />
+                    <Column name="Column4" renderCell={renderCell} />
+                </Table>,
+            );
+
+            // scroll the frozen column out of view in the MAIN quadrant,
+            // and expect a non-zero height.
+            table.scrollToRegion(Regions.column(columnWidths.length - 1));
+
+            const quadrantSelector = `.${Classes.TABLE_QUADRANT_LEFT}`;
+            const columnHeaderSelector = `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS}`;
+            const resizeHandleSelector = `${columnHeaderSelector} .${Classes.TABLE_RESIZE_HANDLE_TARGET}`;
+            const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX);
+
+            // double-click the frozen column's resize handle
+            frozenColumnResizeHandle
+                .mouse("mousedown")
+                .mouse("mouseup", 10)
+                .mouse("mousedown")
+                .mouse("mouseup", 10);
+
+            expect(table.state.columnWidths[0]).to.equal(EXPECTED_COLUMN_WIDTH);
+
+            // clean up
+            document.body.removeChild(containerElement);
+        });
+
         function mountTable(tableProps: Partial<ITableProps> & object = {}) {
             return harness.mount(
                 // set the row height so small so they can all fit in the viewport and be rendered
