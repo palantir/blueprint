@@ -5,8 +5,8 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
 import { EditableText, Utils as CoreUtils } from "@blueprintjs/core";
 
@@ -55,6 +55,11 @@ export interface IEditableCellState {
 }
 
 export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
+    public static defaultProps = {
+        truncated: true,
+        wrapText: false,
+    };
+
     public constructor(props: IEditableCellProps, context?: any) {
         super(props, context);
         this.state = {
@@ -77,31 +82,46 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     public render() {
-        const { onCancel, onChange, onConfirm, ...spreadableProps } = this.props;
+        const { onCancel, onChange, onConfirm, truncated, wrapText, ...spreadableProps } = this.props;
 
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
+
+        let cellContents: JSX.Element = null;
+        if (isEditing) {
+            cellContents = (
+                <EditableText
+                    isEditing={true}
+                    className={Classes.TABLE_EDITABLE_NAME}
+                    intent={spreadableProps.intent}
+                    minWidth={null}
+                    onCancel={this.handleCancel}
+                    onChange={this.handleChange}
+                    onConfirm={this.handleConfirm}
+                    onEdit={this.handleEdit}
+                    placeholder=""
+                    selectAllOnFocus={true}
+                    value={dirtyValue}
+                />
+            );
+        } else {
+            const textClasses = classNames({
+                [Classes.TABLE_TRUNCATED_TEXT]: truncated,
+                [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
+            });
+
+            cellContents = <div className={textClasses}>{savedValue}</div>;
+        }
 
         return (
             <Cell {...spreadableProps} truncated={false} interactive={interactive}>
                 <Draggable
                     onActivate={this.handleCellActivate}
                     onDoubleClick={this.handleCellDoubleClick}
-                    preventDefault={!interactive}
+                    preventDefault={false}
                     stopPropagation={interactive}
                 >
-                    <EditableText
-                        className={Classes.TABLE_EDITABLE_NAME}
-                        intent={spreadableProps.intent}
-                        minWidth={null}
-                        onCancel={this.handleCancel}
-                        onChange={this.handleChange}
-                        onConfirm={this.handleConfirm}
-                        onEdit={this.handleEdit}
-                        placeholder=""
-                        selectAllOnFocus={true}
-                        value={isEditing ? dirtyValue : savedValue}
-                    />
+                    {cellContents}
                 </Draggable>
             </Cell>
         );
@@ -134,22 +154,10 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     private handleCellActivate = (_event: MouseEvent) => {
-        // Cancel edit of active cell when clicking away
-        if (!this.state.isEditing && document.activeElement instanceof HTMLElement && document.activeElement.blur) {
-            document.activeElement.blur();
-        }
         return true;
     };
 
     private handleCellDoubleClick = (_event: MouseEvent) => {
-        const cellElement = ReactDOM.findDOMNode(this) as HTMLElement;
-        if (cellElement == null) {
-            return;
-        }
-
-        const focusable = cellElement.querySelector(".pt-editable-text") as HTMLElement;
-        if (focusable.focus != null) {
-            focusable.focus();
-        }
+        this.handleEdit();
     };
 }
