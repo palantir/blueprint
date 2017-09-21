@@ -22,8 +22,8 @@ import {
     Position,
     Utils,
 } from "@blueprintjs/core";
-import { IListItemsProps, IQueryListRendererProps, QueryList } from "../";
 import * as Classes from "../../common/classes";
+import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -115,14 +115,20 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         return Select as new () => Select<T>;
     }
 
-    public state: ISelectState<T> = { isOpen: false, query: "" };
-
     private TypedQueryList = QueryList.ofType<T>();
     private list: QueryList<T>;
     private refHandlers = {
         queryList: (ref: QueryList<T>) => (this.list = ref),
     };
     private previousFocusedElement: HTMLElement;
+
+    constructor(props?: ISelectProps<T>, context?: any) {
+        super(props, context);
+
+        const { inputProps = {} } = props;
+        const query = inputProps.value !== undefined ? inputProps.value : "";
+        this.state = { isOpen: false, query };
+    }
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -147,6 +153,13 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
                 renderer={this.renderQueryList}
             />
         );
+    }
+
+    public componentWillReceiveProps(nextProps: ISelectProps<T>) {
+        const { inputProps: nextInputProps = {} } = nextProps;
+        if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
+            this.setState({ query: nextInputProps.value });
+        }
     }
 
     public componentDidUpdate(_prevProps: ISelectProps<T>, prevState: ISelectState<T>) {

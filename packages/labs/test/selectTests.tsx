@@ -102,11 +102,20 @@ describe("<Select>", () => {
         const value = "nailed it";
         const onChange = sinon.spy();
 
-        const input = select({ inputProps: { value, onChange } }).find("input");
+        const wrapper = select({ inputProps: { value, onChange } });
+        assert.equal(wrapper.state("query"), value);
+
+        const input = wrapper.find("input");
         assert.equal(input.prop("value"), value);
+        assert.equal(wrapper.state("query"), value);
 
         input.simulate("change");
         assert.isTrue(onChange.calledOnce);
+
+        const value2 = "nailed it again";
+        wrapper.setProps({ inputProps: { value: value2 } });
+        assert.equal(wrapper.find("input").prop("value"), value2);
+        assert.equal(wrapper.state("query"), value2);
     });
 
     it("popover can be controlled with popoverProps", () => {
