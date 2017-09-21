@@ -562,6 +562,14 @@ describe("TableQuadrantStack", () => {
             });
         });
 
+        describe("throttleScrolling", () => {
+            it("throttles scrolling by default", () => {
+                // need to do a full mount to get defaultProps to apply
+                const stack = mount(<TableQuadrantStack grid={grid} renderBody={renderGridBody()} />);
+                expect(stack.props().throttleScrolling).to.be.true;
+            });
+        });
+
         it("syncs quadrant scroll offsets when scrolling the main quadrant", () => {
             // simulating a "scroll" or "wheel" event doesn't seem to affect the
             // scrollTop/scrollLeft the way it would in practice, so we need to tweak those

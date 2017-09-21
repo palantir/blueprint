@@ -178,6 +178,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         isHorizontalScrollDisabled: false,
         isRowHeaderShown: true,
         isVerticalScrollDisabled: false,
+        throttleScrolling: true,
         viewSyncDelay: DEFAULT_VIEW_SYNC_DELAY,
     };
 
