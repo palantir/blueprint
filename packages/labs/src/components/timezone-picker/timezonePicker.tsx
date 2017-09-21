@@ -21,8 +21,8 @@ import {
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
-import { ISelectItemRendererProps, Select } from "..";
 import * as Classes from "../../common/classes";
+import { ISelectItemRendererProps, Select } from "../select/select";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
 import { filterWithQueryCandidates, getTimezoneQueryCandidates } from "./timezoneUtils";
