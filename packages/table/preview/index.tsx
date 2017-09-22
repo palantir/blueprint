@@ -150,7 +150,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     public constructor(props: any, context?: any) {
         super(props, context);
 
-        this.state = {
+        const stateDefaults = {
             cellContent: CellContent.LONG_TEXT,
             cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
             enableBatchRendering: true,
@@ -189,6 +189,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             showRowHeadersLoading: false,
             showZebraStriping: false,
         };
+        this.state = {};
+        // populate the state from local storage, if the values are there, otherwise use the defaults
+        Object.keys(stateDefaults).forEach((stateKey: keyof IMutableTableState) => {
+            const stateValue = localStorageGetOrDefault(stateKey, stateDefaults[stateKey]);
+            this.state[stateKey] = stateValue;
+        });
     }
 
     // React Lifecycle
@@ -246,6 +252,12 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
+        // save off any changes to the state to local storage
+        Object.keys(nextState).forEach((stateKey: keyof IMutableTableState) => {
+            if (this.state[stateKey] !== nextState[stateKey]) {
+                localStorage.setItem(stateKey, JSON.stringify(nextState[stateKey]));
+            }
+        });
         if (
             nextState.cellContent !== this.state.cellContent ||
             nextState.numRows !== this.state.numRows ||
@@ -940,4 +952,14 @@ function getRandomInteger(min: number, max: number) {
 
 function contains(arr: any[], value: any) {
     return arr.indexOf(value) >= 0;
+}
+
+function localStorageGetOrDefault(stateKey: keyof IMutableTableState, defaultValue: any) {
+    const storedState = localStorage.getItem(stateKey);
+    if (storedState == null) {
+        // if we're not in local storage, populate local storage for next time
+        localStorage.setItem(stateKey, JSON.stringify(defaultValue));
+        return defaultValue;
+    }
+    return JSON.parse(storedState);
 }
