@@ -98,14 +98,18 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.state("query"), "");
     });
 
-    it("if query is non-empty, the input value will equal the query", () => {
+    it("if query is non-empty, the input value will stay in sync with the query prop", () => {
         const query = "nailed it";
         const wrapper = select({ query });
-        assert.equal(wrapper.find("input").prop("value"), query);
+        const input = wrapper.find("input");
+
+        assert.equal(input.prop("value"), query);
         assert.equal(wrapper.state("query"), query);
-        (wrapper.find("input").getDOMNode() as HTMLInputElement).value = "some other value";
-        wrapper.find("input").simulate("change");
-        assert.equal(wrapper.find("input").prop("value"), query);
+
+        (input.getDOMNode() as HTMLInputElement).value = "some other value";
+        input.simulate("change");
+
+        assert.equal(input.prop("value"), query);
         assert.equal(wrapper.state("query"), query);
     });
 
@@ -119,8 +123,12 @@ describe("<Select>", () => {
     it("onQueryChange is called when the input value changes", () => {
         const onQueryChange = sinon.spy();
         const wrapper = select({ onQueryChange });
-        wrapper.find("input").simulate("change");
+        const query = "nailed it";
+        const input = wrapper.find("input");
+        (input.getDOMNode() as HTMLInputElement).value = query;
+        input.simulate("change");
         assert.isTrue(onQueryChange.calledOnce);
+        assert.isTrue(onQueryChange.calledWithExactly(query));
     });
 
     it("if onQueryChange and inputProps.onChange are passed, both will be called", () => {
