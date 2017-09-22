@@ -9,6 +9,7 @@ import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
+import * as Classes from "../src/common/classes";
 import { EditableCell } from "../src/index";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
@@ -26,7 +27,7 @@ describe("<EditableCell>", () => {
 
     it("renders", () => {
         const elem = harness.mount(<EditableCell value="test-value-5000" />);
-        expect(elem.find(".bp-table-truncated-text").text()).to.equal("test-value-5000");
+        expect(elem.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal("test-value-5000");
     });
 
     it("renders loading state", () => {
@@ -39,10 +40,10 @@ describe("<EditableCell>", () => {
         const VALUE_2 = "bar";
 
         const elem = mount(<EditableCell value={VALUE_1} />);
-        expect(elem.find(".bp-table-truncated-text").text()).to.equal(VALUE_1);
+        expect(elem.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal(VALUE_1);
 
         elem.setProps({ value: VALUE_2 });
-        expect(elem.find(".bp-table-truncated-text").text()).to.equal(VALUE_2);
+        expect(elem.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal(VALUE_2);
     });
 
     it("edits", () => {
@@ -104,7 +105,7 @@ describe("<EditableCell>", () => {
 
     function doubleClickToEdit(elem: ElementHarness) {
         elem
-            .find(".bp-table-truncated-text")
+            .find(`.${Classes.TABLE_TRUNCATED_TEXT}`)
             .mouse("mousedown")
             .mouse("mouseup")
             .mouse("mousedown")
