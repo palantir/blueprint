@@ -277,7 +277,8 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         }
 
         requestAnimationFrame(() => {
-            if (this.input != null) {
+            const { inputProps = {} } = this.props;
+            if (inputProps.autoFocus !== false && this.input != null) {
                 this.input.focus();
             }
         });
