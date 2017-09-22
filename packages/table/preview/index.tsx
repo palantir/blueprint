@@ -190,10 +190,17 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             showZebraStriping: false,
         };
         this.state = {};
-        // populate the state from local storage, if the values are there, otherwise use the defaults
+        // populate the state from local storage, if the values are there, otherwise use (and store) the defaults
         Object.keys(stateDefaults).forEach((stateKey: keyof IMutableTableState) => {
-            const stateValue = localStorageGetOrDefault(stateKey, stateDefaults[stateKey]);
-            this.state[stateKey] = stateValue;
+            let stateValue = localStorage.getItem(stateKey);
+
+            if (stateValue == null) {
+                // populate local storage for next time.
+                stateValue = JSON.stringify(stateDefaults[stateKey]);
+                localStorage.setItem(stateKey, stateValue);
+            }
+
+            this.state[stateKey] = JSON.parse(stateValue);
         });
     }
 
@@ -252,12 +259,6 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
-        // save off any changes to the state to local storage
-        Object.keys(nextState).forEach((stateKey: keyof IMutableTableState) => {
-            if (this.state[stateKey] !== nextState[stateKey]) {
-                localStorage.setItem(stateKey, JSON.stringify(nextState[stateKey]));
-            }
-        });
         if (
             nextState.cellContent !== this.state.cellContent ||
             nextState.numRows !== this.state.numRows ||
@@ -267,7 +268,14 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(_prevProps: {}, prevState: IMutableTableState) {
+        // save off any changes made to the state to local storage
+        Object.keys(this.state).forEach((stateKey: keyof IMutableTableState) => {
+            if (this.state[stateKey] !== prevState[stateKey]) {
+                localStorage.setItem(stateKey, JSON.stringify(this.state[stateKey]));
+            }
+        });
+
         this.syncFocusStyle();
         this.syncDependentBooleanStates();
     }
@@ -952,14 +960,4 @@ function getRandomInteger(min: number, max: number) {
 
 function contains(arr: any[], value: any) {
     return arr.indexOf(value) >= 0;
-}
-
-function localStorageGetOrDefault(stateKey: keyof IMutableTableState, defaultValue: any) {
-    const storedState = localStorage.getItem(stateKey);
-    if (storedState == null) {
-        // if we're not in local storage, populate local storage for next time
-        localStorage.setItem(stateKey, JSON.stringify(defaultValue));
-        return defaultValue;
-    }
-    return JSON.parse(storedState);
 }
