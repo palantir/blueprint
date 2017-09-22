@@ -13,7 +13,6 @@ import { Grid } from "../common";
 import { Batcher } from "../common/batcher";
 import { IFocusedCellCoordinates } from "../common/cell";
 import * as Classes from "../common/classes";
-import { Utils } from "../common/utils";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
@@ -258,16 +257,16 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
     public shouldComponentUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
         return (
-            !Utils.shallowCompareKeys(this.state, nextState) ||
-            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: SHALLOW_COMPARE_PROP_KEYS_BLACKLIST }) ||
-            !Utils.deepCompareKeys(this.props, nextProps, SHALLOW_COMPARE_PROP_KEYS_BLACKLIST)
+            !CoreUtils.shallowCompareKeys(this.state, nextState) ||
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: SHALLOW_COMPARE_PROP_KEYS_BLACKLIST }) ||
+            !CoreUtils.deepCompareKeys(this.props, nextProps, SHALLOW_COMPARE_PROP_KEYS_BLACKLIST)
         );
     }
 
     public componentWillUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
         const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
-        let shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
-        shouldResetBatcher = shouldResetBatcher || !Utils.shallowCompareKeys(this.state, nextState);
+        let shouldResetBatcher = !CoreUtils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
+        shouldResetBatcher = shouldResetBatcher || !CoreUtils.shallowCompareKeys(this.state, nextState);
         if (shouldResetBatcher) {
             this.batcher.reset();
         }

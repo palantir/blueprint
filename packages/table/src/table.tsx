@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps, Utils as BlueprintUtils } from "@blueprintjs/core";
+import { AbstractComponent, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
@@ -518,10 +518,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const stateKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST };
 
         return (
-            !Utils.shallowCompareKeys(this.props, nextProps, propKeysBlacklist) ||
-            !Utils.shallowCompareKeys(this.state, nextState, stateKeysBlacklist) ||
-            !Utils.deepCompareKeys(this.props, nextProps, Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST) ||
-            !Utils.deepCompareKeys(this.state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST)
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, propKeysBlacklist) ||
+            !CoreUtils.shallowCompareKeys(this.state, nextState, stateKeysBlacklist) ||
+            !CoreUtils.deepCompareKeys(this.props, nextProps, Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST) ||
+            !CoreUtils.deepCompareKeys(this.state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST)
         );
     }
 
@@ -816,7 +816,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
         if (sparse != null) {
             const success = Clipboard.copyCells(sparse);
-            BlueprintUtils.safeInvoke(onCopy, success);
+            CoreUtils.safeInvoke(onCopy, success);
         }
     };
 
@@ -1222,7 +1222,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // will only actually render once the viewportRect is defined though, so
         // we defer invoking onCompleteRender until that check passes.
         if (this.state.viewportRect != null) {
-            BlueprintUtils.safeInvoke(this.props.onCompleteRender);
+            CoreUtils.safeInvoke(this.props.onCompleteRender);
         }
     };
 
@@ -1736,7 +1736,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.setState({ focusedCell } as ITableState);
         }
 
-        BlueprintUtils.safeInvoke(this.props.onFocus, focusedCell);
+        CoreUtils.safeInvoke(this.props.onFocus, focusedCell);
     };
 
     private handleSelection = (selectedRegions: IRegion[]) => {
@@ -1757,7 +1757,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.setState({ isReordering: false, verticalGuides: undefined } as ITableState);
-        BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
+        CoreUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
     };
 
     private handleRowsReordering = (horizontalGuides: number[]) => {
@@ -1766,7 +1766,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.setState({ isReordering: false, horizontalGuides: undefined } as ITableState);
-        BlueprintUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
+        CoreUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
     };
 
     private handleLayoutLock = (isLayoutLocked = false) => {
@@ -1804,7 +1804,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
-        BlueprintUtils.safeInvoke(this.props.onVisibleCellsChange, rowIndices, columnIndices);
+        CoreUtils.safeInvoke(this.props.onVisibleCellsChange, rowIndices, columnIndices);
     }
 
     private getMaxFrozenColumnIndex = () => {

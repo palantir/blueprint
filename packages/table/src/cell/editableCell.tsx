@@ -11,7 +11,6 @@ import * as ReactDOM from "react-dom";
 import { EditableText, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { Utils } from "../common/utils";
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
@@ -65,9 +64,9 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
 
     public shouldComponentUpdate(nextProps: IEditableCellProps, nextState: IEditableCellState) {
         return (
-            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
-            !Utils.shallowCompareKeys(this.state, nextState) ||
-            !Utils.deepCompareKeys(this.props, nextProps, ["style"])
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
+            !CoreUtils.shallowCompareKeys(this.state, nextState) ||
+            !CoreUtils.deepCompareKeys(this.props, nextProps, ["style"])
         );
     }
 
