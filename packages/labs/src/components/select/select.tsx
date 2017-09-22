@@ -46,6 +46,18 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /**
+     * Current query value, for controlled usage.
+     * Providing this prop will put the component in controlled mode.
+     */
+    query?: string;
+
+    /**
+     * Callback invoked when the query value changes,
+     * through user input or when the filter is reset.
+     */
+    onQueryChange?: (query: string) => void;
+
+    /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's children, if appropriate.
      * @default false
@@ -55,11 +67,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     /** React child to render when filtering items returns zero results. */
     noResults?: React.ReactChild;
 
-    /**
-     * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
-     * If you want to control the filter input, you can pass `value` and `onChange` here
-     * to override `Select`'s own behavior.
-     */
+    /** Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead). */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
@@ -125,9 +133,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     constructor(props?: ISelectProps<T>, context?: any) {
         super(props, context);
 
-        const { inputProps = {} } = props;
-        const query = inputProps.value !== undefined ? inputProps.value : "";
-        this.state = { isOpen: false, query };
+        this.state = { isOpen: false, query: getQuery(props) };
     }
 
     public render() {
@@ -156,9 +162,9 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     }
 
     public componentWillReceiveProps(nextProps: ISelectProps<T>) {
-        const { inputProps: nextInputProps = {} } = nextProps;
-        if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
-            this.setState({ query: nextInputProps.value });
+        const nextQuery = getQuery(nextProps);
+        if (this.state.query !== nextQuery) {
+            this.setState({ query: nextQuery });
         }
     }
 
@@ -172,7 +178,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
-        const { ref, ...htmlInputProps } = inputProps;
+        const { ref, value, ...htmlInputProps } = inputProps;
         const input = (
             <InputGroup
                 autoFocus={true}
@@ -304,10 +310,29 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = {} } = this.props;
-        this.setState({ query: event.currentTarget.value });
+        const { inputProps = {}, onQueryChange } = this.props;
+        const query = event.currentTarget.value;
+        this.setState({ query });
         Utils.safeInvoke(inputProps.onChange, event);
+        Utils.safeInvoke(onQueryChange, query);
     };
 
-    private resetQuery = () => this.setState({ activeItem: this.props.items[0], query: "" });
+    private resetQuery = () => {
+        const { items, onQueryChange } = this.props;
+        const query = "";
+        this.setState({ activeItem: items[0], query });
+        Utils.safeInvoke(onQueryChange, query);
+    };
+}
+
+function getQuery(props: ISelectProps<any>): string {
+    const { inputProps = {} } = props;
+
+    let query: string = "";
+    if (props.query !== undefined) {
+        query = props.query;
+    } else if (inputProps.value !== undefined) {
+        query = inputProps.value;
+    }
+    return query;
 }
