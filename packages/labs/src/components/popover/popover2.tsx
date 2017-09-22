@@ -27,7 +27,7 @@ import {
 import * as Errors from "../../common/errors";
 import { Tooltip2 } from "../tooltip/tooltip2";
 import { getArrowAngle, PopoverArrow } from "./arrow";
-import { positionToPlacement, resolvePropValue } from "./popoverMigrationUtils";
+import { positionToPlacement } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 
 export interface IPopover2Props extends IOverlayableProps, IProps {
@@ -196,6 +196,15 @@ export interface IPopover2State {
     transformOrigin?: string;
     isOpen?: boolean;
     hasDarkParent?: boolean;
+
+    /** Migrated `disabled` value that considers the `disabled` and `isDisabled` props. */
+    disabled?: boolean;
+
+    /** Migrated `hasBackdrop` value that considers the `hasBackdrop` and `isModal` props. */
+    hasBackdrop?: boolean;
+
+    /** Migrated `placement` value that considers the `placement` and `position` props. */
+    placement?: Placement;
 }
 
 @PureRender
@@ -214,10 +223,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         openOnTargetFocus: true,
         rootElementTag: "span",
         transitionDuration: 300,
-        // Migrated props excluded from default props:
-        // For `disabled`, see `getDisabled`.
-        // For `hasBackdrop`, see `getHasBackdrop`.
-        // For `placement`, see `getPlacement`.
     };
 
     /**
@@ -248,15 +253,17 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         }
 
         this.state = {
+            disabled,
+            hasBackdrop: getHasBackdrop(props),
             hasDarkParent: false,
             isOpen,
+            placement: getPlacement(props),
         };
     }
 
     public render() {
         const { className } = this.props;
-        const { isOpen } = this.state;
-        const disabled = getDisabled(this.props);
+        const { isOpen, disabled, hasBackdrop } = this.state;
 
         let targetProps: React.HTMLAttributes<HTMLElement>;
         if (this.isHoverInteractionKind()) {
@@ -307,7 +314,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
                     className={this.props.portalClassName}
                     didOpen={this.handleContentMount}
                     enforceFocus={this.props.enforceFocus}
-                    hasBackdrop={getHasBackdrop(this.props)}
+                    hasBackdrop={hasBackdrop}
                     inline={this.props.inline}
                     isOpen={isOpen && !isContentEmpty}
                     onClose={this.handleOverlayClose}
@@ -327,10 +334,9 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     public componentWillReceiveProps(nextProps: IPopover2Props) {
         super.componentWillReceiveProps(nextProps);
 
-        const disabled = getDisabled(this.props);
         const nextDisabled = getDisabled(nextProps);
 
-        if (nextProps.isOpen == null && nextDisabled && !disabled) {
+        if (nextProps.isOpen == null && nextDisabled && !this.state.disabled) {
             // ok to use setOpenState here because disabled and isOpen are mutex.
             this.setOpenState(false);
         } else if (nextProps.isOpen !== this.props.isOpen) {
@@ -338,6 +344,12 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             // (which would be invoked if this went through setOpenState)
             this.setState({ isOpen: nextProps.isOpen });
         }
+
+        this.setState({
+            disabled: nextDisabled,
+            hasBackdrop: getHasBackdrop(nextProps),
+            placement: getPlacement(nextProps),
+        });
     }
 
     public componentWillUpdate(_: IPopover2Props, nextState: IPopover2State) {
@@ -378,7 +390,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
     private renderPopper(content: JSX.Element) {
         const { inline, interactionKind, modifiers } = this.props;
-        const placement = getPlacement(this.props);
+        const { placement } = this.state;
 
         const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class
@@ -482,7 +494,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
             !this.props.openOnTargetFocus
         ) {
             this.handleMouseLeave(e);
-        } else if (!getDisabled(this.props)) {
+        } else if (!this.state.disabled) {
             // only begin opening popover when it is enabled
             this.setOpenState(true, e, this.props.hoverOpenDelay);
         }
@@ -512,7 +524,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
     private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
-        if (!getDisabled(this.props) && !this.isElementInPopover(e.target as HTMLElement)) {
+        if (!this.state.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
                 this.setState(prevState => ({ isOpen: !prevState.isOpen }));
             } else {
@@ -579,19 +591,31 @@ function ensureElement(child: React.ReactChild | undefined) {
 }
 
 function getDisabled(props: IPopover2Props): boolean {
-    return resolvePropValue([props.disabled, props.isDisabled], false);
+    if (props.disabled !== undefined) {
+        return props.disabled;
+    } else if (props.isDisabled !== undefined) {
+        return props.isDisabled;
+    } else {
+        return false;
+    }
 }
 
 function getHasBackdrop(props: IPopover2Props): boolean {
-    return resolvePropValue([props.hasBackdrop, props.isModal], false);
+    if (props.hasBackdrop !== undefined) {
+        return props.hasBackdrop;
+    } else if (props.isModal !== undefined) {
+        return props.isModal;
+    } else {
+        return false;
+    }
 }
 
 function getPlacement(props: IPopover2Props): Placement {
-    let placement: Placement = "auto";
     if (props.placement !== undefined) {
-        placement = props.placement;
+        return props.placement;
     } else if (props.position !== undefined) {
-        placement = positionToPlacement(props.position);
+        return positionToPlacement(props.position);
+    } else {
+        return "auto";
     }
-    return placement;
 }

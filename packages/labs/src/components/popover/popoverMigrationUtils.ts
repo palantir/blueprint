@@ -9,22 +9,6 @@ import { Position } from "@blueprintjs/core";
 import { Placement } from "./popover2";
 
 /**
- * Get the first non-undefined prop value, falling back to the specified default value.
- * @param candidates the ordered list of value candidates
- * @param defaultValue the fallback value
- */
-export function resolvePropValue<T>(candidates: Array<T | undefined>, defaultValue: T): T {
-    let value: T | undefined;
-    for (const candidate of candidates) {
-        if (candidate !== undefined) {
-            value = candidate;
-            break;
-        }
-    }
-    return value !== undefined ? value : defaultValue;
-}
-
-/**
  * Convert a position to a placement.
  * @param position the position to convert
  */
