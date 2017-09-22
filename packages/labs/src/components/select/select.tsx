@@ -114,9 +114,18 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
     public state: ISelectState<T> = { isOpen: false, query: "" };
 
+    private input: HTMLInputElement;
     private TypedQueryList = QueryList.ofType<T>();
     private list: QueryList<T>;
     private refHandlers = {
+        input: (ref: HTMLInputElement) => {
+            this.input = ref;
+
+            const { inputProps = {} } = this.props;
+            if (inputProps.inputRef !== undefined) {
+                inputProps.inputRef(ref);
+            }
+        },
         queryList: (ref: QueryList<T>) => (this.list = ref),
     };
     private previousFocusedElement: HTMLElement;
@@ -159,12 +168,13 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         const { ref, ...htmlInputProps } = inputProps;
         const input = (
             <InputGroup
-                autoFocus={true}
+                autoFocus={false}
                 leftIconName="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
                 value={listProps.query}
                 {...htmlInputProps}
+                inputRef={this.refHandlers.input}
                 onChange={this.handleQueryChange}
             />
         );
@@ -268,6 +278,12 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         if (this.list != null) {
             this.list.scrollActiveItemIntoView();
         }
+
+        requestAnimationFrame(() => {
+            if (this.input != null) {
+                this.input.focus();
+            }
+        });
 
         const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.popoverDidOpen);
