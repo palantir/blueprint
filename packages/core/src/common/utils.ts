@@ -118,8 +118,9 @@ export function countDecimalPlaces(num: number) {
 }
 
 /**
- * Throttle an event on an EventTarget by wrapping it in a `requestAnimationFrame` call.
- * Returns the event handler that was bound to given eventName so you can clean up after yourself.
+ * Throttle an event on an EventTarget by wrapping it in a
+ * `requestAnimationFrame` call. Returns the event handler that was bound to
+ * given eventName so you can clean up after yourself.
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
@@ -150,7 +151,8 @@ export function throttleReactEventCallback(
             }
         },
         (event2: React.SyntheticEvent<any>) => {
-            // prevent React from reclaiming the event object before we reference it
+            // prevent React from reclaiming the event object before we
+            // reference it
             event2.persist();
         },
         (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => {
@@ -226,7 +228,8 @@ export function getShallowUnequalKeyValues<T extends object>(
     objB: T,
     keys?: IKeyBlacklist<T> | IKeyWhitelist<T>,
 ) {
-    // default param values let null values pass through, so we have to take this more thorough approach
+    // default param values let null values pass through, so we have to take
+    // this more thorough approach
     const definedObjA = objA == null ? {} : objA;
     const definedObjB = objB == null ? {} : objB;
 
@@ -260,7 +263,8 @@ function _throttleHelper(
 ) {
     let isRunning = false;
     const func = (...args: any[]) => {
-        // don't use safeInvoke, because we might have more than its max number of typed params
+        // don't use safeInvoke, because we might have more than its max number
+        // of typed params
         if (isFunction(onBeforeIsRunningCheck)) {
             onBeforeIsRunningCheck(...args);
         }
