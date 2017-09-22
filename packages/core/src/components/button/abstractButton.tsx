@@ -37,6 +37,13 @@ export interface IButtonProps extends IActionProps {
     loading?: boolean;
 
     /**
+     * If set to `true`, the button will display in a placeholder state.
+     * This is equivalent to setting `className="pt-placeholder"`.
+     * @default false
+     */
+    placeholder?: boolean;
+
+    /**
      * HTML `type` attribute of button. Common values are `"button"` and `"submit"`.
      * Note that this prop has no effect on `AnchorButton`; it only affects `Button`.
      * @default "button"
@@ -74,6 +81,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
                 [Classes.ACTIVE]: this.state.isActive || this.props.active,
                 [Classes.DISABLED]: disabled,
                 [Classes.LOADING]: this.props.loading,
+                [Classes.PLACEHOLDER]: this.props.placeholder,
             },
             Classes.iconClass(this.props.iconName),
             Classes.intentClass(this.props.intent),
