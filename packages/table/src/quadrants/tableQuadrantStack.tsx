@@ -169,9 +169,6 @@ export interface ITableQuadrantStackProps extends IProps {
 const DEFAULT_VIEW_SYNC_DELAY = 500;
 
 export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackProps, {}> {
-    // Static variables
-    // ================
-
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantStackProps> = {
@@ -274,58 +271,65 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             : this.handleMainQuadrantScroll;
         const onWheel = throttleScrolling ? this.throttledHandleWheel : this.handleWheel;
 
+        const baseProps = {
+            grid,
+            isRowHeaderShown,
+            onWheel,
+            renderBody,
+        };
+
+        const shouldRenderLeftQuadrants = this.shouldRenderLeftQuadrants();
+        const maybeLeftQuadrant = shouldRenderLeftQuadrants ? (
+            <TableQuadrant
+                {...baseProps}
+                quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
+                quadrantType={QuadrantType.LEFT}
+                renderColumnHeader={this.renderLeftQuadrantColumnHeader}
+                renderMenu={this.renderLeftQuadrantMenu}
+                renderRowHeader={this.renderLeftQuadrantRowHeader}
+                scrollContainerRef={this.quadrantRefHandlers[QuadrantType.LEFT].scrollContainer}
+            />
+        ) : (
+            undefined
+        );
+        const maybeTopLeftQuadrant = shouldRenderLeftQuadrants ? (
+            <TableQuadrant
+                {...baseProps}
+                quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].quadrant}
+                quadrantType={QuadrantType.TOP_LEFT}
+                renderColumnHeader={this.renderTopLeftQuadrantColumnHeader}
+                renderMenu={this.renderTopLeftQuadrantMenu}
+                renderRowHeader={this.renderTopLeftQuadrantRowHeader}
+                scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].scrollContainer}
+            />
+        ) : (
+            undefined
+        );
+
         return (
             <div className={Classes.TABLE_QUADRANT_STACK}>
                 <TableQuadrant
+                    {...baseProps}
                     bodyRef={this.props.bodyRef}
-                    grid={grid}
-                    isRowHeaderShown={isRowHeaderShown}
                     onScroll={onMainQuadrantScroll}
-                    onWheel={onWheel}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.MAIN].quadrant}
                     quadrantType={QuadrantType.MAIN}
-                    renderBody={renderBody}
                     renderColumnHeader={this.renderMainQuadrantColumnHeader}
                     renderMenu={this.renderMainQuadrantMenu}
                     renderRowHeader={this.renderMainQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.MAIN].scrollContainer}
                 />
                 <TableQuadrant
-                    grid={grid}
-                    isRowHeaderShown={isRowHeaderShown}
-                    onWheel={onWheel}
+                    {...baseProps}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP].quadrant}
                     quadrantType={QuadrantType.TOP}
-                    renderBody={renderBody}
                     renderColumnHeader={this.renderTopQuadrantColumnHeader}
                     renderMenu={this.renderTopQuadrantMenu}
                     renderRowHeader={this.renderTopQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP].scrollContainer}
                 />
-                <TableQuadrant
-                    grid={grid}
-                    isRowHeaderShown={isRowHeaderShown}
-                    onWheel={onWheel}
-                    quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
-                    quadrantType={QuadrantType.LEFT}
-                    renderBody={renderBody}
-                    renderColumnHeader={this.renderLeftQuadrantColumnHeader}
-                    renderMenu={this.renderLeftQuadrantMenu}
-                    renderRowHeader={this.renderLeftQuadrantRowHeader}
-                    scrollContainerRef={this.quadrantRefHandlers[QuadrantType.LEFT].scrollContainer}
-                />
-                <TableQuadrant
-                    grid={grid}
-                    isRowHeaderShown={isRowHeaderShown}
-                    onWheel={onWheel}
-                    quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].quadrant}
-                    quadrantType={QuadrantType.TOP_LEFT}
-                    renderBody={renderBody}
-                    renderColumnHeader={this.renderTopLeftQuadrantColumnHeader}
-                    renderMenu={this.renderTopLeftQuadrantMenu}
-                    renderRowHeader={this.renderTopLeftQuadrantRowHeader}
-                    scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].scrollContainer}
-                />
+                {maybeLeftQuadrant}
+                {maybeTopLeftQuadrant}
             </div>
         );
     }
@@ -492,7 +496,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const nextScrollTop = mainScrollContainer.scrollTop;
         const nextScrollLeft = mainScrollContainer.scrollLeft;
 
-        this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
+        if (this.shouldRenderLeftQuadrants()) {
+            this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
+        }
         this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
 
         // update the cache immediately
@@ -541,7 +547,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
             // sync the corresponding scroll position of all dependent quadrants
             quadrantTypesToSync.forEach(quadrantTypeToSync => {
-                this.quadrantRefs[quadrantTypeToSync].scrollContainer[scrollKey] = nextScrollOffset;
+                const { scrollContainer } = this.quadrantRefs[quadrantTypeToSync];
+                if (scrollContainer != null) {
+                    scrollContainer[scrollKey] = nextScrollOffset;
+                }
                 this.cache.setQuadrantScrollOffset(quadrantTypeToSync, scrollKey, nextScrollOffset);
             });
         }
@@ -681,59 +690,71 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.cache.setColumnHeaderHeight(columnHeaderHeight);
         QUADRANT_TYPES.forEach(quadrantType => {
             const { scrollContainer } = this.quadrantRefs[quadrantType];
-            this.cache.setQuadrantScrollOffset(quadrantType, "scrollLeft", scrollContainer.scrollLeft);
-            this.cache.setQuadrantScrollOffset(quadrantType, "scrollTop", scrollContainer.scrollTop);
+            if (scrollContainer != null) {
+                this.cache.setQuadrantScrollOffset(quadrantType, "scrollLeft", scrollContainer.scrollLeft);
+                this.cache.setQuadrantScrollOffset(quadrantType, "scrollTop", scrollContainer.scrollTop);
+            }
         });
 
         //
         // Writes (batched to avoid DOM thrashing)
         //
 
-        this.setQuadrantRowHeaderSizes(rowHeaderWidth);
-        this.setQuadrantMenuElementSizes(nextMenuElementWidth, nextMenuElementHeight);
-        this.setQuadrantSize(QuadrantType.LEFT, "width", nextLeftQuadrantWidth);
-        this.setQuadrantSize(QuadrantType.TOP, "height", nextTopQuadrantHeight);
-        this.setQuadrantSize(QuadrantType.TOP_LEFT, "width", nextLeftQuadrantWidth);
-        this.setQuadrantSize(QuadrantType.TOP_LEFT, "height", nextTopQuadrantHeight);
-        this.setQuadrantOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
-        this.setQuadrantOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
+        this.maybesSetQuadrantRowHeaderSizes(rowHeaderWidth);
+        this.maybeSetQuadrantMenuElementSizes(nextMenuElementWidth, nextMenuElementHeight);
+        this.maybeSetQuadrantSizes(nextLeftQuadrantWidth, nextTopQuadrantHeight);
+        this.maybeSetQuadrantOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
+        this.maybeSetQuadrantOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
     };
 
-    private setQuadrantSize = (quadrantType: QuadrantType, dimension: "width" | "height", value: number) => {
-        this.quadrantRefs[quadrantType].quadrant.style[dimension] = `${value}px`;
+    private maybeSetQuadrantSizes = (width: number, height: number) => {
+        this.maybesSetQuadrantSize(QuadrantType.LEFT, "width", width);
+        this.maybesSetQuadrantSize(QuadrantType.TOP, "height", height);
+        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "width", width);
+        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "height", height);
     };
 
-    private setQuadrantOffset = (quadrantType: QuadrantType, side: "right" | "bottom", value: number) => {
-        this.quadrantRefs[quadrantType].quadrant.style[side] = `${value}px`;
-    };
-
-    private setQuadrantRowHeaderSizes = (width: number) => {
-        const mainRowHeader = this.quadrantRefs[QuadrantType.MAIN].rowHeader;
-        if (mainRowHeader == null) {
-            return;
+    private maybesSetQuadrantSize = (quadrantType: QuadrantType, dimension: "width" | "height", value: number) => {
+        const { quadrant } = this.quadrantRefs[quadrantType];
+        if (quadrant != null) {
+            quadrant.style[dimension] = `${value}px`;
         }
-
-        const widthString = `${width}px`;
-        mainRowHeader.style.width = widthString;
-        this.quadrantRefs[QuadrantType.TOP].rowHeader.style.width = widthString;
-        this.quadrantRefs[QuadrantType.LEFT].rowHeader.style.width = widthString;
-        this.quadrantRefs[QuadrantType.TOP_LEFT].rowHeader.style.width = widthString;
     };
 
-    private setQuadrantMenuElementSizes = (width: number, height: number) => {
-        this.setQuadrantMenuElementSize(QuadrantType.MAIN, width, height);
-        this.setQuadrantMenuElementSize(QuadrantType.TOP, width, height);
-        this.setQuadrantMenuElementSize(QuadrantType.LEFT, width, height);
-        this.setQuadrantMenuElementSize(QuadrantType.TOP_LEFT, width, height);
-    };
-
-    private setQuadrantMenuElementSize = (quadrantType: QuadrantType, width: number, height: number) => {
-        const quadrantMenu = this.quadrantRefs[quadrantType].menu;
-        if (quadrantMenu == null) {
-            return;
+    private maybeSetQuadrantOffset = (quadrantType: QuadrantType, side: "right" | "bottom", value: number) => {
+        const { quadrant } = this.quadrantRefs[quadrantType];
+        if (quadrant != null) {
+            quadrant.style[side] = `${value}px`;
         }
-        quadrantMenu.style.width = `${width}px`;
-        quadrantMenu.style.height = `${height}px`;
+    };
+
+    private maybesSetQuadrantRowHeaderSizes = (width: number) => {
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.MAIN, width);
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP, width);
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.LEFT, width);
+        this.maybeSetQuadrantRowHeaderSize(QuadrantType.TOP_LEFT, width);
+    };
+
+    private maybeSetQuadrantRowHeaderSize = (quadrantType: QuadrantType, width: number) => {
+        const { rowHeader } = this.quadrantRefs[quadrantType];
+        if (rowHeader != null) {
+            rowHeader.style.width = `${width}px`;
+        }
+    };
+
+    private maybeSetQuadrantMenuElementSizes = (width: number, height: number) => {
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.MAIN, width, height);
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP, width, height);
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.LEFT, width, height);
+        this.maybeSetQuadrantMenuElementSize(QuadrantType.TOP_LEFT, width, height);
+    };
+
+    private maybeSetQuadrantMenuElementSize = (quadrantType: QuadrantType, width: number, height: number) => {
+        const { menu } = this.quadrantRefs[quadrantType];
+        if (menu != null) {
+            menu.style.width = `${width}px`;
+            menu.style.height = `${height}px`;
+        }
     };
 
     // Helpers
@@ -770,6 +791,11 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             const desiredRowHeaderWidth = mainRowHeader.clientWidth;
             return desiredRowHeaderWidth;
         }
+    }
+
+    private shouldRenderLeftQuadrants() {
+        const { isRowHeaderShown, numFrozenColumns } = this.props;
+        return isRowHeaderShown || (numFrozenColumns != null && numFrozenColumns > 0);
     }
 
     // Resizing
