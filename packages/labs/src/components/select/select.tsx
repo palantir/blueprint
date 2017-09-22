@@ -122,9 +122,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
             this.input = ref;
 
             const { inputProps = {} } = this.props;
-            if (inputProps.inputRef !== undefined) {
-                inputProps.inputRef(ref);
-            }
+            Utils.safeInvoke(inputProps.inputRef, ref);
         },
         queryList: (ref: QueryList<T>) => (this.list = ref),
     };
@@ -168,7 +166,6 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         const { ref, ...htmlInputProps } = inputProps;
         const input = (
             <InputGroup
-                autoFocus={false}
                 leftIconName="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
