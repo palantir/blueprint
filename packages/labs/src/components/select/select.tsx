@@ -47,7 +47,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
 
     /**
      * Current query value, for controlled usage.
-     * Providing this prop will put the component in controlled mode.
+     * Providing this prop will control the query input.
      */
     query?: string;
 
@@ -163,7 +163,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
     public componentWillReceiveProps(nextProps: ISelectProps<T>) {
         const nextQuery = getQuery(nextProps);
-        if (nextQuery !== undefined && this.state.query !== nextQuery) {
+        if (nextQuery !== undefined && nextQuery !== this.state.query) {
             this.setState({ query: nextQuery });
         }
     }
@@ -178,15 +178,15 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
-        const { ref, value, ...htmlInputProps } = inputProps;
+        const { ref, ...htmlInputProps } = inputProps;
         const input = (
             <InputGroup
                 autoFocus={true}
                 leftIconName="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
-                value={listProps.query}
                 {...htmlInputProps}
+                value={listProps.query}
                 onChange={this.handleQueryChange}
             />
         );
@@ -310,31 +310,34 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = {}, onQueryChange } = this.props;
-        const query = event.currentTarget.value;
+        const { inputProps = {} } = this.props;
+        Utils.safeInvoke(inputProps.onChange, event);
+        this.setQuery(event.currentTarget.value);
+    };
+
+    private resetQuery = () => {
+        const { items } = this.props;
+        this.setState({ activeItem: items[0] });
+        this.setQuery("");
+    };
+
+    private setQuery(query: string): void {
         // Only set the query state ourselves if not controlled
         if (getQuery(this.props) === undefined) {
             this.setState({ query });
         }
-        Utils.safeInvoke(inputProps.onChange, event);
-        Utils.safeInvoke(onQueryChange, query);
-    };
 
-    private resetQuery = () => {
-        const { items, onQueryChange } = this.props;
-        const query = "";
-        this.setState({ activeItem: items[0], query });
-        Utils.safeInvoke(onQueryChange, query);
-    };
+        Utils.safeInvoke(this.props.onQueryChange, query);
+    }
 }
 
-function getQuery(props: ISelectProps<any>, fallback?: string): string | undefined {
+function getQuery(props: ISelectProps<any>, defaultValue?: string): string | undefined {
     const { inputProps = {} } = props;
     if (props.query !== undefined) {
         return props.query;
     } else if (inputProps.value !== undefined) {
         return inputProps.value;
     } else {
-        return fallback;
+        return defaultValue;
     }
 }

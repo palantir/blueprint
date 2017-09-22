@@ -53,8 +53,7 @@ describe("<Select>", () => {
     });
 
     it("itemRenderer is called for each filtered child", () => {
-        const wrapper = select({ query: "" });
-        wrapper.setProps({ query: "1999" });
+        select({}, "1999");
         // each item rendered before setting query, then 4 items filtered rendered twice (TODO: why)
         assert.equal(handlers.itemRenderer.callCount, 108);
     });
@@ -65,7 +64,7 @@ describe("<Select>", () => {
     });
 
     it("renders noResults when filtering returns empty list", () => {
-        const wrapper = select({ noResults: <address />, query: "non-existent film name" });
+        const wrapper = select({ noResults: <address /> }, "non-existent film name");
         assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
     });
 
@@ -79,7 +78,7 @@ describe("<Select>", () => {
     });
 
     it("clicking item preserves state when resetOnSelect=false", () => {
-        const wrapper = select({ resetOnSelect: false, query: "1972" });
+        const wrapper = select({ resetOnSelect: false }, "1972");
         wrapper
             .find("a")
             .at(0)
@@ -89,7 +88,7 @@ describe("<Select>", () => {
     });
 
     it("clicking item resets state when resetOnSelect=true", () => {
-        const wrapper = select({ resetOnSelect: true, query: "1972" });
+        const wrapper = select({ resetOnSelect: true }, "1972");
         wrapper
             .find("a")
             .at(0)
@@ -98,7 +97,7 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.state("query"), "");
     });
 
-    it("if query is non-empty, the input value will stay in sync with the query prop", () => {
+    it("if query prop is non-empty, the input value will stay in sync with the query prop", () => {
         const query = "nailed it";
         const wrapper = select({ query });
         const input = wrapper.find("input");
@@ -178,47 +177,44 @@ describe("<Select>", () => {
         const onChange = sinon.spy();
 
         const wrapper = select({ inputProps: { value, onChange } });
-        assert.equal(wrapper.state("query"), value);
-
         const input = wrapper.find("input");
+
         assert.equal(input.prop("value"), value);
-        assert.equal(wrapper.state("query"), value);
 
         input.simulate("change");
         assert.isTrue(onChange.calledOnce);
-
-        const value2 = "nailed it again";
-        wrapper.setProps({ inputProps: { value: value2 } });
-        assert.equal(wrapper.find("input").prop("value"), value2);
-        assert.equal(wrapper.state("query"), value2);
     });
 
     it("popover can be controlled with popoverProps", () => {
         // Select defines its own popoverWillOpen so this ensures that the passthrough happens
         const popoverWillOpen = sinon.spy();
         const tetherOptions = {}; // our own instance
-        const wrapper = select({ popoverProps: { popoverWillOpen, tetherOptions } });
+        const wrapper = select({ popoverProps: { inline: true, popoverWillOpen, tetherOptions } });
         wrapper.find("table").simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("tetherOptions"), tetherOptions);
         assert.isTrue(popoverWillOpen.calledOnce);
     });
 
     it("popover can be controlled with popoverProps.isOpen", () => {
-        const wrapper = select({ popoverProps: { isOpen: false } });
+        const wrapper = select({ popoverProps: { inline: true, isOpen: false } });
         wrapper.find("table").simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
-        wrapper.setProps({ popoverProps: { isOpen: true } });
+        wrapper.setProps({ popoverProps: { inline: true, isOpen: true } });
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
 
     it("returns focus to focusable target after popover closed");
 
-    function select(props: Partial<ISelectProps<Film>> = {}) {
-        return mount(
+    function select(props: Partial<ISelectProps<Film>> = {}, query?: string) {
+        const wrapper = mount(
             <FilmSelect {...defaultProps} {...handlers} {...props}>
                 <table />
             </FilmSelect>,
         );
+        if (query !== undefined) {
+            wrapper.setState({ query });
+        }
+        return wrapper;
     }
 });
 
