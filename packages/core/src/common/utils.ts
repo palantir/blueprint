@@ -7,6 +7,14 @@
 
 import { CLAMP_MIN_MAX } from "./errors";
 
+export interface IKeyWhitelist<T> {
+    include: Array<keyof T>;
+}
+
+export interface IKeyBlacklist<T> {
+    exclude: Array<keyof T>;
+}
+
 // only accessible within this file, so use `Utils.isNodeEnv` from the outside.
 declare var process: { env: any };
 
@@ -115,7 +123,7 @@ export function countDecimalPlaces(num: number) {
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
-    const throttledFunc = throttleHelper(undefined, undefined, (event: Event) => {
+    const throttledFunc = _throttleHelper(undefined, undefined, (event: Event) => {
         target.dispatchEvent(new CustomEvent(newEventName, event));
     });
     target.addEventListener(eventName, throttledFunc);
@@ -135,7 +143,7 @@ export function throttleReactEventCallback(
     callback: (event: React.SyntheticEvent<any>, ...otherArgs: any[]) => any,
     options: IThrottledReactEventOptions = {},
 ) {
-    const throttledFunc = throttleHelper(
+    const throttledFunc = _throttleHelper(
         (event2: React.SyntheticEvent<any>) => {
             if (options.preventDefault) {
                 event2.preventDefault();
@@ -150,46 +158,6 @@ export function throttleReactEventCallback(
         },
     );
     return throttledFunc;
-}
-
-type ThrottleHelperCallback = (...args: any[]) => void;
-
-function throttleHelper(
-    onBeforeIsRunningCheck: ThrottleHelperCallback,
-    onAfterIsRunningCheck: ThrottleHelperCallback,
-    onAnimationFrameRequested: ThrottleHelperCallback,
-) {
-    let isRunning = false;
-    const func = (...args: any[]) => {
-        // don't use safeInvoke, because we might have more than its max number of typed params
-        if (isFunction(onBeforeIsRunningCheck)) {
-            onBeforeIsRunningCheck(...args);
-        }
-
-        if (isRunning) {
-            return;
-        }
-        isRunning = true;
-
-        if (isFunction(onAfterIsRunningCheck)) {
-            onAfterIsRunningCheck(...args);
-        }
-
-        requestAnimationFrame(() => {
-            if (isFunction(onAnimationFrameRequested)) {
-                onAnimationFrameRequested(...args);
-            }
-            isRunning = false;
-        });
-    };
-    return func;
-}
-
-export interface IKeyWhitelist<T> {
-    include: Array<keyof T>;
-}
-export interface IKeyBlacklist<T> {
-    exclude: Array<keyof T>;
 }
 
 /**
@@ -280,6 +248,40 @@ export function getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys
     return _getUnequalKeyValues(definedObjA, definedObjB, filteredKeys, (a, b, key) => {
         return deepCompareKeys(a, b, [key]);
     });
+}
+
+// Private helpers
+// ===============
+
+function _throttleHelper(
+    onBeforeIsRunningCheck: (...args: any[]) => void,
+    onAfterIsRunningCheck: (...args: any[]) => void,
+    onAnimationFrameRequested: (...args: any[]) => void,
+) {
+    let isRunning = false;
+    const func = (...args: any[]) => {
+        // don't use safeInvoke, because we might have more than its max number of typed params
+        if (isFunction(onBeforeIsRunningCheck)) {
+            onBeforeIsRunningCheck(...args);
+        }
+
+        if (isRunning) {
+            return;
+        }
+        isRunning = true;
+
+        if (isFunction(onAfterIsRunningCheck)) {
+            onAfterIsRunningCheck(...args);
+        }
+
+        requestAnimationFrame(() => {
+            if (isFunction(onAnimationFrameRequested)) {
+                onAnimationFrameRequested(...args);
+            }
+            isRunning = false;
+        });
+    };
+    return func;
 }
 
 /**
