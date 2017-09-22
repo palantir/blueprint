@@ -217,8 +217,13 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     private shouldIgnoreMouseDown(event: MouseEvent) {
         const { ignoredSelectors = [] } = this.props;
         const element = event.target as HTMLElement;
+
+        const isLeftClick = Utils.isLeftClick(event);
+        const isContextMenuTrigger = isLeftClick && event.ctrlKey;
+
         return (
-            !Utils.isLeftClick(event) ||
+            !isLeftClick ||
+            isContextMenuTrigger ||
             this.props.disabled ||
             ignoredSelectors.some((selector: string) => element.closest(selector) != null)
         );
