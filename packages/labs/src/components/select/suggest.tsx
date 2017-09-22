@@ -20,8 +20,9 @@ import {
     Position,
     Utils,
 } from "@blueprintjs/core";
-import { IListItemsProps, IQueryListRendererProps, ISelectItemRendererProps, QueryList } from "../";
 import * as Classes from "../../common/classes";
+import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { ISelectItemRendererProps } from "../select/select";
 
 export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**

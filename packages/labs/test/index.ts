@@ -8,3 +8,4 @@ import "./queryListTests";
 import "./selectTests";
 import "./suggestTests";
 import "./tagInputTests";
+import "./timezonePickerTests";

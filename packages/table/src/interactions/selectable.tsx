@@ -11,9 +11,9 @@ import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
 import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
 import { Utils } from "../common/utils";
-import { DragEvents } from "../interactions/dragEvents";
-import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, Regions } from "../regions";
+import { DragEvents } from "./dragEvents";
+import { Draggable, ICoordinateData, IDraggableProps } from "./draggable";
 
 export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coords?: ICoordinateData) => IRegion;
 
