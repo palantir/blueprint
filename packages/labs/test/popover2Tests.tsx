@@ -6,7 +6,7 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper, shallow } from "enzyme";
+import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { Popper } from "react-popper";
 
@@ -16,6 +16,8 @@ import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 
 import { Arrow } from "react-popper";
 import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../src/index";
+
+type ShallowPopover2Wrapper = ShallowWrapper<IPopover2Props, IPopover2State>;
 
 describe("<Popover2>", () => {
     let testsContainerElement: HTMLElement;
@@ -584,18 +586,10 @@ describe("<Popover2>", () => {
                     child
                 </Popover2>,
             );
-            {
-                const actual: Placement = popover.find(Popper).prop("placement");
-                const expected: Placement = "bottom-start";
-                assert.strictEqual(actual, expected);
-            }
+            assertPlacement(popover, "bottom-start");
 
             popover.setProps({ position: Position.LEFT_BOTTOM });
-            {
-                const actual: Placement = popover.find(Popper).prop("placement");
-                const expected: Placement = "left-end";
-                assert.strictEqual(actual, expected);
-            }
+            assertPlacement(popover, "left-end");
         });
 
         it("should convert isModal to hasBackdrop", () => {
@@ -628,18 +622,10 @@ describe("<Popover2>", () => {
                     child
                 </Popover2>,
             );
-            {
-                const actual: Placement = popover.find(Popper).prop("placement");
-                const expected: Placement = "left-end";
-                assert.strictEqual(actual, expected);
-            }
+            assertPlacement(popover, "left-end");
 
             popover.setProps({ placement: "bottom-start", position: Position.LEFT_BOTTOM });
-            {
-                const actual: Placement = popover.find(Popper).prop("placement");
-                const expected: Placement = "bottom-start";
-                assert.strictEqual(actual, expected);
-            }
+            assertPlacement(popover, "bottom-start");
         });
 
         it("hasBackdrop should take precedence over isModal", () => {
@@ -713,5 +699,9 @@ describe("<Popover2>", () => {
 
     function getNode(element: ReactWrapper<React.HTMLAttributes<{}>, any>) {
         return (element as any).node as Element;
+    }
+
+    function assertPlacement(popover: ShallowPopover2Wrapper, placement: Placement) {
+        assert.strictEqual(popover.find(Popper).prop("placement"), placement);
     }
 });

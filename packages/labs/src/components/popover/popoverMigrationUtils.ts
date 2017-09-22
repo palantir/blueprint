@@ -14,14 +14,21 @@ import { Placement } from "./popover2";
  * @param defaultValue the fallback value
  */
 export function resolvePropValue<T>(candidates: Array<T | undefined>, defaultValue: T): T {
-    return [...candidates].reverse().reduce((prev, cur) => (cur !== undefined ? cur : prev), defaultValue);
+    let value: T | undefined;
+    for (const candidate of candidates) {
+        if (candidate !== undefined) {
+            value = candidate;
+            break;
+        }
+    }
+    return value !== undefined ? value : defaultValue;
 }
 
 /**
- * Migrate a legacy position into a placement.
+ * Convert a position to a placement.
  * @param position the position to convert
  */
-export function migratePosition(position: Position): Placement {
+export function positionToPlacement(position: Position): Placement {
     switch (position) {
         case Position.TOP_LEFT:
             return "top-start";

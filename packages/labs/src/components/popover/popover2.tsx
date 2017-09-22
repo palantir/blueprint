@@ -27,7 +27,7 @@ import {
 import * as Errors from "../../common/errors";
 import { Tooltip2 } from "../tooltip/tooltip2";
 import { getArrowAngle, PopoverArrow } from "./arrow";
-import { migratePosition, resolvePropValue } from "./popoverMigrations";
+import { positionToPlacement, resolvePropValue } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 
 export interface IPopover2Props extends IOverlayableProps, IProps {
@@ -359,13 +359,13 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
     protected validateProps(props: IPopover2Props & { children?: React.ReactNode }) {
         if (props.isDisabled !== undefined) {
-            console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_DISABLED);
+            console.warn(Errors.POPOVER2_WARN_DEPRECATED_IS_DISABLED);
         }
         if (props.isModal !== undefined) {
-            console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_MODAL);
+            console.warn(Errors.POPOVER2_WARN_DEPRECATED_IS_MODAL);
         }
         if (props.position !== undefined) {
-            console.warn(Errors.POPOVER_WARN_DEPRECATED_POSITION);
+            console.warn(Errors.POPOVER2_WARN_DEPRECATED_POSITION);
         }
     }
 
@@ -591,7 +591,7 @@ function getPlacement(props: IPopover2Props): Placement {
     if (props.placement !== undefined) {
         placement = props.placement;
     } else if (props.position !== undefined) {
-        placement = migratePosition(props.position);
+        placement = positionToPlacement(props.position);
     }
     return placement;
 }
