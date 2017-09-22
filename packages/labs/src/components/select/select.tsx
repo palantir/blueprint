@@ -133,7 +133,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     constructor(props?: ISelectProps<T>, context?: any) {
         super(props, context);
 
-        this.state = { isOpen: false, query: getQuery(props) };
+        this.state = { isOpen: false, query: getQuery(props, "") };
     }
 
     public render() {
@@ -163,7 +163,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
     public componentWillReceiveProps(nextProps: ISelectProps<T>) {
         const nextQuery = getQuery(nextProps);
-        if (this.state.query !== nextQuery) {
+        if (nextQuery !== undefined && this.state.query !== nextQuery) {
             this.setState({ query: nextQuery });
         }
     }
@@ -312,7 +312,10 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         const { inputProps = {}, onQueryChange } = this.props;
         const query = event.currentTarget.value;
-        this.setState({ query });
+        // Only set the query state ourselves if not controlled
+        if (getQuery(this.props) === undefined) {
+            this.setState({ query });
+        }
         Utils.safeInvoke(inputProps.onChange, event);
         Utils.safeInvoke(onQueryChange, query);
     };
@@ -325,14 +328,13 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     };
 }
 
-function getQuery(props: ISelectProps<any>): string {
+function getQuery(props: ISelectProps<any>, fallback?: string): string | undefined {
     const { inputProps = {} } = props;
-
-    let query: string = "";
     if (props.query !== undefined) {
-        query = props.query;
+        return props.query;
     } else if (inputProps.value !== undefined) {
-        query = inputProps.value;
+        return inputProps.value;
+    } else {
+        return fallback;
     }
-    return query;
 }

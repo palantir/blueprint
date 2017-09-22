@@ -103,6 +103,10 @@ describe("<Select>", () => {
         const wrapper = select({ query });
         assert.equal(wrapper.find("input").prop("value"), query);
         assert.equal(wrapper.state("query"), query);
+        (wrapper.find("input").getDOMNode() as HTMLInputElement).value = "some other value";
+        wrapper.find("input").simulate("change");
+        assert.equal(wrapper.find("input").prop("value"), query);
+        assert.equal(wrapper.state("query"), query);
     });
 
     it("if both query and inputProps.value are non-empty, query will take precedence", () => {
