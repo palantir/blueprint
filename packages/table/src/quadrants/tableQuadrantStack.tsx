@@ -540,7 +540,13 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
 
             const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
-            const nextScrollOffset = mainScrollContainer[scrollKey] + delta;
+            const currScrollOffset = mainScrollContainer[scrollKey];
+            const nextScrollOffset = Math.max(0, mainScrollContainer[scrollKey] + delta);
+
+            if (nextScrollOffset === currScrollOffset) {
+                return;
+            }
+
             mainScrollContainer[scrollKey] = nextScrollOffset;
 
             // update the cache.
