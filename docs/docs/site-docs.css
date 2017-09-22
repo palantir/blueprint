@@ -3000,6 +3000,9 @@ a.pt-button.pt-disabled {
   background: rgba(57, 75, 89, 0.7); }
 .pt-file-upload.pt-fill {
   width: 100%; }
+.pt-file-upload.pt-large,
+.pt-large .pt-file-upload {
+  height: 40px; }
 .pt-file-upload-input {
   outline: none;
   border: none;
@@ -6935,6 +6938,8 @@ table.pt-table.pt-interactive tbody tr:hover td {
   color: rgba(92, 112, 128, 0.5); }
 .pt-input-ghost:focus {
   outline: none !important; }
+.pt-timezone-picker-popover {
+  min-width: 370px; }
 
 @-webkit-keyframes skeleton-fade-in {
   0% {
@@ -7259,7 +7264,6 @@ table.pt-table.pt-interactive tbody tr:hover td {
   flex: 0 0; }
 .bp-table-column-headers .bp-table-interaction-bar {
   position: relative;
-  cursor: s-resize;
   height: 20px; }
 .bp-table-column-headers .bp-table-header {
   min-height: 30px;
@@ -7267,6 +7271,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
   line-height: 30px; }
 .bp-table-row-headers .bp-table-header {
   min-width: 30px;
+  overflow: hidden;
   line-height: 20px; }
 .bp-table-column-name-text,
 .bp-table-row-name-text {
@@ -7520,6 +7525,7 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-quadrant-stack {
   display: -webkit-flex;
   display: flex;
+  position: relative;
   height: 100%; }
 .bp-table-quadrant {
   position: absolute;
@@ -7568,7 +7574,8 @@ table.pt-table.pt-interactive tbody tr:hover td {
   overflow-y: hidden; }
 .bp-table-quadrant-left {
   bottom: 0;
-  z-index: 2; }
+  z-index: 2;
+  transition: width 100ms cubic-bezier(0.4, 1, 0.75, 0.9); }
 .bp-table-quadrant-left .bp-table-quadrant-scroll-container {
   position: absolute;
   top: 0;
@@ -7577,7 +7584,8 @@ table.pt-table.pt-interactive tbody tr:hover td {
   height: auto;
   overflow-x: hidden; }
 .bp-table-quadrant-top-left {
-  z-index: 3; }
+  z-index: 3;
+  transition: width 100ms cubic-bezier(0.4, 1, 0.75, 0.9); }
 .bp-table-quadrant-top-left .bp-table-quadrant-scroll-container {
   right: -20px;
   bottom: -20px;
@@ -7641,13 +7649,13 @@ table.pt-table.pt-interactive tbody tr:hover td {
   background-color: #30404d;
   color: #f5f8fa; }
 .bp-table-row-headers {
-  display: table;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
   position: relative;
   z-index: 12;
   background-color: #f5f8fa;
-  color: #5c7080; }
+  color: #5c7080;
+  transition: width 100ms cubic-bezier(0.4, 1, 0.75, 0.9); }
 .pt-dark .bp-table-row-headers {
   background-color: #30404d;
   color: #bfccd6; }
