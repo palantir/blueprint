@@ -8,7 +8,6 @@
 import * as classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../common/classes";
-import { Utils } from "../common/utils";
 
 import { Classes as CoreClasses, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
