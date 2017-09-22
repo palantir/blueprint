@@ -5,20 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { QuadrantType } from "./tableQuadrant";
-
-export interface IScrollOffsetMap {
-    scrollLeft: number;
-    scrollTop: number;
-}
+export type ScrollKey = "scrollLeft" | "scrollTop";
 
 export class TableQuadrantStackCache {
     private cachedRowHeaderWidth: number;
     private cachedColumnHeaderHeight: number;
-    private cachedMainQuadrantScrollOffsets: IScrollOffsetMap;
-    private cachedTopQuadrantScrollOffsets: IScrollOffsetMap;
-    private cachedLeftQuadrantScrollOffsets: IScrollOffsetMap;
-    private cachedTopLeftQuadrantScrollOffsets: IScrollOffsetMap;
+    private cachedScrollLeft: number;
+    private cachedScrollTop: number;
 
     public constructor() {
         this.reset();
@@ -27,18 +20,19 @@ export class TableQuadrantStackCache {
     public reset() {
         this.cachedRowHeaderWidth = 0;
         this.cachedColumnHeaderHeight = 0;
-
-        this.cachedMainQuadrantScrollOffsets = this.createScrollOffsetMap();
-        this.cachedTopQuadrantScrollOffsets = this.createScrollOffsetMap();
-        this.cachedLeftQuadrantScrollOffsets = this.createScrollOffsetMap();
-        this.cachedTopLeftQuadrantScrollOffsets = this.createScrollOffsetMap();
+        this.cachedScrollLeft = 0;
+        this.cachedScrollTop = 0;
     }
 
     // Getters
     // =======
 
-    public getQuadrantScrollOffset(quadrantType: QuadrantType, scrollKey: keyof IScrollOffsetMap) {
-        return this.getQuadrantScrollOffsetMap(quadrantType)[scrollKey];
+    public getScrollOffset(scrollKey: ScrollKey) {
+        return scrollKey === "scrollLeft" ? this.cachedScrollLeft : this.cachedScrollTop;
+    }
+
+    public getScrollTop() {
+        return this.cachedScrollTop;
     }
 
     public getRowHeaderWidth() {
@@ -60,28 +54,11 @@ export class TableQuadrantStackCache {
         this.cachedRowHeaderWidth = width;
     }
 
-    public setQuadrantScrollOffset(quadrantType: QuadrantType, scrollKey: keyof IScrollOffsetMap, offset: number) {
-        this.getQuadrantScrollOffsetMap(quadrantType)[scrollKey] = offset;
-    }
-
-    // Helpers
-    // =======
-
-    private createScrollOffsetMap() {
-        return { scrollLeft: 0, scrollTop: 0 };
-    }
-
-    private getQuadrantScrollOffsetMap(quadrantType: QuadrantType) {
-        switch (quadrantType) {
-            case QuadrantType.MAIN:
-                return this.cachedMainQuadrantScrollOffsets;
-            case QuadrantType.TOP:
-                return this.cachedTopQuadrantScrollOffsets;
-            case QuadrantType.LEFT:
-                return this.cachedLeftQuadrantScrollOffsets;
-            default:
-                // i.e. case QuadrantType.TOP_LEFT:
-                return this.cachedTopLeftQuadrantScrollOffsets;
+    public setScrollOffset(scrollKey: ScrollKey, offset: number) {
+        if (scrollKey === "scrollLeft") {
+            this.cachedScrollLeft = offset;
+        } else {
+            this.cachedScrollTop = offset;
         }
     }
 }

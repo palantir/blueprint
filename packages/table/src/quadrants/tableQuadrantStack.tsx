@@ -12,7 +12,7 @@ import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
 import * as ScrollUtils from "../common/internal/scrollUtils";
 import { Utils } from "../common/utils";
-import { QUADRANT_TYPES, QuadrantType, TableQuadrant } from "./tableQuadrant";
+import { QuadrantType, TableQuadrant } from "./tableQuadrant";
 import { TableQuadrantStackCache } from "./tableQuadrantStackCache";
 
 interface IQuadrantRefMap<T> {
@@ -501,9 +501,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         }
         this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
 
-        // update the cache immediately
-        this.cache.setQuadrantScrollOffset(QuadrantType.LEFT, "scrollTop", nextScrollTop);
-        this.cache.setQuadrantScrollOffset(QuadrantType.TOP, "scrollLeft", nextScrollLeft);
+        // update the cache.
+        this.cache.setScrollOffset("scrollTop", nextScrollTop);
+        this.cache.setScrollOffset("scrollLeft", nextScrollLeft);
 
         // syncs the quadrants only after scrolling has stopped for a short time
         this.syncQuadrantViewsDebounced();
@@ -518,8 +518,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // force a reflow by resizing or repositioning stuff.
         CoreUtils.safeInvoke(this.props.onScroll, event);
 
-        this.handleDirectionalWheel("horizontal", event.deltaX, QuadrantType.MAIN, [QuadrantType.TOP]);
-        this.handleDirectionalWheel("vertical", event.deltaY, QuadrantType.MAIN, [QuadrantType.LEFT]);
+        this.handleDirectionalWheel("horizontal", event.deltaX, [QuadrantType.TOP]);
+        this.handleDirectionalWheel("vertical", event.deltaY, [QuadrantType.LEFT]);
 
         this.syncQuadrantViewsDebounced();
     };
@@ -527,7 +527,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     private handleDirectionalWheel = (
         direction: "horizontal" | "vertical",
         delta: number,
-        quadrantType: QuadrantType,
         quadrantTypesToSync: QuadrantType[],
     ) => {
         const isHorizontal = direction === "horizontal";
@@ -540,10 +539,12 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         if (!isScrollDisabled) {
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
 
-            const nextScrollOffset = this.quadrantRefs[quadrantType].scrollContainer[scrollKey] + delta;
+            const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
+            const nextScrollOffset = mainScrollContainer[scrollKey] + delta;
+            mainScrollContainer[scrollKey] = nextScrollOffset;
 
-            this.quadrantRefs[quadrantType].scrollContainer[scrollKey] = nextScrollOffset;
-            this.cache.setQuadrantScrollOffset(quadrantType, scrollKey, nextScrollOffset);
+            // update the cache.
+            this.cache.setScrollOffset(scrollKey, nextScrollOffset);
 
             // sync the corresponding scroll position of all dependent quadrants
             quadrantTypesToSync.forEach(quadrantTypeToSync => {
@@ -551,7 +552,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 if (scrollContainer != null) {
                     scrollContainer[scrollKey] = nextScrollOffset;
                 }
-                this.cache.setQuadrantScrollOffset(quadrantTypeToSync, scrollKey, nextScrollOffset);
             });
         }
     };
@@ -688,13 +688,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // prevents unnecessary reflows in the future.
         this.cache.setRowHeaderWidth(rowHeaderWidth);
         this.cache.setColumnHeaderHeight(columnHeaderHeight);
-        QUADRANT_TYPES.forEach(quadrantType => {
-            const { scrollContainer } = this.quadrantRefs[quadrantType];
-            if (scrollContainer != null) {
-                this.cache.setQuadrantScrollOffset(quadrantType, "scrollLeft", scrollContainer.scrollLeft);
-                this.cache.setQuadrantScrollOffset(quadrantType, "scrollTop", scrollContainer.scrollTop);
-            }
-        });
 
         //
         // Writes (batched to avoid DOM thrashing)
@@ -705,6 +698,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.maybeSetQuadrantSizes(nextLeftQuadrantWidth, nextTopQuadrantHeight);
         this.maybeSetQuadrantOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
         this.maybeSetQuadrantOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
+        this.maybeSetQuadrantScrollOffset(QuadrantType.LEFT, "scrollTop");
+        this.maybeSetQuadrantScrollOffset(QuadrantType.TOP, "scrollLeft");
     };
 
     private maybeSetQuadrantSizes = (width: number, height: number) => {
@@ -757,6 +752,13 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         }
     };
 
+    private maybeSetQuadrantScrollOffset = (quadrantType: QuadrantType, scrollKey: "scrollLeft" | "scrollTop") => {
+        const { scrollContainer } = this.quadrantRefs[quadrantType];
+        if (scrollContainer != null) {
+            scrollContainer[scrollKey] = this.cache.getScrollOffset(scrollKey);
+        }
+    };
+
     // Helpers
     // =======
 
@@ -793,15 +795,16 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         }
     }
 
-    private shouldRenderLeftQuadrants() {
-        const { isRowHeaderShown, numFrozenColumns } = this.props;
+    private shouldRenderLeftQuadrants(props: ITableQuadrantStackProps = this.props) {
+        const { isRowHeaderShown, numFrozenColumns } = props;
         return isRowHeaderShown || (numFrozenColumns != null && numFrozenColumns > 0);
     }
 
     // Resizing
 
     private adjustVerticalGuides(verticalGuides: number[], quadrantType: QuadrantType) {
-        const scrollAmount = this.cache.getQuadrantScrollOffset(quadrantType, "scrollLeft");
+        const isFrozenQuadrant = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
+        const scrollAmount = isFrozenQuadrant ? 0 : this.cache.getScrollOffset("scrollLeft");
         const rowHeaderWidth = this.cache.getRowHeaderWidth();
 
         const adjustedVerticalGuides =
@@ -813,7 +816,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     }
 
     private adjustHorizontalGuides(horizontalGuides: number[], quadrantType: QuadrantType) {
-        const scrollAmount = this.cache.getQuadrantScrollOffset(quadrantType, "scrollTop");
+        const isFrozenQuadrant = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
+        const scrollAmount = isFrozenQuadrant ? 0 : this.cache.getScrollOffset("scrollTop");
         const columnHeaderHeight = this.cache.getColumnHeaderHeight();
 
         const adjustedHorizontalGuides =
