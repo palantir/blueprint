@@ -63,6 +63,11 @@ $file-upload-button-padding-large: ($pt-input-height-large - $pt-button-height) 
   &.pt-fill {
     width: 100%;
   }
+
+  &.pt-large,
+  .pt-large & {
+    height: $pt-input-height-large;
+  }
 }
 
 .pt-file-upload-input {

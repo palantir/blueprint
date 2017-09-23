@@ -133,7 +133,8 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     constructor(props?: ISelectProps<T>, context?: any) {
         super(props, context);
 
-        this.state = { isOpen: false, query: getQuery(props, "") };
+        const query = props && props.inputProps && props.inputProps.value !== undefined ? props.inputProps.value : "";
+        this.state = { isOpen: false, query };
     }
 
     public render() {

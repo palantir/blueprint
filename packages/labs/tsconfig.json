@@ -20,6 +20,7 @@
         "target": "es5"
     },
     "include": [
+        "typings/**/*",
         "src/**/*"
     ],
     "exclude": [

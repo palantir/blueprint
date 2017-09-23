@@ -5,5 +5,10 @@
         "**/dist": true,
         "**/coverage": true,
         "docs": true
+    },
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "[scss]": {
+        "editor.tabSize": 2
     }
 }

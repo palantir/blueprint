@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes as CoreClasses, IconClasses } from "@blueprintjs/core";
+import { Classes as CoreClasses, IconClasses, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -346,7 +346,8 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
         const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
         const modifiedHandleResizeEnd = (size: number) => this.props.handleResizeEnd(index, size);
-        const modifiedHandleResizeHandleDoubleClick = () => this.props.handleResizeDoubleClick(index);
+        const modifiedHandleResizeHandleDoubleClick = () =>
+            CoreUtils.safeInvoke(this.props.handleResizeDoubleClick, index);
 
         const baseChildren = (
             <DragSelectable

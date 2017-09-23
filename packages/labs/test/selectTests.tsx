@@ -46,8 +46,8 @@ describe("<Select>", () => {
         assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
-    it("disabled=false disables Popover", () => {
-        const wrapper = select({ disabled: true, popoverProps: {} });
+    it("disabled=true disables Popover", () => {
+        const wrapper = select({ disabled: true, popoverProps: { inline: true } });
         wrapper.find("table").simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
     });
