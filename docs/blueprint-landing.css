@@ -2785,6 +2785,9 @@ a.pt-button {
             background: rgba(57, 75, 89, 0.7); }
   .pt-file-upload.pt-fill {
     width: 100%; }
+  .pt-file-upload.pt-large,
+  .pt-large .pt-file-upload {
+    height: 40px; }
 
 .pt-file-upload-input {
   outline: none;
