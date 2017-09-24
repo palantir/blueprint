@@ -150,7 +150,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
     public constructor(props: any, context?: any) {
         super(props, context);
 
-        this.state = {
+        const stateDefaults = {
             cellContent: CellContent.LONG_TEXT,
             cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
             enableBatchRendering: true,
@@ -189,6 +189,19 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
             showRowHeadersLoading: false,
             showZebraStriping: false,
         };
+        this.state = {};
+        // populate the state from local storage, if the values are there, otherwise use (and store) the defaults
+        Object.keys(stateDefaults).forEach((stateKey: keyof IMutableTableState) => {
+            let stateValue = localStorage.getItem(stateKey);
+
+            if (stateValue == null) {
+                // populate local storage for next time.
+                stateValue = JSON.stringify(stateDefaults[stateKey]);
+                localStorage.setItem(stateKey, stateValue);
+            }
+
+            this.state[stateKey] = JSON.parse(stateValue);
+        });
     }
 
     // React Lifecycle
@@ -255,7 +268,14 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(_prevProps: {}, prevState: IMutableTableState) {
+        // save off any changes made to the state to local storage
+        Object.keys(this.state).forEach((stateKey: keyof IMutableTableState) => {
+            if (this.state[stateKey] !== prevState[stateKey]) {
+                localStorage.setItem(stateKey, JSON.stringify(this.state[stateKey]));
+            }
+        });
+
         this.syncFocusStyle();
         this.syncDependentBooleanStates();
     }
