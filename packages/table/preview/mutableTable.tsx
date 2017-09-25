@@ -7,16 +7,7 @@
  * Demonstrates sample usage of the table component.
  */
 
-import {
-    Button,
-    Classes,
-    FocusStyleManager,
-    Intent,
-    Menu,
-    MenuDivider,
-    MenuItem,
-    Switch,
-} from "@blueprintjs/core";
+import { Button, Classes, FocusStyleManager, Intent, Menu, MenuDivider, MenuItem, Switch } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -129,46 +120,6 @@ function contains(arr: any[], value: any) {
     return arr.indexOf(value) >= 0;
 }
 
-const DEFAULT_STATE: IMutableTableState = {
-    cellContent: CellContent.LONG_TEXT,
-    cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
-    enableBatchRendering: true,
-    enableCellEditing: false,
-    enableCellSelection: true,
-    enableCellTruncation: false,
-    enableColumnCustomHeaders: true,
-    enableColumnNameEditing: false,
-    enableColumnReordering: true,
-    enableColumnResizing: true,
-    enableColumnSelection: true,
-    enableContextMenu: false,
-    enableFullTableSelection: true,
-    enableMultiSelection: true,
-    enableRowReordering: false,
-    enableRowResizing: false,
-    enableRowSelection: true,
-    numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
-    numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
-    numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
-    numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
-    scrollToColumnIndex: 0,
-    scrollToRegionType: RegionCardinality.CELLS,
-    scrollToRowIndex: 0,
-    selectedFocusStyle: FocusStyle.TAB,
-    showCallbackLogs: true,
-    showCellsLoading: false,
-    showColumnHeadersLoading: false,
-    showColumnInteractionBar: false,
-    showColumnMenus: false,
-    showCustomRegions: false,
-    showFocusCell: false,
-    showGhostCells: true,
-    showInline: false,
-    showRowHeaders: true,
-    showRowHeadersLoading: false,
-    showZebraStriping: false,
-}
-
 export interface IMutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
@@ -208,6 +159,46 @@ export interface IMutableTableState {
     showRowHeadersLoading?: boolean;
     showZebraStriping?: boolean;
 }
+
+const DEFAULT_STATE: IMutableTableState = {
+    cellContent: CellContent.LONG_TEXT,
+    cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
+    enableBatchRendering: true,
+    enableCellEditing: false,
+    enableCellSelection: true,
+    enableCellTruncation: false,
+    enableColumnCustomHeaders: true,
+    enableColumnNameEditing: false,
+    enableColumnReordering: true,
+    enableColumnResizing: true,
+    enableColumnSelection: true,
+    enableContextMenu: false,
+    enableFullTableSelection: true,
+    enableMultiSelection: true,
+    enableRowReordering: false,
+    enableRowResizing: false,
+    enableRowSelection: true,
+    numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
+    numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
+    numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
+    numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
+    scrollToColumnIndex: 0,
+    scrollToRegionType: RegionCardinality.CELLS,
+    scrollToRowIndex: 0,
+    selectedFocusStyle: FocusStyle.TAB,
+    showCallbackLogs: true,
+    showCellsLoading: false,
+    showColumnHeadersLoading: false,
+    showColumnInteractionBar: false,
+    showColumnMenus: false,
+    showCustomRegions: false,
+    showFocusCell: false,
+    showGhostCells: true,
+    showInline: false,
+    showRowHeaders: true,
+    showRowHeadersLoading: false,
+    showZebraStriping: false,
+};
 
 export class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<string>();

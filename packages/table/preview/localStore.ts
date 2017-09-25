@@ -9,15 +9,19 @@
 
 import { defaults } from "lodash";
 
-export class LocalStore<T> {
+/**
+ * Simple typed storage API for a JSON serializable object in web local storage
+ * or session storage.
+ */
+export class LocalStore<T extends object> {
     private storage: Storage;
 
-    constructor(private key: string, session = false){
+    constructor(private key: string, session = false) {
         this.storage = session ? sessionStorage : localStorage;
     }
 
-    public getWithDefaults(defs?: T): T | {} {
-        return defaults(this.get(), defs);
+    public getWithDefaults(defaultValue?: T): T | {} {
+        return defaults(this.get(), defaultValue);
     }
 
     public get(): T | {} {
