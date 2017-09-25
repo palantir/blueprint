@@ -5,11 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
+import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../common/classes";
-import { Utils } from "../common/utils";
 import { QuadrantType } from "../quadrants/tableQuadrant";
 import { IRegion, Regions } from "../regions";
 
@@ -37,9 +36,9 @@ export class RegionLayer extends React.Component<IRegionLayerProps, {}> {
         // implementation, so do that check last with hope that we return earlier and avoid it
         // altogether.
         return (
-            !Utils.arraysEqual(this.props.regions, nextProps.regions, Regions.regionsEqual) ||
-            !Utils.arraysEqual(this.props.regionStyles, nextProps.regionStyles, Utils.shallowCompareKeys) ||
-            !Utils.shallowCompareKeys(this.props, nextProps, { include: UPDATE_PROPS_KEYS })
+            !CoreUtils.arraysEqual(this.props.regions, nextProps.regions, Regions.regionsEqual) ||
+            !CoreUtils.arraysEqual(this.props.regionStyles, nextProps.regionStyles, CoreUtils.shallowCompareKeys) ||
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, { include: UPDATE_PROPS_KEYS })
         );
     }
 

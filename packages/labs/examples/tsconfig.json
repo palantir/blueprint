@@ -18,10 +18,8 @@
         "target": "es5",
         "paths": {
             "@blueprintjs/labs": ["../dist/index"],
-            "@blueprintjs/docs": ["../../docs/dist/index"]
+            "@blueprintjs/docs": ["../../docs/dist/index"],
+            "@blueprintjs/datetime": ["../../datetime/dist/index"]
         }
-    },
-    "include": [
-        "../types/*"
-    ]
+    }
 }

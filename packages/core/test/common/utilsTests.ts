@@ -6,7 +6,7 @@
  */
 
 import { assert } from "chai";
-import { Utils } from "../../src";
+import * as Utils from "../../src/common/utils";
 
 describe("Utils", () => {
     it("isFunction", () => {

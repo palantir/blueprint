@@ -5,6 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -12,7 +13,6 @@ import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
-import { Utils } from "./common/utils";
 import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
@@ -62,8 +62,8 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         return (
-            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: DEEP_COMPARE_KEYS }) ||
-            !Utils.deepCompareKeys(this.props, nextProps, DEEP_COMPARE_KEYS)
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: DEEP_COMPARE_KEYS }) ||
+            !CoreUtils.deepCompareKeys(this.props, nextProps, DEEP_COMPARE_KEYS)
         );
     }
 

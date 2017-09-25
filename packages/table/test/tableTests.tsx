@@ -10,9 +10,9 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Keys } from "@blueprintjs/core";
+import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
-import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
+import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
@@ -1060,8 +1060,8 @@ describe("<Table>", () => {
             const expectedCols = sortInterval(ACTIVATION_CELL_COORDS.col, nextCellCoords.col);
             const expectedRows = sortInterval(ACTIVATION_CELL_COORDS.row, nextCellCoords.row);
 
-            expect(Utils.arraysEqual(selectedCols, expectedCols)).to.be.true;
-            expect(Utils.arraysEqual(selectedRows, expectedRows)).to.be.true;
+            expect(CoreUtils.arraysEqual(selectedCols, expectedCols)).to.be.true;
+            expect(CoreUtils.arraysEqual(selectedRows, expectedRows)).to.be.true;
         }
 
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
