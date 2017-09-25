@@ -7,7 +7,6 @@
 
 import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
@@ -49,7 +48,16 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
      * @default RenderMode.BATCH
      */
     renderMode?: RenderMode;
+
+    /**
+     * The `Rect` bounds of the visible viewport with respect to its parent
+     * scrollable pane. While not directly used by the component, this prop is
+     * necessary for shouldComponentUpdate logic to run properly.
+     */
+    viewportRect: Rect;
 }
+
+const SHALLOW_COMPARE_BLACKLIST: Array<keyof ITableBodyCellsProps> = ["viewportRect"];
 
 /**
  * We don't want to reset the batcher when this set of keys changes. Any other
@@ -62,7 +70,6 @@ const BATCHER_RESET_PROP_KEYS_BLACKLIST: Array<keyof ITableBodyCellsProps> = [
     "rowIndexStart",
 ];
 
-@PureRender
 export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     public static defaultProps = {
         renderMode: RenderMode.BATCH,
@@ -76,6 +83,15 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
 
     public componentDidMount() {
         this.maybeInvokeOnCompleteRender();
+    }
+
+    public shouldComponentUpdate(nextProps?: ITableBodyCellsProps) {
+        return (
+            !Utils.shallowCompareKeys(nextProps, this.props, { exclude: SHALLOW_COMPARE_BLACKLIST }) ||
+            // "viewportRect" is not a plain object, so we can't just deep
+            // compare; we need custom logic.
+            this.didViewportRectChange(nextProps.viewportRect, this.props.viewportRect)
+        );
     }
 
     public componentWillUpdate(nextProps?: ITableBodyCellsProps) {
@@ -179,6 +195,19 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
             CoreUtils.safeInvoke(onCompleteRender);
         }
     }
+
+    // Other
+    // =====
+
+    private didViewportRectChange = (nextViewportRect: Rect, currViewportRect: Rect) => {
+        if (nextViewportRect == null && currViewportRect == null) {
+            return false;
+        } else if (nextViewportRect == null || currViewportRect == null) {
+            return true;
+        } else {
+            return !nextViewportRect.equals(currViewportRect);
+        }
+    };
 }
 
 /**

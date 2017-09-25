@@ -11,7 +11,6 @@ import * as React from "react";
 import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
-import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
 import { ICoordinateData } from "./interactions/draggable";
@@ -38,12 +37,6 @@ export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps 
     numFrozenRows?: number;
 
     /**
-     * The `Rect` bounds of the visible viewport with respect to its parent
-     * scrollable pane.
-     */
-    viewportRect: Rect;
-
-    /**
      * An optional callback for displaying a context menu when right-clicking
      * on the table body. The callback is supplied with an `IMenuContext`
      * containing the `IRegion`s of interest.
@@ -51,12 +44,7 @@ export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps 
     renderBodyContextMenu?: IContextMenuRenderer;
 }
 
-const SHALLOW_COMPARE_BLACKLIST: Array<keyof ITableBodyProps> = ["selectedRegions", "viewportRect"];
-
-const DEEP_COMPARE_WHITELIST: Array<keyof ITableBodyProps> = [
-    "selectedRegions",
-    // viewportRect is not a plain object, so we need more nuanced logic to compare it.
-];
+const DEEP_COMPARE_KEYS: Array<keyof ITableBodyProps> = ["selectedRegions"];
 
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
@@ -64,6 +52,8 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
         renderMode: RenderMode.BATCH,
     };
 
+    // TODO: Does this method need to be public?
+    // (see: https://github.com/palantir/blueprint/issues/1617)
     public static cellClassNames(rowIndex: number, columnIndex: number) {
         return cellClassNames(rowIndex, columnIndex);
     }
@@ -72,35 +62,15 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         return (
-            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: SHALLOW_COMPARE_BLACKLIST }) ||
-            !Utils.deepCompareKeys(this.props, nextProps, DEEP_COMPARE_WHITELIST) ||
-            !nextProps.viewportRect.equals(this.props.viewportRect)
+            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: DEEP_COMPARE_KEYS }) ||
+            !Utils.deepCompareKeys(this.props, nextProps, DEEP_COMPARE_KEYS)
         );
     }
 
     public render() {
-        const {
-            allowMultipleSelection,
-            cellRenderer,
-            columnIndexEnd,
-            columnIndexStart,
-            focusedCell,
-            grid,
-            loading,
-            numFrozenColumns,
-            numFrozenRows,
-            onCompleteRender,
-            onFocus,
-            onSelection,
-            renderMode,
-            rowIndexEnd,
-            rowIndexStart,
-            selectedRegions,
-            selectedRegionTransform,
-        } = this.props;
+        const { grid, numFrozenColumns, numFrozenRows } = this.props;
 
         const defaultStyle = grid.getRect().sizeStyle();
-
         const style = {
             height: numFrozenRows != null ? grid.getCumulativeHeightAt(numFrozenRows - 1) : defaultStyle.height,
             width: numFrozenColumns != null ? grid.getCumulativeWidthAt(numFrozenColumns - 1) : defaultStyle.width,
@@ -108,15 +78,15 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
         return (
             <DragSelectable
-                allowMultipleSelection={allowMultipleSelection}
-                focusedCell={focusedCell}
+                allowMultipleSelection={this.props.allowMultipleSelection}
+                focusedCell={this.props.focusedCell}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
-                onFocus={onFocus}
-                onSelection={onSelection}
+                onFocus={this.props.onFocus}
+                onSelection={this.props.onSelection}
                 onSelectionEnd={this.handleSelectionEnd}
-                selectedRegions={selectedRegions}
-                selectedRegionTransform={selectedRegionTransform}
+                selectedRegions={this.props.selectedRegions}
+                selectedRegionTransform={this.props.selectedRegionTransform}
             >
                 <ContextMenuTargetWrapper
                     className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
@@ -124,15 +94,16 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                     style={style}
                 >
                     <TableBodyCells
-                        cellRenderer={cellRenderer}
+                        cellRenderer={this.props.cellRenderer}
                         grid={grid}
-                        loading={loading}
-                        onCompleteRender={onCompleteRender}
-                        renderMode={renderMode}
-                        columnIndexStart={columnIndexStart}
-                        columnIndexEnd={columnIndexEnd}
-                        rowIndexStart={rowIndexStart}
-                        rowIndexEnd={rowIndexEnd}
+                        loading={this.props.loading}
+                        onCompleteRender={this.props.onCompleteRender}
+                        renderMode={this.props.renderMode}
+                        columnIndexStart={this.props.columnIndexStart}
+                        columnIndexEnd={this.props.columnIndexEnd}
+                        rowIndexStart={this.props.rowIndexStart}
+                        rowIndexEnd={this.props.rowIndexEnd}
+                        viewportRect={this.props.viewportRect}
                     />
                 </ContextMenuTargetWrapper>
             </DragSelectable>
