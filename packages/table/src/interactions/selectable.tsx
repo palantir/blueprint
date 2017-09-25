@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Utils as BlueprintUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
@@ -299,7 +299,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         // target an already-selected region.
         if (
             this.lastEmittedSelectedRegions == null ||
-            !Utils.deepCompareKeys(this.lastEmittedSelectedRegions, nextSelectedRegions)
+            !CoreUtils.deepCompareKeys(this.lastEmittedSelectedRegions, nextSelectedRegions)
         ) {
             onSelection(nextSelectedRegions);
             this.lastEmittedSelectedRegions = nextSelectedRegions;
@@ -316,7 +316,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     // =====
 
     private finishInteraction = () => {
-        BlueprintUtils.safeInvoke(this.props.onSelectionEnd, this.props.selectedRegions);
+        CoreUtils.safeInvoke(this.props.onSelectionEnd, this.props.selectedRegions);
         this.didExpandSelectionOnActivate = false;
         this.lastEmittedSelectedRegions = null;
     };
