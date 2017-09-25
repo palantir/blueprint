@@ -7,7 +7,7 @@
  * Demonstrates sample usage of the table component.
  */
 
-import { defaults } from "lodash";
+import defaults = require("lodash/defaults");
 
 /**
  * Simple typed storage API for a JSON serializable object in web local storage
