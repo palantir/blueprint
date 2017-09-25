@@ -345,21 +345,24 @@ export const Utils = {
      * Returns true if the arrays are equal. Elements will be shallowly compared
      * by default, or they will be compared using the custom `compare` function
      * if one is provided.
-     * @deprecated since 1.26.0; import this function from core Utils instead.
+     * @deprecated since @blueprintjs/table 1.26.0; import this function from
+     * core Utils instead.
      */
     arraysEqual: CoreUtils.arraysEqual,
 
     /**
      * Deep comparison between objects. If `keys` is provided, just that subset
      * of keys will be compared; otherwise, all keys will be compared.
-     * @deprecated since 1.26.0; import this function from core Utils instead.
+     * @deprecated since @blueprintjs/table 1.26.0; import this function from
+     * core Utils instead.
      */
     deepCompareKeys: CoreUtils.deepCompareKeys,
 
     /**
      * Returns a descriptive object for each key whose values are deeply unequal
      * between two provided objects. Useful for debugging shouldComponentUpdate.
-     * @deprecated since 1.26.0; import this function from core Utils instead.
+     * @deprecated since @blueprintjs/table 1.26.0; import this function from
+     * core Utils instead.
      */
     getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
         return CoreUtils.getDeepUnequalKeyValues(objA, objB, keys);
@@ -369,7 +372,8 @@ export const Utils = {
      * Returns a descriptive object for each key whose values are shallowly
      * unequal between two provided objects. Useful for debugging
      * shouldComponentUpdate.
-     * @deprecated since 1.26.0; import this function from core Utils instead.
+     * @deprecated since @blueprintjs/table 1.26.0; import this function from
+     * core Utils instead.
      */
     getShallowUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
         return CoreUtils.getShallowUnequalKeyValues(objA, objB, keys);
@@ -378,7 +382,8 @@ export const Utils = {
     /**
      * Shallow comparison between objects. If `keys` is provided, just that
      * subset of keys will be compared; otherwise, all keys will be compared.
-     * @deprecated since 1.26.0; import this function from core Utils instead.
+     * @deprecated since @blueprintjs/table 1.26.0; import this function from
+     * core Utils instead.
      */
     shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
         return CoreUtils.shallowCompareKeys(objA, objB, keys);
