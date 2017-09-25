@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/labs",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Incubator for unstable and in-development Blueprint components",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -9,12 +9,17 @@
   "dependencies": {
     "@blueprintjs/core": "^1.26.0",
     "classnames": "^2.2",
+    "fuzzaldrin-plus": "^0.5.0",
+    "moment": "^2.14.1",
+    "moment-timezone": "^0.5.13",
     "popper.js": "1.11.0",
     "pure-render-decorator": "^1.2.1",
     "react-popper": "^0.7.2",
     "tslib": "^1.5.0"
   },
   "devDependencies": {
+    "@types/fuzzaldrin-plus": "^0.0.1",
+    "@types/moment-timezone": "^0.2.35",
     "bourbon": "^4.3.4",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",

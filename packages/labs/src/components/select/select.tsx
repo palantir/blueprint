@@ -19,8 +19,9 @@ import {
     Menu,
     Utils,
 } from "@blueprintjs/core";
-import { IListItemsProps, IPopover2Props, IQueryListRendererProps, Popover2, QueryList } from "../";
 import * as Classes from "../../common/classes";
+import { IPopover2Props, Popover2 } from "../popover/popover2";
+import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -76,6 +77,12 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * @default false
      */
     resetOnClose?: boolean;
+
+    /**
+     * Callback invoked when the query value changes,
+     * through user input or when the filter is reset.
+     */
+    onQueryChange?: (query: string) => void;
 }
 
 export interface ISelectItemRendererProps<T> {
@@ -128,6 +135,13 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     };
     private previousFocusedElement: HTMLElement;
 
+    constructor(props?: ISelectProps<T>, context?: any) {
+        super(props, context);
+
+        const query = props && props.inputProps && props.inputProps.value !== undefined ? props.inputProps.value : "";
+        this.state = { isOpen: false, query };
+    }
+
     public render() {
         // omit props specific to this component, spread the rest.
         const {
@@ -151,6 +165,13 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
                 renderer={this.renderQueryList}
             />
         );
+    }
+
+    public componentWillReceiveProps(nextProps: ISelectProps<T>) {
+        const { inputProps: nextInputProps = {} } = nextProps;
+        if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
+            this.setState({ query: nextInputProps.value });
+        }
     }
 
     public componentDidUpdate(_prevProps: ISelectProps<T>, prevState: ISelectState<T>) {
@@ -302,10 +323,17 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = {} } = this.props;
-        this.setState({ query: event.currentTarget.value });
+        const { inputProps = {}, onQueryChange } = this.props;
+        const query = event.currentTarget.value;
+        this.setState({ query });
         Utils.safeInvoke(inputProps.onChange, event);
+        Utils.safeInvoke(onQueryChange, query);
     };
 
-    private resetQuery = () => this.setState({ activeItem: this.props.items[0], query: "" });
+    private resetQuery = () => {
+        const { items, onQueryChange } = this.props;
+        const query = "";
+        this.setState({ activeItem: items[0], query });
+        Utils.safeInvoke(onQueryChange, query);
+    };
 }
