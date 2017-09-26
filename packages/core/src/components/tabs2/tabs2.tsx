@@ -13,7 +13,7 @@ import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import * as Utils from "../../src/common/utils";
 
 import { ITab2Props, Tab2, TabId } from "./tab2";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
@@ -154,9 +154,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         } else if (prevState.selectedTabId != null) {
-            const prevChildren = JSON.stringify(prevProps.children.map(thisArg => JSON.stringify(thisArg.props, ["title", "id"])));
-            const children = JSON.stringify(React.Children.map(this.props.children, thisArg => JSON.stringify(thisArg.props, ["title", "id"])));
-            if (prevChildren !== children) {
+            if (!Utils.shallowCompareKeys(prevProps.children, this.props.children)) {
                 this.moveSelectionIndicator();
             }
         }
@@ -227,7 +225,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     }
 
     private handleTabClick = (newTabId: TabId, event: React.MouseEvent<HTMLElement>) => {
-        safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId, event);
+        Utils.safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId, event);
         if (this.props.selectedTabId === undefined) {
             this.setState({ selectedTabId: newTabId });
         }
