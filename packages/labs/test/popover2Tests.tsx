@@ -10,8 +10,10 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 
 import { Classes, Keys, Overlay, PopoverInteractionKind, Tooltip, Utils } from "@blueprintjs/core";
+// tslint:disable no-submodule-imports
 import * as Errors from "@blueprintjs/core/src/common/errors";
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
+// tslint:enable
 
 import { Arrow } from "react-popper";
 import { IPopover2Props, IPopover2State, Popover2 } from "../src/index";
