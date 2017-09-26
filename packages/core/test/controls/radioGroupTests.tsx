@@ -12,7 +12,9 @@ import * as React from "react";
 import { IOptionProps, Radio, RadioGroup } from "../../src/index";
 
 describe("RadioGroup", () => {
-    const emptyHandler = () => { return; };
+    const emptyHandler = () => {
+        return;
+    };
 
     it("nothing is selected by default", () => {
         const group = mount(
@@ -60,12 +62,22 @@ describe("RadioGroup", () => {
     });
 
     it("uses options if given both options and children", () => {
-        const group = mount(<RadioGroup onChange={emptyHandler} options={[]}><Radio value="one" /></RadioGroup>);
+        const group = mount(
+            <RadioGroup onChange={emptyHandler} options={[]}>
+                <Radio value="one" />
+            </RadioGroup>,
+        );
         assert.lengthOf(group.find(Radio), 0);
     });
 
     it("renders non-Radio children too", () => {
-        const group = mount(<RadioGroup onChange={emptyHandler}><Radio /><address /><Radio /></RadioGroup>);
+        const group = mount(
+            <RadioGroup onChange={emptyHandler}>
+                <Radio />
+                <address />
+                <Radio />
+            </RadioGroup>,
+        );
         assert.lengthOf(group.find("address"), 1);
         assert.lengthOf(group.find(Radio), 2);
     });

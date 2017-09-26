@@ -16,8 +16,8 @@ describe("Regions", () => {
             expect(Regions.isValid(region)).to.be.true;
             expect(Regions.getRegionCardinality(region)).to.equal(RegionCardinality.CELLS);
             expect(region).to.deep.equal({
-              cols: [1, 3],
-              rows: [0, 2],
+                cols: [1, 3],
+                rows: [0, 2],
             });
 
             expect(Regions.cell(0, 1)).to.deep.equal(Regions.cell(0, 1, 0, 1));
@@ -29,7 +29,7 @@ describe("Regions", () => {
             expect(Regions.isValid(region)).to.be.true;
             expect(Regions.getRegionCardinality(region)).to.equal(RegionCardinality.FULL_COLUMNS);
             expect(region).to.deep.equal({
-              cols: [7, 11],
+                cols: [7, 11],
             });
 
             expect(Regions.column(1)).to.deep.equal(Regions.column(1, 1));
@@ -41,7 +41,7 @@ describe("Regions", () => {
             expect(Regions.isValid(region)).to.be.true;
             expect(Regions.getRegionCardinality(region)).to.equal(RegionCardinality.FULL_ROWS);
             expect(region).to.deep.equal({
-              rows: [3, 14],
+                rows: [3, 14],
             });
 
             expect(Regions.row(1)).to.deep.equal(Regions.row(1, 1));
@@ -50,7 +50,7 @@ describe("Regions", () => {
 
     describe("array manipulation", () => {
         it("adds regions", () => {
-            const regions = [ Regions.row(1, 37) ];
+            const regions = [Regions.row(1, 37)];
             const added = Regions.add(regions, Regions.column(3, 14));
 
             expect(added).to.not.equal(regions);
@@ -59,7 +59,7 @@ describe("Regions", () => {
         });
 
         it("updates regions", () => {
-            const regions = [ Regions.row(1, 37) ];
+            const regions = [Regions.row(1, 37)];
             const updated = Regions.update(regions, Regions.column(3, 14));
 
             expect(updated).to.not.equal(regions);
@@ -69,11 +69,7 @@ describe("Regions", () => {
     });
 
     it("searches", () => {
-        const regions = [
-            Regions.row(1, 37),
-            Regions.column(3, 14),
-            Regions.cell(1, 2, 3, 4),
-        ];
+        const regions = [Regions.row(1, 37), Regions.column(3, 14), Regions.cell(1, 2, 3, 4)];
 
         expect(Regions.findMatchingRegion(null, Regions.column(14, 3))).to.equal(-1);
         expect(Regions.findMatchingRegion([], Regions.column(14, 3))).to.equal(-1);
@@ -84,14 +80,14 @@ describe("Regions", () => {
 
     it("containment", () => {
         expect(Regions.hasFullColumn(null, 5)).to.be.false;
-        expect(Regions.hasFullColumn([ Regions.row(0, 10) ], 5)).to.be.false;
-        expect(Regions.hasFullColumn([ Regions.column(0, 10) ], 15)).to.be.false;
-        expect(Regions.hasFullColumn([ Regions.column(0, 10) ], 5)).to.be.true;
+        expect(Regions.hasFullColumn([Regions.row(0, 10)], 5)).to.be.false;
+        expect(Regions.hasFullColumn([Regions.column(0, 10)], 15)).to.be.false;
+        expect(Regions.hasFullColumn([Regions.column(0, 10)], 5)).to.be.true;
 
         expect(Regions.hasFullRow(null, 5)).to.be.false;
-        expect(Regions.hasFullRow([ Regions.column(0, 10) ], 5)).to.be.false;
-        expect(Regions.hasFullRow([ Regions.row(0, 10) ], 15)).to.be.false;
-        expect(Regions.hasFullRow([ Regions.row(0, 10) ], 5)).to.be.true;
+        expect(Regions.hasFullRow([Regions.column(0, 10)], 5)).to.be.false;
+        expect(Regions.hasFullRow([Regions.row(0, 10)], 15)).to.be.false;
+        expect(Regions.hasFullRow([Regions.row(0, 10)], 5)).to.be.true;
     });
 
     it("validates", () => {
@@ -107,12 +103,14 @@ describe("Regions", () => {
     });
 
     it("combines styled region groups", () => {
-        const myGroups = [{
-            className: "my-region",
-            regions: [ Regions.column(1) ],
-        }];
+        const myGroups = [
+            {
+                className: "my-region",
+                regions: [Regions.column(1)],
+            },
+        ];
 
-        const joinedGroups = Regions.joinStyledRegionGroups([ Regions.row(2) ], myGroups, null);
+        const joinedGroups = Regions.joinStyledRegionGroups([Regions.row(2)], myGroups, null);
         expect(joinedGroups).to.have.lengthOf(2);
         expect(joinedGroups[1].regions[0]).to.deep.equal(Regions.row(2));
     });
@@ -125,10 +123,10 @@ describe("Regions", () => {
         Regions.eachUniqueFullColumn([], append);
         expect(hits).to.have.lengthOf(0);
 
-        Regions.eachUniqueFullColumn([ Regions.row(2) ], append);
+        Regions.eachUniqueFullColumn([Regions.row(2)], append);
         expect(hits).to.have.lengthOf(0);
 
-        Regions.eachUniqueFullColumn([ Regions.row(2) , Regions.column(2, 5) ], append);
+        Regions.eachUniqueFullColumn([Regions.row(2), Regions.column(2, 5)], append);
         expect(hits).to.have.lengthOf(4);
     });
 
@@ -137,27 +135,51 @@ describe("Regions", () => {
         expect(invalid).to.have.lengthOf(0);
 
         const cells = Regions.enumerateUniqueCells([Regions.column(0), Regions.row(0)], 3, 2);
-        expect(cells).to.deep.equal([
-            [0, 0],
-            [0, 1],
-            [1, 0],
-            [2, 0],
-        ]);
+        expect(cells).to.deep.equal([[0, 0], [0, 1], [1, 0], [2, 0]]);
     });
 
     it("sparsely maps cells", () => {
-        const cells = [
-            [0, 0],
-            [0, 1],
-            [1, 0],
-            [2, 0],
-        ] as ICellCoordinate[];
+        const cells = [[0, 0], [0, 1], [1, 0], [2, 0]] as ICellCoordinate[];
         const sparse = Regions.sparseMapCells(cells, () => "X");
         // normal deep equals doesn't work here so we use JSON.stringify
-        expect(JSON.stringify(sparse)).to.equal(JSON.stringify([
-            ["X", "X"],
-            ["X", null],
-            ["X", null],
-        ]));
+        expect(JSON.stringify(sparse)).to.equal(JSON.stringify([["X", "X"], ["X", null], ["X", null]]));
+    });
+
+    describe("expandRegion", () => {
+        it("returns new region if cardinalities are different", () => {
+            const oldRegion = Regions.cell(0, 0);
+            const newRegion = Regions.table();
+            const result = Regions.expandRegion(oldRegion, newRegion);
+            // should have returned the newRegion instance
+            expect(result).to.equal(newRegion);
+        });
+
+        it("expands a FULL_ROWS region", () => {
+            const oldRegion = Regions.row(1, 2);
+            const newRegion = Regions.row(9, 10);
+            const result = Regions.expandRegion(oldRegion, newRegion);
+            expect(result).to.deep.equal(Regions.row(1, 10));
+        });
+
+        it("expands a FULL_COLUMNS region", () => {
+            const oldRegion = Regions.column(9, 10);
+            const newRegion = Regions.column(1, 2);
+            const result = Regions.expandRegion(oldRegion, newRegion);
+            expect(result).to.deep.equal(Regions.column(1, 10));
+        });
+
+        it("expands a CELLS region", () => {
+            const oldRegion = Regions.cell(1, 2);
+            const newRegion = Regions.cell(9, 10);
+            const result = Regions.expandRegion(oldRegion, newRegion);
+            expect(result).to.deep.equal(Regions.cell(1, 2, 9, 10));
+        });
+
+        it("expands a FULL_TABLE region", () => {
+            const oldRegion = Regions.table();
+            const newRegion = Regions.table();
+            const result = Regions.expandRegion(oldRegion, newRegion);
+            expect(result).to.deep.equal(Regions.table());
+        });
     });
 });

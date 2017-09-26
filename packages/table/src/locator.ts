@@ -43,7 +43,7 @@ export interface ILocator {
      * Locates a cell's row and column index given the client X
      * coordinate. Returns -1 if the coordinate is not over a table cell.
      */
-    convertPointToCell: (clientX: number, clientY: number) => {col: number, row: number};
+    convertPointToCell: (clientX: number, clientY: number) => { col: number; row: number };
 }
 
 export class Locator implements ILocator {
@@ -51,17 +51,23 @@ export class Locator implements ILocator {
 
     private grid: Grid;
 
-    private rowHeaderWidth = 0;
-    private columnHeaderHeight = 0;
-
-    private numFrozenRows = 0;
-    private numFrozenColumns = 0;
+    // these values affect how we map a mouse coordinate to a cell coordinate.
+    // for instance, a click at (0px,0px) in the grid could map to an arbitrary
+    // cell if table is scrolled, but it will always map to cell (0,0) if there
+    // are active frozen rows and columns.
+    private numFrozenRows: number;
+    private numFrozenColumns: number;
 
     public constructor(
+        /* The root table element within which a click is deemed valid and relevant. */
         private tableElement: HTMLElement,
-        private bodyElement: HTMLElement,
+        /* The scrollable element that wraps the cell container. */
+        private scrollContainerElement: HTMLElement,
+        /* The element containing all body cells in the grid (excluding headers). */
+        private cellContainerElement: HTMLElement,
     ) {
-        // empty constructor
+        this.numFrozenRows = 0;
+        this.numFrozenColumns = 0;
     }
 
     // Setters
@@ -82,30 +88,20 @@ export class Locator implements ILocator {
         return this;
     }
 
-    public setColumnHeaderHeight(columnHeaderHeight: number) {
-        this.columnHeaderHeight = columnHeaderHeight;
-        return this;
-    }
-
-    public setRowHeaderWidth(rowHeaderWidth: number) {
-        this.rowHeaderWidth = rowHeaderWidth;
-        return this;
-    }
-
     // Getters
     // =======
 
     public getViewportRect() {
         return new Rect(
-            this.bodyElement.scrollLeft,
-            this.bodyElement.scrollTop,
-            this.bodyElement.clientWidth,
-            this.bodyElement.clientHeight,
+            this.scrollContainerElement.scrollLeft,
+            this.scrollContainerElement.scrollTop,
+            this.scrollContainerElement.clientWidth,
+            this.scrollContainerElement.clientHeight,
         );
     }
 
     public getWidestVisibleCellInColumn(columnIndex: number): number {
-        const cells = this.tableElement.getElementsByClassName(Classes.columnCellIndexClass(columnIndex));
+        const cells = this.cellContainerElement.getElementsByClassName(Classes.columnCellIndexClass(columnIndex));
         let max = 0;
         for (let i = 0; i < cells.length; i++) {
             const contentWidth = Utils.measureElementTextContent(cells.item(i)).width;
@@ -118,8 +114,9 @@ export class Locator implements ILocator {
     }
 
     public getTallestVisibleCellInColumn(columnIndex: number): number {
-        const cells = this.tableElement
-            .getElementsByClassName(`${Classes.columnCellIndexClass(columnIndex)} ${Classes.TABLE_CELL}`);
+        const cells = this.cellContainerElement.getElementsByClassName(
+            `${Classes.columnCellIndexClass(columnIndex)} ${Classes.TABLE_CELL}`,
+        );
         let max = 0;
         for (let i = 0; i < cells.length; i++) {
             const cellValue = cells.item(i).querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
@@ -173,7 +170,7 @@ export class Locator implements ILocator {
         const gridY = this.toGridY(clientY);
         const col = Utils.binarySearch(gridX, this.grid.numCols - 1, this.convertCellIndexToClientX);
         const row = Utils.binarySearch(gridY, this.grid.numRows - 1, this.convertCellIndexToClientY);
-        return {col, row};
+        return { col, row };
     }
 
     // Private helpers
@@ -185,52 +182,50 @@ export class Locator implements ILocator {
 
     private convertCellIndexToClientX = (index: number) => {
         return this.grid.getCumulativeWidthAt(index);
-    }
+    };
 
     private convertCellMidpointToClientX = (index: number) => {
         const cellLeft = this.grid.getCumulativeWidthBefore(index);
         const cellRight = this.grid.getCumulativeWidthAt(index);
         return (cellLeft + cellRight) / 2;
-    }
+    };
 
     private convertCellIndexToClientY = (index: number) => {
         return this.grid.getCumulativeHeightAt(index);
-    }
+    };
 
     private convertCellMidpointToClientY = (index: number) => {
         const cellTop = this.grid.getCumulativeHeightBefore(index);
         const cellBottom = this.grid.getCumulativeHeightAt(index);
         return (cellTop + cellBottom) / 2;
-    }
+    };
 
     private toGridX = (clientX: number) => {
-        const tableOffsetFromPageLeft = this.tableElement.getBoundingClientRect().left;
-        const cursorOffsetFromTableLeft = clientX - tableOffsetFromPageLeft;
-        const cursorOffsetFromGridLeft = cursorOffsetFromTableLeft - this.rowHeaderWidth;
-        const scrollOffsetFromTableLeft = this.bodyElement.scrollLeft;
+        const gridOffsetFromPageLeft = this.cellContainerElement.getBoundingClientRect().left;
+        const scrollOffsetFromGridLeft = this.scrollContainerElement.scrollLeft;
+        const cursorOffsetFromGridLeft = clientX - (gridOffsetFromPageLeft + scrollOffsetFromGridLeft);
 
-        const isCursorWithinFrozenColumns = this.numFrozenColumns != null
-            && this.numFrozenColumns > 0
-            && cursorOffsetFromGridLeft <= this.grid.getCumulativeWidthBefore(this.numFrozenColumns);
+        const isCursorWithinFrozenColumns =
+            this.numFrozenColumns != null &&
+            this.numFrozenColumns > 0 &&
+            cursorOffsetFromGridLeft <= this.grid.getCumulativeWidthBefore(this.numFrozenColumns);
 
         // the frozen-column region doesn't scroll, so ignore the scroll distance in that case
         return isCursorWithinFrozenColumns
             ? cursorOffsetFromGridLeft
-            : cursorOffsetFromGridLeft + scrollOffsetFromTableLeft;
-    }
+            : cursorOffsetFromGridLeft + scrollOffsetFromGridLeft;
+    };
 
     private toGridY = (clientY: number) => {
-        const tableOffsetFromPageTop = this.tableElement.getBoundingClientRect().top;
-        const cursorOffsetFromTableTop = clientY - tableOffsetFromPageTop;
-        const cursorOffsetFromGridTop = cursorOffsetFromTableTop - this.columnHeaderHeight;
-        const scrollOffsetFromTableTop = this.bodyElement.scrollTop;
+        const gridOffsetFromPageTop = this.cellContainerElement.getBoundingClientRect().top;
+        const scrollOffsetFromGridTop = this.scrollContainerElement.scrollTop;
+        const cursorOffsetFromGridTop = clientY - (gridOffsetFromPageTop + scrollOffsetFromGridTop);
 
-        const isCursorWithinFrozenRows = this.numFrozenRows != null
-            && this.numFrozenRows > 0
-            && cursorOffsetFromGridTop <= this.grid.getCumulativeHeightBefore(this.numFrozenRows);
+        const isCursorWithinFrozenRows =
+            this.numFrozenRows != null &&
+            this.numFrozenRows > 0 &&
+            cursorOffsetFromGridTop <= this.grid.getCumulativeHeightBefore(this.numFrozenRows);
 
-        return isCursorWithinFrozenRows
-            ? cursorOffsetFromGridTop
-            : cursorOffsetFromGridTop + scrollOffsetFromTableTop;
-    }
+        return isCursorWithinFrozenRows ? cursorOffsetFromGridTop : cursorOffsetFromGridTop + scrollOffsetFromGridTop;
+    };
 }

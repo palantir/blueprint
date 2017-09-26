@@ -63,7 +63,14 @@ describe("<Tree>", () => {
     it("caret direction is determined by node expansion", () => {
         const contents = [
             // tslint:disable-next-line:max-line-length
-            { id: 1, className: "c0", hasCaret: true, isExpanded: false, label: "", childNodes: [{ id: 4, label: "" }] },
+            {
+                childNodes: [{ id: 4, label: "" }],
+                className: "c0",
+                hasCaret: true,
+                id: 1,
+                isExpanded: false,
+                label: "",
+            },
             { id: 0, className: "c1", hasCaret: true, isExpanded: true, label: "" },
             { id: 2, className: "c2", hasCaret: true, isExpanded: false, label: "" },
             { id: 3, className: "c3", hasCaret: true, isExpanded: true, label: "", childNodes: [{ id: 5, label: "" }] },
@@ -169,7 +176,7 @@ describe("<Tree>", () => {
         assert.strictEqual(tree.find(`.c2 ${secondaryLabelSelector}`).text(), "Paragraph");
     });
 
-    it("getNodeContentElement returns references to underlying node elements", (done) => {
+    it("getNodeContentElement returns references to underlying node elements", done => {
         const contents = createDefaultContents();
         contents[1].isExpanded = true;
 

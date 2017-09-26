@@ -104,7 +104,7 @@ export class Toast extends AbstractComponent<IToastProps, {}> {
     private handleActionClick = (e: React.MouseEvent<HTMLElement>) => {
         safeInvoke(this.props.action.onClick, e);
         this.triggerDismiss(false);
-    }
+    };
 
     private handleCloseClick = () => this.triggerDismiss(false);
 
@@ -117,7 +117,7 @@ export class Toast extends AbstractComponent<IToastProps, {}> {
         if (this.props.timeout > 0) {
             this.setTimeout(() => this.triggerDismiss(true), this.props.timeout);
         }
-    }
+    };
 }
 
 export const ToastFactory = React.createFactory(Toast);

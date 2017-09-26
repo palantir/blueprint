@@ -53,7 +53,11 @@ export class Tab2 extends React.Component<ITab2Props, {}> {
     /* istanbul ignore next */
     public render() {
         const { className, panel } = this.props;
-        return <div className={classNames(Classes.TAB_PANEL, className)} role="tablist">{panel}</div>;
+        return (
+            <div className={classNames(Classes.TAB_PANEL, className)} role="tablist">
+                {panel}
+            </div>
+        );
     }
 }
 

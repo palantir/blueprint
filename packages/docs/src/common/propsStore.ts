@@ -12,14 +12,14 @@ export interface IInheritedPropertyEntry extends ITsPropertyEntry {
 }
 
 export class PropsStore {
-    constructor(private props: { [name: string]: ITsInterfaceEntry }) { }
+    constructor(private props: { [name: string]: ITsInterfaceEntry }) {}
 
     public getInterface = (name: string) => {
         // TODO: need better library support for this https://github.com/giladgray/ts-quick-docs/issues/25
         // remove generics from end of name
         const actualName = /^(\w+)<?/.exec(name)[1];
         return this.props[actualName];
-    }
+    };
 
     public getProps = (entry: ITsInterfaceEntry): IInheritedPropertyEntry[] => {
         if (entry == null) {
@@ -29,19 +29,21 @@ export class PropsStore {
         } else {
             // dirty deduplication for overridden/inherited props
             const props: { [name: string]: ITsPropertyEntry } = {};
-            entry.extends.map(this.getInheritedProps).forEach((inherited) => {
-                inherited.forEach((prop) => props[prop.name] = prop);
+            entry.extends.map(this.getInheritedProps).forEach(inherited => {
+                inherited.forEach(prop => (props[prop.name] = prop));
             });
-            entry.properties.forEach((prop) => props[prop.name] = prop);
+            entry.properties.forEach(prop => (props[prop.name] = prop));
             // return a sorted array of unique props
-            return Object.keys(props).sort().map((n) => props[n]);
+            return Object.keys(props)
+                .sort()
+                .map(n => props[n]);
         }
-    }
+    };
 
     private getInheritedProps = (name: string) => {
         return this.getProps(this.getInterface(name)).map((p: IInheritedPropertyEntry) => {
             p.inheritedFrom = name;
             return p;
         });
-    }
+    };
 }

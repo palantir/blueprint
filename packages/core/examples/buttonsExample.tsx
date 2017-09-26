@@ -32,11 +32,11 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         wiggling: false,
     };
 
-    private handleActiveChange = handleBooleanChange((active) => this.setState({ active }));
-    private handleDisabledChange = handleBooleanChange((disabled) => this.setState({ disabled }));
-    private handleLargeChange = handleBooleanChange((large) => this.setState({ large }));
-    private handleLoadingChange = handleBooleanChange((loading) => this.setState({ loading }));
-    private handleMinimalChange = handleBooleanChange((minimal) => this.setState({ minimal }));
+    private handleActiveChange = handleBooleanChange(active => this.setState({ active }));
+    private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+    private handleLoadingChange = handleBooleanChange(loading => this.setState({ loading }));
+    private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
 
     private wiggleTimeoutId: number;
@@ -54,7 +54,9 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         return (
             <div className="docs-react-example-row">
                 <div className="docs-react-example-column">
-                    <code>Button</code><br/><br/>
+                    <code>Button</code>
+                    <br />
+                    <br />
                     <Button
                         className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
                         disabled={this.state.disabled}
@@ -67,7 +69,9 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     />
                 </div>
                 <div className="docs-react-example-column">
-                    <code>AnchorButton</code><br/><br/>
+                    <code>AnchorButton</code>
+                    <br />
+                    <br />
                     <AnchorButton
                         className={classes}
                         disabled={this.state.disabled}
@@ -88,25 +92,17 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     protected renderOptions() {
         return [
             [
-                <label className={Classes.LABEL} key="label">Modifiers</label>,
-                <Switch
-                    checked={this.state.active}
-                    key="active"
-                    label="Active"
-                    onChange={this.handleActiveChange}
-                />,
+                <label className={Classes.LABEL} key="label">
+                    Modifiers
+                </label>,
+                <Switch checked={this.state.active} key="active" label="Active" onChange={this.handleActiveChange} />,
                 <Switch
                     checked={this.state.disabled}
                     key="disabled"
                     label="Disabled"
                     onChange={this.handleDisabledChange}
                 />,
-                <Switch
-                    checked={this.state.large}
-                    key="large"
-                    label="Large"
-                    onChange={this.handleLargeChange}
-                />,
+                <Switch checked={this.state.large} key="large" label="Large" onChange={this.handleLargeChange} />,
                 <Switch
                     checked={this.state.loading}
                     key="loading"
@@ -119,9 +115,8 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     label="Minimal"
                     onChange={this.handleMinimalChange}
                 />,
-            ], [
-                <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />,
             ],
+            [<IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />],
         ];
     }
 
@@ -129,5 +124,5 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         clearTimeout(this.wiggleTimeoutId);
         this.setState({ wiggling: true });
         this.wiggleTimeoutId = setTimeout(() => this.setState({ wiggling: false }), 300);
-    }
+    };
 }

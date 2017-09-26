@@ -49,7 +49,7 @@ export class ClickToCopy extends React.PureComponent<IClickToCopyProps, IClickTo
     private inputElement: HTMLInputElement;
 
     private refHandlers = {
-        input: (input: HTMLInputElement) => this.inputElement = input,
+        input: (input: HTMLInputElement) => (this.inputElement = input),
     };
 
     public render() {
@@ -78,17 +78,20 @@ export class ClickToCopy extends React.PureComponent<IClickToCopyProps, IClickTo
         document.execCommand("copy");
         this.setState({ hasCopied: true });
         Utils.safeInvoke(this.props.onClick, e);
-    }
+    };
 
     // tslint:disable-next-line:member-ordering
-    private handleKeyDown = createKeyEventHandler({
-        all: this.props.onKeyDown,
-        [Keys.SPACE]: this.handleClickEvent,
-        [Keys.ENTER]: this.handleClickEvent,
-    }, true);
+    private handleKeyDown = createKeyEventHandler(
+        {
+            all: this.props.onKeyDown,
+            [Keys.SPACE]: this.handleClickEvent,
+            [Keys.ENTER]: this.handleClickEvent,
+        },
+        true,
+    );
 
     private handleMouseLeave = (e: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ hasCopied: false });
         Utils.safeInvoke(this.props.onMouseLeave, e);
-    }
+    };
 }

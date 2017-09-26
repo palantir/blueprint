@@ -82,7 +82,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
 
     private trackElement: HTMLElement;
     private refHandlers = {
-        track: (el: HTMLDivElement) => this.trackElement = el,
+        track: (el: HTMLDivElement) => (this.trackElement = el),
     };
 
     public constructor(props: P) {
@@ -95,16 +95,16 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
 
     public render() {
         const { disabled } = this.props;
-        const classes = classNames(this.className, {
-            [Classes.DISABLED]: disabled,
-            [`${Classes.SLIDER}-unlabeled`]: this.props.renderLabel === false,
-        }, this.props.className);
+        const classes = classNames(
+            this.className,
+            {
+                [Classes.DISABLED]: disabled,
+                [`${Classes.SLIDER}-unlabeled`]: this.props.renderLabel === false,
+            },
+            this.props.className,
+        );
         return (
-            <div
-                className={classes}
-                onMouseDown={this.maybeHandleTrackClick}
-                onTouchStart={this.maybeHandleTrackTouch}
-            >
+            <div className={classes} onMouseDown={this.maybeHandleTrackClick} onTouchStart={this.maybeHandleTrackTouch}>
                 <div className={`${Classes.SLIDER}-track`} ref={this.refHandlers.track} />
                 {this.maybeRenderFill()}
                 {this.maybeRenderAxis()}
@@ -158,13 +158,19 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         const max: number = this.props.max;
         const min: number = this.props.min;
         const labelStepSize: number = this.props.labelStepSize;
-        if (this.props.renderLabel === false) { return undefined; }
+        if (this.props.renderLabel === false) {
+            return undefined;
+        }
 
         const stepSize = Math.round(this.state.tickSize * labelStepSize);
         const labels: JSX.Element[] = [];
         // tslint:disable-next-line:one-variable-per-declaration
         for (let i = min, left = 0; i < max || approxEqual(i, max); i += labelStepSize, left += stepSize) {
-            labels.push(<div className={`${Classes.SLIDER}-label`} key={i} style={{left}}>{this.formatLabel(i)}</div>);
+            labels.push(
+                <div className={`${Classes.SLIDER}-label`} key={i} style={{ left }}>
+                    {this.formatLabel(i)}
+                </div>,
+            );
         }
         return <div className={`${Classes.SLIDER}-axis`}>{labels}</div>;
     }
@@ -180,25 +186,23 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         if (this.canHandleTrackEvent(event)) {
             this.handleTrackClick(event);
         }
-    }
+    };
 
     private maybeHandleTrackTouch = (event: React.TouchEvent<HTMLDivElement>) => {
         if (this.canHandleTrackEvent(event)) {
             this.handleTrackTouch(event);
         }
-    }
+    };
 
     private canHandleTrackEvent = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
         const target = event.target as HTMLElement;
         // ensure event does not come from inside the handle
         return !this.props.disabled && target.closest(`.${Classes.SLIDER_HANDLE}`) == null;
-    }
+    };
 
     private getLabelPrecision({ labelPrecision, stepSize }: P) {
         // infer default label precision from stepSize because that's how much the handle moves.
-        return (labelPrecision == null)
-            ? countDecimalPlaces(stepSize)
-            : labelPrecision;
+        return labelPrecision == null ? countDecimalPlaces(stepSize) : labelPrecision;
     }
 
     private updateTickSize() {

@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/table",
-  "version": "1.22.0",
+  "version": "1.26.0",
   "description": "Scalable interactive table component",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -27,10 +27,12 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.74",
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "http-server": "^0.9.0",
+    "lodash": "^4.17.4",
     "npm-run-all": "^4.0.2",
     "onchange": "^3.2.1",
     "react": "^15.6.1",

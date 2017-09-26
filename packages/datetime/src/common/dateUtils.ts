@@ -14,7 +14,7 @@ export type MomentDateRange = [moment.Moment, moment.Moment];
 export enum DateRangeBoundary {
     START,
     END,
-};
+}
 
 export function areEqual(date1: Date, date2: Date) {
     if (date1 == null && date2 == null) {
@@ -41,27 +41,33 @@ export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
 }
 
 export function areSameDay(date1: Date, date2: Date) {
-    return date1 != null
-        && date2 != null
-        && date1.getDate() === date2.getDate()
-        && date1.getMonth() === date2.getMonth()
-        && date1.getFullYear() === date2.getFullYear();
+    return (
+        date1 != null &&
+        date2 != null &&
+        date1.getDate() === date2.getDate() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getFullYear() === date2.getFullYear()
+    );
 }
 
 export function areSameMonth(date1: Date, date2: Date) {
-    return date1 != null
-        && date2 != null
-        && date1.getMonth() === date2.getMonth()
-        && date1.getFullYear() === date2.getFullYear();
+    return (
+        date1 != null &&
+        date2 != null &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getFullYear() === date2.getFullYear()
+    );
 }
 
 export function areSameTime(date1: Date, date2: Date) {
-    return date1 != null
-        && date2 != null
-        && date1.getHours() === date2.getHours()
-        && date1.getMinutes() === date2.getMinutes()
-        && date1.getSeconds() === date2.getSeconds()
-        && date1.getMilliseconds() === date2.getMilliseconds();
+    return (
+        date1 != null &&
+        date2 != null &&
+        date1.getHours() === date2.getHours() &&
+        date1.getMinutes() === date2.getMinutes() &&
+        date1.getSeconds() === date2.getSeconds() &&
+        date1.getMilliseconds() === date2.getMilliseconds()
+    );
 }
 
 export function clone(d: Date) {
@@ -81,14 +87,14 @@ export function isDayInRange(date: Date, dateRange: DateRange, exclusive = false
     start.setHours(0, 0, 0, 0);
     end.setHours(0, 0, 0, 0);
 
-    return start <= day && day <= end
-        && (!exclusive
-            || !areSameDay(start, day) && !areSameDay(day, end));
+    return start <= day && day <= end && (!exclusive || (!areSameDay(start, day) && !areSameDay(day, end)));
 }
 
 export function isDayRangeInRange(innerRange: DateRange, outerRange: DateRange) {
-    return (innerRange[0] == null || isDayInRange(innerRange[0], outerRange))
-        && (innerRange[1] == null || isDayInRange(innerRange[1], outerRange));
+    return (
+        (innerRange[0] == null || isDayInRange(innerRange[0], outerRange)) &&
+        (innerRange[1] == null || isDayInRange(innerRange[1], outerRange))
+    );
 }
 
 export function isMonthInRange(date: Date, dateRange: DateRange) {
@@ -167,13 +173,20 @@ export function getDateTime(date: Date, time: Date) {
     } else if (time === null) {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
     } else {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(),
-            time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds());
+        return new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            time.getHours(),
+            time.getMinutes(),
+            time.getSeconds(),
+            time.getMilliseconds(),
+        );
     }
 }
 
 export function getDateOnlyWithTime(date: Date): Date {
-  return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+    return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
 }
 
 export function isMomentNull(momentDate: moment.Moment) {
@@ -241,10 +254,7 @@ export function fromDateRangeToMomentDateRange(dateRange: DateRange) {
     if (dateRange == null) {
         return undefined;
     }
-    return [
-        fromDateToMoment(dateRange[0]),
-        fromDateToMoment(dateRange[1]),
-    ] as MomentDateRange;
+    return [fromDateToMoment(dateRange[0]), fromDateToMoment(dateRange[1])] as MomentDateRange;
 }
 
 /**
@@ -256,10 +266,7 @@ export function fromMomentDateRangeToDateRange(momentDateRange: MomentDateRange)
     if (momentDateRange == null) {
         return undefined;
     }
-    return [
-        fromMomentToDate(momentDateRange[0]),
-        fromMomentToDate(momentDateRange[1]),
-    ] as DateRange;
+    return [fromMomentToDate(momentDateRange[0]), fromMomentToDate(momentDateRange[1])] as DateRange;
 }
 
 export function getDatePreviousMonth(date: Date): Date {
@@ -276,4 +283,12 @@ export function getDateNextMonth(date: Date): Date {
     } else {
         return new Date(date.getFullYear(), date.getMonth() + 1);
     }
+}
+
+/**
+ * Returns a date string in the provided format localized to the provided locale.
+ */
+export function toLocalizedDateString(momentDate: moment.Moment, format: string, locale: string | undefined) {
+    const adjustedMomentDate = locale != null ? momentDate.locale(locale) : momentDate;
+    return adjustedMomentDate.format(format);
 }

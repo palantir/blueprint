@@ -5,11 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Utils as CoreUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { IFocusedCellCoordinates } from "../common/cell";
 import { Utils } from "../common/utils";
-import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
+import { Draggable, ICoordinateData, IDraggableProps } from "./draggable";
 
 export interface IReorderableProps {
     /**
@@ -38,9 +40,16 @@ export interface IReorderableProps {
     onSelection: (regions: IRegion[]) => void;
 
     /**
-     * An array containing the table's selection Regions.
+     * When the user reorders something, this callback is called with the new
+     * focus cell for the newly selected set of regions.
      */
-    selectedRegions: IRegion[];
+    onFocus: (focusedCell: IFocusedCellCoordinates) => void;
+
+    /**
+     * An array containing the table's selection Regions.
+     * @default []
+     */
+    selectedRegions?: IRegion[];
 }
 
 export interface IDragReorderable extends IReorderableProps {
@@ -72,6 +81,10 @@ export interface IDragReorderable extends IReorderableProps {
 
 @PureRender
 export class DragReorderable extends React.Component<IDragReorderable, {}> {
+    public static defaultProps: Partial<IDragReorderable> = {
+        selectedRegions: [],
+    };
+
     private selectedRegionStartIndex: number;
     private selectedRegionLength: number;
 
@@ -85,11 +98,13 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     private getDraggableProps(): IDraggableProps {
-        return this.props.onReordered == null ? {} : {
-            onActivate: this.handleActivate,
-            onDragEnd: this.handleDragEnd,
-            onDragMove: this.handleDragMove,
-        };
+        return this.props.onReordered == null
+            ? {}
+            : {
+                  onActivate: this.handleActivate,
+                  onDragEnd: this.handleDragEnd,
+                  onDragMove: this.handleDragMove,
+              };
     }
 
     private handleActivate = (event: MouseEvent) => {
@@ -129,7 +144,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
             this.selectedRegionLength = selectedInterval[1] - selectedInterval[0] + 1;
         } else {
             // select the new region to avoid complex and unintuitive UX w/r/t the existing selection
-            this.props.onSelection([region]);
+            this.maybeSelectRegion(region);
 
             const regionRange = isRowHeader ? region.rows : region.cols;
             this.selectedRegionStartIndex = regionRange[0];
@@ -137,7 +152,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         }
 
         return true;
-    }
+    };
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
         const oldIndex = this.selectedRegionStartIndex;
@@ -145,7 +160,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const length = this.selectedRegionLength;
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
         this.props.onReordering(oldIndex, reorderedIndex, length);
-    }
+    };
 
     private handleDragEnd = (event: MouseEvent, coords: ICoordinateData) => {
         const oldIndex = this.selectedRegionStartIndex;
@@ -155,11 +170,26 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         const reorderedIndex = Utils.guideIndexToReorderedIndex(oldIndex, guideIndex, length);
         this.props.onReordered(oldIndex, reorderedIndex, length);
 
+        // the newly reordered region becomes the only selection
         const newRegion = this.props.toRegion(reorderedIndex, reorderedIndex + length - 1);
-        this.props.onSelection(Regions.update(this.props.selectedRegions, newRegion));
+        this.maybeSelectRegion(newRegion);
 
         // resetting is not strictly required, but it's cleaner
         this.selectedRegionStartIndex = undefined;
         this.selectedRegionLength = undefined;
+    };
+
+    private maybeSelectRegion(region: IRegion) {
+        const nextSelectedRegions = [region];
+
+        if (!CoreUtils.deepCompareKeys(nextSelectedRegions, this.props.selectedRegions)) {
+            this.props.onSelection(nextSelectedRegions);
+
+            // move the focused cell into the newly selected region
+            this.props.onFocus({
+                ...Regions.getFocusCellCoordinatesFromRegion(region),
+                focusSelectionIndex: 0,
+            });
+        }
     }
 }

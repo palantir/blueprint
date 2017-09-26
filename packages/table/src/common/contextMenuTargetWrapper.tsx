@@ -25,7 +25,11 @@ export interface IContextMenuTargetWrapper extends IProps {
 export class ContextMenuTargetWrapper extends React.Component<IContextMenuTargetWrapper, {}> {
     public render() {
         const { className, children, style } = this.props;
-        return <div className={className} style={style}>{children}</div>;
+        return (
+            <div className={className} style={style}>
+                {children}
+            </div>
+        );
     }
 
     public renderContextMenu(e: React.MouseEvent<HTMLElement>) {

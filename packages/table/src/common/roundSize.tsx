@@ -50,6 +50,6 @@ export class RoundSize extends React.Component<{}, {}> {
         this.containerElement.style.height = height;
     }
 
-    private setInternalRef = (ref: HTMLElement) => this.internalElement = ref;
-    private setContainerRef = (ref: HTMLElement) => this.containerElement = ref;
+    private setInternalRef = (ref: HTMLElement) => (this.internalElement = ref);
+    private setContainerRef = (ref: HTMLElement) => (this.containerElement = ref);
 }

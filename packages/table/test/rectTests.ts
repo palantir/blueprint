@@ -50,4 +50,15 @@ describe("Rect", () => {
         expect(rect.containsY(50)).to.be.true;
         expect(rect.containsY(51)).to.be.false;
     });
+
+    it("equals", () => {
+        const rect1 = new Rect(10, 20, 30, 40);
+        const rect2 = new Rect(10, 20, 30, 40);
+        const rect3 = new Rect(40, 30, 20, 10);
+
+        expect(rect1.equals(rect2)).to.be.true;
+        expect(rect2.equals(rect1)).to.be.true;
+        expect(rect1.equals(rect3)).to.be.false;
+        expect(rect3.equals(rect1)).to.be.false;
+    });
 });

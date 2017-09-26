@@ -17,8 +17,16 @@ const MIN_STEPS = 3;
 const MAX_STEPS = 20;
 
 const QUALITATIVE = [
-    "cobalt3", "forest3", "gold3", "vermilion3", "violet3",
-    "turquoise3", "rose3", "lime3", "sepia3", "indigo3",
+    "cobalt3",
+    "forest3",
+    "gold3",
+    "vermilion3",
+    "violet3",
+    "turquoise3",
+    "rose3",
+    "lime3",
+    "sepia3",
+    "indigo3",
 ];
 
 const SINGLE_HUE = [
@@ -55,7 +63,7 @@ const DIVERGING = [
 ];
 
 export interface IColorSchemeProps {
-    schemes: Array<{ label: string; palettes: string[][]; diverging?: boolean; }>;
+    schemes: Array<{ label: string; palettes: string[][]; diverging?: boolean }>;
     steps?: number;
 }
 
@@ -72,16 +80,18 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
         steps: this.props.steps || 5,
     };
 
-    private handleStepChange = handleNumberChange((steps) => {
+    private handleStepChange = handleNumberChange(steps => {
         this.setState({
             steps: Math.max(MIN_STEPS, Math.min(MAX_STEPS, steps)),
         });
     });
 
-    private handleSchemaChange = handleNumberChange((activeSchema) => this.setState({
-        activePalette: 0,
-        activeSchema,
-    }));
+    private handleSchemaChange = handleNumberChange(activeSchema =>
+        this.setState({
+            activePalette: 0,
+            activeSchema,
+        }),
+    );
 
     public render() {
         const schema = this.props.schemes[this.state.activeSchema];
@@ -114,7 +124,7 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
 
     private handlePaletteChange = (key: number) => {
         this.setState({ activePalette: key });
-    }
+    };
 
     private renderRadioGroup() {
         if (this.props.schemes.length === 1) {
@@ -129,7 +139,7 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
             };
         });
 
-        return(
+        return (
             <RadioGroup
                 key="activeSchema"
                 name="activeSchema"
@@ -146,21 +156,33 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
         if (diverging) {
             // Split the basePalette into left and right, including the middle color in both.
             // Create individual bezier scales for each side. We'll choose which to use later.
-            const leftColors = chroma.bezier(basePalette.slice(0, 3)).scale().mode("lab").correctLightness(true);
-            const rightColors = chroma.bezier(basePalette.slice(2, 5)).scale().mode("lab").correctLightness(true);
+            const leftColors = chroma
+                .bezier(basePalette.slice(0, 3))
+                .scale()
+                .mode("lab")
+                .correctLightness(true);
+            const rightColors = chroma
+                .bezier(basePalette.slice(2, 5))
+                .scale()
+                .mode("lab")
+                .correctLightness(true);
 
             const result: string[] = [];
             for (let i = 0; i < steps; i++) {
                 // Calculate the position of the step as a value between 0 and 1.
                 // If it's below 0.5 use the left color scale, otherwise use right scale.
                 const t = i / (steps - 1);
-                result.push((t < 0.5) ? leftColors(t * 2).hex() : rightColors(t * 2 - 1).hex());
+                result.push(t < 0.5 ? leftColors(t * 2).hex() : rightColors(t * 2 - 1).hex());
             }
             return result;
         } else {
-            return chroma.bezier(basePalette).scale().correctLightness(true).colors(steps);
+            return chroma
+                .bezier(basePalette)
+                .scale()
+                .correctLightness(true)
+                .colors(steps);
         }
-    }
+    };
 
     private renderPalette(palette: string[], key: number, diverging?: boolean) {
         const colors = this.generateColorPalette(palette, diverging, 5);
@@ -172,32 +194,30 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
             selected: key === this.state.activePalette,
         });
         const clickHandler = this.handlePaletteChange.bind(this, key);
-        const keyDownHandler = createKeyEventHandler({
-            [Keys.SPACE]: clickHandler,
-            [Keys.ENTER]: clickHandler,
-        }, true);
+        const keyDownHandler = createKeyEventHandler(
+            {
+                [Keys.SPACE]: clickHandler,
+                [Keys.ENTER]: clickHandler,
+            },
+            true,
+        );
 
         return (
             <div className={classes} key={key} onClick={clickHandler} onKeyDown={keyDownHandler} tabIndex={0}>
                 {swatches}
             </div>
         );
-    };
+    }
 }
 
 export const QualitativeSchemePalette: React.SFC<{}> = () => <ColorBar colors={QUALITATIVE} />;
 
 export const SequentialSchemePalette: React.SFC<{}> = () => {
-    const schemes = [
-        { label: "Single hue", palettes: SINGLE_HUE },
-        { label: "Multi-hue", palettes: SEQUENTIAL },
-    ];
+    const schemes = [{ label: "Single hue", palettes: SINGLE_HUE }, { label: "Multi-hue", palettes: SEQUENTIAL }];
     return <ColorScheme schemes={schemes} />;
 };
 
 export const DivergingSchemePalette: React.SFC<{}> = () => {
-    const schemes = [
-        { diverging: true, label: "Diverging", palettes: DIVERGING },
-    ];
+    const schemes = [{ diverging: true, label: "Diverging", palettes: DIVERGING }];
     return <ColorScheme schemes={schemes} />;
 };

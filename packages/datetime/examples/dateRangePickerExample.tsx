@@ -29,13 +29,28 @@ interface ISelectOption {
 
 const MIN_DATE_OPTIONS: ISelectOption[] = [
     { label: "None", value: undefined },
-    { label: "4 months ago", value: moment().add(-4, "months").toDate() },
-    { label: "1 year ago", value: moment().add(-1, "years").toDate() },
+    {
+        label: "4 months ago",
+        value: moment()
+            .add(-4, "months")
+            .toDate(),
+    },
+    {
+        label: "1 year ago",
+        value: moment()
+            .add(-1, "years")
+            .toDate(),
+    },
 ];
 
 const MAX_DATE_OPTIONS: ISelectOption[] = [
     { label: "None", value: undefined },
-    { label: "1 month ago", value: moment().add(-1, "months").toDate() },
+    {
+        label: "1 month ago",
+        value: moment()
+            .add(-1, "months")
+            .toDate(),
+    },
 ];
 
 export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleState> {
@@ -48,12 +63,12 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
         shortcuts: true,
     };
 
-    private handleMaxDateIndexChange = handleNumberChange((maxDateIndex) => this.setState({ maxDateIndex }));
-    private handleMinDateIndexChange = handleNumberChange((minDateIndex) => this.setState({ minDateIndex }));
+    private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
+    private handleMinDateIndexChange = handleNumberChange(minDateIndex => this.setState({ minDateIndex }));
 
-    private toggleSingleDay = handleBooleanChange((allowSingleDayRange) => this.setState({ allowSingleDayRange }));
-    private toggleShortcuts = handleBooleanChange((shortcuts) => this.setState({ shortcuts }));
-    private toggleContiguousCalendarMonths = handleBooleanChange((contiguousCalendarMonths) => {
+    private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
+    private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
+    private toggleContiguousCalendarMonths = handleBooleanChange(contiguousCalendarMonths => {
         this.setState({ contiguousCalendarMonths });
     });
 
@@ -63,22 +78,24 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
         const minDate = MIN_DATE_OPTIONS[this.state.minDateIndex].value;
         const maxDate = MAX_DATE_OPTIONS[this.state.maxDateIndex].value;
 
-        return <div className="docs-datetime-example">
-            <DateRangePicker
-                allowSingleDayRange={this.state.allowSingleDayRange}
-                contiguousCalendarMonths={this.state.contiguousCalendarMonths}
-                className={Classes.ELEVATION_1}
-                maxDate={maxDate}
-                minDate={minDate}
-                onChange={this.handleDateChange}
-                shortcuts={this.state.shortcuts}
-            />
-            <div>
-                <Moment date={start} />
-                <Icon iconName="arrow-right" iconSize={20} />
-                <Moment date={end} />
+        return (
+            <div className="docs-datetime-example">
+                <DateRangePicker
+                    allowSingleDayRange={this.state.allowSingleDayRange}
+                    contiguousCalendarMonths={this.state.contiguousCalendarMonths}
+                    className={Classes.ELEVATION_1}
+                    maxDate={maxDate}
+                    minDate={minDate}
+                    onChange={this.handleDateChange}
+                    shortcuts={this.state.shortcuts}
+                />
+                <div>
+                    <Moment date={start} />
+                    <Icon iconName="arrow-right" iconSize={20} />
+                    <Moment date={end} />
+                </div>
             </div>
-        </div>;
+        );
     }
 
     protected renderOptions() {
@@ -102,14 +119,16 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                     label="Show shortcuts"
                     onChange={this.toggleShortcuts}
                 />,
-            ], [
+            ],
+            [
                 this.renderSelectMenu(
                     "Minimum date",
                     this.state.minDateIndex,
                     MIN_DATE_OPTIONS,
                     this.handleMinDateIndexChange,
                 ),
-            ], [
+            ],
+            [
                 this.renderSelectMenu(
                     "Maximum date",
                     this.state.maxDateIndex,
@@ -142,7 +161,11 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
 
     private renderSelectMenuOptions(options: ISelectOption[]) {
         return options.map((option, index) => {
-            return <option key={index} value={index}>{option.label}</option>;
+            return (
+                <option key={index} value={index}>
+                    {option.label}
+                </option>
+            );
         });
     }
 }

@@ -70,8 +70,8 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     private contentElement: HTMLElement;
     private navElement: HTMLElement;
     private refHandlers = {
-        content: (ref: HTMLElement) => this.contentElement = ref,
-        nav: (ref: HTMLElement) => this.navElement = ref,
+        content: (ref: HTMLElement) => (this.contentElement = ref),
+        nav: (ref: HTMLElement) => (this.navElement = ref),
     };
 
     public constructor(props: IDocumentationProps) {
@@ -97,15 +97,11 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             <div className={classNames("docs-root", { "docs-examples-only": examplesOnly }, this.props.className)}>
                 <div className="docs-app">
                     <div className="pt-navbar docs-navbar docs-flex-row">
-                        <div className="pt-navbar-group">
-                            {this.props.navbarLeft}
-                        </div>
+                        <div className="pt-navbar-group">{this.props.navbarLeft}</div>
                         <div className="pt-navbar-group">
                             <Navigator items={nav} onNavigate={this.handleNavigation} />
                         </div>
-                        <div className="pt-navbar-group">
-                            {this.props.navbarRight}
-                        </div>
+                        <div className="pt-navbar-group">{this.props.navbarRight}</div>
                     </div>
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu
@@ -126,8 +122,8 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public renderHotkeys() {
         return (
             <Hotkeys>
-                <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection}/>
-                <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection}/>
+                <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection} />
+                <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection} />
             </Hotkeys>
         );
     }
@@ -182,24 +178,25 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         if (activeSectionId !== undefined && activePageId !== undefined) {
             this.setState({ activePageId, activeSectionId });
         }
-    }
+    };
 
     private handleNextSection = () => this.shiftSection(1);
     private handlePreviousSection = () => this.shiftSection(-1);
 
     private handleScroll = () => {
         const activeSectionId = getScrolledReference(100, this.contentElement);
-        if (activeSectionId == null) { return; }
+        if (activeSectionId == null) {
+            return;
+        }
         // use the longer (deeper) name to avoid jumping up between sections
         this.setState({ ...this.state, activeSectionId });
-    }
+    };
 
     private maybeScrollToActivePageMenuItem() {
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navMenuElement = this.navElement
-            .query(`a[href="#${activeSectionId}"]`).closest(".docs-menu-item-page");
+        const navMenuElement = this.navElement.query(`a[href="#${activeSectionId}"]`).closest(".docs-menu-item-page");
         const innerBounds = navMenuElement.getBoundingClientRect();
         const outerBounds = this.navElement.getBoundingClientRect();
         if (innerBounds.top < outerBounds.top || innerBounds.bottom > outerBounds.bottom) {
@@ -213,7 +210,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
 
     private shiftSection(direction: 1 | -1) {
         // use the current hash instead of `this.state.activeSectionId` to avoid cases where the
-    	// active section cannot actually be selected in the nav (often a short one at the end).
+        // active section cannot actually be selected in the nav (often a short one at the end).
         const currentSectionId = location.hash.slice(1);
         // this map is built by an in-order traversal so the keys are actually sorted correctly!
         const sections = Object.keys(this.routeToPage);

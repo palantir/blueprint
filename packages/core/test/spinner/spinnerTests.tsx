@@ -26,13 +26,20 @@ describe("Spinner", () => {
 
     it("value sets stroke-dashoffset", () => {
         // dash offset = X * (1 - value)
-        const root = mount(<Spinner value={0.35}/>);
+        const root = mount(<Spinner value={0.35} />);
         assert.isTrue(root.find(`.${Classes.SPINNER}`).hasClass("pt-no-spin"), "missing class pt-no-spin");
         assertStrokePercent(root, 0.35);
     });
 
     it("React renders SVGSpinner", () => {
-        assert.lengthOf(mount(<svg><SVGSpinner/></svg>).find(`.${Classes.SVG_SPINNER} svg`), 1);
+        assert.lengthOf(
+            mount(
+                <svg>
+                    <SVGSpinner />
+                </svg>,
+            ).find(`.${Classes.SVG_SPINNER} svg`),
+            1,
+        );
     });
 
     function assertStrokePercent(wrapper: ReactWrapper<any, {}>, percent: number) {

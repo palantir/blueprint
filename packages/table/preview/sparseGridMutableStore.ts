@@ -12,11 +12,7 @@ class GridEntry<T> {
         return `${i}_${j}`;
     }
 
-    public constructor(
-        public i: number,
-        public j: number,
-        public value: T,
-    ) {}
+    public constructor(public i: number, public j: number, public value: T) {}
 
     // there are two things here called `key` but they're certainly not overloaded (one being static)
     // TSLint bug report: https://github.com/palantir/tslint/issues/2139
@@ -62,7 +58,7 @@ export class SparseGridMutableStore<T> {
 
     public get(i: number, j: number): T {
         const entry = this.map[GridEntry.key(i, j)];
-        return (entry == null) ? undefined : entry.value;
+        return entry == null ? undefined : entry.value;
     }
 
     public insertI(i: number, count: number) {

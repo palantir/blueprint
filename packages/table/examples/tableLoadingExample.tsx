@@ -34,13 +34,13 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
 
     protected className = "docs-table-loading-example";
 
-    private handleCellsLoading = handleBooleanChange((cellsLoading) => this.setState({ cellsLoading }));
+    private handleCellsLoading = handleBooleanChange(cellsLoading => this.setState({ cellsLoading }));
 
-    private handleColumnHeadersLoading = handleBooleanChange((columnHeadersLoading) => {
+    private handleColumnHeadersLoading = handleBooleanChange(columnHeadersLoading => {
         this.setState({ columnHeadersLoading });
     });
 
-    private handleRowHeadersLoading = handleBooleanChange((rowHeadersLoading) => this.setState({ rowHeadersLoading }));
+    private handleRowHeadersLoading = handleBooleanChange(rowHeadersLoading => this.setState({ rowHeadersLoading }));
 
     public renderExample() {
         const loadingOptions: TableLoadingOption[] = [];
@@ -62,39 +62,35 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
     }
 
     protected renderOptions() {
-        return [[
-            <Switch
-                checked={this.state.cellsLoading}
-                label="Cells"
-                key="cells"
-                onChange={this.handleCellsLoading}
-            />,
-            <Switch
-                checked={this.state.columnHeadersLoading}
-                label="Column headers"
-                key="columnheaders"
-                onChange={this.handleColumnHeadersLoading}
-            />,
-            <Switch
-                checked={this.state.rowHeadersLoading}
-                label="Row headers"
-                key="rowheaders"
-                onChange={this.handleRowHeadersLoading}
-            />,
-        ]];
+        return [
+            [
+                <Switch
+                    checked={this.state.cellsLoading}
+                    label="Cells"
+                    key="cells"
+                    onChange={this.handleCellsLoading}
+                />,
+                <Switch
+                    checked={this.state.columnHeadersLoading}
+                    label="Column headers"
+                    key="columnheaders"
+                    onChange={this.handleColumnHeadersLoading}
+                />,
+                <Switch
+                    checked={this.state.rowHeadersLoading}
+                    label="Row headers"
+                    key="rowheaders"
+                    onChange={this.handleRowHeadersLoading}
+                />,
+            ],
+        ];
     }
 
     private renderColumns() {
         const columns: JSX.Element[] = [];
 
         Object.keys(bigSpaceRocks[0]).forEach((columnName, index) => {
-            columns.push(
-                <Column
-                    key={index}
-                    name={this.formatColumnName(columnName)}
-                    renderCell={this.renderCell}
-                />,
-            );
+            columns.push(<Column key={index} name={this.formatColumnName(columnName)} renderCell={this.renderCell} />);
         });
 
         return columns;
@@ -102,16 +98,10 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
 
     private renderCell = (rowIndex: number, columnIndex: number) => {
         const bigSpaceRock = bigSpaceRocks[rowIndex];
-        return (
-            <Cell>
-                {bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}
-            </Cell>
-        );
-    }
+        return <Cell>{bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}</Cell>;
+    };
 
     private formatColumnName = (columnName: string) => {
-        return columnName
-            .replace(/([A-Z])/g, " $1")
-            .replace(/^./, (firstCharacter) => firstCharacter.toUpperCase());
-    }
+        return columnName.replace(/([A-Z])/g, " $1").replace(/^./, firstCharacter => firstCharacter.toUpperCase());
+    };
 }

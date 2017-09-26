@@ -24,12 +24,17 @@ describe("<Tag>", () => {
     it("clicking close button triggers onRemove", () => {
         const handleRemove = sinon.spy();
         shallow(<Tag onRemove={handleRemove}>Hello</Tag>)
-            .find(`.${Classes.TAG_REMOVE}`).simulate("click");
+            .find(`.${Classes.TAG_REMOVE}`)
+            .simulate("click");
         assert.isTrue(handleRemove.calledOnce);
     });
 
     it("passes other props onto .pt-tag element", () => {
-        const element = shallow(<Tag alt="foo bar" title="baz qux">Hello</Tag>).find(".pt-tag");
+        const element = shallow(
+            <Tag alt="foo bar" title="baz qux">
+                Hello
+            </Tag>,
+        ).find(".pt-tag");
         assert.deepEqual(element.prop("alt"), "foo bar");
         assert.deepEqual(element.prop("title"), "baz qux");
     });
@@ -45,7 +50,8 @@ describe("<Tag>", () => {
             },
         };
         shallow(<Tag {...tagProps}>Hello</Tag>)
-            .find(`.${Classes.TAG_REMOVE}`).simulate("click");
+            .find(`.${Classes.TAG_REMOVE}`)
+            .simulate("click");
         assert.isTrue(handleRemove.args.length > 0 && handleRemove.args[0].length === 2);
         assert.isTrue(handleRemove.args[0][1][DATA_ATTR_FOO] !== undefined);
         assert.deepEqual(handleRemove.args[0][1][DATA_ATTR_FOO], tagProps[DATA_ATTR_FOO]);

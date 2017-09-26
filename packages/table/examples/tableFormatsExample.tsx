@@ -59,7 +59,7 @@ const TIME_ZONES = [
     ["+12:45", 12.75, "Pacific/Chatham"],
     ["+13:00", 13.0, "Pacific/Tongatapu"],
     ["+14:00", 14.0, "Pacific/Kiritimati"],
-].map((arr) => {
+].map(arr => {
     return {
         name: arr[2],
         offsetMsec: (arr[1] as number) * 60 * 60 * 1000 + LOCAL_TIMEZONE_OFFSET_MSEC,
@@ -83,10 +83,7 @@ export class TableFormatsExample extends BaseExample<{}> {
 
     public render() {
         return (
-            <Table
-                isRowResizable={true}
-                numRows={this.data.length}
-            >
+            <Table isRowResizable={true} numRows={this.data.length}>
                 <Column name="Timezone" renderCell={this.renderTimezone} />
                 <Column name="UTC Offset" renderCell={this.renderOffset} />
                 <Column name="Local Time" renderCell={this.renderLocalTime} />
@@ -103,8 +100,16 @@ export class TableFormatsExample extends BaseExample<{}> {
         const localDateTime = new Date(this.date);
         localDateTime.setTime(localDateTime.getTime() + this.data[row].offsetMsec);
         const formattedDateTime = localDateTime.toLocaleString("en-US", FORMAT_OPTIONS);
-        return <Cell><TruncatedFormat>{formattedDateTime}</TruncatedFormat></Cell>;
-    }
+        return (
+            <Cell>
+                <TruncatedFormat>{formattedDateTime}</TruncatedFormat>
+            </Cell>
+        );
+    };
 
-    private renderJSON = (row: number) => <Cell><JSONFormat>{this.data[row]}</JSONFormat></Cell>;
+    private renderJSON = (row: number) => (
+        <Cell>
+            <JSONFormat>{this.data[row]}</JSONFormat>
+        </Cell>
+    );
 }

@@ -5,12 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
+import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Utils } from "../common/utils";
 import { DragEvents } from "./dragEvents";
 
 export type IClientCoordinates = [number, number];
@@ -101,13 +100,9 @@ export interface IDragHandler {
     stopPropagation?: boolean;
 }
 
-export interface IDraggableProps extends IProps, IDragHandler {
-}
+export interface IDraggableProps extends IProps, IDragHandler {}
 
-const REATTACH_PROPS_KEYS = [
-    "stopPropagation",
-    "preventDefault",
-] as Array<keyof IDraggableProps>;
+const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof IDraggableProps>;
 
 /**
  * This component provides a simple interface for combined drag and/or click
@@ -149,7 +144,7 @@ export class Draggable extends React.Component<IDraggableProps, {}> {
 
     public componentWillReceiveProps(nextProps: IDraggableProps) {
         const propsWhitelist = { include: REATTACH_PROPS_KEYS };
-        if (this.events && !Utils.shallowCompareKeys(this.props, nextProps, propsWhitelist)) {
+        if (this.events && !CoreUtils.shallowCompareKeys(this.props, nextProps, propsWhitelist)) {
             this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, nextProps);
         }
     }

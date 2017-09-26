@@ -35,7 +35,7 @@ export class Text extends React.Component<ITextProps, ITextState> {
 
     private textRef: HTMLDivElement;
     private refHandlers = {
-        text: (overflowElement: HTMLDivElement) => this.textRef = overflowElement,
+        text: (overflowElement: HTMLDivElement) => (this.textRef = overflowElement),
     };
 
     public componentDidMount() {
@@ -47,9 +47,12 @@ export class Text extends React.Component<ITextProps, ITextState> {
     }
 
     public render() {
-        const classes = classNames({
-            [Classes.TEXT_OVERFLOW_ELLIPSIS]: this.props.ellipsize,
-        }, this.props.className);
+        const classes = classNames(
+            {
+                [Classes.TEXT_OVERFLOW_ELLIPSIS]: this.props.ellipsize,
+            },
+            this.props.className,
+        );
         return (
             <div
                 className={classes}

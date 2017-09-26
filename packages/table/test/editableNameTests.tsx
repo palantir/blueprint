@@ -30,12 +30,9 @@ describe("<EditableName>", () => {
         const onCancel = sinon.spy();
         const onChange = sinon.spy();
         const onConfirm = sinon.spy();
-        const elem = harness.mount(<EditableName
-            name="test-name-5000"
-            onCancel={onCancel}
-            onChange={onChange}
-            onConfirm={onConfirm}
-        />);
+        const elem = harness.mount(
+            <EditableName name="test-name-5000" onCancel={onCancel} onChange={onChange} onConfirm={onConfirm} />,
+        );
 
         // focus
         elem.find(".pt-editable-text").focus();

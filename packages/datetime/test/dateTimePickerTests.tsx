@@ -55,7 +55,10 @@ describe("<DateTimePicker>", () => {
             />,
         );
         assert.isTrue(onChangeSpy.notCalled);
-        root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+        root
+            .find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`)
+            .first()
+            .simulate("click");
         assert.isTrue(onChangeSpy.calledOnce);
         assert.deepEqual(onChangeSpy.firstCall.args[0], new Date(2012, 2, 5, 7, 5, 40));
     });
@@ -74,13 +77,13 @@ describe("<DateTimePicker>", () => {
     it("changing the time before selecting a date works as expected", () => {
         const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
         const { getDay, root } = wrap(
-            <DateTimePicker
-                defaultValue={defaultValue}
-                timePickerProps={{ showArrowButtons: true }}
-            />,
+            <DateTimePicker defaultValue={defaultValue} timePickerProps={{ showArrowButtons: true }} />,
         );
         getDay(5).simulate("click");
-        root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+        root
+            .find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`)
+            .first()
+            .simulate("click");
         getDay(15).simulate("click");
         assert.equal(root.state("timeValue").getHours(), defaultValue.getHours() + 1);
         assert.equal(root.state("timeValue").getMinutes(), defaultValue.getMinutes());
@@ -103,14 +106,32 @@ describe("<DateTimePicker>", () => {
         }
     });
 
+    describe("when uncontrolled", () => {
+        it("Passing an undefined value prop twice does not clear the selected date", () => {
+            const { root, getSelectedDay } = wrap(<DateTimePicker />);
+            assert.isTrue(getSelectedDay().exists());
+            root.setProps({ value: undefined });
+            assert.isNotNull(root.state("dateValue"));
+            assert.isTrue(getSelectedDay().exists());
+        });
+
+        it("Rerendering with an undefined value prop does not clear the selected date", () => {
+            const { root, getSelectedDay } = wrap(<DateTimePicker />);
+            assert.isNotNull(root.state("dateValue"));
+            assert.isTrue(getSelectedDay().exists());
+            root.update();
+            assert.isNotNull(root.state("dateValue"));
+            assert.isTrue(getSelectedDay().exists());
+        });
+    });
+
     function wrap(dtp: JSX.Element) {
         const root = mount(dtp);
         return {
             getDay: (dayNumber = 1) => {
                 return root
                     .find(`.${Classes.DATEPICKER_DAY}`)
-                    .filterWhere((day) => day.text() === "" + dayNumber &&
-                        !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE));
+                    .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE));
             },
             getSelectedDay: () => root.find(`.${Classes.DATEPICKER_DAY_SELECTED}`),
             root,

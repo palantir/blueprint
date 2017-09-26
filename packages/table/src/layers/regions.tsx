@@ -5,11 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
+import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../common/classes";
-import { Utils } from "../common/utils";
 import { QuadrantType } from "../quadrants/tableQuadrant";
 import { IRegion, Regions } from "../regions";
 
@@ -29,18 +28,18 @@ export interface IRegionLayerProps extends IProps {
 }
 
 // don't include "regions" or "regionStyles" in here, because they can't be shallowly compared
-const UPDATE_PROPS_KEYS = [
-    "className",
-] as Array<keyof IRegionLayerProps>;
+const UPDATE_PROPS_KEYS = ["className"] as Array<keyof IRegionLayerProps>;
 
 export class RegionLayer extends React.Component<IRegionLayerProps, {}> {
     public shouldComponentUpdate(nextProps: IRegionLayerProps) {
         // shallowly comparable props like "className" tend not to change in the default table
         // implementation, so do that check last with hope that we return earlier and avoid it
         // altogether.
-        return !Utils.arraysEqual(this.props.regions, nextProps.regions, Regions.regionsEqual)
-            || !Utils.arraysEqual(this.props.regionStyles, nextProps.regionStyles, Utils.shallowCompareKeys)
-            || !Utils.shallowCompareKeys(this.props, nextProps, { include: UPDATE_PROPS_KEYS });
+        return (
+            !CoreUtils.arraysEqual(this.props.regions, nextProps.regions, Regions.regionsEqual) ||
+            !CoreUtils.arraysEqual(this.props.regionStyles, nextProps.regionStyles, CoreUtils.shallowCompareKeys) ||
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, { include: UPDATE_PROPS_KEYS })
+        );
     }
 
     public render() {
@@ -64,5 +63,5 @@ export class RegionLayer extends React.Component<IRegionLayerProps, {}> {
                 style={regionStyles[index]}
             />
         );
-    }
+    };
 }

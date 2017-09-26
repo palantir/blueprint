@@ -8,15 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import {
-    AbstractComponent,
-    Icon,
-    IconName,
-    IProps,
-    Popover,
-    Position,
-    Utils as CoreUtils,
-} from "@blueprintjs/core";
+import { AbstractComponent, Icon, IconName, IProps, Popover, Position, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -97,10 +89,12 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
      * their mouse events.
      */
     public static isHeaderMouseTarget(target: HTMLElement) {
-        return target.classList.contains(Classes.TABLE_HEADER)
-            || target.classList.contains(Classes.TABLE_COLUMN_NAME)
-            || target.classList.contains(Classes.TABLE_INTERACTION_BAR)
-            || target.classList.contains(Classes.TABLE_HEADER_CONTENT);
+        return (
+            target.classList.contains(Classes.TABLE_HEADER) ||
+            target.classList.contains(Classes.TABLE_COLUMN_NAME) ||
+            target.classList.contains(Classes.TABLE_INTERACTION_BAR) ||
+            target.classList.contains(Classes.TABLE_HEADER_CONTENT)
+        );
     }
 
     public state = {
@@ -123,11 +117,17 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             ...spreadableProps,
         } = this.props;
 
+        const classes = classNames(spreadableProps.className, Classes.TABLE_COLUMN_HEADER_CELL, {
+            [Classes.TABLE_HAS_INTERACTION_BAR]: useInteractionBar,
+            [Classes.TABLE_HAS_REORDER_HANDLE]: this.props.reorderHandle != null,
+        });
+
         return (
             <HeaderCell
                 isReorderable={this.props.isColumnReorderable}
                 isSelected={this.props.isColumnSelected}
                 {...spreadableProps}
+                className={classes}
             >
                 {this.renderName()}
                 {this.maybeRenderContent()}
@@ -146,7 +146,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
     }
 
     private renderName() {
-        const { index, loading, name, renderName, useInteractionBar } = this.props;
+        const { index, loading, name, renderName, reorderHandle, useInteractionBar } = this.props;
 
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
@@ -161,7 +161,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
                     <div className={Classes.TABLE_INTERACTION_BAR}>
-                        {this.props.reorderHandle}
+                        {reorderHandle}
                         {dropdownMenu}
                     </div>
                     <HorizontalCellDivider />
@@ -171,6 +171,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
         } else {
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
+                    {reorderHandle}
                     {dropdownMenu}
                     <div className={Classes.TABLE_COLUMN_NAME_TEXT}>{nameComponent}</div>
                 </div>
@@ -183,11 +184,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             return undefined;
         }
 
-        return (
-            <div className={Classes.TABLE_HEADER_CONTENT}>
-                {this.props.children}
-            </div>
-        );
+        return <div className={Classes.TABLE_HEADER_CONTENT}>{this.props.children}</div>;
     }
 
     private maybeRenderDropdownMenu() {
@@ -197,19 +194,19 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             return undefined;
         }
 
-        const constraints = [{
-            attachment: "together",
-            pin: true,
-            to: "window",
-        }];
+        const constraints = [
+            {
+                attachment: "together",
+                pin: true,
+                to: "window",
+            },
+        ];
         const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, {
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
         });
 
         // prefer renderMenu if it's defined
-        const content = CoreUtils.isFunction(renderMenu)
-            ? renderMenu(index)
-            : menu;
+        const content = CoreUtils.isFunction(renderMenu) ? renderMenu(index) : menu;
 
         return (
             <div className={classes}>
@@ -231,9 +228,9 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
 
     private handlePopoverDidOpen = () => {
         this.setState({ isActive: true });
-    }
+    };
 
     private handlePopoverWillClose = () => {
         this.setState({ isActive: false });
-    }
+    };
 }

@@ -24,9 +24,10 @@ export function expectCellLoading(cell: Element, cellType: CellType, loading = t
         expect(cell.classList.contains(CoreClasses.LOADING)).to.be.true;
         expect(cell.querySelector(`.${CoreClasses.SKELETON}`)).to.not.be.null;
         if (cellType !== CellType.BODY_CELL) {
-            const headerNameText = cellType === CellType.COLUMN_HEADER
-                ? cell.querySelector(`.${Classes.TABLE_COLUMN_NAME_TEXT}`)
-                : cell.querySelector(`.${Classes.TABLE_ROW_NAME}`);
+            const headerNameText =
+                cellType === CellType.COLUMN_HEADER
+                    ? cell.querySelector(`.${Classes.TABLE_COLUMN_NAME_TEXT}`)
+                    : cell.querySelector(`.${Classes.TABLE_ROW_NAME}`);
             expect(headerNameText).to.not.be.null;
             expect(headerNameText.textContent).to.equal("");
         } else {

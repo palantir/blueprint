@@ -98,22 +98,22 @@ export class Batcher<T> {
      * "current" arguments match the "batch" arguments.
      */
     public removeOldAddNew(
-            callback: (...args: any[]) => T,
-            addNewLimit = Batcher.DEFAULT_ADD_LIMIT,
-            removeOldLimit = Batcher.DEFAULT_REMOVE_LIMIT,
-            updateLimit = Batcher.DEFAULT_UPDATE_LIMIT,
+        callback: (...args: any[]) => T,
+        addNewLimit = Batcher.DEFAULT_ADD_LIMIT,
+        removeOldLimit = Batcher.DEFAULT_REMOVE_LIMIT,
+        updateLimit = Batcher.DEFAULT_UPDATE_LIMIT,
     ) {
         // remove old
         const keysToRemove = this.setKeysDifference(this.currentObjects, this.batchArgs, removeOldLimit);
-        keysToRemove.forEach((key) => delete this.currentObjects[key]);
+        keysToRemove.forEach(key => delete this.currentObjects[key]);
 
         // remove ALL old objects not in batch
         const keysToRemoveOld = this.setKeysDifference(this.oldObjects, this.batchArgs, -1);
-        keysToRemoveOld.forEach((key) => delete this.oldObjects[key]);
+        keysToRemoveOld.forEach(key => delete this.oldObjects[key]);
 
         // copy ALL old objects into current objects if not defined
         const keysToShallowCopy = Object.keys(this.oldObjects);
-        keysToShallowCopy.forEach((key) => {
+        keysToShallowCopy.forEach(key => {
             if (this.currentObjects[key] == null) {
                 this.currentObjects[key] = this.oldObjects[key];
             }
@@ -121,19 +121,19 @@ export class Batcher<T> {
 
         // update old objects with factory
         const keysToUpdate = this.setKeysIntersection(this.oldObjects, this.currentObjects, updateLimit);
-        keysToUpdate.forEach((key) => {
+        keysToUpdate.forEach(key => {
             delete this.oldObjects[key];
             this.currentObjects[key] = callback.apply(undefined, this.batchArgs[key]);
         });
 
         // add new objects with factory
         const keysToAdd = this.setKeysDifference(this.batchArgs, this.currentObjects, addNewLimit);
-        keysToAdd.forEach((key) => this.currentObjects[key] = callback.apply(undefined, this.batchArgs[key]));
+        keysToAdd.forEach(key => (this.currentObjects[key] = callback.apply(undefined, this.batchArgs[key])));
 
         // set `done` to true of sets match exactly after add/remove and there
         // are no "old objects" remaining
-        this.done = this.setHasSameKeys(this.batchArgs, this.currentObjects)
-            && Object.keys(this.oldObjects).length === 0;
+        this.done =
+            this.setHasSameKeys(this.batchArgs, this.currentObjects) && Object.keys(this.oldObjects).length === 0;
     }
 
     /**
@@ -169,25 +169,17 @@ export class Batcher<T> {
         const callback = this.callback;
         delete this.callback;
         Utils.safeInvoke(callback);
-    }
+    };
 
     private mapCurrentObjectKey = (key: string) => {
         return this.currentObjects[key];
-    }
+    };
 
-    private setKeysDifference(
-            a: Record<string, any>,
-            b: Record<string, any>,
-            limit: number,
-    ) {
+    private setKeysDifference(a: Record<string, any>, b: Record<string, any>, limit: number) {
         return this.setKeysOperation(a, b, "difference", limit);
     }
 
-    private setKeysIntersection(
-            a: Record<string, any>,
-            b: Record<string, any>,
-            limit: number,
-    ) {
+    private setKeysIntersection(a: Record<string, any>, b: Record<string, any>, limit: number) {
         return this.setKeysOperation(a, b, "intersect", limit);
     }
 
@@ -201,19 +193,16 @@ export class Batcher<T> {
      * Returns an array of at most `limit` keys.
      */
     private setKeysOperation(
-            a: Record<string, any>,
-            b: Record<string, any>,
-            operation: "intersect" | "difference",
-            limit: number,
+        a: Record<string, any>,
+        b: Record<string, any>,
+        operation: "intersect" | "difference",
+        limit: number,
     ) {
         const result = [];
         const aKeys = Object.keys(a);
         for (let i = 0; i < aKeys.length && (limit < 0 || result.length < limit); i++) {
             const key = aKeys[i];
-            if (
-                  (operation === "difference" && a[key] && !b[key]) ||
-                  (operation === "intersect" && a[key] && b[key])
-            ) {
+            if ((operation === "difference" && a[key] && !b[key]) || (operation === "intersect" && a[key] && b[key])) {
                 result.push(key);
             }
         }

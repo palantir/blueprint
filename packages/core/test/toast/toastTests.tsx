@@ -21,8 +21,7 @@ describe("<Toast>", () => {
 
     it("clicking dismiss button triggers onDismiss callback with `false`", () => {
         const handleDismiss = sinon.spy();
-        wrap(<Toast message="Hello" onDismiss={handleDismiss} />)
-            .dismiss.simulate("click");
+        wrap(<Toast message="Hello" onDismiss={handleDismiss} />).dismiss.simulate("click");
         assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
     });
@@ -36,15 +35,13 @@ describe("<Toast>", () => {
 
     it("clicking action button triggers onClick callback", () => {
         const onClick = sinon.spy();
-        wrap(<Toast action={{ onClick, text: "Undo" }} message="Hello" />)
-            .action.simulate("click");
+        wrap(<Toast action={{ onClick, text: "Undo" }} message="Hello" />).action.simulate("click");
         assert.isTrue(onClick.calledOnce, "action onClick not called once");
     });
 
     it("clicking action button also triggers onDismiss callback with `false`", () => {
         const handleDismiss = sinon.spy();
-        wrap(<Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />)
-            .action.simulate("click");
+        wrap(<Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />).action.simulate("click");
         assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
     });
@@ -60,9 +57,9 @@ describe("<Toast>", () => {
 
     describe("timeout", () => {
         let handleDismiss: Sinon.SinonSpy;
-        beforeEach(() => handleDismiss = sinon.spy());
+        beforeEach(() => (handleDismiss = sinon.spy()));
 
-        it("calls onDismiss automatically after timeout expires with `true`", (done) => {
+        it("calls onDismiss automatically after timeout expires with `true`", done => {
             // mounting for lifecycle methods to start timeout
             mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
             setTimeout(() => {
@@ -72,18 +69,16 @@ describe("<Toast>", () => {
             }, 20);
         });
 
-        it("updating with timeout={0} cancels timeout", (done) => {
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />)
-                .setProps({ timeout: 0 });
+        it("updating with timeout={0} cancels timeout", done => {
+            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />).setProps({ timeout: 0 });
             setTimeout(() => {
                 assert.isTrue(handleDismiss.notCalled, "onDismiss was called");
                 done();
             }, 20);
         });
 
-        it("updating timeout={0} with timeout={X} starts timeout", (done) => {
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={0} />)
-                .setProps({ timeout: 20 });
+        it("updating timeout={0} with timeout={X} starts timeout", done => {
+            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={0} />).setProps({ timeout: 20 });
             setTimeout(() => {
                 assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
                 assert.isTrue(handleDismiss.firstCall.args[0], "onDismiss not called with `true`");

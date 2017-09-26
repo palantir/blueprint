@@ -36,9 +36,14 @@ export class Spinner extends React.Component<ISpinnerProps, {}> {
 
     public render() {
         const { className, intent, value } = this.props;
-        const classes = classNames(Classes.SPINNER, Classes.intentClass(intent), {
-            "pt-no-spin": value != null,
-        }, className);
+        const classes = classNames(
+            Classes.SPINNER,
+            Classes.intentClass(intent),
+            {
+                "pt-no-spin": value != null,
+            },
+            className,
+        );
 
         const style: React.CSSProperties = {
             strokeDasharray: `${PATH_LENGTH} ${PATH_LENGTH}`,
@@ -55,21 +60,20 @@ export class Spinner extends React.Component<ISpinnerProps, {}> {
             style,
         } as React.DOMAttributes<SVGPathElement>);
 
-        return this.renderContainer(classes, (
+        return this.renderContainer(
+            classes,
             <svg viewBox={classes.indexOf(Classes.SMALL) >= 0 ? "-15 -15 130 130" : "0 0 100 100"}>
                 <path className="pt-spinner-track" d={SPINNER_TRACK} />
                 {headElement}
-            </svg>
-        ));
+            </svg>,
+        );
     }
 
     // abstract away the container elements so SVGSpinner can do its own thing
     protected renderContainer(classes: string, content: JSX.Element) {
         return (
             <div className={classes}>
-                <div className="pt-spinner-svg-container">
-                    {content}
-                </div>
+                <div className="pt-spinner-svg-container">{content}</div>
             </div>
         );
     }

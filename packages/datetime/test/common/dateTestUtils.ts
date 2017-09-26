@@ -8,11 +8,7 @@ export function toHyphenatedDateString(date: Date) {
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // 0-indexed => 1-indexed
     const day = date.getDate();
-    return [
-        year.toString(),
-        padWithZeroes(month.toString(), 2),
-        padWithZeroes(day.toString(), 2),
-    ].join("-");
+    return [year.toString(), padWithZeroes(month.toString(), 2), padWithZeroes(day.toString(), 2)].join("-");
 }
 
 /**

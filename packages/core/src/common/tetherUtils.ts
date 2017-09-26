@@ -23,7 +23,9 @@ import { Position } from "./position";
 // element. thus, we pass a fake HTML bodyElement to Tether, with a no-op `appendChild` function
 // (the only function the library uses from bodyElement).
 const fakeHtmlElement = ({
-    appendChild : () => { /* No-op */ },
+    appendChild: () => {
+        /* No-op */
+    },
 } as any) as HTMLElement;
 
 export interface ITetherConstraint {
@@ -54,38 +56,38 @@ export function createTetherOptions(
 
 /** @internal */
 export function getTargetAttachment(position: Position) {
-    const attachments: {[p: number]: string} = {
-        [Position.TOP_LEFT]:     "top left",
-        [Position.TOP]:          "top center",
-        [Position.TOP_RIGHT]:    "top right",
-        [Position.RIGHT_TOP]:    "top right",
-        [Position.RIGHT]:        "middle right",
+    const attachments: { [p: number]: string } = {
+        [Position.TOP_LEFT]: "top left",
+        [Position.TOP]: "top center",
+        [Position.TOP_RIGHT]: "top right",
+        [Position.RIGHT_TOP]: "top right",
+        [Position.RIGHT]: "middle right",
         [Position.RIGHT_BOTTOM]: "bottom right",
         [Position.BOTTOM_RIGHT]: "bottom right",
-        [Position.BOTTOM]:       "bottom center",
-        [Position.BOTTOM_LEFT]:  "bottom left",
-        [Position.LEFT_BOTTOM]:  "bottom left",
-        [Position.LEFT]:         "middle left",
-        [Position.LEFT_TOP]:     "top left",
+        [Position.BOTTOM]: "bottom center",
+        [Position.BOTTOM_LEFT]: "bottom left",
+        [Position.LEFT_BOTTOM]: "bottom left",
+        [Position.LEFT]: "middle left",
+        [Position.LEFT_TOP]: "top left",
     };
     return attachments[position];
 }
 
 /** @internal */
 export function getPopoverAttachment(position: Position) {
-    const attachments: {[p: number]: string} = {
-        [Position.TOP_LEFT]:     "bottom left",
-        [Position.TOP]:          "bottom center",
-        [Position.TOP_RIGHT]:    "bottom right",
-        [Position.RIGHT_TOP]:    "top left",
-        [Position.RIGHT]:        "middle left",
+    const attachments: { [p: number]: string } = {
+        [Position.TOP_LEFT]: "bottom left",
+        [Position.TOP]: "bottom center",
+        [Position.TOP_RIGHT]: "bottom right",
+        [Position.RIGHT_TOP]: "top left",
+        [Position.RIGHT]: "middle left",
         [Position.RIGHT_BOTTOM]: "bottom left",
         [Position.BOTTOM_RIGHT]: "top right",
-        [Position.BOTTOM]:       "top center",
-        [Position.BOTTOM_LEFT]:  "top left",
-        [Position.LEFT_BOTTOM]:  "bottom right",
-        [Position.LEFT]:         "middle right",
-        [Position.LEFT_TOP]:     "top right",
+        [Position.BOTTOM]: "top center",
+        [Position.BOTTOM_LEFT]: "top left",
+        [Position.LEFT_BOTTOM]: "bottom right",
+        [Position.LEFT]: "middle right",
+        [Position.LEFT_TOP]: "top right",
     };
     return attachments[position];
 }

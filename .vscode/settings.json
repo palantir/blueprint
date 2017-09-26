@@ -1,3 +1,14 @@
 {
-    "typescript.tsdk": "./node_modules/typescript/lib"
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "files.exclude": {
+        "**/build": true,
+        "**/dist": true,
+        "**/coverage": true,
+        "docs": true
+    },
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "[scss]": {
+        "editor.tabSize": 2
+    }
 }

@@ -21,15 +21,17 @@ import {
     Overlay,
     Utils,
 } from "@blueprintjs/core";
-import {
-    IListItemsProps,
-    IQueryListRendererProps,
-    ISelectItemRendererProps,
-    QueryList,
-} from "../";
+
 import * as Classes from "../../common/classes";
+import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { ISelectItemRendererProps } from "../select/select";
 
 export interface IOmniboxProps<T> extends IListItemsProps<T> {
+    /**
+     * React child to render when query is empty.
+     */
+    initialContent?: React.ReactChild;
+
     /**
      * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
      * this item is active (selected by keyboard arrows) and an `onClick` event handler that
@@ -38,7 +40,7 @@ export interface IOmniboxProps<T> extends IListItemsProps<T> {
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /** React child to render when filtering items returns zero results. */
-    noResults?: string | JSX.Element;
+    noResults?: React.ReactChild;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
@@ -94,29 +96,24 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
     private TypedQueryList = QueryList.ofType<T>();
     private queryList: QueryList<T>;
     private refHandlers = {
-        queryList: (ref: QueryList<T>) => this.queryList = ref,
+        queryList: (ref: QueryList<T>) => (this.queryList = ref),
     };
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const {
-            isOpen,
-            itemRenderer,
-            inputProps,
-            noResults,
-            overlayProps,
-            ...restProps,
-        } = this.props;
+        const { initialContent, isOpen, itemRenderer, inputProps, noResults, overlayProps, ...restProps } = this.props;
 
-        return <this.TypedQueryList
-            {...restProps}
-            activeItem={this.state.activeItem}
-            onActiveItemChange={this.handleActiveItemChange}
-            onItemSelect={this.handleItemSelect}
-            query={this.state.query}
-            ref={this.refHandlers.queryList}
-            renderer={this.renderQueryList}
-        />;
+        return (
+            <this.TypedQueryList
+                {...restProps}
+                activeItem={this.state.activeItem}
+                onActiveItemChange={this.handleActiveItemChange}
+                onItemSelect={this.handleItemSelect}
+                query={this.state.query}
+                ref={this.refHandlers.queryList}
+                renderer={this.renderQueryList}
+            />
+        );
     }
 
     public componentWillReceiveProps(nextProps: IOmniboxProps<T>) {
@@ -131,12 +128,9 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
-        const { query } = this.state;
         const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
-        const handlers = isOpen && query.length > 0
-            ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp }
-            : {};
+        const handlers = isOpen && !this.isQueryEmpty() ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
 
         return (
             <Overlay
@@ -146,10 +140,7 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
                 className={classNames(overlayProps.className, Classes.OMNIBOX_OVERLAY)}
                 onClose={this.handleOverlayClose}
             >
-                <div
-                    className={classNames(listProps.className, Classes.OMNIBOX)}
-                    {...handlers}
-                >
+                <div className={classNames(listProps.className, Classes.OMNIBOX)} {...handlers}>
                     <InputGroup
                         autoFocus={true}
                         className={CoreClasses.LARGE}
@@ -163,47 +154,57 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
                 </div>
             </Overlay>
         );
-    }
+    };
 
     private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
         const { itemRenderer, noResults } = this.props;
         if (filteredItems.length === 0) {
             return noResults;
         }
-        return filteredItems.map((item, index) => itemRenderer({
-            index,
-            item,
-            handleClick: (e) => handleItemSelect(item, e),
-            isActive: item === activeItem,
-        }));
+        return filteredItems.map((item, index) =>
+            itemRenderer({
+                index,
+                item,
+                handleClick: e => handleItemSelect(item, e),
+                isActive: item === activeItem,
+            }),
+        );
     }
 
     private maybeRenderMenu(listProps: IQueryListRendererProps<T>) {
-        if (this.state.query.length > 0) {
-            return (
-                <Menu ulRef={listProps.itemsParentRef}>
-                    {this.renderItems(listProps)}
-                </Menu>
-            );
+        const { initialContent } = this.props;
+        let menuChildren: any;
+
+        if (!this.isQueryEmpty()) {
+            menuChildren = this.renderItems(listProps);
+        } else if (initialContent != null) {
+            menuChildren = initialContent;
         }
+
+        if (menuChildren != null) {
+            return <Menu ulRef={listProps.itemsParentRef}>{menuChildren}</Menu>;
+        }
+
         return undefined;
     }
+
+    private isQueryEmpty = () => this.state.query.length === 0;
 
     private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
-        if (this.state.query.length > 0) {
+        if (!this.isQueryEmpty()) {
             Utils.safeInvoke(this.props.onItemSelect, item, event);
         }
-    }
+    };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         const { inputProps = {} } = this.props;
         this.setState({ query: event.currentTarget.value });
         Utils.safeInvoke(inputProps.onChange, event);
-    }
+    };
 
     private handleOverlayClose = (event: React.SyntheticEvent<HTMLElement>) => {
         Utils.safeInvoke(this.props.onClose, event);
-    }
+    };
 }

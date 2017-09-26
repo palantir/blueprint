@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
@@ -7,7 +6,7 @@
  */
 
 import { assert } from "chai";
-import { Utils } from "../../src";
+import * as Utils from "../../src/common/utils";
 
 describe("Utils", () => {
     it("isFunction", () => {
@@ -55,8 +54,8 @@ describe("Utils", () => {
         const DEFAULT_EPSILON = 0.00001;
         assert.isTrue(Utils.approxEqual(0, DEFAULT_EPSILON));
         assert.isTrue(Utils.approxEqual(-1 * DEFAULT_EPSILON, -2 * DEFAULT_EPSILON));
-        assert.isFalse(Utils.approxEqual(10, 10 + DEFAULT_EPSILON + (DEFAULT_EPSILON / 10)));
-        assert.isFalse(Utils.approxEqual(10, 10 - DEFAULT_EPSILON - (DEFAULT_EPSILON / 10)));
+        assert.isFalse(Utils.approxEqual(10, 10 + DEFAULT_EPSILON + DEFAULT_EPSILON / 10));
+        assert.isFalse(Utils.approxEqual(10, 10 - DEFAULT_EPSILON - DEFAULT_EPSILON / 10));
     });
 
     it("clamp", () => {

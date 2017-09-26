@@ -11,8 +11,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 
-import { Classes, IMenuItemProps, IMenuProps, Menu, MenuDivider, MenuItem, Popover } from "../../src/index";
-import { MenuDividerFactory, MenuFactory, MenuItemFactory } from "../../src/index";
+import { Classes, IMenuItemProps, IMenuProps, Menu, MenuItem, Popover, PopoverInteractionKind } from "../../src/index";
+import { MenuDivider, MenuDividerFactory, MenuFactory, MenuItemFactory } from "../../src/index";
 
 describe("MenuItem", () => {
     it("React renders MenuItem", () => {
@@ -57,7 +57,7 @@ describe("MenuItem", () => {
 
     it("renders children if given children and submenu", () => {
         const wrapper = shallow(
-            <MenuItem iconName="style" text="Style" submenu={[{text: "foo"}]}>
+            <MenuItem iconName="style" text="Style" submenu={[{ text: "foo" }]}>
                 <MenuItem text="one" />
                 <MenuItem text="two" />
             </MenuItem>,
@@ -68,13 +68,17 @@ describe("MenuItem", () => {
 
     it("Clicking MenuItem triggers onClick prop", () => {
         const onClick = sinon.spy();
-        shallow(<MenuItem text="Graph" onClick={onClick} />).find("a").simulate("click");
+        shallow(<MenuItem text="Graph" onClick={onClick} />)
+            .find("a")
+            .simulate("click");
         assert.isTrue(onClick.calledOnce);
     });
 
     it("Clicking disabled MenuItem does not trigger onClick prop", () => {
         const onClick = sinon.spy();
-        shallow(<MenuItem disabled={true} text="Graph" onClick={onClick} />).find("a").simulate("click");
+        shallow(<MenuItem disabled={true} text="Graph" onClick={onClick} />)
+            .find("a")
+            .simulate("click");
         assert.isTrue(onClick.notCalled);
     });
 
@@ -86,7 +90,10 @@ describe("MenuItem", () => {
                 <button className="pt-button" type="button" />
             </Popover>,
         );
-        wrapper.find(MenuItem).find("a").simulate("click");
+        wrapper
+            .find(MenuItem)
+            .find("a")
+            .simulate("click");
         assert.isTrue(handleClose.notCalled);
     });
 
@@ -94,6 +101,32 @@ describe("MenuItem", () => {
         const wrapper = shallow(MenuItemFactory({ iconName: "graph", text: "Object" }));
         assert.lengthOf(wrapper.find(".pt-icon-graph"), 1);
         assert.strictEqual(wrapper.text(), "Object");
+    });
+
+    it("popover can be controlled with popoverProps", () => {
+        // Ensures that popover props are passed to Popover component, except content property
+        const popoverProps = {
+            content: "CUSTOM_CONTENT",
+            inline: false,
+            interactionKind: PopoverInteractionKind.CLICK,
+            popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
+        };
+        const wrapper = shallow(
+            <MenuItem iconName="style" text="Style" popoverProps={popoverProps}>
+                <MenuItem text="one" />
+                <MenuItem text="two" />
+            </MenuItem>,
+        );
+        assert.strictEqual(wrapper.find(Popover).prop("inline"), popoverProps.inline);
+        assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
+        assert.notStrictEqual(
+            wrapper
+                .find(Popover)
+                .prop("popoverClassName")
+                .indexOf(popoverProps.popoverClassName),
+            0,
+        );
+        assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
     });
 
     /**
@@ -115,28 +148,30 @@ describe("MenuItem", () => {
 
         afterEach(() => ReactDOM.unmountComponentAtNode(childContainer));
 
-        it("children can display left", (done) => {
-            menuItem = ReactDOM.render((
+        it("children can display left", done => {
+            menuItem = ReactDOM.render(
                 <MenuItem iconName="style" text="Style">
                     <MenuItem iconName="bold" text="Bold" />
                     <MenuItem iconName="italic" text="Italic" />
                     <MenuItem iconName="underline" text="Underline" />
-                </MenuItem>
-            ), childContainer) as MenuItem;
+                </MenuItem>,
+                childContainer,
+            ) as MenuItem;
             hoverOverTarget(0, () => {
                 assert.isNotNull(childContainer.query(`.${Classes.ALIGN_LEFT}`));
                 done();
             });
         });
 
-        it("useSmartPositioning=false prevents display left behavior", (done) => {
-            menuItem = ReactDOM.render((
+        it("useSmartPositioning=false prevents display left behavior", done => {
+            menuItem = ReactDOM.render(
                 <MenuItem iconName="style" text="Style" useSmartPositioning={false}>
                     <MenuItem iconName="bold" text="Bold" />
                     <MenuItem iconName="italic" text="Italic" />
                     <MenuItem iconName="underline" text="Underline" />
-                </MenuItem>
-            ), childContainer) as MenuItem;
+                </MenuItem>,
+                childContainer,
+            ) as MenuItem;
             hoverOverTarget(0, () => {
                 assert.isNotNull(childContainer.query(`.${Classes.OVERLAY_OPEN}`));
                 assert.isNull(childContainer.query(`.${Classes.ALIGN_LEFT}`));
@@ -144,8 +179,8 @@ describe("MenuItem", () => {
             });
         });
 
-        it("children will continue displaying in the same direction if possible", (done) => {
-            menuItem = ReactDOM.render((
+        it("children will continue displaying in the same direction if possible", done => {
+            menuItem = ReactDOM.render(
                 <MenuItem iconName="style" text="Style">
                     <MenuItem iconName="bold" text="Bold" />
                     <MenuItem iconName="italic" text="Italic" />
@@ -155,8 +190,9 @@ describe("MenuItem", () => {
                         <MenuItem iconName="italic" text="Italic" />
                         <MenuItem iconName="underline" text="Underline" />
                     </MenuItem>
-                </MenuItem>
-            ), childContainer) as MenuItem;
+                </MenuItem>,
+                childContainer,
+            ) as MenuItem;
             hoverOverTarget(0, () => {
                 hoverOverTarget(4, () => {
                     assertClassNameCount(Classes.ALIGN_LEFT, 2);
@@ -165,8 +201,8 @@ describe("MenuItem", () => {
             });
         });
 
-        it("children will flip direction after no more room in the existing direction", (done) => {
-            menuItem = ReactDOM.render((
+        it("children will flip direction after no more room in the existing direction", done => {
+            menuItem = ReactDOM.render(
                 <MenuItem iconName="style" text="Style">
                     <MenuItem iconName="bold" text="Bold" />
                     <MenuItem iconName="italic" text="Italic" />
@@ -181,8 +217,9 @@ describe("MenuItem", () => {
                             <MenuItem iconName="underline" text="Underline" />
                         </MenuItem>
                     </MenuItem>
-                </MenuItem>
-            ), childContainer) as MenuItem;
+                </MenuItem>,
+                childContainer,
+            ) as MenuItem;
             hoverOverTarget(0, () => {
                 hoverOverTarget(4, () => {
                     hoverOverTarget(8, () => {
@@ -194,30 +231,35 @@ describe("MenuItem", () => {
             });
         });
 
-        it("submenu as props can display left", (done) => {
+        it("submenu as props can display left", done => {
             const items: IMenuItemProps[] = [
                 { iconName: "align-left", text: "Align Left" },
                 { iconName: "align-center", text: "Align Center" },
                 { iconName: "align-right", text: "Align Right" },
             ];
-            menuItem = ReactDOM.render((
-                <MenuItem iconName="align-left" text="Alignment" submenu={items} />
-            ), childContainer) as MenuItem;
+            menuItem = ReactDOM.render(
+                <MenuItem iconName="align-left" text="Alignment" submenu={items} />,
+                childContainer,
+            ) as MenuItem;
             hoverOverTarget(0, () => {
                 assert.isNotNull(childContainer.query(`.${Classes.ALIGN_LEFT}`));
                 done();
             });
         });
 
-        it("submenu as props can inherit submenuViewportMargin prop from parent", (done) => {
+        it("submenu as props can inherit submenuViewportMargin prop from parent", done => {
             const items: IMenuItemProps[] = [
                 { iconName: "align-left", text: "Align Left" },
                 { iconName: "align-center", text: "Align Center" },
-                { iconName: "align-right", submenu: [
-                    { iconName: "align-left", text: "Align Left" },
-                    { iconName: "align-center", text: "Align Center" },
-                    { iconName: "align-right", text: "Align Right" },
-                ], text: "Align Right" },
+                {
+                    iconName: "align-right",
+                    submenu: [
+                        { iconName: "align-left", text: "Align Left" },
+                        { iconName: "align-center", text: "Align Center" },
+                        { iconName: "align-right", text: "Align Right" },
+                    ],
+                    text: "Align Right",
+                },
             ];
             menuItem = ReactDOM.render(
                 <MenuItem
@@ -273,19 +315,24 @@ describe("MenuDivider", () => {
 
 describe("Menu", () => {
     it("React renders Menu with children", () => {
-        const menu = shallow(<Menu><MenuItem iconName="graph" text="Graph" /></Menu>);
+        const menu = shallow(
+            <Menu>
+                <MenuItem iconName="graph" text="Graph" />
+            </Menu>,
+        );
         assert.isTrue(menu.hasClass(Classes.MENU));
         assert.lengthOf(menu.find(MenuItem), 1);
     });
 
     it("Factory renders Menu", () => {
-        const menu = shallow(MenuFactory({}, MenuItemFactory({iconName: "layout", text: "Layout"})));
+        const menu = shallow(MenuFactory({}, MenuItemFactory({ iconName: "layout", text: "Layout" })));
         assert.isTrue(menu.hasClass(Classes.MENU));
         assert.lengthOf(menu.find(MenuItem), 1);
     });
 });
 
 function findSubmenu(wrapper: ShallowWrapper<any, any>) {
-    return wrapper.find(Popover).prop("content") as
-        (React.ReactElement<IMenuProps & { children: Array<React.ReactElement<IMenuItemProps>> }>);
+    return wrapper.find(Popover).prop("content") as React.ReactElement<
+        IMenuProps & { children: Array<React.ReactElement<IMenuItemProps>> }
+    >;
 }

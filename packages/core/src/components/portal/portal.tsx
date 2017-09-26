@@ -21,9 +21,9 @@ export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
      */
     containerRef?: (ref: HTMLDivElement) => void;
 
-   /**
-    * Callback invoked when the children of this `Portal` have been added to the DOM.
-    */
+    /**
+     * Callback invoked when the children of this `Portal` have been added to the DOM.
+     */
     onChildrenMount?: () => void;
 }
 

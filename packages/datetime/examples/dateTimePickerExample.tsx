@@ -17,16 +17,18 @@ export class DateTimePickerExample extends BaseExample<{ date: Date }> {
 
     protected renderExample() {
         const timeProps = { precision: TimePickerPrecision.SECOND };
-        return <div className="docs-datetime-example">
-            <DateTimePicker
-                className={Classes.ELEVATION_1}
-                timePickerProps={timeProps}
-                onChange={this.handleDateChange}
-            />
-            <div>
-                <Moment date={this.state.date} format="LLLL" />
+        return (
+            <div className="docs-datetime-example">
+                <DateTimePicker
+                    className={Classes.ELEVATION_1}
+                    timePickerProps={timeProps}
+                    onChange={this.handleDateChange}
+                />
+                <div>
+                    <Moment date={this.state.date} format="LLLL" />
+                </div>
             </div>
-        </div>;
+        );
     }
 
     private handleDateChange = (date: Date) => this.setState({ date });
