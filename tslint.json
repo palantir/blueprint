@@ -35,6 +35,7 @@
     "no-submodule-imports": {
       "options": [
         "documentalist",
+        "lodash",
         "react-dom"
       ]
     },
