@@ -329,7 +329,9 @@ describe("<Tabs2>", () => {
     });
 
     function findTabById(wrapper: ReactWrapper<ITabs2Props, {}>, id: string) {
-        return wrapper.find(TAB).filter({ "data-tab-id": id });
+        // Need this to get the right overload signature
+        // tslint:disable-next-line:no-object-literal-type-assertion
+        return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<{}>);
     }
 
     function assertIndicatorPosition(wrapper: ReactWrapper<ITabs2Props, ITabs2State>, selectedTabId: string) {

@@ -317,7 +317,7 @@ describe("<Table>", () => {
             // RenderMode.BATCH is the default
             const table = mount(
                 <Table numRows={numRows} onCompleteRender={onCompleteRenderSpy}>
-                    <Column renderCell={renderCell} />
+                    <Column renderCell={renderDummyCell} />
                 </Table>,
             );
             expect(onCompleteRenderSpy.callCount).to.equal(1);
