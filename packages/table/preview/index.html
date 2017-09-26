@@ -30,10 +30,27 @@
       right: 0;
     }
 
-    .slow-layout-fill {
+    /**
+     * A simple filling layout that DOES NOT create a layout boundary (due to
+     * `display: inline-block`)
+     */
+    .layout-passthrough-fill {
       display: inline-block;
       width: 100%;
       height: 100%;
+      position: relative;
+    }
+
+    /**
+     * A simple filling layout that DOES create a layout boundary.
+     * See: http://wilsonpage.co.uk/introducing-layout-boundaries/
+     */
+    .layout-boundary {
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
     }
 
     .container {
