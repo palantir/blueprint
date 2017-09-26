@@ -19,6 +19,7 @@ export interface IButtonsExampleState {
     loading?: boolean;
     large?: boolean;
     minimal?: boolean;
+    placeholder?: boolean;
     wiggling?: boolean;
 }
 
@@ -29,6 +30,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         large: false,
         loading: false,
         minimal: false,
+        placeholder: false,
         wiggling: false,
     };
 
@@ -37,6 +39,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
     private handleLoadingChange = handleBooleanChange(loading => this.setState({ loading }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
+    private handlePlaceholderChange = handleBooleanChange(placeholder => this.setState({ placeholder }));
     private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
 
     private wiggleTimeoutId: number;
@@ -49,6 +52,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         const classes = classNames({
             [Classes.LARGE]: this.state.large,
             [Classes.MINIMAL]: this.state.minimal,
+            [Classes.PLACEHOLDER]: this.state.placeholder,
         });
 
         return (
@@ -114,6 +118,12 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     key="minimal"
                     label="Minimal"
                     onChange={this.handleMinimalChange}
+                />,
+                <Switch
+                    checked={this.state.placeholder}
+                    key="placeholder"
+                    label="Placeholder"
+                    onChange={this.handlePlaceholderChange}
                 />,
             ],
             [<IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />],

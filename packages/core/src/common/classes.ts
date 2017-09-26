@@ -24,6 +24,7 @@ export const FIXED = "pt-fixed";
 export const FIXED_TOP = "pt-fixed-top";
 export const VERTICAL = "pt-vertical";
 export const ROUND = "pt-round";
+export const PLACEHOLDER = "pt-placeholder";
 
 // text utilities
 export const TEXT_MUTED = "pt-text-muted";

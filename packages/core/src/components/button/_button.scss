@@ -16,6 +16,7 @@ Markup:
 
 :disabled - Disabled state
 .pt-disabled - Disabled appearance
+.pt-placeholder - Placeholder appearance
 .pt-intent-primary - Primary intent
 .pt-intent-success - Success intent
 .pt-intent-warning - Warning intent
@@ -171,6 +172,7 @@ Styleguide pt-button
   <button type="button" class="pt-button pt-minimal pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
 
   .pt-disabled - Disabled appearance
+  .pt-placeholder - Placeholder appearance
   .pt-intent-primary - Primary intent
   .pt-intent-success - Success intent
   .pt-intent-warning - Warning intent

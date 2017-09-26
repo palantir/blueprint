@@ -64,19 +64,23 @@ $button-gradient: linear-gradient(to bottom, rgba($white, 0.8), rgba($white, 0))
 $button-intent-gradient: linear-gradient(to bottom, rgba($white, 0.1), rgba($white, 0)) !default;
 $dark-button-gradient: linear-gradient(to bottom, rgba($white, 0.05), rgba($white, 0)) !default;
 
+$button-color-placeholder: $pt-text-color-muted !default;
 $button-color-disabled: $pt-text-color-disabled !default;
 $button-background-color: $light-gray5 !default;
 $button-background-color-hover: $light-gray4 !default;
 $button-background-color-active: $light-gray2 !default;
 $button-background-color-disabled: rgba($light-gray1, 0.5) !default;
 $button-background-color-active-disabled: rgba($light-gray1, 0.7) !default;
+$button-intent-color-placeholder: rgba($white, 0.7);
 $button-intent-color-disabled: rgba($white, 0.6);
+$dark-button-color-placeholder: $pt-dark-text-color-muted !default;
 $dark-button-color-disabled: $pt-dark-text-color-disabled !default;
 $dark-button-background-color: $dark-gray5 !default;
 $dark-button-background-color-hover: $dark-gray4 !default;
 $dark-button-background-color-active: $dark-gray2 !default;
 $dark-button-background-color-disabled: rgba($dark-gray5, 0.5) !default;
 $dark-button-background-color-active-disabled: rgba($dark-gray5, 0.7) !default;
+$dark-button-intent-color-placeholder: rgba($white, 0.6);
 $dark-button-intent-color-disabled: rgba($white, 0.3);
 
 $minimal-button-divider-width: 1px !default;
@@ -127,6 +131,10 @@ $button-intents: (
     @include pt-button-active();
   }
 
+  &.pt-placeholder {
+    @include pt-button-placeholder();
+  }
+
   &:disabled,
   &.pt-disabled {
     @include pt-button-disabled();
@@ -143,6 +151,10 @@ $button-intents: (
   box-shadow: $button-box-shadow-active;
   background-color: $button-background-color-active;
   background-image: none;
+}
+
+@mixin pt-button-placeholder() {
+  color: $button-color-placeholder;
 }
 
 @mixin pt-button-disabled() {
@@ -182,10 +194,18 @@ $button-intents: (
     background-image: none;
   }
 
+  &.pt-placeholder {
+    @include pt-button-intent-placeholder();
+  }
+
   &:disabled,
   &.pt-disabled {
     @include pt-button-intent-disabled($default-color);
   }
+}
+
+@mixin pt-button-intent-placeholder() {
+  color: $button-intent-color-placeholder;
 }
 
 @mixin pt-button-intent-disabled($default-color) {
@@ -217,6 +237,10 @@ $button-intents: (
     @include pt-dark-button-active();
   }
 
+  &.pt-placeholder {
+    @include pt-dark-button-placeholder();
+  }
+
   &:disabled,
   &.pt-disabled {
     @include pt-dark-button-disabled();
@@ -237,6 +261,10 @@ $button-intents: (
   box-shadow: $dark-button-box-shadow-active;
   background-color: $dark-button-background-color-active;
   background-image: none;
+}
+
+@mixin pt-dark-button-placeholder() {
+  color: $dark-button-color-placeholder;
 }
 
 @mixin pt-dark-button-disabled() {
@@ -262,10 +290,18 @@ $button-intents: (
     box-shadow: $dark-button-intent-box-shadow-active;
   }
 
+  &.pt-placeholder {
+    @include pt-dark-button-intent-placeholder();
+  }
+
   &:disabled,
   &.pt-disabled {
     @include pt-dark-button-intent-disabled();
   }
+}
+
+@mixin pt-dark-button-intent-placeholder() {
+  color: $dark-button-intent-color-placeholder;
 }
 
 @mixin pt-dark-button-intent-disabled() {
@@ -290,6 +326,10 @@ $button-intents: (
     box-shadow: none;
     background: $minimal-button-background-color-active;
     color: $pt-text-color;
+  }
+
+  &.pt-placeholder {
+    color: $pt-text-color-muted;
   }
 
   &:disabled,
@@ -338,6 +378,10 @@ $button-intents: (
     color: $pt-dark-text-color;
   }
 
+  &.pt-placeholder {
+    color: $pt-dark-text-color-muted;
+  }
+
   &:disabled,
   &:disabled:hover,
   &.pt-disabled,
@@ -370,6 +414,10 @@ $button-intents: (
     color: $text-color;
   }
 
+  &.pt-placeholder {
+    color: rgba($text-color, 0.7);
+  }
+
   &:disabled,
   &.pt-disabled {
     background: none;
@@ -392,6 +440,10 @@ $button-intents: (
     &.pt-active {
       background: rgba($intent-color, 0.3);
       color: $dark-text-color;
+    }
+
+    &.pt-placeholder {
+      color: rgba($dark-text-color, 0.7);
     }
 
     &:disabled,
