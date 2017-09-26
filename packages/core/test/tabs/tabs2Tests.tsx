@@ -329,7 +329,7 @@ describe("<Tabs2>", () => {
     });
 
     function findTabById(wrapper: ReactWrapper<ITabs2Props, {}>, id: string) {
-        return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<{}>);
+        return wrapper.find(TAB).filter({ "data-tab-id": id });
     }
 
     function assertIndicatorPosition(wrapper: ReactWrapper<ITabs2Props, ITabs2State>, selectedTabId: string) {
