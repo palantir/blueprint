@@ -28,8 +28,8 @@
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.5.2.tgz#c11cd2817d3a401b7ba0f5a420f35c56139b1c1e"
 
 "@types/cheerio@*":
-  version "0.22.2"
-  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.2.tgz#539625874bc856086ad491c2fdc9b10c05ae308e"
+  version "0.22.1"
+  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.1.tgz#740c4cd8c4d3f3074f83b9ab62e711eac2c764ce"
 
 "@types/classnames@0.0.31":
   version "0.0.31"
@@ -61,13 +61,7 @@
     "@types/react" "*"
     "@types/react-addons-transition-group" "*"
 
-"@types/react-addons-transition-group@*":
-  version "15.0.1"
-  resolved "https://registry.yarnpkg.com/@types/react-addons-transition-group/-/react-addons-transition-group-15.0.1.tgz#0178de43e2b4ccfea8d2f7dfed252dcb339ff14a"
-  dependencies:
-    "@types/react" "*"
-
-"@types/react-addons-transition-group@0.14.17":
+"@types/react-addons-transition-group@*", "@types/react-addons-transition-group@0.14.17":
   version "0.14.17"
   resolved "https://registry.yarnpkg.com/@types/react-addons-transition-group/-/react-addons-transition-group-0.14.17.tgz#78b3980b7dc80e4dc442db79b3e58f4295d8f870"
   dependencies:
@@ -79,11 +73,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
-  version "16.0.7"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.7.tgz#f85b6c33c988a1631e2f32fedae71ec6d9718a0d"
-
-"@types/react@0.14.40":
+"@types/react@*", "@types/react@0.14.40":
   version "0.14.40"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-0.14.40.tgz#49090d68fe64394c98ee33337fcd179079380807"
 
