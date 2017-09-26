@@ -353,7 +353,6 @@
 	    AbstractComponent.prototype.validateProps = function (_) {
 	        // implement in subclass
 	    };
-	    ;
 	    return AbstractComponent;
 	}(React.Component));
 	exports.AbstractComponent = AbstractComponent;
@@ -4984,8 +4983,6 @@
 	    return throttledFunc;
 	}
 	exports.throttleEvent = throttleEvent;
-	;
-	;
 	/**
 	 * Throttle a callback by wrapping it in a `requestAnimationFrame` call. Returns the throttled
 	 * function.
@@ -5071,8 +5068,8 @@
 	exports.NUMERIC_INPUT_STEP_SIZE_NULL = ns + " <NumericInput> requires stepSize to be defined.";
 	exports.POPOVER_REQUIRES_TARGET = ns + " <Popover> requires target prop or at least one child element.";
 	exports.POPOVER_MODAL_INTERACTION = ns + " <Popover isModal={true}> requires interactionKind={PopoverInteractionKind.CLICK}.";
-	exports.POPOVER_WARN_TOO_MANY_CHILDREN = ns + " <Popover> supports one or two children; additional children are ignored."
-	    + " First child is the target, second child is the content. You may instead supply these two as props.";
+	exports.POPOVER_WARN_TOO_MANY_CHILDREN = ns + " <Popover> supports one or two children; additional children are ignored." +
+	    " First child is the target, second child is the content. You may instead supply these two as props.";
 	exports.POPOVER_WARN_DOUBLE_CONTENT = ns + " <Popover> with two children ignores content prop; use either prop or children.";
 	exports.POPOVER_WARN_DOUBLE_TARGET = ns + " <Popover> with children ignores target prop; use either prop or children.";
 	exports.POPOVER_WARN_EMPTY_CONTENT = ns + " Disabling <Popover> with empty/whitespace content...";
@@ -5087,8 +5084,8 @@
 	exports.RANGESLIDER_NULL_VALUE = ns + " <RangeSlider> value prop must be an array of two non-null numbers.";
 	exports.TABS_FIRST_CHILD = ns + " First child of <Tabs> component must be a <TabList>";
 	exports.TABS_MISMATCH = ns + " Number of <Tab> components must equal number of <TabPanel> components";
-	exports.TABS_WARN_DEPRECATED = deprec + " <Tabs> is deprecated since v1.11.0; consider upgrading to <Tabs2>."
-	    + " https://blueprintjs.com/#components.tabs.js";
+	exports.TABS_WARN_DEPRECATED = deprec + " <Tabs> is deprecated since v1.11.0; consider upgrading to <Tabs2>." +
+	    " https://blueprintjs.com/#components.tabs.js";
 	exports.TOASTER_WARN_INLINE = ns + " Toaster.create() ignores inline prop as it always creates a new element.";
 	exports.TOASTER_WARN_LEFT_RIGHT = ns + " Toaster does not support LEFT or RIGHT positions.";
 	exports.DIALOG_WARN_NO_HEADER_ICON = ns + " <Dialog> iconName is ignored if title is omitted.";
@@ -5258,14 +5255,22 @@
 	})(Position = exports.Position || (exports.Position = {}));
 	function isPositionHorizontal(position) {
 	    /* istanbul ignore next */
-	    return position === Position.TOP || position === Position.TOP_LEFT || position === Position.TOP_RIGHT
-	        || position === Position.BOTTOM || position === Position.BOTTOM_LEFT || position === Position.BOTTOM_RIGHT;
+	    return (position === Position.TOP ||
+	        position === Position.TOP_LEFT ||
+	        position === Position.TOP_RIGHT ||
+	        position === Position.BOTTOM ||
+	        position === Position.BOTTOM_LEFT ||
+	        position === Position.BOTTOM_RIGHT);
 	}
 	exports.isPositionHorizontal = isPositionHorizontal;
 	function isPositionVertical(position) {
 	    /* istanbul ignore next */
-	    return position === Position.LEFT || position === Position.LEFT_TOP || position === Position.LEFT_BOTTOM
-	        || position === Position.RIGHT || position === Position.RIGHT_TOP || position === Position.RIGHT_BOTTOM;
+	    return (position === Position.LEFT ||
+	        position === Position.LEFT_TOP ||
+	        position === Position.LEFT_BOTTOM ||
+	        position === Position.RIGHT ||
+	        position === Position.RIGHT_TOP ||
+	        position === Position.RIGHT_BOTTOM);
 	}
 	exports.isPositionVertical = isPositionVertical;
 
@@ -5348,7 +5353,9 @@
 	// element. thus, we pass a fake HTML bodyElement to Tether, with a no-op `appendChild` function
 	// (the only function the library uses from bodyElement).
 	var fakeHtmlElement = {
-	    appendChild: function () { },
+	    appendChild: function () {
+	        /* No-op */
+	    },
 	};
 	/** @internal */
 	function createTetherOptions(element, target, position, tetherOptions) {
@@ -6502,6 +6509,7 @@
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
 	if (typeof window !== "undefined" && typeof document !== "undefined") {
+	    // we're in browser
 	    // tslint:disable-next-line:no-var-requires
 	    __webpack_require__(72); // only import actual dom4 if we're in the browser (not server-compatible)
 	    // we'll still need dom4 types for the TypeScript to compile, these are included in package.json
@@ -7562,9 +7570,7 @@
 	var utils_1 = __webpack_require__(60);
 	var popover_1 = __webpack_require__(220);
 	var TETHER_OPTIONS = {
-	    constraints: [
-	        { attachment: "together", pin: true, to: "window" },
-	    ],
+	    constraints: [{ attachment: "together", pin: true, to: "window" }],
 	};
 	var TRANSITION_DURATION = 100;
 	var ContextMenu = (function (_super) {
@@ -25179,10 +25185,10 @@
 	        _this.handleMouseEnter = function (e) {
 	            // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
 	            // trigger the mouse leave event, as hovering over the popover shouldn't count.
-	            if (_this.props.inline
-	                && _this.isElementInPopover(e.target)
-	                && _this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
-	                && !_this.props.openOnTargetFocus) {
+	            if (_this.props.inline &&
+	                _this.isElementInPopover(e.target) &&
+	                _this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY &&
+	                !_this.props.openOnTargetFocus) {
 	                _this.handleMouseLeave(e);
 	            }
 	            else if (!_this.props.isDisabled) {
@@ -25205,8 +25211,7 @@
 	        _this.handleOverlayClose = function (e) {
 	            var eventTarget = e.target;
 	            // if click was in target, target event listener will handle things, so don't close
-	            if (!Utils.elementIsOrContains(_this.targetElement, eventTarget)
-	                || e.nativeEvent instanceof KeyboardEvent) {
+	            if (!Utils.elementIsOrContains(_this.targetElement, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
 	                _this.setOpenState(false, e);
 	            }
 	        };
@@ -25259,10 +25264,10 @@
 	        var targetTabIndex = this.props.openOnTargetFocus && this.isHoverInteractionKind() ? 0 : undefined;
 	        var target = React.cloneElement(children.target, 
 	        // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-	        (isOpen && children.target.type === tooltip_1.Tooltip)
+	        isOpen && children.target.type === tooltip_1.Tooltip
 	            ? { isDisabled: true, tabIndex: targetTabIndex }
 	            : { tabIndex: targetTabIndex });
-	        var isContentEmpty = (children.content == null);
+	        var isContentEmpty = children.content == null;
 	        if (isContentEmpty && !this.props.isDisabled && isOpen !== false && !Utils.isNodeEnv("production")) {
 	            console.warn(Errors.POPOVER_WARN_EMPTY_CONTENT);
 	        }
@@ -25350,8 +25355,8 @@
 	            // always check popover clicks for dismiss class
 	            onClick: this.handlePopoverClick,
 	        };
-	        if ((interactionKind === PopoverInteractionKind.HOVER)
-	            || (inline && interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY)) {
+	        if (interactionKind === PopoverInteractionKind.HOVER ||
+	            (inline && interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY)) {
 	            popoverHandlers.onMouseEnter = this.handleMouseEnter;
 	            popoverHandlers.onMouseLeave = this.handleMouseLeave;
 	        }
@@ -25407,10 +25412,8 @@
 	            var arrow = this.popoverElement.getElementsByClassName(Classes.POPOVER_ARROW)[0];
 	            var centerWidth = (this.state.targetWidth + arrow.clientWidth) / 2;
 	            var centerHeight = (this.state.targetHeight + arrow.clientHeight) / 2;
-	            var ignoreWidth = centerWidth > this.popoverElement.clientWidth
-	                && PosUtils.isPositionHorizontal(this.props.position);
-	            var ignoreHeight = centerHeight > this.popoverElement.clientHeight
-	                && PosUtils.isPositionVertical(this.props.position);
+	            var ignoreWidth = centerWidth > this.popoverElement.clientWidth && PosUtils.isPositionHorizontal(this.props.position);
+	            var ignoreHeight = centerHeight > this.popoverElement.clientHeight && PosUtils.isPositionVertical(this.props.position);
 	            if (!this.state.ignoreTargetDimensions && (ignoreWidth || ignoreHeight)) {
 	                this.setState({ ignoreTargetDimensions: true });
 	            }
@@ -25428,7 +25431,7 @@
 	            // NOTE: use findDOMNode(this) directly because this.targetElement may not exist yet
 	            var target = react_dom_1.findDOMNode(this).childNodes[0];
 	            // constraints is deprecated but must still be supported through tetherOptions until v2.0
-	            var options = (constraints == null && !useSmartPositioning)
+	            var options = constraints == null && !useSmartPositioning
 	                ? tetherOptions
 	                : tslib_1.__assign({}, tetherOptions, { constraints: useSmartPositioning ? [SMART_POSITIONING] : constraints });
 	            var finalTetherOptions = TetherUtils.createTetherOptions(this.popoverElement, target, position, options);
@@ -25476,8 +25479,8 @@
 	        return this.popoverElement != null && this.popoverElement.contains(element);
 	    };
 	    Popover.prototype.isHoverInteractionKind = function () {
-	        return this.props.interactionKind === PopoverInteractionKind.HOVER
-	            || this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
+	        return (this.props.interactionKind === PopoverInteractionKind.HOVER ||
+	            this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY);
 	    };
 	    return Popover;
 	}(abstractComponent_1.AbstractComponent));
@@ -27496,7 +27499,7 @@
 	    function Overlay(props, context) {
 	        var _this = _super.call(this, props, context) || this;
 	        _this.refHandlers = {
-	            container: function (ref) { return _this.containerElement = ref; },
+	            container: function (ref) { return (_this.containerElement = ref); },
 	        };
 	        _this.handleBackdropMouseDown = function (e) {
 	            var _a = _this.props, backdropProps = _a.backdropProps, canOutsideClickClose = _a.canOutsideClickClose, enforceFocus = _a.enforceFocus, onClose = _a.onClose;
@@ -27512,8 +27515,7 @@
 	        _this.handleDocumentClick = function (e) {
 	            var _a = _this.props, isOpen = _a.isOpen, onClose = _a.onClose;
 	            var eventTarget = e.target;
-	            var isClickInOverlay = _this.containerElement != null
-	                && _this.containerElement.contains(eventTarget);
+	            var isClickInOverlay = _this.containerElement != null && _this.containerElement.contains(eventTarget);
 	            if (isOpen && _this.props.canOutsideClickClose && !isClickInOverlay) {
 	                // casting to any because this is a native event
 	                utils_1.safeInvoke(onClose, e);
@@ -27528,9 +27530,9 @@
 	            }
 	        };
 	        _this.handleDocumentFocus = function (e) {
-	            if (_this.props.enforceFocus
-	                && _this.containerElement != null
-	                && !_this.containerElement.contains(e.target)) {
+	            if (_this.props.enforceFocus &&
+	                _this.containerElement != null &&
+	                !_this.containerElement.contains(e.target)) {
 	                // prevent default focus behavior (sometimes auto-scrolls the page)
 	                e.preventDefault();
 	                e.stopImmediatePropagation();
@@ -30098,8 +30100,8 @@
 	                this.maybeRenderSecondaryAction())));
 	    };
 	    Alert.prototype.validateProps = function (props) {
-	        if (props.cancelButtonText != null && props.onCancel == null ||
-	            props.cancelButtonText == null && props.onCancel != null) {
+	        if ((props.cancelButtonText != null && props.onCancel == null) ||
+	            (props.cancelButtonText == null && props.onCancel != null)) {
 	            console.warn(errors_1.ALERT_WARN_CANCEL_PROPS);
 	        }
 	    };
@@ -30313,13 +30315,15 @@
 	    PureRender
 	], Icon);
 	exports.Icon = Icon;
-	;
 	// NOTE: not using a type alias here so the full union will appear in the interface docs
 	function getSizeClass(size) {
 	    switch (size) {
-	        case Icon.SIZE_STANDARD: return common_1.Classes.ICON_STANDARD;
-	        case Icon.SIZE_LARGE: return common_1.Classes.ICON_LARGE;
-	        default: return common_1.Classes.ICON;
+	        case Icon.SIZE_STANDARD:
+	            return common_1.Classes.ICON_STANDARD;
+	        case Icon.SIZE_LARGE:
+	            return common_1.Classes.ICON_LARGE;
+	        default:
+	            return common_1.Classes.ICON;
 	    }
 	}
 	var Icon_1;
@@ -30374,9 +30378,9 @@
 	            pathLength: PATH_LENGTH,
 	            style: style,
 	        });
-	        return this.renderContainer(classes, (React.createElement("svg", { viewBox: classes.indexOf(Classes.SMALL) >= 0 ? "-15 -15 130 130" : "0 0 100 100" },
+	        return this.renderContainer(classes, React.createElement("svg", { viewBox: classes.indexOf(Classes.SMALL) >= 0 ? "-15 -15 130 130" : "0 0 100 100" },
 	            React.createElement("path", { className: "pt-spinner-track", d: SPINNER_TRACK }),
-	            headElement)));
+	            headElement));
 	    };
 	    // abstract away the container elements so SVGSpinner can do its own thing
 	    Spinner.prototype.renderContainer = function (classes, content) {
@@ -30620,7 +30624,7 @@
 	        return React.createElement(this.props.component, {
 	            className: classNames(Classes.COLLAPSE, this.props.className),
 	            style: containerStyle,
-	        }, (React.createElement("div", { className: "pt-collapse-body", ref: this.contentsRefHandler, style: contentsStyle }, showContents ? this.props.children : null)));
+	        }, React.createElement("div", { className: "pt-collapse-body", ref: this.contentsRefHandler, style: contentsStyle }, showContents ? this.props.children : null));
 	    };
 	    Collapse.prototype.componentDidMount = function () {
 	        this.forceUpdate();
@@ -30634,10 +30638,12 @@
 	    Collapse.prototype.componentDidUpdate = function () {
 	        var _this = this;
 	        if (this.state.animationState === AnimationStates.CLOSING_START) {
-	            this.setTimeout(function () { return _this.setState({
-	                animationState: AnimationStates.CLOSING_END,
-	                height: "0px",
-	            }); });
+	            this.setTimeout(function () {
+	                return _this.setState({
+	                    animationState: AnimationStates.CLOSING_END,
+	                    height: "0px",
+	                });
+	            });
 	            this.setTimeout(function () { return _this.onDelayedStateChange(); }, this.props.transitionDuration);
 	        }
 	    };
@@ -30703,7 +30709,7 @@
 	        var childrenLength = React.Children.count(this.props.children);
 	        var _a = this.partitionChildren(), visibleChildren = _a[0], collapsedChildren = _a[1];
 	        var visibleItems = visibleChildren.map(function (child, index) {
-	            var absoluteIndex = (collapseFrom === CollapseFrom.START ? childrenLength - 1 - index : index);
+	            var absoluteIndex = collapseFrom === CollapseFrom.START ? childrenLength - 1 - index : index;
 	            return (React.createElement("li", { className: _this.props.visibleItemClassName, key: absoluteIndex }, _this.props.renderVisibleItem(child.props, absoluteIndex)));
 	        });
 	        if (collapseFrom === CollapseFrom.START) {
@@ -30713,7 +30719,7 @@
 	        // construct dropdown menu for collapsed items
 	        var collapsedPopover;
 	        if (collapsedChildren.length > 0) {
-	            var position = (collapseFrom === CollapseFrom.END ? position_1.Position.BOTTOM_RIGHT : position_1.Position.BOTTOM_LEFT);
+	            var position = collapseFrom === CollapseFrom.END ? position_1.Position.BOTTOM_RIGHT : position_1.Position.BOTTOM_LEFT;
 	            collapsedPopover = (React.createElement("li", { className: this.props.visibleItemClassName },
 	                React.createElement(popover_1.Popover, tslib_1.__assign({ content: React.createElement(menu_1.Menu, null, collapsedChildren), position: position }, this.props.dropdownProps), this.props.dropdownTarget)));
 	        }
@@ -30738,10 +30744,7 @@
 	            childrenArray.reverse();
 	        }
 	        var visibleItemCount = this.props.visibleItemCount;
-	        return [
-	            childrenArray.slice(0, visibleItemCount),
-	            childrenArray.slice(visibleItemCount),
-	        ];
+	        return [childrenArray.slice(0, visibleItemCount), childrenArray.slice(visibleItemCount)];
 	    };
 	    return CollapsibleList;
 	}(React.Component));
@@ -30828,7 +30831,7 @@
 	        _this.state = {
 	            alignLeft: false,
 	        };
-	        _this.liRefHandler = function (r) { return _this.liElement = r; };
+	        _this.liRefHandler = function (r) { return (_this.liElement = r); };
 	        _this.measureSubmenu = function (el) {
 	            if (el != null) {
 	                var submenuRect = ReactDOM.findDOMNode(el).getBoundingClientRect();
@@ -30843,9 +30846,9 @@
 	                }
 	                var _a = _this.props.submenuViewportMargin.left, left = _a === void 0 ? 0 : _a;
 	                var _b = _this.props.submenuViewportMargin.right, right = _b === void 0 ? 0 : _b;
-	                if (typeof document !== "undefined"
-	                    && typeof document.documentElement !== "undefined"
-	                    && Number(document.documentElement.clientWidth)) {
+	                if (typeof document !== "undefined" &&
+	                    typeof document.documentElement !== "undefined" &&
+	                    Number(document.documentElement.clientWidth)) {
 	                    // we're in a browser context and the clientWidth is available,
 	                    // use it to set calculate 'right'
 	                    right = document.documentElement.clientWidth - right;
@@ -30853,7 +30856,7 @@
 	                // uses context to prioritize the previous positioning
 	                var alignLeft = _this.context.alignLeft || false;
 	                if (alignLeft) {
-	                    if ((submenuLeft - adjustmentWidth) <= left) {
+	                    if (submenuLeft - adjustmentWidth <= left) {
 	                        alignLeft = false;
 	                    }
 	                }
@@ -30906,7 +30909,7 @@
 	        return _this;
 	    }
 	    MenuItem.prototype.render = function () {
-	        var _a = this.props, children = _a.children, disabled = _a.disabled, label = _a.label, submenu = _a.submenu;
+	        var _a = this.props, children = _a.children, disabled = _a.disabled, label = _a.label, submenu = _a.submenu, popoverProps = _a.popoverProps;
 	        var hasSubmenu = children != null || submenu != null;
 	        var liClasses = classNames((_b = {},
 	            _b[Classes.MENU_SUBMENU] = hasSubmenu,
@@ -30924,12 +30927,12 @@
 	            labelElement,
 	            this.props.text));
 	        if (hasSubmenu) {
-	            var measureSubmenu = (this.props.useSmartPositioning) ? this.measureSubmenu : null;
+	            var measureSubmenu = this.props.useSmartPositioning ? this.measureSubmenu : null;
 	            var submenuElement = React.createElement(menu_1.Menu, { ref: measureSubmenu }, this.renderChildren());
-	            var popoverClasses = classNames((_d = {},
+	            var popoverClasses = classNames(Classes.MINIMAL, Classes.MENU_SUBMENU, popoverProps.popoverClassName, (_d = {},
 	                _d[Classes.ALIGN_LEFT] = this.state.alignLeft,
 	                _d));
-	            content = (React.createElement(popover_1.Popover, { content: submenuElement, isDisabled: disabled, enforceFocus: false, hoverCloseDelay: 0, inline: true, interactionKind: popover_1.PopoverInteractionKind.HOVER, position: this.state.alignLeft ? position_1.Position.LEFT_TOP : position_1.Position.RIGHT_TOP, popoverClassName: classNames(Classes.MINIMAL, Classes.MENU_SUBMENU, popoverClasses), useSmartArrowPositioning: false }, content));
+	            content = (React.createElement(popover_1.Popover, tslib_1.__assign({ isDisabled: disabled, enforceFocus: false, hoverCloseDelay: 0, inline: true, interactionKind: popover_1.PopoverInteractionKind.HOVER, position: this.state.alignLeft ? position_1.Position.LEFT_TOP : position_1.Position.RIGHT_TOP, useSmartArrowPositioning: false }, popoverProps, { content: submenuElement, popoverClassName: popoverClasses }), content));
 	        }
 	        return (React.createElement("li", { className: liClasses, ref: this.liRefHandler }, content));
 	        var _b, _c, _d;
@@ -30946,6 +30949,7 @@
 	}(abstractComponent_1.AbstractComponent));
 	MenuItem.defaultProps = {
 	    disabled: false,
+	    popoverProps: {},
 	    shouldDismissPopover: true,
 	    submenuViewportMargin: {},
 	    text: "",
@@ -31015,7 +31019,6 @@
 	    };
 	}
 	exports.ContextMenuTarget = ContextMenuTarget;
-	;
 
 	//# sourceMappingURL=contextMenuTarget.js.map
 
@@ -31117,7 +31120,7 @@
 	                }
 	            }
 	        };
-	        var value = (props.value == null) ? props.defaultValue : props.value;
+	        var value = props.value == null ? props.defaultValue : props.value;
 	        _this.state = {
 	            inputHeight: 0,
 	            inputWidth: 0,
@@ -31129,8 +31132,8 @@
 	    }
 	    EditableText.prototype.render = function () {
 	        var _a = this.props, disabled = _a.disabled, multiline = _a.multiline;
-	        var value = (this.props.value == null ? this.state.value : this.props.value);
-	        var hasValue = (value != null && value !== "");
+	        var value = this.props.value == null ? this.state.value : this.props.value;
+	        var hasValue = value != null && value !== "";
 	        var classes = classNames(Classes.EDITABLE_TEXT, Classes.intentClass(this.props.intent), (_b = {},
 	            _b[Classes.DISABLED] = disabled,
 	            _b["pt-editable-editing"] = this.state.isEditing,
@@ -31233,7 +31236,7 @@
 	            });
 	            // synchronizes the ::before pseudo-element's height while editing for Chrome 53
 	            if (multiline && this.state.isEditing) {
-	                this.setTimeout(function () { return parentElement_1.style.height = scrollHeight_1 + "px"; });
+	                this.setTimeout(function () { return (parentElement_1.style.height = scrollHeight_1 + "px"); });
 	            }
 	        }
 	    };
@@ -31326,7 +31329,7 @@
 	var userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
 	var browser = {
 	    isEdge: !!userAgent.match(/Edge/),
-	    isInternetExplorer: (!!userAgent.match(/Trident/) || !!userAgent.match(/rv:11/)),
+	    isInternetExplorer: !!userAgent.match(/Trident/) || !!userAgent.match(/rv:11/),
 	    isWebkit: !!userAgent.match(/AppleWebKit/),
 	};
 	exports.Browser = {
@@ -31482,7 +31485,7 @@
 	            rightElementWidth: 30,
 	        };
 	        _this.refHandlers = {
-	            rightElement: function (ref) { return _this.rightElement = ref; },
+	            rightElement: function (ref) { return (_this.rightElement = ref); },
 	        };
 	        return _this;
 	    }
@@ -31509,7 +31512,7 @@
 	        if (rightElement == null) {
 	            return undefined;
 	        }
-	        return React.createElement("span", { className: "pt-input-action", ref: this.refHandlers.rightElement }, rightElement);
+	        return (React.createElement("span", { className: "pt-input-action", ref: this.refHandlers.rightElement }, rightElement));
 	    };
 	    InputGroup.prototype.updateInputWidth = function () {
 	        if (this.rightElement != null) {
@@ -31694,7 +31697,7 @@
 	        var didMinChange = nextProps.min !== this.props.min;
 	        var didMaxChange = nextProps.max !== this.props.max;
 	        var didBoundsChange = didMinChange || didMaxChange;
-	        var sanitizedValue = (value !== NumericInput_1.VALUE_EMPTY)
+	        var sanitizedValue = value !== NumericInput_1.VALUE_EMPTY
 	            ? this.getSanitizedValue(value, /* delta */ 0, nextProps.min, nextProps.max)
 	            : NumericInput_1.VALUE_EMPTY;
 	        var stepMaxPrecision = this.getStepMaxPrecision(nextProps);
@@ -31732,7 +31735,7 @@
 	            // text field with squared border-radii on the left side, causing it
 	            // to look weird. This problem goes away if we simply don't nest within
 	            // a control group.
-	            return (React.createElement("div", { className: className }, inputGroup));
+	            return React.createElement("div", { className: className }, inputGroup);
 	        }
 	        else {
 	            var incrementButton = this.renderButton(NumericInput_1.INCREMENT_KEY, NumericInput_1.INCREMENT_ICON_NAME, this.handleIncrementButtonClick);
@@ -31740,13 +31743,11 @@
 	            var buttonGroup = (React.createElement("div", { key: "button-group", className: classNames(common_1.Classes.BUTTON_GROUP, common_1.Classes.VERTICAL, common_1.Classes.FIXED) },
 	                incrementButton,
 	                decrementButton));
-	            var inputElems = (buttonPosition === common_1.Position.LEFT)
-	                ? [buttonGroup, inputGroup]
-	                : [inputGroup, buttonGroup];
+	            var inputElems = buttonPosition === common_1.Position.LEFT ? [buttonGroup, inputGroup] : [inputGroup, buttonGroup];
 	            var classes = classNames(common_1.Classes.NUMERIC_INPUT, common_1.Classes.CONTROL_GROUP, (_c = {},
 	                _c[common_1.Classes.LARGE] = large,
 	                _c), className);
-	            return (React.createElement("div", { className: classes }, inputElems));
+	            return React.createElement("div", { className: classes }, inputElems);
 	        }
 	        var _b, _c;
 	    };
@@ -31827,13 +31828,13 @@
 	        var nextValue = this.toMaxPrecision(parseFloat(value) + delta);
 	        // defaultProps won't work if the user passes in null, so just default
 	        // to +/- infinity here instead, as a catch-all.
-	        var adjustedMin = (min != null) ? min : -Infinity;
-	        var adjustedMax = (max != null) ? max : Infinity;
+	        var adjustedMin = min != null ? min : -Infinity;
+	        var adjustedMax = max != null ? max : Infinity;
 	        nextValue = common_1.Utils.clamp(nextValue, adjustedMin, adjustedMax);
 	        return nextValue.toString();
 	    };
 	    NumericInput.prototype.getValueOrEmptyValue = function (value) {
-	        return (value != null) ? value.toString() : NumericInput_1.VALUE_EMPTY;
+	        return value != null ? value.toString() : NumericInput_1.VALUE_EMPTY;
 	    };
 	    NumericInput.prototype.isValueNumeric = function (value) {
 	        // checking if a string is numeric in Typescript is a big pain, because
@@ -31842,7 +31843,7 @@
 	        // parsed numeric value from the string representation of the value. we
 	        // need to cast the value to the `any` type to allow this operation
 	        // between dissimilar types.
-	        return value != null && (value - parseFloat(value) + 1) >= 0;
+	        return value != null && value - parseFloat(value) + 1 >= 0;
 	    };
 	    NumericInput.prototype.isKeyboardEventDisabledForBasicNumericEntry = function (e) {
 	        // unit tests may not include e.key. don't bother disabling those events.
@@ -31947,7 +31948,9 @@
 	var Errors = __webpack_require__(61);
 	var controls_1 = __webpack_require__(256);
 	var counter = 0;
-	function nextName() { return RadioGroup.displayName + "-" + counter++; }
+	function nextName() {
+	    return RadioGroup.displayName + "-" + counter++;
+	}
 	var RadioGroup = (function (_super) {
 	    tslib_1.__extends(RadioGroup, _super);
 	    function RadioGroup() {
@@ -31997,7 +32000,6 @@
 	}(abstractComponent_1.AbstractComponent));
 	RadioGroup.displayName = "Blueprint.RadioGroup";
 	exports.RadioGroup = RadioGroup;
-	;
 	function isRadio(child) {
 	    return child != null && child.type === controls_1.Radio;
 	}
@@ -32110,9 +32112,9 @@
 	    };
 	    Hotkey.prototype.render = function () {
 	        var _a = this.props, label = _a.label, spreadableProps = tslib_1.__rest(_a, ["label"]);
-	        return React.createElement("div", { className: "pt-hotkey" },
+	        return (React.createElement("div", { className: "pt-hotkey" },
 	            React.createElement("div", { className: "pt-hotkey-label" }, label),
-	            React.createElement(keyCombo_1.KeyCombo, tslib_1.__assign({}, spreadableProps)));
+	            React.createElement(keyCombo_1.KeyCombo, tslib_1.__assign({}, spreadableProps))));
 	    };
 	    Hotkey.prototype.validateProps = function (props) {
 	        if (props.global !== true && props.group == null) {
@@ -32276,7 +32278,7 @@
 	    219: "[",
 	    220: "\\",
 	    221: "]",
-	    222: "\'",
+	    222: "'",
 	};
 	exports.Modifiers = {
 	    16: "shift",
@@ -32310,20 +32312,20 @@
 	    "!": "1",
 	    "@": "2",
 	    "#": "3",
-	    "$": "4",
+	    $: "4",
 	    "%": "5",
 	    "^": "6",
 	    "&": "7",
 	    "*": "8",
 	    "(": "9",
 	    ")": "0",
-	    "_": "-",
+	    _: "-",
 	    "+": "=",
 	    "{": "[",
 	    "}": "]",
 	    "|": "\\",
 	    ":": ";",
-	    "\"": "\'",
+	    '"': "'",
 	    "<": ",",
 	    ">": ".",
 	    "?": "/",
@@ -32352,7 +32354,10 @@
 	 * unshifted version. For example, `@` is equivalent to `shift+2`.
 	 */
 	exports.parseKeyCombo = function (combo) {
-	    var pieces = combo.replace(/\s/g, "").toLowerCase().split("+");
+	    var pieces = combo
+	        .replace(/\s/g, "")
+	        .toLowerCase()
+	        .split("+");
 	    var modifiers = 0;
 	    var key = null;
 	    for (var _i = 0, pieces_1 = pieces; _i < pieces_1.length; _i++) {
@@ -32383,7 +32388,7 @@
 	 * for unit tests.
 	 */
 	var normalizeKeyCode = function (e) {
-	    return (e.which === 0 && e.key != null) ? e.key.charCodeAt(0) : e.which;
+	    return e.which === 0 && e.key != null ? e.key.charCodeAt(0) : e.which;
 	};
 	/**
 	 * Converts a keyboard event into a valid combo prop string
@@ -32461,20 +32466,14 @@
 	exports.normalizeKeyCombo = function (combo, platformOverride) {
 	    var keys = combo.replace(/\s/g, "").split("+");
 	    return keys.map(function (key) {
-	        var keyName = (exports.Aliases[key] != null) ? exports.Aliases[key] : key;
-	        return (keyName === "meta")
-	            ? (isMac(platformOverride) ? "cmd" : "ctrl")
-	            : keyName;
+	        var keyName = exports.Aliases[key] != null ? exports.Aliases[key] : key;
+	        return keyName === "meta" ? (isMac(platformOverride) ? "cmd" : "ctrl") : keyName;
 	    });
 	};
 	/* tslint:enable:no-string-literal */
 	function isMac(platformOverride) {
-	    var platform = platformOverride != null
-	        ? platformOverride
-	        : (typeof navigator !== "undefined" ? navigator.platform : undefined);
-	    return platform == null
-	        ? false
-	        : /Mac|iPod|iPhone|iPad/.test(platform);
+	    var platform = platformOverride != null ? platformOverride : typeof navigator !== "undefined" ? navigator.platform : undefined;
+	    return platform == null ? false : /Mac|iPod|iPhone|iPad/.test(platform);
 	}
 
 	//# sourceMappingURL=hotkeyParser.js.map
@@ -32554,7 +32553,6 @@
 	    // tslint:enable
 	}
 	exports.HotkeysTarget = HotkeysTarget;
-	;
 
 	//# sourceMappingURL=hotkeysTarget.js.map
 
@@ -32774,15 +32772,14 @@
 	        var _this = this;
 	        var hotkeys = this.emptyHotkeyQueue();
 	        var elements = hotkeys.map(function (hotkey, index) {
-	            var group = (hotkey.global === true && hotkey.group == null) ?
-	                _this.componentProps.globalHotkeysGroup : hotkey.group;
+	            var group = hotkey.global === true && hotkey.group == null ? _this.componentProps.globalHotkeysGroup : hotkey.group;
 	            return React.createElement(hotkey_1.Hotkey, tslib_1.__assign({ key: index }, hotkey, { group: group }));
 	        });
 	        return React.createElement(hotkeys_1.Hotkeys, null, elements);
 	    };
 	    HotkeysDialog.prototype.emptyHotkeyQueue = function () {
 	        // flatten then empty the hotkeys queue
-	        var hotkeys = this.hotkeysQueue.reduce((function (arr, queued) { return arr.concat(queued); }), []);
+	        var hotkeys = this.hotkeysQueue.reduce(function (arr, queued) { return arr.concat(queued); }, []);
 	        this.hotkeysQueue.length = 0;
 	        return hotkeys;
 	    };
@@ -32852,8 +32849,8 @@
 	        }
 	        else {
 	            // section header with title
-	            return React.createElement("li", { className: classNames(Classes.MENU_HEADER, className) },
-	                React.createElement("h6", null, title));
+	            return (React.createElement("li", { className: classNames(Classes.MENU_HEADER, className) },
+	                React.createElement("h6", null, title)));
 	        }
 	    };
 	    return MenuDivider;
@@ -32923,7 +32920,7 @@
 	                React.createElement(icon_1.Icon, { iconName: visual, iconSize: "inherit" })));
 	        }
 	        else {
-	            return (React.createElement("div", { className: Classes.NON_IDEAL_STATE_VISUAL }, visual));
+	            return React.createElement("div", { className: Classes.NON_IDEAL_STATE_VISUAL }, visual);
 	        }
 	    };
 	    return NonIdealState;
@@ -32963,7 +32960,7 @@
 	            textContent: "",
 	        };
 	        _this.refHandlers = {
-	            text: function (overflowElement) { return _this.textRef = overflowElement; },
+	            text: function (overflowElement) { return (_this.textRef = overflowElement); },
 	        };
 	        return _this;
 	    }
@@ -33018,7 +33015,7 @@
 	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    SVGPopover.prototype.render = function () {
-	        return React.createElement(popover_1.Popover, tslib_1.__assign({ rootElementTag: "g" }, this.props), this.props.children);
+	        return (React.createElement(popover_1.Popover, tslib_1.__assign({ rootElementTag: "g" }, this.props), this.props.children));
 	    };
 	    return SVGPopover;
 	}(React.Component));
@@ -33055,7 +33052,7 @@
 	        var _a = this.props, className = _a.className, intent = _a.intent, value = _a.value;
 	        var classes = classNames("pt-progress-bar", Classes.intentClass(intent), className);
 	        // don't set width if value is null (rely on default CSS value)
-	        var width = (value == null ? null : 100 * utils_1.clamp(value, 0, 1) + "%");
+	        var width = value == null ? null : 100 * utils_1.clamp(value, 0, 1) + "%";
 	        return (React.createElement("div", { className: classes },
 	            React.createElement("div", { className: "pt-progress-meter", style: { width: width } })));
 	    };
@@ -33092,7 +33089,7 @@
 	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    SVGTooltip.prototype.render = function () {
-	        return React.createElement(tooltip_1.Tooltip, tslib_1.__assign({ rootElementTag: "g" }, this.props), this.props.children);
+	        return (React.createElement(tooltip_1.Tooltip, tslib_1.__assign({ rootElementTag: "g" }, this.props), this.props.children));
 	    };
 	    return SVGTooltip;
 	}(React.Component));
@@ -33179,19 +33176,23 @@
 	    };
 	    RangeSlider.prototype.handleTrackClick = function (event) {
 	        var _this = this;
-	        this.handles.reduce(function (min, handle) {
+	        this.handles
+	            .reduce(function (min, handle) {
 	            // find closest handle to the mouse position
 	            var value = handle.clientToValue(event.clientX);
 	            return _this.nearestHandleForValue(value, min, handle);
-	        }).beginHandleMovement(event);
+	        })
+	            .beginHandleMovement(event);
 	    };
 	    RangeSlider.prototype.handleTrackTouch = function (event) {
 	        var _this = this;
-	        this.handles.reduce(function (min, handle) {
+	        this.handles
+	            .reduce(function (min, handle) {
 	            // find closest handle to the touch position
 	            var value = handle.clientToValue(handle.touchEventClientX(event));
 	            return _this.nearestHandleForValue(value, min, handle);
-	        }).beginHandleTouchMovement(event);
+	        })
+	            .beginHandleTouchMovement(event);
 	    };
 	    RangeSlider.prototype.nearestHandleForValue = function (value, firstHandle, secondHandle) {
 	        var firstDistance = Math.abs(value - firstHandle.props.value);
@@ -33248,7 +33249,7 @@
 	        var _this = _super.call(this, props) || this;
 	        _this.className = Classes.SLIDER;
 	        _this.refHandlers = {
-	            track: function (el) { return _this.trackElement = el; },
+	            track: function (el) { return (_this.trackElement = el); },
 	        };
 	        _this.maybeHandleTrackClick = function (event) {
 	            if (_this.canHandleTrackEvent(event)) {
@@ -33340,9 +33341,7 @@
 	    CoreSlider.prototype.getLabelPrecision = function (_a) {
 	        var labelPrecision = _a.labelPrecision, stepSize = _a.stepSize;
 	        // infer default label precision from stepSize because that's how much the handle moves.
-	        return (labelPrecision == null)
-	            ? utils_1.countDecimalPlaces(stepSize)
-	            : labelPrecision;
+	        return labelPrecision == null ? utils_1.countDecimalPlaces(stepSize) : labelPrecision;
 	    };
 	    CoreSlider.prototype.updateTickSize = function () {
 	        if (this.trackElement != null) {
@@ -33390,7 +33389,7 @@
 	            isMoving: false,
 	        };
 	        _this.refHandlers = {
-	            handle: function (el) { return _this.handleElement = el; },
+	            handle: function (el) { return (_this.handleElement = el); },
 	        };
 	        _this.beginHandleMovement = function (event) {
 	            document.addEventListener("mousemove", _this.handleHandleMovement);
@@ -33454,7 +33453,7 @@
 	        var _a = this.props, className = _a.className, disabled = _a.disabled, label = _a.label, min = _a.min, tickSize = _a.tickSize, value = _a.value;
 	        var isMoving = this.state.isMoving;
 	        // getBoundingClientRect().height includes border size as opposed to clientHeight
-	        var handleSize = (this.handleElement == null ? 0 : this.handleElement.getBoundingClientRect().height);
+	        var handleSize = this.handleElement == null ? 0 : this.handleElement.getBoundingClientRect().height;
 	        return (React.createElement("span", { className: classNames(Classes.SLIDER_HANDLE, (_b = {}, _b[Classes.ACTIVE] = isMoving, _b), className), onKeyDown: disabled ? null : this.handleKeyDown, onKeyUp: disabled ? null : this.handleKeyUp, onMouseDown: disabled ? null : this.beginHandleMovement, onTouchStart: disabled ? null : this.beginHandleTouchMovement, ref: this.refHandlers.handle, style: { left: Math.round((value - min) * tickSize - handleSize / 2) }, tabIndex: 0 }, label == null ? null : React.createElement("span", { className: Classes.SLIDER_LABEL }, label)));
 	        var _b;
 	    };
@@ -33745,9 +33744,9 @@
 	        _this.handleTabSelectingEvent = function (e) {
 	            var tabElement = e.target.closest(TAB_CSS_SELECTOR);
 	            // select only if Tab is one of us and is enabled
-	            if (tabElement != null
-	                && _this.tabIds.indexOf(tabElement.id) >= 0
-	                && tabElement.getAttribute("aria-disabled") !== "true") {
+	            if (tabElement != null &&
+	                _this.tabIds.indexOf(tabElement.id) >= 0 &&
+	                tabElement.getAttribute("aria-disabled") !== "true") {
 	                var index = tabElement.parentElement.queryAll(TAB_CSS_SELECTOR).indexOf(tabElement);
 	                _this.setSelectedTabIndex(index);
 	            }
@@ -34084,7 +34083,7 @@
 	    /* istanbul ignore next */
 	    Tab2.prototype.render = function () {
 	        var _a = this.props, className = _a.className, panel = _a.panel;
-	        return React.createElement("div", { className: classNames(Classes.TAB_PANEL, className), role: "tablist" }, panel);
+	        return (React.createElement("div", { className: classNames(Classes.TAB_PANEL, className), role: "tablist" }, panel));
 	    };
 	    return Tab2;
 	}(React.Component));
@@ -34131,7 +34130,7 @@
 	    function Tabs2(props) {
 	        var _this = _super.call(this, props) || this;
 	        _this.refHandlers = {
-	            tablist: function (tabElement) { return _this.tablistElement = tabElement; },
+	            tablist: function (tabElement) { return (_this.tablistElement = tabElement); },
 	        };
 	        _this.handleKeyDown = function (e) {
 	            var focusedElement = document.activeElement.closest(TAB_SELECTOR);
@@ -34140,8 +34139,7 @@
 	                return;
 	            }
 	            // must rely on DOM state because we have no way of mapping `focusedElement` to a JSX.Element
-	            var enabledTabElements = _this.getTabElements()
-	                .filter(function (el) { return el.getAttribute("aria-disabled") === "false"; });
+	            var enabledTabElements = _this.getTabElements().filter(function (el) { return el.getAttribute("aria-disabled") === "false"; });
 	            var focusedIndex = enabledTabElements.indexOf(focusedElement);
 	            var direction = _this.getKeyCodeDirection(e);
 	            if (focusedIndex >= 0 && direction !== undefined) {
@@ -34386,9 +34384,7 @@
 	            _b[Classes.TAG_REMOVABLE] = onRemove != null,
 	            _b[Classes.ACTIVE] = active,
 	            _b), className);
-	        var button = common_1.Utils.isFunction(onRemove)
-	            ? React.createElement("button", { type: "button", className: Classes.TAG_REMOVE, onClick: this.onRemoveClick })
-	            : undefined;
+	        var button = common_1.Utils.isFunction(onRemove) ? (React.createElement("button", { type: "button", className: Classes.TAG_REMOVE, onClick: this.onRemoveClick })) : (undefined);
 	        return (React.createElement("span", tslib_1.__assign({}, props_1.removeNonHTMLProps(this.props), { className: tagClasses }),
 	            this.props.children,
 	            button));
@@ -34564,7 +34560,7 @@
 	    Toaster.prototype.update = function (key, props) {
 	        var options = this.createToastOptions(props, key);
 	        this.setState(function (prevState) { return ({
-	            toasts: prevState.toasts.map(function (t) { return t.key === key ? options : t; }),
+	            toasts: prevState.toasts.map(function (t) { return (t.key === key ? options : t); }),
 	        }); });
 	    };
 	    Toaster.prototype.dismiss = function (key, timeoutExpired) {
@@ -34706,7 +34702,7 @@
 	            var elementPath = currentPath.concat(i);
 	            return (React.createElement(treeNode_1.TreeNode, tslib_1.__assign({}, node, { key: node.id, contentRef: _this.handleContentRef, depth: elementPath.length - 1, onClick: _this.handleNodeClick, onContextMenu: _this.handleNodeContextMenu, onCollapse: _this.handleNodeCollapse, onDoubleClick: _this.handleNodeDoubleClick, onExpand: _this.handleNodeExpand, path: elementPath }), _this.renderNodes(node.childNodes, elementPath)));
 	        });
-	        return (React.createElement("ul", { className: classNames(Classes.TREE_NODE_LIST, className) }, nodeItems));
+	        return React.createElement("ul", { className: classNames(Classes.TREE_NODE_LIST, className) }, nodeItems);
 	    };
 	    Tree.prototype.handlerHelper = function (handlerFromProps, node, e) {
 	        if (utils_1.isFunction(handlerFromProps)) {
@@ -34856,10 +34852,7 @@
 	            for (var _b = 0, _c = [0, 4, 8, 12]; _b < _c.length; _b++) {
 	                var i = _c[_b];
 	                c[i + j] =
-	                    m[i] * this.m[j] +
-	                        m[i + 1] * this.m[4 + j] +
-	                        m[i + 2] * this.m[8 + j] +
-	                        m[i + 3] * this.m[12 + j];
+	                    m[i] * this.m[j] + m[i + 1] * this.m[4 + j] + m[i + 2] * this.m[8 + j] + m[i + 3] * this.m[12 + j];
 	            }
 	        }
 	        Matrix.POOL = this.m;
@@ -34970,10 +34963,22 @@
 	    Quaternion.prototype.toMatrix = function () {
 	        var t = this;
 	        return M([
-	            1 - 2 * (t.y * t.y + t.z * t.z), 2 * (t.x * t.y - t.w * t.z), 2 * (t.x * t.z + t.w * t.y), 0,
-	            2 * (t.x * t.y + t.w * t.z), 1 - 2 * (t.x * t.x + t.z * t.z), 2 * (t.y * t.z - t.w * t.x), 0,
-	            2 * (t.x * t.z - t.w * t.y), 2 * (t.y * t.z + t.w * t.x), 1 - 2 * (t.x * t.x + t.y * t.y), 0,
-	            0, 0, 0, 1,
+	            1 - 2 * (t.y * t.y + t.z * t.z),
+	            2 * (t.x * t.y - t.w * t.z),
+	            2 * (t.x * t.z + t.w * t.y),
+	            0,
+	            2 * (t.x * t.y + t.w * t.z),
+	            1 - 2 * (t.x * t.x + t.z * t.z),
+	            2 * (t.y * t.z - t.w * t.x),
+	            0,
+	            2 * (t.x * t.z - t.w * t.y),
+	            2 * (t.y * t.z + t.w * t.x),
+	            1 - 2 * (t.x * t.x + t.y * t.y),
+	            0,
+	            0,
+	            0,
+	            0,
+	            1,
 	        ]);
 	    };
 	    return Quaternion;
@@ -35076,10 +35081,10 @@
 	        ctx.closePath();
 	    };
 	    Face.BOUNDS = function (points) {
-	        var minX = -1 + Math.floor(points.reduce((function (r, p) { return (p.x < r.x) ? p : r; }), points[0]).x);
-	        var maxX = 1 + Math.ceil(points.reduce((function (r, p) { return (p.x > r.x) ? p : r; }), points[0]).x);
-	        var minY = -1 + Math.floor(points.reduce((function (r, p) { return (p.y < r.y) ? p : r; }), points[0]).y);
-	        var maxY = 1 + Math.ceil(points.reduce((function (r, p) { return (p.y > r.y) ? p : r; }), points[0]).y);
+	        var minX = -1 + Math.floor(points.reduce(function (r, p) { return (p.x < r.x ? p : r); }, points[0]).x);
+	        var maxX = 1 + Math.ceil(points.reduce(function (r, p) { return (p.x > r.x ? p : r); }, points[0]).x);
+	        var minY = -1 + Math.floor(points.reduce(function (r, p) { return (p.y < r.y ? p : r); }, points[0]).y);
+	        var maxY = 1 + Math.ceil(points.reduce(function (r, p) { return (p.y > r.y ? p : r); }, points[0]).y);
 	        return [minX, minY, maxX - minX, maxY - minY];
 	    };
 	    Face.prototype.transform = function (m) {
@@ -35190,11 +35195,7 @@
 	        return _this;
 	    }
 	    Corner.CORNER = function () {
-	        return new Corner([
-	            [exports.P(), exports.P().translate(-1, 0, 0)],
-	            [exports.P(), exports.P().translate(0, 1, 0)],
-	            [exports.P(), exports.P().translate(0, 0, -1)],
-	        ], exports.P());
+	        return new Corner([[exports.P(), exports.P().translate(-1, 0, 0)], [exports.P(), exports.P().translate(0, 1, 0)], [exports.P(), exports.P().translate(0, 0, -1)]], exports.P());
 	    };
 	    Corner.PATH = function (ctx, segments) {
 	        ctx.beginPath();
@@ -35263,7 +35264,9 @@
 	    // This is a modification of a standard isometric projection that maintains
 	    // a z-coordinate aligned with the view plane.
 	    var shear = [1, 0, 0, 0, 0, Math.sqrt(2 / 3), 1 / Math.sqrt(3), 0, 0, 0, 1, 0, 0, 0, 0, 1];
-	    return M().roty(-Math.PI / 4).matrix(shear);
+	    return M()
+	        .roty(-Math.PI / 4)
+	        .matrix(shear);
 	})();
 	exports.SceneModel = SceneModel;
 	/*-----------------------------------------------
@@ -35281,13 +35284,13 @@
 	        return function (t) { return callback((t = t - 1) * t * t * t * t + 1); };
 	    },
 	    EASE_IN_OUT: function (callback) {
-	        return function (t) { return callback(((t *= 2) < 1) ? 1 / 2 * t * t * t * t : -1 / 2 * ((t -= 2) * t * t * t - 2)); };
+	        return function (t) { return callback((t *= 2) < 1 ? 1 / 2 * t * t * t * t : -1 / 2 * ((t -= 2) * t * t * t - 2)); };
 	    },
 	    EASE_IN_EXP: function (e, callback) {
-	        return function (t) { return callback((t == 0) ? 0 : Math.pow(e, 10 * (t - 1))); };
+	        return function (t) { return callback(t == 0 ? 0 : Math.pow(e, 10 * (t - 1))); };
 	    },
 	    EASE_OUT_EXP: function (e, callback) {
-	        return function (t) { return callback((t == 1) ? 1 : 1 - Math.pow(e, -10 * t)); };
+	        return function (t) { return callback(t == 1 ? 1 : 1 - Math.pow(e, -10 * t)); };
 	    },
 	    EASE_IN_OUT_EXP: function (e, callback) {
 	        return function (t) {
@@ -35317,7 +35320,7 @@
 	        this.value = this.target;
 	    }
 	    Accumulator.prototype.tick = function (elapsed) {
-	        this.value = (this.alpha * this.target) + (1.0 - this.alpha) * this.value;
+	        this.value = this.alpha * this.target + (1.0 - this.alpha) * this.value;
 	        if (this.callback != null) {
 	            this.callback(this.value);
 	        }
@@ -35351,7 +35354,7 @@
 	        if (starttime == null) {
 	            anim.starttime = starttime = elapsed;
 	        }
-	        if ((elapsed - starttime) >= duration) {
+	        if (elapsed - starttime >= duration) {
 	            if (callback != null) {
 	                callback(1.0);
 	            }
@@ -35427,10 +35430,10 @@
 	-------------------------------------------------*/
 	var CanvasBuffer = (function () {
 	    function CanvasBuffer(canvas) {
-	        this.ctx = canvas.getContext('2d');
+	        this.ctx = canvas.getContext("2d");
 	    }
 	    CanvasBuffer.create = function () {
-	        return new CanvasBuffer(document.createElement('canvas'));
+	        return new CanvasBuffer(document.createElement("canvas"));
 	    };
 	    CanvasBuffer.prototype.clear = function (color, bounds) {
 	        if (bounds == null) {
@@ -35452,7 +35455,10 @@
 	        if (bounds == null) {
 	            bounds = [0, 0, this.ctx.canvas.width, this.ctx.canvas.height];
 	        }
-	        var args = [].concat([this.ctx.canvas]).concat(bounds).concat(bounds);
+	        var args = []
+	            .concat([this.ctx.canvas])
+	            .concat(bounds)
+	            .concat(bounds);
 	        ctx.drawImage.apply(ctx, args);
 	    };
 	    return CanvasBuffer;
@@ -35478,10 +35484,10 @@
 	    return CanvasRenderer;
 	}());
 	CanvasRenderer.IS_RETINA = function () {
-	    return (window.matchMedia
-	        && (window.matchMedia('only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx), only screen and (min-resolution: 75.6dpcm)').matches
-	            || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2)').matches)
-	        || (window.devicePixelRatio && window.devicePixelRatio >= 2));
+	    return ((window.matchMedia &&
+	        (window.matchMedia("only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx), only screen and (min-resolution: 75.6dpcm)").matches ||
+	            window.matchMedia("only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min--moz-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2)").matches)) ||
+	        (window.devicePixelRatio && window.devicePixelRatio >= 2));
 	};
 	exports.CanvasRenderer = CanvasRenderer;
 	var BackgroundRenderer = (function (_super) {
@@ -35533,14 +35539,14 @@
 	            this.ctx.beginPath();
 	            this.ctx.moveTo(x, 0);
 	            this.ctx.lineTo(x, this.height);
-	            this.ctx.strokeStyle = ((x - xstart) % major === 0) ? dark : light;
+	            this.ctx.strokeStyle = (x - xstart) % major === 0 ? dark : light;
 	            this.ctx.stroke();
 	        }
 	        for (var y = 0; y < this.height; y += BackgroundRenderer.GRID_SIZE) {
 	            this.ctx.beginPath();
 	            this.ctx.moveTo(0, y);
 	            this.ctx.lineTo(this.width, y);
-	            this.ctx.strokeStyle = (y % major === 0) ? dark : light;
+	            this.ctx.strokeStyle = y % major === 0 ? dark : light;
 	            this.ctx.stroke();
 	        }
 	        this.ctx.restore();
@@ -35576,7 +35582,12 @@
 	                var shape = object;
 	                for (var _i = 0, _a = shape.faces; _i < _a.length; _i++) {
 	                    var face = _a[_i];
-	                    face.projected = face.points.map(function (p) { return p.copy().transform(transform).round(); });
+	                    face.projected = face.points.map(function (p) {
+	                        return p
+	                            .copy()
+	                            .transform(transform)
+	                            .round();
+	                    });
 	                    face.projectedCenter = exports.P();
 	                    for (var _b = 0, _c = face.projected; _b < _c.length; _b++) {
 	                        var p = _c[_b];
@@ -35763,14 +35774,17 @@
 	    // renderer
 	    var renderer = new SceneRenderer(canvas.getContext("2d"), scene);
 	    var backgroundRenderer = new BackgroundRenderer(canvasBackground.getContext("2d"));
-	    var render = function () { return requestAnimationFrame(function () {
-	        backgroundRenderer.render();
-	        renderer.render();
-	    }); };
+	    var render = function () {
+	        return requestAnimationFrame(function () {
+	            backgroundRenderer.render();
+	            renderer.render();
+	        });
+	    };
 	    var animator = new Animator(render);
 	    // entrance animation
 	    var slideDownAnimation = function (offset, model) {
-	        animator.timeline()
+	        animator
+	            .timeline()
 	            .tween(0, function (t) { return model.restore().translate(0, -8, 0); })
 	            .tween(offset + 100)
 	            .tween(1000, exports.T.EASE_OUT_EXP(2, exports.T.INTERPOLATE(-8, 0, function (t) { return model.restore().translate(0, t, 0); })));
@@ -35781,7 +35795,8 @@
 	    // sheen animation
 	    var sheenAnimation = function (offset, model) {
 	        var sheen = model.children[2];
-	        animator.timeline()
+	        animator
+	            .timeline()
 	            .tween(offset)
 	            .tween(500, exports.T.EASE_IN(exports.T.INTERPOLATE(0, 100 * renderer.retinaScale, function (t) {
 	            for (var _i = 0, _a = sheen.faces; _i < _a.length; _i++) {
@@ -35801,7 +35816,8 @@
 	                f.lineDash = null;
 	            }
 	        });
-	        animator.timeline()
+	        animator
+	            .timeline()
 	            .tween(offset)
 	            .tween(500)
 	            .tween(2000, exports.T.EASE_OUT(exports.T.INTERPOLATE(0, -350 * renderer.retinaScale, function (t) {
@@ -35819,7 +35835,7 @@
 	    };
 	    var throttle = function (wait, func) {
 	        var timeout = null;
-	        var reset = function () { return timeout = null; };
+	        var reset = function () { return (timeout = null); };
 	        return function () {
 	            if (timeout == null) {
 	                func();
@@ -35836,12 +35852,16 @@
 	    // Update model transformations once per tick
 	    animator.ticker(function () {
 	        var rotate = Quaternion.xyAlt(accumX.value, -accumY.value).toMatrix();
-	        rotate = M().translate(1, 1, 1).multiply(rotate).multiply(M().translate(-1, -1, -1));
+	        rotate = M()
+	            .translate(1, 1, 1)
+	            .multiply(rotate)
+	            .multiply(M().translate(-1, -1, -1));
 	        explodeGroups[0]
 	            .restore()
 	            .translate(accumExploder[0].value, 0, 0)
 	            .transform(rotate);
-	        explodeGroups[1].restore()
+	        explodeGroups[1]
+	            .restore()
 	            .translate(0, 0, accumExploder[1].value)
 	            .transform(rotate);
 	        explodeGroups[2]
@@ -35872,9 +35892,9 @@
 	    var explodeBlocks = function () {
 	        explosionTimeline
 	            .reset()
-	            .after(0, function () { return accumExploder[0].target = 1.5; })
-	            .after(EXPLOSION_DELAY, function () { return accumExploder[1].target = 0.8; })
-	            .after(EXPLOSION_DELAY, function () { return accumExploder[2].target = 0.6; });
+	            .after(0, function () { return (accumExploder[0].target = 1.5); })
+	            .after(EXPLOSION_DELAY, function () { return (accumExploder[1].target = 0.8); })
+	            .after(EXPLOSION_DELAY, function () { return (accumExploder[2].target = 0.6); });
 	    };
 	    var unexplodeBlocks = function () {
 	        explosionTimeline.reset();
@@ -35917,20 +35937,20 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	// tslint:disable no-var-requires
 	var HERO_SVGS = {
-	    "alert": __webpack_require__(292),
-	    "buttons": __webpack_require__(293),
-	    "calendar": __webpack_require__(294),
-	    "checkboxes": __webpack_require__(295),
+	    alert: __webpack_require__(292),
+	    buttons: __webpack_require__(293),
+	    calendar: __webpack_require__(294),
+	    checkboxes: __webpack_require__(295),
 	    "file-upload": __webpack_require__(296),
 	    "input-groups": __webpack_require__(297),
-	    "inputs": __webpack_require__(298),
-	    "labels": __webpack_require__(299),
-	    "radios": __webpack_require__(300),
+	    inputs: __webpack_require__(298),
+	    labels: __webpack_require__(299),
+	    radios: __webpack_require__(300),
 	    "select-menus": __webpack_require__(301),
-	    "sliders": __webpack_require__(302),
-	    "switches": __webpack_require__(303),
+	    sliders: __webpack_require__(302),
+	    switches: __webpack_require__(303),
 	    "time-selections": __webpack_require__(304),
-	    "toggles": __webpack_require__(305),
+	    toggles: __webpack_require__(305),
 	};
 	var injectSVG = function (elem, id) {
 	    var wrapper = document.createElement("div");

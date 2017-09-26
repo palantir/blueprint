@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
+import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -28,6 +28,8 @@ export interface ClassArray extends Array<ClassValue> {}
  */
 const CSS_FONT_PROPERTIES = ["font-style", "font-variant", "font-weight", "font-size", "font-family"];
 
+// the functions using these interfaces now live in core. it's not clear how to
+// import interfaces from core and re-export them here, so just redefine them.
 export interface IKeyWhitelist<T> {
     include: Array<keyof T>;
 }
@@ -214,93 +216,6 @@ export const Utils = {
     },
 
     /**
-     * Shallow comparison between objects. If `keys` is provided, just that subset of keys will be
-     * compared; otherwise, all keys will be compared.
-     */
-    shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-        // treat `null` and `undefined` as the same
-        if (objA == null && objB == null) {
-            return true;
-        } else if (objA == null || objB == null) {
-            return false;
-        } else if (Array.isArray(objA) || Array.isArray(objB)) {
-            return false;
-        } else if (keys != null) {
-            return _shallowCompareKeys(objA, objB, keys);
-        } else {
-            // shallowly compare all keys from both objects
-            const keysA = Object.keys(objA) as Array<keyof T>;
-            const keysB = Object.keys(objB) as Array<keyof T>;
-            return (
-                _shallowCompareKeys(objA, objB, { include: keysA }) &&
-                _shallowCompareKeys(objA, objB, { include: keysB })
-            );
-        }
-    },
-
-    /**
-     * Deep comparison between objects. If `keys` is provided, just that subset of keys will be
-     * compared; otherwise, all keys will be compared.
-     */
-    deepCompareKeys(objA: any, objB: any, keys?: string[]): boolean {
-        if (objA === objB) {
-            return true;
-        } else if (objA == null && objB == null) {
-            // treat `null` and `undefined` as the same
-            return true;
-        } else if (objA == null || objB == null) {
-            return false;
-        } else if (Array.isArray(objA) || Array.isArray(objB)) {
-            return Utils.arraysEqual(objA, objB, Utils.deepCompareKeys);
-        } else if (_isSimplePrimitiveType(objA) || _isSimplePrimitiveType(objB)) {
-            return objA === objB;
-        } else if (keys != null) {
-            return _deepCompareKeys(objA, objB, keys);
-        } else if (objA.constructor !== objB.constructor) {
-            return false;
-        } else {
-            const keysA = Object.keys(objA);
-            const keysB = Object.keys(objB);
-            if (keysA == null || keysB == null) {
-                return false;
-            }
-            if (keysA.length === 0 && keysB.length === 0) {
-                return true;
-            }
-            return Utils.arraysEqual(keysA, keysB) && _deepCompareKeys(objA, objB, keysA);
-        }
-    },
-
-    /**
-     * Returns a descriptive object for each key whose values are shallowly unequal between two
-     * provided objects. Useful for debugging shouldComponentUpdate.
-     */
-    getShallowUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-        // default param values let null values pass through, so we have to take this more thorough approach
-        const definedObjA = objA == null ? {} : objA;
-        const definedObjB = objB == null ? {} : objB;
-
-        const filteredKeys = _filterKeys(definedObjA, definedObjB, keys == null ? { exclude: [] } : keys);
-        return _getUnequalKeyValues(definedObjA, definedObjB, filteredKeys, (a, b, key) =>
-            Utils.shallowCompareKeys(a, b, { include: [key] }),
-        );
-    },
-
-    /**
-     * Returns a descriptive object for each key whose values are deeply unequal between two
-     * provided objects. Useful for debugging shouldComponentUpdate.
-     */
-    getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
-        const definedObjA = objA == null ? ({} as any) as T : objA;
-        const definedObjB = objB == null ? ({} as any) as T : objB;
-
-        const filteredKeys = keys == null ? _unionKeys(definedObjA, definedObjB) : keys;
-        return _getUnequalKeyValues(definedObjA, definedObjB, filteredKeys, (a, b, key) =>
-            Utils.deepCompareKeys(a, b, [key]),
-        );
-    },
-
-    /**
      * When reordering a contiguous block of rows or columns to a new index, we show a preview guide
      * at the absolute index in the original ordering but emit the new index in the reordered list.
      * This function converts an absolute "guide" index to a relative "reordered" index.
@@ -423,94 +338,55 @@ export const Utils = {
         return event.button === 0;
     },
 
+    // these functions used to live here but now live in core. since these Utils
+    // are in the public API, we provide facades here - complete with function
+    // descriptions - so as to make the refactor invisible externally.
+
     /**
-     * Returns true if the arrays are equal. Elements will be shallowly compared by default, or they
-     * will be compared using the custom `compare` function if one is provided.
+     * Returns true if the arrays are equal. Elements will be shallowly compared
+     * by default, or they will be compared using the custom `compare` function
+     * if one is provided.
+     * @deprecated since @blueprintjs/table 1.26.0; import this function from
+     * core Utils instead.
      */
-    arraysEqual(arrA: any[], arrB: any[], compare = (a: any, b: any) => a === b) {
-        // treat `null` and `undefined` as the same
-        if (arrA == null && arrB == null) {
-            return true;
-        } else if (arrA == null || arrB == null || arrA.length !== arrB.length) {
-            return false;
-        } else {
-            return arrA.every((a, i) => compare(a, arrB[i]));
-        }
+    arraysEqual: CoreUtils.arraysEqual,
+
+    /**
+     * Deep comparison between objects. If `keys` is provided, just that subset
+     * of keys will be compared; otherwise, all keys will be compared.
+     * @deprecated since @blueprintjs/table 1.26.0; import this function from
+     * core Utils instead.
+     */
+    deepCompareKeys: CoreUtils.deepCompareKeys,
+
+    /**
+     * Returns a descriptive object for each key whose values are deeply unequal
+     * between two provided objects. Useful for debugging shouldComponentUpdate.
+     * @deprecated since @blueprintjs/table 1.26.0; import this function from
+     * core Utils instead.
+     */
+    getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
+        return CoreUtils.getDeepUnequalKeyValues(objA, objB, keys);
+    },
+
+    /**
+     * Returns a descriptive object for each key whose values are shallowly
+     * unequal between two provided objects. Useful for debugging
+     * shouldComponentUpdate.
+     * @deprecated since @blueprintjs/table 1.26.0; import this function from
+     * core Utils instead.
+     */
+    getShallowUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+        return CoreUtils.getShallowUnequalKeyValues(objA, objB, keys);
+    },
+
+    /**
+     * Shallow comparison between objects. If `keys` is provided, just that
+     * subset of keys will be compared; otherwise, all keys will be compared.
+     * @deprecated since @blueprintjs/table 1.26.0; import this function from
+     * core Utils instead.
+     */
+    shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+        return CoreUtils.shallowCompareKeys(objA, objB, keys);
     },
 };
-
-/**
- * Partial shallow comparison between objects using the given list of keys.
- */
-function _shallowCompareKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-    return _filterKeys(objA, objB, keys).every(key => {
-        return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && objA[key] === objB[key];
-    });
-}
-
-/**
- * Partial deep comparison between objects using the given list of keys.
- */
-function _deepCompareKeys(objA: any, objB: any, keys: string[]): boolean {
-    return keys.every(key => {
-        return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && Utils.deepCompareKeys(objA[key], objB[key]);
-    });
-}
-
-function _isSimplePrimitiveType(value: any) {
-    return typeof value === "number" || typeof value === "string" || typeof value === "boolean";
-}
-
-function _filterKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-    if (isWhitelist(keys)) {
-        return keys.include;
-    } else {
-        const keysA = Object.keys(objA);
-        const keysB = Object.keys(objB);
-
-        // merge keys from both objects into a big set for quick access
-        const keySet = _arrayToObject(keysA.concat(keysB));
-
-        // delete blacklisted keys from the key set
-        keys.exclude.forEach(key => delete keySet[key]);
-
-        // return the remaining keys as an array
-        return Object.keys(keySet) as Array<keyof T>;
-    }
-}
-
-function isWhitelist<T>(keys: any): keys is IKeyWhitelist<T> {
-    return keys != null && (keys as IKeyWhitelist<T>).include != null;
-}
-
-function _arrayToObject(arr: any[]) {
-    return arr.reduce((obj: any, element: any) => {
-        obj[element] = true;
-        return obj;
-    }, {});
-}
-
-function _getUnequalKeyValues<T extends object>(
-    objA: T,
-    objB: T,
-    keys: Array<keyof T>,
-    compareFn: (objA: any, objB: any, key: keyof T) => boolean,
-) {
-    const unequalKeys = keys.filter(key => !compareFn(objA, objB, key));
-    const unequalKeyValues = unequalKeys.map(key => ({
-        key,
-        valueA: objA[key],
-        valueB: objB[key],
-    }));
-    return unequalKeyValues;
-}
-
-function _unionKeys<T extends object>(objA: T, objB: T) {
-    const keysA = Object.keys(objA);
-    const keysB = Object.keys(objB);
-
-    const concatKeys = keysA.concat(keysB);
-    const keySet = _arrayToObject(concatKeys);
-
-    return Object.keys(keySet) as Array<keyof T>;
-}

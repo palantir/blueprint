@@ -17,7 +17,6 @@ import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
-import { Utils } from "./common/utils";
 import { ICoordinateData } from "./interactions/draggable";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
@@ -134,7 +133,6 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
     private activationCell: ICellCoordinates;
     private batcher = new Batcher<JSX.Element>();
-    private isRenderingBatchedCells = false;
 
     public componentDidMount() {
         this.maybeInvokeOnCompleteRender();
@@ -142,12 +140,12 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
     public shouldComponentUpdate(nextProps: ITableBodyProps) {
         const propKeysWhitelist = { include: UPDATE_PROPS_KEYS };
-        return !Utils.shallowCompareKeys(this.props, nextProps, propKeysWhitelist);
+        return !CoreUtils.shallowCompareKeys(this.props, nextProps, propKeysWhitelist);
     }
 
     public componentWillUpdate(nextProps?: ITableBodyProps) {
         const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
-        const shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
+        const shouldResetBatcher = !CoreUtils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
         if (shouldResetBatcher) {
             this.batcher.reset();
         }
@@ -336,10 +334,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     private maybeInvokeOnCompleteRender() {
         const { onCompleteRender, renderMode } = this.props;
 
-        if (renderMode === RenderMode.BATCH && this.isRenderingBatchedCells && this.batcher.isDone()) {
-            this.isRenderingBatchedCells = false;
-            CoreUtils.safeInvoke(onCompleteRender);
-        } else if (renderMode === RenderMode.NONE) {
+        if (renderMode === RenderMode.NONE || (renderMode === RenderMode.BATCH && this.batcher.isDone())) {
             CoreUtils.safeInvoke(onCompleteRender);
         }
     }

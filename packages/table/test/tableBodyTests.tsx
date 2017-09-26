@@ -124,7 +124,7 @@ describe("TableBody", () => {
             runTestSuite(simulateAction);
         });
 
-        // TODO: make this work (tracked in https://github.com/palantir/blueprint/issues/1549)
+        // triggering onContextMenu via ctrl+click doesn't work in Phantom :/
         describe.skip("on ctrl+click", () => {
             // ctrl+click should also triggers the context menu and should behave in the exact same way
             const simulateAction = (tableBody: ReactWrapper<any, any>) => {

@@ -23,6 +23,12 @@ export interface IHarnessMouseOptions {
     offsetY?: number;
 
     /** @default false */
+    altKey?: boolean;
+
+    /** @default false */
+    ctrlKey?: boolean;
+
+    /** @default false */
     metaKey?: boolean;
 
     /** @default false */
@@ -117,10 +123,14 @@ export class ElementHarness {
         button: number = 0,
     ) {
         let offsetX: number;
+        let isAltKeyDown: boolean;
+        let isCtrlKeyDown: boolean;
 
         if (typeof offsetXOrOptions === "object") {
             offsetX = this.defaultValue(offsetXOrOptions.offsetX, 0);
             offsetY = this.defaultValue(offsetXOrOptions.offsetY, 0);
+            isAltKeyDown = this.defaultValue(offsetXOrOptions.altKey, false);
+            isCtrlKeyDown = this.defaultValue(offsetXOrOptions.ctrlKey, false);
             isMetaKeyDown = this.defaultValue(offsetXOrOptions.metaKey, false);
             isShiftKeyDown = this.defaultValue(offsetXOrOptions.shiftKey, false);
             button = this.defaultValue(offsetXOrOptions.button, 0);
@@ -150,8 +160,8 @@ export class ElementHarness {
             0,
             x,
             y,
-            isMetaKeyDown,
-            false,
+            isCtrlKeyDown,
+            isAltKeyDown,
             isShiftKeyDown,
             isMetaKeyDown,
             button,

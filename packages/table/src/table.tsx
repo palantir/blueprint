@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as BlueprintUtils } from "@blueprintjs/core";
+import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -387,24 +387,26 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public grid: Grid;
     public locator: Locator;
 
-    private bodyElement: HTMLElement;
     private childrenArray: Array<React.ReactElement<IColumnProps>>;
     private columnIdToIndex: { [key: string]: number };
 
     private resizeSensorDetach: () => void;
-    private rootTableElement: HTMLElement;
 
     private refHandlers = {
+        cellContainer: (ref: HTMLElement) => (this.cellContainerElement = ref),
         columnHeader: (ref: HTMLElement) => (this.columnHeaderElement = ref),
         mainQuadrant: (ref: HTMLElement) => (this.mainQuadrantElement = ref),
         quadrantStack: (ref: TableQuadrantStack) => (this.quadrantStackInstance = ref),
+        rootTable: (ref: HTMLElement) => (this.rootTableElement = ref),
         rowHeader: (ref: HTMLElement) => (this.rowHeaderElement = ref),
         scrollContainer: (ref: HTMLElement) => (this.scrollContainerElement = ref),
     };
 
-    private quadrantStackInstance: TableQuadrantStack;
+    private cellContainerElement: HTMLElement;
     private columnHeaderElement: HTMLElement;
     private mainQuadrantElement: HTMLElement;
+    private quadrantStackInstance: TableQuadrantStack;
+    private rootTableElement: HTMLElement;
     private rowHeaderElement: HTMLElement;
     private scrollContainerElement: HTMLElement;
 
@@ -515,14 +517,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const stateKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST };
 
         return (
-            !Utils.shallowCompareKeys(this.props, nextProps, propKeysBlacklist) ||
-            !Utils.shallowCompareKeys(this.state, nextState, stateKeysBlacklist) ||
-            !Utils.deepCompareKeys(this.props, nextProps, Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST) ||
-            !Utils.deepCompareKeys(this.state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST)
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, propKeysBlacklist) ||
+            !CoreUtils.shallowCompareKeys(this.state, nextState, stateKeysBlacklist) ||
+            !CoreUtils.deepCompareKeys(this.props, nextProps, Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST) ||
+            !CoreUtils.deepCompareKeys(this.state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST)
         );
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
+        super.componentWillReceiveProps(nextProps);
+
         const {
             children,
             columnWidths,
@@ -605,9 +609,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
 
         return (
-            <div className={classes} ref={this.setRootTableRef} onScroll={this.handleRootScroll}>
+            <div className={classes} ref={this.refHandlers.rootTable} onScroll={this.handleRootScroll}>
                 <TableQuadrantStack
-                    bodyRef={this.setBodyRef}
+                    bodyRef={this.refHandlers.cellContainer}
                     columnHeaderRef={this.refHandlers.columnHeader}
                     grid={this.grid}
                     handleColumnResizeGuide={this.handleColumnResizeGuide}
@@ -656,7 +660,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public componentDidMount() {
         this.validateGrid();
 
-        this.locator = new Locator(this.mainQuadrantElement, this.scrollContainerElement);
+        this.locator = new Locator(this.mainQuadrantElement, this.scrollContainerElement, this.cellContainerElement);
         this.updateLocator();
         this.updateViewportRect(this.locator.getViewportRect());
 
@@ -684,28 +688,48 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     protected validateProps(props: ITableProps & { children: React.ReactNode }) {
-        const { children, numFrozenColumns, numFrozenRows, numRows } = props;
+        const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
         const numColumns = React.Children.count(children);
 
+        // do cheap error-checking first.
+        if (numRows != null && numRows < 0) {
+            throw new Error(Errors.TABLE_NUM_ROWS_NEGATIVE);
+        }
+        if (numFrozenRows != null && numFrozenRows < 0) {
+            throw new Error(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+        }
+        if (numFrozenColumns != null && numFrozenColumns < 0) {
+            throw new Error(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+        }
+        if (numRows != null && rowHeights != null && rowHeights.length !== numRows) {
+            throw new Error(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+        }
+        if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
+            throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+        }
         React.Children.forEach(children, (child: React.ReactElement<any>) => {
             // save as a variable so that union type narrowing works
             const childType = child.type;
 
-            if (typeof childType === "string") {
-                console.warn(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
+            // the second part of this conditional will never be true, but it
+            // informs the TS compiler that we won't be invoking
+            // childType.prototype on a "string" element.
+            if (typeof child === "string" || typeof childType === "string") {
+                throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
             } else {
                 const isColumn = childType.prototype === Column.prototype || Column.prototype.isPrototypeOf(childType);
                 if (!isColumn) {
-                    console.warn(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
+                    throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
                 }
             }
         });
 
-        if (numFrozenColumns != null && (numFrozenColumns < 0 || numFrozenColumns > numColumns)) {
-            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
-        }
-        if (numFrozenRows != null && (numFrozenRows < 0 || (numRows != null && numFrozenRows > numRows))) {
+        // these are recoverable scenarios, so just print a warning.
+        if (numFrozenRows != null && numRows != null && numFrozenRows > numRows) {
             console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
+        }
+        if (numFrozenColumns != null && numFrozenColumns > numColumns) {
+            console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
     }
 
@@ -789,7 +813,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
         if (sparse != null) {
             const success = Clipboard.copyCells(sparse);
-            BlueprintUtils.safeInvoke(onCopy, success);
+            CoreUtils.safeInvoke(onCopy, success);
         }
     };
 
@@ -1202,7 +1226,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // will only actually render once the viewportRect is defined though, so
         // we defer invoking onCompleteRender until that check passes.
         if (this.state.viewportRect != null) {
-            BlueprintUtils.safeInvoke(this.props.onCompleteRender);
+            CoreUtils.safeInvoke(this.props.onCompleteRender);
         }
     };
 
@@ -1715,7 +1739,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.setState({ focusedCell });
         }
 
-        BlueprintUtils.safeInvoke(this.props.onFocus, focusedCell);
+        CoreUtils.safeInvoke(this.props.onFocus, focusedCell);
     };
 
     private handleSelection = (selectedRegions: IRegion[]) => {
@@ -1736,7 +1760,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.setState({ isReordering: false, verticalGuides: undefined });
-        BlueprintUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
+        CoreUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
     };
 
     private handleRowsReordering = (horizontalGuides: number[]) => {
@@ -1745,7 +1769,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.setState({ isReordering: false, horizontalGuides: undefined });
-        BlueprintUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
+        CoreUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
     };
 
     private handleLayoutLock = (isLayoutLocked = false) => {
@@ -1760,16 +1784,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     };
 
     private updateLocator() {
-        const rowHeaderWidth = this.rowHeaderElement == null ? 0 : this.rowHeaderElement.getBoundingClientRect().width;
-        const columnHeaderHeight =
-            this.columnHeaderElement == null ? 0 : this.columnHeaderElement.getBoundingClientRect().height;
-
         this.locator
             .setGrid(this.grid)
             .setNumFrozenRows(this.getNumFrozenRowsClamped())
-            .setNumFrozenColumns(this.getNumFrozenColumnsClamped())
-            .setRowHeaderWidth(rowHeaderWidth)
-            .setColumnHeaderHeight(columnHeaderHeight);
+            .setNumFrozenColumns(this.getNumFrozenColumnsClamped());
     }
 
     private updateViewportRect = (nextViewportRect: Rect) => {
@@ -1789,7 +1807,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
-        BlueprintUtils.safeInvoke(this.props.onVisibleCellsChange, rowIndices, columnIndices);
+        CoreUtils.safeInvoke(this.props.onVisibleCellsChange, rowIndices, columnIndices);
     }
 
     private getMaxFrozenColumnIndex = () => {
@@ -1820,7 +1838,4 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
         this.setState({ horizontalGuides });
     };
-
-    private setBodyRef = (ref: HTMLElement) => (this.bodyElement = ref);
-    private setRootTableRef = (ref: HTMLElement) => (this.rootTableElement = ref);
 }
