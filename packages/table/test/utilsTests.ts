@@ -232,11 +232,11 @@ describe("Utils", () => {
         const RIGHT_BUTTON_CODE = 1;
 
         it("returns true for left click", () => {
-            expect(Utils.isLeftClick({ button: LEFT_BUTTON_CODE } as MouseEvent)).to.be.true;
+            expect(Utils.isLeftClick(({ button: LEFT_BUTTON_CODE } as any) as MouseEvent)).to.be.true;
         });
 
         it("returns false for right click", () => {
-            expect(Utils.isLeftClick({ button: RIGHT_BUTTON_CODE } as MouseEvent)).to.be.false;
+            expect(Utils.isLeftClick(({ button: RIGHT_BUTTON_CODE } as any) as MouseEvent)).to.be.false;
         });
     });
 
@@ -676,13 +676,13 @@ interface IKeys {
 /**
  * A compactly named function for converting a string array to a key blacklist.
  */
-function bl(keys: string[]) {
-    return { exclude: keys } as IKeyBlacklist<IKeys>;
+function bl(keys: string[]): IKeyBlacklist<IKeys> {
+    return { exclude: keys as Array<keyof IKeys> };
 }
 
 /**
  * A compactly named function for converting a string array to a key whitelist.
  */
-function wl(keys: string[]) {
-    return { include: keys } as IKeyWhitelist<IKeys>;
+function wl(keys: string[]): IKeyWhitelist<IKeys> {
+    return { include: keys as Array<keyof IKeys> };
 }

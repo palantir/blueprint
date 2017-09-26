@@ -12,7 +12,9 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 
 import { Keys } from "@blueprintjs/core";
+// tslint:disable-next-line:no-submodule-imports
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
+
 import { Cell, Column, IColumnProps, ITableProps, RegionCardinality, Table, TableLoadingOption, Utils } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
@@ -92,8 +94,8 @@ describe("<Table>", () => {
         ];
         const tableHarness = harness.mount(
             <Table loadingOptions={loadingOptions} numRows={2}>
-                <Column name="Column0" renderCell={renderCell} />
-                <Column name="Column1" renderCell={renderCell} />
+                <Column name="Column0" renderCell={renderDummyCell} />
+                <Column name="Column1" renderCell={renderDummyCell} />
             </Table>,
         );
 
@@ -159,8 +161,8 @@ describe("<Table>", () => {
         // the callback is called quite often even in the course of a single render cycle.
         // don't bother to count the invocations.
         expect(onVisibleCellsChange.called).to.be.true;
-        const rowIndices = { rowIndexStart: 0, rowIndexEnd: 2 } as IRowIndices;
-        const columnIndices = { columnIndexStart: 0, columnIndexEnd: 0 } as IColumnIndices;
+        const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
+        const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
@@ -174,8 +176,8 @@ describe("<Table>", () => {
         );
         table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`).simulate("scroll");
         expect(onVisibleCellsChange.callCount).to.be.greaterThan(1);
-        const rowIndices = { rowIndexStart: 0, rowIndexEnd: 2 } as IRowIndices;
-        const columnIndices = { columnIndexStart: 0, columnIndexEnd: 0 } as IColumnIndices;
+        const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
+        const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
@@ -261,9 +263,9 @@ describe("<Table>", () => {
         function mountTable() {
             return mount(
                 <Table enableFocus={true} onFocus={onFocus} onSelection={onSelection} numRows={10}>
-                    <Column renderCell={renderCell} />
-                    <Column renderCell={renderCell} />
-                    <Column renderCell={renderCell} />
+                    <Column renderCell={renderDummyCell} />
+                    <Column renderCell={renderDummyCell} />
+                    <Column renderCell={renderDummyCell} />
                 </Table>,
             );
         }
@@ -302,7 +304,7 @@ describe("<Table>", () => {
             // use RenderMode.NONE because it causes all cells to render synchronously
             mount(
                 <Table numRows={100} onCompleteRender={onCompleteRenderSpy} renderMode={RenderMode.NONE}>
-                    <Column renderCell={renderCell} />
+                    <Column renderCell={renderDummyCell} />
                 </Table>,
             );
 
@@ -388,9 +390,9 @@ describe("<Table>", () => {
                         ref={saveTable}
                         {...tableProps}
                     >
-                        <Column renderCell={renderCell} />
-                        <Column renderCell={renderCell} />
-                        <Column renderCell={renderCell} />
+                        <Column renderCell={renderDummyCell} />
+                        <Column renderCell={renderDummyCell} />
+                        <Column renderCell={renderDummyCell} />
                     </Table>
                 </div>,
             );
@@ -699,7 +701,7 @@ describe("<Table>", () => {
         }
 
         function renderColumns(props: Partial<IColumnProps> & object = {}, numColumns = NUM_COLUMNS) {
-            return Utils.times(numColumns, () => <Column renderCell={renderCell} {...props} />);
+            return Utils.times(numColumns, () => <Column renderCell={renderDummyCell} {...props} />);
         }
 
         function renderTableIntoDOM() {
@@ -835,9 +837,9 @@ describe("<Table>", () => {
                     selectedRegions={[Regions.row(0, 1), Regions.row(4, 6), Regions.row(8)]}
                     {...tableProps}
                 >
-                    <Column renderCell={renderCell} />
-                    <Column renderCell={renderCell} />
-                    <Column renderCell={renderCell} />
+                    <Column renderCell={renderDummyCell} />
+                    <Column renderCell={renderDummyCell} />
+                    <Column renderCell={renderDummyCell} />
                 </Table>,
             );
         }
@@ -977,11 +979,11 @@ describe("<Table>", () => {
                         rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT_IN_PX)}
                         {...props}
                     >
-                        <Column renderCell={renderCell} />
-                        <Column renderCell={renderCell} />
-                        <Column renderCell={renderCell} />
-                        <Column renderCell={renderCell} />
-                        <Column renderCell={renderCell} />
+                        <Column renderCell={renderDummyCell} />
+                        <Column renderCell={renderDummyCell} />
+                        <Column renderCell={renderDummyCell} />
+                        <Column renderCell={renderDummyCell} />
+                        <Column renderCell={renderDummyCell} />
                     </Table>
                 </div>,
             );
@@ -1018,7 +1020,7 @@ describe("<Table>", () => {
         const NUM_COLS = 3;
 
         // center the initial focus cell
-        const DEFAULT_FOCUSED_CELL_COORDS = { row: 1, col: 1 } as IFocusedCellCoordinates;
+        const DEFAULT_FOCUSED_CELL_COORDS: IFocusedCellCoordinates = { row: 1, col: 1 } as any;
 
         // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus
@@ -1084,11 +1086,11 @@ describe("<Table>", () => {
                             onFocus={onFocus}
                             selectedRegions={selectedRegions}
                         >
-                            <Column name="Column0" renderCell={renderCell} />
-                            <Column name="Column1" renderCell={renderCell} />
-                            <Column name="Column2" renderCell={renderCell} />
-                            <Column name="Column3" renderCell={renderCell} />
-                            <Column name="Column4" renderCell={renderCell} />
+                            <Column name="Column0" renderCell={renderDummyCell} />
+                            <Column name="Column1" renderCell={renderDummyCell} />
+                            <Column name="Column2" renderCell={renderDummyCell} />
+                            <Column name="Column3" renderCell={renderDummyCell} />
+                            <Column name="Column4" renderCell={renderDummyCell} />
                         </Table>,
                     );
                     tableHarness.simulate("keyDown", createKeyEventConfig(tableHarness, key, keyCode, shiftKey));
@@ -1246,8 +1248,8 @@ describe("<Table>", () => {
                     expect(component.state("viewportRect")[attrToCheck]).to.equal(expectedOffset);
                     expect(onVisibleCellsChange.calledThrice).to.be.true;
 
-                    const rowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 } as IRowIndices;
-                    const columnIndices = { columnIndexStart: 0, columnIndexEnd: NUM_COLS - 1 } as IColumnIndices;
+                    const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
+                    const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: NUM_COLS - 1 };
                     expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
                 });
             }
@@ -1258,7 +1260,7 @@ describe("<Table>", () => {
             // need to `.fill` with some explicit value so that mapping will work, apparently
             const columns = Array(NUM_COLS)
                 .fill(undefined)
-                .map((_, i) => <Column key={i} renderCell={renderCell} />);
+                .map((_, i) => <Column key={i} renderCell={renderDummyCell} />);
             const component = mount(
                 <Table
                     columnWidths={Array(NUM_ROWS).fill(colWidth)}
@@ -1293,10 +1295,10 @@ describe("<Table>", () => {
             const eventConfig = {
                 key,
                 keyCode,
-                shiftKey,
                 preventDefault: () => {
                     /* Empty */
                 },
+                shiftKey,
                 stopPropagation: () => {
                     /* Empty */
                 },
@@ -1311,7 +1313,7 @@ describe("<Table>", () => {
     });
 
     describe("Manually scrolling while drag-selecting", () => {
-        const ACTIVATION_CELL_COORDS = { row: 1, col: 1 } as ICellCoordinates;
+        const ACTIVATION_CELL_COORDS: ICellCoordinates = { row: 1, col: 1 };
 
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
@@ -1396,7 +1398,7 @@ describe("<Table>", () => {
 
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
             // need to explicitly `.fill` a new array with empty values for mapping to work
-            const defineColumn = (_unused: any, i: number) => <Column key={i} renderCell={renderCell} />;
+            const defineColumn = (_unused: any, i: number) => <Column key={i} renderCell={renderDummyCell} />;
             const columns = Array(NUM_COLS)
                 .fill(undefined)
                 .map(defineColumn);
@@ -1519,7 +1521,7 @@ describe("<Table>", () => {
         }
 
         function renderColumn(_unused: any, i: number) {
-            return <Column key={i} renderCell={renderCell} />;
+            return <Column key={i} renderCell={renderDummyCell} />;
         }
 
         function scrollTable(
@@ -1628,7 +1630,7 @@ describe("<Table>", () => {
         });
     });
 
-    function renderCell() {
+    function renderDummyCell() {
         return <Cell>gg</Cell>;
     }
 

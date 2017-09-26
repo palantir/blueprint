@@ -6,6 +6,7 @@
  */
 
 import { assert } from "chai";
+import * as React from "react";
 import { Utils } from "../../src";
 
 describe("Utils", () => {

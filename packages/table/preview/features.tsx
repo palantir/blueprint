@@ -159,17 +159,25 @@ class FormatsTable extends React.Component<{}, {}> {
 
 ReactDOM.render(<FormatsTable />, document.getElementById("table-formats"));
 
-class EditableTable extends React.Component<{}, {}> {
+interface IEditableTableState {
+    intents: Intent[];
+    names: string[];
+    sparseCellData: { [key: string]: string };
+    sparseCellIntent: { [key: string]: Intent };
+}
+
+class EditableTable extends React.Component<{}, IEditableTableState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
     };
 
-    public state = {
-        intents: [] as Intent[],
-        names: ["Please", "Rename", "Me"] as string[],
-        sparseCellData: {} as { [key: string]: string },
-        sparseCellIntent: {} as { [key: string]: Intent },
+    public state: IEditableTableState = {
+        intents: [],
+        names: ["Please", "Rename", "Me"],
+        sparseCellData: {},
+        sparseCellIntent: {},
     };
+
     public render() {
         const columns = this.state.names.map((_, index) => (
             <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />

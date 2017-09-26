@@ -327,7 +327,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="insert"
                     onClick={() => {
                         this.store.addColumnBefore(columnIndex);
-                        this.setState({ numCols: this.state.numCols + 1 } as IMutableTableState);
+                        this.setState({ numCols: this.state.numCols + 1 });
                     }}
                     text="Insert column before"
                 />
@@ -335,7 +335,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="insert"
                     onClick={() => {
                         this.store.addColumnAfter(columnIndex);
-                        this.setState({ numCols: this.state.numCols + 1 } as IMutableTableState);
+                        this.setState({ numCols: this.state.numCols + 1 });
                     }}
                     text="Insert column after"
                 />
@@ -343,7 +343,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="remove"
                     onClick={() => {
                         this.store.removeColumn(columnIndex);
-                        this.setState({ numCols: this.state.numCols - 1 } as IMutableTableState);
+                        this.setState({ numCols: this.state.numCols - 1 });
                     }}
                     text="Remove column"
                 />
@@ -364,7 +364,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="insert"
                     onClick={() => {
                         this.store.addRowBefore(rowIndex);
-                        this.setState({ numRows: this.state.numRows + 1 } as IMutableTableState);
+                        this.setState({ numRows: this.state.numRows + 1 });
                     }}
                     text="Insert row before"
                 />
@@ -372,7 +372,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="insert"
                     onClick={() => {
                         this.store.addRowAfter(rowIndex);
-                        this.setState({ numRows: this.state.numRows + 1 } as IMutableTableState);
+                        this.setState({ numRows: this.state.numRows + 1 });
                     }}
                     text="Insert row after"
                 />
@@ -380,7 +380,7 @@ class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="remove"
                     onClick={() => {
                         this.store.removeRow(rowIndex);
-                        this.setState({ numRows: this.state.numRows - 1 } as IMutableTableState);
+                        this.setState({ numRows: this.state.numRows - 1 });
                     }}
                     text="Remove row"
                 />
