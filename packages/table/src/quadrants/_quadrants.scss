@@ -105,9 +105,9 @@ $table-quadrant-scroll-container-overflow: 20px;
     overflow-x: hidden;
   }
 
-  // correct missing left selecton border when selection includes
-  // cells in the first column (#516). we do this by requiring at least
-  // 1px of width on the body-cell wrapper element.
+  // require at least 1px of width to show the left selection border if
+  // necessary. this will be needed when selection includes cells in the first
+  // column (#1444).
   .bp-table-body-virtual-client {
     min-width: 1px;
   }
