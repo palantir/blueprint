@@ -288,6 +288,13 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * marked with their own `className` for custom styling.
      */
     styledRegionGroups?: IStyledRegionGroup[];
+
+    /**
+     * If `true`, adds an interaction bar on top of all column header cells, and
+     * moves interaction triggers into it.
+     * @default false
+     */
+    useInteractionBar?: boolean;
 }
 
 export interface ITableState {
@@ -363,6 +370,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         renderMode: RenderMode.BATCH,
         renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
+        useInteractionBar: false,
     };
 
     private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
