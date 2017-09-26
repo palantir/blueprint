@@ -11,12 +11,12 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
+import { Utils } from "../../common/utils";
 
-// amount in pixels that the content div width changes when truncated vs when
-// not truncated. Note: could be modified by styles
-// Note 2: this doesn't come from the width of the popover element, but the "right" style
-// on the div, which comes from styles
-const CONTENT_DIV_WIDTH_DELTA = 25;
+// Since we measure only the `textContent` of the cell to determine the
+// truncation state, we must account for the padding that is applied via CSS to
+// the cell.
+const CONTAINER_PADDING = 20;
 
 export enum TruncatedPopoverMode {
     ALWAYS,
@@ -80,7 +80,10 @@ export interface ITruncatedFormatProps extends IProps {
 
 export interface ITruncatedFormatState {
     isTruncated: boolean;
+    isPopoverOpen: boolean;
 }
+
+// const CELL_FONT_PROPERTIES_STRING = `normal normal normal normal 12px / 20px -apple-system, system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", Icons16, sans-serif`;
 
 @PureRender
 export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
@@ -92,12 +95,24 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         truncationSuffix: "...",
     };
 
-    public state: ITruncatedFormatState = { isTruncated: false };
+    public state: ITruncatedFormatState = {
+        isPopoverOpen: false,
+        isTruncated: false,
+    };
 
     private contentDiv: HTMLDivElement;
+    private cachedFontString: string;
+
+    public componentDidMount() {
+        this.setTruncationState();
+    }
+
+    public componentDidUpdate() {
+        this.setTruncationState();
+    }
 
     public render() {
-        const { children, detectTruncation, preformatted, truncateLength, truncationSuffix } = this.props;
+        const { children, detectTruncation, truncateLength, truncationSuffix } = this.props;
         const content = "" + children;
 
         let cellContent = content;
@@ -106,33 +121,13 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         if (this.shouldShowPopover(content)) {
-            const popoverClasses = classNames(
-                Classes.TABLE_TRUNCATED_POPOVER,
-                preformatted ? Classes.TABLE_POPOVER_WHITESPACE_PRE : Classes.TABLE_POPOVER_WHITESPACE_NORMAL,
-            );
-            const popoverContent = <div className={popoverClasses}>{children}</div>;
             const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT);
-            const constraints = [
-                {
-                    attachment: "together",
-                    to: "window",
-                },
-            ];
-
             return (
                 <div className={className}>
                     <div className={Classes.TABLE_TRUNCATED_VALUE} ref={this.handleContentDivRef}>
                         {cellContent}
                     </div>
-                    <Popover
-                        className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
-                        tetherOptions={{ constraints }}
-                        content={popoverContent}
-                        position={Position.BOTTOM}
-                        useSmartArrowPositioning={true}
-                    >
-                        <Icon iconName="more" />
-                    </Popover>
+                    {this.renderPopover()}
                 </div>
             );
         } else {
@@ -145,15 +140,57 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
     }
 
-    public componentDidMount() {
-        this.setTruncationState();
-    }
+    private renderPopover() {
+        const { children, preformatted } = this.props;
 
-    public componentDidUpdate() {
-        this.setTruncationState();
+        // <Popover> will always check the content's position on update
+        // regardless if it is open or not. This negatively affects perf due to
+        // layout thrashing. So instead we manage the popover state ourselves
+        // and mimic its popover target
+        if (this.state.isPopoverOpen) {
+            const popoverClasses = classNames(
+                Classes.TABLE_TRUNCATED_POPOVER,
+                preformatted ? Classes.TABLE_POPOVER_WHITESPACE_PRE : Classes.TABLE_POPOVER_WHITESPACE_NORMAL,
+            );
+            const popoverContent = <div className={popoverClasses}>{children}</div>;
+            const constraints = [
+                {
+                    attachment: "together",
+                    to: "window",
+                },
+            ];
+
+            return (
+                <Popover
+                    className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
+                    tetherOptions={{ constraints }}
+                    content={popoverContent}
+                    position={Position.BOTTOM}
+                    isOpen={true}
+                    onClose={this.handlePopoverClose}
+                    useSmartArrowPositioning={true}
+                >
+                    <Icon iconName="more" />
+                </Popover>
+            );
+        } else {
+            return (
+                <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
+                    <Icon iconName="more" />
+                </span>
+            );
+        }
     }
 
     private handleContentDivRef = (ref: HTMLDivElement) => (this.contentDiv = ref);
+
+    private handlePopoverOpen = () => {
+        this.setState({ isPopoverOpen: true } as ITruncatedFormatState);
+    };
+
+    private handlePopoverClose = () => {
+        this.setState({ isPopoverOpen: false } as ITruncatedFormatState);
+    };
 
     private shouldShowPopover(content: string) {
         const { detectTruncation, showPopover, truncateLength } = this.props;
@@ -178,34 +215,18 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         if (this.contentDiv === undefined) {
-            this.setState({ isTruncated: false });
+            this.setState({ isTruncated: false } as ITruncatedFormatState);
             return;
         }
 
-        const { isTruncated } = this.state;
+        if (this.cachedFontString == null) {
+            this.cachedFontString = Utils.getFontStringFromDom(this.contentDiv);
+        }
 
-        // take all measurements at once to avoid excessive DOM reflows.
-        const {
-            clientHeight: containerHeight,
-            clientWidth: containerWidth,
-            scrollHeight: actualContentHeight,
-            scrollWidth: contentWidth,
-        } = this.contentDiv;
-
-        // if the content is truncated, then a popover handle will be present as a
-        // sibling of the content. we don't want to consider that handle when
-        // calculating the width of the actual content, so subtract it.
-        const actualContentWidth = isTruncated ? contentWidth - CONTENT_DIV_WIDTH_DELTA : contentWidth;
-
-        // we of course truncate the content if it doesn't fit in the container. but we
-        // also aggressively truncate if they're the same size with truncation enabled;
-        // this addresses browser-crashing stack-overflow bugs at various zoom levels.
-        // (see: https://github.com/palantir/blueprint/pull/1519)
-        const shouldTruncate =
-            (isTruncated && actualContentWidth === containerWidth) ||
-            actualContentWidth > containerWidth ||
-            actualContentHeight > containerHeight;
-
-        this.setState({ isTruncated: shouldTruncate });
+        const contentWidth = Utils.measureText(this.contentDiv.textContent, this.cachedFontString).width;
+        const containerWidth = parseInt(this.props.parentCellWidth, 10);
+        const availableWidth = containerWidth - CONTAINER_PADDING;
+        const isTruncated = contentWidth > availableWidth;
+        this.setState({ isTruncated } as ITruncatedFormatState);
     }
 }

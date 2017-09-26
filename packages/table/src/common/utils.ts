@@ -22,11 +22,25 @@ export interface ClassDictionary {
 export interface ClassArray extends Array<ClassValue> {}
 // tslint:enable
 
+export interface ICssFontProperties {
+    "font-family"?: string;
+    "font-size"?: string;
+    "font-style"?: string;
+    "font-variant"?: string;
+    "font-weight"?: string;
+}
+
 /**
  * Since Firefox doesn't provide a computed "font" property, we manually
  * construct it using the ordered properties that can be specifed in CSS.
  */
-const CSS_FONT_PROPERTIES = ["font-style", "font-variant", "font-weight", "font-size", "font-family"];
+const CSS_FONT_PROPERTIES: Array<keyof ICssFontProperties> = [
+    "font-style",
+    "font-variant",
+    "font-weight",
+    "font-size",
+    "font-family",
+];
 
 // the functions using these interfaces now live in core. it's not clear how to
 // import interfaces from core and re-export them here, so just redefine them.
@@ -35,6 +49,14 @@ export interface IKeyWhitelist<T> {
 }
 export interface IKeyBlacklist<T> {
     exclude: Array<keyof T>;
+}
+
+let _CANVAS_SINGLETON: HTMLCanvasElement;
+function _getSingletonCanvasContext(): CanvasRenderingContext2D {
+    if (_CANVAS_SINGLETON == null) {
+        _CANVAS_SINGLETON = document.createElement("canvas");
+    }
+    return _CANVAS_SINGLETON.getContext("2d");
 }
 
 export const Utils = {
@@ -183,18 +205,60 @@ export const Utils = {
     },
 
     /**
-     * Measures the bounds of supplied element's textContent.
+     * Measures the bounds of supplied element's textContent assuming no
+     * text wrapping.
      *
-     * We use the computed font from the supplied element and a non-DOM canvas
-     * context to measure the text.
+     * To improve performance, provide the `fontProperties` parameter. Otherwise,
+     * we use the computed font from the supplied element.
      *
      * Returns a `TextMetrics` object.
      */
-    measureElementTextContent(element: Element) {
-        const context = document.createElement("canvas").getContext("2d");
-        const style = getComputedStyle(element, null);
-        context.font = CSS_FONT_PROPERTIES.map(prop => style.getPropertyValue(prop)).join(" ");
-        return context.measureText(element.textContent);
+    measureElementTextContent(element: Element, fontProperties?: string | ICssFontProperties) {
+        const fontString =
+            fontProperties != null ? Utils.getFontString(fontProperties) : Utils.getFontStringFromDom(element);
+
+        // accessing textContent does NOT force a reflow.
+        // see: "Differences from innerText" (3rd bullet) at
+        // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
+        return Utils.measureText(element.textContent, fontString);
+    },
+
+    /**
+     * Measures the bounds of supplied text, given the CSS-style font string.
+     *
+     * Uses a single non-DOM canvas context to measure the text.
+     *
+     * Returns a `TextMetrics` object.
+     */
+    measureText(text: string, fontString: string) {
+        const context = _getSingletonCanvasContext();
+        context.font = fontString;
+        return context.measureText(text);
+    },
+
+    /**
+     * Convert the provided font properties string or object into the equivalent CSS
+     * "font"-property shorthand string. Does not force a reflow, because the DOM is
+     * never accessed.
+     */
+    getFontString(fontProperties: string | ICssFontProperties) {
+        if (typeof fontProperties === "string") {
+            return fontProperties;
+        } else {
+            return CSS_FONT_PROPERTIES.map(prop => fontProperties[prop]).join(" ");
+        }
+    },
+
+    /**
+     * Lookup the provided element's computed font styles in the DOM, forcing a
+     * reflow, and return the equivalent CSS "font"-property shorthand string.
+     *
+     * For performance info, see:
+     * https://gist.github.com/paulirish/5d52fb081b3570c81e3a#getcomputedstyle
+     */
+    getFontStringFromDom(element: Element) {
+        const style = getComputedStyle(element);
+        return CSS_FONT_PROPERTIES.map(prop => style.getPropertyValue(prop)).join(" ");
     },
 
     /**

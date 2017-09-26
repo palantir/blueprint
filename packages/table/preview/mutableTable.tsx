@@ -34,6 +34,7 @@ import { RenderMode } from "../src/common/renderMode";
 import { IRegion } from "../src/regions";
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";
+import { SlowLayoutStack } from "./slowLayout";
 
 export enum FocusStyle {
     TAB,
@@ -71,6 +72,8 @@ const TRUNCATED_POPOVER_MODES: TruncatedPopoverMode[] = [
     TruncatedPopoverMode.NEVER,
     TruncatedPopoverMode.WHEN_TRUNCATED,
 ];
+
+const SLOW_LAYOUT_STACK_DEPTH = 120;
 
 const COLUMN_COUNT_DEFAULT_INDEX = 3;
 const ROW_COUNT_DEFAULT_INDEX = 4;
@@ -138,6 +141,7 @@ export interface IMutableTableState {
     enableRowReordering?: boolean;
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
+    enableSlowLayout?: boolean;
     numCols?: number;
     numFrozenCols?: number;
     numFrozenRows?: number;
@@ -178,6 +182,7 @@ const DEFAULT_STATE: IMutableTableState = {
     enableRowReordering: false,
     enableRowResizing: false,
     enableRowSelection: true,
+    enableSlowLayout: false,
     numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
     numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
     numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
@@ -224,39 +229,45 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
         return (
             <div className="container">
-                <Table
-                    allowMultipleSelection={this.state.enableMultiSelection}
-                    className={classNames("table", { "is-inline": this.state.showInline })}
-                    enableFocus={this.state.showFocusCell}
-                    fillBodyWithGhostCells={this.state.showGhostCells}
-                    getCellClipboardData={this.getCellValue}
-                    isColumnResizable={this.state.enableColumnResizing}
-                    isColumnReorderable={this.state.enableColumnReordering}
-                    isRowHeaderShown={this.state.showRowHeaders}
-                    isRowReorderable={this.state.enableRowReordering}
-                    isRowResizable={this.state.enableRowResizing}
-                    loadingOptions={this.getEnabledLoadingOptions()}
-                    numFrozenColumns={this.state.numFrozenCols}
-                    numFrozenRows={this.state.numFrozenRows}
-                    numRows={this.state.numRows}
-                    onSelection={this.onSelection}
-                    onCompleteRender={this.onCompleteRender}
-                    onColumnsReordered={this.onColumnsReordered}
-                    onColumnWidthChanged={this.onColumnWidthChanged}
-                    onCopy={this.onCopy}
-                    onFocus={this.onFocus}
-                    onVisibleCellsChange={this.onVisibleCellsChange}
-                    onRowHeightChanged={this.onRowHeightChanged}
-                    onRowsReordered={this.onRowsReordered}
-                    ref={this.refHandlers.table}
-                    renderBodyContextMenu={this.renderBodyContextMenu}
-                    renderMode={renderMode}
-                    renderRowHeader={this.renderRowHeader}
-                    selectionModes={this.getEnabledSelectionModes()}
-                    styledRegionGroups={this.getStyledRegionGroups()}
+                <SlowLayoutStack
+                    depth={SLOW_LAYOUT_STACK_DEPTH}
+                    enabled={this.state.enableSlowLayout}
+                    rootClassName={classNames("table", { "is-inline": this.state.showInline })}
+                    branchClassName={"slow-layout-fill"}
                 >
-                    {this.renderColumns()}
-                </Table>
+                    <Table
+                        allowMultipleSelection={this.state.enableMultiSelection}
+                        enableFocus={this.state.showFocusCell}
+                        fillBodyWithGhostCells={this.state.showGhostCells}
+                        getCellClipboardData={this.getCellValue}
+                        isColumnResizable={this.state.enableColumnResizing}
+                        isColumnReorderable={this.state.enableColumnReordering}
+                        isRowHeaderShown={this.state.showRowHeaders}
+                        isRowReorderable={this.state.enableRowReordering}
+                        isRowResizable={this.state.enableRowResizing}
+                        loadingOptions={this.getEnabledLoadingOptions()}
+                        numFrozenColumns={this.state.numFrozenCols}
+                        numFrozenRows={this.state.numFrozenRows}
+                        numRows={this.state.numRows}
+                        onSelection={this.onSelection}
+                        onCompleteRender={this.onCompleteRender}
+                        onColumnsReordered={this.onColumnsReordered}
+                        onColumnWidthChanged={this.onColumnWidthChanged}
+                        onCopy={this.onCopy}
+                        onFocus={this.onFocus}
+                        onVisibleCellsChange={this.onVisibleCellsChange}
+                        onRowHeightChanged={this.onRowHeightChanged}
+                        onRowsReordered={this.onRowsReordered}
+                        ref={this.refHandlers.table}
+                        renderBodyContextMenu={this.renderBodyContextMenu}
+                        renderMode={renderMode}
+                        renderRowHeader={this.renderRowHeader}
+                        selectionModes={this.getEnabledSelectionModes()}
+                        styledRegionGroups={this.getStyledRegionGroups()}
+                    >
+                        {this.renderColumns()}
+                    </Table>
+                </SlowLayoutStack>
                 {this.renderSidebar()}
             </div>
         );
@@ -534,7 +545,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h4>Page</h4>
                 <h6>Display</h6>
                 {this.renderFocusStyleSelectMenu()}
+                <h6>Perf</h6>
+                {this.renderSwitch("Slow layout", "enableSlowLayout")}
 
+                <h4>Settings</h4>
                 {this.renderResetButton()}
             </div>
         );
