@@ -303,9 +303,9 @@ describe("<Table>", () => {
                     <Column renderCell={renderCell} />
                 </Table>,
             );
-            expect(onCompleteRenderSpy.callCount).to.equal(1);
+            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
             table.setProps({ numRows: 101 });
-            expect(onCompleteRenderSpy.callCount).to.equal(2);
+            expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(2);
         });
 
         it("triggers immediately on mount/update with RenderMode.BATCH for very small batches", () => {
@@ -318,9 +318,10 @@ describe("<Table>", () => {
                     <Column renderCell={renderCell} />
                 </Table>,
             );
-            expect(onCompleteRenderSpy.callCount).to.equal(1);
+
+            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
             table.setProps({ numRows: 2 }); // still small enough to fit in one batch
-            expect(onCompleteRenderSpy.callCount).to.equal(2);
+            expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(2);
         });
     });
 
