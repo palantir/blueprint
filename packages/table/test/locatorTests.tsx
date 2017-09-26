@@ -49,7 +49,9 @@ describe("Locator", () => {
         ReactDOM.render(
             <div className="table-wrapper" style={style}>
                 <div className="body" style={style}>
-                    <div className="body-client" style={style}>B</div>
+                    <div className="body-client" style={style}>
+                        B
+                    </div>
                 </div>
             </div>,
             containerElement,
@@ -58,6 +60,7 @@ describe("Locator", () => {
         locator = new Locator(
             containerElement.query(".table-wrapper") as HTMLElement,
             containerElement.query(".body") as HTMLElement,
+            containerElement.query(".body-client") as HTMLElement,
         );
         locator.setGrid(grid);
     });
@@ -89,7 +92,7 @@ describe("Locator", () => {
                 const top = containerElement.query(".body").getBoundingClientRect().top;
                 expect(locator.convertPointToRow(top + 5)).to.equal(0);
                 expect(locator.convertPointToRow(top + 15)).to.equal(1);
-                expect(locator.convertPointToRow(top + (N_ROWS * ROW_HEIGHT) - (ROW_HEIGHT / 2))).to.equal(N_ROWS - 1);
+                expect(locator.convertPointToRow(top + N_ROWS * ROW_HEIGHT - ROW_HEIGHT / 2)).to.equal(N_ROWS - 1);
                 expect(locator.convertPointToRow(-1000)).to.equal(-1);
             });
         });
@@ -123,8 +126,8 @@ describe("Locator", () => {
                 originalScrollTop = bodyElement.scrollTop;
 
                 // make the table smaller, then scroll it one column and one row over
-                bodyElement.style.height = `${(N_ROWS / 2) * ROW_HEIGHT}px`;
-                bodyElement.style.width = `${(N_COLS / 2) * COL_WIDTH}px`;
+                bodyElement.style.height = `${N_ROWS / 2 * ROW_HEIGHT}px`;
+                bodyElement.style.width = `${N_COLS / 2 * COL_WIDTH}px`;
                 bodyElement.style.overflow = "auto";
                 bodyElement.scrollLeft = NUM_COLUMNS_SCROLLED_OUT_OF_VIEW * COL_WIDTH;
                 bodyElement.scrollTop = NUM_ROWS_SCROLLED_OUT_OF_VIEW * ROW_HEIGHT;
@@ -220,9 +223,10 @@ describe("Locator", () => {
     });
 
     function runTestSuiteForConvertPointToRowOrColumn(
-            elementSizeInPx: number,
-            nElements: number,
-            testFnName: "convertPointToColumn" | "convertPointToRow") {
+        elementSizeInPx: number,
+        nElements: number,
+        testFnName: "convertPointToColumn" | "convertPointToRow",
+    ) {
         const LAST_INDEX = nElements - 1;
 
         describe("out of bounds", () => {
@@ -255,7 +259,7 @@ describe("Locator", () => {
             // since we explicitly set the table width/height to fit one additional column/row, this
             // coordinate should fall beyond the last column but still be within the table's
             // bounding box.
-            runTest(((LAST_INDEX + 1) * elementSizeInPx) + 1, LAST_INDEX + 1);
+            runTest((LAST_INDEX + 1) * elementSizeInPx + 1, LAST_INDEX + 1);
         });
 
         function getElementMidpoint(elementIndex: number) {
@@ -271,19 +275,14 @@ describe("Locator", () => {
         function runTest(clientCoord: number, expectedResult: number) {
             it(`${clientCoord}px => ${expectedResult}`, () => {
                 const { top, left } = containerElement.query(".body").getBoundingClientRect();
-                const baseOffset = (testFnName === "convertPointToColumn") ? left : top;
+                const baseOffset = testFnName === "convertPointToColumn" ? left : top;
                 const actualResult = locator[testFnName](baseOffset + clientCoord, true);
                 expect(actualResult).to.equal(expectedResult);
             });
         }
     }
 
-    function assertCellLocatedProperly(
-        clientX: number,
-        clientY: number,
-        expectedRow: number,
-        expectedCol: number,
-    ) {
+    function assertCellLocatedProperly(clientX: number, clientY: number, expectedRow: number, expectedCol: number) {
         const cell = locator.convertPointToCell(clientX, clientY);
         expect(cell).to.deep.equal({ row: expectedRow, col: expectedCol });
     }
@@ -297,8 +296,8 @@ describe("Locator", () => {
         // return the midpoint of the desired cell within the table container as if the table
         // weren't scrolled
         return {
-            x: bodyRect.left + (col * COL_WIDTH) + colMidpointOffset,
-            y: bodyRect.top + (row * ROW_HEIGHT) + rowMidpointOffset,
+            x: bodyRect.left + col * COL_WIDTH + colMidpointOffset,
+            y: bodyRect.top + row * ROW_HEIGHT + rowMidpointOffset,
         };
     }
 });

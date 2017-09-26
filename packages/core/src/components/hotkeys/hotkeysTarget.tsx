@@ -99,4 +99,4 @@ export function HotkeysTarget<T extends { prototype: IHotkeysTarget }>(construct
         }
     };
     // tslint:enable
-};
+}

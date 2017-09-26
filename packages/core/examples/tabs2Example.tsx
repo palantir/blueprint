@@ -27,9 +27,9 @@ export class Tabs2Example extends BaseExample<ITabs2ExampleState> {
         vertical: false,
     };
 
-    private toggleActiveOnly = handleBooleanChange((activePanelOnly) => this.setState({ activePanelOnly }));
-    private toggleAnimate = handleBooleanChange((animate) => this.setState({ animate }));
-    private toggleVertical = handleBooleanChange((vertical) => this.setState({ vertical }));
+    private toggleActiveOnly = handleBooleanChange(activePanelOnly => this.setState({ activePanelOnly }));
+    private toggleAnimate = handleBooleanChange(animate => this.setState({ animate }));
+    private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
     protected renderExample() {
         return (
@@ -107,9 +107,8 @@ const ReactPanel: React.SFC<{}> = () => (
     <div>
         <h3>Example panel: React</h3>
         <p className="pt-running-text">
-            Lots of people use React as the V in MVC. Since React makes no assumptions about the
-            rest of your technology stack, it's easy to try it out on a small feature in an existing
-            project.
+            Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology
+            stack, it's easy to try it out on a small feature in an existing project.
         </p>
     </div>
 );
@@ -118,10 +117,9 @@ const AngularPanel: React.SFC<{}> = () => (
     <div>
         <h3>Example panel: Angular</h3>
         <p className="pt-running-text">
-            HTML is great for declaring static documents, but it falters when we try to use it for
-            declaring dynamic views in web-applications. AngularJS lets you extend HTML vocabulary
-            for your application. The resulting environment is extraordinarily expressive, readable,
-            and quick to develop.
+            HTML is great for declaring static documents, but it falters when we try to use it for declaring dynamic
+            views in web-applications. AngularJS lets you extend HTML vocabulary for your application. The resulting
+            environment is extraordinarily expressive, readable, and quick to develop.
         </p>
     </div>
 );
@@ -130,10 +128,9 @@ const EmberPanel: React.SFC<{}> = () => (
     <div>
         <h3>Example panel: Ember</h3>
         <p className="pt-running-text">
-            Ember.js is an open-source JavaScript application framework, based on the
-            model-view-controller (MVC) pattern. It allows developers to create scalable single-page
-            web applications by incorporating common idioms and best practices into the framework.
-            What is your favorite JS framework?
+            Ember.js is an open-source JavaScript application framework, based on the model-view-controller (MVC)
+            pattern. It allows developers to create scalable single-page web applications by incorporating common idioms
+            and best practices into the framework. What is your favorite JS framework?
         </p>
         <input className="pt-input" type="text" />
     </div>

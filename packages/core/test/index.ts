@@ -9,6 +9,7 @@ import "./collapse/collapseTests";
 import "./collapsible-list/collapsibleListTests";
 import "./common/propsTests.ts";
 import "./common/tetherUtilsTests.ts";
+import "./common/utils/compareUtilsTests.ts";
 import "./common/utilsTests.ts";
 import "./context-menu/contextMenuTests";
 import "./controls/controlsTests";

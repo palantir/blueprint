@@ -20,7 +20,7 @@ const KeyIcons = {
     right: "pt-icon-arrow-right",
     shift: "pt-icon-key-shift",
     up: "pt-icon-arrow-up",
-} as {[key: string]: string};
+} as { [key: string]: string };
 
 export interface IKeyComboProps {
     allowInInput?: boolean;
@@ -48,7 +48,11 @@ export class KeyCombo extends React.Component<IKeyComboProps, {}> {
                 if (key.length === 1) {
                     key = key.toUpperCase();
                 }
-                components.push(<kbd className="pt-key" key={`key-${i}`}>{key}</kbd>);
+                components.push(
+                    <kbd className="pt-key" key={`key-${i}`}>
+                        {key}
+                    </kbd>,
+                );
             }
         }
         return <div className="pt-key-combo">{components}</div>;

@@ -18,10 +18,10 @@ const SIZES = [
 ];
 
 export class SpinnerExample extends ProgressExample {
-    private handleSizeChange = handleStringChange((className) => this.setState({ className }));
+    private handleSizeChange = handleStringChange(className => this.setState({ className }));
 
     protected renderExample() {
-        const {className, hasValue, intent, value} = this.state;
+        const { className, hasValue, intent, value } = this.state;
         return <Spinner className={className} intent={intent} value={hasValue ? value : null} />;
     }
 
@@ -32,7 +32,11 @@ export class SpinnerExample extends ProgressExample {
                 Size (via <code>className</code>)
                 <div className={Classes.SELECT}>
                     <select value={this.state.className} onChange={this.handleSizeChange}>
-                        {SIZES.map((opt, i) => <option key={i} {...opt}>{opt.label}</option>)}
+                        {SIZES.map((opt, i) => (
+                            <option key={i} {...opt}>
+                                {opt.label}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </label>,

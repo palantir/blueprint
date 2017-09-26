@@ -35,13 +35,20 @@ export class Tag extends React.Component<ITagProps, {}> {
 
     public render() {
         const { active, className, intent, onRemove } = this.props;
-        const tagClasses = classNames(Classes.TAG, Classes.intentClass(intent), {
-            [Classes.TAG_REMOVABLE]: onRemove != null,
-            [Classes.ACTIVE]: active,
-        }, className);
-        const button = Utils.isFunction(onRemove)
-            ? <button type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick} />
-            : undefined;
+        const tagClasses = classNames(
+            Classes.TAG,
+            Classes.intentClass(intent),
+            {
+                [Classes.TAG_REMOVABLE]: onRemove != null,
+                [Classes.ACTIVE]: active,
+            },
+            className,
+        );
+        const button = Utils.isFunction(onRemove) ? (
+            <button type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick} />
+        ) : (
+            undefined
+        );
 
         return (
             <span {...removeNonHTMLProps(this.props)} className={tagClasses}>
@@ -53,7 +60,7 @@ export class Tag extends React.Component<ITagProps, {}> {
 
     private onRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         Utils.safeInvoke(this.props.onRemove, e, this.props);
-    }
+    };
 }
 
 export const TagFactory = React.createFactory(Tag);

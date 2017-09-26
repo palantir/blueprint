@@ -103,7 +103,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         }
         this.currentKeyDown = e.which;
         safeInvoke(this.props.onKeyDown, e);
-    }
+    };
 
     protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
         if (isKeyboardClick(e.which)) {
@@ -112,7 +112,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         }
         this.currentKeyDown = null;
         safeInvoke(this.props.onKeyUp, e);
-    }
+    };
 
     protected renderChildren(): React.ReactNode {
         const { loading, rightIconName, text } = this.props;

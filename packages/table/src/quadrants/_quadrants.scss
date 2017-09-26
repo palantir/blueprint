@@ -1,6 +1,6 @@
 
-@import "../../core/src/common/mixins";
-@import "./common/variables";
+@import "~@blueprintjs/core/src/common/mixins";
+@import "../common/variables";
 
 $table-quadrant-z-index-main: 0;
 $table-quadrant-z-index-top: $table-quadrant-z-index-main + 1;
@@ -11,6 +11,12 @@ $table-quadrant-z-index-top-left: $table-quadrant-z-index-left + 1;
 // LEFT, and TOP_LEFT quadrants. this value specifies the distance the scroll containers should
 // overflow within their parents; it should be large enough to hide a scrollbar of typical width.
 $table-quadrant-scroll-container-overflow: 20px;
+
+.bp-table-quadrant-stack {
+  display: flex;
+  position: relative;
+  height: 100%;
+}
 
 .bp-table-quadrant {
   position: absolute;
@@ -26,7 +32,7 @@ $table-quadrant-scroll-container-overflow: 20px;
 
 .bp-table-quadrant-scroll-container {
   @include force-hardware-acceleration();
-  position: absolute;
+  position: relative;
   top: 0;
   right: 0;
   bottom: 0;
@@ -51,9 +57,22 @@ $table-quadrant-scroll-container-overflow: 20px;
 }
 
 .bp-table-quadrant-main {
-  right: 0;
-  bottom: 0;
+  // use `relative` to ensure the table can size itself according to the MAIN quadrant's contents alone.
+  // other quadrants should remain `absolute` to ensure they're taken out of the document flow.
+  position: relative;
+  top: auto;
+  left: auto;
   z-index: $table-quadrant-z-index-main;
+  // the MAIN quadrant should fill the whole table so that ghost cells will be visible if enabled
+  width: 100%;
+  height: 100%;
+
+  .bp-table-quadrant-scroll-container {
+    // the MAIN quadrant's scroll bars should be visible and should be flush with the right and
+    // bottom edges of the table.
+    width: 100%;
+    height: 100%;
+  }
 
   .bp-table-cell-client {
     background: $white;
@@ -74,14 +93,24 @@ $table-quadrant-scroll-container-overflow: 20px;
   bottom: 0;
   z-index: $table-quadrant-z-index-left;
 
+  // animate width changes on scroll end
+  transition: width $pt-transition-duration $pt-transition-ease;
+
   .bp-table-quadrant-scroll-container {
+    position: absolute;
+    top: 0;
     right: -$table-quadrant-scroll-container-overflow;
+    bottom: 0;
+    height: auto;
     overflow-x: hidden;
   }
 }
 
 .bp-table-quadrant-top-left {
   z-index: $table-quadrant-z-index-top-left;
+
+  // animate width changes on scroll end
+  transition: width $pt-transition-duration $pt-transition-ease;
 
   .bp-table-quadrant-scroll-container {
     right: -$table-quadrant-scroll-container-overflow;

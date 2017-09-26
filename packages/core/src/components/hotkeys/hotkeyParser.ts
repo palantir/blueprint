@@ -35,43 +35,43 @@ export const KeyCodes = {
     45: "ins",
     46: "del",
     // number keys
-    48 : "0",
-    49 : "1",
-    50 : "2",
-    51 : "3",
-    52 : "4",
-    53 : "5",
-    54 : "6",
-    55 : "7",
-    56 : "8",
-    57 : "9",
+    48: "0",
+    49: "1",
+    50: "2",
+    51: "3",
+    52: "4",
+    53: "5",
+    54: "6",
+    55: "7",
+    56: "8",
+    57: "9",
     // alphabet
-    65 : "a",
-    66 : "b",
-    67 : "c",
-    68 : "d",
-    69 : "e",
-    70 : "f",
-    71 : "g",
-    72 : "h",
-    73 : "i",
-    74 : "j",
-    75 : "k",
-    76 : "l",
-    77 : "m",
-    78 : "n",
-    79 : "o",
-    80 : "p",
-    81 : "q",
-    82 : "r",
-    83 : "s",
-    84 : "t",
-    85 : "u",
-    86 : "v",
-    87 : "w",
-    88 : "x",
-    89 : "y",
-    90 : "z",
+    65: "a",
+    66: "b",
+    67: "c",
+    68: "d",
+    69: "e",
+    70: "f",
+    71: "g",
+    72: "h",
+    73: "i",
+    74: "j",
+    75: "k",
+    76: "l",
+    77: "m",
+    78: "n",
+    79: "o",
+    80: "p",
+    81: "q",
+    82: "r",
+    83: "s",
+    84: "t",
+    85: "u",
+    86: "v",
+    87: "w",
+    88: "x",
+    89: "y",
+    90: "z",
     // punctuation
     106: "*",
     107: "+",
@@ -88,7 +88,7 @@ export const KeyCodes = {
     219: "[",
     220: "\\",
     221: "]",
-    222: "\'",
+    222: "'",
 } as IKeyCodeTable;
 
 export const Modifiers = {
@@ -126,20 +126,20 @@ export const ShiftKeys = {
     "!": "1",
     "@": "2",
     "#": "3",
-    "$": "4",
+    $: "4",
     "%": "5",
     "^": "6",
     "&": "7",
     "*": "8",
     "(": "9",
     ")": "0",
-    "_": "-",
+    _: "-",
     "+": "=",
     "{": "[",
     "}": "]",
     "|": "\\",
     ":": ";",
-    "\"": "\'",
+    '"': "'",
     "<": ",",
     ">": ".",
     "?": "/",
@@ -177,7 +177,10 @@ export function comboMatches(a: IKeyCombo, b: IKeyCombo) {
  * unshifted version. For example, `@` is equivalent to `shift+2`.
  */
 export const parseKeyCombo = (combo: string): IKeyCombo => {
-    const pieces = combo.replace(/\s/g, "").toLowerCase().split("+");
+    const pieces = combo
+        .replace(/\s/g, "")
+        .toLowerCase()
+        .split("+");
     let modifiers = 0;
     let key = null as string;
     for (let piece of pieces) {
@@ -209,7 +212,7 @@ export const parseKeyCombo = (combo: string): IKeyCombo => {
  * for unit tests.
  */
 const normalizeKeyCode = (e: KeyboardEvent) => {
-    return (e.which === 0 && e.key != null) ? e.key.charCodeAt(0) : e.which;
+    return e.which === 0 && e.key != null ? e.key.charCodeAt(0) : e.which;
 };
 
 /**
@@ -219,10 +222,18 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
     const keys = [] as string[];
 
     // modifiers first
-    if (e.ctrlKey) { keys.push("ctrl"); }
-    if (e.altKey) { keys.push("alt"); }
-    if (e.shiftKey) { keys.push("shift"); }
-    if (e.metaKey) { keys.push("meta"); }
+    if (e.ctrlKey) {
+        keys.push("ctrl");
+    }
+    if (e.altKey) {
+        keys.push("alt");
+    }
+    if (e.shiftKey) {
+        keys.push("shift");
+    }
+    if (e.metaKey) {
+        keys.push("meta");
+    }
 
     const which = normalizeKeyCode(e);
     if (Modifiers[which] != null) {
@@ -256,10 +267,18 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
 
     let modifiers = 0;
     // tslint:disable no-string-literal
-    if (e.altKey) { modifiers += ModifierBitMasks["alt"]; }
-    if (e.ctrlKey) { modifiers += ModifierBitMasks["ctrl"]; }
-    if (e.metaKey) { modifiers += ModifierBitMasks["meta"]; }
-    if (e.shiftKey) { modifiers += ModifierBitMasks["shift"]; }
+    if (e.altKey) {
+        modifiers += ModifierBitMasks["alt"];
+    }
+    if (e.ctrlKey) {
+        modifiers += ModifierBitMasks["ctrl"];
+    }
+    if (e.metaKey) {
+        modifiers += ModifierBitMasks["meta"];
+    }
+    if (e.shiftKey) {
+        modifiers += ModifierBitMasks["shift"];
+    }
     // tslint:enable
 
     return { modifiers, key };
@@ -274,20 +293,15 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
  */
 export const normalizeKeyCombo = (combo: string, platformOverride?: string): string[] => {
     const keys = combo.replace(/\s/g, "").split("+");
-    return keys.map((key) => {
-        const keyName = (Aliases[key] != null) ? Aliases[key] : key;
-        return (keyName === "meta")
-            ? (isMac(platformOverride) ? "cmd" : "ctrl")
-            : keyName;
+    return keys.map(key => {
+        const keyName = Aliases[key] != null ? Aliases[key] : key;
+        return keyName === "meta" ? (isMac(platformOverride) ? "cmd" : "ctrl") : keyName;
     });
 };
 /* tslint:enable:no-string-literal */
 
 function isMac(platformOverride?: string) {
-    const platform = platformOverride != null
-        ? platformOverride
-        : (typeof navigator !== "undefined" ? navigator.platform : undefined);
-    return platform == null
-        ? false
-        : /Mac|iPod|iPhone|iPad/.test(platform);
+    const platform =
+        platformOverride != null ? platformOverride : typeof navigator !== "undefined" ? navigator.platform : undefined;
+    return platform == null ? false : /Mac|iPod|iPhone|iPad/.test(platform);
 }

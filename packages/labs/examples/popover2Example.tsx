@@ -32,8 +32,11 @@ const INTERACTION_KINDS = [
     { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
 ];
 
-const PLACEMENTS = (PopperJS as any).placements
-    .map((p: PopperJS.Placement) => <option key={p} value={p}>{p}</option>);
+const PLACEMENTS = (PopperJS as any).placements.map((p: PopperJS.Placement) => (
+    <option key={p} value={p}>
+        {p}
+    </option>
+));
 
 const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
 
@@ -71,25 +74,27 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
 
     protected className = "docs-popover2-example";
 
-    private handleExampleIndexChange = handleNumberChange((exampleIndex) => this.setState({ exampleIndex }));
-    private handleInteractionChange = handleNumberChange((interactionKind) => {
+    private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
+    private handleInteractionChange = handleNumberChange(interactionKind => {
         const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, hasBackdrop });
     });
 
     private handlePlacementChange = handleStringChange((placement: PopperJS.Placement) => this.setState({ placement }));
-    private handleBoundaryChange = handleStringChange((boundary: PopperJS.Boundary) => this.setState({
-        modifiers: {
-            ...this.state.modifiers,
-            preventOverflow: {
-                boundariesElement: boundary,
-                enabled: boundary.length > 0,
+    private handleBoundaryChange = handleStringChange((boundary: PopperJS.Boundary) =>
+        this.setState({
+            modifiers: {
+                ...this.state.modifiers,
+                preventOverflow: {
+                    boundariesElement: boundary,
+                    enabled: boundary.length > 0,
+                },
             },
-        },
-     }));
+        }),
+    );
 
-    private toggleEscapeKey = handleBooleanChange((canEscapeKeyClose) => this.setState({ canEscapeKeyClose }));
-    private toggleInline = handleBooleanChange((inline) => {
+    private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+    private toggleInline = handleBooleanChange(inline => {
         if (inline) {
             this.setState({
                 inline,
@@ -100,7 +105,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
             this.setState({ inline });
         }
     });
-    private toggleMinimal = handleBooleanChange((minimal) => this.setState({ minimal }));
+    private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
 
     protected renderExample() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
@@ -109,16 +114,12 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
         });
         return (
             <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
-                <Popover2
-                    popoverClassName={popover2ClassName}
-                    portalClassName="foo"
-                    {...popoverProps}
-                >
+                <Popover2 popoverClassName={popover2ClassName} portalClassName="foo" {...popoverProps}>
                     <Button intent={Intent.PRIMARY} text="Popover target" />
                     {this.getContents(exampleIndex)}
                 </Popover2>
                 <p>
-                    Scroll around this container to experiment<br/>
+                    Scroll around this container to experiment<br />
                     with <code>flip</code> and <code>preventOverflow</code> modifiers.
                 </p>
             </div>
@@ -151,19 +152,15 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                         </select>
                     </div>
                 </label>,
-                <Switch
-                    checked={this.state.inline}
-                    label="Inline"
-                    key="inline"
-                    onChange={this.toggleInline}
-                />,
+                <Switch checked={this.state.inline} label="Inline" key="inline" onChange={this.toggleInline} />,
                 <Switch
                     checked={this.state.minimal}
                     label="Minimal (no arrow, simple transition)"
                     key="minimal"
                     onChange={this.toggleMinimal}
                 />,
-            ], [
+            ],
+            [
                 <h5 key="int">Interactions</h5>,
                 <RadioGroup
                     key="interaction"
@@ -179,7 +176,8 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                     onChange={this.toggleEscapeKey}
                 />,
                 <br key="break" />,
-            ], [
+            ],
+            [
                 <h5 key="mod">Modifiers</h5>,
                 <Switch
                     checked={arrow.enabled}
@@ -225,27 +223,18 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
             <div>
                 <h5>Popover2 title</h5>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.
                 </p>
                 <button className={classNames(Classes.BUTTON, Classes.POPOVER_DISMISS)}>Dismiss</button>
             </div>,
             <div>
                 <label className={Classes.LABEL}>
                     Enter some text
-                    <input
-                        autoFocus={true}
-                        className={Classes.INPUT}
-                        type="text"
-                    />
+                    <input autoFocus={true} className={Classes.INPUT} type="text" />
                 </label>
             </div>,
-            <Slider
-                min={0}
-                max={10}
-                onChange={this.handleSliderChange}
-                value={this.state.sliderValue}
-            />,
+            <Slider min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
             <Menu>
                 <MenuDivider title="Edit" />
                 <MenuItem iconName="cut" text="Cut" label="⌘X" />
@@ -271,7 +260,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
     private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
 
     private getModifierChangeHandler(name: keyof PopperJS.Modifiers) {
-        return handleBooleanChange((enabled) => {
+        return handleBooleanChange(enabled => {
             this.setState({
                 modifiers: {
                     ...this.state.modifiers,
@@ -287,5 +276,5 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
             container.scrollTop = div.clientHeight / 4;
             container.scrollLeft = div.clientWidth / 4;
         }
-    }
+    };
 }

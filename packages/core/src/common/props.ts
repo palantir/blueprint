@@ -87,6 +87,7 @@ const INVALID_PROPS = [
     "iconName",
     "inputRef",
     "intent",
+    "inline",
     "loading",
     "leftIconName",
     "onChildrenMount",
@@ -109,15 +110,17 @@ export function removeNonHTMLProps(
     invalidProps = INVALID_PROPS,
     shouldMerge = false,
 ): { [key: string]: any } {
-
     if (shouldMerge) {
         invalidProps = invalidProps.concat(INVALID_PROPS);
     }
 
-    return invalidProps.reduce((prev, curr) => {
-        if (prev.hasOwnProperty(curr)) {
-            delete (prev as any)[curr];
-        }
-        return prev;
-    }, { ...props });
+    return invalidProps.reduce(
+        (prev, curr) => {
+            if (prev.hasOwnProperty(curr)) {
+                delete (prev as any)[curr];
+            }
+            return prev;
+        },
+        { ...props },
+    );
 }

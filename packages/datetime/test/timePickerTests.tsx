@@ -472,7 +472,7 @@ describe("<TimePicker>", () => {
             assert.isTrue(onTimePickerChange.notCalled);
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
-            TestUtils.Simulate.keyDown(hourInput, {which: Keys.ARROW_UP});
+            TestUtils.Simulate.keyDown(hourInput, { which: Keys.ARROW_UP });
             assert.isTrue(onTimePickerChange.calledOnce);
             assert.isTrue((onTimePickerChange.firstCall.args[0] as Date).getHours() === 1);
         });
@@ -648,7 +648,7 @@ describe("<TimePicker>", () => {
 
     function renderTimePicker(props?: Partial<ITimePickerProps>) {
         timePicker = ReactDOM.render(
-            <TimePicker onChange={onTimePickerChange} {...props}/>,
+            <TimePicker onChange={onTimePickerChange} {...props} />,
             testsContainerElement,
         ) as TimePicker;
     }

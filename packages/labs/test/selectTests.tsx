@@ -22,9 +22,9 @@ describe("<Select>", () => {
         query: "",
     };
     let handlers: {
-        itemPredicate: Sinon.SinonSpy,
-        itemRenderer: Sinon.SinonSpy,
-        onItemSelect: Sinon.SinonSpy,
+        itemPredicate: Sinon.SinonSpy;
+        itemRenderer: Sinon.SinonSpy;
+        onItemSelect: Sinon.SinonSpy;
     };
 
     beforeEach(() => {
@@ -47,6 +47,12 @@ describe("<Select>", () => {
         assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
+    it("disabled=true disables Popover", () => {
+        const wrapper = select({ disabled: true, popoverProps: { inline: true } });
+        wrapper.find("table").simulate("click");
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+    });
+
     it("itemRenderer is called for each filtered child", () => {
         select({}, "1999");
         // each item rendered before setting query, then 4 items filtered rendered twice (TODO: why)
@@ -63,22 +69,31 @@ describe("<Select>", () => {
         assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
     });
 
-    it("clicking item invokes onSelectItem", () => {
+    it("clicking item invokes onItemSelect", () => {
         const wrapper = select();
-        wrapper.find("a").at(4).simulate("click");
+        wrapper
+            .find("a")
+            .at(4)
+            .simulate("click");
         assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
     });
 
     it("clicking item preserves state when resetOnSelect=false", () => {
         const wrapper = select({ resetOnSelect: false }, "1972");
-        wrapper.find("a").at(0).simulate("click");
+        wrapper
+            .find("a")
+            .at(0)
+            .simulate("click");
         assert.strictEqual(wrapper.state("activeItem"), TOP_100_FILMS[1]);
         assert.strictEqual(wrapper.state("query"), "1972");
     });
 
     it("clicking item resets state when resetOnSelect=true", () => {
         const wrapper = select({ resetOnSelect: true }, "1972");
-        wrapper.find("a").at(0).simulate("click");
+        wrapper
+            .find("a")
+            .at(0)
+            .simulate("click");
         assert.strictEqual(wrapper.state("activeItem"), TOP_100_FILMS[0]);
         assert.strictEqual(wrapper.state("query"), "");
     });
@@ -107,7 +122,11 @@ describe("<Select>", () => {
     it("returns focus to focusable target after popover closed");
 
     function select(props: Partial<ISelectProps<Film>> = {}, query?: string) {
-        const wrapper = mount(<FilmSelect {...defaultProps} {...handlers} {...props}><table /></FilmSelect>);
+        const wrapper = mount(
+            <FilmSelect {...defaultProps} {...handlers} {...props}>
+                <table />
+            </FilmSelect>,
+        );
         if (query !== undefined) {
             wrapper.setState({ query });
         }
@@ -121,7 +140,9 @@ function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererPr
         [Classes.INTENT_PRIMARY]: isActive,
     });
     return (
-        <a className={classes} key={film.rank} onClick={handleClick}>{film.rank}. {film.title}</a>
+        <a className={classes} key={film.rank} onClick={handleClick}>
+            {film.rank}. {film.title}
+        </a>
     );
 }
 

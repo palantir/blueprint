@@ -32,14 +32,11 @@ export interface IPrecisionSelectProps {
     label?: string;
 }
 
-export const PrecisionSelect: React.SFC<IPrecisionSelectProps> = (props) => (
+export const PrecisionSelect: React.SFC<IPrecisionSelectProps> = props => (
     <label className={Classes.LABEL}>
         {props.label == null ? props.label : "Precision"}
         <div className={Classes.SELECT}>
-            <select
-                value={props.value}
-                onChange={props.onChange}
-            >
+            <select value={props.value} onChange={props.onChange}>
                 {props.allowEmpty ? <option value="-1">None</option> : undefined}
                 <option value={TimePickerPrecision.MINUTE.toString()}>Minute</option>
                 <option value={TimePickerPrecision.SECOND.toString()}>Second</option>

@@ -13,10 +13,14 @@ import { IActionProps, ILinkProps } from "../../common/props";
 
 export interface IBreadcrumbProps extends IActionProps, ILinkProps {}
 
-export const Breadcrumb: React.SFC<IBreadcrumbProps> = (breadcrumbProps) => {
-    const classes = classNames(Classes.BREADCRUMB, {
-        [Classes.DISABLED]: breadcrumbProps.disabled,
-    }, breadcrumbProps.className);
+export const Breadcrumb: React.SFC<IBreadcrumbProps> = breadcrumbProps => {
+    const classes = classNames(
+        Classes.BREADCRUMB,
+        {
+            [Classes.DISABLED]: breadcrumbProps.disabled,
+        },
+        breadcrumbProps.className,
+    );
     return (
         <a
             className={classes}

@@ -96,21 +96,51 @@ regular expression (`[a-zA-Z]`). If the content is invalid, a
 
 @### Reordering
 
-The table supports column and row reordering via the `isColumnReorderable` and `isRowReorderable`
-props, respectively. The table also requires the `FULL_COLUMNS` selection mode to be enabled for
-column reordering and the `FULL_ROWS` selection mode to be enabled for row reordering; these can be
-set via the `selectionModes` prop.
+The table supports drag-reordering of columns and rows via the `isColumnReorderable` and `isRowReorderable`
+props, respectively.
 
-To reorder a single row or column, first click its header cell to select it, then click and drag the
-header cell again to move it elsewhere. Likewise, to reorder multiple consecutive rows or columns at
-once, click and drag across multiple header cells to select the range, then click and drag anywhere in
-the selected header cells to move them as a group.
+#### Reordering columns
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>Column reordering with interaction bar enabled</h5>
-    When the interaction bar is enabled, the table will show handle icons in the interaction bar that
-    you can drag directly without having to make a selection first.
-</div>
+When `isColumnReorderable={true}`, a drag handle will appear in the column header (or in the
+interaction bar, if `useInteractionBar={true}`).
+
+##### Single column
+
+To reorder a single column, click and drag the desired column's drag handle to the left or right,
+then release. This will work whether or not column selection is enabled.
+
+##### Multiple columns
+
+To allow reordering of multiple contiguous columns at once, first set the following additional
+props:
+
+- `allowMultipleSelection={true}`
+- `selectionModes={[RegionCardinality.FULL_COLUMNS, ...]}`
+
+Then drag-select the desired columns into a single selection, and grab any selected column's drag
+handle to reorder the entire selected block.
+
+##### Edge cases
+
+With disjoint column selections (specified via <kbd>Cmd</kbd> or <kbd>Ctrl</kbd> + click),
+only the selection containing the target drag handle will be reordered. All other
+selections will be cleared afterward.
+
+Reordering a column contained in two overlapping selections will currently result in undefined
+behavior.
+
+#### Reordering rows
+
+Rows do not have a drag handle, so they must be selected before reordering. To reorder a selection
+of one or more rows, simply click and drag anywhere in a selected row header, then release. Note
+that the following props must be set for row reordering to work:
+
+- `isRowHeaderShown={true}`
+- `isRowReorderable={true}`
+- `selectionModes={[RegionCardinality.FULL_ROWS, ...]}`
+- `allowMultipleSelection={true}` (to optionally enable multi-row reordering)
+
+#### Example
 
 @reactExample TableReorderableExample
 
@@ -179,6 +209,25 @@ components are available in the __@blueprintjs/table__ package.
 
 The top-level component of the table is `Table`. You must at least define the
 number of rows (`numRows` prop) as well as a set of `Column` children.
+
+@#### Instance methods
+
+- `resizeRowsByTallestCell(columnIndices?: number | number[]): void` &ndash; Resizes all rows in the
+   table to the height of the tallest visible cell in the specified columns. If no indices are
+   provided, defaults to using the tallest visible cell from all columns in view.
+- `scrollToRegion(region: IRegion): void` &ndash; Scrolls the table to the target region in a
+  fashion appropriate to the target region's cardinality:
+    - `CELLS`: Scroll the top-left cell in the target region to the top-left corner of the viewport.
+    - `FULL_ROWS`: Scroll the top-most row in the target region to the top of the viewport.
+    - `FULL_COLUMNS`: Scroll the left-most column in the target region to the left side of the viewport.
+    - `FULL_TABLE`: Scroll the top-left cell in the table to the top-left corner of the viewport.
+
+  If there are active frozen rows and/or columns, the target region will be positioned in the top-left
+  corner of the non-frozen area (unless the target region itself is in the frozen area).
+
+  If the target region is close to the bottom-right corner of the table, this function will simply
+  scroll the target region as close to the top-left as possible until the bottom-right corner is
+  reached.
 
 @interface ITableProps
 

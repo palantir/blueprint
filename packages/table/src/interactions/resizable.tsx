@@ -60,7 +60,6 @@ export interface IResizableProps extends IProps, ILockableLayout {
      * The initial dimensional size.
      */
     size: number;
-
 }
 
 export interface IResizeableState {
@@ -131,16 +130,16 @@ export class Resizable extends React.Component<IResizableProps, IResizeableState
         if (this.props.onSizeChanged != null) {
             this.props.onSizeChanged(this.state.size);
         }
-    }
+    };
 
     private onResizeEnd = (_offset: number) => {
         // reset "unclamped" size on end
-        this.setState({unclampedSize: this.state.size});
+        this.setState({ unclampedSize: this.state.size });
 
         if (this.props.onResizeEnd != null) {
             this.props.onResizeEnd(this.state.size);
         }
-    }
+    };
 
     /**
      * Returns the CSS style to apply to the child element given the state's
@@ -165,7 +164,7 @@ export class Resizable extends React.Component<IResizableProps, IResizeableState
     private offsetSize(offset: number) {
         const unclampedSize = this.state.unclampedSize + offset;
         this.setState({
-            size : Utils.clamp(unclampedSize, this.props.minSize, this.props.maxSize),
+            size: Utils.clamp(unclampedSize, this.props.minSize, this.props.maxSize),
             unclampedSize,
         });
     }

@@ -22,9 +22,7 @@ import {
 } from "../../src/index";
 
 describe("<NumericInput>", () => {
-
     describe("Defaults", () => {
-
         it("renders the buttons on the right by default", () => {
             const component = mount(<NumericInput />);
             const leftGroup = component.childAt(0);
@@ -69,7 +67,6 @@ describe("<NumericInput>", () => {
     });
 
     describe("Button position", () => {
-
         it("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
             const component = mount(<NumericInput buttonPosition={Position.RIGHT} />);
             const inputGroup = component.find(InputGroup);
@@ -82,7 +79,7 @@ describe("<NumericInput>", () => {
             expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
         });
 
-        it("does not render the buttons when buttonPosition == \"none\"", () => {
+        it('does not render the buttons when buttonPosition == "none"', () => {
             const component = mount(<NumericInput buttonPosition={"none"} />);
 
             const inputGroup = component.find(InputGroup);
@@ -126,7 +123,6 @@ describe("<NumericInput>", () => {
     });
 
     describe("Basic functionality", () => {
-
         it("works like a text input", () => {
             const component = mount(<NumericInput />);
 
@@ -226,7 +222,6 @@ describe("<NumericInput>", () => {
         const VALUE = "12345678";
 
         describe("selectAllOnFocus", () => {
-
             it("if false (the default), does not select any text on focus", () => {
                 const attachTo = document.createElement("div");
                 mount(<NumericInput value="12345678" />, { attachTo });
@@ -280,7 +275,6 @@ describe("<NumericInput>", () => {
     });
 
     describe("Keyboard text entry in input field", () => {
-
         const LESS_COMMON_SYMBOLS = stringToCharArray("åß∂ƒ©©˙∆˚≈ç√∫˜µ≤∑´®†¥¨ˆ≤≥");
 
         const NON_CHARACTER_KEYS = [
@@ -314,7 +308,7 @@ describe("<NumericInput>", () => {
         const NON_NUMERIC_LOWERCASE_LETTERS = stringToCharArray("abcdfghijklmnopqrstuvwxyz");
         const NON_NUMERIC_UPPERCASE_LETTERS = stringToCharArray("ABCDFGHIJKLMNOPQRSTUVWXYZ");
         const NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT = stringToCharArray("`=[]\\;',/");
-        const NON_NUMERIC_SYMBOLS_WITH_SHIFT = stringToCharArray("~!@#$%^&*()_{}|:\"<>?");
+        const NON_NUMERIC_SYMBOLS_WITH_SHIFT = stringToCharArray('~!@#$%^&*()_{}|:"<>?');
 
         const NUMERIC_DIGITS = stringToCharArray("0123456789"); // could be typed from the keyboard or numpad
         const NUMERIC_LOWERCASE_LETTERS = stringToCharArray("e");
@@ -328,7 +322,6 @@ describe("<NumericInput>", () => {
         const SPACE_CHAR = " ";
 
         describe("if allowNumericCharactersOnly = true", () => {
-
             it("disables keystroke for all letters except 'e' and 'E'", () => {
                 runTextInputSuite(NON_NUMERIC_LOWERCASE_LETTERS, true);
                 runTextInputSuite(NON_NUMERIC_UPPERCASE_LETTERS, true, { shiftKey: true });
@@ -392,14 +385,13 @@ describe("<NumericInput>", () => {
                 const inputField = component.find("input");
 
                 inputField.simulate("paste");
-                inputField.simulate("change", { target: { value: VALUE }});
+                inputField.simulate("change", { target: { value: VALUE } });
 
                 expect(component.state().value).to.equal(SANITIZED_VALUE);
             });
         });
 
         describe("if allowNumericCharactersOnly = false", () => {
-
             // Scope-wide flag for setting allowNumericCharactersOnly = false
             const PROP_FLAG: boolean = false;
 
@@ -451,7 +443,6 @@ describe("<NumericInput>", () => {
     });
 
     describe("Keyboard interactions in input field", () => {
-
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
             const mergedMockEvent = mockEvent || {};
             mergedMockEvent.keyCode = Keys.ARROW_UP;
@@ -475,7 +466,6 @@ describe("<NumericInput>", () => {
 
     // Enable these tests once we have a solution for testing Button onKeyUp callbacks (see PR #561)
     describe("Keyboard interactions on buttons (with Space key)", () => {
-
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
             const mergedMockEvent = mockEvent || {};
             mergedMockEvent.keyCode = Keys.SPACE;
@@ -499,7 +489,6 @@ describe("<NumericInput>", () => {
 
     // Enable these tests once we have a solution for testing Button onKeyUp callbacks (see PR #561)
     describe("Keyboard interactions on buttons (with Enter key)", () => {
-
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
             const mergedMockEvent = mockEvent || {};
             mergedMockEvent.keyCode = Keys.ENTER;
@@ -522,7 +511,6 @@ describe("<NumericInput>", () => {
     });
 
     describe("Mouse interactions", () => {
-
         const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("click", mockEvent);
@@ -537,9 +525,7 @@ describe("<NumericInput>", () => {
     });
 
     describe("Value bounds", () => {
-
         describe("if no bounds are defined", () => {
-
             it("enforces no minimum bound", () => {
                 const component = mount(<NumericInput />);
 
@@ -592,7 +578,6 @@ describe("<NumericInput>", () => {
         });
 
         describe("if `min` is defined", () => {
-
             it("decrements the value as usual if it is above the minimum", () => {
                 const MIN_VALUE = 0;
                 const component = mount(<NumericInput min={MIN_VALUE} />);
@@ -666,7 +651,6 @@ describe("<NumericInput>", () => {
         });
 
         describe("if `max` is defined", () => {
-
             it("increments the value as usual if it is above the minimum", () => {
                 const MAX_VALUE = 0;
                 const component = mount(<NumericInput max={MAX_VALUE} />);
@@ -740,7 +724,6 @@ describe("<NumericInput>", () => {
         });
 
         describe("clampValueOnBlur", () => {
-
             it("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", () => {
                 // should be false by default
                 const VALUE = "-5";
@@ -778,11 +761,9 @@ describe("<NumericInput>", () => {
             it("invokes onValueChange when out-of-bounds value clamped on blur", () => {
                 const onValueChange = sinon.spy();
                 const MIN = 0;
-                const component = mount(<NumericInput
-                    clampValueOnBlur={true}
-                    min={MIN}
-                    onValueChange={onValueChange}
-                />);
+                const component = mount(
+                    <NumericInput clampValueOnBlur={true} min={MIN} onValueChange={onValueChange} />,
+                );
                 const inputField = component.find("input");
 
                 inputField.simulate("change", { target: { value: "-5" } });
@@ -797,39 +778,52 @@ describe("<NumericInput>", () => {
     });
 
     describe("Validation", () => {
-
         it("throws an error if min >= max", () => {
-            const fn = () => { mount(<NumericInput min={2} max={1} />); };
+            const fn = () => {
+                mount(<NumericInput min={2} max={1} />);
+            };
             expect(fn).to.throw(Errors.NUMERIC_INPUT_MIN_MAX);
         });
 
         it("throws an error if stepSize is null", () => {
-            const fn = () => { mount(<NumericInput stepSize={null} />); };
+            const fn = () => {
+                mount(<NumericInput stepSize={null} />);
+            };
             expect(fn).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
         });
 
         it("throws an error if stepSize <= 0", () => {
-            const fn = () => { mount(<NumericInput stepSize={-1} />); };
+            const fn = () => {
+                mount(<NumericInput stepSize={-1} />);
+            };
             expect(fn).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if minorStepSize <= 0", () => {
-            const fn = () => { mount(<NumericInput minorStepSize={-0.1} />); };
+            const fn = () => {
+                mount(<NumericInput minorStepSize={-0.1} />);
+            };
             expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if majorStepSize <= 0", () => {
-            const fn = () => { mount(<NumericInput majorStepSize={-0.1} />); };
+            const fn = () => {
+                mount(<NumericInput majorStepSize={-0.1} />);
+            };
             expect(fn).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if majorStepSize <= stepSize", () => {
-            const fn = () => { mount(<NumericInput majorStepSize={0.5} />); };
+            const fn = () => {
+                mount(<NumericInput majorStepSize={0.5} />);
+            };
             expect(fn).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         });
 
         it("throws an error if stepSize <= minorStepSize", () => {
-            const fn = () => { mount(<NumericInput minorStepSize={2} />); };
+            const fn = () => {
+                mount(<NumericInput minorStepSize={2} />);
+            };
             expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         });
 
@@ -861,11 +855,10 @@ describe("<NumericInput>", () => {
     });
 
     describe("Other", () => {
-
         it("disables the input field and buttons when disabled is true", () => {
             const component = mount(<NumericInput disabled={true} />);
 
-            const inputGroup      = component.find(InputGroup);
+            const inputGroup = component.find(InputGroup);
             const decrementButton = component.find(Button).last();
             const incrementButton = component.find(Button).first();
 
@@ -877,7 +870,7 @@ describe("<NumericInput>", () => {
         it("disables the buttons and sets the input field to read-only when readOnly is true", () => {
             const component = mount(<NumericInput readOnly={true} />);
 
-            const inputGroup      = component.find(InputGroup);
+            const inputGroup = component.find(InputGroup);
             const decrementButton = component.find(Button).last();
             const incrementButton = component.find(Button).first();
 
@@ -929,7 +922,7 @@ describe("<NumericInput>", () => {
             const incrementButton = component.find(Button).first();
             const input = component.find("input");
 
-             // excess digits should truncate to max precision
+            // excess digits should truncate to max precision
             component.setState({ value: "0.0001" });
             incrementButton.simulate("click", { altKey: true });
             expect(input.prop("value")).to.equal("0.001");
@@ -955,23 +948,20 @@ describe("<NumericInput>", () => {
 
     function createNumericInputForInteractionSuite(overrides: Partial<HTMLInputProps & INumericInputProps> = {}) {
         // allow `null` to override the default values here
-        const majorStepSize = (overrides.majorStepSize !== undefined) ? overrides.majorStepSize : 20;
-        const minorStepSize = (overrides.minorStepSize !== undefined) ? overrides.minorStepSize : 0.2;
+        const majorStepSize = overrides.majorStepSize !== undefined ? overrides.majorStepSize : 20;
+        const minorStepSize = overrides.minorStepSize !== undefined ? overrides.minorStepSize : 0.2;
 
-        return mount(<NumericInput
-            majorStepSize={majorStepSize}
-            minorStepSize={minorStepSize}
-            stepSize={2}
-            value={10}
-        />);
+        return mount(
+            <NumericInput majorStepSize={majorStepSize} minorStepSize={minorStepSize} stepSize={2} value={10} />,
+        );
     }
 
     function runInteractionSuite(
         incrementDescription: string,
         decrementDescription: string,
         simulateIncrement: (component: ReactWrapper<any, {}>, mockEvent?: object) => void,
-        simulateDecrement: (component: ReactWrapper<any, {}>, mockEvent?: object) => void) {
-
+        simulateDecrement: (component: ReactWrapper<any, {}>, mockEvent?: object) => void,
+    ) {
         it(`increments by stepSize on ${incrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
@@ -1135,28 +1125,25 @@ describe("<NumericInput>", () => {
     }
 
     function stringToCharArray(str: string) {
-        return (str == null) ? [] : str.split("");
+        return str == null ? [] : str.split("");
     }
 
     function runTextInputSuite(
         invalidKeyNames: string[],
         expectDefaultPrevented: boolean,
         eventOptions?: Partial<KeyboardEvent>,
-        allowNumericCharactersOnly?: boolean) {
-
+        allowNumericCharactersOnly?: boolean,
+    ) {
         const onKeyPressSpy = sinon.spy();
-        const component = mount(<NumericInput
-            allowNumericCharactersOnly={allowNumericCharactersOnly}
-            onKeyPress={onKeyPressSpy}
-        />);
+        const component = mount(
+            <NumericInput allowNumericCharactersOnly={allowNumericCharactersOnly} onKeyPress={onKeyPressSpy} />,
+        );
         const inputField = component.find("input");
 
         invalidKeyNames.forEach((keyName, i) => {
             inputField.simulate("keypress", { key: keyName, ...eventOptions });
             const event = onKeyPressSpy.getCall(i).args[0] as KeyboardEvent;
-            const valueToCheck = (expectDefaultPrevented === true)
-                ? event.defaultPrevented
-                : !event.defaultPrevented; // can be undefined, so just check that it's falsey.
+            const valueToCheck = expectDefaultPrevented === true ? event.defaultPrevented : !event.defaultPrevented; // can be undefined, so just check that it's falsey.
             expect(valueToCheck).to.be.true;
         });
     }

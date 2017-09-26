@@ -47,14 +47,14 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
 
     private handleElement: HTMLElement;
     private refHandlers = {
-        handle: (el: HTMLSpanElement) => this.handleElement = el,
+        handle: (el: HTMLSpanElement) => (this.handleElement = el),
     };
 
     public render() {
         const { className, disabled, label, min, tickSize, value } = this.props;
         const { isMoving } = this.state;
         // getBoundingClientRect().height includes border size as opposed to clientHeight
-        const handleSize = (this.handleElement == null ? 0 : this.handleElement.getBoundingClientRect().height);
+        const handleSize = this.handleElement == null ? 0 : this.handleElement.getBoundingClientRect().height;
         return (
             <span
                 className={classNames(Classes.SLIDER_HANDLE, { [Classes.ACTIVE]: isMoving }, className)}
@@ -78,7 +78,9 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     /** Convert client pixel to value between min and max. */
     public clientToValue(clientPixel: number) {
         const { stepSize, tickSize, value } = this.props;
-        if (this.handleElement == null) { return value; }
+        if (this.handleElement == null) {
+            return value;
+        }
         const handleRect = this.handleElement.getBoundingClientRect();
         const handleCenterPixel = handleRect.left + handleRect.width / 2;
         const pixelDelta = clientPixel - handleCenterPixel;
@@ -96,7 +98,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         document.addEventListener("mouseup", this.endHandleMovement);
         this.setState({ isMoving: true });
         this.changeValue(this.clientToValue(event.clientX));
-    }
+    };
 
     public beginHandleTouchMovement = (event: TouchEvent | React.TouchEvent<HTMLElement>) => {
         document.addEventListener("touchmove", this.handleHandleTouchMovement);
@@ -104,7 +106,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         document.addEventListener("touchcancel", this.endHandleTouchMovement);
         this.setState({ isMoving: true });
         this.changeValue(this.clientToValue(this.touchEventClientX(event)));
-    }
+    };
 
     protected validateProps(props: IHandleProps) {
         for (const prop of NUMBER_PROPS) {
@@ -116,11 +118,11 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
 
     private endHandleMovement = (event: MouseEvent) => {
         this.handleMoveEndedAt(event.clientX);
-    }
+    };
 
     private endHandleTouchMovement = (event: TouchEvent) => {
         this.handleMoveEndedAt(this.touchEventClientX(event));
-    }
+    };
 
     private handleMoveEndedAt = (clientPixel: number) => {
         this.removeDocumentEventListeners();
@@ -129,21 +131,21 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         const { onRelease } = this.props;
         const finalValue = this.clamp(this.clientToValue(clientPixel));
         safeInvoke(onRelease, finalValue);
-    }
+    };
 
     private handleHandleMovement = (event: MouseEvent) => {
         this.handleMovedTo(event.clientX);
-    }
+    };
 
     private handleHandleTouchMovement = (event: TouchEvent) => {
         this.handleMovedTo(this.touchEventClientX(event));
-    }
+    };
 
     private handleMovedTo = (clientPixel: number) => {
         if (this.state.isMoving && !this.props.disabled) {
             this.changeValue(this.clientToValue(clientPixel));
         }
-    }
+    };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         const { stepSize, value } = this.props;
@@ -156,13 +158,13 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
             this.changeValue(value + stepSize);
             event.preventDefault();
         }
-    }
+    };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         if ([Keys.ARROW_UP, Keys.ARROW_DOWN, Keys.ARROW_LEFT, Keys.ARROW_RIGHT].indexOf(event.which) >= 0) {
             safeInvoke(this.props.onRelease, this.props.value);
         }
-    }
+    };
 
     /** Clamp value and invoke callback if it differs from current value */
     private changeValue(newValue: number, callback = this.props.onChange) {

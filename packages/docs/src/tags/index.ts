@@ -13,12 +13,7 @@ export interface ITagRendererMap {
 
 export type TagElement = JSX.Element | undefined;
 
-export type TagRenderer = (
-    tag: ITag,
-    key: React.Key,
-    tagRenderers: ITagRendererMap,
-    page?: IPageData,
-) => TagElement;
+export type TagRenderer = (tag: ITag, key: React.Key, tagRenderers: ITagRendererMap, page?: IPageData) => TagElement;
 
 export * from "./css";
 export * from "./defaults";

@@ -44,12 +44,7 @@ export class Rect {
         const rect0 = Rect.wrap(anyRect0);
         const rect1 = Rect.wrap(anyRect1);
 
-        return new Rect(
-            rect0.left - rect1.left,
-            rect0.top - rect1.top,
-            rect0.width,
-            rect0.height,
-        );
+        return new Rect(rect0.left - rect1.left, rect0.top - rect1.top, rect0.width, rect0.height);
     }
 
     /**
@@ -77,13 +72,7 @@ export class Rect {
         }
     }
 
-    public constructor(
-        public left: number,
-        public top: number,
-        public width: number,
-        public height: number,
-    ) {
-    }
+    public constructor(public left: number, public top: number, public width: number, public height: number) {}
 
     public subtractOrigin(anyRect: AnyRect) {
         return Rect.subtractOrigin(this, anyRect);
@@ -110,5 +99,15 @@ export class Rect {
 
     public containsY(clientY: number) {
         return clientY >= this.top && clientY <= this.top + this.height;
+    }
+
+    public equals(rect: Rect) {
+        return (
+            rect != null &&
+            this.left === rect.left &&
+            this.top === rect.top &&
+            this.width === rect.width &&
+            this.height === rect.height
+        );
     }
 }

@@ -11,8 +11,31 @@ import { Browser } from "@blueprintjs/core/dist/compatibility";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave" ;
-export type KeyboardEventType = "keypress" | "keydown" |  "keyup" ;
+export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave";
+export type KeyboardEventType = "keypress" | "keydown" | "keyup";
+
+export interface IHarnessMouseOptions {
+    /** @default 0 */
+    offsetX?: number;
+
+    /** @default 0 */
+    offsetY?: number;
+
+    /** @default false */
+    altKey?: boolean;
+
+    /** @default false */
+    ctrlKey?: boolean;
+
+    /** @default false */
+    metaKey?: boolean;
+
+    /** @default false */
+    shiftKey?: boolean;
+
+    /** @default 0 */
+    button?: number;
+}
 
 function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, modKey = false) {
     const event = document.createEvent("KeyboardEvent");
@@ -22,7 +45,7 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
     let metaKey = false;
 
     if (modKey) {
-        if ((typeof navigator !== "undefined") && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) {
+        if (typeof navigator !== "undefined" && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) {
             metaKey = true;
         } else {
             ctrlKey = true;
@@ -90,11 +113,30 @@ export class ElementHarness {
         return this;
     }
 
-    public mouse(eventType: MouseEventType = "click",
-                 offsetX = 0,
-                 offsetY = 0,
-                 isMetaKeyDown = false,
-                 isShiftKeyDown = false) {
+    public mouse(
+        eventType: MouseEventType = "click",
+        offsetXOrOptions: number | IHarnessMouseOptions = 0, // TODO: Change all tests to the object API
+        offsetY = 0,
+        isMetaKeyDown = false,
+        isShiftKeyDown = false,
+        button: number = 0,
+    ) {
+        let offsetX: number;
+        let isAltKeyDown: boolean;
+        let isCtrlKeyDown: boolean;
+
+        if (typeof offsetXOrOptions === "object") {
+            offsetX = this.defaultValue(offsetXOrOptions.offsetX, 0);
+            offsetY = this.defaultValue(offsetXOrOptions.offsetY, 0);
+            isAltKeyDown = this.defaultValue(offsetXOrOptions.altKey, false);
+            isCtrlKeyDown = this.defaultValue(offsetXOrOptions.ctrlKey, false);
+            isMetaKeyDown = this.defaultValue(offsetXOrOptions.metaKey, false);
+            isShiftKeyDown = this.defaultValue(offsetXOrOptions.shiftKey, false);
+            button = this.defaultValue(offsetXOrOptions.button, 0);
+        } else {
+            offsetX = offsetXOrOptions as number;
+        }
+
         const bounds = this.bounds();
         const x = bounds.left + bounds.width / 2 + offsetX;
         const y = bounds.top + bounds.height / 2 + offsetY;
@@ -108,17 +150,27 @@ export class ElementHarness {
         //     button, relatedTarget
         // );
         event.initMouseEvent(
-            eventType, true, true, window,
-            null, 0, 0, x, y,
-            isMetaKeyDown, false, isShiftKeyDown, isMetaKeyDown,
-            0, null,
+            eventType,
+            true,
+            true,
+            window,
+            null,
+            0,
+            0,
+            x,
+            y,
+            isCtrlKeyDown,
+            isAltKeyDown,
+            isShiftKeyDown,
+            isMetaKeyDown,
+            button,
+            null,
         );
         this.element.dispatchEvent(event);
         return this;
     }
 
     public keyboard(eventType: KeyboardEventType = "keypress", key = "", modKey = false) {
-
         dispatchTestKeyboardEvent(this.element, eventType, key, modKey);
         return this;
     }
@@ -142,6 +194,11 @@ export class ElementHarness {
             return this.element.querySelector(query);
         }
     }
+
+    /** Returns the default value if the provided value is not defined. */
+    private defaultValue(value: any | null | undefined, defaultValue: any) {
+        return value != null ? value : defaultValue;
+    }
 }
 
 export class ReactHarness {
@@ -150,7 +207,7 @@ export class ReactHarness {
     constructor() {
         this.container = document.createElement("div");
         document.documentElement.appendChild(this.container);
-    };
+    }
 
     public mount(component: React.ReactElement<any>) {
         ReactDOM.render(component, this.container);

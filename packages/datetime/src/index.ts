@@ -8,10 +8,7 @@
 import * as classes from "./common/classes";
 
 // re-exporting these symbols to preserve compatility
-import {
-    DayModifiers as IDatePickerDayModifiers,
-    LocaleUtils as IDatePickerLocaleUtils,
-} from "react-day-picker";
+import { DayModifiers as IDatePickerDayModifiers, LocaleUtils as IDatePickerLocaleUtils } from "react-day-picker";
 export { IDatePickerLocaleUtils, IDatePickerDayModifiers };
 
 export const Classes = classes;

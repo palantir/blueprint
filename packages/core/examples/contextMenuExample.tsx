@@ -44,7 +44,7 @@ class GraphNode extends React.Component<{}, { isContextMenuOpen: boolean }> {
         );
         // indicate that context menu is open so we can add a CSS class to this element
         this.setState({ isContextMenuOpen: true });
-    }
+    };
 }
 
 /**
@@ -55,21 +55,23 @@ export class ContextMenuExample extends BaseExample<{}> {
     public className = "docs-context-menu-example";
 
     public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
-        return <Menu>
-            <MenuItem iconName="select" text="Select all" />
-            <MenuItem iconName="insert" text="Insert...">
-                <MenuItem iconName="new-object" text="Object" />
-                <MenuItem iconName="new-text-box" text="Text box" />
-                <MenuItem iconName="star" text="Astral body" />
-            </MenuItem>
-            <MenuItem iconName="layout" text="Layout...">
-                <MenuItem iconName="layout-auto" text="Auto" />
-                <MenuItem iconName="layout-circle" text="Circle" />
-                <MenuItem iconName="layout-grid" text="Grid" />
-            </MenuItem>
-            <MenuDivider />
-            <MenuItem disabled={true} text={`Clicked at (${e.clientX}, ${e.clientY})`} />
-        </Menu>;
+        return (
+            <Menu>
+                <MenuItem iconName="select" text="Select all" />
+                <MenuItem iconName="insert" text="Insert...">
+                    <MenuItem iconName="new-object" text="Object" />
+                    <MenuItem iconName="new-text-box" text="Text box" />
+                    <MenuItem iconName="star" text="Astral body" />
+                </MenuItem>
+                <MenuItem iconName="layout" text="Layout...">
+                    <MenuItem iconName="layout-auto" text="Auto" />
+                    <MenuItem iconName="layout-circle" text="Circle" />
+                    <MenuItem iconName="layout-grid" text="Grid" />
+                </MenuItem>
+                <MenuDivider />
+                <MenuItem disabled={true} text={`Clicked at (${e.clientX}, ${e.clientY})`} />
+            </Menu>
+        );
     }
 
     public renderExample() {

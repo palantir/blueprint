@@ -50,7 +50,8 @@ describe("<EditableText>", () => {
             const wrapper = shallow(
                 <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." value="alphabet" />,
             );
-            wrapper.find("input")
+            wrapper
+                .find("input")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("change", { target: { value: " " } })
                 .simulate("change", { target: { value: "world" } });
@@ -67,9 +68,7 @@ describe("<EditableText>", () => {
             input.simulate("keydown", { which: Keys.ESCAPE });
             assert.equal(changeSpy.callCount, 0, "onChange called incorrectly"); // no change so no invoke
 
-            input
-                .simulate("change", { target: { value: "hello" } })
-                .simulate("keydown", { which: Keys.ESCAPE });
+            input.simulate("change", { target: { value: "hello" } }).simulate("keydown", { which: Keys.ESCAPE });
             assert.equal(changeSpy.callCount, 2, "onChange not called twice"); // change & escape
             assert.deepEqual(changeSpy.args[1], ["alphabet"], `unexpected argument "${changeSpy.args[1][0]}"`);
         });
@@ -82,14 +81,10 @@ describe("<EditableText>", () => {
             const NEW_VALUE = "hello";
 
             const component = shallow(
-                <EditableText
-                    isEditing={true}
-                    onCancel={cancelSpy}
-                    onConfirm={confirmSpy}
-                    defaultValue={OLD_VALUE}
-                />,
+                <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
-            component.find("input")
+            component
+                .find("input")
                 .simulate("change", { target: { value: NEW_VALUE } })
                 .simulate("keydown", { which: Keys.ESCAPE });
 
@@ -106,13 +101,11 @@ describe("<EditableText>", () => {
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
 
-            const component = shallow(<EditableText
-                isEditing={true}
-                onCancel={cancelSpy}
-                onConfirm={confirmSpy}
-                defaultValue={OLD_VALUE}
-            />);
-            component.find("input")
+            const component = shallow(
+                <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
+            );
+            component
+                .find("input")
                 .simulate("change", { target: { value: NEW_VALUE } })
                 .simulate("keydown", { which: Keys.ENTER });
 
@@ -129,13 +122,11 @@ describe("<EditableText>", () => {
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
 
-            const component = shallow(<EditableText
-                isEditing={true}
-                onCancel={cancelSpy}
-                onConfirm={confirmSpy}
-                defaultValue={OLD_VALUE}
-            />);
-            component.find("input")
+            const component = shallow(
+                <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
+            );
+            component
+                .find("input")
                 .simulate("change", { target: { value: NEW_VALUE } }) // change
                 .simulate("change", { target: { value: OLD_VALUE } }) // revert
                 .simulate("keydown", { which: Keys.ENTER });
@@ -294,7 +285,10 @@ describe("<EditableText>", () => {
         }
 
         function simulateHelper(wrapper: ReactWrapper<any, {}>, value: string, e: IFakeKeyboardEvent) {
-            wrapper.find("textarea").simulate("change", { target: { value } }).simulate("keydown", e);
+            wrapper
+                .find("textarea")
+                .simulate("change", { target: { value } })
+                .simulate("keydown", e);
         }
     });
 });

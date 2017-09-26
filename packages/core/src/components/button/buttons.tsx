@@ -20,11 +20,7 @@ export class Button extends AbstractButton<HTMLButtonElement> {
 
     public render() {
         return (
-            <button
-                type="button"
-                {...removeNonHTMLProps(this.props)}
-                {...this.getCommonButtonProps()}
-            >
+            <button type="button" {...removeNonHTMLProps(this.props)} {...this.getCommonButtonProps()}>
                 {this.renderChildren()}
             </button>
         );

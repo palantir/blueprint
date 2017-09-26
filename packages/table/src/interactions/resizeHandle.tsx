@@ -72,8 +72,8 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
 
         const targetClasses = classNames(Classes.TABLE_RESIZE_HANDLE_TARGET, {
             [Classes.TABLE_DRAGGING]: this.state.isDragging,
-            [Classes.TABLE_RESIZE_HORIZONTAL] : orientation === Orientation.HORIZONTAL,
-            [Classes.TABLE_RESIZE_VERTICAL] : orientation === Orientation.VERTICAL,
+            [Classes.TABLE_RESIZE_HORIZONTAL]: orientation === Orientation.HORIZONTAL,
+            [Classes.TABLE_RESIZE_VERTICAL]: orientation === Orientation.VERTICAL,
         });
 
         const handleClasses = classNames(Classes.TABLE_RESIZE_HANDLE, {
@@ -96,24 +96,24 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
     }
 
     private handleActivate = (event: MouseEvent) => {
-        this.setState({isDragging: true});
+        this.setState({ isDragging: true });
         this.props.onLayoutLock(true);
 
         event.stopPropagation();
         event.stopImmediatePropagation();
         return true;
-    }
+    };
 
     private handleDragMove = (_event: MouseEvent, coords: ICoordinateData) => {
         const orientationIndex = this.props.orientation as number;
         if (this.props.onResizeMove != null) {
             this.props.onResizeMove(coords.offset[orientationIndex], coords.delta[orientationIndex]);
         }
-    }
+    };
 
     private handleDragEnd = (_event: MouseEvent, coords: ICoordinateData) => {
         const orientationIndex = this.props.orientation as number;
-        this.setState({isDragging: false});
+        this.setState({ isDragging: false });
         this.props.onLayoutLock(false);
 
         if (this.props.onResizeMove != null) {
@@ -122,19 +122,19 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
         if (this.props.onResizeEnd != null) {
             this.props.onResizeEnd(coords.offset[orientationIndex]);
         }
-    }
+    };
 
     private handleClick = (_event: MouseEvent) => {
-        this.setState({isDragging: false});
+        this.setState({ isDragging: false });
         this.props.onLayoutLock(false);
-    }
+    };
 
     private handleDoubleClick = (_event: MouseEvent) => {
-        this.setState({isDragging: false});
+        this.setState({ isDragging: false });
         this.props.onLayoutLock(false);
 
         if (this.props.onDoubleClick != null) {
             this.props.onDoubleClick();
         }
-    }
+    };
 }

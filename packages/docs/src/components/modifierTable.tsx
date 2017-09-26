@@ -12,7 +12,9 @@ import { IKssModifier } from "documentalist/dist/client";
 function renderModifier(modifier: IKssModifier, index: number) {
     return (
         <tr key={index}>
-            <td data-modifier={modifier.name}><code>{modifier.name}</code></td>
+            <td data-modifier={modifier.name}>
+                <code>{modifier.name}</code>
+            </td>
             <td dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
         </tr>
     );
@@ -27,9 +29,7 @@ export const ModifierTable: React.SFC<{ modifiers: IKssModifier[] }> = ({ modifi
                     <th>Description</th>
                 </tr>
             </thead>
-            <tbody>
-                {modifiers.map(renderModifier)}
-            </tbody>
+            <tbody>{modifiers.map(renderModifier)}</tbody>
         </table>
     </div>
 );

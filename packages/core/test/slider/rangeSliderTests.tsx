@@ -33,51 +33,66 @@ describe("<RangeSlider>", () => {
     it("moving mouse on left handle updates first value in range", () => {
         const changeSpy = sinon.spy();
         const slider = renderSlider(<RangeSlider onChange={changeSpy} />);
-        slider.find(Handle).first().simulate("mousedown", { clientX: 0 });
+        slider
+            .find(Handle)
+            .first()
+            .simulate("mousedown", { clientX: 0 });
         mouseMove(slider.state("tickSize"), 5);
         // called 4 times, for the move to 1, 2, 3, and 4
         assert.equal(changeSpy.callCount, 4);
-        assert.deepEqual(changeSpy.args.map((arg) => arg[0]), [[1, 10], [2, 10], [3, 10], [4, 10]]);
+        assert.deepEqual(changeSpy.args.map(arg => arg[0]), [[1, 10], [2, 10], [3, 10], [4, 10]]);
     });
 
     it("moving touch on left handle updates first value in range", () => {
         const changeSpy = sinon.spy();
         const slider = renderSlider(<RangeSlider onChange={changeSpy} />);
-        slider.find(Handle).first().simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
+        slider
+            .find(Handle)
+            .first()
+            .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
         touchMove(slider.state("tickSize"), 5);
         // called 4 times, for the move to 1, 2, 3, and 4
         assert.equal(changeSpy.callCount, 4);
-        assert.deepEqual(changeSpy.args.map((arg) => arg[0]), [[1, 10], [2, 10], [3, 10], [4, 10]]);
+        assert.deepEqual(changeSpy.args.map(arg => arg[0]), [[1, 10], [2, 10], [3, 10], [4, 10]]);
     });
 
     it("moving mouse on right handle updates second value in range", () => {
         const changeSpy = sinon.spy();
         const slider = renderSlider(<RangeSlider onChange={changeSpy} />);
         const tickSize = slider.state("tickSize");
-        slider.find(Handle).last().simulate("mousedown", { clientX: tickSize * 10 });
+        slider
+            .find(Handle)
+            .last()
+            .simulate("mousedown", { clientX: tickSize * 10 });
         // move leftwards because it defaults to the max value
         mouseMove(-tickSize, 5, tickSize * 10);
         // called 4 times, for the move to 9, 8, 7, and 6
         assert.equal(changeSpy.callCount, 4);
-        assert.deepEqual(changeSpy.args.map((arg) => arg[0]), [[0, 9], [0, 8], [0, 7], [0, 6]]);
+        assert.deepEqual(changeSpy.args.map(arg => arg[0]), [[0, 9], [0, 8], [0, 7], [0, 6]]);
     });
 
     it("moving touch on right handle updates second value in range", () => {
         const changeSpy = sinon.spy();
         const slider = renderSlider(<RangeSlider onChange={changeSpy} />);
         const tickSize = slider.state("tickSize");
-        slider.find(Handle).last().simulate("touchstart", { changedTouches: [{ clientX: tickSize * 10 }] });
+        slider
+            .find(Handle)
+            .last()
+            .simulate("touchstart", { changedTouches: [{ clientX: tickSize * 10 }] });
         // move leftwards because it defaults to the max value
         touchMove(-tickSize, 5, tickSize * 10);
         // called 4 times, for the move to 9, 8, 7, and 6
         assert.equal(changeSpy.callCount, 4);
-        assert.deepEqual(changeSpy.args.map((arg) => arg[0]), [[0, 9], [0, 8], [0, 7], [0, 6]]);
+        assert.deepEqual(changeSpy.args.map(arg => arg[0]), [[0, 9], [0, 8], [0, 7], [0, 6]]);
     });
 
     it("releasing mouse calls onRelease with nearest value", () => {
         const releaseSpy = sinon.spy();
         const slider = renderSlider(<RangeSlider onRelease={releaseSpy} />);
-        slider.find(Handle).last().simulate("mousedown", { clientX: 0 });
+        slider
+            .find(Handle)
+            .last()
+            .simulate("mousedown", { clientX: 0 });
         mouseUp(slider.state("tickSize") * 4);
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
         assert.deepEqual(releaseSpy.args[0][0], [0, 4]);
@@ -86,7 +101,10 @@ describe("<RangeSlider>", () => {
     it("releasing touch calls onRelease with nearest value", () => {
         const releaseSpy = sinon.spy();
         const slider = renderSlider(<RangeSlider onRelease={releaseSpy} />);
-        slider.find(Handle).last().simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
+        slider
+            .find(Handle)
+            .last()
+            .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
         touchEnd(slider.state("tickSize") * 4);
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
         assert.deepEqual(releaseSpy.args[0][0], [0, 4]);
@@ -96,7 +114,8 @@ describe("<RangeSlider>", () => {
         const releaseSpy = sinon.spy();
         const changeSpy = sinon.spy();
         renderSlider(<RangeSlider onChange={changeSpy} onRelease={releaseSpy} />)
-            .find(Handle).first()
+            .find(Handle)
+            .first()
             .simulate("mousedown", { clientX: 0 });
         mouseUp();
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
@@ -108,7 +127,8 @@ describe("<RangeSlider>", () => {
         const releaseSpy = sinon.spy();
         const changeSpy = sinon.spy();
         renderSlider(<RangeSlider onChange={changeSpy} onRelease={releaseSpy} />)
-            .find(Handle).first()
+            .find(Handle)
+            .first()
             .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
         touchEnd();
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
@@ -119,7 +139,10 @@ describe("<RangeSlider>", () => {
     it("disabled slider does not respond to mouse movement", () => {
         const changeSpy = sinon.spy();
         const slider = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />);
-        slider.find(Handle).first().simulate("mousedown", { clientX: 0 });
+        slider
+            .find(Handle)
+            .first()
+            .simulate("mousedown", { clientX: 0 });
         mouseMove(slider.state("tickSize"), 5);
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
@@ -127,7 +150,10 @@ describe("<RangeSlider>", () => {
     it("disabled slider does not respond to touch movement", () => {
         const changeSpy = sinon.spy();
         const slider = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />);
-        slider.find(Handle).first().simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
+        slider
+            .find(Handle)
+            .first()
+            .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
         touchMove(slider.state("tickSize"), 5);
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });

@@ -2856,10 +2856,73 @@
     "content": "\\e78a"
   },
   {
-    "name": "New prescription",
+    "name": "Prescription: new",
     "className": "pt-icon-new-prescription",
     "tags": "instruction, direction, medicine, drug, medication, mixture",
     "group": "miscellaneous",
     "content": "\\e78b"
+  },
+  {
+    "name": "Filter: keep",
+    "className": "pt-icon-filter-keep",
+    "tags": "filtering, funnel, tube, pipe, retain, stay",
+    "group": "action",
+    "content": "\\e78c"
+  },
+  {
+    "name": "Filter: remove",
+    "className": "pt-icon-filter-remove",
+    "tags": "filtering, funnel, tube, pipe, delete, detach, discard, dismiss",
+    "group": "action",
+    "content": "\\e78d"
+  },
+  {
+    "name": "Key",
+    "className": "pt-icon-key",
+    "tags": "lock, unlock, open, security, password, access",
+    "group": "interface",
+    "content": "\\e78e"
+  },
+  {
+    "name": "Feed: subscribed",
+    "className": "pt-icon-feed-subscribed",
+    "tags": "rss, feed, tick, check",
+    "group": "interface",
+    "content": "\\e78f"
+  },
+  {
+    "name": "Widget: button",
+    "className": "pt-icon-widget-button",
+    "tags": "element, click, press",
+    "group": "interface",
+    "content": "\\e790"
+  },
+  {
+    "name": "Widget: header",
+    "className": "pt-icon-widget-header",
+    "tags": "element, layout, top",
+    "group": "interface",
+    "content": "\\e791"
+  },
+  {
+    "name": "Widget: footer",
+    "className": "pt-icon-widget-footer",
+    "tags": "element, layout, bottom",
+    "group": "interface",
+    "content": "\\e792"
+  },
+  {
+    "name": "Header: one",
+    "className": "pt-icon-header-one",
+    "tags": "paragraph styling, formatting",
+    "group": "editor",
+    "content": "\\e793"
+  },
+  {
+    "name": "Header: two",
+    "className": "pt-icon-header-two",
+    "tags": "paragraph styling, formatting",
+    "group": "editor",
+    "content": "\\e794"
   }
 ]

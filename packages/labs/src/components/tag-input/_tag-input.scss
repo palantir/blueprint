@@ -11,6 +11,7 @@
 
 $ti-padding: ($pt-input-height - $tag-height) / 2;
 $ti-padding-right: ($pt-input-height - $pt-button-height-small) / 2;
+$ti-large-padding-right: ($pt-input-height-large - $pt-button-height-small) / 2;
 
 $ti-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
 $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
@@ -42,8 +43,12 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
     margin-bottom: $ti-padding;
     // essentially a min-width, cuz flex allows it to grow or shrink:
     width: $pt-grid-size * 10;
-    padding: 0 ($input-padding-horizontal - $ti-padding);
     line-height: $tag-height;
+
+    // match padding of other input elements iff no tags are selected
+    &:not(:first-child) {
+      padding: 0 ($input-padding-horizontal - $ti-padding);
+    }
 
     ~ * {
       // shift right element up (to ignore top padding) so flex box will center it correctly
@@ -53,6 +58,7 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
 
   &.pt-large {
     height: auto;
+    padding-right: $ti-large-padding-right;
 
     .pt-tag-input-icon {
       // stylelint-disable-next-line max-line-length
@@ -89,11 +95,13 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
 
 // TODO: this is probably a useful modifier that we should pull into core, and use in EditableText
 .pt-input-ghost {
+  @include pt-input-placeholder();
+
   // reset browser input styles (we're using an input solely because you can type in it)
   border: none;
   box-shadow: none;
   background: none;
-  padding: 0;
+  padding: 0 $input-padding-horizontal;
 
   &:focus {
     // remove focus state too

@@ -25,7 +25,7 @@ export interface INavMenuItemProps extends IProps {
 }
 
 // tslint:disable-next-line:max-line-length
-export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.ReactNode }> = (props) => {
+export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.ReactNode }> = props => {
     const { item } = props;
     const classes = classNames(
         "docs-menu-item",
@@ -49,15 +49,13 @@ export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.React
 };
 NavMenuItem.displayName = "Docs.NavMenuItem";
 
-export const NavMenu: React.SFC<INavMenuProps> = (props) => {
-    const menu = props.items.map((section) => {
+export const NavMenu: React.SFC<INavMenuProps> = props => {
+    const menu = props.items.map(section => {
         const isActive = props.activeSectionId === section.route;
         const isExpanded = isActive || isParentOfRoute(section.route, props.activeSectionId);
         // active section gets selected styles, expanded section shows its children
         const classes = classNames({ "docs-nav-expanded": isExpanded });
-        const childrenMenu = isPageNode(section)
-            ? <NavMenu {...props} items={section.children} />
-            : undefined;
+        const childrenMenu = isPageNode(section) ? <NavMenu {...props} items={section.children} /> : undefined;
         return (
             <NavMenuItem
                 className={classes}

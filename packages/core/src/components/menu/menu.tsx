@@ -21,10 +21,7 @@ export class Menu extends React.Component<IMenuProps, {}> {
 
     public render() {
         return (
-            <ul
-                className={classNames(Classes.MENU, this.props.className)}
-                ref={this.props.ulRef}
-            >
+            <ul className={classNames(Classes.MENU, this.props.className)} ref={this.props.ulRef}>
                 {this.props.children}
             </ul>
         );

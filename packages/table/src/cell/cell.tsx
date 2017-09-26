@@ -8,9 +8,8 @@
 import * as classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../common/classes";
-import { Utils } from "../common/utils";
 
-import { Classes as CoreClasses, IIntentProps, IProps } from "@blueprintjs/core";
+import { Classes as CoreClasses, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
 
@@ -77,8 +76,10 @@ export class Cell extends React.Component<ICellProps, {}> {
 
     public shouldComponentUpdate(nextProps: ICellProps) {
         // deeply compare "style," because a new but identical object might have been provided.
-        return !Utils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] })
-            || !Utils.deepCompareKeys(this.props.style, nextProps.style);
+        return (
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
+            !CoreUtils.deepCompareKeys(this.props.style, nextProps.style)
+        );
     }
 
     public render() {
@@ -95,14 +96,24 @@ export class Cell extends React.Component<ICellProps, {}> {
             className,
         );
 
-        const textClasses = classNames(
-            {
-                [Classes.TABLE_TRUNCATED_TEXT]: truncated,
-                [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
-            },
-        );
+        const textClasses = classNames({
+            [Classes.TABLE_TRUNCATED_TEXT]: truncated,
+            [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
+        });
 
-        const content = <div className={textClasses}>{this.props.children}</div>;
+        // add width and height to the children, for use in shouldComponentUpdate in truncatedFormat
+        // note: these aren't actually used by truncated format, just in shouldComponentUpdate
+        const modifiedChildren = React.Children.map(this.props.children, child => {
+            if (style != null && React.isValidElement(child)) {
+                return React.cloneElement(child as React.ReactElement<any>, {
+                    parentCellHeight: style.height,
+                    parentCellWidth: style.width,
+                });
+            }
+            return child;
+        });
+
+        const content = <div className={textClasses}>{modifiedChildren}</div>;
 
         return (
             <div className={classes} style={style} title={tooltip}>

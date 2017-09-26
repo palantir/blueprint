@@ -52,11 +52,9 @@ describe("<ColumnHeaderCell>", () => {
     describe("Custom renderer", () => {
         it("renders custom name", () => {
             const renderColumnHeader = (columnIndex: number) => {
-                return (
-                    <ColumnHeaderCell name={`COLUMN-${columnIndex}`}/>
-                );
+                return <ColumnHeaderCell name={`COLUMN-${columnIndex}`} />;
             };
-            const table = harness.mount(createTableOfSize(3, 2, {renderColumnHeader}));
+            const table = harness.mount(createTableOfSize(3, 2, { renderColumnHeader }));
             const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).element.textContent;
             expect(text).to.equal("COLUMN-1");
         });
@@ -69,7 +67,7 @@ describe("<ColumnHeaderCell>", () => {
                     </ColumnHeaderCell>
                 );
             };
-            const table = harness.mount(createTableOfSize(3, 2, {renderColumnHeader}));
+            const table = harness.mount(createTableOfSize(3, 2, { renderColumnHeader }));
             const text = table.find(`.${Classes.TABLE_HEADER_CONTENT} h4`, 2).element.textContent;
             expect(text).to.equal("Header of 2");
         });
@@ -79,11 +77,9 @@ describe("<ColumnHeaderCell>", () => {
             const menu = getMenuComponent(menuClickSpy);
 
             const renderColumnHeader = (columnIndex: number) => {
-                return (
-                    <ColumnHeaderCell name={`COL-${columnIndex}`} menu={menu} />
-                );
+                return <ColumnHeaderCell name={`COL-${columnIndex}`} menu={menu} />;
             };
-            const table = harness.mount(createTableOfSize(3, 2, {renderColumnHeader}));
+            const table = harness.mount(createTableOfSize(3, 2, { renderColumnHeader }));
             expectMenuToOpen(table, menuClickSpy);
         });
 
@@ -93,10 +89,7 @@ describe("<ColumnHeaderCell>", () => {
             const renderMenu = sinon.stub().returns(menu);
 
             const renderColumnHeader = (columnIndex: number) => (
-                <ColumnHeaderCell
-                    name={`COL-${columnIndex}`}
-                    renderMenu={renderMenu}
-                />
+                <ColumnHeaderCell name={`COL-${columnIndex}`} renderMenu={renderMenu} />
             );
             const table = harness.mount(createTableOfSize(3, 2, { renderColumnHeader }));
             expectMenuToOpen(table, menuClickSpy);
@@ -108,56 +101,46 @@ describe("<ColumnHeaderCell>", () => {
             };
             const table = harness.mount(createTableOfSize(2, 1, { renderColumnHeader }));
             expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).text()).to.equal("");
-            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).text())
-                .to.equal("Column Header");
+            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).text()).to.equal(
+                "Column Header",
+            );
         });
 
         function getMenuComponent(menuClickSpy: Sinon.SinonSpy) {
             return (
                 <Menu>
-                    <MenuItem
-                        iconName="export"
-                        onClick={menuClickSpy}
-                        text="Teleport"
-                    />
-                    <MenuItem
-                        iconName="sort-alphabetical-desc"
-                        onClick={menuClickSpy}
-                        text="Down with ZA!"
-                    />
-                    <MenuItem
-                        iconName="curved-range-chart"
-                        onClick={menuClickSpy}
-                        text="Psi"
-                    />
+                    <MenuItem iconName="export" onClick={menuClickSpy} text="Teleport" />
+                    <MenuItem iconName="sort-alphabetical-desc" onClick={menuClickSpy} text="Down with ZA!" />
+                    <MenuItem iconName="curved-range-chart" onClick={menuClickSpy} text="Psi" />
                 </Menu>
             );
         }
 
         function expectMenuToOpen(table: ElementHarness, menuClickSpy: Sinon.SinonSpy) {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
-            table.find(`.${Classes.TABLE_TH_MENU}`).mouse("mousemove").mouse("click");
-            ElementHarness.document().find(".pt-icon-export").mouse("click");
+            table
+                .find(`.${Classes.TABLE_TH_MENU}`)
+                .mouse("mousemove")
+                .mouse("click");
+            ElementHarness.document()
+                .find(".pt-icon-export")
+                .mouse("click");
             expect(menuClickSpy.called).to.be.true;
         }
     });
 
     describe("Reorder handle", () => {
-        const REORDER_HANDLE_CLASS = "reorder-handle";
+        const REORDER_HANDLE_CLASS = Classes.TABLE_REORDER_HANDLE_TARGET;
 
         it("shows reorder handle in interaction bar if reordering and interaction bar are enabled", () => {
             const element = mount({ useInteractionBar: true, isColumnReorderable: true });
-            expect(doesReorderHandleExist(element)).to.be.true;
+            expect(element.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
 
-        it("hides reorder handle if reordering enabled but interaction bar disabled", () => {
+        it("shows reorder handle next to column name if reordering enabled but interaction bar disabled", () => {
             const element = mount({ useInteractionBar: false, isColumnReorderable: true });
-            expect(doesReorderHandleExist(element)).to.be.false;
+            expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
-
-        function doesReorderHandleExist(element: ElementHarness) {
-            return element.find(`.${REORDER_HANDLE_CLASS}`).exists();
-        }
 
         function mount(props: Partial<IColumnHeaderCellProps> & object) {
             const element = harness.mount(
@@ -165,7 +148,8 @@ describe("<ColumnHeaderCell>", () => {
                     useInteractionBar={props.useInteractionBar}
                     isColumnReorderable={props.isColumnReorderable}
                     reorderHandle={<div className={REORDER_HANDLE_CLASS} />}
-                />);
+                />,
+            );
             return element;
         }
     });
