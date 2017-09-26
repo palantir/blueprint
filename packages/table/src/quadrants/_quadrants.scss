@@ -104,13 +104,6 @@ $table-quadrant-scroll-container-overflow: 20px;
     height: auto;
     overflow-x: hidden;
   }
-
-  // correct missing left selecton border when selection includes
-  // cells in the first column (#516). we do this by requiring at least
-  // 1px of width on the body-cell wrapper element.
-  .bp-table-body-virtual-client {
-    min-width: 1px;
-  }
 }
 
 .bp-table-quadrant-top-left {
@@ -124,10 +117,5 @@ $table-quadrant-scroll-container-overflow: 20px;
     bottom: -$table-quadrant-scroll-container-overflow;
     overflow-x: hidden;
     overflow-y: hidden;
-  }
-
-  // correct missing bottom-right corner in the menu-element (addresses #1444).
-  .bp-table-body-virtual-client {
-    min-width: 1px;
   }
 }
