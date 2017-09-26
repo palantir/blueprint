@@ -149,7 +149,6 @@ export interface IMutableTableState {
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
-    showColumnInteractionBar?: boolean;
     showColumnMenus?: boolean;
     showCustomRegions?: boolean;
     showFocusCell?: boolean;
@@ -157,6 +156,7 @@ export interface IMutableTableState {
     showInline?: boolean;
     showRowHeaders?: boolean;
     showRowHeadersLoading?: boolean;
+    showTableInteractionBar?: boolean;
     showZebraStriping?: boolean;
 }
 
@@ -189,7 +189,6 @@ const DEFAULT_STATE: IMutableTableState = {
     showCallbackLogs: true,
     showCellsLoading: false,
     showColumnHeadersLoading: false,
-    showColumnInteractionBar: false,
     showColumnMenus: false,
     showCustomRegions: false,
     showFocusCell: false,
@@ -197,6 +196,7 @@ const DEFAULT_STATE: IMutableTableState = {
     showInline: false,
     showRowHeaders: true,
     showRowHeadersLoading: false,
+    showTableInteractionBar: false,
     showZebraStriping: false,
 };
 
@@ -254,6 +254,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     renderRowHeader={this.renderRowHeader}
                     selectionModes={this.getEnabledSelectionModes()}
                     styledRegionGroups={this.getStyledRegionGroups()}
+                    useInteractionBar={this.state.showTableInteractionBar}
                 >
                     {this.renderColumns()}
                 </Table>
@@ -317,7 +318,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 name={this.store.getColumnName(columnIndex)}
                 renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
                 renderName={this.getColumnNameRenderer()}
-                useInteractionBar={this.state.showColumnInteractionBar}
             />
         );
     };
@@ -486,6 +486,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Focus cell", "showFocusCell")}
                 {this.renderSwitch("Ghost cells", "showGhostCells")}
                 {this.renderSwitch("Batch rendering", "enableBatchRendering")}
+                {this.renderSwitch("Interaction bar", "showTableInteractionBar")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Body context menu", "enableContextMenu")}
                 {this.renderSwitch("Callback logs", "showCallbackLogs")}
@@ -499,7 +500,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderNumberSelectMenu("Num. columns", "numCols", COLUMN_COUNTS)}
                 {this.renderNumberSelectMenu("Num. frozen columns", "numFrozenCols", FROZEN_COLUMN_COUNTS)}
                 {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
-                {this.renderSwitch("Interaction bar", "showColumnInteractionBar")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Editing", "enableColumnNameEditing")}
