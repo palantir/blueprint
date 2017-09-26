@@ -40,10 +40,12 @@ export interface IColumnNameProps {
      * If `true`, adds an interaction bar on top of the column header cell and
      * moves the menu and selection interactions to it.
      *
-     * This allows you to override the rendering of column name without worry
-     * of clobbering the menu or other interactions.
+     * This allows you to override the rendering of column name without worry of
+     * clobbering the menu or other interactions.
      *
      * @default false
+     * @deprecated since @blueprintjs/table v1.27.0; pass this prop to `Table`
+     * instead.
      */
     useInteractionBar?: boolean;
 }
