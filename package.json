@@ -13,7 +13,6 @@
     "copy:landing": "cp -rf packages/site-landing/dist/* docs/.",
     "delete:doc-source-maps": "find docs -name '*.map' -type f -delete",
     "gulp": "gulp",
-    "lint-fix": "tslint -t codeFrame 'packages/*/{src,test,examples}/**/*.{ts,tsx}' --fix",
     "serve": "http-server docs"
   },
   "dependencies": {
