@@ -13,7 +13,7 @@ import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
-import * as Utils from "../../src/common/utils";
+import * as Utils from "../../common/utils";
 
 import { ITab2Props, Tab2, TabId } from "./tab2";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
