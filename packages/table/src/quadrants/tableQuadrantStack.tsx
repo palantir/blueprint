@@ -17,6 +17,7 @@ import { TableQuadrantStackCache } from "./tableQuadrantStackCache";
 
 interface IQuadrantRefMap<T> {
     columnHeader?: T;
+    columnHeaderChildToMeasure?: T;
     menu?: T;
     quadrant?: T;
     rowHeader?: T;
@@ -162,11 +163,32 @@ export interface ITableQuadrantStackProps extends IProps {
      * @default 500
      */
     viewSyncDelay?: number;
+
+    /**
+     * If `true`, adds an interaction bar on top of all column header cells, and
+     * moves interaction triggers into it.
+     *
+     * This value defaults to `undefined` so that, by default, it won't override
+     * the `useInteractionBar` values that you might have provided directly to
+     * each `<ColumnHeaderCell>`.
+     *
+     * @default undefined
+     */
+    useInteractionBar?: boolean;
 }
 
 // the debounce delay for updating the view on scroll. elements will be resized
 // and rejiggered once scroll has ceased for at least this long, but not before.
 const DEFAULT_VIEW_SYNC_DELAY = 500;
+
+// when these props change, the layout will change, which requires quadrant
+// views should be resynchronized.
+const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
+    "isRowHeaderShown",
+    "numFrozenColumns",
+    "numFrozenRows",
+    "useInteractionBar",
+];
 
 export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackProps, {}> {
     // Static variables
@@ -179,6 +201,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         isRowHeaderShown: true,
         isVerticalScrollDisabled: false,
         throttleScrolling: true,
+        useInteractionBar: undefined,
         viewSyncDelay: DEFAULT_VIEW_SYNC_DELAY,
     };
 
@@ -256,11 +279,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     public componentDidUpdate(prevProps: ITableQuadrantStackProps) {
         // sync'ing quadrant views triggers expensive reflows, so we only call
         // it when layout-affecting props change.
-        if (
-            this.props.numFrozenColumns !== prevProps.numFrozenColumns ||
-            this.props.numFrozenRows !== prevProps.numFrozenRows ||
-            this.props.isRowHeaderShown !== prevProps.isRowHeaderShown
-        ) {
+        if (!CoreUtils.shallowCompareKeys(this.props, prevProps, { include: SYNC_TRIGGER_PROP_KEYS })) {
             this.emitRefs();
             this.syncQuadrantViews();
         }
@@ -335,7 +354,17 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private generateQuadrantRefHandlers(quadrantType: QuadrantType): IQuadrantRefHandlers {
         const reducer = (agg: IQuadrantRefHandlers, key: keyof IQuadrantRefHandlers) => {
-            agg[key] = (ref: HTMLElement) => (this.quadrantRefs[quadrantType][key] = ref);
+            agg[key] = (ref: HTMLElement) => {
+                this.quadrantRefs[quadrantType][key] = ref;
+                if (key === "columnHeader") {
+                    // during a syncQuadrantViews call, the columnHeader ref's
+                    // height may be influenced by a fixed-size menu element
+                    // that hasn't been updated yet. save a child ref to make
+                    // sure we measure the actual height of the cells.
+                    const childElement = ref.querySelector(`.${Classes.TABLE_COLUMN_HEADER_TR}`) as HTMLElement;
+                    this.quadrantRefs[quadrantType].columnHeaderChildToMeasure = childElement;
+                }
+            };
             return agg;
         };
         return ["columnHeader", "menu", "quadrant", "rowHeader", "scrollContainer"].reduce(reducer, {});
@@ -646,7 +675,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private syncQuadrantViews = () => {
         const mainRefs = this.quadrantRefs[QuadrantType.MAIN];
-        const mainColumnHeader = mainRefs.columnHeader;
         const mainScrollContainer = mainRefs.scrollContainer;
 
         //
@@ -659,7 +687,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         // Menu-element resizing: keep the menu element's borders flush with
         // thsoe of the the row and column headers.
-        const columnHeaderHeight = mainColumnHeader == null ? 0 : mainColumnHeader.clientHeight;
+        const columnHeaderHeight = mainRefs.columnHeader == null ? 0 : mainRefs.columnHeaderChildToMeasure.clientHeight;
         const nextMenuElementWidth = rowHeaderWidth;
         const nextMenuElementHeight = columnHeaderHeight;
 

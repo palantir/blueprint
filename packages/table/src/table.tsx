@@ -292,7 +292,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `true`, adds an interaction bar on top of all column header cells, and
      * moves interaction triggers into it.
-     * @default false
+     *
+     * This value defaults to `undefined` so that, by default, it won't override
+     * the `useInteractionBar` values that you might have provided directly to
+     * each `<ColumnHeaderCell>`.
+     *
+     * @default undefined
      */
     useInteractionBar?: boolean;
 }
@@ -370,7 +375,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         renderMode: RenderMode.BATCH,
         renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
-        useInteractionBar: false,
     };
 
     private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
@@ -602,7 +606,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { className, isRowHeaderShown } = this.props;
+        const { className, isRowHeaderShown, useInteractionBar } = this.props;
         const { horizontalGuides, verticalGuides } = this.state;
         this.validateGrid();
 
@@ -641,6 +645,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     renderRowHeader={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
+                    useInteractionBar={useInteractionBar}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
                 <GuideLayer
@@ -925,22 +930,40 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
 
-        const { id, loadingOptions, renderCell, renderColumnHeader, ...spreadableProps } = props;
+        // TODO: `renderColumnHeader` is really an unclear name. should rename
+        // to `renderColumnHeaderCell` in the future.
+        // (see: https://github.com/palantir/blueprint/issues/1625)
+        const {
+            id,
+            loadingOptions,
+            renderCell,
+            renderColumnHeader: renderColumnHeaderCell,
+            ...spreadableProps,
+        } = props;
 
         const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
 
-        if (renderColumnHeader != null) {
-            const columnHeader = renderColumnHeader(columnIndex);
-            const columnHeaderLoading = columnHeader.props.loading;
+        // <Table>'s useInteractionBar defaults to undefined. this means we
+        // won't override the cell's useInteractionBar value unless the consumer
+        // explicitly provided an override value to the <Table>.
+        const tableUseInteractionBar = this.props.useInteractionBar;
 
-            return React.cloneElement(columnHeader, {
-                loading: columnHeaderLoading != null ? columnHeaderLoading : columnLoading,
+        if (renderColumnHeaderCell != null) {
+            const columnHeaderCell = renderColumnHeaderCell(columnIndex);
+            const columnHeaderCellLoading = columnHeaderCell.props.loading;
+
+            const clonedColumnHeaderCell = React.cloneElement(columnHeaderCell, {
+                loading: columnHeaderCellLoading != null ? columnHeaderCellLoading : columnLoading,
+                useInteractionBar: tableUseInteractionBar,
             } as IColumnHeaderCellProps);
+
+            return clonedColumnHeaderCell;
         }
 
         const baseProps: IColumnHeaderCellProps = {
             index: columnIndex,
             loading: columnLoading,
+            useInteractionBar: tableUseInteractionBar,
             ...spreadableProps,
         };
 
