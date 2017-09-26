@@ -34,7 +34,8 @@
     },
     "no-submodule-imports": {
       "options": [
-        "documentalist"
+        "documentalist",
+        "react-dom"
       ]
     },
     "no-unnecessary-callback-wrapper": true,

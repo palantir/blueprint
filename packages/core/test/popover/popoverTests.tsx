@@ -8,7 +8,6 @@
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-// tslint:disable-next-line:no-submodule-imports
 import { Simulate } from "react-dom/test-utils";
 
 import * as Errors from "../../src/common/errors";
