@@ -13,8 +13,9 @@
         ["Object", "getOwnPropertyNames", "use Object.keys()"],
         ["describe", "only", "should not be committed to repo"],
         ["it", "only", "should not be committed to repo"],
-        ["test", "only", "should not be committed to repo"],
-        ["assert", "equal", "use assert.strictEqual instead"]
+        ["test", "only", "should not be committed to repo"]
+        // TODO: enable
+        // ["assert", "equal", "use assert.strictEqual instead"]
       ]
     },
     "file-header": {
@@ -38,6 +39,8 @@
     },
     "no-unnecessary-callback-wrapper": true,
     "no-unnecessary-initializer": true,
+    // TODO: enable no-unused-expression. Currently, a lot of chai assertions are not writtten as proper statements.
+    "no-unused-expression": false,
     "prefer-conditional-expression": false,
     "prettier": {
       "options": {
