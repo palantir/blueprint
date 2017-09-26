@@ -438,13 +438,21 @@ describe("TableQuadrantStack", () => {
                     renderColumnHeader={renderColumnHeader}
                 />,
             );
-            // add explicit 0 to communicate that we're considering the zero-width row headers
-            const expectedWidth =
-                numFrozenColumns === 0 ? EXPECTED_HEADER_BORDER_WIDTH : 0 + numFrozenColumns * COLUMN_WIDTH;
+
             const expectedHeight =
                 COLUMN_HEADER_HEIGHT +
                 (numFrozenRows === 0 ? EXPECTED_HEADER_BORDER_WIDTH : numFrozenRows * ROW_HEIGHT);
-            assertNonMainQuadrantSizesCorrect(container, expectedWidth, expectedHeight);
+
+            const { topQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(container);
+
+            if (numFrozenColumns === 0) {
+                expect(leftQuadrant).to.be.null;
+                expect(topLeftQuadrant).to.be.null;
+                assertStyleEquals(topQuadrant, "height", toPxString(expectedHeight));
+            } else {
+                const expectedWidth = numFrozenColumns * COLUMN_WIDTH;
+                assertNonMainQuadrantSizesCorrect(container, expectedWidth, expectedHeight);
+            }
         }
 
         function assertNonMainQuadrantSizesCorrect(
