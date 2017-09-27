@@ -52,19 +52,19 @@ export class Spinner extends React.Component<ISpinnerProps, {}> {
             strokeDashoffset: PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1)),
         };
 
-        // HACKHACK to temporarily squash error regarding React.SVGProps missing prop pathLength
-        const headElement = React.createElement("path", {
+        // HACKHACK to squash error regarding React.SVGProps missing prop pathLength
+        const svgPathAttributes: React.DOMAttributes<SVGPathElement> = {
             className: "pt-spinner-head",
             d: SPINNER_TRACK,
             pathLength: PATH_LENGTH,
             style,
-        } as React.DOMAttributes<SVGPathElement>);
+        } as any;
 
         return this.renderContainer(
             classes,
             <svg viewBox={classes.indexOf(Classes.SMALL) >= 0 ? "-15 -15 130 130" : "0 0 100 100"}>
                 <path className="pt-spinner-track" d={SPINNER_TRACK} />
-                {headElement}
+                <path {...svgPathAttributes} />
             </svg>,
         );
     }

@@ -243,7 +243,7 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
      * @param {IMenuItemProps} newProps If supplied, object will be modified, otherwise, defaults to an empty object.
      * @returns An object to be used as child props.
      */
-    private cascadeProps = (newProps: IMenuItemProps = {} as IMenuItemProps) => {
+    private cascadeProps = (newProps: IMenuItemProps = ({} as any) as IMenuItemProps) => {
         const { submenuViewportMargin, useSmartPositioning } = this.props;
 
         if (submenuViewportMargin != null && newProps.submenuViewportMargin == null) {

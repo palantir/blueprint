@@ -75,22 +75,22 @@ export class DragEvents {
     }
 
     private updateCoordinateData(event: MouseEvent) {
-        const currentCoordinates = [event.clientX, event.clientY];
-        const deltaCoordinates = [
+        const currentCoordinates: [number, number] = [event.clientX, event.clientY];
+        const deltaCoordinates: [number, number] = [
             currentCoordinates[0] - this.lastCoordinates[0],
             currentCoordinates[1] - this.lastCoordinates[1],
         ];
-        const offsetCoordinates = [
+        const offsetCoordinates: [number, number] = [
             currentCoordinates[0] - this.activationCoordinates[0],
             currentCoordinates[1] - this.activationCoordinates[1],
         ];
-        const data = {
+        const data: ICoordinateData = {
             activation: this.activationCoordinates,
             current: currentCoordinates,
             delta: deltaCoordinates,
             last: this.lastCoordinates,
             offset: offsetCoordinates,
-        } as ICoordinateData;
+        };
         this.lastCoordinates = [event.clientX, event.clientY];
         return data;
     }

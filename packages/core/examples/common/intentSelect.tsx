@@ -5,8 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import * as Classes from "@blueprintjs/core/src/common/classes";
-import { Intent } from "@blueprintjs/core/src/common/intent";
+import { Classes, Intent } from "@blueprintjs/core";
 import * as React from "react";
 
 const INTENTS = [

@@ -6,7 +6,6 @@
  */
 
 import * as React from "react";
-import { ReactElement } from "react";
 
 import { AbstractComponent } from "../../common";
 import { KeyCombo } from "./keyCombo";
@@ -83,7 +82,7 @@ export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
         stopPropagation: false,
     };
 
-    public static isInstance(element: any): element is ReactElement<IHotkeyProps> {
+    public static isInstance(element: any): element is React.ReactElement<IHotkeyProps> {
         return element != null && (element as JSX.Element).type === Hotkey;
     }
 
