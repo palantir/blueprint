@@ -952,8 +952,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const columnHeaderCell = renderColumnHeaderCell(columnIndex);
             const columnHeaderCellLoading = columnHeaderCell.props.loading;
 
-            // do this check here, as we can't tell in `ColumnHeaderCell` if
-            // useInteractionBar was injected by `Table` or provided by the user.
+            // print a deprecation warning here if needed. we can't do this in
+            // ColumnHeaderCell, because we wouldn't be able to tell if
+            // useInteractionBar was injected by Table or provided by the user.
             if (columnHeaderCell.props.useInteractionBar && !CoreUtils.isNodeEnv("production")) {
                 console.warn(Errors.COLUMN_HEADER_CELL_USE_INTERACTION_BAR_DEPRECATED);
             }
