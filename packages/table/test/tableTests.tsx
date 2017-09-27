@@ -543,6 +543,7 @@ describe("<Table>", () => {
             const CONTAINER_WIDTH = 500;
             const CONTAINER_HEIGHT = 500;
             const EXPECTED_COLUMN_WIDTH = 216;
+            const EXPECTED_ROW_HEADER_WIDTH = 30;
             const FROZEN_COLUMN_INDEX = 0;
 
             const renderCell = () => <Cell wrapText={false}>my cell value with lots and lots of words</Cell>;
@@ -580,6 +581,7 @@ describe("<Table>", () => {
             const quadrantSelector = `.${Classes.TABLE_QUADRANT_LEFT}`;
             const columnHeaderSelector = `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS}`;
             const resizeHandleSelector = `${columnHeaderSelector} .${Classes.TABLE_RESIZE_HANDLE_TARGET}`;
+            const quadrantElement = tableElement.find(quadrantSelector, 0);
             const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX);
 
             // double-click the frozen column's resize handle
@@ -590,6 +592,7 @@ describe("<Table>", () => {
                 .mouse("mouseup", 10);
 
             expect(table.state.columnWidths[0]).to.equal(EXPECTED_COLUMN_WIDTH);
+            expect(quadrantElement.style().width).to.equal(`${EXPECTED_ROW_HEADER_WIDTH + EXPECTED_COLUMN_WIDTH}px`);
 
             // clean up
             document.body.removeChild(containerElement);
