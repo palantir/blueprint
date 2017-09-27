@@ -31,10 +31,6 @@ export class TableQuadrantStackCache {
         return scrollKey === "scrollLeft" ? this.cachedScrollLeft : this.cachedScrollTop;
     }
 
-    public getScrollTop() {
-        return this.cachedScrollTop;
-    }
-
     public getRowHeaderWidth() {
         return this.cachedRowHeaderWidth;
     }
