@@ -107,50 +107,14 @@ describe("<ColumnHeaderCell>", () => {
             );
         });
 
-        describe("useInteractionBar", () => {
-            const NUM_COLUMNS = 5;
-            let consoleWarn: Sinon.SinonStub;
-
-            before(() => {
-                consoleWarn = sinon.stub(console, "warn");
-            });
-
-            afterEach(() => {
-                consoleWarn.reset();
-            });
-
-            after(() => {
-                consoleWarn.restore();
-            });
-
-            it("prints a deprecation warning if useInteractionBar=true", () => {
-                const renderColumnHeader = () => <ColumnHeaderCell useInteractionBar={true} />;
-                harness.mount(createTableOfSize(NUM_COLUMNS, 1, { renderColumnHeader }));
-                expect(consoleWarn.called, "prints at least one warning").to.be.true;
-                expect(consoleWarn.getCall(0).args[0], "prints correct message").to.equal(
-                    Errors.COLUMN_HEADER_CELL_USE_INTERACTION_BAR_DEPRECATED,
-                );
-            });
-
-            it("does not print a deprecation warning if useInteractionBar=false", () => {
-                const renderColumnHeader = () => <ColumnHeaderCell useInteractionBar={false} />;
-                harness.mount(createTableOfSize(NUM_COLUMNS, 1, { renderColumnHeader }));
-                expect(consoleWarn.callCount, "not called").to.equal(0);
-            });
-
-            it("does not print a deprecation warning if useInteractionBar not provided", () => {
-                const renderColumnHeader = () => <ColumnHeaderCell />;
-                harness.mount(createTableOfSize(NUM_COLUMNS, 1, { renderColumnHeader }));
-                expect(consoleWarn.callCount, "not called").to.equal(0);
-            });
-
-            it("Table's useInteractionBar prop value overrides the one passed to ColumnHeaderCell", () => {
-                const renderColumnHeader = () => <ColumnHeaderCell useInteractionBar={true} />;
-                const columnProps = { renderColumnHeader };
-                const tableProps = { useInteractionBar: false };
-                const table = harness.mount(createTableOfSize(NUM_COLUMNS, 1, columnProps, tableProps));
-                expect(table.find(`.${Classes.TABLE_INTERACTION_BAR}`, 0).element).to.equal(undefined);
-            });
+        it("Table's useInteractionBar prop value overrides the one passed to ColumnHeaderCell", () => {
+            const consoleWarn = sinon.stub(console, "warn");
+            const renderColumnHeader = () => <ColumnHeaderCell useInteractionBar={true} />;
+            const columnProps = { renderColumnHeader };
+            const tableProps = { useInteractionBar: false };
+            const table = harness.mount(createTableOfSize(5, 1, columnProps, tableProps));
+            expect(table.find(`.${Classes.TABLE_INTERACTION_BAR}`, 0).element).to.equal(undefined);
+            consoleWarn.restore();
         });
 
         function getMenuComponent(menuClickSpy: Sinon.SinonSpy) {
