@@ -203,8 +203,8 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     }
 
     /** Filters children to only `<Tab>`s */
-    private getTabChildren(child: React.Children = this.props.children) {
-        return React.Children.toArray(child).filter(isTab) as TabElement[];
+    private getTabChildren(children=this.props.children) {
+        return React.Children.toArray(children).filter(isTab) as TabElement[];
     }
 
     /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
