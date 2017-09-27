@@ -261,7 +261,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.syncQuadrantViews();
     }
 
-
     public componentDidMount() {
         this.emitRefs();
         this.syncQuadrantViews();

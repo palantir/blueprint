@@ -692,7 +692,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         if (this.didColumnOrRowSizesChangeInLatestUpdate) {
-            console.log("synchronizing quadrant views!");
             this.quadrantStackInstance.synchronizeQuadrantViews();
             this.didColumnOrRowSizesChangeInLatestUpdate = false;
         }
