@@ -411,6 +411,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private rowHeaderElement: HTMLElement;
     private scrollContainerElement: HTMLElement;
 
+    // when this variable is true, we'll need to synchronize quadrant views
+    // after the update. this variable lets us avoid expensively diff'ing
+    // columnWidths and rowHeights on each update.
+    private didColumnOrRowSizesChangeInLatestUpdate: boolean = false;
+
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
 
@@ -467,6 +472,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
         const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
         this.invalidateGrid();
+        this.didColumnOrRowSizesChangeInLatestUpdate = true;
         this.setState({ rowHeights });
     }
 
@@ -683,6 +689,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (this.locator != null) {
             this.validateGrid();
             this.updateLocator();
+        }
+
+        if (this.didColumnOrRowSizesChangeInLatestUpdate) {
+            console.log("synchronizing quadrant views!");
+            this.quadrantStackInstance.synchronizeQuadrantViews();
+            this.didColumnOrRowSizesChangeInLatestUpdate = false;
         }
 
         this.maybeScrollTableIntoView();
@@ -1453,6 +1465,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         this.invalidateGrid();
+        this.didColumnOrRowSizesChangeInLatestUpdate = true;
         this.setState({ columnWidths });
 
         const { onColumnWidthChanged } = this.props;
@@ -1479,6 +1492,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         this.invalidateGrid();
+        this.didColumnOrRowSizesChangeInLatestUpdate = true;
         this.setState({ rowHeights });
 
         const { onRowHeightChanged } = this.props;

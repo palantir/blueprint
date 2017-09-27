@@ -248,6 +248,20 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.syncQuadrantViews();
     }
 
+    /**
+     * Synchronizes quadrant sizes and scroll offsets based on the current
+     * column, row, and header sizes. Useful for correcting quadrant sizes after
+     * explicitly resizing columns and rows, for instance.
+     *
+     * Invoking this method imperatively is cheaper than providing columnWidths
+     * or rowHeights array props to TableQuadrantStack and forcing it to run
+     * expensive array diffs upon every update.
+     */
+    public synchronizeQuadrantViews() {
+        this.syncQuadrantViews();
+    }
+
+
     public componentDidMount() {
         this.emitRefs();
         this.syncQuadrantViews();
