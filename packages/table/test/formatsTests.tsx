@@ -168,7 +168,7 @@ describe("Formats", () => {
                 "i'm": 1234,
             };
             const str = JSON.stringify(obj, null, 2);
-            const comp = harness.mount(<JSONFormat>{obj}</JSONFormat>);
+            const comp = harness.mount(<JSONFormat parentCellWidth="300">{obj}</JSONFormat>);
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal(str);
         });
 
