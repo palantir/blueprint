@@ -9,8 +9,6 @@ import { Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { emptyCellRenderer, ICellProps, ICellRenderer } from "./cell/cell";
-import { Batcher } from "./common/batcher";
 import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
