@@ -34,7 +34,7 @@ import { RenderMode } from "../src/common/renderMode";
 import { IRegion } from "../src/regions";
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";
-import { SlowLayoutStack } from "./slowLayout";
+import { SlowLayoutStack } from "./slowLayoutStack";
 
 export enum FocusStyle {
     TAB,

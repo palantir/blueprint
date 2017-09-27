@@ -17,6 +17,7 @@ import { Utils } from "../../common/utils";
 // truncation state, we must account for the padding that is applied via CSS to
 // the cell.
 const CONTAINER_PADDING = 20;
+const FALLBACK_CONTAINER_WIDTH = 150;
 
 export enum TruncatedPopoverMode {
     ALWAYS,
@@ -83,8 +84,6 @@ export interface ITruncatedFormatState {
     isPopoverOpen: boolean;
 }
 
-// const CELL_FONT_PROPERTIES_STRING = `normal normal normal normal 12px / 20px -apple-system, system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", Icons16, sans-serif`;
-
 @PureRender
 export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
@@ -143,7 +142,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
     private renderPopover() {
         const { children, preformatted } = this.props;
 
-        // <Popover> will always check the content's position on update
+        // `<Popover>` will always check the content's position on update
         // regardless if it is open or not. This negatively affects perf due to
         // layout thrashing. So instead we manage the popover state ourselves
         // and mimic its popover target
@@ -174,6 +173,8 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                 </Popover>
             );
         } else {
+            // NOTE: This structure matches what `<Popover>` does internally. If
+            // `<Popover>` changes, this must be updated.
             return (
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
                     <Icon iconName="more" />
@@ -224,7 +225,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         const contentWidth = Utils.measureText(this.contentDiv.textContent, this.cachedFontString).width;
-        const containerWidth = parseInt(this.props.parentCellWidth, 10);
+        const containerWidth = parseInt(this.props.parentCellWidth, 10) || FALLBACK_CONTAINER_WIDTH;
         const availableWidth = containerWidth - CONTAINER_PADDING;
         const isTruncated = contentWidth > availableWidth;
         this.setState({ isTruncated } as ITruncatedFormatState);
