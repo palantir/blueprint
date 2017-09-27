@@ -147,7 +147,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
                 items={query ? this.timezoneItems : this.initialTimezoneItems}
                 itemListPredicate={this.filterItems}
                 itemRenderer={this.renderItem}
-                noResults={<MenuItem disabled text="No matching timezones." />}
+                noResults={<MenuItem disabled={true} text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
                 resetOnSelect={true}
                 resetOnClose={true}

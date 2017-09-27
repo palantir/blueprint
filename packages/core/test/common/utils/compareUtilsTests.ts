@@ -367,13 +367,13 @@ interface IKeys {
 /**
  * A compactly named function for converting a string array to a key blacklist.
  */
-function bl(keys: string[]) {
-    return { exclude: keys } as IKeyBlacklist<IKeys>;
+function bl(keys: string[]): IKeyBlacklist<IKeys> {
+    return { exclude: keys as Array<keyof IKeys> };
 }
 
 /**
  * A compactly named function for converting a string array to a key whitelist.
  */
-function wl(keys: string[]) {
-    return { include: keys } as IKeyWhitelist<IKeys>;
+function wl(keys: string[]): IKeyWhitelist<IKeys> {
+    return { include: keys as Array<keyof IKeys> };
 }

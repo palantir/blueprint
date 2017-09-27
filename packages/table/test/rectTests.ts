@@ -10,12 +10,12 @@ import { Rect } from "../src/common/rect";
 
 describe("Rect", () => {
     it("wraps AnyRects", () => {
-        const anyRect = {
+        const anyRect: ClientRect = {
             height: 40,
             left: 20,
             top: 10,
             width: 30,
-        } as ClientRect;
+        } as any;
 
         const rect = Rect.union(anyRect, anyRect);
         expect(rect).to.be.instanceof(Rect);

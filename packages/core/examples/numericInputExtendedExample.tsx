@@ -106,7 +106,7 @@ export class NumericInputExtendedExample extends BaseExample<INumericInputExtend
         // indicating that there was some illegal character present in it.
         const trimmedTerms = terms.map((term: string) => term.trim());
         const numericTerms = trimmedTerms.map((term: string) => +term);
-        const illegalTerms = numericTerms.filter((term: number) => isNaN(term));
+        const illegalTerms = numericTerms.filter(isNaN);
 
         if (illegalTerms.length > 0) {
             return "";
@@ -143,17 +143,17 @@ export class NumericInputExtendedExample extends BaseExample<INumericInputExtend
             return value;
         }
 
-        const number = +value.substring(0, value.length - 1);
+        const num = +value.substring(0, value.length - 1);
         const lastChar = value.charAt(value.length - 1).toLowerCase();
 
         let result: number;
 
         if (lastChar === NumberAbbreviation.THOUSAND) {
-            result = number * 1e3;
+            result = num * 1e3;
         } else if (lastChar === NumberAbbreviation.MILLION) {
-            result = number * 1e6;
+            result = num * 1e6;
         } else if (lastChar === NumberAbbreviation.BILLION) {
-            result = number * 1e9;
+            result = num * 1e9;
         }
 
         const isValid = result != null && !isNaN(result);

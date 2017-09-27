@@ -45,7 +45,8 @@ export const Utils = {
      */
     assignClasses<P extends IProps>(elem: React.ReactElement<P>, ...extendedClasses: ClassValue[]) {
         const classes = classNames(elem.props.className, ...extendedClasses);
-        return React.cloneElement(elem, { className: classes } as IProps);
+        const props: IProps = { className: classes };
+        return React.cloneElement(elem, props);
     },
 
     /**

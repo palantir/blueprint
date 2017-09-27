@@ -65,7 +65,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
-                noResults={<MenuItem disabled text="No results." />}
+                noResults={<MenuItem disabled={true} text="No results." />}
                 onItemSelect={this.handleFilmSelect}
                 popoverProps={{ popoverClassName: popoverMinimal ? Classes.MINIMAL : "" }}
                 tagRenderer={this.renderTag}

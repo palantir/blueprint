@@ -124,13 +124,10 @@ export class DenseGridMutableStore<T> {
     // Private helpers
     // ===============
 
-    private createRow() {
-        return this.orderedColumnKeys.reduce(
-            (agg, columnKey) => {
-                agg[columnKey] = this.DEFAULT_CELL_VALUE;
-                return agg;
-            },
-            {} as IDataRow<T>,
-        );
+    private createRow(): IDataRow<T> {
+        return this.orderedColumnKeys.reduce((agg: IDataRow<T>, columnKey) => {
+            agg[columnKey] = this.DEFAULT_CELL_VALUE;
+            return agg;
+        }, {});
     }
 }

@@ -8,8 +8,7 @@
 // tslint:disable max-classes-per-file
 
 import { expect } from "chai";
-import { mount } from "enzyme";
-import * as Enzyme from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -56,7 +55,7 @@ describe("Hotkeys", () => {
         let globalKeyUpSpy: Sinon.SinonSpy = null;
 
         let attachTo: HTMLElement = null;
-        let comp: Enzyme.ReactWrapper<any, any> = null;
+        let comp: ReactWrapper<any, any> = null;
 
         interface ITestComponentProps {
             allowInInput?: boolean;
@@ -351,7 +350,7 @@ describe("Hotkeys", () => {
             verifyCombos(
                 Array.apply(null, Array(26)).map((_: any, i: number) => {
                     const combo = String.fromCharCode(alpha + i).toLowerCase();
-                    const event = { which: alpha + i } as KeyboardEvent;
+                    const event: KeyboardEvent = { which: alpha + i } as any;
                     return makeComboTest(combo, event);
                 }),
             );
@@ -362,7 +361,7 @@ describe("Hotkeys", () => {
             verifyCombos(
                 Array.apply(null, Array(26)).map((_: any, i: number) => {
                     const combo = String.fromCharCode(alpha + i).toUpperCase();
-                    const event = { which: alpha + i } as KeyboardEvent;
+                    const event: KeyboardEvent = { which: alpha + i } as any;
                     return makeComboTest(combo, event);
                 }),
                 false,
@@ -374,7 +373,7 @@ describe("Hotkeys", () => {
             verifyCombos(
                 Array.apply(null, Array(26)).map((_: any, i: number) => {
                     const combo = "shift + " + String.fromCharCode(alpha + i).toLowerCase();
-                    const event = { shiftKey: true, which: alpha + i } as KeyboardEvent;
+                    const event: KeyboardEvent = { shiftKey: true, which: alpha + i } as any;
                     return makeComboTest(combo, event);
                 }),
             );
@@ -383,24 +382,30 @@ describe("Hotkeys", () => {
         it("matches modifiers only", () => {
             const tests = [] as IComboTest[];
             const ignored = 16;
-            tests.push(makeComboTest("shift", { shiftKey: true, which: ignored } as KeyboardEvent));
+            tests.push(makeComboTest("shift", { shiftKey: true, which: ignored } as any));
             tests.push(
-                makeComboTest("ctrl + alt + shift", {
+                makeComboTest("ctrl + alt + shift", ({
                     altKey: true,
                     ctrlKey: true,
                     shiftKey: true,
                     which: ignored,
-                } as KeyboardEvent),
+                } as any) as KeyboardEvent),
             );
-            tests.push(makeComboTest("ctrl + meta", { ctrlKey: true, metaKey: true, which: ignored } as KeyboardEvent));
+            tests.push(
+                makeComboTest("ctrl + meta", ({
+                    ctrlKey: true,
+                    metaKey: true,
+                    which: ignored,
+                } as any) as KeyboardEvent),
+            );
             verifyCombos(tests);
         });
 
         it("adds shift to keys that imply it", () => {
             const tests = [] as IComboTest[];
-            tests.push(makeComboTest("!", { shiftKey: true, which: 49 } as KeyboardEvent));
-            tests.push(makeComboTest("@", { shiftKey: true, which: 50 } as KeyboardEvent));
-            tests.push(makeComboTest("{", { shiftKey: true, which: 219 } as KeyboardEvent));
+            tests.push(makeComboTest("!", ({ shiftKey: true, which: 49 } as any) as KeyboardEvent));
+            tests.push(makeComboTest("@", ({ shiftKey: true, which: 50 } as any) as KeyboardEvent));
+            tests.push(makeComboTest("{", ({ shiftKey: true, which: 219 } as any) as KeyboardEvent));
             // don't verify the strings because these will be converted to
             // `shift + 1`, etc.
             verifyCombos(tests, false);
