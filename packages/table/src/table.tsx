@@ -1002,7 +1002,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndexEnd = showFrozenColumnsOnly ? this.getMaxFrozenColumnIndex() : columnIndices.columnIndexEnd;
 
         return (
-            <div className={classes} ref={refHandler}>
+            <div className={classes}>
                 <ColumnHeader
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
@@ -1013,6 +1013,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={locator}
                     maxColumnWidth={maxColumnWidth}
+                    measurableElementRef={refHandler}
                     minColumnWidth={minColumnWidth}
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onFocus={this.handleFocus}

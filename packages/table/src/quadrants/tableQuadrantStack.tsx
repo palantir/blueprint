@@ -17,7 +17,6 @@ import { TableQuadrantStackCache } from "./tableQuadrantStackCache";
 
 interface IQuadrantRefMap<T> {
     columnHeader?: T;
-    columnHeaderChildToMeasure?: T;
     menu?: T;
     quadrant?: T;
     rowHeader?: T;
@@ -354,17 +353,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private generateQuadrantRefHandlers(quadrantType: QuadrantType): IQuadrantRefHandlers {
         const reducer = (agg: IQuadrantRefHandlers, key: keyof IQuadrantRefHandlers) => {
-            agg[key] = (ref: HTMLElement) => {
-                this.quadrantRefs[quadrantType][key] = ref;
-                if (key === "columnHeader") {
-                    // during a syncQuadrantViews call, the columnHeader ref's
-                    // height may be influenced by a fixed-size menu element
-                    // that hasn't been updated yet. save a child ref to make
-                    // sure we measure the actual height of the cells.
-                    const childElement = ref.querySelector(`.${Classes.TABLE_COLUMN_HEADER_TR}`) as HTMLElement;
-                    this.quadrantRefs[quadrantType].columnHeaderChildToMeasure = childElement;
-                }
-            };
+            agg[key] = (ref: HTMLElement) => (this.quadrantRefs[quadrantType][key] = ref);
             return agg;
         };
         return ["columnHeader", "menu", "quadrant", "rowHeader", "scrollContainer"].reduce(reducer, {});
@@ -687,7 +676,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         // Menu-element resizing: keep the menu element's borders flush with
         // thsoe of the the row and column headers.
-        const columnHeaderHeight = mainRefs.columnHeader == null ? 0 : mainRefs.columnHeaderChildToMeasure.clientHeight;
+        const columnHeaderHeight = mainRefs.columnHeader == null ? 0 : mainRefs.columnHeader.clientHeight;
         const nextMenuElementWidth = rowHeaderWidth;
         const nextMenuElementHeight = columnHeaderHeight;
 
