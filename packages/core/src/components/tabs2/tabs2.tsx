@@ -167,7 +167,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         } else if (prevState.selectedTabId != null) {
-            if (!Utils.arraysEqual(getTabChildren(prevProps.children), getTabChildren(), Utils.shallowCompareKeys)) {
+            if (!Utils.arraysEqual(this.getTabChildren(prevProps.children), this.getTabChildren(), Utils.shallowCompareKeys)) {
                 this.moveSelectionIndicator();
             }
         }
