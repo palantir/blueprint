@@ -24,11 +24,11 @@ export function getTimezoneMetadata(timezone: string, date: Date): ITimezoneMeta
     const abbreviation = getAbbreviation(timezone, timestamp);
 
     return {
-        timezone,
         abbreviation,
         offset,
         offsetAsString,
         population: zone.population,
+        timezone,
     };
 }
 

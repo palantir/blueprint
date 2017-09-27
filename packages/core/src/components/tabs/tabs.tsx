@@ -19,7 +19,7 @@ import * as Utils from "../../common/utils";
 
 import { ITabProps, Tab } from "./tab";
 import { ITabListProps, TabList } from "./tabList";
-import { ITabPanelProps, TabPanel } from "./tabPanel";
+import { TabPanel } from "./tabPanel";
 
 export interface ITabsProps extends IProps {
     /**
@@ -260,10 +260,11 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
                 isSelected: this.state.selectedTabIndex === tabIndex,
                 panelId: this.panelIds[tabIndex],
                 ref: `tabs-${tabIndex}`,
-            } as ITabProps);
+            });
             tabIndex++;
             return clonedTab;
         });
+        // tslint:disable-next-line no-object-literal-type-assertion
         return React.cloneElement(child, {
             children: tabs,
             indicatorWrapperStyle: this.state.indicatorWrapperStyle,
@@ -277,7 +278,7 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
             isSelected: this.state.selectedTabIndex === tabIndex,
             ref: `panels-${tabIndex}`,
             tabId: this.tabIds[tabIndex],
-        } as ITabPanelProps);
+        });
     }
 
     private focusTab(index: number) {
@@ -377,14 +378,14 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     }
 }
 
-let tabCount = 0;
+let globalTabCount = 0;
 function generateTabId() {
-    return `pt-tab-${tabCount++}`;
+    return `pt-tab-${globalTabCount++}`;
 }
 
-let panelCount = 0;
+let globalPanelCount = 0;
 function generatePanelId() {
-    return `pt-tab-panel-${panelCount++}`;
+    return `pt-tab-panel-${globalPanelCount++}`;
 }
 
 export const TabsFactory = React.createFactory(Tabs);

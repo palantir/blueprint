@@ -5,10 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Children, ReactElement } from "react";
 import * as React from "react";
-import { AbstractComponent, IProps } from "../../common";
 
+import { AbstractComponent, IProps } from "../../common";
+import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { Hotkey, IHotkeyProps } from "./hotkey";
 
 export { Hotkey, IHotkeyProps } from "./hotkey";
@@ -16,7 +16,6 @@ export { KeyCombo, IKeyComboProps } from "./keyCombo";
 export { HotkeysTarget, IHotkeysTarget } from "./hotkeysTarget";
 export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 export { IHotkeysDialogProps, hideHotkeysDialog, setHotkeysDialogProps } from "./hotkeysDialog";
-import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 
 export interface IHotkeysProps extends IProps {
     /**
@@ -36,7 +35,10 @@ export class Hotkeys extends AbstractComponent<IHotkeysProps, {}> {
     };
 
     public render() {
-        const hotkeys = Children.map(this.props.children, (child: ReactElement<IHotkeyProps>) => child.props);
+        const hotkeys = React.Children.map(
+            this.props.children,
+            (child: React.ReactElement<IHotkeyProps>) => child.props,
+        );
 
         // sort by group label alphabetically, globals first
         hotkeys.sort((a, b) => {
@@ -68,7 +70,7 @@ export class Hotkeys extends AbstractComponent<IHotkeysProps, {}> {
     }
 
     protected validateProps(props: IHotkeysProps & { children: React.ReactNode }) {
-        Children.forEach(props.children, child => {
+        React.Children.forEach(props.children, child => {
             if (!Hotkey.isInstance(child)) {
                 throw new Error(HOTKEYS_HOTKEY_CHILDREN);
             }

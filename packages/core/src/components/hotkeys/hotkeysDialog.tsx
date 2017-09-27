@@ -43,7 +43,7 @@ class HotkeysDialog {
         if (this.container == null) {
             this.container = this.getContainer();
         }
-        ReactDOM.render(this.renderComponent(), this.container) as React.Component<any, React.ComponentState>;
+        ReactDOM.render(this.renderComponent(), this.container);
     }
 
     public unmount() {

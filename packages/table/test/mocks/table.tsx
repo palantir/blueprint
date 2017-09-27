@@ -1,5 +1,8 @@
 /**
- * @license Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
 import * as React from "react";
@@ -18,16 +21,16 @@ export function createTableOfSize(numColumns: number, numRows: number, columnPro
 
 export function createTableWithData(columnNames: string[], data: string[][], columnProps?: any, tableProps?: any) {
     // combine column overrides
-    const columnPropsWithDefaults = {
+    const columnPropsWithDefaults: IColumnProps = {
         renderCell: (rowIndex: number, columnIndex: number) => <Cell>{data[rowIndex][columnIndex]}</Cell>,
         ...columnProps,
-    } as IColumnProps;
+    };
 
     // combine table overrides
-    const tablePropsWithDefaults = {
+    const tablePropsWithDefaults: ITableProps = {
         numRows: data.length,
         ...tableProps,
-    } as ITableProps;
+    };
 
     const SampleColumns = columnNames.map((name, index) => {
         return <Column key={index} name={name} {...columnPropsWithDefaults} />;
