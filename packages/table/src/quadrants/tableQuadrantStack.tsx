@@ -180,8 +180,8 @@ export interface ITableQuadrantStackProps extends IProps {
 // and rejiggered once scroll has ceased for at least this long, but not before.
 const DEFAULT_VIEW_SYNC_DELAY = 500;
 
-// when these props change, the layout will change, which requires quadrant
-// views should be resynchronized.
+// a list of props that trigger layout changes. when these props change,
+// quadrant views need to be explicitly resynchronized.
 const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
     "isRowHeaderShown",
     "numFrozenColumns",
