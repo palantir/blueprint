@@ -82,7 +82,8 @@ const FROZEN_COLUMN_COUNT_DEFAULT_INDEX = 0;
 const FROZEN_ROW_COUNT_DEFAULT_INDEX = 0;
 
 const LONG_TEXT_MIN_LENGTH = 5;
-const LONG_TEXT_MAX_LENGTH = 40;
+const LONG_TEXT_MAX_LENGTH = 120;
+const LONG_TEXT_WORD_SPLIT_REGEXP = /.{1,5}/g;
 const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const CELL_CONTENT_GENERATORS = {
@@ -93,7 +94,10 @@ const CELL_CONTENT_GENERATORS = {
         return Utils.times(randomLength, () => {
             const randomIndex = getRandomInteger(0, ALPHANUMERIC_CHARS.length - 1);
             return ALPHANUMERIC_CHARS[randomIndex];
-        }).join("");
+        })
+            .join("")
+            .match(LONG_TEXT_WORD_SPLIT_REGEXP)
+            .join(" ");
     },
 };
 
@@ -130,6 +134,7 @@ export interface IMutableTableState {
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableCellTruncation?: boolean;
+    enableCellWrap?: boolean;
     enableColumnCustomHeaders?: boolean;
     enableColumnNameEditing?: boolean;
     enableColumnReordering?: boolean;
@@ -172,6 +177,7 @@ const DEFAULT_STATE: IMutableTableState = {
     enableCellEditing: false,
     enableCellSelection: true,
     enableCellTruncation: false,
+    enableCellWrap: false,
     enableColumnCustomHeaders: true,
     enableColumnNameEditing: false,
     enableColumnReordering: true,
@@ -460,7 +466,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             );
         } else if (this.state.enableCellTruncation) {
             return (
-                <Cell className={classes}>
+                <Cell className={classes} wrapText={this.state.enableCellWrap}>
                     <TruncatedFormat
                         detectTruncation={true}
                         preformatted={false}
@@ -474,7 +480,12 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             );
         } else {
             return (
-                <Cell className={classes} columnIndex={columnIndex} rowIndex={rowIndex}>
+                <Cell
+                    className={classes}
+                    columnIndex={columnIndex}
+                    rowIndex={rowIndex}
+                    wrapText={this.state.enableCellWrap}
+                >
                     {valueAsString}
                 </Cell>
             );
@@ -549,8 +560,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Editing", "enableCellEditing")}
                 {this.renderSwitch("Selection", "enableCellSelection")}
                 {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", false)}
-
                 <div className="sidebar-indented-group">{truncatedPopoverModeMenu}</div>
+                {this.renderSwitch("Wrap Text", "enableCellWrap")}
 
                 <h4>Page</h4>
                 <h6>Display</h6>
