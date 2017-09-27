@@ -108,7 +108,7 @@ describe("Formats", () => {
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
 
-        it.only("does not show popover if text is not truncated by default", () => {
+        it("does not show popover if text is not truncated by default", () => {
             const str = `Dawkins`;
             const comp = harness.mount(<TruncatedFormat>{str}</TruncatedFormat>);
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
