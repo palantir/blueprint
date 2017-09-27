@@ -36,6 +36,12 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumn
     cellRenderer: IColumnHeaderRenderer;
 
     /**
+     * Ref handler that receives the HTML element that should be measured to
+     * indicate the fluid height of the column header.
+     */
+    measurableElementRef?: (ref: HTMLElement) => void;
+
+    /**
      * A callback invoked when user is done resizing the column
      */
     onColumnWidthChanged: IIndexedResizeCallback;
@@ -118,7 +124,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
         // cell all the way to the last
         return (
             <div style={{ width: tableWidth }}>
-                <div style={style} className={classes}>
+                <div style={style} className={classes} ref={this.props.measurableElementRef}>
                     {cells}
                 </div>
             </div>

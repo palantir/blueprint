@@ -162,11 +162,32 @@ export interface ITableQuadrantStackProps extends IProps {
      * @default 500
      */
     viewSyncDelay?: number;
+
+    /**
+     * If `true`, adds an interaction bar on top of all column header cells, and
+     * moves interaction triggers into it.
+     *
+     * This value defaults to `undefined` so that, by default, it won't override
+     * the `useInteractionBar` values that you might have provided directly to
+     * each `<ColumnHeaderCell>`.
+     *
+     * @default undefined
+     */
+    useInteractionBar?: boolean;
 }
 
 // the debounce delay for updating the view on scroll. elements will be resized
 // and rejiggered once scroll has ceased for at least this long, but not before.
 const DEFAULT_VIEW_SYNC_DELAY = 500;
+
+// a list of props that trigger layout changes. when these props change,
+// quadrant views need to be explicitly resynchronized.
+const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
+    "isRowHeaderShown",
+    "numFrozenColumns",
+    "numFrozenRows",
+    "useInteractionBar",
+];
 
 export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackProps, {}> {
     // Static variables
@@ -179,6 +200,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         isRowHeaderShown: true,
         isVerticalScrollDisabled: false,
         throttleScrolling: true,
+        useInteractionBar: undefined,
         viewSyncDelay: DEFAULT_VIEW_SYNC_DELAY,
     };
 
@@ -256,11 +278,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     public componentDidUpdate(prevProps: ITableQuadrantStackProps) {
         // sync'ing quadrant views triggers expensive reflows, so we only call
         // it when layout-affecting props change.
-        if (
-            this.props.numFrozenColumns !== prevProps.numFrozenColumns ||
-            this.props.numFrozenRows !== prevProps.numFrozenRows ||
-            this.props.isRowHeaderShown !== prevProps.isRowHeaderShown
-        ) {
+        if (!CoreUtils.shallowCompareKeys(this.props, prevProps, { include: SYNC_TRIGGER_PROP_KEYS })) {
             this.emitRefs();
             this.syncQuadrantViews();
         }

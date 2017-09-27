@@ -287,6 +287,18 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * marked with their own `className` for custom styling.
      */
     styledRegionGroups?: IStyledRegionGroup[];
+
+    /**
+     * If `true`, adds an interaction bar on top of all column header cells, and
+     * moves interaction triggers into it.
+     *
+     * This value defaults to `undefined` so that, by default, it won't override
+     * the `useInteractionBar` values that you might have provided directly to
+     * each `<ColumnHeaderCell>`.
+     *
+     * @default undefined
+     */
+    useInteractionBar?: boolean;
 }
 
 export interface ITableState {
@@ -593,7 +605,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { className, isRowHeaderShown } = this.props;
+        const { className, isRowHeaderShown, useInteractionBar } = this.props;
         const { horizontalGuides, verticalGuides } = this.state;
         this.validateGrid();
 
@@ -632,6 +644,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     renderRowHeader={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
+                    useInteractionBar={useInteractionBar}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
                 <GuideLayer
@@ -914,22 +927,46 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
 
-        const { id, loadingOptions, renderCell, renderColumnHeader, ...spreadableProps } = props;
+        // TODO: `renderColumnHeader` is really an unclear name. should rename
+        // to `renderColumnHeaderCell` in the future.
+        // (see: https://github.com/palantir/blueprint/issues/1625)
+        const {
+            id,
+            loadingOptions,
+            renderCell,
+            renderColumnHeader: renderColumnHeaderCell,
+            ...spreadableProps,
+        } = props;
 
         const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
 
-        if (renderColumnHeader != null) {
-            const columnHeader = renderColumnHeader(columnIndex);
-            const columnHeaderLoading = columnHeader.props.loading;
-            const headerCellProps: IColumnHeaderCellProps = {
-                loading: columnHeaderLoading != null ? columnHeaderLoading : columnLoading,
+        // <Table>'s useInteractionBar defaults to undefined. this means we
+        // won't override the cell's useInteractionBar value unless the consumer
+        // explicitly provided an override value to the <Table>.
+        const tableUseInteractionBar = this.props.useInteractionBar;
+
+        if (renderColumnHeaderCell != null) {
+            const columnHeaderCell = renderColumnHeaderCell(columnIndex);
+            const columnHeaderCellLoading = columnHeaderCell.props.loading;
+
+            // print a deprecation warning here if needed. we can't do this in
+            // ColumnHeaderCell, because we wouldn't be able to tell if
+            // useInteractionBar was injected by Table or provided by the user.
+            if (columnHeaderCell.props.useInteractionBar && !CoreUtils.isNodeEnv("production")) {
+                console.warn(Errors.COLUMN_HEADER_CELL_USE_INTERACTION_BAR_DEPRECATED);
+            }
+
+            const columnHeaderCellProps: IColumnHeaderCellProps = {
+                loading: columnHeaderCellLoading != null ? columnHeaderCellLoading : columnLoading,
+                useInteractionBar: tableUseInteractionBar,
             };
-            return React.cloneElement(columnHeader, headerCellProps);
+            return React.cloneElement(columnHeaderCell, columnHeaderCellProps);
         }
 
         const baseProps: IColumnHeaderCellProps = {
             index: columnIndex,
             loading: columnLoading,
+            useInteractionBar: tableUseInteractionBar,
             ...spreadableProps,
         };
 
@@ -967,7 +1004,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndexEnd = showFrozenColumnsOnly ? this.getMaxFrozenColumnIndex() : columnIndices.columnIndexEnd;
 
         return (
-            <div className={classes} ref={refHandler}>
+            <div className={classes}>
                 <ColumnHeader
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
@@ -978,6 +1015,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={this.locator}
                     maxColumnWidth={maxColumnWidth}
+                    measurableElementRef={refHandler}
                     minColumnWidth={minColumnWidth}
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onFocus={this.handleFocus}
