@@ -664,6 +664,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private syncQuadrantViews = () => {
         const mainRefs = this.quadrantRefs[QuadrantType.MAIN];
+        const mainColumnHeader = mainRefs.columnHeader;
         const mainScrollContainer = mainRefs.scrollContainer;
 
         //
@@ -676,7 +677,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         // Menu-element resizing: keep the menu element's borders flush with
         // thsoe of the the row and column headers.
-        const columnHeaderHeight = mainRefs.columnHeader == null ? 0 : mainRefs.columnHeader.clientHeight;
+        const columnHeaderHeight = mainColumnHeader == null ? 0 : mainColumnHeader.clientHeight;
         const nextMenuElementWidth = rowHeaderWidth;
         const nextMenuElementHeight = columnHeaderHeight;
 
