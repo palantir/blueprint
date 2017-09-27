@@ -952,6 +952,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             const columnHeaderCell = renderColumnHeaderCell(columnIndex);
             const columnHeaderCellLoading = columnHeaderCell.props.loading;
 
+            // do this check here, as we can't tell in `ColumnHeaderCell` if
+            // useInteractionBar was injected by `Table` or provided by the user.
+            if (columnHeaderCell.props.useInteractionBar && !CoreUtils.isNodeEnv("production")) {
+                console.warn(Errors.COLUMN_HEADER_CELL_USE_INTERACTION_BAR_DEPRECATED);
+            }
+
             const clonedColumnHeaderCell = React.cloneElement(columnHeaderCell, {
                 loading: columnHeaderCellLoading != null ? columnHeaderCellLoading : columnLoading,
                 useInteractionBar: tableUseInteractionBar,
