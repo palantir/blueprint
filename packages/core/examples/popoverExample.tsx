@@ -103,8 +103,8 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
     private toggleInline = handleBooleanChange(inline => {
         if (inline) {
             this.setState({
-                inline,
                 inheritDarkTheme: false,
+                inline,
                 isModal: false,
                 tetherConstraints: [],
             });

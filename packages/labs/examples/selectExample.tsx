@@ -60,7 +60,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
-                noResults={<MenuItem disabled text="No results." />}
+                noResults={<MenuItem disabled={true} text="No results." />}
                 onItemSelect={this.handleValueChange}
                 popoverProps={{ popoverClassName: minimal ? Classes.MINIMAL : "" }}
             >
