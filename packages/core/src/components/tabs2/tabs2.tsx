@@ -39,8 +39,8 @@ export interface ITabs2Props extends IProps {
     defaultSelectedTabId?: TabId;
 
     /**
-     * The children of a `Tabs2` component, which can be React elements
-     * that use `ITab2Props` or any other React element.
+     * The children of a `Tabs2` component, which are React elements
+     * that use `ITab2Props`.
      */
     children?: React.ReactElement<ITab2Props> | Array<React.ReactElement<ITab2Props>>;
 
