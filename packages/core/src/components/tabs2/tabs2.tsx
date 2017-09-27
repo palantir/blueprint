@@ -42,7 +42,7 @@ export interface ITabs2Props extends IProps {
      * The children of a `Tabs2` component, which can be React elements
      * that use `ITab2Props` or any other React element.
      */
-    children?: React.ReactElement<ITab2Props> | Array<React.ReactElement<ITab2Props>> | <React.ReactElement<any>> | Array<React.ReactElement<any>>;
+    children?: React.ReactElement<ITab2Props> | Array<React.ReactElement<ITab2Props>>;
 
     /**
      * Unique identifier for this `Tabs` container. This will be combined with the `id` of each
