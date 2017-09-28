@@ -184,11 +184,11 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
     private handleContentDivRef = (ref: HTMLDivElement) => (this.contentDiv = ref);
 
     private handlePopoverOpen = () => {
-        this.setState({ isPopoverOpen: true } as ITruncatedFormatState);
+        this.setState({ isPopoverOpen: true });
     };
 
     private handlePopoverClose = () => {
-        this.setState({ isPopoverOpen: false } as ITruncatedFormatState);
+        this.setState({ isPopoverOpen: false });
     };
 
     private shouldShowPopover(content: string) {
@@ -214,7 +214,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         if (this.contentDiv === undefined) {
-            this.setState({ isTruncated: false } as ITruncatedFormatState);
+            this.setState({ isTruncated: false });
             return;
         }
 
@@ -242,6 +242,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             actualContentWidth > containerWidth ||
             actualContentHeight > containerHeight;
 
-        this.setState({ isTruncated: shouldTruncate } as ITruncatedFormatState);
+        this.setState({ isTruncated: shouldTruncate });
     }
 }
