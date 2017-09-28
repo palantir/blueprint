@@ -547,6 +547,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         delta: number,
         quadrantTypesToSync: QuadrantType[],
     ) => {
+        const { grid } = this.props;
         const isHorizontal = direction === "horizontal";
 
         const scrollKey = isHorizontal ? "scrollLeft" : "scrollTop";
@@ -558,8 +559,14 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
 
             const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
+            const contentSize = isHorizontal ? grid.getWidth() : grid.getHeight();
+            const containerSize = isHorizontal
+                ? mainScrollContainer.clientWidth - this.cache.getRowHeaderWidth()
+                : mainScrollContainer.clientHeight - this.cache.getColumnHeaderHeight();
+
             const currScrollOffset = mainScrollContainer[scrollKey];
-            const nextScrollOffset = Math.max(0, mainScrollContainer[scrollKey] + delta);
+            const maxScrollOffset = contentSize - containerSize;
+            const nextScrollOffset = CoreUtils.clamp(mainScrollContainer[scrollKey] + delta, 0, maxScrollOffset);
 
             if (nextScrollOffset === currScrollOffset) {
                 return;
