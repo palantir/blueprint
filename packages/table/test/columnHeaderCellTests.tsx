@@ -13,7 +13,6 @@ import { shallow } from "enzyme";
 import * as React from "react";
 
 import * as Classes from "../src/common/classes";
-import * as Errors from "../src/common/errors";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src/index";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
