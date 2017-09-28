@@ -79,8 +79,8 @@ export interface ITruncatedFormatProps extends IProps {
 }
 
 export interface ITruncatedFormatState {
-    isTruncated: boolean;
-    isPopoverOpen: boolean;
+    isTruncated?: boolean;
+    isPopoverOpen?: boolean;
 }
 
 @PureRender
