@@ -12,21 +12,28 @@ import { BaseExample } from "@blueprintjs/docs";
 
 import { Column, ColumnHeaderCell, EditableCell, EditableName, Table } from "../src";
 
-export class TableEditableExample extends BaseExample<{}> {
+export interface ITableEditableExampleState {
+    columnNames?: string[];
+    sparseCellData?: { [key: string]: string };
+    sparseCellIntent?: { [key: string]: Intent };
+    sparseColumnIntents?: Intent[];
+}
+
+export class TableEditableExample extends BaseExample<ITableEditableExampleState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
     };
 
-    public state = {
+    public state: ITableEditableExampleState = {
         columnNames: ["Please", "Rename", "Me"],
         sparseCellData: {
             "1-1": "editable",
             "3-1": "validation 123",
-        } as { [key: string]: string },
+        },
         sparseCellIntent: {
             "3-1": Intent.DANGER,
-        } as { [key: string]: Intent },
-        sparseColumnIntents: [] as Intent[],
+        },
+        sparseColumnIntents: [],
     };
 
     public render() {

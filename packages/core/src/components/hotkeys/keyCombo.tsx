@@ -8,7 +8,7 @@
 import * as React from "react";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
-const KeyIcons = {
+const KeyIcons: { [key: string]: string } = {
     alt: "pt-icon-key-option",
     cmd: "pt-icon-key-command",
     ctrl: "pt-icon-key-control",
@@ -20,7 +20,7 @@ const KeyIcons = {
     right: "pt-icon-arrow-right",
     shift: "pt-icon-key-shift",
     up: "pt-icon-arrow-up",
-} as { [key: string]: string };
+};
 
 export interface IKeyComboProps {
     allowInInput?: boolean;

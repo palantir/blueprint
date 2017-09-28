@@ -232,11 +232,11 @@ describe("Utils", () => {
         const RIGHT_BUTTON_CODE = 1;
 
         it("returns true for left click", () => {
-            expect(Utils.isLeftClick({ button: LEFT_BUTTON_CODE } as MouseEvent)).to.be.true;
+            expect(Utils.isLeftClick(({ button: LEFT_BUTTON_CODE } as any) as MouseEvent)).to.be.true;
         });
 
         it("returns false for right click", () => {
-            expect(Utils.isLeftClick({ button: RIGHT_BUTTON_CODE } as MouseEvent)).to.be.false;
+            expect(Utils.isLeftClick(({ button: RIGHT_BUTTON_CODE } as any) as MouseEvent)).to.be.false;
         });
     });
 

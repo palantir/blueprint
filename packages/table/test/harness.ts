@@ -7,6 +7,7 @@
 
 // tslint:disable max-classes-per-file
 
+// tslint:disable-next-line:no-submodule-imports
 import { Browser } from "@blueprintjs/core/dist/compatibility";
 import * as React from "react";
 import * as ReactDOM from "react-dom";

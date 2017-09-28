@@ -97,8 +97,8 @@ describe("<DateInput>", () => {
                     autoFocus: true,
                     content: "fail",
                     inline: true,
-                    position: Position.TOP,
                     popoverWillOpen,
+                    position: Position.TOP,
                 }}
             />,
         );

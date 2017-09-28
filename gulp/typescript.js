@@ -7,22 +7,36 @@ module.exports = (blueprint, gulp, plugins) => {
     const mergeStream = require("merge-stream");
     const path = require("path");
 
+    const getTSLintGlobs = (project) => [
+        // we might consider excluding src/generated/** from linting in the future, but for now it
+        // conforms to our code style
+        path.join(project.cwd, "!(coverage|dist|node_modules|typings)", "**", "*.{js,jsx,ts,tsx}"),
+        // exclude nested dist directories (ex: table/preview/dist)
+        "!" + path.join(project.cwd, "*", "dist", "**", "*.{js,jsx,ts,tsx}"),
+    ];
+
     blueprint.defineTaskGroup({
         block: "all",
         name: "tslint",
         withTasks: ["tslint-gulp"],
     }, (project, taskName) => {
         gulp.task(taskName, () => (
-            gulp.src([
-                // we might consider excluding src/generated/** from linting in the future, but for now it
-                // conforms to our code style
-                path.join(project.cwd, "!(coverage|dist|node_modules|typings)", "**", "*.{js,jsx,ts,tsx}"),
-                // exclude nested dist directories (ex: table/preview/dist)
-                "!" + path.join(project.cwd, "*", "dist", "**", "*.{js,jsx,ts,tsx}"),
-            ])
+            gulp.src(getTSLintGlobs(project))
                 .pipe(plugins.tslint({ formatter: "codeFrame" }))
                 .pipe(plugins.tslint.report({ emitError: true }))
                 .pipe(plugins.count(`${project.id}: ## files tslinted`))
+        ));
+    });
+
+    blueprint.defineTaskGroup({
+        block: "all",
+        name: "tslint-fix",
+    }, (project, taskName) => {
+        gulp.task(taskName, () => (
+            gulp.src(getTSLintGlobs(project))
+                .pipe(plugins.tslint({ formatter: "codeFrame", fix: true }))
+                .pipe(plugins.tslint.report({ emitError: true }))
+                .pipe(plugins.count(`${project.id}: ## files tslint-fixed`))
         ));
     });
 

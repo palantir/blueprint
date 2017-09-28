@@ -8,13 +8,14 @@
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
-import { Popper } from "react-popper";
+import { Arrow, Popper } from "react-popper";
 
 import { Classes, Keys, Overlay, PopoverInteractionKind, Position, Tooltip, Utils } from "@blueprintjs/core";
+// tslint:disable-next-line:no-submodule-imports
 import * as Errors from "@blueprintjs/core/src/common/errors";
+// tslint:disable-next-line:no-submodule-imports
 import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
 
-import { Arrow } from "react-popper";
 import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../src/index";
 
 type ShallowPopover2Wrapper = ShallowWrapper<IPopover2Props, IPopover2State>;
