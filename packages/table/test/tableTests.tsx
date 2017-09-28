@@ -583,6 +583,7 @@ describe("<Table>", () => {
             const quadrantSelector = `.${Classes.TABLE_QUADRANT_LEFT}`;
             const columnHeaderSelector = `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS}`;
             const resizeHandleSelector = `${columnHeaderSelector} .${Classes.TABLE_RESIZE_HANDLE_TARGET}`;
+
             const quadrantElement = tableElement.find(quadrantSelector, 0);
             const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX);
 
@@ -593,8 +594,12 @@ describe("<Table>", () => {
                 .mouse("mousedown")
                 .mouse("mouseup", 10);
 
-            expect(table.state.columnWidths[0]).to.equal(EXPECTED_COLUMN_WIDTH);
-            expect(quadrantElement.style().width).to.equal(`${EXPECTED_ROW_HEADER_WIDTH + EXPECTED_COLUMN_WIDTH}px`);
+            const columnWidth = table.state.columnWidths[0];
+            const quadrantWidth = quadrantElement.style().width;
+            const expectedQuadrantWidth = EXPECTED_ROW_HEADER_WIDTH + EXPECTED_COLUMN_WIDTH;
+
+            expect(columnWidth, "column resizes correctly").to.equal(EXPECTED_COLUMN_WIDTH);
+            expect(quadrantWidth, "quadrant resizes correctly").to.equal(`${expectedQuadrantWidth}px`);
 
             // clean up
             document.body.removeChild(containerElement);
