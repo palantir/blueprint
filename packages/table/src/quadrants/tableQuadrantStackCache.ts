@@ -12,6 +12,8 @@ export class TableQuadrantStackCache {
     private cachedColumnHeaderHeight: number;
     private cachedScrollLeft: number;
     private cachedScrollTop: number;
+    private cachedScrollContainerClientWidth: number;
+    private cachedScrollContainerClientHeight: number;
 
     public constructor() {
         this.reset();
@@ -39,6 +41,14 @@ export class TableQuadrantStackCache {
         return this.cachedColumnHeaderHeight;
     }
 
+    public getScrollContainerClientWidth() {
+        return this.cachedScrollContainerClientWidth;
+    }
+
+    public getScrollContainerClientHeight() {
+        return this.cachedScrollContainerClientHeight;
+    }
+
     // Setters
     // =======
 
@@ -56,5 +66,13 @@ export class TableQuadrantStackCache {
         } else {
             this.cachedScrollTop = offset;
         }
+    }
+
+    public setScrollContainerClientWidth(clientWidth: number | undefined) {
+        this.cachedScrollContainerClientWidth = clientWidth;
+    }
+
+    public setScrollContainerClientHeight(clientHeight: number | undefined) {
+        this.cachedScrollContainerClientHeight = clientHeight;
     }
 }
