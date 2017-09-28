@@ -18,6 +18,7 @@ import {
     EditableCell,
     EditableName,
     IStyledRegionGroup,
+    JSONFormat,
     RegionCardinality,
     Regions,
     RowHeaderCell,
@@ -45,6 +46,7 @@ export enum CellContent {
     EMPTY,
     CELL_NAMES,
     LONG_TEXT,
+    LARGE_JSON,
 }
 
 type IMutableStateUpdateCallback = (
@@ -52,20 +54,23 @@ type IMutableStateUpdateCallback = (
 ) => ((event: React.FormEvent<HTMLElement>) => void);
 
 const COLUMN_COUNTS = [0, 1, 5, 20, 100, 1000];
-
 const ROW_COUNTS = [0, 1, 5, 20, 100, 1000, 100000];
-
 const FROZEN_COLUMN_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
 const FROZEN_ROW_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
 
-const REGION_CARDINALITIES = [
+const REGION_CARDINALITIES: RegionCardinality[] = [
     RegionCardinality.CELLS,
     RegionCardinality.FULL_ROWS,
     RegionCardinality.FULL_COLUMNS,
     RegionCardinality.FULL_TABLE,
 ];
 
-const CELL_CONTENTS = [CellContent.EMPTY, CellContent.CELL_NAMES, CellContent.LONG_TEXT];
+const CELL_CONTENTS: CellContent[] = [
+    CellContent.EMPTY,
+    CellContent.CELL_NAMES,
+    CellContent.LONG_TEXT,
+    CellContent.LARGE_JSON,
+];
 
 const TRUNCATED_POPOVER_MODES: TruncatedPopoverMode[] = [
     TruncatedPopoverMode.ALWAYS,
@@ -84,20 +89,21 @@ const FROZEN_ROW_COUNT_DEFAULT_INDEX = 0;
 const LONG_TEXT_MIN_LENGTH = 5;
 const LONG_TEXT_MAX_LENGTH = 120;
 const LONG_TEXT_WORD_SPLIT_REGEXP = /.{1,5}/g;
-const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+const LARGE_JSON_PROP_COUNT = 3;
+const LARGE_JSON_OBJECT_DEPTH = 2;
 
 const CELL_CONTENT_GENERATORS = {
     [CellContent.CELL_NAMES]: Utils.toBase26CellName,
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
         const randomLength = getRandomInteger(LONG_TEXT_MIN_LENGTH, LONG_TEXT_MAX_LENGTH);
-        return Utils.times(randomLength, () => {
-            const randomIndex = getRandomInteger(0, ALPHANUMERIC_CHARS.length - 1);
-            return ALPHANUMERIC_CHARS[randomIndex];
-        })
-            .join("")
+        return getRandomString(randomLength)
             .match(LONG_TEXT_WORD_SPLIT_REGEXP)
             .join(" ");
+    },
+    [CellContent.LARGE_JSON]: (_ri: number, _ci: number) => {
+        return getRandomObject(LARGE_JSON_PROP_COUNT, LARGE_JSON_OBJECT_DEPTH);
     },
 };
 
@@ -118,9 +124,43 @@ function handleNumberChange(handler: (value: number) => void) {
     return handleStringChange(value => handler(+value));
 }
 
-function getRandomInteger(min: number, max: number) {
+function getRandomObject(propCount: number, depth = 0): object {
+    const childPropCount = propCount;
+    const obj: any = {};
+    while (propCount-- >= 0) {
+        obj[getRandomString(5)] = depth === 0 ? getRandomValue() : getRandomObject(childPropCount, depth - 1);
+    }
+    return obj;
+}
+
+function getRandomValue(): number | string | number[] | string[] | null {
+    switch (getRandomInteger(0, 4)) {
+        case 0:
+            return Math.random();
+        case 1:
+            return getRandomString(5);
+        case 2:
+            return Utils.times(5, () => Math.random());
+        case 3:
+            return Utils.times(5, () => getRandomString(5));
+        default:
+            return null;
+    }
+}
+
+function getRandomInteger(min: number, max: number): number {
     // min and max are inclusive
     return Math.floor(min + Math.random() * (max - min + 1));
+}
+
+function getRandomString(length: number): string {
+    let str = "";
+    while (str.length < length) {
+        str += Math.random()
+            .toString(36)
+            .substr(2);
+    }
+    return str.substr(0, length);
 }
 
 function contains(arr: any[], value: any) {
@@ -214,7 +254,7 @@ const DEFAULT_STATE: IMutableTableState = {
 };
 
 export class MutableTable extends React.Component<{}, IMutableTableState> {
-    private store = new DenseGridMutableStore<string>();
+    private store = new DenseGridMutableStore<any>();
 
     private tableInstance: Table;
     private stateStore: LocalStore<IMutableTableState>;
@@ -463,6 +503,19 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     rowIndex={rowIndex}
                     value={valueAsString}
                 />
+            );
+        } else if (this.state.cellContent === CellContent.LARGE_JSON) {
+            return (
+                <Cell className={classes} wrapText={this.state.enableCellWrap}>
+                    <JSONFormat
+                        detectTruncation={this.state.enableCellTruncation}
+                        preformatted={true}
+                        showPopover={this.state.cellTruncatedPopoverMode}
+                        truncateLength={1e10}
+                    >
+                        {valueAsString}
+                    </JSONFormat>
+                </Cell>
             );
         } else if (this.state.enableCellTruncation) {
             return (
@@ -763,6 +816,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 return "Empty";
             case CellContent.LONG_TEXT:
                 return "Long text";
+            case CellContent.LARGE_JSON:
+                return "Large JSON (~5KB)";
             default:
                 return "";
         }

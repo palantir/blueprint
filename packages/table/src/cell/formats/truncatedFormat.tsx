@@ -11,13 +11,12 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { Utils } from "../../common/utils";
 
-// Since we measure only the `textContent` of the cell to determine the
-// truncation state, we must account for the padding that is applied via CSS to
-// the cell.
-const CONTAINER_PADDING = 20;
-const FALLBACK_CONTAINER_WIDTH = 150;
+// amount in pixels that the content div width changes when truncated vs when
+// not truncated. Note: could be modified by styles
+// Note 2: this doesn't come from the width of the popover element, but the "right" style
+// on the div, which comes from styles
+const CONTENT_DIV_WIDTH_DELTA = 25;
 
 export enum TruncatedPopoverMode {
     ALWAYS,
@@ -100,7 +99,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
     };
 
     private contentDiv: HTMLDivElement;
-    private cachedFontString: string;
 
     public componentDidMount() {
         this.setTruncationState();
@@ -220,14 +218,30 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
             return;
         }
 
-        if (this.cachedFontString == null) {
-            this.cachedFontString = Utils.getFontStringFromDom(this.contentDiv);
-        }
+        const { isTruncated } = this.state;
 
-        const contentWidth = Utils.measureText(this.contentDiv.textContent, this.cachedFontString).width;
-        const containerWidth = parseInt(this.props.parentCellWidth, 10) || FALLBACK_CONTAINER_WIDTH;
-        const availableWidth = containerWidth - CONTAINER_PADDING;
-        const isTruncated = contentWidth > availableWidth;
-        this.setState({ isTruncated } as ITruncatedFormatState);
+        // take all measurements at once to avoid excessive DOM reflows.
+        const {
+            clientHeight: containerHeight,
+            clientWidth: containerWidth,
+            scrollHeight: actualContentHeight,
+            scrollWidth: contentWidth,
+        } = this.contentDiv;
+
+        // if the content is truncated, then a popover handle will be present as a
+        // sibling of the content. we don't want to consider that handle when
+        // calculating the width of the actual content, so subtract it.
+        const actualContentWidth = isTruncated ? contentWidth - CONTENT_DIV_WIDTH_DELTA : contentWidth;
+
+        // we of course truncate the content if it doesn't fit in the container. but we
+        // also aggressively truncate if they're the same size with truncation enabled;
+        // this addresses browser-crashing stack-overflow bugs at various zoom levels.
+        // (see: https://github.com/palantir/blueprint/pull/1519)
+        const shouldTruncate =
+            (isTruncated && actualContentWidth === containerWidth) ||
+            actualContentWidth > containerWidth ||
+            actualContentHeight > containerHeight;
+
+        this.setState({ isTruncated: shouldTruncate } as ITruncatedFormatState);
     }
 }
