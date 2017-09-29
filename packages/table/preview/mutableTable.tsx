@@ -78,9 +78,7 @@ const TRUNCATED_POPOVER_MODES: TruncatedPopoverMode[] = [
     TruncatedPopoverMode.WHEN_TRUNCATED,
 ];
 
-const TRUNCATION_LENGTHS: number[] = [
-    20, 80, 100, 1000
-];
+const TRUNCATION_LENGTHS: number[] = [20, 80, 100, 1000];
 const TRUNCATION_LENGTH_DEFAULT_INDEX = 1;
 
 const SLOW_LAYOUT_STACK_DEPTH = 120;
@@ -579,7 +577,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             this.handleNumberStateChange,
             "enableCellTruncationFixed",
             true,
-        )
+        );
 
         return (
             <div className="sidebar pt-elevation-0">
