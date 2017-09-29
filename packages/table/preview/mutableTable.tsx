@@ -127,7 +127,7 @@ function handleNumberChange(handler: (value: number) => void) {
 function getRandomObject(propCount: number, depth = 0): object {
     const childPropCount = propCount;
     const obj: any = {};
-    while (propCount-- >= 0) {
+    for (let i = 0; i < propCount; i++) {
         obj[getRandomString(5)] = depth === 0 ? getRandomValue() : getRandomObject(childPropCount, depth - 1);
     }
     return obj;

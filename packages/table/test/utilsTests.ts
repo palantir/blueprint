@@ -318,15 +318,4 @@ describe("Utils", () => {
             expect(result).to.eql(expected.split(""));
         }
     });
-
-    describe("measure text", () => {
-        it("measures an element's content with canvas", () => {
-            const elem = document.createElement("div");
-            elem.style.setProperty("font", "10px sans-serif");
-            elem.textContent = "hello";
-            const elemWidth = Utils.measureElementTextContent(elem).width;
-            const stringWidth = Utils.measureText("hello", "10px san-serif").width;
-            expect(elemWidth).to.be.closeTo(stringWidth, 10);
-        });
-    });
 });
