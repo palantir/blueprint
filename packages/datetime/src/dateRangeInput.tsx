@@ -88,6 +88,11 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     format?: string;
 
     /**
+     * The day the calendar week starts with. 0=Sunday, 6=Saturday
+     */
+    firstDayOfWeek?: number;
+
+    /**
      * The error message to display when the selected date is invalid.
      * @default "Invalid date"
      */

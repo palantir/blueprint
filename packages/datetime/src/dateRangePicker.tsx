@@ -66,6 +66,11 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     defaultValue?: DateRange;
 
     /**
+     * The day the calendar week starts with. 0=Sunday, 6=Saturday
+     */
+    firstDayOfWeek?: number;
+
+    /**
      * Called when the user selects a day.
      * If no days are selected, it will pass `[null, null]`.
      * If a start date is selected but not an end date, it will pass `[selectedDate, null]`.
@@ -205,6 +210,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
 
         const dayPickerBaseProps: DayPicker.Props = {
             disabledDays,
+            firstDayOfWeek: this.props.firstDayOfWeek,
             locale,
             localeUtils,
             modifiers,
