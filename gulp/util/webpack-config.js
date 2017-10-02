@@ -13,6 +13,12 @@ const globalName = (id) => upperFirst(camelCase(id));
 
 const DEFAULT_CONFIG = {
     devtool: "source-map",
+    module: {
+        loaders: [
+            // always provide JSON loader to support importing data files (see moment-timezone)
+            { loader: "json-loader", test: /\.json$/ },
+        ],
+    },
     plugins: [
         new webpack.DefinePlugin({
             "process.env": {
