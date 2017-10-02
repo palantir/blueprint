@@ -422,7 +422,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private componentDOMChange() {
-        if (!this.targetElement) {
+        if (this.targetElement == null) {
             return;
         }
         if (this.props.useSmartArrowPositioning) {
