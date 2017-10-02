@@ -820,11 +820,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.maybeSetQuadrantScrollOffset(dependentQuadrantType, scrollKey);
     };
 
-    /**
-     * This function is named 'update' instead of 'set', because a 'set'
-     * function typically takes the new value as a parameter. We avoid that to
-     * keep the isHorizontal logic tree contained within this function.
-     */
+    // this function is named 'update' instead of 'set', because a 'set'
+    // function typically takes the new value as a parameter. we avoid that to
+    // keep the isHorizontal logic tree contained within this function.
     private updateScrollContainerClientSize(isHorizontal: boolean) {
         const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
         if (isHorizontal) {
