@@ -572,10 +572,15 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             : this.cache.getScrollContainerClientHeight();
 
         if (clientSize == null) {
-            // should trigger only on the first scroll of the wheel gesture
+            // should trigger only on the first scroll of the wheel gesture.
+            // will save client width and height sizes in the cache.
             clientSize = this.updateScrollContainerClientSize(isHorizontal);
         }
 
+        // by now, the client width and height will have been saved in cache, so
+        // they can't be nully anymore. also, events can only happen after
+        // mount, so we're guaranteed to have measured the header sizes in
+        // syncQuadrantViews() by now too, as it's invoked on mount.
         const containerSize = isHorizontal
             ? this.cache.getScrollContainerClientWidth() - this.cache.getRowHeaderWidth()
             : this.cache.getScrollContainerClientHeight() - this.cache.getColumnHeaderHeight();
@@ -802,6 +807,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     };
 
     private maybeSetGlobalScrollOffset = (scrollKey: "scrollLeft" | "scrollTop", offset: number) => {
+        // the "global" scroll offset should always be set on the MAIN
+        // quadrant's scroll container; that's our single source of truth.
         this.quadrantRefs[QuadrantType.MAIN].scrollContainer[scrollKey] = offset;
         this.cache.setScrollOffset(scrollKey, offset);
 
@@ -809,10 +816,12 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.maybeSetQuadrantScrollOffset(dependentQuadrantType, scrollKey);
     };
 
+    /**
+     * This function is named 'update' instead of 'set', because a 'set'
+     * function typically takes the new value as a parameter. We avoid that to
+     * keep the isHorizontal logic tree contained within this function.
+     */
     private updateScrollContainerClientSize(isHorizontal: boolean) {
-        // this function is called 'update' instead of 'set', because a 'set'
-        // function typically takes the new value as a parameter. we avoid that
-        // to keep the isHorizontal logic tree contained within this function.
         const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
         if (isHorizontal) {
             this.cache.setScrollContainerClientWidth(mainScrollContainer.clientWidth);
