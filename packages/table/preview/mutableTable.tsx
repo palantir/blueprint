@@ -78,6 +78,9 @@ const TRUNCATED_POPOVER_MODES: TruncatedPopoverMode[] = [
     TruncatedPopoverMode.WHEN_TRUNCATED,
 ];
 
+const TRUNCATION_LENGTHS: number[] = [20, 80, 100, 1000];
+const TRUNCATION_LENGTH_DEFAULT_INDEX = 1;
+
 const SLOW_LAYOUT_STACK_DEPTH = 120;
 
 const COLUMN_COUNT_DEFAULT_INDEX = 3;
@@ -170,10 +173,12 @@ function contains(arr: any[], value: any) {
 export interface IMutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
+    cellTruncationLength?: number;
     enableBatchRendering?: boolean;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableCellTruncation?: boolean;
+    enableCellTruncationFixed?: boolean;
     enableCellWrap?: boolean;
     enableColumnCustomHeaders?: boolean;
     enableColumnNameEditing?: boolean;
@@ -213,10 +218,12 @@ export interface IMutableTableState {
 const DEFAULT_STATE: IMutableTableState = {
     cellContent: CellContent.LONG_TEXT,
     cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
+    cellTruncationLength: TRUNCATION_LENGTHS[TRUNCATION_LENGTH_DEFAULT_INDEX],
     enableBatchRendering: true,
     enableCellEditing: false,
     enableCellSelection: true,
     enableCellTruncation: false,
+    enableCellTruncationFixed: false,
     enableCellWrap: false,
     enableColumnCustomHeaders: true,
     enableColumnNameEditing: false,
@@ -521,10 +528,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             return (
                 <Cell className={classes} wrapText={this.state.enableCellWrap}>
                     <TruncatedFormat
-                        detectTruncation={true}
+                        detectTruncation={!this.state.enableCellTruncationFixed}
                         preformatted={false}
                         showPopover={this.state.cellTruncatedPopoverMode}
-                        truncateLength={80}
+                        truncateLength={this.state.cellTruncationLength}
                         truncationSuffix="..."
                     >
                         {valueAsString}
@@ -560,6 +567,15 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             this.toTruncatedPopoverModeLabel,
             this.handleNumberStateChange,
             "enableCellTruncation",
+            true,
+        );
+        const truncatedLengthMenu = this.renderSelectMenu(
+            "Length",
+            "cellTruncationLength",
+            TRUNCATION_LENGTHS,
+            this.toValueLabel,
+            this.handleNumberStateChange,
+            "enableCellTruncationFixed",
             true,
         );
 
@@ -612,8 +628,11 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Interactions</h6>
                 {this.renderSwitch("Editing", "enableCellEditing")}
                 {this.renderSwitch("Selection", "enableCellSelection")}
+                <h6>Text Layout</h6>
                 {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", false)}
                 <div className="sidebar-indented-group">{truncatedPopoverModeMenu}</div>
+                {this.renderSwitch("Fixed Truncation", "enableCellTruncationFixed", "enableCellTruncation", true)}
+                <div className="sidebar-indented-group">{truncatedLengthMenu}</div>
                 {this.renderSwitch("Wrap Text", "enableCellWrap")}
 
                 <h4>Page</h4>
