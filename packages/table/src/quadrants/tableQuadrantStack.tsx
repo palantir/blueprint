@@ -738,8 +738,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.maybesSetQuadrantRowHeaderSizes(rowHeaderWidth);
         this.maybeSetQuadrantMenuElementSizes(nextMenuElementWidth, nextMenuElementHeight);
         this.maybeSetQuadrantSizes(nextLeftQuadrantWidth, nextTopQuadrantHeight);
-        this.maybeSetQuadrantOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
-        this.maybeSetQuadrantOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
+        this.maybeSetQuadrantPositionOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
+        this.maybeSetQuadrantPositionOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
         this.maybeSetQuadrantScrollOffset(QuadrantType.LEFT, "scrollTop");
         this.maybeSetQuadrantScrollOffset(QuadrantType.TOP, "scrollLeft");
     };
@@ -758,7 +758,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         }
     };
 
-    private maybeSetQuadrantOffset = (quadrantType: QuadrantType, side: "right" | "bottom", value: number) => {
+    private maybeSetQuadrantPositionOffset = (quadrantType: QuadrantType, side: "right" | "bottom", value: number) => {
         const { quadrant } = this.quadrantRefs[quadrantType];
         if (quadrant != null) {
             quadrant.style[side] = `${value}px`;
