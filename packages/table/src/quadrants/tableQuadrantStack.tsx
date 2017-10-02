@@ -517,8 +517,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const nextScrollTop = mainScrollContainer.scrollTop;
 
         // update the cache.
-        this.setScrollOffset("scrollLeft", nextScrollLeft);
-        this.setScrollOffset("scrollTop", nextScrollTop);
+        this.setScrollOffset("scrollLeft", nextScrollLeft, /* setOffsetExplicitly */ false);
+        this.setScrollOffset("scrollTop", nextScrollTop, /* setOffsetExplicitly */ false);
 
         // sync less important view stuff when scrolling/wheeling stops.
         this.syncQuadrantViewsDebounced();
@@ -805,10 +805,15 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         }
     };
 
-    private setScrollOffset = (scrollKey: "scrollLeft" | "scrollTop", offset: number) => {
-        // the scroll offset should be set on the MAIN quadrant's scroll
-        // container, since that's the one whose scroll bars are visible.
-        this.quadrantRefs[QuadrantType.MAIN].scrollContainer[scrollKey] = offset;
+    private setScrollOffset = (scrollKey: "scrollLeft" | "scrollTop", offset: number, setOffsetExplicitly = true) => {
+        if (setOffsetExplicitly) {
+            // the scroll offset should be set on the MAIN quadrant's scroll
+            // container, since that's the one whose scroll bars are visible.
+            // note: if this helper is invoked onScroll, then no need to update
+            // the offset explicitly, because it will have been done before the
+            // event fired.
+            this.quadrantRefs[QuadrantType.MAIN].scrollContainer[scrollKey] = offset;
+        }
         this.cache.setScrollOffset(scrollKey, offset);
 
         const dependentQuadrantType = scrollKey === "scrollLeft" ? QuadrantType.TOP : QuadrantType.LEFT;
