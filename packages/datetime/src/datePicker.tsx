@@ -31,6 +31,11 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     defaultValue?: Date;
 
     /**
+     * The day the calendar week starts with. 0=Sunday, 6=Saturday
+     */
+    firstDayOfWeek?: number;
+
+    /**
      * Called when the user selects a day.
      * If being used in an uncontrolled manner, `selectedDate` will be `null` if the user clicks the currently selected
      * day. If being used in a controlled manner, `selectedDate` will contain the day clicked no matter what.
@@ -61,6 +66,7 @@ export interface IDatePickerState {
 export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerState> {
     public static defaultProps: IDatePickerProps = {
         canClearSelection: true,
+        firstDayOfWeek: 0,
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         showActionsBar: false,
@@ -106,7 +112,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
     }
 
     public render() {
-        const { className, locale, localeUtils, maxDate, minDate, showActionsBar } = this.props;
+        const { className, locale, localeUtils, maxDate, minDate, showActionsBar, firstDayOfWeek } = this.props;
         const { displayMonth, displayYear } = this.state;
 
         return (
@@ -125,6 +131,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
                     onMonthChange={this.handleMonthChange}
                     selectedDays={this.state.value}
                     toMonth={maxDate}
+                    firstDayOfWeek={firstDayOfWeek}
                 />
                 {showActionsBar ? this.renderOptionsBar() : null}
             </div>

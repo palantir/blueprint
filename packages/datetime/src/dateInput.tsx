@@ -67,6 +67,11 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     format?: string;
 
     /**
+     * The day the calendar week starts with. 0=Sunday, 6=Saturday
+     */
+    firstDayOfWeek?: number;
+
+    /**
      * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
