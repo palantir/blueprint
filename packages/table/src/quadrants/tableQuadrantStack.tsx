@@ -220,7 +220,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     // this flag helps us avoid redundant work in the MAIN quadrant's onScroll callback, if the
     // callback was triggered from a manual scrollTop/scrollLeft update within an onWheel.
-    private wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+    private wasMainQuadrantScrollTriggeredByWheelEvent = false;
 
     // keep throttled event callbacks around as instance variables, so we don't
     // have to continually reinstantiate them.
@@ -258,7 +258,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     public scrollToPosition(scrollLeft: number, scrollTop: number) {
         const { scrollContainer } = this.quadrantRefs[QuadrantType.MAIN];
 
-        this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+        this.wasMainQuadrantScrollTriggeredByWheelEvent = false;
 
         // this will trigger the main quadrant's scroll callback below
         scrollContainer.scrollLeft = scrollLeft;
@@ -284,6 +284,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     public render() {
         const { grid, isRowHeaderShown, renderBody, throttleScrolling } = this.props;
 
+        // use the more generic "scroll" event for the main quadrant to capture
+        // *both* scrollbar interactions and trackpad/mousewheel gestures.
         const onMainQuadrantScroll = throttleScrolling
             ? this.throttledHandleMainQuadrantScroll
             : this.handleMainQuadrantScroll;
@@ -498,11 +500,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // Scrolling
     // ---------
 
-    // use the more generic "scroll" event for the main quadrant, which captures both click+dragging
-    // on the scrollbar and trackpad/mousewheel gestures
     private handleMainQuadrantScroll = (event: React.UIEvent<HTMLElement>) => {
-        if (this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback) {
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+        if (this.wasMainQuadrantScrollTriggeredByWheelEvent) {
+            this.wasMainQuadrantScrollTriggeredByWheelEvent = false;
             return;
         }
 
@@ -510,74 +510,89 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // forcing a reflow with upcoming .scroll{Top,Left} setters.
         CoreUtils.safeInvoke(this.props.onScroll, event);
 
+        // batch DOM reads here. note that onScroll events don't include deltas
+        // like onWheel events do, so we have to read from the DOM directly.
         const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
-        const nextScrollTop = mainScrollContainer.scrollTop;
         const nextScrollLeft = mainScrollContainer.scrollLeft;
+        const nextScrollTop = mainScrollContainer.scrollTop;
 
-        if (this.shouldRenderLeftQuadrants()) {
-            this.quadrantRefs[QuadrantType.LEFT].scrollContainer.scrollTop = nextScrollTop;
-        }
-        this.quadrantRefs[QuadrantType.TOP].scrollContainer.scrollLeft = nextScrollLeft;
+        // with the "scroll" event, scroll offsets are updated prior to the
+        // event's firing, so no explicit update needed.
+        this.handleScrollOffsetChange("scrollLeft", nextScrollLeft);
+        this.handleScrollOffsetChange("scrollTop", nextScrollTop);
 
-        // update the cache.
-        this.cache.setScrollOffset("scrollTop", nextScrollTop);
-        this.cache.setScrollOffset("scrollLeft", nextScrollLeft);
-
-        // syncs the quadrants only after scrolling has stopped for a short time
+        // sync less important view stuff when scrolling/wheeling stops.
         this.syncQuadrantViewsDebounced();
     };
-
-    // recall that we've already invoked event.preventDefault() when defining the throttled versions
-    // of these onWheel callbacks, so now we need to manually update the affected quadrant's scroll
-    // position too.
 
     private handleWheel = (event: React.WheelEvent<HTMLElement>) => {
         // again, let the listener read the current scroll position before we
         // force a reflow by resizing or repositioning stuff.
         CoreUtils.safeInvoke(this.props.onScroll, event);
 
-        this.handleDirectionalWheel("horizontal", event.deltaX, [QuadrantType.TOP]);
-        this.handleDirectionalWheel("vertical", event.deltaY, [QuadrantType.LEFT]);
+        // this helper performs DOM reads, so do them together before the writes below.
+        const nextScrollLeft = this.getNextScrollOffset("horizontal", event.deltaX);
+        const nextScrollTop = this.getNextScrollOffset("vertical", event.deltaY);
 
+        // update this flag before updating the main quadrant scroll offsets,
+        // since we need this set before onScroll fires.
+        if (nextScrollLeft != null || nextScrollTop != null) {
+            this.wasMainQuadrantScrollTriggeredByWheelEvent = true;
+        }
+
+        // we invoke event.preventDefault() when defining the throttled versions
+        // of this onWheel callback, so we need to manually update the affected
+        // quadrant's scroll position to make up for that. note that these DOM
+        // writes are batched together after the reads above.
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
+        this.handleScrollOffsetChange("scrollLeft", nextScrollLeft);
+        this.handleScrollOffsetChange("scrollTop", nextScrollTop);
+
+        // sync less important view stuff when scrolling/wheeling stops.
         this.syncQuadrantViewsDebounced();
     };
 
-    private handleDirectionalWheel = (
-        direction: "horizontal" | "vertical",
-        delta: number,
-        quadrantTypesToSync: QuadrantType[],
-    ) => {
+    private getNextScrollOffset = (direction: "horizontal" | "vertical", delta: number) => {
+        const { grid, isHorizontalScrollDisabled, isVerticalScrollDisabled } = this.props;
+
         const isHorizontal = direction === "horizontal";
-
         const scrollKey = isHorizontal ? "scrollLeft" : "scrollTop";
-        const isScrollDisabled = isHorizontal
-            ? this.props.isHorizontalScrollDisabled
-            : this.props.isVerticalScrollDisabled;
+        const isScrollDisabled = isHorizontal ? isHorizontalScrollDisabled : isVerticalScrollDisabled;
 
-        if (!isScrollDisabled) {
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
-
-            const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
-            const currScrollOffset = mainScrollContainer[scrollKey];
-            const nextScrollOffset = Math.max(0, mainScrollContainer[scrollKey] + delta);
-
-            if (nextScrollOffset === currScrollOffset) {
-                return;
-            }
-
-            mainScrollContainer[scrollKey] = nextScrollOffset;
-
-            // update the cache.
-            this.cache.setScrollOffset(scrollKey, nextScrollOffset);
-
-            // sync the corresponding scroll position of all dependent quadrants
-            quadrantTypesToSync.forEach(quadrantTypeToSync => {
-                const { scrollContainer } = this.quadrantRefs[quadrantTypeToSync];
-                if (scrollContainer != null) {
-                    scrollContainer[scrollKey] = nextScrollOffset;
-                }
-            });
+        if (isScrollDisabled) {
+            return undefined;
         }
+
+        // measure client size on the first event of the current wheel gesture,
+        // then grab cached values on successive events to eliminate DOM reads.
+        // requires clearing the cached values in the debounced view-update at
+        // the end of the wheel event.
+        // ASSUMPTION: the client size won't change during the wheel event.
+        let clientSize = isHorizontal
+            ? this.cache.getScrollContainerClientWidth()
+            : this.cache.getScrollContainerClientHeight();
+
+        if (clientSize == null) {
+            // should trigger only on the first scroll of the wheel gesture.
+            // will save client width and height sizes in the cache.
+            clientSize = this.updateScrollContainerClientSize(isHorizontal);
+        }
+
+        // by now, the client width and height will have been saved in cache, so
+        // they can't be nully anymore. also, events can only happen after
+        // mount, so we're guaranteed to have measured the header sizes in
+        // syncQuadrantViews() by now too, as it's invoked on mount.
+        const containerSize = isHorizontal
+            ? this.cache.getScrollContainerClientWidth() - this.cache.getRowHeaderWidth()
+            : this.cache.getScrollContainerClientHeight() - this.cache.getColumnHeaderHeight();
+
+        const gridSize = isHorizontal ? grid.getWidth() : grid.getHeight();
+        const maxScrollOffset = gridSize - containerSize;
+        const currScrollOffset = this.cache.getScrollOffset(scrollKey);
+        const nextScrollOffset = CoreUtils.clamp(currScrollOffset + delta, 0, maxScrollOffset);
+
+        return nextScrollOffset;
     };
 
     // Resizing
@@ -608,24 +623,24 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     // Rows
 
-    private handleRowResizeGuideMain = (verticalGuides: number[]) => {
-        this.invokeRowResizeHandler(verticalGuides, QuadrantType.MAIN);
+    private handleRowResizeGuideMain = (horizontalGuides: number[]) => {
+        this.invokeRowResizeHandler(horizontalGuides, QuadrantType.MAIN);
     };
 
-    private handleRowResizeGuideTop = (verticalGuides: number[]) => {
-        this.invokeRowResizeHandler(verticalGuides, QuadrantType.TOP);
+    private handleRowResizeGuideTop = (horizontalGuides: number[]) => {
+        this.invokeRowResizeHandler(horizontalGuides, QuadrantType.TOP);
     };
 
-    private handleRowResizeGuideLeft = (verticalGuides: number[]) => {
-        this.invokeRowResizeHandler(verticalGuides, QuadrantType.LEFT);
+    private handleRowResizeGuideLeft = (horizontalGuides: number[]) => {
+        this.invokeRowResizeHandler(horizontalGuides, QuadrantType.LEFT);
     };
 
-    private handleRowResizeGuideTopLeft = (verticalGuides: number[]) => {
-        this.invokeRowResizeHandler(verticalGuides, QuadrantType.TOP_LEFT);
+    private handleRowResizeGuideTopLeft = (horizontalGuides: number[]) => {
+        this.invokeRowResizeHandler(horizontalGuides, QuadrantType.TOP_LEFT);
     };
 
-    private invokeRowResizeHandler = (verticalGuides: number[], quadrantType: QuadrantType) => {
-        const adjustedGuides = this.adjustHorizontalGuides(verticalGuides, quadrantType);
+    private invokeRowResizeHandler = (horizontalGuides: number[], quadrantType: QuadrantType) => {
+        const adjustedGuides = this.adjustHorizontalGuides(horizontalGuides, quadrantType);
         CoreUtils.safeInvoke(this.props.handleRowResizeGuide, adjustedGuides);
     };
 
@@ -712,6 +727,11 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // prevents unnecessary reflows in the future.
         this.cache.setRowHeaderWidth(rowHeaderWidth);
         this.cache.setColumnHeaderHeight(columnHeaderHeight);
+        // ...however, we also clear the cached client size, so we can read it
+        // again when a new scroll begins. not safe to assume this won't change.
+        // TODO: maybe use the ResizeSensor?
+        this.cache.setScrollContainerClientWidth(undefined);
+        this.cache.setScrollContainerClientHeight(undefined);
 
         //
         // Writes (batched to avoid DOM thrashing)
@@ -720,8 +740,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.maybesSetQuadrantRowHeaderSizes(rowHeaderWidth);
         this.maybeSetQuadrantMenuElementSizes(nextMenuElementWidth, nextMenuElementHeight);
         this.maybeSetQuadrantSizes(nextLeftQuadrantWidth, nextTopQuadrantHeight);
-        this.maybeSetQuadrantOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
-        this.maybeSetQuadrantOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
+        this.maybeSetQuadrantPositionOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
+        this.maybeSetQuadrantPositionOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
         this.maybeSetQuadrantScrollOffset(QuadrantType.LEFT, "scrollTop");
         this.maybeSetQuadrantScrollOffset(QuadrantType.TOP, "scrollLeft");
     };
@@ -740,7 +760,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         }
     };
 
-    private maybeSetQuadrantOffset = (quadrantType: QuadrantType, side: "right" | "bottom", value: number) => {
+    private maybeSetQuadrantPositionOffset = (quadrantType: QuadrantType, side: "right" | "bottom", value: number) => {
         const { quadrant } = this.quadrantRefs[quadrantType];
         if (quadrant != null) {
             quadrant.style[side] = `${value}px`;
@@ -776,12 +796,37 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         }
     };
 
-    private maybeSetQuadrantScrollOffset = (quadrantType: QuadrantType, scrollKey: "scrollLeft" | "scrollTop") => {
+    private maybeSetQuadrantScrollOffset = (
+        quadrantType: QuadrantType,
+        scrollKey: "scrollLeft" | "scrollTop",
+        newOffset?: number,
+    ) => {
         const { scrollContainer } = this.quadrantRefs[quadrantType];
+        const scrollOffset = newOffset != null ? newOffset : this.cache.getScrollOffset(scrollKey);
         if (scrollContainer != null) {
-            scrollContainer[scrollKey] = this.cache.getScrollOffset(scrollKey);
+            scrollContainer[scrollKey] = scrollOffset;
         }
     };
+
+    private handleScrollOffsetChange = (scrollKey: "scrollLeft" | "scrollTop", offset: number) => {
+        this.cache.setScrollOffset(scrollKey, offset);
+        const dependentQuadrantType = scrollKey === "scrollLeft" ? QuadrantType.TOP : QuadrantType.LEFT;
+        this.maybeSetQuadrantScrollOffset(dependentQuadrantType, scrollKey);
+    };
+
+    // this function is named 'update' instead of 'set', because a 'set'
+    // function typically takes the new value as a parameter. we avoid that to
+    // keep the isHorizontal logic tree contained within this function.
+    private updateScrollContainerClientSize(isHorizontal: boolean) {
+        const mainScrollContainer = this.quadrantRefs[QuadrantType.MAIN].scrollContainer;
+        if (isHorizontal) {
+            this.cache.setScrollContainerClientWidth(mainScrollContainer.clientWidth);
+            return this.cache.getScrollContainerClientWidth();
+        } else {
+            this.cache.setScrollContainerClientHeight(mainScrollContainer.clientHeight);
+            return this.cache.getScrollContainerClientHeight();
+        }
+    }
 
     // Helpers
     // =======
