@@ -44,6 +44,7 @@ $menu-z-index: $row-z-index + 1 !default;
   display: flex;
   flex: 0 0 auto;
   min-height: 0%; // Must use % unit for IE11
+  padding-bottom: 1px; // account for bottom borders on menu and column headers
 }
 
 .bp-table-bottom-container {
