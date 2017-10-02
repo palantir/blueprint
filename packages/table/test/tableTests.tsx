@@ -111,44 +111,6 @@ describe("<Table>", () => {
         rowHeaders.forEach(rowHeader => expectCellLoading(rowHeader, CellType.ROW_HEADER));
     });
 
-    it("Gets and sets the tallest cell by columns correctly", () => {
-        const DEFAULT_RESIZE_HEIGHT = 20;
-        const MAX_HEIGHT = 40;
-        const renderCellLong = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
-        const renderCellShort = () => <Cell wrapText={false}>short value</Cell>;
-
-        let table: Table;
-
-        const saveTable = (t: Table) => (table = t);
-
-        harness.mount(
-            <Table ref={saveTable} numRows={4}>
-                <Column name="Column0" renderCell={renderCellLong} />
-                <Column name="Column1" renderCell={renderCellShort} />
-            </Table>,
-        );
-
-        // Resize by first column
-        table.resizeRowsByTallestCell(0);
-        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
-
-        // Resize by second column
-        table.resizeRowsByTallestCell(1);
-        expect(table.state.rowHeights[0]).to.equal(DEFAULT_RESIZE_HEIGHT);
-
-        // Resize by both columns
-        table.resizeRowsByTallestCell([0, 1]);
-        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
-
-        // Resize by second column via array
-        table.resizeRowsByTallestCell([1]);
-        expect(table.state.rowHeights[0]).to.equal(DEFAULT_RESIZE_HEIGHT);
-
-        // Resize by visible columns
-        table.resizeRowsByTallestCell();
-        expect(table.state.rowHeights[0]).to.equal(MAX_HEIGHT);
-    });
-
     it("Invokes onVisibleCellsChange on mount", () => {
         const onVisibleCellsChange = sinon.spy();
         const renderCell = () => <Cell>foo</Cell>;
@@ -179,6 +141,175 @@ describe("<Table>", () => {
         const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
         const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
+    });
+
+    describe("Instance methods", () => {
+        describe("resizeRowsByTallestCell", () => {
+            it("Gets and sets the tallest cell by columns correctly", () => {
+                const DEFAULT_RESIZE_HEIGHT = 20;
+                const MAX_HEIGHT = 40;
+
+                const renderCellLong = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
+                const renderCellShort = () => <Cell wrapText={false}>short value</Cell>;
+
+                let table: Table;
+
+                const saveTable = (t: Table) => (table = t);
+
+                harness.mount(
+                    <Table ref={saveTable} numRows={4}>
+                        <Column name="Column0" renderCell={renderCellLong} />
+                        <Column name="Column1" renderCell={renderCellShort} />
+                    </Table>,
+                );
+
+                table.resizeRowsByTallestCell(0);
+                expect(table.state.rowHeights[0], "resizes by first column").to.equal(MAX_HEIGHT);
+
+                table.resizeRowsByTallestCell(1);
+                expect(table.state.rowHeights[0], "resizes by second column").to.equal(DEFAULT_RESIZE_HEIGHT);
+
+                table.resizeRowsByTallestCell([0, 1]);
+                expect(table.state.rowHeights[0], "resizes by both column").to.equal(MAX_HEIGHT);
+
+                table.resizeRowsByTallestCell([1]);
+                expect(table.state.rowHeights[0], "resizes by second column via array").to.equal(DEFAULT_RESIZE_HEIGHT);
+
+                table.resizeRowsByTallestCell();
+                expect(table.state.rowHeights[0], "resizes by visible columns").to.equal(MAX_HEIGHT);
+            });
+
+            it("Works on a frozen column when the corresponding MAIN-quadrant column is out of view", () => {
+                const CONTAINER_WIDTH = 500;
+                const CONTAINER_HEIGHT = 500;
+                const EXPECTED_MAX_ROW_HEIGHT = 20;
+                const FROZEN_COLUMN_INDEX = 0;
+
+                const renderCell = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
+
+                // huge values that will force scrolling
+                const LARGE_COLUMN_WIDTH = 1000;
+                // need 5 columns to ensure the first column won't be included
+                // in the 3 "bleed" columns once we scroll rightward.
+                const columnWidths = Array(5).fill(LARGE_COLUMN_WIDTH);
+
+                // create a container element to enforce a maximum viewport size
+                // small enough to cause scrolling.
+                const containerElement = document.createElement("div");
+                containerElement.style.width = `${CONTAINER_WIDTH}px`;
+                containerElement.style.height = `${CONTAINER_HEIGHT}px`;
+                document.body.appendChild(containerElement);
+
+                // need to mount directly into the DOM for this test to work
+                const table = mount(
+                    <Table numRows={4} numFrozenColumns={1} columnWidths={columnWidths}>
+                        <Column name="Column0" renderCell={renderCell} />
+                        <Column name="Column1" renderCell={renderCell} />
+                        <Column name="Column2" renderCell={renderCell} />
+                        <Column name="Column3" renderCell={renderCell} />
+                        <Column name="Column4" renderCell={renderCell} />
+                    </Table>,
+                    { attachTo: containerElement },
+                );
+
+                // scroll the frozen column out of view in the MAIN quadrant,
+                // and expect a non-zero height.
+                const tableInstance = table.instance() as Table;
+                tableInstance.scrollToRegion(Regions.column(columnWidths.length - 1));
+                tableInstance.resizeRowsByTallestCell(FROZEN_COLUMN_INDEX);
+                expect(table.state().rowHeights[0]).to.equal(EXPECTED_MAX_ROW_HEIGHT);
+
+                // clean up
+                document.body.removeChild(containerElement);
+            });
+        });
+
+        describe("scrollToRegion", () => {
+            const CONTAINER_WIDTH = 200;
+            const CONTAINER_HEIGHT = 200;
+
+            const ROW_HEIGHT = 300;
+            const COLUMN_WIDTH = 400;
+
+            const NUM_ROWS = 3;
+            const NUM_COLUMNS = 3;
+
+            const TARGET_ROW = 1;
+            const TARGET_COLUMN = 2;
+
+            let tableInstance: Table;
+
+            it("should calculate coordinates for scrolling to cell", () => {
+                mountTable();
+                checkInstanceMethod(
+                    Regions.cell(TARGET_ROW, TARGET_COLUMN),
+                    TARGET_COLUMN * COLUMN_WIDTH,
+                    TARGET_ROW * ROW_HEIGHT,
+                );
+            });
+
+            it("should calculate coordinates for scrolling to frozen cell", () => {
+                mountTable({ numFrozenRows: TARGET_ROW + 1, numFrozenColumns: TARGET_COLUMN + 1 });
+                checkInstanceMethod(Regions.cell(TARGET_ROW, TARGET_COLUMN), 0, 0);
+            });
+
+            it("should calculate coordinates for scrolling to row", () => {
+                mountTable();
+                checkInstanceMethod(Regions.row(TARGET_ROW), 0, TARGET_ROW * ROW_HEIGHT);
+            });
+
+            it("should calculate coordinates for scrolling to frozen row", () => {
+                mountTable({ numFrozenRows: TARGET_ROW + 1 });
+                checkInstanceMethod(Regions.row(TARGET_ROW), 0, 0);
+            });
+
+            it("should calculate coordinates for scrolling to column", () => {
+                mountTable();
+                checkInstanceMethod(Regions.column(TARGET_COLUMN), TARGET_COLUMN * COLUMN_WIDTH, 0);
+            });
+
+            it("should calculate coordinates for scrolling to frozen column", () => {
+                mountTable({ numFrozenColumns: TARGET_COLUMN + 1 });
+                checkInstanceMethod(Regions.column(TARGET_COLUMN), 0, 0);
+            });
+
+            it("should calculate coordinates for scrolling to full table", () => {
+                mountTable();
+                checkInstanceMethod(Regions.table(), 0, 0);
+            });
+
+            function checkInstanceMethod(region: IRegion, expectedScrollLeft: number, expectedScrollTop: number) {
+                // cast as `any` to access private members
+                const spy = sinon.spy((tableInstance as any).quadrantStackInstance, "scrollToPosition");
+                tableInstance.scrollToRegion(region);
+                // just check that the scroll event would be triggered with the proper args; don't
+                // bother checking the result of the whole action
+                expect(spy.firstCall.args).to.deep.equal([expectedScrollLeft, expectedScrollTop]);
+                spy.restore();
+            }
+
+            function saveTable(ref: Table) {
+                tableInstance = ref;
+            }
+
+            function mountTable(tableProps: Partial<ITableProps> & object = {}) {
+                mount(
+                    <div style={{ width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT }}>
+                        <Table
+                            columnWidths={Array(NUM_COLUMNS).fill(COLUMN_WIDTH)}
+                            numRows={NUM_ROWS}
+                            rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT)}
+                            ref={saveTable}
+                            {...tableProps}
+                        >
+                            <Column renderCell={renderDummyCell} />
+                            <Column renderCell={renderDummyCell} />
+                            <Column renderCell={renderDummyCell} />
+                        </Table>
+                    </div>,
+                );
+            }
+        });
     });
 
     describe("Full-table selection", () => {
@@ -327,93 +458,6 @@ describe("<Table>", () => {
         });
     });
 
-    describe("scrollToRegion", () => {
-        const CONTAINER_WIDTH = 200;
-        const CONTAINER_HEIGHT = 200;
-
-        const ROW_HEIGHT = 300;
-        const COLUMN_WIDTH = 400;
-
-        const NUM_ROWS = 3;
-        const NUM_COLUMNS = 3;
-
-        const TARGET_ROW = 1;
-        const TARGET_COLUMN = 2;
-
-        let tableInstance: Table;
-
-        it("should calculate coordinates for scrolling to cell", () => {
-            mountTable();
-            checkInstanceMethod(
-                Regions.cell(TARGET_ROW, TARGET_COLUMN),
-                TARGET_COLUMN * COLUMN_WIDTH,
-                TARGET_ROW * ROW_HEIGHT,
-            );
-        });
-
-        it("should calculate coordinates for scrolling to frozen cell", () => {
-            mountTable({ numFrozenRows: TARGET_ROW + 1, numFrozenColumns: TARGET_COLUMN + 1 });
-            checkInstanceMethod(Regions.cell(TARGET_ROW, TARGET_COLUMN), 0, 0);
-        });
-
-        it("should calculate coordinates for scrolling to row", () => {
-            mountTable();
-            checkInstanceMethod(Regions.row(TARGET_ROW), 0, TARGET_ROW * ROW_HEIGHT);
-        });
-
-        it("should calculate coordinates for scrolling to frozen row", () => {
-            mountTable({ numFrozenRows: TARGET_ROW + 1 });
-            checkInstanceMethod(Regions.row(TARGET_ROW), 0, 0);
-        });
-
-        it("should calculate coordinates for scrolling to column", () => {
-            mountTable();
-            checkInstanceMethod(Regions.column(TARGET_COLUMN), TARGET_COLUMN * COLUMN_WIDTH, 0);
-        });
-
-        it("should calculate coordinates for scrolling to frozen column", () => {
-            mountTable({ numFrozenColumns: TARGET_COLUMN + 1 });
-            checkInstanceMethod(Regions.column(TARGET_COLUMN), 0, 0);
-        });
-
-        it("should calculate coordinates for scrolling to full table", () => {
-            mountTable();
-            checkInstanceMethod(Regions.table(), 0, 0);
-        });
-
-        function checkInstanceMethod(region: IRegion, expectedScrollLeft: number, expectedScrollTop: number) {
-            // cast as `any` to access private members
-            const spy = sinon.spy((tableInstance as any).quadrantStackInstance, "scrollToPosition");
-            tableInstance.scrollToRegion(region);
-            // just check that the scroll event would be triggered with the proper args; don't
-            // bother checking the result of the whole action
-            expect(spy.firstCall.args).to.deep.equal([expectedScrollLeft, expectedScrollTop]);
-            spy.restore();
-        }
-
-        function saveTable(ref: Table) {
-            tableInstance = ref;
-        }
-
-        function mountTable(tableProps: Partial<ITableProps> & object = {}) {
-            mount(
-                <div style={{ width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT }}>
-                    <Table
-                        columnWidths={Array(NUM_COLUMNS).fill(COLUMN_WIDTH)}
-                        numRows={NUM_ROWS}
-                        rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT)}
-                        ref={saveTable}
-                        {...tableProps}
-                    >
-                        <Column renderCell={renderDummyCell} />
-                        <Column renderCell={renderDummyCell} />
-                        <Column renderCell={renderDummyCell} />
-                    </Table>
-                </div>,
-            );
-        }
-    });
-
     describe("Freezing", () => {
         it("clamps out-of-bounds numFrozenColumns if > number of columns", () => {
             const table1 = mount(<Table numFrozenColumns={1} />);
@@ -495,6 +539,73 @@ describe("<Table>", () => {
 
             resizeHandleTarget.mouse("mouseup");
             expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
+        });
+
+        it("resizes frozen column on double-click when corresponding MAIN-quadrant column not in view", () => {
+            const CONTAINER_WIDTH = 500;
+            const CONTAINER_HEIGHT = 500;
+            const EXPECTED_COLUMN_WIDTH_WITH_LOCAL_KARMA = 216;
+            const EXPECTED_ROW_HEADER_WIDTH = 30;
+            const FROZEN_COLUMN_INDEX = 0;
+
+            const renderCell = () => <Cell wrapText={false}>my cell value with lots and lots of words</Cell>;
+
+            // huge values that will force scrolling
+            const LARGE_COLUMN_WIDTH = 1000;
+            // need 5 columns to ensure the first column won't be included
+            // in the 3 "bleed" columns once we scroll rightward.
+            const columnWidths = Array(5).fill(LARGE_COLUMN_WIDTH);
+
+            // create a container element to enforce a maximum viewport size
+            // small enough to cause scrolling.
+            const containerElement = document.createElement("div");
+            containerElement.style.width = `${CONTAINER_WIDTH}px`;
+            containerElement.style.height = `${CONTAINER_HEIGHT}px`;
+            document.body.appendChild(containerElement);
+
+            // need to mount directly into the DOM for this test to work
+            let table: Table;
+            const saveTable = (ref: Table) => (table = ref);
+            const tableElement = harness.mount(
+                <Table ref={saveTable} numRows={1} numFrozenColumns={1} columnWidths={columnWidths}>
+                    <Column name="Column0" renderCell={renderCell} />
+                    <Column name="Column1" renderCell={renderCell} />
+                    <Column name="Column2" renderCell={renderCell} />
+                    <Column name="Column3" renderCell={renderCell} />
+                    <Column name="Column4" renderCell={renderCell} />
+                </Table>,
+            );
+
+            // scroll the frozen column out of view in the MAIN quadrant,
+            // and expect a non-zero height.
+            table.scrollToRegion(Regions.column(columnWidths.length - 1));
+
+            const quadrantSelector = `.${Classes.TABLE_QUADRANT_LEFT}`;
+            const columnHeaderSelector = `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS}`;
+            const resizeHandleSelector = `${columnHeaderSelector} .${Classes.TABLE_RESIZE_HANDLE_TARGET}`;
+
+            const quadrantElement = tableElement.find(quadrantSelector, 0);
+            const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX);
+
+            // double-click the frozen column's resize handle
+            frozenColumnResizeHandle
+                .mouse("mousedown")
+                .mouse("mouseup", 10)
+                .mouse("mousedown")
+                .mouse("mouseup", 10);
+
+            const columnWidth = table.state.columnWidths[0];
+            const quadrantWidth = parseInt(quadrantElement.style().width, 10);
+            const expectedQuadrantWidth = EXPECTED_ROW_HEADER_WIDTH + EXPECTED_COLUMN_WIDTH_WITH_LOCAL_KARMA;
+
+            // local `gulp karma` expects 216px, and Circle CI `gulp test`
+            // expects 265px. :/ .at.least() seems more reliable than bounding
+            // the width in [216,265] and introducing potential test flakiness.
+            expect(columnWidth, "column resizes correctly").to.be.at.least(EXPECTED_COLUMN_WIDTH_WITH_LOCAL_KARMA);
+            expect(quadrantWidth, "quadrant resizes correctly").to.be.at.least(expectedQuadrantWidth);
+
+            // clean up
+            document.body.removeChild(containerElement);
         });
 
         function mountTable(tableProps: Partial<ITableProps> & object = {}) {

@@ -422,6 +422,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private rowHeaderElement: HTMLElement;
     private scrollContainerElement: HTMLElement;
 
+    // when true, we'll need to imperatively synchronize quadrant views after
+    // the update. this variable lets us avoid expensively diff'ing columnWidths
+    // and rowHeights in <TableQuadrantStack> on each update.
+    private didUpdateColumnOrRowSizes: boolean = false;
+
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
 
@@ -478,6 +483,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
         const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
         this.invalidateGrid();
+        this.didUpdateColumnOrRowSizes = true;
         this.setState({ rowHeights });
     }
 
@@ -673,7 +679,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public componentDidMount() {
         this.validateGrid();
 
-        this.locator = new Locator(this.mainQuadrantElement, this.scrollContainerElement, this.cellContainerElement);
+        this.locator = new Locator(this.rootTableElement, this.scrollContainerElement, this.cellContainerElement);
         this.updateLocator();
         this.updateViewportRect(this.locator.getViewportRect());
 
@@ -695,6 +701,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (this.locator != null) {
             this.validateGrid();
             this.updateLocator();
+        }
+
+        if (this.didUpdateColumnOrRowSizes) {
+            this.quadrantStackInstance.synchronizeQuadrantViews();
+            this.didUpdateColumnOrRowSizes = false;
         }
 
         this.maybeScrollTableIntoView();
@@ -1492,6 +1503,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         this.invalidateGrid();
+        this.didUpdateColumnOrRowSizes = true;
         this.setState({ columnWidths });
 
         const { onColumnWidthChanged } = this.props;
@@ -1518,6 +1530,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         this.invalidateGrid();
+        this.didUpdateColumnOrRowSizes = true;
         this.setState({ rowHeights });
 
         const { onRowHeightChanged } = this.props;
