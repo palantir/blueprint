@@ -517,8 +517,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const nextScrollTop = mainScrollContainer.scrollTop;
 
         // update the cache.
-        this.maybeSetGlobalScrollOffset("scrollLeft", nextScrollLeft);
-        this.maybeSetGlobalScrollOffset("scrollTop", nextScrollTop);
+        this.setScrollOffset("scrollLeft", nextScrollLeft);
+        this.setScrollOffset("scrollTop", nextScrollTop);
 
         // sync less important view stuff when scrolling/wheeling stops.
         this.syncQuadrantViewsDebounced();
@@ -543,8 +543,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // of this onWheel callback, so we need to manually update the affected
         // quadrant's scroll position to make up for that. note that these DOM
         // writes are batched together after the reads above.
-        this.maybeSetGlobalScrollOffset("scrollLeft", nextScrollLeft);
-        this.maybeSetGlobalScrollOffset("scrollTop", nextScrollTop);
+        this.setScrollOffset("scrollLeft", nextScrollLeft);
+        this.setScrollOffset("scrollTop", nextScrollTop);
 
         // sync less important view stuff when scrolling/wheeling stops.
         this.syncQuadrantViewsDebounced();
@@ -805,9 +805,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         }
     };
 
-    private maybeSetGlobalScrollOffset = (scrollKey: "scrollLeft" | "scrollTop", offset: number) => {
-        // the "global" scroll offset should always be set on the MAIN
-        // quadrant's scroll container; that's our single source of truth.
+    private setScrollOffset = (scrollKey: "scrollLeft" | "scrollTop", offset: number) => {
+        // the scroll offset should be set on the MAIN quadrant's scroll
+        // container, since that's the one whose scroll bars are visible.
         this.quadrantRefs[QuadrantType.MAIN].scrollContainer[scrollKey] = offset;
         this.cache.setScrollOffset(scrollKey, offset);
 
