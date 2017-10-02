@@ -620,24 +620,24 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     // Rows
 
-    private handleRowResizeGuideMain = (verticalGuides: number[]) => {
-        this.invokeRowResizeHandler(verticalGuides, QuadrantType.MAIN);
+    private handleRowResizeGuideMain = (horizontalGuides: number[]) => {
+        this.invokeRowResizeHandler(horizontalGuides, QuadrantType.MAIN);
     };
 
-    private handleRowResizeGuideTop = (verticalGuides: number[]) => {
-        this.invokeRowResizeHandler(verticalGuides, QuadrantType.TOP);
+    private handleRowResizeGuideTop = (horizontalGuides: number[]) => {
+        this.invokeRowResizeHandler(horizontalGuides, QuadrantType.TOP);
     };
 
-    private handleRowResizeGuideLeft = (verticalGuides: number[]) => {
-        this.invokeRowResizeHandler(verticalGuides, QuadrantType.LEFT);
+    private handleRowResizeGuideLeft = (horizontalGuides: number[]) => {
+        this.invokeRowResizeHandler(horizontalGuides, QuadrantType.LEFT);
     };
 
-    private handleRowResizeGuideTopLeft = (verticalGuides: number[]) => {
-        this.invokeRowResizeHandler(verticalGuides, QuadrantType.TOP_LEFT);
+    private handleRowResizeGuideTopLeft = (horizontalGuides: number[]) => {
+        this.invokeRowResizeHandler(horizontalGuides, QuadrantType.TOP_LEFT);
     };
 
-    private invokeRowResizeHandler = (verticalGuides: number[], quadrantType: QuadrantType) => {
-        const adjustedGuides = this.adjustHorizontalGuides(verticalGuides, quadrantType);
+    private invokeRowResizeHandler = (horizontalGuides: number[], quadrantType: QuadrantType) => {
+        const adjustedGuides = this.adjustHorizontalGuides(horizontalGuides, quadrantType);
         CoreUtils.safeInvoke(this.props.handleRowResizeGuide, adjustedGuides);
     };
 
