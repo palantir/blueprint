@@ -516,9 +516,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const nextScrollLeft = mainScrollContainer.scrollLeft;
         const nextScrollTop = mainScrollContainer.scrollTop;
 
-        // update the cache.
-        this.setScrollOffset("scrollLeft", nextScrollLeft, /* setOffsetExplicitly */ false);
-        this.setScrollOffset("scrollTop", nextScrollTop, /* setOffsetExplicitly */ false);
+        // with the "scroll" event, scroll offsets are updated prior to the
+        // event's firing, so no explicit update needed.
+        this.handleScrollOffsetChange("scrollLeft", nextScrollLeft);
+        this.handleScrollOffsetChange("scrollTop", nextScrollTop);
 
         // sync less important view stuff when scrolling/wheeling stops.
         this.syncQuadrantViewsDebounced();
@@ -543,8 +544,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // of this onWheel callback, so we need to manually update the affected
         // quadrant's scroll position to make up for that. note that these DOM
         // writes are batched together after the reads above.
-        this.setScrollOffset("scrollLeft", nextScrollLeft);
-        this.setScrollOffset("scrollTop", nextScrollTop);
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
+        this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
+        this.handleScrollOffsetChange("scrollLeft", nextScrollLeft);
+        this.handleScrollOffsetChange("scrollTop", nextScrollTop);
 
         // sync less important view stuff when scrolling/wheeling stops.
         this.syncQuadrantViewsDebounced();
@@ -805,17 +808,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         }
     };
 
-    private setScrollOffset = (scrollKey: "scrollLeft" | "scrollTop", offset: number, setOffsetExplicitly = true) => {
-        if (setOffsetExplicitly) {
-            // the scroll offset should be set on the MAIN quadrant's scroll
-            // container, since that's the one whose scroll bars are visible.
-            // note: if this helper is invoked onScroll, then no need to update
-            // the offset explicitly, because it will have been done before the
-            // event fired.
-            this.quadrantRefs[QuadrantType.MAIN].scrollContainer[scrollKey] = offset;
-        }
+    private handleScrollOffsetChange = (scrollKey: "scrollLeft" | "scrollTop", offset: number) => {
         this.cache.setScrollOffset(scrollKey, offset);
-
         const dependentQuadrantType = scrollKey === "scrollLeft" ? QuadrantType.TOP : QuadrantType.LEFT;
         this.maybeSetQuadrantScrollOffset(dependentQuadrantType, scrollKey);
     };
