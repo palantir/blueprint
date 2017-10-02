@@ -220,7 +220,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     // this flag helps us avoid redundant work in the MAIN quadrant's onScroll callback, if the
     // callback was triggered from a manual scrollTop/scrollLeft update within an onWheel.
-    private wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+    private wasMainQuadrantScrollTriggeredByWheelEvent = false;
 
     // keep throttled event callbacks around as instance variables, so we don't
     // have to continually reinstantiate them.
@@ -258,7 +258,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     public scrollToPosition(scrollLeft: number, scrollTop: number) {
         const { scrollContainer } = this.quadrantRefs[QuadrantType.MAIN];
 
-        this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+        this.wasMainQuadrantScrollTriggeredByWheelEvent = false;
 
         // this will trigger the main quadrant's scroll callback below
         scrollContainer.scrollLeft = scrollLeft;
@@ -284,6 +284,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     public render() {
         const { grid, isRowHeaderShown, renderBody, throttleScrolling } = this.props;
 
+        // use the more generic "scroll" event for the main quadrant to capture
+        // *both* scrollbar interactions and trackpad/mousewheel gestures.
         const onMainQuadrantScroll = throttleScrolling
             ? this.throttledHandleMainQuadrantScroll
             : this.handleMainQuadrantScroll;
@@ -498,11 +500,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // Scrolling
     // ---------
 
-    // use the more generic "scroll" event for the main quadrant, which captures both click+dragging
-    // on the scrollbar and trackpad/mousewheel gestures
     private handleMainQuadrantScroll = (event: React.UIEvent<HTMLElement>) => {
-        if (this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback) {
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = false;
+        if (this.wasMainQuadrantScrollTriggeredByWheelEvent) {
+            this.wasMainQuadrantScrollTriggeredByWheelEvent = false;
             return;
         }
 
@@ -524,10 +524,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.syncQuadrantViewsDebounced();
     };
 
-    // recall that we've already invoked event.preventDefault() when defining the throttled versions
-    // of these onWheel callbacks, so now we need to manually update the affected quadrant's scroll
-    // position too.
-
     private handleWheel = (event: React.WheelEvent<HTMLElement>) => {
         // again, let the listener read the current scroll position before we
         // force a reflow by resizing or repositioning stuff.
@@ -540,10 +536,13 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // update this flag before updating the main quadrant scroll offsets,
         // since we need this set before onScroll fires.
         if (nextScrollLeft != null || nextScrollTop != null) {
-            this.wasMainQuadrantScrollChangedFromOtherOnWheelCallback = true;
+            this.wasMainQuadrantScrollTriggeredByWheelEvent = true;
         }
 
-        // note that these upcoming DOM writes are batched together after the reads above.
+        // we invoke event.preventDefault() when defining the throttled versions
+        // of this onWheel callback, so we need to manually update the affected
+        // quadrant's scroll position to make up for that. note that these DOM
+        // writes are batched together after the reads above.
         this.maybeSetGlobalScrollOffset("scrollLeft", nextScrollLeft);
         this.maybeSetGlobalScrollOffset("scrollTop", nextScrollTop);
 
