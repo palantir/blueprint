@@ -26,6 +26,13 @@ describe("<DatePicker>", () => {
         assert.isUndefined(root.state("selectedDay"));
     });
 
+    it("week starts with firstDayOfWeek value", () => {
+        const selectedFirstDay = 3;
+        const wrapper = mount(<DatePicker firstDayOfWeek={selectedFirstDay} />);
+        const firstWeekday = wrapper.find("Weekday").first();
+        assert.equal(firstWeekday.prop("weekday"), selectedFirstDay);
+    });
+
     it("user-provided modifiers are applied", () => {
         const oddifier = (d: Date) => d.getDate() % 2 === 1;
         const { getDay } = wrap(<DatePicker modifiers={{ odd: oddifier }} />);
