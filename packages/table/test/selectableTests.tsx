@@ -440,10 +440,16 @@ describe("DragSelectable", () => {
         });
 
         it("applies a selectedRegionTransform if provided", () => {
-            locateDrag.returns(REGION_3);
+            locateDrag.returns(REGION);
+
+            // return different values on activation and on drag to ensure
+            // onSelection is called twice
+            const selectedRegionTransform = sinon.stub();
+            selectedRegionTransform.onFirstCall().returns(TRANSFORMED_REGION);
+            selectedRegionTransform.onSecondCall().returns(TRANSFORMED_REGION_2);
 
             const component = mountDragSelectable({
-                selectedRegionTransform: sinon.stub().returns(TRANSFORMED_REGION),
+                selectedRegionTransform,
                 selectedRegions: [REGION],
             });
 
@@ -453,7 +459,7 @@ describe("DragSelectable", () => {
 
             expect(onSelection.calledTwice, "calls onSelection on mousemove").to.be.true;
             expect(
-                onSelection.secondCall.calledWith([TRANSFORMED_REGION]),
+                onSelection.secondCall.calledWith([TRANSFORMED_REGION_2]),
                 "calls onSelection on mousemove with proper args",
             ).to.be.true;
         });
@@ -480,8 +486,21 @@ describe("DragSelectable", () => {
             expect(onFocus.secondCall.calledWith(toFocusedCell(REGION_3)), "moves focusedCell with the selection");
         });
 
+        it("invokes onSelection even if the selection changed, even if controlled selectedRegions are the same", () => {
+            const CONTROLLED_REGION = REGION_3; // different from the locateClick region
+            locateDrag.returns(CONTROLLED_REGION);
+
+            const component = mountDragSelectable({ selectedRegions: [CONTROLLED_REGION] });
+            const item = getItem(component);
+
+            item.mouse("mousedown");
+            expect(onSelection.callCount, "calls onSelection on mousedown").to.equal(1);
+            item.mouse("mousemove");
+            expect(onSelection.callCount, "calls onSelection again on mousemove").to.equal(2);
+        });
+
         it("doesn't invoke onSelection if the selection didn't change", () => {
-            locateDrag.returns(REGION_3);
+            locateDrag.returns(REGION_2); // same as the value returned from locateClick
 
             const component = mountDragSelectable({ selectedRegions: [REGION_3] });
             const item = getItem(component);

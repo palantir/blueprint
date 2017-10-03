@@ -17,7 +17,7 @@ export interface IKeyMap {
     [key: string]: string;
 }
 
-export const KeyCodes = {
+export const KeyCodes: IKeyCodeTable = {
     8: "backspace",
     9: "tab",
     13: "enter",
@@ -89,25 +89,25 @@ export const KeyCodes = {
     220: "\\",
     221: "]",
     222: "'",
-} as IKeyCodeTable;
+};
 
-export const Modifiers = {
+export const Modifiers: IKeyCodeTable = {
     16: "shift",
     17: "ctrl",
     18: "alt",
     91: "meta",
     93: "meta",
     224: "meta",
-} as IKeyCodeTable;
+};
 
-export const ModifierBitMasks = {
+export const ModifierBitMasks: IKeyCodeReverseTable = {
     alt: 1,
     ctrl: 2,
     meta: 4,
     shift: 8,
-} as IKeyCodeReverseTable;
+};
 
-export const Aliases = {
+export const Aliases: IKeyMap = {
     cmd: "meta",
     command: "meta",
     escape: "esc",
@@ -117,11 +117,11 @@ export const Aliases = {
     plus: "+",
     return: "enter",
     win: "meta",
-} as IKeyMap;
+};
 
 // alph sorting is unintuitive here
 // tslint:disable object-literal-sort-keys
-export const ShiftKeys = {
+export const ShiftKeys: IKeyMap = {
     "~": "`",
     "!": "1",
     "@": "2",
@@ -143,10 +143,8 @@ export const ShiftKeys = {
     "<": ",",
     ">": ".",
     "?": "/",
-} as IKeyMap;
+};
 // tslint:enable object-literal-sort-keys
-
-/* tslint:enable:object-literal-key-quotes */
 
 // Function keys
 for (let i = 1; i <= 12; ++i) {

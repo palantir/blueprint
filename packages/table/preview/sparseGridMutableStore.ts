@@ -32,7 +32,7 @@ export class SparseGridMutableStore<T> {
 
     public clear() {
         this.list = [] as Array<GridEntry<T>>;
-        this.map = {} as { [key: string]: GridEntry<T> };
+        this.map = {};
     }
 
     public set(i: number, j: number, value: T) {

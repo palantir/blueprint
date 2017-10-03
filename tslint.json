@@ -1,28 +1,67 @@
 {
-  "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier", "tslint-plugin-prettier"],
+  "extends": [
+    "tslint:latest",
+    "tslint-react",
+    "tslint-config-prettier",
+    "tslint-plugin-prettier"
+  ],
+  "defaultSeverity": "error",
   "rules": {
-    "ban": [
-      true,
-      ["Object", "assign", "use TS2.1 object spread { ...a, ...b }"],
-      ["Object", "getOwnPropertyNames", "use Object.keys()"],
-      ["describe", "only"],
-      ["it", "only"]
-    ],
-    "file-header": {
-      "options": ["@license Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved."]
+    "ban": {
+      "options": [
+        ["Object", "assign", "use TS2.1 object spread { ...a, ...b }"],
+        ["Object", "getOwnPropertyNames", "use Object.keys()"],
+        ["describe", "only", "should not be committed to repo"],
+        ["it", "only", "should not be committed to repo"],
+        ["test", "only", "should not be committed to repo"]
+        // TODO: enable
+        // ["assert", "equal", "use assert.strictEqual instead"]
+      ]
     },
-    "jsx-wrap-multiline": false,
-    "linebreak-style": [true, "LF"],
-    "no-invalid-this": [true, "check-function-in-method"],
-    "prettier": [true, {
-      "printWidth": 120,
-      "tabWidth": 4,
-      "trailingComma": "all"
-     }],
-    "variable-name": ["ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"]
+    "file-header": {
+      "options": ["Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved."]
+    },
+    "jsx-key": false,
+    "linebreak-style": {
+      "options": ["LF"]
+    },
+    "no-console": {
+      "options": ["log", "time", "timeEnd", "trace"]
+    },
+    "no-default-export": true,
+    "no-invalid-this": {
+      "options": ["check-function-in-method"]
+    },
+    "no-submodule-imports": {
+      "options": [
+        "documentalist",
+        "lodash",
+        "react-dom"
+      ]
+    },
+    "no-unnecessary-callback-wrapper": true,
+    "no-unnecessary-initializer": true,
+    // TODO: enable no-unused-expression. Currently, a lot of chai assertions are not writtten as proper statements.
+    "no-unused-expression": false,
+    "prefer-conditional-expression": false,
+    "prettier": {
+      "options": {
+        "printWidth": 120,
+        "tabWidth": 4,
+        "trailingComma": "all"
+      }
+    },
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore",
+        "allow-pascal-case"
+      ]
+    }
   },
   "jsRules": {
-    "object-literal-shorthand": true,
-    "trailing-comma": [false]
+    "object-literal-sort-keys": false,
+    "trailing-comma": false
   }
 }

@@ -89,9 +89,6 @@ $menu-z-index: $row-z-index + 1 !default;
 }
 
 .bp-table-row-headers {
-  // let header's height resize based on height of child element
-  display: table;
-
   flex: 0 0 auto;
   // allow absolute position for region overlay
   position: relative;
@@ -100,6 +97,9 @@ $menu-z-index: $row-z-index + 1 !default;
 
   background-color: $header-background-color;
   color: $row-header-text-color;
+
+  // animate width changes on scroll end
+  transition: width $pt-transition-duration $pt-transition-ease;
 
   .pt-dark & {
     background-color: $dark-header-background-color;

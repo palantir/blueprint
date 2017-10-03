@@ -1,6 +1,7 @@
 {
     "extends": "../tsconfig",
     "include": [
+        "../typings/*",
         "../../../test/typings/tsd.d.ts",
         "../types/*",
         "**/*"

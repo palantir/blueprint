@@ -133,7 +133,7 @@ describe("Loading Options", () => {
 });
 
 function generatePowerSet<T>(list: T[]) {
-    const base2 = (number: number) => number.toString(2);
+    const base2 = (num: number) => num.toString(2);
     const numberOfSubsets = Math.pow(2, list.length);
     const listOfSubsets: T[][] = [undefined];
 

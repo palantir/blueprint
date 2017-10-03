@@ -420,12 +420,12 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
 
         const baseStateChange = {
-            isOpen,
-            isEndInputFocused,
-            isStartInputFocused,
-            startHoverString,
             endHoverString,
             endInputString: this.getFormattedDateString(selectedEnd),
+            isEndInputFocused,
+            isOpen,
+            isStartInputFocused,
+            startHoverString,
             startInputString: this.getFormattedDateString(selectedStart),
             wasLastFocusChangeDueToHover: false,
         };
@@ -454,8 +454,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             const isEndInputFocused = this.state.boundaryToModify === DateRangeBoundary.END;
 
             this.setState({
-                isEndInputFocused,
                 endHoverString: null,
+                isEndInputFocused,
                 isStartInputFocused: !isEndInputFocused,
                 lastFocusedField: this.state.boundaryToModify,
                 startHoverString: null,
@@ -468,9 +468,9 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 hoveredBoundary != null ? hoveredBoundary === DateRangeBoundary.END : this.state.isEndInputFocused;
 
             this.setState({
-                isStartInputFocused,
-                isEndInputFocused,
                 endHoverString: this.getFormattedDateString(hoveredEnd),
+                isEndInputFocused,
+                isStartInputFocused,
                 lastFocusedField: isStartInputFocused ? DateRangeBoundary.START : DateRangeBoundary.END,
                 shouldSelectAfterUpdate: this.props.selectAllOnFocus,
                 startHoverString: this.getFormattedDateString(hoveredStart),
@@ -556,8 +556,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         e.preventDefault();
 
         this.setState({
-            isStartInputFocused,
             isEndInputFocused,
+            isStartInputFocused,
             wasLastFocusChangeDueToHover: false,
         });
     };
@@ -584,10 +584,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const boundaryToModify = this.state.wasLastFocusChangeDueToHover ? this.state.boundaryToModify : boundary;
 
         this.setState({
-            isOpen: true,
-            boundaryToModify,
             [keys.inputString]: inputString,
             [keys.isInputFocused]: true,
+            boundaryToModify,
+            isOpen: true,
             lastFocusedField: boundary,
             shouldSelectAfterUpdate: this.props.selectAllOnFocus,
             wasLastFocusChangeDueToHover: false,
@@ -813,7 +813,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         }
     };
 
-    private getStateKeysAndValuesForBoundary = (boundary: DateRangeBoundary) => {
+    private getStateKeysAndValuesForBoundary = (boundary: DateRangeBoundary): IStateKeysAndValuesObject => {
         const controlledRange = fromDateRangeToMomentDateRange(this.props.value);
         if (boundary === DateRangeBoundary.START) {
             return {
@@ -830,7 +830,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     isInputFocused: this.state.isStartInputFocused,
                     selectedValue: this.state.selectedStart,
                 },
-            } as IStateKeysAndValuesObject;
+            };
         } else {
             return {
                 keys: {
@@ -846,7 +846,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                     isInputFocused: this.state.isEndInputFocused,
                     selectedValue: this.state.selectedEnd,
                 },
-            } as IStateKeysAndValuesObject;
+            };
         }
     };
 

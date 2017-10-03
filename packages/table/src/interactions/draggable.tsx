@@ -5,12 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
+import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Utils } from "../common/utils";
 import { DragEvents } from "./dragEvents";
 
 export type IClientCoordinates = [number, number];
@@ -145,7 +144,7 @@ export class Draggable extends React.Component<IDraggableProps, {}> {
 
     public componentDidUpdate(prevProps: IDraggableProps) {
         const propsWhitelist = { include: REATTACH_PROPS_KEYS };
-        if (this.events && !Utils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
+        if (this.events && !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
             this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, this.props);
         }
     }

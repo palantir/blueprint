@@ -6,6 +6,8 @@
  */
 
 import { expect } from "chai";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import * as ScrollUtils from "../../../src/common/internal/scrollUtils";
 import { IRegion, Regions } from "../../../src/regions";
@@ -266,6 +268,73 @@ describe("scrollUtils", () => {
 
         function getLeftOffset(columnIndex: number) {
             return COLUMN_WIDTH * columnIndex;
+        }
+    });
+
+    describe("measureScrollBarThickness", () => {
+        const PARENT_WIDTH = 100;
+        const PARENT_HEIGHT = 100;
+
+        let containerElement: HTMLElement;
+
+        const baseStyles = { display: "block" };
+        const parentStyle = {
+            ...baseStyles,
+            background: "yellow",
+            height: PARENT_HEIGHT,
+            overflow: "auto",
+            width: PARENT_WIDTH,
+        };
+
+        const fn = ScrollUtils.measureScrollBarThickness;
+
+        const VERTICAL_ERROR = "measures vertical scrollbar correctly";
+        const HORIZONTAL_ERROR = "measures horizontal scrollbar correctly";
+
+        beforeEach(() => {
+            containerElement = document.createElement("div");
+            document.body.appendChild(containerElement);
+        });
+
+        afterEach(() => {
+            document.body.removeChild(containerElement);
+            containerElement = undefined;
+        });
+
+        // make the content size much bigger or much smaller than the container
+        // to ensure Phantom shows/hides scrollbars correctly.
+
+        it("measures correctly when neither scrollbar is showing", () => {
+            const element = mountElementsWithContentSize(PARENT_WIDTH / 2, PARENT_HEIGHT / 2);
+            expect(fn(element, "vertical"), VERTICAL_ERROR).to.equal(0);
+            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.equal(0);
+        });
+
+        it("measures correctly when only vertical scrollbar is showing", () => {
+            const element = mountElementsWithContentSize(PARENT_WIDTH / 2, PARENT_HEIGHT * 2);
+            expect(fn(element, "vertical"), VERTICAL_ERROR).to.be.greaterThan(0);
+            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.equal(0);
+        });
+
+        it("measures correctly when only horizontal scrollbar is showing", () => {
+            const element = mountElementsWithContentSize(PARENT_WIDTH * 2, PARENT_HEIGHT / 2);
+            expect(fn(element, "vertical"), VERTICAL_ERROR).to.equal(0);
+            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.be.greaterThan(0);
+        });
+
+        it("measures correctly when both scrollbars are showing", () => {
+            const element = mountElementsWithContentSize(PARENT_WIDTH * 2, PARENT_HEIGHT * 2);
+            expect(fn(element, "vertical"), VERTICAL_ERROR).to.be.greaterThan(0);
+            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.be.greaterThan(0);
+        });
+
+        function mountElementsWithContentSize(contentWidth: number, contentHeight: number) {
+            return ReactDOM.render(
+                <div style={parentStyle}>
+                    <div style={{ ...baseStyles, width: contentWidth, height: contentHeight }} />
+                </div>,
+                containerElement,
+            ) as HTMLElement;
         }
     });
 });

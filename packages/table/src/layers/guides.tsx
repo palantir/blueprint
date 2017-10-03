@@ -5,12 +5,11 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IProps } from "@blueprintjs/core";
+import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
-import { Utils } from "../common/utils";
 
 export interface IGuideLayerProps extends IProps {
     /**
@@ -32,8 +31,8 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
         // shallow-comparing guide arrays leads to tons of unnecessary re-renders, so we check the
         // array contents explicitly.
         return (
-            !Utils.arraysEqual(this.props.verticalGuides, nextProps.verticalGuides) ||
-            !Utils.arraysEqual(this.props.horizontalGuides, nextProps.horizontalGuides)
+            !CoreUtils.arraysEqual(this.props.verticalGuides, nextProps.verticalGuides) ||
+            !CoreUtils.arraysEqual(this.props.horizontalGuides, nextProps.horizontalGuides)
         );
     }
 
@@ -50,9 +49,9 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
     }
 
     private renderVerticalGuide = (offset: number, index: number) => {
-        const style = {
+        const style: React.CSSProperties = {
             left: `${offset}px`,
-        } as React.CSSProperties;
+        };
         const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_VERTICAL_GUIDE, {
             "bp-table-vertical-guide-flush-left": offset === 0,
         });
@@ -60,9 +59,9 @@ export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
     };
 
     private renderHorizontalGuide = (offset: number, index: number) => {
-        const style = {
+        const style: React.CSSProperties = {
             top: `${offset}px`,
-        } as React.CSSProperties;
+        };
         const className = classNames(Classes.TABLE_OVERLAY, Classes.TABLE_HORIZONTAL_GUIDE, {
             "bp-table-horizontal-guide-flush-top": offset === 0,
         });

@@ -7,6 +7,10 @@
 
 import { IRegion, RegionCardinality, Regions } from "../../regions";
 
+/**
+ * Returns the scroll{Left,Top} offsets of the provided region based on its
+ * cardinality.
+ */
 export function getScrollPositionForRegion(
     region: IRegion,
     currScrollLeft: number,
@@ -56,6 +60,18 @@ export function getScrollPositionForRegion(
     }
 
     return { scrollLeft, scrollTop };
+}
+
+/**
+ * Returns the thickness of the target scroll bar in pixels.
+ * If the target scroll bar is not present, 0 is returned.
+ */
+export function measureScrollBarThickness(element: HTMLElement, direction: "horizontal" | "vertical") {
+    // offset size includes the scroll bar. client size does not.
+    // the difference gives the thickness of the scroll bar.
+    return direction === "horizontal"
+        ? element.offsetHeight - element.clientHeight
+        : element.offsetWidth - element.clientWidth;
 }
 
 /**

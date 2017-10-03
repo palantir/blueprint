@@ -14,6 +14,7 @@ $table-quadrant-scroll-container-overflow: 20px;
 
 .bp-table-quadrant-stack {
   display: flex;
+  position: relative;
   height: 100%;
 }
 
@@ -92,6 +93,9 @@ $table-quadrant-scroll-container-overflow: 20px;
   bottom: 0;
   z-index: $table-quadrant-z-index-left;
 
+  // animate width changes on scroll end
+  transition: width $pt-transition-duration $pt-transition-ease;
+
   .bp-table-quadrant-scroll-container {
     position: absolute;
     top: 0;
@@ -100,15 +104,30 @@ $table-quadrant-scroll-container-overflow: 20px;
     height: auto;
     overflow-x: hidden;
   }
+
+  // require at least 1px of width to show the left selection border if
+  // necessary. this will be needed when selection includes cells in the first
+  // column (#1444).
+  .bp-table-body-virtual-client {
+    min-width: 1px;
+  }
 }
 
 .bp-table-quadrant-top-left {
   z-index: $table-quadrant-z-index-top-left;
+
+  // animate width changes on scroll end
+  transition: width $pt-transition-duration $pt-transition-ease;
 
   .bp-table-quadrant-scroll-container {
     right: -$table-quadrant-scroll-container-overflow;
     bottom: -$table-quadrant-scroll-container-overflow;
     overflow-x: hidden;
     overflow-y: hidden;
+  }
+
+  // correct missing bottom-right corner in the menu-element (addresses #1444).
+  .bp-table-body-virtual-client {
+    min-width: 1px;
   }
 }

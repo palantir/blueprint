@@ -8,7 +8,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, MenuItem, Switch } from "@blueprintjs/core";
+import { Classes, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 import { ISelectItemRendererProps, Suggest } from "../src";
 import { Film, TOP_100_FILMS } from "./data";
@@ -43,7 +43,7 @@ export class SuggestExample extends BaseExample<ISuggestExampleState> {
                 items={TOP_100_FILMS}
                 itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
-                noResults={<MenuItem disabled text="No results." />}
+                noResults={<MenuItem disabled={true} text="No results." />}
                 onItemSelect={this.handleValueChange}
                 popoverProps={{ popoverClassName: minimal ? Classes.MINIMAL : "" }}
             />

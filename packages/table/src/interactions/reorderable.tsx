@@ -5,12 +5,13 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import { Utils as CoreUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
 import { Utils } from "../common/utils";
-import { Draggable, ICoordinateData, IDraggableProps } from "../interactions/draggable";
 import { IRegion, RegionCardinality, Regions } from "../regions";
+import { Draggable, ICoordinateData, IDraggableProps } from "./draggable";
 
 export interface IReorderableProps {
     /**
@@ -181,7 +182,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     private maybeSelectRegion(region: IRegion) {
         const nextSelectedRegions = [region];
 
-        if (!Utils.deepCompareKeys(nextSelectedRegions, this.props.selectedRegions)) {
+        if (!CoreUtils.deepCompareKeys(nextSelectedRegions, this.props.selectedRegions)) {
             this.props.onSelection(nextSelectedRegions);
 
             // move the focused cell into the newly selected region

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -54,11 +54,11 @@ export const NavMenu: React.SFC<INavMenuProps> = props => {
         const isActive = props.activeSectionId === section.route;
         const isExpanded = isActive || isParentOfRoute(section.route, props.activeSectionId);
         // active section gets selected styles, expanded section shows its children
-        const classes = classNames({ "docs-nav-expanded": isExpanded });
+        const itemClasses = classNames({ "docs-nav-expanded": isExpanded });
         const childrenMenu = isPageNode(section) ? <NavMenu {...props} items={section.children} /> : undefined;
         return (
             <NavMenuItem
-                className={classes}
+                className={itemClasses}
                 key={section.route}
                 item={section}
                 isActive={isActive}
