@@ -56,9 +56,9 @@ export interface ITruncatedFormatProps extends IProps {
      * Configures when the popover is shown with the `TruncatedPopoverMode` enum.
      *
      * The enum values are:
-     * - `ALWAYS`: show the popover (default).
+     * - `ALWAYS`: show the popover.
      * - `NEVER`: don't show the popover.
-     * - `WHEN_TRUNCATED`: show the popover only when the text is truncated.
+     * - `WHEN_TRUNCATED`: show the popover only when the text is truncated (default).
      * @default WHEN_TRUNCATED
      */
     showPopover?: TruncatedPopoverMode;
