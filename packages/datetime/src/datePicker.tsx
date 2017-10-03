@@ -26,7 +26,9 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Props to pass to ReactDayPicker.
-     * See API documentation [here](http://react-day-picker.js.org).
+     * See API documentation [here](http://react-day-picker.js.org/docs/api-daypicker.html).
+     * Beware! The following props are controlled by blueprint and thus will not be passed along:
+     * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`)
      */
     dayPickerProps?: ReactDayPicker.Props;
 
