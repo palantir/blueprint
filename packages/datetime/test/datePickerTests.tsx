@@ -16,6 +16,9 @@ import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps } from "../src/index";
 
+const areDatesEqual = (a: Date, b: Date) =>
+    a.getDay() === b.getDay() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear();
+
 describe("<DatePicker>", () => {
     it(`renders .${Classes.DATEPICKER}`, () => {
         assert.lengthOf(wrap(<DatePicker />).root.find(`.${Classes.DATEPICKER}`), 1);
@@ -36,20 +39,29 @@ describe("<DatePicker>", () => {
         });
 
         it("doesnt show outside days if specified", () => {
-            const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
+            const defaultValue = new Date(2017, Months.SEPTEMBER, 1, 12);
             const wrapper = mount(
                 <DatePicker defaultValue={defaultValue} dayPickerProps={{ enableOutsideDays: false }} />,
             );
-            const firstDay = wrapper.find("Day").first();
-            assert.equal(firstDay.prop("day"), defaultValue);
+
+            const dayIsHidden = (day: any): boolean =>
+                day.prop("empty") && !day.prop("ariaSelected") && day.prop("ariaDisabled");
+
+            assert.isTrue(dayIsHidden(wrapper.find("Day").at(0)));
+            assert.isTrue(dayIsHidden(wrapper.find("Day").at(1)));
+            assert.isTrue(dayIsHidden(wrapper.find("Day").at(2)));
+            assert.isTrue(dayIsHidden(wrapper.find("Day").at(3)));
+            assert.isTrue(dayIsHidden(wrapper.find("Day").at(4)));
+
+            assert.isFalse(dayIsHidden(wrapper.find("Day").at(5)));
         });
 
         it("respects default of true for enableOutsideDays prop", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
-            const firstDayInView = new Date(2017, Months.AUGUST, 27);
+            const firstDayInView = new Date(2017, Months.AUGUST, 27, 12, 0);
             const wrapper = mount(<DatePicker defaultValue={defaultValue} />);
             const firstDay = wrapper.find("Day").first();
-            assert.equal(firstDay.prop("day"), firstDayInView);
+            assert.isTrue(areDatesEqual(new Date(firstDay.prop("day")), firstDayInView));
         });
 
         it("disables days as specified in disableDays daypicker prop in addition to min/max", () => {
