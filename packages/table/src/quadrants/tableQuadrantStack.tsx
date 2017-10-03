@@ -195,9 +195,10 @@ export interface ITableQuadrantStackProps extends IProps {
     useInteractionBar?: boolean;
 }
 
-// if there are no frozen rows or columns, we still want the quadrant to be 1px bigger to
-// reveal the header border.
-const BORDER_WIDTH_CORRECTION = 1;
+// if there are no frozen rows or columns, we still want the quadrant to be 1px
+// bigger to reveal the header border. this border leaks into the cell grid to
+// ensure that selection overlay borders (e.g.) will be perfectly flush with it.
+const QUADRANT_MIN_SIZE = 1;
 
 // the debounce delay for updating the view on scroll. elements will be resized
 // and rejiggered once scroll has ceased for at least this long, but not before.
@@ -753,10 +754,20 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         // Quadrant-size sync'ing: make the quadrants precisely as big as they
         // need to be to fit their variable-sized headers and/or frozen areas.
+
+        // resize LEFT-area features regardless
         this.maybesSetQuadrantRowHeaderSizes(rowHeaderWidth);
-        this.maybeSetQuadrantMenuElementSizes(rowHeaderWidth, columnHeaderHeight);
-        this.maybeSetQuadrantSizes(nextLeftQuadrantWidth, nextTopQuadrantHeight);
+        this.maybesSetQuadrantSize(QuadrantType.LEFT, "width", nextLeftQuadrantWidth);
+        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "width", nextLeftQuadrantWidth);
         this.cache.setRowHeaderWidth(rowHeaderWidth);
+
+        // resize TOP-area features only if they wouldn't confusingly collapse to zero height.
+        if (!this.isQuadrantDimensionZero(nextTopQuadrantHeight)) {
+            this.maybeSetQuadrantMenuElementSizes(rowHeaderWidth, columnHeaderHeight);
+            this.maybesSetQuadrantSize(QuadrantType.TOP, "height", nextTopQuadrantHeight);
+            this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "height", nextTopQuadrantHeight);
+            this.cache.setColumnHeaderHeight(columnHeaderHeight);
+        }
 
         // Scrollbar clearance: tweak the quadrant bottom/right offsets to
         // reveal the MAIN-quadrant scrollbars if they're visible.
@@ -768,24 +779,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         this.maybeSetQuadrantScrollOffset(QuadrantType.LEFT, "scrollTop");
         this.maybeSetQuadrantScrollOffset(QuadrantType.TOP, "scrollLeft");
 
-        // edge case around column sizing
-        if (nextTopQuadrantHeight > BORDER_WIDTH_CORRECTION) {
-            this.maybesSetQuadrantSize(QuadrantType.TOP, "height", nextTopQuadrantHeight);
-            this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "height", nextTopQuadrantHeight);
-            this.cache.setColumnHeaderHeight(columnHeaderHeight);
-        }
-
         // clear the cached client size, so we can read it again when a new
         // scroll begins. not safe to assume this won't change.
         this.cache.setScrollContainerClientWidth(undefined);
         this.cache.setScrollContainerClientHeight(undefined);
-    };
-
-    private maybeSetQuadrantSizes = (width: number, height: number) => {
-        this.maybesSetQuadrantSize(QuadrantType.LEFT, "width", width);
-        this.maybesSetQuadrantSize(QuadrantType.TOP, "height", height);
-        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "width", width);
-        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "height", height);
     };
 
     private maybesSetQuadrantSize = (quadrantType: QuadrantType, dimension: "width" | "height", value: number) => {
@@ -877,7 +874,15 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const getterFn = dimension === "width" ? grid.getCumulativeWidthAt : grid.getCumulativeHeightAt;
 
         // both getter functions do O(1) lookups.
-        return numFrozen > 0 ? getterFn(numFrozen - 1) : BORDER_WIDTH_CORRECTION;
+        return numFrozen > 0 ? getterFn(numFrozen - 1) : QUADRANT_MIN_SIZE;
+    }
+
+    /**
+     * Returns true if the provided quadrant width or height is effectively
+     * zero, accounting for various under-the-hood edge cases.
+     */
+    private isQuadrantDimensionZero(quadrantWidthOrHeight: number) {
+        return quadrantWidthOrHeight <= QUADRANT_MIN_SIZE;
     }
 
     /**
