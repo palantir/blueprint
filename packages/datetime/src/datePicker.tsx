@@ -118,6 +118,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
                 <ReactDayPicker
+                    {...dayPickerBaseProps}
                     canChangeMonth={true}
                     captionElement={this.renderCaption}
                     disabledDays={this.disabledDays}
@@ -131,7 +132,6 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
                     onMonthChange={this.handleMonthChange}
                     selectedDays={this.state.value}
                     toMonth={maxDate}
-                    {...dayPickerBaseProps}
                 />
                 {showActionsBar ? this.renderOptionsBar() : null}
             </div>
