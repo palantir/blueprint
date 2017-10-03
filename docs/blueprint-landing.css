@@ -1917,7 +1917,8 @@ a.pt-button {
   display: block; }
   .pt-editable-text.pt-multiline .pt-editable-content {
     overflow: auto;
-    white-space: pre-wrap; }
+    white-space: pre-wrap;
+    word-wrap: break-word; }
 
 .pt-select select {
   display: inline-block;
@@ -3047,7 +3048,7 @@ a.pt-button {
     margin: 0 7px;
     line-height: 30px;
     color: #5c7080; }
-  .pt-input-group .pt-spinner {
+  .pt-input-group .pt-input-action > .pt-spinner {
     margin: 3px; }
   .pt-input-group .pt-tag {
     margin: 5px; }
@@ -3093,7 +3094,7 @@ a.pt-button {
       padding-left: 40px; }
     .pt-input-group.pt-large .pt-input:not(:last-child) {
       padding-right: 40px; }
-  .pt-input-group.pt-large .pt-spinner {
+  .pt-input-group.pt-large .pt-input-action > .pt-spinner {
     margin: 8px; }
   .pt-input-group.pt-round .pt-button,
   .pt-input-group.pt-round .pt-input,
@@ -6849,7 +6850,7 @@ table.pt-table {
 .pt-dark .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
   background-color: #137cbd; }
 /*
- * Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  */
 .pt-wireframes {
   position: absolute;
@@ -7015,7 +7016,7 @@ table.pt-table {
             animation-delay: 5s; }
 
 /*
- * Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  */
 body,
 h1,

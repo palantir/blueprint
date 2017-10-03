@@ -14,7 +14,6 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
-    IToastProps,
     MenuItem,
     Position,
     Switch,
