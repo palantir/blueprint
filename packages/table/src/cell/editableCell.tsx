@@ -77,7 +77,9 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
 
     public componentWillReceiveProps(nextProps: IEditableCellProps) {
         const { value } = nextProps;
-        this.setState({ savedValue: value, dirtyValue: value });
+        if (value !== this.props.value) {
+            this.setState({ savedValue: value, dirtyValue: value });
+        }
     }
 
     public render() {
