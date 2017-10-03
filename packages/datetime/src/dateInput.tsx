@@ -8,6 +8,7 @@
 import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
+import * as ReactDayPicker from "react-day-picker";
 
 import {
     AbstractComponent,
@@ -50,6 +51,12 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     closeOnSelection?: boolean;
 
     /**
+     * Props to pass to ReactDayPicker.
+     * See API documentation [here](http://react-day-picker.js.org).
+     */
+    dayPickerProps?: ReactDayPicker.Props;
+
+    /**
      * Whether the date input is non-interactive.
      * @default false
      */
@@ -65,11 +72,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * @default "YYYY-MM-DD"
      */
     format?: string;
-
-    /**
-     * The day the calendar week starts with. 0=Sunday, 6=Saturday
-     */
-    firstDayOfWeek?: number;
 
     /**
      * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).
