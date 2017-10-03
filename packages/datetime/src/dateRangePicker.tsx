@@ -63,7 +63,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * Props to pass to ReactDayPicker.
      * See API documentation [here](http://react-day-picker.js.org).
      */
-    dayPickerProps?: object;
+    dayPickerBaseProps?: ReactDayPicker.Props;
 
     /**
      * Initial `DateRange` the calendar will display as selected.
@@ -206,7 +206,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         const {
             className,
             contiguousCalendarMonths,
-            dayPickerProps,
+            dayPickerBaseProps,
             locale,
             localeUtils,
             maxDate,
@@ -217,7 +217,8 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         const { leftView, rightView } = this.state;
         const disabledDays = [{ before: this.props.minDate }, { after: this.props.maxDate }];
 
-        const dayPickerBaseProps: ReactDayPicker.Props = {
+        const extendedDayPickerBaseProps: ReactDayPicker.Props = {
+            ...dayPickerBaseProps,
             disabledDays,
             locale,
             localeUtils,
@@ -226,7 +227,6 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
             onDayMouseEnter: this.handleDayMouseEnter,
             onDayMouseLeave: this.handleDayMouseLeave,
             selectedDays: this.state.value,
-            ...dayPickerProps,
         };
 
         if (contiguousCalendarMonths || isShowingOneMonth) {
@@ -239,7 +239,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
                 <div className={classes}>
                     {this.maybeRenderShortcuts()}
                     <ReactDayPicker
-                        {...dayPickerBaseProps}
+                        {...extendedDayPickerBaseProps}
                         captionElement={this.renderSingleCaption}
                         fromMonth={minDate}
                         month={leftView.getFullDate()}

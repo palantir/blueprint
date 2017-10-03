@@ -54,7 +54,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * Props to pass to ReactDayPicker.
      * See API documentation [here](http://react-day-picker.js.org).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerBaseProps?: ReactDayPicker.Props;
 
     /**
      * Whether the date input is non-interactive.
