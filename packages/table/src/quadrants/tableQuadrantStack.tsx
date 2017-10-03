@@ -12,6 +12,7 @@ import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
 import * as ScrollUtils from "../common/internal/scrollUtils";
 import { Utils } from "../common/utils";
+import { TableLoadingOption } from "../regions";
 import { QuadrantType, TableQuadrant } from "./tableQuadrant";
 import { TableQuadrantStackCache } from "./tableQuadrantStackCache";
 
@@ -83,6 +84,19 @@ export interface ITableQuadrantStackProps extends IProps {
     isVerticalScrollDisabled?: boolean;
 
     /**
+     * A list of `TableLoadingOption`. Loading cells may have different sizes
+     * from potentially custom cells in the header or body, so we need to know
+     * when the loading states change in order to synchronize quadrant sizes
+     * properly.
+     */
+    loadingOptions?: TableLoadingOption[];
+
+    /**
+     * The number of columns.
+     */
+    numColumns: number;
+
+    /**
      * The number of frozen columns.
      */
     numFrozenColumns?: number;
@@ -91,6 +105,11 @@ export interface ITableQuadrantStackProps extends IProps {
      * The number of frozen rows.
      */
     numFrozenRows?: number;
+
+    /**
+     * The number of rows.
+     */
+    numRows: number;
 
     /**
      * An optional callback invoked the quadrants are scrolled.
@@ -184,8 +203,11 @@ const DEFAULT_VIEW_SYNC_DELAY = 500;
 // quadrant views need to be explicitly resynchronized.
 const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
     "isRowHeaderShown",
+    "loadingOptions",
     "numFrozenColumns",
     "numFrozenRows",
+    "numColumns",
+    "numRows",
     "useInteractionBar",
 ];
 

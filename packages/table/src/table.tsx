@@ -611,7 +611,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { className, isRowHeaderShown, useInteractionBar } = this.props;
+        const { className, isRowHeaderShown, loadingOptions, numRows, useInteractionBar } = this.props;
         const { horizontalGuides, verticalGuides } = this.state;
         this.validateGrid();
 
@@ -639,8 +639,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     isHorizontalScrollDisabled={this.shouldDisableHorizontalScroll()}
                     isRowHeaderShown={isRowHeaderShown}
                     isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
+                    loadingOptions={loadingOptions}
+                    numColumns={this.childrenArray.length}
                     numFrozenColumns={this.getNumFrozenColumnsClamped()}
                     numFrozenRows={this.getNumFrozenRowsClamped()}
+                    numRows={numRows}
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
                     ref={this.refHandlers.quadrantStack}
