@@ -402,6 +402,36 @@ describe("<DateRangePicker>", () => {
     });
 
     describe("hover interactions", () => {
+        describe("react-day-picker props are used", () => {
+            it("calls onMonthChange", () => {
+                const monthChangeSpy = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onMonthChange: monthChangeSpy } });
+                clickNextMonth();
+                assert.isTrue(monthChangeSpy.called);
+            });
+            it("calls onDayMouseEnter", () => {
+                const mouseEnterSpy = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onDayMouseEnter: mouseEnterSpy } });
+                mouseEnterDay(14);
+                assert.isTrue(mouseEnterSpy.called);
+            });
+
+            it("calls onDayMouseLeave", () => {
+                const mouseLeaveSpy = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onDayMouseLeave: mouseLeaveSpy } });
+                mouseEnterDay(14);
+                mouseLeaveDay(14);
+                assert.isTrue(mouseLeaveSpy.called);
+            });
+
+            it("calls onDayClick", () => {
+                const mouseClickSpy = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onDayClick: mouseClickSpy } });
+                clickDay(14);
+                assert.isTrue(mouseClickSpy.called);
+            });
+        });
+
         describe("when neither start nor end date is defined", () => {
             it("should show a hovered range of [day, null]", () => {
                 renderDateRangePicker();
@@ -941,6 +971,10 @@ describe("<DateRangePicker>", () => {
         ) as DateRangePicker;
     }
 
+    function clickNextMonth() {
+        TestUtils.Simulate.click(getNextMonthButton());
+    }
+
     function clickDay(dayNumber = 1, fromLeftMonth = true) {
         TestUtils.Simulate.click(getDayElement(dayNumber, fromLeftMonth));
     }
@@ -963,6 +997,10 @@ describe("<DateRangePicker>", () => {
 
     function clickFirstShortcut() {
         TestUtils.Simulate.click(getShortcut(0));
+    }
+
+    function getNextMonthButton() {
+        return document.query(".DayPicker-NavButton--next");
     }
 
     function getDayElement(dayNumber = 1, fromLeftMonth = true) {
