@@ -264,13 +264,16 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
     private setArrayState<T>(key: string, index: number, value: T) {
         const values = (this.state as any)[key].slice() as T[];
         values[index] = value;
-        this.setState({ [key]: values });
+        // `any` necessary to fix weird TS errors. related SO post:
+        // https://stackoverflow.com/questions/46361905/property-is-missing-in-type-x-string-string
+        this.setState({ [key]: values } as any);
     }
 
     private setSparseState<T>(stateKey: string, dataKey: string, value: T) {
         const stateData = (this.state as any)[stateKey] as { [key: string]: T };
         const values = { ...stateData, [dataKey]: value };
-        this.setState({ [stateKey]: values });
+        // `any` necessary to fix weird TS errors.
+        this.setState({ [stateKey]: values } as any);
     }
 }
 
