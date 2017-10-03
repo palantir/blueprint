@@ -66,7 +66,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
      * Props to pass to ReactDayPicker.
      * See API documentation [here](http://react-day-picker.js.org).
      */
-    dayPickerBaseProps?: ReactDayPicker.Props;
+    dayPickerProps?: ReactDayPicker.Props;
 
     /**
      * The default date range to be used in the component when uncontrolled.

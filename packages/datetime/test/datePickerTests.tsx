@@ -28,7 +28,7 @@ describe("<DatePicker>", () => {
 
     it("week starts with firstDayOfWeek value", () => {
         const selectedFirstDay = 3;
-        const wrapper = mount(<DatePicker dayPickerBaseProps={{ firstDayOfWeek: selectedFirstDay }} />);
+        const wrapper = mount(<DatePicker dayPickerProps={{ firstDayOfWeek: selectedFirstDay }} />);
         const firstWeekday = wrapper.find("Weekday").first();
         assert.equal(firstWeekday.prop("weekday"), selectedFirstDay);
     });

@@ -28,7 +28,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * Props to pass to ReactDayPicker.
      * See API documentation [here](http://react-day-picker.js.org).
      */
-    dayPickerBaseProps?: ReactDayPicker.Props;
+    dayPickerProps?: ReactDayPicker.Props;
 
     /**
      * Initial day the calendar will display as selected.
@@ -112,13 +112,13 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
     }
 
     public render() {
-        const { className, dayPickerBaseProps, locale, localeUtils, maxDate, minDate, showActionsBar } = this.props;
+        const { className, dayPickerProps, locale, localeUtils, maxDate, minDate, showActionsBar } = this.props;
         const { displayMonth, displayYear } = this.state;
 
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
                 <ReactDayPicker
-                    {...dayPickerBaseProps}
+                    {...dayPickerProps}
                     canChangeMonth={true}
                     captionElement={this.renderCaption}
                     disabledDays={this.disabledDays}

@@ -65,7 +65,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * Beware! The following props are controlled by blueprint and thus will not be passed along:
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`), `numberOfMonths`
      */
-    dayPickerBaseProps?: ReactDayPicker.Props;
+    dayPickerProps?: ReactDayPicker.Props;
 
     /**
      * Initial `DateRange` the calendar will display as selected.
@@ -116,7 +116,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
-        dayPickerBaseProps: {},
+        dayPickerProps: {},
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         shortcuts: true,
@@ -209,7 +209,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         const {
             className,
             contiguousCalendarMonths,
-            dayPickerBaseProps,
+            dayPickerProps,
             locale,
             localeUtils,
             maxDate,
@@ -220,8 +220,8 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         const { leftView, rightView } = this.state;
         const disabledDays = [{ before: this.props.minDate }, { after: this.props.maxDate }];
 
-        const dayPickerProps: ReactDayPicker.Props = {
-            ...dayPickerBaseProps,
+        const hydratedDayPickerProps: ReactDayPicker.Props = {
+            ...dayPickerProps,
             disabledDays,
             locale,
             localeUtils,
@@ -242,7 +242,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
                 <div className={classes}>
                     {this.maybeRenderShortcuts()}
                     <ReactDayPicker
-                        {...dayPickerProps}
+                        {...hydratedDayPickerProps}
                         captionElement={this.renderSingleCaption}
                         fromMonth={minDate}
                         month={leftView.getFullDate()}
@@ -257,7 +257,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
                     {this.maybeRenderShortcuts()}
                     <ReactDayPicker
-                        {...dayPickerProps}
+                        {...hydratedDayPickerProps}
                         canChangeMonth={true}
                         captionElement={this.renderLeftCaption}
                         fromMonth={minDate}
@@ -266,7 +266,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
                         toMonth={DateUtils.getDatePreviousMonth(maxDate)}
                     />
                     <ReactDayPicker
-                        {...dayPickerProps}
+                        {...hydratedDayPickerProps}
                         canChangeMonth={true}
                         captionElement={this.renderRightCaption}
                         fromMonth={DateUtils.getDateNextMonth(minDate)}
@@ -379,8 +379,8 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         modifiers: ReactDayPicker.DayModifiers,
         e: React.MouseEvent<HTMLDivElement>,
     ) => {
-        if (typeof this.props.dayPickerBaseProps.onDayMouseEnter === "function") {
-            this.props.dayPickerBaseProps.onDayMouseEnter(day, modifiers, e);
+        if (typeof this.props.dayPickerProps.onDayMouseEnter === "function") {
+            this.props.dayPickerProps.onDayMouseEnter(day, modifiers, e);
         }
 
         if (modifiers.disabled) {
@@ -401,8 +401,8 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         modifiers: ReactDayPicker.DayModifiers,
         e: React.MouseEvent<HTMLDivElement>,
     ) => {
-        if (typeof this.props.dayPickerBaseProps.onDayMouseLeave === "function") {
-            this.props.dayPickerBaseProps.onDayMouseLeave(day, modifiers, e);
+        if (typeof this.props.dayPickerProps.onDayMouseLeave === "function") {
+            this.props.dayPickerProps.onDayMouseLeave(day, modifiers, e);
         }
         if (modifiers.disabled) {
             return;
@@ -416,8 +416,8 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         modifiers: ReactDayPicker.DayModifiers,
         e: React.MouseEvent<HTMLDivElement>,
     ) => {
-        if (typeof this.props.dayPickerBaseProps.onDayClick === "function") {
-            this.props.dayPickerBaseProps.onDayClick(day, modifiers, e);
+        if (typeof this.props.dayPickerProps.onDayClick === "function") {
+            this.props.dayPickerProps.onDayClick(day, modifiers, e);
         }
 
         if (modifiers.disabled) {
@@ -456,16 +456,16 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
     }
 
     private handleLeftMonthChange = (newDate: Date) => {
-        if (typeof this.props.dayPickerBaseProps.onMonthChange === "function") {
-            this.props.dayPickerBaseProps.onMonthChange(newDate);
+        if (typeof this.props.dayPickerProps.onMonthChange === "function") {
+            this.props.dayPickerProps.onMonthChange(newDate);
         }
         const leftView = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
         this.updateLeftView(leftView);
     };
 
     private handleRightMonthChange = (newDate: Date) => {
-        if (typeof this.props.dayPickerBaseProps.onMonthChange === "function") {
-            this.props.dayPickerBaseProps.onMonthChange(newDate);
+        if (typeof this.props.dayPickerProps.onMonthChange === "function") {
+            this.props.dayPickerProps.onMonthChange(newDate);
         }
         const rightView = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
         this.updateRightView(rightView);
