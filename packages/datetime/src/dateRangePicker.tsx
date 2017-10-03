@@ -254,7 +254,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
                     {this.maybeRenderShortcuts()}
                     <ReactDayPicker
-                        {...dayPickerBaseProps}
+                        {...dayPickerProps}
                         canChangeMonth={true}
                         captionElement={this.renderLeftCaption}
                         fromMonth={minDate}
@@ -263,7 +263,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
                         toMonth={DateUtils.getDatePreviousMonth(maxDate)}
                     />
                     <ReactDayPicker
-                        {...dayPickerBaseProps}
+                        {...dayPickerProps}
                         canChangeMonth={true}
                         captionElement={this.renderRightCaption}
                         fromMonth={DateUtils.getDateNextMonth(minDate)}
