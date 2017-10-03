@@ -601,7 +601,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             : this.cache.getScrollContainerClientHeight() - this.cache.getColumnHeaderHeight();
 
         const gridSize = isHorizontal ? grid.getWidth() : grid.getHeight();
-        const maxScrollOffset = gridSize - containerSize;
+        const maxScrollOffset = Math.max(0, gridSize - containerSize);
         const currScrollOffset = this.cache.getScrollOffset(scrollKey);
         const nextScrollOffset = CoreUtils.clamp(currScrollOffset + delta, 0, maxScrollOffset);
 
