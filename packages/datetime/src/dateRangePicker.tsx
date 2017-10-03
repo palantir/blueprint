@@ -217,7 +217,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         const { leftView, rightView } = this.state;
         const disabledDays = [{ before: this.props.minDate }, { after: this.props.maxDate }];
 
-        const extendedDayPickerBaseProps: ReactDayPicker.Props = {
+        const dayPickerProps: ReactDayPicker.Props = {
             ...dayPickerBaseProps,
             disabledDays,
             locale,
@@ -239,7 +239,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
                 <div className={classes}>
                     {this.maybeRenderShortcuts()}
                     <ReactDayPicker
-                        {...extendedDayPickerBaseProps}
+                        {...dayPickerProps}
                         captionElement={this.renderSingleCaption}
                         fromMonth={minDate}
                         month={leftView.getFullDate()}
