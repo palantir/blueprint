@@ -61,7 +61,9 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Props to pass to ReactDayPicker.
-     * See API documentation [here](http://react-day-picker.js.org).
+     * See API documentation [here](http://react-day-picker.js.org/docs/api-daypicker.html).
+     * Beware! The following props are controlled by blueprint and thus will not be passed along:
+     * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`), `numberOfMonths`
      */
     dayPickerBaseProps?: ReactDayPicker.Props;
 
@@ -114,6 +116,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
+        dayPickerBaseProps: {},
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         shortcuts: true,
@@ -371,7 +374,15 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         />
     );
 
-    private handleDayMouseEnter = (day: Date, modifiers: ReactDayPicker.DayModifiers) => {
+    private handleDayMouseEnter = (
+        day: Date,
+        modifiers: ReactDayPicker.DayModifiers,
+        e: React.MouseEvent<HTMLDivElement>,
+    ) => {
+        if (typeof this.props.dayPickerBaseProps.onDayMouseEnter === "function") {
+            this.props.dayPickerBaseProps.onDayMouseEnter(day, modifiers, e);
+        }
+
         if (modifiers.disabled) {
             return;
         }
@@ -385,7 +396,14 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         Utils.safeInvoke(this.props.onHoverChange, dateRange, day, boundary);
     };
 
-    private handleDayMouseLeave = (day: Date, modifiers: ReactDayPicker.DayModifiers) => {
+    private handleDayMouseLeave = (
+        day: Date,
+        modifiers: ReactDayPicker.DayModifiers,
+        e: React.MouseEvent<HTMLDivElement>,
+    ) => {
+        if (typeof this.props.dayPickerBaseProps.onDayMouseLeave === "function") {
+            this.props.dayPickerBaseProps.onDayMouseLeave(day, modifiers, e);
+        }
         if (modifiers.disabled) {
             return;
         }
@@ -393,7 +411,15 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         Utils.safeInvoke(this.props.onHoverChange, undefined, day, undefined);
     };
 
-    private handleDayClick = (day: Date, modifiers: ReactDayPicker.DayModifiers) => {
+    private handleDayClick = (
+        day: Date,
+        modifiers: ReactDayPicker.DayModifiers,
+        e: React.MouseEvent<HTMLDivElement>,
+    ) => {
+        if (typeof this.props.dayPickerBaseProps.onDayClick === "function") {
+            this.props.dayPickerBaseProps.onDayClick(day, modifiers, e);
+        }
+
         if (modifiers.disabled) {
             // rerender base component to get around bug where you can navigate past bounds by clicking days
             this.forceUpdate();
@@ -409,7 +435,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
 
         // update the hovered date range after click to show the newly selected
         // state, at leasts until the mouse moves again
-        this.handleDayMouseEnter(day, modifiers);
+        this.handleDayMouseEnter(day, modifiers, e);
 
         this.handleNextState(nextValue);
     };
@@ -430,11 +456,17 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
     }
 
     private handleLeftMonthChange = (newDate: Date) => {
+        if (typeof this.props.dayPickerBaseProps.onMonthChange === "function") {
+            this.props.dayPickerBaseProps.onMonthChange(newDate);
+        }
         const leftView = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
         this.updateLeftView(leftView);
     };
 
     private handleRightMonthChange = (newDate: Date) => {
+        if (typeof this.props.dayPickerBaseProps.onMonthChange === "function") {
+            this.props.dayPickerBaseProps.onMonthChange(newDate);
+        }
         const rightView = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
         this.updateRightView(rightView);
     };
