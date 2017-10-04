@@ -206,14 +206,18 @@ export interface ITableQuadrantStackProps extends IProps {
     useInteractionBar?: boolean;
 }
 
+// the debounce delay for updating the view on scroll. elements will be resized
+// and rejiggered once scroll has ceased for at least this long, but not before.
+const DEFAULT_VIEW_SYNC_DELAY = 500;
+
+// when there are no column headers, the header and menu element will
+// confusingly collapse to zero height unless we establish this default.
+const EMPTY_COLUMN_HEADER_HEIGHT = 30;
+
 // if there are no frozen rows or columns, we still want the quadrant to be 1px
 // bigger to reveal the header border. this border leaks into the cell grid to
 // ensure that selection overlay borders (e.g.) will be perfectly flush with it.
 const QUADRANT_MIN_SIZE = 1;
-
-// the debounce delay for updating the view on scroll. elements will be resized
-// and rejiggered once scroll has ceased for at least this long, but not before.
-const DEFAULT_VIEW_SYNC_DELAY = 500;
 
 // a list of props that trigger layout changes. when these props change,
 // quadrant views need to be explicitly resynchronized.
@@ -747,38 +751,43 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const mainRefs = this.quadrantRefs[QuadrantType.MAIN];
         const mainScrollContainer = mainRefs.scrollContainer;
 
+        //
         // Reads (batched to avoid DOM thrashing)
+        //
 
-        const rowHeaderWidth = this.measureRowHeaderWidth();
-        const columnHeaderHeight = this.measureColumnHeaderHeight();
+        const rowHeaderWidth = this.measureDesiredRowHeaderWidth();
+        const columnHeaderHeight = this.measureDesiredColumnHeaderHeight();
 
         const leftQuadrantGridWidth = this.getSecondaryQuadrantGridSize("width");
         const topQuadrantGridHeight = this.getSecondaryQuadrantGridSize("height");
 
-        const nextLeftQuadrantWidth = rowHeaderWidth + leftQuadrantGridWidth;
-        const nextTopQuadrantHeight = columnHeaderHeight + topQuadrantGridHeight;
+        const leftQuadrantWidth = rowHeaderWidth + leftQuadrantGridWidth;
+        const topQuadrantHeight = this.isQuadrantDimensionZero(columnHeaderHeight + topQuadrantGridHeight)
+            ? EMPTY_COLUMN_HEADER_HEIGHT
+            : columnHeaderHeight + topQuadrantGridHeight;
 
         const rightScrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer, "vertical");
         const bottomScrollBarHeight = ScrollUtils.measureScrollBarThickness(mainScrollContainer, "horizontal");
 
+        // Update cache: let's read now whatever values we might need later.
+        // prevents unnecessary reflows in the future.
+        this.cache.setRowHeaderWidth(rowHeaderWidth);
+        this.cache.setColumnHeaderHeight(columnHeaderHeight);
+        // ...however, we also clear the cached client size, so we can read it
+        // again when a new scroll begins. not safe to assume this won't change.
+        // TODO: maybe use the ResizeSensor?
+        this.cache.setScrollContainerClientWidth(undefined);
+        this.cache.setScrollContainerClientHeight(undefined);
+
+        //
         // Writes (batched to avoid DOM thrashing)
+        //
 
         // Quadrant-size sync'ing: make the quadrants precisely as big as they
         // need to be to fit their variable-sized headers and/or frozen areas.
-
-        // resize LEFT-area features regardless
         this.maybesSetQuadrantRowHeaderSizes(rowHeaderWidth);
-        this.maybesSetQuadrantSize(QuadrantType.LEFT, "width", nextLeftQuadrantWidth);
-        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "width", nextLeftQuadrantWidth);
-        this.cache.setRowHeaderWidth(rowHeaderWidth);
-
-        // resize TOP-area features only if they wouldn't confusingly collapse to zero height.
-        if (!this.isQuadrantDimensionZero(nextTopQuadrantHeight)) {
-            this.maybeSetQuadrantMenuElementSizes(rowHeaderWidth, columnHeaderHeight);
-            this.maybesSetQuadrantSize(QuadrantType.TOP, "height", nextTopQuadrantHeight);
-            this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "height", nextTopQuadrantHeight);
-            this.cache.setColumnHeaderHeight(columnHeaderHeight);
-        }
+        this.maybeSetQuadrantMenuElementSizes(rowHeaderWidth, columnHeaderHeight);
+        this.maybeSetQuadrantSizes(leftQuadrantWidth, topQuadrantHeight);
 
         // Scrollbar clearance: tweak the quadrant bottom/right offsets to
         // reveal the MAIN-quadrant scrollbars if they're visible.
@@ -789,11 +798,13 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // not have been around prior to this update.
         this.maybeSetQuadrantScrollOffset(QuadrantType.LEFT, "scrollTop");
         this.maybeSetQuadrantScrollOffset(QuadrantType.TOP, "scrollLeft");
+    };
 
-        // clear the cached client size, so we can read it again when a new
-        // scroll begins. not safe to assume this won't change.
-        this.cache.setScrollContainerClientWidth(undefined);
-        this.cache.setScrollContainerClientHeight(undefined);
+    private maybeSetQuadrantSizes = (width: number, height: number) => {
+        this.maybesSetQuadrantSize(QuadrantType.LEFT, "width", width);
+        this.maybesSetQuadrantSize(QuadrantType.TOP, "height", height);
+        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "width", width);
+        this.maybesSetQuadrantSize(QuadrantType.TOP_LEFT, "height", height);
     };
 
     private maybesSetQuadrantSize = (quadrantType: QuadrantType, dimension: "width" | "height", value: number) => {
@@ -897,17 +908,18 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     }
 
     /**
-     * Measures the row header's desired width; that is, the width it would
-     * need to be to properly fit its widest children currently in view.
+     * Measures the desired width of the row header based on its tallest
+     * contents.
      */
-    private measureRowHeaderWidth() {
+    private measureDesiredRowHeaderWidth() {
         // the MAIN row header serves as the source of truth
         const mainRowHeader = this.quadrantRefs[QuadrantType.MAIN].rowHeader;
 
         if (mainRowHeader == null) {
             return 0;
         } else {
-            // (alas, we must force a reflow to measure the row header's "desired" width)
+            // we modify the row header itself to measure the desired row width.
+            // (yes, this necessarily forces a reflow.)
             mainRowHeader.style.width = "auto";
 
             const desiredRowHeaderWidth = mainRowHeader.clientWidth;
@@ -916,9 +928,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     }
 
     /**
-     * Measures the desired height of the column header based on its contents.
+     * Measures the desired height of the column header based on its tallest
+     * contents.
      */
-    private measureColumnHeaderHeight() {
+    private measureDesiredColumnHeaderHeight() {
         const mainColumnHeader = this.quadrantRefs[QuadrantType.MAIN].columnHeader;
         return mainColumnHeader == null ? 0 : mainColumnHeader.clientHeight;
     }
