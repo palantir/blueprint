@@ -72,7 +72,9 @@ export interface ITableQuadrantStackProps extends IProps {
     isHorizontalScrollDisabled?: boolean;
 
     /**
-     * If `false`, hides the row headers and settings menu.
+     * If `false`, hides the row headers and settings menu. Affects the layout
+     * of the table, so we need to know when this changes change in order to
+     * synchronize quadrant sizes properly.
      * @default true
      */
     isRowHeaderShown?: boolean;
@@ -92,22 +94,29 @@ export interface ITableQuadrantStackProps extends IProps {
     loadingOptions?: TableLoadingOption[];
 
     /**
-     * The number of columns.
+     * The number of columns. Affects the layout of the table, so we need to
+     * know when this changes change in order to synchronize quadrant sizes
+     * properly.
      */
     numColumns: number;
 
     /**
-     * The number of frozen columns.
+     * The number of frozen columns. Affects the layout of the table, so we need
+     * to know when this changes change in order to synchronize quadrant sizes
+     * properly.
      */
     numFrozenColumns?: number;
 
     /**
-     * The number of frozen rows.
+     * The number of frozen rows. Affects the layout of the table, so we need to
+     * know when this changes change in order to synchronize quadrant sizes
+     * properly.
      */
     numFrozenRows?: number;
 
     /**
-     * The number of rows.
+     * The number of rows. Affects the layout of the table, so we need to know
+     * when this changes change in order to synchronize quadrant sizes properly.
      */
     numRows: number;
 
@@ -184,7 +193,9 @@ export interface ITableQuadrantStackProps extends IProps {
 
     /**
      * If `true`, adds an interaction bar on top of all column header cells, and
-     * moves interaction triggers into it.
+     * moves interaction triggers into it. Affects the layout of the table, so
+     * we need to know when this changes change in order to synchronize quadrant
+     * sizes properly.
      *
      * This value defaults to `undefined` so that, by default, it won't override
      * the `useInteractionBar` values that you might have provided directly to
