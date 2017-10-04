@@ -513,10 +513,11 @@ export class Regions {
     }
 
     public static isRegionValidForTable(region: IRegion, numRows: number, numCols: number) {
-        if (region.rows != null && (region.rows[0] >= numRows || region.rows[1] >= numRows)) {
+        if (numRows === 0 || numCols === 0) {
             return false;
-        }
-        if (region.cols != null && (region.cols[0] >= numCols || region.cols[1] >= numCols)) {
+        } else if (region.rows != null && (region.rows[0] >= numRows || region.rows[1] >= numRows)) {
+            return false;
+        } else if (region.cols != null && (region.cols[0] >= numCols || region.cols[1] >= numCols)) {
             return false;
         }
         return true;

@@ -587,8 +587,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             // fit in the current new table dimensions
             newSelectedRegions = this.state.selectedRegions.filter(region => {
                 const regionCardinality = Regions.getRegionCardinality(region);
-                const isSelectionModeEnabled = selectionModes.indexOf(regionCardinality) >= 0;
-                return isSelectionModeEnabled && Regions.isRegionValidForTable(region, numRows, numCols);
+                return (
+                    this.isSelectionModeEnabled(regionCardinality, selectionModes) &&
+                    Regions.isRegionValidForTable(region, numRows, numCols)
+                );
             });
         }
 
@@ -1196,8 +1198,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return this.state.verticalGuides != null || this.state.horizontalGuides != null;
     }
 
-    private isSelectionModeEnabled(selectionMode: RegionCardinality) {
-        return this.props.selectionModes.indexOf(selectionMode) >= 0;
+    private isSelectionModeEnabled(selectionMode: RegionCardinality, selectionModes = this.props.selectionModes) {
+        const { numRows } = this.props;
+        const numColumns = this.childrenArray.length;
+        return selectionModes.indexOf(selectionMode) >= 0 && numRows > 0 && numColumns > 0;
     }
 
     private getEnabledSelectionHandler(selectionMode: RegionCardinality) {
