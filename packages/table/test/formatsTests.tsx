@@ -23,7 +23,7 @@ describe("Formats", () => {
         harness.destroy();
     });
 
-    describe.only("Truncated Format", () => {
+    describe("Truncated Format", () => {
         it("can automatically truncate and show popover when truncated", () => {
             const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength + 1);
 
