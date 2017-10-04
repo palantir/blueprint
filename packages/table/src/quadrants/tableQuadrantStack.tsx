@@ -762,9 +762,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const topQuadrantGridHeight = this.getSecondaryQuadrantGridSize("height");
 
         const leftQuadrantWidth = rowHeaderWidth + leftQuadrantGridWidth;
-        const topQuadrantHeight = this.isQuadrantDimensionZero(columnHeaderHeight + topQuadrantGridHeight)
-            ? EMPTY_COLUMN_HEADER_HEIGHT
-            : columnHeaderHeight + topQuadrantGridHeight;
+        const topQuadrantHeight =
+            columnHeaderHeight + topQuadrantGridHeight <= QUADRANT_MIN_SIZE
+                ? EMPTY_COLUMN_HEADER_HEIGHT
+                : columnHeaderHeight + topQuadrantGridHeight;
 
         const rightScrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer, "vertical");
         const bottomScrollBarHeight = ScrollUtils.measureScrollBarThickness(mainScrollContainer, "horizontal");
@@ -897,14 +898,6 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
         // both getter functions do O(1) lookups.
         return numFrozen > 0 ? getterFn(numFrozen - 1) : QUADRANT_MIN_SIZE;
-    }
-
-    /**
-     * Returns true if the provided quadrant width or height is effectively
-     * zero, accounting for various under-the-hood edge cases.
-     */
-    private isQuadrantDimensionZero(quadrantWidthOrHeight: number) {
-        return quadrantWidthOrHeight <= QUADRANT_MIN_SIZE;
     }
 
     /**
