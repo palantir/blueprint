@@ -925,8 +925,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
      */
     private measureDesiredColumnHeaderHeight() {
         // unlike the row headers, the column headers are in a display-flex
-        // layout and are not actually bound by any fixed width that we set, so
-        // they'll grow freely to their necessary size. makes measuring easy!
+        // layout and are not actually bound by any fixed `height` that we set,
+        // so they'll grow freely to their necessary size. makes measuring easy!
         const mainColumnHeader = this.quadrantRefs[QuadrantType.MAIN].columnHeader;
         return mainColumnHeader == null ? 0 : mainColumnHeader.clientHeight;
     }
