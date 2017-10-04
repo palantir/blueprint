@@ -39,12 +39,6 @@ export interface ITabs2Props extends IProps {
     defaultSelectedTabId?: TabId;
 
     /**
-     * The children of a `Tabs2` component, which are React elements
-     * that use `ITab2Props`.
-     */
-    children?: React.ReactElement<ITab2Props> | Array<React.ReactElement<ITab2Props>>;
-
-    /**
      * Unique identifier for this `Tabs` container. This will be combined with the `id` of each
      * `Tab` child to generate ARIA accessibility attributes. IDs are required and should be
      * unique on the page to support server-side rendering.
