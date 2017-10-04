@@ -918,8 +918,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         if (mainRowHeader == null) {
             return 0;
         } else {
-            // we modify the row header itself to measure the desired row width.
-            // (yes, this necessarily forces a reflow.)
+            // (alas, we must force a reflow to measure the row header's "desired" width)
             mainRowHeader.style.width = "auto";
 
             const desiredRowHeaderWidth = mainRowHeader.clientWidth;
@@ -932,6 +931,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
      * contents.
      */
     private measureDesiredColumnHeaderHeight() {
+        // unlike the row headers, the column headers are in a display-flex
+        // layout and are not actually bound by any fixed width that we set, so
+        // they'll grow freely to their necessary size. makes measuring easy!
         const mainColumnHeader = this.quadrantRefs[QuadrantType.MAIN].columnHeader;
         return mainColumnHeader == null ? 0 : mainColumnHeader.clientHeight;
     }
