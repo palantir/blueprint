@@ -622,6 +622,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 [Classes.TABLE_NO_VERTICAL_SCROLL]: this.shouldDisableVerticalScroll(),
                 [Classes.TABLE_NO_HORIZONTAL_SCROLL]: this.shouldDisableHorizontalScroll(),
                 [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
+                [Classes.TABLE_NO_COLUMNS]: this.childrenArray.length === 0,
+                [Classes.TABLE_NO_ROWS]: numRows === 0,
             },
             className,
         );
