@@ -67,7 +67,7 @@ export interface ITruncatedFormatProps extends IProps {
      * Number of characters that are displayed before being truncated and appended with the
      * `truncationSuffix` prop. A value of 0 will disable truncation. This prop is ignored if
      * `detectTruncation` is `false`.
-     * @default 500
+     * @default 2000
      */
     truncateLength?: number;
 
@@ -89,7 +89,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         detectTruncation: false,
         preformatted: false,
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
-        truncateLength: 500,
+        truncateLength: 2000,
         truncationSuffix: "...",
     };
 

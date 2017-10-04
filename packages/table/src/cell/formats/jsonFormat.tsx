@@ -35,7 +35,7 @@ export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
         omitQuotesOnStrings: true,
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
         stringify: (obj: any) => JSON.stringify(obj, null, 2),
-        truncateLength: 500,
+        truncateLength: 2000,
     };
 
     public render() {
