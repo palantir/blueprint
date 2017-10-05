@@ -224,23 +224,19 @@ const SHALLOW_COMPARE_PROP_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
 const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["indexEnd", "indexStart"];
 
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
-    public state: IHeaderState = {
-        hasSelectionEnded: false,
-    };
+    public state: IHeaderState;
 
     protected activationIndex: number;
     private batcher = new Batcher<JSX.Element>();
 
     public constructor(props?: IHeaderProps, context?: any) {
         super(props, context);
-    }
 
-    public componentDidMount() {
-        if (this.props.selectedRegions != null && this.props.selectedRegions.length > 0) {
-            // we already have a selection defined, so we'll want to enable reordering interactions
-            // right away if other criteria are satisfied too.
-            this.setState({ hasSelectionEnded: true });
-        }
+        // a selection is already defined, so enable reordering interactions
+        // right away if other criteria are satisfied too.
+        this.state = {
+            hasSelectionEnded: props.selectedRegions != null && props.selectedRegions.length > 0,
+        };
     }
 
     public componentWillUnmount() {
