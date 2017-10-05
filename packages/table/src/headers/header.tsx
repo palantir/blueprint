@@ -272,9 +272,13 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         return this.props.wrapCells(this.renderCells());
     }
 
-    private locateClick = (event: MouseEvent): IRegion => {
+    private convertEventToIndex = (event: MouseEvent): number => {
         const coord = this.props.getMouseCoordinate(event);
-        this.activationIndex = this.props.convertPointToIndex(coord);
+        return this.props.convertPointToIndex(coord);
+    };
+
+    private locateClick = (event: MouseEvent): IRegion => {
+        this.activationIndex = this.convertEventToIndex(event);
         return this.props.toRegion(this.activationIndex);
     };
 
@@ -319,7 +323,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
         const isLoading = cell.props.loading != null ? cell.props.loading : this.props.loading;
         const isSelected = this.props.isCellSelected(index);
-        const isEntireCellTargetReorderable = this.isEntireCellTargetReorderable(isSelected);
+        const isEntireCellTargetReorderable = this.isEntireCellTargetReorderable(index);
 
         const className = classNames(
             extremaClasses,
@@ -347,7 +351,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const baseChildren = (
             <DragSelectable
                 allowMultipleSelection={this.props.allowMultipleSelection}
-                disabled={isEntireCellTargetReorderable}
+                disabled={this.isDragSelectableDisabled}
                 focusedCell={this.props.focusedCell}
                 ignoredSelectors={[`.${Classes.TABLE_REORDER_HANDLE_TARGET}`]}
                 key={getIndexClass(index)}
@@ -356,6 +360,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                 onFocus={this.props.onFocus}
                 onSelection={this.handleDragSelectableSelection}
                 onSelectionEnd={this.handleDragSelectableSelectionEnd}
+                requireMetaKeyToDeselect={true}
                 selectedRegions={selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
             >
@@ -377,7 +382,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
         return this.isReorderHandleEnabled()
             ? baseChildren // reordering will be handled by interacting with the reorder handle
-            : this.wrapInDragReorderable(index, baseChildren, !isEntireCellTargetReorderable);
+            : this.wrapInDragReorderable(index, baseChildren, this.isDragReorderableDisabled);
     };
 
     private isReorderHandleEnabled() {
@@ -402,7 +407,11 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         return this.props.fullRegionCardinality === RegionCardinality.FULL_COLUMNS;
     }
 
-    private wrapInDragReorderable(index: number, children: JSX.Element, disabled?: boolean) {
+    private wrapInDragReorderable(
+        index: number,
+        children: JSX.Element,
+        disabled: boolean | ((event: MouseEvent) => boolean) = false,
+    ) {
         return (
             <DragReorderable
                 disabled={disabled}
@@ -431,8 +440,33 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         this.setState({ hasSelectionEnded: true });
     };
 
-    private isEntireCellTargetReorderable = (isSelected: boolean) => {
+    private isDragSelectableDisabled = (event: MouseEvent) => {
+        if (event.metaKey) {
+            // if the meta key is pressed, we want to forcefully ignore reordering
+            // interactions and prioritize drag-selection interactions (e.g. to make
+            // it possible to deselect a row).
+            return false;
+        }
+        const regionIndex = this.convertEventToIndex(event);
+        return this.isEntireCellTargetReorderable(regionIndex);
+    };
+
+    private isDragReorderableDisabled = (event: MouseEvent) => {
+        const isSelectionEnabled = !this.isDragSelectableDisabled(event);
+        if (isSelectionEnabled) {
+            // if drag-selection is enabled, we don't want drag-reordering
+            // interactions to compete. otherwise, a mouse-drag might both expand a
+            // selection and reorder the same selection simultaneously - confusing!
+            return true;
+        }
+
+        const regionIndex = this.convertEventToIndex(event);
+        return !this.isEntireCellTargetReorderable(regionIndex);
+    };
+
+    private isEntireCellTargetReorderable = (index: number) => {
         const { selectedRegions } = this.props;
+
         // although reordering may be generally enabled for this row/column (via props.isReorderable), the
         // row/column shouldn't actually become reorderable from a user perspective until a few other
         // conditions are true:
@@ -441,7 +475,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             // the row/column should be the only selection (or it should be part of the only selection),
             // because reordering multiple disjoint row/column selections is a UX morass with no clear best
             // behavior.
-            isSelected &&
+            this.props.isCellSelected(index) &&
             this.state.hasSelectionEnded &&
             Regions.getRegionCardinality(selectedRegions[0]) === this.props.fullRegionCardinality &&
             // selected regions can be updated during mousedown+drag and before mouseup; thus, we

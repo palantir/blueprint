@@ -79,7 +79,7 @@ export interface IDragSelectableProps extends ISelectableProps {
      * Whether the selection behavior is disabled.
      * @default false
      */
-    disabled?: boolean;
+    disabled?: boolean | ((event: MouseEvent) => boolean);
 
     /**
      * A callback that determines a `Region` for the single `MouseEvent`. If
@@ -226,16 +226,18 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     };
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
-        const { ignoredSelectors = [] } = this.props;
+        const { disabled, ignoredSelectors = [] } = this.props;
         const element = event.target as HTMLElement;
 
         const isLeftClick = Utils.isLeftClick(event);
         const isContextMenuTrigger = isLeftClick && event.ctrlKey;
 
+        const isDisabled = CoreUtils.isFunction(disabled) ? CoreUtils.safeInvoke(disabled, event) : disabled;
+
         return (
             !isLeftClick ||
             isContextMenuTrigger ||
-            this.props.disabled ||
+            isDisabled ||
             ignoredSelectors.some((selector: string) => element.closest(selector) != null)
         );
     }
