@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { EditableText, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
@@ -23,55 +23,37 @@ export interface IEditableNameProps extends IIntentProps, IProps {
      * important to listen to if you are doing anything with `onChange` events,
      * since you'll likely want to revert whatever changes you made.
      */
-    onCancel?: (value: string, columnIndex?: number) => void;
+    onCancel?: (value: string) => void;
 
     /**
      * A listener that is triggered as soon as the editable name is modified.
      * This can be due, for example, to keyboard input or the clipboard.
      */
-    onChange?: (value: string, columnIndex?: number) => void;
+    onChange?: (value: string) => void;
 
     /**
      * A listener that is triggered once the editing is confirmed. This is
      * usually due to the `return` (or `enter`) key press.
      */
-    onConfirm?: (value: string, columnIndex?: number) => void;
+    onConfirm?: (value: string) => void;
 }
 
 @PureRender
 export class EditableName extends React.Component<IEditableNameProps, {}> {
     public render() {
-        const { className, intent, name } = this.props;
+        const { className, intent, name, onCancel, onChange, onConfirm } = this.props;
         return (
             <EditableText
                 className={classNames(className, Classes.TABLE_EDITABLE_NAME)}
                 defaultValue={name}
                 intent={intent}
                 minWidth={null}
-                onCancel={this.handleCancel}
-                onChange={this.handleChange}
-                onConfirm={this.handleConfirm}
+                onCancel={onCancel}
+                onChange={onChange}
+                onConfirm={onConfirm}
                 placeholder=""
                 selectAllOnFocus={true}
             />
         );
-    }
-
-    private handleCancel = (value: string) => {
-        this.invokeCallback(this.props.onCancel, value);
-    };
-
-    private handleChange = (value: string) => {
-        this.invokeCallback(this.props.onChange, value);
-    };
-
-    private handleConfirm = (value: string) => {
-        this.invokeCallback(this.props.onConfirm, value);
-    };
-
-    private invokeCallback(callback: (value: string, rowIndex?: number, columnIndex?: number) => void, value: string) {
-        // pass through the row and column indices if they were provided as props by the consumer
-        // const { columnIndex } = this.props;
-        CoreUtils.safeInvoke(callback, value);
     }
 }
