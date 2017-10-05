@@ -57,6 +57,8 @@ describe("Formats", () => {
                 majority have never stirred?
             `;
 
+            // fix the container's width and height to ensure this test passes
+            // regardless of the page's dimensions.
             const style = { height: "300px", width: "300px", position: "relative" };
 
             const comp = harness.mount(
