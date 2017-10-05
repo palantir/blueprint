@@ -72,6 +72,37 @@ describe("<EditableCell>", () => {
         expect(onConfirm.called).to.be.true;
     });
 
+    it("doesn't change edited value on non-value prop changes", () => {
+        const onCancel = sinon.spy();
+        const onChange = sinon.spy();
+        const onConfirm = sinon.spy();
+        const elem = harness.mount(
+            <EditableCell value="test-value-5000" onCancel={onCancel} onChange={onChange} onConfirm={onConfirm} />,
+        );
+
+        // double click to edit
+        doubleClickToEdit(elem);
+        const input = getInput(elem);
+        expect(input.element).to.equal(document.activeElement);
+
+        // edit
+        input.change("my-changed-value");
+        expect(onChange.called).to.be.true;
+        expect(onCancel.called).to.be.false;
+        expect(onConfirm.called).to.be.false;
+        expect(elem.find(".pt-editable-content").text()).to.equal("my-changed-value");
+
+        harness.mount(
+            <EditableCell value="test-value-5000" onCancel={onCancel} onChange={null} onConfirm={onConfirm} />,
+        );
+        expect(elem.find(".pt-editable-content").text()).to.equal("my-changed-value");
+
+        // confirm
+        input.blur();
+        expect(onCancel.called).to.be.false;
+        expect(onConfirm.called).to.be.true;
+    });
+
     it("passes index prop to callbacks if index was provided", () => {
         const onCancelSpy = sinon.spy();
         const onChangeSpy = sinon.spy();
