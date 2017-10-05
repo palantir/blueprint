@@ -103,6 +103,7 @@ describe("Selection", () => {
             .find(COLUMN_TH_SELECTOR)
             .mouse("mousedown")
             .mouse("mouseup");
+        onSelection.reset();
 
         // select a row
         table
@@ -111,14 +112,6 @@ describe("Selection", () => {
             .mouse("mouseup");
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.row(0)]]);
-        onSelection.reset();
-
-        // doesn't deselect on re-click
-        table
-            .find(ROW_TH_SELECTOR)
-            .mouse("mousedown")
-            .mouse("mouseup");
-        expect(onSelection.called).to.equal(false);
         onSelection.reset();
 
         // deselects on cmd+click
@@ -132,7 +125,7 @@ describe("Selection", () => {
         onSelection.reset();
     });
 
-    it("Doesn't select twice the same column on click", () => {
+    it("Column selection works when enabled", () => {
         const onSelection = sinon.spy();
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
 
@@ -144,14 +137,6 @@ describe("Selection", () => {
         expect(onSelection.called).to.equal(true, "first select");
         expect(onSelection.lastCall.args.length).to.equal(1);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
-        onSelection.reset();
-
-        // leaves the selection in place on re-click
-        table
-            .find(COLUMN_TH_SELECTOR)
-            .mouse("mousedown")
-            .mouse("mouseup");
-        expect(onSelection.called).to.equal(false);
         onSelection.reset();
 
         // deselects on cmd+click
@@ -180,6 +165,28 @@ describe("Selection", () => {
             .mouse("mouseup", 0, 0, isMetaKeyDown);
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[]], "meta key clear");
+    });
+
+    it("Keeps same column selected and reinvokes onSelection when clicked again", () => {
+        const onSelection = sinon.spy();
+        const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
+
+        // leaves the selection in place on re-click
+        const column = table.find(COLUMN_TH_SELECTOR);
+        column.mouse("mousedown").mouse("mouseup");
+        column.mouse("mousedown").mouse("mouseup");
+        expect(onSelection.callCount).to.equal(2);
+    });
+
+    it("Keeps same row selected and reinvokes onSelection when clicked again", () => {
+        const onSelection = sinon.spy();
+        const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
+
+        // leaves the selection in place on re-click
+        const row = table.find(ROW_TH_SELECTOR);
+        row.mouse("mousedown").mouse("mouseup");
+        row.mouse("mousedown").mouse("mouseup");
+        expect(onSelection.callCount).to.equal(2);
     });
 
     it("Transforms regions on selections", () => {
