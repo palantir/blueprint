@@ -447,8 +447,8 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             // it possible to deselect a row).
             return false;
         }
-        const regionIndex = this.convertEventToIndex(event);
-        return this.isEntireCellTargetReorderable(regionIndex);
+        const cellIndex = this.convertEventToIndex(event);
+        return this.isEntireCellTargetReorderable(cellIndex);
     };
 
     private isDragReorderableDisabled = (event: MouseEvent) => {
@@ -459,14 +459,12 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             // selection and reorder the same selection simultaneously - confusing!
             return true;
         }
-
-        const regionIndex = this.convertEventToIndex(event);
-        return !this.isEntireCellTargetReorderable(regionIndex);
+        const cellIndex = this.convertEventToIndex(event);
+        return !this.isEntireCellTargetReorderable(cellIndex);
     };
 
     private isEntireCellTargetReorderable = (index: number) => {
         const { selectedRegions } = this.props;
-
         // although reordering may be generally enabled for this row/column (via props.isReorderable), the
         // row/column shouldn't actually become reorderable from a user perspective until a few other
         // conditions are true:

@@ -154,8 +154,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         if (matchesExistingSelection) {
             const shouldIgnoreSubsequentDragMove = this.handleUpdateExistingSelection(foundIndex, event);
-            // if this flag is true, we'll want to allow the current mousedown
-            // event to be the start of a new drag-selection if desired.
             if (shouldIgnoreSubsequentDragMove) {
                 return false;
             }
@@ -231,7 +229,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         const isLeftClick = Utils.isLeftClick(event);
         const isContextMenuTrigger = isLeftClick && event.ctrlKey;
-
         const isDisabled = CoreUtils.isFunction(disabled) ? CoreUtils.safeInvoke(disabled, event) : disabled;
 
         return (
