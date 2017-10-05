@@ -206,13 +206,13 @@ export interface ITableQuadrantStackProps extends IProps {
     useInteractionBar?: boolean;
 }
 
+// when there are no column headers, the header and menu element will
+// confusingly collapse to zero height unless we establish this default.
+const DEFAULT_COLUMN_HEADER_HEIGHT = 30;
+
 // the debounce delay for updating the view on scroll. elements will be resized
 // and rejiggered once scroll has ceased for at least this long, but not before.
 const DEFAULT_VIEW_SYNC_DELAY = 500;
-
-// when there are no column headers, the header and menu element will
-// confusingly collapse to zero height unless we establish this default.
-const EMPTY_COLUMN_HEADER_HEIGHT = 30;
 
 // if there are no frozen rows or columns, we still want the quadrant to be 1px
 // bigger to reveal the header border. this border leaks into the cell grid to
@@ -762,13 +762,14 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const topQuadrantGridHeight = this.getSecondaryQuadrantGridSize("height");
 
         const leftQuadrantWidth = rowHeaderWidth + leftQuadrantGridWidth;
-        const topQuadrantHeight =
-            columnHeaderHeight + topQuadrantGridHeight <= QUADRANT_MIN_SIZE
-                ? EMPTY_COLUMN_HEADER_HEIGHT
-                : columnHeaderHeight + topQuadrantGridHeight;
+        const topQuadrantHeight = columnHeaderHeight + topQuadrantGridHeight;
 
         const rightScrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer, "vertical");
         const bottomScrollBarHeight = ScrollUtils.measureScrollBarThickness(mainScrollContainer, "horizontal");
+
+        // ensure neither of these measurements confusingly clamps to zero height.
+        const adjustedColumnHeaderHeight = this.maybeIncreaseToDefaultColumnHeaderHeight(columnHeaderHeight);
+        const adjustedTopQuadrantHeight = this.maybeIncreaseToDefaultColumnHeaderHeight(topQuadrantHeight);
 
         // Update cache: let's read now whatever values we might need later.
         // prevents unnecessary reflows in the future.
@@ -787,8 +788,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // Quadrant-size sync'ing: make the quadrants precisely as big as they
         // need to be to fit their variable-sized headers and/or frozen areas.
         this.maybesSetQuadrantRowHeaderSizes(rowHeaderWidth);
-        this.maybeSetQuadrantMenuElementSizes(rowHeaderWidth, columnHeaderHeight);
-        this.maybeSetQuadrantSizes(leftQuadrantWidth, topQuadrantHeight);
+        this.maybeSetQuadrantMenuElementSizes(rowHeaderWidth, adjustedColumnHeaderHeight);
+        this.maybeSetQuadrantSizes(leftQuadrantWidth, adjustedTopQuadrantHeight);
 
         // Scrollbar clearance: tweak the quadrant bottom/right offsets to
         // reveal the MAIN-quadrant scrollbars if they're visible.
@@ -881,6 +882,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             this.cache.setScrollContainerClientHeight(mainScrollContainer.clientHeight);
             return this.cache.getScrollContainerClientHeight();
         }
+    }
+
+    private maybeIncreaseToDefaultColumnHeaderHeight(height: number) {
+        return height <= QUADRANT_MIN_SIZE ? DEFAULT_COLUMN_HEADER_HEIGHT : height;
     }
 
     // Helpers
