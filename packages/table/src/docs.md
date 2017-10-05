@@ -215,7 +215,7 @@ number of rows (`numRows` prop) as well as a set of `Column` children.
 - `resizeRowsByTallestCell(columnIndices?: number | number[]): void` &ndash; Resizes all rows in the
    table to the height of the tallest visible cell in the specified columns. If no indices are
    provided, defaults to using the tallest visible cell from all columns in view.
-- `scrollToRegion(region: IRegion): void` &ndash; Scrolls the table to the target region in a
+- `scrollToRegion(region: IRegion): void` &ndash; Scrolls the table to the target [region](#table-js.region) in a
   fashion appropriate to the target region's cardinality:
     - `CELLS`: Scroll the top-left cell in the target region to the top-left corner of the viewport.
     - `FULL_ROWS`: Scroll the top-most row in the target region to the top of the viewport.
@@ -276,6 +276,47 @@ Return a `EditableCell` component from the `renderCell` prop on a
 `Column` to enable double-click-to-edit functionality in the table body.
 
 @interface IEditableCellProps
+
+@### Region
+
+A region is a rectangular group of cells in the table.
+
+Regions are typically used to describe boundaries for selections (via the
+`selectedRegions` prop) and/or custom overlays (via the `styledRegionGroups`
+prop). You may also wish to scroll directly to a region in the table via the
+[`Table.scrollToRegion`](#table-js.instance-methods) instance method.
+
+There are four different types of regions, each represented by a different
+`RegionCardinality`:
+- `RegionCardinality.CELLS`: a region that contains a finite rectangular group
+  of table cells.
+- `RegionCardinality.FULL_ROWS`: a region that represents all cells within one
+  or more rows.
+- `RegionCardinality.FULL_COLUMNS`: a region that represents all cells within
+  one or more columns.
+- `RegionCardinality.FULL_TABLE`: a region that represents all cells in the
+  table.
+
+Regions are defined in code according to the `IRegion` interface below. While
+you may construct region objects manually according to this interface, we
+recommend using the exported __factory methods__ to help you easily construct
+the appropriate schema for your desired region type:
+
+```tsx
+import { Regions } from "@blueprintjs/table";
+
+const singleCellRegion   = Regions.cell(0, 0); // { rows: [0, 0], cols: [0, 0] }
+const singleColumnRegion = Regions.column(0); // { rows: null, cols: [0, 0] }
+const singleRowRegion    = Regions.row(0); // { rows: [0, 0], cols: null }
+
+const multiCellRegion   = Regions.cell(0, 0, 2, 2); // { rows: [0, 2], cols: [0, 2] }
+const multiColumnRegion = Regions.column(0, 2); // { rows: null, cols: [0, 2] }
+const multiRowRegion    = Regions.row(0, 2); // { rows: [0, 2], cols: null }
+
+const tableRegion = Regions.table(); // { rows: null, cols: null }
+```
+
+@interface IRegion
 
 @### TruncatedFormat
 

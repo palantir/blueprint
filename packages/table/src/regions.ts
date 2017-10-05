@@ -89,12 +89,24 @@ export type ICellInterval = [number, number];
 export type ICellCoordinate = [number, number];
 
 /**
- * A ZERO-indexed region of cells.
+ * A rectangular group of one or more cells in the table, with a well-defined
+ * `RegionCardinality`.
  *
  * @see `Regions.getRegionCardinality` for more about the format of this object.
  */
 export interface IRegion {
+    /**
+     * The first and last row indices in the region, inclusive and zero-indexed.
+     * If `rows` is `null`, then all rows are understood to be included in the
+     * region.
+     */
     rows?: ICellInterval;
+
+    /**
+     * The first and last column indices in the region, inclusive and
+     * zero-indexed. If `cols` is `null`, then all columns are understood to be
+     * included in the region.
+     */
     cols?: ICellInterval;
 }
 
