@@ -14,7 +14,6 @@ export interface IRadioExampleState {
     radioValue?: string;
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class RadioExample extends BaseExample<IRadioExampleState> {
     public state: IRadioExampleState = {};
 

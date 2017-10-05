@@ -10,7 +10,6 @@ import * as React from "react";
 import { Classes, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
-// tslint:disable-next-line:max-classes-per-file
 export class SwitchExample extends BaseExample<{}> {
     protected renderExample() {
         return (
