@@ -66,7 +66,7 @@ export interface ITruncatedFormatProps extends IProps {
     /**
      * Number of characters that are displayed before being truncated and appended with the
      * `truncationSuffix` prop. A value of 0 will disable truncation. This prop is ignored if
-     * `detectTruncation` is `false`.
+     * `detectTruncation` is `true`.
      * @default 2000
      */
     truncateLength?: number;
