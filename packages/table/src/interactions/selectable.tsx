@@ -93,6 +93,12 @@ export interface IDragSelectableProps extends ISelectableProps {
      * `null` may be returned.
      */
     locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => IRegion;
+
+    /**
+     * Whether the meta key should be pressed to enable deselection on click.
+     * @default false
+     */
+    requireMetaKeyToDeselect?: boolean;
 }
 
 @PureRender
@@ -100,6 +106,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     public static defaultProps: Partial<IDragSelectableProps> = {
         allowMultipleSelection: false,
         disabled: false,
+        requireMetaKeyToDeselect: false,
         selectedRegions: [],
     };
 
@@ -127,7 +134,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     }
 
     private handleActivate = (event: MouseEvent) => {
-        const { locateClick, selectedRegions, selectedRegionTransform } = this.props;
+        const { locateClick, requireMetaKeyToDeselect, selectedRegions, selectedRegionTransform } = this.props;
         if (this.shouldIgnoreMouseDown(event)) {
             return false;
         }
@@ -147,8 +154,11 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         if (matchesExistingSelection) {
             this.handleUpdateExistingSelection(foundIndex, event);
-            // no need to listen for subsequent drags
-            return false;
+            // if this flag is true, we'll want to allow the current mousedown
+            // event to be the start of a new drag-selection if desired.
+            if (!requireMetaKeyToDeselect) {
+                return false;
+            }
         } else if (this.shouldExpandSelection(event)) {
             this.handleExpandSelection(region);
         } else if (this.shouldAddDisjointSelection(event)) {
@@ -234,7 +244,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     // ============
 
     private handleUpdateExistingSelection = (selectedRegionIndex: number, event: MouseEvent) => {
-        const { selectedRegions } = this.props;
+        const { requireMetaKeyToDeselect, selectedRegions } = this.props;
 
         if (DragEvents.isAdditive(event)) {
             // remove just the clicked region, leaving other selected regions in place
@@ -248,7 +258,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
                 const lastIndex = nextSelectedRegions.length - 1;
                 this.invokeOnFocusCallbackForRegion(nextSelectedRegions[lastIndex], lastIndex);
             }
-        } else {
+        } else if (!requireMetaKeyToDeselect) {
             // clear all selections, but don't update the focused cell
             this.maybeInvokeSelectionCallback([]);
         }
