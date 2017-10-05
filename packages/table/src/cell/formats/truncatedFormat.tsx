@@ -31,7 +31,7 @@ export interface ITruncatedFormatProps extends IProps {
      * Should the component keep track of the truncation state of the string content. If true, the
      * value of `truncateLength` is ignored. When combined with a `showPopover` value of
      * `WHEN_TRUNCATED`, popovers will only render when necessary.
-     * @default true;
+     * @default false;
      */
     detectTruncation?: boolean;
 
@@ -66,8 +66,8 @@ export interface ITruncatedFormatProps extends IProps {
     /**
      * Number of characters that are displayed before being truncated and appended with the
      * `truncationSuffix` prop. A value of 0 will disable truncation. This prop is ignored if
-     * `detectTruncation` is `true`.
-     * @default 80
+     * `detectTruncation` is `false`.
+     * @default 2000
      */
     truncateLength?: number;
 
@@ -86,10 +86,10 @@ export interface ITruncatedFormatState {
 @PureRender
 export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
-        detectTruncation: true,
+        detectTruncation: false,
         preformatted: false,
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
-        truncateLength: 80,
+        truncateLength: 2000,
         truncationSuffix: "...",
     };
 

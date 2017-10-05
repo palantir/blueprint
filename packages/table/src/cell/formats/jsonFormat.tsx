@@ -31,10 +31,11 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
 
 export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
     public static defaultProps: IJSONFormatProps = {
-        detectTruncation: true,
+        detectTruncation: false,
         omitQuotesOnStrings: true,
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
         stringify: (obj: any) => JSON.stringify(obj, null, 2),
+        truncateLength: 2000,
     };
 
     public render() {
