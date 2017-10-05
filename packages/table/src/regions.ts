@@ -89,9 +89,6 @@ export type ICellInterval = [number, number];
 export type ICellCoordinate = [number, number];
 
 /**
- * A rectangular group of one or more cells in the table, with a well-defined
- * `RegionCardinality`.
- *
  * @see `Regions.getRegionCardinality` for more about the format of this object.
  */
 export interface IRegion {
