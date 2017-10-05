@@ -149,15 +149,8 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             region = selectedRegionTransform(region, event);
         }
 
-        console.log("[handleActivate]");
-        console.log("  region =", region);
-        console.log("  selectedRegions =", ...selectedRegions);
-
         const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
         const matchesExistingSelection = foundIndex !== -1;
-
-        console.log("  foundIndex =", foundIndex);
-        console.log("  matchesExistingSelection =", matchesExistingSelection);
 
         if (matchesExistingSelection) {
             const shouldIgnoreSubsequentDragMove = this.handleUpdateExistingSelection(foundIndex, event);
@@ -256,17 +249,10 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     private handleUpdateExistingSelection = (selectedRegionIndex: number, event: MouseEvent) => {
         const { requireMetaKeyToDeselect, selectedRegions } = this.props;
 
-        console.log("  [handleUpdateExistingSelection]");
-        console.log("    requireMetaKeyToDeselect:", requireMetaKeyToDeselect);
-        console.log("    selectedRegionIndex:", selectedRegionIndex);
-        console.log("    event.metaKey:", event.metaKey);
-
         if (DragEvents.isAdditive(event)) {
-            console.log("      A");
             // remove just the clicked region, leaving other selected regions in place
             const nextSelectedRegions = selectedRegions.slice();
             nextSelectedRegions.splice(selectedRegionIndex, 1);
-            console.log("        nextSelectedRegions", ...nextSelectedRegions);
             this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
             // if there are still any selections, move the focused cell to the
@@ -281,14 +267,12 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
             // quite unintuitive, so ignore subsequent drag-move's.
             return true;
         } else if (requireMetaKeyToDeselect) {
-            console.log("      B (clearing selection)");
             // not additive, so that means we just clicked on one of the selected cells.
             // in that case, leave only that cell selected.
             const nextSelectedRegion = selectedRegions[selectedRegionIndex];
             this.maybeInvokeSelectionCallback([nextSelectedRegion]);
             this.invokeOnFocusCallbackForRegion(nextSelectedRegion, 0);
         } else {
-            console.log("      C (clearing selection)");
             // not additive and no need to wait for a meta key to deselect, so
             // clear all selections. in this case, don't move the focused cell.
             this.maybeInvokeSelectionCallback([]);
