@@ -98,7 +98,7 @@ export interface ITableQuadrantStackProps extends IProps {
      * know when this changes change in order to synchronize quadrant sizes
      * properly.
      */
-    numColumns: number;
+    numColumns?: number;
 
     /**
      * The number of frozen columns. Affects the layout of the table, so we need
@@ -118,7 +118,7 @@ export interface ITableQuadrantStackProps extends IProps {
      * The number of rows. Affects the layout of the table, so we need to know
      * when this changes change in order to synchronize quadrant sizes properly.
      */
-    numRows: number;
+    numRows?: number;
 
     /**
      * An optional callback invoked the quadrants are scrolled.
