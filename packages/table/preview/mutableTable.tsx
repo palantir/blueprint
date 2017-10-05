@@ -603,6 +603,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
                 <h6>Interactions</h6>
+                {this.renderSwitch("Custom Headers", "enableColumnCustomHeaders")}
                 {this.renderSwitch("Editing", "enableColumnNameEditing")}
                 {this.renderSwitch("Reordering", "enableColumnReordering")}
                 {this.renderSwitch("Resizing", "enableColumnResizing")}
