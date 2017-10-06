@@ -6,7 +6,7 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { LocaleUtils } from "react-day-picker";
 
@@ -38,30 +38,30 @@ describe("<DatePicker>", () => {
             assert.equal(firstWeekday.prop("weekday"), selectedFirstDay);
         });
 
-        it("doesnt show outside days if specified", () => {
-            const defaultValue = new Date(2017, Months.SEPTEMBER, 1, 12);
-            const wrapper = mount(
-                <DatePicker defaultValue={defaultValue} dayPickerProps={{ enableOutsideDays: false }} />,
-            );
-
-            const dayIsHidden = (day: any): boolean =>
-                day.prop("empty") && !day.prop("ariaSelected") && day.prop("ariaDisabled");
-
-            assert.isTrue(dayIsHidden(wrapper.find("Day").at(0)));
-            assert.isTrue(dayIsHidden(wrapper.find("Day").at(1)));
-            assert.isTrue(dayIsHidden(wrapper.find("Day").at(2)));
-            assert.isTrue(dayIsHidden(wrapper.find("Day").at(3)));
-            assert.isTrue(dayIsHidden(wrapper.find("Day").at(4)));
-
-            assert.isFalse(dayIsHidden(wrapper.find("Day").at(5)));
-        });
-
-        it("respects default of true for enableOutsideDays prop", () => {
+        it("shows outside days by default", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const firstDayInView = new Date(2017, Months.AUGUST, 27, 12, 0);
             const wrapper = mount(<DatePicker defaultValue={defaultValue} />);
             const firstDay = wrapper.find("Day").first();
             assert.isTrue(areDatesEqual(new Date(firstDay.prop("day")), firstDayInView));
+        });
+
+        it("doesn't show outside days if enableOutsideDays=false", () => {
+            const defaultValue = new Date(2017, Months.SEPTEMBER, 1, 12);
+            const wrapper = mount(
+                <DatePicker defaultValue={defaultValue} dayPickerProps={{ enableOutsideDays: false }} />,
+            );
+
+            const isDayHidden = (day: ReactWrapper<any, any>): boolean =>
+                day.prop("empty") && !day.prop("ariaSelected") && day.prop("ariaDisabled");
+
+            assert.isTrue(isDayHidden(wrapper.find("Day").at(0)));
+            assert.isTrue(isDayHidden(wrapper.find("Day").at(1)));
+            assert.isTrue(isDayHidden(wrapper.find("Day").at(2)));
+            assert.isTrue(isDayHidden(wrapper.find("Day").at(3)));
+            assert.isTrue(isDayHidden(wrapper.find("Day").at(4)));
+
+            assert.isFalse(isDayHidden(wrapper.find("Day").at(5)));
         });
 
         it("disables days as specified in disableDays daypicker prop in addition to min/max", () => {
