@@ -77,11 +77,11 @@ describe("Regions", () => {
         const INVALID_INDEX_LOW = -1;
         const INVALID_INDEX_HIGH = N;
 
-        const fn = Regions.isRegionValidForTable;
+        const isValid = Regions.isRegionValidForTable;
 
         describe("in an NxN table", () => {
-            const expectTrue = (region: IRegion, msg?: string) => expect(fn(region, N, N), msg).to.be.true;
-            const expectFalse = (region: IRegion, msg?: string) => expect(fn(region, N, N), msg).to.be.false;
+            const expectTrue = (region: IRegion, msg?: string) => expect(isValid(region, N, N), msg).to.be.true;
+            const expectFalse = (region: IRegion, msg?: string) => expect(isValid(region, N, N), msg).to.be.false;
 
             describe("cell regions", () => {
                 it("returns false if row index out-of-bounds", () => {
@@ -133,7 +133,7 @@ describe("Regions", () => {
 
         describe("in an N-row, 0-column table", () => {
             const expectFalse = (region: IRegion, msg?: string) =>
-                expect(fn(region, N, VALID_INDEX_LOW), msg).to.be.false;
+                expect(isValid(region, N, VALID_INDEX_LOW), msg).to.be.false;
 
             it("always returns false", () => {
                 expectFalse(Regions.cell(VALID_INDEX_LOW, VALID_INDEX_LOW));
@@ -147,7 +147,7 @@ describe("Regions", () => {
 
         describe("in an N-column, 0-row table", () => {
             const expectFalse = (region: IRegion, msg?: string) =>
-                expect(fn(region, VALID_INDEX_LOW, N), msg).to.be.false;
+                expect(isValid(region, VALID_INDEX_LOW, N), msg).to.be.false;
 
             it("always returns false", () => {
                 expectFalse(Regions.cell(INVALID_INDEX_LOW, INVALID_INDEX_LOW));
@@ -161,7 +161,7 @@ describe("Regions", () => {
 
         describe("in a 0-column, 0-row table", () => {
             const expectFalse = (region: IRegion, msg?: string) =>
-                expect(fn(region, VALID_INDEX_LOW, VALID_INDEX_LOW), msg).to.be.false;
+                expect(isValid(region, VALID_INDEX_LOW, VALID_INDEX_LOW), msg).to.be.false;
 
             it("always returns false", () => {
                 expectFalse(Regions.cell(INVALID_INDEX_LOW, INVALID_INDEX_LOW));

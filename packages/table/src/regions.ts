@@ -693,7 +693,7 @@ export class Regions {
     }
 }
 
-function intervalInRangeInclusive(interval: [number, number], minInclusive: number, maxInclusive: number) {
+function intervalInRangeInclusive(interval: ICellInterval, minInclusive: number, maxInclusive: number) {
     return (
         inRangeInclusive(interval[0], minInclusive, maxInclusive) &&
         inRangeInclusive(interval[1], minInclusive, maxInclusive)
