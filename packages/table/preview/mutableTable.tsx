@@ -409,10 +409,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderCustomColumnName = (name: string, index: number) => {
         // show taller, multi-line column names after an arbitrary threshold
         // just to allow us to check if column headers resize appropriately.
-        const isAAOrGreater = index >= 26;
-        const maybeMultilineName = isAAOrGreater
-            ? [<span key="1">{name}</span>, <br key="2" />, <span key="3">{name}</span>]
-            : name;
+        const COLUMN_Z_INDEX = 25; // 0-indexed
+        const maybeMultilineName =
+            index > COLUMN_Z_INDEX ? [<span key="1">{name}</span>, <br key="2" />, <span key="3">{name}</span>] : name;
         return (
             <div className="tbl-custom-column-header">
                 <div className="tbl-custom-column-header-name">{maybeMultilineName}</div>
