@@ -23,6 +23,7 @@ export const TABLE_COLUMN_NAME_TEXT = "bp-table-column-name-text";
 export const TABLE_CONTAINER = "bp-table-container";
 export const TABLE_DRAGGING = "bp-table-dragging";
 export const TABLE_EDITABLE_NAME = "bp-table-editable-name";
+export const TABLE_EDITABLE_TEXT = "bp-table-editable-text";
 export const TABLE_FOCUS_REGION = "bp-table-focus-region";
 export const TABLE_HAS_INTERACTION_BAR = "bp-table-has-interaction-bar";
 export const TABLE_HAS_REORDER_HANDLE = "bp-table-has-reorder-handle";

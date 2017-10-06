@@ -93,7 +93,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             cellContents = (
                 <EditableText
                     isEditing={true}
-                    className={Classes.TABLE_EDITABLE_NAME}
+                    className={classNames(Classes.TABLE_EDITABLE_TEXT, Classes.TABLE_EDITABLE_NAME)}
                     intent={spreadableProps.intent}
                     minWidth={null}
                     onCancel={this.handleCancel}
@@ -106,7 +106,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                 />
             );
         } else {
-            const textClasses = classNames({
+            const textClasses = classNames(Classes.TABLE_EDITABLE_TEXT, {
                 [Classes.TABLE_TRUNCATED_TEXT]: truncated,
                 [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
             });

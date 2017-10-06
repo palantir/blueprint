@@ -50,3 +50,12 @@
 .bp-table-editable-name input {
   height: $cell-height; // fixed height for IE11
 }
+
+.bp-table-editable-text {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: $cell-padding;
+}
