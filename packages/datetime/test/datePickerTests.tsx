@@ -15,7 +15,7 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps } from "../src/index";
-import { assertDatesEqual } from "./common/dateTestUtils";
+import { assertDateDisabled, assertDatesEqual } from "./common/dateTestUtils";
 
 describe("<DatePicker>", () => {
     it(`renders .${Classes.DATEPICKER}`, () => {
@@ -62,7 +62,7 @@ describe("<DatePicker>", () => {
             assert.isFalse(isDayHidden(wrapper.find("Day").at(5)));
         });
 
-        it("disables days as specified in disableDays daypicker prop in addition to min/max", () => {
+        it("disables days according to custom modifiers in addition to default modifiers", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const disableFridays = { daysOfWeek: [5] };
             const { getDay } = wrap(
@@ -72,10 +72,9 @@ describe("<DatePicker>", () => {
                     dayPickerProps={{ disabledDays: disableFridays }}
                 />,
             );
-            assert.isTrue(getDay(15).hasClass(Classes.DATEPICKER_DAY_DISABLED));
-
-            assert.isTrue(getDay(21).hasClass(Classes.DATEPICKER_DAY_DISABLED));
-            assert.isFalse(getDay(10).hasClass(Classes.DATEPICKER_DAY_DISABLED));
+            assertDateDisabled(getDay(15));
+            assertDateDisabled(getDay(21));
+            assertDateDisabled(getDay(10), false);
         });
 
         it("respects default disabledDays value", () => {
@@ -83,8 +82,8 @@ describe("<DatePicker>", () => {
             const { getDay } = wrap(
                 <DatePicker defaultValue={defaultValue} maxDate={new Date(2017, Months.SEPTEMBER, 20)} />,
             );
-            assert.isTrue(getDay(21).hasClass(Classes.DATEPICKER_DAY_DISABLED));
-            assert.isFalse(getDay(10).hasClass(Classes.DATEPICKER_DAY_DISABLED));
+            assertDateDisabled(getDay(21));
+            assertDateDisabled(getDay(10), false);
         });
 
         it("prefers blueprint props over dayPickerProps", () => {

@@ -6,7 +6,9 @@
  */
 
 import { assert } from "chai";
+import { ReactWrapper } from "enzyme";
 import { padWithZeroes } from "../../src/common/utils";
+import { Classes } from "../../src/index";
 
 /**
  * Converts a date to a "YYYY-MM-DD" string without relying on moment.js.
@@ -41,4 +43,8 @@ export function assertTimeIs(time: Date, hours: number, minutes: number, seconds
 
 export function assertDatesEqual(a: Date, b: Date) {
     assert.isTrue(a.getDay() === b.getDay() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear());
+}
+
+export function assertDateDisabled(day: ReactWrapper<any, any>, expectDisabled: boolean = true) {
+    assert.equal(day.hasClass(Classes.DATEPICKER_DAY_DISABLED), expectDisabled);
 }
