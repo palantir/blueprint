@@ -239,15 +239,11 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     public constructor(props: ITableQuadrantStackProps, context?: any) {
         super(props, context);
 
-        // a few points here:
-        // - we throttle onScroll/onWheel callbacks to making scrolling look more fluid.
-        // - we declare throttled functions on the component instance, since they're stateful.
-        // - "wheel"-ing triggers super-fluid onScroll behavior by default, but relying on that
-        //   causes sync'd quadrants to lag behind. thus, we preventDefault for onWheel and instead
-        //   manually update all relevant quadrants using event.delta{X,Y} later, in the callback.
-        //   this keeps every sync'd quadrant visually aligned in each animation frame.
+        // callbacks trigger too frequently unless we throttle scroll and wheel
+        // events. declare these functions on the component instance since
+        // they're stateful.
         this.throttledHandleMainQuadrantScroll = CoreUtils.throttleReactEventCallback(this.handleMainQuadrantScroll);
-        this.throttledHandleWheel = CoreUtils.throttleReactEventCallback(this.handleWheel, { preventDefault: true });
+        this.throttledHandleWheel = CoreUtils.throttleReactEventCallback(this.handleWheel);
 
         this.cache = new TableQuadrantStackCache();
     }
@@ -553,10 +549,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             this.wasMainQuadrantScrollTriggeredByWheelEvent = true;
         }
 
-        // we invoke event.preventDefault() when defining the throttled versions
-        // of this onWheel callback, so we need to manually update the affected
-        // quadrant's scroll position to make up for that. note that these DOM
-        // writes are batched together after the reads above.
+        // manually update the affected quadrant's scroll position to make sure
+        // it stays perfectly in sync with dependent quadrants in each frame.
+        // note: these DOM writes are batched together after the reads above.
         this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollLeft = nextScrollLeft;
         this.quadrantRefs[QuadrantType.MAIN].scrollContainer.scrollTop = nextScrollTop;
         this.handleScrollOffsetChange("scrollLeft", nextScrollLeft);
