@@ -142,10 +142,10 @@ export class Draggable extends React.Component<IDraggableProps, {}> {
         return React.Children.only(this.props.children);
     }
 
-    public componentWillReceiveProps(nextProps: IDraggableProps) {
+    public componentDidUpdate(prevProps: IDraggableProps) {
         const propsWhitelist = { include: REATTACH_PROPS_KEYS };
-        if (this.events && !CoreUtils.shallowCompareKeys(this.props, nextProps, propsWhitelist)) {
-            this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, nextProps);
+        if (this.events && !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
+            this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, this.props);
         }
     }
 

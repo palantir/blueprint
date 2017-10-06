@@ -299,19 +299,17 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
     private bringFocusInsideOverlay() {
         // always delay focus manipulation to just before repaint to prevent scroll jumping
         return requestAnimationFrame(() => {
-            const { containerElement } = this;
-
             // container ref may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
-            if (containerElement == null || document.activeElement == null || !this.props.isOpen) {
+            if (this.containerElement == null || document.activeElement == null || !this.props.isOpen) {
                 return;
             }
 
-            const isFocusOutsideModal = !containerElement.contains(document.activeElement);
+            const isFocusOutsideModal = !this.containerElement.contains(document.activeElement);
             if (isFocusOutsideModal) {
                 // element marked autofocus has higher priority than the other clowns
-                const autofocusElement = containerElement.query("[autofocus]") as HTMLElement;
-                const wrapperElement = containerElement.query("[tabindex]") as HTMLElement;
+                const autofocusElement = this.containerElement.query("[autofocus]") as HTMLElement;
+                const wrapperElement = this.containerElement.query("[tabindex]") as HTMLElement;
                 if (autofocusElement != null) {
                     autofocusElement.focus();
                 } else if (wrapperElement != null) {

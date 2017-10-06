@@ -13,6 +13,7 @@ import { shallow } from "enzyme";
 import * as React from "react";
 
 import * as Classes from "../src/common/classes";
+import * as Errors from "../src/common/errors";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src/index";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
@@ -104,6 +105,16 @@ describe("<ColumnHeaderCell>", () => {
             expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).text()).to.equal(
                 "Column Header",
             );
+        });
+
+        it("Table's useInteractionBar prop value overrides the one passed to ColumnHeaderCell", () => {
+            const consoleWarn = sinon.stub(console, "warn");
+            const renderColumnHeader = () => <ColumnHeaderCell useInteractionBar={true} />;
+            const columnProps = { renderColumnHeader };
+            const tableProps = { useInteractionBar: false };
+            const table = harness.mount(createTableOfSize(5, 1, columnProps, tableProps));
+            expect(table.find(`.${Classes.TABLE_INTERACTION_BAR}`, 0).element).to.equal(undefined);
+            consoleWarn.restore();
         });
 
         function getMenuComponent(menuClickSpy: Sinon.SinonSpy) {

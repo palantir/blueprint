@@ -174,10 +174,10 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
         }
         return filteredItems.map((item, index) =>
             itemRenderer({
-                index,
-                item,
                 handleClick: e => handleItemSelect(item, e),
+                index,
                 isActive: item === activeItem,
+                item,
             }),
         );
     }

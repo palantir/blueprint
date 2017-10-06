@@ -25,21 +25,7 @@ describe("Formats", () => {
 
     describe("Truncated Format", () => {
         it("can automatically truncate and show popover when truncated", () => {
-            const str = `
-                We are going to die, and that makes us the lucky ones. Most
-                people are never going to die because they are never going to
-                be born. The potential people who could have been here in my
-                place but who will in fact never see the light of day
-                outnumber the sand grains of Arabia. Certainly those unborn
-                ghosts include greater poets than Keats, scientists greater
-                than Newton. We know this because the set of possible people
-                allowed by our DNA so massively outnumbers the set of actual
-                people. In the teeth of these stupefying odds it is you and I,
-                in our ordinariness, that are here. We privileged few, who won
-                the lottery of birth against all odds, how dare we whine at
-                our inevitable return to that prior state from which the vast
-                majority have never stirred?
-            `;
+            const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength + 1);
 
             const comp = harness.mount(
                 <div className={Classes.TABLE_NO_WRAP_TEXT}>
@@ -71,11 +57,13 @@ describe("Formats", () => {
                 majority have never stirred?
             `;
 
-            const style = { height: "200px", position: "relative" };
+            // fix the container's width and height to ensure this test passes
+            // regardless of the page's dimensions.
+            const style = { height: "300px", width: "300px", position: "relative" };
 
             const comp = harness.mount(
                 <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>
-                    <TruncatedFormat>{str}</TruncatedFormat>
+                    <TruncatedFormat detectTruncation={true}>{str}</TruncatedFormat>
                 </div>,
             );
             const textElement = comp.element.query(`.${Classes.TABLE_TRUNCATED_VALUE}`);
@@ -84,18 +72,7 @@ describe("Formats", () => {
         });
 
         it("can manually truncate and show popover when truncated", () => {
-            const str = `
-                As Gregor Samsa awoke one morning from uneasy dreams he found
-                himself transformed in his bed into a gigantic insect. He was
-                lying on his hard, as it were armor-plated, back and when he
-                lifted his head a little he could see his dome-like brown belly
-                divided into stiff arched segments on top of which the bed quilt
-                could hardly keep in position and was about to slide off
-                completely. His numerous legs, which were pitifully thin
-                compared to the rest of his bulk, waved helplessly before his
-                eyes.
-            `;
-
+            const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength + 1);
             const comp = harness.mount(<TruncatedFormat detectTruncation={false}>{str}</TruncatedFormat>);
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text().length).to.equal(
                 TruncatedFormat.defaultProps.truncateLength + 3,
@@ -154,7 +131,9 @@ describe("Formats", () => {
             `;
             const comp = harness.mount(
                 <div className={Classes.TABLE_NO_WRAP_TEXT}>
-                    <TruncatedFormat truncateLength={0}>{str}</TruncatedFormat>
+                    <TruncatedFormat detectTruncation={true} truncateLength={0}>
+                        {str}
+                    </TruncatedFormat>
                 </div>,
             );
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text()).to.have.lengthOf(str.length);
@@ -204,3 +183,7 @@ describe("Formats", () => {
         });
     });
 });
+
+function createStringOfLength(length: number) {
+    return new Array(length).fill("a").join("");
+}

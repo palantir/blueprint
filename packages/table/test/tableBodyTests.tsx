@@ -91,11 +91,11 @@ describe("TableBody", () => {
             const viewportRect = new Rect(0, 0, NUM_COLUMNS * COLUMN_WIDTH, LARGE_NUM_ROWS * ROW_HEIGHT);
 
             return mountTableBody({
+                columnIndexEnd: NUM_COLUMNS - 1,
                 grid,
                 renderMode,
-                viewportRect,
-                columnIndexEnd: NUM_COLUMNS - 1,
                 rowIndexEnd: LARGE_NUM_ROWS - 1,
+                viewportRect,
             });
         }
     });
@@ -184,10 +184,10 @@ describe("TableBody", () => {
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
-                renderBodyContextMenu,
-                selectedRegions,
                 onFocus,
                 onSelection,
+                renderBodyContextMenu,
+                selectedRegions,
             });
         }
 

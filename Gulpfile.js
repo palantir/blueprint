@@ -103,6 +103,7 @@ const projects = [
                 "@blueprintjs/core",
                 "@blueprintjs/datetime",
                 "@blueprintjs/docs",
+                "@blueprintjs/labs",
                 "@blueprintjs/table",
                 "dom4",
                 "moment",
