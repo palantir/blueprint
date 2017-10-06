@@ -106,7 +106,18 @@ describe("DragSelectable", () => {
                 locateClick.returns(REGION);
             });
 
-            it("deselects just that region if CMD key was depressed", () => {
+            it("deselects just that region if CMD key was depressed (one region)", () => {
+                const component = mountDragSelectable({
+                    selectedRegions: [REGION],
+                });
+
+                getItem(component).mouse("mousedown", { metaKey: true });
+
+                expectOnSelectionCalledWith([]);
+                expectOnFocusNotCalled();
+            });
+
+            it("deselects just that region if CMD key was depressed (many regions)", () => {
                 const component = mountDragSelectable({
                     selectedRegions: [REGION_2, REGION, REGION_3],
                 });
@@ -117,15 +128,15 @@ describe("DragSelectable", () => {
                 expectOnFocusCalledWith(REGION_3, 1);
             });
 
-            it("deselects all regions if no modifier keys were depressed", () => {
+            it("leaves just the clicked region selected if CMD key not depressed", () => {
                 const component = mountDragSelectable({
                     selectedRegions: [REGION_2, REGION, REGION_3],
                 });
 
                 getItem(component).mouse("mousedown");
 
-                expectOnSelectionCalledWith([]);
-                expectOnFocusNotCalled(); // leave focused cell where it is
+                expectOnSelectionCalledWith([REGION]);
+                expectOnFocusCalledWith(REGION, 0);
             });
 
             it("works with a selectedRegionTransform too", () => {
@@ -138,18 +149,6 @@ describe("DragSelectable", () => {
 
                 expectOnSelectionCalledWith([REGION_2, REGION_3]);
                 expectOnFocusCalledWith(REGION_3, 1);
-            });
-
-            it("selects just the clicked region requireMetaKeyToDeselect=true", () => {
-                const component = mountDragSelectable({
-                    requireMetaKeyToDeselect: true,
-                    selectedRegions: [REGION_2, REGION, REGION_3],
-                });
-
-                getItem(component).mouse("mousedown");
-
-                expectOnSelectionCalledWith([REGION]);
-                expectOnFocusCalledWith(REGION, 0);
             });
         });
 

@@ -164,7 +164,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         } else {
             this.handleReplaceSelection(region);
         }
-
         return true;
     };
 
