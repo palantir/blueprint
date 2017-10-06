@@ -9,6 +9,7 @@ import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
+import * as Classes from "../src/common/classes";
 import { EditableCell } from "../src/index";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
@@ -26,7 +27,7 @@ describe("<EditableCell>", () => {
 
     it("renders", () => {
         const elem = harness.mount(<EditableCell value="test-value-5000" />);
-        expect(elem.find(".pt-editable-content").text()).to.equal("test-value-5000");
+        expect(elem.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal("test-value-5000");
     });
 
     it("renders loading state", () => {
@@ -39,10 +40,10 @@ describe("<EditableCell>", () => {
         const VALUE_2 = "bar";
 
         const elem = mount(<EditableCell value={VALUE_1} />);
-        expect(elem.find(".pt-editable-content").text()).to.equal(VALUE_1);
+        expect(elem.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal(VALUE_1);
 
         elem.setProps({ value: VALUE_2 });
-        expect(elem.find(".pt-editable-content").text()).to.equal(VALUE_2);
+        expect(elem.find(`.${Classes.TABLE_TRUNCATED_TEXT}`).text()).to.equal(VALUE_2);
     });
 
     it("edits", () => {
@@ -63,6 +64,37 @@ describe("<EditableCell>", () => {
         expect(onChange.called).to.be.true;
         expect(onCancel.called).to.be.false;
         expect(onConfirm.called).to.be.false;
+        expect(elem.find(".pt-editable-content").text()).to.equal("my-changed-value");
+
+        // confirm
+        input.blur();
+        expect(onCancel.called).to.be.false;
+        expect(onConfirm.called).to.be.true;
+    });
+
+    it("doesn't change edited value on non-value prop changes", () => {
+        const onCancel = sinon.spy();
+        const onChange = sinon.spy();
+        const onConfirm = sinon.spy();
+        const elem = harness.mount(
+            <EditableCell value="test-value-5000" onCancel={onCancel} onChange={onChange} onConfirm={onConfirm} />,
+        );
+
+        // double click to edit
+        doubleClickToEdit(elem);
+        const input = getInput(elem);
+        expect(input.element).to.equal(document.activeElement);
+
+        // edit
+        input.change("my-changed-value");
+        expect(onChange.called).to.be.true;
+        expect(onCancel.called).to.be.false;
+        expect(onConfirm.called).to.be.false;
+        expect(elem.find(".pt-editable-content").text()).to.equal("my-changed-value");
+
+        harness.mount(
+            <EditableCell value="test-value-5000" onCancel={onCancel} onChange={null} onConfirm={onConfirm} />,
+        );
         expect(elem.find(".pt-editable-content").text()).to.equal("my-changed-value");
 
         // confirm
@@ -104,7 +136,7 @@ describe("<EditableCell>", () => {
 
     function doubleClickToEdit(elem: ElementHarness) {
         elem
-            .find(".pt-editable-content")
+            .find(`.${Classes.TABLE_TRUNCATED_TEXT}`)
             .mouse("mousedown")
             .mouse("mouseup")
             .mouse("mousedown")
