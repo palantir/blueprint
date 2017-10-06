@@ -63,8 +63,12 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     contiguousCalendarMonths?: boolean;
 
     /**
-     * Props to pass to ReactDayPicker.
-     * See API documentation [here](http://react-day-picker.js.org).
+     * Props to pass to ReactDayPicker. See API documentation
+     * [here](http://react-day-picker.js.org/docs/api-daypicker.html).
+     *
+     * The following props are managed by the component and cannot be configured:
+     * `canChangeMonth`, `captionElement`, `numberOfMonths`, `fromMonth` (use
+     * `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`).
      */
     dayPickerProps?: ReactDayPicker.Props;
 
@@ -214,6 +218,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         allowSingleDayRange: false,
         closeOnSelection: true,
         contiguousCalendarMonths: true,
+        dayPickerProps: {},
         disabled: false,
         endInputProps: {},
         format: "YYYY-MM-DD",
