@@ -9,6 +9,7 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { LocaleUtils } from "react-day-picker";
+import * as TestUtils from "react-dom/test-utils";
 
 import { Button } from "@blueprintjs/core";
 import * as DateUtils from "../src/common/dateUtils";
@@ -77,7 +78,7 @@ describe("<DatePicker>", () => {
             assertDateDisabled(getDay(10), false);
         });
 
-        it("respects default disabledDays value", () => {
+        it("disables out-of-range max dates", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const { getDay } = wrap(
                 <DatePicker defaultValue={defaultValue} maxDate={new Date(2017, Months.SEPTEMBER, 20)} />,
@@ -86,7 +87,17 @@ describe("<DatePicker>", () => {
             assertDateDisabled(getDay(10), false);
         });
 
-        it("prefers blueprint props over dayPickerProps", () => {
+        it("disables out-of-range min dates", () => {
+            const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
+            const { getDay } = wrap(
+                <DatePicker defaultValue={defaultValue} minDate={new Date(2017, Months.AUGUST, 20)} />,
+            );
+            clickPrevMonth();
+            assertDateDisabled(getDay(10));
+            assertDateDisabled(getDay(21), false);
+        });
+
+        it("allows top-level locale, localeUtils, and modifiers to be overridden by same props in dayPickerProps", () => {
             const blueprintModifiers: IDatePickerModifiers = {
                 blueprint: () => true,
             };
@@ -115,9 +126,9 @@ describe("<DatePicker>", () => {
 
             const wrapper = mount(<DatePicker {...blueprintProps} dayPickerProps={dayPickerProps} />);
             const DayPicker = wrapper.find("DayPicker").first();
-            assert.equal(DayPicker.prop("locale"), blueprintProps.locale);
-            assert.equal(DayPicker.prop("localeUtils"), blueprintProps.localeUtils);
-            assert.equal(DayPicker.prop("modifiers"), blueprintProps.modifiers);
+            assert.equal(DayPicker.prop("locale"), dayPickerProps.locale);
+            assert.equal(DayPicker.prop("localeUtils"), dayPickerProps.localeUtils);
+            assert.equal(DayPicker.prop("modifiers"), dayPickerProps.modifiers);
         });
 
         describe("event handlers", () => {
@@ -146,6 +157,16 @@ describe("<DatePicker>", () => {
                 const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange: monthChangeSpy }} />);
                 root
                     .find({ className: Classes.DATEPICKER_MONTH_SELECT })
+                    .first()
+                    .simulate("change");
+                assert.isTrue(monthChangeSpy.called);
+            });
+
+            it("calls onMonthChange on year select change", () => {
+                const monthChangeSpy = sinon.spy();
+                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange: monthChangeSpy }} />);
+                root
+                    .find({ className: Classes.DATEPICKER_YEAR_SELECT })
                     .first()
                     .simulate("change");
                 assert.isTrue(monthChangeSpy.called);
@@ -511,3 +532,11 @@ describe("<DatePicker>", () => {
         };
     }
 });
+
+function getPrevMonthButton() {
+    return document.query(".DayPicker-NavButton--prev");
+}
+
+function clickPrevMonth() {
+    TestUtils.Simulate.click(getPrevMonthButton());
+}
