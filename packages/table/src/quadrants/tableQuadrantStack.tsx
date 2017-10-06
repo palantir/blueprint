@@ -75,6 +75,9 @@ export interface ITableQuadrantStackProps extends IProps {
      * If `false`, hides the row headers and settings menu. Affects the layout
      * of the table, so we need to know when this changes in order to
      * synchronize quadrant sizes properly.
+     *
+     * REQUIRES QUADRANT RESYNC
+     *
      * @default true
      */
     isRowHeaderShown?: boolean;
@@ -90,12 +93,16 @@ export interface ITableQuadrantStackProps extends IProps {
      * from potentially custom cells in the header or body, so we need to know
      * when the loading states change in order to synchronize quadrant sizes
      * properly.
+     *
+     * REQUIRES QUADRANT RESYNC
      */
     loadingOptions?: TableLoadingOption[];
 
     /**
      * The number of columns. Affects the layout of the table, so we need to
      * know when this changes in order to synchronize quadrant sizes properly.
+     *
+     * REQUIRES QUADRANT RESYNC
      */
     numColumns?: number;
 
@@ -103,18 +110,24 @@ export interface ITableQuadrantStackProps extends IProps {
      * The number of frozen columns. Affects the layout of the table, so we need
      * to know when this changes in order to synchronize quadrant sizes
      * properly.
+     *
+     * REQUIRES QUADRANT RESYNC
      */
     numFrozenColumns?: number;
 
     /**
      * The number of frozen rows. Affects the layout of the table, so we need to
      * know when this changes in order to synchronize quadrant sizes properly.
+     *
+     * REQUIRES QUADRANT RESYNC
      */
     numFrozenRows?: number;
 
     /**
      * The number of rows. Affects the layout of the table, so we need to know
      * when this changes in order to synchronize quadrant sizes properly.
+     *
+     * REQUIRES QUADRANT RESYNC
      */
     numRows?: number;
 
@@ -198,6 +211,8 @@ export interface ITableQuadrantStackProps extends IProps {
      * This value defaults to `undefined` so that, by default, it won't override
      * the `useInteractionBar` values that you might have provided directly to
      * each `<ColumnHeaderCell>`.
+     *
+     * REQUIRES QUADRANT RESYNC
      *
      * @default undefined
      */

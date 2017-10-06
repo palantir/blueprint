@@ -613,7 +613,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { className, isRowHeaderShown, loadingOptions, numRows, useInteractionBar } = this.props;
+        const { children, className, isRowHeaderShown, loadingOptions, numRows, useInteractionBar } = this.props;
         const { horizontalGuides, verticalGuides } = this.state;
         this.validateGrid();
 
@@ -643,7 +643,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     isRowHeaderShown={isRowHeaderShown}
                     isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
                     loadingOptions={loadingOptions}
-                    numColumns={this.childrenArray.length}
+                    numColumns={React.Children.count(children)}
                     numFrozenColumns={this.getNumFrozenColumnsClamped()}
                     numFrozenRows={this.getNumFrozenRowsClamped()}
                     numRows={numRows}
@@ -1198,8 +1198,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private isSelectionModeEnabled(selectionMode: RegionCardinality, selectionModes = this.props.selectionModes) {
-        const { numRows } = this.props;
-        const numColumns = this.childrenArray.length;
+        const { children, numRows } = this.props;
+        const numColumns = React.Children.count(children);
         return selectionModes.indexOf(selectionMode) >= 0 && numRows > 0 && numColumns > 0;
     }
 
