@@ -1150,10 +1150,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
 
-        const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
-        const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumns : columnIndices.columnIndexEnd;
-        const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
-        const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows : rowIndices.rowIndexEnd;
+        // start beyond the frozen area if rendering unrelated quadrants, so we
+        // don't render duplicate cells underneath the frozen ones.
+        const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart + numFrozenColumns;
+        const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart + numFrozenRows;
+
+        // if rendering frozen rows/columns, subtract one to convert to
+        // 0-indexing. if the 1-indexed value is 0, this sets the end index
+        // to -1, which avoids rendering absent frozen rows/columns at all.
+        const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumns - 1 : columnIndices.columnIndexEnd;
+        const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows - 1 : rowIndices.rowIndexEnd;
 
         // the main quadrant contains all cells in the table, so listen only to that quadrant
         const onCompleteRender = quadrantType === QuadrantType.MAIN ? this.handleCompleteRender : undefined;
