@@ -602,9 +602,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderNumberSelectMenu("Num. frozen columns", "numFrozenCols", FROZEN_COLUMN_COUNTS)}
                 {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
-                <h6>Interactions</h6>
                 {this.renderSwitch("Custom headers", "enableColumnCustomHeaders")}
-                {this.renderSwitch("Editing", "enableColumnNameEditing")}
+                <h6>Interactions</h6>
+                {this.renderSwitch("Editing", "enableColumnNameEditing", "enableColumnCustomHeaders", false)}
                 {this.renderSwitch("Reordering", "enableColumnReordering")}
                 {this.renderSwitch("Resizing", "enableColumnResizing")}
                 {this.renderSwitch("Selection", "enableColumnSelection")}
@@ -982,6 +982,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private syncDependentBooleanStates = () => {
         if (this.state.enableCellEditing && this.state.enableCellTruncation) {
             this.setState({ enableCellTruncation: false });
+        }
+
+        if (this.state.enableColumnNameEditing && this.state.enableColumnCustomHeaders) {
+            this.setState({ enableColumnNameEditing: false });
         }
     };
 
