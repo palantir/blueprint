@@ -336,6 +336,22 @@ describe("<Overlay>", () => {
             assertBodyScrollingDisabled(false, done);
         });
 
+        it("keeps scrolling disabled if hasBackdrop=true overlay exists following unmount", done => {
+            const backdropOverlay = mountOverlay(false, true);
+            wrapper = mountOverlay(false, true);
+            backdropOverlay.unmount();
+
+            assertBodyScrollingDisabled(true, done);
+        });
+
+        it("doesn't keep scrolling disabled if no hasBackdrop=true overlay exists following unmount", done => {
+            const backdropOverlay = mountOverlay(false, true);
+            wrapper = mountOverlay(false, false);
+            backdropOverlay.unmount();
+
+            assertBodyScrollingDisabled(false, done);
+        });
+
         function mountOverlay(inline: boolean, hasBackdrop: boolean) {
             return mount(
                 <Overlay hasBackdrop={hasBackdrop} inline={inline} isOpen={true}>

@@ -266,7 +266,9 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
                 if (lastOpenedOverlay.props.enforceFocus) {
                     document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
                 }
-            } else {
+            }
+
+            if (openStack.filter(o => !o.props.inline && o.props.hasBackdrop).length === 0) {
                 document.body.classList.remove(Classes.OVERLAY_OPEN);
             }
         }
