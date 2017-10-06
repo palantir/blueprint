@@ -10,7 +10,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Grid } from "../common";
-import { Batcher } from "../common/batcher";
+// import { Batcher } from "../common/batcher";
 import { IFocusedCellCoordinates } from "../common/cell";
 import * as Classes from "../common/classes";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
@@ -221,7 +221,7 @@ export interface IHeaderState {
 
 const SHALLOW_COMPARE_PROP_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["focusedCell", "selectedRegions"];
 
-const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["indexEnd", "indexStart"];
+// const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["indexEnd", "indexStart"];
 
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
     public state: IHeaderState = {
@@ -229,7 +229,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     };
 
     protected activationIndex: number;
-    private batcher = new Batcher<JSX.Element>();
+    // private batcher = new Batcher<JSX.Element>();
 
     public constructor(props?: IHeaderProps, context?: any) {
         super(props, context);
@@ -243,9 +243,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         }
     }
 
-    public componentWillUnmount() {
-        this.batcher.cancelOutstandingCallback();
-    }
+    // public componentWillUnmount() {
+    //     this.batcher.cancelOutstandingCallback();
+    // }
 
     public componentWillReceiveProps(nextProps?: IInternalHeaderProps) {
         if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
@@ -263,14 +263,14 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         );
     }
 
-    public componentWillUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
-        const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
-        let shouldResetBatcher = !CoreUtils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
-        shouldResetBatcher = shouldResetBatcher || !CoreUtils.shallowCompareKeys(this.state, nextState);
-        if (shouldResetBatcher) {
-            this.batcher.reset();
-        }
-    }
+    // public componentWillUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
+    //     const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
+    //     let shouldResetBatcher = !CoreUtils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
+    //     shouldResetBatcher = shouldResetBatcher || !CoreUtils.shallowCompareKeys(this.state, nextState);
+    //     if (shouldResetBatcher) {
+    //         this.batcher.reset();
+    //     }
+    // }
 
     public render() {
         return this.props.wrapCells(this.renderCells());
@@ -298,16 +298,22 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     private renderCells = () => {
         const { indexStart, indexEnd } = this.props;
 
-        this.batcher.startNewBatch();
-        for (let index = indexStart; index <= indexEnd; index++) {
-            this.batcher.addArgsToBatch(index);
-        }
-        this.batcher.removeOldAddNew(this.renderNewCell);
+        // this.batcher.startNewBatch();
+        // for (let index = indexStart; index <= indexEnd; index++) {
+        //     this.batcher.addArgsToBatch(index);
+        // }
+        // this.batcher.removeOldAddNew(this.renderNewCell);
 
-        if (!this.batcher.isDone()) {
-            this.batcher.idleCallback(() => this.forceUpdate());
+        // if (!this.batcher.isDone()) {
+        //     this.batcher.idleCallback(() => this.forceUpdate());
+        // }
+        // return this.batcher.getList();
+
+        const cells: JSX.Element[] = [];
+        for (let index = indexStart; index <= indexEnd; index++) {
+            cells.push(this.renderNewCell(index));
         }
-        return this.batcher.getList();
+        return cells;
     };
 
     private renderNewCell = (index: number) => {
