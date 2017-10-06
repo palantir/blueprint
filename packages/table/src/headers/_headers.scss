@@ -303,12 +303,24 @@ $dark-selectable-header-menu-selected-hover-background:
       box-shadow: none;
     }
 
-    &.pt-editable-editing::before {
-      top: -$cell-padding-vertical + $cell-border-width - 1px;
-      right: -$cell-padding-horizontal + $cell-border-width;
-      bottom: -$cell-padding-vertical + 1px;
-      left: -$cell-padding-horizontal + $cell-border-width - 1px;
-      cursor: $select-text-cursor;
+    &.pt-editable-editing {
+      &::before {
+        top: -$cell-padding-vertical + $cell-border-width - 1px;
+        right: -$cell-padding-horizontal + $cell-border-width;
+        bottom: -$cell-padding-vertical + 1px;
+        left: -$cell-padding-horizontal + $cell-border-width - 1px;
+        cursor: $select-text-cursor;
+      }
+
+      &.bp-table-editable-text {
+        &::before {
+          top: -$cell-padding-vertical + $cell-border-width - 1px;
+          right: $cell-border-width;
+          bottom: -$cell-padding-vertical + 1px;
+          left: $cell-border-width - 1px;
+          cursor: $select-text-cursor;
+        }
+      }
     }
   }
 

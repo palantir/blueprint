@@ -54,7 +54,8 @@
 .bp-table-editable-text {
   position: absolute;
   top: 0;
-  right: 10px;
+  right: 0;
   bottom: 0;
-  left: 10px;
+  left: 0;
+  padding: $cell-padding;
 }
