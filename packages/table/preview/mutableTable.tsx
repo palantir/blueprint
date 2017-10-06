@@ -603,7 +603,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
                 <h6>Interactions</h6>
-                {this.renderSwitch("Custom Headers", "enableColumnCustomHeaders")}
+                {this.renderSwitch("Custom headers", "enableColumnCustomHeaders")}
                 {this.renderSwitch("Editing", "enableColumnNameEditing")}
                 {this.renderSwitch("Reordering", "enableColumnReordering")}
                 {this.renderSwitch("Resizing", "enableColumnResizing")}
@@ -632,9 +632,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Text Layout</h6>
                 {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", false)}
                 <div className="sidebar-indented-group">{truncatedPopoverModeMenu}</div>
-                {this.renderSwitch("Fixed Truncation", "enableCellTruncationFixed", "enableCellTruncation", true)}
+                {this.renderSwitch("Fixed truncation", "enableCellTruncationFixed", "enableCellTruncation", true)}
                 <div className="sidebar-indented-group">{truncatedLengthMenu}</div>
-                {this.renderSwitch("Wrap Text", "enableCellWrap")}
+                {this.renderSwitch("Wrap text", "enableCellWrap")}
 
                 <h4>Page</h4>
                 <h6>Display</h6>
@@ -653,11 +653,11 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         return (
             <Button
                 intent={Intent.PRIMARY}
-                iconName={"undo"}
+                iconName="undo"
                 className={classNames(Classes.FILL)}
                 onClick={this.handleDefaultsButtonClick}
             >
-                Reset All
+                Reset all
             </Button>
         );
     }
