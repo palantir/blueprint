@@ -71,8 +71,8 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * [here](http://react-day-picker.js.org/docs/api-daypicker.html).
      *
      * The following props are managed by the component and cannot be configured:
-     * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
-     * `initialMonth`), `toMonth` (use `maxDate`), `numberOfMonths`
+     * `canChangeMonth`, `captionElement`, `numberOfMonths`, `fromMonth` (use
+     * `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`).
      */
     dayPickerProps?: ReactDayPicker.Props;
 
