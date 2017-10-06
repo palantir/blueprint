@@ -222,6 +222,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         const disabledDays = this.getDisabledDaysModifier();
 
         const dayPickerBaseProps: ReactDayPicker.Props = {
+            enableOutsideDays: true,
             locale,
             localeUtils,
             modifiers,
