@@ -93,12 +93,6 @@ export interface IDragSelectableProps extends ISelectableProps {
      * `null` may be returned.
      */
     locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => IRegion;
-
-    /**
-     * Whether the meta key should be pressed to enable deselection on click.
-     * @default false
-     */
-    requireMetaKeyToDeselect?: boolean;
 }
 
 @PureRender
@@ -106,7 +100,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     public static defaultProps: Partial<IDragSelectableProps> = {
         allowMultipleSelection: false,
         disabled: false,
-        requireMetaKeyToDeselect: false,
         selectedRegions: [],
     };
 
@@ -152,11 +145,18 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
         const matchesExistingSelection = foundIndex !== -1;
 
+        if (matchesExistingSelection && DragEvents.isAdditive(event)) {
+            this.handleClearSelectionAtIndex(foundIndex);
+            // if we just deselected a selected region, a subsequent drag-move
+            // could reselect it again and *also* clear other selections. that's
+            // quite unintuitive, so ignore subsequent drag-move's.
+            return false;
+        }
+
+        // we want to listen to subsequent drag-move's in all following cases,
+        // so this mousedown can be the start of a new selection if desired.
         if (matchesExistingSelection) {
-            const shouldIgnoreSubsequentDragMove = this.handleUpdateExistingSelection(foundIndex, event);
-            if (shouldIgnoreSubsequentDragMove) {
-                return false;
-            }
+            this.handleClearAllSelectionsNotAtIndex(foundIndex);
         } else if (this.shouldExpandSelection(event)) {
             this.handleExpandSelection(region);
         } else if (this.shouldAddDisjointSelection(event)) {
@@ -242,44 +242,28 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     // Update logic
     // ============
 
-    /**
-     * Returns true if the component should ignore subsequent drag-move's.
-     */
-    private handleUpdateExistingSelection = (selectedRegionIndex: number, event: MouseEvent) => {
-        const { requireMetaKeyToDeselect, selectedRegions } = this.props;
+    private handleClearSelectionAtIndex = (selectedRegionIndex: number) => {
+        const { selectedRegions } = this.props;
 
-        if (DragEvents.isAdditive(event)) {
-            // remove just the clicked region, leaving other selected regions in place
-            const nextSelectedRegions = selectedRegions.slice();
-            nextSelectedRegions.splice(selectedRegionIndex, 1);
-            this.maybeInvokeSelectionCallback(nextSelectedRegions);
+        // remove just the clicked region, leaving other selected regions in place
+        const nextSelectedRegions = selectedRegions.slice();
+        nextSelectedRegions.splice(selectedRegionIndex, 1);
+        this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
-            // if there are still any selections, move the focused cell to the
-            // most recent selection. otherwise, don't update it.
-            if (nextSelectedRegions.length > 0) {
-                const lastIndex = nextSelectedRegions.length - 1;
-                this.invokeOnFocusCallbackForRegion(nextSelectedRegions[lastIndex], lastIndex);
-            }
-
-            // if we just deselected a selected region, a subsequent drag-move
-            // could reselect it again and *also* clear other selections. that's
-            // quite unintuitive, so ignore subsequent drag-move's.
-            return true;
-        } else if (requireMetaKeyToDeselect) {
-            // not additive, so that means we just clicked on one of the selected cells.
-            // in that case, leave only that cell selected.
-            const nextSelectedRegion = selectedRegions[selectedRegionIndex];
-            this.maybeInvokeSelectionCallback([nextSelectedRegion]);
-            this.invokeOnFocusCallbackForRegion(nextSelectedRegion, 0);
-        } else {
-            // not additive and no need to wait for a meta key to deselect, so
-            // clear all selections. in this case, don't move the focused cell.
-            this.maybeInvokeSelectionCallback([]);
+        // if there are still any selections, move the focused cell to the
+        // most recent selection. otherwise, don't update it.
+        if (nextSelectedRegions.length > 0) {
+            const lastIndex = nextSelectedRegions.length - 1;
+            this.invokeOnFocusCallbackForRegion(nextSelectedRegions[lastIndex], lastIndex);
         }
+    };
 
-        // listen to subsequent dragmoves, so this same mousedown can be the
-        // start of a new selection if desired.
-        return false;
+    private handleClearAllSelectionsNotAtIndex = (selectedRegionIndex: number) => {
+        const { selectedRegions } = this.props;
+
+        const nextSelectedRegion = selectedRegions[selectedRegionIndex];
+        this.maybeInvokeSelectionCallback([nextSelectedRegion]);
+        this.invokeOnFocusCallbackForRegion(nextSelectedRegion, 0);
     };
 
     private handleExpandSelection = (region: IRegion) => {

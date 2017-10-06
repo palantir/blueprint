@@ -224,19 +224,12 @@ const SHALLOW_COMPARE_PROP_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = [
 const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["indexEnd", "indexStart"];
 
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
-    public state: IHeaderState;
-
     protected activationIndex: number;
     private batcher = new Batcher<JSX.Element>();
 
-    public constructor(props?: IHeaderProps, context?: any) {
+    public constructor(props?: IInternalHeaderProps, context?: any) {
         super(props, context);
-
-        // a selection is already defined, so enable reordering interactions
-        // right away if other criteria are satisfied too.
-        this.state = {
-            hasSelectionEnded: props.selectedRegions != null && props.selectedRegions.length > 0,
-        };
+        this.state = { hasSelectionEnded: this.isSelectedRegionsControlledAndNonEmpty(props) };
     }
 
     public componentWillUnmount() {
@@ -244,11 +237,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     }
 
     public componentWillReceiveProps(nextProps?: IInternalHeaderProps) {
-        if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
-            this.setState({ hasSelectionEnded: true });
-        } else {
-            this.setState({ hasSelectionEnded: false });
-        }
+        this.setState({ hasSelectionEnded: this.isSelectedRegionsControlledAndNonEmpty(nextProps) });
     }
 
     public shouldComponentUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
@@ -270,6 +259,10 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
     public render() {
         return this.props.wrapCells(this.renderCells());
+    }
+
+    private isSelectedRegionsControlledAndNonEmpty(props: IInternalHeaderProps = this.props) {
+        return props.selectedRegions != null && props.selectedRegions.length > 0;
     }
 
     private convertEventToIndex = (event: MouseEvent): number => {
