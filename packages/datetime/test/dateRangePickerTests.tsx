@@ -18,7 +18,7 @@ import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { IDateRangeShortcut } from "../src/dateRangePicker";
 import { Classes as DateClasses, DateRange, DateRangePicker, IDateRangePickerProps } from "../src/index";
-import { assertDayDisabled } from "./common/dateTestUtils";
+import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 
 describe("<DateRangePicker>", () => {
     let testsContainerElement: Element;
@@ -55,23 +55,62 @@ describe("<DateRangePicker>", () => {
         assert.isTrue(getDayElement(5).classList.contains("DayPicker-Day--odd"));
     });
 
-    it("disables days according to custom modifiers in addition to default modifiers", () => {
-        const disableFridays = { daysOfWeek: [5] };
+    describe("reconciliates dayPickerProps", () => {
+        it("week starts with firstDayOfWeek value", () => {
+            const selectedFirstDay = 3;
+            const wrapper = mount(<DateRangePicker dayPickerProps={{ firstDayOfWeek: selectedFirstDay }} />);
+            const firstWeekday = wrapper.find("Weekday").first();
+            assert.equal(firstWeekday.prop("weekday"), selectedFirstDay);
+        });
 
-        const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
-        const maxDate = new Date(2017, Months.OCTOBER, 20);
+        it("shows outside days by default", () => {
+            const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
+            const firstDayInView = new Date(2017, Months.AUGUST, 27, 12, 0);
+            const { leftView } = wrap(<DateRangePicker defaultValue={defaultValue} />);
+            const firstDay = leftView.find("Day").first();
+            assertDatesEqual(new Date(firstDay.prop("day")), firstDayInView);
+        });
 
-        const { getDayLeftView, getDayRightView } = wrap(
-            <DateRangePicker
-                dayPickerProps={{ disabledDays: disableFridays }}
-                defaultValue={defaultValue}
-                maxDate={maxDate}
-            />,
-        );
+        it("doesn't show outside days if enableOutsideDays=false", () => {
+            const defaultValue = [new Date(2017, Months.SEPTEMBER, 1, 12), null] as DateRange;
+            const { leftView, rightView } = wrap(
+                <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ enableOutsideDays: false }} />,
+            );
+            const leftDays = leftView.find("Day");
+            const rightDays = rightView.find("Day");
 
-        assertDayDisabled(getDayLeftView(15));
-        assertDayDisabled(getDayRightView(21));
-        assertDayDisabled(getDayLeftView(10), false);
+            assertDayHidden(leftDays.at(0));
+            assertDayHidden(leftDays.at(1));
+            assertDayHidden(leftDays.at(2));
+            assertDayHidden(leftDays.at(3));
+            assertDayHidden(leftDays.at(4));
+            assertDayHidden(leftDays.at(5), false);
+
+            assertDayHidden(rightDays.at(30), false);
+            assertDayHidden(rightDays.at(31));
+            assertDayHidden(rightDays.at(32));
+            assertDayHidden(rightDays.at(33));
+            assertDayHidden(rightDays.at(34));
+        });
+
+        it("disables days according to custom modifiers in addition to default modifiers", () => {
+            const disableFridays = { daysOfWeek: [5] };
+
+            const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
+            const maxDate = new Date(2017, Months.OCTOBER, 20);
+
+            const { getDayLeftView, getDayRightView } = wrap(
+                <DateRangePicker
+                    dayPickerProps={{ disabledDays: disableFridays }}
+                    defaultValue={defaultValue}
+                    maxDate={maxDate}
+                />,
+            );
+
+            assertDayDisabled(getDayLeftView(15));
+            assertDayDisabled(getDayRightView(21));
+            assertDayDisabled(getDayLeftView(10), false);
+        });
     });
 
     describe("initially displayed month", () => {
