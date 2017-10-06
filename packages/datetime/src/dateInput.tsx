@@ -51,8 +51,12 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     closeOnSelection?: boolean;
 
     /**
-     * Props to pass to ReactDayPicker.
-     * See API documentation [here](http://react-day-picker.js.org).
+     * Props to pass to ReactDayPicker. See API documentation
+     * [here](http://react-day-picker.js.org/docs/api-daypicker.html).
+     *
+     * The following props are managed by the component and cannot be configured:
+     * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
+     * `initialMonth`), `toMonth` (use `maxDate`).
      */
     dayPickerProps?: ReactDayPicker.Props;
 
@@ -154,6 +158,7 @@ export interface IDateInputState {
 export class DateInput extends AbstractComponent<IDateInputProps, IDateInputState> {
     public static defaultProps: IDateInputProps = {
         closeOnSelection: true,
+        dayPickerProps: {},
         disabled: false,
         format: "YYYY-MM-DD",
         invalidDateMessage: "Invalid date",
