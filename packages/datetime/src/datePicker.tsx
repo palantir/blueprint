@@ -340,6 +340,8 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
             }
         }
 
+        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
+
         this.setStateWithValueIfUncontrolled({ displayMonth, displayYear }, value);
     };
 
