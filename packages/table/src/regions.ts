@@ -97,14 +97,14 @@ export interface IRegion {
      * If `rows` is `null`, then all rows are understood to be included in the
      * region.
      */
-    rows?: ICellInterval;
+    rows?: ICellInterval | null;
 
     /**
      * The first and last column indices in the region, inclusive and
      * zero-indexed. If `cols` is `null`, then all columns are understood to be
      * included in the region.
      */
-    cols?: ICellInterval;
+    cols?: ICellInterval | null;
 }
 
 export class Regions {
