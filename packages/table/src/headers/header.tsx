@@ -353,7 +353,6 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                 onFocus={this.props.onFocus}
                 onSelection={this.handleDragSelectableSelection}
                 onSelectionEnd={this.handleDragSelectableSelectionEnd}
-                requireMetaKeyToDeselect={true}
                 selectedRegions={selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
             >

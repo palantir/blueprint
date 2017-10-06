@@ -85,7 +85,6 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 onFocus={this.props.onFocus}
                 onSelection={this.props.onSelection}
                 onSelectionEnd={this.handleSelectionEnd}
-                requireMetaKeyToDeselect={true}
                 selectedRegions={this.props.selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
             >
