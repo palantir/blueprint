@@ -38,3 +38,7 @@ export function assertTimeIs(time: Date, hours: number, minutes: number, seconds
         assert.strictEqual(time.getMilliseconds(), milliseconds);
     }
 }
+
+export function assertDatesEqual(a: Date, b: Date) {
+    assert.isTrue(a.getDay() === b.getDay() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear());
+}

@@ -15,9 +15,7 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps } from "../src/index";
-
-const areDatesEqual = (a: Date, b: Date) =>
-    a.getDay() === b.getDay() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear();
+import { assertDatesEqual } from "./common/dateTestUtils";
 
 describe("<DatePicker>", () => {
     it(`renders .${Classes.DATEPICKER}`, () => {
@@ -43,7 +41,7 @@ describe("<DatePicker>", () => {
             const firstDayInView = new Date(2017, Months.AUGUST, 27, 12, 0);
             const wrapper = mount(<DatePicker defaultValue={defaultValue} />);
             const firstDay = wrapper.find("Day").first();
-            assert.isTrue(areDatesEqual(new Date(firstDay.prop("day")), firstDayInView));
+            assertDatesEqual(new Date(firstDay.prop("day")), firstDayInView);
         });
 
         it("doesn't show outside days if enableOutsideDays=false", () => {
