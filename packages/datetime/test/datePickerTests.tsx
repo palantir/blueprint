@@ -133,50 +133,50 @@ describe("<DatePicker>", () => {
 
         describe("event handlers", () => {
             it("calls onMonthChange on button next click", () => {
-                const monthChangeSpy = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange: monthChangeSpy }} />);
+                const onMonthChange = sinon.spy();
+                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
                 root
                     .find(".DayPicker-NavButton--next")
                     .first()
                     .simulate("click");
-                assert.isTrue(monthChangeSpy.called);
+                assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on button prev click", () => {
-                const monthChangeSpy = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange: monthChangeSpy }} />);
+                const onMonthChange = sinon.spy();
+                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
                 root
                     .find(".DayPicker-NavButton--prev")
                     .first()
                     .simulate("click");
-                assert.isTrue(monthChangeSpy.called);
+                assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on month select change", () => {
-                const monthChangeSpy = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange: monthChangeSpy }} />);
+                const onMonthChange = sinon.spy();
+                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
                 root
                     .find({ className: Classes.DATEPICKER_MONTH_SELECT })
                     .first()
                     .simulate("change");
-                assert.isTrue(monthChangeSpy.called);
+                assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on year select change", () => {
-                const monthChangeSpy = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange: monthChangeSpy }} />);
+                const onMonthChange = sinon.spy();
+                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
                 root
                     .find({ className: Classes.DATEPICKER_YEAR_SELECT })
                     .first()
                     .simulate("change");
-                assert.isTrue(monthChangeSpy.called);
+                assert.isTrue(onMonthChange.called);
             });
 
             it("calls onDayClick", () => {
-                const mouseClickSpy = sinon.spy();
-                const { getDay } = wrap(<DatePicker dayPickerProps={{ onDayClick: mouseClickSpy }} />);
+                const onDayClick = sinon.spy();
+                const { getDay } = wrap(<DatePicker dayPickerProps={{ onDayClick }} />);
                 getDay().simulate("click");
-                assert.isTrue(mouseClickSpy.called);
+                assert.isTrue(onDayClick.called);
             });
         });
     });

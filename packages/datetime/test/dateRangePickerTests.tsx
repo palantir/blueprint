@@ -404,31 +404,32 @@ describe("<DateRangePicker>", () => {
     describe("hover interactions", () => {
         describe("react-day-picker props are used", () => {
             it("calls onMonthChange", () => {
-                const monthChangeSpy = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onMonthChange: monthChangeSpy } });
+                const onMonthChange = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onMonthChange } });
                 clickNextMonth();
-                assert.isTrue(monthChangeSpy.called);
+                assert.isTrue(onMonthChange.called);
             });
+
             it("calls onDayMouseEnter", () => {
-                const mouseEnterSpy = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayMouseEnter: mouseEnterSpy } });
+                const onDayMouseEnter = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onDayMouseEnter } });
                 mouseEnterDay(14);
-                assert.isTrue(mouseEnterSpy.called);
+                assert.isTrue(onDayMouseEnter.called);
             });
 
             it("calls onDayMouseLeave", () => {
-                const mouseLeaveSpy = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayMouseLeave: mouseLeaveSpy } });
+                const onDayMouseLeave = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onDayMouseLeave } });
                 mouseEnterDay(14);
                 mouseLeaveDay(14);
-                assert.isTrue(mouseLeaveSpy.called);
+                assert.isTrue(onDayMouseLeave.called);
             });
 
             it("calls onDayClick", () => {
-                const mouseClickSpy = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayClick: mouseClickSpy } });
+                const onDayClick = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onDayClick } });
                 clickDay(14);
-                assert.isTrue(mouseClickSpy.called);
+                assert.isTrue(onDayClick.called);
             });
         });
 
