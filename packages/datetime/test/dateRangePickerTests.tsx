@@ -7,7 +7,9 @@
 
 import { Classes } from "@blueprintjs/core";
 import { assert } from "chai";
+import { mount } from "enzyme";
 import * as React from "react";
+import * as ReactDayPicker from "react-day-picker";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 
@@ -16,6 +18,7 @@ import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { IDateRangeShortcut } from "../src/dateRangePicker";
 import { Classes as DateClasses, DateRange, DateRangePicker, IDateRangePickerProps } from "../src/index";
+import { assertDayDisabled } from "./common/dateTestUtils";
 
 describe("<DateRangePicker>", () => {
     let testsContainerElement: Element;
@@ -50,6 +53,25 @@ describe("<DateRangePicker>", () => {
 
         assert.isFalse(getDayElement(4).classList.contains("DayPicker-Day--odd"));
         assert.isTrue(getDayElement(5).classList.contains("DayPicker-Day--odd"));
+    });
+
+    it("disables days according to custom modifiers in addition to default modifiers", () => {
+        const disableFridays = { daysOfWeek: [5] };
+
+        const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
+        const maxDate = new Date(2017, Months.OCTOBER, 20);
+
+        const { getDayLeftView, getDayRightView } = wrap(
+            <DateRangePicker
+                dayPickerProps={{ disabledDays: disableFridays }}
+                defaultValue={defaultValue}
+                maxDate={maxDate}
+            />,
+        );
+
+        assertDayDisabled(getDayLeftView(15));
+        assertDayDisabled(getDayRightView(21));
+        assertDayDisabled(getDayLeftView(10), false);
     });
 
     describe("initially displayed month", () => {
@@ -970,6 +992,32 @@ describe("<DateRangePicker>", () => {
             />,
             testsContainerElement,
         ) as DateRangePicker;
+    }
+
+    function wrap(datepicker: JSX.Element) {
+        const wrapper = mount(datepicker);
+        const dayPickers = wrapper.find(ReactDayPicker).find("Month");
+        const leftDayPicker = dayPickers.at(0);
+        const rightDayPicker = dayPickers.length > 1 ? dayPickers.at(1) : dayPickers.at(0);
+        return {
+            getDayLeftView: (dayNumber = 1) => {
+                return leftDayPicker
+                    .find(`.${DateClasses.DATEPICKER_DAY}`)
+                    .filterWhere(
+                        day => day.text() === "" + dayNumber && !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE),
+                    );
+            },
+            getDayRightView: (dayNumber = 1) => {
+                return rightDayPicker
+                    .find(`.${DateClasses.DATEPICKER_DAY}`)
+                    .filterWhere(
+                        day => day.text() === "" + dayNumber && !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE),
+                    );
+            },
+            leftView: leftDayPicker,
+            rightView: rightDayPicker,
+            root: wrapper,
+        };
     }
 
     function clickNextMonth() {

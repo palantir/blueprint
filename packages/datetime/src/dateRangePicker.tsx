@@ -219,14 +219,14 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
 
         const { leftView, rightView } = this.state;
-        const disabledDays = [{ before: this.props.minDate }, { after: this.props.maxDate }];
+        const disabledDays = this.getDisabledDaysModifier();
 
         const dayPickerBaseProps: ReactDayPicker.Props = {
-            ...dayPickerProps,
-            disabledDays,
             locale,
             localeUtils,
             modifiers,
+            ...dayPickerProps,
+            disabledDays,
             onDayClick: this.handleDayClick,
             onDayMouseEnter: this.handleDayMouseEnter,
             onDayMouseLeave: this.handleDayMouseLeave,
@@ -322,6 +322,14 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
             throw new Error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID);
         }
     }
+
+    private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
+
+    private getDisabledDaysModifier = () => {
+        const { dayPickerProps: { disabledDays } } = this.props;
+
+        return disabledDays instanceof Array ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
+    };
 
     private maybeRenderShortcuts() {
         const propsShortcuts = this.props.shortcuts;
