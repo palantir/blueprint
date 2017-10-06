@@ -129,26 +129,17 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         } = this.props;
         const { displayMonth, displayYear } = this.state;
 
-        const setDefaultValue = (propValue: any, fallbackValue: any) =>
-            typeof propValue !== "undefined" ? propValue : fallbackValue;
-
-        const dayPickerPropsWithDefaults: ReactDayPicker.Props = {
-            ...dayPickerProps,
-            canChangeMonth: true, // currently no functionality to hide navigation
-            disabledDays: this.disabledDays(),
-            // Prefer dayPickerProps to static default values for:
-            enableOutsideDays: setDefaultValue(dayPickerProps.enableOutsideDays, true),
-            // Prefer blueprint props to dayPickerProps for:
-            locale: setDefaultValue(locale, dayPickerProps.enableOutsideDays),
-            localeUtils: setDefaultValue(localeUtils, dayPickerProps.localeUtils),
-            modifiers: setDefaultValue(modifiers, dayPickerProps.modifiers),
-        };
-
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
                 <ReactDayPicker
-                    {...dayPickerPropsWithDefaults}
+                    enableOutsideDays={true}
+                    locale={locale}
+                    localeUtils={localeUtils}
+                    modifiers={modifiers}
+                    {...dayPickerProps}
+                    canChangeMonth={true}
                     captionElement={this.renderCaption}
+                    disabledDays={this.getDisabledDaysModifier()}
                     fromMonth={minDate}
                     month={new Date(displayYear, displayMonth)}
                     onDayClick={this.handleDayClick}
@@ -199,10 +190,12 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         }
     }
 
-    private disabledDays = () => {
-        const rangeCheck = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
+    private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
+
+    private getDisabledDaysModifier = () => {
         const { dayPickerProps: { disabledDays } } = this.props;
-        return disabledDays instanceof Array ? [rangeCheck, ...disabledDays] : [rangeCheck, disabledDays];
+
+        return disabledDays instanceof Array ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
 
     private renderCaption = (props: ReactDayPicker.CaptionElementProps) => (
@@ -237,9 +230,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         modifiers: ReactDayPicker.DayModifiers,
         e: React.MouseEvent<HTMLDivElement>,
     ) => {
-        if (typeof this.props.dayPickerProps.onDayClick === "function") {
-            this.props.dayPickerProps.onDayClick(day, modifiers, e);
-        }
+        Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
 
         let newValue = day;
 
@@ -310,9 +301,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
             }
         }
 
-        if (typeof this.props.dayPickerProps.onMonthChange === "function") {
-            this.props.dayPickerProps.onMonthChange(value);
-        }
+        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
 
         this.setStateWithValueIfUncontrolled({ displayMonth, displayYear }, value);
     };
@@ -325,9 +314,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
             Utils.safeInvoke(this.props.onChange, value, false);
         }
 
-        if (typeof this.props.dayPickerProps.onMonthChange === "function") {
-            this.props.dayPickerProps.onMonthChange(value);
-        }
+        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
 
         this.setStateWithValueIfUncontrolled({ displayMonth }, value);
     };
