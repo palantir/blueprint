@@ -206,6 +206,32 @@ describe("<Tabs2>", () => {
         assert.equal(wrapper.find(".pt-tab-indicator").length, 0);
     });
 
+    it("removes indicator element when selected tab is removed", () => {
+        const wrapper = mount(
+            <Tabs2 id={ID} animate={false}>
+                {getTabsContents()}
+            </Tabs2>,
+        );
+        // first tab is selected by default. now remove it.
+        const tabIdsWithoutFirstTab = TAB_IDS.slice(1);
+        wrapper.setProps({ children: getTabsContents(tabIdsWithoutFirstTab) });
+        const indicatorStyle = wrapper.state().indicatorWrapperStyle;
+        assert.deepEqual(indicatorStyle, { display: "none" }, "indicator should be hidden");
+    });
+
+    it("leaves indicator element in place when non-selected tab is removed", () => {
+        const wrapper = mount(
+            <Tabs2 id={ID} animate={false}>
+                {getTabsContents()}
+            </Tabs2>,
+        );
+        // first tab is selected by default. now remove the last one.
+        const lastTabIndex = TAB_IDS.length - 1;
+        const tabIdsWithoutLastTab = TAB_IDS.slice(0, lastTabIndex - 1);
+        wrapper.setProps({ children: getTabsContents(tabIdsWithoutLastTab) });
+        assertIndicatorPosition(wrapper, "first");
+    });
+
     describe("when state is managed internally", () => {
         const TAB_ID_TO_SELECT = TAB_IDS[1];
 
@@ -342,8 +368,8 @@ describe("<Tabs2>", () => {
         assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
     }
 
-    function getTabsContents(): Array<React.ReactElement<any>> {
-        return TAB_IDS.map(id => <Tab2 id={id} key={id} panel={<Panel title={id} />} title={id} />);
+    function getTabsContents(tabIds: string[] = TAB_IDS): Array<React.ReactElement<any>> {
+        return tabIds.map(id => <Tab2 id={id} key={id} panel={<Panel title={id} />} title={id} />);
     }
 });
 
