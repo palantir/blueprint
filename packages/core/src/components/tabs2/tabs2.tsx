@@ -167,9 +167,11 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         } else if (prevState.selectedTabId != null) {
+            // comparing React nodes is difficult to do with simple logic, so
+            // shallowly compare just their props as a workaround.
             const didChildrenChange = !Utils.arraysEqual(
-                this.getTabChildren(prevProps),
-                this.getTabChildren(),
+                this.getTabChildrenProps(prevProps),
+                this.getTabChildrenProps(),
                 Utils.shallowCompareKeys,
             );
             if (didChildrenChange) {
@@ -202,8 +204,8 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     }
 
     /** Filters children to only `<Tab>`s */
-    private getTabChildren(props: ITabs2Props & { children?: React.ReactNode } = this.props) {
-        return React.Children.toArray(props.children).filter(isTab) as TabElement[];
+    private getTabChildrenProps(props: ITabs2Props & { children?: React.ReactNode } = this.props) {
+        return this.getTabChildren(props).map(child => child.props);
     }
 
     /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
