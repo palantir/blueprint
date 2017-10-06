@@ -23,8 +23,10 @@ import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { IRegion, Regions } from "../src/regions";
+import { ITableState } from "../src/table";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
+import { createTableOfSize } from "./mocks/table";
 
 describe("<Table>", () => {
     const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
@@ -1624,6 +1626,98 @@ describe("<Table>", () => {
             expectHeaderWidth(table3, 1, 50); // <= difference when no IDs
             expectHeaderWidth(table3, 2, 51);
         });
+    });
+
+    describe("Empty-state", () => {
+        const CELL_INDEX = 0;
+        const SELECTED_REGIONS = [Regions.row(0), Regions.column(0), Regions.cell(0, 0), Regions.table()];
+
+        let table: ReactWrapper<ITableProps, ITableState>;
+
+        describe("disables all selection modes", () => {
+            it("when numRows = 0", () => {
+                table = mountTable(0, 1);
+                clickColumnHeaderCell();
+                expectNoSelectedRegions();
+                clickTableMenu();
+                expectNoSelectedRegions();
+            });
+
+            it("when numCols = 0", () => {
+                table = mountTable(1, 0);
+                clickRowHeaderCell();
+                expectNoSelectedRegions();
+                clickTableMenu();
+                expectNoSelectedRegions();
+            });
+        });
+
+        describe("clears all uncontrolled selections", () => {
+            it("when numRows becomes 0", () => {
+                table = mountTable(1, 1);
+                table.setState({ selectedRegions: SELECTED_REGIONS });
+                table.setProps({ numRows: 0 });
+                expectNoSelectedRegions();
+            });
+
+            it("when numCols becomes 0", () => {
+                table = mountTable(1, 1);
+                table.setState({ selectedRegions: SELECTED_REGIONS });
+                table.setProps({ children: [] });
+                expectNoSelectedRegions();
+            });
+        });
+
+        describe("leaves controlled selections in place", () => {
+            it("when numRows becomes 0", () => {
+                table = mountTable(1, 1, { selectedRegions: SELECTED_REGIONS });
+                table.setProps({ numRows: 0, selectedRegions: SELECTED_REGIONS });
+                expect(table.state().selectedRegions).to.deep.equal(SELECTED_REGIONS);
+            });
+
+            it("when numCols becomes 0", () => {
+                table = mountTable(1, 1, { selectedRegions: SELECTED_REGIONS });
+                table.setProps({ children: [], selectedRegions: SELECTED_REGIONS });
+                expect(table.state().selectedRegions).to.deep.equal(SELECTED_REGIONS);
+            });
+        });
+
+        function mountTable(numRows: number, numCols: number, tableProps: Partial<ITableProps> = {}) {
+            // this createTableOfSize API is backwards from the codebase's
+            // normal [row, column] parameter order. :/
+            return mount(
+                createTableOfSize(numCols, numRows, {
+                    fillBodyWithGhostCells: true,
+                    isRowHeaderShown: true,
+                    renderCell: renderDummyCell,
+                    ...tableProps,
+                }),
+            );
+        }
+
+        function click(component: ReactWrapper<any, any>) {
+            component.simulate("mousedown").simulate("mouseup");
+        }
+
+        function find(selector: string) {
+            return table.find(`.${Classes.TABLE_QUADRANT_MAIN} ${selector}`);
+        }
+
+        function clickRowHeaderCell() {
+            click(find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(CELL_INDEX));
+        }
+
+        function clickColumnHeaderCell() {
+            click(find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`).at(CELL_INDEX));
+        }
+
+        function clickTableMenu() {
+            click(find(`.${Classes.TABLE_MENU}`));
+        }
+
+        function expectNoSelectedRegions() {
+            expect(table.state("selectedRegions")).to.be.empty;
+        }
     });
 
     function renderDummyCell() {

@@ -39,6 +39,7 @@ export const TABLE_LAST_IN_ROW = "bp-table-last-in-row";
 export const TABLE_MENU = "bp-table-menu";
 export const TABLE_NO_HORIZONTAL_SCROLL = "bp-table-no-horizontal-scroll";
 export const TABLE_NO_LAYOUT = "bp-table-no-layout";
+export const TABLE_NO_ROWS = "bp-table-no-rows";
 export const TABLE_NO_VERTICAL_SCROLL = "bp-table-no-vertical-scroll";
 export const TABLE_NO_WRAP_TEXT = "bp-table-no-wrap-text";
 export const TABLE_NULL = "bp-table-null";

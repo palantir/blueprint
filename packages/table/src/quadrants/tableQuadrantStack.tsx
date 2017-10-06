@@ -12,6 +12,7 @@ import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
 import * as ScrollUtils from "../common/internal/scrollUtils";
 import { Utils } from "../common/utils";
+import { TableLoadingOption } from "../regions";
 import { QuadrantType, TableQuadrant } from "./tableQuadrant";
 import { TableQuadrantStackCache } from "./tableQuadrantStackCache";
 
@@ -71,7 +72,12 @@ export interface ITableQuadrantStackProps extends IProps {
     isHorizontalScrollDisabled?: boolean;
 
     /**
-     * If `false`, hides the row headers and settings menu.
+     * If `false`, hides the row headers and settings menu. Affects the layout
+     * of the table, so we need to know when this changes in order to
+     * synchronize quadrant sizes properly.
+     *
+     * REQUIRES QUADRANT RESYNC
+     *
      * @default true
      */
     isRowHeaderShown?: boolean;
@@ -83,14 +89,47 @@ export interface ITableQuadrantStackProps extends IProps {
     isVerticalScrollDisabled?: boolean;
 
     /**
-     * The number of frozen columns.
+     * A list of `TableLoadingOption`. Loading cells may have different sizes
+     * from potentially custom cells in the header or body, so we need to know
+     * when the loading states change in order to synchronize quadrant sizes
+     * properly.
+     *
+     * REQUIRES QUADRANT RESYNC
+     */
+    loadingOptions?: TableLoadingOption[];
+
+    /**
+     * The number of columns. Affects the layout of the table, so we need to
+     * know when this changes in order to synchronize quadrant sizes properly.
+     *
+     * REQUIRES QUADRANT RESYNC
+     */
+    numColumns?: number;
+
+    /**
+     * The number of frozen columns. Affects the layout of the table, so we need
+     * to know when this changes in order to synchronize quadrant sizes
+     * properly.
+     *
+     * REQUIRES QUADRANT RESYNC
      */
     numFrozenColumns?: number;
 
     /**
-     * The number of frozen rows.
+     * The number of frozen rows. Affects the layout of the table, so we need to
+     * know when this changes in order to synchronize quadrant sizes properly.
+     *
+     * REQUIRES QUADRANT RESYNC
      */
     numFrozenRows?: number;
+
+    /**
+     * The number of rows. Affects the layout of the table, so we need to know
+     * when this changes in order to synchronize quadrant sizes properly.
+     *
+     * REQUIRES QUADRANT RESYNC
+     */
+    numRows?: number;
 
     /**
      * An optional callback invoked the quadrants are scrolled.
@@ -165,27 +204,43 @@ export interface ITableQuadrantStackProps extends IProps {
 
     /**
      * If `true`, adds an interaction bar on top of all column header cells, and
-     * moves interaction triggers into it.
+     * moves interaction triggers into it. Affects the layout of the table, so
+     * we need to know when this changes in order to synchronize quadrant sizes
+     * properly.
      *
      * This value defaults to `undefined` so that, by default, it won't override
      * the `useInteractionBar` values that you might have provided directly to
      * each `<ColumnHeaderCell>`.
+     *
+     * REQUIRES QUADRANT RESYNC
      *
      * @default undefined
      */
     useInteractionBar?: boolean;
 }
 
+// when there are no column headers, the header and menu element will
+// confusingly collapse to zero height unless we establish this default.
+const DEFAULT_COLUMN_HEADER_HEIGHT = 30;
+
 // the debounce delay for updating the view on scroll. elements will be resized
 // and rejiggered once scroll has ceased for at least this long, but not before.
 const DEFAULT_VIEW_SYNC_DELAY = 500;
+
+// if there are no frozen rows or columns, we still want the quadrant to be 1px
+// bigger to reveal the header border. this border leaks into the cell grid to
+// ensure that selection overlay borders (e.g.) will be perfectly flush with it.
+const QUADRANT_MIN_SIZE = 1;
 
 // a list of props that trigger layout changes. when these props change,
 // quadrant views need to be explicitly resynchronized.
 const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
     "isRowHeaderShown",
+    "loadingOptions",
     "numFrozenColumns",
     "numFrozenRows",
+    "numColumns",
+    "numRows",
     "useInteractionBar",
 ];
 
@@ -702,34 +757,27 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
 
     private syncQuadrantViews = () => {
         const mainRefs = this.quadrantRefs[QuadrantType.MAIN];
-        const mainColumnHeader = mainRefs.columnHeader;
         const mainScrollContainer = mainRefs.scrollContainer;
 
         //
         // Reads (batched to avoid DOM thrashing)
         //
 
-        // Row-header resizing: resize the row header to be as wide as its
-        // widest contents require it to be.
         const rowHeaderWidth = this.measureDesiredRowHeaderWidth();
+        const columnHeaderHeight = this.measureDesiredColumnHeaderHeight();
 
-        // Menu-element resizing: keep the menu element's borders flush with
-        // thsoe of the the row and column headers.
-        const columnHeaderHeight = mainColumnHeader == null ? 0 : mainColumnHeader.clientHeight;
-        const nextMenuElementWidth = rowHeaderWidth;
-        const nextMenuElementHeight = columnHeaderHeight;
+        const leftQuadrantGridWidth = this.getSecondaryQuadrantGridSize("width");
+        const topQuadrantGridHeight = this.getSecondaryQuadrantGridSize("height");
 
-        // Quadrant-size sync'ing: make the quadrants precisely as big as they
-        // need to be to fit their variable-sized headers and/or frozen areas.
-        const leftQuadrantGridWidth = this.getSecondaryQuadrantSize("width");
-        const topQuadrantGridHeight = this.getSecondaryQuadrantSize("height");
-        const nextLeftQuadrantWidth = rowHeaderWidth + leftQuadrantGridWidth;
-        const nextTopQuadrantHeight = columnHeaderHeight + topQuadrantGridHeight;
+        const leftQuadrantWidth = rowHeaderWidth + leftQuadrantGridWidth;
+        const topQuadrantHeight = columnHeaderHeight + topQuadrantGridHeight;
 
-        // Scrollbar clearance: tweak the quadrant bottom/right offsets to
-        // reveal the MAIN-quadrant scrollbars if they're visible.
         const rightScrollBarWidth = ScrollUtils.measureScrollBarThickness(mainScrollContainer, "vertical");
         const bottomScrollBarHeight = ScrollUtils.measureScrollBarThickness(mainScrollContainer, "horizontal");
+
+        // ensure neither of these measurements confusingly clamps to zero height.
+        const adjustedColumnHeaderHeight = this.maybeIncreaseToDefaultColumnHeaderHeight(columnHeaderHeight);
+        const adjustedTopQuadrantHeight = this.maybeIncreaseToDefaultColumnHeaderHeight(topQuadrantHeight);
 
         // Update cache: let's read now whatever values we might need later.
         // prevents unnecessary reflows in the future.
@@ -745,11 +793,19 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         // Writes (batched to avoid DOM thrashing)
         //
 
+        // Quadrant-size sync'ing: make the quadrants precisely as big as they
+        // need to be to fit their variable-sized headers and/or frozen areas.
         this.maybesSetQuadrantRowHeaderSizes(rowHeaderWidth);
-        this.maybeSetQuadrantMenuElementSizes(nextMenuElementWidth, nextMenuElementHeight);
-        this.maybeSetQuadrantSizes(nextLeftQuadrantWidth, nextTopQuadrantHeight);
+        this.maybeSetQuadrantMenuElementSizes(rowHeaderWidth, adjustedColumnHeaderHeight);
+        this.maybeSetQuadrantSizes(leftQuadrantWidth, adjustedTopQuadrantHeight);
+
+        // Scrollbar clearance: tweak the quadrant bottom/right offsets to
+        // reveal the MAIN-quadrant scrollbars if they're visible.
         this.maybeSetQuadrantPositionOffset(QuadrantType.TOP, "right", rightScrollBarWidth);
         this.maybeSetQuadrantPositionOffset(QuadrantType.LEFT, "bottom", bottomScrollBarHeight);
+
+        // Scroll syncing: sync the scroll offsets of quadrants that may or may
+        // not have been around prior to this update.
         this.maybeSetQuadrantScrollOffset(QuadrantType.LEFT, "scrollTop");
         this.maybeSetQuadrantScrollOffset(QuadrantType.TOP, "scrollLeft");
     };
@@ -836,6 +892,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         }
     }
 
+    private maybeIncreaseToDefaultColumnHeaderHeight(height: number) {
+        return height <= QUADRANT_MIN_SIZE ? DEFAULT_COLUMN_HEADER_HEIGHT : height;
+    }
+
     // Helpers
     // =======
 
@@ -843,20 +903,20 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
      * Returns the width or height of *only the grid* in the secondary quadrants
      * (TOP, LEFT, TOP_LEFT), based on the number of frozen rows and columns.
      */
-    private getSecondaryQuadrantSize(dimension: "width" | "height") {
+    private getSecondaryQuadrantGridSize(dimension: "width" | "height") {
         const { grid, numFrozenColumns, numFrozenRows } = this.props;
 
         const numFrozen = dimension === "width" ? numFrozenColumns : numFrozenRows;
         const getterFn = dimension === "width" ? grid.getCumulativeWidthAt : grid.getCumulativeHeightAt;
 
-        // if there are no frozen rows or columns, we still want the quadrant to be 1px bigger to
-        // reveal the header border.
-        const BORDER_WIDTH_CORRECTION = 1;
-
         // both getter functions do O(1) lookups.
-        return numFrozen > 0 ? getterFn(numFrozen - 1) : BORDER_WIDTH_CORRECTION;
+        return numFrozen > 0 ? getterFn(numFrozen - 1) : QUADRANT_MIN_SIZE;
     }
 
+    /**
+     * Measures the desired width of the row header based on its tallest
+     * contents.
+     */
     private measureDesiredRowHeaderWidth() {
         // the MAIN row header serves as the source of truth
         const mainRowHeader = this.quadrantRefs[QuadrantType.MAIN].rowHeader;
@@ -870,6 +930,18 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
             const desiredRowHeaderWidth = mainRowHeader.clientWidth;
             return desiredRowHeaderWidth;
         }
+    }
+
+    /**
+     * Measures the desired height of the column header based on its tallest
+     * contents.
+     */
+    private measureDesiredColumnHeaderHeight() {
+        // unlike the row headers, the column headers are in a display-flex
+        // layout and are not actually bound by any fixed `height` that we set,
+        // so they'll grow freely to their necessary size. makes measuring easy!
+        const mainColumnHeader = this.quadrantRefs[QuadrantType.MAIN].columnHeader;
+        return mainColumnHeader == null ? 0 : mainColumnHeader.clientHeight;
     }
 
     private shouldRenderLeftQuadrants(props: ITableQuadrantStackProps = this.props) {

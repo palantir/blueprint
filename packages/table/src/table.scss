@@ -44,6 +44,12 @@ $menu-z-index: $row-z-index + 1 !default;
   display: flex;
   flex: 0 0 auto;
   min-height: 0%; // Must use % unit for IE11
+
+  .bp-table-container.bp-table-no-rows & {
+    // edge case when there are no rows: keep bottom borders visible on menu
+    // element and column headers
+    padding-bottom: 1px;
+  }
 }
 
 .bp-table-bottom-container {

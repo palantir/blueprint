@@ -587,8 +587,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             // fit in the current new table dimensions
             newSelectedRegions = this.state.selectedRegions.filter(region => {
                 const regionCardinality = Regions.getRegionCardinality(region);
-                const isSelectionModeEnabled = selectionModes.indexOf(regionCardinality) >= 0;
-                return isSelectionModeEnabled && Regions.isRegionValidForTable(region, numRows, numCols);
+                return (
+                    this.isSelectionModeEnabled(regionCardinality, selectionModes) &&
+                    Regions.isRegionValidForTable(region, numRows, numCols)
+                );
             });
         }
 
@@ -611,7 +613,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { className, isRowHeaderShown, useInteractionBar } = this.props;
+        const { children, className, isRowHeaderShown, loadingOptions, numRows, useInteractionBar } = this.props;
         const { horizontalGuides, verticalGuides } = this.state;
         this.validateGrid();
 
@@ -622,6 +624,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 [Classes.TABLE_NO_VERTICAL_SCROLL]: this.shouldDisableVerticalScroll(),
                 [Classes.TABLE_NO_HORIZONTAL_SCROLL]: this.shouldDisableHorizontalScroll(),
                 [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
+                [Classes.TABLE_NO_ROWS]: numRows === 0,
             },
             className,
         );
@@ -639,8 +642,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     isHorizontalScrollDisabled={this.shouldDisableHorizontalScroll()}
                     isRowHeaderShown={isRowHeaderShown}
                     isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
+                    loadingOptions={loadingOptions}
+                    numColumns={React.Children.count(children)}
                     numFrozenColumns={this.getNumFrozenColumnsClamped()}
                     numFrozenRows={this.getNumFrozenRowsClamped()}
+                    numRows={numRows}
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
                     ref={this.refHandlers.quadrantStack}
@@ -1191,8 +1197,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return this.state.verticalGuides != null || this.state.horizontalGuides != null;
     }
 
-    private isSelectionModeEnabled(selectionMode: RegionCardinality) {
-        return this.props.selectionModes.indexOf(selectionMode) >= 0;
+    private isSelectionModeEnabled(selectionMode: RegionCardinality, selectionModes = this.props.selectionModes) {
+        const { children, numRows } = this.props;
+        const numColumns = React.Children.count(children);
+        return selectionModes.indexOf(selectionMode) >= 0 && numRows > 0 && numColumns > 0;
     }
 
     private getEnabledSelectionHandler(selectionMode: RegionCardinality) {

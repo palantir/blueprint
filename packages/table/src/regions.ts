@@ -513,10 +513,11 @@ export class Regions {
     }
 
     public static isRegionValidForTable(region: IRegion, numRows: number, numCols: number) {
-        if (region.rows != null && (region.rows[0] >= numRows || region.rows[1] >= numRows)) {
+        if (numRows === 0 || numCols === 0) {
             return false;
-        }
-        if (region.cols != null && (region.cols[0] >= numCols || region.cols[1] >= numCols)) {
+        } else if (region.rows != null && !intervalInRangeInclusive(region.rows, 0, numRows - 1)) {
+            return false;
+        } else if (region.cols != null && !intervalInRangeInclusive(region.cols, 0, numCols - 1)) {
             return false;
         }
         return true;
@@ -690,4 +691,15 @@ export class Regions {
         interval.sort(Regions.numericalComparator);
         return interval as ICellInterval;
     }
+}
+
+function intervalInRangeInclusive(interval: ICellInterval, minInclusive: number, maxInclusive: number) {
+    return (
+        inRangeInclusive(interval[0], minInclusive, maxInclusive) &&
+        inRangeInclusive(interval[1], minInclusive, maxInclusive)
+    );
+}
+
+function inRangeInclusive(value: number, minInclusive: number, maxInclusive: number) {
+    return value >= minInclusive && value <= maxInclusive;
 }
