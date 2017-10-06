@@ -9,7 +9,6 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { LocaleUtils } from "react-day-picker";
-import * as TestUtils from "react-dom/test-utils";
 
 import { Button } from "@blueprintjs/core";
 import * as DateUtils from "../src/common/dateUtils";
@@ -89,10 +88,11 @@ describe("<DatePicker>", () => {
 
         it("disables out-of-range min dates", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
-            const { getDay } = wrap(
+            const { getDay, root } = wrap(
                 <DatePicker defaultValue={defaultValue} minDate={new Date(2017, Months.AUGUST, 20)} />,
             );
-            clickPrevMonth();
+            const prevMonthButton = root.find(".DayPicker-NavButton--prev").first();
+            prevMonthButton.simulate("click");
             assertDateDisabled(getDay(10));
             assertDateDisabled(getDay(21), false);
         });
@@ -532,11 +532,3 @@ describe("<DatePicker>", () => {
         };
     }
 });
-
-function getPrevMonthButton() {
-    return document.query(".DayPicker-NavButton--prev");
-}
-
-function clickPrevMonth() {
-    TestUtils.Simulate.click(getPrevMonthButton());
-}
