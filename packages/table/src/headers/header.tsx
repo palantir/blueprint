@@ -13,6 +13,7 @@ import { Grid } from "../common";
 import { Batcher } from "../common/batcher";
 import { IFocusedCellCoordinates } from "../common/cell";
 import * as Classes from "../common/classes";
+import { DragEvents } from "../interactions/dragEvents";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
@@ -433,10 +434,10 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     };
 
     private isDragSelectableDisabled = (event: MouseEvent) => {
-        if (event.metaKey) {
-            // if the meta key is pressed, we want to forcefully ignore reordering
-            // interactions and prioritize drag-selection interactions (e.g. to make
-            // it possible to deselect a row).
+        if (DragEvents.isAdditive(event)) {
+            // if the meta/crtl key was pressed, we want to forcefully ignore
+            // reordering interactions and prioritize drag-selection
+            // interactions (e.g. to make it possible to deselect a row).
             return false;
         }
         const cellIndex = this.convertEventToIndex(event);
