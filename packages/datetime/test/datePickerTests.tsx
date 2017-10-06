@@ -15,7 +15,7 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps } from "../src/index";
-import { assertDateDisabled, assertDatesEqual } from "./common/dateTestUtils";
+import { assertDatesEqual, assertDayDisabled } from "./common/dateTestUtils";
 
 describe("<DatePicker>", () => {
     it(`renders .${Classes.DATEPICKER}`, () => {
@@ -72,9 +72,9 @@ describe("<DatePicker>", () => {
                     dayPickerProps={{ disabledDays: disableFridays }}
                 />,
             );
-            assertDateDisabled(getDay(15));
-            assertDateDisabled(getDay(21));
-            assertDateDisabled(getDay(10), false);
+            assertDayDisabled(getDay(15));
+            assertDayDisabled(getDay(21));
+            assertDayDisabled(getDay(10), false);
         });
 
         it("disables out-of-range max dates", () => {
@@ -82,8 +82,8 @@ describe("<DatePicker>", () => {
             const { getDay } = wrap(
                 <DatePicker defaultValue={defaultValue} maxDate={new Date(2017, Months.SEPTEMBER, 20)} />,
             );
-            assertDateDisabled(getDay(21));
-            assertDateDisabled(getDay(10), false);
+            assertDayDisabled(getDay(21));
+            assertDayDisabled(getDay(10), false);
         });
 
         it("disables out-of-range min dates", () => {
@@ -93,8 +93,8 @@ describe("<DatePicker>", () => {
             );
             const prevMonthButton = root.find(".DayPicker-NavButton--prev").first();
             prevMonthButton.simulate("click");
-            assertDateDisabled(getDay(10));
-            assertDateDisabled(getDay(21), false);
+            assertDayDisabled(getDay(10));
+            assertDayDisabled(getDay(21), false);
         });
 
         it("allows top-level locale, localeUtils, and modifiers to be overridden by same props in dayPickerProps", () => {
