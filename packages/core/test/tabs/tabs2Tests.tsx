@@ -207,11 +207,7 @@ describe("<Tabs2>", () => {
     });
 
     it("removes indicator element when selected tab is removed", () => {
-        const wrapper = mount(
-            <Tabs2 id={ID} animate={false}>
-                {getTabsContents()}
-            </Tabs2>,
-        );
+        const wrapper = mount(<Tabs2 id={ID}>{getTabsContents()}</Tabs2>);
         // first tab is selected by default. now remove it.
         const tabIdsWithoutFirstTab = TAB_IDS.slice(1);
         wrapper.setProps({ children: getTabsContents(tabIdsWithoutFirstTab) });
@@ -220,11 +216,7 @@ describe("<Tabs2>", () => {
     });
 
     it("leaves indicator element in place when non-selected tab is removed", () => {
-        const wrapper = mount(
-            <Tabs2 id={ID} animate={false}>
-                {getTabsContents()}
-            </Tabs2>,
-        );
+        const wrapper = mount(<Tabs2 id={ID}>{getTabsContents()}</Tabs2>);
         // first tab is selected by default. now remove the last one.
         const lastTabIndex = TAB_IDS.length - 1;
         const tabIdsWithoutLastTab = TAB_IDS.slice(0, lastTabIndex - 1);
