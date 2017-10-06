@@ -58,14 +58,6 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * @default true
      */
     contiguousCalendarMonths?: boolean;
-
-    /**
-     * Props to pass to ReactDayPicker.
-     * See API documentation [here](http://react-day-picker.js.org/docs/api-daypicker.html).
-     * Beware! The following props are controlled by blueprint and thus will not be passed along:
-     * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`), `numberOfMonths`
-     */
-
     /**
      * Props to pass to ReactDayPicker. See API documentation
      * [here](http://react-day-picker.js.org/docs/api-daypicker.html).
