@@ -17,7 +17,13 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { IDateRangeShortcut } from "../src/dateRangePicker";
-import { Classes as DateClasses, DateRange, DateRangePicker, IDateRangePickerProps } from "../src/index";
+import {
+    Classes as DateClasses,
+    DateRange,
+    DateRangePicker,
+    IDatePickerModifiers,
+    IDateRangePickerProps,
+} from "../src/index";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 
 describe("<DateRangePicker>", () => {
@@ -129,6 +135,40 @@ describe("<DateRangePicker>", () => {
             prevMonthButton.simulate("click");
             assertDayDisabled(getDayLeftView(10));
             assertDayDisabled(getDayLeftView(21), false);
+        });
+
+        it("allows top-level locale, localeUtils, and modifiers to be overridden by same props in dayPickerProps", () => {
+            const blueprintModifiers: IDatePickerModifiers = {
+                blueprint: () => true,
+            };
+            const blueprintLocaleUtils = {
+                ...ReactDayPicker.LocaleUtils,
+                formatDay: () => "b",
+            };
+            const blueprintProps: IDateRangePickerProps = {
+                locale: "blueprint",
+                localeUtils: blueprintLocaleUtils,
+                modifiers: blueprintModifiers,
+            };
+
+            const dayPickerModifiers: IDatePickerModifiers = {
+                dayPicker: () => true,
+            };
+            const dayPickerLocaleUtils = {
+                ...ReactDayPicker.LocaleUtils,
+                formatDay: () => "d",
+            };
+            const dayPickerProps: IDateRangePickerProps = {
+                locale: "dayPicker",
+                localeUtils: dayPickerLocaleUtils,
+                modifiers: dayPickerModifiers,
+            };
+
+            const wrapper = mount(<DateRangePicker {...blueprintProps} dayPickerProps={dayPickerProps} />);
+            const DayPicker = wrapper.find("DayPicker").first();
+            assert.equal(DayPicker.prop("locale"), dayPickerProps.locale);
+            assert.equal(DayPicker.prop("localeUtils"), dayPickerProps.localeUtils);
+            assert.equal(DayPicker.prop("modifiers"), dayPickerProps.modifiers);
         });
     });
 
