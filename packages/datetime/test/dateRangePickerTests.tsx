@@ -170,6 +170,72 @@ describe("<DateRangePicker>", () => {
             assert.equal(DayPicker.prop("localeUtils"), dayPickerProps.localeUtils);
             assert.equal(DayPicker.prop("modifiers"), dayPickerProps.modifiers);
         });
+
+        describe("event handlers", () => {
+            it("calls onMonthChange on button next click", () => {
+                const onMonthChange = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onMonthChange } });
+                clickNextMonth();
+                assert.isTrue(onMonthChange.called);
+            });
+
+            it("calls onMonthChange on button next click", () => {
+                const onMonthChange = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onMonthChange } });
+                clickPrevMonth();
+                assert.isTrue(onMonthChange.called);
+            });
+
+            it("calls onMonthChange on month select change in left calendar", () => {
+                const onMonthChange = sinon.spy();
+                const { leftView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                leftView.find({ className: DateClasses.DATEPICKER_MONTH_SELECT }).simulate("change");
+                assert.isTrue(onMonthChange.called);
+            });
+
+            it("calls onMonthChange on month select change in right calendar", () => {
+                const onMonthChange = sinon.spy();
+                const { rightView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                rightView.find({ className: DateClasses.DATEPICKER_MONTH_SELECT }).simulate("change");
+                assert.isTrue(onMonthChange.called);
+            });
+
+            it("calls onMonthChange on year select change in left calendar", () => {
+                const onMonthChange = sinon.spy();
+                const { leftView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                leftView.find({ className: DateClasses.DATEPICKER_YEAR_SELECT }).simulate("change");
+                assert.isTrue(onMonthChange.called);
+            });
+
+            it("calls onMonthChange on year select change in right calendar", () => {
+                const onMonthChange = sinon.spy();
+                const { rightView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                rightView.find({ className: DateClasses.DATEPICKER_YEAR_SELECT }).simulate("change");
+                assert.isTrue(onMonthChange.called);
+            });
+
+            it("calls onDayMouseEnter", () => {
+                const onDayMouseEnter = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onDayMouseEnter } });
+                mouseEnterDay(14);
+                assert.isTrue(onDayMouseEnter.called);
+            });
+
+            it("calls onDayMouseLeave", () => {
+                const onDayMouseLeave = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onDayMouseLeave } });
+                mouseEnterDay(14);
+                mouseLeaveDay(14);
+                assert.isTrue(onDayMouseLeave.called);
+            });
+
+            it("calls onDayClick", () => {
+                const onDayClick = sinon.spy();
+                renderDateRangePicker({ dayPickerProps: { onDayClick } });
+                clickDay(14);
+                assert.isTrue(onDayClick.called);
+            });
+        });
     });
 
     describe("initially displayed month", () => {
@@ -522,37 +588,6 @@ describe("<DateRangePicker>", () => {
     });
 
     describe("hover interactions", () => {
-        describe("react-day-picker props are used", () => {
-            it("calls onMonthChange", () => {
-                const onMonthChange = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onMonthChange } });
-                clickNextMonth();
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onDayMouseEnter", () => {
-                const onDayMouseEnter = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayMouseEnter } });
-                mouseEnterDay(14);
-                assert.isTrue(onDayMouseEnter.called);
-            });
-
-            it("calls onDayMouseLeave", () => {
-                const onDayMouseLeave = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayMouseLeave } });
-                mouseEnterDay(14);
-                mouseLeaveDay(14);
-                assert.isTrue(onDayMouseLeave.called);
-            });
-
-            it("calls onDayClick", () => {
-                const onDayClick = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayClick } });
-                clickDay(14);
-                assert.isTrue(onDayClick.called);
-            });
-        });
-
         describe("when neither start nor end date is defined", () => {
             it("should show a hovered range of [day, null]", () => {
                 renderDateRangePicker();
@@ -1122,6 +1157,10 @@ describe("<DateRangePicker>", () => {
         TestUtils.Simulate.click(getNextMonthButton());
     }
 
+    function clickPrevMonth() {
+        TestUtils.Simulate.click(getPrevMonthButton());
+    }
+
     function clickDay(dayNumber = 1, fromLeftMonth = true) {
         TestUtils.Simulate.click(getDayElement(dayNumber, fromLeftMonth));
     }
@@ -1148,6 +1187,10 @@ describe("<DateRangePicker>", () => {
 
     function getNextMonthButton() {
         return document.query(".DayPicker-NavButton--next");
+    }
+
+    function getPrevMonthButton() {
+        return document.query(".DayPicker-NavButton--prev");
     }
 
     function getDayElement(dayNumber = 1, fromLeftMonth = true) {
