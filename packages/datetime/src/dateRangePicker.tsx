@@ -508,6 +508,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
     */
     private handleLeftYearSelectChange = (leftDisplayYear: number) => {
         let leftView = new MonthAndYear(this.state.leftView.getMonth(), leftDisplayYear);
+        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, leftView.getFullDate());
         const { minDate, maxDate } = this.props;
         const adjustedMaxDate = DateUtils.getDatePreviousMonth(maxDate);
 
@@ -530,6 +531,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
 
     private handleRightYearSelectChange = (rightDisplayYear: number) => {
         let rightView = new MonthAndYear(this.state.rightView.getMonth(), rightDisplayYear);
+        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, rightView.getFullDate());
         const { minDate, maxDate } = this.props;
         const adjustedMinDate = DateUtils.getDateNextMonth(minDate);
 
