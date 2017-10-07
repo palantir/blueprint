@@ -95,7 +95,6 @@ describe("<DateRangePicker>", () => {
 
         it("disables days according to custom modifiers in addition to default modifiers", () => {
             const disableFridays = { daysOfWeek: [5] };
-
             const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
             const maxDate = new Date(2017, Months.OCTOBER, 20);
 
@@ -110,6 +109,26 @@ describe("<DateRangePicker>", () => {
             assertDayDisabled(getDayLeftView(15));
             assertDayDisabled(getDayRightView(21));
             assertDayDisabled(getDayLeftView(10), false);
+        });
+
+        it("disables out-of-range max dates", () => {
+            const defaultValue = [new Date(2017, Months.AUGUST, 1), null] as DateRange;
+            const { getDayRightView } = wrap(
+                <DateRangePicker defaultValue={defaultValue} maxDate={new Date(2017, Months.SEPTEMBER, 20)} />,
+            );
+            assertDayDisabled(getDayRightView(21));
+            assertDayDisabled(getDayRightView(10), false);
+        });
+
+        it("disables out-of-range min dates", () => {
+            const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
+            const { getDayLeftView, root } = wrap(
+                <DateRangePicker defaultValue={defaultValue} minDate={new Date(2017, Months.AUGUST, 20)} />,
+            );
+            const prevMonthButton = root.find(".DayPicker-NavButton--prev").first();
+            prevMonthButton.simulate("click");
+            assertDayDisabled(getDayLeftView(10));
+            assertDayDisabled(getDayLeftView(21), false);
         });
     });
 
