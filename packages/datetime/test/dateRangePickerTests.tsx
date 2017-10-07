@@ -174,15 +174,51 @@ describe("<DateRangePicker>", () => {
         describe("event handlers", () => {
             it("calls onMonthChange on button next click", () => {
                 const onMonthChange = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onMonthChange } });
-                clickNextMonth();
+                const { leftDayPickerNavbar } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                leftDayPickerNavbar.find(".DayPicker-NavButton--next").simulate("click");
                 assert.isTrue(onMonthChange.called);
             });
 
-            it("calls onMonthChange on button next click", () => {
+            it("calls onMonthChange on button prev click", () => {
                 const onMonthChange = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onMonthChange } });
-                clickPrevMonth();
+                const { leftDayPickerNavbar } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                leftDayPickerNavbar.find(".DayPicker-NavButton--prev").simulate("click");
+                assert.isTrue(onMonthChange.called);
+            });
+
+            it("calls onMonthChange on button next click of left calendar", () => {
+                const onMonthChange = sinon.spy();
+                const { leftDayPickerNavbar } = wrap(
+                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
+                );
+                leftDayPickerNavbar.find(".DayPicker-NavButton--next").simulate("click");
+                assert.isTrue(onMonthChange.called);
+            });
+
+            it("calls onMonthChange on button prev click of left calendar", () => {
+                const onMonthChange = sinon.spy();
+                const { leftDayPickerNavbar } = wrap(
+                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
+                );
+                leftDayPickerNavbar.find(".DayPicker-NavButton--prev").simulate("click");
+                assert.isTrue(onMonthChange.called);
+            });
+
+            it("calls onMonthChange on button next click of right calendar", () => {
+                const onMonthChange = sinon.spy();
+                const { rightDayPickerNavbar } = wrap(
+                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
+                );
+                rightDayPickerNavbar.find(".DayPicker-NavButton--next").simulate("click");
+                assert.isTrue(onMonthChange.called);
+            });
+
+            it("calls onMonthChange on button prev click of right calendar", () => {
+                const onMonthChange = sinon.spy();
+                const { rightDayPickerNavbar } = wrap(
+                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
+                );
+                rightDayPickerNavbar.find(".DayPicker-NavButton--prev").simulate("click");
                 assert.isTrue(onMonthChange.called);
             });
 
@@ -1147,18 +1183,12 @@ describe("<DateRangePicker>", () => {
                         day => day.text() === "" + dayNumber && !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE),
                     );
             },
+            leftDayPickerNavbar: wrapper.find("Navbar").at(0),
             leftView: leftDayPicker,
+            rightDayPickerNavbar: wrapper.find("Navbar").at(1) || wrapper.find("Navbar").at(0),
             rightView: rightDayPicker,
             root: wrapper,
         };
-    }
-
-    function clickNextMonth() {
-        TestUtils.Simulate.click(getNextMonthButton());
-    }
-
-    function clickPrevMonth() {
-        TestUtils.Simulate.click(getPrevMonthButton());
     }
 
     function clickDay(dayNumber = 1, fromLeftMonth = true) {
@@ -1183,14 +1213,6 @@ describe("<DateRangePicker>", () => {
 
     function clickFirstShortcut() {
         TestUtils.Simulate.click(getShortcut(0));
-    }
-
-    function getNextMonthButton() {
-        return document.query(".DayPicker-NavButton--next");
-    }
-
-    function getPrevMonthButton() {
-        return document.query(".DayPicker-NavButton--prev");
     }
 
     function getDayElement(dayNumber = 1, fromLeftMonth = true) {
