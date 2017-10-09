@@ -1198,21 +1198,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     };
 
-    /**
-     * Normalizes RenderMode.BATCH_ON_UPDATE into RenderMode.{BATCH,NONE}. We do
-     * this because there are actually multiple updates required before the
-     * <Table> is considered fully "mounted," and adding that knowledge to child
-     * components would lead to tight coupling. Thus, keep it simple for them.
-     */
-    private getNormalizedRenderMode(): RenderMode.BATCH | RenderMode.NONE {
-        const { renderMode } = this.props;
-
-        const shouldBatchRender =
-            renderMode === RenderMode.BATCH || (renderMode === RenderMode.BATCH_ON_UPDATE && this.hasCompletelyMounted);
-
-        return shouldBatchRender ? RenderMode.BATCH : RenderMode.NONE;
-    }
-
     private isGuidesShowing() {
         return this.state.verticalGuides != null || this.state.horizontalGuides != null;
     }
@@ -1899,6 +1884,21 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const numFrozenRows = this.getNumFrozenRowsClamped();
         return numFrozenRows != null ? numFrozenRows - 1 : undefined;
     };
+
+    /**
+     * Normalizes RenderMode.BATCH_ON_UPDATE into RenderMode.{BATCH,NONE}. We do
+     * this because there are actually multiple updates required before the
+     * <Table> is considered fully "mounted," and adding that knowledge to child
+     * components would lead to tight coupling. Thus, keep it simple for them.
+     */
+    private getNormalizedRenderMode(): RenderMode.BATCH | RenderMode.NONE {
+        const { renderMode } = this.props;
+
+        const shouldBatchRender =
+            renderMode === RenderMode.BATCH || (renderMode === RenderMode.BATCH_ON_UPDATE && this.hasCompletelyMounted);
+
+        return shouldBatchRender ? RenderMode.BATCH : RenderMode.NONE;
+    }
 
     private getNumFrozenColumnsClamped(props: ITableProps = this.props) {
         const { numFrozenColumns } = props;
