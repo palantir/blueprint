@@ -138,14 +138,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * The number of columns to freeze to the left side of the table, counting
      * from the leftmost column.
-     * @default 0
      */
     numFrozenColumns?: number;
 
     /**
      * The number of rows to freeze to the top of the table, counting from the
      * topmost row.
-     * @default 0
      */
     numFrozenRows?: number;
 
@@ -384,8 +382,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
-        numFrozenColumns: 0,
-        numFrozenRows: 0,
         numRows: 0,
         renderMode: RenderMode.BATCH,
         renderRowHeader: renderDefaultRowHeader,
@@ -632,7 +628,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     public render() {
         const { children, className, isRowHeaderShown, loadingOptions, numRows, useInteractionBar } = this.props;
-        const { horizontalGuides, verticalGuides } = this.state;
+        const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
         this.validateGrid();
 
         const classes = classNames(
@@ -662,8 +658,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
                     loadingOptions={loadingOptions}
                     numColumns={React.Children.count(children)}
-                    numFrozenColumns={this.state.numFrozenColumnsClamped}
-                    numFrozenRows={this.state.numFrozenRowsClamped}
+                    numFrozenColumns={numFrozenColumnsClamped}
+                    numFrozenRows={numFrozenRowsClamped}
                     numRows={numRows}
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
@@ -1926,6 +1922,8 @@ function clampNumFrozenRows(props: ITableProps) {
     return clampPotentiallyNullValue(numFrozenRows, numRows);
 }
 
+// add explicit `| null | undefined`, because the params make more sense in this
+// order, and you can't have an optional param precede a required param.
 function clampPotentiallyNullValue(value: number | null | undefined, max: number) {
     return value == null ? 0 : Utils.clamp(value, 0, max);
 }
