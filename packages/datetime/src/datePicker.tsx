@@ -25,16 +25,6 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     canClearSelection?: boolean;
 
     /**
-     * Props to pass to ReactDayPicker. See API documentation
-     * [here](http://react-day-picker.js.org/docs/api-daypicker.html).
-     *
-     * The following props are managed by the component and cannot be configured:
-     * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
-     * `initialMonth`), `toMonth` (use `maxDate`).
-     */
-    dayPickerProps?: ReactDayPicker.Props;
-
-    /**
      * Initial day the calendar will display as selected.
      * This should not be set if `value` is set.
      */
@@ -71,7 +61,6 @@ export interface IDatePickerState {
 export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerState> {
     public static defaultProps: IDatePickerProps = {
         canClearSelection: true,
-        dayPickerProps: {},
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         showActionsBar: false,
@@ -117,30 +106,20 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
     }
 
     public render() {
-        const {
-            className,
-            dayPickerProps,
-            locale,
-            localeUtils,
-            maxDate,
-            minDate,
-            modifiers,
-            showActionsBar,
-        } = this.props;
+        const { className, locale, localeUtils, maxDate, minDate, showActionsBar } = this.props;
         const { displayMonth, displayYear } = this.state;
 
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
                 <ReactDayPicker
-                    enableOutsideDays={true}
-                    locale={locale}
-                    localeUtils={localeUtils}
-                    modifiers={modifiers}
-                    {...dayPickerProps}
                     canChangeMonth={true}
                     captionElement={this.renderCaption}
-                    disabledDays={this.getDisabledDaysModifier()}
+                    disabledDays={this.disabledDays}
+                    enableOutsideDays={true}
                     fromMonth={minDate}
+                    locale={locale}
+                    localeUtils={localeUtils}
+                    modifiers={this.props.modifiers}
                     month={new Date(displayYear, displayMonth)}
                     onDayClick={this.handleDayClick}
                     onMonthChange={this.handleMonthChange}
@@ -192,12 +171,6 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
 
     private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
 
-    private getDisabledDaysModifier = () => {
-        const { dayPickerProps: { disabledDays } } = this.props;
-
-        return disabledDays instanceof Array ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
-    };
-
     private renderCaption = (props: ReactDayPicker.CaptionElementProps) => (
         <DatePickerCaption
             {...props}
@@ -225,13 +198,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         );
     }
 
-    private handleDayClick = (
-        day: Date,
-        modifiers: ReactDayPicker.DayModifiers,
-        e: React.MouseEvent<HTMLDivElement>,
-    ) => {
-        Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
-
+    private handleDayClick = (day: Date, modifiers: ReactDayPicker.DayModifiers) => {
         let newValue = day;
 
         if (this.props.canClearSelection && modifiers.selected) {
@@ -301,8 +268,6 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
             }
         }
 
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
-
         this.setStateWithValueIfUncontrolled({ displayMonth, displayYear }, value);
     };
 
@@ -313,8 +278,6 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
             value = this.computeValidDateInSpecifiedMonthYear(value.getFullYear(), displayMonth);
             Utils.safeInvoke(this.props.onChange, value, false);
         }
-
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
 
         this.setStateWithValueIfUncontrolled({ displayMonth }, value);
     };
@@ -339,8 +302,6 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
                 displayMonth = maxMonth;
             }
         }
-
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
 
         this.setStateWithValueIfUncontrolled({ displayMonth, displayYear }, value);
     };
