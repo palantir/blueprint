@@ -80,11 +80,9 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     }
 
     private batcher = new Batcher<JSX.Element>();
-    private hasComponentMounted = false;
 
     public componentDidMount() {
         this.maybeInvokeOnCompleteRender();
-        this.hasComponentMounted = true;
     }
 
     public shouldComponentUpdate(nextProps?: ITableBodyCellsProps) {
@@ -110,7 +108,6 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
 
     public componentWillUnmount() {
         this.batcher.cancelOutstandingCallback();
-        this.hasComponentMounted = false;
     }
 
     public render() {
@@ -142,7 +139,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     }
 
     private renderAllCells() {
-        const { columnIndexEnd, columnIndexStart, grid, rowIndexEnd, rowIndexStart } = this.props;
+        const { columnIndexEnd, columnIndexStart, rowIndexEnd, rowIndexStart } = this.props;
 
         const cells: Array<React.ReactElement<any>> = [];
         const cellsArgs: Array<[number, number]> = [];
@@ -198,7 +195,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
 
     private maybeInvokeOnCompleteRender() {
         const { onCompleteRender, renderMode } = this.props;
-        if (renderMode === RenderMode.NONE || this.batcher.isDone()) {
+        if (renderMode === RenderMode.NONE || (renderMode === RenderMode.BATCH && this.batcher.isDone())) {
             CoreUtils.safeInvoke(onCompleteRender);
         }
     }
