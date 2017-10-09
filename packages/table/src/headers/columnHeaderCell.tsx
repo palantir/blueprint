@@ -45,8 +45,7 @@ export interface IColumnNameProps {
      *
      * @default false
      * @deprecated since blueprintjs/table v1.27.0; pass this prop to `Table`
-     * instead. (If you don't, the `Table` will not be able to properly resize
-     * the column header when `useInteractionBar` is toggled on and off.)
+     * instead.
      */
     useInteractionBar?: boolean;
 }
