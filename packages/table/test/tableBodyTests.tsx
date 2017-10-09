@@ -228,7 +228,6 @@ describe("TableBody", () => {
                 // IColumnIndices
                 columnIndexStart={0}
                 columnIndexEnd={columnIndexEnd}
-
                 {...spreadableProps}
             />,
         );
