@@ -13,7 +13,7 @@ import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import * as Utils from "../../common/utils";
 
 import { ITab2Props, Tab2, TabId } from "./tab2";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
@@ -163,9 +163,20 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         }
     }
 
-    public componentDidUpdate(_prevProps: ITabs2Props, prevState: ITabs2State) {
+    public componentDidUpdate(prevProps: ITabs2Props, prevState: ITabs2State) {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
+        } else if (prevState.selectedTabId != null) {
+            // comparing React nodes is difficult to do with simple logic, so
+            // shallowly compare just their props as a workaround.
+            const didChildrenChange = !Utils.arraysEqual(
+                this.getTabChildrenProps(prevProps),
+                this.getTabChildrenProps(),
+                Utils.shallowCompareKeys,
+            );
+            if (didChildrenChange) {
+                this.moveSelectionIndicator();
+            }
         }
     }
 
@@ -192,9 +203,13 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
         return undefined;
     }
 
-    /** Filters this.props.children to only `<Tab>`s */
-    private getTabChildren() {
-        return React.Children.toArray(this.props.children).filter(isTab) as TabElement[];
+    private getTabChildrenProps(props: ITabs2Props & { children?: React.ReactNode } = this.props) {
+        return this.getTabChildren(props).map(child => child.props);
+    }
+
+    /** Filters children to only `<Tab>`s */
+    private getTabChildren(props: ITabs2Props & { children?: React.ReactNode } = this.props) {
+        return React.Children.toArray(props.children).filter(isTab) as TabElement[];
     }
 
     /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
@@ -235,7 +250,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
     };
 
     private handleTabClick = (newTabId: TabId, event: React.MouseEvent<HTMLElement>) => {
-        safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId, event);
+        Utils.safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId, event);
         if (this.props.selectedTabId === undefined) {
             this.setState({ selectedTabId: newTabId });
         }

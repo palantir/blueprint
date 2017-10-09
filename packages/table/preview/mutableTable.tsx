@@ -416,10 +416,15 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     };
 
-    private renderCustomColumnName = (name: string) => {
+    private renderCustomColumnName = (name: string, index: number) => {
+        // show taller, multi-line column names after an arbitrary threshold
+        // just to allow us to check if column headers resize appropriately.
+        const COLUMN_Z_INDEX = 25; // 0-indexed
+        const maybeMultilineName =
+            index > COLUMN_Z_INDEX ? [<span key="1">{name}</span>, <br key="2" />, <span key="3">{name}</span>] : name;
         return (
             <div className="tbl-custom-column-header">
-                <div className="tbl-custom-column-header-name">{name}</div>
+                <div className="tbl-custom-column-header-name">{maybeMultilineName}</div>
                 <div className="tbl-custom-column-header-type">string</div>
             </div>
         );
@@ -612,8 +617,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderNumberSelectMenu("Num. frozen columns", "numFrozenCols", FROZEN_COLUMN_COUNTS)}
                 {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
+                {this.renderSwitch("Custom headers", "enableColumnCustomHeaders")}
                 <h6>Interactions</h6>
-                {this.renderSwitch("Editing", "enableColumnNameEditing")}
+                {this.renderSwitch("Editing", "enableColumnNameEditing", "enableColumnCustomHeaders", false)}
                 {this.renderSwitch("Reordering", "enableColumnReordering")}
                 {this.renderSwitch("Resizing", "enableColumnResizing")}
                 {this.renderSwitch("Selection", "enableColumnSelection")}
@@ -645,9 +651,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Text Layout</h6>
                 {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", false)}
                 <div className="sidebar-indented-group">{truncatedPopoverModeMenu}</div>
-                {this.renderSwitch("Fixed Truncation", "enableCellTruncationFixed", "enableCellTruncation", true)}
+                {this.renderSwitch("Fixed truncation", "enableCellTruncationFixed", "enableCellTruncation", true)}
                 <div className="sidebar-indented-group">{truncatedLengthMenu}</div>
-                {this.renderSwitch("Wrap Text", "enableCellWrap")}
+                {this.renderSwitch("Wrap text", "enableCellWrap")}
 
                 <h4>Page</h4>
                 <h6>Display</h6>
@@ -994,6 +1000,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private syncDependentBooleanStates = () => {
         if (this.state.enableCellEditing && this.state.enableCellTruncation) {
             this.setState({ enableCellTruncation: false });
+        }
+
+        if (this.state.enableColumnNameEditing && this.state.enableColumnCustomHeaders) {
+            this.setState({ enableColumnNameEditing: false });
         }
     };
 

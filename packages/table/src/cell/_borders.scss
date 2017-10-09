@@ -14,15 +14,12 @@ for all borders with minimal duplication. See the bottom of this file.
   }
 
   .bp-table-menu {
-    box-shadow: $border-width 0 0 $border-color;
+    box-shadow: $border-width 0 0 $border-color,
+                0 $border-width 0 $border-color;
   }
 
   .bp-table-header {
     box-shadow: 0 $border-width 0 $border-color;
-  }
-
-  .bp-table-row-headers {
-    box-shadow: inset 0 $border-width 0 $border-color;
   }
 
   .bp-table-cell {

@@ -224,6 +224,14 @@ describe("TableQuadrantStack", () => {
             mount(<TableQuadrantStack grid={grid} renderBody={renderBody} renderRowHeader={renderRowHeader} />);
             expect(renderRowHeader.callCount).to.equal(4);
         });
+
+        it("does not render LEFT/TOP_LEFT quadrants if row header not shown and no frozen columns", () => {
+            const component = mount(
+                <TableQuadrantStack grid={grid} renderBody={sinon.spy()} isRowHeaderShown={false} />,
+            );
+            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`).length).to.equal(0);
+            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`).length).to.equal(0);
+        });
     });
 
     describe("Resize callbacks", () => {
