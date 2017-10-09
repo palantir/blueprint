@@ -33,12 +33,15 @@
 }
 
 .docs-prop-tags {
-  margin: $pt-grid-size 0 0;
+  $tag-top-margin: ($pt-grid-size / 10) * 3;
+
+  margin: ($pt-grid-size - $tag-top-margin) 0 0;
 
   &:empty { display: none; }
 
-  .pt-tag + .pt-tag {
-    margin-left: $pt-grid-size;
+  .pt-tag {
+    margin-top: $tag-top-margin;
+    margin-right: $pt-grid-size;
   }
 }
 
