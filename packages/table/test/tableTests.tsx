@@ -443,6 +443,16 @@ describe("<Table>", () => {
             expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(2);
         });
 
+        it("triggers immediately on mount with RenderMode.BATCH_ON_UPDATE", () => {
+            const onCompleteRenderSpy = sinon.spy();
+            mount(
+                <Table onCompleteRender={onCompleteRenderSpy} numRows={100} renderMode={RenderMode.BATCH_ON_UPDATE}>
+                    <Column renderCell={renderDummyCell} />
+                </Table>,
+            );
+            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
+        });
+
         it("triggers immediately on mount/update with RenderMode.BATCH for very small batches", () => {
             const onCompleteRenderSpy = sinon.spy();
             const numRows = 1;
