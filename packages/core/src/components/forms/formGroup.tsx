@@ -1,0 +1,94 @@
+/*
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
+ * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
+ * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ */
+
+import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
+import * as React from "react";
+import * as Classes from "../../common/classes";
+import { IIntentProps, IProps } from "../../common/props";
+
+export interface IFormGroupProps extends IIntentProps, IProps {
+    /**
+     * Whether form group should appear as non-interactive.
+     * Remember that input elements must be disabled separately
+     */
+    disabled?: boolean;
+
+    /** Optional helper text. Will be wrapped in `.pt-form-helper-text` and displayed beneath `children`. */
+    helperText?: React.ReactNode;
+
+    /** Whether to render label and control on a single line. */
+    inline?: boolean;
+
+    /** Label of this form group */
+    label?: React.ReactNode;
+
+    /**
+     * `id` attribute of the labelable form element that this `FormGroup` controls,
+     * used as `<label for>` attribute.
+     */
+    labelFor?: string;
+
+    /**
+     * Whether this form input should appear as required (does not affect HTML form required status).
+     * Providing a boolean value will render a default "required" message after the `label` prop.
+     * Providing a JSX value will render that content instead.
+     *
+     * Note: the default message element is exposed as `FormGroup.DEFAULT_REQUIRED_CONTENT` and
+     * can be changed to provide a new global default for your app.
+     */
+    required?: boolean | React.ReactNode;
+}
+
+@PureRender
+export class FormGroup extends React.Component<IFormGroupProps, {}> {
+    /**
+     * Element used to render `required` message when a boolean value is provided for that prop.
+     * Modifying the value of this property will change the default globally in your app.
+     *
+     * Defaults to `<span class="pt-text-muted">(required)</span>`.
+     */
+    public static DEFAULT_REQUIRED_CONTENT = <span className={Classes.TEXT_MUTED}>(required)</span>;
+
+    public render() {
+        const { children, helperText, label, labelFor } = this.props;
+        return (
+            <div className={this.getClassName()}>
+                <label className={Classes.LABEL} htmlFor={labelFor}>
+                    {label}
+                    {this.maybeRenderRequired()}
+                </label>
+                <div className={Classes.FORM_CONTENT}>
+                    {children}
+                    {helperText && <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>}
+                </div>
+            </div>
+        );
+    }
+
+    private getClassName() {
+        const { className, disabled, inline, intent } = this.props;
+        return classNames(
+            Classes.FORM_GROUP,
+            Classes.intentClass(intent),
+            {
+                [Classes.DISABLED]: disabled,
+                [Classes.INLINE]: inline,
+            },
+            className,
+        );
+    }
+
+    private maybeRenderRequired() {
+        const { required } = this.props;
+        if (required === true) {
+            return FormGroup.DEFAULT_REQUIRED_CONTENT;
+        } else {
+            return required;
+        }
+    }
+}

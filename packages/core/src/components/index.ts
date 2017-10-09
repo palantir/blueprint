@@ -25,6 +25,7 @@ export * from "./context-menu/contextMenuTarget";
 export * from "./dialog/dialog";
 export * from "./editable-text/editableText";
 export * from "./forms/controls";
+export * from "./forms/formGroup";
 export * from "./forms/inputGroup";
 export * from "./forms/numericInput";
 export * from "./forms/radioGroup";
