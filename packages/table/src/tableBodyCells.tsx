@@ -72,7 +72,7 @@ const BATCHER_RESET_PROP_KEYS_BLACKLIST: Array<keyof ITableBodyCellsProps> = [
 
 export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     public static defaultProps = {
-        renderMode: RenderMode.BATCH_ON_UPDATE,
+        renderMode: RenderMode.BATCH,
     };
 
     private static cellReactKey(rowIndex: number, columnIndex: number) {
