@@ -7,9 +7,7 @@
 
 import { Classes } from "@blueprintjs/core";
 import { assert } from "chai";
-import { mount } from "enzyme";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 
@@ -17,14 +15,7 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { IDateRangeShortcut } from "../src/dateRangePicker";
-import {
-    Classes as DateClasses,
-    DateRange,
-    DateRangePicker,
-    IDatePickerModifiers,
-    IDateRangePickerProps,
-} from "../src/index";
-import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
+import { Classes as DateClasses, DateRange, DateRangePicker, IDateRangePickerProps } from "../src/index";
 
 describe("<DateRangePicker>", () => {
     let testsContainerElement: Element;
@@ -59,219 +50,6 @@ describe("<DateRangePicker>", () => {
 
         assert.isFalse(getDayElement(4).classList.contains("DayPicker-Day--odd"));
         assert.isTrue(getDayElement(5).classList.contains("DayPicker-Day--odd"));
-    });
-
-    describe("reconciliates dayPickerProps", () => {
-        it("week starts with firstDayOfWeek value", () => {
-            const selectedFirstDay = 3;
-            const wrapper = mount(<DateRangePicker dayPickerProps={{ firstDayOfWeek: selectedFirstDay }} />);
-            const firstWeekday = wrapper.find("Weekday").first();
-            assert.equal(firstWeekday.prop("weekday"), selectedFirstDay);
-        });
-
-        it("shows outside days by default", () => {
-            const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
-            const firstDayInView = new Date(2017, Months.AUGUST, 27, 12, 0);
-            const { leftView } = wrap(<DateRangePicker defaultValue={defaultValue} />);
-            const firstDay = leftView.find("Day").first();
-            assertDatesEqual(new Date(firstDay.prop("day")), firstDayInView);
-        });
-
-        it("doesn't show outside days if enableOutsideDays=false", () => {
-            const defaultValue = [new Date(2017, Months.SEPTEMBER, 1, 12), null] as DateRange;
-            const { leftView, rightView } = wrap(
-                <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ enableOutsideDays: false }} />,
-            );
-            const leftDays = leftView.find("Day");
-            const rightDays = rightView.find("Day");
-
-            assertDayHidden(leftDays.at(0));
-            assertDayHidden(leftDays.at(1));
-            assertDayHidden(leftDays.at(2));
-            assertDayHidden(leftDays.at(3));
-            assertDayHidden(leftDays.at(4));
-            assertDayHidden(leftDays.at(5), false);
-
-            assertDayHidden(rightDays.at(30), false);
-            assertDayHidden(rightDays.at(31));
-            assertDayHidden(rightDays.at(32));
-            assertDayHidden(rightDays.at(33));
-            assertDayHidden(rightDays.at(34));
-        });
-
-        it("disables days according to custom modifiers in addition to default modifiers", () => {
-            const disableFridays = { daysOfWeek: [5] };
-            const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
-            const maxDate = new Date(2017, Months.OCTOBER, 20);
-
-            const { getDayLeftView, getDayRightView } = wrap(
-                <DateRangePicker
-                    dayPickerProps={{ disabledDays: disableFridays }}
-                    defaultValue={defaultValue}
-                    maxDate={maxDate}
-                />,
-            );
-
-            assertDayDisabled(getDayLeftView(15));
-            assertDayDisabled(getDayRightView(21));
-            assertDayDisabled(getDayLeftView(10), false);
-        });
-
-        it("disables out-of-range max dates", () => {
-            const defaultValue = [new Date(2017, Months.AUGUST, 1), null] as DateRange;
-            const { getDayRightView } = wrap(
-                <DateRangePicker defaultValue={defaultValue} maxDate={new Date(2017, Months.SEPTEMBER, 20)} />,
-            );
-            assertDayDisabled(getDayRightView(21));
-            assertDayDisabled(getDayRightView(10), false);
-        });
-
-        it("disables out-of-range min dates", () => {
-            const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
-            const { getDayLeftView, root } = wrap(
-                <DateRangePicker defaultValue={defaultValue} minDate={new Date(2017, Months.AUGUST, 20)} />,
-            );
-            const prevMonthButton = root.find(".DayPicker-NavButton--prev").first();
-            prevMonthButton.simulate("click");
-            assertDayDisabled(getDayLeftView(10));
-            assertDayDisabled(getDayLeftView(21), false);
-        });
-
-        it("allows top-level locale, localeUtils, and modifiers to be overridden by same props in dayPickerProps", () => {
-            const blueprintModifiers: IDatePickerModifiers = {
-                blueprint: () => true,
-            };
-            const blueprintLocaleUtils = {
-                ...ReactDayPicker.LocaleUtils,
-                formatDay: () => "b",
-            };
-            const blueprintProps: IDateRangePickerProps = {
-                locale: "blueprint",
-                localeUtils: blueprintLocaleUtils,
-                modifiers: blueprintModifiers,
-            };
-
-            const dayPickerModifiers: IDatePickerModifiers = {
-                dayPicker: () => true,
-            };
-            const dayPickerLocaleUtils = {
-                ...ReactDayPicker.LocaleUtils,
-                formatDay: () => "d",
-            };
-            const dayPickerProps: IDateRangePickerProps = {
-                locale: "dayPicker",
-                localeUtils: dayPickerLocaleUtils,
-                modifiers: dayPickerModifiers,
-            };
-
-            const wrapper = mount(<DateRangePicker {...blueprintProps} dayPickerProps={dayPickerProps} />);
-            const DayPicker = wrapper.find("DayPicker").first();
-            assert.equal(DayPicker.prop("locale"), dayPickerProps.locale);
-            assert.equal(DayPicker.prop("localeUtils"), dayPickerProps.localeUtils);
-            assert.equal(DayPicker.prop("modifiers"), dayPickerProps.modifiers);
-        });
-
-        describe("event handlers", () => {
-            it("calls onMonthChange on button next click", () => {
-                const onMonthChange = sinon.spy();
-                const { leftDayPickerNavbar } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
-                leftDayPickerNavbar.find(".DayPicker-NavButton--next").simulate("click");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on button prev click", () => {
-                const onMonthChange = sinon.spy();
-                const { leftDayPickerNavbar } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
-                leftDayPickerNavbar.find(".DayPicker-NavButton--prev").simulate("click");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on button next click of left calendar", () => {
-                const onMonthChange = sinon.spy();
-                const { leftDayPickerNavbar } = wrap(
-                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
-                );
-                leftDayPickerNavbar.find(".DayPicker-NavButton--next").simulate("click");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on button prev click of left calendar", () => {
-                const onMonthChange = sinon.spy();
-                const { leftDayPickerNavbar } = wrap(
-                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
-                );
-                leftDayPickerNavbar.find(".DayPicker-NavButton--prev").simulate("click");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on button next click of right calendar", () => {
-                const onMonthChange = sinon.spy();
-                const { rightDayPickerNavbar } = wrap(
-                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
-                );
-                rightDayPickerNavbar.find(".DayPicker-NavButton--next").simulate("click");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on button prev click of right calendar", () => {
-                const onMonthChange = sinon.spy();
-                const { rightDayPickerNavbar } = wrap(
-                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
-                );
-                rightDayPickerNavbar.find(".DayPicker-NavButton--prev").simulate("click");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on month select change in left calendar", () => {
-                const onMonthChange = sinon.spy();
-                const { leftView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
-                leftView.find({ className: DateClasses.DATEPICKER_MONTH_SELECT }).simulate("change");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on month select change in right calendar", () => {
-                const onMonthChange = sinon.spy();
-                const { rightView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
-                rightView.find({ className: DateClasses.DATEPICKER_MONTH_SELECT }).simulate("change");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on year select change in left calendar", () => {
-                const onMonthChange = sinon.spy();
-                const { leftView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
-                leftView.find({ className: DateClasses.DATEPICKER_YEAR_SELECT }).simulate("change");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on year select change in right calendar", () => {
-                const onMonthChange = sinon.spy();
-                const { rightView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
-                rightView.find({ className: DateClasses.DATEPICKER_YEAR_SELECT }).simulate("change");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onDayMouseEnter", () => {
-                const onDayMouseEnter = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayMouseEnter } });
-                mouseEnterDay(14);
-                assert.isTrue(onDayMouseEnter.called);
-            });
-
-            it("calls onDayMouseLeave", () => {
-                const onDayMouseLeave = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayMouseLeave } });
-                mouseEnterDay(14);
-                mouseLeaveDay(14);
-                assert.isTrue(onDayMouseLeave.called);
-            });
-
-            it("calls onDayClick", () => {
-                const onDayClick = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayClick } });
-                clickDay(14);
-                assert.isTrue(onDayClick.called);
-            });
-        });
     });
 
     describe("initially displayed month", () => {
@@ -1161,34 +939,6 @@ describe("<DateRangePicker>", () => {
             />,
             testsContainerElement,
         ) as DateRangePicker;
-    }
-
-    function wrap(datepicker: JSX.Element) {
-        const wrapper = mount(datepicker);
-        const dayPickers = wrapper.find(ReactDayPicker).find("Month");
-        const leftDayPicker = dayPickers.at(0);
-        const rightDayPicker = dayPickers.length > 1 ? dayPickers.at(1) : dayPickers.at(0);
-        return {
-            getDayLeftView: (dayNumber = 1) => {
-                return leftDayPicker
-                    .find(`.${DateClasses.DATEPICKER_DAY}`)
-                    .filterWhere(
-                        day => day.text() === "" + dayNumber && !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE),
-                    );
-            },
-            getDayRightView: (dayNumber = 1) => {
-                return rightDayPicker
-                    .find(`.${DateClasses.DATEPICKER_DAY}`)
-                    .filterWhere(
-                        day => day.text() === "" + dayNumber && !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE),
-                    );
-            },
-            leftDayPickerNavbar: wrapper.find("Navbar").at(0),
-            leftView: leftDayPicker,
-            rightDayPickerNavbar: wrapper.find("Navbar").at(1) || wrapper.find("Navbar").at(0),
-            rightView: rightDayPicker,
-            root: wrapper,
-        };
     }
 
     function clickDay(dayNumber = 1, fromLeftMonth = true) {

@@ -8,14 +8,12 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import { LocaleUtils } from "react-day-picker";
 
 import { Button } from "@blueprintjs/core";
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
-import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps } from "../src/index";
-import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
+import { Classes, DatePicker } from "../src/index";
 
 describe("<DatePicker>", () => {
     it(`renders .${Classes.DATEPICKER}`, () => {
@@ -26,156 +24,6 @@ describe("<DatePicker>", () => {
         const { getSelectedDays, root } = wrap(<DatePicker />);
         assert.lengthOf(getSelectedDays(), 0);
         assert.isUndefined(root.state("selectedDay"));
-    });
-
-    describe("reconciliates dayPickerProps", () => {
-        it("week starts with firstDayOfWeek value", () => {
-            const selectedFirstDay = 3;
-            const wrapper = mount(<DatePicker dayPickerProps={{ firstDayOfWeek: selectedFirstDay }} />);
-            const firstWeekday = wrapper.find("Weekday").first();
-            assert.equal(firstWeekday.prop("weekday"), selectedFirstDay);
-        });
-
-        it("shows outside days by default", () => {
-            const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
-            const firstDayInView = new Date(2017, Months.AUGUST, 27, 12, 0);
-            const wrapper = mount(<DatePicker defaultValue={defaultValue} />);
-            const firstDay = wrapper.find("Day").first();
-            assertDatesEqual(new Date(firstDay.prop("day")), firstDayInView);
-        });
-
-        it("doesn't show outside days if enableOutsideDays=false", () => {
-            const defaultValue = new Date(2017, Months.SEPTEMBER, 1, 12);
-            const wrapper = mount(
-                <DatePicker defaultValue={defaultValue} dayPickerProps={{ enableOutsideDays: false }} />,
-            );
-            const days = wrapper.find("Day");
-
-            assertDayHidden(days.at(0));
-            assertDayHidden(days.at(1));
-            assertDayHidden(days.at(2));
-            assertDayHidden(days.at(3));
-            assertDayHidden(days.at(4));
-            assertDayHidden(days.at(5), false);
-        });
-
-        it("disables days according to custom modifiers in addition to default modifiers", () => {
-            const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
-            const disableFridays = { daysOfWeek: [5] };
-            const { getDay } = wrap(
-                <DatePicker
-                    defaultValue={defaultValue}
-                    maxDate={new Date(2017, Months.SEPTEMBER, 20)}
-                    dayPickerProps={{ disabledDays: disableFridays }}
-                />,
-            );
-            assertDayDisabled(getDay(15));
-            assertDayDisabled(getDay(21));
-            assertDayDisabled(getDay(10), false);
-        });
-
-        it("disables out-of-range max dates", () => {
-            const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
-            const { getDay } = wrap(
-                <DatePicker defaultValue={defaultValue} maxDate={new Date(2017, Months.SEPTEMBER, 20)} />,
-            );
-            assertDayDisabled(getDay(21));
-            assertDayDisabled(getDay(10), false);
-        });
-
-        it("disables out-of-range min dates", () => {
-            const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
-            const { getDay, root } = wrap(
-                <DatePicker defaultValue={defaultValue} minDate={new Date(2017, Months.AUGUST, 20)} />,
-            );
-            const prevMonthButton = root.find(".DayPicker-NavButton--prev").first();
-            prevMonthButton.simulate("click");
-            assertDayDisabled(getDay(10));
-            assertDayDisabled(getDay(21), false);
-        });
-
-        it("allows top-level locale, localeUtils, and modifiers to be overridden by same props in dayPickerProps", () => {
-            const blueprintModifiers: IDatePickerModifiers = {
-                blueprint: () => true,
-            };
-            const blueprintLocaleUtils = {
-                ...LocaleUtils,
-                formatDay: () => "b",
-            };
-            const blueprintProps: IDatePickerProps = {
-                locale: "blueprint",
-                localeUtils: blueprintLocaleUtils,
-                modifiers: blueprintModifiers,
-            };
-
-            const dayPickerModifiers: IDatePickerModifiers = {
-                dayPicker: () => true,
-            };
-            const dayPickerLocaleUtils = {
-                ...LocaleUtils,
-                formatDay: () => "d",
-            };
-            const dayPickerProps: IDatePickerProps = {
-                locale: "dayPicker",
-                localeUtils: dayPickerLocaleUtils,
-                modifiers: dayPickerModifiers,
-            };
-
-            const wrapper = mount(<DatePicker {...blueprintProps} dayPickerProps={dayPickerProps} />);
-            const DayPicker = wrapper.find("DayPicker").first();
-            assert.equal(DayPicker.prop("locale"), dayPickerProps.locale);
-            assert.equal(DayPicker.prop("localeUtils"), dayPickerProps.localeUtils);
-            assert.equal(DayPicker.prop("modifiers"), dayPickerProps.modifiers);
-        });
-
-        describe("event handlers", () => {
-            it("calls onMonthChange on button next click", () => {
-                const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
-                root
-                    .find(".DayPicker-NavButton--next")
-                    .first()
-                    .simulate("click");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on button prev click", () => {
-                const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
-                root
-                    .find(".DayPicker-NavButton--prev")
-                    .first()
-                    .simulate("click");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on month select change", () => {
-                const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
-                root
-                    .find({ className: Classes.DATEPICKER_MONTH_SELECT })
-                    .first()
-                    .simulate("change");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onMonthChange on year select change", () => {
-                const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
-                root
-                    .find({ className: Classes.DATEPICKER_YEAR_SELECT })
-                    .first()
-                    .simulate("change");
-                assert.isTrue(onMonthChange.called);
-            });
-
-            it("calls onDayClick", () => {
-                const onDayClick = sinon.spy();
-                const { getDay } = wrap(<DatePicker dayPickerProps={{ onDayClick }} />);
-                getDay().simulate("click");
-                assert.isTrue(onDayClick.called);
-            });
-        });
     });
 
     it("user-provided modifiers are applied", () => {
