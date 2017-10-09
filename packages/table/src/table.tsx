@@ -470,18 +470,27 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      */
     public resizeRowsByTallestCell(columnIndices?: number | number[]) {
         let tallest = 0;
+        console.log("columnIndices", columnIndices);
+        console.log("this.state.viewportRect", this.state.viewportRect);
         if (columnIndices == null) {
+            console.log("A");
             // Consider all columns currently in viewport
             const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
+            console.log("  viewportColumnIndices", viewportColumnIndices);
             for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
                 tallest = Math.max(tallest, this.locator.getTallestVisibleCellInColumn(col));
             }
+            console.log("  tallest", tallest);
         } else {
+            console.log("B");
             const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
+            console.log("  columnIndicesArray", columnIndicesArray);
             const tallestByColumns = columnIndicesArray.map(col => this.locator.getTallestVisibleCellInColumn(col));
+            console.log("  tallestByColumns", ...tallestByColumns);
             tallest = Math.max(...tallestByColumns);
         }
         const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
+        console.log("rowHeights", ...rowHeights);
         this.invalidateGrid();
         this.didUpdateColumnOrRowSizes = true;
         this.setState({ rowHeights });

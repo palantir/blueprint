@@ -143,8 +143,8 @@ describe("<Table>", () => {
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
-    describe("Instance methods", () => {
-        describe("resizeRowsByTallestCell", () => {
+    describe.only("Instance methods", () => {
+        describe.only("resizeRowsByTallestCell", () => {
             it("Gets and sets the tallest cell by columns correctly", () => {
                 const DEFAULT_RESIZE_HEIGHT = 20;
                 const MAX_HEIGHT = 40;
@@ -162,7 +162,6 @@ describe("<Table>", () => {
                         <Column name="Column1" renderCell={renderCellShort} />
                     </Table>,
                 );
-
                 table.resizeRowsByTallestCell(0);
                 expect(table.state.rowHeights[0], "resizes by first column").to.equal(MAX_HEIGHT);
 
