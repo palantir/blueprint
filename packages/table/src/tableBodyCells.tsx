@@ -79,10 +79,13 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
         return `cell-${rowIndex}-${columnIndex}`;
     }
 
+    private hasComponentMounted = false;
+
     private batcher = new Batcher<JSX.Element>();
 
     public componentDidMount() {
         this.maybeInvokeOnCompleteRender();
+        this.hasComponentMounted = true;
     }
 
     public shouldComponentUpdate(nextProps?: ITableBodyCellsProps) {
@@ -108,16 +111,22 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
 
     public componentWillUnmount() {
         this.batcher.cancelOutstandingCallback();
+        this.hasComponentMounted = false;
     }
 
     public render() {
-        const { renderMode } = this.props;
-        const cells = renderMode === RenderMode.BATCH ? this.renderBatchedCells() : this.renderAllCells();
+        const cells = this.shouldUseBatchRendering() ? this.renderBatchedCells() : this.renderAllCells();
         return <div className="bp-table-body-cells">{cells}</div>;
     }
 
     // Render modes
     // ============
+
+    private shouldUseBatchRendering() {
+        const { renderMode } = this.props;
+        // use batch rendering only on update, not on the initial mount.
+        return this.hasComponentMounted && renderMode === RenderMode.BATCH;
+    }
 
     private renderBatchedCells() {
         const { columnIndexEnd, columnIndexStart, rowIndexEnd, rowIndexStart } = this.props;
