@@ -49,7 +49,7 @@ const DEEP_COMPARE_KEYS: Array<keyof ITableBodyProps> = ["selectedRegions"];
 export class TableBody extends React.Component<ITableBodyProps, {}> {
     public static defaultProps = {
         loading: false,
-        renderMode: RenderMode.BATCH_ON_UPDATE,
+        renderMode: RenderMode.BATCH,
     };
 
     // TODO: Does this method need to be public?

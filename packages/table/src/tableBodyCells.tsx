@@ -41,10 +41,13 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
     onCompleteRender?: () => void;
 
     /**
-     * Dictates how cells should be rendered.
-     * @default RenderMode.BATCH_ON_UPDATE
+     * Dictates how cells should be rendered. This component doesn't support
+     * `RenderMode.BATCH_ON_UPDATE`, because there are actually multiple updates
+     * that need to happen at higher levels before the table is considered fully
+     * "mounted"; thus, we let higher components tell us when to switch modes.
+     * @default RenderMode.BATCH
      */
-    renderMode?: RenderMode;
+    renderMode?: RenderMode.BATCH | RenderMode.NONE;
 
     /**
      * The `Rect` bounds of the visible viewport with respect to its parent
@@ -111,19 +114,13 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     }
 
     public render() {
-        const cells = this.shouldUseBatchRendering() ? this.renderBatchedCells() : this.renderAllCells();
+        const { renderMode } = this.props;
+        const cells = renderMode === RenderMode.BATCH ? this.renderBatchedCells() : this.renderAllCells();
         return <div className="bp-table-body-cells">{cells}</div>;
     }
 
     // Render modes
     // ============
-
-    private shouldUseBatchRendering() {
-        const { renderMode } = this.props;
-        return (
-            renderMode === RenderMode.BATCH || (renderMode === RenderMode.BATCH_ON_UPDATE && this.hasComponentMounted)
-        );
-    }
 
     private renderBatchedCells() {
         const { columnIndexEnd, columnIndexStart, rowIndexEnd, rowIndexStart } = this.props;
