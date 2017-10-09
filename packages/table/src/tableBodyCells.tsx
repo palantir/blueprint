@@ -41,11 +41,8 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
     onCompleteRender?: () => void;
 
     /**
-     * Dictates how cells should be rendered. Supported modes are:
-     * - `RenderMode.BATCH`: renders cells in batches to improve
-     *   performance
-     * - `RenderMode.NONE`: renders cells synchronously all at once
-     * @default RenderMode.BATCH
+     * Dictates how cells should be rendered.
+     * @default RenderMode.BATCH_ON_UPDATE
      */
     renderMode?: RenderMode;
 
@@ -72,16 +69,15 @@ const BATCHER_RESET_PROP_KEYS_BLACKLIST: Array<keyof ITableBodyCellsProps> = [
 
 export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     public static defaultProps = {
-        renderMode: RenderMode.BATCH,
+        renderMode: RenderMode.BATCH_ON_UPDATE,
     };
 
     private static cellReactKey(rowIndex: number, columnIndex: number) {
         return `cell-${rowIndex}-${columnIndex}`;
     }
 
-    private hasComponentMounted = false;
-
     private batcher = new Batcher<JSX.Element>();
+    private hasComponentMounted = false;
 
     public componentDidMount() {
         this.maybeInvokeOnCompleteRender();
@@ -124,8 +120,9 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
 
     private shouldUseBatchRendering() {
         const { renderMode } = this.props;
-        // use batch rendering only on update, not on the initial mount.
-        return this.hasComponentMounted && renderMode === RenderMode.BATCH;
+        return (
+            renderMode === RenderMode.BATCH || (renderMode === RenderMode.BATCH_ON_UPDATE && this.hasComponentMounted)
+        );
     }
 
     private renderBatchedCells() {
@@ -199,8 +196,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
 
     private maybeInvokeOnCompleteRender() {
         const { onCompleteRender, renderMode } = this.props;
-
-        if (renderMode === RenderMode.NONE || (renderMode === RenderMode.BATCH && this.batcher.isDone())) {
+        if (renderMode === RenderMode.NONE || this.batcher.isDone()) {
             CoreUtils.safeInvoke(onCompleteRender);
         }
     }

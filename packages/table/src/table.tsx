@@ -218,8 +218,10 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * Dictates how cells should be rendered. Supported modes are:
      * - `RenderMode.BATCH`: renders cells in batches to improve performance
+     * - `RenderMode.BATCH_ON_UPDATE`: renders cells synchronously on mount and
+     *   in batches on update
      * - `RenderMode.NONE`: renders cells synchronously all at once
-     * @default RenderMode.BATCH
+     * @default RenderMode.BATCH_ON_UPDATE
      */
     renderMode?: RenderMode;
 
@@ -371,7 +373,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         minColumnWidth: 50,
         minRowHeight: 20,
         numRows: 0,
-        renderMode: RenderMode.BATCH,
+        renderMode: RenderMode.BATCH_ON_UPDATE,
         renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
