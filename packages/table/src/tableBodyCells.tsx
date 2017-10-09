@@ -162,11 +162,11 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     // Cell renderers
     // ==============
 
-    private renderNewCell = (row: number, col: number) => {
+    private renderNewCell = (rowIndex: number, columnIndex: number) => {
         const { columnIndexEnd, grid, rowIndexEnd } = this.props;
-        const extremaClasses = grid.getExtremaClasses(row, col, rowIndexEnd, columnIndexEnd);
-        const isGhost = grid.isGhostIndex(row, col);
-        return this.renderCell(row, col, extremaClasses, isGhost);
+        const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
+        const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
+        return this.renderCell(rowIndex, columnIndex, extremaClasses, isGhost);
     };
 
     private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
