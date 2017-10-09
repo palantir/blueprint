@@ -145,14 +145,19 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
         const { columnIndexEnd, columnIndexStart, grid, rowIndexEnd, rowIndexStart } = this.props;
 
         const cells: Array<React.ReactElement<any>> = [];
+        const cellsArgs: Array<[number, number]> = [];
 
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-                const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
-                const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
-                cells.push(this.renderCell(rowIndex, columnIndex, extremaClasses, isGhost));
+                cells.push(this.renderNewCell(rowIndex, columnIndex));
+                cellsArgs.push([rowIndex, columnIndex]);
             }
         }
+
+        // pretend we did an entire rendering pass using the batcher. that way,
+        // if we switch from `RenderMode.NONE` to `RenderMode.BATCH`, we don't
+        // have to re-paint every cell still in view.
+        this.batcher.setList(cellsArgs, cells);
 
         return cells;
     }
