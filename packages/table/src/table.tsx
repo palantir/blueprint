@@ -138,12 +138,14 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * The number of columns to freeze to the left side of the table, counting
      * from the leftmost column.
+     * @default 0
      */
     numFrozenColumns?: number;
 
     /**
      * The number of rows to freeze to the top of the table, counting from the
      * topmost row.
+     * @default 0
      */
     numFrozenRows?: number;
 
@@ -382,6 +384,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
+        numFrozenColumns: 0,
+        numFrozenRows: 0,
         numRows: 0,
         renderMode: RenderMode.BATCH,
         renderRowHeader: renderDefaultRowHeader,
