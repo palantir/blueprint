@@ -503,9 +503,17 @@ describe("<Table>", () => {
             expect(consoleWarn.callCount).to.equal(2);
         });
 
+        const NUM_ROWS = 4;
+        const NUM_COLUMNS = 3;
+
+        // assuming numFrozenColumns=1 and numFrozenRows=1
+        const NUM_TOP_LEFT_COLUMNS = 1;
+        const NUM_TOP_LEFT_ROWS = 1;
+        const NUM_TOP = NUM_COLUMNS - NUM_TOP_LEFT_COLUMNS;
+        const NUM_LEFT = NUM_ROWS - NUM_TOP_LEFT_ROWS;
+        const NUM_TOP_LEFT = NUM_TOP_LEFT_COLUMNS * NUM_TOP_LEFT_ROWS;
+
         it("does not render frozen bleed cells if numFrozenRows=0 and numFrozenColumns=0", () => {
-            const NUM_ROWS = 3;
-            const NUM_COLUMNS = 3;
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
             expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
@@ -513,18 +521,47 @@ describe("<Table>", () => {
         });
 
         it("renders only one row of frozen cells (i.e. no bleed cells) if numFrozenRows = 1", () => {
-            const NUM_ROWS = 3;
-            const table = mount(createTableOfSize(3, NUM_ROWS, {}, { numFrozenRows: 1 }));
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_ROWS);
+            const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1 }));
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_COLUMNS);
             expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
         });
 
         it("renders only one column of frozen cells (i.e. no bleed cells) if numFrozenColumns = 1", () => {
-            const NUM_COLUMNS = 3;
-            const table = mount(createTableOfSize(NUM_COLUMNS, 3, {}, { numFrozenColumns: 1 }));
+            const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenColumns: 1 }));
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_COLUMNS);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_ROWS);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+        });
+
+        it("renders correct number of frozen cells if numFrozenRows = 1 and numFrozenColumns = 1", () => {
+            const table = mount(
+                createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1, numFrozenColumns: 1 }),
+            );
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_TOP);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_LEFT);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(
+                NUM_TOP_LEFT,
+            );
+        });
+
+        it("renders correct number of frozen cells if numFrozenRows and numFrozenColumns are changed to > 0", () => {
+            const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
+            table.setProps({ numFrozenRows: 1, numFrozenColumns: 1 });
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_TOP);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_LEFT);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(
+                NUM_TOP_LEFT,
+            );
+        });
+
+        it("renders correct number of frozen cells if numFrozenRows and numFrozenColumns are changed to 0", () => {
+            const table = mount(
+                createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1, numFrozenColumns: 1 }),
+            );
+            table.setProps({ numFrozenRows: 0, numFrozenColumns: 0 });
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
         });
     });
