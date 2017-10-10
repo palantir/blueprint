@@ -38,7 +38,7 @@ export interface IRowHeaderProps extends IHeaderProps, IRowHeights, IRowIndices 
 }
 
 export class RowHeader extends React.Component<IRowHeaderProps, {}> {
-    public defaultProps = {
+    public static defaultProps = {
         renderRowHeader: renderDefaultRowHeader,
     };
 
