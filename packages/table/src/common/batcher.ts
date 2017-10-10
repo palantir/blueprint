@@ -170,11 +170,12 @@ export class Batcher<T> {
      * for normal usage.
      */
     public setList(objectsArgs: SimpleStringifyable[][], objects: T[]) {
+        this.reset();
         objectsArgs.forEach((args, i) => {
-            const key = this.getKey(args);
             this.addArgsToBatch(...args);
-            this.currentObjects[key] = objects[i];
+            this.currentObjects[this.getKey(args)] = objects[i];
         });
+        this.done = true;
     }
 
     private getKey(args: SimpleStringifyable[]) {

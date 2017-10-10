@@ -195,6 +195,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
 
     private maybeInvokeOnCompleteRender() {
         const { onCompleteRender, renderMode } = this.props;
+
         if (renderMode === RenderMode.NONE || (renderMode === RenderMode.BATCH && this.batcher.isDone())) {
             CoreUtils.safeInvoke(onCompleteRender);
         }
