@@ -8,23 +8,28 @@ We use box shadows instead of borders since it makes the size and position
 calculations much more well-behaved. This mixin allows us to define the themes
 for all borders with minimal duplication. See the bottom of this file.
 */
-@mixin bp-table-borders-mixin($border-width, $border-color) {
+@mixin bp-table-borders-mixin($border-width, $border-color, $border-color-frozen) {
+  $border-right-default: $border-width 0 0 $border-color;
+  $border-bottom-default: 0 $border-width 0 $border-color;
+  $inset-border-right-default: inset (-$border-width) 0 0 $border-color;
+  $inset-border-bottom-default: inset 0 (-$border-width) 0 $border-color;
+  $inset-border-right-frozen: inset -2px 0 0 $border-color-frozen;
+  $inset-border-bottom-frozen: inset 0 -2px 0 $border-color-frozen;
+
   .bp-table-container {
     box-shadow: 0 0 0 $border-width $border-color;
   }
 
   .bp-table-menu {
-    box-shadow: $border-width 0 0 $border-color,
-                0 $border-width 0 $border-color;
+    box-shadow: $border-bottom-default, $border-right-default;
   }
 
   .bp-table-header {
-    box-shadow: 0 $border-width 0 $border-color;
+    box-shadow: $border-bottom-default;
   }
 
   .bp-table-cell {
-    box-shadow: inset (-$border-width) 0 0 $border-color,
-                inset 0 (-$border-width) 0 $border-color;
+    box-shadow: $inset-border-bottom-default, $inset-border-right-default;
   }
 
   .bp-table-horizontal-cell-divider {
@@ -33,8 +38,11 @@ for all borders with minimal duplication. See the bottom of this file.
   }
 
   .bp-table-column-headers .bp-table-header {
-    box-shadow: inset (-$border-width) 0 0 $border-color,
-                0 $border-width 0 $border-color;
+    box-shadow: $border-bottom-default, $inset-border-right-default;
+
+    &.bp-table-last-in-row {
+      box-shadow: $border-bottom-default, $inset-border-right-frozen;
+    }
 
     &::before {
       // hover shadow
@@ -44,8 +52,11 @@ for all borders with minimal duplication. See the bottom of this file.
   }
 
   .bp-table-row-headers .bp-table-header {
-    box-shadow: inset 0 (-$border-width) 0 $border-color,
-                $border-width 0 0 $border-color;
+    box-shadow: $inset-border-bottom-default, $border-right-default;
+
+    &.bp-table-last-in-column {
+      box-shadow: $inset-border-bottom-frozen, $border-right-default;
+    }
 
     &::before {
       // hover shadow
@@ -56,24 +67,40 @@ for all borders with minimal duplication. See the bottom of this file.
 
   .bp-table-body {
     .bp-table-last-in-row {
-      box-shadow: inset 0 (-$border-width) 0 $border-color,
-                  $border-width 0 0 $border-color;
+      box-shadow: $inset-border-bottom-default, $border-right-default;
     }
 
     .bp-table-last-in-column {
-      box-shadow: inset (-$border-width) 0 0 $border-color,
-                  0 $border-width 0 $border-color;
+      box-shadow: $border-bottom-default, $inset-border-right-default;
     }
 
     .bp-table-last-in-row.bp-table-last-in-column {
-      box-shadow: $border-width 0 0 $border-color,
-                  0 $border-width 0 $border-color;
+      box-shadow: $border-bottom-default, $border-right-default;
     }
+  }
+
+  .bp-table-quadrant-left,
+  .bp-table-quadrant-top-left {
+    .bp-table-last-in-row {
+      box-shadow: $inset-border-bottom-default, $inset-border-right-frozen;
+    }
+  }
+
+  .bp-table-quadrant-top .bp-table-last-in-column {
+    box-shadow: $inset-border-bottom-frozen, $inset-border-right-default;
+  }
+
+  .bp-table-quadrant-top-left .bp-table-last-in-column.bp-table-last-in-row {
+    box-shadow: $inset-border-bottom-frozen, $inset-border-right-frozen;
   }
 }
 
-@include bp-table-borders-mixin($cell-border-width, $cell-border-color);
+@include bp-table-borders-mixin($cell-border-width, $cell-border-color, $cell-border-color-frozen);
 
 .pt-dark {
-  @include bp-table-borders-mixin($cell-border-width, $dark-cell-border-color);
+  @include bp-table-borders-mixin(
+    $cell-border-width,
+    $dark-cell-border-color,
+    $dark-cell-border-color-frozen
+  );
 }

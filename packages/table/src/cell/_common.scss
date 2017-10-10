@@ -13,9 +13,11 @@ $large-cell-height: $pt-grid-size * 3 !default;
 $cell-background-color: $white !default;
 $cell-background-color-opacity: 0.1 !default;
 $cell-border-color: $pt-divider-black !default;
+$cell-border-color-frozen: $blue4;
 $cell-text-color: $pt-text-color !default;
 $dark-cell-background-color: $dark-gray3 !default;
 $dark-cell-border-color: $pt-dark-divider-black !default;
+$dark-cell-border-color-frozen: $blue1;
 $dark-cell-text-color: $pt-dark-text-color !default;
 
 $cell-transition-duration: $pt-transition-duration * 3;
