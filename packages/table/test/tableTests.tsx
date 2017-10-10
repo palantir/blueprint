@@ -461,35 +461,109 @@ describe("<Table>", () => {
     });
 
     describe("Freezing", () => {
-        it("clamps out-of-bounds numFrozenColumns if > number of columns", () => {
-            const table1 = mount(<Table numFrozenColumns={1} />);
-            expect(getNumClamped(table1, "numFrozenColumns")).to.equal(0);
-            const table2 = mount(
+        let consoleWarn: Sinon.SinonSpy;
+
+        before(() => (consoleWarn = sinon.stub(console, "warn")));
+        afterEach(() => consoleWarn.reset());
+        after(() => consoleWarn.restore());
+
+        it("prints a warning and clamps out-of-bounds numFrozenColumns if > number of columns", () => {
+            const table1 = mount(<Table />);
+            expect(table1.state().numFrozenColumnsClamped).to.equal(0);
+            expect(consoleWarn.callCount).to.equal(0);
+
+            const table2 = mount(<Table numFrozenColumns={1} />);
+            expect(table2.state().numFrozenColumnsClamped).to.equal(0);
+            expect(consoleWarn.callCount).to.equal(1);
+
+            const table3 = mount(
                 <Table numFrozenColumns={2}>
                     <Column />
                 </Table>,
             );
-            expect(getNumClamped(table2, "numFrozenColumns")).to.equal(1);
+            expect(table3.state().numFrozenColumnsClamped).to.equal(1);
+            expect(consoleWarn.callCount).to.equal(2);
         });
 
-        it("clamps out-of-bounds numFrozenRows if > numRows", () => {
-            const table1 = mount(<Table numFrozenRows={1} />);
-            expect(getNumClamped(table1, "numFrozenRows")).to.equal(0);
-            const table2 = mount(
+        it("prints a warning and clamps out-of-bounds numFrozenRows if > numRows", () => {
+            const table1 = mount(<Table />);
+            expect(table1.state().numFrozenRowsClamped).to.equal(0);
+            expect(consoleWarn.callCount).to.equal(0);
+
+            const table2 = mount(<Table numFrozenRows={1} numRows={0} />);
+            expect(table2.state().numFrozenRowsClamped).to.equal(0);
+            expect(consoleWarn.callCount).to.equal(1);
+
+            const table3 = mount(
                 <Table numFrozenRows={2} numRows={1}>
                     <Column />
                 </Table>,
             );
-            expect(getNumClamped(table2, "numFrozenRows")).to.equal(1);
+            expect(table3.state().numFrozenRowsClamped).to.equal(1);
+            expect(consoleWarn.callCount).to.equal(2);
         });
 
-        function getNumClamped(table: ReactWrapper<any, any>, propName: "numFrozenColumns" | "numFrozenRows") {
-            // cast as `any` to give us access to private members
-            const unprotectedTableNode = table.getNode() as any;
-            return propName === "numFrozenColumns"
-                ? unprotectedTableNode.getNumFrozenColumnsClamped()
-                : unprotectedTableNode.getNumFrozenRowsClamped();
-        }
+        const NUM_ROWS = 4;
+        const NUM_COLUMNS = 3;
+
+        // assuming numFrozenColumns=1 and numFrozenRows=1
+        const NUM_TOP_LEFT_COLUMNS = 1;
+        const NUM_TOP_LEFT_ROWS = 1;
+        const NUM_TOP = NUM_COLUMNS - NUM_TOP_LEFT_COLUMNS;
+        const NUM_LEFT = NUM_ROWS - NUM_TOP_LEFT_ROWS;
+        const NUM_TOP_LEFT = NUM_TOP_LEFT_COLUMNS * NUM_TOP_LEFT_ROWS;
+
+        it("does not render frozen bleed cells if numFrozenRows=0 and numFrozenColumns=0", () => {
+            const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+        });
+
+        it("renders only one row of frozen cells (i.e. no bleed cells) if numFrozenRows = 1", () => {
+            const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1 }));
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_COLUMNS);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+        });
+
+        it("renders only one column of frozen cells (i.e. no bleed cells) if numFrozenColumns = 1", () => {
+            const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenColumns: 1 }));
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_ROWS);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+        });
+
+        it("renders correct number of frozen cells if numFrozenRows = 1 and numFrozenColumns = 1", () => {
+            const table = mount(
+                createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1, numFrozenColumns: 1 }),
+            );
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_TOP);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_LEFT);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(
+                NUM_TOP_LEFT,
+            );
+        });
+
+        it("renders correct number of frozen cells if numFrozenRows and numFrozenColumns are changed to > 0", () => {
+            const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
+            table.setProps({ numFrozenRows: 1, numFrozenColumns: 1 });
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_TOP);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_LEFT);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(
+                NUM_TOP_LEFT,
+            );
+        });
+
+        it("renders correct number of frozen cells if numFrozenRows and numFrozenColumns are changed to 0", () => {
+            const table = mount(
+                createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1, numFrozenColumns: 1 }),
+            );
+            table.setProps({ numFrozenRows: 0, numFrozenColumns: 0 });
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+        });
     });
 
     describe("Resizing", () => {

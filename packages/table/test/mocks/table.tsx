@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { Cell, Column, IColumnProps, ITableProps, Table, Utils } from "../../src";
+import { Cell, Column, IColumnProps, ITableProps, RenderMode, Table, Utils } from "../../src";
 
 export function createTableOfSize(numColumns: number, numRows: number, columnProps?: any, tableProps?: any) {
     const columns = Utils.times(numColumns, Utils.toBase26Alpha);
@@ -29,6 +29,7 @@ export function createTableWithData(columnNames: string[], data: string[][], col
     // combine table overrides
     const tablePropsWithDefaults: ITableProps = {
         numRows: data.length,
+        renderMode: RenderMode.NONE, // much easier to test things when all cells render synchronously
         ...tableProps,
     };
 
