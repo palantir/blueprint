@@ -41,7 +41,7 @@ export interface IFormGroupProps extends IIntentProps, IProps {
      * _Note:_ the default message element is exposed as `FormGroup.DEFAULT_REQUIRED_CONTENT` and
      * can be changed to provide a new global default for your app.
      */
-    required?: boolean | React.ReactNode;
+    requiredLabel?: boolean | React.ReactNode;
 }
 
 @PureRender
@@ -60,7 +60,7 @@ export class FormGroup extends React.Component<IFormGroupProps, {}> {
             <div className={this.getClassName()}>
                 <label className={Classes.LABEL} htmlFor={labelFor}>
                     {label}
-                    {this.maybeRenderRequired()}
+                    {this.maybeRenderRequiredLabel()}
                 </label>
                 <div className={Classes.FORM_CONTENT}>
                     {children}
@@ -83,9 +83,9 @@ export class FormGroup extends React.Component<IFormGroupProps, {}> {
         );
     }
 
-    private maybeRenderRequired() {
-        const { required } = this.props;
-        return required === true ? FormGroup.DEFAULT_REQUIRED_CONTENT : required;
+    private maybeRenderRequiredLabel() {
+        const { requiredLabel } = this.props;
+        return requiredLabel === true ? FormGroup.DEFAULT_REQUIRED_CONTENT : requiredLabel;
     }
 
     private maybeRenderHelperText() {
