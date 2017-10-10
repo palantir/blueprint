@@ -1157,9 +1157,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
 
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
-        const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumns : columnIndices.columnIndexEnd;
+        const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumns - 1 : columnIndices.columnIndexEnd;
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
-        const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows : rowIndices.rowIndexEnd;
+        const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows - 1 : rowIndices.rowIndexEnd;
 
         // the main quadrant contains all cells in the table, so listen only to that quadrant
         const onCompleteRender = quadrantType === QuadrantType.MAIN ? this.handleCompleteRender : undefined;
