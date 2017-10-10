@@ -502,6 +502,31 @@ describe("<Table>", () => {
             expect(table3.state().numFrozenRowsClamped).to.equal(1);
             expect(consoleWarn.callCount).to.equal(2);
         });
+
+        it("does not render frozen bleed cells if numFrozenRows=0 and numFrozenColumns=0", () => {
+            const NUM_ROWS = 3;
+            const NUM_COLUMNS = 3;
+            const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+        });
+
+        it("renders only one row of frozen cells (i.e. no bleed cells) if numFrozenRows = 1", () => {
+            const NUM_ROWS = 3;
+            const table = mount(createTableOfSize(3, NUM_ROWS, {}, { numFrozenRows: 1 }));
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_ROWS);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+        });
+
+        it("renders only one column of frozen cells (i.e. no bleed cells) if numFrozenColumns = 1", () => {
+            const NUM_COLUMNS = 3;
+            const table = mount(createTableOfSize(NUM_COLUMNS, 3, {}, { numFrozenColumns: 1 }));
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_COLUMNS);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+        });
     });
 
     describe("Resizing", () => {
