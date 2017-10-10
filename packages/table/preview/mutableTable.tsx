@@ -7,7 +7,17 @@
  * Demonstrates sample usage of the table component.
  */
 
-import { Button, Classes, FocusStyleManager, Intent, Menu, MenuDivider, MenuItem, Switch } from "@blueprintjs/core";
+import {
+    Button,
+    Classes,
+    FocusStyleManager,
+    IButtonProps,
+    Intent,
+    Menu,
+    MenuDivider,
+    MenuItem,
+    Switch,
+} from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -633,6 +643,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Reordering", "enableRowReordering")}
                 {this.renderSwitch("Resizing", "enableRowResizing")}
                 {this.renderSwitch("Selection", "enableRowSelection")}
+                <h6>Instance methods</h6>
+                {this.renderButton("Resize rows by tallest cell", {
+                    onClick: this.handleResizeRowsByTallestCellButtonClick,
+                })}
 
                 <h4>Cells</h4>
                 <h6>Display</h6>
@@ -657,20 +671,15 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Isolate layout boundary", "enableLayoutBoundary")}
 
                 <h4>Settings</h4>
-                {this.renderResetButton()}
+                {this.renderButton("Reset all", { iconName: "undo", onClick: this.handleDefaultsButtonClick })}
             </div>
         );
     }
 
-    private renderResetButton() {
+    private renderButton(label: string, props: IButtonProps) {
         return (
-            <Button
-                intent={Intent.PRIMARY}
-                iconName="undo"
-                className={classNames(Classes.FILL)}
-                onClick={this.handleDefaultsButtonClick}
-            >
-                Reset all
+            <Button intent={Intent.PRIMARY} className={classNames(Classes.FILL)} {...props}>
+                {label}
             </Button>
         );
     }
@@ -974,6 +983,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         }
 
         this.tableInstance.scrollToRegion(region);
+    };
+
+    private handleResizeRowsByTallestCellButtonClick = () => {
+        this.tableInstance.resizeRowsByTallestCell();
     };
 
     // State updates

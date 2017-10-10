@@ -12,3 +12,13 @@ heading, use the `<h5>` element.
 </div>
 
 @css pt-callout
+
+@## JavaScript API
+
+The `Callout` component is available in the __@blueprintjs/core__ package.
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
+
+The component is a simple wrapper around the CSS API that provides props for modifiers and optional title element.
+Any additional HTML props will be spread to the rendered `<div>` element.
+
+@interface ICalloutProps

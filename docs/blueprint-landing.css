@@ -5008,6 +5008,39 @@ span.pt-icon {
 .pt-icon-header-two::before {
   content: "\E794"; }
 
+.pt-icon-form::before {
+  content: "\E795"; }
+
+.pt-icon-series-add::before {
+  content: "\E796"; }
+
+.pt-icon-series-search::before {
+  content: "\E797"; }
+
+.pt-icon-series-filtered::before {
+  content: "\E798"; }
+
+.pt-icon-series-derived::before {
+  content: "\E799"; }
+
+.pt-icon-series-configuration::before {
+  content: "\E79A"; }
+
+.pt-icon-console::before {
+  content: "\E79B"; }
+
+.pt-icon-compass::before {
+  content: "\E79C"; }
+
+.pt-icon-walk::before {
+  content: "\E79D"; }
+
+.pt-icon-taxi::before {
+  content: "\E79E"; }
+
+.pt-icon-train::before {
+  content: "\E79F"; }
+
 .pt-submenu > .pt-popover-target {
   display: inherit; }
   .pt-submenu > .pt-popover-target > .pt-menu-item {
@@ -5027,7 +5060,7 @@ span.pt-icon {
         line-height: 20px; }
 
 .pt-submenu .pt-popover {
-  position: relative;
+  position: absolute;
   top: -5px;
   left: 5px; }
   .pt-submenu .pt-popover.pt-align-left {

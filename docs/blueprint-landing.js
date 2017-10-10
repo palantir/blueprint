@@ -6256,6 +6256,17 @@
 	    WIDGET_FOOTER: "pt-icon-widget-footer",
 	    HEADER_ONE: "pt-icon-header-one",
 	    HEADER_TWO: "pt-icon-header-two",
+	    FORM: "pt-icon-form",
+	    SERIES_ADD: "pt-icon-series-add",
+	    SERIES_SEARCH: "pt-icon-series-search",
+	    SERIES_FILTERED: "pt-icon-series-filtered",
+	    SERIES_DERIVED: "pt-icon-series-derived",
+	    SERIES_CONFIGURATION: "pt-icon-series-configuration",
+	    CONSOLE: "pt-icon-console",
+	    COMPASS: "pt-icon-compass",
+	    WALK: "pt-icon-walk",
+	    TAXI: "pt-icon-taxi",
+	    TRAIN: "pt-icon-train",
 	};
 
 	//# sourceMappingURL=iconClasses.js.map
@@ -6690,6 +6701,17 @@
 	    WIDGET_FOOTER: "\ue792",
 	    HEADER_ONE: "\ue793",
 	    HEADER_TWO: "\ue794",
+	    FORM: "\ue795",
+	    SERIES_ADD: "\ue796",
+	    SERIES_SEARCH: "\ue797",
+	    SERIES_FILTERED: "\ue798",
+	    SERIES_DERIVED: "\ue799",
+	    SERIES_CONFIGURATION: "\ue79a",
+	    CONSOLE: "\ue79b",
+	    COMPASS: "\ue79c",
+	    WALK: "\ue79d",
+	    TAXI: "\ue79e",
+	    TRAIN: "\ue79f",
 	};
 
 	//# sourceMappingURL=iconStrings.js.map
@@ -25539,6 +25561,9 @@
 	        }
 	    };
 	    Popover.prototype.componentDOMChange = function () {
+	        if (this.targetElement == null) {
+	            return;
+	        }
 	        if (this.props.useSmartArrowPositioning) {
 	            this.setState({
 	                targetHeight: this.targetElement.clientHeight,
@@ -34325,7 +34350,7 @@
 	var abstractComponent_1 = __webpack_require__(23);
 	var Classes = __webpack_require__(68);
 	var Keys = __webpack_require__(69);
-	var utils_1 = __webpack_require__(60);
+	var Utils = __webpack_require__(60);
 	var tab2_1 = __webpack_require__(283);
 	var tabTitle_1 = __webpack_require__(285);
 	exports.Expander = function () { return React.createElement("div", { className: "pt-flex-expander" }); };
@@ -34363,7 +34388,7 @@
 	            }
 	        };
 	        _this.handleTabClick = function (newTabId, event) {
-	            utils_1.safeInvoke(_this.props.onChange, newTabId, _this.state.selectedTabId, event);
+	            Utils.safeInvoke(_this.props.onChange, newTabId, _this.state.selectedTabId, event);
 	            if (_this.props.selectedTabId === undefined) {
 	                _this.setState({ selectedTabId: newTabId });
 	            }
@@ -34413,9 +34438,17 @@
 	            this.setState({ selectedTabId: selectedTabId });
 	        }
 	    };
-	    Tabs2.prototype.componentDidUpdate = function (_prevProps, prevState) {
+	    Tabs2.prototype.componentDidUpdate = function (prevProps, prevState) {
 	        if (this.state.selectedTabId !== prevState.selectedTabId) {
 	            this.moveSelectionIndicator();
+	        }
+	        else if (prevState.selectedTabId != null) {
+	            // comparing React nodes is difficult to do with simple logic, so
+	            // shallowly compare just their props as a workaround.
+	            var didChildrenChange = !Utils.arraysEqual(this.getTabChildrenProps(prevProps), this.getTabChildrenProps(), Utils.shallowCompareKeys);
+	            if (didChildrenChange) {
+	                this.moveSelectionIndicator();
+	            }
 	        }
 	    };
 	    Tabs2.prototype.getInitialSelectedTabId = function () {
@@ -34442,9 +34475,14 @@
 	        }
 	        return undefined;
 	    };
-	    /** Filters this.props.children to only `<Tab>`s */
-	    Tabs2.prototype.getTabChildren = function () {
-	        return React.Children.toArray(this.props.children).filter(isTab);
+	    Tabs2.prototype.getTabChildrenProps = function (props) {
+	        if (props === void 0) { props = this.props; }
+	        return this.getTabChildren(props).map(function (child) { return child.props; });
+	    };
+	    /** Filters children to only `<Tab>`s */
+	    Tabs2.prototype.getTabChildren = function (props) {
+	        if (props === void 0) { props = this.props; }
+	        return React.Children.toArray(props.children).filter(isTab);
 	    };
 	    /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
 	    Tabs2.prototype.getTabElements = function (subselector) {
