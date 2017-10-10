@@ -46,6 +46,18 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /**
+     * Current query value, for controlled usage.
+     * Providing this prop will control the query input.
+     */
+    query?: string;
+
+    /**
+     * Callback invoked when the query value changes,
+     * through user input or when the filter is reset.
+     */
+    onQueryChange?: (query: string) => void;
+
+    /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's children, if appropriate.
      * @default false
@@ -55,11 +67,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     /** React child to render when filtering items returns zero results. */
     noResults?: React.ReactChild;
 
-    /**
-     * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
-     * If you want to control the filter input, you can pass `value` and `onChange` here
-     * to override `Select`'s own behavior.
-     */
+    /** Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead). */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
@@ -79,12 +87,6 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * @default false
      */
     resetOnClose?: boolean;
-
-    /**
-     * Callback invoked when the query value changes,
-     * through user input or when the filter is reset.
-     */
-    onQueryChange?: (query: string) => void;
 }
 
 export interface ISelectItemRendererProps<T> {
@@ -161,9 +163,9 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     }
 
     public componentWillReceiveProps(nextProps: ISelectProps<T>) {
-        const { inputProps: nextInputProps = {} } = nextProps;
-        if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
-            this.setState({ query: nextInputProps.value });
+        const nextQuery = getQuery(nextProps);
+        if (nextQuery !== undefined && nextQuery !== this.state.query) {
+            this.setState({ query: nextQuery });
         }
     }
 
@@ -184,8 +186,8 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
                 leftIconName="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
-                value={listProps.query}
                 {...htmlInputProps}
+                value={listProps.query}
                 onChange={this.handleQueryChange}
             />
         );
@@ -309,17 +311,34 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = {}, onQueryChange } = this.props;
-        const query = event.currentTarget.value;
-        this.setState({ query });
+        const { inputProps = {} } = this.props;
         Utils.safeInvoke(inputProps.onChange, event);
-        Utils.safeInvoke(onQueryChange, query);
+        this.setQuery(event.currentTarget.value);
     };
 
     private resetQuery = () => {
-        const { items, onQueryChange } = this.props;
-        const query = "";
-        this.setState({ activeItem: items[0], query });
-        Utils.safeInvoke(onQueryChange, query);
+        const { items } = this.props;
+        this.setState({ activeItem: items[0] });
+        this.setQuery("");
     };
+
+    private setQuery(query: string): void {
+        // Only set the query state ourselves if not controlled
+        if (getQuery(this.props) === undefined) {
+            this.setState({ query });
+        }
+
+        Utils.safeInvoke(this.props.onQueryChange, query);
+    }
+}
+
+function getQuery(props: ISelectProps<any>, defaultValue?: string): string | undefined {
+    const { inputProps = {} } = props;
+    if (props.query !== undefined) {
+        return props.query;
+    } else if (inputProps.value !== undefined) {
+        return inputProps.value;
+    } else {
+        return defaultValue;
+    }
 }

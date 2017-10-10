@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { Classes, InputGroup, Popover } from "@blueprintjs/core";
+import { Button, Classes, InputGroup, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount } from "enzyme";
@@ -19,7 +19,6 @@ describe("<Select>", () => {
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { inline: true, isOpen: true },
-        query: "",
     };
     let handlers: {
         itemPredicate: Sinon.SinonSpy;
@@ -98,11 +97,88 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.state("query"), "");
     });
 
+    it("if query prop is non-empty, the input value will stay in sync with the query prop", () => {
+        const query = "nailed it";
+        const wrapper = select({ query });
+        const input = wrapper.find("input");
+
+        assert.equal(input.prop("value"), query);
+        assert.equal(wrapper.state("query"), query);
+
+        (input.getDOMNode() as HTMLInputElement).value = "some other value";
+        input.simulate("change");
+
+        assert.equal(input.prop("value"), query);
+        assert.equal(wrapper.state("query"), query);
+    });
+
+    it("if both query and inputProps.value are non-empty, query will take precedence", () => {
+        const query = "nailed it";
+        const wrapper = select({ query, inputProps: { value: "some other value" } });
+        assert.equal(wrapper.find("input").prop("value"), query);
+        assert.equal(wrapper.state("query"), query);
+    });
+
+    it("onQueryChange is called when the input value changes", () => {
+        const onQueryChange = sinon.spy();
+        const wrapper = select({ onQueryChange });
+        const query = "nailed it";
+        const input = wrapper.find("input");
+        (input.getDOMNode() as HTMLInputElement).value = query;
+        input.simulate("change");
+        assert.isTrue(onQueryChange.calledOnce);
+        assert.isTrue(onQueryChange.calledWithExactly(query));
+    });
+
+    it("if onQueryChange and inputProps.onChange are passed, both will be called", () => {
+        const onQueryChange = sinon.spy();
+        const onInputChange = sinon.spy();
+        const wrapper = select({ onQueryChange, inputProps: { onChange: onInputChange } });
+        wrapper.find("input").simulate("change");
+        assert.isTrue(onQueryChange.calledOnce);
+        assert.isTrue(onInputChange.calledOnce);
+    });
+
+    it("onQueryChange is called when resetOnSelect=true", () => {
+        const onQueryChange = sinon.spy();
+        const wrapper = select({ onQueryChange, resetOnSelect: true, query: "1972" });
+        wrapper
+            .find("a")
+            .at(0)
+            .simulate("click");
+        assert.isTrue(onQueryChange.calledOnce);
+        assert.isTrue(onQueryChange.calledWithExactly(""));
+    });
+
+    it("onQueryChange is called when resetOnClose=true", () => {
+        const onQueryChange = sinon.spy();
+        const wrapper = select({ onQueryChange, resetOnClose: true, popoverProps: {}, query: "1972" });
+        wrapper.find("table").simulate("click");
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        wrapper.find("table").simulate("click");
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+        assert.isTrue(onQueryChange.calledOnce);
+        assert.isTrue(onQueryChange.calledWithExactly(""));
+    });
+
+    it("onQueryChange is called when clear button pressed", () => {
+        const onQueryChange = sinon.spy();
+        const wrapper = select({ onQueryChange, query: "1972" });
+        wrapper
+            .find(InputGroup)
+            .find(Button)
+            .simulate("click");
+        assert.isTrue(onQueryChange.calledOnce);
+        assert.isTrue(onQueryChange.calledWithExactly(""));
+    });
+
     it("input can be controlled with inputProps", () => {
         const value = "nailed it";
         const onChange = sinon.spy();
 
-        const input = select({ inputProps: { value, onChange } }).find("input");
+        const wrapper = select({ inputProps: { value, onChange } });
+        const input = wrapper.find("input");
+
         assert.equal(input.prop("value"), value);
 
         input.simulate("change");
@@ -113,10 +189,18 @@ describe("<Select>", () => {
         // Select defines its own popoverWillOpen so this ensures that the passthrough happens
         const popoverWillOpen = sinon.spy();
         const tetherOptions = {}; // our own instance
-        const wrapper = select({ popoverProps: { isOpen: undefined, popoverWillOpen, tetherOptions } });
+        const wrapper = select({ popoverProps: { inline: true, popoverWillOpen, tetherOptions } });
         wrapper.find("table").simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("tetherOptions"), tetherOptions);
         assert.isTrue(popoverWillOpen.calledOnce);
+    });
+
+    it("popover can be controlled with popoverProps.isOpen", () => {
+        const wrapper = select({ popoverProps: { inline: true, isOpen: false } });
+        wrapper.find("table").simulate("click");
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        wrapper.setProps({ popoverProps: { inline: true, isOpen: true } });
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
 
     it("returns focus to focusable target after popover closed");
