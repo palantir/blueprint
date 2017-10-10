@@ -14,17 +14,17 @@ import { IIntentProps, IProps } from "../../common/props";
 export interface IFormGroupProps extends IIntentProps, IProps {
     /**
      * Whether form group should appear as non-interactive.
-     * Remember that input elements must be disabled separately
+     * Remember that input elements must be disabled separately.
      */
     disabled?: boolean;
 
     /** Optional helper text. Will be wrapped in `.pt-form-helper-text` and displayed beneath `children`. */
     helperText?: React.ReactNode;
 
-    /** Whether to render label and control on a single line. */
+    /** Whether to render the label and children on a single line. */
     inline?: boolean;
 
-    /** Label of this form group */
+    /** Label of this form group. */
     label?: React.ReactNode;
 
     /**
@@ -35,10 +35,10 @@ export interface IFormGroupProps extends IIntentProps, IProps {
 
     /**
      * Whether this form input should appear as required (does not affect HTML form required status).
-     * Providing a boolean value will render a default "required" message after the `label` prop.
+     * Providing a boolean `true` value will render a default "required" message after the `label` prop.
      * Providing a JSX value will render that content instead.
      *
-     * Note: the default message element is exposed as `FormGroup.DEFAULT_REQUIRED_CONTENT` and
+     * _Note:_ the default message element is exposed as `FormGroup.DEFAULT_REQUIRED_CONTENT` and
      * can be changed to provide a new global default for your app.
      */
     required?: boolean | React.ReactNode;
@@ -55,7 +55,7 @@ export class FormGroup extends React.Component<IFormGroupProps, {}> {
     public static DEFAULT_REQUIRED_CONTENT = <span className={Classes.TEXT_MUTED}>(required)</span>;
 
     public render() {
-        const { children, helperText, label, labelFor } = this.props;
+        const { children, label, labelFor } = this.props;
         return (
             <div className={this.getClassName()}>
                 <label className={Classes.LABEL} htmlFor={labelFor}>
@@ -64,7 +64,7 @@ export class FormGroup extends React.Component<IFormGroupProps, {}> {
                 </label>
                 <div className={Classes.FORM_CONTENT}>
                     {children}
-                    {helperText && <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>}
+                    {this.maybeRenderHelperText()}
                 </div>
             </div>
         );
@@ -85,10 +85,14 @@ export class FormGroup extends React.Component<IFormGroupProps, {}> {
 
     private maybeRenderRequired() {
         const { required } = this.props;
-        if (required === true) {
-            return FormGroup.DEFAULT_REQUIRED_CONTENT;
-        } else {
-            return required;
+        return required === true ? FormGroup.DEFAULT_REQUIRED_CONTENT : required;
+    }
+
+    private maybeRenderHelperText() {
+        const { helperText } = this.props;
+        if (!helperText) {
+            return null;
         }
+        return <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>;
     }
 }
