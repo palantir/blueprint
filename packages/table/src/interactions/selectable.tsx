@@ -8,8 +8,10 @@
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+
 import { IFocusedCellCoordinates } from "../common/cell";
 import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
+import * as PlatformUtils from "../common/internal/platformUtils";
 import { Utils } from "../common/utils";
 import { IRegion, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
@@ -220,7 +222,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         const element = event.target as HTMLElement;
 
         const isLeftClick = Utils.isLeftClick(event);
-        const isContextMenuTrigger = isLeftClick && event.ctrlKey;
+        const isContextMenuTrigger = isLeftClick && event.ctrlKey && PlatformUtils.isMac();
 
         return (
             !isLeftClick ||
