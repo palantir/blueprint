@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { ICellInterval, IRegion, Regions } from "../../regions";
+import { IRegion, Regions } from "../../regions";
 import { IFocusedCellCoordinates } from "../cell";
 import { Direction } from "../direction";
 import { IMovementDelta } from "../movementDelta";
@@ -19,10 +19,7 @@ export function modifyLastSelectedRegion(
     const lastSelectedRegion = getLastSelectedRegion(selectedRegions);
     const delta = directionToMovementDelta(direction);
 
-    const nextRegion: IRegion = {
-        cols: lastSelectedRegion.cols.slice() as ICellInterval,
-        rows: lastSelectedRegion.rows.slice() as ICellInterval,
-    };
+    const nextRegion: IRegion = Regions.copy(lastSelectedRegion);
 
     if (focusedCell != null) {
         // TODO: Implement

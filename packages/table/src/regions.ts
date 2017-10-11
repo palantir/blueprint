@@ -169,6 +169,16 @@ export class Regions {
     }
 
     /**
+     * Returns a deep copy of the provided region.
+     */
+    public static copy(region: IRegion): IRegion {
+        return {
+            cols: region.cols == null ? region.cols : region.cols.slice() as ICellInterval,
+            rows: region.rows == null ? region.rows : region.rows.slice() as ICellInterval,
+        };
+    }
+
+    /**
      * Returns a region containing one or more cells.
      */
     public static cell(row: number, col: number, row2?: number, col2?: number): IRegion {
