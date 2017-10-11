@@ -19,7 +19,6 @@ import {
     IPopoverProps,
     IPopoverState,
     MenuItem,
-    Popover,
 } from "@blueprintjs/core";
 import {
     getInitialTimezoneItems,
@@ -34,6 +33,7 @@ import {
     ISelectState,
     ITimezonePickerProps,
     ITimezonePickerState,
+    Popover2,
     QueryList,
     Select,
     TimezoneDisplayFormat,
@@ -50,7 +50,7 @@ describe("<TimezonePicker>", () => {
     it("clicking on button target opens popover", () => {
         const timezonePicker = mount(<TimezonePicker popoverProps={getPopoverProps({}, ["isOpen"])} />);
         timezonePicker.find(Button).simulate("click");
-        assert.isTrue(timezonePicker.find(Popover).prop("isOpen"));
+        assert.isTrue(timezonePicker.find(Popover2).prop("isOpen"));
     });
 
     it("if disabled=true, clicking on button target does not open popover", () => {
@@ -58,7 +58,7 @@ describe("<TimezonePicker>", () => {
             <TimezonePicker disabled={true} popoverProps={getPopoverProps({ isOpen: false })} />,
         );
         timezonePicker.find(Button).simulate("click");
-        assert.isFalse(timezonePicker.find(Popover).prop("isOpen"));
+        assert.isFalse(timezonePicker.find(Popover2).prop("isOpen"));
     });
 
     it("if placeholder is non-empty, the filter placeholder text is changed", () => {
@@ -289,7 +289,7 @@ describe("<TimezonePicker>", () => {
     function findPopover(timezonePicker: TimezonePickerShallowWrapper): PopoverShallowWrapper {
         return findQueryList(timezonePicker)
             .shallow()
-            .find(Popover);
+            .find(Popover2);
     }
 
     function findInputGroup(timezonePicker: TimezonePickerShallowWrapper): InputGroupShallowWrapper {
