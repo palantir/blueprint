@@ -785,8 +785,107 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // Hotkeys
     // =======
 
+    private maybeRenderCopyHotkey() {
+        const { getCellClipboardData } = this.props;
+        if (getCellClipboardData != null) {
+            return (
+                <Hotkey
+                    key="copy-hotkey"
+                    label="Copy selected table cells"
+                    group="Table"
+                    combo="mod+c"
+                    onKeyDown={this.handleCopy}
+                />
+            );
+        } else {
+            return undefined;
+        }
+    }
+
     private maybeRenderSelectionHotkeys() {
-        // TODO: Implement!
+        // TODO: Implement
+    }
+
+    private maybeRenderFocusHotkeys() {
+        const { enableFocus } = this.props;
+        if (enableFocus != null) {
+            return [
+                <Hotkey
+                    key="move left"
+                    label="Move focus cell left"
+                    group="Table"
+                    combo="left"
+                    onKeyDown={this.handleFocusMoveLeft}
+                />,
+                <Hotkey
+                    key="move right"
+                    label="Move focus cell right"
+                    group="Table"
+                    combo="right"
+                    onKeyDown={this.handleFocusMoveRight}
+                />,
+                <Hotkey
+                    key="move up"
+                    label="Move focus cell up"
+                    group="Table"
+                    combo="up"
+                    onKeyDown={this.handleFocusMoveUp}
+                />,
+                <Hotkey
+                    key="move down"
+                    label="Move focus cell down"
+                    group="Table"
+                    combo="down"
+                    onKeyDown={this.handleFocusMoveDown}
+                />,
+                <Hotkey
+                    key="move tab"
+                    label="Move focus cell tab"
+                    group="Table"
+                    combo="tab"
+                    onKeyDown={this.handleFocusMoveRightInternal}
+                />,
+                <Hotkey
+                    key="move shift-tab"
+                    label="Move focus cell shift tab"
+                    group="Table"
+                    combo="shift+tab"
+                    onKeyDown={this.handleFocusMoveLeftInternal}
+                />,
+                <Hotkey
+                    key="move enter"
+                    label="Move focus cell enter"
+                    group="Table"
+                    combo="enter"
+                    onKeyDown={this.handleFocusMoveDownInternal}
+                />,
+                <Hotkey
+                    key="move shift-enter"
+                    label="Move focus cell shift enter"
+                    group="Table"
+                    combo="shift+enter"
+                    onKeyDown={this.handleFocusMoveUpInternal}
+                />,
+            ];
+        } else {
+            return [];
+        }
+    }
+
+    private maybeRenderSelectAllHotkey() {
+        if (this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE)) {
+            return (
+                <Hotkey
+                    key="select-all-hotkey"
+                    label="Select all"
+                    group="Table"
+                    combo="mod+a"
+                    onKeyDown={this.handleSelectAllHotkey}
+                />
+            );
+        } else {
+            return undefined;
+        }
     }
 
     // Quadrant refs
@@ -1295,23 +1394,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         });
     }
 
-    private maybeRenderCopyHotkey() {
-        const { getCellClipboardData } = this.props;
-        if (getCellClipboardData != null) {
-            return (
-                <Hotkey
-                    key="copy-hotkey"
-                    label="Copy selected table cells"
-                    group="Table"
-                    combo="mod+c"
-                    onKeyDown={this.handleCopy}
-                />
-            );
-        } else {
-            return undefined;
-        }
-    }
-
     private handleCompleteRender = () => {
         // the first onCompleteRender is triggered before the viewportRect is
         // defined and the second after the viewportRect has been set. the cells
@@ -1330,88 +1412,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleFocusMoveUpInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "up");
     private handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
     private handleFocusMoveDownInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "down");
-
-    private maybeRenderFocusHotkeys() {
-        const { enableFocus } = this.props;
-        if (enableFocus != null) {
-            return [
-                <Hotkey
-                    key="move left"
-                    label="Move focus cell left"
-                    group="Table"
-                    combo="left"
-                    onKeyDown={this.handleFocusMoveLeft}
-                />,
-                <Hotkey
-                    key="move right"
-                    label="Move focus cell right"
-                    group="Table"
-                    combo="right"
-                    onKeyDown={this.handleFocusMoveRight}
-                />,
-                <Hotkey
-                    key="move up"
-                    label="Move focus cell up"
-                    group="Table"
-                    combo="up"
-                    onKeyDown={this.handleFocusMoveUp}
-                />,
-                <Hotkey
-                    key="move down"
-                    label="Move focus cell down"
-                    group="Table"
-                    combo="down"
-                    onKeyDown={this.handleFocusMoveDown}
-                />,
-                <Hotkey
-                    key="move tab"
-                    label="Move focus cell tab"
-                    group="Table"
-                    combo="tab"
-                    onKeyDown={this.handleFocusMoveRightInternal}
-                />,
-                <Hotkey
-                    key="move shift-tab"
-                    label="Move focus cell shift tab"
-                    group="Table"
-                    combo="shift+tab"
-                    onKeyDown={this.handleFocusMoveLeftInternal}
-                />,
-                <Hotkey
-                    key="move enter"
-                    label="Move focus cell enter"
-                    group="Table"
-                    combo="enter"
-                    onKeyDown={this.handleFocusMoveDownInternal}
-                />,
-                <Hotkey
-                    key="move shift-enter"
-                    label="Move focus cell shift enter"
-                    group="Table"
-                    combo="shift+enter"
-                    onKeyDown={this.handleFocusMoveUpInternal}
-                />,
-            ];
-        } else {
-            return [];
-        }
-    }
-
-    private maybeRenderSelectAllHotkey() {
-        if (this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE)) {
-            return (
-                <Hotkey
-                    key="select-all-hotkey"
-                    label="Select all"
-                    group="Table"
-                    combo="mod+a"
-                    onKeyDown={this.handleSelectAllHotkey}
-                />
-            );
-        } else {
-            return undefined;
-        }
-    }
 
     private styleBodyRegion = (region: IRegion, quadrantType: QuadrantType): React.CSSProperties => {
         const { numFrozenColumns } = this.props;
