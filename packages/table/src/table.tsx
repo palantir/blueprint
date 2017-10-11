@@ -543,6 +543,45 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
     }
 
+    public resizeRowsByApproximateHeight(getCellText: (rowIndex: number, columnIndex: number) => string) {
+        const APPROX_CHAR_WIDTH = 8;
+        const APPROX_LINE_HEIGHT = 18;
+        const NUM_EXTRA_LINES = 1; // extra lines
+        const CELL_HORIZONTAL_PADDING = 10;
+
+        const { numRows } = this.props;
+        const { columnWidths } = this.state;
+        const numColumns = columnWidths.length;
+
+        const rowHeights: number[] = [];
+
+        for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+            let maxCellHeightInRow = 0;
+
+            // iterate through each cell in the row
+            for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+                const strLength = getCellText(rowIndex, columnIndex).length; // assume non-null
+                const cellWidth = columnWidths[columnIndex];
+
+                const availableCellWidth = cellWidth - 2 * CELL_HORIZONTAL_PADDING;
+                const approxCharsPerLine = availableCellWidth / APPROX_CHAR_WIDTH;
+                const approxNumLinesDesired = Math.ceil(strLength / approxCharsPerLine) + NUM_EXTRA_LINES;
+
+                const approxCellHeight = approxNumLinesDesired * APPROX_LINE_HEIGHT;
+
+                if (approxCellHeight > maxCellHeightInRow) {
+                    maxCellHeightInRow = approxCellHeight;
+                }
+            }
+
+            rowHeights.push(maxCellHeightInRow);
+        }
+
+        this.invalidateGrid();
+        this.didUpdateColumnOrRowSizes = true;
+        this.setState({ rowHeights });
+    }
+
     // React lifecycle
     // ===============
 

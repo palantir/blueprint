@@ -639,6 +639,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderButton("Resize rows by tallest cell", {
                     onClick: this.handleResizeRowsByTallestCellButtonClick,
                 })}
+                {this.renderButton("Resize rows by approx height", {
+                    onClick: this.handleResizeRowsByApproxHeightButtonClick,
+                })}
 
                 <h4>Cells</h4>
                 <h6>Display</h6>
@@ -968,6 +971,15 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private handleResizeRowsByTallestCellButtonClick = () => {
         this.tableInstance.resizeRowsByTallestCell();
+    };
+
+    private handleResizeRowsByApproxHeightButtonClick = () => {
+        this.tableInstance.resizeRowsByApproximateHeight(this.getCellText);
+    };
+
+    private getCellText = (rowIndex: number, columnIndex: number) => {
+        const content = this.store.get(rowIndex, columnIndex);
+        return this.state.cellContent === CellContent.LARGE_JSON ? JSON.stringify(content) : content;
     };
 
     // State updates
