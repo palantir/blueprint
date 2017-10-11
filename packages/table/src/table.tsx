@@ -372,6 +372,25 @@ export interface ITableState {
     viewportRect?: Rect;
 }
 
+enum Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+}
+
+interface IMovementDelta {
+    /**
+     * The number of rows by which to move.
+     */
+    rows: number;
+
+    /**
+     * The number of columns by which to move.
+     */
+    cols: number;
+}
+
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
@@ -803,7 +822,36 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private maybeRenderSelectionHotkeys() {
-        // TODO: Implement
+        return [
+            <Hotkey
+                key="modify-selection-up"
+                label="Modify selection upward"
+                group="Table"
+                combo="mod+up"
+                onKeyDown={this.handleSelectionModifyUp}
+            />,
+            <Hotkey
+                key="modify-selection-down"
+                label="Modify selection downward"
+                group="Table"
+                combo="mod+down"
+                onKeyDown={this.handleSelectionModifyDown}
+            />,
+            <Hotkey
+                key="modify-selection-left"
+                label="Modify selection leftward"
+                group="Table"
+                combo="mod+left"
+                onKeyDown={this.handleSelectionModifyLeft}
+            />,
+            <Hotkey
+                key="modify-selection-right"
+                label="Modify selection rightward"
+                group="Table"
+                combo="mod+right"
+                onKeyDown={this.handleSelectionModifyRight}
+            />,
+        ];
     }
 
     private maybeRenderFocusHotkeys() {
@@ -887,6 +935,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             return undefined;
         }
     }
+
+    // Modify selection
+    // ----------------
+
+    private handleSelectionModifyUp = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.UP);
+    private handleSelectionModifyDown = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.DOWN);
+    private handleSelectionModifyLeft = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.LEFT);
+    private handleSelectionModifyRight = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.RIGHT);
+
+    private handleSelectionModify = (e: KeyboardEvent, direction: Direction) => {
+        const delta = directionToMovementDelta(direction);
+    };
 
     // Quadrant refs
     // =============
@@ -1938,4 +1998,19 @@ function clampNumFrozenRows(props: ITableProps) {
 // order, and you can't have an optional param precede a required param.
 function clampPotentiallyNullValue(value: number | null | undefined, max: number) {
     return value == null ? 0 : Utils.clamp(value, 0, max);
+}
+
+function directionToMovementDelta(direction: Direction): IMovementDelta {
+    switch (direction) {
+        case Direction.UP:
+            return { rows: -1, cols: 0 };
+        case Direction.DOWN:
+            return { rows: +1, cols: 0 };
+        case Direction.LEFT:
+            return { rows: 0, cols: -1 };
+        case Direction.RIGHT:
+            return { rows: 0, cols: +1 };
+        default:
+            return undefined;
+    }
 }
