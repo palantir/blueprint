@@ -18,7 +18,7 @@ export interface IFormGroupProps extends IIntentProps, IProps {
      */
     disabled?: boolean;
 
-    /** Optional helper text. Will be wrapped in `.pt-form-helper-text` and displayed beneath `children`. */
+    /** Optional helper text. The given content will be wrapped in `.pt-form-helper-text` and displayed beneath `children`. */
     helperText?: React.ReactNode;
 
     /** Whether to render the label and children on a single line. */
