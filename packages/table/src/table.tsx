@@ -14,6 +14,7 @@ import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
+import { Direction } from "./common/direction";
 import * as Errors from "./common/errors";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
@@ -371,25 +372,6 @@ export interface ITableState {
      * performance enhancements.
      */
     viewportRect?: Rect;
-}
-
-enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-}
-
-interface IMovementDelta {
-    /**
-     * The number of rows by which to move.
-     */
-    rows: number;
-
-    /**
-     * The number of columns by which to move.
-     */
-    cols: number;
 }
 
 @HotkeysTarget
@@ -828,28 +810,28 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 key="modify-selection-up"
                 label="Modify selection upward"
                 group="Table"
-                combo="mod+up"
+                combo="shift+up"
                 onKeyDown={this.handleSelectionModifyUp}
             />,
             <Hotkey
                 key="modify-selection-down"
                 label="Modify selection downward"
                 group="Table"
-                combo="mod+down"
+                combo="shift+down"
                 onKeyDown={this.handleSelectionModifyDown}
             />,
             <Hotkey
                 key="modify-selection-left"
                 label="Modify selection leftward"
                 group="Table"
-                combo="mod+left"
+                combo="shift+left"
                 onKeyDown={this.handleSelectionModifyLeft}
             />,
             <Hotkey
                 key="modify-selection-right"
                 label="Modify selection rightward"
                 group="Table"
-                combo="mod+right"
+                combo="shift+right"
                 onKeyDown={this.handleSelectionModifyRight}
             />,
         ];
@@ -945,12 +927,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleSelectionModifyLeft = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.LEFT);
     private handleSelectionModifyRight = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.RIGHT);
 
-    private handleSelectionModify = (e: KeyboardEvent, direction: Direction) => {
+    private handleSelectionModify = (_e: KeyboardEvent, direction: Direction) => {
         const { focusedCell, selectedRegions } = this.state;
         const nextSelectedRegions = SelectionUtils.modifyLastSelectedRegion(selectedRegions, direction, focusedCell);
 
         console.log("next selectedRegions:", nextSelectedRegions);
-
+        this.setState({ selectedRegions: nextSelectedRegions });
         // TODO: Scroll viewport to reveal the new end of the modified region
         // TODO: Update the selected regions in state
     };
@@ -2005,19 +1987,4 @@ function clampNumFrozenRows(props: ITableProps) {
 // order, and you can't have an optional param precede a required param.
 function clampPotentiallyNullValue(value: number | null | undefined, max: number) {
     return value == null ? 0 : Utils.clamp(value, 0, max);
-}
-
-function directionToMovementDelta(direction: Direction): IMovementDelta {
-    switch (direction) {
-        case Direction.UP:
-            return { rows: -1, cols: 0 };
-        case Direction.DOWN:
-            return { rows: +1, cols: 0 };
-        case Direction.LEFT:
-            return { rows: 0, cols: -1 };
-        case Direction.RIGHT:
-            return { rows: 0, cols: +1 };
-        default:
-            return undefined;
-    }
 }
