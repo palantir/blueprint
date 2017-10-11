@@ -2924,5 +2924,82 @@
     "tags": "paragraph styling, formatting",
     "group": "editor",
     "content": "\\e794"
+  },
+  {
+    "name": "Form",
+    "className": "pt-icon-form",
+    "tags": "response, fill",
+    "group": "data",
+    "content": "\\e795"
+  },
+  {
+    "name": "Series: add",
+    "className": "pt-icon-series-add",
+    "tags": "timeseries, plot, line, data, chart, new, create",
+    "group": "data",
+    "content": "\\e796"
+  },
+  {
+    "name": "Series: search",
+    "className": "pt-icon-series-search",
+    "tags": "timeseries, plot, line, data, chart, find, filter",
+    "group": "data",
+    "content": "\\e797"
+  },
+  {
+    "name": "Series: filtered",
+    "className": "pt-icon-series-filtered",
+    "tags": "timeseries, plot, line, data, chart, reduce, reduced, search",
+    "group": "data",
+    "content": "\\e798"
+  },
+  {
+    "name": "Series: derived",
+    "className": "pt-icon-series-derived",
+    "tags": "timeseries, plot, line, data, chart, transform, transformed, compute, computed, modify, modified, alter, altered, adjust, adjusted",
+    "group": "data",
+    "content": "\\e799"
+  },
+  {
+    "name": "Series: configuration",
+    "className": "pt-icon-series-configuration",
+    "tags": " timeseries, plot, line, data, chart, edit, modify, customize, adjust, alter, transform",
+    "group": "data",
+    "content": "\\e79a"
+  },
+  {
+    "name": "Console",
+    "className": "pt-icon-console",
+    "tags": "terminal, coding",
+    "group": "interface",
+    "content": "\\e79b"
+  },
+  {
+    "name": "Compass",
+    "className": "pt-icon-compass",
+    "tags": "map, direction",
+    "group": "interface",
+    "content": "\\e79c"
+  },
+  {
+    "name": "Walk",
+    "className": "pt-icon-walk",
+    "tags": "transportation, run, move",
+    "group": "interface",
+    "content": "\\e79d"
+  },
+  {
+    "name": "Taxi",
+    "className": "pt-icon-taxi",
+    "tags": "transportation, car, move",
+    "group": "interface",
+    "content": "\\e79e"
+  },
+  {
+    "name": "Train",
+    "className": "pt-icon-train",
+    "tags": "transportation, public, move",
+    "group": "interface",
+    "content": "\\e79f"
   }
 ]

@@ -1917,7 +1917,8 @@ a.pt-button {
   display: block; }
   .pt-editable-text.pt-multiline .pt-editable-content {
     overflow: auto;
-    white-space: pre-wrap; }
+    white-space: pre-wrap;
+    word-wrap: break-word; }
 
 .pt-select select {
   display: inline-block;
@@ -3047,7 +3048,7 @@ a.pt-button {
     margin: 0 7px;
     line-height: 30px;
     color: #5c7080; }
-  .pt-input-group .pt-spinner {
+  .pt-input-group .pt-input-action > .pt-spinner {
     margin: 3px; }
   .pt-input-group .pt-tag {
     margin: 5px; }
@@ -3093,7 +3094,7 @@ a.pt-button {
       padding-left: 40px; }
     .pt-input-group.pt-large .pt-input:not(:last-child) {
       padding-right: 40px; }
-  .pt-input-group.pt-large .pt-spinner {
+  .pt-input-group.pt-large .pt-input-action > .pt-spinner {
     margin: 8px; }
   .pt-input-group.pt-round .pt-button,
   .pt-input-group.pt-round .pt-input,
@@ -5007,6 +5008,39 @@ span.pt-icon {
 .pt-icon-header-two::before {
   content: "\E794"; }
 
+.pt-icon-form::before {
+  content: "\E795"; }
+
+.pt-icon-series-add::before {
+  content: "\E796"; }
+
+.pt-icon-series-search::before {
+  content: "\E797"; }
+
+.pt-icon-series-filtered::before {
+  content: "\E798"; }
+
+.pt-icon-series-derived::before {
+  content: "\E799"; }
+
+.pt-icon-series-configuration::before {
+  content: "\E79A"; }
+
+.pt-icon-console::before {
+  content: "\E79B"; }
+
+.pt-icon-compass::before {
+  content: "\E79C"; }
+
+.pt-icon-walk::before {
+  content: "\E79D"; }
+
+.pt-icon-taxi::before {
+  content: "\E79E"; }
+
+.pt-icon-train::before {
+  content: "\E79F"; }
+
 .pt-submenu > .pt-popover-target {
   display: inherit; }
   .pt-submenu > .pt-popover-target > .pt-menu-item {
@@ -5026,7 +5060,7 @@ span.pt-icon {
         line-height: 20px; }
 
 .pt-submenu .pt-popover {
-  position: relative;
+  position: absolute;
   top: -5px;
   left: 5px; }
   .pt-submenu .pt-popover.pt-align-left {
@@ -6849,7 +6883,7 @@ table.pt-table {
 .pt-dark .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
   background-color: #137cbd; }
 /*
- * Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  */
 .pt-wireframes {
   position: absolute;
@@ -7015,7 +7049,7 @@ table.pt-table {
             animation-delay: 5s; }
 
 /*
- * Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  */
 body,
 h1,

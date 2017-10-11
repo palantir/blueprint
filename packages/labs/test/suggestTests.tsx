@@ -172,14 +172,13 @@ describe("Suggest", () => {
         it("invokes inputValueRenderer when rendering an item in the input field", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest();
-            const { inputValueRenderer } = handlers;
 
-            assert.isFalse(inputValueRenderer.called, "should not call inputValueRenderer before selection");
+            assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
             selectItem(wrapper, ITEM_INDEX);
             const selectedItem = TOP_100_FILMS[ITEM_INDEX];
             const expectedValue = inputValueRenderer(selectedItem);
 
-            assert.isTrue(inputValueRenderer.called, "should call inputValueRenderer after selection");
+            assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
             assert.strictEqual(wrapper.find("input").prop("value"), expectedValue);
         });
     });

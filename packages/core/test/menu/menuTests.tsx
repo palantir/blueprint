@@ -11,8 +11,19 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 
-import { Classes, IMenuItemProps, IMenuProps, Menu, MenuItem, Popover, PopoverInteractionKind } from "../../src/index";
-import { MenuDivider, MenuDividerFactory, MenuFactory, MenuItemFactory } from "../../src/index";
+import {
+    Classes,
+    IMenuItemProps,
+    IMenuProps,
+    Menu,
+    MenuDivider,
+    MenuDividerFactory,
+    MenuFactory,
+    MenuItem,
+    MenuItemFactory,
+    Popover,
+    PopoverInteractionKind,
+} from "../../src/index";
 
 describe("MenuItem", () => {
     it("React renders MenuItem", () => {

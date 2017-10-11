@@ -90,7 +90,9 @@ $input-button-height-large: $pt-button-height !default;
     color: $pt-icon-color;
   }
 
-  .pt-spinner {
+  // adjusting the margin of spinners in input groups
+  // we have to avoid targetting buttons that contain a spinner
+  .pt-input-action > .pt-spinner {
     margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
   }
 
@@ -161,7 +163,7 @@ $input-button-height-large: $pt-button-height !default;
       }
     }
 
-    .pt-spinner {
+    .pt-input-action > .pt-spinner {
       margin: ($pt-input-height-large - $spinner-width * $spinner-width-factor-small) / 2;
     }
   }

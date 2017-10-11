@@ -1,4 +1,4 @@
-// Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
 // of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 // and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -33,12 +33,15 @@
 }
 
 .docs-prop-tags {
-  margin: $pt-grid-size 0 0;
+  $tag-top-margin: ($pt-grid-size / 10) * 3;
+
+  margin: ($pt-grid-size - $tag-top-margin) 0 0;
 
   &:empty { display: none; }
 
-  .pt-tag + .pt-tag {
-    margin-left: $pt-grid-size;
+  .pt-tag {
+    margin-top: $tag-top-margin;
+    margin-right: $pt-grid-size;
   }
 }
 

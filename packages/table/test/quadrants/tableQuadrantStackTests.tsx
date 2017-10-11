@@ -224,6 +224,14 @@ describe("TableQuadrantStack", () => {
             mount(<TableQuadrantStack grid={grid} renderBody={renderBody} renderRowHeader={renderRowHeader} />);
             expect(renderRowHeader.callCount).to.equal(4);
         });
+
+        it("does not render LEFT/TOP_LEFT quadrants if row header not shown and no frozen columns", () => {
+            const component = mount(
+                <TableQuadrantStack grid={grid} renderBody={sinon.spy()} isRowHeaderShown={false} />,
+            );
+            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`).length).to.equal(0);
+            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`).length).to.equal(0);
+        });
     });
 
     describe("Resize callbacks", () => {
@@ -438,13 +446,21 @@ describe("TableQuadrantStack", () => {
                     renderColumnHeader={renderColumnHeader}
                 />,
             );
-            // add explicit 0 to communicate that we're considering the zero-width row headers
-            const expectedWidth =
-                numFrozenColumns === 0 ? EXPECTED_HEADER_BORDER_WIDTH : 0 + numFrozenColumns * COLUMN_WIDTH;
+
             const expectedHeight =
                 COLUMN_HEADER_HEIGHT +
                 (numFrozenRows === 0 ? EXPECTED_HEADER_BORDER_WIDTH : numFrozenRows * ROW_HEIGHT);
-            assertNonMainQuadrantSizesCorrect(container, expectedWidth, expectedHeight);
+
+            const { topQuadrant, leftQuadrant, topLeftQuadrant } = findQuadrants(container);
+
+            if (numFrozenColumns === 0) {
+                expect(leftQuadrant).to.be.null;
+                expect(topLeftQuadrant).to.be.null;
+                assertStyleEquals(topQuadrant, "height", toPxString(expectedHeight));
+            } else {
+                const expectedWidth = numFrozenColumns * COLUMN_WIDTH;
+                assertNonMainQuadrantSizesCorrect(container, expectedWidth, expectedHeight);
+            }
         }
 
         function assertNonMainQuadrantSizesCorrect(

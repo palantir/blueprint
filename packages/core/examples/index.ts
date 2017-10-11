@@ -7,9 +7,9 @@
 
 export * from "./alertExample";
 export * from "./buttonsExample";
+export * from "./checkboxExample";
 export * from "./collapseExample";
 export * from "./collapsibleListExample";
-export * from "./controlExamples";
 export * from "./dialogExample";
 export * from "./contextMenuExample";
 export * from "./dropdownMenuExample";
@@ -25,7 +25,9 @@ export * from "./overlayExample";
 export * from "./popoverExample";
 export * from "./progressExample";
 export * from "./rangeSliderExample";
+export * from "./radioExample";
 export * from "./sliderExample";
+export * from "./switchExample";
 export * from "./textExample";
 export * from "./spinnerExample";
 export * from "./tabsExample";

@@ -14,7 +14,6 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
-    IToastProps,
     MenuItem,
     Position,
     Switch,
@@ -67,7 +66,7 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
                     items={TOP_100_FILMS}
                     itemPredicate={this.filterFilm}
                     itemRenderer={this.renderFilm}
-                    noResults={<MenuItem disabled text="No results." />}
+                    noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleItemSelect}
                     onClose={this.handleClose}
                     inputProps={{ onBlur: this.handleBlur }}
@@ -134,7 +133,7 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
                     You selected <strong>{film.title}</strong>.
                 </span>
             ),
-        } as IToastProps);
+        });
     };
 
     private handleSwitchChange(prop: keyof IOmniboxExampleState) {

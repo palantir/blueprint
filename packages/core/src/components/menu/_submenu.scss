@@ -35,7 +35,7 @@
 
   // minor adjustments to popover position so top submenu item lines up with submenu trigger item
   .pt-popover {
-    position: relative;
+    position: absolute;
     top: -$half-grid-size;
     left: $half-grid-size;
 

@@ -10,10 +10,8 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Grid } from "../common";
-import { Batcher } from "../common/batcher";
 import { IFocusedCellCoordinates } from "../common/cell";
 import * as Classes from "../common/classes";
-import { Utils } from "../common/utils";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
@@ -222,15 +220,12 @@ export interface IHeaderState {
 
 const SHALLOW_COMPARE_PROP_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["focusedCell", "selectedRegions"];
 
-const RESET_CELL_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["indexEnd", "indexStart"];
-
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
     public state: IHeaderState = {
         hasSelectionEnded: false,
     };
 
     protected activationIndex: number;
-    private batcher = new Batcher<JSX.Element>();
 
     public constructor(props?: IHeaderProps, context?: any) {
         super(props, context);
@@ -244,10 +239,6 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         }
     }
 
-    public componentWillUnmount() {
-        this.batcher.cancelOutstandingCallback();
-    }
-
     public componentWillReceiveProps(nextProps?: IInternalHeaderProps) {
         if (nextProps.selectedRegions != null && nextProps.selectedRegions.length > 0) {
             this.setState({ hasSelectionEnded: true });
@@ -258,19 +249,10 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
     public shouldComponentUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
         return (
-            !Utils.shallowCompareKeys(this.state, nextState) ||
-            !Utils.shallowCompareKeys(this.props, nextProps, { exclude: SHALLOW_COMPARE_PROP_KEYS_BLACKLIST }) ||
-            !Utils.deepCompareKeys(this.props, nextProps, SHALLOW_COMPARE_PROP_KEYS_BLACKLIST)
+            !CoreUtils.shallowCompareKeys(this.state, nextState) ||
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: SHALLOW_COMPARE_PROP_KEYS_BLACKLIST }) ||
+            !CoreUtils.deepCompareKeys(this.props, nextProps, SHALLOW_COMPARE_PROP_KEYS_BLACKLIST)
         );
-    }
-
-    public componentWillUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
-        const resetKeysBlacklist = { exclude: RESET_CELL_KEYS_BLACKLIST };
-        let shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
-        shouldResetBatcher = shouldResetBatcher || !Utils.shallowCompareKeys(this.state, nextState);
-        if (shouldResetBatcher) {
-            this.batcher.reset();
-        }
     }
 
     public render() {
@@ -299,16 +281,12 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     private renderCells = () => {
         const { indexStart, indexEnd } = this.props;
 
-        this.batcher.startNewBatch();
+        const cells: JSX.Element[] = [];
         for (let index = indexStart; index <= indexEnd; index++) {
-            this.batcher.addArgsToBatch(index);
+            cells.push(this.renderNewCell(index));
         }
-        this.batcher.removeOldAddNew(this.renderNewCell);
 
-        if (!this.batcher.isDone()) {
-            this.batcher.idleCallback(() => this.forceUpdate());
-        }
-        return this.batcher.getList();
+        return cells;
     };
 
     private renderNewCell = (index: number) => {

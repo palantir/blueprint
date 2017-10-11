@@ -119,7 +119,9 @@ describe("Toaster", () => {
         assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
     });
 
-    describe("with autoFocus set to true", () => {
+    // this test was flaky, but we should reenable eventually.
+    // see: https://github.com/palantir/blueprint/issues/1680
+    describe.skip("with autoFocus set to true", () => {
         before(() => {
             testsContainerElement = document.createElement("div");
             document.documentElement.appendChild(testsContainerElement);

@@ -31,7 +31,7 @@ export interface ITruncatedFormatProps extends IProps {
      * Should the component keep track of the truncation state of the string content. If true, the
      * value of `truncateLength` is ignored. When combined with a `showPopover` value of
      * `WHEN_TRUNCATED`, popovers will only render when necessary.
-     * @default true;
+     * @default false;
      */
     detectTruncation?: boolean;
 
@@ -56,9 +56,9 @@ export interface ITruncatedFormatProps extends IProps {
      * Configures when the popover is shown with the `TruncatedPopoverMode` enum.
      *
      * The enum values are:
-     * - `ALWAYS`: show the popover (default).
+     * - `ALWAYS`: show the popover.
      * - `NEVER`: don't show the popover.
-     * - `WHEN_TRUNCATED`: show the popover only when the text is truncated.
+     * - `WHEN_TRUNCATED`: show the popover only when the text is truncated (default).
      * @default WHEN_TRUNCATED
      */
     showPopover?: TruncatedPopoverMode;
@@ -67,7 +67,7 @@ export interface ITruncatedFormatProps extends IProps {
      * Number of characters that are displayed before being truncated and appended with the
      * `truncationSuffix` prop. A value of 0 will disable truncation. This prop is ignored if
      * `detectTruncation` is `true`.
-     * @default 80
+     * @default 2000
      */
     truncateLength?: number;
 
@@ -79,25 +79,37 @@ export interface ITruncatedFormatProps extends IProps {
 }
 
 export interface ITruncatedFormatState {
-    isTruncated: boolean;
+    isTruncated?: boolean;
+    isPopoverOpen?: boolean;
 }
 
 @PureRender
 export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
-        detectTruncation: true,
+        detectTruncation: false,
         preformatted: false,
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
-        truncateLength: 80,
+        truncateLength: 2000,
         truncationSuffix: "...",
     };
 
-    public state: ITruncatedFormatState = { isTruncated: false };
+    public state: ITruncatedFormatState = {
+        isPopoverOpen: false,
+        isTruncated: false,
+    };
 
     private contentDiv: HTMLDivElement;
 
+    public componentDidMount() {
+        this.setTruncationState();
+    }
+
+    public componentDidUpdate() {
+        this.setTruncationState();
+    }
+
     public render() {
-        const { children, detectTruncation, preformatted, truncateLength, truncationSuffix } = this.props;
+        const { children, detectTruncation, truncateLength, truncationSuffix } = this.props;
         const content = "" + children;
 
         let cellContent = content;
@@ -106,33 +118,13 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         if (this.shouldShowPopover(content)) {
-            const popoverClasses = classNames(
-                Classes.TABLE_TRUNCATED_POPOVER,
-                preformatted ? Classes.TABLE_POPOVER_WHITESPACE_PRE : Classes.TABLE_POPOVER_WHITESPACE_NORMAL,
-            );
-            const popoverContent = <div className={popoverClasses}>{children}</div>;
             const className = classNames(this.props.className, Classes.TABLE_TRUNCATED_FORMAT);
-            const constraints = [
-                {
-                    attachment: "together",
-                    to: "window",
-                },
-            ];
-
             return (
                 <div className={className}>
                     <div className={Classes.TABLE_TRUNCATED_VALUE} ref={this.handleContentDivRef}>
                         {cellContent}
                     </div>
-                    <Popover
-                        className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
-                        tetherOptions={{ constraints }}
-                        content={popoverContent}
-                        position={Position.BOTTOM}
-                        useSmartArrowPositioning={true}
-                    >
-                        <Icon iconName="more" />
-                    </Popover>
+                    {this.renderPopover()}
                 </div>
             );
         } else {
@@ -145,15 +137,59 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
     }
 
-    public componentDidMount() {
-        this.setTruncationState();
-    }
+    private renderPopover() {
+        const { children, preformatted } = this.props;
 
-    public componentDidUpdate() {
-        this.setTruncationState();
+        // `<Popover>` will always check the content's position on update
+        // regardless if it is open or not. This negatively affects perf due to
+        // layout thrashing. So instead we manage the popover state ourselves
+        // and mimic its popover target
+        if (this.state.isPopoverOpen) {
+            const popoverClasses = classNames(
+                Classes.TABLE_TRUNCATED_POPOVER,
+                preformatted ? Classes.TABLE_POPOVER_WHITESPACE_PRE : Classes.TABLE_POPOVER_WHITESPACE_NORMAL,
+            );
+            const popoverContent = <div className={popoverClasses}>{children}</div>;
+            const constraints = [
+                {
+                    attachment: "together",
+                    to: "window",
+                },
+            ];
+
+            return (
+                <Popover
+                    className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
+                    tetherOptions={{ constraints }}
+                    content={popoverContent}
+                    position={Position.BOTTOM}
+                    isOpen={true}
+                    onClose={this.handlePopoverClose}
+                    useSmartArrowPositioning={true}
+                >
+                    <Icon iconName="more" />
+                </Popover>
+            );
+        } else {
+            // NOTE: This structure matches what `<Popover>` does internally. If
+            // `<Popover>` changes, this must be updated.
+            return (
+                <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
+                    <Icon iconName="more" />
+                </span>
+            );
+        }
     }
 
     private handleContentDivRef = (ref: HTMLDivElement) => (this.contentDiv = ref);
+
+    private handlePopoverOpen = () => {
+        this.setState({ isPopoverOpen: true });
+    };
+
+    private handlePopoverClose = () => {
+        this.setState({ isPopoverOpen: false });
+    };
 
     private shouldShowPopover(content: string) {
         const { detectTruncation, showPopover, truncateLength } = this.props;
