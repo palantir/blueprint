@@ -811,28 +811,28 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 label="Modify selection upward"
                 group="Table"
                 combo="shift+up"
-                onKeyDown={this.handleSelectionModifyUp}
+                onKeyDown={this.handleSelectionResizeUp}
             />,
             <Hotkey
                 key="modify-selection-down"
                 label="Modify selection downward"
                 group="Table"
                 combo="shift+down"
-                onKeyDown={this.handleSelectionModifyDown}
+                onKeyDown={this.handleSelectionResizeDown}
             />,
             <Hotkey
                 key="modify-selection-left"
                 label="Modify selection leftward"
                 group="Table"
                 combo="shift+left"
-                onKeyDown={this.handleSelectionModifyLeft}
+                onKeyDown={this.handleSelectionResizeLeft}
             />,
             <Hotkey
                 key="modify-selection-right"
                 label="Modify selection rightward"
                 group="Table"
                 combo="shift+right"
-                onKeyDown={this.handleSelectionModifyRight}
+                onKeyDown={this.handleSelectionResizeRight}
             />,
         ];
     }
@@ -922,14 +922,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // Modify selection
     // ----------------
 
-    private handleSelectionModifyUp = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.UP);
-    private handleSelectionModifyDown = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.DOWN);
-    private handleSelectionModifyLeft = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.LEFT);
-    private handleSelectionModifyRight = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.RIGHT);
+    private handleSelectionResizeUp = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.UP);
+    private handleSelectionResizeDown = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.DOWN);
+    private handleSelectionResizeLeft = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.LEFT);
+    private handleSelectionResizeRight = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.RIGHT);
 
-    private handleSelectionModify = (e: KeyboardEvent, direction: Direction) => {
+    private handleSelectionResize = (e: KeyboardEvent, direction: Direction) => {
         const { focusedCell, selectedRegions } = this.state;
-        const nextSelectedRegions = SelectionUtils.modifyLastSelectedRegion(selectedRegions, direction, focusedCell);
+        const nextSelectedRegions = SelectionUtils.resizeLastSelectedRegion(selectedRegions, direction, focusedCell);
         e.preventDefault();
         e.stopPropagation();
 

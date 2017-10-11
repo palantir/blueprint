@@ -11,7 +11,7 @@ import { Direction } from "../direction";
 import { IMovementDelta } from "../movementDelta";
 import * as FocusedCellUtils from "./focusedCellUtils";
 
-export function modifyLastSelectedRegion(
+export function resizeLastSelectedRegion(
     selectedRegions: IRegion[],
     direction: Direction,
     focusedCell?: IFocusedCellCoordinates,
