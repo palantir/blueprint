@@ -14,7 +14,7 @@ import { IIntentProps, IProps } from "../../common/props";
 export interface IFormGroupProps extends IIntentProps, IProps {
     /**
      * Whether form group should appear as non-interactive.
-     * Remember that input elements must be disabled separately.
+     * Remember that `input` elements must be disabled separately.
      */
     disabled?: boolean;
 
@@ -40,6 +40,7 @@ export interface IFormGroupProps extends IIntentProps, IProps {
      *
      * _Note:_ the default message element is exposed as `FormGroup.DEFAULT_REQUIRED_CONTENT` and
      * can be changed to provide a new global default for your app.
+     * @default false
      */
     requiredLabel?: boolean | React.ReactNode;
 }
