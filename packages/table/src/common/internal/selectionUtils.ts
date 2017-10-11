@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { IRegion, Regions } from "../../regions";
+import { ICellInterval, IRegion, Regions } from "../../regions";
 import { IFocusedCellCoordinates } from "../cell";
 import { Direction } from "../direction";
 import { IMovementDelta } from "../movementDelta";
@@ -17,36 +17,26 @@ export function modifyLastSelectedRegion(
     focusedCell?: IFocusedCellCoordinates,
 ) {
     const lastSelectedRegion = getLastSelectedRegion(selectedRegions);
-    // const cardinality = Regions.getRegionCardinality(lastSelectedRegion);
     const delta = directionToMovementDelta(direction);
 
-    // const expansionDestinationRegion: IRegion = {};
-
-    // if (cardinality === RegionCardinality.FULL_COLUMNS) {
-    //     if (direction === Direction.LEFT) {
-    //         expansionDestinationRegion.cols[0] += ;
-    //     }
-    // }
-
-    const nextRegion: IRegion = { ...lastSelectedRegion };
+    const nextRegion: IRegion = {
+        cols: lastSelectedRegion.cols.slice() as ICellInterval,
+        rows: lastSelectedRegion.rows.slice() as ICellInterval,
+    };
 
     if (focusedCell != null) {
         // TODO: Implement
     } else {
-        // the region sans focused cell can never shrink
-        const affectedRowIndex = getIndexToModify(delta.rows);
-        const affectedColumnIndex = getIndexToModify(delta.cols);
-
-        if (nextRegion.rows != null) {
-            nextRegion.rows[affectedRowIndex] += delta.rows;
-        }
-        if (nextRegion.cols != null) {
-            nextRegion.cols[affectedColumnIndex] += delta.cols;
-        }
+        ["rows", "cols"].forEach((dimension: "rows" | "cols") => {
+            if (nextRegion[dimension] != null) {
+                const deltaValue = delta[dimension];
+                const affectedIndex = deltaValue < 0 ? 0 : 1;
+                nextRegion[dimension][affectedIndex] += deltaValue;
+            }
+        });
     }
 
-    return nextRegion;
-    // TODO: Implement
+    return expandLastSelectedRegion(selectedRegions, nextRegion, focusedCell);
 }
 
 /**
@@ -77,37 +67,6 @@ export function getLastSelectedRegion(selectedRegions: IRegion[]) {
     return selectedRegions == null || selectedRegions.length === 0
         ? undefined
         : selectedRegions[selectedRegions.length - 1];
-}
-
-// function getModifiedRegion(region: IRegion, delta: IMovementDelta, focusedCell?: IFocusedCellCoordinates) {
-//     if (region == null) {
-//         return undefined;
-//     }
-
-//     const nextRegion: IRegion = { ...region };
-
-//     if (focusedCell != null) {
-//         // TODO: Implement
-//     } else {
-//         // the region sans focused cell can never shrink
-//         const affectedRowIndex = getIndexToModify(delta.rows);
-//         const affectedColumnIndex = getIndexToModify(delta.cols);
-
-//         if (nextRegion.rows != null) {
-//             nextRegion.rows[affectedRowIndex] += delta.rows;
-//         }
-//         if (nextRegion.cols != null) {
-//             nextRegion.cols[affectedColumnIndex] += delta.cols;
-//         }
-//     }
-
-//     return nextRegion;
-// }
-
-function getIndexToModify(deltaValue: number) {
-    const START = 0;
-    const END = 1;
-    return deltaValue < 0 ? START : END;
 }
 
 function directionToMovementDelta(direction: Direction): IMovementDelta {

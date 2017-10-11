@@ -927,12 +927,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleSelectionModifyLeft = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.LEFT);
     private handleSelectionModifyRight = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.RIGHT);
 
-    private handleSelectionModify = (_e: KeyboardEvent, direction: Direction) => {
+    private handleSelectionModify = (e: KeyboardEvent, direction: Direction) => {
         const { focusedCell, selectedRegions } = this.state;
         const nextSelectedRegions = SelectionUtils.modifyLastSelectedRegion(selectedRegions, direction, focusedCell);
+        e.preventDefault();
+        e.stopPropagation();
 
         console.log("next selectedRegions:", nextSelectedRegions);
-        this.setState({ selectedRegions: nextSelectedRegions });
+        this.handleSelection(nextSelectedRegions);
+
         // TODO: Scroll viewport to reveal the new end of the modified region
         // TODO: Update the selected regions in state
     };
