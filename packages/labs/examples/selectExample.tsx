@@ -62,7 +62,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled={true} text="No results." />}
                 onItemSelect={this.handleValueChange}
-                popoverProps={{ popoverClassName: minimal ? Classes.MINIMAL : "" }}
+                popoverProps={{ minimal }}
             >
                 <Button rightIconName="caret-down" text={film ? film.title : "(No selection)"} disabled={disabled} />
             </FilmSelect>
