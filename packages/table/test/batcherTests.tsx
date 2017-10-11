@@ -131,4 +131,25 @@ describe("Batcher", () => {
         expect(batcher.getList()).to.deep.equal(["B2", "B3", "B4", "B5"]);
         expect(batcher.isDone()).to.be.true;
     });
+
+    it("can completely overwrite existing objects with setList", () => {
+        const callback = (i: number) => i * 2;
+        const batcher = new Batcher<any>();
+
+        // fill the batcher with some elements
+        batcher.startNewBatch();
+        batcher.addArgsToBatch(1);
+        batcher.addArgsToBatch(2);
+        batcher.addArgsToBatch(3);
+        batcher.removeOldAddNew(callback, 1, 1);
+        batcher.removeOldAddNew(callback, 1, 1);
+        batcher.removeOldAddNew(callback, 1, 1);
+
+        // overwrite the batcher's elements with precreated objects
+        const objectsArgs = [[1], [2], [3]];
+        const objects = [2, 4, 6];
+        batcher.setList(objectsArgs, objects);
+        expect(batcher.isDone()).to.be.true;
+        expect(batcher.getList()).to.deep.equal([2, 4, 6]);
+    });
 });

@@ -15,6 +15,14 @@ export enum RenderMode {
     BATCH,
 
     /**
+     * Renders all cells synchronously on initial mount, then renders cells in
+     * batches on successive updates (e.g. during scrolling). This helps to
+     * remove visual rendering artifacts when the table is first rendered,
+     * wihout slowing scrolling performance to a crawl.
+     */
+    BATCH_ON_UPDATE,
+
+    /**
      * Disables the batch-rendering behavior, rendering all cells synchronously
      * at once. This may result in degraded performance on large tables and/or
      * on tables with complex cells.

@@ -222,8 +222,10 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * Dictates how cells should be rendered. Supported modes are:
      * - `RenderMode.BATCH`: renders cells in batches to improve performance
+     * - `RenderMode.BATCH_ON_UPDATE`: renders cells synchronously on mount and
+     *   in batches on update
      * - `RenderMode.NONE`: renders cells synchronously all at once
-     * @default RenderMode.BATCH
+     * @default RenderMode.BATCH_ON_UPDATE
      */
     renderMode?: RenderMode;
 
@@ -387,7 +389,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         numFrozenColumns: 0,
         numFrozenRows: 0,
         numRows: 0,
-        renderMode: RenderMode.BATCH,
+        renderMode: RenderMode.BATCH_ON_UPDATE,
         renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
@@ -441,7 +443,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // when true, we'll need to imperatively synchronize quadrant views after
     // the update. this variable lets us avoid expensively diff'ing columnWidths
     // and rowHeights in <TableQuadrantStack> on each update.
-    private didUpdateColumnOrRowSizes: boolean = false;
+    private didUpdateColumnOrRowSizes = false;
+
+    // this value is set to `true` when all cells finish mounting for the first
+    // time. it serves as a signal that we can switch to batch rendering.
+    private didCompletelyMount = false;
 
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
@@ -719,6 +725,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.resizeSensorDetach();
             delete this.resizeSensorDetach;
         }
+        this.didCompletelyMount = false;
     }
 
     public componentDidUpdate() {
@@ -1170,7 +1177,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             fillBodyWithGhostCells,
             loadingOptions,
             renderBodyContextMenu,
-            renderMode,
             selectedRegionTransform,
         } = this.props;
 
@@ -1204,7 +1210,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onFocus={this.handleFocus}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                     renderBodyContextMenu={renderBodyContextMenu}
-                    renderMode={renderMode}
+                    renderMode={this.getNormalizedRenderMode()}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
                     viewportRect={viewportRect}
@@ -1311,6 +1317,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // we defer invoking onCompleteRender until that check passes.
         if (this.state.viewportRect != null) {
             CoreUtils.safeInvoke(this.props.onCompleteRender);
+            this.didCompletelyMount = true;
         }
     };
 
@@ -1905,6 +1912,21 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { numFrozenRowsClamped: numFrozenRows } = this.state;
         return numFrozenRows != null ? numFrozenRows - 1 : undefined;
     };
+
+    /**
+     * Normalizes RenderMode.BATCH_ON_UPDATE into RenderMode.{BATCH,NONE}. We do
+     * this because there are actually multiple updates required before the
+     * <Table> is considered fully "mounted," and adding that knowledge to child
+     * components would lead to tight coupling. Thus, keep it simple for them.
+     */
+    private getNormalizedRenderMode(): RenderMode.BATCH | RenderMode.NONE {
+        const { renderMode } = this.props;
+
+        const shouldBatchRender =
+            renderMode === RenderMode.BATCH || (renderMode === RenderMode.BATCH_ON_UPDATE && this.didCompletelyMount);
+
+        return shouldBatchRender ? RenderMode.BATCH : RenderMode.NONE;
+    }
 
     private handleColumnResizeGuide = (verticalGuides: number[]) => {
         this.setState({ verticalGuides });
