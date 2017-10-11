@@ -10,6 +10,7 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
 import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
+import * as SelectionUtils from "../common/internal/selectionUtils";
 import { Utils } from "../common/utils";
 import { IRegion, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
@@ -181,7 +182,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         const nextSelectedRegions = this.didExpandSelectionOnActivate
-            ? this.expandSelectedRegions(selectedRegions, region, focusedCell)
+            ? SelectionUtils.expandLastSelectedRegion(selectedRegions, region, focusedCell)
             : Regions.update(selectedRegions, region);
 
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
@@ -260,7 +261,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         // there should be only one selected region after expanding. do not
         // update the focused cell.
-        const nextSelectedRegions = this.expandSelectedRegions(selectedRegions, region, focusedCell);
+        const nextSelectedRegions = SelectionUtils.expandLastSelectedRegion(selectedRegions, region, focusedCell);
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
         // move the focused cell into the new region if there were no selections before
@@ -320,16 +321,4 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         this.didExpandSelectionOnActivate = false;
         this.lastEmittedSelectedRegions = null;
     };
-
-    private expandSelectedRegions(regions: IRegion[], region: IRegion, focusedCell?: IFocusedCellCoordinates) {
-        if (regions.length === 0) {
-            return [region];
-        } else if (focusedCell != null) {
-            const expandedRegion = FocusedCellUtils.expandFocusedRegion(focusedCell, region);
-            return Regions.update(regions, expandedRegion);
-        } else {
-            const expandedRegion = Regions.expandRegion(regions[regions.length - 1], region);
-            return Regions.update(regions, expandedRegion);
-        }
-    }
 }
