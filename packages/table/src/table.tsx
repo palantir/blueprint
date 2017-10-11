@@ -445,7 +445,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // and rowHeights in <TableQuadrantStack> on each update.
     private didUpdateColumnOrRowSizes = false;
 
-    private hasCompletelyRendered = false;
+    // this value is set to `true` when all cells finish mounting for the first
+    // time. it serves as a signal that we can switch to batch rendering.
+    private didCompletelyMount = false;
 
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
@@ -723,7 +725,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.resizeSensorDetach();
             delete this.resizeSensorDetach;
         }
-        this.hasCompletelyRendered = false;
+        this.didCompletelyMount = false;
     }
 
     public componentDidUpdate() {
@@ -1315,7 +1317,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // we defer invoking onCompleteRender until that check passes.
         if (this.state.viewportRect != null) {
             CoreUtils.safeInvoke(this.props.onCompleteRender);
-            this.hasCompletelyRendered = true;
+            this.didCompletelyMount = true;
         }
     };
 
@@ -1921,8 +1923,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { renderMode } = this.props;
 
         const shouldBatchRender =
-            renderMode === RenderMode.BATCH ||
-            (renderMode === RenderMode.BATCH_ON_UPDATE && this.hasCompletelyRendered);
+            renderMode === RenderMode.BATCH || (renderMode === RenderMode.BATCH_ON_UPDATE && this.didCompletelyMount);
 
         return shouldBatchRender ? RenderMode.BATCH : RenderMode.NONE;
     }
