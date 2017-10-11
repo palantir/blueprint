@@ -9,6 +9,14 @@ import { IRegion, Regions } from "../../regions";
 import { IFocusedCellCoordinates } from "../cell";
 import * as FocusedCellUtils from "./focusedCellUtils";
 
+export function modifyLastSelectedRegion(
+    selectedRegions: IRegion[],
+    delta: IMovementDelta,
+    focusedCell?: IFocusedCellCoordinates,
+) {
+    // TODO: Implement
+}
+
 /**
  * Expands the last-selected region to the new region, and replaces the
  * last-selected region with the expanded region. If a focused cell is provided,
@@ -28,4 +36,13 @@ export function expandLastSelectedRegion(
         const expandedRegion = Regions.expandRegion(selectedRegions[selectedRegions.length - 1], newRegion);
         return Regions.update(selectedRegions, expandedRegion);
     }
+}
+
+/**
+ * Returns the last region in the provided `selectedRegions` array, or `undefined`.
+ */
+export function getLastSelectedRegion(selectedRegions: IRegion[]) {
+    return selectedRegions == null || selectedRegions.length === 0
+        ? undefined
+        : selectedRegions[selectedRegions.length - 1];
 }

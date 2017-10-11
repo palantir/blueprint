@@ -18,6 +18,7 @@ import * as Errors from "./common/errors";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
+import * as SelectionUtils from "./common/internal/selectionUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
@@ -945,7 +946,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleSelectionModifyRight = (e: KeyboardEvent) => this.handleSelectionModify(e, Direction.RIGHT);
 
     private handleSelectionModify = (e: KeyboardEvent, direction: Direction) => {
-        const delta = directionToMovementDelta(direction);
+        const { focusedCell, selectedRegions } = this.state;
+        const nextSelectedRegions = SelectionUtils.modifyLastSelectedRegion(selectedRegions, direction, focusedCell);
+
+        console.log("next selectedRegions:", nextSelectedRegions);
+
+        // TODO: Scroll viewport to reveal the new end of the modified region
+        // TODO: Update the selected regions in state
     };
 
     // Quadrant refs
