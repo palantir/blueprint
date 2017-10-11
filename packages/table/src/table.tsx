@@ -691,6 +691,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.maybeRenderCopyHotkey(),
             this.maybeRenderSelectAllHotkey(),
             this.maybeRenderFocusHotkeys(),
+            this.maybeRenderSelectionHotkeys(),
         ];
         return <Hotkeys>{hotkeys.filter(element => element !== undefined)}</Hotkeys>;
     }
@@ -779,6 +780,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (numFrozenColumns != null && numFrozenColumns > numColumns) {
             console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
+    }
+
+    // Hotkeys
+    // =======
+
+    private maybeRenderSelectionHotkeys() {
+        // TODO: Implement!
     }
 
     // Quadrant refs
