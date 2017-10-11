@@ -136,12 +136,16 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     loadingOptions?: TableLoadingOption[];
 
     /**
-     * The number of columns to freeze to the left side of the table, counting from the leftmost column.
+     * The number of columns to freeze to the left side of the table, counting
+     * from the leftmost column.
+     * @default 0
      */
     numFrozenColumns?: number;
 
     /**
-     * The number of rows to freeze to the top of the table, counting from the topmost row.
+     * The number of rows to freeze to the top of the table, counting from the
+     * topmost row.
+     * @default 0
      */
     numFrozenRows?: number;
 
@@ -335,6 +339,16 @@ export interface ITableState {
     isReordering?: boolean;
 
     /**
+     * The number of frozen columns, clamped to [0, num <Column>s].
+     */
+    numFrozenColumnsClamped?: number;
+
+    /**
+     * The number of frozen rows, clamped to [0, numRows].
+     */
+    numFrozenRowsClamped?: number;
+
+    /**
      * An array of row heights. These are initialized updated when the user
      * drags row header resize handles.
      */
@@ -370,6 +384,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
+        numFrozenColumns: 0,
+        numFrozenRows: 0,
         numRows: 0,
         renderMode: RenderMode.BATCH,
         renderRowHeader: renderDefaultRowHeader,
@@ -456,6 +472,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             focusedCell,
             isLayoutLocked: false,
             isReordering: false,
+            numFrozenColumnsClamped: clampNumFrozenColumns(props),
+            numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
             selectedRegions,
         };
@@ -505,10 +523,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * corner is reached.
      */
     public scrollToRegion(region: IRegion) {
+        const { numFrozenColumnsClamped: numFrozenColumns, numFrozenRowsClamped: numFrozenRows } = this.state;
         const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
-
-        const numFrozenRows = this.getNumFrozenRowsClamped();
-        const numFrozenColumns = this.getNumFrozenColumnsClamped();
 
         const { scrollLeft, scrollTop } = ScrollUtils.getScrollPositionForRegion(
             region,
@@ -607,6 +623,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.setState({
             columnWidths: newColumnWidths,
             focusedCell: newFocusedCell,
+            numFrozenColumnsClamped: clampNumFrozenColumns(nextProps),
+            numFrozenRowsClamped: clampNumFrozenRows(nextProps),
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });
@@ -614,7 +632,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     public render() {
         const { children, className, isRowHeaderShown, loadingOptions, numRows, useInteractionBar } = this.props;
-        const { horizontalGuides, verticalGuides } = this.state;
+        const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
         this.validateGrid();
 
         const classes = classNames(
@@ -644,8 +662,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
                     loadingOptions={loadingOptions}
                     numColumns={React.Children.count(children)}
-                    numFrozenColumns={this.getNumFrozenColumnsClamped()}
-                    numFrozenRows={this.getNumFrozenRowsClamped()}
+                    numFrozenColumns={numFrozenColumnsClamped}
+                    numFrozenRows={numFrozenRowsClamped}
                     numRows={numRows}
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
@@ -1140,7 +1158,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         showFrozenRowsOnly: boolean = false,
         showFrozenColumnsOnly: boolean = false,
     ) => {
-        const { focusedCell, selectedRegions, viewportRect } = this.state;
+        const {
+            focusedCell,
+            numFrozenColumnsClamped: numFrozenColumns,
+            numFrozenRowsClamped: numFrozenRows,
+            selectedRegions,
+            viewportRect,
+        } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
@@ -1150,15 +1174,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             selectedRegionTransform,
         } = this.props;
 
-        const numFrozenColumns = this.getNumFrozenColumnsClamped();
-        const numFrozenRows = this.getNumFrozenRowsClamped();
-
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
 
-        const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
+        // start beyond the frozen area if rendering unrelated quadrants, so we
+        // don't render duplicate cells underneath the frozen ones.
+        const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart + numFrozenColumns;
+        const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart + numFrozenRows;
+
+        // if rendering frozen rows/columns, subtract one to convert to
+        // 0-indexing. if the 1-indexed value is 0, this sets the end index
+        // to -1, which avoids rendering absent frozen rows/columns at all.
         const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumns - 1 : columnIndices.columnIndexEnd;
-        const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows - 1 : rowIndices.rowIndexEnd;
 
         // the main quadrant contains all cells in the table, so listen only to that quadrant
@@ -1845,8 +1872,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private updateLocator() {
         this.locator
             .setGrid(this.grid)
-            .setNumFrozenRows(this.getNumFrozenRowsClamped())
-            .setNumFrozenColumns(this.getNumFrozenColumnsClamped());
+            .setNumFrozenRows(this.state.numFrozenRowsClamped)
+            .setNumFrozenColumns(this.state.numFrozenColumnsClamped);
     }
 
     private updateViewportRect = (nextViewportRect: Rect) => {
@@ -1870,25 +1897,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private getMaxFrozenColumnIndex = () => {
-        const numFrozenColumns = this.getNumFrozenColumnsClamped();
+        const { numFrozenColumnsClamped: numFrozenColumns } = this.state;
         return numFrozenColumns != null ? numFrozenColumns - 1 : undefined;
     };
 
     private getMaxFrozenRowIndex = () => {
-        const numFrozenRows = this.getNumFrozenRowsClamped();
+        const { numFrozenRowsClamped: numFrozenRows } = this.state;
         return numFrozenRows != null ? numFrozenRows - 1 : undefined;
     };
-
-    private getNumFrozenColumnsClamped(props: ITableProps = this.props) {
-        const { numFrozenColumns } = props;
-        const numColumns = React.Children.count(props.children);
-        return Utils.clamp(numFrozenColumns, 0, numColumns);
-    }
-
-    private getNumFrozenRowsClamped(props: ITableProps = this.props) {
-        const { numFrozenRows, numRows } = props;
-        return Utils.clamp(numFrozenRows, 0, numRows);
-    }
 
     private handleColumnResizeGuide = (verticalGuides: number[]) => {
         this.setState({ verticalGuides });
@@ -1897,4 +1913,21 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
         this.setState({ horizontalGuides });
     };
+}
+
+function clampNumFrozenColumns(props: ITableProps) {
+    const { numFrozenColumns } = props;
+    const numColumns = React.Children.count(props.children);
+    return clampPotentiallyNullValue(numFrozenColumns, numColumns);
+}
+
+function clampNumFrozenRows(props: ITableProps) {
+    const { numFrozenRows, numRows } = props;
+    return clampPotentiallyNullValue(numFrozenRows, numRows);
+}
+
+// add explicit `| null | undefined`, because the params make more sense in this
+// order, and you can't have an optional param precede a required param.
+function clampPotentiallyNullValue(value: number | null | undefined, max: number) {
+    return value == null ? 0 : Utils.clamp(value, 0, max);
 }
