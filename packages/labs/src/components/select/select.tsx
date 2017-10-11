@@ -299,6 +299,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
         requestAnimationFrame(() => {
             const { inputProps = {} } = this.props;
+            // autofocus is enabled by default
             if (inputProps.autoFocus !== false && this.input != null) {
                 this.input.focus();
             }
