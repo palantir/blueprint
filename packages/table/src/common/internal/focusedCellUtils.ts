@@ -93,32 +93,6 @@ export function expandFocusedRegion(focusedCell: IFocusedCellCoordinates, newReg
     }
 }
 
-// export function getExpandDirection();
-
-// export function expandFocusedRegionWithDelta(
-//     focusedCell: IFocusedCellCoordinates,
-//     newRegion: IRegion,
-//     delta: IMovementDelta,
-// ) {
-//     switch (Regions.getRegionCardinality(newRegion)) {
-//         case RegionCardinality.FULL_COLUMNS: {
-//             const [indexStart, indexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "col", "cols");
-//             return Regions.column(indexStart, indexEnd);
-//         }
-//         case RegionCardinality.FULL_ROWS: {
-//             const [indexStart, indexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "row", "rows");
-//             return Regions.row(indexStart, indexEnd);
-//         }
-//         case RegionCardinality.CELLS:
-//             const [rowIndexStart, rowIndexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "row", "rows");
-//             const [colIndexStart, colIndexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "col", "cols");
-//             return Regions.cell(rowIndexStart, colIndexStart, rowIndexEnd, colIndexEnd);
-//         default:
-//             // i.e. `case RegionCardinality.FULL_TABLE:`
-//             return Regions.table();
-//     }
-// }
-
 function getExpandedRegionIndices(
     focusedCell: IFocusedCellCoordinates,
     newRegion: IRegion,
