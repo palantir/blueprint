@@ -683,7 +683,11 @@ ul {
         background: rgba(15, 153, 96, 0.3);
         color: #0d8050; }
       .pt-button.pt-minimal.pt-intent-success:disabled, .pt-button.pt-minimal.pt-intent-success.pt-disabled {
-        background: none;
+        background: rgba(15, 153, 96, 0.3);
+        color: rgba(13, 128, 80, 0.5); }
+      .pt-button.pt-minimal.pt-intent-success:disabled.active, .pt-button.pt-minimal.pt-intent-success:disabled.active:hover, .pt-button.pt-minimal.pt-intent-success.pt-disabled.active, .pt-button.pt-minimal.pt-intent-success.pt-disabled.active:hover, .pt-button.pt-minimal.pt-intent-success:disabled.pt-active, .pt-button.pt-minimal.pt-intent-success:disabled.pt-active:hover, .pt-button.pt-minimal.pt-intent-success.pt-disabled.pt-active, .pt-button.pt-minimal.pt-intent-success.pt-disabled.pt-active:hover {
+        background: rgba(15, 153, 96, 0.3);
+        cursor: not-allowed;
         color: rgba(13, 128, 80, 0.5); }
       .pt-button.pt-minimal.pt-intent-success .pt-button-spinner .pt-spinner-head {
         stroke: #0d8050; }
@@ -711,7 +715,11 @@ ul {
         background: rgba(217, 130, 43, 0.3);
         color: #bf7326; }
       .pt-button.pt-minimal.pt-intent-warning:disabled, .pt-button.pt-minimal.pt-intent-warning.pt-disabled {
-        background: none;
+        background: rgba(217, 130, 43, 0.3);
+        color: rgba(191, 115, 38, 0.5); }
+      .pt-button.pt-minimal.pt-intent-warning:disabled.active, .pt-button.pt-minimal.pt-intent-warning:disabled.active:hover, .pt-button.pt-minimal.pt-intent-warning.pt-disabled.active, .pt-button.pt-minimal.pt-intent-warning.pt-disabled.active:hover, .pt-button.pt-minimal.pt-intent-warning:disabled.pt-active, .pt-button.pt-minimal.pt-intent-warning:disabled.pt-active:hover, .pt-button.pt-minimal.pt-intent-warning.pt-disabled.pt-active, .pt-button.pt-minimal.pt-intent-warning.pt-disabled.pt-active:hover {
+        background: rgba(217, 130, 43, 0.3);
+        cursor: not-allowed;
         color: rgba(191, 115, 38, 0.5); }
       .pt-button.pt-minimal.pt-intent-warning .pt-button-spinner .pt-spinner-head {
         stroke: #bf7326; }
@@ -739,7 +747,11 @@ ul {
         background: rgba(219, 55, 55, 0.3);
         color: #c23030; }
       .pt-button.pt-minimal.pt-intent-danger:disabled, .pt-button.pt-minimal.pt-intent-danger.pt-disabled {
-        background: none;
+        background: rgba(219, 55, 55, 0.3);
+        color: rgba(194, 48, 48, 0.5); }
+      .pt-button.pt-minimal.pt-intent-danger:disabled.active, .pt-button.pt-minimal.pt-intent-danger:disabled.active:hover, .pt-button.pt-minimal.pt-intent-danger.pt-disabled.active, .pt-button.pt-minimal.pt-intent-danger.pt-disabled.active:hover, .pt-button.pt-minimal.pt-intent-danger:disabled.pt-active, .pt-button.pt-minimal.pt-intent-danger:disabled.pt-active:hover, .pt-button.pt-minimal.pt-intent-danger.pt-disabled.pt-active, .pt-button.pt-minimal.pt-intent-danger.pt-disabled.pt-active:hover {
+        background: rgba(219, 55, 55, 0.3);
+        cursor: not-allowed;
         color: rgba(194, 48, 48, 0.5); }
       .pt-button.pt-minimal.pt-intent-danger .pt-button-spinner .pt-spinner-head {
         stroke: #c23030; }
