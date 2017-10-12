@@ -10,7 +10,6 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
 import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
-import * as SelectionUtils from "../common/internal/selectionUtils";
 import { Utils } from "../common/utils";
 import { IRegion, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
@@ -182,7 +181,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         }
 
         const nextSelectedRegions = this.didExpandSelectionOnActivate
-            ? SelectionUtils.expandLastSelectedRegion(selectedRegions, region, focusedCell)
+            ? this.expandSelectedRegions(selectedRegions, region, focusedCell)
             : Regions.update(selectedRegions, region);
 
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
@@ -261,7 +260,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         // there should be only one selected region after expanding. do not
         // update the focused cell.
-        const nextSelectedRegions = SelectionUtils.expandLastSelectedRegion(selectedRegions, region, focusedCell);
+        const nextSelectedRegions = this.expandSelectedRegions(selectedRegions, region, focusedCell);
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
         // move the focused cell into the new region if there were no selections before
@@ -321,4 +320,25 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         this.didExpandSelectionOnActivate = false;
         this.lastEmittedSelectedRegions = null;
     };
+
+    /**
+     * Expands the last-selected region to the new region, and replaces the
+     * last-selected region with the expanded region. If a focused cell is provided,
+     * the focused cell will serve as an anchor for the expansion.
+     */
+    private expandSelectedRegions(
+        selectedRegions: IRegion[],
+        newRegion: IRegion,
+        focusedCell?: IFocusedCellCoordinates,
+    ) {
+        if (selectedRegions.length === 0) {
+            return [newRegion];
+        } else if (focusedCell != null) {
+            const expandedRegion = FocusedCellUtils.expandFocusedRegion(focusedCell, newRegion);
+            return Regions.update(selectedRegions, expandedRegion);
+        } else {
+            const expandedRegion = Regions.expandRegion(selectedRegions[selectedRegions.length - 1], newRegion);
+            return Regions.update(selectedRegions, expandedRegion);
+        }
+    }
 }
