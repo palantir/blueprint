@@ -326,19 +326,15 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
      * last-selected region with the expanded region. If a focused cell is provided,
      * the focused cell will serve as an anchor for the expansion.
      */
-    private expandSelectedRegions(
-        selectedRegions: IRegion[],
-        newRegion: IRegion,
-        focusedCell?: IFocusedCellCoordinates,
-    ) {
-        if (selectedRegions.length === 0) {
-            return [newRegion];
+    private expandSelectedRegions(regions: IRegion[], region: IRegion, focusedCell?: IFocusedCellCoordinates) {
+        if (regions.length === 0) {
+            return [region];
         } else if (focusedCell != null) {
-            const expandedRegion = FocusedCellUtils.expandFocusedRegion(focusedCell, newRegion);
-            return Regions.update(selectedRegions, expandedRegion);
+            const expandedRegion = FocusedCellUtils.expandFocusedRegion(focusedCell, region);
+            return Regions.update(regions, expandedRegion);
         } else {
-            const expandedRegion = Regions.expandRegion(selectedRegions[selectedRegions.length - 1], newRegion);
-            return Regions.update(selectedRegions, expandedRegion);
+            const expandedRegion = Regions.expandRegion(regions[regions.length - 1], region);
+            return Regions.update(regions, expandedRegion);
         }
     }
 }
