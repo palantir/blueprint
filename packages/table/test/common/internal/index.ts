@@ -5,5 +5,6 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
+import "./directionUtilsTests";
 import "./focusedCellUtilsTests";
 import "./scrollUtilsTests";
