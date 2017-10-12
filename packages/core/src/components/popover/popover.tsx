@@ -276,8 +276,8 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         }
 
         this.state = {
-            isOpen,
             ignoreTargetDimensions: false,
+            isOpen,
             targetHeight: 0,
             targetWidth: 0,
         };
@@ -422,6 +422,9 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private componentDOMChange() {
+        if (this.targetElement == null) {
+            return;
+        }
         if (this.props.useSmartArrowPositioning) {
             this.setState({
                 targetHeight: this.targetElement.clientHeight,
@@ -533,8 +536,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             // popover open. we must do this check *after* the next element focuses, so we use a
             // timeout of 0 to flush the rest of the event queue before proceeding.
             requestAnimationFrame(() => {
-                const { popoverElement } = this;
-                if (popoverElement == null || !popoverElement.contains(document.activeElement)) {
+                if (this.popoverElement == null || !this.popoverElement.contains(document.activeElement)) {
                     this.handleMouseLeave(e);
                 }
             });

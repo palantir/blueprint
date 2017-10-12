@@ -190,7 +190,7 @@ export const ICON_STANDARD = "pt-icon-standard";
 export const ICON_LARGE = "pt-icon-large";
 
 /** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
-export function iconClass(iconName: string) {
+export function iconClass(iconName?: string) {
     if (iconName == null) {
         return undefined;
     }

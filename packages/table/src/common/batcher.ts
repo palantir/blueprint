@@ -79,7 +79,7 @@ export class Batcher<T> {
      * The arguments must be simple stringifyable objects.
      */
     public addArgsToBatch(...args: SimpleStringifyable[]) {
-        this.batchArgs[args.join(Batcher.ARG_DELIMITER)] = args;
+        this.batchArgs[this.getKey(args)] = args;
     }
 
     /**
@@ -163,6 +163,23 @@ export class Batcher<T> {
 
     public cancelOutstandingCallback() {
         delete this.callback;
+    }
+
+    /**
+     * Forcibly overwrites the current list of batched objects. Not recommended
+     * for normal usage.
+     */
+    public setList(objectsArgs: SimpleStringifyable[][], objects: T[]) {
+        this.reset();
+        objectsArgs.forEach((args, i) => {
+            this.addArgsToBatch(...args);
+            this.currentObjects[this.getKey(args)] = objects[i];
+        });
+        this.done = true;
+    }
+
+    private getKey(args: SimpleStringifyable[]) {
+        return args.join(Batcher.ARG_DELIMITER);
     }
 
     private handleIdleCallback = () => {

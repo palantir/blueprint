@@ -1,10 +1,11 @@
 /*
- * Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  */
 
 import "./alert/alertTests";
 import "./breadcrumbs/breadcrumbTests";
 import "./buttons/buttonTests";
+import "./callout/calloutTests";
 import "./collapse/collapseTests";
 import "./collapsible-list/collapsibleListTests";
 import "./common/propsTests.ts";
@@ -18,6 +19,7 @@ import "./controls/numericInputTests";
 import "./controls/radioGroupTests";
 import "./dialog/dialogTests";
 import "./editable-text/editableTextTests";
+import "./forms/formGroupTests";
 import "./hotkeys/hotkeysTests";
 import "./icon/iconTests";
 import "./menu/menuTests";

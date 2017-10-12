@@ -5,8 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import { AbstractComponent, IProps, Utils as CoreUtils } from "@blueprintjs/core";
-import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
+import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -137,12 +136,16 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     loadingOptions?: TableLoadingOption[];
 
     /**
-     * The number of columns to freeze to the left side of the table, counting from the leftmost column.
+     * The number of columns to freeze to the left side of the table, counting
+     * from the leftmost column.
+     * @default 0
      */
     numFrozenColumns?: number;
 
     /**
-     * The number of rows to freeze to the top of the table, counting from the topmost row.
+     * The number of rows to freeze to the top of the table, counting from the
+     * topmost row.
+     * @default 0
      */
     numFrozenRows?: number;
 
@@ -219,8 +222,10 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * Dictates how cells should be rendered. Supported modes are:
      * - `RenderMode.BATCH`: renders cells in batches to improve performance
+     * - `RenderMode.BATCH_ON_UPDATE`: renders cells synchronously on mount and
+     *   in batches on update
      * - `RenderMode.NONE`: renders cells synchronously all at once
-     * @default RenderMode.BATCH
+     * @default RenderMode.BATCH_ON_UPDATE
      */
     renderMode?: RenderMode;
 
@@ -288,6 +293,18 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * marked with their own `className` for custom styling.
      */
     styledRegionGroups?: IStyledRegionGroup[];
+
+    /**
+     * If `true`, adds an interaction bar on top of all column header cells, and
+     * moves interaction triggers into it.
+     *
+     * This value defaults to `undefined` so that, by default, it won't override
+     * the `useInteractionBar` values that you might have provided directly to
+     * each `<ColumnHeaderCell>`.
+     *
+     * @default undefined
+     */
+    useInteractionBar?: boolean;
 }
 
 export interface ITableState {
@@ -322,6 +339,16 @@ export interface ITableState {
      * for the duration of the dragging interaction.
      */
     isReordering?: boolean;
+
+    /**
+     * The number of frozen columns, clamped to [0, num <Column>s].
+     */
+    numFrozenColumnsClamped?: number;
+
+    /**
+     * The number of frozen rows, clamped to [0, numRows].
+     */
+    numFrozenRowsClamped?: number;
 
     /**
      * An array of row heights. These are initialized updated when the user
@@ -359,8 +386,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
+        numFrozenColumns: 0,
+        numFrozenRows: 0,
         numRows: 0,
-        renderMode: RenderMode.BATCH,
+        renderMode: RenderMode.BATCH_ON_UPDATE,
         renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
@@ -411,6 +440,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private rowHeaderElement: HTMLElement;
     private scrollContainerElement: HTMLElement;
 
+    // when true, we'll need to imperatively synchronize quadrant views after
+    // the update. this variable lets us avoid expensively diff'ing columnWidths
+    // and rowHeights in <TableQuadrantStack> on each update.
+    private didUpdateColumnOrRowSizes = false;
+
+    // this value is set to `true` when all cells finish mounting for the first
+    // time. it serves as a signal that we can switch to batch rendering.
+    private didCompletelyMount = false;
+
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
 
@@ -440,6 +478,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             focusedCell,
             isLayoutLocked: false,
             isReordering: false,
+            numFrozenColumnsClamped: clampNumFrozenColumns(props),
+            numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
             selectedRegions,
         };
@@ -467,6 +507,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
         const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
         this.invalidateGrid();
+        this.didUpdateColumnOrRowSizes = true;
         this.setState({ rowHeights });
     }
 
@@ -488,10 +529,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * corner is reached.
      */
     public scrollToRegion(region: IRegion) {
+        const { numFrozenColumnsClamped: numFrozenColumns, numFrozenRowsClamped: numFrozenRows } = this.state;
         const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
-
-        const numFrozenRows = this.getNumFrozenRowsClamped();
-        const numFrozenColumns = this.getNumFrozenColumnsClamped();
 
         const { scrollLeft, scrollTop } = ScrollUtils.getScrollPositionForRegion(
             region,
@@ -570,8 +609,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             // fit in the current new table dimensions
             newSelectedRegions = this.state.selectedRegions.filter(region => {
                 const regionCardinality = Regions.getRegionCardinality(region);
-                const isSelectionModeEnabled = selectionModes.indexOf(regionCardinality) >= 0;
-                return isSelectionModeEnabled && Regions.isRegionValidForTable(region, numRows, numCols);
+                return (
+                    this.isSelectionModeEnabled(regionCardinality, selectionModes) &&
+                    Regions.isRegionValidForTable(region, numRows, numCols)
+                );
             });
         }
 
@@ -588,14 +629,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.setState({
             columnWidths: newColumnWidths,
             focusedCell: newFocusedCell,
+            numFrozenColumnsClamped: clampNumFrozenColumns(nextProps),
+            numFrozenRowsClamped: clampNumFrozenRows(nextProps),
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
         });
     }
 
     public render() {
-        const { className, isRowHeaderShown } = this.props;
-        const { horizontalGuides, verticalGuides } = this.state;
+        const { children, className, isRowHeaderShown, loadingOptions, numRows, useInteractionBar } = this.props;
+        const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
         this.validateGrid();
 
         const classes = classNames(
@@ -605,6 +648,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 [Classes.TABLE_NO_VERTICAL_SCROLL]: this.shouldDisableVerticalScroll(),
                 [Classes.TABLE_NO_HORIZONTAL_SCROLL]: this.shouldDisableHorizontalScroll(),
                 [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.CELLS),
+                [Classes.TABLE_NO_ROWS]: numRows === 0,
             },
             className,
         );
@@ -622,8 +666,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     isHorizontalScrollDisabled={this.shouldDisableHorizontalScroll()}
                     isRowHeaderShown={isRowHeaderShown}
                     isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
-                    numFrozenColumns={this.getNumFrozenColumnsClamped()}
-                    numFrozenRows={this.getNumFrozenRowsClamped()}
+                    loadingOptions={loadingOptions}
+                    numColumns={React.Children.count(children)}
+                    numFrozenColumns={numFrozenColumnsClamped}
+                    numFrozenRows={numFrozenRowsClamped}
+                    numRows={numRows}
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
                     ref={this.refHandlers.quadrantStack}
@@ -633,6 +680,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     renderRowHeader={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
+                    useInteractionBar={useInteractionBar}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
                 <GuideLayer
@@ -661,7 +709,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     public componentDidMount() {
         this.validateGrid();
 
-        this.locator = new Locator(this.mainQuadrantElement, this.scrollContainerElement, this.cellContainerElement);
+        this.locator = new Locator(this.rootTableElement, this.scrollContainerElement, this.cellContainerElement);
         this.updateLocator();
         this.updateViewportRect(this.locator.getViewportRect());
 
@@ -677,12 +725,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.resizeSensorDetach();
             delete this.resizeSensorDetach;
         }
+        this.didCompletelyMount = false;
     }
 
     public componentDidUpdate() {
         if (this.locator != null) {
             this.validateGrid();
             this.updateLocator();
+        }
+
+        if (this.didUpdateColumnOrRowSizes) {
+            this.quadrantStackInstance.synchronizeQuadrantViews();
+            this.didUpdateColumnOrRowSizes = false;
         }
 
         this.maybeScrollTableIntoView();
@@ -744,7 +798,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         newFocusedCell: IFocusedCellCoordinates,
         focusCellRegion: IRegion,
     ) {
-        const { grid } = this;
         const { selectedRegions } = this.state;
 
         const primaryAxisPlural = primaryAxis === "row" ? "rows" : "cols";
@@ -785,8 +838,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
                 const newFocusCellRegion = Regions.getCellRegionFromRegion(
                     selectedRegions[newFocusCellSelectionIndex],
-                    grid.numRows,
-                    grid.numCols,
+                    this.grid.numRows,
+                    this.grid.numCols,
                 );
 
                 newFocusedCell = {
@@ -800,7 +853,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleCopy = (e: KeyboardEvent) => {
-        const { grid } = this;
         const { getCellClipboardData, onCopy } = this.props;
         const { selectedRegions } = this.state;
 
@@ -812,7 +864,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.preventDefault();
         e.stopPropagation();
 
-        const cells = Regions.enumerateUniqueCells(selectedRegions, grid.numRows, grid.numCols);
+        const cells = Regions.enumerateUniqueCells(selectedRegions, this.grid.numRows, this.grid.numCols);
         const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
         if (sparse != null) {
             const success = Clipboard.copyCells(sparse);
@@ -917,22 +969,46 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
 
-        const { id, loadingOptions, renderCell, renderColumnHeader, ...spreadableProps } = props;
+        // TODO: `renderColumnHeader` is really an unclear name. should rename
+        // to `renderColumnHeaderCell` in the future.
+        // (see: https://github.com/palantir/blueprint/issues/1625)
+        const {
+            id,
+            loadingOptions,
+            renderCell,
+            renderColumnHeader: renderColumnHeaderCell,
+            ...spreadableProps,
+        } = props;
 
         const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
 
-        if (renderColumnHeader != null) {
-            const columnHeader = renderColumnHeader(columnIndex);
-            const columnHeaderLoading = columnHeader.props.loading;
+        // <Table>'s useInteractionBar defaults to undefined. this means we
+        // won't override the cell's useInteractionBar value unless the consumer
+        // explicitly provided an override value to the <Table>.
+        const tableUseInteractionBar = this.props.useInteractionBar;
 
-            return React.cloneElement(columnHeader, {
-                loading: columnHeaderLoading != null ? columnHeaderLoading : columnLoading,
-            } as IColumnHeaderCellProps);
+        if (renderColumnHeaderCell != null) {
+            const columnHeaderCell = renderColumnHeaderCell(columnIndex);
+            const columnHeaderCellLoading = columnHeaderCell.props.loading;
+
+            // print a deprecation warning here if needed. we can't do this in
+            // ColumnHeaderCell, because we wouldn't be able to tell if
+            // useInteractionBar was injected by Table or provided by the user.
+            if (columnHeaderCell.props.useInteractionBar && !CoreUtils.isNodeEnv("production")) {
+                console.warn(Errors.COLUMN_HEADER_CELL_USE_INTERACTION_BAR_DEPRECATED);
+            }
+
+            const columnHeaderCellProps: IColumnHeaderCellProps = {
+                loading: columnHeaderCellLoading != null ? columnHeaderCellLoading : columnLoading,
+                useInteractionBar: tableUseInteractionBar,
+            };
+            return React.cloneElement(columnHeaderCell, columnHeaderCellProps);
         }
 
         const baseProps: IColumnHeaderCellProps = {
             index: columnIndex,
             loading: columnLoading,
+            useInteractionBar: tableUseInteractionBar,
             ...spreadableProps,
         };
 
@@ -949,7 +1025,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly: boolean = false,
     ) => {
-        const { grid, locator } = this;
         const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
@@ -966,22 +1041,23 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
         });
 
-        const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
         const columnIndexEnd = showFrozenColumnsOnly ? this.getMaxFrozenColumnIndex() : columnIndices.columnIndexEnd;
 
         return (
-            <div className={classes} ref={refHandler}>
+            <div className={classes}>
                 <ColumnHeader
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
                     focusedCell={focusedCell}
-                    grid={grid}
+                    grid={this.grid}
                     isReorderable={isColumnReorderable}
                     isResizable={isColumnResizable}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
-                    locator={locator}
+                    locator={this.locator}
                     maxColumnWidth={maxColumnWidth}
+                    measurableElementRef={refHandler}
                     minColumnWidth={minColumnWidth}
                     onColumnWidthChanged={this.handleColumnWidthChanged}
                     onFocus={this.handleFocus}
@@ -1009,7 +1085,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly: boolean = false,
     ) => {
-        const { grid, locator } = this;
         const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
             allowMultipleSelection,
@@ -1027,7 +1102,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
         });
 
-        const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? this.getMaxFrozenRowIndex() : rowIndices.rowIndexEnd;
 
@@ -1036,8 +1111,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 <RowHeader
                     allowMultipleSelection={allowMultipleSelection}
                     focusedCell={focusedCell}
-                    grid={grid}
-                    locator={locator}
+                    grid={this.grid}
+                    locator={this.locator}
                     isReorderable={isRowReorderable}
                     isResizable={isRowResizable}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
@@ -1063,16 +1138,26 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     };
 
     private bodyCellRenderer = (rowIndex: number, columnIndex: number) => {
-        const columnProps = this.getColumnProps(columnIndex);
-        const cell = columnProps.renderCell(rowIndex, columnIndex);
-        const cellLoading = cell.props.loading;
+        const {
+            id,
+            loadingOptions,
+            renderCell,
+            renderColumnHeader,
+            name,
+            renderName,
+            useInteractionBar,
+            ...restColumnProps,
+        } = this.getColumnProps(columnIndex);
 
-        const loading =
-            cellLoading != null
-                ? cellLoading
-                : this.hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS);
+        const cell = renderCell(rowIndex, columnIndex);
+        const { loading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS) } = cell.props;
 
-        return React.cloneElement(cell, { ...columnProps, loading } as ICellProps);
+        const cellProps: ICellProps = {
+            ...restColumnProps,
+            loading,
+        };
+
+        return React.cloneElement(cell, cellProps);
     };
 
     private renderBody = (
@@ -1080,27 +1165,34 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         showFrozenRowsOnly: boolean = false,
         showFrozenColumnsOnly: boolean = false,
     ) => {
-        const { grid, locator } = this;
-        const { focusedCell, selectedRegions, viewportRect } = this.state;
+        const {
+            focusedCell,
+            numFrozenColumnsClamped: numFrozenColumns,
+            numFrozenRowsClamped: numFrozenRows,
+            selectedRegions,
+            viewportRect,
+        } = this.state;
         const {
             allowMultipleSelection,
             fillBodyWithGhostCells,
             loadingOptions,
             renderBodyContextMenu,
-            renderMode,
             selectedRegionTransform,
         } = this.props;
 
-        const numFrozenColumns = this.getNumFrozenColumnsClamped();
-        const numFrozenRows = this.getNumFrozenRowsClamped();
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
 
-        const rowIndices = grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
-        const columnIndices = grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        // start beyond the frozen area if rendering unrelated quadrants, so we
+        // don't render duplicate cells underneath the frozen ones.
+        const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart + numFrozenColumns;
+        const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart + numFrozenRows;
 
-        const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
-        const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumns : columnIndices.columnIndexEnd;
-        const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
-        const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows : rowIndices.rowIndexEnd;
+        // if rendering frozen rows/columns, subtract one to convert to
+        // 0-indexing. if the 1-indexed value is 0, this sets the end index
+        // to -1, which avoids rendering absent frozen rows/columns at all.
+        const columnIndexEnd = showFrozenColumnsOnly ? numFrozenColumns - 1 : columnIndices.columnIndexEnd;
+        const rowIndexEnd = showFrozenRowsOnly ? numFrozenRows - 1 : rowIndices.rowIndexEnd;
 
         // the main quadrant contains all cells in the table, so listen only to that quadrant
         const onCompleteRender = quadrantType === QuadrantType.MAIN ? this.handleCompleteRender : undefined;
@@ -1111,14 +1203,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     allowMultipleSelection={allowMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedCell={focusedCell}
-                    grid={grid}
+                    grid={this.grid}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
-                    locator={locator}
+                    locator={this.locator}
                     onCompleteRender={onCompleteRender}
                     onFocus={this.handleFocus}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                     renderBodyContextMenu={renderBodyContextMenu}
-                    renderMode={renderMode}
+                    renderMode={this.getNormalizedRenderMode()}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
                     viewportRect={viewportRect}
@@ -1138,8 +1230,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return this.state.verticalGuides != null || this.state.horizontalGuides != null;
     }
 
-    private isSelectionModeEnabled(selectionMode: RegionCardinality) {
-        return this.props.selectionModes.indexOf(selectionMode) >= 0;
+    private isSelectionModeEnabled(selectionMode: RegionCardinality, selectionModes = this.props.selectionModes) {
+        const { children, numRows } = this.props;
+        const numColumns = React.Children.count(children);
+        return selectionModes.indexOf(selectionMode) >= 0 && numRows > 0 && numColumns > 0;
     }
 
     private getEnabledSelectionHandler(selectionMode: RegionCardinality) {
@@ -1223,6 +1317,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // we defer invoking onCompleteRender until that check passes.
         if (this.state.viewportRect != null) {
             CoreUtils.safeInvoke(this.props.onCompleteRender);
+            this.didCompletelyMount = true;
         }
     };
 
@@ -1365,13 +1460,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     };
 
     private styleMenuRegion = (region: IRegion): React.CSSProperties => {
-        const { grid } = this;
         const { viewportRect } = this.state;
         if (viewportRect == null) {
             return {};
         }
         const cardinality = Regions.getRegionCardinality(region);
-        const style = grid.getRegionStyle(region);
+        const style = this.grid.getRegionStyle(region);
 
         switch (cardinality) {
             case RegionCardinality.FULL_TABLE:
@@ -1389,13 +1483,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     };
 
     private styleColumnHeaderRegion = (region: IRegion): React.CSSProperties => {
-        const { grid } = this;
         const { viewportRect } = this.state;
         if (viewportRect == null) {
             return {};
         }
         const cardinality = Regions.getRegionCardinality(region);
-        const style = grid.getRegionStyle(region);
+        const style = this.grid.getRegionStyle(region);
 
         switch (cardinality) {
             case RegionCardinality.FULL_TABLE:
@@ -1413,13 +1506,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     };
 
     private styleRowHeaderRegion = (region: IRegion): React.CSSProperties => {
-        const { grid } = this;
         const { viewportRect } = this.state;
         if (viewportRect == null) {
             return {};
         }
         const cardinality = Regions.getRegionCardinality(region);
-        const style = grid.getRegionStyle(region);
+        const style = this.grid.getRegionStyle(region);
         switch (cardinality) {
             case RegionCardinality.FULL_TABLE:
                 style.top = "-1px";
@@ -1453,6 +1545,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         this.invalidateGrid();
+        this.didUpdateColumnOrRowSizes = true;
         this.setState({ columnWidths });
 
         const { onColumnWidthChanged } = this.props;
@@ -1479,6 +1572,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         this.invalidateGrid();
+        this.didUpdateColumnOrRowSizes = true;
         this.setState({ rowHeights });
 
         const { onRowHeightChanged } = this.props;
@@ -1527,7 +1621,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         const newFocusedCell = { col: focusedCell.col, row: focusedCell.row, focusSelectionIndex: 0 };
-        const { grid } = this;
 
         switch (direction) {
             case "up":
@@ -1548,9 +1641,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         if (
             newFocusedCell.row < 0 ||
-            newFocusedCell.row >= grid.numRows ||
+            newFocusedCell.row >= this.grid.numRows ||
             newFocusedCell.col < 0 ||
-            newFocusedCell.col >= grid.numCols
+            newFocusedCell.col >= this.grid.numCols
         ) {
             return;
         }
@@ -1571,7 +1664,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.stopPropagation();
 
         const { focusedCell, selectedRegions } = this.state;
-        const { grid } = this;
 
         if (focusedCell == null) {
             // halt early if we have a selectedRegionTransform or something else in play that nixes
@@ -1587,7 +1679,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         // if we're not in any particular focus cell region, and one exists, go to the first cell of the first one
         if (focusedCell.focusSelectionIndex == null && selectedRegions.length > 0) {
-            const focusCellRegion = Regions.getCellRegionFromRegion(selectedRegions[0], grid.numRows, grid.numCols);
+            const focusCellRegion = Regions.getCellRegionFromRegion(
+                selectedRegions[0],
+                this.grid.numRows,
+                this.grid.numCols,
+            );
 
             newFocusedCell = {
                 col: focusCellRegion.cols[0],
@@ -1602,8 +1698,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
             const focusCellRegion = Regions.getCellRegionFromRegion(
                 selectedRegions[focusedCell.focusSelectionIndex],
-                grid.numRows,
-                grid.numCols,
+                this.grid.numRows,
+                this.grid.numCols,
             );
 
             if (
@@ -1635,9 +1731,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         if (
             newFocusedCell.row < 0 ||
-            newFocusedCell.row >= grid.numRows ||
+            newFocusedCell.row >= this.grid.numRows ||
             newFocusedCell.col < 0 ||
-            newFocusedCell.col >= grid.numCols
+            newFocusedCell.col >= this.grid.numCols
         ) {
             return;
         }
@@ -1733,7 +1829,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         // only set focused cell state if not specified in props
         if (this.props.focusedCell == null) {
-            this.setState({ focusedCell } as ITableState);
+            this.setState({ focusedCell });
         }
 
         CoreUtils.safeInvoke(this.props.onFocus, focusedCell);
@@ -1742,7 +1838,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleSelection = (selectedRegions: IRegion[]) => {
         // only set selectedRegions state if not specified in props
         if (this.props.selectedRegions == null) {
-            this.setState({ selectedRegions } as ITableState);
+            this.setState({ selectedRegions });
         }
 
         const { onSelection } = this.props;
@@ -1752,20 +1848,20 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     };
 
     private handleColumnsReordering = (verticalGuides: number[]) => {
-        this.setState({ isReordering: true, verticalGuides } as ITableState);
+        this.setState({ isReordering: true, verticalGuides });
     };
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        this.setState({ isReordering: false, verticalGuides: undefined } as ITableState);
+        this.setState({ isReordering: false, verticalGuides: undefined });
         CoreUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
     };
 
     private handleRowsReordering = (horizontalGuides: number[]) => {
-        this.setState({ isReordering: true, horizontalGuides } as ITableState);
+        this.setState({ isReordering: true, horizontalGuides });
     };
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        this.setState({ isReordering: false, horizontalGuides: undefined } as ITableState);
+        this.setState({ isReordering: false, horizontalGuides: undefined });
         CoreUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
     };
 
@@ -1783,8 +1879,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private updateLocator() {
         this.locator
             .setGrid(this.grid)
-            .setNumFrozenRows(this.getNumFrozenRowsClamped())
-            .setNumFrozenColumns(this.getNumFrozenColumnsClamped());
+            .setNumFrozenRows(this.state.numFrozenRowsClamped)
+            .setNumFrozenColumns(this.state.numFrozenColumnsClamped);
     }
 
     private updateViewportRect = (nextViewportRect: Rect) => {
@@ -1808,31 +1904,52 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private getMaxFrozenColumnIndex = () => {
-        const numFrozenColumns = this.getNumFrozenColumnsClamped();
+        const { numFrozenColumnsClamped: numFrozenColumns } = this.state;
         return numFrozenColumns != null ? numFrozenColumns - 1 : undefined;
     };
 
     private getMaxFrozenRowIndex = () => {
-        const numFrozenRows = this.getNumFrozenRowsClamped();
+        const { numFrozenRowsClamped: numFrozenRows } = this.state;
         return numFrozenRows != null ? numFrozenRows - 1 : undefined;
     };
 
-    private getNumFrozenColumnsClamped(props: ITableProps = this.props) {
-        const { numFrozenColumns } = props;
-        const numColumns = React.Children.count(props.children);
-        return Utils.clamp(numFrozenColumns, 0, numColumns);
-    }
+    /**
+     * Normalizes RenderMode.BATCH_ON_UPDATE into RenderMode.{BATCH,NONE}. We do
+     * this because there are actually multiple updates required before the
+     * <Table> is considered fully "mounted," and adding that knowledge to child
+     * components would lead to tight coupling. Thus, keep it simple for them.
+     */
+    private getNormalizedRenderMode(): RenderMode.BATCH | RenderMode.NONE {
+        const { renderMode } = this.props;
 
-    private getNumFrozenRowsClamped(props: ITableProps = this.props) {
-        const { numFrozenRows, numRows } = props;
-        return Utils.clamp(numFrozenRows, 0, numRows);
+        const shouldBatchRender =
+            renderMode === RenderMode.BATCH || (renderMode === RenderMode.BATCH_ON_UPDATE && this.didCompletelyMount);
+
+        return shouldBatchRender ? RenderMode.BATCH : RenderMode.NONE;
     }
 
     private handleColumnResizeGuide = (verticalGuides: number[]) => {
-        this.setState({ verticalGuides } as ITableState);
+        this.setState({ verticalGuides });
     };
 
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
-        this.setState({ horizontalGuides } as ITableState);
+        this.setState({ horizontalGuides });
     };
+}
+
+function clampNumFrozenColumns(props: ITableProps) {
+    const { numFrozenColumns } = props;
+    const numColumns = React.Children.count(props.children);
+    return clampPotentiallyNullValue(numFrozenColumns, numColumns);
+}
+
+function clampNumFrozenRows(props: ITableProps) {
+    const { numFrozenRows, numRows } = props;
+    return clampPotentiallyNullValue(numFrozenRows, numRows);
+}
+
+// add explicit `| null | undefined`, because the params make more sense in this
+// order, and you can't have an optional param precede a required param.
+function clampPotentiallyNullValue(value: number | null | undefined, max: number) {
+    return value == null ? 0 : Utils.clamp(value, 0, max);
 }

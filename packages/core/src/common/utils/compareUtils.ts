@@ -110,12 +110,13 @@ export function getShallowUnequalKeyValues<T extends object>(
  * Returns a descriptive object for each key whose values are deeply unequal
  * between two provided objects. Useful for debugging shouldComponentUpdate.
  */
-export function getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
-    const definedObjA = objA == null ? {} as T : objA;
-    const definedObjB = objB == null ? {} as T : objB;
-
-    const filteredKeys = keys == null ? _unionKeys(definedObjA, definedObjB) : keys;
-    return _getUnequalKeyValues(definedObjA, definedObjB, filteredKeys, (a, b, key) => {
+export function getDeepUnequalKeyValues<T extends object>(
+    objA: T = ({} as any) as T,
+    objB: T = ({} as any) as T,
+    keys?: Array<keyof T>,
+) {
+    const filteredKeys = keys == null ? _unionKeys(objA, objB) : keys;
+    return _getUnequalKeyValues(objA, objB, filteredKeys, (a, b, key) => {
         return deepCompareKeys(a, b, [key]);
     });
 }

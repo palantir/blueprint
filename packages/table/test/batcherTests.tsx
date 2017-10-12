@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-present Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
  * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
@@ -130,5 +130,26 @@ describe("Batcher", () => {
         batcher.removeOldAddNew((i: number) => `B${i}`, 1, 1, 1);
         expect(batcher.getList()).to.deep.equal(["B2", "B3", "B4", "B5"]);
         expect(batcher.isDone()).to.be.true;
+    });
+
+    it("can completely overwrite existing objects with setList", () => {
+        const callback = (i: number) => i * 2;
+        const batcher = new Batcher<any>();
+
+        // fill the batcher with some elements
+        batcher.startNewBatch();
+        batcher.addArgsToBatch(1);
+        batcher.addArgsToBatch(2);
+        batcher.addArgsToBatch(3);
+        batcher.removeOldAddNew(callback, 1, 1);
+        batcher.removeOldAddNew(callback, 1, 1);
+        batcher.removeOldAddNew(callback, 1, 1);
+
+        // overwrite the batcher's elements with precreated objects
+        const objectsArgs = [[1], [2], [3]];
+        const objects = [2, 4, 6];
+        batcher.setList(objectsArgs, objects);
+        expect(batcher.isDone()).to.be.true;
+        expect(batcher.getList()).to.deep.equal([2, 4, 6]);
     });
 });

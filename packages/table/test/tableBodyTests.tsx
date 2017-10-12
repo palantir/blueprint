@@ -83,7 +83,7 @@ describe("TableBody", () => {
             expect(tableBody.find(Cell).length).to.equal(Batcher.DEFAULT_ADD_LIMIT);
         });
 
-        function mountTableBodyForRenderModeTest(renderMode: RenderMode) {
+        function mountTableBodyForRenderModeTest(renderMode: RenderMode.BATCH | RenderMode.NONE) {
             const rowHeights = Array(LARGE_NUM_ROWS).fill(ROW_HEIGHT);
             const columnWidths = Array(NUM_COLUMNS).fill(COLUMN_WIDTH);
 
@@ -91,11 +91,11 @@ describe("TableBody", () => {
             const viewportRect = new Rect(0, 0, NUM_COLUMNS * COLUMN_WIDTH, LARGE_NUM_ROWS * ROW_HEIGHT);
 
             return mountTableBody({
+                columnIndexEnd: NUM_COLUMNS - 1,
                 grid,
                 renderMode,
-                viewportRect,
-                columnIndexEnd: NUM_COLUMNS - 1,
                 rowIndexEnd: LARGE_NUM_ROWS - 1,
+                viewportRect,
             });
         }
     });
@@ -184,10 +184,10 @@ describe("TableBody", () => {
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
-                renderBodyContextMenu,
-                selectedRegions,
                 onFocus,
                 onSelection,
+                renderBodyContextMenu,
+                selectedRegions,
             });
         }
 
@@ -198,7 +198,7 @@ describe("TableBody", () => {
     });
 
     function mountTableBody(props: Partial<ITableBodyProps> & object = {}) {
-        const { rowIndexEnd, columnIndexEnd } = props;
+        const { rowIndexEnd, columnIndexEnd, renderMode, ...spreadableProps } = props;
 
         const numRows = rowIndexEnd != null ? rowIndexEnd : LARGE_NUM_ROWS;
         const numCols = columnIndexEnd != null ? columnIndexEnd : NUM_COLUMNS;
@@ -215,6 +215,7 @@ describe("TableBody", () => {
                 grid={grid}
                 loading={false}
                 locator={null}
+                renderMode={renderMode as RenderMode.BATCH | RenderMode.NONE}
                 viewportRect={viewportRect}
                 // ISelectableProps
                 allowMultipleSelection={true}
@@ -223,13 +224,11 @@ describe("TableBody", () => {
                 selectedRegions={[]}
                 // IRowIndices
                 rowIndexStart={0}
+                rowIndexEnd={rowIndexEnd}
                 // IColumnIndices
                 columnIndexStart={0}
-                // missing: columnIndexEnd
-                // missing: renderMode
-                // missing: rowIndexEnd
-
-                {...props}
+                columnIndexEnd={columnIndexEnd}
+                {...spreadableProps}
             />,
         );
     }

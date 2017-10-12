@@ -10,7 +10,7 @@ var strSource = require("vinyl-source-stream");
 
 var DEFAULT_SCOPE = "source.tsx";
 
-const COPYRIGHT_HEADER = "\/*\n * Copyright 2015-present Palantir Technologies, Inc. All rights reserved.\n *\/\n";
+const COPYRIGHT_HEADER = "\/*\n * Copyright 2015 Palantir Technologies, Inc. All rights reserved.\n *\/\n";
 
 // Highlights configuration (https://github.com/atom/highlights)
 

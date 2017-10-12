@@ -61,7 +61,7 @@ class Envelope {
 
 // alph sorting does not follow a logical order here
 // tslint:disable object-literal-sort-keys
-const Scale = {
+const Scale: { [note: string]: number } = {
     A3: 220.0,
     "A#3": 233.08,
     B3: 246.94,
@@ -89,7 +89,7 @@ const Scale = {
     A5: 880.0,
     "A#5": 932.33,
     B5: 987.77,
-} as { [note: string]: number };
+};
 // tslint:enable object-literal-sort-keys
 
 interface IPianoKeyProps {

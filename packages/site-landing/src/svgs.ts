@@ -5,7 +5,7 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-// tslint:disable no-var-requires
+// tslint:disable no-var-requires no-submodule-imports
 const HERO_SVGS = {
     alert: require("raw!../resources/inline/alert.svg"),
     buttons: require("raw!../resources/inline/buttons.svg"),

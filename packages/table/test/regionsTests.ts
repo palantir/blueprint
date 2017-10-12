@@ -6,7 +6,7 @@
  */
 
 import { expect } from "chai";
-import { ICellCoordinate, RegionCardinality, Regions } from "../src/regions";
+import { ICellCoordinate, IRegion, RegionCardinality, Regions } from "../src/regions";
 
 describe("Regions", () => {
     describe("factories", () => {
@@ -65,6 +65,113 @@ describe("Regions", () => {
             expect(updated).to.not.equal(regions);
             expect(updated.length).to.equal(regions.length);
             expect(Regions.lastRegionIsEqual(updated, Regions.column(14, 3)));
+        });
+    });
+
+    describe("isRegionValidForTable", () => {
+        const N = 3;
+
+        const VALID_INDEX_LOW = 0;
+        const VALID_INDEX_HIGH = N - 1;
+
+        const INVALID_INDEX_LOW = -1;
+        const INVALID_INDEX_HIGH = N;
+
+        const isValid = Regions.isRegionValidForTable;
+
+        describe("in an NxN table", () => {
+            const expectTrue = (region: IRegion, msg?: string) => expect(isValid(region, N, N), msg).to.be.true;
+            const expectFalse = (region: IRegion, msg?: string) => expect(isValid(region, N, N), msg).to.be.false;
+
+            describe("cell regions", () => {
+                it("returns false if row index out-of-bounds", () => {
+                    expectFalse(Regions.cell(INVALID_INDEX_LOW, VALID_INDEX_LOW), "invalid low");
+                    expectFalse(Regions.cell(INVALID_INDEX_HIGH, VALID_INDEX_LOW), "invalid high");
+                });
+
+                it("returns false if column index out-of-bounds", () => {
+                    expectFalse(Regions.cell(VALID_INDEX_LOW, INVALID_INDEX_LOW), "invalid low");
+                    expectFalse(Regions.cell(VALID_INDEX_LOW, INVALID_INDEX_HIGH), "invalid high");
+                });
+
+                it("returns true if both row and column indices in bounds", () => {
+                    expectTrue(Regions.cell(VALID_INDEX_LOW, VALID_INDEX_LOW), "valid low");
+                    expectTrue(Regions.cell(VALID_INDEX_HIGH, VALID_INDEX_HIGH), "valid high");
+                });
+            });
+
+            describe("column regions", () => {
+                it("returns false if column index out-of-bounds", () => {
+                    expectFalse(Regions.column(INVALID_INDEX_LOW), "invalid low");
+                    expectFalse(Regions.column(INVALID_INDEX_HIGH), "invalid high");
+                });
+
+                it("returns true if both row and column indices in bounds", () => {
+                    expectTrue(Regions.column(VALID_INDEX_LOW), "valid low");
+                    expectTrue(Regions.column(VALID_INDEX_HIGH), "valid high");
+                });
+            });
+
+            describe("row regions", () => {
+                it("returns false if row index out-of-bounds", () => {
+                    expectFalse(Regions.row(INVALID_INDEX_LOW), "invalid low");
+                    expectFalse(Regions.row(INVALID_INDEX_HIGH), "invalid high");
+                });
+
+                it("returns true if both row and column indices in bounds", () => {
+                    expectTrue(Regions.row(VALID_INDEX_LOW), "valid low");
+                    expectTrue(Regions.row(VALID_INDEX_HIGH), "valid high");
+                });
+            });
+
+            describe("table regions", () => {
+                it("always returns true", () => {
+                    expectTrue(Regions.table());
+                });
+            });
+        });
+
+        describe("in an N-row, 0-column table", () => {
+            const expectFalse = (region: IRegion, msg?: string) =>
+                expect(isValid(region, N, VALID_INDEX_LOW), msg).to.be.false;
+
+            it("always returns false", () => {
+                expectFalse(Regions.cell(VALID_INDEX_LOW, VALID_INDEX_LOW));
+                expectFalse(Regions.column(INVALID_INDEX_LOW));
+                expectFalse(Regions.column(VALID_INDEX_LOW));
+                expectFalse(Regions.row(INVALID_INDEX_LOW));
+                expectFalse(Regions.row(VALID_INDEX_LOW));
+                expectFalse(Regions.table());
+            });
+        });
+
+        describe("in an N-column, 0-row table", () => {
+            const expectFalse = (region: IRegion, msg?: string) =>
+                expect(isValid(region, VALID_INDEX_LOW, N), msg).to.be.false;
+
+            it("always returns false", () => {
+                expectFalse(Regions.cell(INVALID_INDEX_LOW, INVALID_INDEX_LOW));
+                expectFalse(Regions.column(INVALID_INDEX_LOW));
+                expectFalse(Regions.column(VALID_INDEX_LOW));
+                expectFalse(Regions.row(INVALID_INDEX_LOW));
+                expectFalse(Regions.row(VALID_INDEX_LOW));
+                expectFalse(Regions.table());
+            });
+        });
+
+        describe("in a 0-column, 0-row table", () => {
+            const expectFalse = (region: IRegion, msg?: string) =>
+                expect(isValid(region, VALID_INDEX_LOW, VALID_INDEX_LOW), msg).to.be.false;
+
+            it("always returns false", () => {
+                expectFalse(Regions.cell(INVALID_INDEX_LOW, INVALID_INDEX_LOW));
+                expectFalse(Regions.cell(VALID_INDEX_LOW, VALID_INDEX_LOW));
+                expectFalse(Regions.column(INVALID_INDEX_LOW));
+                expectFalse(Regions.column(VALID_INDEX_LOW));
+                expectFalse(Regions.row(INVALID_INDEX_LOW));
+                expectFalse(Regions.row(VALID_INDEX_LOW));
+                expectFalse(Regions.table());
+            });
         });
     });
 

@@ -7,7 +7,17 @@
  * Demonstrates sample usage of the table component.
  */
 
-import { Button, Classes, FocusStyleManager, Intent, Menu, MenuDivider, MenuItem, Switch } from "@blueprintjs/core";
+import {
+    Button,
+    Classes,
+    FocusStyleManager,
+    IButtonProps,
+    Intent,
+    Menu,
+    MenuDivider,
+    MenuItem,
+    Switch,
+} from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -18,6 +28,7 @@ import {
     EditableCell,
     EditableName,
     IStyledRegionGroup,
+    JSONFormat,
     RegionCardinality,
     Regions,
     RowHeaderCell,
@@ -34,6 +45,7 @@ import { RenderMode } from "../src/common/renderMode";
 import { IRegion } from "../src/regions";
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";
+import { SlowLayoutStack } from "./slowLayoutStack";
 
 export enum FocusStyle {
     TAB,
@@ -44,6 +56,7 @@ export enum CellContent {
     EMPTY,
     CELL_NAMES,
     LONG_TEXT,
+    LARGE_JSON,
 }
 
 type IMutableStateUpdateCallback = (
@@ -51,26 +64,36 @@ type IMutableStateUpdateCallback = (
 ) => ((event: React.FormEvent<HTMLElement>) => void);
 
 const COLUMN_COUNTS = [0, 1, 5, 20, 100, 1000];
-
 const ROW_COUNTS = [0, 1, 5, 20, 100, 1000, 100000];
-
 const FROZEN_COLUMN_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
 const FROZEN_ROW_COUNTS = [0, 1, 2, 5, 20, 100, 1000];
 
-const REGION_CARDINALITIES = [
+const REGION_CARDINALITIES: RegionCardinality[] = [
     RegionCardinality.CELLS,
     RegionCardinality.FULL_ROWS,
     RegionCardinality.FULL_COLUMNS,
     RegionCardinality.FULL_TABLE,
 ];
 
-const CELL_CONTENTS = [CellContent.EMPTY, CellContent.CELL_NAMES, CellContent.LONG_TEXT];
+const RENDER_MODES: RenderMode[] = [RenderMode.BATCH_ON_UPDATE, RenderMode.BATCH, RenderMode.NONE];
+
+const CELL_CONTENTS: CellContent[] = [
+    CellContent.EMPTY,
+    CellContent.CELL_NAMES,
+    CellContent.LONG_TEXT,
+    CellContent.LARGE_JSON,
+];
 
 const TRUNCATED_POPOVER_MODES: TruncatedPopoverMode[] = [
     TruncatedPopoverMode.ALWAYS,
     TruncatedPopoverMode.NEVER,
     TruncatedPopoverMode.WHEN_TRUNCATED,
 ];
+
+const TRUNCATION_LENGTHS: number[] = [20, 80, 100, 1000];
+const TRUNCATION_LENGTH_DEFAULT_INDEX = 1;
+
+const SLOW_LAYOUT_STACK_DEPTH = 120;
 
 const COLUMN_COUNT_DEFAULT_INDEX = 3;
 const ROW_COUNT_DEFAULT_INDEX = 4;
@@ -79,18 +102,23 @@ const FROZEN_COLUMN_COUNT_DEFAULT_INDEX = 0;
 const FROZEN_ROW_COUNT_DEFAULT_INDEX = 0;
 
 const LONG_TEXT_MIN_LENGTH = 5;
-const LONG_TEXT_MAX_LENGTH = 40;
-const ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const LONG_TEXT_MAX_LENGTH = 120;
+const LONG_TEXT_WORD_SPLIT_REGEXP = /.{1,5}/g;
+
+const LARGE_JSON_PROP_COUNT = 3;
+const LARGE_JSON_OBJECT_DEPTH = 2;
 
 const CELL_CONTENT_GENERATORS = {
     [CellContent.CELL_NAMES]: Utils.toBase26CellName,
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
         const randomLength = getRandomInteger(LONG_TEXT_MIN_LENGTH, LONG_TEXT_MAX_LENGTH);
-        return Utils.times(randomLength, () => {
-            const randomIndex = getRandomInteger(0, ALPHANUMERIC_CHARS.length - 1);
-            return ALPHANUMERIC_CHARS[randomIndex];
-        }).join("");
+        return getRandomString(randomLength)
+            .match(LONG_TEXT_WORD_SPLIT_REGEXP)
+            .join(" ");
+    },
+    [CellContent.LARGE_JSON]: (_ri: number, _ci: number) => {
+        return getRandomObject(LARGE_JSON_PROP_COUNT, LARGE_JSON_OBJECT_DEPTH);
     },
 };
 
@@ -111,9 +139,43 @@ function handleNumberChange(handler: (value: number) => void) {
     return handleStringChange(value => handler(+value));
 }
 
-function getRandomInteger(min: number, max: number) {
+function getRandomObject(propCount: number, depth = 0): object {
+    const childPropCount = propCount;
+    const obj: any = {};
+    for (let i = 0; i < propCount; i++) {
+        obj[getRandomString(5)] = depth === 0 ? getRandomValue() : getRandomObject(childPropCount, depth - 1);
+    }
+    return obj;
+}
+
+function getRandomValue(): number | string | number[] | string[] | null {
+    switch (getRandomInteger(0, 4)) {
+        case 0:
+            return Math.random();
+        case 1:
+            return getRandomString(5);
+        case 2:
+            return Utils.times(5, () => Math.random());
+        case 3:
+            return Utils.times(5, () => getRandomString(5));
+        default:
+            return null;
+    }
+}
+
+function getRandomInteger(min: number, max: number): number {
     // min and max are inclusive
     return Math.floor(min + Math.random() * (max - min + 1));
+}
+
+function getRandomString(length: number): string {
+    let str = "";
+    while (str.length < length) {
+        str += Math.random()
+            .toString(36)
+            .substr(2);
+    }
+    return str.substr(0, length);
 }
 
 function contains(arr: any[], value: any) {
@@ -123,10 +185,12 @@ function contains(arr: any[], value: any) {
 export interface IMutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
-    enableBatchRendering?: boolean;
+    cellTruncationLength?: number;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableCellTruncation?: boolean;
+    enableCellTruncationFixed?: boolean;
+    enableCellWrap?: boolean;
     enableColumnCustomHeaders?: boolean;
     enableColumnNameEditing?: boolean;
     enableColumnReordering?: boolean;
@@ -134,14 +198,17 @@ export interface IMutableTableState {
     enableColumnSelection?: boolean;
     enableContextMenu?: boolean;
     enableFullTableSelection?: boolean;
+    enableLayoutBoundary?: boolean;
     enableMultiSelection?: boolean;
     enableRowReordering?: boolean;
     enableRowResizing?: boolean;
     enableRowSelection?: boolean;
+    enableSlowLayout?: boolean;
     numCols?: number;
     numFrozenCols?: number;
     numFrozenRows?: number;
     numRows?: number;
+    renderMode?: RenderMode;
     scrollToColumnIndex?: number;
     scrollToRegionType?: RegionCardinality;
     scrollToRowIndex?: number;
@@ -149,7 +216,6 @@ export interface IMutableTableState {
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
-    showColumnInteractionBar?: boolean;
     showColumnMenus?: boolean;
     showCustomRegions?: boolean;
     showFocusCell?: boolean;
@@ -157,16 +223,19 @@ export interface IMutableTableState {
     showInline?: boolean;
     showRowHeaders?: boolean;
     showRowHeadersLoading?: boolean;
+    showTableInteractionBar?: boolean;
     showZebraStriping?: boolean;
 }
 
 const DEFAULT_STATE: IMutableTableState = {
     cellContent: CellContent.LONG_TEXT,
     cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
-    enableBatchRendering: true,
+    cellTruncationLength: TRUNCATION_LENGTHS[TRUNCATION_LENGTH_DEFAULT_INDEX],
     enableCellEditing: false,
     enableCellSelection: true,
     enableCellTruncation: false,
+    enableCellTruncationFixed: false,
+    enableCellWrap: false,
     enableColumnCustomHeaders: true,
     enableColumnNameEditing: false,
     enableColumnReordering: true,
@@ -174,14 +243,17 @@ const DEFAULT_STATE: IMutableTableState = {
     enableColumnSelection: true,
     enableContextMenu: false,
     enableFullTableSelection: true,
+    enableLayoutBoundary: false,
     enableMultiSelection: true,
     enableRowReordering: false,
     enableRowResizing: false,
     enableRowSelection: true,
+    enableSlowLayout: false,
     numCols: COLUMN_COUNTS[COLUMN_COUNT_DEFAULT_INDEX],
     numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
     numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
     numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
+    renderMode: RenderMode.BATCH_ON_UPDATE,
     scrollToColumnIndex: 0,
     scrollToRegionType: RegionCardinality.CELLS,
     scrollToRowIndex: 0,
@@ -189,7 +261,6 @@ const DEFAULT_STATE: IMutableTableState = {
     showCallbackLogs: true,
     showCellsLoading: false,
     showColumnHeadersLoading: false,
-    showColumnInteractionBar: false,
     showColumnMenus: false,
     showCustomRegions: false,
     showFocusCell: false,
@@ -197,11 +268,12 @@ const DEFAULT_STATE: IMutableTableState = {
     showInline: false,
     showRowHeaders: true,
     showRowHeadersLoading: false,
+    showTableInteractionBar: false,
     showZebraStriping: false,
 };
 
 export class MutableTable extends React.Component<{}, IMutableTableState> {
-    private store = new DenseGridMutableStore<string>();
+    private store = new DenseGridMutableStore<any>();
 
     private tableInstance: Table;
     private stateStore: LocalStore<IMutableTableState>;
@@ -220,43 +292,19 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     // ===============
 
     public render() {
-        const renderMode = this.state.enableBatchRendering ? RenderMode.BATCH : RenderMode.NONE;
-
+        const layoutBoundary = this.state.enableLayoutBoundary;
         return (
             <div className="container">
-                <Table
-                    allowMultipleSelection={this.state.enableMultiSelection}
-                    className={classNames("table", { "is-inline": this.state.showInline })}
-                    enableFocus={this.state.showFocusCell}
-                    fillBodyWithGhostCells={this.state.showGhostCells}
-                    getCellClipboardData={this.getCellValue}
-                    isColumnResizable={this.state.enableColumnResizing}
-                    isColumnReorderable={this.state.enableColumnReordering}
-                    isRowHeaderShown={this.state.showRowHeaders}
-                    isRowReorderable={this.state.enableRowReordering}
-                    isRowResizable={this.state.enableRowResizing}
-                    loadingOptions={this.getEnabledLoadingOptions()}
-                    numFrozenColumns={this.state.numFrozenCols}
-                    numFrozenRows={this.state.numFrozenRows}
-                    numRows={this.state.numRows}
-                    onSelection={this.onSelection}
-                    onCompleteRender={this.onCompleteRender}
-                    onColumnsReordered={this.onColumnsReordered}
-                    onColumnWidthChanged={this.onColumnWidthChanged}
-                    onCopy={this.onCopy}
-                    onFocus={this.onFocus}
-                    onVisibleCellsChange={this.onVisibleCellsChange}
-                    onRowHeightChanged={this.onRowHeightChanged}
-                    onRowsReordered={this.onRowsReordered}
-                    ref={this.refHandlers.table}
-                    renderBodyContextMenu={this.renderBodyContextMenu}
-                    renderMode={renderMode}
-                    renderRowHeader={this.renderRowHeader}
-                    selectionModes={this.getEnabledSelectionModes()}
-                    styledRegionGroups={this.getStyledRegionGroups()}
+                <SlowLayoutStack
+                    depth={SLOW_LAYOUT_STACK_DEPTH}
+                    enabled={this.state.enableSlowLayout}
+                    rootClassName={classNames("table", { "is-inline": this.state.showInline })}
+                    branchClassName={"layout-passthrough-fill"}
                 >
-                    {this.renderColumns()}
-                </Table>
+                    <div className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}>
+                        {this.renderTable()}
+                    </div>
+                </SlowLayoutStack>
                 {this.renderSidebar()}
             </div>
         );
@@ -298,6 +346,44 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     // Renderers
     // =========
 
+    private renderTable() {
+        return (
+            <Table
+                allowMultipleSelection={this.state.enableMultiSelection}
+                enableFocus={this.state.showFocusCell}
+                fillBodyWithGhostCells={this.state.showGhostCells}
+                getCellClipboardData={this.getCellValue}
+                isColumnResizable={this.state.enableColumnResizing}
+                isColumnReorderable={this.state.enableColumnReordering}
+                isRowHeaderShown={this.state.showRowHeaders}
+                isRowReorderable={this.state.enableRowReordering}
+                isRowResizable={this.state.enableRowResizing}
+                loadingOptions={this.getEnabledLoadingOptions()}
+                numFrozenColumns={this.state.numFrozenCols}
+                numFrozenRows={this.state.numFrozenRows}
+                numRows={this.state.numRows}
+                onSelection={this.onSelection}
+                onCompleteRender={this.onCompleteRender}
+                onColumnsReordered={this.onColumnsReordered}
+                onColumnWidthChanged={this.onColumnWidthChanged}
+                onCopy={this.onCopy}
+                onFocus={this.onFocus}
+                onVisibleCellsChange={this.onVisibleCellsChange}
+                onRowHeightChanged={this.onRowHeightChanged}
+                onRowsReordered={this.onRowsReordered}
+                ref={this.refHandlers.table}
+                renderBodyContextMenu={this.renderBodyContextMenu}
+                renderMode={this.state.renderMode}
+                renderRowHeader={this.renderRowHeader}
+                selectionModes={this.getEnabledSelectionModes()}
+                styledRegionGroups={this.getStyledRegionGroups()}
+                useInteractionBar={this.state.showTableInteractionBar}
+            >
+                {this.renderColumns()}
+            </Table>
+        );
+    }
+
     private renderColumns() {
         return Utils.times(this.state.numCols, columnIndex => {
             return (
@@ -317,7 +403,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 name={this.store.getColumnName(columnIndex)}
                 renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
                 renderName={this.getColumnNameRenderer()}
-                useInteractionBar={this.state.showColumnInteractionBar}
             />
         );
     };
@@ -332,10 +417,15 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     };
 
-    private renderCustomColumnName = (name: string) => {
+    private renderCustomColumnName = (name: string, index: number) => {
+        // show taller, multi-line column names after an arbitrary threshold
+        // just to allow us to check if column headers resize appropriately.
+        const COLUMN_Z_INDEX = 25; // 0-indexed
+        const maybeMultilineName =
+            index > COLUMN_Z_INDEX ? [<span key="1">{name}</span>, <br key="2" />, <span key="3">{name}</span>] : name;
         return (
             <div className="tbl-custom-column-header">
-                <div className="tbl-custom-column-header-name">{name}</div>
+                <div className="tbl-custom-column-header-name">{maybeMultilineName}</div>
                 <div className="tbl-custom-column-header-type">string</div>
             </div>
         );
@@ -353,7 +443,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="insert"
                     onClick={() => {
                         this.store.addColumnBefore(columnIndex);
-                        this.setState({ numCols: this.state.numCols + 1 } as IMutableTableState);
+                        this.setState({ numCols: this.state.numCols + 1 });
                     }}
                     text="Insert column before"
                 />
@@ -361,7 +451,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="insert"
                     onClick={() => {
                         this.store.addColumnAfter(columnIndex);
-                        this.setState({ numCols: this.state.numCols + 1 } as IMutableTableState);
+                        this.setState({ numCols: this.state.numCols + 1 });
                     }}
                     text="Insert column after"
                 />
@@ -369,7 +459,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="remove"
                     onClick={() => {
                         this.store.removeColumn(columnIndex);
-                        this.setState({ numCols: this.state.numCols - 1 } as IMutableTableState);
+                        this.setState({ numCols: this.state.numCols - 1 });
                     }}
                     text="Remove column"
                 />
@@ -390,7 +480,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="insert"
                     onClick={() => {
                         this.store.addRowBefore(rowIndex);
-                        this.setState({ numRows: this.state.numRows + 1 } as IMutableTableState);
+                        this.setState({ numRows: this.state.numRows + 1 });
                     }}
                     text="Insert row before"
                 />
@@ -398,7 +488,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="insert"
                     onClick={() => {
                         this.store.addRowAfter(rowIndex);
-                        this.setState({ numRows: this.state.numRows + 1 } as IMutableTableState);
+                        this.setState({ numRows: this.state.numRows + 1 });
                     }}
                     text="Insert row after"
                 />
@@ -406,7 +496,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     iconName="remove"
                     onClick={() => {
                         this.store.removeRow(rowIndex);
-                        this.setState({ numRows: this.state.numRows - 1 } as IMutableTableState);
+                        this.setState({ numRows: this.state.numRows - 1 });
                     }}
                     text="Remove row"
                 />
@@ -437,14 +527,27 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     value={valueAsString}
                 />
             );
+        } else if (this.state.cellContent === CellContent.LARGE_JSON) {
+            return (
+                <Cell className={classes} wrapText={this.state.enableCellWrap}>
+                    <JSONFormat
+                        detectTruncation={this.state.enableCellTruncation}
+                        preformatted={true}
+                        showPopover={this.state.cellTruncatedPopoverMode}
+                        truncateLength={1e10}
+                    >
+                        {valueAsString}
+                    </JSONFormat>
+                </Cell>
+            );
         } else if (this.state.enableCellTruncation) {
             return (
-                <Cell className={classes}>
+                <Cell className={classes} wrapText={this.state.enableCellWrap}>
                     <TruncatedFormat
-                        detectTruncation={true}
+                        detectTruncation={!this.state.enableCellTruncationFixed}
                         preformatted={false}
                         showPopover={this.state.cellTruncatedPopoverMode}
-                        truncateLength={80}
+                        truncateLength={this.state.cellTruncationLength}
                         truncationSuffix="..."
                     >
                         {valueAsString}
@@ -453,7 +556,12 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             );
         } else {
             return (
-                <Cell className={classes} columnIndex={columnIndex} rowIndex={rowIndex}>
+                <Cell
+                    className={classes}
+                    columnIndex={columnIndex}
+                    rowIndex={rowIndex}
+                    wrapText={this.state.enableCellWrap}
+                >
                     {valueAsString}
                 </Cell>
             );
@@ -461,6 +569,13 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private renderSidebar() {
+        const renderModeMenu = this.renderSelectMenu(
+            "Render mode",
+            "renderMode",
+            RENDER_MODES,
+            this.toRenderModeLabel,
+            this.handleNumberStateChange,
+        );
         const cellContentMenu = this.renderSelectMenu(
             "Cell content",
             "cellContent",
@@ -477,6 +592,15 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             "enableCellTruncation",
             true,
         );
+        const truncatedLengthMenu = this.renderSelectMenu(
+            "Length",
+            "cellTruncationLength",
+            TRUNCATION_LENGTHS,
+            this.toValueLabel,
+            this.handleNumberStateChange,
+            "enableCellTruncationFixed",
+            true,
+        );
 
         return (
             <div className="sidebar pt-elevation-0">
@@ -485,7 +609,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Inline", "showInline")}
                 {this.renderSwitch("Focus cell", "showFocusCell")}
                 {this.renderSwitch("Ghost cells", "showGhostCells")}
-                {this.renderSwitch("Batch rendering", "enableBatchRendering")}
+                {renderModeMenu}
+                {this.renderSwitch("Interaction bar", "showTableInteractionBar")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Body context menu", "enableContextMenu")}
                 {this.renderSwitch("Callback logs", "showCallbackLogs")}
@@ -499,10 +624,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderNumberSelectMenu("Num. columns", "numCols", COLUMN_COUNTS)}
                 {this.renderNumberSelectMenu("Num. frozen columns", "numFrozenCols", FROZEN_COLUMN_COUNTS)}
                 {this.renderSwitch("Loading state", "showColumnHeadersLoading")}
-                {this.renderSwitch("Interaction bar", "showColumnInteractionBar")}
                 {this.renderSwitch("Menus", "showColumnMenus")}
+                {this.renderSwitch("Custom headers", "enableColumnCustomHeaders")}
                 <h6>Interactions</h6>
-                {this.renderSwitch("Editing", "enableColumnNameEditing")}
+                {this.renderSwitch("Editing", "enableColumnNameEditing", "enableColumnCustomHeaders", false)}
                 {this.renderSwitch("Reordering", "enableColumnReordering")}
                 {this.renderSwitch("Resizing", "enableColumnResizing")}
                 {this.renderSwitch("Selection", "enableColumnSelection")}
@@ -518,6 +643,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Reordering", "enableRowReordering")}
                 {this.renderSwitch("Resizing", "enableRowResizing")}
                 {this.renderSwitch("Selection", "enableRowSelection")}
+                <h6>Instance methods</h6>
+                {this.renderButton("Resize rows by tallest cell", {
+                    onClick: this.handleResizeRowsByTallestCellButtonClick,
+                })}
 
                 <h4>Cells</h4>
                 <h6>Display</h6>
@@ -527,28 +656,30 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 <h6>Interactions</h6>
                 {this.renderSwitch("Editing", "enableCellEditing")}
                 {this.renderSwitch("Selection", "enableCellSelection")}
+                <h6>Text Layout</h6>
                 {this.renderSwitch("Truncation", "enableCellTruncation", "enableCellEditing", false)}
-
                 <div className="sidebar-indented-group">{truncatedPopoverModeMenu}</div>
+                {this.renderSwitch("Fixed truncation", "enableCellTruncationFixed", "enableCellTruncation", true)}
+                <div className="sidebar-indented-group">{truncatedLengthMenu}</div>
+                {this.renderSwitch("Wrap text", "enableCellWrap")}
 
                 <h4>Page</h4>
                 <h6>Display</h6>
                 {this.renderFocusStyleSelectMenu()}
+                <h6>Perf</h6>
+                {this.renderSwitch("Slow layout", "enableSlowLayout")}
+                {this.renderSwitch("Isolate layout boundary", "enableLayoutBoundary")}
 
-                {this.renderResetButton()}
+                <h4>Settings</h4>
+                {this.renderButton("Reset all", { iconName: "undo", onClick: this.handleDefaultsButtonClick })}
             </div>
         );
     }
 
-    private renderResetButton() {
+    private renderButton(label: string, props: IButtonProps) {
         return (
-            <Button
-                intent={Intent.PRIMARY}
-                iconName={"undo"}
-                className={classNames(Classes.FILL)}
-                onClick={this.handleDefaultsButtonClick}
-            >
-                Reset All
+            <Button intent={Intent.PRIMARY} className={classNames(Classes.FILL)} {...props}>
+                {label}
             </Button>
         );
     }
@@ -719,6 +850,17 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     // Select menu - label generators
     // ==============================
 
+    private toRenderModeLabel(renderMode: RenderMode) {
+        switch (renderMode) {
+            case RenderMode.BATCH:
+                return "Batch";
+            case RenderMode.BATCH_ON_UPDATE:
+                return "Batch on update";
+            default:
+                return "None";
+        }
+    }
+
     private toCellContentLabel(cellContent: CellContent) {
         switch (cellContent) {
             case CellContent.CELL_NAMES:
@@ -727,6 +869,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 return "Empty";
             case CellContent.LONG_TEXT:
                 return "Long text";
+            case CellContent.LARGE_JSON:
+                return "Large JSON (~5KB)";
             default:
                 return "";
         }
@@ -841,6 +985,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.tableInstance.scrollToRegion(region);
     };
 
+    private handleResizeRowsByTallestCellButtonClick = () => {
+        this.tableInstance.resizeRowsByTallestCell();
+    };
+
     // State updates
     // =============
 
@@ -871,6 +1019,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private syncDependentBooleanStates = () => {
         if (this.state.enableCellEditing && this.state.enableCellTruncation) {
             this.setState({ enableCellTruncation: false });
+        }
+
+        if (this.state.enableColumnNameEditing && this.state.enableColumnCustomHeaders) {
+            this.setState({ enableColumnNameEditing: false });
         }
     };
 
