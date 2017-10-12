@@ -40,7 +40,9 @@ For a subtler button that appears to fade into the UI, add the `.pt-minimal` mod
 to any `.pt-button`. `pt-minimal` is compatible with all other button modifiers,
 except for `.pt-fill` (due to lack of visual affordances).
 
-Note that minimal buttons are _not supported_ in button groups at this time.
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    Note that minimal buttons are _not supported_ in button groups at this time.
+</div>
 
 @css pt-button.pt-minimal
 
