@@ -17,7 +17,7 @@ import * as Errors from "../errors";
 export function getFocusedOrLastSelectedIndex(selectedRegions: IRegion[], focusedCell?: IFocusedCellCoordinates) {
     if (selectedRegions.length === 0) {
         return undefined;
-    } else if (focusedCell != null && focusedCell.focusSelectionIndex != null) {
+    } else if (focusedCell != null) {
         return focusedCell.focusSelectionIndex;
     } else {
         return selectedRegions.length - 1;
