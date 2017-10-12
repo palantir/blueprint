@@ -960,9 +960,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { selectedRegions } = this.state;
         const numColumns = React.Children.count(children);
 
-        const clampedNextRegion = Regions.clampRegion(region, numRows, numColumns);
-        const nextSelectedRegions = Regions.update(selectedRegions, clampedNextRegion, index);
+        const maxRowIndex = Math.max(0, numRows - 1);
+        const maxColumnIndex = Math.max(0, numColumns - 1);
+        const clampedNextRegion = Regions.clampRegion(region, maxRowIndex, maxColumnIndex);
 
+        const nextSelectedRegions = Regions.update(selectedRegions, clampedNextRegion, index);
         this.handleSelection(nextSelectedRegions);
     }
 

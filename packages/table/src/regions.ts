@@ -248,15 +248,15 @@ export class Regions {
      * Clamps the region's start and end indices between 0 and the provided
      * maximum values.
      */
-    public static clampRegion(region: IRegion, maxRows: number, maxColumns: number) {
+    public static clampRegion(region: IRegion, maxRowIndex: number, maxColumnIndex: number) {
         const nextRegion = Regions.copy(region);
         if (region.rows != null) {
-            nextRegion.rows[0] = Utils.clamp(region.rows[0], 0, maxRows - 1);
-            nextRegion.rows[1] = Utils.clamp(region.rows[1], 0, maxRows - 1);
+            nextRegion.rows[0] = Utils.clamp(region.rows[0], 0, maxRowIndex);
+            nextRegion.rows[1] = Utils.clamp(region.rows[1], 0, maxRowIndex);
         }
         if (region.cols != null) {
-            nextRegion.cols[0] = Utils.clamp(region.cols[0], 0, maxColumns - 1);
-            nextRegion.cols[1] = Utils.clamp(region.cols[1], 0, maxColumns - 1);
+            nextRegion.cols[0] = Utils.clamp(region.cols[0], 0, maxColumnIndex);
+            nextRegion.cols[1] = Utils.clamp(region.cols[1], 0, maxColumnIndex);
         }
         return nextRegion;
     }
