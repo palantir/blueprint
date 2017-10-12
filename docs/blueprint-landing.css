@@ -614,6 +614,10 @@ ul {
       background: none;
       cursor: not-allowed;
       color: rgba(92, 112, 128, 0.5); }
+    .pt-button.pt-minimal:disabled.active, .pt-button.pt-minimal:disabled.active:hover, .pt-button.pt-minimal.pt-disabled.active, .pt-button.pt-minimal.pt-disabled.active:hover, .pt-button.pt-minimal:disabled.pt-active, .pt-button.pt-minimal:disabled.pt-active:hover, .pt-button.pt-minimal.pt-disabled.pt-active, .pt-button.pt-minimal.pt-disabled.pt-active:hover {
+      background: rgba(115, 134, 148, 0.3);
+      cursor: not-allowed;
+      color: rgba(92, 112, 128, 0.5); }
     .pt-dark .pt-button.pt-minimal {
       box-shadow: none;
       background: none;
