@@ -948,9 +948,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         console.log("next selectedRegions:", nextSelectedRegions);
         this.handleSelection(nextSelectedRegions);
-
-        // TODO: Scroll viewport to reveal the new end of the modified region
-        // TODO: Update the selected regions in state
     };
 
     // Quadrant refs
