@@ -693,7 +693,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.maybeRenderCopyHotkey(),
             this.maybeRenderSelectAllHotkey(),
             this.maybeRenderFocusHotkeys(),
-            this.maybeRenderSelectionHotkeys(),
+            this.maybeRenderSelectionResizeHotkeys(),
         ];
         return <Hotkeys>{hotkeys.filter(element => element !== undefined)}</Hotkeys>;
     }
@@ -804,37 +804,44 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    private maybeRenderSelectionHotkeys() {
-        return [
-            <Hotkey
-                key="resize-selection-up"
-                label="Resize selection upward"
-                group="Table"
-                combo="shift+up"
-                onKeyDown={this.handleSelectionResizeUp}
-            />,
-            <Hotkey
-                key="resize-selection-down"
-                label="Resize selection downward"
-                group="Table"
-                combo="shift+down"
-                onKeyDown={this.handleSelectionResizeDown}
-            />,
-            <Hotkey
-                key="resize-selection-left"
-                label="Resize selection leftward"
-                group="Table"
-                combo="shift+left"
-                onKeyDown={this.handleSelectionResizeLeft}
-            />,
-            <Hotkey
-                key="resize-selection-right"
-                label="Resize selection rightward"
-                group="Table"
-                combo="shift+right"
-                onKeyDown={this.handleSelectionResizeRight}
-            />,
-        ];
+    private maybeRenderSelectionResizeHotkeys() {
+        const { allowMultipleSelection, selectionModes } = this.props;
+        const isSomeSelectionModeEnabled = selectionModes.length > 0;
+
+        if (allowMultipleSelection && isSomeSelectionModeEnabled) {
+            return [
+                <Hotkey
+                    key="resize-selection-up"
+                    label="Resize selection upward"
+                    group="Table"
+                    combo="shift+up"
+                    onKeyDown={this.handleSelectionResizeUp}
+                />,
+                <Hotkey
+                    key="resize-selection-down"
+                    label="Resize selection downward"
+                    group="Table"
+                    combo="shift+down"
+                    onKeyDown={this.handleSelectionResizeDown}
+                />,
+                <Hotkey
+                    key="resize-selection-left"
+                    label="Resize selection leftward"
+                    group="Table"
+                    combo="shift+left"
+                    onKeyDown={this.handleSelectionResizeLeft}
+                />,
+                <Hotkey
+                    key="resize-selection-right"
+                    label="Resize selection rightward"
+                    group="Table"
+                    combo="shift+right"
+                    onKeyDown={this.handleSelectionResizeRight}
+                />,
+            ];
+        } else {
+            return undefined;
+        }
     }
 
     private maybeRenderFocusHotkeys() {
@@ -931,16 +938,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.preventDefault();
         e.stopPropagation();
 
-        const { allowMultipleSelection } = this.props;
         const { focusedCell, selectedRegions } = this.state;
 
-        if (selectedRegions.length === 0 || !allowMultipleSelection) {
+        if (selectedRegions.length === 0) {
             return;
         }
 
         const index = FocusedCellUtils.getFocusedOrLastSelectedIndex(selectedRegions, focusedCell);
         const region = selectedRegions[index];
-
         const nextRegion = SelectionUtils.resizeSelectedRegion(region, direction, focusedCell);
 
         this.updateSelectedRegionAtIndex(nextRegion, index);
