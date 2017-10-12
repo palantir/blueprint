@@ -8,13 +8,13 @@ We use box shadows instead of borders since it makes the size and position
 calculations much more well-behaved. This mixin allows us to define the themes
 for all borders with minimal duplication. See the bottom of this file.
 */
-@mixin bp-table-borders-mixin($border-width, $border-color, $border-color-frozen) {
+@mixin bp-table-borders-mixin($border-width, $frozen-border-width, $border-color) {
   $border-right-default: $border-width 0 0 $border-color;
   $border-bottom-default: 0 $border-width 0 $border-color;
   $inset-border-right-default: inset (-$border-width) 0 0 $border-color;
   $inset-border-bottom-default: inset 0 (-$border-width) 0 $border-color;
-  $inset-border-right-frozen: inset -2px 0 0 $border-color-frozen;
-  $inset-border-bottom-frozen: inset 0 -2px 0 $border-color-frozen;
+  $inset-border-right-frozen: inset (-$frozen-border-width) 0 0 $border-color;
+  $inset-border-bottom-frozen: inset 0 (-$frozen-border-width) 0 $border-color;
 
   .bp-table-container {
     box-shadow: 0 0 0 $border-width $border-color;
@@ -92,7 +92,7 @@ for all borders with minimal duplication. See the bottom of this file.
 
         &::before {
           // hover shadow
-          right: 2px;
+          right: $frozen-border-width;
           bottom: 0;
         }
       }
@@ -103,7 +103,7 @@ for all borders with minimal duplication. See the bottom of this file.
         &::before {
           // hover shadow
           right: 0;
-          bottom: 2px;
+          bottom: $frozen-border-width;
         }
       }
     }
@@ -118,12 +118,12 @@ for all borders with minimal duplication. See the bottom of this file.
   }
 }
 
-@include bp-table-borders-mixin($cell-border-width, $cell-border-color, $cell-border-color-frozen);
+@include bp-table-borders-mixin($cell-border-width, $frozen-cell-border-width, $cell-border-color);
 
 .pt-dark {
   @include bp-table-borders-mixin(
     $cell-border-width,
-    $dark-cell-border-color,
-    $dark-cell-border-color-frozen
+    $frozen-cell-border-width,
+    $dark-cell-border-color
   );
 }
