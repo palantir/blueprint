@@ -12,67 +12,6 @@ import * as FocusedCellUtils from "../../../src/common/internal/focusedCellUtils
 import { IRegion, Regions } from "../../../src/regions";
 
 describe("FocusedCellUtils", () => {
-    describe("getInitialFocusedCell", () => {
-        const FOCUSED_CELL_FROM_PROPS = getFocusedCell(1, 2);
-        const FOCUSED_CELL_FROM_STATE = getFocusedCell(3, 4);
-        const SELECTED_REGIONS = [Regions.cell(1, 1, 4, 5), Regions.cell(5, 1, 6, 2)];
-
-        it("returns undefined if enableFocus=false", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-                false,
-                FOCUSED_CELL_FROM_PROPS,
-                FOCUSED_CELL_FROM_STATE,
-                SELECTED_REGIONS,
-            );
-            expect(focusedCell).to.be.undefined;
-        });
-
-        it("returns the focusedCellFromProps if defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-                true,
-                FOCUSED_CELL_FROM_PROPS,
-                FOCUSED_CELL_FROM_STATE,
-                SELECTED_REGIONS,
-            );
-            expect(focusedCell).to.deep.equal(FOCUSED_CELL_FROM_PROPS);
-        });
-
-        it("returns the focusedCellFromState if focusedCellFromProps not defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-                true,
-                null,
-                FOCUSED_CELL_FROM_STATE,
-                SELECTED_REGIONS,
-            );
-            expect(focusedCell).to.deep.equal(FOCUSED_CELL_FROM_STATE);
-        });
-
-        // tslint:disable-next-line:max-line-length
-        it("returns the focused cell for the last selected region if focusedCell not provided", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, SELECTED_REGIONS);
-            const lastIndex = SELECTED_REGIONS.length - 1;
-            const expectedFocusedCell = {
-                ...Regions.getFocusCellCoordinatesFromRegion(SELECTED_REGIONS[lastIndex]),
-                focusSelectionIndex: lastIndex,
-            };
-            expect(focusedCell).to.deep.equal(expectedFocusedCell);
-        });
-
-        it("returns cell (0, 0) if nothing else is defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, []);
-            const expectedFocusedCell = {
-                col: 0,
-                focusSelectionIndex: 0,
-                row: 0,
-            };
-            expect(focusedCell).to.deep.equal(expectedFocusedCell);
-        });
-
-        function getFocusedCell(row: number, col: number, focusSelectionIndex: number = 0): IFocusedCellCoordinates {
-            return { row, col, focusSelectionIndex };
-        }
-    });
-
     describe("expandFocusedRegion", () => {
         const FOCUSED_ROW = 3;
         const FOCUSED_COL = 3;
@@ -189,6 +128,67 @@ describe("FocusedCellUtils", () => {
 
         function toCellCoords(row: number, col: number): IFocusedCellCoordinates {
             return { row, col, focusSelectionIndex: 0 };
+        }
+    });
+
+    describe("getInitialFocusedCell", () => {
+        const FOCUSED_CELL_FROM_PROPS = getFocusedCell(1, 2);
+        const FOCUSED_CELL_FROM_STATE = getFocusedCell(3, 4);
+        const SELECTED_REGIONS = [Regions.cell(1, 1, 4, 5), Regions.cell(5, 1, 6, 2)];
+
+        it("returns undefined if enableFocus=false", () => {
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
+                false,
+                FOCUSED_CELL_FROM_PROPS,
+                FOCUSED_CELL_FROM_STATE,
+                SELECTED_REGIONS,
+            );
+            expect(focusedCell).to.be.undefined;
+        });
+
+        it("returns the focusedCellFromProps if defined", () => {
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
+                true,
+                FOCUSED_CELL_FROM_PROPS,
+                FOCUSED_CELL_FROM_STATE,
+                SELECTED_REGIONS,
+            );
+            expect(focusedCell).to.deep.equal(FOCUSED_CELL_FROM_PROPS);
+        });
+
+        it("returns the focusedCellFromState if focusedCellFromProps not defined", () => {
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
+                true,
+                null,
+                FOCUSED_CELL_FROM_STATE,
+                SELECTED_REGIONS,
+            );
+            expect(focusedCell).to.deep.equal(FOCUSED_CELL_FROM_STATE);
+        });
+
+        // tslint:disable-next-line:max-line-length
+        it("returns the focused cell for the last selected region if focusedCell not provided", () => {
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, SELECTED_REGIONS);
+            const lastIndex = SELECTED_REGIONS.length - 1;
+            const expectedFocusedCell = {
+                ...Regions.getFocusCellCoordinatesFromRegion(SELECTED_REGIONS[lastIndex]),
+                focusSelectionIndex: lastIndex,
+            };
+            expect(focusedCell).to.deep.equal(expectedFocusedCell);
+        });
+
+        it("returns cell (0, 0) if nothing else is defined", () => {
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, []);
+            const expectedFocusedCell = {
+                col: 0,
+                focusSelectionIndex: 0,
+                row: 0,
+            };
+            expect(focusedCell).to.deep.equal(expectedFocusedCell);
+        });
+
+        function getFocusedCell(row: number, col: number, focusSelectionIndex: number = 0): IFocusedCellCoordinates {
+            return { row, col, focusSelectionIndex };
         }
     });
 
