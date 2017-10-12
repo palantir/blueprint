@@ -58,13 +58,23 @@ describe("Regions", () => {
             expect(Regions.lastRegionIsEqual(added, Regions.column(14, 3)));
         });
 
-        it("updates regions", () => {
+        it("updates regions at last index", () => {
             const regions = [Regions.row(1, 37)];
             const updated = Regions.update(regions, Regions.column(3, 14));
 
             expect(updated).to.not.equal(regions);
             expect(updated.length).to.equal(regions.length);
             expect(Regions.lastRegionIsEqual(updated, Regions.column(14, 3)));
+        });
+
+        it("updates regions at specified index", () => {
+            const INDEX = 1;
+            const regions = [Regions.row(1), Regions.column(1), Regions.cell(1, 1)];
+            const updated = Regions.update(regions, Regions.column(2), INDEX);
+
+            expect(updated).to.not.equal(regions);
+            expect(updated.length).to.equal(regions.length);
+            expect(updated[INDEX]).to.deep.equal(Regions.column(2));
         });
     });
 
