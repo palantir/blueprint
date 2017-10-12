@@ -807,29 +807,29 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private maybeRenderSelectionHotkeys() {
         return [
             <Hotkey
-                key="modify-selection-up"
-                label="Modify selection upward"
+                key="resize-selection-up"
+                label="Resize selection upward"
                 group="Table"
                 combo="shift+up"
                 onKeyDown={this.handleSelectionResizeUp}
             />,
             <Hotkey
-                key="modify-selection-down"
-                label="Modify selection downward"
+                key="resize-selection-down"
+                label="Resize selection downward"
                 group="Table"
                 combo="shift+down"
                 onKeyDown={this.handleSelectionResizeDown}
             />,
             <Hotkey
-                key="modify-selection-left"
-                label="Modify selection leftward"
+                key="resize-selection-left"
+                label="Resize selection leftward"
                 group="Table"
                 combo="shift+left"
                 onKeyDown={this.handleSelectionResizeLeft}
             />,
             <Hotkey
-                key="modify-selection-right"
-                label="Modify selection rightward"
+                key="resize-selection-right"
+                label="Resize selection rightward"
                 group="Table"
                 combo="shift+right"
                 onKeyDown={this.handleSelectionResizeRight}
