@@ -931,11 +931,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         e.preventDefault();
         e.stopPropagation();
 
-        const { children, numRows } = this.props;
+        const { allowMultipleSelection } = this.props;
         const { focusedCell, selectedRegions } = this.state;
-        const numColumns = React.Children.count(children);
 
-        if (selectedRegions.length === 0) {
+        if (selectedRegions.length === 0 || !allowMultipleSelection) {
             return;
         }
 
@@ -943,12 +942,24 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const region = selectedRegions[index];
 
         const nextRegion = SelectionUtils.resizeSelectedRegion(region, direction, focusedCell);
-        const clampedNextRegion = Regions.clampRegion(nextRegion, numRows, numColumns);
+
+        this.updateSelectedRegionAtIndex(nextRegion, index);
+    };
+
+    /**
+     * Replaces the selected region at the specified array index, with the
+     * region provided.
+     */
+    private updateSelectedRegionAtIndex(region: IRegion, index: number) {
+        const { children, numRows } = this.props;
+        const { selectedRegions } = this.state;
+        const numColumns = React.Children.count(children);
+
+        const clampedNextRegion = Regions.clampRegion(region, numRows, numColumns);
         const nextSelectedRegions = Regions.update(selectedRegions, clampedNextRegion, index);
 
-        console.log("next selectedRegions:", nextSelectedRegions);
         this.handleSelection(nextSelectedRegions);
-    };
+    }
 
     // Quadrant refs
     // =============
