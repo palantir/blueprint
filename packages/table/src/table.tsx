@@ -928,10 +928,23 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleSelectionResizeRight = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.RIGHT);
 
     private handleSelectionResize = (e: KeyboardEvent, direction: Direction) => {
-        const { focusedCell, selectedRegions } = this.state;
-        const nextSelectedRegions = SelectionUtils.resizeLastSelectedRegion(selectedRegions, direction, focusedCell);
         e.preventDefault();
         e.stopPropagation();
+
+        const { children, numRows } = this.props;
+        const { focusedCell, selectedRegions } = this.state;
+        const numColumns = React.Children.count(children);
+
+        if (selectedRegions.length === 0) {
+            return;
+        }
+
+        const index = FocusedCellUtils.getFocusedOrLastSelectedIndex(selectedRegions, focusedCell);
+        const region = selectedRegions[index];
+
+        const nextRegion = SelectionUtils.resizeSelectedRegion(region, direction, focusedCell);
+        const clampedNextRegion = Regions.clampRegion(nextRegion, numRows, numColumns);
+        const nextSelectedRegions = Regions.update(selectedRegions, clampedNextRegion, index);
 
         console.log("next selectedRegions:", nextSelectedRegions);
         this.handleSelection(nextSelectedRegions);

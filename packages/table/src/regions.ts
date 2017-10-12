@@ -221,13 +221,34 @@ export class Regions {
 
     /**
      * Replaces the region at the end of a cloned copy of the supplied region
-     * array.
+     * array, or at the specific index if one is provided.
      */
-    public static update(regions: IRegion[], region: IRegion) {
+    public static update(regions: IRegion[], region: IRegion, index?: number) {
         const copy = regions.slice();
-        copy.pop();
-        copy.push(region);
+        if (index != null) {
+            copy.splice(index, 1, region);
+        } else {
+            copy.pop();
+            copy.push(region);
+        }
         return copy;
+    }
+
+    /**
+     * Clamps the region's start and end indices between 0 and the provided
+     * maximum values.
+     */
+    public static clampRegion(region: IRegion, maxRows: number, maxColumns: number) {
+        const nextRegion = Regions.copy(region);
+        if (region.rows != null) {
+            nextRegion.rows[0] = Utils.clamp(region.rows[0], 0, maxRows - 1);
+            nextRegion.rows[1] = Utils.clamp(region.rows[1], 0, maxRows - 1);
+        }
+        if (region.cols != null) {
+            nextRegion.cols[0] = Utils.clamp(region.cols[0], 0, maxColumns - 1);
+            nextRegion.cols[1] = Utils.clamp(region.cols[1], 0, maxColumns - 1);
+        }
+        return nextRegion;
     }
 
     /**

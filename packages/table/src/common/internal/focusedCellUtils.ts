@@ -26,6 +26,16 @@ export function isFocusedCellAtRegionRight(region: IRegion, focusedCell: IFocuse
     return region.cols != null && focusedCell.col === region.cols[1];
 }
 
+export function getFocusedOrLastSelectedIndex(selectedRegions: IRegion[], focusedCell?: IFocusedCellCoordinates) {
+    if (selectedRegions.length === 0) {
+        return undefined;
+    } else if (focusedCell != null && focusedCell.focusSelectionIndex != null) {
+        return focusedCell.focusSelectionIndex;
+    } else {
+        return selectedRegions.length - 1;
+    }
+}
+
 /**
  * Returns the proper focused cell for the given set of initial conditions.
  */

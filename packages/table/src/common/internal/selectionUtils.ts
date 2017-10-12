@@ -11,20 +11,17 @@ import { Direction } from "../direction";
 import { IMovementDelta } from "../movementDelta";
 import * as FocusedCellUtils from "./focusedCellUtils";
 
-export function resizeLastSelectedRegion(
-    selectedRegions: IRegion[],
-    direction: Direction,
-    focusedCell?: IFocusedCellCoordinates,
-) {
-    const lastSelectedRegion = getLastSelectedRegion(selectedRegions);
-    const cardinality = Regions.getRegionCardinality(lastSelectedRegion);
-    const delta = directionToMovementDelta(direction);
-
-    if (cardinality === RegionCardinality.FULL_TABLE) {
-        return selectedRegions;
+export function resizeSelectedRegion(region: IRegion, direction: Direction, focusedCell?: IFocusedCellCoordinates) {
+    if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_TABLE) {
+        // return the same instance to maintain referential integrity and avoid
+        // unnecessary updates.
+        return region;
     }
 
-    const nextRegion: IRegion = Regions.copy(lastSelectedRegion);
+    const nextRegion: IRegion = Regions.copy(region);
+
+    let affectedRowIndex: number = 0;
+    let affectedColumnIndex: number = 0;
 
     if (focusedCell != null) {
         const isAtTop = FocusedCellUtils.isFocusedCellAtRegionTop(nextRegion, focusedCell);
@@ -32,58 +29,35 @@ export function resizeLastSelectedRegion(
         const isAtLeft = FocusedCellUtils.isFocusedCellAtRegionLeft(nextRegion, focusedCell);
         const isAtRight = FocusedCellUtils.isFocusedCellAtRegionRight(nextRegion, focusedCell);
 
-        if (direction === Direction.UP && cardinality !== RegionCardinality.FULL_COLUMNS) {
-            if (isAtTop && !isAtBottom) {
-                // move the bottom up
-                nextRegion.rows[1] += delta.rows;
-            } else {
-                // move the top up
-                nextRegion.rows[0] += delta.rows;
-            }
-            nextRegion.rows[0] = Math.max(0, nextRegion.rows[0]);
-            nextRegion.rows[1] = Math.max(0, nextRegion.rows[1]);
-        } else if (direction === Direction.DOWN && cardinality !== RegionCardinality.FULL_COLUMNS) {
-            if (isAtBottom && !isAtTop) {
-                // move the top down
-                nextRegion.rows[0] += delta.rows;
-            } else {
-                // move the bottom down
-                nextRegion.rows[1] += delta.rows;
-            }
-            nextRegion.rows[0] = Math.max(0, nextRegion.rows[0]);
-            nextRegion.rows[1] = Math.max(0, nextRegion.rows[1]);
-        } else if (direction === Direction.LEFT && cardinality !== RegionCardinality.FULL_ROWS) {
-            if (isAtLeft && !isAtRight) {
-                // move the right side left
-                nextRegion.cols[1] += delta.cols;
-            } else {
-                // move the left side left
-                nextRegion.cols[0] += delta.cols;
-            }
-            nextRegion.cols[0] = Math.max(0, nextRegion.cols[0]);
-            nextRegion.cols[1] = Math.max(0, nextRegion.cols[1]);
-        } else if (direction === Direction.RIGHT && cardinality !== RegionCardinality.FULL_ROWS) {
-            if (isAtRight && !isAtLeft) {
-                // move the left side right
-                nextRegion.cols[0] += delta.cols;
-            } else {
-                // move the right side right
-                nextRegion.cols[1] += delta.cols;
-            }
-            nextRegion.cols[0] = Math.max(0, nextRegion.cols[0]);
-            nextRegion.cols[1] = Math.max(0, nextRegion.cols[1]);
+        // note the special case when the focused cell is in a region that is
+        // only 1 row wide or 1 column wide.
+        if (direction === Direction.UP) {
+            affectedRowIndex = isAtTop && !isAtBottom ? 1 : 0;
+        } else if (direction === Direction.DOWN) {
+            affectedRowIndex = isAtBottom && !isAtTop ? 0 : 1;
+        } else if (direction === Direction.LEFT) {
+            affectedColumnIndex = isAtLeft && !isAtRight ? 1 : 0;
+        } else {
+            // i.e. `Direction.RIGHT:`
+            affectedColumnIndex = isAtRight && !isAtLeft ? 0 : 1;
         }
     } else {
-        ["rows", "cols"].forEach((dimension: "rows" | "cols") => {
-            if (nextRegion[dimension] != null) {
-                const deltaValue = delta[dimension];
-                const affectedIndex = deltaValue < 0 ? 0 : 1;
-                nextRegion[dimension][affectedIndex] += deltaValue;
-            }
-        });
+        affectedRowIndex = direction === Direction.DOWN ? 1 : 0;
+        affectedColumnIndex = direction === Direction.RIGHT ? 1 : 0;
     }
 
-    return Regions.update(selectedRegions, nextRegion);
+    const delta = directionToMovementDelta(direction);
+
+    if (nextRegion.rows != null) {
+        nextRegion.rows[affectedRowIndex] += delta.rows;
+    }
+    if (nextRegion.cols != null) {
+        nextRegion.cols[affectedColumnIndex] += delta.cols;
+    }
+
+    // the new coordinates might be out of bounds. the caller is responsible for
+    // sanitizing the result.
+    return nextRegion;
 }
 
 /**
