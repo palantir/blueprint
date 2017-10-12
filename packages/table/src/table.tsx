@@ -926,7 +926,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
     }
 
-    // Modify selection
+    // Selection resize
     // ----------------
 
     private handleSelectionResizeUp = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.UP);
