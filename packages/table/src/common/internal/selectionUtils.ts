@@ -38,7 +38,7 @@ import * as FocusedCellUtils from "./focusedCellUtils";
  * This function does not clamp the indices of the returned region; that is the
  * responsibility of the caller.
  */
-export function resizeSelectedRegion(region: IRegion, direction: Direction, focusedCell?: IFocusedCellCoordinates) {
+export function resizeRegion(region: IRegion, direction: Direction, focusedCell?: IFocusedCellCoordinates) {
     if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_TABLE) {
         // return the same instance to maintain referential integrity and
         // possibly avoid unnecessary update lifecycles.

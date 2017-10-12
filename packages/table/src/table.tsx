@@ -946,7 +946,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         const index = FocusedCellUtils.getFocusedOrLastSelectedIndex(selectedRegions, focusedCell);
         const region = selectedRegions[index];
-        const nextRegion = SelectionUtils.resizeSelectedRegion(region, direction, focusedCell);
+        const nextRegion = SelectionUtils.resizeRegion(region, direction, focusedCell);
 
         this.updateSelectedRegionAtIndex(nextRegion, index);
     };
