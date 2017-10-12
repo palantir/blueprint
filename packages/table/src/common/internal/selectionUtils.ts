@@ -8,7 +8,7 @@
 import { IRegion, RegionCardinality, Regions } from "../../regions";
 import { IFocusedCellCoordinates } from "../cell";
 import { Direction } from "../direction";
-import { IMovementDelta } from "../movementDelta";
+import * as DirectionUtils from "./directionUtils";
 import * as FocusedCellUtils from "./focusedCellUtils";
 
 export function resizeSelectedRegion(region: IRegion, direction: Direction, focusedCell?: IFocusedCellCoordinates) {
@@ -46,7 +46,7 @@ export function resizeSelectedRegion(region: IRegion, direction: Direction, focu
         affectedColumnIndex = direction === Direction.RIGHT ? 1 : 0;
     }
 
-    const delta = directionToMovementDelta(direction);
+    const delta = DirectionUtils.directionToDelta(direction);
 
     if (nextRegion.rows != null) {
         nextRegion.rows[affectedRowIndex] += delta.rows;
@@ -88,19 +88,4 @@ export function getLastSelectedRegion(selectedRegions: IRegion[]) {
     return selectedRegions == null || selectedRegions.length === 0
         ? undefined
         : selectedRegions[selectedRegions.length - 1];
-}
-
-function directionToMovementDelta(direction: Direction): IMovementDelta {
-    switch (direction) {
-        case Direction.UP:
-            return { rows: -1, cols: 0 };
-        case Direction.DOWN:
-            return { rows: +1, cols: 0 };
-        case Direction.LEFT:
-            return { rows: 0, cols: -1 };
-        case Direction.RIGHT:
-            return { rows: 0, cols: +1 };
-        default:
-            return undefined;
-    }
 }
