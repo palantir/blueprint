@@ -8,3 +8,4 @@
 import "./directionUtilsTests";
 import "./focusedCellUtilsTests";
 import "./scrollUtilsTests";
+import "./selectionUtilsTests";

@@ -172,10 +172,20 @@ export class Regions {
      * Returns a deep copy of the provided region.
      */
     public static copy(region: IRegion): IRegion {
-        return {
-            cols: region.cols == null ? region.cols : region.cols.slice() as ICellInterval,
-            rows: region.rows == null ? region.rows : region.rows.slice() as ICellInterval,
-        };
+        const cardinality = Regions.getRegionCardinality(region);
+
+        // we need to be careful not to explicitly spell out `rows: undefined`
+        // (e.g.) if the "rows" key is completely absent, otherwise
+        // deep-equality checks will fail.
+        if (cardinality === RegionCardinality.CELLS) {
+            return Regions.cell(region.rows[0], region.cols[0], region.rows[1], region.cols[1]);
+        } else if (cardinality === RegionCardinality.FULL_COLUMNS) {
+            return Regions.column(region.cols[0], region.cols[1]);
+        } else if (cardinality === RegionCardinality.FULL_ROWS) {
+            return Regions.row(region.rows[0], region.rows[1]);
+        } else {
+            return Regions.table();
+        }
     }
 
     /**
