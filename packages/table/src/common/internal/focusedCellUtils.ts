@@ -8,6 +8,23 @@
 import { IRegion, RegionCardinality, Regions } from "../../regions";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../cell";
 import * as Errors from "../errors";
+// import { IMovementDelta } from "../movementDelta";
+
+export function isFocusedCellAtRegionTop(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+    return region.rows != null && focusedCell.row === region.rows[0];
+}
+
+export function isFocusedCellAtRegionBottom(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+    return region.rows != null && focusedCell.row === region.rows[1];
+}
+
+export function isFocusedCellAtRegionLeft(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+    return region.cols != null && focusedCell.col === region.cols[0];
+}
+
+export function isFocusedCellAtRegionRight(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+    return region.cols != null && focusedCell.col === region.cols[1];
+}
 
 /**
  * Returns the proper focused cell for the given set of initial conditions.
@@ -75,6 +92,32 @@ export function expandFocusedRegion(focusedCell: IFocusedCellCoordinates, newReg
             return Regions.table();
     }
 }
+
+// export function getExpandDirection();
+
+// export function expandFocusedRegionWithDelta(
+//     focusedCell: IFocusedCellCoordinates,
+//     newRegion: IRegion,
+//     delta: IMovementDelta,
+// ) {
+//     switch (Regions.getRegionCardinality(newRegion)) {
+//         case RegionCardinality.FULL_COLUMNS: {
+//             const [indexStart, indexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "col", "cols");
+//             return Regions.column(indexStart, indexEnd);
+//         }
+//         case RegionCardinality.FULL_ROWS: {
+//             const [indexStart, indexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "row", "rows");
+//             return Regions.row(indexStart, indexEnd);
+//         }
+//         case RegionCardinality.CELLS:
+//             const [rowIndexStart, rowIndexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "row", "rows");
+//             const [colIndexStart, colIndexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "col", "cols");
+//             return Regions.cell(rowIndexStart, colIndexStart, rowIndexEnd, colIndexEnd);
+//         default:
+//             // i.e. `case RegionCardinality.FULL_TABLE:`
+//             return Regions.table();
+//     }
+// }
 
 function getExpandedRegionIndices(
     focusedCell: IFocusedCellCoordinates,
