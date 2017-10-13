@@ -437,7 +437,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
     private isDragSelectableDisabled = (event: MouseEvent) => {
         if (DragEvents.isAdditive(event)) {
-            // if the meta/crtl key was pressed, we want to forcefully ignore
+            // if the meta/ctrl key was pressed, we want to forcefully ignore
             // reordering interactions and prioritize drag-selection
             // interactions (e.g. to make it possible to deselect a row).
             return false;
