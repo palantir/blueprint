@@ -10,6 +10,21 @@ import { ICellCoordinates, IFocusedCellCoordinates } from "../cell";
 import * as Errors from "../errors";
 
 /**
+ * Returns the `focusedSelectionIndex` if both the focused cell and that
+ * property are defined, or the last index of `selectedRegions` otherwise. If
+ * `selectedRegions` is empty, the function always returns `undefined`.
+ */
+export function getFocusedOrLastSelectedIndex(selectedRegions: IRegion[], focusedCell?: IFocusedCellCoordinates) {
+    if (selectedRegions.length === 0) {
+        return undefined;
+    } else if (focusedCell != null) {
+        return focusedCell.focusSelectionIndex;
+    } else {
+        return selectedRegions.length - 1;
+    }
+}
+
+/**
  * Returns the proper focused cell for the given set of initial conditions.
  */
 export function getInitialFocusedCell(
@@ -37,6 +52,38 @@ export function getInitialFocusedCell(
         // focus the top-left cell of the table
         return { col: 0, row: 0, focusSelectionIndex: 0 };
     }
+}
+
+/**
+ * Returns `true` if the focused cell is located along the top boundary of the
+ * provided region, or `false` otherwise.
+ */
+export function isFocusedCellAtRegionTop(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+    return region.rows != null && focusedCell.row === region.rows[0];
+}
+
+/**
+ * Returns `true` if the focused cell is located along the bottom boundary of
+ * the provided region, or `false` otherwise.
+ */
+export function isFocusedCellAtRegionBottom(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+    return region.rows != null && focusedCell.row === region.rows[1];
+}
+
+/**
+ * Returns `true` if the focused cell is located along the left boundary of the
+ * provided region, or `false` otherwise.
+ */
+export function isFocusedCellAtRegionLeft(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+    return region.cols != null && focusedCell.col === region.cols[0];
+}
+
+/**
+ * Returns `true` if the focused cell is located along the right boundary of the
+ * provided region, or `false` otherwise.
+ */
+export function isFocusedCellAtRegionRight(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+    return region.cols != null && focusedCell.col === region.cols[1];
 }
 
 /**

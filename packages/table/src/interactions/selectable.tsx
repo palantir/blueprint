@@ -334,6 +334,11 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         this.lastEmittedSelectedRegions = null;
     };
 
+    /**
+     * Expands the last-selected region to the new region, and replaces the
+     * last-selected region with the expanded region. If a focused cell is provided,
+     * the focused cell will serve as an anchor for the expansion.
+     */
     private expandSelectedRegions(regions: IRegion[], region: IRegion, focusedCell?: IFocusedCellCoordinates) {
         if (regions.length === 0) {
             return [region];
