@@ -213,11 +213,12 @@ export interface IInternalHeaderProps extends IHeaderProps {
 
 export interface IHeaderState {
     /**
-     * Whether the drag-select interaction has finished (via mouseup). When
+     * Whether the component has a valid selection specified either via props
+     * (i.e. controlled mode) or via a completed drag-select interaction. When
      * true, DragReorderable will know that it can override the click-and-drag
      * interactions that would normally be reserved for drag-select behavior.
      */
-    hasSelectionEnded?: boolean;
+    hasValidSelection?: boolean;
 }
 
 const SHALLOW_COMPARE_PROP_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["focusedCell", "selectedRegions"];
@@ -230,7 +231,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
     public constructor(props?: IInternalHeaderProps, context?: any) {
         super(props, context);
-        this.state = { hasSelectionEnded: this.isSelectedRegionsControlledAndNonEmpty(props) };
+        this.state = { hasValidSelection: this.isSelectedRegionsControlledAndNonEmpty(props) };
     }
 
     public componentWillUnmount() {
@@ -238,7 +239,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     }
 
     public componentWillReceiveProps(nextProps?: IInternalHeaderProps) {
-        this.setState({ hasSelectionEnded: this.isSelectedRegionsControlledAndNonEmpty(nextProps) });
+        this.setState({ hasValidSelection: this.isSelectedRegionsControlledAndNonEmpty(nextProps) });
     }
 
     public shouldComponentUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
@@ -393,6 +394,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                           <span className={classNames(CoreClasses.ICON_STANDARD, IconClasses.DRAG_HANDLE_VERTICAL)} />
                       </div>
                   </div>,
+                  false,
               );
     }
 
@@ -403,7 +405,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     private wrapInDragReorderable(
         index: number,
         children: JSX.Element,
-        disabled: boolean | ((event: MouseEvent) => boolean) = false,
+        disabled: boolean | ((event: MouseEvent) => boolean),
     ) {
         return (
             <DragReorderable
@@ -425,12 +427,12 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
     private handleDragSelectableSelection = (selectedRegions: IRegion[]) => {
         this.props.onSelection(selectedRegions);
-        this.setState({ hasSelectionEnded: false });
+        this.setState({ hasValidSelection: false });
     };
 
     private handleDragSelectableSelectionEnd = () => {
         this.activationIndex = null; // not strictly required, but good practice
-        this.setState({ hasSelectionEnded: true });
+        this.setState({ hasValidSelection: true });
     };
 
     private isDragSelectableDisabled = (event: MouseEvent) => {
@@ -467,7 +469,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             // because reordering multiple disjoint row/column selections is a UX morass with no clear best
             // behavior.
             this.props.isCellSelected(index) &&
-            this.state.hasSelectionEnded &&
+            this.state.hasValidSelection &&
             Regions.getRegionCardinality(selectedRegions[0]) === this.props.fullRegionCardinality &&
             // selected regions can be updated during mousedown+drag and before mouseup; thus, we
             // add a final check to make sure we don't enable reordering until the selection
