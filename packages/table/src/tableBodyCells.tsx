@@ -41,13 +41,13 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
     onCompleteRender?: () => void;
 
     /**
-     * Dictates how cells should be rendered. Supported modes are:
-     * - `RenderMode.BATCH`: renders cells in batches to improve
-     *   performance
-     * - `RenderMode.NONE`: renders cells synchronously all at once
+     * Dictates how cells should be rendered. This component doesn't support
+     * `RenderMode.BATCH_ON_UPDATE`, because there are actually multiple updates
+     * that need to happen at higher levels before the table is considered fully
+     * "mounted"; thus, we let higher components tell us when to switch modes.
      * @default RenderMode.BATCH
      */
-    renderMode?: RenderMode;
+    renderMode?: RenderMode.BATCH | RenderMode.NONE;
 
     /**
      * The `Rect` bounds of the visible viewport with respect to its parent
@@ -139,17 +139,22 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     }
 
     private renderAllCells() {
-        const { columnIndexEnd, columnIndexStart, grid, rowIndexEnd, rowIndexStart } = this.props;
+        const { columnIndexEnd, columnIndexStart, rowIndexEnd, rowIndexStart } = this.props;
 
         const cells: Array<React.ReactElement<any>> = [];
+        const cellsArgs: Array<[number, number]> = [];
 
         for (let rowIndex = rowIndexStart; rowIndex <= rowIndexEnd; rowIndex++) {
             for (let columnIndex = columnIndexStart; columnIndex <= columnIndexEnd; columnIndex++) {
-                const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
-                const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
-                cells.push(this.renderCell(rowIndex, columnIndex, extremaClasses, isGhost));
+                cells.push(this.renderNewCell(rowIndex, columnIndex));
+                cellsArgs.push([rowIndex, columnIndex]);
             }
         }
+
+        // pretend we did an entire rendering pass using the batcher. that way,
+        // if we switch from `RenderMode.NONE` to `RenderMode.BATCH`, we don't
+        // have to re-paint every cell still in view.
+        this.batcher.setList(cellsArgs, cells);
 
         return cells;
     }
@@ -157,11 +162,11 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     // Cell renderers
     // ==============
 
-    private renderNewCell = (row: number, col: number) => {
+    private renderNewCell = (rowIndex: number, columnIndex: number) => {
         const { columnIndexEnd, grid, rowIndexEnd } = this.props;
-        const extremaClasses = grid.getExtremaClasses(row, col, rowIndexEnd, columnIndexEnd);
-        const isGhost = grid.isGhostIndex(row, col);
-        return this.renderCell(row, col, extremaClasses, isGhost);
+        const extremaClasses = grid.getExtremaClasses(rowIndex, columnIndex, rowIndexEnd, columnIndexEnd);
+        const isGhost = grid.isGhostIndex(rowIndex, columnIndex);
+        return this.renderCell(rowIndex, columnIndex, extremaClasses, isGhost);
     };
 
     private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {

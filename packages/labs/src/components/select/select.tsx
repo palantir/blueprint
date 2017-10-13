@@ -15,14 +15,12 @@ import {
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
-    IPopoverProps,
     Keys,
     Menu,
-    Popover,
-    Position,
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
+import { IPopover2Props, Popover2 } from "../popover/popover2";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
@@ -62,8 +60,8 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
-    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps> & object;
+    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<IPopover2Props> & object;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected
@@ -121,9 +119,18 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         return Select as new () => Select<T>;
     }
 
+    public state: ISelectState<T> = { isOpen: false, query: "" };
+
+    private input: HTMLInputElement;
     private TypedQueryList = QueryList.ofType<T>();
     private list: QueryList<T>;
     private refHandlers = {
+        input: (ref: HTMLInputElement) => {
+            this.input = ref;
+
+            const { inputProps = {} } = this.props;
+            Utils.safeInvoke(inputProps.inputRef, ref);
+        },
         queryList: (ref: QueryList<T>) => (this.list = ref),
     };
     private previousFocusedElement: HTMLElement;
@@ -180,24 +187,24 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         const { ref, ...htmlInputProps } = inputProps;
         const input = (
             <InputGroup
-                autoFocus={true}
                 leftIconName="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
                 value={listProps.query}
                 {...htmlInputProps}
+                inputRef={this.refHandlers.input}
                 onChange={this.handleQueryChange}
             />
         );
 
         const { handleKeyDown, handleKeyUp } = listProps;
         return (
-            <Popover
+            <Popover2
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
-                position={Position.BOTTOM_LEFT}
-                isDisabled={disabled}
+                placement="bottom-start"
+                disabled={disabled}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
@@ -216,7 +223,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
                     {filterable ? input : undefined}
                     <Menu ulRef={listProps.itemsParentRef}>{this.renderItems(listProps)}</Menu>
                 </div>
-            </Popover>
+            </Popover2>
         );
     };
 
@@ -289,6 +296,14 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         if (this.list != null) {
             this.list.scrollActiveItemIntoView();
         }
+
+        requestAnimationFrame(() => {
+            const { inputProps = {} } = this.props;
+            // autofocus is enabled by default
+            if (inputProps.autoFocus !== false && this.input != null) {
+                this.input.focus();
+            }
+        });
 
         const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.popoverDidOpen);

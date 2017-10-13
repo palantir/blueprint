@@ -5,8 +5,10 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import "./directionUtilsTests";
-import "./focusedCellUtilsTests";
-import "./platformUtilsTests";
-import "./scrollUtilsTests";
-import "./selectionUtilsTests";
+export interface IMovementDelta {
+    /** The number of rows by which to move. */
+    rows: number;
+
+    /** The number of columns by which to move. */
+    cols: number;
+}

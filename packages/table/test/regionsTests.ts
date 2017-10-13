@@ -58,13 +58,23 @@ describe("Regions", () => {
             expect(Regions.lastRegionIsEqual(added, Regions.column(14, 3)));
         });
 
-        it("updates regions", () => {
+        it("updates regions at last index", () => {
             const regions = [Regions.row(1, 37)];
             const updated = Regions.update(regions, Regions.column(3, 14));
 
             expect(updated).to.not.equal(regions);
             expect(updated.length).to.equal(regions.length);
             expect(Regions.lastRegionIsEqual(updated, Regions.column(14, 3)));
+        });
+
+        it("updates regions at specified index", () => {
+            const INDEX = 1;
+            const regions = [Regions.row(1), Regions.column(1), Regions.cell(1, 1)];
+            const updated = Regions.update(regions, Regions.column(2), INDEX);
+
+            expect(updated).to.not.equal(regions);
+            expect(updated.length).to.equal(regions.length);
+            expect(updated[INDEX]).to.deep.equal(Regions.column(2));
         });
     });
 
@@ -250,6 +260,69 @@ describe("Regions", () => {
         const sparse = Regions.sparseMapCells(cells, () => "X");
         // normal deep equals doesn't work here so we use JSON.stringify
         expect(JSON.stringify(sparse)).to.equal(JSON.stringify([["X", "X"], ["X", null], ["X", null]]));
+    });
+
+    describe("clampRegion", () => {
+        const fn = Regions.clampRegion;
+
+        it("returns a deep copy of the region", () => {
+            const validRegion = Regions.table();
+            const clampedRegion = fn(validRegion, 1, 1);
+            expect(clampedRegion === validRegion).to.be.false;
+        });
+
+        it("clamps regions whose start indices are < 0", () => {
+            const cellRegion = Regions.cell(-1, 1);
+            expect(fn(cellRegion, 1, 1)).to.deep.equal(Regions.cell(0, 1));
+
+            const columnRegion = Regions.column(-1, 1);
+            expect(fn(columnRegion, 1, 1)).to.deep.equal(Regions.column(0, 1));
+
+            const rowRegion = Regions.row(-1, 1);
+            expect(fn(rowRegion, 1, 1)).to.deep.equal(Regions.row(0, 1));
+        });
+
+        it("clamps regions whose end indices are > max", () => {
+            const cellRegion = Regions.cell(0, 2);
+            expect(fn(cellRegion, 1, 1)).to.deep.equal(Regions.cell(0, 1));
+
+            const columnRegion = Regions.column(0, 2);
+            expect(fn(columnRegion, 1, 1)).to.deep.equal(Regions.column(0, 1));
+
+            const rowRegion = Regions.row(0, 2);
+            expect(fn(rowRegion, 1, 1)).to.deep.equal(Regions.row(0, 1));
+        });
+
+        it("returns a new FULL_TABLE region if provided", () => {
+            const tableRegion = Regions.table();
+            expect(fn(tableRegion, 1, 1)).to.deep.equal(Regions.table());
+        });
+    });
+
+    describe("copy", () => {
+        it("copies CELLS regions", () => {
+            const region = Regions.cell(0, 1, 2, 3);
+            const regionCopy = Regions.cell(0, 1, 2, 3);
+            expect(Regions.copy(region)).to.deep.equal(regionCopy);
+        });
+
+        it("copies FULL_COLUMNS regions", () => {
+            const region = Regions.column(0, 1);
+            const regionCopy = Regions.column(0, 1);
+            expect(Regions.copy(region)).to.deep.equal(regionCopy);
+        });
+
+        it("copies FULL_ROWS regions", () => {
+            const region = Regions.row(0, 1);
+            const regionCopy = Regions.row(0, 1);
+            expect(Regions.copy(region)).to.deep.equal(regionCopy);
+        });
+
+        it("copies FULL_TABLE regions", () => {
+            const region = Regions.table();
+            const regionCopy = Regions.table();
+            expect(Regions.copy(region)).to.deep.equal(regionCopy);
+        });
     });
 
     describe("expandRegion", () => {

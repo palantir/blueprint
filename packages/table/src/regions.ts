@@ -169,6 +169,26 @@ export class Regions {
     }
 
     /**
+     * Returns a deep copy of the provided region.
+     */
+    public static copy(region: IRegion): IRegion {
+        const cardinality = Regions.getRegionCardinality(region);
+
+        // we need to be careful not to explicitly spell out `rows: undefined`
+        // (e.g.) if the "rows" key is completely absent, otherwise
+        // deep-equality checks will fail.
+        if (cardinality === RegionCardinality.CELLS) {
+            return Regions.cell(region.rows[0], region.cols[0], region.rows[1], region.cols[1]);
+        } else if (cardinality === RegionCardinality.FULL_COLUMNS) {
+            return Regions.column(region.cols[0], region.cols[1]);
+        } else if (cardinality === RegionCardinality.FULL_ROWS) {
+            return Regions.row(region.rows[0], region.rows[1]);
+        } else {
+            return Regions.table();
+        }
+    }
+
+    /**
      * Returns a region containing one or more cells.
      */
     public static cell(row: number, col: number, row2?: number, col2?: number): IRegion {
@@ -211,13 +231,34 @@ export class Regions {
 
     /**
      * Replaces the region at the end of a cloned copy of the supplied region
-     * array.
+     * array, or at the specific index if one is provided.
      */
-    public static update(regions: IRegion[], region: IRegion) {
+    public static update(regions: IRegion[], region: IRegion, index?: number) {
         const copy = regions.slice();
-        copy.pop();
-        copy.push(region);
+        if (index != null) {
+            copy.splice(index, 1, region);
+        } else {
+            copy.pop();
+            copy.push(region);
+        }
         return copy;
+    }
+
+    /**
+     * Clamps the region's start and end indices between 0 and the provided
+     * maximum values.
+     */
+    public static clampRegion(region: IRegion, maxRowIndex: number, maxColumnIndex: number) {
+        const nextRegion = Regions.copy(region);
+        if (region.rows != null) {
+            nextRegion.rows[0] = Utils.clamp(region.rows[0], 0, maxRowIndex);
+            nextRegion.rows[1] = Utils.clamp(region.rows[1], 0, maxRowIndex);
+        }
+        if (region.cols != null) {
+            nextRegion.cols[0] = Utils.clamp(region.cols[0], 0, maxColumnIndex);
+            nextRegion.cols[1] = Utils.clamp(region.cols[1], 0, maxColumnIndex);
+        }
+        return nextRegion;
     }
 
     /**

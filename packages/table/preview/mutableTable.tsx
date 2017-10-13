@@ -75,6 +75,8 @@ const REGION_CARDINALITIES: RegionCardinality[] = [
     RegionCardinality.FULL_TABLE,
 ];
 
+const RENDER_MODES: RenderMode[] = [RenderMode.BATCH_ON_UPDATE, RenderMode.BATCH, RenderMode.NONE];
+
 const CELL_CONTENTS: CellContent[] = [
     CellContent.EMPTY,
     CellContent.CELL_NAMES,
@@ -184,7 +186,6 @@ export interface IMutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
     cellTruncationLength?: number;
-    enableBatchRendering?: boolean;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableCellTruncation?: boolean;
@@ -207,6 +208,7 @@ export interface IMutableTableState {
     numFrozenCols?: number;
     numFrozenRows?: number;
     numRows?: number;
+    renderMode?: RenderMode;
     scrollToColumnIndex?: number;
     scrollToRegionType?: RegionCardinality;
     scrollToRowIndex?: number;
@@ -229,7 +231,6 @@ const DEFAULT_STATE: IMutableTableState = {
     cellContent: CellContent.LONG_TEXT,
     cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
     cellTruncationLength: TRUNCATION_LENGTHS[TRUNCATION_LENGTH_DEFAULT_INDEX],
-    enableBatchRendering: true,
     enableCellEditing: false,
     enableCellSelection: true,
     enableCellTruncation: false,
@@ -252,6 +253,7 @@ const DEFAULT_STATE: IMutableTableState = {
     numFrozenCols: FROZEN_COLUMN_COUNTS[FROZEN_COLUMN_COUNT_DEFAULT_INDEX],
     numFrozenRows: FROZEN_ROW_COUNTS[FROZEN_ROW_COUNT_DEFAULT_INDEX],
     numRows: ROW_COUNTS[ROW_COUNT_DEFAULT_INDEX],
+    renderMode: RenderMode.BATCH_ON_UPDATE,
     scrollToColumnIndex: 0,
     scrollToRegionType: RegionCardinality.CELLS,
     scrollToRowIndex: 0,
@@ -345,7 +347,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     // =========
 
     private renderTable() {
-        const renderMode = this.state.enableBatchRendering ? RenderMode.BATCH : RenderMode.NONE;
         return (
             <Table
                 allowMultipleSelection={this.state.enableMultiSelection}
@@ -372,7 +373,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 onRowsReordered={this.onRowsReordered}
                 ref={this.refHandlers.table}
                 renderBodyContextMenu={this.renderBodyContextMenu}
-                renderMode={renderMode}
+                renderMode={this.state.renderMode}
                 renderRowHeader={this.renderRowHeader}
                 selectionModes={this.getEnabledSelectionModes()}
                 styledRegionGroups={this.getStyledRegionGroups()}
@@ -568,6 +569,13 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private renderSidebar() {
+        const renderModeMenu = this.renderSelectMenu(
+            "Render mode",
+            "renderMode",
+            RENDER_MODES,
+            this.toRenderModeLabel,
+            this.handleNumberStateChange,
+        );
         const cellContentMenu = this.renderSelectMenu(
             "Cell content",
             "cellContent",
@@ -601,7 +609,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Inline", "showInline")}
                 {this.renderSwitch("Focus cell", "showFocusCell")}
                 {this.renderSwitch("Ghost cells", "showGhostCells")}
-                {this.renderSwitch("Batch rendering", "enableBatchRendering")}
+                {renderModeMenu}
                 {this.renderSwitch("Interaction bar", "showTableInteractionBar")}
                 <h6>Interactions</h6>
                 {this.renderSwitch("Body context menu", "enableContextMenu")}
@@ -844,6 +852,17 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     // Select menu - label generators
     // ==============================
+
+    private toRenderModeLabel(renderMode: RenderMode) {
+        switch (renderMode) {
+            case RenderMode.BATCH:
+                return "Batch";
+            case RenderMode.BATCH_ON_UPDATE:
+                return "Batch on update";
+            default:
+                return "None";
+        }
+    }
 
     private toCellContentLabel(cellContent: CellContent) {
         switch (cellContent) {

@@ -14,10 +14,12 @@ import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
+import { Direction } from "./common/direction";
 import * as Errors from "./common/errors";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
+import * as SelectionUtils from "./common/internal/selectionUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
@@ -222,8 +224,10 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * Dictates how cells should be rendered. Supported modes are:
      * - `RenderMode.BATCH`: renders cells in batches to improve performance
+     * - `RenderMode.BATCH_ON_UPDATE`: renders cells synchronously on mount and
+     *   in batches on update
      * - `RenderMode.NONE`: renders cells synchronously all at once
-     * @default RenderMode.BATCH
+     * @default RenderMode.BATCH_ON_UPDATE
      */
     renderMode?: RenderMode;
 
@@ -387,7 +391,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         numFrozenColumns: 0,
         numFrozenRows: 0,
         numRows: 0,
-        renderMode: RenderMode.BATCH,
+        renderMode: RenderMode.BATCH_ON_UPDATE,
         renderRowHeader: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
@@ -441,7 +445,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // when true, we'll need to imperatively synchronize quadrant views after
     // the update. this variable lets us avoid expensively diff'ing columnWidths
     // and rowHeights in <TableQuadrantStack> on each update.
-    private didUpdateColumnOrRowSizes: boolean = false;
+    private didUpdateColumnOrRowSizes = false;
+
+    // this value is set to `true` when all cells finish mounting for the first
+    // time. it serves as a signal that we can switch to batch rendering.
+    private didCompletelyMount = false;
 
     public constructor(props: ITableProps, context?: any) {
         super(props, context);
@@ -730,6 +738,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.maybeRenderCopyHotkey(),
             this.maybeRenderSelectAllHotkey(),
             this.maybeRenderFocusHotkeys(),
+            this.maybeRenderSelectionResizeHotkeys(),
         ];
         return <Hotkeys>{hotkeys.filter(element => element !== undefined)}</Hotkeys>;
     }
@@ -758,6 +767,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.resizeSensorDetach();
             delete this.resizeSensorDetach;
         }
+        this.didCompletelyMount = false;
     }
 
     public componentDidUpdate() {
@@ -818,6 +828,190 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (numFrozenColumns != null && numFrozenColumns > numColumns) {
             console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
+    }
+
+    // Hotkeys
+    // =======
+
+    private maybeRenderCopyHotkey() {
+        const { getCellClipboardData } = this.props;
+        if (getCellClipboardData != null) {
+            return (
+                <Hotkey
+                    key="copy-hotkey"
+                    label="Copy selected table cells"
+                    group="Table"
+                    combo="mod+c"
+                    onKeyDown={this.handleCopy}
+                />
+            );
+        } else {
+            return undefined;
+        }
+    }
+
+    private maybeRenderSelectionResizeHotkeys() {
+        const { allowMultipleSelection, selectionModes } = this.props;
+        const isSomeSelectionModeEnabled = selectionModes.length > 0;
+
+        if (allowMultipleSelection && isSomeSelectionModeEnabled) {
+            return [
+                <Hotkey
+                    key="resize-selection-up"
+                    label="Resize selection upward"
+                    group="Table"
+                    combo="shift+up"
+                    onKeyDown={this.handleSelectionResizeUp}
+                />,
+                <Hotkey
+                    key="resize-selection-down"
+                    label="Resize selection downward"
+                    group="Table"
+                    combo="shift+down"
+                    onKeyDown={this.handleSelectionResizeDown}
+                />,
+                <Hotkey
+                    key="resize-selection-left"
+                    label="Resize selection leftward"
+                    group="Table"
+                    combo="shift+left"
+                    onKeyDown={this.handleSelectionResizeLeft}
+                />,
+                <Hotkey
+                    key="resize-selection-right"
+                    label="Resize selection rightward"
+                    group="Table"
+                    combo="shift+right"
+                    onKeyDown={this.handleSelectionResizeRight}
+                />,
+            ];
+        } else {
+            return undefined;
+        }
+    }
+
+    private maybeRenderFocusHotkeys() {
+        const { enableFocus } = this.props;
+        if (enableFocus != null) {
+            return [
+                <Hotkey
+                    key="move left"
+                    label="Move focus cell left"
+                    group="Table"
+                    combo="left"
+                    onKeyDown={this.handleFocusMoveLeft}
+                />,
+                <Hotkey
+                    key="move right"
+                    label="Move focus cell right"
+                    group="Table"
+                    combo="right"
+                    onKeyDown={this.handleFocusMoveRight}
+                />,
+                <Hotkey
+                    key="move up"
+                    label="Move focus cell up"
+                    group="Table"
+                    combo="up"
+                    onKeyDown={this.handleFocusMoveUp}
+                />,
+                <Hotkey
+                    key="move down"
+                    label="Move focus cell down"
+                    group="Table"
+                    combo="down"
+                    onKeyDown={this.handleFocusMoveDown}
+                />,
+                <Hotkey
+                    key="move tab"
+                    label="Move focus cell tab"
+                    group="Table"
+                    combo="tab"
+                    onKeyDown={this.handleFocusMoveRightInternal}
+                />,
+                <Hotkey
+                    key="move shift-tab"
+                    label="Move focus cell shift tab"
+                    group="Table"
+                    combo="shift+tab"
+                    onKeyDown={this.handleFocusMoveLeftInternal}
+                />,
+                <Hotkey
+                    key="move enter"
+                    label="Move focus cell enter"
+                    group="Table"
+                    combo="enter"
+                    onKeyDown={this.handleFocusMoveDownInternal}
+                />,
+                <Hotkey
+                    key="move shift-enter"
+                    label="Move focus cell shift enter"
+                    group="Table"
+                    combo="shift+enter"
+                    onKeyDown={this.handleFocusMoveUpInternal}
+                />,
+            ];
+        } else {
+            return [];
+        }
+    }
+
+    private maybeRenderSelectAllHotkey() {
+        if (this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE)) {
+            return (
+                <Hotkey
+                    key="select-all-hotkey"
+                    label="Select all"
+                    group="Table"
+                    combo="mod+a"
+                    onKeyDown={this.handleSelectAllHotkey}
+                />
+            );
+        } else {
+            return undefined;
+        }
+    }
+
+    // Selection resize
+    // ----------------
+
+    private handleSelectionResizeUp = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.UP);
+    private handleSelectionResizeDown = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.DOWN);
+    private handleSelectionResizeLeft = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.LEFT);
+    private handleSelectionResizeRight = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.RIGHT);
+
+    private handleSelectionResize = (e: KeyboardEvent, direction: Direction) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const { focusedCell, selectedRegions } = this.state;
+
+        if (selectedRegions.length === 0) {
+            return;
+        }
+
+        const index = FocusedCellUtils.getFocusedOrLastSelectedIndex(selectedRegions, focusedCell);
+        const region = selectedRegions[index];
+        const nextRegion = SelectionUtils.resizeRegion(region, direction, focusedCell);
+
+        this.updateSelectedRegionAtIndex(nextRegion, index);
+    };
+
+    /**
+     * Replaces the selected region at the specified array index, with the
+     * region provided.
+     */
+    private updateSelectedRegionAtIndex(region: IRegion, index: number) {
+        const { children, numRows } = this.props;
+        const { selectedRegions } = this.state;
+        const numColumns = React.Children.count(children);
+
+        const maxRowIndex = Math.max(0, numRows - 1);
+        const maxColumnIndex = Math.max(0, numColumns - 1);
+        const clampedNextRegion = Regions.clampRegion(region, maxRowIndex, maxColumnIndex);
+
+        const nextSelectedRegions = Regions.update(selectedRegions, clampedNextRegion, index);
+        this.handleSelection(nextSelectedRegions);
     }
 
     // Quadrant refs
@@ -1209,7 +1403,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             fillBodyWithGhostCells,
             loadingOptions,
             renderBodyContextMenu,
-            renderMode,
             selectedRegionTransform,
         } = this.props;
 
@@ -1243,7 +1436,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onFocus={this.handleFocus}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                     renderBodyContextMenu={renderBodyContextMenu}
-                    renderMode={renderMode}
+                    renderMode={this.getNormalizedRenderMode()}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
                     viewportRect={viewportRect}
@@ -1326,23 +1519,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         });
     }
 
-    private maybeRenderCopyHotkey() {
-        const { getCellClipboardData } = this.props;
-        if (getCellClipboardData != null) {
-            return (
-                <Hotkey
-                    key="copy-hotkey"
-                    label="Copy selected table cells"
-                    group="Table"
-                    combo="mod+c"
-                    onKeyDown={this.handleCopy}
-                />
-            );
-        } else {
-            return undefined;
-        }
-    }
-
     private handleCompleteRender = () => {
         // the first onCompleteRender is triggered before the viewportRect is
         // defined and the second after the viewportRect has been set. the cells
@@ -1350,6 +1526,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // we defer invoking onCompleteRender until that check passes.
         if (this.state.viewportRect != null) {
             CoreUtils.safeInvoke(this.props.onCompleteRender);
+            this.didCompletelyMount = true;
         }
     };
 
@@ -1361,88 +1538,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleFocusMoveUpInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "up");
     private handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
     private handleFocusMoveDownInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "down");
-
-    private maybeRenderFocusHotkeys() {
-        const { enableFocus } = this.props;
-        if (enableFocus != null) {
-            return [
-                <Hotkey
-                    key="move left"
-                    label="Move focus cell left"
-                    group="Table"
-                    combo="left"
-                    onKeyDown={this.handleFocusMoveLeft}
-                />,
-                <Hotkey
-                    key="move right"
-                    label="Move focus cell right"
-                    group="Table"
-                    combo="right"
-                    onKeyDown={this.handleFocusMoveRight}
-                />,
-                <Hotkey
-                    key="move up"
-                    label="Move focus cell up"
-                    group="Table"
-                    combo="up"
-                    onKeyDown={this.handleFocusMoveUp}
-                />,
-                <Hotkey
-                    key="move down"
-                    label="Move focus cell down"
-                    group="Table"
-                    combo="down"
-                    onKeyDown={this.handleFocusMoveDown}
-                />,
-                <Hotkey
-                    key="move tab"
-                    label="Move focus cell tab"
-                    group="Table"
-                    combo="tab"
-                    onKeyDown={this.handleFocusMoveRightInternal}
-                />,
-                <Hotkey
-                    key="move shift-tab"
-                    label="Move focus cell shift tab"
-                    group="Table"
-                    combo="shift+tab"
-                    onKeyDown={this.handleFocusMoveLeftInternal}
-                />,
-                <Hotkey
-                    key="move enter"
-                    label="Move focus cell enter"
-                    group="Table"
-                    combo="enter"
-                    onKeyDown={this.handleFocusMoveDownInternal}
-                />,
-                <Hotkey
-                    key="move shift-enter"
-                    label="Move focus cell shift enter"
-                    group="Table"
-                    combo="shift+enter"
-                    onKeyDown={this.handleFocusMoveUpInternal}
-                />,
-            ];
-        } else {
-            return [];
-        }
-    }
-
-    private maybeRenderSelectAllHotkey() {
-        if (this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE)) {
-            return (
-                <Hotkey
-                    key="select-all-hotkey"
-                    label="Select all"
-                    group="Table"
-                    combo="mod+a"
-                    onKeyDown={this.handleSelectAllHotkey}
-                />
-            );
-        } else {
-            return undefined;
-        }
-    }
 
     private styleBodyRegion = (region: IRegion, quadrantType: QuadrantType): React.CSSProperties => {
         const { numFrozenColumns } = this.props;
@@ -1944,6 +2039,21 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { numFrozenRowsClamped: numFrozenRows } = this.state;
         return numFrozenRows != null ? numFrozenRows - 1 : undefined;
     };
+
+    /**
+     * Normalizes RenderMode.BATCH_ON_UPDATE into RenderMode.{BATCH,NONE}. We do
+     * this because there are actually multiple updates required before the
+     * <Table> is considered fully "mounted," and adding that knowledge to child
+     * components would lead to tight coupling. Thus, keep it simple for them.
+     */
+    private getNormalizedRenderMode(): RenderMode.BATCH | RenderMode.NONE {
+        const { renderMode } = this.props;
+
+        const shouldBatchRender =
+            renderMode === RenderMode.BATCH || (renderMode === RenderMode.BATCH_ON_UPDATE && this.didCompletelyMount);
+
+        return shouldBatchRender ? RenderMode.BATCH : RenderMode.NONE;
+    }
 
     private handleColumnResizeGuide = (verticalGuides: number[]) => {
         this.setState({ verticalGuides });

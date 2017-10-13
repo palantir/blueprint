@@ -5,8 +5,9 @@
  * and https://github.com/palantir/blueprint/blob/master/PATENTS
  */
 
-import "./directionUtilsTests";
-import "./focusedCellUtilsTests";
-import "./platformUtilsTests";
-import "./scrollUtilsTests";
-import "./selectionUtilsTests";
+export enum Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+}

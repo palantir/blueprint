@@ -16,7 +16,7 @@ import { createTableOfSize } from "./mocks/table";
 
 describe("Selection", () => {
     const harness = new ReactHarness();
-    const TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
+    const COLUMN_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
     const ROW_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
     const CELL_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.rowCellIndexClass(
         2,
@@ -36,7 +36,7 @@ describe("Selection", () => {
         const table = harness.mount(createTableOfSize(3, 7, {}, { enableFocus: true, onSelection, onFocus }));
 
         table
-            .find(TH_SELECTOR)
+            .find(COLUMN_TH_SELECTOR)
             .mouse("mousedown")
             .mouse("mouseup");
 
@@ -54,11 +54,11 @@ describe("Selection", () => {
         const table = harness.mount(createTableOfSize(3, 7, {}, { getCellClipboardData, onCopy }));
 
         table
-            .find(TH_SELECTOR)
+            .find(COLUMN_TH_SELECTOR)
             .mouse("mousedown")
             .mouse("mouseup");
-        table.find(TH_SELECTOR).focus();
-        table.find(TH_SELECTOR).keyboard("keydown", "C", true);
+        table.find(COLUMN_TH_SELECTOR).focus();
+        table.find(COLUMN_TH_SELECTOR).keyboard("keydown", "C", true);
         expect(copyCellsStub.lastCall.args).to.deep.equal([[["A1"], ["A2"], ["A3"], ["A4"], ["A5"], ["A6"], ["A7"]]]);
         expect(onCopy.lastCall.args).to.deep.equal([true]);
     });
@@ -78,7 +78,7 @@ describe("Selection", () => {
         );
 
         table
-            .find(TH_SELECTOR)
+            .find(COLUMN_TH_SELECTOR)
             .mouse("mousedown")
             .mouse("mouseup");
         expect(onSelection.called).to.equal(true);
@@ -98,29 +98,40 @@ describe("Selection", () => {
         const selectionModes = [RegionCardinality.FULL_COLUMNS, RegionCardinality.FULL_ROWS];
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection, selectionModes }));
 
+        // select a column to ensure it deselects when we click the row
         table
-            .find(TH_SELECTOR)
+            .find(COLUMN_TH_SELECTOR)
             .mouse("mousedown")
             .mouse("mouseup");
-        expect(onSelection.called).to.equal(true);
-        expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
         onSelection.reset();
 
+        // select a row
         table
             .find(ROW_TH_SELECTOR)
             .mouse("mousedown")
             .mouse("mouseup");
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.row(0)]]);
+        onSelection.reset();
+
+        // deselects on cmd+click
+        table
+            .find(ROW_TH_SELECTOR)
+            .mouse("mousedown", { metaKey: true })
+            .mouse("mouseup");
+        expect(onSelection.called).to.equal(true, "cmd+click to deselect");
+        expect(onSelection.lastCall.args.length).to.equal(1);
+        expect(onSelection.lastCall.args).to.deep.equal([[]]);
+        onSelection.reset();
     });
 
-    it("Doesn't select twice the same column on click", () => {
+    it("Column selection works when enabled", () => {
         const onSelection = sinon.spy();
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
 
         // initial selection
         table
-            .find(TH_SELECTOR)
+            .find(COLUMN_TH_SELECTOR)
             .mouse("mousedown")
             .mouse("mouseup");
         expect(onSelection.called).to.equal(true, "first select");
@@ -128,18 +139,19 @@ describe("Selection", () => {
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
         onSelection.reset();
 
-        // clears the selection on re-click
+        // deselects on cmd+click
         table
-            .find(TH_SELECTOR)
-            .mouse("mousedown")
+            .find(COLUMN_TH_SELECTOR)
+            .mouse("mousedown", { metaKey: true })
             .mouse("mouseup");
-        expect(onSelection.called).to.equal(true);
-        expect(onSelection.lastCall.args).to.deep.equal([[]], "re-click clear");
+        expect(onSelection.called).to.equal(true, "cmd+click to deselect");
+        expect(onSelection.lastCall.args.length).to.equal(1);
+        expect(onSelection.lastCall.args).to.deep.equal([[]]);
         onSelection.reset();
 
         // re-select
         table
-            .find(TH_SELECTOR)
+            .find(COLUMN_TH_SELECTOR)
             .mouse("mousedown")
             .mouse("mouseup");
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]], "second select");
@@ -148,11 +160,33 @@ describe("Selection", () => {
         // clears even with meta key
         const isMetaKeyDown = true;
         table
-            .find(TH_SELECTOR)
+            .find(COLUMN_TH_SELECTOR)
             .mouse("mousedown", 0, 0, isMetaKeyDown)
             .mouse("mouseup", 0, 0, isMetaKeyDown);
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[]], "meta key clear");
+    });
+
+    it("Keeps same column selected and reinvokes onSelection when clicked again", () => {
+        const onSelection = sinon.spy();
+        const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
+
+        // leaves the selection in place on re-click
+        const column = table.find(COLUMN_TH_SELECTOR);
+        column.mouse("mousedown").mouse("mouseup");
+        column.mouse("mousedown").mouse("mouseup");
+        expect(onSelection.callCount).to.equal(2);
+    });
+
+    it("Keeps same row selected and reinvokes onSelection when clicked again", () => {
+        const onSelection = sinon.spy();
+        const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
+
+        // leaves the selection in place on re-click
+        const row = table.find(ROW_TH_SELECTOR);
+        row.mouse("mousedown").mouse("mouseup");
+        row.mouse("mousedown").mouse("mouseup");
+        expect(onSelection.callCount).to.equal(2);
     });
 
     it("Transforms regions on selections", () => {
@@ -195,7 +229,7 @@ describe("Selection", () => {
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
 
         table
-            .find(TH_SELECTOR, 0)
+            .find(COLUMN_TH_SELECTOR, 0)
             .mouse("mousedown")
             .mouse("mouseup");
 
@@ -206,7 +240,7 @@ describe("Selection", () => {
 
         const isMetaKeyDown = true;
         table
-            .find(TH_SELECTOR, 1)
+            .find(COLUMN_TH_SELECTOR, 1)
             .mouse("mousedown", 0, 0, isMetaKeyDown)
             .mouse("mouseup", 0, 0, isMetaKeyDown);
 
@@ -219,9 +253,9 @@ describe("Selection", () => {
         const onSelection = sinon.spy();
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
 
-        table.find(TH_SELECTOR).mouse("mousedown");
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown");
         table
-            .find(TH_SELECTOR, 1)
+            .find(COLUMN_TH_SELECTOR, 1)
             .mouse("mousemove")
             .mouse("mouseup");
 
@@ -237,7 +271,7 @@ describe("Selection", () => {
         // initial selection
         const isMetaKeyDown = true;
         table
-            .find(TH_SELECTOR)
+            .find(COLUMN_TH_SELECTOR)
             .mouse("mousedown", 0, 0, isMetaKeyDown)
             .mouse("mouseup", 0, 0, isMetaKeyDown);
         expect(onSelection.called).to.equal(true, "first select");
