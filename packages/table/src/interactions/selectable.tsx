@@ -230,7 +230,7 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
 
         const isLeftClick = Utils.isLeftClick(event);
         const isContextMenuTrigger = isLeftClick && event.ctrlKey && PlatformUtils.isMac();
-        const isDisabled = CoreUtils.isFunction(disabled) ? CoreUtils.safeInvoke(disabled, event) : disabled;
+        const isDisabled = CoreUtils.safeInvokeOrValue(disabled, event);
 
         return (
             !isLeftClick ||
