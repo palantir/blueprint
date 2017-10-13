@@ -837,6 +837,60 @@ describe("<Table>", () => {
             expect(onSelection.getCall(1).args).to.deep.equal([[Regions.column(newIndex)]]);
         });
 
+        it("Deselects a selected row on cmd+click (without reordering)", () => {
+            const table = mountTable({
+                isRowReorderable: true,
+                onRowsReordered,
+                onSelection,
+                selectedRegions: [Regions.row(OLD_INDEX)],
+            });
+            const headerCell = getHeaderCell(getRowHeadersWrapper(table), 0);
+            headerCell.mouse("mousedown", { metaKey: true }).mouse("mousemove", 0, OFFSET_Y);
+
+            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
+            expect(guide.exists(), "guide not drawn").be.false;
+
+            headerCell.mouse("mouseup", 0, OFFSET_Y);
+            expect(onSelection.called, "onSelection called").to.be.true;
+            expect(onSelection.calledWith([]), "onSelection called with []").to.be.true;
+            expect(onRowsReordered.called, "onRowsReordered not called").to.be.false;
+        });
+
+        it("Deselects a selected column on cmd+click (without reordering)", () => {
+            const table = mountTable({
+                isColumnReorderable: true,
+                onColumnsReordered,
+                onSelection,
+                selectedRegions: [Regions.column(OLD_INDEX)],
+            });
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
+            headerCell.mouse("mousedown", { metaKey: true }).mouse("mousemove", 0, OFFSET_Y);
+
+            const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
+            expect(guide.exists(), "guide not drawn").be.false;
+
+            headerCell.mouse("mouseup", 0, OFFSET_Y);
+            expect(onSelection.called, "onSelection called").to.be.true;
+            expect(onSelection.calledWith([]), "onSelection called with []").to.be.true;
+            expect(onColumnsReordered.called, "onColumnsReordered not called").to.be.false;
+        });
+
+        it("Does not deselect a selected column when the reorder handle is cmd+click'd", () => {
+            const table = mountTable({
+                isColumnReorderable: true,
+                onColumnsReordered,
+                onSelection,
+            });
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
+            const reorderHandle = getReorderHandle(headerCell);
+            reorderHandle
+                .mouse("mousedown", { metaKey: true })
+                .mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle))
+                .mouse("mouseup", getAdjustedOffsetX(OFFSET_X, reorderHandle));
+            expect(onColumnsReordered.called).to.be.true;
+            expect(onSelection.firstCall.calledWith([Regions.column(0)]));
+        });
+
         function mountTable(props: Partial<ITableProps>) {
             const table = harness.mount(
                 <div style={{ width: CONTAINER_WIDTH_IN_PX, height: CONTAINER_HEIGHT_IN_PX }}>

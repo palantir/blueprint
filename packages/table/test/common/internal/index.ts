@@ -6,4 +6,5 @@
  */
 
 import "./focusedCellUtilsTests";
+import "./platformUtilsTests";
 import "./scrollUtilsTests";

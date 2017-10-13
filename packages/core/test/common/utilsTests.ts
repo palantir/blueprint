@@ -24,6 +24,20 @@ describe("Utils", () => {
         assert.isTrue(callback.firstCall.calledWith(1, "2", true, 4));
     });
 
+    it("safeInvokeOrValue", () => {
+        assert.doesNotThrow(() => Utils.safeInvokeOrValue(undefined, 1, "2", true, 4));
+
+        // try the max number of args (4)
+        const callback = sinon.spy();
+        Utils.safeInvokeOrValue(callback, 1, "2", true, 4);
+        assert.isTrue(callback.firstCall.calledWith(1, "2", true, 4));
+
+        // try passing a value
+        const value = "3";
+        const result = Utils.safeInvokeOrValue(value);
+        assert.strictEqual(result, value);
+    });
+
     it("elementIsOrContains", () => {
         const child = document.createElement("span");
         const parent = document.createElement("div");

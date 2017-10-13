@@ -8,8 +8,10 @@
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+
 import { IFocusedCellCoordinates } from "../common/cell";
 import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
+import * as PlatformUtils from "../common/internal/platformUtils";
 import { Utils } from "../common/utils";
 import { IRegion, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
@@ -79,7 +81,7 @@ export interface IDragSelectableProps extends ISelectableProps {
      * Whether the selection behavior is disabled.
      * @default false
      */
-    disabled?: boolean;
+    disabled?: boolean | ((event: MouseEvent) => boolean);
 
     /**
      * A callback that determines a `Region` for the single `MouseEvent`. If
@@ -145,10 +147,18 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         const foundIndex = Regions.findMatchingRegion(selectedRegions, region);
         const matchesExistingSelection = foundIndex !== -1;
 
-        if (matchesExistingSelection) {
-            this.handleUpdateExistingSelection(foundIndex, event);
-            // no need to listen for subsequent drags
+        if (matchesExistingSelection && DragEvents.isAdditive(event)) {
+            this.handleClearSelectionAtIndex(foundIndex);
+            // if we just deselected a selected region, a subsequent drag-move
+            // could reselect it again and *also* clear other selections. that's
+            // quite unintuitive, so ignore subsequent drag-move's.
             return false;
+        }
+
+        // we want to listen to subsequent drag-move's in all following cases,
+        // so this mousedown can be the start of a new selection if desired.
+        if (matchesExistingSelection) {
+            this.handleClearAllSelectionsNotAtIndex(foundIndex);
         } else if (this.shouldExpandSelection(event)) {
             this.handleExpandSelection(region);
         } else if (this.shouldAddDisjointSelection(event)) {
@@ -156,7 +166,6 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
         } else {
             this.handleReplaceSelection(region);
         }
-
         return true;
     };
 
@@ -216,16 +225,17 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     };
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
-        const { ignoredSelectors = [] } = this.props;
+        const { disabled, ignoredSelectors = [] } = this.props;
         const element = event.target as HTMLElement;
 
         const isLeftClick = Utils.isLeftClick(event);
-        const isContextMenuTrigger = isLeftClick && event.ctrlKey;
+        const isContextMenuTrigger = isLeftClick && event.ctrlKey && PlatformUtils.isMac();
+        const isDisabled = CoreUtils.safeInvokeOrValue(disabled, event);
 
         return (
             !isLeftClick ||
             isContextMenuTrigger ||
-            this.props.disabled ||
+            isDisabled ||
             ignoredSelectors.some((selector: string) => element.closest(selector) != null)
         );
     }
@@ -233,25 +243,28 @@ export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     // Update logic
     // ============
 
-    private handleUpdateExistingSelection = (selectedRegionIndex: number, event: MouseEvent) => {
+    private handleClearSelectionAtIndex = (selectedRegionIndex: number) => {
         const { selectedRegions } = this.props;
 
-        if (DragEvents.isAdditive(event)) {
-            // remove just the clicked region, leaving other selected regions in place
-            const nextSelectedRegions = selectedRegions.slice();
-            nextSelectedRegions.splice(selectedRegionIndex, 1);
-            this.maybeInvokeSelectionCallback(nextSelectedRegions);
+        // remove just the clicked region, leaving other selected regions in place
+        const nextSelectedRegions = selectedRegions.slice();
+        nextSelectedRegions.splice(selectedRegionIndex, 1);
+        this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
-            // if there are still any selections, move the focused cell to the
-            // most recent selection. otherwise, don't update it.
-            if (nextSelectedRegions.length > 0) {
-                const lastIndex = nextSelectedRegions.length - 1;
-                this.invokeOnFocusCallbackForRegion(nextSelectedRegions[lastIndex], lastIndex);
-            }
-        } else {
-            // clear all selections, but don't update the focused cell
-            this.maybeInvokeSelectionCallback([]);
+        // if there are still any selections, move the focused cell to the
+        // most recent selection. otherwise, don't update it.
+        if (nextSelectedRegions.length > 0) {
+            const lastIndex = nextSelectedRegions.length - 1;
+            this.invokeOnFocusCallbackForRegion(nextSelectedRegions[lastIndex], lastIndex);
         }
+    };
+
+    private handleClearAllSelectionsNotAtIndex = (selectedRegionIndex: number) => {
+        const { selectedRegions } = this.props;
+
+        const nextSelectedRegion = selectedRegions[selectedRegionIndex];
+        this.maybeInvokeSelectionCallback([nextSelectedRegion]);
+        this.invokeOnFocusCallbackForRegion(nextSelectedRegion, 0);
     };
 
     private handleExpandSelection = (region: IRegion) => {
