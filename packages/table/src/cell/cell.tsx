@@ -12,6 +12,8 @@ import * as Classes from "../common/classes";
 import { Classes as CoreClasses, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
+import { JSONFormat } from "./formats/jsonFormat";
+import { TruncatedFormat } from "./formats/truncatedFormat";
 
 export interface ICellProps extends IIntentProps, IProps {
     key?: string;
@@ -105,10 +107,24 @@ export class Cell extends React.Component<ICellProps, {}> {
         // note: these aren't actually used by truncated format, just in shouldComponentUpdate
         const modifiedChildren = React.Children.map(this.props.children, child => {
             if (style != null && React.isValidElement(child)) {
-                return React.cloneElement(child as React.ReactElement<any>, {
-                    parentCellHeight: style.height,
-                    parentCellWidth: style.width,
-                });
+                const childType = child.type;
+                // can't get prototype of "string" child, so treat those separately
+                if (typeof child === "string" || typeof childType === "string") {
+                    return child;
+                } else {
+                    const isTruncatedFormat =
+                        childType.prototype === TruncatedFormat.prototype ||
+                        TruncatedFormat.prototype.isPrototypeOf(childType) ||
+                        childType.prototype === JSONFormat.prototype ||
+                        JSONFormat.prototype.isPrototypeOf(childType);
+                    // only add props if child is truncated format
+                    if (isTruncatedFormat) {
+                        return React.cloneElement(child as React.ReactElement<any>, {
+                            parentCellHeight: style.height,
+                            parentCellWidth: style.width,
+                        });
+                    }
+                }
             }
             return child;
         });
