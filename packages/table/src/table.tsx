@@ -11,17 +11,17 @@ import * as React from "react";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
-import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
-import { Direction } from "./common/direction";
 import * as Errors from "./common/errors";
-import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
+import { Grid, ICellMapper, IColumnIndices, IRowIndices } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
 import { Rect } from "./common/rect";
-import { RenderMode } from "./common/renderMode";
+import { Direction } from "./common/types/direction";
+import { IFocusedCellCoordinates } from "./common/types/focusedCellCoordinates";
+import { RenderMode } from "./common/types/renderMode";
 import { Utils } from "./common/utils";
 import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
@@ -491,6 +491,74 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // ================
 
     /**
+     * __Experimental!__ Resizes all rows in the table to the approximate
+     * maximum height of wrapped cell content in each row. Works best when each
+     * cell contains plain text of a consistent font style (though font style
+     * may vary between cells). Since this function uses approximate
+     * measurements, results may not be perfect.
+     *
+     * Approximation parameters can be configured for the entire table or on a
+     * per-cell basis. Default values are fine-tuned to work well with default
+     * Table font styles.
+     *
+     * @param getCellText the text content of the cell
+     * @param getApproximateCharWidth the approximate width (in pixels) of an
+     * average character of text
+     * @param getApproximateLineHeight the approximate height (in pixels) of an
+     * average line of text
+     * @param getCellHorizontalPadding the sum of horizontal paddings (in
+     * pixels) from the left __and__ right sides of the cell
+     * @param getNumBufferLines the number of extra lines to add in case the
+     * calculation is imperfect
+     */
+    public resizeRowsByApproximateHeight(
+        getCellText: ICellMapper<string>,
+        getApproximateCharWidth: number | ICellMapper<number> = 8,
+        getApproximateLineHeight: number | ICellMapper<number> = 18,
+        getCellHorizontalPadding: number | ICellMapper<number> = 2 * Locator.CELL_HORIZONTAL_PADDING,
+        getNumBufferLines: number | ICellMapper<number> = 1,
+    ) {
+        const { numRows } = this.props;
+        const { columnWidths } = this.state;
+        const numColumns = columnWidths.length;
+
+        const rowHeights: number[] = [];
+
+        for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+            let maxCellHeightInRow = 0;
+
+            // iterate through each cell in the row
+            for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+                // resolve all parameters to raw values
+                const approxCharWidth = CoreUtils.safeInvokeOrValue(getApproximateCharWidth, rowIndex, columnIndex);
+                const approxLineHeight = CoreUtils.safeInvokeOrValue(getApproximateLineHeight, rowIndex, columnIndex);
+                const horizontalPadding = CoreUtils.safeInvokeOrValue(getCellHorizontalPadding, rowIndex, columnIndex);
+                const numBufferLines = CoreUtils.safeInvokeOrValue(getNumBufferLines, rowIndex, columnIndex);
+
+                const cellText = getCellText(rowIndex, columnIndex);
+                const numCharsInCell = cellText == null ? 0 : cellText.length;
+
+                const actualCellWidth = columnWidths[columnIndex];
+                const availableCellWidth = actualCellWidth - horizontalPadding;
+                const approxCharsPerLine = availableCellWidth / approxCharWidth;
+                const approxNumLinesDesired = Math.ceil(numCharsInCell / approxCharsPerLine) + numBufferLines;
+
+                const approxCellHeight = approxNumLinesDesired * approxLineHeight;
+
+                if (approxCellHeight > maxCellHeightInRow) {
+                    maxCellHeightInRow = approxCellHeight;
+                }
+            }
+
+            rowHeights.push(maxCellHeightInRow);
+        }
+
+        this.invalidateGrid();
+        this.didUpdateColumnOrRowSizes = true;
+        this.setState({ rowHeights });
+    }
+
+    /**
      * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
      * If no indices are provided, default to using the tallest visible cell from all columns in view.
      */
@@ -549,45 +617,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         // defer to the quadrant stack to keep all quadrant positions in sync
         this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
-    }
-
-    public resizeRowsByApproximateHeight(getCellText: (rowIndex: number, columnIndex: number) => string) {
-        const APPROX_CHAR_WIDTH = 8;
-        const APPROX_LINE_HEIGHT = 18;
-        const NUM_EXTRA_LINES = 1; // extra lines
-        const CELL_HORIZONTAL_PADDING = 10;
-
-        const { numRows } = this.props;
-        const { columnWidths } = this.state;
-        const numColumns = columnWidths.length;
-
-        const rowHeights: number[] = [];
-
-        for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
-            let maxCellHeightInRow = 0;
-
-            // iterate through each cell in the row
-            for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
-                const strLength = getCellText(rowIndex, columnIndex).length; // assume non-null
-                const cellWidth = columnWidths[columnIndex];
-
-                const availableCellWidth = cellWidth - 2 * CELL_HORIZONTAL_PADDING;
-                const approxCharsPerLine = availableCellWidth / APPROX_CHAR_WIDTH;
-                const approxNumLinesDesired = Math.ceil(strLength / approxCharsPerLine) + NUM_EXTRA_LINES;
-
-                const approxCellHeight = approxNumLinesDesired * APPROX_LINE_HEIGHT;
-
-                if (approxCellHeight > maxCellHeightInRow) {
-                    maxCellHeightInRow = approxCellHeight;
-                }
-            }
-
-            rowHeights.push(maxCellHeightInRow);
-        }
-
-        this.invalidateGrid();
-        this.didUpdateColumnOrRowSizes = true;
-        this.setState({ rowHeights });
     }
 
     // React lifecycle
