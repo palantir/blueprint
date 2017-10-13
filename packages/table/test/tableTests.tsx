@@ -26,7 +26,7 @@ import { IRegion, Regions } from "../src/regions";
 import { ITableState } from "../src/table";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
-import { createTableOfSize } from "./mocks/table";
+import { createStringOfLength, createTableOfSize } from "./mocks/table";
 
 describe("<Table>", () => {
     const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
@@ -146,6 +146,41 @@ describe("<Table>", () => {
     });
 
     describe("Instance methods", () => {
+        describe("resizeRowsByApproximateHeight", () => {
+            it("resizes each row to fit its respective tallest cell", () => {
+                const STR_LENGTH_SHORT = 10;
+                const STR_LENGTH_LONG = 100;
+                const NUM_ROWS = 4;
+
+                const cellTextShort = createStringOfLength(STR_LENGTH_SHORT);
+                const cellTextLong = createStringOfLength(STR_LENGTH_LONG);
+
+                const getCellText = (rowIndex: number) => {
+                    return rowIndex === 0 ? cellTextShort : cellTextLong;
+                };
+                const renderCell = (rowIndex: number) => {
+                    return <Cell wrapText={true}>{getCellText(rowIndex)}</Cell>;
+                };
+
+                let table: Table;
+                const saveTable = (t: Table) => (table = t);
+
+                harness.mount(
+                    <Table ref={saveTable} numRows={NUM_ROWS}>
+                        <Column name="Column0" renderCell={renderCell} />
+                        <Column name="Column1" renderCell={renderCell} />
+                    </Table>,
+                );
+
+                const expectedRowHeightsBefore = Array(NUM_ROWS).fill(Table.defaultProps.defaultRowHeight);
+                const expectedRowHeightsAfter = [36, 144, 144, 144];
+
+                expect(table.state.rowHeights).to.deep.equal(expectedRowHeightsBefore);
+                table.resizeRowsByApproximateHeight(getCellText);
+                expect(table.state.rowHeights).to.deep.equal(expectedRowHeightsAfter);
+            });
+        });
+
         describe("resizeRowsByTallestCell", () => {
             it("Gets and sets the tallest cell by columns correctly", () => {
                 const DEFAULT_RESIZE_HEIGHT = 20;

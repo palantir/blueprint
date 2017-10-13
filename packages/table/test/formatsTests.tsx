@@ -11,6 +11,7 @@ import { JSONFormat } from "../src/cell/formats/jsonFormat";
 import { TruncatedFormat, TruncatedPopoverMode } from "../src/cell/formats/truncatedFormat";
 import * as Classes from "../src/common/classes";
 import { ReactHarness } from "./harness";
+import { createStringOfLength } from "./mocks/table";
 
 describe("Formats", () => {
     const harness = new ReactHarness();
@@ -183,7 +184,3 @@ describe("Formats", () => {
         });
     });
 });
-
-function createStringOfLength(length: number) {
-    return new Array(length).fill("a").join("");
-}

@@ -9,6 +9,10 @@ import * as React from "react";
 
 import { Cell, Column, IColumnProps, ITableProps, RenderMode, Table, Utils } from "../../src";
 
+export function createStringOfLength(length: number) {
+    return new Array(length).fill("a").join("");
+}
+
 export function createTableOfSize(numColumns: number, numRows: number, columnProps?: any, tableProps?: any) {
     const columns = Utils.times(numColumns, Utils.toBase26Alpha);
     const data = Utils.times(numRows, (row: number) => {
