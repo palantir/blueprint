@@ -202,7 +202,7 @@ describe("<Tabs2>", () => {
                 {getTabsContents()}
             </Tabs2>,
         );
-        assertIndicatorPosition(wrapper, TAB_IDS[0]);
+        assert.isUndefined(wrapper.state().indicatorWrapperStyle);
         assert.equal(wrapper.find(".pt-tab-indicator").length, 0);
     });
 
