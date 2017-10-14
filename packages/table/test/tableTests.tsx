@@ -147,37 +147,49 @@ describe("<Table>", () => {
 
     describe("Instance methods", () => {
         describe("resizeRowsByApproximateHeight", () => {
-            it("resizes each row to fit its respective tallest cell", () => {
-                const STR_LENGTH_SHORT = 10;
-                const STR_LENGTH_LONG = 100;
-                const NUM_ROWS = 4;
+            const STR_LENGTH_SHORT = 10;
+            const STR_LENGTH_LONG = 100;
+            const NUM_ROWS = 4;
 
-                const cellTextShort = createStringOfLength(STR_LENGTH_SHORT);
-                const cellTextLong = createStringOfLength(STR_LENGTH_LONG);
+            const cellTextShort = createStringOfLength(STR_LENGTH_SHORT);
+            const cellTextLong = createStringOfLength(STR_LENGTH_LONG);
 
-                const getCellText = (rowIndex: number) => {
-                    return rowIndex === 0 ? cellTextShort : cellTextLong;
-                };
-                const renderCell = (rowIndex: number) => {
-                    return <Cell wrapText={true}>{getCellText(rowIndex)}</Cell>;
-                };
+            const getCellText = (rowIndex: number) => {
+                return rowIndex === 0 ? cellTextShort : cellTextLong;
+            };
+            const renderCell = (rowIndex: number) => {
+                return <Cell wrapText={true}>{getCellText(rowIndex)}</Cell>;
+            };
 
-                let table: Table;
-                const saveTable = (t: Table) => (table = t);
+            let table: Table;
+            const saveTable = (t: Table) => (table = t);
 
+            beforeEach(() => {
                 harness.mount(
                     <Table ref={saveTable} numRows={NUM_ROWS}>
                         <Column name="Column0" renderCell={renderCell} />
                         <Column name="Column1" renderCell={renderCell} />
                     </Table>,
                 );
+            });
 
-                const expectedRowHeightsBefore = Array(NUM_ROWS).fill(Table.defaultProps.defaultRowHeight);
-                const expectedRowHeightsAfter = [36, 144, 144, 144];
+            afterEach(() => {
+                table = undefined;
+            });
 
-                expect(table.state.rowHeights).to.deep.equal(expectedRowHeightsBefore);
+            it("resizes each row to fit its respective tallest cell", () => {
                 table.resizeRowsByApproximateHeight(getCellText);
-                expect(table.state.rowHeights).to.deep.equal(expectedRowHeightsAfter);
+                expect(table.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
+            });
+
+            it("still uses defaults if an empty `options` object is passed", () => {
+                table.resizeRowsByApproximateHeight(getCellText, {});
+                expect(table.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
+            });
+
+            it("can customize options", () => {
+                table.resizeRowsByApproximateHeight(getCellText, { getNumBufferLines: 2 });
+                expect(table.state.rowHeights).to.deep.equal([54, 162, 162, 162]);
             });
         });
 

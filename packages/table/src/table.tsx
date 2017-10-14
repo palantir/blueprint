@@ -46,6 +46,29 @@ import {
 } from "./regions";
 import { TableBody } from "./tableBody";
 
+export interface IResizeRowsByApproximateHeightOptions {
+    /**
+     * Approximate width (in pixels) of an average character of text.
+     */
+    getApproximateCharWidth?: number | ICellMapper<number>;
+
+    /**
+     * Approximate height (in pixels) of an average line of text.
+     */
+    getApproximateLineHeight?: number | ICellMapper<number>;
+
+    /**
+     * Sum of horizontal paddings (in pixels) from the left __and__ right sides
+     * of the cell.
+     */
+    getCellHorizontalPadding?: number | ICellMapper<number>;
+
+    /**
+     * Number of extra lines to add in case the calculation is imperfect.
+     */
+    getNumBufferLines?: number | ICellMapper<number>;
+}
+
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `false`, only a single region of a single column/row/cell may be
@@ -396,6 +419,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
+    // these default values for `resizeRowsByApproximateHeight` have been
+    // fine-tuned to work well with default Table font styles.
+    private static resizeRowsByApproximateHeightDefaults: Record<
+        keyof IResizeRowsByApproximateHeightOptions,
+        number
+    > = {
+        getApproximateCharWidth: 8,
+        getApproximateLineHeight: 18,
+        getCellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
+        getNumBufferLines: 1,
+    };
+
     private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
     ] as Array<keyof ITableProps>;
@@ -500,23 +535,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * Approximation parameters can be configured for the entire table or on a
      * per-cell basis. Default values are fine-tuned to work well with default
      * Table font styles.
-     *
-     * @param getCellText the text content of the cell
-     * @param getApproximateCharWidth the approximate width (in pixels) of an
-     * average character of text
-     * @param getApproximateLineHeight the approximate height (in pixels) of an
-     * average line of text
-     * @param getCellHorizontalPadding the sum of horizontal paddings (in
-     * pixels) from the left __and__ right sides of the cell
-     * @param getNumBufferLines the number of extra lines to add in case the
-     * calculation is imperfect
      */
     public resizeRowsByApproximateHeight(
         getCellText: ICellMapper<string>,
-        getApproximateCharWidth: number | ICellMapper<number> = 8,
-        getApproximateLineHeight: number | ICellMapper<number> = 18,
-        getCellHorizontalPadding: number | ICellMapper<number> = 2 * Locator.CELL_HORIZONTAL_PADDING,
-        getNumBufferLines: number | ICellMapper<number> = 1,
+        options?: IResizeRowsByApproximateHeightOptions,
     ) {
         const { numRows } = this.props;
         const { columnWidths } = this.state;
@@ -530,10 +552,30 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             // iterate through each cell in the row
             for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
                 // resolve all parameters to raw values
-                const approxCharWidth = CoreUtils.safeInvokeOrValue(getApproximateCharWidth, rowIndex, columnIndex);
-                const approxLineHeight = CoreUtils.safeInvokeOrValue(getApproximateLineHeight, rowIndex, columnIndex);
-                const horizontalPadding = CoreUtils.safeInvokeOrValue(getCellHorizontalPadding, rowIndex, columnIndex);
-                const numBufferLines = CoreUtils.safeInvokeOrValue(getNumBufferLines, rowIndex, columnIndex);
+                const approxCharWidth = this.resolveResizeRowsByApproximateHeightOption(
+                    options,
+                    "getApproximateCharWidth",
+                    rowIndex,
+                    columnIndex,
+                );
+                const approxLineHeight = this.resolveResizeRowsByApproximateHeightOption(
+                    options,
+                    "getApproximateLineHeight",
+                    rowIndex,
+                    columnIndex,
+                );
+                const horizontalPadding = this.resolveResizeRowsByApproximateHeightOption(
+                    options,
+                    "getCellHorizontalPadding",
+                    rowIndex,
+                    columnIndex,
+                );
+                const numBufferLines = this.resolveResizeRowsByApproximateHeightOption(
+                    options,
+                    "getNumBufferLines",
+                    rowIndex,
+                    columnIndex,
+                );
 
                 const cellText = getCellText(rowIndex, columnIndex);
                 const numCharsInCell = cellText == null ? 0 : cellText.length;
@@ -2091,6 +2133,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
         this.setState({ horizontalGuides });
     };
+
+    private resolveResizeRowsByApproximateHeightOption(
+        options: IResizeRowsByApproximateHeightOptions | null | undefined,
+        key: keyof IResizeRowsByApproximateHeightOptions,
+        rowIndex: number,
+        columnIndex: number,
+    ) {
+        return options != null && options[key] != null
+            ? CoreUtils.safeInvokeOrValue(options[key], rowIndex, columnIndex)
+            : Table.resizeRowsByApproximateHeightDefaults[key];
+    }
 }
 
 function clampNumFrozenColumns(props: ITableProps) {
