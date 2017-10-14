@@ -69,6 +69,13 @@ export interface IResizeRowsByApproximateHeightOptions {
     getNumBufferLines?: number | ICellMapper<number>;
 }
 
+interface IResizeRowsByApproximateHeightResolvedOptions {
+    getApproximateCharWidth?: number;
+    getApproximateLineHeight?: number;
+    getCellHorizontalPadding?: number;
+    getNumBufferLines?: number;
+}
+
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `false`, only a single region of a single column/row/cell may be
@@ -552,30 +559,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             // iterate through each cell in the row
             for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
                 // resolve all parameters to raw values
-                const approxCharWidth = this.resolveResizeRowsByApproximateHeightOption(
-                    options,
-                    "getApproximateCharWidth",
-                    rowIndex,
-                    columnIndex,
-                );
-                const approxLineHeight = this.resolveResizeRowsByApproximateHeightOption(
-                    options,
-                    "getApproximateLineHeight",
-                    rowIndex,
-                    columnIndex,
-                );
-                const horizontalPadding = this.resolveResizeRowsByApproximateHeightOption(
-                    options,
-                    "getCellHorizontalPadding",
-                    rowIndex,
-                    columnIndex,
-                );
-                const numBufferLines = this.resolveResizeRowsByApproximateHeightOption(
-                    options,
-                    "getNumBufferLines",
-                    rowIndex,
-                    columnIndex,
-                );
+                const {
+                    getApproximateCharWidth: approxCharWidth,
+                    getApproximateLineHeight: approxLineHeight,
+                    getCellHorizontalPadding: horizontalPadding,
+                    getNumBufferLines: numBufferLines,
+                } = this.resolveResizeRowsByApproximateHeightOptions(options, rowIndex, columnIndex);
 
                 const cellText = getCellText(rowIndex, columnIndex);
                 const numCharsInCell = cellText == null ? 0 : cellText.length;
@@ -2134,15 +2123,28 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.setState({ horizontalGuides });
     };
 
-    private resolveResizeRowsByApproximateHeightOption(
+    /**
+     * Returns an object with option keys mapped to their resolved values
+     * (falling back to default values as necessary).
+     */
+    private resolveResizeRowsByApproximateHeightOptions(
         options: IResizeRowsByApproximateHeightOptions | null | undefined,
-        key: keyof IResizeRowsByApproximateHeightOptions,
         rowIndex: number,
         columnIndex: number,
     ) {
-        return options != null && options[key] != null
-            ? CoreUtils.safeInvokeOrValue(options[key], rowIndex, columnIndex)
-            : Table.resizeRowsByApproximateHeightDefaults[key];
+        const optionKeys = Object.keys(Table.resizeRowsByApproximateHeightDefaults);
+        const optionReducer = (
+            agg: IResizeRowsByApproximateHeightOptions,
+            key: keyof IResizeRowsByApproximateHeightOptions,
+        ) => {
+            agg[key] =
+                options != null && options[key] != null
+                    ? CoreUtils.safeInvokeOrValue(options[key], rowIndex, columnIndex)
+                    : Table.resizeRowsByApproximateHeightDefaults[key];
+            return agg;
+        };
+        const resolvedOptions: IResizeRowsByApproximateHeightResolvedOptions = optionKeys.reduce(optionReducer, {});
+        return resolvedOptions;
     }
 }
 
