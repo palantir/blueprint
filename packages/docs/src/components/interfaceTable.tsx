@@ -52,7 +52,7 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
     }
     if (deprecated) {
         const maybeMessage =
-            typeof deprecated === "string" ? <span dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} /> : "";
+            typeof deprecated === "string" ? <span key="__deprecated_msg" dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} /> : "";
         tags.push(propTag(Intent.DANGER, "Deprecated", maybeMessage));
     }
     if (inheritedFrom != null) {

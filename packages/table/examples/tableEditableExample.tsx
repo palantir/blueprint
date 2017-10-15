@@ -40,7 +40,7 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
         const columns = this.state.columnNames.map((_: string, index: number) => {
             return <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />;
         });
-        return <Table numRows={7}>{columns}</Table>;
+        return <Table numRows={7} useInteractionBar={true}>{columns}</Table>;
     }
 
     public renderCell = (rowIndex: number, columnIndex: number) => {
@@ -73,7 +73,6 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
             <ColumnHeaderCell
                 name={this.state.columnNames[columnIndex]}
                 renderName={renderName}
-                useInteractionBar={true}
             />
         );
     };

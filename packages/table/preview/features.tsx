@@ -58,7 +58,7 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
 }
 
 // tslint:disable:no-console jsx-no-lambda
-const testMenu = (
+const renderTestMenu = () => (
     <Menu>
         <MenuItem iconName="export" onClick={() => console.log("Beam me up!")} text="Teleport" />
         <MenuItem
@@ -183,7 +183,10 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
             <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />
         ));
         return (
-            <Table numRows={7} selectionModes={SelectionModes.COLUMNS_AND_CELLS} enableFocus={true}>
+            <Table numRows={7}
+                   selectionModes={SelectionModes.COLUMNS_AND_CELLS}
+                   enableFocus={true}
+                   useInteractionBar={true}>
                 {columns}
             </Table>
         );
@@ -217,10 +220,9 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
         };
         return (
             <ColumnHeaderCell
-                menu={testMenu}
+                renderMenu={renderTestMenu}
                 name={this.state.names[columnIndex]}
                 renderName={renderName}
-                useInteractionBar={true}
             />
         );
     };
@@ -520,7 +522,7 @@ ReactDOM.render(
             renderColumnHeader: (columnIndex: number) => {
                 const alpha = Utils.toBase26Alpha(columnIndex);
                 return (
-                    <ColumnHeaderCell name={`${alpha} Column with a substantially long header name`} menu={testMenu}>
+                    <ColumnHeaderCell name={`${alpha} Column with a substantially long header name`} renderMenu={renderTestMenu}>
                         <h4>Header {alpha}</h4>
                         <p>Whatever interactive header content goes here lorem ipsum.</p>
                     </ColumnHeaderCell>
@@ -529,7 +531,7 @@ ReactDOM.render(
         },
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell name={`${rowIndex + 1}`} menu={testMenu} />;
+                return <RowHeaderCell name={`${rowIndex + 1}`} renderMenu={renderTestMenu} />;
             },
         },
     ),
