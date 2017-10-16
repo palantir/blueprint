@@ -16,7 +16,7 @@ import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
 import { Direction } from "./common/direction";
 import * as Errors from "./common/errors";
-import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
+import { Grid, ICellMapper, IColumnIndices, IRowIndices } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
@@ -45,6 +45,36 @@ import {
     TableLoadingOption,
 } from "./regions";
 import { TableBody } from "./tableBody";
+
+export interface IResizeRowsByApproximateHeightOptions {
+    /**
+     * Approximate width (in pixels) of an average character of text.
+     */
+    getApproximateCharWidth?: number | ICellMapper<number>;
+
+    /**
+     * Approximate height (in pixels) of an average line of text.
+     */
+    getApproximateLineHeight?: number | ICellMapper<number>;
+
+    /**
+     * Sum of horizontal paddings (in pixels) from the left __and__ right sides
+     * of the cell.
+     */
+    getCellHorizontalPadding?: number | ICellMapper<number>;
+
+    /**
+     * Number of extra lines to add in case the calculation is imperfect.
+     */
+    getNumBufferLines?: number | ICellMapper<number>;
+}
+
+interface IResizeRowsByApproximateHeightResolvedOptions {
+    getApproximateCharWidth?: number;
+    getApproximateLineHeight?: number;
+    getCellHorizontalPadding?: number;
+    getNumBufferLines?: number;
+}
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
@@ -396,6 +426,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
+    // these default values for `resizeRowsByApproximateHeight` have been
+    // fine-tuned to work well with default Table font styles.
+    private static resizeRowsByApproximateHeightDefaults: Record<
+        keyof IResizeRowsByApproximateHeightOptions,
+        number
+    > = {
+        getApproximateCharWidth: 8,
+        getApproximateLineHeight: 18,
+        getCellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
+        getNumBufferLines: 1,
+    };
+
     private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
     ] as Array<keyof ITableProps>;
@@ -489,6 +531,63 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     // Instance methods
     // ================
+
+    /**
+     * __Experimental!__ Resizes all rows in the table to the approximate
+     * maximum height of wrapped cell content in each row. Works best when each
+     * cell contains plain text of a consistent font style (though font style
+     * may vary between cells). Since this function uses approximate
+     * measurements, results may not be perfect.
+     *
+     * Approximation parameters can be configured for the entire table or on a
+     * per-cell basis. Default values are fine-tuned to work well with default
+     * Table font styles.
+     */
+    public resizeRowsByApproximateHeight(
+        getCellText: ICellMapper<string>,
+        options?: IResizeRowsByApproximateHeightOptions,
+    ) {
+        const { numRows } = this.props;
+        const { columnWidths } = this.state;
+        const numColumns = columnWidths.length;
+
+        const rowHeights: number[] = [];
+
+        for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+            let maxCellHeightInRow = 0;
+
+            // iterate through each cell in the row
+            for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+                // resolve all parameters to raw values
+                const {
+                    getApproximateCharWidth: approxCharWidth,
+                    getApproximateLineHeight: approxLineHeight,
+                    getCellHorizontalPadding: horizontalPadding,
+                    getNumBufferLines: numBufferLines,
+                } = this.resolveResizeRowsByApproximateHeightOptions(options, rowIndex, columnIndex);
+
+                const cellText = getCellText(rowIndex, columnIndex);
+                const numCharsInCell = cellText == null ? 0 : cellText.length;
+
+                const actualCellWidth = columnWidths[columnIndex];
+                const availableCellWidth = actualCellWidth - horizontalPadding;
+                const approxCharsPerLine = availableCellWidth / approxCharWidth;
+                const approxNumLinesDesired = Math.ceil(numCharsInCell / approxCharsPerLine) + numBufferLines;
+
+                const approxCellHeight = approxNumLinesDesired * approxLineHeight;
+
+                if (approxCellHeight > maxCellHeightInRow) {
+                    maxCellHeightInRow = approxCellHeight;
+                }
+            }
+
+            rowHeights.push(maxCellHeightInRow);
+        }
+
+        this.invalidateGrid();
+        this.didUpdateColumnOrRowSizes = true;
+        this.setState({ rowHeights });
+    }
 
     /**
      * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
@@ -2023,6 +2122,30 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
         this.setState({ horizontalGuides });
     };
+
+    /**
+     * Returns an object with option keys mapped to their resolved values
+     * (falling back to default values as necessary).
+     */
+    private resolveResizeRowsByApproximateHeightOptions(
+        options: IResizeRowsByApproximateHeightOptions | null | undefined,
+        rowIndex: number,
+        columnIndex: number,
+    ) {
+        const optionKeys = Object.keys(Table.resizeRowsByApproximateHeightDefaults);
+        const optionReducer = (
+            agg: IResizeRowsByApproximateHeightResolvedOptions,
+            key: keyof IResizeRowsByApproximateHeightOptions,
+        ) => {
+            agg[key] =
+                options != null && options[key] != null
+                    ? CoreUtils.safeInvokeOrValue(options[key], rowIndex, columnIndex)
+                    : Table.resizeRowsByApproximateHeightDefaults[key];
+            return agg;
+        };
+        const resolvedOptions: IResizeRowsByApproximateHeightResolvedOptions = optionKeys.reduce(optionReducer, {});
+        return resolvedOptions;
+    }
 }
 
 function clampNumFrozenColumns(props: ITableProps) {
