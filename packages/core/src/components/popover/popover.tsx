@@ -18,6 +18,7 @@ import * as PosUtils from "../../common/position";
 import { IProps } from "../../common/props";
 import * as TetherUtils from "../../common/tetherUtils";
 import * as Utils from "../../common/utils";
+import { isDarkTheme } from "../../common/utils/isDarkTheme";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
 
@@ -432,7 +433,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             });
         }
         if (!this.props.inline) {
-            this.hasDarkParent = this.targetElement.closest(`.${Classes.DARK}`) != null;
+            this.hasDarkParent = isDarkTheme(this.targetElement);
             this.updateTether();
         }
     }

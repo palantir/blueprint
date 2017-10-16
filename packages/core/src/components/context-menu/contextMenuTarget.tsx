@@ -6,9 +6,11 @@
  */
 
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import { CONTEXTMENU_WARN_DECORATOR_NO_METHOD } from "../../common/errors";
 import { isFunction, safeInvoke } from "../../common/utils";
+import { isDarkTheme } from "../../common/utils/isDarkTheme";
 import * as ContextMenu from "./contextMenu";
 
 export interface IContextMenuTarget extends React.Component<any, any> {
@@ -33,6 +35,8 @@ export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(c
             // always return `element` in case caller is distinguishing between `null` and `undefined`
             return element;
         }
+        /* tslint:disable:no-this-assignment */
+        const thisElem = this;
 
         const oldOnContextMenu = element.props.onContextMenu as React.MouseEventHandler<HTMLElement>;
         const onContextMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -44,8 +48,10 @@ export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(c
             if (isFunction(this.renderContextMenu)) {
                 const menu = this.renderContextMenu(e);
                 if (menu != null) {
+                    const htmlElement = ReactDOM.findDOMNode(thisElem);
+                    const darkTheme = htmlElement && isDarkTheme(htmlElement);
                     e.preventDefault();
-                    ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, onContextMenuClose);
+                    ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, onContextMenuClose, darkTheme);
                 }
             }
 
