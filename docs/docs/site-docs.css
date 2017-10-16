@@ -7100,16 +7100,16 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-container {
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.15); }
 .bp-table-menu {
-  box-shadow: 1px 0 0 rgba(16, 22, 26, 0.15), 0 1px 0 rgba(16, 22, 26, 0.15); }
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15), 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-header {
   box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15); }
 .bp-table-cell {
-  box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.15), inset 0 -1px 0 rgba(16, 22, 26, 0.15); }
+  box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15), inset -1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-horizontal-cell-divider {
   box-shadow: inset 0 1px 0 rgba(16, 22, 26, 0.15);
   height: 1px; }
 .bp-table-column-headers .bp-table-header {
-  box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.15), 0 1px 0 rgba(16, 22, 26, 0.15); }
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15), inset -1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-column-headers .bp-table-header::before {
   right: 1px;
   bottom: 0; }
@@ -7121,22 +7121,42 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .bp-table-body .bp-table-last-in-row {
   box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15), 1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-body .bp-table-last-in-column {
-  box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.15), 0 1px 0 rgba(16, 22, 26, 0.15); }
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15), inset -1px 0 0 rgba(16, 22, 26, 0.15); }
 .bp-table-body .bp-table-last-in-row.bp-table-last-in-column {
-  box-shadow: 1px 0 0 rgba(16, 22, 26, 0.15), 0 1px 0 rgba(16, 22, 26, 0.15); }
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15), 1px 0 0 rgba(16, 22, 26, 0.15); }
+.bp-table-quadrant-top-left .bp-table-cell.bp-table-last-in-row {
+  box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15), inset -3px 0 0 rgba(16, 22, 26, 0.15); }
+.bp-table-quadrant-top-left .bp-table-cell.bp-table-last-in-column {
+  box-shadow: inset 0 -3px 0 rgba(16, 22, 26, 0.15), inset -1px 0 0 rgba(16, 22, 26, 0.15); }
+.bp-table-quadrant-top-left .bp-table-cell.bp-table-last-in-column.bp-table-last-in-row {
+  box-shadow: inset 0 -3px 0 rgba(16, 22, 26, 0.15), inset -3px 0 0 rgba(16, 22, 26, 0.15); }
+.bp-table-quadrant-top-left .bp-table-header.bp-table-last-in-row {
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15), inset -3px 0 0 rgba(16, 22, 26, 0.15); }
+.bp-table-quadrant-top-left .bp-table-header.bp-table-last-in-row::before {
+  right: 3px;
+  bottom: 0; }
+.bp-table-quadrant-top-left .bp-table-header.bp-table-last-in-column {
+  box-shadow: inset 0 -3px 0 rgba(16, 22, 26, 0.15), 1px 0 0 rgba(16, 22, 26, 0.15); }
+.bp-table-quadrant-top-left .bp-table-header.bp-table-last-in-column::before {
+  right: 0;
+  bottom: 3px; }
+.bp-table-quadrant-left .bp-table-cell.bp-table-last-in-row {
+  box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15), inset -3px 0 0 rgba(16, 22, 26, 0.15); }
+.bp-table-quadrant-top .bp-table-cell.bp-table-last-in-column {
+  box-shadow: inset 0 -3px 0 rgba(16, 22, 26, 0.15), inset -1px 0 0 rgba(16, 22, 26, 0.15); }
 .pt-dark .bp-table-container {
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-menu {
-  box-shadow: 1px 0 0 rgba(16, 22, 26, 0.4), 0 1px 0 rgba(16, 22, 26, 0.4); }
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.4), 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-header {
   box-shadow: 0 1px 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-cell {
-  box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.4), inset 0 -1px 0 rgba(16, 22, 26, 0.4); }
+  box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.4), inset -1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-horizontal-cell-divider {
   box-shadow: inset 0 1px 0 rgba(16, 22, 26, 0.4);
   height: 1px; }
 .pt-dark .bp-table-column-headers .bp-table-header {
-  box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.4), 0 1px 0 rgba(16, 22, 26, 0.4); }
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.4), inset -1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-column-headers .bp-table-header::before {
   right: 1px;
   bottom: 0; }
@@ -7148,9 +7168,29 @@ table.pt-table.pt-interactive tbody tr:hover td {
 .pt-dark .bp-table-body .bp-table-last-in-row {
   box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.4), 1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-body .bp-table-last-in-column {
-  box-shadow: inset -1px 0 0 rgba(16, 22, 26, 0.4), 0 1px 0 rgba(16, 22, 26, 0.4); }
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.4), inset -1px 0 0 rgba(16, 22, 26, 0.4); }
 .pt-dark .bp-table-body .bp-table-last-in-row.bp-table-last-in-column {
-  box-shadow: 1px 0 0 rgba(16, 22, 26, 0.4), 0 1px 0 rgba(16, 22, 26, 0.4); }
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.4), 1px 0 0 rgba(16, 22, 26, 0.4); }
+.pt-dark .bp-table-quadrant-top-left .bp-table-cell.bp-table-last-in-row {
+  box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.4), inset -3px 0 0 rgba(16, 22, 26, 0.4); }
+.pt-dark .bp-table-quadrant-top-left .bp-table-cell.bp-table-last-in-column {
+  box-shadow: inset 0 -3px 0 rgba(16, 22, 26, 0.4), inset -1px 0 0 rgba(16, 22, 26, 0.4); }
+.pt-dark .bp-table-quadrant-top-left .bp-table-cell.bp-table-last-in-column.bp-table-last-in-row {
+  box-shadow: inset 0 -3px 0 rgba(16, 22, 26, 0.4), inset -3px 0 0 rgba(16, 22, 26, 0.4); }
+.pt-dark .bp-table-quadrant-top-left .bp-table-header.bp-table-last-in-row {
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.4), inset -3px 0 0 rgba(16, 22, 26, 0.4); }
+.pt-dark .bp-table-quadrant-top-left .bp-table-header.bp-table-last-in-row::before {
+  right: 3px;
+  bottom: 0; }
+.pt-dark .bp-table-quadrant-top-left .bp-table-header.bp-table-last-in-column {
+  box-shadow: inset 0 -3px 0 rgba(16, 22, 26, 0.4), 1px 0 0 rgba(16, 22, 26, 0.4); }
+.pt-dark .bp-table-quadrant-top-left .bp-table-header.bp-table-last-in-column::before {
+  right: 0;
+  bottom: 3px; }
+.pt-dark .bp-table-quadrant-left .bp-table-cell.bp-table-last-in-row {
+  box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.4), inset -3px 0 0 rgba(16, 22, 26, 0.4); }
+.pt-dark .bp-table-quadrant-top .bp-table-cell.bp-table-last-in-column {
+  box-shadow: inset 0 -3px 0 rgba(16, 22, 26, 0.4), inset -1px 0 0 rgba(16, 22, 26, 0.4); }
 @keyframes skeleton-fade-in {
   0% {
     opacity: 0; }
@@ -8062,11 +8102,12 @@ input[type="search"] {
 .docs-prop-description p:last-child {
   margin: 0; }
 .docs-prop-tags {
-  margin: 10px 0 0; }
+  margin: 7px 0 0; }
 .docs-prop-tags:empty {
   display: none; }
-.docs-prop-tags .pt-tag + .pt-tag {
-  margin-left: 10px; }
+.docs-prop-tags .pt-tag {
+  margin-top: 3px;
+  margin-right: 10px; }
 .docs-prop-name code::after {
   line-height: 1;
   font-family: "Icons16", sans-serif;
