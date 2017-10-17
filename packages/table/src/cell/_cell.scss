@@ -21,6 +21,11 @@
     @include cell-content-align-vertical();
     color: transparent;
   }
+
+  &:focus {
+    // disable focus outline on cells; we already have the focus border
+    outline: none;
+  }
 }
 
 .bp-table-cell-interactive {

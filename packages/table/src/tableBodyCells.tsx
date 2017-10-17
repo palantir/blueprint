@@ -11,6 +11,7 @@ import * as React from "react";
 
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
+import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
@@ -22,6 +23,11 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
      * A cell renderer for the cells in the body.
      */
     cellRenderer: ICellRenderer;
+
+    /**
+     * The location of the focused cell, for setting the "focused" property on cells
+     */
+    focusedCell?: IFocusedCellCoordinates;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -170,7 +176,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     };
 
     private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
-        const { cellRenderer, loading, grid } = this.props;
+        const { cellRenderer, focusedCell, loading, grid } = this.props;
         const baseCell = isGhost ? emptyCellRenderer() : cellRenderer(rowIndex, columnIndex);
         const className = classNames(
             cellClassNames(rowIndex, columnIndex),
@@ -187,7 +193,8 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
         const cellLoading = baseCell.props.loading != null ? baseCell.props.loading : loading;
 
         const style = { ...baseCell.props.style, ...Rect.style(rect) };
-        return React.cloneElement(baseCell, { className, key, loading: cellLoading, style });
+        const isFocused = focusedCell != null && focusedCell.row === rowIndex && focusedCell.col === columnIndex;
+        return React.cloneElement(baseCell, { className, key, isFocused, loading: cellLoading, style });
     };
 
     // Callbacks

@@ -95,6 +95,7 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 >
                     <TableBodyCells
                         cellRenderer={this.props.cellRenderer}
+                        focusedCell={this.props.focusedCell}
                         grid={grid}
                         loading={this.props.loading}
                         onCompleteRender={this.props.onCompleteRender}
