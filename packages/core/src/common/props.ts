@@ -92,6 +92,7 @@ const INVALID_PROPS = [
     "leftIconName",
     "onChildrenMount",
     "onRemove",
+    "popoverProps",
     "rightElement",
     "rightIconName",
     "text",
