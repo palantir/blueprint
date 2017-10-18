@@ -183,10 +183,12 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
             <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />
         ));
         return (
-            <Table numRows={7}
-                   selectionModes={SelectionModes.COLUMNS_AND_CELLS}
-                   enableFocus={true}
-                   useInteractionBar={true}>
+            <Table
+                numRows={7}
+                selectionModes={SelectionModes.COLUMNS_AND_CELLS}
+                enableFocus={true}
+                useInteractionBar={true}
+            >
                 {columns}
             </Table>
         );
@@ -522,7 +524,10 @@ ReactDOM.render(
             renderColumnHeader: (columnIndex: number) => {
                 const alpha = Utils.toBase26Alpha(columnIndex);
                 return (
-                    <ColumnHeaderCell name={`${alpha} Column with a substantially long header name`} renderMenu={renderTestMenu}>
+                    <ColumnHeaderCell
+                        name={`${alpha} Column with a substantially long header name`}
+                        renderMenu={renderTestMenu}
+                    >
                         <h4>Header {alpha}</h4>
                         <p>Whatever interactive header content goes here lorem ipsum.</p>
                     </ColumnHeaderCell>
