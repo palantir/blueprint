@@ -75,9 +75,10 @@ describe("<ColumnHeaderCell>", () => {
         it("renders custom menu items", () => {
             const menuClickSpy = sinon.spy();
             const menu = getMenuComponent(menuClickSpy);
+            const renderMenuFn = () => menu;
 
             const renderColumnHeader = (columnIndex: number) => {
-                return <ColumnHeaderCell name={`COL-${columnIndex}`} menu={menu} />;
+                return <ColumnHeaderCell name={`COL-${columnIndex}`} renderMenu={renderMenuFn} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, { renderColumnHeader }));
             expectMenuToOpen(table, menuClickSpy);

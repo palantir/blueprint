@@ -63,7 +63,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
 
     public renderExample() {
         return (
-            <Table numRows={bigSpaceRocks.length} renderRowHeader={this.renderRowHeaderCell}>
+            <Table numRows={bigSpaceRocks.length} renderRowHeader={this.renderRowHeaderCell} useInteractionBar={true}>
                 {this.renderColumns()}
             </Table>
         );
@@ -113,13 +113,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
         const formattedColumnName = columnName
             .replace(/([A-Z])/g, " $1")
             .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
-        return (
-            <ColumnHeaderCell
-                loading={this.isLoading(0, columnIndex + 1)}
-                name={formattedColumnName}
-                useInteractionBar={true}
-            />
-        );
+        return <ColumnHeaderCell loading={this.isLoading(0, columnIndex + 1)} name={formattedColumnName} />;
     };
 
     private renderRowHeaderCell = (rowIndex: number) => {

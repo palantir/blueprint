@@ -35,13 +35,12 @@ export class TableReorderableExample extends BaseExample<ITableReorderableExampl
     private toggleUseInteractionBar = handleBooleanChange(useInteractionBar => this.setState({ useInteractionBar }));
 
     public componentDidMount() {
-        const { useInteractionBar } = this.state;
         const columns = [
-            <Column key="1" name="Letter" renderCell={this.renderLetterCell} useInteractionBar={useInteractionBar} />,
-            <Column key="2" name="Fruit" renderCell={this.renderFruitCell} useInteractionBar={useInteractionBar} />,
-            <Column key="3" name="Animal" renderCell={this.renderAnimalCell} useInteractionBar={useInteractionBar} />,
-            <Column key="4" name="Country" renderCell={this.renderCountryCell} useInteractionBar={useInteractionBar} />,
-            <Column key="5" name="City" renderCell={this.renderCityCell} useInteractionBar={useInteractionBar} />,
+            <Column key="1" name="Letter" renderCell={this.renderLetterCell} />,
+            <Column key="2" name="Fruit" renderCell={this.renderFruitCell} />,
+            <Column key="3" name="Animal" renderCell={this.renderAnimalCell} />,
+            <Column key="4" name="Country" renderCell={this.renderCountryCell} />,
+            <Column key="5" name="City" renderCell={this.renderCityCell} />,
         ];
         this.setState({ columns });
     }
@@ -57,6 +56,7 @@ export class TableReorderableExample extends BaseExample<ITableReorderableExampl
     }
 
     public renderExample() {
+        const { useInteractionBar } = this.state;
         return (
             <Table
                 isColumnReorderable={true}
@@ -66,6 +66,7 @@ export class TableReorderableExample extends BaseExample<ITableReorderableExampl
                 numRows={this.state.data.length}
                 onColumnsReordered={this.handleColumnsReordered}
                 onRowsReordered={this.handleRowsReordered}
+                useInteractionBar={useInteractionBar}
             >
                 {this.state.columns}
             </Table>

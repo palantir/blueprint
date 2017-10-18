@@ -28,9 +28,9 @@ abstract class AbstractSortableColumn implements ISortableColumn {
     constructor(protected name: string, protected index: number) {}
 
     public getColumn(getCellData: ICellLookup, sortColumn: ISortCallback) {
-        const menu = this.renderMenu(sortColumn);
         const renderCell = (rowIndex: number, columnIndex: number) => <Cell>{getCellData(rowIndex, columnIndex)}</Cell>;
-        const renderColumnHeader = () => <ColumnHeaderCell name={this.name} menu={menu} />;
+        const renderMenu = this.renderMenu.bind(this, sortColumn);
+        const renderColumnHeader = () => <ColumnHeaderCell name={this.name} renderMenu={renderMenu} />;
         return (
             <Column key={this.index} name={this.name} renderCell={renderCell} renderColumnHeader={renderColumnHeader} />
         );
