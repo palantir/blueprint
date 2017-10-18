@@ -14,10 +14,12 @@ import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
+import { Direction } from "./common/direction";
 import * as Errors from "./common/errors";
-import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
+import { Grid, ICellMapper, IColumnIndices, IRowIndices } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
+import * as SelectionUtils from "./common/internal/selectionUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
@@ -43,6 +45,36 @@ import {
     TableLoadingOption,
 } from "./regions";
 import { TableBody } from "./tableBody";
+
+export interface IResizeRowsByApproximateHeightOptions {
+    /**
+     * Approximate width (in pixels) of an average character of text.
+     */
+    getApproximateCharWidth?: number | ICellMapper<number>;
+
+    /**
+     * Approximate height (in pixels) of an average line of text.
+     */
+    getApproximateLineHeight?: number | ICellMapper<number>;
+
+    /**
+     * Sum of horizontal paddings (in pixels) from the left __and__ right sides
+     * of the cell.
+     */
+    getCellHorizontalPadding?: number | ICellMapper<number>;
+
+    /**
+     * Number of extra lines to add in case the calculation is imperfect.
+     */
+    getNumBufferLines?: number | ICellMapper<number>;
+}
+
+interface IResizeRowsByApproximateHeightResolvedOptions {
+    getApproximateCharWidth?: number;
+    getApproximateLineHeight?: number;
+    getCellHorizontalPadding?: number;
+    getNumBufferLines?: number;
+}
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
@@ -394,6 +426,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
+    // these default values for `resizeRowsByApproximateHeight` have been
+    // fine-tuned to work well with default Table font styles.
+    private static resizeRowsByApproximateHeightDefaults: Record<
+        keyof IResizeRowsByApproximateHeightOptions,
+        number
+    > = {
+        getApproximateCharWidth: 8,
+        getApproximateLineHeight: 18,
+        getCellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
+        getNumBufferLines: 1,
+    };
+
     private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
     ] as Array<keyof ITableProps>;
@@ -487,6 +531,63 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     // Instance methods
     // ================
+
+    /**
+     * __Experimental!__ Resizes all rows in the table to the approximate
+     * maximum height of wrapped cell content in each row. Works best when each
+     * cell contains plain text of a consistent font style (though font style
+     * may vary between cells). Since this function uses approximate
+     * measurements, results may not be perfect.
+     *
+     * Approximation parameters can be configured for the entire table or on a
+     * per-cell basis. Default values are fine-tuned to work well with default
+     * Table font styles.
+     */
+    public resizeRowsByApproximateHeight(
+        getCellText: ICellMapper<string>,
+        options?: IResizeRowsByApproximateHeightOptions,
+    ) {
+        const { numRows } = this.props;
+        const { columnWidths } = this.state;
+        const numColumns = columnWidths.length;
+
+        const rowHeights: number[] = [];
+
+        for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+            let maxCellHeightInRow = 0;
+
+            // iterate through each cell in the row
+            for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+                // resolve all parameters to raw values
+                const {
+                    getApproximateCharWidth: approxCharWidth,
+                    getApproximateLineHeight: approxLineHeight,
+                    getCellHorizontalPadding: horizontalPadding,
+                    getNumBufferLines: numBufferLines,
+                } = this.resolveResizeRowsByApproximateHeightOptions(options, rowIndex, columnIndex);
+
+                const cellText = getCellText(rowIndex, columnIndex);
+                const numCharsInCell = cellText == null ? 0 : cellText.length;
+
+                const actualCellWidth = columnWidths[columnIndex];
+                const availableCellWidth = actualCellWidth - horizontalPadding;
+                const approxCharsPerLine = availableCellWidth / approxCharWidth;
+                const approxNumLinesDesired = Math.ceil(numCharsInCell / approxCharsPerLine) + numBufferLines;
+
+                const approxCellHeight = approxNumLinesDesired * approxLineHeight;
+
+                if (approxCellHeight > maxCellHeightInRow) {
+                    maxCellHeightInRow = approxCellHeight;
+                }
+            }
+
+            rowHeights.push(maxCellHeightInRow);
+        }
+
+        this.invalidateGrid();
+        this.didUpdateColumnOrRowSizes = true;
+        this.setState({ rowHeights });
+    }
 
     /**
      * Resize all rows in the table to the height of the tallest visible cell in the specified columns.
@@ -697,6 +798,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.maybeRenderCopyHotkey(),
             this.maybeRenderSelectAllHotkey(),
             this.maybeRenderFocusHotkeys(),
+            this.maybeRenderSelectionResizeHotkeys(),
         ];
         return <Hotkeys>{hotkeys.filter(element => element !== undefined)}</Hotkeys>;
     }
@@ -786,6 +888,190 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (numFrozenColumns != null && numFrozenColumns > numColumns) {
             console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
+    }
+
+    // Hotkeys
+    // =======
+
+    private maybeRenderCopyHotkey() {
+        const { getCellClipboardData } = this.props;
+        if (getCellClipboardData != null) {
+            return (
+                <Hotkey
+                    key="copy-hotkey"
+                    label="Copy selected table cells"
+                    group="Table"
+                    combo="mod+c"
+                    onKeyDown={this.handleCopy}
+                />
+            );
+        } else {
+            return undefined;
+        }
+    }
+
+    private maybeRenderSelectionResizeHotkeys() {
+        const { allowMultipleSelection, selectionModes } = this.props;
+        const isSomeSelectionModeEnabled = selectionModes.length > 0;
+
+        if (allowMultipleSelection && isSomeSelectionModeEnabled) {
+            return [
+                <Hotkey
+                    key="resize-selection-up"
+                    label="Resize selection upward"
+                    group="Table"
+                    combo="shift+up"
+                    onKeyDown={this.handleSelectionResizeUp}
+                />,
+                <Hotkey
+                    key="resize-selection-down"
+                    label="Resize selection downward"
+                    group="Table"
+                    combo="shift+down"
+                    onKeyDown={this.handleSelectionResizeDown}
+                />,
+                <Hotkey
+                    key="resize-selection-left"
+                    label="Resize selection leftward"
+                    group="Table"
+                    combo="shift+left"
+                    onKeyDown={this.handleSelectionResizeLeft}
+                />,
+                <Hotkey
+                    key="resize-selection-right"
+                    label="Resize selection rightward"
+                    group="Table"
+                    combo="shift+right"
+                    onKeyDown={this.handleSelectionResizeRight}
+                />,
+            ];
+        } else {
+            return undefined;
+        }
+    }
+
+    private maybeRenderFocusHotkeys() {
+        const { enableFocus } = this.props;
+        if (enableFocus != null) {
+            return [
+                <Hotkey
+                    key="move left"
+                    label="Move focus cell left"
+                    group="Table"
+                    combo="left"
+                    onKeyDown={this.handleFocusMoveLeft}
+                />,
+                <Hotkey
+                    key="move right"
+                    label="Move focus cell right"
+                    group="Table"
+                    combo="right"
+                    onKeyDown={this.handleFocusMoveRight}
+                />,
+                <Hotkey
+                    key="move up"
+                    label="Move focus cell up"
+                    group="Table"
+                    combo="up"
+                    onKeyDown={this.handleFocusMoveUp}
+                />,
+                <Hotkey
+                    key="move down"
+                    label="Move focus cell down"
+                    group="Table"
+                    combo="down"
+                    onKeyDown={this.handleFocusMoveDown}
+                />,
+                <Hotkey
+                    key="move tab"
+                    label="Move focus cell tab"
+                    group="Table"
+                    combo="tab"
+                    onKeyDown={this.handleFocusMoveRightInternal}
+                />,
+                <Hotkey
+                    key="move shift-tab"
+                    label="Move focus cell shift tab"
+                    group="Table"
+                    combo="shift+tab"
+                    onKeyDown={this.handleFocusMoveLeftInternal}
+                />,
+                <Hotkey
+                    key="move enter"
+                    label="Move focus cell enter"
+                    group="Table"
+                    combo="enter"
+                    onKeyDown={this.handleFocusMoveDownInternal}
+                />,
+                <Hotkey
+                    key="move shift-enter"
+                    label="Move focus cell shift enter"
+                    group="Table"
+                    combo="shift+enter"
+                    onKeyDown={this.handleFocusMoveUpInternal}
+                />,
+            ];
+        } else {
+            return [];
+        }
+    }
+
+    private maybeRenderSelectAllHotkey() {
+        if (this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE)) {
+            return (
+                <Hotkey
+                    key="select-all-hotkey"
+                    label="Select all"
+                    group="Table"
+                    combo="mod+a"
+                    onKeyDown={this.handleSelectAllHotkey}
+                />
+            );
+        } else {
+            return undefined;
+        }
+    }
+
+    // Selection resize
+    // ----------------
+
+    private handleSelectionResizeUp = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.UP);
+    private handleSelectionResizeDown = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.DOWN);
+    private handleSelectionResizeLeft = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.LEFT);
+    private handleSelectionResizeRight = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.RIGHT);
+
+    private handleSelectionResize = (e: KeyboardEvent, direction: Direction) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const { focusedCell, selectedRegions } = this.state;
+
+        if (selectedRegions.length === 0) {
+            return;
+        }
+
+        const index = FocusedCellUtils.getFocusedOrLastSelectedIndex(selectedRegions, focusedCell);
+        const region = selectedRegions[index];
+        const nextRegion = SelectionUtils.resizeRegion(region, direction, focusedCell);
+
+        this.updateSelectedRegionAtIndex(nextRegion, index);
+    };
+
+    /**
+     * Replaces the selected region at the specified array index, with the
+     * region provided.
+     */
+    private updateSelectedRegionAtIndex(region: IRegion, index: number) {
+        const { children, numRows } = this.props;
+        const { selectedRegions } = this.state;
+        const numColumns = React.Children.count(children);
+
+        const maxRowIndex = Math.max(0, numRows - 1);
+        const maxColumnIndex = Math.max(0, numColumns - 1);
+        const clampedNextRegion = Regions.clampRegion(region, maxRowIndex, maxColumnIndex);
+
+        const nextSelectedRegions = Regions.update(selectedRegions, clampedNextRegion, index);
+        this.handleSelection(nextSelectedRegions);
     }
 
     // Quadrant refs
@@ -1293,23 +1579,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         });
     }
 
-    private maybeRenderCopyHotkey() {
-        const { getCellClipboardData } = this.props;
-        if (getCellClipboardData != null) {
-            return (
-                <Hotkey
-                    key="copy-hotkey"
-                    label="Copy selected table cells"
-                    group="Table"
-                    combo="mod+c"
-                    onKeyDown={this.handleCopy}
-                />
-            );
-        } else {
-            return undefined;
-        }
-    }
-
     private handleCompleteRender = () => {
         // the first onCompleteRender is triggered before the viewportRect is
         // defined and the second after the viewportRect has been set. the cells
@@ -1329,88 +1598,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleFocusMoveUpInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "up");
     private handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
     private handleFocusMoveDownInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "down");
-
-    private maybeRenderFocusHotkeys() {
-        const { enableFocus } = this.props;
-        if (enableFocus != null) {
-            return [
-                <Hotkey
-                    key="move left"
-                    label="Move focus cell left"
-                    group="Table"
-                    combo="left"
-                    onKeyDown={this.handleFocusMoveLeft}
-                />,
-                <Hotkey
-                    key="move right"
-                    label="Move focus cell right"
-                    group="Table"
-                    combo="right"
-                    onKeyDown={this.handleFocusMoveRight}
-                />,
-                <Hotkey
-                    key="move up"
-                    label="Move focus cell up"
-                    group="Table"
-                    combo="up"
-                    onKeyDown={this.handleFocusMoveUp}
-                />,
-                <Hotkey
-                    key="move down"
-                    label="Move focus cell down"
-                    group="Table"
-                    combo="down"
-                    onKeyDown={this.handleFocusMoveDown}
-                />,
-                <Hotkey
-                    key="move tab"
-                    label="Move focus cell tab"
-                    group="Table"
-                    combo="tab"
-                    onKeyDown={this.handleFocusMoveRightInternal}
-                />,
-                <Hotkey
-                    key="move shift-tab"
-                    label="Move focus cell shift tab"
-                    group="Table"
-                    combo="shift+tab"
-                    onKeyDown={this.handleFocusMoveLeftInternal}
-                />,
-                <Hotkey
-                    key="move enter"
-                    label="Move focus cell enter"
-                    group="Table"
-                    combo="enter"
-                    onKeyDown={this.handleFocusMoveDownInternal}
-                />,
-                <Hotkey
-                    key="move shift-enter"
-                    label="Move focus cell shift enter"
-                    group="Table"
-                    combo="shift+enter"
-                    onKeyDown={this.handleFocusMoveUpInternal}
-                />,
-            ];
-        } else {
-            return [];
-        }
-    }
-
-    private maybeRenderSelectAllHotkey() {
-        if (this.isSelectionModeEnabled(RegionCardinality.FULL_TABLE)) {
-            return (
-                <Hotkey
-                    key="select-all-hotkey"
-                    label="Select all"
-                    group="Table"
-                    combo="mod+a"
-                    onKeyDown={this.handleSelectAllHotkey}
-                />
-            );
-        } else {
-            return undefined;
-        }
-    }
 
     private styleBodyRegion = (region: IRegion, quadrantType: QuadrantType): React.CSSProperties => {
         const { numFrozenColumns } = this.props;
@@ -1935,6 +2122,30 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
         this.setState({ horizontalGuides });
     };
+
+    /**
+     * Returns an object with option keys mapped to their resolved values
+     * (falling back to default values as necessary).
+     */
+    private resolveResizeRowsByApproximateHeightOptions(
+        options: IResizeRowsByApproximateHeightOptions | null | undefined,
+        rowIndex: number,
+        columnIndex: number,
+    ) {
+        const optionKeys = Object.keys(Table.resizeRowsByApproximateHeightDefaults);
+        const optionReducer = (
+            agg: IResizeRowsByApproximateHeightResolvedOptions,
+            key: keyof IResizeRowsByApproximateHeightOptions,
+        ) => {
+            agg[key] =
+                options != null && options[key] != null
+                    ? CoreUtils.safeInvokeOrValue(options[key], rowIndex, columnIndex)
+                    : Table.resizeRowsByApproximateHeightDefaults[key];
+            return agg;
+        };
+        const resolvedOptions: IResizeRowsByApproximateHeightResolvedOptions = optionKeys.reduce(optionReducer, {});
+        return resolvedOptions;
+    }
 }
 
 function clampNumFrozenColumns(props: ITableProps) {

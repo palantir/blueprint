@@ -76,7 +76,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                         className={classes}
                         disabled={this.state.disabled}
                         active={this.state.active}
-                        href="./"
+                        href="./#core/components/button.javascript-api"
                         iconName="duplicate"
                         intent={this.state.intent}
                         loading={this.state.loading}

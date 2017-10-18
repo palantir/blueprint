@@ -47,7 +47,7 @@ export interface ILocator {
 }
 
 export class Locator implements ILocator {
-    private static CELL_HORIZONTAL_PADDING = 10;
+    public static CELL_HORIZONTAL_PADDING = 10;
 
     private grid: Grid;
 

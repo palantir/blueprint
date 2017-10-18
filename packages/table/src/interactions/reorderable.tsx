@@ -57,7 +57,7 @@ export interface IDragReorderable extends IReorderableProps {
      * Whether the reordering behavior is disabled.
      * @default false
      */
-    disabled?: boolean;
+    disabled?: boolean | ((event: MouseEvent) => boolean);
 
     /**
      * A callback that determines a `Region` for the single `MouseEvent`. If
@@ -108,7 +108,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
     }
 
     private handleActivate = (event: MouseEvent) => {
-        if (!Utils.isLeftClick(event) || this.props.disabled) {
+        if (this.shouldIgnoreMouseDown(event)) {
             return false;
         }
 
@@ -178,6 +178,12 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
         this.selectedRegionStartIndex = undefined;
         this.selectedRegionLength = undefined;
     };
+
+    private shouldIgnoreMouseDown(event: MouseEvent) {
+        const { disabled } = this.props;
+        const isDisabled = CoreUtils.isFunction(disabled) ? CoreUtils.safeInvoke(disabled, event) : disabled;
+        return !Utils.isLeftClick(event) || isDisabled;
+    }
 
     private maybeSelectRegion(region: IRegion) {
         const nextSelectedRegions = [region];

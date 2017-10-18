@@ -124,10 +124,12 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
             .filter(this.props.renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
             .map(this.renderTabPanel);
 
-        const tabIndicator = (
+        const tabIndicator = this.props.animate ? (
             <div className="pt-tab-indicator-wrapper" style={indicatorWrapperStyle}>
                 <div className="pt-tab-indicator" />
             </div>
+        ) : (
+            undefined
         );
 
         const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical }, this.props.className);
@@ -144,7 +146,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
                     ref={this.refHandlers.tablist}
                     role="tablist"
                 >
-                    {this.props.animate ? tabIndicator : undefined}
+                    {tabIndicator}
                     {tabTitles}
                 </div>
                 {tabPanels}
@@ -261,7 +263,7 @@ export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
      * Store the CSS values so the transition animation can start.
      */
     private moveSelectionIndicator() {
-        if (this.tablistElement === undefined) {
+        if (this.tablistElement === undefined || !this.props.animate) {
             return;
         }
 

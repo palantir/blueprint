@@ -106,7 +106,18 @@ describe("DragSelectable", () => {
                 locateClick.returns(REGION);
             });
 
-            it("deselects just that region if CMD key was depressed", () => {
+            it("deselects just that region if CMD key was depressed (one region)", () => {
+                const component = mountDragSelectable({
+                    selectedRegions: [REGION],
+                });
+
+                getItem(component).mouse("mousedown", { metaKey: true });
+
+                expectOnSelectionCalledWith([]);
+                expectOnFocusNotCalled();
+            });
+
+            it("deselects just that region if CMD key was depressed (many regions)", () => {
                 const component = mountDragSelectable({
                     selectedRegions: [REGION_2, REGION, REGION_3],
                 });
@@ -117,15 +128,15 @@ describe("DragSelectable", () => {
                 expectOnFocusCalledWith(REGION_3, 1);
             });
 
-            it("deselects all regions if no modifier keys were depressed", () => {
+            it("leaves just the clicked region selected if CMD key not depressed", () => {
                 const component = mountDragSelectable({
                     selectedRegions: [REGION_2, REGION, REGION_3],
                 });
 
                 getItem(component).mouse("mousedown");
 
-                expectOnSelectionCalledWith([]);
-                expectOnFocusNotCalled(); // leave focused cell where it is
+                expectOnSelectionCalledWith([REGION]);
+                expectOnFocusCalledWith(REGION, 0);
             });
 
             it("works with a selectedRegionTransform too", () => {
@@ -509,6 +520,30 @@ describe("DragSelectable", () => {
             expect(onSelection.callCount, "calls onSelection on mousedown").to.equal(1);
             item.mouse("mousemove");
             expect(onSelection.callCount, "does not call onSelection again on mousemove").to.equal(1);
+        });
+
+        it("triggered when a region receives mousedown with requireMetaKeyToDeselect=true", () => {
+            locateDrag.returns(REGION); // different from the locateClick region
+
+            const component = mountDragSelectable({ selectedRegions: [REGION_2, REGION, REGION_3] });
+            const item = getItem(component);
+
+            item.mouse("mousedown");
+            expect(onSelection.callCount, "calls onSelection on mousedown").to.equal(1);
+            item.mouse("mousemove");
+            expect(onSelection.callCount, "calls onSelection again on mousemove").to.equal(2);
+        });
+
+        it("isn't triggered when one of multiple selected regions received mousedown", () => {
+            locateDrag.returns(REGION); // different from the locateClick region
+
+            const component = mountDragSelectable({ selectedRegions: [REGION_2, REGION, REGION_3] });
+            const item = getItem(component);
+
+            item.mouse("mousedown");
+            expect(onSelection.callCount, "calls onSelection on mousedown").to.equal(1);
+            item.mouse("mousemove");
+            expect(onSelection.callCount, "calls onSelection again on mousemove").to.equal(2);
         });
 
         // running these checks separately clarifies the subsequent effects of the "mousemove" event.

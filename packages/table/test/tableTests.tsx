@@ -26,7 +26,7 @@ import { IRegion, Regions } from "../src/regions";
 import { ITableState } from "../src/table";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
-import { createTableOfSize } from "./mocks/table";
+import { createStringOfLength, createTableOfSize } from "./mocks/table";
 
 describe("<Table>", () => {
     const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
@@ -146,6 +146,53 @@ describe("<Table>", () => {
     });
 
     describe("Instance methods", () => {
+        describe("resizeRowsByApproximateHeight", () => {
+            const STR_LENGTH_SHORT = 10;
+            const STR_LENGTH_LONG = 100;
+            const NUM_ROWS = 4;
+
+            const cellTextShort = createStringOfLength(STR_LENGTH_SHORT);
+            const cellTextLong = createStringOfLength(STR_LENGTH_LONG);
+
+            const getCellText = (rowIndex: number) => {
+                return rowIndex === 0 ? cellTextShort : cellTextLong;
+            };
+            const renderCell = (rowIndex: number) => {
+                return <Cell wrapText={true}>{getCellText(rowIndex)}</Cell>;
+            };
+
+            let table: Table;
+            const saveTable = (t: Table) => (table = t);
+
+            beforeEach(() => {
+                harness.mount(
+                    <Table ref={saveTable} numRows={NUM_ROWS}>
+                        <Column name="Column0" renderCell={renderCell} />
+                        <Column name="Column1" renderCell={renderCell} />
+                    </Table>,
+                );
+            });
+
+            afterEach(() => {
+                table = undefined;
+            });
+
+            it("resizes each row to fit its respective tallest cell", () => {
+                table.resizeRowsByApproximateHeight(getCellText);
+                expect(table.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
+            });
+
+            it("still uses defaults if an empty `options` object is passed", () => {
+                table.resizeRowsByApproximateHeight(getCellText, {});
+                expect(table.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
+            });
+
+            it("can customize options", () => {
+                table.resizeRowsByApproximateHeight(getCellText, { getNumBufferLines: 2 });
+                expect(table.state.rowHeights).to.deep.equal([54, 162, 162, 162]);
+            });
+        });
+
         describe("resizeRowsByTallestCell", () => {
             it("Gets and sets the tallest cell by columns correctly", () => {
                 const DEFAULT_RESIZE_HEIGHT = 20;
@@ -837,6 +884,60 @@ describe("<Table>", () => {
             expect(onSelection.getCall(1).args).to.deep.equal([[Regions.column(newIndex)]]);
         });
 
+        it("Deselects a selected row on cmd+click (without reordering)", () => {
+            const table = mountTable({
+                isRowReorderable: true,
+                onRowsReordered,
+                onSelection,
+                selectedRegions: [Regions.row(OLD_INDEX)],
+            });
+            const headerCell = getHeaderCell(getRowHeadersWrapper(table), 0);
+            headerCell.mouse("mousedown", { metaKey: true }).mouse("mousemove", 0, OFFSET_Y);
+
+            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
+            expect(guide.exists(), "guide not drawn").be.false;
+
+            headerCell.mouse("mouseup", 0, OFFSET_Y);
+            expect(onSelection.called, "onSelection called").to.be.true;
+            expect(onSelection.calledWith([]), "onSelection called with []").to.be.true;
+            expect(onRowsReordered.called, "onRowsReordered not called").to.be.false;
+        });
+
+        it("Deselects a selected column on cmd+click (without reordering)", () => {
+            const table = mountTable({
+                isColumnReorderable: true,
+                onColumnsReordered,
+                onSelection,
+                selectedRegions: [Regions.column(OLD_INDEX)],
+            });
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
+            headerCell.mouse("mousedown", { metaKey: true }).mouse("mousemove", 0, OFFSET_Y);
+
+            const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
+            expect(guide.exists(), "guide not drawn").be.false;
+
+            headerCell.mouse("mouseup", 0, OFFSET_Y);
+            expect(onSelection.called, "onSelection called").to.be.true;
+            expect(onSelection.calledWith([]), "onSelection called with []").to.be.true;
+            expect(onColumnsReordered.called, "onColumnsReordered not called").to.be.false;
+        });
+
+        it("Does not deselect a selected column when the reorder handle is cmd+click'd", () => {
+            const table = mountTable({
+                isColumnReorderable: true,
+                onColumnsReordered,
+                onSelection,
+            });
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
+            const reorderHandle = getReorderHandle(headerCell);
+            reorderHandle
+                .mouse("mousedown", { metaKey: true })
+                .mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle))
+                .mouse("mouseup", getAdjustedOffsetX(OFFSET_X, reorderHandle));
+            expect(onColumnsReordered.called).to.be.true;
+            expect(onSelection.firstCall.calledWith([Regions.column(0)]));
+        });
+
         function mountTable(props: Partial<ITableProps>) {
             const table = harness.mount(
                 <div style={{ width: CONTAINER_WIDTH_IN_PX, height: CONTAINER_HEIGHT_IN_PX }}>
@@ -1151,31 +1252,6 @@ describe("<Table>", () => {
             component.setState({ viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight) });
 
             return { attachTo, component };
-        }
-
-        function createKeyEventConfig(
-            component: ReactWrapper<any, any>,
-            key: string,
-            keyCode: number,
-            shiftKey = false,
-        ) {
-            const eventConfig = {
-                key,
-                keyCode,
-                preventDefault: () => {
-                    /* Empty */
-                },
-                shiftKey,
-                stopPropagation: () => {
-                    /* Empty */
-                },
-                target: (component as any).getNode(), // `getNode` is a real Enzyme method, just not in the typings?
-                which: keyCode,
-            };
-            return {
-                eventConfig,
-                nativeEvent: eventConfig,
-            };
         }
     });
 
@@ -1804,6 +1880,80 @@ describe("<Table>", () => {
         }
     });
 
+    describe("Hotkey: shift + arrow keys", () => {
+        const NUM_ROWS = 3;
+        const NUM_COLS = 3;
+
+        const SELECTED_CELL_ROW = 1;
+        const SELECTED_CELL_COL = 1;
+        const selectedRegions = [Regions.cell(SELECTED_CELL_ROW, SELECTED_CELL_COL)];
+
+        it("resizes a selection on shift + arrow keys", () => {
+            const containerElement = document.createElement("div");
+            document.body.appendChild(containerElement);
+
+            const onSelection = sinon.spy();
+            const component = mount(createTableOfSize(NUM_COLS, NUM_ROWS, {}, { onSelection, selectedRegions }), {
+                attachTo: containerElement,
+            });
+
+            pressKeyWithShiftKey(component, Keys.ARROW_RIGHT);
+            expect(onSelection.calledOnce).to.be.true;
+            expect(onSelection.firstCall.args).to.deep.equal([
+                [Regions.cell(SELECTED_CELL_ROW, SELECTED_CELL_COL, SELECTED_CELL_ROW, SELECTED_CELL_COL + 1)],
+            ]);
+        });
+
+        it("resizes a selection on shift + arrow keys if focusedCell is defined", () => {
+            const containerElement = document.createElement("div");
+            document.body.appendChild(containerElement);
+
+            const onSelection = sinon.spy();
+            const focusedCell = { row: SELECTED_CELL_ROW, col: SELECTED_CELL_COL, focusSelectionIndex: 0 };
+            const tableProps = { enableFocus: true, focusedCell, onSelection, selectedRegions };
+            const component = mount(createTableOfSize(NUM_COLS, NUM_ROWS, {}, tableProps), {
+                attachTo: containerElement,
+            });
+
+            const expectedSelectedRegions = [
+                Regions.cell(SELECTED_CELL_ROW, SELECTED_CELL_COL, SELECTED_CELL_ROW, SELECTED_CELL_COL + 1),
+            ];
+
+            // expand rightward with a RIGHT keypress
+            pressKeyWithShiftKey(component, Keys.ARROW_RIGHT);
+            expect(onSelection.calledOnce).to.be.true;
+            expect(onSelection.firstCall.args).to.deep.equal([expectedSelectedRegions]);
+            onSelection.reset();
+
+            // pretend the selection change persisted
+            component.setProps({ selectedRegions: expectedSelectedRegions });
+
+            // undo the resize change with a LEFT keypress
+            pressKeyWithShiftKey(component, Keys.ARROW_LEFT);
+            expect(onSelection.calledOnce).to.be.true;
+            expect(onSelection.firstCall.args).to.deep.equal([selectedRegions]);
+        });
+
+        it("does not change a selection on shift + arrow keys if allowMultipleSelection=false", () => {
+            const containerElement = document.createElement("div");
+            document.body.appendChild(containerElement);
+
+            const onSelection = sinon.spy();
+            const tableProps = { allowMultipleSelection: false, onSelection, selectedRegions };
+            const component = mount(createTableOfSize(NUM_COLS, NUM_ROWS, {}, tableProps), {
+                attachTo: containerElement,
+            });
+
+            pressKeyWithShiftKey(component, Keys.ARROW_RIGHT);
+            expect(onSelection.calledOnce).to.be.false;
+        });
+
+        function pressKeyWithShiftKey(component: ReactWrapper<ITableProps, {}>, keyCode: number) {
+            const key = keyCode === Keys.ARROW_LEFT ? "left" : "right";
+            component.simulate("keyDown", createKeyEventConfig(component, key, keyCode, true));
+        }
+    });
+
     function renderDummyCell() {
         return <Cell>gg</Cell>;
     }
@@ -1839,5 +1989,25 @@ describe("<Table>", () => {
 
     function delayToNextFrame(callback: () => void) {
         setTimeout(callback);
+    }
+
+    function createKeyEventConfig(component: ReactWrapper<any, any>, key: string, keyCode: number, shiftKey = false) {
+        const eventConfig = {
+            key,
+            keyCode,
+            preventDefault: () => {
+                /* Empty */
+            },
+            shiftKey,
+            stopPropagation: () => {
+                /* Empty */
+            },
+            target: (component as any).getNode(), // `getNode` is a real Enzyme method, just not in the typings?
+            which: keyCode,
+        };
+        return {
+            eventConfig,
+            nativeEvent: eventConfig,
+        };
     }
 });
