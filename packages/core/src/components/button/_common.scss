@@ -299,6 +299,13 @@ $button-intents: (
     background: none;
     cursor: not-allowed;
     color: $pt-text-color-disabled;
+
+    &:active,
+    &.pt-active {
+      box-shadow: none;
+      background: $minimal-button-background-color-active;
+      color: $pt-text-color-disabled;
+    }
   }
 
   .pt-dark & {
@@ -345,6 +352,13 @@ $button-intents: (
     background: none;
     cursor: not-allowed;
     color: $pt-dark-text-color-disabled;
+
+    &:active,
+    &.pt-active {
+      box-shadow: none;
+      background: $dark-minimal-button-background-color-active;
+      color: $pt-dark-text-color-disabled;
+    }
   }
 }
 
@@ -374,6 +388,12 @@ $button-intents: (
   &.pt-disabled {
     background: none;
     color: rgba($text-color, 0.5);
+
+    &:active,
+    &.pt-active {
+      background: rgba($intent-color, 0.3);
+      color: rgba($text-color, 0.5);
+    }
   }
 
   .pt-button-spinner .pt-spinner-head {
