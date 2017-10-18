@@ -109,6 +109,17 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     display: table-row;
   }
 
+  .DayPicker-WeekNumber {
+    display: table-cell;
+    cursor: pointer;
+    min-width: 1rem;
+    padding: 0.5rem;
+    vertical-align: middle;
+    text-align: right;
+    color: $gray3;
+    font-size: 0.75em;
+  }
+
   .DayPicker-Day {
     display: table-cell;
     border-radius: $pt-border-radius;
