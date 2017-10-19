@@ -5779,13 +5779,9 @@ plur@^2.0.0, plur@^2.1.2:
   dependencies:
     irregular-plurals "^1.0.0"
 
-popper.js@1.11.0:
+popper.js@1.11.0, popper.js@^1.10.8:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.11.0.tgz#0103f23ac0c9221d944e7f25e3aba4c2f73987de"
-
-popper.js@^1.12.5:
-  version "1.12.5"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.5.tgz#229e4dea01629e1f1a1e26991ffade5024220fa6"
 
 portfinder@0.4.x:
   version "0.4.0"
@@ -6403,11 +6399,12 @@ react-dom@^15.3.0, react-dom@^15.5.1, react-dom@^15.6.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-popper@^0.7.2:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.7.3.tgz#fa2809a80fbe7ec516e9bac01d81bc47a8b5cd3b"
+react-popper@0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.7.2.tgz#5daa821eadc6f2ca802176d7be271d0f03f25f58"
   dependencies:
-    popper.js "^1.12.5"
+    is-equal-shallow "^0.1.3"
+    popper.js "^1.10.8"
     prop-types "^15.5.10"
 
 react-test-renderer@15.5.4:

@@ -14,7 +14,7 @@
     "moment-timezone": "^0.5.13",
     "popper.js": "1.11.0",
     "pure-render-decorator": "^1.2.1",
-    "react-popper": "^0.7.2",
+    "react-popper": "0.7.2",
     "tslib": "^1.5.0"
   },
   "devDependencies": {
@@ -25,6 +25,9 @@
     "react-addons-css-transition-group": "^15.6.0",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1"
+  },
+  "resolutions": {
+    "popper.js": "1.11.0"
   },
   "repository": {
     "type": "git",
