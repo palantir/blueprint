@@ -84,6 +84,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 renderGhostCell={this.renderGhostCell}
                 renderHeaderCell={renderHeaderCell}
                 resizeOrientation={Orientation.HORIZONTAL}
+                selectedRegions={[]}
                 toRegion={this.toRegion}
                 wrapCells={this.wrapCells}
                 {...spreadableProps}

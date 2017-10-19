@@ -160,7 +160,7 @@ export class DragEvents {
                         // if this the first click of a possible double-click,
                         // we delay the firing of the click event by the
                         // timeout.
-                        this.doubleClickTimeoutToken = setTimeout(() => {
+                        this.doubleClickTimeoutToken = window.setTimeout(() => {
                             delete this.doubleClickTimeoutToken;
                             if (this.handler.onClick != null) {
                                 this.handler.onClick(event);
@@ -170,7 +170,7 @@ export class DragEvents {
                         // otherwise, this is the second click in the double-
                         // click so we cancel the single-click timeout and
                         // fire the double-click event.
-                        clearTimeout(this.doubleClickTimeoutToken);
+                        window.clearTimeout(this.doubleClickTimeoutToken);
                         delete this.doubleClickTimeoutToken;
                         this.handler.onDoubleClick(event);
                     }

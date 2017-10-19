@@ -16,6 +16,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "dist",
+    "pretty": true,
     "removeComments": false,
     "sourceMap": false,
     "stripInternal": false,

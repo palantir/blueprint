@@ -98,6 +98,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 renderHeaderCell={renderHeaderCell}
                 resizeOrientation={Orientation.VERTICAL}
                 toRegion={this.toRegion}
+                selectedRegions={[]}
                 wrapCells={this.wrapCells}
                 {...spreadableProps}
             />
