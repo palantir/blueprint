@@ -30,7 +30,7 @@ Make sure to review the [general usage docs for JS components](#blueprint.usage)
 This component is a simple wrapper around the CSS API that abstracts away the HTML complexity.
 
 ```
-<Card interactive elevation={Card.ELEVATION_TWO}>
+<Card interactive={true} elevation={Card.ELEVATION_TWO}>
     <h5><a href="#">Card heading</a></h5>
     <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis.
