@@ -1,5 +1,5 @@
 {
-    "version": "2.0.0",
+    "version": "2.4.2",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "declaration": true,
@@ -11,6 +11,7 @@
         "noImplicitAny": false,
         "noImplicitReturns": true,
         "outDir": "dist/",
+        "pretty": true,
         "removeComments": false,
         "sourceMap": false,
         "stripInternal": true,

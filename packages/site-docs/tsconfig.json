@@ -1,5 +1,5 @@
 {
-    "version": "2.0.0",
+    "version": "2.4.2",
     "compilerOptions": {
         "baseUrl": ".",
         "declaration": false,
@@ -24,6 +24,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "outDir": "dist/",
+        "pretty": true,
         "removeComments": true,
         "sourceMap": false,
         "target": "es5",

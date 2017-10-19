@@ -1,34 +1,34 @@
 {
-  "compilerOptions": {
-    "declaration": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "lib": [
-      "dom",
-      "es2015"
+    "compilerOptions": {
+        "declaration": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "outDir": "dist",
+        "pretty": true,
+        "removeComments": false,
+        "sourceMap": false,
+        "stripInternal": false,
+        "target": "es5"
+    },
+    "include": [
+        "preview/*.d.ts",
+        "src/**/*"
     ],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "outDir": "dist",
-    "pretty": true,
-    "removeComments": false,
-    "sourceMap": false,
-    "stripInternal": false,
-    "target": "es5"
-  },
-  "include": [
-    "preview/*.d.ts",
-    "src/**/*"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "test"
-  ]
+    "exclude": [
+        "dist",
+        "node_modules",
+        "test"
+    ]
 }
