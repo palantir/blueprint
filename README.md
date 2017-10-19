@@ -34,7 +34,7 @@ The other packages (`site-docs` and `site-landing`) are not published to NPM as 
 We use [Lerna](https://lernajs.io/) to manage inter-package dependencies in this monorepo.
 Builds are orchestrated via [Gulp](http://gulpjs.com/) tasks.
 
-__Prerequisites__: Node.js v6+, Yarn v0.28+
+__Prerequisites__: Node.js v8+, Yarn v1.0+
 
 1. `git clone` this repository (or fork if you lack permissions).
 1. `yarn` to install dependencies at the root of the repo.
