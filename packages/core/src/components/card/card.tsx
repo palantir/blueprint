@@ -10,9 +10,6 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
-
-export type Elevation = 0 | 1 | 2 | 3 | 4;
 
 export interface ICardProps extends IProps {
     /**
@@ -42,15 +39,13 @@ export interface ICardProps extends IProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-/* tslint:disable:object-literal-sort-keys */
-export const Elevation = {
-    ZERO: 0,
-    ONE: 1,
-    TWO: 2,
-    THREE: 3,
-    FOUR: 4,
-};
-/* tslint:enable:object-literal-sort-keys */
+export enum Elevation {
+    ZERO = 0,
+    ONE = 1,
+    TWO = 2,
+    THREE = 3,
+    FOUR = 4,
+}
 
 const ELEVATION_CLASSES = [
     Classes.ELEVATION_0,
@@ -66,23 +61,19 @@ export class Card extends React.Component<ICardProps, {}> {
 
     public render() {
         return (
-            <div className={this.getClassName()} onClick={this.handleClick}>
+            <div className={this.getClassName()} onClick={this.props.onClick}>
                 {this.props.children}
             </div>
         );
     }
 
-    private handleClick = (e: React.MouseEvent<HTMLElement>) => {
-        safeInvoke(this.props.onClick, e);
-    };
-
     private getClassName() {
-        const { elevation, interactive } = this.props;
+        const { elevation, interactive, className } = this.props;
         return classNames(
             Classes.CARD,
             { [Classes.INTERACTIVE]: interactive },
             ELEVATION_CLASSES[elevation],
-            this.props.className,
+            className,
         );
     }
 }

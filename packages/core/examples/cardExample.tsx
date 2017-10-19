@@ -7,13 +7,13 @@
 
 import * as React from "react";
 
-import { Card, Classes, ElevetaionSize, Slider, Switch } from "@blueprintjs/core";
+import { Card, Classes, Elevetaion, Slider, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
 export interface ICardExampleState {
-    elevation: ElevetaionSize;
-    interactive: boolean;
-    onClick: (e: React.MouseEvent<HTMLElement>) => void;
+    elevation?: Elevetaion;
+    interactive?: boolean;
+    onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export class CardExample extends BaseExample<ICardExampleState> {
@@ -65,11 +65,7 @@ export class CardExample extends BaseExample<ICardExampleState> {
         ];
     }
 
-    private handleElevationChange = (elevation: number) => this.updateState({ elevation });
+    private handleElevationChange = (elevation: number) => this.setState({ elevation });
 
-    private handleInteractiveChange = () => this.updateState({ interactive: !this.state.interactive });
-
-    private updateState(state: Partial<ICardExampleState>) {
-        return this.setState({ ...this.state, ...state });
-    }
+    private handleInteractiveChange = () => this.setState({ interactive: !this.state.interactive });
 }
