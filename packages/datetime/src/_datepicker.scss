@@ -112,12 +112,13 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   .DayPicker-WeekNumber {
     display: table-cell;
     cursor: pointer;
-    min-width: 1rem;
-    padding: 0.5rem;
+    width: $datepicker-day-size;
+    height: $datepicker-day-size;
+    padding-right: 10px;
     vertical-align: middle;
     text-align: right;
-    color: $gray3;
-    font-size: 0.75em;
+    color: $pt-text-color-disabled;
+    font-size: $pt-font-size;
   }
 
   .DayPicker-Day {
@@ -224,6 +225,10 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
 .pt-dark .pt-datepicker {
   background: $dark-datepicker-background-color;
+
+  .DayPicker-WeekNumber {
+    color: $pt-dark-text-color-disabled;
+  }
 
   .DayPicker-Day {
     &.DayPicker-Day--outside {
