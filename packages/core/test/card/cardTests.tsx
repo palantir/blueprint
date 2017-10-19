@@ -15,10 +15,10 @@ describe("<Card>", () => {
     it("supports elevation, interactive, and className props", () => {
         const wrapper = shallow(<Card elevation={3} interactive={true} className={Classes.TEXT_MUTED} />);
 
-        assert.isTrue(wrapper.hasClass(Classes.CARD));
-        assert.isTrue(wrapper.hasClass(Classes.ELEVATION_3));
-        assert.isTrue(wrapper.hasClass(Classes.INTERACTIVE));
-        assert.isTrue(wrapper.hasClass(Classes.TEXT_MUTED));
+        assert.isTrue(wrapper.hasClass(Classes.CARD), Classes.CARD);
+        assert.isTrue(wrapper.hasClass(Classes.ELEVATION_3), Classes.ELEVATION_3);
+        assert.isTrue(wrapper.hasClass(Classes.INTERACTIVE), Classes.INTERACTIVE);
+        assert.isTrue(wrapper.hasClass(Classes.TEXT_MUTED), Classes.TEXT_MUTED);
     });
 
     it("renders children", () => {
@@ -34,10 +34,7 @@ describe("<Card>", () => {
 
     it("call onClick when card is clicked", () => {
         const onClick = sinon.spy();
-        const wrapper = shallow(<Card onClick={onClick} />);
-
-        wrapper.simulate("click");
-
+        shallow(<Card onClick={onClick} />).simulate("click");
         assert.isTrue(onClick.calledOnce);
     });
 });

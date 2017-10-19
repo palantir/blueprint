@@ -65,13 +65,9 @@ export class CardExample extends BaseExample<ICardExampleState> {
         ];
     }
 
-    private handleElevationChange = (elevation: number) => {
-        this.updateState({ elevation });
-    };
+    private handleElevationChange = (elevation: number) => this.updateState({ elevation });
 
-    private handleInteractiveChange = () => {
-        this.updateState({ interactive: !this.state.interactive });
-    };
+    private handleInteractiveChange = () => this.updateState({ interactive: !this.state.interactive });
 
     private updateState(state: Partial<ICardExampleState>) {
         return this.setState({ ...this.state, ...state });

@@ -33,8 +33,8 @@ This component is a simple wrapper around the CSS API that abstracts away the HT
 <Card interactive={true} elevation={Card.ELEVATION_TWO}>
     <h5><a href="#">Card heading</a></h5>
     <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis.
-    Fusce dapibus metus in dapibus mollis. Quisque eget ex diam.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis.
+        Fusce dapibus metus in dapibus mollis. Quisque eget ex diam.
     </p>
     <button type="button" className={Classes.BUTTON}>Submit</button>
 </Card>

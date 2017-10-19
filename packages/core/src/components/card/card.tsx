@@ -42,15 +42,27 @@ export interface ICardProps extends IProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
+/* tslint:disable:object-literal-sort-keys */
+export const Elevation = {
+    ZERO: 0,
+    ONE: 1,
+    TWO: 2,
+    THREE: 3,
+    FOUR: 4,
+};
+/* tslint:enable:object-literal-sort-keys */
+
+const ELEVATION_CLASSES = [
+    Classes.ELEVATION_0,
+    Classes.ELEVATION_1,
+    Classes.ELEVATION_2,
+    Classes.ELEVATION_3,
+    Classes.ELEVATION_4,
+];
+
 @PureRender
 export class Card extends React.Component<ICardProps, {}> {
     public static displayName = "Blueprint.Card";
-
-    public static readonly ELEVATION_ZERO = 0 as 0;
-    public static readonly ELEVATION_ONE = 1 as 1;
-    public static readonly ELEVATION_TWO = 2 as 2;
-    public static readonly ELEVATION_THREE = 3 as 3;
-    public static readonly ELEVATION_FOUR = 4 as 4;
 
     public render() {
         return (
@@ -64,19 +76,13 @@ export class Card extends React.Component<ICardProps, {}> {
         safeInvoke(this.props.onClick, e);
     };
 
-    private getClassName = () => {
+    private getClassName() {
         const { elevation, interactive } = this.props;
         return classNames(
             Classes.CARD,
-            {
-                [Classes.INTERACTIVE]: interactive,
-                [Classes.ELEVATION_0]: elevation === Card.ELEVATION_ZERO,
-                [Classes.ELEVATION_1]: elevation === Card.ELEVATION_ONE,
-                [Classes.ELEVATION_2]: elevation === Card.ELEVATION_TWO,
-                [Classes.ELEVATION_3]: elevation === Card.ELEVATION_THREE,
-                [Classes.ELEVATION_4]: elevation === Card.ELEVATION_FOUR,
-            },
+            { [Classes.INTERACTIVE]: interactive },
+            ELEVATION_CLASSES[elevation],
             this.props.className,
         );
-    };
+    }
 }
