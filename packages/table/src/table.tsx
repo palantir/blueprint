@@ -2004,9 +2004,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                         ? 0
                         : this.rowHeaderElement.clientWidth;
 
-                if (this.scrollContainerElement != null) {
-                    this.scrollContainerElement.scrollLeft = nextScrollLeft + leftCorrection;
-                }
+                this.scrollContainerElement.scrollLeft = nextScrollLeft + leftCorrection;
             }
 
             const nextViewportRect = new Rect(nextScrollLeft, nextScrollTop, viewportRect.width, viewportRect.height);
