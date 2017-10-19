@@ -16,7 +16,7 @@ import { Cell, ICellProps } from "./cell";
 
 export interface IEditableCellProps extends ICellProps {
     /**
-     * Whether or not the given cell is the current active/focused cell.
+     * Whether the given cell is the current active/focused cell.
      */
     isFocused?: boolean;
 
@@ -66,6 +66,11 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     };
 
     private cellRef: HTMLElement;
+    private refHandlers = {
+        cell: (ref: HTMLElement) => {
+            this.cellRef = ref;
+        },
+    };
 
     public constructor(props: IEditableCellProps, context?: any) {
         super(props, context);
@@ -131,7 +136,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         }
 
         return (
-            <Cell {...spreadableProps} truncated={false} interactive={interactive} cellRef={this.handleCellRef}>
+            <Cell {...spreadableProps} truncated={false} interactive={interactive} cellRef={this.refHandlers.cell}>
                 <Draggable
                     onActivate={this.handleCellActivate}
                     onDoubleClick={this.handleCellDoubleClick}
@@ -149,7 +154,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             <Hotkeys>
                 <Hotkey
                     key="edit-cell"
-                    label="Edit the currely focused cell"
+                    label="Edit the currently focused cell"
                     group="Table"
                     combo="f2"
                     onKeyDown={this.handleEdit}
@@ -164,10 +169,6 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             this.cellRef.focus();
         }
     }
-
-    private handleCellRef = (cellRef: HTMLElement) => {
-        this.cellRef = cellRef;
-    };
 
     private handleEdit = () => {
         this.setState({ isEditing: true, dirtyValue: this.state.savedValue });

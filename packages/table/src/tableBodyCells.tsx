@@ -25,7 +25,7 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
     cellRenderer: ICellRenderer;
 
     /**
-     * The location of the focused cell, for setting the "focused" property on cells
+     * The coordinates of the currently focused cell, for setting the "isFocused" prop on cells.
      */
     focusedCell?: IFocusedCellCoordinates;
 

@@ -71,12 +71,12 @@ export interface ICellProps extends IIntentProps, IProps {
     tabIndex?: number;
 
     /**
-     * Callback to be called when cell is focused and key is pressed down.
+     * Callback to be called when the cell is focused and a key is pressed down.
      */
     onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
 
     /**
-     * Callback to be called when cell is focused and key is released.
+     * Callback to be called when the cell is focused and a key is released.
      */
     onKeyUp?: React.KeyboardEventHandler<HTMLElement>;
 
@@ -165,15 +165,7 @@ export class Cell extends React.Component<ICellProps, {}> {
         const content = <div className={textClasses}>{modifiedChildren}</div>;
 
         return (
-            <div
-                className={classes}
-                style={style}
-                title={tooltip}
-                tabIndex={tabIndex}
-                onKeyDown={onKeyDown}
-                onKeyUp={onKeyUp}
-                ref={cellRef}
-            >
+            <div className={classes} title={tooltip} ref={cellRef} {...{ style, tabIndex, onKeyDown, onKeyUp }}>
                 <LoadableContent loading={loading} variableLength={true}>
                     {content}
                 </LoadableContent>
