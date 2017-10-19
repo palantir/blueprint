@@ -30,12 +30,7 @@ describe("<Tag>", () => {
     });
 
     it("passes other props onto .pt-tag element", () => {
-        const element = shallow(
-            <Tag alt="foo bar" title="baz qux">
-                Hello
-            </Tag>,
-        ).find(".pt-tag");
-        assert.deepEqual(element.prop("alt"), "foo bar");
+        const element = shallow(<Tag title="baz qux">Hello</Tag>).find(".pt-tag");
         assert.deepEqual(element.prop("title"), "baz qux");
     });
 
