@@ -50,27 +50,4 @@ describe("<Card>", () => {
         const errorMessage = "Exected onClick to be called, but it doesn't happend";
         expect(onClick.calledOnce, errorMessage).to.be.true;
     });
-
-    it("when loading, all childer becomes skeletons", () => {
-        const wrapper = shallow(
-            <Card loading={true}>
-                <h4>Sekelteon 1</h4>
-                <p>Sekelteon 2</p>
-                <span />
-            </Card>,
-        );
-
-        assert.equal(wrapper.children().length, 3);
-        assert.isTrue(wrapper.find("h4").hasClass(Classes.SKELETON), noClass(Classes.SKELETON));
-        assert.isTrue(wrapper.find("p").hasClass(Classes.SKELETON), noClass(Classes.SKELETON));
-        assert.isTrue(wrapper.find("p").hasClass(Classes.SKELETON), noClass(Classes.SKELETON));
-    });
-
-    it("when loading, children of type string or number are inserted into <p> elements", () => {
-        const cardWithString = shallow(<Card loading={true}>Sekelteon 1</Card>);
-        const cardWithNumber = shallow(<Card loading={true}>1234</Card>);
-
-        assert.isTrue(cardWithString.find("p").hasClass(Classes.SKELETON), noClass(Classes.SKELETON));
-        assert.isTrue(cardWithNumber.find("p").hasClass(Classes.SKELETON), noClass(Classes.SKELETON));
-    });
 });
