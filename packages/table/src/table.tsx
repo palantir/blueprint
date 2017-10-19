@@ -8,6 +8,7 @@
 import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
+
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
@@ -466,22 +467,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private resizeSensorDetach: () => void;
 
     private refHandlers = {
-        cellContainer: (ref: HTMLElement | null) => (this.cellContainerElement = ref),
-        columnHeader: (ref: HTMLElement | null) => (this.columnHeaderElement = ref),
-        mainQuadrant: (ref: HTMLElement | null) => (this.mainQuadrantElement = ref),
-        quadrantStack: (ref: TableQuadrantStack | null) => (this.quadrantStackInstance = ref),
-        rootTable: (ref: HTMLElement | null) => (this.rootTableElement = ref),
-        rowHeader: (ref: HTMLElement | null) => (this.rowHeaderElement = ref),
-        scrollContainer: (ref: HTMLElement | null) => (this.scrollContainerElement = ref),
+        cellContainer: (ref: HTMLElement) => (this.cellContainerElement = ref),
+        columnHeader: (ref: HTMLElement) => (this.columnHeaderElement = ref),
+        mainQuadrant: (ref: HTMLElement) => (this.mainQuadrantElement = ref),
+        quadrantStack: (ref: TableQuadrantStack) => (this.quadrantStackInstance = ref),
+        rootTable: (ref: HTMLElement) => (this.rootTableElement = ref),
+        rowHeader: (ref: HTMLElement) => (this.rowHeaderElement = ref),
+        scrollContainer: (ref: HTMLElement) => (this.scrollContainerElement = ref),
     };
 
-    private cellContainerElement: HTMLElement | null;
-    private columnHeaderElement: HTMLElement | null;
-    private mainQuadrantElement: HTMLElement | null;
-    private quadrantStackInstance: TableQuadrantStack | null;
-    private rootTableElement: HTMLElement | null;
-    private rowHeaderElement: HTMLElement | null;
-    private scrollContainerElement: HTMLElement | null;
+    private cellContainerElement: HTMLElement;
+    private columnHeaderElement: HTMLElement;
+    private mainQuadrantElement: HTMLElement;
+    private quadrantStackInstance: TableQuadrantStack;
+    private rootTableElement: HTMLElement;
+    private rowHeaderElement: HTMLElement;
+    private scrollContainerElement: HTMLElement;
 
     // when true, we'll need to imperatively synchronize quadrant views after
     // the update. this variable lets us avoid expensively diff'ing columnWidths
@@ -646,9 +647,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const correctedScrollTop = this.shouldDisableVerticalScroll() ? 0 : scrollTop;
 
         // defer to the quadrant stack to keep all quadrant positions in sync
-        if (this.quadrantStackInstance != null) {
-            this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
-        }
+        this.quadrantStackInstance.scrollToPosition(correctedScrollLeft, correctedScrollTop);
     }
 
     // React lifecycle
@@ -838,9 +837,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         if (this.didUpdateColumnOrRowSizes) {
-            if (this.quadrantStackInstance != null) {
-                this.quadrantStackInstance.synchronizeQuadrantViews();
-            }
+            this.quadrantStackInstance.synchronizeQuadrantViews();
             this.didUpdateColumnOrRowSizes = false;
         }
 
@@ -1998,14 +1995,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             // doing, we add the size of the header elements, which are not technically part of the
             // "grid" concept (the grid only consists of body cells at present).
             if (didScrollTopChange) {
-                const topCorrection =
-                    this.shouldDisableVerticalScroll() || this.columnHeaderElement == null
-                        ? 0
-                        : this.columnHeaderElement.clientHeight;
-
-                if (this.scrollContainerElement != null) {
-                    this.scrollContainerElement.scrollTop = nextScrollTop + topCorrection;
-                }
+                const topCorrection = this.shouldDisableVerticalScroll() ? 0 : this.columnHeaderElement.clientHeight;
+                this.scrollContainerElement.scrollTop = nextScrollTop + topCorrection;
             }
             if (didScrollLeftChange) {
                 const leftCorrection =
