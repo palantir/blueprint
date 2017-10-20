@@ -7,8 +7,8 @@
 
 import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
+import * as Classes from "../../src/common/classes";
 import { padWithZeroes } from "../../src/common/utils";
-import { Classes } from "../../src/index";
 
 /**
  * Converts a date to a "YYYY-MM-DD" string without relying on moment.js.
