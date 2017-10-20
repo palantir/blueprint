@@ -113,9 +113,9 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     display: table-cell;
     vertical-align: middle;
     text-align: center;
-    pointer-events: none;
     color: $pt-text-color-disabled;
     font-size: $pt-font-size;
+    pointer-events: none;
   }
 
   .DayPicker-Day {
