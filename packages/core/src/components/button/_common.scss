@@ -348,12 +348,12 @@ $button-intents: (
   &:disabled:hover,
   &.pt-disabled,
   &.pt-disabled:hover {
+    background: none;
     cursor: not-allowed;
     color: $pt-dark-text-color-disabled;
 
     &:active,
     &.pt-active {
-      box-shadow: none;
       background: $dark-minimal-button-background-color-active;
       color: $pt-dark-text-color-disabled;
     }
