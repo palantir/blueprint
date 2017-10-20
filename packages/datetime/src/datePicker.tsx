@@ -195,7 +195,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
     private getDisabledDaysModifier = () => {
         const { dayPickerProps: { disabledDays } } = this.props;
 
-        return disabledDays instanceof Array ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
+        return Array.isArray(disabledDays) ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
 
     private renderCaption = (props: ReactDayPicker.CaptionElementProps) => (
