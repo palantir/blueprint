@@ -1999,11 +1999,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 this.scrollContainerElement.scrollTop = nextScrollTop + topCorrection;
             }
             if (didScrollLeftChange) {
-                const leftCorrection =
-                    this.shouldDisableHorizontalScroll() || this.rowHeaderElement == null
-                        ? 0
-                        : this.rowHeaderElement.clientWidth;
-
+                const leftCorrection = this.shouldDisableHorizontalScroll() ? 0 : this.rowHeaderElement.clientWidth;
                 this.scrollContainerElement.scrollLeft = nextScrollLeft + leftCorrection;
             }
 

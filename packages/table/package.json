@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/table",
-  "version": "1.29.1",
+  "version": "1.29.0",
   "description": "Scalable interactive table component",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
