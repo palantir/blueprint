@@ -32,9 +32,7 @@ This component is a simple wrapper around the CSS API.
 ```
 <Card interactive={true} elevation={Card.ELEVATION_TWO}>
     <h5><a href="#">Card heading</a></h5>
-    <p>
-        Card content
-    </p>
+    <p>Card content</p>
     <Button>Submit</Button>
 </Card>
 ```

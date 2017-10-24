@@ -7,11 +7,11 @@
 
 import * as React from "react";
 
-import { Card, Classes, Elevetaion, Slider, Switch } from "@blueprintjs/core";
+import { Card, Classes, Elevation, Slider, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
 export interface ICardExampleState {
-    elevation?: Elevetaion;
+    elevation?: Elevation;
     interactive?: boolean;
     onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
