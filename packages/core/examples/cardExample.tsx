@@ -29,10 +29,7 @@ export class CardExample extends BaseExample<ICardExampleState> {
                 <h5>
                     <a href="#">Card heading</a>
                 </h5>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis Fusce dapibus
-                    mollis. Quisque eget ex diam.
-                </p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 <button type="button" className={Classes.BUTTON}>
                     Submit
                 </button>
