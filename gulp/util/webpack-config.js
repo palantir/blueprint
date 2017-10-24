@@ -34,12 +34,8 @@ const TYPESCRIPT_CONFIG = {
                 use: [{
                     loader: "ts-loader",
                     options: {
-                        compilerOptions: {
-                            // do not emit declarations since we are bundling
-                            declaration: false,
-                            // ensure that only @types from this project are used (instead of from local symlinked blueprint)
-                            // typeRoots: ["node_modules/@types"],
-                        },
+                        // do not emit declarations since we are bundling
+                        compilerOptions: { declaration: false },
                     },
                 }],
             },
@@ -127,16 +123,9 @@ module.exports = {
                 rules: TYPESCRIPT_CONFIG.module.rules.concat({
                     enforce: "post",
                     test: /src\/.*\.tsx?$/,
-                    use: "istanbul-instrumenter",
+                    use: "istanbul-instrumenter-loader",
                 }),
             },
-            resolve: Object.assign({}, TYPESCRIPT_CONFIG.resolve, {
-                alias: {
-                    // webpack will load react twice because of symlinked node modules
-                    // this makes it only use one copy of React
-                    react: path.resolve(`./${project.cwd}/node_modules/react`),
-                },
-            }),
         });
     },
 

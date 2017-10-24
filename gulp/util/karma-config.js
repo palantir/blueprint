@@ -9,8 +9,6 @@ const COVERAGE_PERCENT_HIGH = 90;
 module.exports = function createConfig(project) {
     const webpackConfigGenerator = require("./webpack-config");
     const webpackConfig = webpackConfigGenerator.generateWebpackKarmaConfig(project);
-    // must delete this key in order to resolve root @types packages correctly.
-    delete webpackConfig.ts.compilerOptions.typeRoots;
 
     const resourcesGlob = (project.id === "core" ? "." : "node_modules/@blueprintjs/*");
     const filesToInclude = [
@@ -30,7 +28,7 @@ module.exports = function createConfig(project) {
 
     // include core's CSS in all projects
     if (project.id !== "core") {
-        filesToInclude.push("node_modules/@blueprintjs/core/**/*.css");
+        filesToInclude.push(path.resolve(__dirname, "../../packages/core/dist/*.css"));
     }
 
     // disable code coverage for labs package (but still run tests)
