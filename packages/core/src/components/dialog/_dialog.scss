@@ -79,7 +79,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
   background: $light-gray4;
   width: $pt-grid-size * 50;
   padding-bottom: $pt-grid-size * 2;
-  user-select: initial;
+  user-select: text;
 
   &:focus {
     outline: 0;
