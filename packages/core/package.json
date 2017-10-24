@@ -22,11 +22,11 @@
     "react-dom": "^16.0.0 || ^15.0.1 || ^0.14"
   },
   "devDependencies": {
-    "bourbon": "4.3.2",
-    "react": "15.5.1",
-    "react-addons-css-transition-group": "15.5.1",
-    "react-dom": "15.5.1",
-    "react-test-renderer": "15.5.4"
+    "bourbon": "^4.3.4",
+    "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-test-renderer": "^15.6.1"
   },
   "repository": {
     "type": "git",
