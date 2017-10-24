@@ -7,20 +7,20 @@
 
 // tslint:disable no-var-requires no-submodule-imports
 const HERO_SVGS = {
-    alert: require("raw!../resources/inline/alert.svg"),
-    buttons: require("raw!../resources/inline/buttons.svg"),
-    calendar: require("raw!../resources/inline/calendar.svg"),
-    checkboxes: require("raw!../resources/inline/checkboxes.svg"),
-    "file-upload": require("raw!../resources/inline/file-upload.svg"),
-    "input-groups": require("raw!../resources/inline/input-groups.svg"),
-    inputs: require("raw!../resources/inline/inputs.svg"),
-    labels: require("raw!../resources/inline/labels.svg"),
-    radios: require("raw!../resources/inline/radios.svg"),
-    "select-menus": require("raw!../resources/inline/select-menus.svg"),
-    sliders: require("raw!../resources/inline/sliders.svg"),
-    switches: require("raw!../resources/inline/switches.svg"),
-    "time-selections": require("raw!../resources/inline/time-selections.svg"),
-    toggles: require("raw!../resources/inline/toggles.svg"),
+    alert: require("raw-loader!../resources/inline/alert.svg"),
+    buttons: require("raw-loader!../resources/inline/buttons.svg"),
+    calendar: require("raw-loader!../resources/inline/calendar.svg"),
+    checkboxes: require("raw-loader!../resources/inline/checkboxes.svg"),
+    "file-upload": require("raw-loader!../resources/inline/file-upload.svg"),
+    "input-groups": require("raw-loader!../resources/inline/input-groups.svg"),
+    inputs: require("raw-loader!../resources/inline/inputs.svg"),
+    labels: require("raw-loader!../resources/inline/labels.svg"),
+    radios: require("raw-loader!../resources/inline/radios.svg"),
+    "select-menus": require("raw-loader!../resources/inline/select-menus.svg"),
+    sliders: require("raw-loader!../resources/inline/sliders.svg"),
+    switches: require("raw-loader!../resources/inline/switches.svg"),
+    "time-selections": require("raw-loader!../resources/inline/time-selections.svg"),
+    toggles: require("raw-loader!../resources/inline/toggles.svg"),
 };
 
 const injectSVG = (elem: HTMLElement, id: string) => {

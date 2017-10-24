@@ -19,18 +19,32 @@ module.exports = {
     },
 
     module: {
-        loaders: [
+        rules: [
             {
-                loader: "ts-loader",
                 test: /\.tsx?$/,
+                use: "ts-loader",
+                use: [{
+                    loader: "ts-loader",
+                    options: {
+                        compilerOptions: { declaration: false },
+                    },
+                }],
             }, {
-                loader: ExtractTextPlugin.extract("style", "css"),
                 test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader",
+                }),
             }, {
+                test: /\.(eot|ttf|woff|woff2)$/,
                 // We need to resolve to an absolute path so that this loader
                 // can be applied to CSS in other projects (i.e. packages/core)
-                loader: require.resolve("file-loader") + "?name=fonts/[name].[ext]",
-                test: /\.(eot|ttf|woff|woff2)$/,
+                use: [{
+                    loader: "file-loader",
+                    options: {
+                        name: "fonts/[name].[ext]",
+                    },
+                }],
             },
         ],
     },
@@ -48,13 +62,6 @@ module.exports = {
     ],
 
     resolve: {
-        alias: {
-            react: resolve("/node_modules/react"),
-        },
-        extensions: ["", ".js", ".ts", ".tsx"],
-    },
-
-    ts: {
-        compilerOptions: { declaration: false },
+        extensions: [".js", ".ts", ".tsx"],
     },
 };

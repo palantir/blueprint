@@ -13,21 +13,39 @@ module.exports = {
     ],
 
     module: {
-        loaders: [
+        rules: [
             {
                 include: SRC,
-                loader: "ts-loader",
                 test: /\.tsx?$/,
+                use: [{
+                    loader: "ts-loader",
+                    options: {
+                        compilerOptions: { declaration: false },
+                    },
+                }],
             }, {
                 include: SRC,
-                loader: ExtractTextPlugin.extract("style", "css!postcss!sass"),
+                loader: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: ["css-loader", "postcss-loader", "sass-loader"],
+                }),
                 test: /\.s[ac]ss$/,
             }, {
-                loader: require.resolve("file-loader") + "?name=assets/fonts/[name].[ext]",
                 test: /\.(eot|ttf|woff|woff2)$/,
+                use: [{
+                    loader: "file-loader",
+                    options: {
+                        name: "assets/fonts/[name].[ext]"
+                    }
+                }],
             }, {
-                loader: require.resolve("file-loader") + "?name=assets/img/[name].[ext]",
                 test: /resources\/img\/.*\.(svg|png)$/,
+                use: [{
+                    loader: "file-loader",
+                    options: {
+                        name: "assets/img/[name].[ext]"
+                    }
+                }],
             },
         ],
     },
@@ -42,10 +60,6 @@ module.exports = {
     ],
 
     resolve: {
-        extensions: ["", ".js", ".ts", ".tsx"],
-    },
-
-    ts: {
-        compilerOptions: { declaration: false },
+        extensions: [".js", ".ts", ".tsx"],
     },
 };
