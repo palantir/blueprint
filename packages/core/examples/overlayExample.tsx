@@ -8,13 +8,19 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, IBackdropProps, Intent, IOverlayableProps, Overlay, Switch } from "@blueprintjs/core";
+import { Button, Classes, Intent, Overlay, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
 
-export interface IOverlayExampleState extends IOverlayableProps, IBackdropProps {
-    isOpen?: boolean;
+export interface IOverlayExampleState {
+    autoFocus: boolean;
+    canEscapeKeyClose: boolean;
+    canOutsideClickClose: boolean;
+    enforceFocus: boolean;
+    hasBackdrop: boolean;
+    inline: boolean;
+    isOpen: boolean;
 }
 
 export class OverlayExample extends BaseExample<IOverlayExampleState> {

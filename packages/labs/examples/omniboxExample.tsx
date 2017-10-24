@@ -19,15 +19,15 @@ import {
     Switch,
     Toaster,
 } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 import { ISelectItemRendererProps, Omnibox } from "../src";
 import { Film, TOP_100_FILMS } from "./data";
 
 const FilmOmnibox = Omnibox.ofType<Film>();
 
 export interface IOmniboxExampleState {
-    isOpen?: boolean;
-    resetOnSelect?: boolean;
+    isOpen: boolean;
+    resetOnSelect: boolean;
 }
 
 @HotkeysTarget
@@ -37,7 +37,7 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
         resetOnSelect: true,
     };
 
-    private handleResetChange = this.handleSwitchChange("resetOnSelect");
+    private handleResetChange = handleBooleanChange(resetOnSelect => this.setState({ resetOnSelect }));
 
     private toaster: Toaster;
     private refHandlers = {
@@ -135,12 +135,6 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
             ),
         });
     };
-
-    private handleSwitchChange(prop: keyof IOmniboxExampleState) {
-        return (event: React.FormEvent<HTMLInputElement>) => {
-            this.setState({ [prop]: event.currentTarget.checked });
-        };
-    }
 
     private handleClose = () => this.setState({ isOpen: false });
 

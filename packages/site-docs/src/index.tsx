@@ -18,14 +18,14 @@ import * as ReactDocs from "./tags/reactDocs";
 import { reactExamples } from "./tags/reactExamples";
 
 /* tslint:disable:no-var-requires */
-const docs = require<IDocsData>("./generated/docs.json");
+const docs: IDocsData = require("./generated/docs.json");
 
-const releases = require<IPackageInfo[]>("./generated/releases.json").map(pkg => {
+const releases = (require("./generated/releases.json") as IPackageInfo[]).map(pkg => {
     pkg.url = `https://www.npmjs.com/package/${pkg.name}`;
     return pkg;
 });
 
-const versions = require<string[]>("./generated/versions.json").map(version => ({
+const versions = (require("./generated/versions.json") as string[]).map(version => ({
     url: `https://palantir.github.io/blueprint/docs/${version}`,
     version,
 }));
