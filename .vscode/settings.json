@@ -2,7 +2,6 @@
     "typescript.tsdk": "./node_modules/typescript/lib",
     "files.exclude": {
         "**/build": true,
-        "**/dist": true,
         "**/coverage": true,
         "docs": true
     },

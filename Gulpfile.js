@@ -97,21 +97,6 @@ const projects = [
         webpack: {
             entry: "src/index.tsx",
             dest: "dist",
-            localResolve: [
-                // locally resolve @blueprintjs packages so example components will compile
-                // (they all import @blueprint/* but don't actually have themselves in their node_modules)
-                "@blueprintjs/core",
-                "@blueprintjs/datetime",
-                "@blueprintjs/docs",
-                "@blueprintjs/labs",
-                "@blueprintjs/table",
-                "dom4",
-                "moment",
-                "normalize.css",
-                "react",
-                "react-addons-css-transition-group",
-                "react-dom",
-            ],
         },
         copy: {
             "resources/favicon.png": { to: ["resources/"], base: "resources/" },
