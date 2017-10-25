@@ -11,7 +11,7 @@ import * as React from "react";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
-import { RangeSlider } from "../../src/index";
+import { Classes, RangeSlider } from "../../src/index";
 import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
 describe("<RangeSlider>", () => {
@@ -24,6 +24,11 @@ describe("<RangeSlider>", () => {
     });
 
     afterEach(() => testsContainerElement.remove());
+
+    it("does not render progress bar if handles are equal", () => {
+        const slider = renderSlider(<RangeSlider value={[4, 4]} />);
+        assert.isFalse(slider.find(`.${Classes.SLIDER}-progress`).exists());
+    });
 
     it("throws error if range value contains null", () => {
         assert.throws(() => renderSlider(<RangeSlider value={[null, 5]} />));
