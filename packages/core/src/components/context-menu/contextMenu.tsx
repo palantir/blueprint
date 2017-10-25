@@ -31,6 +31,7 @@ const TETHER_OPTIONS = {
 };
 const TRANSITION_DURATION = 100;
 
+/* istanbul ignore next */
 class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
     public state: IContextMenuState = {
         isOpen: false,
