@@ -71,12 +71,12 @@ export interface ICellProps extends IIntentProps, IProps {
     tabIndex?: number;
 
     /**
-     * Callback to be called when the cell is focused and a key is pressed down.
+     * Callback invoked when the cell is focused and a key is pressed down.
      */
     onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
 
     /**
-     * Callback to be called when the cell is focused and a key is released.
+     * Callback invoked when the cell is focused and a key is released.
      */
     onKeyUp?: React.KeyboardEventHandler<HTMLElement>;
 
