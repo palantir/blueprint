@@ -110,7 +110,7 @@ module.exports = {
         return Object.assign({}, TYPESCRIPT_CONFIG, {
             devtool: "inline-source-map",
             entry: {
-                [project.id]: `./${project.cwd}/test/index`,
+                [project.id]: `./${project.cwd}/test/index.ts`,
             },
             // these externals necessary for Enzyme harness
             externals: {
@@ -118,6 +118,7 @@ module.exports = {
                 "react/addons": true,
                 "react/lib/ExecutionEnvironment": true,
                 "react/lib/ReactContext": true,
+                "react-addons-test-utils": true,
             },
             module: {
                 rules: TYPESCRIPT_CONFIG.module.rules.concat({
@@ -126,6 +127,25 @@ module.exports = {
                     use: "istanbul-instrumenter-loader",
                 }),
             },
+            plugins: [
+                function() {
+                    this.plugin("done", function(stats) {
+                        if (stats.compilation.errors.length > 0) {
+                            // tslint:disable-next-line:no-console
+                            console.error("ERRORS in compilation. See above.");
+
+                            // Pretend no assets were generated. This prevents the tests
+                            // from running making it clear that there were errors.
+                            stats.stats = [{
+                                assets: [],
+                                toJson: function () { return this; }
+                            }];
+                        }
+                        return stats;
+                    });
+                }
+            ],
+            bail: true,
         });
     },
 
