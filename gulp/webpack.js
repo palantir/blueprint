@@ -16,7 +16,7 @@ module.exports = (blueprint, gulp) => {
 
     gulp.task("webpack-docs-watch", (callback) => {
         // rely on editor for compiler errors during development--this results in _massive_ speed increase
-        configuration.ts.transpileOnly = true;
+        configuration.module.rules[1].use[0].options.transpileOnly = true;
         // never invoke callback so it runs forever!
         webpack(configuration).watch({}, webpackConfig.webpackDone());
     });
