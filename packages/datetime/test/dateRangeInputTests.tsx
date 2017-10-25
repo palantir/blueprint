@@ -15,8 +15,8 @@ import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, D
 import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any, {}>;
-type WrappedComponentInput = ReactWrapper<React.HTMLAttributes<{}>, any>;
-type WrappedComponentDayElement = ReactWrapper<React.HTMLAttributes<{}>, any>;
+type WrappedComponentInput = ReactWrapper<React.InputHTMLAttributes<HTMLInputElement>, any>;
+type WrappedComponentDayElement = ReactWrapper<React.HTMLAttributes<HTMLDivElement>, any>;
 
 type OutOfRangeTestFunction = (input: WrappedComponentInput, inputString: string, boundary?: DateRangeBoundary) => void;
 

@@ -233,7 +233,7 @@ describe("<Tabs2>", () => {
                     {getTabsContents()}
                 </Tabs2>,
             );
-            assert.isTrue(findTabById(wrapper, TAB_ID_TO_SELECT).prop("selected"));
+            assert.isTrue(findTabById(wrapper, TAB_ID_TO_SELECT).prop("aria-selected"));
         });
 
         it("unknown tab ID hides moving indicator element", () => {
@@ -254,7 +254,7 @@ describe("<Tabs2>", () => {
             );
             findTabById(wrapper, TAB_ID_TO_SELECT).simulate("click");
             wrapper.update();
-            assert.isTrue(findTabById(wrapper, TAB_ID_TO_SELECT).prop("selected"));
+            assert.isTrue(findTabById(wrapper, TAB_ID_TO_SELECT).prop("aria-selected"));
         });
 
         it("invokes onChange() callback", () => {
