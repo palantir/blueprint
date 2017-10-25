@@ -988,6 +988,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     group="Table"
                     combo="tab"
                     onKeyDown={this.handleFocusMoveRightInternal}
+                    allowInInput={true}
                 />,
                 <Hotkey
                     key="move shift-tab"
@@ -995,6 +996,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     group="Table"
                     combo="shift+tab"
                     onKeyDown={this.handleFocusMoveLeftInternal}
+                    allowInInput={true}
                 />,
                 <Hotkey
                     key="move enter"
@@ -1002,6 +1004,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     group="Table"
                     combo="enter"
                     onKeyDown={this.handleFocusMoveDownInternal}
+                    allowInInput={true}
                 />,
                 <Hotkey
                     key="move shift-enter"
@@ -1009,6 +1012,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     group="Table"
                     combo="shift+enter"
                     onKeyDown={this.handleFocusMoveUpInternal}
+                    allowInInput={true}
                 />,
             ];
         } else {
