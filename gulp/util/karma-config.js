@@ -3,6 +3,8 @@
  */
 "use strict";
 
+const path = require("path");
+
 const COVERAGE_PERCENT = 80;
 const COVERAGE_PERCENT_HIGH = 90;
 
@@ -10,25 +12,33 @@ module.exports = function createConfig(project) {
     const webpackConfigGenerator = require("./webpack-config");
     const webpackConfig = webpackConfigGenerator.generateWebpackKarmaConfig(project);
 
-    const resourcesGlob = (project.id === "core" ? "." : "node_modules/@blueprintjs/*");
     const filesToInclude = [
         {
-            included: false,
-            pattern: "node_modules/**/*.css",
-            served: true,
+            included: true,
+            pattern: path.resolve("node_modules/normalize.css/normalize.css"),
+            watched: false,
         },
+        // (core files are inserted here below)
         {
             included: false,
-            pattern: resourcesGlob + "/resources/**/*",
-            served: true,
+            pattern: "resources/**/*",
+            watched: false,
         },
         "dist/**/*.css",
         "test/index.ts",
     ];
 
-    // include core's CSS in all projects
+    // in all other projects, include core CSS and expose resources
     if (project.id !== "core") {
-        filesToInclude.push(path.resolve(__dirname, "../../packages/core/dist/*.css"));
+        filesToInclude.splice(1, 0, {
+            included: true,
+            pattern: path.resolve("packages/core/dist/*.css"),
+            watched: false,
+        }, {
+            included: false,
+            pattern: path.resolve("packages/core/resources/**/*"),
+            watched: false,
+        });
     }
 
     // disable code coverage for labs package (but still run tests)
