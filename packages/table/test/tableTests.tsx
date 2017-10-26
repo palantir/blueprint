@@ -1526,7 +1526,11 @@ describe("<Table>", () => {
                     // eventually throw an error from deep inside, so might as
                     // well just throw a clear error at the outset.
                     const renderErroneousTable = () => {
-                        shallow(<Table>I'm a string, not a column</Table>);
+                        shallow(
+                            <Table>
+                                <span>I'm a span, not a column</span>
+                            </Table>,
+                        );
                     };
                     expect(renderErroneousTable).to.throw(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
                 });
