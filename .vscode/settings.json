@@ -4,12 +4,10 @@
         "**/build": true,
         "**/dist": true,
         "**/coverage": true,
-        "**/dist": true,
         "docs": true
     },
     "search.exclude": {
       "**/node_modules": true,
-      "**/bower_components": true,
       "**/build": true,
       "**/coverage": true,
       "**/dist": true,
