@@ -120,7 +120,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                     onConfirm={this.handleConfirm}
                     onEdit={this.handleEdit}
                     placeholder=""
-                    selectAllOnFocus={true}
+                    selectAllOnFocus={false}
                     value={dirtyValue}
                 />
             );
@@ -134,7 +134,13 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         }
 
         return (
-            <Cell {...spreadableProps} truncated={false} interactive={interactive} cellRef={this.refHandlers.cell}>
+            <Cell
+                {...spreadableProps}
+                truncated={false}
+                interactive={interactive}
+                cellRef={this.refHandlers.cell}
+                onKeyPress={this.handleKeyPress}
+            >
                 <Draggable
                     onActivate={this.handleCellActivate}
                     onDoubleClick={this.handleCellDoubleClick}
@@ -167,6 +173,14 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             this.cellRef.focus();
         }
     }
+
+    private handleKeyPress = () => {
+        if (this.state.isEditing) {
+            return;
+        }
+        // setting dirty value to empty string because apparently the text field will pick up the key and write it in there
+        this.setState({ isEditing: true, dirtyValue: "", savedValue: this.state.savedValue });
+    };
 
     private handleEdit = () => {
         this.setState({ isEditing: true, dirtyValue: this.state.savedValue });

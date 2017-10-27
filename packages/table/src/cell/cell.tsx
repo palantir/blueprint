@@ -79,6 +79,11 @@ export interface ICellProps extends IIntentProps, IProps {
     onKeyUp?: React.KeyboardEventHandler<HTMLElement>;
 
     /**
+     * Callback invoked when a character-key is pressed
+     */
+    onKeyPress?: React.KeyboardEventHandler<HTMLElement>;
+
+    /**
      * A ref handle to capture the outer div of this cell. Used internally.
      */
     cellRef?: (ref: HTMLElement) => void;
@@ -108,6 +113,7 @@ export class Cell extends React.Component<ICellProps, {}> {
             tabIndex,
             onKeyDown,
             onKeyUp,
+            onKeyPress,
             style,
             intent,
             interactive,
@@ -163,7 +169,12 @@ export class Cell extends React.Component<ICellProps, {}> {
         const content = <div className={textClasses}>{modifiedChildren}</div>;
 
         return (
-            <div className={classes} title={tooltip} ref={cellRef} {...{ style, tabIndex, onKeyDown, onKeyUp }}>
+            <div
+                className={classes}
+                title={tooltip}
+                ref={cellRef}
+                {...{ style, tabIndex, onKeyDown, onKeyUp, onKeyPress }}
+            >
                 <LoadableContent loading={loading} variableLength={true}>
                     {content}
                 </LoadableContent>
