@@ -117,8 +117,11 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         const { loading, rightIconName, text } = this.props;
 
         const children = React.Children.map(this.props.children, (child, index) => {
-            // must wrap string children in spans so loading prop can hide them
-            if (typeof child === "string") {
+            if (child === "") {
+                // render as undefined to avoid extra space after icon
+                return undefined;
+            } else if (typeof child === "string") {
+                // must wrap string children in spans so loading prop can hide them
                 return <span key={`text-${index}`}>{child}</span>;
             }
             return child;
