@@ -7,7 +7,7 @@ via standard CSS properties.
 There are two ways of using Blueprint UI icons, described in more detail in the
 [**Icon component documentation**](#core/components/icon):
 1. React component: `<Icon iconName="more" />`
-2. CSS classes: `<span className="pt-icon-standard pt-icon-more />`
+2. CSS classes: `<span className="pt-icon-standard pt-icon-more" />`
 
 Many Blueprint [components](#core/components) provide an `iconName` prop, which supports both the
 full name `pt-icon-projects` and the short name `projects`.
