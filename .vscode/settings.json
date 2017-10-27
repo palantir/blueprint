@@ -2,8 +2,8 @@
     "typescript.tsdk": "./node_modules/typescript/lib",
     "files.watcherExclude": {
         "**/build": true,
-        "**/dist": true,
         "**/coverage": true,
+        "**/dist": true,
         "docs": true
     },
     "search.exclude": {
