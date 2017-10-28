@@ -99,12 +99,12 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
     }
 
     public render() {
-        const { disabled } = this.props;
         const classes = classNames(
             this.className,
             {
-                [Classes.DISABLED]: disabled,
+                [Classes.DISABLED]: this.props.disabled,
                 [`${Classes.SLIDER}-unlabeled`]: this.props.renderLabel === false,
+                [Classes.VERTICAL]: this.props.vertical,
             },
             this.props.className,
         );
