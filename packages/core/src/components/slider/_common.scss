@@ -6,12 +6,23 @@
 @import "../../common/mixins";
 @import "../button/common";
 
-@mixin slider($size) {
+@mixin slider($size, $vertical: false) {
+  $slider-min-size: $pt-grid-size * 15;
+
   position: relative;
   cursor: default;
-  width: 100%;
-  min-width: $pt-grid-size * 15;
-  height: $size;
+
+  @if $vertical == false {
+    width: 100%;
+    min-width: $slider-min-size;
+    height: $size;
+  } @else {
+    // define the same rules for both vertical as for horizontal to ensure all
+    // horizontal rules are fully overridden.
+    width: $size;
+    min-width: $size;
+    height: $slider-min-size;
+  }
 
   &:hover {
     cursor: pointer;
@@ -27,14 +38,25 @@
   }
 }
 
-@mixin slider-track($handle-size, $track-size) {
+@mixin slider-track($handle-size, $track-size, $vertical: false) {
+  $slider-track-offset: ($handle-size - $track-size) / 2;
+
   position: absolute;
-  top: ($handle-size - $track-size) / 2;
-  right: 0;
-  left: 0;
   border-radius: $pt-border-radius;
   background: rgba($gray1, 0.2);
-  height: $track-size;
+
+  @if $vertical == false {
+    top: $slider-track-offset;
+    right: 0;
+    left: 0;
+    height: $track-size;
+  } @else {
+    top: 0;
+    bottom: 0;
+    left: $slider-track-offset;
+    width: $track-size;
+    height: auto; // override the non-vertical rule above
+  }
 
   .pt-dark & {
     background: rgba($black, 0.5);
@@ -97,10 +119,17 @@
   }
 }
 
-@mixin slider-label() {
+@mixin slider-label($label-offset, $vertical: false) {
   display: inline-block;
+  position: absolute;
   padding: ($pt-grid-size / 5) ($pt-grid-size / 2);
   vertical-align: top;
   line-height: 1;
   font-size: $pt-font-size-small;
+
+  @if $vertical == false {
+    transform: translate(-50%, $label-offset);
+  } @else {
+    transform: translate($label-offset, 50%);
+  }
 }

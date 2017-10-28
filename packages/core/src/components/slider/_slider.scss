@@ -6,7 +6,7 @@
 
 $handle-size: $pt-icon-size-standard !default;
 $track-size: $handle-size - $pt-grid-size !default;
-$label-top: $handle-size + 4px !default;
+$label-offset: $handle-size + 4px !default;
 
 // retain legacy variable aliases so as to not break consumers
 $handle-height: $handle-size !default;
@@ -36,7 +36,6 @@ $track-height: $track-size !default;
   @include slider-handle($handle-size, $track-size);
 
   .pt-slider-label {
-    transform: translate(-50%, $label-top);
     margin-left: $handle-size / 2;
     border-radius: $pt-border-radius;
     box-shadow: $pt-tooltip-box-shadow;
@@ -56,9 +55,7 @@ $track-height: $track-size !default;
 }
 
 .pt-slider-label {
-  @include slider-label();
-  position: absolute;
-  transform: translate(-50%, $label-top);
+  @include slider-label($label-offset);
 }
 
 .pt-range-slider {
@@ -83,5 +80,57 @@ $track-height: $track-size !default;
 
   .pt-slider-progress {
     border-radius: 0;
+  }
+}
+
+.pt-slider.pt-vertical {
+  // width: 40px;
+  // min-width: 40px;
+  // height: 150px;
+  @include slider($pt-input-height-large, $vertical: true);
+
+  // .pt-slider-track {
+  //   top: 0;
+  //   left: 5px;
+  //   width: 6px;
+  //   height: 100%;
+  // }
+  .pt-slider-track,
+  .pt-slider-progress {
+    @include slider-track($handle-size, $track-size, $vertical: true);
+  }
+
+  // .pt-slider-progress {
+  //   top: auto;
+  //   bottom: 0;
+  //   left: 5px !important;
+  //   width: 6px !important;
+  //   height: 50%;
+  // }
+
+  // .pt-slider-axis {
+  //   position: relative;
+  //   margin-left: 20px;
+  // }
+
+  // .pt-slider-label {
+  //   // display: block;
+  //   // left: auto !important;
+  //   // transform: none;
+  //   margin-left: 0;
+  //   vertical-align: inherit;
+  // }
+
+  .pt-slider-label {
+    @include slider-label($label-offset, $vertical: true);
+  }
+
+  .pt-slider-handle {
+    // top: calc(100% - 16px);
+    // left: 0 !important;
+
+    .pt-slider-label {
+      margin-left: 20px;
+    }
   }
 }
