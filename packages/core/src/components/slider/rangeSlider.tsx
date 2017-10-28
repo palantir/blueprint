@@ -67,7 +67,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
     }
 
     protected renderHandles() {
-        const { disabled, max, min, onRelease, stepSize, value } = this.props;
+        const { disabled, max, min, onRelease, stepSize, value, vertical } = this.props;
         return value.map((val, index) => (
             <Handle
                 disabled={disabled}
@@ -81,6 +81,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
                 stepSize={stepSize}
                 tickSize={this.state.tickSize}
                 value={val}
+                vertical={vertical}
             />
         ));
     }
@@ -99,7 +100,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         this.handles
             .reduce((min, handle) => {
                 // find closest handle to the touch position
-                const value = handle.clientToValue(handle.touchEventClientX(event));
+                const value = handle.clientToValue(handle.touchEventClientOffset(event));
                 return this.nearestHandleForValue(value, min, handle);
             })
             .beginHandleTouchMovement(event);

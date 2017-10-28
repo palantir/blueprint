@@ -27,6 +27,7 @@ export interface IHandleProps extends IProps {
     stepSize?: number;
     tickSize?: number;
     value?: number;
+    vertical?: boolean;
 }
 
 export interface IHandleState {
@@ -88,15 +89,16 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         return value + valueDelta;
     }
 
-    public touchEventClientX(event: TouchEvent | React.TouchEvent<HTMLElement>) {
-        return event.changedTouches[0].clientX;
+    public touchEventClientOffset(event: TouchEvent | React.TouchEvent<HTMLElement>) {
+        const touch = event.changedTouches[0];
+        return this.props.vertical ? touch.clientY : touch.clientX;
     }
 
     public beginHandleMovement = (event: MouseEvent | React.MouseEvent<HTMLElement>) => {
         document.addEventListener("mousemove", this.handleHandleMovement);
         document.addEventListener("mouseup", this.endHandleMovement);
         this.setState({ isMoving: true });
-        this.changeValue(this.clientToValue(event.clientX));
+        this.changeValue(this.clientToValue(this.eventClientOffset(event)));
     };
 
     public beginHandleTouchMovement = (event: TouchEvent | React.TouchEvent<HTMLElement>) => {
@@ -104,7 +106,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         document.addEventListener("touchend", this.endHandleTouchMovement);
         document.addEventListener("touchcancel", this.endHandleTouchMovement);
         this.setState({ isMoving: true });
-        this.changeValue(this.clientToValue(this.touchEventClientX(event)));
+        this.changeValue(this.clientToValue(this.touchEventClientOffset(event)));
     };
 
     protected validateProps(props: IHandleProps) {
@@ -116,11 +118,11 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     }
 
     private endHandleMovement = (event: MouseEvent) => {
-        this.handleMoveEndedAt(event.clientX);
+        this.handleMoveEndedAt(this.eventClientOffset(event));
     };
 
     private endHandleTouchMovement = (event: TouchEvent) => {
-        this.handleMoveEndedAt(this.touchEventClientX(event));
+        this.handleMoveEndedAt(this.touchEventClientOffset(event));
     };
 
     private handleMoveEndedAt = (clientPixel: number) => {
@@ -133,11 +135,11 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     };
 
     private handleHandleMovement = (event: MouseEvent) => {
-        this.handleMovedTo(event.clientX);
+        this.handleMovedTo(this.eventClientOffset(event));
     };
 
     private handleHandleTouchMovement = (event: TouchEvent) => {
-        this.handleMovedTo(this.touchEventClientX(event));
+        this.handleMovedTo(this.touchEventClientOffset(event));
     };
 
     private handleMovedTo = (clientPixel: number) => {
@@ -176,6 +178,10 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     /** Clamp value between min and max props */
     private clamp(value: number) {
         return clamp(value, this.props.min, this.props.max);
+    }
+
+    private eventClientOffset(event: MouseEvent | React.MouseEvent<HTMLElement>) {
+        return this.props.vertical ? event.clientY : event.clientX;
     }
 
     private removeDocumentEventListeners() {

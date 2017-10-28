@@ -50,13 +50,20 @@ export class Slider extends CoreSlider<ISliderProps> {
 
     protected renderFill() {
         const initialValue = clamp(this.props.initialValue, this.props.min, this.props.max);
-        let left = Math.round((initialValue - this.props.min) * this.state.tickSize);
-        let width = Math.round((this.props.value - initialValue) * this.state.tickSize);
-        if (width < 0) {
-            left += width;
-            width = Math.abs(width);
+
+        let offset = Math.round((initialValue - this.props.min) * this.state.tickSize);
+        let size = Math.round((this.props.value - initialValue) * this.state.tickSize);
+
+        if (size < 0) {
+            offset += size;
+            size = Math.abs(size);
         }
-        return <div className={`${Classes.SLIDER}-progress`} style={{ left, width }} />;
+
+        const style: React.CSSProperties = this.props.vertical
+            ? { bottom: size, height: size }
+            : { left: size, width: size };
+
+        return <div className={`${Classes.SLIDER}-progress`} style={style} />;
     }
 
     protected renderHandles() {
