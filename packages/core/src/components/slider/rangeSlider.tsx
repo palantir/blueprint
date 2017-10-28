@@ -16,8 +16,8 @@ import { Handle } from "./handle";
 export type NumberRange = [number, number];
 
 enum RangeEnd {
-    LEFT = 0,
-    RIGHT = 1,
+    START = 0,
+    END = 1,
 }
 
 export interface IRangeSliderProps extends ICoreSliderProps {
@@ -52,18 +52,25 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
     private handles: Handle[] = [];
 
     protected renderFill() {
-        const [leftValue, rightValue] = this.props.value;
-        if (leftValue === rightValue) {
+        const { tickSize } = this.state;
+        const [startValue, endValue] = this.props.value;
+        if (startValue === endValue) {
             return undefined;
         }
         // expand by 1px in each direction so it sits under the handle border
-        let left = Math.round((leftValue - this.props.min) * this.state.tickSize) - 1;
-        let width = Math.round((rightValue - leftValue) * this.state.tickSize) + 2;
-        if (width < 0) {
-            left += width;
-            width = Math.abs(width);
+        let offset = Math.round((startValue - this.props.min) * tickSize) - 1;
+        let size = Math.round((endValue - startValue) * tickSize) + 2;
+
+        if (size < 0) {
+            offset += size;
+            size = Math.abs(size);
         }
-        return <div className={`${Classes.SLIDER}-progress`} style={{ left, width }} />;
+
+        const style: React.CSSProperties = this.props.vertical
+            ? { bottom: offset, height: size }
+            : { left: offset, width: size };
+
+        return <div className={`${Classes.SLIDER}-progress`} style={style} />;
     }
 
     protected renderHandles() {
@@ -114,7 +121,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
 
     protected validateProps(props: IRangeSliderProps) {
         const { value } = props;
-        if (value == null || value[RangeEnd.LEFT] == null || value[RangeEnd.RIGHT] == null) {
+        if (value == null || value[RangeEnd.START] == null || value[RangeEnd.END] == null) {
             throw new Error(Errors.RANGESLIDER_NULL_VALUE);
         }
     }
@@ -127,19 +134,19 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
 
     private getHandlerForIndex = (index: RangeEnd, callback: (value: NumberRange) => any) => (newValue: number) => {
         if (isFunction(callback)) {
-            const [leftValue, rightValue] = this.props.value;
-            if (index === RangeEnd.LEFT) {
-                callback([Math.min(newValue, rightValue), rightValue]);
+            const [startValue, endValue] = this.props.value;
+            if (index === RangeEnd.START) {
+                callback([Math.min(newValue, endValue), endValue]);
             } else {
-                callback([leftValue, Math.max(newValue, leftValue)]);
+                callback([startValue, Math.max(newValue, startValue)]);
             }
         }
     };
 
     private handleChange = (newValue: NumberRange) => {
-        const [leftValue, rightValue] = this.props.value;
-        const [newLeftValue, newRightValue] = newValue;
-        if ((leftValue !== newLeftValue || rightValue !== newRightValue) && isFunction(this.props.onChange)) {
+        const [startValue, endValue] = this.props.value;
+        const [newStartValue, newEndValue] = newValue;
+        if ((startValue !== newStartValue || endValue !== newEndValue) && isFunction(this.props.onChange)) {
             this.props.onChange(newValue);
         }
     };

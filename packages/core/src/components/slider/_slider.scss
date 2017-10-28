@@ -188,3 +188,28 @@ $track-height: $track-size !default;
     }
   }
 }
+
+.pt-range-slider.pt-vertical {
+  .pt-slider-handle {
+    width: $handle-size;
+    height: $handle-size / 2;
+
+    &:first-of-type {
+      margin-top: $handle-size / 2;
+      border-top-left-radius: 0;
+      border-top-right-radius: $pt-border-radius;
+      border-bottom-right-radius: $pt-border-radius;
+    }
+
+    &:last-of-type {
+      margin-left: 0;
+      border-top-left-radius: $pt-border-radius;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      .pt-slider-label {
+        margin-left: 0;
+      }
+    }
+  }
+}
