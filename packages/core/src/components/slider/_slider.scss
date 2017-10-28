@@ -4,9 +4,13 @@
 @import "../tooltip/common";
 @import "./common";
 
-$handle-height: $pt-icon-size-standard !default;
-$track-height: $handle-height - $pt-grid-size !default;
-$label-top: $handle-height + 4px !default;
+$handle-size: $pt-icon-size-standard !default;
+$track-size: $handle-size - $pt-grid-size !default;
+$label-top: $handle-size + 4px !default;
+
+// retain legacy variable aliases so as to not break consumers
+$handle-height: $handle-size !default;
+$track-height: $track-size !default;
 
 .pt-slider {
   @include slider($pt-input-height-large);
@@ -14,13 +18,13 @@ $label-top: $handle-height + 4px !default;
   user-select: none;
 
   &.pt-slider-unlabeled {
-    height: $handle-height;
+    height: $handle-size;
   }
 }
 
 .pt-slider-track,
 .pt-slider-progress {
-  @include slider-track($handle-height, $track-height);
+  @include slider-track($handle-size, $track-size);
 }
 
 .pt-slider-progress,
@@ -29,11 +33,11 @@ $label-top: $handle-height + 4px !default;
 }
 
 .pt-slider-handle {
-  @include slider-handle($handle-height, $track-height);
+  @include slider-handle($handle-size, $track-size);
 
   .pt-slider-label {
     transform: translate(-50%, $label-top);
-    margin-left: $handle-height / 2;
+    margin-left: $handle-size / 2;
     border-radius: $pt-border-radius;
     box-shadow: $pt-tooltip-box-shadow;
     background: $tooltip-background-color;
@@ -59,7 +63,7 @@ $label-top: $handle-height + 4px !default;
 
 .pt-range-slider {
   .pt-slider-handle {
-    width: $handle-height / 2;
+    width: $handle-size / 2;
 
     &:first-of-type {
       border-top-right-radius: 0;
@@ -67,7 +71,7 @@ $label-top: $handle-height + 4px !default;
     }
 
     &:last-of-type {
-      margin-left: $handle-height / 2;
+      margin-left: $handle-size / 2;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
 

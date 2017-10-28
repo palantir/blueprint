@@ -6,12 +6,12 @@
 @import "../../common/mixins";
 @import "../button/common";
 
-@mixin slider($height) {
+@mixin slider($size) {
   position: relative;
   cursor: default;
   width: 100%;
   min-width: $pt-grid-size * 15;
-  height: $height;
+  height: $size;
 
   &:hover {
     cursor: pointer;
@@ -27,21 +27,21 @@
   }
 }
 
-@mixin slider-track($handle-height, $track-height) {
+@mixin slider-track($handle-size, $track-size) {
   position: absolute;
-  top: ($handle-height - $track-height) / 2;
+  top: ($handle-size - $track-size) / 2;
   right: 0;
   left: 0;
   border-radius: $pt-border-radius;
   background: rgba($gray1, 0.2);
-  height: $track-height;
+  height: $track-size;
 
   .pt-dark & {
     background: rgba($black, 0.5);
   }
 }
 
-@mixin slider-handle($handle-height, $track-height) {
+@mixin slider-handle($handle-size, $track-size) {
   @include pt-button();
   position: absolute;
   top: 0;
@@ -49,8 +49,8 @@
   border-radius: $pt-border-radius;
   box-shadow: $button-box-shadow-overlay;
   cursor: pointer;
-  width: $handle-height;
-  height: $handle-height;
+  width: $handle-size;
+  height: $handle-size;
 
   // ensure target handle's label always covers neighbors
   &:focus {
