@@ -67,6 +67,12 @@ export interface ICoreSliderProps extends IProps {
      * @default true
      */
     renderLabel?: boolean | ((value: number) => string | JSX.Element);
+
+    /**
+     * Whether to show the slider in a vertical orientation.
+     * @default false
+     */
+    vertical?: boolean;
 }
 
 export interface ISliderState {

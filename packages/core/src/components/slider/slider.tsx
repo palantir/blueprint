@@ -41,6 +41,7 @@ export class Slider extends CoreSlider<ISliderProps> {
         showTrackFill: true,
         stepSize: 1,
         value: 0,
+        vertical: false,
     };
 
     public static displayName: "Blueprint.Slider";
