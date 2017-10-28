@@ -171,10 +171,18 @@ $track-height: $track-size !default;
     @include slider-track-orientation($handle-size, $track-size, $vertical: true);
   }
 
+  .pt-slider-progress {
+    top: auto;
+  }
+
   .pt-slider-label {
     @include slider-label-orientation($label-offset, $vertical: true);
+  }
 
-    .pt-slider-handle & {
+  .pt-slider-handle {
+    top: auto;
+
+    .pt-slider-label {
       margin-top: -$handle-size / 2;
       margin-left: 0;
     }
