@@ -1,8 +1,7 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import * as classNames from "classnames";
@@ -16,18 +15,18 @@ export interface ICardProps extends IProps {
      * Controls the intensity of the drop shadow beneath the card: the higher
      * the elevation, the higher the drop shadow. At elevation `0`, no drop
      * shadow is applied.
-     * 
+     *
      * @default 0
      */
     elevation?: Elevation;
 
     /**
      * Whether the card should respond to user interactions. If set to `true`,
-     * hovering over the card will increase the card's elevation by two levels
+     * hovering over the card will increase the card's elevation
      * and change the mouse cursor to a pointer.
      *
      * Recommended when `onClick` is also defined.
-     * 
+     *
      * @default false
      */
     interactive?: boolean;
@@ -58,6 +57,10 @@ const ELEVATION_CLASSES = [
 @PureRender
 export class Card extends React.Component<ICardProps, {}> {
     public static displayName = "Blueprint.Card";
+    public static defaultProps: ICardProps = {
+        elevation: Elevation.ZERO,
+        interactive: false,
+    };
 
     public render() {
         return (

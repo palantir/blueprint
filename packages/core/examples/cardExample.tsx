@@ -1,13 +1,12 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import * as React from "react";
 
-import { Card, Classes, Elevation, Slider, Switch } from "@blueprintjs/core";
+import { Button, Card, Classes, Elevation, Slider, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
 export interface ICardExampleState {
@@ -30,9 +29,7 @@ export class CardExample extends BaseExample<ICardExampleState> {
                     <a href="#">Card heading</a>
                 </h5>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                <button type="button" className={Classes.BUTTON}>
-                    Submit
-                </button>
+                <Button text="Submit" className={Classes.BUTTON} />
             </Card>
         );
     }

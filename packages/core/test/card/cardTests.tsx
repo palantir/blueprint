@@ -1,8 +1,7 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import { assert } from "chai";
@@ -32,7 +31,7 @@ describe("<Card>", () => {
         assert.equal(wrapper.children().html(), "<h4>Card content</h4>");
     });
 
-    it("call onClick when card is clicked", () => {
+    it("calls onClick when card is clicked", () => {
         const onClick = sinon.spy();
         shallow(<Card onClick={onClick} />).simulate("click");
         assert.isTrue(onClick.calledOnce);
