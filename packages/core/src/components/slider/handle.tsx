@@ -204,9 +204,11 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         // getBoundingClientRect().height includes border size; clientHeight does not.
         const handleRect = handleElement.getBoundingClientRect();
 
+        // assuming the handle is square, measure the opposite dimension in case
+        // we're working with a range-slider having half-size handles.
         return this.props.vertical
-            ? { handleMidpoint: handleRect.height / 2, handleOffset: handleRect.bottom }
-            : { handleMidpoint: handleRect.width / 2, handleOffset: handleRect.left };
+            ? { handleMidpoint: handleRect.width / 2, handleOffset: handleRect.bottom }
+            : { handleMidpoint: handleRect.height / 2, handleOffset: handleRect.left };
     }
 
     private removeDocumentEventListeners() {
