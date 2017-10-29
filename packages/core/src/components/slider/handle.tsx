@@ -41,6 +41,9 @@ const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 @PureRender
 export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     public static displayName = "Blueprint.SliderHandle";
+
+    private static HANDLE_HEIGHT = 16;
+
     public state = {
         isMoving: false,
     };
@@ -85,7 +88,9 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
             return value;
         }
         const handleCenterPixel = this.getHandleElementCenterPixel(this.handleElement);
-        const pixelDelta = vertical ? handleCenterPixel - clientPixel : clientPixel - handleCenterPixel;
+        const pixelDelta = vertical
+            ? handleCenterPixel - clientPixel - Handle.HANDLE_HEIGHT
+            : clientPixel - handleCenterPixel;
         // convert pixels to range value in increments of `stepSize`
         const valueDelta = Math.round(pixelDelta / (tickSize * stepSize)) * stepSize;
         return value + valueDelta;
