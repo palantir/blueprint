@@ -96,6 +96,10 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         return value + valueDelta;
     }
 
+    public mouseEventClientOffset(event: MouseEvent | React.MouseEvent<HTMLElement>) {
+        return this.props.vertical ? event.clientY : event.clientX;
+    }
+
     public touchEventClientOffset(event: TouchEvent | React.TouchEvent<HTMLElement>) {
         const touch = event.changedTouches[0];
         return this.props.vertical ? touch.clientY : touch.clientX;
@@ -105,7 +109,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         document.addEventListener("mousemove", this.handleHandleMovement);
         document.addEventListener("mouseup", this.endHandleMovement);
         this.setState({ isMoving: true });
-        this.changeValue(this.clientToValue(this.getEventClientOffset(event)));
+        this.changeValue(this.clientToValue(this.mouseEventClientOffset(event)));
     };
 
     public beginHandleTouchMovement = (event: TouchEvent | React.TouchEvent<HTMLElement>) => {
@@ -125,7 +129,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     }
 
     private endHandleMovement = (event: MouseEvent) => {
-        this.handleMoveEndedAt(this.getEventClientOffset(event));
+        this.handleMoveEndedAt(this.mouseEventClientOffset(event));
     };
 
     private endHandleTouchMovement = (event: TouchEvent) => {
@@ -142,7 +146,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     };
 
     private handleHandleMovement = (event: MouseEvent) => {
-        this.handleMovedTo(this.getEventClientOffset(event));
+        this.handleMovedTo(this.mouseEventClientOffset(event));
     };
 
     private handleHandleTouchMovement = (event: TouchEvent) => {
@@ -185,10 +189,6 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     /** Clamp value between min and max props */
     private clamp(value: number) {
         return clamp(value, this.props.min, this.props.max);
-    }
-
-    private getEventClientOffset(event: MouseEvent | React.MouseEvent<HTMLElement>) {
-        return this.props.vertical ? event.clientY : event.clientX;
     }
 
     private getHandleElementCenterPixel(handleElement: HTMLElement) {

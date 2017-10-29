@@ -97,7 +97,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         this.handles
             .reduce((min, handle) => {
                 // find closest handle to the mouse position
-                const value = handle.clientToValue(event.clientX);
+                const value = handle.clientToValue(handle.mouseEventClientOffset(event));
                 return this.nearestHandleForValue(value, min, handle);
             })
             .beginHandleMovement(event);
