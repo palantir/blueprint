@@ -42,8 +42,6 @@ const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     public static displayName = "Blueprint.SliderHandle";
 
-    private static HANDLE_HEIGHT = 16;
-
     public state = {
         isMoving: false,
     };
@@ -57,7 +55,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         const { className, disabled, label, min, tickSize, value, vertical } = this.props;
         const { isMoving } = this.state;
 
-        const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement);
+        const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);
         const offset = Math.round((value - min) * tickSize - handleMidpoint);
         const style: React.CSSProperties = vertical ? { bottom: offset } : { left: offset };
 
@@ -83,16 +81,28 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
 
     /** Convert client pixel to value between min and max. */
     public clientToValue(clientPixel: number) {
+        console.log("    [clientToValue]");
+        console.log("      clientPixel =", clientPixel);
+
         const { stepSize, tickSize, value, vertical } = this.props;
         if (this.handleElement == null) {
             return value;
         }
+
+        const clientPixelNormalized = vertical ? window.innerHeight - clientPixel : clientPixel;
+        console.log("      clientPixelNormalized =", clientPixelNormalized);
+
         const handleCenterPixel = this.getHandleElementCenterPixel(this.handleElement);
-        const pixelDelta = vertical
-            ? handleCenterPixel - clientPixel - Handle.HANDLE_HEIGHT
-            : clientPixel - handleCenterPixel;
+        console.log("      handleCenterPixel =", handleCenterPixel);
+
+        const pixelDelta = clientPixelNormalized - handleCenterPixel;
+        console.log("      pixelDelta =", pixelDelta);
+
         // convert pixels to range value in increments of `stepSize`
         const valueDelta = Math.round(pixelDelta / (tickSize * stepSize)) * stepSize;
+        console.log("      valueDelta =", valueDelta);
+
+        console.log("      value + valueDelta =", value + valueDelta);
         return value + valueDelta;
     }
 
@@ -180,8 +190,10 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
 
     /** Clamp value and invoke callback if it differs from current value */
     private changeValue(newValue: number, callback = this.props.onChange) {
+        console.log("[changeValue] (unclamped) newValue =", newValue);
         newValue = this.clamp(newValue);
         if (!isNaN(newValue) && this.props.value !== newValue) {
+            console.log("[changeValue] changing value", "newValue =", newValue);
             safeInvoke(callback, newValue);
         }
     }
@@ -196,19 +208,25 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         return handleOffset + handleMidpoint;
     }
 
-    private getHandleMidpointAndOffset(handleElement: HTMLElement) {
+    private getHandleMidpointAndOffset(handleElement: HTMLElement, useOppositeDimension = false) {
         if (handleElement == null) {
             return { handleMidpoint: 0, handleOffset: 0 };
         }
 
+        const { vertical } = this.props;
+
         // getBoundingClientRect().height includes border size; clientHeight does not.
         const handleRect = handleElement.getBoundingClientRect();
 
-        // assuming the handle is square, measure the opposite dimension in case
-        // we're working with a range-slider having half-size handles.
-        return this.props.vertical
-            ? { handleMidpoint: handleRect.width / 2, handleOffset: handleRect.bottom }
-            : { handleMidpoint: handleRect.height / 2, handleOffset: handleRect.left };
+        const sizeKey = vertical
+            ? useOppositeDimension ? "width" : "height"
+            : useOppositeDimension ? "height" : "width";
+
+        // "bottom" value seems to be consistently incorrect, so explicitly
+        // calculate it using the window offset instead.
+        const handleOffset = vertical ? window.innerHeight - (handleRect.top + handleRect[sizeKey]) : handleRect.left;
+
+        return { handleMidpoint: handleRect[sizeKey] / 2, handleOffset };
     }
 
     private removeDocumentEventListeners() {

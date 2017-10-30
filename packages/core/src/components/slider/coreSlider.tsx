@@ -157,6 +157,15 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         }
     }
 
+    protected getTrackInitialPixel() {
+        if (this.trackElement == null) {
+            return undefined;
+        }
+        const trackRect = this.trackElement.getBoundingClientRect();
+        // for vertical tracks, the initial (lowest-`value`) pixel is on the bottom.
+        return this.props.vertical ? trackRect.top + trackRect.height : trackRect.left;
+    }
+
     private maybeRenderAxis() {
         // explicit typedefs are required because tsc (rightly) assumes that props might be overriden with different
         // types in subclasses
