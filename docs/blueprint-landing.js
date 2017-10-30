@@ -32218,8 +32218,8 @@
 	        // is a floating-point number character that we're allowed to print.
 	        return !this.isFloatingPointNumericCharacter(e.key);
 	    };
-	    NumericInput.prototype.isFloatingPointNumericCharacter = function (char) {
-	        return NumericInput_1.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(char);
+	    NumericInput.prototype.isFloatingPointNumericCharacter = function (ch) {
+	        return NumericInput_1.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(ch);
 	    };
 	    NumericInput.prototype.getStepMaxPrecision = function (props) {
 	        if (props.minorStepSize != null) {
