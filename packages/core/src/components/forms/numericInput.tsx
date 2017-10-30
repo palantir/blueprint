@@ -576,8 +576,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         return !this.isFloatingPointNumericCharacter(e.key);
     }
 
-    private isFloatingPointNumericCharacter(char: string) {
-        return NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(char);
+    private isFloatingPointNumericCharacter(ch: string) {
+        return NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(ch);
     }
 
     private getStepMaxPrecision(props: HTMLInputProps & INumericInputProps) {
