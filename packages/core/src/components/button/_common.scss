@@ -151,7 +151,8 @@ $button-intents: (
   cursor: not-allowed;
   color: $button-color-disabled;
 
-  &.pt-active {
+  &.pt-active,
+  &.pt-active:hover {
     background: $button-background-color-active-disabled;
   }
 }
@@ -297,6 +298,10 @@ $button-intents: (
     background: none;
     cursor: not-allowed;
     color: $pt-text-color-disabled;
+
+    &.pt-active {
+      background: $minimal-button-background-color-active;
+    }
   }
 
   .pt-dark & {
@@ -343,6 +348,10 @@ $button-intents: (
     background: none;
     cursor: not-allowed;
     color: $pt-dark-text-color-disabled;
+
+    &.pt-active {
+      background: $dark-minimal-button-background-color-active;
+    }
   }
 }
 
@@ -372,6 +381,10 @@ $button-intents: (
   &.pt-disabled {
     background: none;
     color: rgba($text-color, 0.5);
+
+    &.pt-active {
+      background: rgba($intent-color, 0.3);
+    }
   }
 
   .pt-button-spinner .pt-spinner-head {
@@ -396,6 +409,10 @@ $button-intents: (
     &.pt-disabled {
       background: none;
       color: rgba($dark-text-color, 0.5);
+
+      &.pt-active {
+        background: rgba($intent-color, 0.3);
+      }
     }
   }
 }
