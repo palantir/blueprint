@@ -1,10 +1,10 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -21,6 +21,7 @@ export interface IOffset {
 
 interface IContextMenuState {
     isOpen?: boolean;
+    isDarkTheme?: boolean;
     menu?: JSX.Element;
     offset?: IOffset;
     onClose?: () => void;
@@ -40,6 +41,7 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
     public render() {
         // prevent right-clicking in a context menu
         const content = <div onContextMenu={this.cancelContextMenu}>{this.state.menu}</div>;
+        const popoverClassName = classNames(Classes.MINIMAL, { [Classes.DARK]: this.state.isDarkTheme });
         return (
             <Popover
                 backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
@@ -49,7 +51,7 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
                 isOpen={this.state.isOpen}
                 onInteraction={this.handlePopoverInteraction}
                 position={Position.RIGHT_TOP}
-                popoverClassName={Classes.MINIMAL}
+                popoverClassName={popoverClassName}
                 useSmartArrowPositioning={false}
                 tetherOptions={TETHER_OPTIONS}
                 transitionDuration={TRANSITION_DURATION}
@@ -59,8 +61,8 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
         );
     }
 
-    public show(menu: JSX.Element, offset: IOffset, onClose?: () => void) {
-        this.setState({ isOpen: true, menu, offset, onClose });
+    public show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean) {
+        this.setState({ isOpen: true, menu, offset, onClose, isDarkTheme });
     }
 
     public hide() {
@@ -101,7 +103,7 @@ let contextMenu: ContextMenu;
  * The menu will appear below-right of this point and will flip to below-left if there is not enough
  * room onscreen. The optional callback will be invoked when this menu closes.
  */
-export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void) {
+export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean) {
     if (contextMenu == null) {
         const contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);
@@ -109,7 +111,7 @@ export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void) {
         contextMenu = ReactDOM.render(<ContextMenu />, contextMenuElement) as ContextMenu;
     }
 
-    contextMenu.show(menu, offset, onClose);
+    contextMenu.show(menu, offset, onClose, isDarkTheme);
 }
 
 /** Hide the open context menu. */

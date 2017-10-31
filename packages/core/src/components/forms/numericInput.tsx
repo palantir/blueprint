@@ -1,8 +1,7 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import * as classNames from "classnames";
@@ -577,8 +576,8 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         return !this.isFloatingPointNumericCharacter(e.key);
     }
 
-    private isFloatingPointNumericCharacter(char: string) {
-        return NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(char);
+    private isFloatingPointNumericCharacter(character: string) {
+        return NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(character);
     }
 
     private getStepMaxPrecision(props: HTMLInputProps & INumericInputProps) {

@@ -1,7 +1,5 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS
+// Licensed under the terms of the LICENSE file distributed with this project.
 
 @import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../core/src/common/icons";
@@ -12,6 +10,15 @@
 $cell-size: $pt-grid-size * 3 !default;
 $header-height: $pt-grid-size * 4 !default;
 $header-margin: ($header-height - $pt-input-height) / 2 !default;
+
+@mixin calendar-day() {
+  display: table-cell;
+  width: $datepicker-day-size;
+  height: $datepicker-day-size;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 1;
+}
 
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
@@ -86,13 +93,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   }
 
   .DayPicker-Weekday {
-    display: table-cell;
-    width: $datepicker-day-size;
-    height: $datepicker-day-size;
+    @include calendar-day();
     padding-top: $pt-grid-size / 2;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 1;
     font-weight: 600;
 
     // normalize.css adds an underline to abbr[title] elements, remove it here
@@ -109,15 +111,16 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     display: table-row;
   }
 
+  .DayPicker-WeekNumber {
+    @include calendar-day();
+    color: $pt-text-color-disabled;
+    font-size: $pt-font-size;
+  }
+
   .DayPicker-Day {
-    display: table-cell;
+    @include calendar-day();
     border-radius: $pt-border-radius;
     cursor: pointer;
-    width: $datepicker-day-size;
-    height: $datepicker-day-size;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 1;
 
     // spelling out full name so these are equal specificity to pseudo-classes (.DayPicker-Day:hover)
     &.DayPicker-Day--outside {
@@ -213,6 +216,10 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
 .pt-dark .pt-datepicker {
   background: $dark-datepicker-background-color;
+
+  .DayPicker-WeekNumber {
+    color: $pt-dark-text-color-disabled;
+  }
 
   .DayPicker-Day {
     &.DayPicker-Day--outside {

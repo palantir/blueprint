@@ -1,20 +1,23 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { EditableText, Utils as CoreUtils } from "@blueprintjs/core";
+import { EditableText, Hotkey, Hotkeys, HotkeysTarget, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
 export interface IEditableCellProps extends ICellProps {
+    /**
+     * Whether the given cell is the current active/focused cell.
+     */
+    isFocused?: boolean;
+
     /**
      * The value displayed in the text box. Be sure to update this value when
      * rendering this component after a confirmed change.
@@ -53,10 +56,18 @@ export interface IEditableCellState {
     dirtyValue?: string;
 }
 
+@HotkeysTarget
 export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
     public static defaultProps = {
         truncated: true,
         wrapText: false,
+    };
+
+    private cellRef: HTMLElement;
+    private refHandlers = {
+        cell: (ref: HTMLElement) => {
+            this.cellRef = ref;
+        },
     };
 
     public constructor(props: IEditableCellProps, context?: any) {
@@ -65,6 +76,14 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             isEditing: false,
             savedValue: props.value,
         };
+    }
+
+    public componentDidMount() {
+        this.checkShouldFocus();
+    }
+
+    public componentDidUpdate() {
+        this.checkShouldFocus();
     }
 
     public shouldComponentUpdate(nextProps: IEditableCellProps, nextState: IEditableCellState) {
@@ -115,7 +134,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         }
 
         return (
-            <Cell {...spreadableProps} truncated={false} interactive={interactive}>
+            <Cell {...spreadableProps} truncated={false} interactive={interactive} cellRef={this.refHandlers.cell}>
                 <Draggable
                     onActivate={this.handleCellActivate}
                     onDoubleClick={this.handleCellDoubleClick}
@@ -126,6 +145,27 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
                 </Draggable>
             </Cell>
         );
+    }
+
+    public renderHotkeys() {
+        return (
+            <Hotkeys>
+                <Hotkey
+                    key="edit-cell"
+                    label="Edit the currently focused cell"
+                    group="Table"
+                    combo="f2"
+                    onKeyDown={this.handleEdit}
+                />
+            </Hotkeys>
+        );
+    }
+
+    private checkShouldFocus() {
+        if (this.props.isFocused && !this.state.isEditing) {
+            // don't focus if we're editing -- we'll lose the fact that we're editing
+            this.cellRef.focus();
+        }
     }
 
     private handleEdit = () => {

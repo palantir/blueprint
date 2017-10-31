@@ -4,7 +4,7 @@
   "description": "Blueprint landing page",
   "private": true,
   "author": "Palantir Technologies",
-  "license": "BSD-3-Clause",
+  "license": "Apache-2.0",
   "scripts": {
     "build:copy": "mkdir -p dist/assets && cp ./src/index.html dist/. && cp -r ./resources/img dist/assets/.",
     "build:webpack": "webpack --config webpack.config.js",

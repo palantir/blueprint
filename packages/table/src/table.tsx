@@ -1,8 +1,7 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
@@ -988,6 +987,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     group="Table"
                     combo="tab"
                     onKeyDown={this.handleFocusMoveRightInternal}
+                    allowInInput={true}
                 />,
                 <Hotkey
                     key="move shift-tab"
@@ -995,6 +995,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     group="Table"
                     combo="shift+tab"
                     onKeyDown={this.handleFocusMoveLeftInternal}
+                    allowInInput={true}
                 />,
                 <Hotkey
                     key="move enter"
@@ -1002,6 +1003,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     group="Table"
                     combo="enter"
                     onKeyDown={this.handleFocusMoveDownInternal}
+                    allowInInput={true}
                 />,
                 <Hotkey
                     key="move shift-enter"
@@ -1009,6 +1011,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     group="Table"
                     combo="shift+enter"
                     onKeyDown={this.handleFocusMoveUpInternal}
+                    allowInInput={true}
                 />,
             ];
         } else {
@@ -1999,7 +2002,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 this.scrollContainerElement.scrollTop = nextScrollTop + topCorrection;
             }
             if (didScrollLeftChange) {
-                const leftCorrection = this.shouldDisableHorizontalScroll() ? 0 : this.rowHeaderElement.clientWidth;
+                const leftCorrection =
+                    this.shouldDisableHorizontalScroll() || this.rowHeaderElement == null
+                        ? 0
+                        : this.rowHeaderElement.clientWidth;
+
                 this.scrollContainerElement.scrollLeft = nextScrollLeft + leftCorrection;
             }
 

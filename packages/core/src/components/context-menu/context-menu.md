@@ -20,7 +20,7 @@ The `@ContextMenuTarget` [class decorator][ts-decorator] can be applied to any `
 class that meets the following requirements:
 
 - It defines an instance method called `renderContextMenu()` that returns a single `JSX.Element`
-(most likely a [`Menu`](#core/components/menu)).
+(most likely a [`Menu`](#core/components/menu)) or `undefined`.
 - Its root element supports the `"contextmenu"` event and the `onContextMenu` prop.
 
 This is always true if the decorated class uses an intrinsic element, such as `<div>`, as its

@@ -1,14 +1,13 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
+import * as Classes from "../../src/common/classes";
 import { padWithZeroes } from "../../src/common/utils";
-import { Classes } from "../../src/index";
 
 /**
  * Converts a date to a "YYYY-MM-DD" string without relying on moment.js.

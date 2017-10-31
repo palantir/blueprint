@@ -4,6 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classes from "../common/classes";
+import { Classes } from "../";
 
-export const Classes = classes;
+export function isDarkTheme(element: Element): boolean {
+    return element.closest(`.${Classes.DARK}`) != null;
+}

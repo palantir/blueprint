@@ -1,8 +1,7 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import * as classNames from "classnames";
@@ -18,6 +17,7 @@ import * as PosUtils from "../../common/position";
 import { IProps } from "../../common/props";
 import * as TetherUtils from "../../common/tetherUtils";
 import * as Utils from "../../common/utils";
+import { isDarkTheme } from "../../common/utils/isDarkTheme";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
 
@@ -432,7 +432,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             });
         }
         if (!this.props.inline) {
-            this.hasDarkParent = this.targetElement.closest(`.${Classes.DARK}`) != null;
+            this.hasDarkParent = isDarkTheme(this.targetElement);
             this.updateTether();
         }
     }

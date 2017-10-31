@@ -63,4 +63,4 @@ its best chance at getting merged.
 
 ## License
 
-This project is made available under the [BSD License](https://github.com/palantir/blueprint/blob/master/LICENSE).
+This project is made available under the [Apache-2.0 License](https://github.com/palantir/blueprint/blob/master/LICENSE).

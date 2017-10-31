@@ -1,8 +1,6 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import * as classNames from "classnames";
@@ -64,6 +62,26 @@ export interface ICellProps extends IIntentProps, IProps {
      * @default false
      */
     wrapText?: boolean;
+
+    /**
+     * Allows for setting a tab index on the cell, so the cell can be browser-focusable.
+     */
+    tabIndex?: number;
+
+    /**
+     * Callback invoked when the cell is focused and a key is pressed down.
+     */
+    onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
+
+    /**
+     * Callback invoked when the cell is focused and a key is released.
+     */
+    onKeyUp?: React.KeyboardEventHandler<HTMLElement>;
+
+    /**
+     * A ref handle to capture the outer div of this cell. Used internally.
+     */
+    cellRef?: (ref: HTMLElement) => void;
 }
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
@@ -85,7 +103,20 @@ export class Cell extends React.Component<ICellProps, {}> {
     }
 
     public render() {
-        const { style, intent, interactive, loading, tooltip, truncated, className, wrapText } = this.props;
+        const {
+            cellRef,
+            tabIndex,
+            onKeyDown,
+            onKeyUp,
+            style,
+            intent,
+            interactive,
+            loading,
+            tooltip,
+            truncated,
+            className,
+            wrapText,
+        } = this.props;
 
         const classes = classNames(
             Classes.TABLE_CELL,
@@ -132,7 +163,7 @@ export class Cell extends React.Component<ICellProps, {}> {
         const content = <div className={textClasses}>{modifiedChildren}</div>;
 
         return (
-            <div className={classes} style={style} title={tooltip}>
+            <div className={classes} title={tooltip} ref={cellRef} {...{ style, tabIndex, onKeyDown, onKeyUp }}>
                 <LoadableContent loading={loading} variableLength={true}>
                     {content}
                 </LoadableContent>

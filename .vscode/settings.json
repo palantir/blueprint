@@ -1,9 +1,17 @@
 {
     "typescript.tsdk": "./node_modules/typescript/lib",
-    "files.exclude": {
+    "files.watcherExclude": {
         "**/build": true,
         "**/coverage": true,
+        "**/dist": true,
         "docs": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/build": true,
+      "**/coverage": true,
+      "**/dist": true,
+      "docs": true
     },
     "editor.insertSpaces": true,
     "editor.tabSize": 4,

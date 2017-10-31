@@ -1,8 +1,7 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
- * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
- * and https://github.com/palantir/blueprint/blob/master/PATENTS
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import { assert } from "chai";
@@ -41,6 +40,10 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             const wrapper = button({}, true, "raw string", <em>not a string</em>);
             assert.equal(wrapper.find("span").length, 1, "span not found");
             assert.equal(wrapper.find("em").length, 1, "em not found");
+        });
+
+        it('doesn\'t render a span if text=""', () => {
+            assert.equal(button({}, true, "").find("span").length, 0);
         });
 
         it("renders a loading spinner when the loading prop is true", () => {

@@ -1,7 +1,5 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the BSD-3 License as modified (the “License”); you may obtain a copy
-// of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
-// and https://github.com/palantir/blueprint/blob/master/PATENTS
+// Licensed under the terms of the LICENSE file distributed with this project.
 
 @import "../../common/mixins";
 @import "../../common/variables";
@@ -153,7 +151,8 @@ $button-intents: (
   cursor: not-allowed;
   color: $button-color-disabled;
 
-  &.pt-active {
+  &.pt-active,
+  &.pt-active:hover {
     background: $button-background-color-active-disabled;
   }
 }
@@ -299,6 +298,10 @@ $button-intents: (
     background: none;
     cursor: not-allowed;
     color: $pt-text-color-disabled;
+
+    &.pt-active {
+      background: $minimal-button-background-color-active;
+    }
   }
 
   .pt-dark & {
@@ -345,6 +348,10 @@ $button-intents: (
     background: none;
     cursor: not-allowed;
     color: $pt-dark-text-color-disabled;
+
+    &.pt-active {
+      background: $dark-minimal-button-background-color-active;
+    }
   }
 }
 
@@ -374,6 +381,10 @@ $button-intents: (
   &.pt-disabled {
     background: none;
     color: rgba($text-color, 0.5);
+
+    &.pt-active {
+      background: rgba($intent-color, 0.3);
+    }
   }
 
   .pt-button-spinner .pt-spinner-head {
@@ -398,6 +409,10 @@ $button-intents: (
     &.pt-disabled {
       background: none;
       color: rgba($dark-text-color, 0.5);
+
+      &.pt-active {
+        background: rgba($intent-color, 0.3);
+      }
     }
   }
 }
