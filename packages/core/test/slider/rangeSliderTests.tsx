@@ -10,7 +10,7 @@ import * as React from "react";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
-import { ISliderProps, RangeSlider } from "../../src/index";
+import { Classes, ISliderProps, RangeSlider } from "../../src/index";
 import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
 describe("<RangeSlider>", () => {
@@ -83,6 +83,26 @@ describe("<RangeSlider>", () => {
         // called 4 times, for the move to 9, 8, 7, and 6
         assert.equal(changeSpy.callCount, 4);
         assert.deepEqual(changeSpy.args.map(arg => arg[0]), [[0, 9], [0, 8], [0, 7], [0, 6]]);
+    });
+
+    it("releasing mouse on a track value closer to the lower handle, moves the lower handle", () => {
+        const changeSpy = sinon.spy();
+        const slider = renderSlider(<RangeSlider onChange={changeSpy} />);
+        const tickSize = slider.state("tickSize");
+        const NEXT_LOW_VALUE = 1;
+        slider.find(`.${Classes.SLIDER}`).simulate("mousedown", { clientX: tickSize * NEXT_LOW_VALUE });
+        assert.equal(changeSpy.callCount, 1);
+        assert.deepEqual(changeSpy.firstCall.args[0], [NEXT_LOW_VALUE, 10]);
+    });
+
+    it("releasing mouse on a track value closer to the upper handle, moves the upper handle", () => {
+        const changeSpy = sinon.spy();
+        const slider = renderSlider(<RangeSlider onChange={changeSpy} />);
+        const tickSize = slider.state("tickSize");
+        const NEXT_HIGH_VALUE = 9;
+        slider.find(`.${Classes.SLIDER}`).simulate("mousedown", { clientX: tickSize * NEXT_HIGH_VALUE });
+        assert.equal(changeSpy.callCount, 1);
+        assert.deepEqual(changeSpy.firstCall.args[0], [0, NEXT_HIGH_VALUE]);
     });
 
     it("releasing mouse calls onRelease with nearest value", () => {
