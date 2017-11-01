@@ -94,13 +94,11 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
     }
 
     protected handleTrackClick(event: React.MouseEvent<HTMLElement>) {
-        console.log("[handleTrackClick]");
         this.handles
             .reduce((min, handle) => {
                 // find closest handle to the mouse position
                 const offset = handle.mouseEventClientOffset(event);
                 const value = handle.clientToValue(offset);
-                console.log("  min =", min, "handle =", handle, "value =", value, "for mouse offset:", offset);
                 return this.nearestHandleForValue(value, min, handle);
             })
             .beginHandleMovement(event);

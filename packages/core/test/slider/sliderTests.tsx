@@ -13,7 +13,7 @@ import { Handle } from "../../src/components/slider/handle";
 import { Classes, ISliderProps, Slider } from "../../src/index";
 import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
-describe.only("<Slider>", () => {
+describe("<Slider>", () => {
     let testsContainerElement: HTMLElement;
 
     beforeEach(() => {

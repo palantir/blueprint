@@ -81,28 +81,20 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
 
     /** Convert client pixel to value between min and max. */
     public clientToValue(clientPixel: number) {
-        console.log("    [clientToValue]");
-        console.log("      clientPixel =", clientPixel);
-
         const { stepSize, tickSize, value, vertical } = this.props;
         if (this.handleElement == null) {
             return value;
         }
 
+        // #1769: this logic doesn't work perfectly when the tick size is
+        // smaller than the handle size; it may be off by a tick or two.
         const clientPixelNormalized = vertical ? window.innerHeight - clientPixel : clientPixel;
-        console.log("      clientPixelNormalized =", clientPixelNormalized);
-
         const handleCenterPixel = this.getHandleElementCenterPixel(this.handleElement);
-        console.log("      handleCenterPixel =", handleCenterPixel);
-
         const pixelDelta = clientPixelNormalized - handleCenterPixel;
-        console.log("      pixelDelta =", pixelDelta);
 
         // convert pixels to range value in increments of `stepSize`
         const valueDelta = Math.round(pixelDelta / (tickSize * stepSize)) * stepSize;
-        console.log("      valueDelta =", valueDelta);
 
-        console.log("      value + valueDelta =", value + valueDelta);
         return value + valueDelta;
     }
 
@@ -190,10 +182,8 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
 
     /** Clamp value and invoke callback if it differs from current value */
     private changeValue(newValue: number, callback = this.props.onChange) {
-        console.log("[changeValue] (unclamped) newValue =", newValue);
         newValue = this.clamp(newValue);
         if (!isNaN(newValue) && this.props.value !== newValue) {
-            console.log("[changeValue] changing value", "newValue =", newValue);
             safeInvoke(callback, newValue);
         }
     }
