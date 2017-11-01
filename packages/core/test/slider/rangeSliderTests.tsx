@@ -13,7 +13,7 @@ import { Handle } from "../../src/components/slider/handle";
 import { ISliderProps, RangeSlider } from "../../src/index";
 import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
-describe.only("<RangeSlider>", () => {
+describe("<RangeSlider>", () => {
     let testsContainerElement: HTMLElement;
 
     beforeEach(() => {
@@ -231,14 +231,15 @@ describe.only("<RangeSlider>", () => {
         it("moving touch on top handle updates second value in range", () => {
             const slider = renderSlider(<RangeSlider vertical={true} onChange={changeSpy} />);
             const tickSize = slider.state("tickSize");
+            const sliderTop = getSliderTopPixel(slider);
             const sliderBottom = getSliderBottomPixel(slider);
 
             slider
                 .find(Handle)
                 .last()
-                .simulate("touchstart", { changedTouches: [{ clientY: sliderBottom - tickSize * 10 }] });
+                .simulate("touchstart", { changedTouches: [{ clientY: sliderTop }] });
             // move downwards because it defaults to the max value
-            touchMoveVertical(tickSize, 5, tickSize * 10, sliderBottom);
+            touchMoveVertical(-tickSize, 5, tickSize * 10, sliderBottom);
 
             // called 4 times, for the move to 9, 8, 7, and 6
             assert.equal(changeSpy.callCount, 4);
