@@ -1,23 +1,7 @@
 {
-    "version": "2.4.2",
+    "extends": "../../config/tsconfig.base.json",
     "compilerOptions": {
-        "declaration": true,
-        "experimentalDecorators": true,
-        "importHelpers": true,
-        "jsx": "react",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "outDir": "dist/",
-        "pretty": true,
-        "removeComments": false,
-        "sourceMap": false,
-        "stripInternal": true,
-        "target": "es5"
+        "outDir": "dist/"
     },
     "include": [
         "src/**/*"

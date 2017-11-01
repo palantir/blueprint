@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
-source scripts/artifactVariables.sh
+# Submits a comment to the change PR or commit with links to artifcats that show the results of the
+# code change being applied.
+
+source scripts/artifact-variables
 
 # Docs
 echo "Docs preview...RENDER"
-scripts/docsDist.sh
 PREVIEWS="$(artifactLink '/packages/site-docs/dist/index.html' 'documentation')"
 COVERAGES="$(coverageLink '/packages/core/' 'core')"
 COVERAGES="$COVERAGES | $(coverageLink 'packages/datetime/' 'datetime')"

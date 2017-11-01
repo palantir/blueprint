@@ -1,3 +1,12 @@
+machine:
+  pre:
+    - mkdir ~/yarn
+  environment:
+    PATH: $PATH:$HOME/yarn/bin:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin:$HOME/$CIRCLE_PROJECT_REPONAME/scripts
+    YARN_VERSION: 1.2.1
+  node:
+    version: 8.5.0
+
 general:
   artifacts:
     # compiled assets for each package
@@ -17,15 +26,6 @@ general:
     # GH Pages content
     - docs
 
-machine:
-  pre:
-    - mkdir ~/yarn
-  environment:
-    YARN_VERSION: 1.2.1
-    PATH: $PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin
-  node:
-    version: 8.5.0
-
 dependencies:
   cache_directories:
     - ~/yarn
@@ -35,7 +35,6 @@ dependencies:
   override:
     - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
     - yarn
-    - yarn bootstrap
     - echo "Checking if lockfiles changed..." && git diff --exit-code
     - yarn build:gulp
 
@@ -48,9 +47,10 @@ deployment:
   preview:
     branch: /.*/
     commands:
-      - ./scripts/preview.sh
+      - build-docs-artifacts
+      - submit-preview-comment
   npm:
     tag: /release-.*/
     owner: palantir
     commands:
-      - ./scripts/npmPublish.sh
+      - publish-npm-semver-tagged

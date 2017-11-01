@@ -7,6 +7,6 @@ in this repo.
 
 From the root of the repo:
 
-1. Run `npm run bootstrap`
-1. Run `npm run gulp`
+1. Run `yarn`
+1. Run `yarn dev`
 1. Open your browser to http://localhost:9000/packages/site-docs/dist

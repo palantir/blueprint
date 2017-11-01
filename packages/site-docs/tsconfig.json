@@ -1,11 +1,7 @@
 {
-    "version": "2.4.2",
+    "extends": "../../config/tsconfig.base.json",
     "compilerOptions": {
         "baseUrl": ".",
-        "declaration": false,
-        "experimentalDecorators": true,
-        "importHelpers": true,
-        "jsx": "react",
         "lib": [
             "dom",
             "es2015.core",
@@ -17,17 +13,7 @@
             "es2015.symbol",
             "es5"
         ],
-        "module": "commonjs",
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
         "outDir": "dist/",
-        "pretty": true,
-        "removeComments": true,
-        "sourceMap": false,
-        "target": "es5",
         "paths": {
             "@blueprintjs/*": ["node_modules/@blueprintjs/*"]
         }
@@ -40,6 +26,5 @@
         "node_modules",
         "build",
         "test"
-    ],
-    "compileOnSave": false
+    ]
 }
