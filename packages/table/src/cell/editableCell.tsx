@@ -175,7 +175,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     private handleKeyPress = () => {
-        if (this.state.isEditing) {
+        if (this.state.isEditing || !this.props.isFocused) {
             return;
         }
         // setting dirty value to empty string because apparently the text field will pick up the key and write it in there
