@@ -11,6 +11,15 @@ $cell-size: $pt-grid-size * 3 !default;
 $header-height: $pt-grid-size * 4 !default;
 $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
+@mixin calendar-day() {
+  display: table-cell;
+  width: $datepicker-day-size;
+  height: $datepicker-day-size;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 1;
+}
+
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
 .pt-datepicker {
@@ -84,13 +93,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   }
 
   .DayPicker-Weekday {
-    display: table-cell;
-    width: $datepicker-day-size;
-    height: $datepicker-day-size;
+    @include calendar-day();
     padding-top: $pt-grid-size / 2;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 1;
     font-weight: 600;
 
     // normalize.css adds an underline to abbr[title] elements, remove it here
@@ -108,23 +112,15 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   }
 
   .DayPicker-WeekNumber {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
+    @include calendar-day();
     color: $pt-text-color-disabled;
     font-size: $pt-font-size;
-    pointer-events: none;
   }
 
   .DayPicker-Day {
-    display: table-cell;
+    @include calendar-day();
     border-radius: $pt-border-radius;
     cursor: pointer;
-    width: $datepicker-day-size;
-    height: $datepicker-day-size;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 1;
 
     // spelling out full name so these are equal specificity to pseudo-classes (.DayPicker-Day:hover)
     &.DayPicker-Day--outside {
