@@ -10,6 +10,10 @@
   version "0.22.5"
   resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.5.tgz#db749e8470d98f103d51407db9bee5a8b9d20d45"
 
+"@types/chroma-js@^1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@types/chroma-js/-/chroma-js-1.3.3.tgz#2f8ddbaed996166c23305f8c6ff0784bea5c2a87"
+
 "@types/classnames@^2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.3.tgz#3f0ff6873da793870e20a260cada55982f38a9e5"
@@ -114,6 +118,10 @@
   dependencies:
     "@types/glob" "*"
     "@types/node" "*"
+
+"@types/sinon@^2.3.7":
+  version "2.3.7"
+  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-2.3.7.tgz#e92c2fed3297eae078d78d1da032b26788b4af86"
 
 "@types/tether@^1.1.27", "@types/tether@^1.4.3":
   version "1.4.3"

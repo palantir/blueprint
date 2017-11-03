@@ -38,6 +38,7 @@
     "@types/react-addons-css-transition-group": "^15.0.3",
     "@types/react-addons-transition-group": "^15.0.1",
     "@types/react-dom": "^16.0.1",
+    "@types/sinon": "^2.3.7",
     "@types/tether": "^1.4.3",
     "autoprefixer": "^7.1.5",
     "better-handlebars": "github:wmeldon/better-handlebars",

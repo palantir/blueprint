@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@blueprintjs/webpack-build-scripts": "^0.1.0",
+    "@types/chroma-js": "^1.3.3",
     "bourbon": "^4.3.4",
     "webpack-dev-server": "^2.9.3"
   },
