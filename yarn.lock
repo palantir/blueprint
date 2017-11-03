@@ -4219,6 +4219,12 @@ karma-sourcemap-loader@^0.3.7:
   dependencies:
     graceful-fs "^4.1.2"
 
+karma-typescript-preprocessor@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/karma-typescript-preprocessor/-/karma-typescript-preprocessor-0.3.1.tgz#a4ed4976af02a0801d17843756ad8ccc80053d5a"
+  dependencies:
+    typescript "^2.1.4"
+
 karma-webpack@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/karma-webpack/-/karma-webpack-2.0.5.tgz#4f56887e32cf4f9583391c2388415de06af06efd"
@@ -4789,12 +4795,6 @@ meow@^3.3.0, meow@^3.7.0:
 merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
-
-merge-stream@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/merge-stream/-/merge-stream-1.0.1.tgz#4041202d508a342ba00174008df0c251b8c135e1"
-  dependencies:
-    readable-stream "^2.0.1"
 
 methods@~1.1.2:
   version "1.1.2"
@@ -7953,7 +7953,7 @@ typescript@2.3.4:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.4.tgz#3d38321828231e434f287514959c37a82b629f42"
 
-typescript@~2.4.2:
+typescript@^2.1.4, typescript@~2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.2.tgz#f8395f85d459276067c988aa41837a8f82870844"
 

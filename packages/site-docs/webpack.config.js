@@ -2,7 +2,7 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const baseConfig = require("@blueprintjs/webpack-build-scripts/config.base");
+const baseConfig = require("@blueprintjs/webpack-build-scripts/webpack.config.base");
 const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {

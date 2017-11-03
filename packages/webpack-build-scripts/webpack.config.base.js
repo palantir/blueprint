@@ -93,7 +93,7 @@ module.exports = {
     devtool: IS_PRODUCTION ? false : "inline-source-map",
 
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.tsx?$/,
                 loader: require.resolve("awesome-typescript-loader"),

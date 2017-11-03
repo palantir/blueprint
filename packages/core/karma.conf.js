@@ -2,19 +2,8 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
+const baseKarmaConfig = require("@blueprintjs/karma-build-scripts/karma.config.base");
+
 module.exports = function (config) {
-    config.set({
-        preprocessors: {
-            "**/*.ts": ["typescript"],
-        },
-        typescriptPreprocessor: {
-            options: Object.assign({}, require("../../config/tsconfig.base.json"), {
-                declaration: false,
-                sourceMap: true,
-            }),
-            transformPath: function (filePath) {
-                return filePath.replace(/\.tsx?$/, ".js");
-            },
-        },
-    })
+    config.set(baseKarmaConfig);
 };
