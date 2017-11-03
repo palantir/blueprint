@@ -7,6 +7,7 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import { HTMLInputProps, IInputGroupProps, InputGroup, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
@@ -413,8 +414,8 @@ describe("<DateRangeInput>", () => {
             // nice one-liners further down this block, and it also gives
             // certain tests easy access to onError/onChange if they need it.
 
-            let onChange: Sinon.SinonSpy;
-            let onError: Sinon.SinonSpy;
+            let onChange: sinon.SinonSpy;
+            let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
 
             beforeEach(() => {
@@ -503,8 +504,8 @@ describe("<DateRangeInput>", () => {
         });
 
         describe("Typing an invalid date", () => {
-            let onChange: Sinon.SinonSpy;
-            let onError: Sinon.SinonSpy;
+            let onChange: sinon.SinonSpy;
+            let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
 
             beforeEach(() => {
@@ -614,8 +615,8 @@ describe("<DateRangeInput>", () => {
         // this test sub-suite is structured a little differently because of the
         // different semantics of this error case in each field
         describe("Typing an overlapping date", () => {
-            let onChange: Sinon.SinonSpy;
-            let onError: Sinon.SinonSpy;
+            let onChange: sinon.SinonSpy;
+            let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
             let startInput: WrappedComponentInput;
             let endInput: WrappedComponentInput;

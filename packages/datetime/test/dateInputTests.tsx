@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import { InputGroup, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
