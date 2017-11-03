@@ -8,6 +8,7 @@ import { assert } from "chai";
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { Arrow, Popper } from "react-popper";
+import * as sinon from "sinon";
 
 import { Classes, Keys, Overlay, PopoverInteractionKind, Position, Tooltip, Utils } from "@blueprintjs/core";
 // tslint:disable-next-line:no-submodule-imports
@@ -347,7 +348,7 @@ describe("<Popover2>", () => {
         });
 
         describe("onInteraction()", () => {
-            let onInteraction: Sinon.SinonSpy;
+            let onInteraction: sinon.SinonSpy;
             beforeEach(() => (onInteraction = sinon.spy()));
 
             it("is invoked with `true` when closed popover target is clicked", () => {

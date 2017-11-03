@@ -6,6 +6,18 @@
   "typings": "dist/index.d.ts",
   "style": "dist/blueprint-labs.css",
   "unpkg": "dist/labs.bundle.js",
+  "scripts": {
+    "build": "npm-run-all -p 'build:*'",
+    "build:typescript": "tsc -p ./src",
+    "build:sass": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
+    "clean": "rm -rf dist/*",
+    "dev": "npm-run-all -p 'build:typescript --watch' 'build:sass --watch'",
+    "lint": "npm-run-all -p lint:stylelint lint:tslint",
+    "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
+    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../../tslint.json",
+    "lint-fix": "yarn lint:tslint --fix",
+    "test": "karma start"
+  },
   "dependencies": {
     "@blueprintjs/core": "^1.30.0",
     "classnames": "^2.2",
@@ -21,6 +33,9 @@
     "@types/fuzzaldrin-plus": "^0.0.1",
     "@types/moment-timezone": "^0.5.0",
     "bourbon": "^4.3.4",
+    "karma": "^1.7.1",
+    "node-sass": "^4.5.3",
+    "npm-run-all": "^4.1.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.1",
     "react-dom": "^15.6.1",
