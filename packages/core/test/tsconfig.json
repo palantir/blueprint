@@ -1,6 +1,7 @@
 {
     "extends": "../../../config/tsconfig.base",
     "compilerOptions": {
-        "noEmit": true
+        "declaration": false,
+        "noEmit": false
     }
 }

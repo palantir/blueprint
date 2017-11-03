@@ -6,7 +6,7 @@
 
 import { assert } from "chai";
 import * as React from "react";
-import { spy } from "sinon";
+import { SinonSpy, spy } from "sinon";
 
 import * as Utils from "../../src/common/utils";
 

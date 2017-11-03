@@ -2,17 +2,23 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const baseWebpackConfig = require("@blueprintjs/webpack-build-scripts/webpack.config.base");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 const path = require("path");
 const webpack = require("webpack");
 
-module.exports = Object.assign({}, baseWebpackConfig, {
+/**
+ * This differs significantly from the base webpack config, so we don't even end up extending from it.
+ */
+module.exports = {
+    bail: true,
+
     devtool: "inline-source-map",
-    entry: {
-        core: path.resolve(process.cwd(), "test/index.ts"),
+
+    resolve: {
+        extensions: [".js", ".ts", ".tsx"],
     },
+
     // these externals necessary for Enzyme harness
     externals: {
         "cheerio": "window",
@@ -21,13 +27,28 @@ module.exports = Object.assign({}, baseWebpackConfig, {
         "react/lib/ReactContext": true,
         "react-addons-test-utils": true,
     },
+
     module: {
-        rules: baseWebpackConfig.module.rules.concat({
-            enforce: "post",
-            test: /src\/.*\.tsx?$/,
-            use: "istanbul-instrumenter-loader",
-        }),
+        rules: [
+            {
+                test: /\.js$/,
+                use: "source-map-loader"
+            },
+            {
+                test: /\.tsx?$/,
+                loader: "awesome-typescript-loader",
+                options: {
+                    configFileName: "./test/tsconfig.json",
+                },
+            },
+            {
+                enforce: "post",
+                test: /src\/.*\.tsx?$/,
+                use: "istanbul-instrumenter-loader",
+            },
+        ]
     },
+
     plugins: [
         new webpack.DefinePlugin({
             "process.env": {
@@ -37,10 +58,11 @@ module.exports = Object.assign({}, baseWebpackConfig, {
 
         new CheckerPlugin(),
 
-        new CircularDependencyPlugin({
-            exclude: /.js|node_modules/,
-            failOnError: true,
-        }),
+        // TODO: enable this
+        // new CircularDependencyPlugin({
+        //     exclude: /.js|node_modules/,
+        //     failOnError: true,
+        // }),
 
         function() {
             this.plugin("done", function(stats) {
@@ -59,5 +81,4 @@ module.exports = Object.assign({}, baseWebpackConfig, {
             });
         }
     ],
-    bail: true,
-});
+};
