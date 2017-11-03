@@ -9,6 +9,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
+import * as sinon from "sinon";
 
 import * as Classes from "../../src/common/classes";
 import { Grid } from "../../src/common/grid";
@@ -72,7 +73,7 @@ describe("TableQuadrantStack", () => {
             />,
         );
 
-        const isMainQuadrantChild = (refSpy: Sinon.SinonSpy) => {
+        const isMainQuadrantChild = (refSpy: sinon.SinonSpy) => {
             const refElement = refSpy.firstCall.args[0] as HTMLElement;
             const quadrantElement = refElement.closest(`.${Classes.TABLE_QUADRANT_MAIN}`) as HTMLElement;
             return quadrantElement != null;

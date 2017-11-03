@@ -6,6 +6,8 @@
 
 import { expect } from "chai";
 import * as React from "react";
+import * as sinon from "sinon";
+
 import * as Classes from "../src/common/classes";
 import { Resizable } from "../src/interactions/resizable";
 import { Orientation, ResizeHandle } from "../src/interactions/resizeHandle";

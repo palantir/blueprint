@@ -8,6 +8,7 @@ import { expect } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as sinon from "sinon";
 
 import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
 // tslint:disable-next-line:no-submodule-imports
@@ -517,7 +518,7 @@ describe("<Table>", () => {
     });
 
     describe("Freezing", () => {
-        let consoleWarn: Sinon.SinonSpy;
+        let consoleWarn: sinon.SinonSpy;
 
         before(() => (consoleWarn = sinon.stub(console, "warn")));
         afterEach(() => consoleWarn.reset());
@@ -980,8 +981,8 @@ describe("<Table>", () => {
     });
 
     describe("Focused cell", () => {
-        let onFocus: Sinon.SinonSpy;
-        let onVisibleCellsChange: Sinon.SinonSpy;
+        let onFocus: sinon.SinonSpy;
+        let onVisibleCellsChange: sinon.SinonSpy;
 
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
@@ -1263,7 +1264,7 @@ describe("<Table>", () => {
         const ROW_HEIGHT = 60;
         const COL_WIDTH = 400;
 
-        let onSelection: Sinon.SinonSpy;
+        let onSelection: sinon.SinonSpy;
 
         beforeEach(() => {
             onSelection = sinon.spy();
@@ -1388,7 +1389,7 @@ describe("<Table>", () => {
         const UPDATED_COL_WIDTH = COL_WIDTH - 1;
         const UPDATED_ROW_HEIGHT = ROW_HEIGHT - 1;
 
-        let onVisibleCellsChange: Sinon.SinonSpy;
+        let onVisibleCellsChange: sinon.SinonSpy;
 
         beforeEach(() => {
             onVisibleCellsChange = sinon.spy();
@@ -1536,7 +1537,7 @@ describe("<Table>", () => {
             });
 
             describe("warnings", () => {
-                let consoleWarn: Sinon.SinonSpy;
+                let consoleWarn: sinon.SinonSpy;
 
                 before(() => {
                     consoleWarn = sinon.spy(console, "warn");
@@ -1636,7 +1637,7 @@ describe("<Table>", () => {
             });
 
             describe("warnings", () => {
-                let consoleWarn: Sinon.SinonSpy;
+                let consoleWarn: sinon.SinonSpy;
 
                 before(() => {
                     consoleWarn = sinon.spy(console, "warn");

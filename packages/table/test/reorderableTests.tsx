@@ -6,6 +6,8 @@
 
 import { expect } from "chai";
 import * as React from "react";
+import * as sinon from "sinon";
+
 import { Regions } from "../src/";
 import { DragReorderable } from "../src/interactions/reorderable";
 import { ReactHarness } from "./harness";

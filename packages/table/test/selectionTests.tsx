@@ -4,8 +4,11 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { expect } from "chai";
 import "es6-shim";
+
+import { expect } from "chai";
+import * as sinon from "sinon";
+
 import * as Classes from "../src/common/classes";
 import { Clipboard } from "../src/common/clipboard";
 import { Utils } from "../src/common/utils";

@@ -7,6 +7,7 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import { Cell } from "../src/cell/cell";
 import { Batcher } from "../src/common/batcher";
