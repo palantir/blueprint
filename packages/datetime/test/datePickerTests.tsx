@@ -129,9 +129,12 @@ describe("<DatePicker>", () => {
         });
 
         describe("event handlers", () => {
+            // use a date that lets us navigate forward and backward in the same year
+            const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
+
             it("calls onMonthChange on button next click", () => {
                 const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
+                const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
                 root
                     .find(".DayPicker-NavButton--next")
                     .first()
@@ -141,7 +144,7 @@ describe("<DatePicker>", () => {
 
             it("calls onMonthChange on button prev click", () => {
                 const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
+                const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
                 root
                     .find(".DayPicker-NavButton--prev")
                     .first()
@@ -151,7 +154,7 @@ describe("<DatePicker>", () => {
 
             it("calls onMonthChange on month select change", () => {
                 const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
+                const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
                 root
                     .find({ className: Classes.DATEPICKER_MONTH_SELECT })
                     .first()
@@ -161,7 +164,7 @@ describe("<DatePicker>", () => {
 
             it("calls onMonthChange on year select change", () => {
                 const onMonthChange = sinon.spy();
-                const { root } = wrap(<DatePicker dayPickerProps={{ onMonthChange }} />);
+                const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
                 root
                     .find({ className: Classes.DATEPICKER_YEAR_SELECT })
                     .first()
@@ -171,7 +174,7 @@ describe("<DatePicker>", () => {
 
             it("calls onDayClick", () => {
                 const onDayClick = sinon.spy();
-                const { getDay } = wrap(<DatePicker dayPickerProps={{ onDayClick }} />);
+                const { getDay } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onDayClick }} />);
                 getDay().simulate("click");
                 assert.isTrue(onDayClick.called);
             });

@@ -172,16 +172,23 @@ describe("<DateRangePicker>", () => {
         });
 
         describe("event handlers", () => {
+            // use a date that lets us navigate forward and backward in the same year
+            const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
+
             it("calls onMonthChange on button next click", () => {
                 const onMonthChange = sinon.spy();
-                const { leftDayPickerNavbar } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                const { leftDayPickerNavbar } = wrap(
+                    <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
+                );
                 leftDayPickerNavbar.find(".DayPicker-NavButton--next").simulate("click");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on button prev click", () => {
                 const onMonthChange = sinon.spy();
-                const { leftDayPickerNavbar } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                const { leftDayPickerNavbar } = wrap(
+                    <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
+                );
                 leftDayPickerNavbar.find(".DayPicker-NavButton--prev").simulate("click");
                 assert.isTrue(onMonthChange.called);
             });
@@ -189,7 +196,11 @@ describe("<DateRangePicker>", () => {
             it("calls onMonthChange on button next click of left calendar", () => {
                 const onMonthChange = sinon.spy();
                 const { leftDayPickerNavbar } = wrap(
-                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
+                    <DateRangePicker
+                        defaultValue={defaultValue}
+                        contiguousCalendarMonths={false}
+                        dayPickerProps={{ onMonthChange }}
+                    />,
                 );
                 leftDayPickerNavbar.find(".DayPicker-NavButton--next").simulate("click");
                 assert.isTrue(onMonthChange.called);
@@ -198,7 +209,11 @@ describe("<DateRangePicker>", () => {
             it("calls onMonthChange on button prev click of left calendar", () => {
                 const onMonthChange = sinon.spy();
                 const { leftDayPickerNavbar } = wrap(
-                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
+                    <DateRangePicker
+                        defaultValue={defaultValue}
+                        contiguousCalendarMonths={false}
+                        dayPickerProps={{ onMonthChange }}
+                    />,
                 );
                 leftDayPickerNavbar.find(".DayPicker-NavButton--prev").simulate("click");
                 assert.isTrue(onMonthChange.called);
@@ -207,7 +222,11 @@ describe("<DateRangePicker>", () => {
             it("calls onMonthChange on button next click of right calendar", () => {
                 const onMonthChange = sinon.spy();
                 const { rightDayPickerNavbar } = wrap(
-                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
+                    <DateRangePicker
+                        defaultValue={defaultValue}
+                        contiguousCalendarMonths={false}
+                        dayPickerProps={{ onMonthChange }}
+                    />,
                 );
                 rightDayPickerNavbar.find(".DayPicker-NavButton--next").simulate("click");
                 assert.isTrue(onMonthChange.called);
@@ -216,7 +235,11 @@ describe("<DateRangePicker>", () => {
             it("calls onMonthChange on button prev click of right calendar", () => {
                 const onMonthChange = sinon.spy();
                 const { rightDayPickerNavbar } = wrap(
-                    <DateRangePicker contiguousCalendarMonths={false} dayPickerProps={{ onMonthChange }} />,
+                    <DateRangePicker
+                        defaultValue={defaultValue}
+                        contiguousCalendarMonths={false}
+                        dayPickerProps={{ onMonthChange }}
+                    />,
                 );
                 rightDayPickerNavbar.find(".DayPicker-NavButton--prev").simulate("click");
                 assert.isTrue(onMonthChange.called);
@@ -224,42 +247,50 @@ describe("<DateRangePicker>", () => {
 
             it("calls onMonthChange on month select change in left calendar", () => {
                 const onMonthChange = sinon.spy();
-                const { leftView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                const { leftView } = wrap(
+                    <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
+                );
                 leftView.find({ className: DateClasses.DATEPICKER_MONTH_SELECT }).simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on month select change in right calendar", () => {
                 const onMonthChange = sinon.spy();
-                const { rightView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                const { rightView } = wrap(
+                    <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
+                );
                 rightView.find({ className: DateClasses.DATEPICKER_MONTH_SELECT }).simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on year select change in left calendar", () => {
                 const onMonthChange = sinon.spy();
-                const { leftView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                const { leftView } = wrap(
+                    <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
+                );
                 leftView.find({ className: DateClasses.DATEPICKER_YEAR_SELECT }).simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on year select change in right calendar", () => {
                 const onMonthChange = sinon.spy();
-                const { rightView } = wrap(<DateRangePicker dayPickerProps={{ onMonthChange }} />);
+                const { rightView } = wrap(
+                    <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
+                );
                 rightView.find({ className: DateClasses.DATEPICKER_YEAR_SELECT }).simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onDayMouseEnter", () => {
                 const onDayMouseEnter = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayMouseEnter } });
+                renderDateRangePicker({ defaultValue, dayPickerProps: { onDayMouseEnter } });
                 mouseEnterDay(14);
                 assert.isTrue(onDayMouseEnter.called);
             });
 
             it("calls onDayMouseLeave", () => {
                 const onDayMouseLeave = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayMouseLeave } });
+                renderDateRangePicker({ defaultValue, dayPickerProps: { onDayMouseLeave } });
                 mouseEnterDay(14);
                 mouseLeaveDay(14);
                 assert.isTrue(onDayMouseLeave.called);
@@ -267,7 +298,7 @@ describe("<DateRangePicker>", () => {
 
             it("calls onDayClick", () => {
                 const onDayClick = sinon.spy();
-                renderDateRangePicker({ dayPickerProps: { onDayClick } });
+                renderDateRangePicker({ defaultValue, dayPickerProps: { onDayClick } });
                 clickDay(14);
                 assert.isTrue(onDayClick.called);
             });
