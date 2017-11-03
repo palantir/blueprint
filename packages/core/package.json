@@ -7,8 +7,8 @@
   "style": "dist/blueprint.css",
   "unpkg": "dist/core.bundle.js",
   "scripts": {
+    "build": "npm-run-all -p 'build:*'",
     "build:typescript": "tsc -p ./",
-    "build:typescript:test": "tsc -p ./test",
     "build:sass": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
     "clean": "rm -rf dist/*",
     "dev": "npm-run-all -p 'build:typescript --watch' 'build:sass --watch'",
