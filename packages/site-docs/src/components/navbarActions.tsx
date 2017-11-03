@@ -55,7 +55,7 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
     }
 
     /**
-     * Render a list of the latest artifacts versions, including links to them on Stash and Artifactory.
+     * Render a list of the latest artifacts versions.
      * Also include a link to the GitHub release notes.
      */
     private renderReleasesMenu() {
