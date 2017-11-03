@@ -5770,13 +5770,9 @@ plur@^2.0.0, plur@^2.1.2:
   dependencies:
     irregular-plurals "^1.0.0"
 
-popper.js@1.11.0:
+popper.js@1.11.0, popper.js@^1.10.8:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.11.0.tgz#0103f23ac0c9221d944e7f25e3aba4c2f73987de"
-
-popper.js@^1.10.8:
-  version "1.12.6"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.6.tgz#91e12a97b07815258b76915d64044e8ac053d426"
 
 portfinder@^1.0.13, portfinder@^1.0.9:
   version "1.0.13"

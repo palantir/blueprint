@@ -74,6 +74,9 @@
     "vinyl-source-stream": "^1.1.0",
     "webpack": "^3.8.1"
   },
+  "resolutions": {
+    "popper.js": "1.11.0"
+  },
   "engines": {
     "node": ">=6.1"
   },
