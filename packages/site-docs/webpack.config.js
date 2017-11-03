@@ -2,10 +2,10 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const config = require("@blueprintjs/webpack-build-scripts/config");
+const baseConfig = require("@blueprintjs/webpack-build-scripts/config.base");
 const path = require("path");
 
-module.exports = Object.assign({}, config, {
+module.exports = Object.assign({}, baseConfig, {
     entry: {
         "app": [
             "./src/index.tsx",
