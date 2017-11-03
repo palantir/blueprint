@@ -158,7 +158,7 @@ describe("<Slider>", () => {
         const trackSelector = `.${Classes.SLIDER}-track`;
         const slider = renderSlider(<Slider disabled={true} />);
         // spy on instance method instead of onChange because we can't supply nativeEvent
-        const trackClickSpy = spy(slider.instance() as Slider, "handleTrackClick");
+        const trackClickSpy = spy(slider.instance() as any, "handleTrackClick");
         slider.find(trackSelector).simulate("mousedown", { target: testsContainerElement.query(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackClick was called when disabled");
     });
@@ -167,7 +167,7 @@ describe("<Slider>", () => {
         const trackSelector = `.${Classes.SLIDER}-track`;
         const slider = renderSlider(<Slider disabled={true} />);
         // spy on instance method instead of onChange because we can't supply nativeEvent
-        const trackClickSpy = spy(slider.instance() as Slider, "handleTrackTouch");
+        const trackClickSpy = spy(slider.instance() as any, "handleTrackTouch");
         slider.find(trackSelector).simulate("touchstart", { target: testsContainerElement.query(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackTouch was called when disabled");
     });
