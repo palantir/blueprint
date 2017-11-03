@@ -71,17 +71,27 @@ export class Slider extends CoreSlider<ISliderProps> {
         );
     }
 
-    protected handleTrackClick(event: React.MouseEvent<HTMLElement>) {
+    // tslint:disable member-ordering
+    /**
+     * @internal
+     * @public for testing
+     */
+    public handleTrackClick(event: React.MouseEvent<HTMLElement>) {
         if (this.handle != null) {
             this.handle.beginHandleMovement(event);
         }
     }
 
-    protected handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
+    /**
+     * @internal
+     * @public for testing
+     */
+    public handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
         if (this.handle != null) {
             this.handle.beginHandleTouchMovement(event);
         }
     }
+    // tslint:enable member-ordering
 
     private handleHandleRef = (ref: Handle) => {
         this.handle = ref;

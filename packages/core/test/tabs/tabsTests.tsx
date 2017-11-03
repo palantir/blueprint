@@ -9,6 +9,7 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { spy } from "sinon";
 
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
@@ -130,7 +131,7 @@ describe("<Tabs>", () => {
 
         it("invokes onChange() callback", () => {
             const TAB_INDEX_TO_SELECT = 1;
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = spy();
             const wrapper = mount(<Tabs onChange={onChangeSpy}>{getTabsContents()}</Tabs>);
 
             wrapper.ref(`tabs-${TAB_INDEX_TO_SELECT}`).simulate("click");
@@ -187,7 +188,7 @@ describe("<Tabs>", () => {
 
         it("invokes onChange() callback", () => {
             const TAB_INDEX_TO_SELECT = 1;
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = spy();
             const tabs = mount(
                 <Tabs selectedTabIndex={0} onChange={onChangeSpy}>
                     {getTabsContents()}
@@ -210,7 +211,7 @@ describe("<Tabs>", () => {
 
         it("does switch tabs if the user hooks up onChange() to do so", () => {
             const TAB_INDEX_TO_SELECT = 1;
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = spy();
             class TestComponent extends React.Component<{}, any> {
                 public state = {
                     mySelectedTab: 0,

@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import {
     CollapseFrom,
@@ -86,7 +87,7 @@ describe("<CollapsibleList>", () => {
 
     describe("renderVisibleItem", () => {
         it("is called with props of each child", () => {
-            const renderVisibleItem = sinon.spy();
+            const renderVisibleItem = spy();
             // using END so it won't reverse the list
             renderCollapsibleList(5, { collapseFrom: CollapseFrom.END, renderVisibleItem, visibleItemCount: 3 });
             assert.equal(renderVisibleItem.callCount, 3);
@@ -97,7 +98,7 @@ describe("<CollapsibleList>", () => {
         });
 
         it("is called with absolute index of item in props array when CollapseFrom.START", () => {
-            const renderVisibleItem = sinon.spy();
+            const renderVisibleItem = spy();
             renderCollapsibleList(7, { renderVisibleItem, visibleItemCount: 3 });
             renderVisibleItem.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
@@ -107,7 +108,7 @@ describe("<CollapsibleList>", () => {
         });
 
         it("is called with absolute index of item in props array when CollapseFrom.END", () => {
-            const renderVisibleItem = sinon.spy();
+            const renderVisibleItem = spy();
             renderCollapsibleList(6, { collapseFrom: CollapseFrom.END, renderVisibleItem, visibleItemCount: 3 });
             renderVisibleItem.args.map(arg => {
                 const props: IMenuItemProps = arg[0];

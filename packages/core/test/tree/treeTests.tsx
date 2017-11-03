@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { spy } from "sinon";
 
 import { mount } from "enzyme";
 import { Classes, ITreeNode, ITreeProps, Tree } from "../../src/index";
@@ -83,11 +84,11 @@ describe("<Tree>", () => {
     });
 
     it("event callbacks are fired correctly", () => {
-        const onNodeClick = sinon.spy();
-        const onNodeCollapse = sinon.spy();
-        const onNodeContextMenu = sinon.spy();
-        const onNodeDoubleClick = sinon.spy();
-        const onNodeExpand = sinon.spy();
+        const onNodeClick = spy();
+        const onNodeCollapse = spy();
+        const onNodeContextMenu = spy();
+        const onNodeDoubleClick = spy();
+        const onNodeExpand = spy();
 
         const contents = createDefaultContents();
         contents[3].isExpanded = true;

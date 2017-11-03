@@ -10,6 +10,7 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { SinonSpy, spy } from "sinon";
 
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
 import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
@@ -47,11 +48,11 @@ describe("Hotkeys", () => {
     });
 
     describe("Local/Global @HotkeysTarget", () => {
-        let localKeyDownSpy: Sinon.SinonSpy = null;
-        let localKeyUpSpy: Sinon.SinonSpy = null;
+        let localKeyDownSpy: SinonSpy = null;
+        let localKeyUpSpy: SinonSpy = null;
 
-        let globalKeyDownSpy: Sinon.SinonSpy = null;
-        let globalKeyUpSpy: Sinon.SinonSpy = null;
+        let globalKeyDownSpy: SinonSpy = null;
+        let globalKeyUpSpy: SinonSpy = null;
 
         let attachTo: HTMLElement = null;
         let comp: ReactWrapper<any, any> = null;
@@ -107,11 +108,11 @@ describe("Hotkeys", () => {
         }
 
         beforeEach(() => {
-            localKeyDownSpy = sinon.spy();
-            localKeyUpSpy = sinon.spy();
+            localKeyDownSpy = spy();
+            localKeyUpSpy = spy();
 
-            globalKeyDownSpy = sinon.spy();
-            globalKeyUpSpy = sinon.spy();
+            globalKeyDownSpy = spy();
+            globalKeyUpSpy = spy();
 
             attachTo = document.createElement("div");
             document.documentElement.appendChild(attachTo);
@@ -152,7 +153,7 @@ describe("Hotkeys", () => {
 
         it("can generate hotkey combo string from keyboard input", () => {
             const combo = "shift + x";
-            const handleKeyDown = sinon.spy();
+            const handleKeyDown = spy();
 
             @HotkeysTarget
             class ComboComponent extends React.Component<{}, {}> {

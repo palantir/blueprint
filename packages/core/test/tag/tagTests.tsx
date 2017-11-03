@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import { Classes, Tag } from "../../src/index";
 
@@ -16,12 +17,12 @@ describe("<Tag>", () => {
     });
 
     it("renders close button when onRemove is a function", () => {
-        const wrapper = shallow(<Tag onRemove={sinon.spy()}>Hello</Tag>);
+        const wrapper = shallow(<Tag onRemove={spy()}>Hello</Tag>);
         assert.lengthOf(wrapper.find(`.${Classes.TAG_REMOVE}`), 1);
     });
 
     it("clicking close button triggers onRemove", () => {
-        const handleRemove = sinon.spy();
+        const handleRemove = spy();
         shallow(<Tag onRemove={handleRemove}>Hello</Tag>)
             .find(`.${Classes.TAG_REMOVE}`)
             .simulate("click");
@@ -34,7 +35,7 @@ describe("<Tag>", () => {
     });
 
     it("passes all props to the onRemove handler", () => {
-        const handleRemove = sinon.spy();
+        const handleRemove = spy();
         const DATA_ATTR_FOO = "data-foo";
         const tagProps = {
             onRemove: handleRemove,

@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
@@ -35,7 +36,7 @@ describe("<RangeSlider>", () => {
     });
 
     it("moving mouse on left handle updates first value in range", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const slider = renderSlider(<RangeSlider onChange={changeSpy} />);
         slider
             .find(Handle)
@@ -48,7 +49,7 @@ describe("<RangeSlider>", () => {
     });
 
     it("moving touch on left handle updates first value in range", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const slider = renderSlider(<RangeSlider onChange={changeSpy} />);
         slider
             .find(Handle)
@@ -61,7 +62,7 @@ describe("<RangeSlider>", () => {
     });
 
     it("moving mouse on right handle updates second value in range", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const slider = renderSlider(<RangeSlider onChange={changeSpy} />);
         const tickSize = slider.state("tickSize");
         slider
@@ -76,7 +77,7 @@ describe("<RangeSlider>", () => {
     });
 
     it("moving touch on right handle updates second value in range", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const slider = renderSlider(<RangeSlider onChange={changeSpy} />);
         const tickSize = slider.state("tickSize");
         slider
@@ -91,7 +92,7 @@ describe("<RangeSlider>", () => {
     });
 
     it("releasing mouse calls onRelease with nearest value", () => {
-        const releaseSpy = sinon.spy();
+        const releaseSpy = spy();
         const slider = renderSlider(<RangeSlider onRelease={releaseSpy} />);
         slider
             .find(Handle)
@@ -103,7 +104,7 @@ describe("<RangeSlider>", () => {
     });
 
     it("releasing touch calls onRelease with nearest value", () => {
-        const releaseSpy = sinon.spy();
+        const releaseSpy = spy();
         const slider = renderSlider(<RangeSlider onRelease={releaseSpy} />);
         slider
             .find(Handle)
@@ -115,8 +116,8 @@ describe("<RangeSlider>", () => {
     });
 
     it("releasing mouse on same value calls onRelease but not onChange", () => {
-        const releaseSpy = sinon.spy();
-        const changeSpy = sinon.spy();
+        const releaseSpy = spy();
+        const changeSpy = spy();
         renderSlider(<RangeSlider onChange={changeSpy} onRelease={releaseSpy} />)
             .find(Handle)
             .first()
@@ -128,8 +129,8 @@ describe("<RangeSlider>", () => {
     });
 
     it("releasing touch on same value calls onRelease but not onChange", () => {
-        const releaseSpy = sinon.spy();
-        const changeSpy = sinon.spy();
+        const releaseSpy = spy();
+        const changeSpy = spy();
         renderSlider(<RangeSlider onChange={changeSpy} onRelease={releaseSpy} />)
             .find(Handle)
             .first()
@@ -141,7 +142,7 @@ describe("<RangeSlider>", () => {
     });
 
     it("disabled slider does not respond to mouse movement", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const slider = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />);
         slider
             .find(Handle)
@@ -152,7 +153,7 @@ describe("<RangeSlider>", () => {
     });
 
     it("disabled slider does not respond to touch movement", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const slider = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />);
         slider
             .find(Handle)
@@ -163,7 +164,7 @@ describe("<RangeSlider>", () => {
     });
 
     it("disabled slider does not respond to key presses", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const handles = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />).find(Handle);
         handles.first().simulate("keydown", { which: Keys.ARROW_DOWN });
         handles.last().simulate("keydown", { which: Keys.ARROW_DOWN });

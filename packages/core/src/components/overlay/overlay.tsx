@@ -297,7 +297,12 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         }
     }
 
-    private bringFocusInsideOverlay() {
+    // tslint:disable member-ordering
+    /**
+     * @public for testing
+     * @internal
+     */
+    public bringFocusInsideOverlay() {
         // always delay focus manipulation to just before repaint to prevent scroll jumping
         return requestAnimationFrame(() => {
             // container ref may be undefined between component mounting and Portal rendering
@@ -319,6 +324,7 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             }
         });
     }
+    // tslint:enable member-ordering
 
     private handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         const { backdropProps, canOutsideClickClose, enforceFocus, onClose } = this.props;
