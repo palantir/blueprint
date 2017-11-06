@@ -213,10 +213,54 @@ number of rows (`numRows` prop) as well as a set of `Column` children.
 @#### Instance methods
 
 - `resizeRowsByTallestCell(columnIndices?: number | number[]): void` &ndash; Resizes all rows in the
-   table to the height of the tallest visible cell in the specified columns. If no indices are
-   provided, defaults to using the tallest visible cell from all columns in view.
+    table to the height of the tallest visible cell in the specified columns. If no indices are
+    provided, defaults to using the tallest visible cell from all columns in view.
+- `resizeRowsByApproximateHeight(getCellText?: ICellMapper<string>, options?: IResizeRowsByApproximateHeightOptions)`
+    &ndash; __Experimental!__ Resizes every row in the table to fit its
+    maximum-height cell content. Since rows in view are the only ones present in
+    the DOM, this method merely _approximates_ the height of cell content based
+    on average letter width and line height.
+
+    This has two implications: (1) results are best when each cell contains plain
+    text with an internally consistent style, and (2) results may not be perfect.
+
+    Approximation parameters can be configured for the entire table or on a
+    per-cell basis. Default values are fine-tuned to work well with default
+    `Table` font styles. Here are the available options:
+
+    ```tsx
+interface IResizeRowsByApproximateHeightOptions {
+    /**
+     * Approximate width (in pixels) of an average character of text.
+     */
+    getApproximateCharWidth?: number | ICellMapper<number>;
+
+    /**
+     * Approximate height (in pixels) of an average line of text.
+     */
+    getApproximateLineHeight?: number | ICellMapper<number>;
+
+    /**
+     * Sum of horizontal paddings (in pixels) from the left __and__ right sides
+     * of the cell.
+     */
+    getCellHorizontalPadding?: number | ICellMapper<number>;
+
+    /**
+     * Number of extra lines to add in case the calculation is imperfect.
+     */
+    getNumBufferLines?: number | ICellMapper<number>;
+}
+    ```
+
+    `ICellMapper` is just a function that takes a cell-coordinate and returns a generic type:
+
+    ```tsx
+    type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
+    ```
+
 - `scrollToRegion(region: IRegion): void` &ndash; Scrolls the table to the target [region](#table-js.region) in a
-  fashion appropriate to the target region's cardinality:
+   fashion appropriate to the target region's cardinality:
     - `CELLS`: Scroll the top-left cell in the target region to the top-left corner of the viewport.
     - `FULL_ROWS`: Scroll the top-most row in the target region to the top of the viewport.
     - `FULL_COLUMNS`: Scroll the left-most column in the target region to the left side of the viewport.
