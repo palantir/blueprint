@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 
 import { Slider, Switch } from "@blueprintjs/core";
@@ -28,8 +29,13 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
 
     protected renderExample() {
         const { vertical } = this.state;
+
+        const rootClasses = classNames("docs-slider-example", {
+            "docs-slider-example-vertical": vertical,
+        });
+
         return (
-            <div style={{ width: "100%" }}>
+            <div className={rootClasses}>
                 <Slider
                     min={0}
                     max={10}
