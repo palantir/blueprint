@@ -298,9 +298,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const prevMomentDate = this.state.value;
         const momentDate = fromDateToMoment(date);
 
-        // this change handler was triggered by a change in month, day, or (if enabled) time. for UX
-        // purposes, we want to close the popover only if the user explicitly clicked a day within
-        // the current month.
+        // this change handler was triggered by a change in month, day, or (if
+        // enabled) time. for UX purposes, we want to close the popover only if
+        // the user explicitly clicked a day within the current month.
         const isOpen =
             !hasUserManuallySelectedDate ||
             this.hasMonthChanged(prevMomentDate, momentDate) ||
