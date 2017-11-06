@@ -111,7 +111,7 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { tagInputProps = {}, popoverProps = {}, selectedItems } = this.props;
+        const { tagInputProps = {}, popoverProps = {}, selectedItems = [] } = this.props;
         const { handleKeyDown, handleKeyUp, query } = listProps;
         const defaultInputProps: HTMLInputProps = {
             placeholder: "Search...",
@@ -121,8 +121,6 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
             ref: this.refHandlers.input,
             value: query,
         };
-
-        const tagInputValues = selectedItems == null ? [] : selectedItems.map(this.props.tagRenderer);
 
         return (
             <Popover
@@ -146,7 +144,7 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
                         {...tagInputProps}
                         inputProps={defaultInputProps}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
-                        values={tagInputValues}
+                        values={selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
                 <div onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)} onKeyUp={handleKeyUp}>
