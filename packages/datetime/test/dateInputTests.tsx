@@ -321,6 +321,26 @@ describe("<DateInput>", () => {
             const wrapper = mount(<DateInput locale="de" format="L" value={DATE2} />);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_DE_STR);
         });
+
+        it.only("Clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
+            const onChange = sinon.spy();
+            const { getSelectedDays, root } = wrap(
+                <DateInput
+                    canClearSelection={false}
+                    onChange={onChange}
+                    timePrecision={TimePickerPrecision.SECOND}
+                    value={DATE}
+                />,
+            );
+            root.setState({ isOpen: true });
+
+            getSelectedDays()
+                .at(0)
+                .simulate("click");
+
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.firstCall.args, [DATE]);
+        });
     });
 
     /* Assert Date equals YYYY-MM-DD string. */
