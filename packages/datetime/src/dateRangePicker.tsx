@@ -187,20 +187,24 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
             initialMonth = DateUtils.getDateBetween([props.minDate, props.maxDate]);
         }
 
-        /*
-        * if the initial month is the last month of the picker's
-        * allowable range, the react-day-picker library will show
-        * the max month on the left and the *min* month on the right.
-        * subtracting one avoids that weird, wraparound state (#289).
-        */
+        // if the initial month is the last month of the picker's
+        // allowable range, the react-day-picker library will show
+        // the max month on the left and the *min* month on the right.
+        // subtracting one avoids that weird, wraparound state (#289).
         const initialMonthEqualsMinMonth = DateUtils.areSameMonth(initialMonth, props.minDate);
         const initalMonthEqualsMaxMonth = DateUtils.areSameMonth(initialMonth, props.maxDate);
         if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
             initialMonth.setMonth(initialMonth.getMonth() - 1);
         }
 
-        const leftView = new MonthAndYear(initialMonth.getMonth(), initialMonth.getFullYear());
-        const rightView = leftView.getNextMonth();
+        // show the selected end date's encompassing month in the right view if
+        // the calendars don't have to be contiguous.
+        const leftView = MonthAndYear.fromDate(initialMonth);
+        const rightDate = value[1];
+        const rightView =
+            !props.contiguousCalendarMonths && rightDate != null
+                ? MonthAndYear.fromDate(rightDate)
+                : leftView.getNextMonth();
         this.state = { leftView, rightView, value, hoverValue: [null, null] };
     }
 
@@ -254,7 +258,6 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
                 </div>
             );
         } else {
-            debugger;
             // const rightMonth = contiguousCalendarMonths ? rightView.getFullDate()
             return (
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
@@ -629,7 +632,6 @@ function getStateChange(
                     leftView = nextValueStartMonthAndYear;
                     rightView = nextValueStartMonthAndYear.getNextMonth();
                 }
-
             } else {
                 // Different start and end date months, adjust display months.
                 if (!leftView.isSame(nextValueStartMonthAndYear)) {
