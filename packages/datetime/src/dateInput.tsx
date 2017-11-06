@@ -196,6 +196,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 <DatePicker {...this.props} onChange={this.handleDateChange} value={dateValue} />
             ) : (
                 <DateTimePicker
+                    canClearSelection={this.props.canClearSelection}
                     onChange={this.handleDateChange}
                     value={dateValue}
                     datePickerProps={this.props}
