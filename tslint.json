@@ -29,6 +29,8 @@
       "options": ["log", "time", "timeEnd", "trace"]
     },
     "no-default-export": true,
+    // TODO: enable this
+    "no-implicit-dependencies": false,
     "no-invalid-this": {
       "options": ["check-function-in-method"]
     },
