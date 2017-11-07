@@ -141,9 +141,9 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     value?: Date;
 
     /**
-     * Any props to be passed on to the `TimePicker` when . `value`, `onChange`,
-     * and `timePrecision` will be ignored in favor of the top-level props by
-     * the same name.
+     * Any props to be passed on to the `TimePicker`. `value`, `onChange`, and
+     * `timePrecision` will be ignored in favor of the corresponding top-level
+     * props on this component.
      */
     timePickerProps?: ITimePickerProps;
 
