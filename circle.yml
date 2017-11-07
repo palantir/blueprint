@@ -36,12 +36,12 @@ dependencies:
     - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
     - yarn
     - echo "Checking if lockfiles changed..." && git diff --exit-code
-    - yarn build:gulp
+    - yarn build-libs
 
 test:
   override:
-    - gulp check
-    - gulp test
+    - case $CIRCLE_NODE_INDEX in 0) yarn build:webpack && yarn dist ;; 1) yarn test ;; 2) yarn lint ;; esac:
+        parallel: true
 
 deployment:
   preview:

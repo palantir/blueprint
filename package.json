@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build": "npm-run-all build:typescript build:sass build:webpack",
+    "build-libs": "npm-run-all build:typescript build:sass",
     "build:site": "npm-run-all build build:landing clean:docs copy:docs copy:landing",
     "build:landing": "lerna run build --scope '@blueprintjs/site-landing'",
     "build:typescript": "lerna run build:typescript",
