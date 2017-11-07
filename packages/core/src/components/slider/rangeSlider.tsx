@@ -105,9 +105,18 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
     }
 
     protected nearestHandleForValue(value: number, firstHandle: Handle, secondHandle: Handle) {
-        const firstDistance = Math.abs(value - firstHandle.props.value);
+        const firstHandleValue = firstHandle.props.value;
+        const firstDistance = Math.abs(value - firstHandleValue);
         const secondDistance = Math.abs(value - secondHandle.props.value);
-        return secondDistance < firstDistance ? secondHandle : firstHandle;
+        if (firstDistance < secondDistance) {
+            return firstHandle;
+        } else if (secondDistance < firstDistance) {
+            return secondHandle;
+        } else {
+            // if the values are equal, return the handle that is *able* to move
+            // in the necessary direction.
+            return value < firstHandleValue ? firstHandle : secondHandle;
+        }
     }
 
     protected validateProps(props: IRangeSliderProps) {
