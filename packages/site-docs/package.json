@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config ./webpack.config.js",
     "clean": "rm -rf dist/*",
-    "dev": "webpack-dev-server --hot --config ./webpack.config.js",
+    "dev": "webpack-dev-server --config ./webpack.config.js",
     "dist": "NODE_ENV=production yarn build",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
@@ -29,7 +29,8 @@
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.1",
     "react-dom": "^15.6.1",
-    "tslib": "^1.7.1"
+    "tslib": "^1.7.1",
+    "webpack": "^3.8.1"
   },
   "devDependencies": {
     "@blueprintjs/webpack-build-scripts": "^0.1.0",

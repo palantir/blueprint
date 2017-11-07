@@ -7,7 +7,7 @@ const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        "app": [
+        "site-docs": [
             "./src/index.tsx",
             "./src/index.scss"
         ],
@@ -16,14 +16,23 @@ module.exports = Object.assign({}, baseConfig, {
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "./dist"),
+        publicPath: "/",
     },
 
     devServer: {
-        contentBase: "./dist",
+        contentBase: "./",
         disableHostCheck: true,
         historyApiFallback: true,
-        https: true,
+        https: false,
+        // hot: true,
+        index: path.resolve(__dirname, "index.html"),
         inline: true,
         stats: "errors-only",
+        open: true,
+        overlay: {
+            warnings: true,
+            errors: true,
+        },
+        port: 9000,
     }
 });
