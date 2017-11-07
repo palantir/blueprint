@@ -64,7 +64,7 @@ describe("<MultiSelect>", () => {
         assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
     });
 
-    it("selectedItems can be missing without throwing an error", () => {
+    it("selectedItems is optional", () => {
         assert.doesNotThrow(() => multiselect({ selectedItems: undefined }));
     });
 
