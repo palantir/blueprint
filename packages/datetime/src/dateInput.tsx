@@ -196,6 +196,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 <DatePicker {...this.props} onChange={this.handleDateChange} value={dateValue} />
             ) : (
                 <DateTimePicker
+                    canClearSelection={this.props.canClearSelection}
                     onChange={this.handleDateChange}
                     value={dateValue}
                     datePickerProps={this.props}
@@ -298,9 +299,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const prevMomentDate = this.state.value;
         const momentDate = fromDateToMoment(date);
 
-        // this change handler was triggered by a change in month, day, or (if enabled) time. for UX
-        // purposes, we want to close the popover only if the user explicitly clicked a day within
-        // the current month.
+        // this change handler was triggered by a change in month, day, or (if
+        // enabled) time. for UX purposes, we want to close the popover only if
+        // the user explicitly clicked a day within the current month.
         const isOpen =
             !hasUserManuallySelectedDate ||
             this.hasMonthChanged(prevMomentDate, momentDate) ||

@@ -262,6 +262,25 @@ describe("<DateInput>", () => {
             assert.isTrue(onError.calledOnce);
             assert.isNaN((onError.args[0][0] as Date).valueOf());
         });
+
+        it("Clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
+            const DATE = new Date(2016, Months.APRIL, 4);
+            const onChange = sinon.spy();
+            const { getDay, root } = wrap(
+                <DateInput
+                    canClearSelection={false}
+                    defaultValue={DATE}
+                    onChange={onChange}
+                    timePrecision={TimePickerPrecision.SECOND}
+                />,
+            );
+            root.setState({ isOpen: true });
+
+            getDay(DATE.getDate()).simulate("click");
+
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.firstCall.args, [DATE]);
+        });
     });
 
     describe("when controlled", () => {
@@ -320,6 +339,26 @@ describe("<DateInput>", () => {
         it("Formats locale-specific format strings properly", () => {
             const wrapper = mount(<DateInput locale="de" format="L" value={DATE2} />);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_DE_STR);
+        });
+
+        it("Clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
+            const onChange = sinon.spy();
+            const { getSelectedDays, root } = wrap(
+                <DateInput
+                    canClearSelection={false}
+                    onChange={onChange}
+                    timePrecision={TimePickerPrecision.SECOND}
+                    value={DATE}
+                />,
+            );
+            root.setState({ isOpen: true });
+
+            getSelectedDays()
+                .at(0)
+                .simulate("click");
+
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.firstCall.args, [DATE]);
         });
     });
 
