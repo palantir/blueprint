@@ -10,7 +10,7 @@ import * as React from "react";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
-import { RangeSlider } from "../../src/index";
+import { Classes, RangeSlider } from "../../src/index";
 import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
 describe("<RangeSlider>", () => {
@@ -163,6 +163,25 @@ describe("<RangeSlider>", () => {
         handles.first().simulate("keydown", { which: Keys.ARROW_DOWN });
         handles.last().simulate("keydown", { which: Keys.ARROW_DOWN });
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
+    });
+
+    it("when values are equal, releasing mouse on a track still moves the nearest handle", () => {
+        const NEXT_LOW_VALUE = 1;
+        const NEXT_HIGH_VALUE = 9;
+        const VALUE = 5;
+
+        const changeSpy = sinon.spy();
+        const slider = renderSlider(<RangeSlider onChange={changeSpy} value={[VALUE, VALUE]} />);
+        const tickSize = slider.state("tickSize");
+
+        slider.find(`.${Classes.SLIDER}`).simulate("mousedown", { clientX: tickSize * NEXT_LOW_VALUE });
+        assert.equal(changeSpy.callCount, 1, "lower handle invokes onChange");
+        assert.deepEqual(changeSpy.firstCall.args[0], [NEXT_LOW_VALUE, VALUE], "lower handle moves");
+        changeSpy.reset();
+
+        slider.find(`.${Classes.SLIDER}`).simulate("mousedown", { clientX: tickSize * NEXT_HIGH_VALUE });
+        assert.equal(changeSpy.callCount, 1, "higher handle invokes onChange");
+        assert.deepEqual(changeSpy.firstCall.args[0], [VALUE, NEXT_HIGH_VALUE], "higher handle moves");
     });
 
     function renderSlider(slider: JSX.Element) {
