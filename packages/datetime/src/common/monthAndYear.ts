@@ -7,6 +7,10 @@
 import { getDateNextMonth, getDatePreviousMonth } from "./dateUtils";
 
 export class MonthAndYear {
+    public static fromDate(date: Date) {
+        return date == null ? undefined : new MonthAndYear(date.getMonth(), date.getFullYear());
+    }
+
     private date: Date;
 
     constructor(month?: number, year?: number) {

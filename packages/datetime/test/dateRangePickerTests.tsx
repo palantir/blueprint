@@ -386,6 +386,13 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.leftView.getYear(), YEAR);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.DECEMBER);
         });
+
+        it("right calendar shows the month immediately after the left view by default", () => {
+            const startDate = new Date(2017, Months.MAY, 5);
+            const endDate = new Date(2017, Months.JULY, 5);
+            renderDateRangePicker({ value: [startDate, endDate] });
+            assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JUNE);
+        });
     });
 
     describe("left/right calendar when not sequential", () => {
@@ -528,6 +535,13 @@ describe("<DateRangePicker>", () => {
             TestUtils.Simulate.click(prevBtn[1]);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.APRIL);
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.MAY);
+        });
+
+        it("right calendar shows the month containing the selected end date", () => {
+            const startDate = new Date(2017, Months.MAY, 5);
+            const endDate = new Date(2017, Months.JULY, 5);
+            renderDateRangePicker({ contiguousCalendarMonths: false, value: [startDate, endDate] });
+            assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JULY);
         });
     });
 
