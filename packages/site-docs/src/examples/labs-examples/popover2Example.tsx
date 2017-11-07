@@ -5,7 +5,7 @@
  */
 
 import * as classNames from "classnames";
-import * as PopperJS from "popper.js";
+import PopperJS from "popper.js";
 import * as React from "react";
 
 import {
@@ -31,7 +31,7 @@ const INTERACTION_KINDS = [
     { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
 ];
 
-const PLACEMENTS = (PopperJS as any).placements.map((p: PopperJS.Placement) => (
+const PLACEMENTS = PopperJS.placements.map((p: PopperJS.Placement) => (
     <option key={p} value={p}>
         {p}
     </option>

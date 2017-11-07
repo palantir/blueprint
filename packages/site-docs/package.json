@@ -24,6 +24,7 @@
     "dom4": "^1.8.3",
     "moment": "^2.18.1",
     "normalize.css": "~4.1.1",
+    "popper.js": "^1.12.6",
     "pure-render-decorator": "^1.2.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.1",

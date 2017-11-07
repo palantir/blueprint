@@ -5,12 +5,13 @@
  */
 
 import * as classNames from "classnames";
-import { ModifierFn, Modifiers as PopperModifiers, Placement } from "popper.js";
+import PopperJS from "popper.js";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
 
-export { PopperModifiers, Placement };
+export type PopperModifiers = PopperJS.Modifiers;
+export type Placement = PopperJS.Placement;
 
 import {
     AbstractComponent,
@@ -563,7 +564,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
     }
 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
-    private updatePopoverState: ModifierFn = data => {
+    private updatePopoverState: PopperJS.ModifierFn = data => {
         // pretty sure it's safe to always set these (and let sCU determine) because they're both strings
         this.setState({
             arrowRotation: getArrowAngle(data.placement),
