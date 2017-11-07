@@ -8,6 +8,7 @@ export * from "./alertExample";
 export * from "./buttonsExample";
 export * from "./checkboxExample";
 export * from "./collapseExample";
+export * from "./cardExample";
 export * from "./collapsibleListExample";
 export * from "./dialogExample";
 export * from "./contextMenuExample";

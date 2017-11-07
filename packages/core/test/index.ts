@@ -7,6 +7,7 @@ import "./alert/alertTests";
 import "./breadcrumbs/breadcrumbTests";
 import "./buttons/buttonTests";
 import "./callout/calloutTests";
+import "./card/cardTests";
 import "./collapse/collapseTests";
 import "./collapsible-list/collapsibleListTests";
 import "./common/propsTests.ts";
