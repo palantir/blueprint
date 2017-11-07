@@ -8,7 +8,7 @@ import { Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs";
 import * as React from "react";
 
-import { DateInput, TimePickerPrecision } from "../src";
+import { DateInput, TimePickerPrecision } from "@blueprintjs/datetime";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { PrecisionSelect } from "./common/precisionSelect";
 

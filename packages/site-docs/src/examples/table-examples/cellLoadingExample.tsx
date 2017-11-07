@@ -7,8 +7,7 @@ import * as React from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
 import { BaseExample, handleStringChange } from "@blueprintjs/docs";
-
-import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table } from "../src";
+import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
     [key: string]: number | string;

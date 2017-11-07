@@ -7,8 +7,7 @@
 import * as React from "react";
 
 import { BaseExample } from "@blueprintjs/docs";
-
-import { Cell, Column, Table } from "../src";
+import { Cell, Column, Table } from "@blueprintjs/table";
 
 export class TableDollarExample extends BaseExample<{}> {
     public renderExample() {

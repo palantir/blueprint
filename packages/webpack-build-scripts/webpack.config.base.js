@@ -1,5 +1,6 @@
 /**
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 const path = require("path");
@@ -111,7 +112,7 @@ module.exports = {
                     : [ require.resolve("style-loader"), ...scssLoaders ],
             },
             {
-                test: /\.(eot|ttf|woff|woff2|svg)$/,
+                test: /\.(eot|ttf|woff|woff2|svg|png)$/,
                 loader: require.resolve("file-loader"),
             },
         ],

@@ -9,7 +9,7 @@ import * as React from "react";
 
 import { Button, Classes, Intent, ITagProps, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
-import { TagInput } from "../src";
+import { TagInput } from "@blueprintjs/labs";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 

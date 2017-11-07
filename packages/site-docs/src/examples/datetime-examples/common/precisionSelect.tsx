@@ -4,9 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes } from "@blueprintjs/core";
 import * as React from "react";
-import { TimePickerPrecision } from "../../src";
+
+import { Classes } from "@blueprintjs/core";
+import { TimePickerPrecision } from "@blueprintjs/datetime";
 
 export interface IPrecisionSelectProps {
     /**

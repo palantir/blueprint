@@ -10,7 +10,7 @@ import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
 
-import { DatePicker } from "../src";
+import { DatePicker } from "@blueprintjs/datetime";
 
 const FORMAT = "dddd, LL";
 

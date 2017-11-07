@@ -8,8 +8,7 @@ import * as React from "react";
 
 import { Intent } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
-
-import { Column, ColumnHeaderCell, EditableCell, EditableName, Table } from "../src";
+import { Column, ColumnHeaderCell, EditableCell, EditableName, Table } from "@blueprintjs/table";
 
 export interface ITableEditableExampleState {
     columnNames?: string[];

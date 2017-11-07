@@ -8,8 +8,7 @@ import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 import { BaseExample, handleNumberChange } from "@blueprintjs/docs";
-
-import { Cell, Column, ColumnLoadingOption, Table } from "../src";
+import { Cell, Column, ColumnLoadingOption, Table } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
     [key: string]: number | string;

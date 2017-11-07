@@ -10,8 +10,16 @@ import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
-
-import { Cell, Column, ColumnHeaderCell, CopyCellsMenuItem, IMenuContext, SelectionModes, Table, Utils } from "../src";
+import {
+    Cell,
+    Column,
+    ColumnHeaderCell,
+    CopyCellsMenuItem,
+    IMenuContext,
+    SelectionModes,
+    Table,
+    Utils,
+} from "@blueprintjs/table";
 
 // tslint:disable-next-line:no-var-requires
 const sumo = require("./sumo.json") as any[];

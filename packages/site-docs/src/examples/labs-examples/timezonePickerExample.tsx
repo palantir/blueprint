@@ -8,8 +8,7 @@ import * as React from "react";
 
 import { Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
-
-import { TimezoneDisplayFormat, TimezonePicker } from "../src";
+import { TimezoneDisplayFormat, TimezonePicker } from "@blueprintjs/labs";
 
 export interface ITimezonePickerExampleState {
     date?: Date;

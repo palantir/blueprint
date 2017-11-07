@@ -8,7 +8,7 @@ import { Classes } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 import * as React from "react";
 
-import { DateTimePicker, TimePickerPrecision } from "../src";
+import { DateTimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
 import { Moment } from "./datePickerExample";
 
 export class DateTimePickerExample extends BaseExample<{ date: Date }> {

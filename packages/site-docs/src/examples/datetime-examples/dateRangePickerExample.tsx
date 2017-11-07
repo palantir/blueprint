@@ -9,7 +9,7 @@ import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprint
 import * as moment from "moment";
 import * as React from "react";
 
-import { DateRange, DateRangePicker } from "../src";
+import { DateRange, DateRangePicker } from "@blueprintjs/datetime";
 import { Moment } from "./datePickerExample";
 
 export interface IDateRangePickerExampleState {

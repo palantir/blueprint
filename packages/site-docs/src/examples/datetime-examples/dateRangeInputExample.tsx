@@ -8,7 +8,7 @@ import { Classes, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 import * as React from "react";
 
-import { DateRangeInput } from "../src";
+import { DateRangeInput } from "@blueprintjs/datetime";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 
 export interface IDateRangeInputExampleState {

@@ -8,10 +8,10 @@ import { IBaseExampleProps, IExampleMap } from "@blueprintjs/docs";
 import * as React from "react";
 
 // tslint:disable no-submodule-imports
-import * as CoreExamples from "@blueprintjs/core/examples";
-import * as DateExamples from "@blueprintjs/datetime/examples";
-import * as LabsExamples from "@blueprintjs/labs/examples";
-import * as TableExamples from "@blueprintjs/table/examples";
+import * as CoreExamples from "../examples/core-examples";
+import * as DateExamples from "../examples/datetime-examples";
+import * as LabsExamples from "../examples/labs-examples";
+import * as TableExamples from "../examples/table-examples";
 
 import { getTheme } from "../components/blueprintDocs";
 

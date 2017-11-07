@@ -7,8 +7,7 @@
 import * as React from "react";
 
 import { BaseExample } from "@blueprintjs/docs";
-
-import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "../src";
+import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "@blueprintjs/table";
 
 interface ITimezone {
     name: string;
