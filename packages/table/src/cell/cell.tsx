@@ -79,7 +79,7 @@ export interface ICellProps extends IIntentProps, IProps {
     onKeyUp?: React.KeyboardEventHandler<HTMLElement>;
 
     /**
-     * Callback invoked when a character-key is pressed
+     * Callback invoked when a character-key is pressed.
      */
     onKeyPress?: React.KeyboardEventHandler<HTMLElement>;
 
