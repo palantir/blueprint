@@ -3,50 +3,42 @@
   "version": "1.5.0",
   "description": "Blueprint landing page",
   "private": true,
-  "author": "Palantir Technologies",
-  "license": "Apache-2.0",
   "scripts": {
+    "build": "webpack --config ./webpack.config.js",
     "build:copy": "mkdir -p dist/assets && cp ./src/index.html dist/. && cp -r ./resources/img dist/assets/.",
-    "build:webpack": "webpack --config webpack.config.js",
-    "build": "npm-run-all clean build:copy build:webpack",
-    "check:typescript": "$(cd ..; npm bin)/tslint src/**/*.tsx",
-    "check:sass": "$(cd ..; npm bin)/stylelint src/**/*.scss",
-    "check": "npm-run-all -p check:typescript check:sass",
-    "clean": "rm -rf dist",
-    "deploy:copy": "cp -r dist/* ../../docs/.",
-    "deploy": "npm-run-all build deploy:copy",
+    "clean": "rm -rf dist/*",
+    "dev": "webpack-dev-server --config ./webpack.config.js",
+    "dist": "NODE_ENV=production npm-run-all build dist:copy",
+    "dist:copy": "cp -r dist/* ../../docs/.",
+    "lint": "npm-run-all -p lint:stylelint lint:tslint",
+    "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
+    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../../tslint.json",
+    "lint-fix": "yarn lint:tslint --fix",
     "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f resources/img",
-    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f resources/inline && node scripts/dedupe-svg-ids.js",
-    "serve": "http-server dist",
-    "start": "npm-run-all -s clean build -p serve watch",
-    "watch": "onchange 'src/**' -- npm-run-all build:copy build:webpack"
+    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f resources/inline && node scripts/dedupe-svg-ids.js"
   },
   "devDependencies": {
     "@blueprintjs/core": "^1.25.1",
-    "autoprefixer": "^7.1.2",
+    "@blueprintjs/webpack-build-scripts": "^0.1.0",
     "classnames": "^2.2.5",
-    "css-loader": "^0.28.7",
-    "extract-text-webpack-plugin": "^3.0.1",
-    "file-loader": "^1.1.5",
-    "http-server": "^0.10.0",
-    "imports-loader": "^0.7.1",
     "node-sass": "^4.5.3",
     "npm-run-all": "^4.1.1",
-    "onchange": "^3.2.1",
-    "postcss-loader": "^2.0.8",
-    "raw-loader": "^0.5.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.1",
     "react-dom": "^15.6.1",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.0",
     "svgo": "^0.7.2",
-    "ts-loader": "^3.0.5",
-    "webpack": "^3.8.1"
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
   },
   "keywords": [
     "blueprint",
     "site-landing",
     "open source"
-  ]
+  ],
+  "author": "Palantir Technologies",
+  "license": "Apache-2.0"
 }

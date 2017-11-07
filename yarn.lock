@@ -358,7 +358,7 @@ arraybuffer.slice@0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/arraybuffer.slice/-/arraybuffer.slice-0.0.6.tgz#f33b2159f0532a3f3107a272c0ccfbd1ad2979ca"
 
-arrify@^1.0.0, arrify@~1.0.1:
+arrify@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
 
@@ -944,7 +944,7 @@ chalk@^1.0.0, chalk@^1.1.1, chalk@^1.1.3:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.3.0:
+chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.3.0.tgz#b5ea48efc9c1793dccc9b4767c93914d3f2d52ba"
   dependencies:
@@ -980,21 +980,6 @@ cheerio@^0.22.0:
 chokidar@^1.4.1, chokidar@^1.6.0, chokidar@^1.6.1, chokidar@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
-  dependencies:
-    anymatch "^1.3.0"
-    async-each "^1.0.0"
-    glob-parent "^2.0.0"
-    inherits "^2.0.1"
-    is-binary-path "^1.0.0"
-    is-glob "^2.0.0"
-    path-is-absolute "^1.0.0"
-    readdirp "^2.0.0"
-  optionalDependencies:
-    fsevents "^1.0.0"
-
-chokidar@~1.6.0:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.6.1.tgz#2f4447ab5e96e50fb3d789fd90d4c72e0e4c70c2"
   dependencies:
     anymatch "^1.3.0"
     async-each "^1.0.0"
@@ -1621,13 +1606,6 @@ cross-spawn@^5.0.1, cross-spawn@^5.1.0:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-cross-spawn@~4.0.0:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-4.0.2.tgz#7b9247621c23adfdd3856004a823cbe397424d41"
-  dependencies:
-    lru-cache "^4.0.1"
-    which "^1.2.9"
-
 cryptiles@2.x.x:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/cryptiles/-/cryptiles-2.0.5.tgz#3bdfecdc608147c1c67202fa291e7dca59eaa3b8"
@@ -1669,7 +1647,7 @@ css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
 
-css-loader@^0.28.4, css-loader@^0.28.7:
+css-loader@^0.28.4:
   version "0.28.7"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-0.28.7.tgz#5f2ee989dd32edd907717f953317656160999c1b"
   dependencies:
@@ -2248,7 +2226,7 @@ enhanced-resolve@3.3.0:
     object-assign "^4.0.1"
     tapable "^0.2.5"
 
-enhanced-resolve@^3.0.0, enhanced-resolve@^3.4.0:
+enhanced-resolve@^3.4.0:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-3.4.1.tgz#0421e339fd71419b3da13d129b3979040230476e"
   dependencies:
@@ -2649,7 +2627,7 @@ extglob@^2.0.2:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-text-webpack-plugin@^3.0.0, extract-text-webpack-plugin@^3.0.1:
+extract-text-webpack-plugin@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extract-text-webpack-plugin/-/extract-text-webpack-plugin-3.0.2.tgz#5f043eaa02f9750a9258b78c0a6e0dc1408fb2f7"
   dependencies:
@@ -2739,13 +2717,6 @@ file-loader@^0.11.2:
   resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-0.11.2.tgz#4ff1df28af38719a6098093b88c82c71d1794a34"
   dependencies:
     loader-utils "^1.0.2"
-
-file-loader@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-1.1.5.tgz#91c25b6b6fbe56dae99f10a425fd64933b5c9daa"
-  dependencies:
-    loader-utils "^1.0.2"
-    schema-utils "^0.3.0"
 
 filename-regex@^2.0.0:
   version "2.0.1"
@@ -3597,13 +3568,6 @@ import-local@^0.1.1:
   dependencies:
     pkg-dir "^2.0.0"
     resolve-cwd "^2.0.0"
-
-imports-loader@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/imports-loader/-/imports-loader-0.7.1.tgz#f204b5f34702a32c1db7d48d89d5e867a0441253"
-  dependencies:
-    loader-utils "^1.0.2"
-    source-map "^0.5.6"
 
 imurmurhash@^0.1.4:
   version "0.1.4"
@@ -4910,7 +4874,7 @@ minimist@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
 
-minimist@1.2.0, minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0, minimist@~1.2.0:
+minimist@1.2.0, minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
 
@@ -5415,16 +5379,6 @@ once@1.x, once@^1.3.0, once@^1.3.1, once@^1.3.2, once@^1.3.3, once@^1.4.0:
   dependencies:
     wrappy "1"
 
-onchange@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/onchange/-/onchange-3.2.1.tgz#7669312c8a8f94d80b4595dc8abe5d119559f7e0"
-  dependencies:
-    arrify "~1.0.1"
-    chokidar "~1.6.0"
-    cross-spawn "~4.0.0"
-    minimist "~1.2.0"
-    tree-kill "~1.1.0"
-
 onecolor@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/onecolor/-/onecolor-3.0.4.tgz#75a46f80da6c7aaa5b4daae17a47198bd9652494"
@@ -5913,7 +5867,7 @@ postcss-load-plugins@^2.3.0:
     cosmiconfig "^2.1.1"
     object-assign "^4.1.0"
 
-postcss-loader@^2.0.6, postcss-loader@^2.0.8:
+postcss-loader@^2.0.6:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-2.0.8.tgz#8c67ddb029407dfafe684a406cfc16bad2ce0814"
   dependencies:
@@ -7450,13 +7404,6 @@ style-loader@^0.18.2:
     loader-utils "^1.0.2"
     schema-utils "^0.3.0"
 
-style-loader@^0.19.0:
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.19.0.tgz#7258e788f0fee6a42d710eaf7d6c2412a4c50759"
-  dependencies:
-    loader-utils "^1.0.2"
-    schema-utils "^0.3.0"
-
 style-search@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/style-search/-/style-search-0.1.0.tgz#7958c793e47e32e07d2b5cafe5c0bf8e12e77902"
@@ -7832,10 +7779,6 @@ tough-cookie@~2.3.0, tough-cookie@~2.3.3:
   dependencies:
     punycode "^1.4.1"
 
-tree-kill@~1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.1.0.tgz#c963dcf03722892ec59cba569e940b71954d1729"
-
 trim-newlines@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-1.0.0.tgz#5887966bb582a4503a41eb524f7d35011815a613"
@@ -7847,15 +7790,6 @@ trim-off-newlines@^1.0.0:
 trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
-
-ts-loader@^3.0.5:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-3.1.1.tgz#602d93c12029eaf8fa1ee478a90785d40c5f6658"
-  dependencies:
-    chalk "^2.3.0"
-    enhanced-resolve "^3.0.0"
-    loader-utils "^1.0.2"
-    semver "^5.0.1"
 
 ts-quick-docs@^0.5.3:
   version "0.5.3"
