@@ -7,17 +7,18 @@
   "style": "dist/table.css",
   "unpkg": "dist/table.bundle.js",
   "scripts": {
-    "build": "npm-run-all -p 'build:*'",
-    "build:typescript": "tsc -p ./src",
-    "build:sass": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
+    "compile": "npm-run-all -p 'compile:*'",
+    "compile:typescript": "tsc -p ./src",
+    "compile:sass": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
     "clean": "rm -rf dist/*",
-    "dev": "npm-run-all -p 'build:typescript --watch' 'build:sass --watch' 'dev:preview'",
+    "dev": "npm-run-all -p 'compile:typescript --watch' 'compile:sass --watch' 'dev:preview'",
     "dev:preview": "webpack-dev-server --config webpack.config.preview.js",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../../tslint.json",
     "lint-fix": "yarn lint:tslint --fix",
-    "test": "karma start"
+    "test": "karma start",
+    "verify": "npm-run-all compile -p test lint"
   },
   "dependencies": {
     "@blueprintjs/core": "^1.32.0",

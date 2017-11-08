@@ -1,17 +1,18 @@
 {
-  "name": "@blueprintjs/site-docs",
+  "name": "@blueprintjs/docs-app",
   "version": "1.32.0",
   "description": "Blueprint Documentation Site",
   "private": true,
   "scripts": {
-    "build": "webpack --config ./webpack.config.js",
+    "bundle": "webpack --config ./webpack.config.js",
     "clean": "rm -rf dist/*",
     "dev": "webpack-dev-server --config ./webpack.config.js",
-    "dist": "NODE_ENV=production yarn build",
+    "dist": "NODE_ENV=production yarn bundle",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../../tslint.json",
-    "lint-fix": "yarn lint:tslint --fix"
+    "lint-fix": "yarn lint:tslint --fix",
+    "verify": "npm-run-all -p dist lint"
   },
   "dependencies": {
     "@blueprintjs/core": "^1.32.0",

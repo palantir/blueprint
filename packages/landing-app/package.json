@@ -1,21 +1,22 @@
 {
-  "name": "@blueprintjs/site-landing",
+  "name": "@blueprintjs/landing-app",
   "version": "1.5.0",
   "description": "Blueprint landing page",
   "private": true,
   "scripts": {
-    "build": "webpack --config ./webpack.config.js",
-    "build:copy": "mkdir -p dist/assets && cp ./src/index.html dist/. && cp -r ./resources/img dist/assets/.",
+    "bundle": "webpack --config ./webpack.config.js",
+    "copy": "mkdir -p dist/assets && cp ./src/index.html dist/. && cp -r ./resources/img dist/assets/.",
     "clean": "rm -rf dist/*",
     "dev": "webpack-dev-server --config ./webpack.config.js",
-    "dist": "NODE_ENV=production npm-run-all build dist:copy",
+    "dist": "NODE_ENV=production npm-run-all bundle copy",
     "dist:copy": "cp -r dist/* ../../docs/.",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../../tslint.json",
     "lint-fix": "yarn lint:tslint --fix",
     "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f resources/img",
-    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f resources/inline && node scripts/dedupe-svg-ids.js"
+    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f resources/inline && node scripts/dedupe-svg-ids.js",
+    "verify": "npm-run-all -p dist lint"
   },
   "devDependencies": {
     "@blueprintjs/core": "^1.25.1",
@@ -36,8 +37,7 @@
   },
   "keywords": [
     "blueprint",
-    "site-landing",
-    "open source"
+    "landing page"
   ],
   "author": "Palantir Technologies",
   "license": "Apache-2.0"

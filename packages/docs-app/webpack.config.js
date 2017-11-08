@@ -7,7 +7,7 @@ const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        "site-docs": [
+        "docs-app": [
             "./src/index.tsx",
             "./src/index.scss"
         ],
@@ -24,6 +24,7 @@ module.exports = Object.assign({}, baseConfig, {
         disableHostCheck: true,
         historyApiFallback: true,
         https: false,
+        // TODO: enable HMR
         // hot: true,
         index: path.resolve(__dirname, "index.html"),
         inline: true,

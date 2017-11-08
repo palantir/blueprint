@@ -7,19 +7,19 @@ source scripts/artifact-variables
 
 # Docs
 echo "Docs preview...RENDER"
-PREVIEWS="$(artifactLink '/packages/site-docs/dist/index.html' 'documentation')"
+PREVIEWS="$(artifactLink '/packages/docs-app/dist/index.html' 'documentation')"
 COVERAGES="$(coverageLink '/packages/core/' 'core')"
 COVERAGES="$COVERAGES | $(coverageLink 'packages/datetime/' 'datetime')"
 
 # Landing
-echo -n "site-landing preview..."
-git diff HEAD..origin/master --quiet -- packages/site-landing
+echo -n "landing-app preview..."
+git diff HEAD..origin/master --quiet -- packages/landing-app
 if [ $? -eq 0 ]; then
     echo "SKIP"
 else
     echo "RENDER"
-    (cd packages/site-landing; npm run build)
-    PREVIEWS="$PREVIEWS | $(artifactLink '/packages/site-landing/dist/index.html' 'landing')"
+    (cd packages/landing-app; npm run build)
+    PREVIEWS="$PREVIEWS | $(artifactLink '/packages/landing-app/dist/index.html' 'landing')"
 fi
 
 # Table

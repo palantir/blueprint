@@ -14,7 +14,7 @@ general:
     - packages/datetime/dist
     - packages/docs/dist
     - packages/labs/dist
-    - packages/site-docs/dist
+    - packages/docs-app/dist
     - packages/site-landing/dist
     - packages/table/dist
     # code coverage reports
@@ -36,11 +36,10 @@ dependencies:
     - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
     - yarn
     - echo "Checking if lockfiles changed..." && git diff --exit-code
-    - yarn build-libs
 
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) yarn build:webpack && yarn dist ;; 1) yarn test ;; 2) yarn lint ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) yarn compile-libs && yarn dist ;; 1) yarn test ;; 2) yarn lint ;; esac:
         parallel: true
 
 deployment:
