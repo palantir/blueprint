@@ -12,5 +12,9 @@ $collapse-transition: ($pt-transition-duration * 2) $pt-transition-ease !default
 
   .pt-collapse-body {
     transition: transform $collapse-transition;
+
+    &[aria-hidden="true"] {
+      display: none;
+    }
   }
 }

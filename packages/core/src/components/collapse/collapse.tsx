@@ -26,6 +26,13 @@ export interface ICollapseProps extends IProps {
     isOpen?: boolean;
 
     /**
+     * Whether the child components will remain mounted when the collapse is closed.
+     * Setting to true may improve performance of the collapse component, by avoiding re-rendering.
+     * @default false
+     */
+    keepChildrenMounted?: boolean;
+
+    /**
      * The length of time the transition takes, in milliseconds. This must match the duration of the animation in CSS.
      * Only set this prop if you override Blueprint's default transitions with new transitions of a different length.
      * @default 200
@@ -82,6 +89,7 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
     public static defaultProps: ICollapseProps = {
         component: "div",
         isOpen: false,
+        keepChildrenMounted: false,
         transitionDuration: 200,
     };
 
@@ -117,12 +125,13 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
     }
 
     public render() {
-        const showContents = this.state.animationState !== AnimationStates.CLOSED;
-        const displayWithTransform = showContents && this.state.animationState !== AnimationStates.CLOSING_END;
+        const contentsVisible = this.state.animationState !== AnimationStates.CLOSED;
+        const renderChildren = contentsVisible || this.props.keepChildrenMounted;
+        const displayWithTransform = contentsVisible && this.state.animationState !== AnimationStates.CLOSING_END;
         const isAutoHeight = this.state.height === "auto";
 
         const containerStyle = {
-            height: showContents ? this.state.height : undefined,
+            height: contentsVisible ? this.state.height : undefined,
             overflowY: (isAutoHeight ? "visible" : undefined) as "visible" | undefined,
             transition: isAutoHeight ? "none" : undefined,
         };
@@ -140,8 +149,13 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
                 className: classNames(Classes.COLLAPSE, this.props.className),
                 style: containerStyle,
             },
-            <div className="pt-collapse-body" ref={this.contentsRefHandler} style={contentsStyle}>
-                {showContents ? this.props.children : null}
+            <div
+                className="pt-collapse-body"
+                ref={this.contentsRefHandler}
+                style={contentsStyle}
+                aria-hidden={!contentsVisible && this.props.keepChildrenMounted}
+            >
+                {renderChildren ? this.props.children : null}
             </div>,
         );
     }
