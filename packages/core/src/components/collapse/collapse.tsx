@@ -26,8 +26,8 @@ export interface ICollapseProps extends IProps {
     isOpen?: boolean;
 
     /**
-     * Whether the child components will remain mounted when the collapse is closed.
-     * Setting to true may improve performance of the collapse component, by avoiding re-rendering.
+     * Whether the child components will remain mounted when the `Collapse` is closed.
+     * Setting to true may improve performance by avoiding re-mounting children.
      * @default false
      */
     keepChildrenMounted?: boolean;
@@ -125,13 +125,13 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
     }
 
     public render() {
-        const contentsVisible = this.state.animationState !== AnimationStates.CLOSED;
-        const renderChildren = contentsVisible || this.props.keepChildrenMounted;
-        const displayWithTransform = contentsVisible && this.state.animationState !== AnimationStates.CLOSING_END;
+        const isContentVisible = this.state.animationState !== AnimationStates.CLOSED;
+        const shouldRenderChildren = isContentVisible || this.props.keepChildrenMounted;
+        const displayWithTransform = isContentVisible && this.state.animationState !== AnimationStates.CLOSING_END;
         const isAutoHeight = this.state.height === "auto";
 
         const containerStyle = {
-            height: contentsVisible ? this.state.height : undefined,
+            height: isContentVisible ? this.state.height : undefined,
             overflowY: (isAutoHeight ? "visible" : undefined) as "visible" | undefined,
             transition: isAutoHeight ? "none" : undefined,
         };
@@ -153,9 +153,9 @@ export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> 
                 className="pt-collapse-body"
                 ref={this.contentsRefHandler}
                 style={contentsStyle}
-                aria-hidden={!contentsVisible && this.props.keepChildrenMounted}
+                aria-hidden={!isContentVisible && this.props.keepChildrenMounted}
             >
-                {renderChildren ? this.props.children : null}
+                {shouldRenderChildren ? this.props.children : null}
             </div>,
         );
     }
