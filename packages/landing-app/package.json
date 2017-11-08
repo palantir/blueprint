@@ -18,15 +18,17 @@
     "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f resources/inline && node scripts/dedupe-svg-ids.js",
     "verify": "npm-run-all -p dist lint"
   },
-  "devDependencies": {
+  "dependencies": {
     "@blueprintjs/core": "^1.25.1",
-    "@blueprintjs/webpack-build-scripts": "^0.1.0",
     "classnames": "^2.2.5",
-    "node-sass": "^4.5.3",
-    "npm-run-all": "^4.1.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "@blueprintjs/webpack-build-scripts": "^0.1.0",
+    "node-sass": "^4.5.3",
+    "npm-run-all": "^4.1.1",
     "svgo": "^0.7.2",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3"

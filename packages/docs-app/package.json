@@ -30,15 +30,15 @@
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.1",
     "react-dom": "^15.6.1",
-    "tslib": "^1.7.1",
-    "webpack": "^3.8.1"
+    "tslib": "^1.7.1"
   },
   "devDependencies": {
     "@blueprintjs/webpack-build-scripts": "^0.1.0",
     "@types/chroma-js": "^1.3.3",
     "bourbon": "^4.3.4",
     "raw-loader": "^0.5.1",
-    "webpack-dev-server": "^2.9.3"
+    "webpack-dev-server": "^2.9.3",
+    "webpack": "^3.8.1"
   },
   "repository": {
     "type": "git",
