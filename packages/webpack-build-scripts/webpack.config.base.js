@@ -87,11 +87,25 @@ const scssLoaders = [
 ];
 
 module.exports = {
-    resolve: {
-        extensions: [ ".js", ".jsx", ".ts", ".tsx", ".scss" ],
-    },
-
     devtool: IS_PRODUCTION ? false : "inline-source-map",
+
+    devServer: {
+        contentBase: "./",
+        disableHostCheck: true,
+        historyApiFallback: true,
+        https: false,
+        // TODO: enable HMR
+        // hot: true,
+        index: path.resolve(__dirname, "index.html"),
+        inline: true,
+        stats: "errors-only",
+        open: true,
+        overlay: {
+            warnings: true,
+            errors: true,
+        },
+        port: 9000,
+    },
 
     module: {
         rules: [
@@ -119,4 +133,8 @@ module.exports = {
     },
 
     plugins,
+
+    resolve: {
+        extensions: [ ".js", ".jsx", ".ts", ".tsx", ".scss" ],
+    },
 };

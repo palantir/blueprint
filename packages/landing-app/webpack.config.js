@@ -18,21 +18,4 @@ module.exports = Object.assign({}, baseConfig, {
         path: path.resolve(__dirname, "./dist"),
         publicPath: "/",
     },
-
-    devServer: {
-        contentBase: "./",
-        disableHostCheck: true,
-        historyApiFallback: true,
-        https: false,
-        // hot: true,
-        index: path.resolve(__dirname, "index.html"),
-        inline: true,
-        stats: "errors-only",
-        open: true,
-        overlay: {
-            warnings: true,
-            errors: true,
-        },
-        port: 9000,
-    }
 });
