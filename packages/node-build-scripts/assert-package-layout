@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+/**
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * @fileoverview Asserts that all library packages adhere to the layout spec.
+ */
+
+const fs = require("fs");
+const path = require("path");
+
+// asserts that all main fields in package.json reference existing files
+const PACKAGE_MAIN_FIELDS = ["main", "style", "typings", "unpkg"];
+// assume we are running from a node_modules/.bin/ folder
+const manifest = require(path.resolve(__dirname, "../../package.json"));
+try {
+    // using promises here so errors will be produced for each failing package, not just the first
+    Promise.all(
+        PACKAGE_MAIN_FIELDS
+            .filter((field) => manifest[field] !== undefined)
+            .map((field) => assertFileExists(
+                path.resolve(project.cwd, manifest[field]),
+                `${manifest.name}: "${field}" not found (${manifest[field]})`
+            ))
+    );
+} catch (e) {
+    console.error("[node-build-scripts] Failed to validate package layout.");
+}
+
+function assertFileExists(filePath, errorMessage) {
+    return new Promise((resolve, reject) => {
+        // non-existent file will callback with err; we don't care about actual contents
+        fs.readFile(filePath, (err) => {
+            if (err) {
+                reject(errorMessage);
+            } else {
+                resolve();
+            }
+        });
+    });
+}

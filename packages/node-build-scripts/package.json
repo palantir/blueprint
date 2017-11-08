@@ -1,0 +1,7 @@
+{
+  "name": "@blueprintjs/node-build-scripts",
+  "version": "0.1.0",
+  "bin": {
+    "assert-package-layout": "./assert-package-layout"
+  }
+}

@@ -13,12 +13,15 @@
     "clean": "rm -rf dist/*",
     "dev": "npm-run-all -p 'compile:typescript --watch' 'compile:sass --watch' 'dev:preview'",
     "dev:preview": "webpack-dev-server --config webpack.config.preview.js",
+    "dist": "npm-run-all -s 'dist:*'",
+    "dist:bundle": "NODE_ENV=production webpack",
+    "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../../tslint.json",
     "lint-fix": "yarn lint:tslint --fix",
     "test": "karma start",
-    "verify": "npm-run-all compile -p test lint"
+    "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
     "@blueprintjs/core": "^1.32.0",
@@ -28,6 +31,7 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
+    "@blueprintjs/node-build-scripts": "*",
     "lodash": "^4.17.4",
     "karma": "^1.7.1",
     "node-sass": "^4.5.3",
@@ -36,7 +40,9 @@
     "react-addons-css-transition-group": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
-    "webpack-dev-server": "^2.9.4"
+    "typescript": "~2.4.2",
+    "webpack-dev-server": "^2.9.4",
+    "webpack": "^3.8.1"
   },
   "repository": {
     "type": "git",

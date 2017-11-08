@@ -28,11 +28,12 @@ const plugins = [
     // Can remove after https://github.com/webpack/webpack/issues/3460 resolved
     new CheckerPlugin(),
 
+    // TODO: enable this
     // Zero tolereance for circular depenendencies
-    new CircularDependencyPlugin({
-        exclude: /.js|node_modules/,
-        failOnError: true,
-    }),
+    // new CircularDependencyPlugin({
+    //     exclude: /.js|node_modules/,
+    //     failOnError: true,
+    // }),
 ];
 if (IS_PRODUCTION) {
     plugins.push(
