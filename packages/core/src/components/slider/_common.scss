@@ -6,101 +6,43 @@
 @import "../../common/mixins";
 @import "../button/common";
 
-@mixin slider($height) {
-  position: relative;
-  cursor: default;
-  width: 100%;
-  min-width: $pt-grid-size * 15;
-  height: $height;
+@mixin slider-orientation($size, $vertical: false) {
+  $slider-min-size: $pt-grid-size * 15;
 
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:active {
-    cursor: grabbing;
-  }
-
-  &.pt-disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  @if $vertical == false {
+    width: 100%;
+    min-width: $slider-min-size;
+    height: $size;
+  } @else {
+    // define the same rules for both vertical as for horizontal to ensure all
+    // horizontal rules are fully overridden.
+    width: $size;
+    min-width: $size;
+    height: $slider-min-size;
   }
 }
 
-@mixin slider-track($handle-height, $track-height) {
-  position: absolute;
-  top: ($handle-height - $track-height) / 2;
-  right: 0;
-  left: 0;
-  border-radius: $pt-border-radius;
-  background: rgba($gray1, 0.2);
-  height: $track-height;
+@mixin slider-track-orientation($handle-size, $track-size, $vertical: false) {
+  $slider-track-offset: ($handle-size - $track-size) / 2;
 
-  .pt-dark & {
-    background: rgba($black, 0.5);
+  @if $vertical == false {
+    top: $slider-track-offset;
+    right: 0;
+    left: 0;
+    height: $track-size;
+  } @else {
+    top: 0;
+    bottom: 0;
+    left: $slider-track-offset;
+    width: $track-size;
+    height: auto; // override the non-vertical rule above
   }
 }
 
-@mixin slider-handle($handle-height, $track-height) {
-  @include pt-button();
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: $pt-border-radius;
-  box-shadow: $button-box-shadow-overlay;
-  cursor: pointer;
-  width: $handle-height;
-  height: $handle-height;
-
-  // ensure target handle's label always covers neighbors
-  &:focus {
-    z-index: 1;
+@mixin slider-label-orientation($label-offset, $vertical: false) {
+  @if $vertical == false {
+    transform: translate(-50%, $label-offset);
+  } @else {
+    transform: translate($label-offset, 50%);
   }
-
-  &:hover {
-    @include pt-button-hover();
-    z-index: 2;
-    box-shadow: $button-box-shadow-overlay;
-    cursor: grab;
-  }
-
-  &.pt-active {
-    @include pt-button-active();
-    box-shadow: $button-box-shadow-overlay-active;
-    cursor: grabbing;
-  }
-
-  .pt-disabled & {
-    box-shadow: none;
-    background: $gray5;
-    // easy way to avoid lots of special cases to ignore mouse states when disabled:
-    pointer-events: none;
-  }
-
-  .pt-dark & {
-    @include pt-dark-button();
-
-    &,
-    &:hover {
-      background-color: $dark-gray5;
-    }
-
-    &.pt-active {
-      background-color: $dark-gray3;
-    }
-  }
-
-  .pt-dark .pt-disabled & {
-    border-color: $gray1;
-    box-shadow: none;
-    background: $gray1;
-  }
-}
-
-@mixin slider-label() {
-  display: inline-block;
-  padding: ($pt-grid-size / 5) ($pt-grid-size / 2);
-  vertical-align: top;
-  line-height: 1;
-  font-size: $pt-font-size-small;
 }
