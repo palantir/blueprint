@@ -91,13 +91,13 @@ module.exports = {
     devtool: IS_PRODUCTION ? false : "inline-source-map",
 
     devServer: {
-        contentBase: "./",
+        contentBase: "./src",
         disableHostCheck: true,
         historyApiFallback: true,
         https: false,
         // TODO: enable HMR
         // hot: true,
-        index: path.resolve(__dirname, "index.html"),
+        index: path.resolve(__dirname, "src/index.html"),
         inline: true,
         stats: "errors-only",
         open: true,

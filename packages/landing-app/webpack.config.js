@@ -10,6 +10,7 @@ module.exports = Object.assign({}, baseConfig, {
     entry: {
         "blueprint-landing": [
             "./src/index.tsx",
+            "./src/index.scss"
         ],
     },
 
