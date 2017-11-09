@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Karma build scripts for @blueprintjs packages",
   "private": true,
+  "scripts": {
+    "test": "exit 0"
+  },
   "dependencies": {
     "istanbul-instrumenter-loader": "^3.0.0",
     "karma": "^1.7.1",

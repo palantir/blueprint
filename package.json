@@ -21,7 +21,7 @@
     "dev:table": "lerna run dev --scope '@blueprintjs/table'",
     "dist": "npm-run-all 'dist:*'",
     "dist:libs-apps": "lerna run dist",
-    "dist:docs": "npm-run-all clean:gh-pages copy-docs-app copy-landing-app",
+    "dist:docs": "npm-run-all clean-gh-pages copy-docs-app copy-landing-app",
     "lint": "lerna run lint",
     "lint-fix": "lerna run lint-fix",
     "test": "lerna run test",

@@ -7,7 +7,7 @@
     "bundle": "webpack --config ./webpack.config.js",
     "clean": "rm -rf dist/*",
     "dev": "webpack-dev-server --config ./webpack.config.js",
-    "dist": "NODE_ENV=production yarn bundle && cp -r dist/* ../../docs/",
+    "dist": "NODE_ENV=production yarn bundle",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../../tslint.json",

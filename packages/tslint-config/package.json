@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "TSLint configuration for @blueprintjs packages",
   "private": true,
+  "scripts": {
+    "test": "exit 0"
+  },
   "dependencies": {
     "prettier": "^1.7.4",
     "tslint": "^5.7.0",

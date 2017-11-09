@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Webpack build scripts for @blueprintjs packages",
   "private": true,
+  "scripts": {
+    "test": "exit 0"
+  },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
     "awesome-typescript-loader": "^3.2.2",

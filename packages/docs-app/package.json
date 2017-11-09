@@ -12,6 +12,7 @@
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../../tslint.json",
     "lint-fix": "yarn lint:tslint --fix",
+    "test": "exit 0",
     "verify": "npm-run-all -p dist lint"
   },
   "dependencies": {
