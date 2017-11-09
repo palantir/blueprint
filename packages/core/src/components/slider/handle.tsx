@@ -27,6 +27,7 @@ export interface IHandleProps extends IProps {
     stepSize?: number;
     tickSize?: number;
     value?: number;
+    vertical?: boolean;
 }
 
 export interface IHandleState {
@@ -40,6 +41,7 @@ const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 @PureRender
 export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     public static displayName = "Blueprint.SliderHandle";
+
     public state = {
         isMoving: false,
     };
@@ -50,10 +52,13 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     };
 
     public render() {
-        const { className, disabled, label, min, tickSize, value } = this.props;
+        const { className, disabled, label, min, tickSize, value, vertical } = this.props;
         const { isMoving } = this.state;
-        // getBoundingClientRect().height includes border size as opposed to clientHeight
-        const handleSize = this.handleElement == null ? 0 : this.handleElement.getBoundingClientRect().height;
+
+        const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);
+        const offset = Math.round((value - min) * tickSize - handleMidpoint);
+        const style: React.CSSProperties = vertical ? { bottom: offset } : { left: offset };
+
         return (
             <span
                 className={classNames(Classes.SLIDER_HANDLE, { [Classes.ACTIVE]: isMoving }, className)}
@@ -62,7 +67,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
                 onMouseDown={disabled ? null : this.beginHandleMovement}
                 onTouchStart={disabled ? null : this.beginHandleTouchMovement}
                 ref={this.refHandlers.handle}
-                style={{ left: Math.round((value - min) * tickSize - handleSize / 2) }}
+                style={style}
                 tabIndex={0}
             >
                 {label == null ? null : <span className={Classes.SLIDER_LABEL}>{label}</span>}
@@ -76,27 +81,37 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
 
     /** Convert client pixel to value between min and max. */
     public clientToValue(clientPixel: number) {
-        const { stepSize, tickSize, value } = this.props;
+        const { stepSize, tickSize, value, vertical } = this.props;
         if (this.handleElement == null) {
             return value;
         }
-        const handleRect = this.handleElement.getBoundingClientRect();
-        const handleCenterPixel = handleRect.left + handleRect.width / 2;
-        const pixelDelta = clientPixel - handleCenterPixel;
+
+        // #1769: this logic doesn't work perfectly when the tick size is
+        // smaller than the handle size; it may be off by a tick or two.
+        const clientPixelNormalized = vertical ? window.innerHeight - clientPixel : clientPixel;
+        const handleCenterPixel = this.getHandleElementCenterPixel(this.handleElement);
+        const pixelDelta = clientPixelNormalized - handleCenterPixel;
+
         // convert pixels to range value in increments of `stepSize`
         const valueDelta = Math.round(pixelDelta / (tickSize * stepSize)) * stepSize;
+
         return value + valueDelta;
     }
 
-    public touchEventClientX(event: TouchEvent | React.TouchEvent<HTMLElement>) {
-        return event.changedTouches[0].clientX;
+    public mouseEventClientOffset(event: MouseEvent | React.MouseEvent<HTMLElement>) {
+        return this.props.vertical ? event.clientY : event.clientX;
+    }
+
+    public touchEventClientOffset(event: TouchEvent | React.TouchEvent<HTMLElement>) {
+        const touch = event.changedTouches[0];
+        return this.props.vertical ? touch.clientY : touch.clientX;
     }
 
     public beginHandleMovement = (event: MouseEvent | React.MouseEvent<HTMLElement>) => {
         document.addEventListener("mousemove", this.handleHandleMovement);
         document.addEventListener("mouseup", this.endHandleMovement);
         this.setState({ isMoving: true });
-        this.changeValue(this.clientToValue(event.clientX));
+        this.changeValue(this.clientToValue(this.mouseEventClientOffset(event)));
     };
 
     public beginHandleTouchMovement = (event: TouchEvent | React.TouchEvent<HTMLElement>) => {
@@ -104,7 +119,7 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
         document.addEventListener("touchend", this.endHandleTouchMovement);
         document.addEventListener("touchcancel", this.endHandleTouchMovement);
         this.setState({ isMoving: true });
-        this.changeValue(this.clientToValue(this.touchEventClientX(event)));
+        this.changeValue(this.clientToValue(this.touchEventClientOffset(event)));
     };
 
     protected validateProps(props: IHandleProps) {
@@ -116,11 +131,11 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     }
 
     private endHandleMovement = (event: MouseEvent) => {
-        this.handleMoveEndedAt(event.clientX);
+        this.handleMoveEndedAt(this.mouseEventClientOffset(event));
     };
 
     private endHandleTouchMovement = (event: TouchEvent) => {
-        this.handleMoveEndedAt(this.touchEventClientX(event));
+        this.handleMoveEndedAt(this.touchEventClientOffset(event));
     };
 
     private handleMoveEndedAt = (clientPixel: number) => {
@@ -133,11 +148,11 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     };
 
     private handleHandleMovement = (event: MouseEvent) => {
-        this.handleMovedTo(event.clientX);
+        this.handleMovedTo(this.mouseEventClientOffset(event));
     };
 
     private handleHandleTouchMovement = (event: TouchEvent) => {
-        this.handleMovedTo(this.touchEventClientX(event));
+        this.handleMovedTo(this.touchEventClientOffset(event));
     };
 
     private handleMovedTo = (clientPixel: number) => {
@@ -176,6 +191,32 @@ export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     /** Clamp value between min and max props */
     private clamp(value: number) {
         return clamp(value, this.props.min, this.props.max);
+    }
+
+    private getHandleElementCenterPixel(handleElement: HTMLElement) {
+        const { handleMidpoint, handleOffset } = this.getHandleMidpointAndOffset(handleElement);
+        return handleOffset + handleMidpoint;
+    }
+
+    private getHandleMidpointAndOffset(handleElement: HTMLElement, useOppositeDimension = false) {
+        if (handleElement == null) {
+            return { handleMidpoint: 0, handleOffset: 0 };
+        }
+
+        const { vertical } = this.props;
+
+        // getBoundingClientRect().height includes border size; clientHeight does not.
+        const handleRect = handleElement.getBoundingClientRect();
+
+        const sizeKey = vertical
+            ? useOppositeDimension ? "width" : "height"
+            : useOppositeDimension ? "height" : "width";
+
+        // "bottom" value seems to be consistently incorrect, so explicitly
+        // calculate it using the window offset instead.
+        const handleOffset = vertical ? window.innerHeight - (handleRect.top + handleRect[sizeKey]) : handleRect.left;
+
+        return { handleMidpoint: handleRect[sizeKey] / 2, handleOffset };
     }
 
     private removeDocumentEventListeners() {

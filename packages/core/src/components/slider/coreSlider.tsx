@@ -67,6 +67,12 @@ export interface ICoreSliderProps extends IProps {
      * @default true
      */
     renderLabel?: boolean | ((value: number) => string | JSX.Element);
+
+    /**
+     * Whether to show the slider in a vertical orientation.
+     * @default false
+     */
+    vertical?: boolean;
 }
 
 export interface ISliderState {
@@ -93,12 +99,12 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
     }
 
     public render() {
-        const { disabled } = this.props;
         const classes = classNames(
             this.className,
             {
-                [Classes.DISABLED]: disabled,
+                [Classes.DISABLED]: this.props.disabled,
                 [`${Classes.SLIDER}-unlabeled`]: this.props.renderLabel === false,
+                [Classes.VERTICAL]: this.props.vertical,
             },
             this.props.className,
         );
@@ -151,6 +157,15 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         }
     }
 
+    protected getTrackInitialPixel() {
+        if (this.trackElement == null) {
+            return undefined;
+        }
+        const trackRect = this.trackElement.getBoundingClientRect();
+        // for vertical tracks, the initial (lowest-`value`) pixel is on the bottom.
+        return this.props.vertical ? trackRect.top + trackRect.height : trackRect.left;
+    }
+
     private maybeRenderAxis() {
         // explicit typedefs are required because tsc (rightly) assumes that props might be overriden with different
         // types in subclasses
@@ -164,9 +179,10 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         const stepSize = Math.round(this.state.tickSize * labelStepSize);
         const labels: JSX.Element[] = [];
         // tslint:disable-next-line:one-variable-per-declaration
-        for (let i = min, left = 0; i < max || approxEqual(i, max); i += labelStepSize, left += stepSize) {
+        for (let i = min, offset = 0; i < max || approxEqual(i, max); i += labelStepSize, offset += stepSize) {
+            const style = this.props.vertical ? { bottom: offset } : { left: offset };
             labels.push(
-                <div className={`${Classes.SLIDER}-label`} key={i} style={{ left }}>
+                <div className={`${Classes.SLIDER}-label`} key={i} style={style}>
                     {this.formatLabel(i)}
                 </div>,
             );
@@ -206,7 +222,8 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
 
     private updateTickSize() {
         if (this.trackElement != null) {
-            const tickSize = this.trackElement.clientWidth / (this.props.max - this.props.min);
+            const trackSize = this.props.vertical ? this.trackElement.clientHeight : this.trackElement.clientWidth;
+            const tickSize = trackSize / (this.props.max - this.props.min);
             this.setState({ tickSize });
         }
     }
