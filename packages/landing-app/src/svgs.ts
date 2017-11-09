@@ -6,20 +6,20 @@
 
 // tslint:disable no-var-requires no-submodule-imports
 const HERO_SVGS = {
-    alert: require("raw-loader!../resources/inline/alert.svg"),
-    buttons: require("raw-loader!../resources/inline/buttons.svg"),
-    calendar: require("raw-loader!../resources/inline/calendar.svg"),
-    checkboxes: require("raw-loader!../resources/inline/checkboxes.svg"),
-    "file-upload": require("raw-loader!../resources/inline/file-upload.svg"),
-    "input-groups": require("raw-loader!../resources/inline/input-groups.svg"),
-    inputs: require("raw-loader!../resources/inline/inputs.svg"),
-    labels: require("raw-loader!../resources/inline/labels.svg"),
-    radios: require("raw-loader!../resources/inline/radios.svg"),
-    "select-menus": require("raw-loader!../resources/inline/select-menus.svg"),
-    sliders: require("raw-loader!../resources/inline/sliders.svg"),
-    switches: require("raw-loader!../resources/inline/switches.svg"),
-    "time-selections": require("raw-loader!../resources/inline/time-selections.svg"),
-    toggles: require("raw-loader!../resources/inline/toggles.svg"),
+    alert: require("raw-loader!./assets/inline/alert.svg"),
+    buttons: require("raw-loader!./assets/inline/buttons.svg"),
+    calendar: require("raw-loader!./assets/inline/calendar.svg"),
+    checkboxes: require("raw-loader!./assets/inline/checkboxes.svg"),
+    "file-upload": require("raw-loader!./assets/inline/file-upload.svg"),
+    "input-groups": require("raw-loader!./assets/inline/input-groups.svg"),
+    inputs: require("raw-loader!./assets/inline/inputs.svg"),
+    labels: require("raw-loader!./assets/inline/labels.svg"),
+    radios: require("raw-loader!./assets/inline/radios.svg"),
+    "select-menus": require("raw-loader!./assets/inline/select-menus.svg"),
+    sliders: require("raw-loader!./assets/inline/sliders.svg"),
+    switches: require("raw-loader!./assets/inline/switches.svg"),
+    "time-selections": require("raw-loader!./assets/inline/time-selections.svg"),
+    toggles: require("raw-loader!./assets/inline/toggles.svg"),
 };
 
 const injectSVG = (elem: HTMLElement, id: string) => {

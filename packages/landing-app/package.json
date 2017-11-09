@@ -5,17 +5,15 @@
   "private": true,
   "scripts": {
     "bundle": "webpack --config ./webpack.config.js",
-    "copy": "mkdir -p dist/assets && cp ./src/index.html dist/. && cp -r ./resources/img dist/assets/.",
     "clean": "rm -rf dist/*",
     "dev": "webpack-dev-server --config ./webpack.config.js",
-    "dist": "NODE_ENV=production npm-run-all bundle copy",
-    "dist:copy": "cp -r dist/* ../../docs/.",
+    "dist": "NODE_ENV=production yarn bundle && cp -r dist/* ../../docs/",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../../tslint.json",
     "lint-fix": "yarn lint:tslint --fix",
-    "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f resources/img",
-    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f resources/inline && node scripts/dedupe-svg-ids.js",
+    "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/img",
+    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/inline && node scripts/dedupe-svg-ids.js",
     "verify": "npm-run-all -p dist lint"
   },
   "dependencies": {
@@ -27,8 +25,10 @@
   },
   "devDependencies": {
     "@blueprintjs/webpack-build-scripts": "^0.1.0",
+    "copy-webpack-plugin": "^4.2.0",
     "node-sass": "^4.5.3",
     "npm-run-all": "^4.1.1",
+    "raw-loader": "^0.5.1",
     "svgo": "^0.7.2",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3"
