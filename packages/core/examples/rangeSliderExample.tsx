@@ -40,7 +40,7 @@ export class RangeSliderExample extends BaseExample<IRangeSliderExampleState> {
 
     protected renderOptions() {
         return [
-            [<Switch checked={this.state.vertical} label={"Vertical"} key="vertical" onChange={this.toggleVertical} />],
+            [<Switch checked={this.state.vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />],
         ];
     }
 

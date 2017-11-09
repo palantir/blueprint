@@ -15,7 +15,7 @@ import { Handle } from "./handle";
 
 export type NumberRange = [number, number];
 
-enum RangeEnd {
+enum RangeIndex {
     START = 0,
     END = 1,
 }
@@ -122,7 +122,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
 
     protected validateProps(props: IRangeSliderProps) {
         const { value } = props;
-        if (value == null || value[RangeEnd.START] == null || value[RangeEnd.END] == null) {
+        if (value == null || value[RangeIndex.START] == null || value[RangeIndex.END] == null) {
             throw new Error(Errors.RANGESLIDER_NULL_VALUE);
         }
     }
@@ -133,10 +133,10 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         }
     };
 
-    private getHandlerForIndex = (index: RangeEnd, callback: (value: NumberRange) => any) => (newValue: number) => {
+    private getHandlerForIndex = (index: RangeIndex, callback: (value: NumberRange) => any) => (newValue: number) => {
         if (isFunction(callback)) {
             const [startValue, endValue] = this.props.value;
-            if (index === RangeEnd.START) {
+            if (index === RangeIndex.START) {
                 callback([Math.min(newValue, endValue), endValue]);
             } else {
                 callback([startValue, Math.max(newValue, startValue)]);

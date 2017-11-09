@@ -72,7 +72,7 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
 
     protected renderOptions() {
         return [
-            [<Switch checked={this.state.vertical} label={"Vertical"} key="vertical" onChange={this.toggleVertical} />],
+            [<Switch checked={this.state.vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />],
         ];
     }
 
