@@ -1,3 +1,3 @@
 {
-  "extends": "./packages/@blueprintjs/tslint-config"
+  "extends": "./packages/@blueprintjs/tslint-config/index"
 }

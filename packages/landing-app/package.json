@@ -10,7 +10,7 @@
     "dist": "NODE_ENV=production yarn bundle",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
-    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../../tslint.json",
+    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config",
     "lint-fix": "yarn lint:tslint --fix",
     "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/img",
     "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/inline && node scripts/dedupe-svg-ids.js",
