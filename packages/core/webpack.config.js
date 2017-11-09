@@ -3,7 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-const baseConfig = require("@blueprintjs/webpack-build-scripts/webpack.config.base");
+const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
 const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {
@@ -13,8 +13,12 @@ module.exports = Object.assign({}, baseConfig, {
         ],
     },
 
+    externals: COMMON_EXTERNALS,
+
     output: {
         filename: "[name].js",
+        library: ["Blueprint", "Core"],
+        libraryTarget: "umd",
         path: path.resolve(__dirname, "./dist")
     },
 });
