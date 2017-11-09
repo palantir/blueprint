@@ -35,11 +35,17 @@
   .pt-popover {
     position: absolute;
     top: -$half-grid-size;
-    left: $half-grid-size;
+    box-shadow: none;
+    padding-left: $half-grid-size;
 
     &.pt-align-left {
-      right: $half-grid-size;
-      left: auto;
+      right: 0;
+      padding-right: $half-grid-size;
+      padding-left: 0;
+    }
+
+    > .pt-popover-content {
+      box-shadow: $pt-popover-box-shadow;
     }
   }
 }
