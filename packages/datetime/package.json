@@ -19,7 +19,7 @@
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config",
     "lint-fix": "yarn lint:tslint --fix",
-    "test": "karma start",
+    "test": "tsc -p ./test && karma start",
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {

@@ -3,6 +3,7 @@
  */
 
 const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
+const fs = require("fs");
 const path = require("path");
 
 module.exports = function (config) {
@@ -11,7 +12,10 @@ module.exports = function (config) {
     config.set({
         webpack: Object.assign({}, baseConfig.webpack, {
             entry: {
-                core: path.resolve(__dirname, "test/index.ts"),
+                core: [
+                    path.resolve(__dirname, "test/index.ts"),
+                    path.resolve(__dirname, "src/blueprint.scss"),
+                ],
             },
         }),
     })

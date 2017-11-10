@@ -19,7 +19,7 @@ module.exports = {
         extensions: [".js", ".ts", ".tsx"],
     },
 
-    // these externals necessary for Enzyme harness
+    // these externals are necessary for Enzyme harness
     externals: {
         "cheerio": "window",
         "react/addons": true,
@@ -42,9 +42,21 @@ module.exports = {
                 },
             },
             {
+                test: /\.scss$/,
+                use: [
+                    require.resolve("style-loader"),
+                    require.resolve("css-loader"),
+                    require.resolve("sass-loader"),
+                ],
+            },
+            {
                 enforce: "post",
                 test: /src\/.*\.tsx?$/,
                 use: "istanbul-instrumenter-loader",
+            },
+            {
+                test: /\.(eot|ttf|woff|woff2|svg|png)$/,
+                loader: require.resolve("file-loader"),
             },
         ]
     },
@@ -56,29 +68,10 @@ module.exports = {
             },
         }),
 
-        new CheckerPlugin(),
-
         // TODO: enable this
         // new CircularDependencyPlugin({
         //     exclude: /.js|node_modules/,
         //     failOnError: true,
         // }),
-
-        function() {
-            this.plugin("done", function(stats) {
-                if (stats.compilation.errors.length > 0) {
-                    // tslint:disable-next-line:no-console
-                    console.error("ERRORS in compilation. See above.");
-
-                    // Pretend no assets were generated. This prevents the tests
-                    // from running making it clear that there were errors.
-                    stats.stats = [{
-                        assets: [],
-                        toJson: function () { return this; }
-                    }];
-                }
-                return stats;
-            });
-        }
     ],
 };
