@@ -14,6 +14,7 @@
     "lint-fix": "yarn lint:tslint --fix",
     "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/img",
     "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/inline && node scripts/dedupe-svg-ids.js",
+    "test": "exit 0",
     "verify": "npm-run-all -p dist lint"
   },
   "dependencies": {

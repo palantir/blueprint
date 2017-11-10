@@ -2076,8 +2076,8 @@ describe("<DateRangeInput>", () => {
         });
 
         describe("Typing an out-of-range date", () => {
-            let onChange: Sinon.SinonSpy;
-            let onError: Sinon.SinonSpy;
+            let onChange: sinon.SinonSpy;
+            let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
 
             beforeEach(() => {
@@ -2130,8 +2130,8 @@ describe("<DateRangeInput>", () => {
         });
 
         describe("Typing an invalid date", () => {
-            let onChange: Sinon.SinonSpy;
-            let onError: Sinon.SinonSpy;
+            let onChange: sinon.SinonSpy;
+            let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
 
             beforeEach(() => {
@@ -2179,8 +2179,8 @@ describe("<DateRangeInput>", () => {
         });
 
         describe("Typing an overlapping date", () => {
-            let onChange: Sinon.SinonSpy;
-            let onError: Sinon.SinonSpy;
+            let onChange: sinon.SinonSpy;
+            let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
             let startInput: WrappedComponentInput;
             let endInput: WrappedComponentInput;
