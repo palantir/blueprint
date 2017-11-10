@@ -39,4 +39,22 @@ describe("<Collapse>", () => {
     it("supports custom Component", () => {
         assert.isTrue(shallow(<Collapse component={MenuItem} />).is(MenuItem));
     });
+
+    it("unmounts children by default", () => {
+        const collapse = mount(
+            <Collapse isOpen={false}>
+                <div className="removed-child" />
+            </Collapse>,
+        );
+        assert.lengthOf(collapse.find(".removed-child"), 0);
+    });
+
+    it("keepChildrenMounted keeps child mounted", () => {
+        const collapse = mount(
+            <Collapse isOpen={false} keepChildrenMounted={true}>
+                <div className="hidden-child" />
+            </Collapse>,
+        );
+        assert.lengthOf(collapse.find(".hidden-child"), 1);
+    });
 });
