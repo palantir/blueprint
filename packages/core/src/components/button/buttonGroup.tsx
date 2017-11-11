@@ -12,7 +12,7 @@ import { IProps } from "../../common/props";
 
 export interface IButtonGroupProps extends IProps {
     /**
-     * Whether the child buttons should appear with full-width styling.
+     * Whether the button group should take up the full width of its container.
      * @default false
      */
     fill?: boolean;
@@ -35,7 +35,7 @@ export interface IButtonGroupProps extends IProps {
     style?: React.CSSProperties;
 
     /**
-     * Whether the child buttons should appear with vertical styling.
+     * Whether the button group should appear with vertical styling.
      * @default false
      */
     vertical?: boolean;
