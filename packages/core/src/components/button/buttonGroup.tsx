@@ -30,7 +30,7 @@ export interface IButtonGroupProps extends IProps {
     large?: boolean;
 
     /**
-     * CSS styles to apply to the alert.
+     * CSS styles to apply to the button group.
      */
     style?: React.CSSProperties;
 
