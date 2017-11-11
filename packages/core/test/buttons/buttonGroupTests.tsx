@@ -5,7 +5,7 @@
  */
 
 import { assert } from "chai";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import * as React from "react";
 
 import { Button, ButtonGroup, Classes } from "../../src/index";
@@ -22,7 +22,7 @@ describe("<ButtonGroup>", () => {
     });
 
     it("renders with custom style", () => {
-        const wrapper = shallow(<ButtonGroup style={{ background: "yellow" }} />);
+        const wrapper = mount(<ButtonGroup style={{ background: "yellow" }} />);
         const element = wrapper.getDOMNode() as HTMLElement;
         assert.deepEqual(element.style.background, "yellow");
     });
