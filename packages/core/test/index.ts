@@ -5,6 +5,7 @@
 
 import "./alert/alertTests";
 import "./breadcrumbs/breadcrumbTests";
+import "./buttons/buttonGroupTests";
 import "./buttons/buttonTests";
 import "./callout/calloutTests";
 import "./card/cardTests";
