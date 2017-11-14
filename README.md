@@ -80,6 +80,14 @@ Each library has its own dev script which you can run to watch changes to that p
 1. Run `yarn` at the root to update lockfiles.
 1. Commit the result.
 
+### Updating icons
+
+The [One-time setup](#one-time-setup) and [Incorporating upstream changes](#incorporating-upstream-changes) steps should produce the generated
+source code in this repo used to build the icons documentation. This is sufficient for most development workflows.
+
+If you are updating icons or adding new ones, you'll need to run `yarn compile` in `packages/core` to see those changes reflected before
+running any of the dev scripts.
+
 ## Contributing
 
 Looking for places to contribute to the codebase? Check out the

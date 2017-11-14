@@ -6,6 +6,13 @@
     "test": "exit 0"
   },
   "bin": {
-    "assert-package-layout": "./assert-package-layout"
-  }
+    "assert-package-layout": "./assert-package-layout",
+    "generate-icons-source": "./generate-icons-source"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "author": "Palantir Technologies",
+  "license": "Apache-2.0"
 }
