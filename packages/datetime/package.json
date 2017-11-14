@@ -19,7 +19,10 @@
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config",
     "lint-fix": "yarn lint:tslint --fix",
-    "test": "tsc -p ./test && karma start",
+    "test": "npm-run-all -s test:pre -p test:karma test:iso",
+    "test:pre": "tsc -p ./test",
+    "test:karma": "karma start",
+    "test:iso": "mocha test/isotest.js",
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
@@ -35,6 +38,7 @@
     "bourbon": "^4.3.4",
     "enzyme": "~2.9.1",
     "karma": "^1.7.1",
+    "mocha": "^4.0.1",
     "node-sass": "^4.5.3",
     "npm-run-all": "^4.1.1",
     "react": "^15.6.1",

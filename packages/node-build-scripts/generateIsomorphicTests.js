@@ -1,7 +1,11 @@
-/*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
- * Licensed under the terms of the LICENSE file distributed with this project.
+#!/usr/bin/env node
+/**
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * @fileoverview Generates isomorphic tests for React components
  */
+
+// TODO: make this an executable script that takes configuration from CLI arguments so we don't need
+// to use the `mocha` CLI and write an isotest.js file in every project
 
 const { render } = require("enzyme");
 const React = require("react");
