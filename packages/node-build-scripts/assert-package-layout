@@ -12,7 +12,7 @@ const PACKAGE_MAIN_FIELDS = ["main", "style", "typings", "unpkg"];
 const manifest = require(path.resolve(process.cwd(), "./package.json"));
 
 for (let field of PACKAGE_MAIN_FIELDS.filter(field => manifest[field] !== undefined)) {
-    if (!fs.existsSync(path.resolve(project.cwd, manifest[field]))) {
+    if (!fs.existsSync(path.resolve(process.cwd(), manifest[field]))) {
         console.error("[node-build-scripts] Failed to validate package layout.");
         process.exit(1);
     }
