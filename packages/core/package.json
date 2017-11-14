@@ -20,7 +20,7 @@
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config",
     "lint-fix": "yarn lint:tslint --fix",
-    "test": "npm-run-all -s compile:pre test:pre -p test:karma test:iso",
+    "test": "npm-run-all -s compile:pre compile:typescript test:pre -p test:karma test:iso",
     "test:pre": "tsc -p ./test",
     "test:karma": "karma start",
     "test:iso": "mocha test/isotest.js",
