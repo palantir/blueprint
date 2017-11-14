@@ -9,8 +9,7 @@ const path = require("path");
 
 // asserts that all main fields in package.json reference existing files
 const PACKAGE_MAIN_FIELDS = ["main", "style", "typings", "unpkg"];
-// assume we are running from a node_modules/.bin/ folder
-const manifest = require(path.resolve(__dirname, "../../package.json"));
+const manifest = require(path.resolve(process.cwd(), "./package.json"));
 
 for (let field of PACKAGE_MAIN_FIELDS.filter(field => manifest[field] !== undefined)) {
     if (!fs.existsSync(path.resolve(project.cwd, manifest[field]))) {

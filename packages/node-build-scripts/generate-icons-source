@@ -8,8 +8,12 @@ const fs = require("fs");
 const path = require("path");
 const { COPYRIGHT_HEADER } = require("./constants");
 
-// assume we are running from a node_modules/.bin/ folder
-const ICONS_METADATA = require(path.resolve(__dirname, "../../resources/icons/icons.json"));
+const ICONS_METADATA = require(path.resolve(process.cwd(), "./resources/icons/icons.json"));
+const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
+
+if (!fs.existsSync(GENERATED_SRC_DIR)) {
+    fs.mkdirSync();
+}
 
 // great big map for iteration
 writeLinesToFile(
@@ -48,10 +52,9 @@ writeLinesToFile(
 );
 
 function writeLinesToFile(filename, lines) {
-    // assume we are running from a node_modules/.bin/ folder
-    const outputPath = path.resolve(__dirname, `../../src/generated/${filename}`);
+    const outputPath = path.join(GENERATED_SRC_DIR, filename);
     const contents = [COPYRIGHT_HEADER, ...lines, ""].join("\n");
-    fs.writeFileSync(outputPath, contents, { encoding: "utf8" });
+    fs.writeFileSync(outputPath, contents);
 }
 
 function toEnumName(icon) {
