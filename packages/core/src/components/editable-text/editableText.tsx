@@ -128,6 +128,9 @@ export class EditableText extends AbstractComponent<IEditableTextProps, IEditabl
                 input.focus();
                 const { length } = input.value;
                 input.setSelectionRange(this.props.selectAllOnFocus ? 0 : length, length);
+                if (!this.props.selectAllOnFocus) {
+                    input.scrollLeft = input.scrollWidth;
+                }
             }
         },
     };

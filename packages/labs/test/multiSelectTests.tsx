@@ -64,6 +64,10 @@ describe("<MultiSelect>", () => {
         assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
     });
 
+    it("selectedItems is optional", () => {
+        assert.doesNotThrow(() => multiselect({ selectedItems: undefined }));
+    });
+
     function multiselect(props: Partial<IMultiSelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
             <FilmMultiSelect {...defaultProps} {...handlers} {...props}>

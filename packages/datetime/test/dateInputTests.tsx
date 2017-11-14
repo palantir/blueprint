@@ -68,6 +68,38 @@ describe("<DateInput>", () => {
         });
     });
 
+    it("with TimePicker passes timePickerProps correctly to DateTimePicker", () => {
+        const onChange = sinon.spy();
+        const value = new Date(2017, Months.MAY, 5);
+
+        const timePickerProps = {
+            disabled: true,
+            // these will each be overridden by top-level props:
+            onChange,
+            precision: TimePickerPrecision.MILLISECOND,
+            value: new Date(2017, Months.MAY, 6),
+        };
+
+        const wrapper = mount(
+            <DateInput
+                timePrecision={TimePickerPrecision.SECOND}
+                onChange={sinon.spy()}
+                value={value}
+                timePickerProps={timePickerProps}
+            />,
+        ).setState({ isOpen: true });
+
+        const timePicker = wrapper.find(TimePicker);
+
+        // ensure the top-level props override props by the same name in timePickerProps
+        assert.equal(timePicker.prop("precision"), TimePickerPrecision.SECOND);
+        assert.notEqual(timePicker.prop("onChange"), onChange);
+        DateTestUtils.assertDatesEqual(timePicker.prop("value"), value);
+
+        // ensure this additional prop was passed through undeterred.
+        assert.equal(timePicker.prop("disabled"), true);
+    });
+
     it("inputProps are passed to InputGroup", () => {
         const inputRef = sinon.spy();
         const onFocus = sinon.spy();
@@ -262,6 +294,25 @@ describe("<DateInput>", () => {
             assert.isTrue(onError.calledOnce);
             assert.isNaN((onError.args[0][0] as Date).valueOf());
         });
+
+        it("Clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
+            const DATE = new Date(2016, Months.APRIL, 4);
+            const onChange = sinon.spy();
+            const { getDay, root } = wrap(
+                <DateInput
+                    canClearSelection={false}
+                    defaultValue={DATE}
+                    onChange={onChange}
+                    timePrecision={TimePickerPrecision.SECOND}
+                />,
+            );
+            root.setState({ isOpen: true });
+
+            getDay(DATE.getDate()).simulate("click");
+
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.firstCall.args, [DATE]);
+        });
     });
 
     describe("when controlled", () => {
@@ -320,6 +371,26 @@ describe("<DateInput>", () => {
         it("Formats locale-specific format strings properly", () => {
             const wrapper = mount(<DateInput locale="de" format="L" value={DATE2} />);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_DE_STR);
+        });
+
+        it("Clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
+            const onChange = sinon.spy();
+            const { getSelectedDays, root } = wrap(
+                <DateInput
+                    canClearSelection={false}
+                    onChange={onChange}
+                    timePrecision={TimePickerPrecision.SECOND}
+                    value={DATE}
+                />,
+            );
+            root.setState({ isOpen: true });
+
+            getSelectedDays()
+                .at(0)
+                .simulate("click");
+
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.firstCall.args, [DATE]);
         });
     });
 

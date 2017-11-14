@@ -15,9 +15,9 @@ import { Handle } from "./handle";
 
 export type NumberRange = [number, number];
 
-enum RangeEnd {
-    LEFT = 0,
-    RIGHT = 1,
+enum RangeIndex {
+    START = 0,
+    END = 1,
 }
 
 export interface IRangeSliderProps extends ICoreSliderProps {
@@ -43,6 +43,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         showTrackFill: true,
         stepSize: 1,
         value: [0, 10],
+        vertical: false,
     };
 
     public static displayName = "Blueprint.RangeSlider";
@@ -51,22 +52,29 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
     private handles: Handle[] = [];
 
     protected renderFill() {
-        const [leftValue, rightValue] = this.props.value;
-        if (leftValue === rightValue) {
+        const { tickSize } = this.state;
+        const [startValue, endValue] = this.props.value;
+        if (startValue === endValue) {
             return undefined;
         }
         // expand by 1px in each direction so it sits under the handle border
-        let left = Math.round((leftValue - this.props.min) * this.state.tickSize) - 1;
-        let width = Math.round((rightValue - leftValue) * this.state.tickSize) + 2;
-        if (width < 0) {
-            left += width;
-            width = Math.abs(width);
+        let offset = Math.round((startValue - this.props.min) * tickSize) - 1;
+        let size = Math.round((endValue - startValue) * tickSize) + 2;
+
+        if (size < 0) {
+            offset += size;
+            size = Math.abs(size);
         }
-        return <div className={`${Classes.SLIDER}-progress`} style={{ left, width }} />;
+
+        const style: React.CSSProperties = this.props.vertical
+            ? { bottom: offset, height: size }
+            : { left: offset, width: size };
+
+        return <div className={`${Classes.SLIDER}-progress`} style={style} />;
     }
 
     protected renderHandles() {
-        const { disabled, max, min, onRelease, stepSize, value } = this.props;
+        const { disabled, max, min, onRelease, stepSize, value, vertical } = this.props;
         return value.map((val, index) => (
             <Handle
                 disabled={disabled}
@@ -80,6 +88,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
                 stepSize={stepSize}
                 tickSize={this.state.tickSize}
                 value={val}
+                vertical={vertical}
             />
         ));
     }
@@ -88,7 +97,8 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         this.handles
             .reduce((min, handle) => {
                 // find closest handle to the mouse position
-                const value = handle.clientToValue(event.clientX);
+                const offset = handle.mouseEventClientOffset(event);
+                const value = handle.clientToValue(offset);
                 return this.nearestHandleForValue(value, min, handle);
             })
             .beginHandleMovement(event);
@@ -98,21 +108,30 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         this.handles
             .reduce((min, handle) => {
                 // find closest handle to the touch position
-                const value = handle.clientToValue(handle.touchEventClientX(event));
+                const value = handle.clientToValue(handle.touchEventClientOffset(event));
                 return this.nearestHandleForValue(value, min, handle);
             })
             .beginHandleTouchMovement(event);
     }
 
     protected nearestHandleForValue(value: number, firstHandle: Handle, secondHandle: Handle) {
-        const firstDistance = Math.abs(value - firstHandle.props.value);
+        const firstHandleValue = firstHandle.props.value;
+        const firstDistance = Math.abs(value - firstHandleValue);
         const secondDistance = Math.abs(value - secondHandle.props.value);
-        return secondDistance < firstDistance ? secondHandle : firstHandle;
+        if (firstDistance < secondDistance) {
+            return firstHandle;
+        } else if (secondDistance < firstDistance) {
+            return secondHandle;
+        } else {
+            // if the values are equal, return the handle that is *able* to move
+            // in the necessary direction.
+            return value < firstHandleValue ? firstHandle : secondHandle;
+        }
     }
 
     protected validateProps(props: IRangeSliderProps) {
         const { value } = props;
-        if (value == null || value[RangeEnd.LEFT] == null || value[RangeEnd.RIGHT] == null) {
+        if (value == null || value[RangeIndex.START] == null || value[RangeIndex.END] == null) {
             throw new Error(Errors.RANGESLIDER_NULL_VALUE);
         }
     }
@@ -123,21 +142,21 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         }
     };
 
-    private getHandlerForIndex = (index: RangeEnd, callback: (value: NumberRange) => any) => (newValue: number) => {
+    private getHandlerForIndex = (index: RangeIndex, callback: (value: NumberRange) => any) => (newValue: number) => {
         if (isFunction(callback)) {
-            const [leftValue, rightValue] = this.props.value;
-            if (index === RangeEnd.LEFT) {
-                callback([Math.min(newValue, rightValue), rightValue]);
+            const [startValue, endValue] = this.props.value;
+            if (index === RangeIndex.START) {
+                callback([Math.min(newValue, endValue), endValue]);
             } else {
-                callback([leftValue, Math.max(newValue, leftValue)]);
+                callback([startValue, Math.max(newValue, startValue)]);
             }
         }
     };
 
     private handleChange = (newValue: NumberRange) => {
-        const [leftValue, rightValue] = this.props.value;
-        const [newLeftValue, newRightValue] = newValue;
-        if ((leftValue !== newLeftValue || rightValue !== newRightValue) && isFunction(this.props.onChange)) {
+        const [startValue, endValue] = this.props.value;
+        const [newStartValue, newEndValue] = newValue;
+        if ((startValue !== newStartValue || endValue !== newEndValue) && isFunction(this.props.onChange)) {
             this.props.onChange(newValue);
         }
     };

@@ -27,6 +27,8 @@ This repository contains multiple projects in the `packages/` directory that are
 
 [![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive table component.
 
+[![npm](https://img.shields.io/npm/v/@blueprintjs/labs.svg?label=@blueprintjs/labs)](https://www.npmjs.com/package/@blueprintjs/labs) &ndash; Incubator and staging area for new components still under initial development.
+
 The other packages (`site-docs` and `site-landing`) are not published to NPM as they are used to build the documentation site.
 
 ## Development

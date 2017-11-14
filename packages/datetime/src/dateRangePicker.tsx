@@ -187,20 +187,24 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
             initialMonth = DateUtils.getDateBetween([props.minDate, props.maxDate]);
         }
 
-        /*
-        * if the initial month is the last month of the picker's
-        * allowable range, the react-day-picker library will show
-        * the max month on the left and the *min* month on the right.
-        * subtracting one avoids that weird, wraparound state (#289).
-        */
+        // if the initial month is the last month of the picker's
+        // allowable range, the react-day-picker library will show
+        // the max month on the left and the *min* month on the right.
+        // subtracting one avoids that weird, wraparound state (#289).
         const initialMonthEqualsMinMonth = DateUtils.areSameMonth(initialMonth, props.minDate);
         const initalMonthEqualsMaxMonth = DateUtils.areSameMonth(initialMonth, props.maxDate);
         if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
             initialMonth.setMonth(initialMonth.getMonth() - 1);
         }
 
-        const leftView = new MonthAndYear(initialMonth.getMonth(), initialMonth.getFullYear());
-        const rightView = leftView.getNextMonth();
+        // show the selected end date's encompassing month in the right view if
+        // the calendars don't have to be contiguous.
+        const leftView = MonthAndYear.fromDate(initialMonth);
+        const rightDate = value[1];
+        const rightView =
+            !props.contiguousCalendarMonths && rightDate != null
+                ? MonthAndYear.fromDate(rightDate)
+                : leftView.getNextMonth();
         this.state = { leftView, rightView, value, hoverValue: [null, null] };
     }
 
@@ -254,6 +258,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
                 </div>
             );
         } else {
+            // const rightMonth = contiguousCalendarMonths ? rightView.getFullDate()
             return (
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
                     {this.maybeRenderShortcuts()}
@@ -576,12 +581,10 @@ function getStateChange(
         let leftView = state.leftView.clone();
         let rightView = state.rightView.clone();
 
-        /*
-        * Only end date selected.
-        * If the newly selected end date isn't in either of the displayed months, then
-        *   - set the right DayPicker to the month of the selected end date
-        *   - ensure the left DayPicker is before the right, changing if needed
-        */
+        // Only end date selected.
+        // If the newly selected end date isn't in either of the displayed months, then
+        //   - set the right DayPicker to the month of the selected end date
+        //   - ensure the left DayPicker is before the right, changing if needed
         if (nextValueStart == null && nextValueEnd != null) {
             const nextValueEndMonthAndYear = new MonthAndYear(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
 
@@ -591,13 +594,11 @@ function getStateChange(
                     leftView = rightView.getPreviousMonth();
                 }
             }
-            /*
-        * Only start date selected.
-        * If the newly selected start date isn't in either of the displayed months, then
-        *   - set the left DayPicker to the month of the selected start date
-        *   - ensure the right DayPicker is before the left, changing if needed
-        */
         } else if (nextValueStart != null && nextValueEnd == null) {
+            // Only start date selected.
+            // If the newly selected start date isn't in either of the displayed months, then
+            //   - set the left DayPicker to the month of the selected start date
+            //   - ensure the right DayPicker is before the left, changing if needed
             const nextValueStartMonthAndYear = new MonthAndYear(
                 nextValueStart.getMonth(),
                 nextValueStart.getFullYear(),
@@ -609,22 +610,18 @@ function getStateChange(
                     rightView = leftView.getNextMonth();
                 }
             }
-            /*
-        * Both start date and end date selected.
-        */
         } else if (nextValueStart != null && nextValueEnd != null) {
+            // Both start date and end date selected.
             const nextValueStartMonthAndYear = new MonthAndYear(
                 nextValueStart.getMonth(),
                 nextValueStart.getFullYear(),
             );
             const nextValueEndMonthAndYear = new MonthAndYear(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
 
-            /*
-            * Both start and end date months are identical
-            * If the selected month isn't in either of the displayed months, then
-            *   - set the left DayPicker to be the selected month
-            *   - set the right DayPicker to +1
-            */
+            // Both start and end date months are identical
+            // If the selected month isn't in either of the displayed months, then
+            //   - set the left DayPicker to be the selected month
+            //   - set the right DayPicker to +1
             if (DateUtils.areSameMonth(nextValueStart, nextValueEnd)) {
                 const potentialLeftEqualsNextValueStart = leftView.isSame(nextValueStartMonthAndYear);
                 const potentialRightEqualsNextValueStart = rightView.isSame(nextValueStartMonthAndYear);
@@ -635,10 +632,8 @@ function getStateChange(
                     leftView = nextValueStartMonthAndYear;
                     rightView = nextValueStartMonthAndYear.getNextMonth();
                 }
-                /*
-            * Different start and end date months, adjust display months.
-            */
             } else {
+                // Different start and end date months, adjust display months.
                 if (!leftView.isSame(nextValueStartMonthAndYear)) {
                     leftView = nextValueStartMonthAndYear;
                     rightView = nextValueStartMonthAndYear.getNextMonth();

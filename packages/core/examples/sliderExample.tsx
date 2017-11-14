@@ -4,15 +4,17 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 
-import { Slider } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { Slider, Switch } from "@blueprintjs/core";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 
 export interface ISliderExampleState {
     value1?: number;
     value2?: number;
     value3?: number;
+    vertical?: boolean;
 }
 
 export class SliderExample extends BaseExample<ISliderExampleState> {
@@ -20,11 +22,20 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
         value1: 0,
         value2: 2.5,
         value3: 30,
+        vertical: false,
     };
 
+    private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
+
     protected renderExample() {
+        const { vertical } = this.state;
+
+        const rootClasses = classNames("docs-slider-example", {
+            "docs-slider-example-vertical": vertical,
+        });
+
         return (
-            <div style={{ width: "100%" }}>
+            <div className={rootClasses}>
                 <Slider
                     min={0}
                     max={10}
@@ -32,6 +43,7 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     labelStepSize={10}
                     onChange={this.getChangeHandler("value2")}
                     value={this.state.value2}
+                    vertical={vertical}
                 />
                 <Slider
                     min={0}
@@ -41,6 +53,7 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     onChange={this.getChangeHandler("value1")}
                     renderLabel={this.renderLabel1}
                     value={this.state.value1}
+                    vertical={vertical}
                 />
                 <Slider
                     min={-12}
@@ -51,9 +64,16 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     renderLabel={this.renderLabel3}
                     showTrackFill={false}
                     value={this.state.value3}
+                    vertical={vertical}
                 />
             </div>
         );
+    }
+
+    protected renderOptions() {
+        return [
+            [<Switch checked={this.state.vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />],
+        ];
     }
 
     private getChangeHandler(key: string) {
