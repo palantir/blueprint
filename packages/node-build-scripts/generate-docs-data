@@ -22,6 +22,10 @@ const DOCS_DATA_FILENAME = "docs.json";
 const DOCS_RELEASES_FILENAME = "releases.json";
 const DOCS_VERSIONS_FIELENAME = "versions.json";
 
+if (!fs.existsSync(GENERATED_SRC_DIR)) {
+    fs.mkdirSync(GENERATED_SRC_DIR);
+}
+
 generateDocumentalistData();
 generateReleasesData();
 generateVersionsData();
