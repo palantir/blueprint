@@ -12,7 +12,7 @@ const ICONS_METADATA = require(path.resolve(process.cwd(), "./resources/icons/ic
 const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
 
 if (!fs.existsSync(GENERATED_SRC_DIR)) {
-    fs.mkdirSync();
+    fs.mkdirSync(GENERATED_SRC_DIR);
 }
 
 // great big map for iteration
