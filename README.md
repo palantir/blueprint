@@ -80,6 +80,14 @@ Each library has its own dev script which you can run to watch changes to that p
 1. Run `yarn` at the root to update lockfiles.
 1. Commit the result.
 
+### Updating documentation
+
+Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx?` files and KSS markup in `.scss` files. This documentation is extracted
+and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).
+
+If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app`), you'll need to run `yarn generate-docs-data` from the `docs-app`
+package to see it reflected in the application. Note that `yarn bundle` in this package also runs this script.
+
 ### Updating icons
 
 The [One-time setup](#one-time-setup) and [Incorporating upstream changes](#incorporating-upstream-changes) steps should produce the generated

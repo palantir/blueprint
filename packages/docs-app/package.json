@@ -4,7 +4,9 @@
   "description": "Blueprint Documentation Site",
   "private": true,
   "scripts": {
-    "bundle": "webpack --config ./webpack.config.js",
+    "bundle": "npm-run-all -s bundle:pre bundle:webpack",
+    "bundle:pre": "generate-docs-data",
+    "bundle:webpack": "webpack --config ./webpack.config.js",
     "clean": "rm -rf dist/*",
     "dev": "webpack-dev-server --config ./webpack.config.js",
     "dist": "NODE_ENV=production yarn bundle",
@@ -34,6 +36,7 @@
     "tslib": "^1.7.1"
   },
   "devDependencies": {
+    "@blueprintjs/node-build-scripts": "^0.1.0",
     "@blueprintjs/webpack-build-scripts": "^0.1.0",
     "@types/chroma-js": "^1.3.3",
     "bourbon": "^4.3.4",

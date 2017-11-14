@@ -7,6 +7,7 @@
   },
   "bin": {
     "assert-package-layout": "./assert-package-layout",
+    "generate-docs-data": "./generate-docs-data",
     "generate-icons-source": "./generate-icons-source"
   },
   "repository": {
