@@ -21,3 +21,22 @@ the card increases by two levels.
 Users expect an interactive card to be a single clickable unit.
 
 @css pt-card.pt-interactive
+
+@## JavaScript API
+
+Then `Card` component is available in the __@blueprintjs/core__ package.
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
+
+This component is a simple wrapper around the CSS API.
+
+```
+<Card interactive={true} elevation={Card.ELEVATION_TWO}>
+    <h5><a href="#">Card heading</a></h5>
+    <p>Card content</p>
+    <Button>Submit</Button>
+</Card>
+```
+
+@reactExample CardExample
+
+@interface ICardProps

@@ -33,7 +33,7 @@ import { DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS, DATEINPUT_WARN_DEPRECATED_POPO
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateTimePicker } from "./dateTimePicker";
-import { TimePickerPrecision } from "./timePicker";
+import { ITimePickerProps, TimePickerPrecision } from "./timePicker";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
@@ -141,6 +141,13 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     value?: Date;
 
     /**
+     * Any props to be passed on to the `TimePicker`. `value`, `onChange`, and
+     * `timePrecision` will be ignored in favor of the corresponding top-level
+     * props on this component.
+     */
+    timePickerProps?: ITimePickerProps;
+
+    /**
      * Adds a time chooser to the bottom of the popover.
      * Passed to the `DateTimePicker` component.
      */
@@ -166,6 +173,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         openOnFocus: true,
         outOfRangeMessage: "Out of range",
         popoverPosition: Position.BOTTOM,
+        timePickerProps: {},
     };
 
     public static displayName = "Blueprint.DateInput";
@@ -196,10 +204,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 <DatePicker {...this.props} onChange={this.handleDateChange} value={dateValue} />
             ) : (
                 <DateTimePicker
+                    canClearSelection={this.props.canClearSelection}
                     onChange={this.handleDateChange}
                     value={dateValue}
                     datePickerProps={this.props}
-                    timePickerProps={{ precision: this.props.timePrecision }}
+                    timePickerProps={{ ...this.props.timePickerProps, precision: this.props.timePrecision }}
                 />
             );
         // assign default empty object here to prevent mutation
@@ -298,9 +307,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const prevMomentDate = this.state.value;
         const momentDate = fromDateToMoment(date);
 
-        // this change handler was triggered by a change in month, day, or (if enabled) time. for UX
-        // purposes, we want to close the popover only if the user explicitly clicked a day within
-        // the current month.
+        // this change handler was triggered by a change in month, day, or (if
+        // enabled) time. for UX purposes, we want to close the popover only if
+        // the user explicitly clicked a day within the current month.
         const isOpen =
             !hasUserManuallySelectedDate ||
             this.hasMonthChanged(prevMomentDate, momentDate) ||

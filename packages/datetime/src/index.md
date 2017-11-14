@@ -19,6 +19,9 @@ The __@blueprintjs/datetime__ NPM package provides several components for intera
 - [`DateInput`](#datetime/dateinput), which composes a text input with a `DatePicker` in
   a `Popover`, for use in forms.
 
+- [`DateRangeInput`](#datetime/daterangeinput), which composes two text inputs with a `DateRangePicker` in
+  a `Popover`, for use in forms.
+
 They are available in the __@blueprintjs/datetime__ package on
 [NPM](https://www.npmjs.com/package/@blueprintjs/datetime).
 

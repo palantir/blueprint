@@ -15,7 +15,8 @@ Any content should be a child of the `Collapse` element. Content must be in the 
 flow (e.g. `position: absolute;` wouldn't work, as the parent element would inherit a height of 0).
 
 Toggling the `isOpen` prop triggers the open and close animations.
-Once the component is in the closed state, the children are no longer rendered.
+Once the component is in the closed state, the children are no longer rendered, unless the
+`keepChildrenMounted` prop is true.
 
 ```tsx
 export interface ICollapseExampleState {

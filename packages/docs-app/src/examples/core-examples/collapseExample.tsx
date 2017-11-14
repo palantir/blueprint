@@ -6,19 +6,29 @@
 
 import * as React from "react";
 
-import { Button, Collapse } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { Button, Collapse, Switch } from "@blueprintjs/core";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 
-export class CollapseExample extends BaseExample<{ isOpen: boolean }> {
-    public state = {
+export interface ICollapseExampleState {
+    isOpen?: boolean;
+    keepChildrenMounted?: boolean;
+}
+
+export class CollapseExample extends BaseExample<ICollapseExampleState> {
+    public state: ICollapseExampleState = {
         isOpen: false,
+        keepChildrenMounted: false,
     };
+
+    private handleChildrenMountedChange = handleBooleanChange(keepChildrenMounted => {
+        this.setState({ keepChildrenMounted });
+    });
 
     protected renderExample() {
         return (
             <div>
                 <Button onClick={this.handleClick}>{this.state.isOpen ? "Hide" : "Show"} build logs</Button>
-                <Collapse isOpen={this.state.isOpen}>
+                <Collapse isOpen={this.state.isOpen} keepChildrenMounted={this.state.keepChildrenMounted}>
                     <pre>
                         [11:53:30] Finished 'typescript-bundle-blueprint' after 769 ms<br />
                         [11:53:30] Starting 'typescript-typings-blueprint'...<br />
@@ -29,6 +39,19 @@ export class CollapseExample extends BaseExample<{ isOpen: boolean }> {
                 </Collapse>
             </div>
         );
+    }
+
+    protected renderOptions() {
+        return [
+            [
+                <Switch
+                    checked={this.state.keepChildrenMounted}
+                    key="keepChildrenMounted"
+                    label="Keep children mounted"
+                    onChange={this.handleChildrenMountedChange}
+                />,
+            ],
+        ];
     }
 
     private handleClick = () => {
