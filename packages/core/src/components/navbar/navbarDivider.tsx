@@ -5,16 +5,23 @@
  */
 
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 // allow the empty interface so we can label it clearly in the docs
 // tslint:disable-next-line:no-empty-interface
-export interface INavbarDividerProps extends IProps {
+export interface INavbarDividerProps extends React.HTMLProps<HTMLDivElement>, IProps {
     // Empty
 }
 
-export const NavbarDivider: React.SFC<INavbarDividerProps> = ({ className }) => (
-    <div className={classNames(Classes.NAVBAR_DIVIDER, className)} />
-);
+@PureRender
+export class NavbarDivider extends React.Component<INavbarDividerProps, {}> {
+    public static displayName = "Blueprint.Navbar.Divider";
+
+    public render() {
+        const { className, ...htmlProps } = this.props;
+        return <div className={classNames(Classes.NAVBAR_DIVIDER, className)} {...htmlProps} />;
+    }
+}

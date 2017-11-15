@@ -43,26 +43,29 @@ horizontally center it.
 
 @## JavaScript API
 
-The `Navbar` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+The `Navbar`, `Navbar.Group`, `Navbar.Heading`, and `Navbar.Divider` components
+are available in the __@blueprintjs/core__ package. Make sure to review the
+[general usage docs for JS components](#blueprint.usage).
 
-This component is a simple wrapper around the CSS API.
+These components are simple wrappers around the corresponding CSS APIs.
 
 ```
 <Navbar>
-    <div style="margin: 0 auto; width: 480px;"> <!-- ADD ME -->
-        <NavbarGroup>
-            <NavbarHeading text="Blueprint" />
-        </NavbarGroup>
-        <NavbarGroup align="right">
-            <button class="pt-button pt-minimal pt-icon-home">Home</button>
-            <button class="pt-button pt-minimal pt-icon-document">Files</button>
-            <NavbarDivider />
-            <button class="pt-button pt-minimal pt-icon-user"></button>
-            <button class="pt-button pt-minimal pt-icon-notifications"></button>
-            <button class="pt-button pt-minimal pt-icon-cog"></button>
-        </NavbarGroup>
-    </div>
+    <Navbar.Group>
+        <Navbar.Heading>Blueprint</Navbar.Heading>
+    </Navbar.Group>
+    <Navbar.Group align="right">
+        <Button className="pt-minimal" iconName="home">
+            Home
+        </Button>
+        <Button className="pt-minimal" iconName="document">
+            Files
+        </Button>
+        <Navbar.Divider />
+        <Button className="pt-minimal" iconName="user" />
+        <Button className="pt-minimal" iconName="notifications" />
+        <Button className="pt-minimal" iconName="cog" />
+    </Navbar.Group>
 </Navbar>
 ```
 
