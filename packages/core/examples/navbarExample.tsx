@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Navbar, NavbarDivider, NavbarGroup, NavbarHeading, Switch } from "@blueprintjs/core";
+import { Button, Navbar, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 
 export interface INavbarExampleState {
@@ -21,16 +21,24 @@ export class NavbarExample extends BaseExample<INavbarExampleState> {
     private handleAlignRightChange = handleBooleanChange(alignRight => this.setState({ alignRight }));
 
     protected renderExample() {
+        const { alignRight } = this.state;
         return (
-            <Navbar>
-                <div style={{ margin: "0 auto", width: 480 }}>
-                    <NavbarGroup align={this.state.alignRight ? "right" : "left"}>
-                        <NavbarHeading>Blueprint</NavbarHeading>
-                        <NavbarDivider />
-                        <button className="pt-button pt-minimal pt-icon-home">Home</button>
-                        <button className="pt-button pt-minimal pt-icon-document">Files</button>
-                    </NavbarGroup>
-                </div>
+            <Navbar style={{ width: "100%" }}>
+                <Navbar.Group>
+                    <Navbar.Heading>Blueprint</Navbar.Heading>
+                </Navbar.Group>
+                <Navbar.Group align={alignRight ? "right" : "left"}>
+                    <Button className="pt-minimal" iconName="home">
+                        Home
+                    </Button>
+                    <Button className="pt-minimal" iconName="document">
+                        Files
+                    </Button>
+                    <Navbar.Divider />
+                    <Button className="pt-minimal" iconName="user" />
+                    <Button className="pt-minimal" iconName="notifications" />
+                    <Button className="pt-minimal" iconName="cog" />
+                </Navbar.Group>
             </Navbar>
         );
     }

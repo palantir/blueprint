@@ -11,11 +11,19 @@ import { IProps } from "../../common/props";
 
 // allow the empty interface so we can label it clearly in the docs
 // tslint:disable-next-line:no-empty-interface
-export interface INavbarHeadingProps extends IProps {
+export interface INavbarHeadingProps extends React.HTMLProps<HTMLDivElement>, IProps {
     // Empty
 }
 
-export const NavbarHeading: React.SFC<INavbarHeadingProps & { children?: React.ReactNode[] }> = ({
-    children,
-    className,
-}) => <div className={classNames(Classes.NAVBAR_HEADING, className)}>{children}</div>;
+export class NavbarHeading extends React.Component<React.HTMLProps<HTMLDivElement>, {}> {
+    public static displayName = "Blueprint.Navbar.Heading";
+
+    public render() {
+        const { children, className, ...htmlProps } = this.props;
+        return (
+            <div className={classNames(Classes.NAVBAR_HEADING, className)} {...htmlProps}>
+                {children}
+            </div>
+        );
+    }
+}

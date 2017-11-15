@@ -10,7 +10,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface INavbarGroupProps extends IProps {
+export interface INavbarGroupProps extends React.HTMLProps<HTMLDivElement>, IProps {
     /**
      * The side of the navbar on which the group should appear.
      * @default "left"
@@ -19,21 +19,27 @@ export interface INavbarGroupProps extends IProps {
 }
 
 @PureRender
-export class NavbarGroup extends React.Component<INavbarGroupProps & { children?: React.ReactNode }, {}> {
+export class NavbarGroup extends React.Component<INavbarGroupProps, {}> {
+    public static displayName = "Blueprint.Navbar.Group";
+
     public static defaultProps: INavbarGroupProps = {
         align: "left",
     };
 
     public render() {
-        const { align } = this.props;
+        const { align, children, className: propsClassName, ...htmlProps } = this.props;
         const className = classNames(
             Classes.NAVBAR_GROUP,
             {
                 [Classes.ALIGN_LEFT]: align === "left",
                 [Classes.ALIGN_RIGHT]: align === "right",
             },
-            this.props.className,
+            propsClassName,
         );
-        return <div className={className}>{this.props.children}</div>;
+        return (
+            <div className={className} {...htmlProps}>
+                {children}
+            </div>
+        );
     }
 }
