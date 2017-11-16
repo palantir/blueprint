@@ -10,7 +10,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface IButtonGroupProps extends IProps {
+export interface IButtonGroupProps extends IProps, React.HTMLProps<HTMLDivElement> {
     /**
      * Whether the button group should take up the full width of its container.
      * @default false
@@ -30,11 +30,6 @@ export interface IButtonGroupProps extends IProps {
     large?: boolean;
 
     /**
-     * CSS styles to apply to the button group.
-     */
-    style?: React.CSSProperties;
-
-    /**
      * Whether the button group should appear with vertical styling.
      * @default false
      */
@@ -46,18 +41,19 @@ export class ButtonGroup extends React.Component<IButtonGroupProps, {}> {
     public static displayName = "Blueprint.ButtonGroup";
 
     public render() {
-        const className = classNames(
+        const { className, fill, minimal, large, vertical, ...htmlProps } = this.props;
+        const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
-                [Classes.FILL]: this.props.fill,
-                [Classes.MINIMAL]: this.props.minimal,
-                [Classes.LARGE]: this.props.large,
-                [Classes.VERTICAL]: this.props.vertical,
+                [Classes.FILL]: fill,
+                [Classes.MINIMAL]: minimal,
+                [Classes.LARGE]: large,
+                [Classes.VERTICAL]: vertical,
             },
-            this.props.className,
+            className,
         );
         return (
-            <div className={className} style={this.props.style}>
+            <div {...htmlProps} className={buttonGroupClasses}>
                 {this.props.children}
             </div>
         );
