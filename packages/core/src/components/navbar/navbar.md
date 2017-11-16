@@ -46,7 +46,7 @@ horizontally center it.
 The `Navbar` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
-This component is a simple wrapper around the CSS API.
+These components are simple wrappers around the corresponding CSS APIs. Each of them supports the full range of HTML props.
 
 ```
 <Navbar>
