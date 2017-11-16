@@ -7,15 +7,15 @@
 import * as React from "react";
 
 import { Classes, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample, IBaseExampleProps } from "@blueprintjs/docs";
 
 export interface ITreeExampleState {
     nodes: ITreeNode[];
 }
 
 export class TreeExample extends BaseExample<ITreeExampleState> {
-    public constructor() {
-        super();
+    public constructor(props: IBaseExampleProps) {
+        super(props);
         const tooltipLabel = (
             <Tooltip content="An eye!">
                 <span className="pt-icon-standard pt-icon-eye-open" />
