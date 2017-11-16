@@ -21,10 +21,11 @@ describe("<ButtonGroup>", () => {
         assert.equal(wrapper.children().length, 1);
     });
 
-    it("renders with custom style", () => {
-        const wrapper = mount(<ButtonGroup style={{ background: "yellow" }} />);
+    it("supports html props", () => {
+        const wrapper = mount(<ButtonGroup style={{ background: "yellow" }} tabIndex={1} />);
         const element = wrapper.getDOMNode() as HTMLElement;
         assert.deepEqual(element.style.background, "yellow");
+        assert.deepEqual(element.tabIndex, 1);
     });
 
     it("renders with custom className", () => {
