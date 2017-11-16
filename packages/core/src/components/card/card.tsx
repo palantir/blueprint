@@ -38,13 +38,7 @@ export interface ICardProps extends IProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-export enum Elevation {
-    ZERO = 0,
-    ONE = 1,
-    TWO = 2,
-    THREE = 3,
-    FOUR = 4,
-}
+export type Elevation  = 0 | 1 | 2 | 3 | 4;
 
 const ELEVATION_CLASSES = [
     Classes.ELEVATION_0,
@@ -58,7 +52,7 @@ const ELEVATION_CLASSES = [
 export class Card extends React.Component<ICardProps, {}> {
     public static displayName = "Blueprint.Card";
     public static defaultProps: ICardProps = {
-        elevation: Elevation.ZERO,
+        elevation: 0,
         interactive: false,
     };
 
