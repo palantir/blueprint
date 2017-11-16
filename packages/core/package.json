@@ -15,6 +15,7 @@
     "dev": "npm-run-all -p 'compile:typescript --watch' 'compile:sass --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
+    "dist:variables": "generate-css-variables",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
