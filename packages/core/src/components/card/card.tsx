@@ -58,7 +58,7 @@ const ELEVATION_CLASSES = [
 export class Card extends React.Component<ICardProps, {}> {
     public static displayName = "Blueprint.Card";
     public static defaultProps: ICardProps = {
-        elevation: 0,
+        elevation: Elevation.ZERO,
         interactive: false,
     };
 
