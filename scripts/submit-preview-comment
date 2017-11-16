@@ -30,7 +30,7 @@ if [ $? -eq 0 ]; then
 else
     echo "RENDER"
     (cd packages/table; npm run build)
-    PREVIEWS="$PREVIEWS | $(artifactLink '/packages/table/preview/index.html' 'table')"
+    PREVIEWS="$PREVIEWS | $(artifactLink '/packages/table/dist/preview/index.html' 'table')"
 fi
 
 # Actual public site
