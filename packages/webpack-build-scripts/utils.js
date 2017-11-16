@@ -17,7 +17,7 @@ function getPackageName() {
             name = nameSplit[1];
         }
     } catch (e) {
-        console.error("[webpack-build-scripts] Couldn't read packge name from package.json", e);
+        console.error("[webpack-build-scripts] Couldn't read package name from package.json", e);
     }
     return name;
 }

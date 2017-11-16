@@ -38,7 +38,7 @@ These are hosted on GitHub Pages as static web applications.
 
 ### Build tooling
 
-These private packages define development dependencies and contain build configuration. They adhere to standard NPM package layout &mdash; this allows us to keep clear API boundaries for build configuration and isolate groups of `devDependencies`. In the future, we might publish these packages to allow other Blueprint projects to use this infrastructure outside this monorepo.
+These private packages define development dependencies and contain build configuration. They adhere to standard NPM package layout&mdash;this allows us to keep clear API boundaries for build configuration and isolate groups of `devDependencies`. In the future, we might publish these packages to allow other Blueprint projects to use this infrastructure outside this monorepo.
 
 - `karma-build-scripts`
 - `node-build-scripts`
@@ -66,14 +66,14 @@ If you were previously in a working state and have just pulled new code from `de
 - If there were package dependency changes, run `yarn` at the root.
   - This command is very quick if there are no new things to install.
 - Run `yarn compile-libs` to get the latest built versions of the library packages in this repo.
-  - This command is quicker than `yarn verify` since it doesn't build the application packages (`workspace-chrome`, `workspace-docs`, etc.) or run tests
+  - This command is quicker than `yarn verify` since it doesn't build the application packages (`docs-app`, `landing-app`, etc.) or run tests
 
 ### Developing libraries
 
 Each library has its own dev script which you can run to watch changes to that package and run the docs application with webpack-dev-server: `yarn dev:core`, `yarn dev:datetime`, etc.
 
-- One exception is table &mdash; since it has its own playground application for development, it `dev:table` script doesn't run the docs site.
-- You may also choose to watch changes across all packages with `dev:all`.
+- One exception is `table`&mdash;since it has its own playground application for development, the `dev:table` script doesn't run the docs site.
+- You may also choose to watch changes across all packages by running `yarn dev:all` from the root directory.
 
 ### Updating dependencies
 
@@ -83,11 +83,9 @@ Each library has its own dev script which you can run to watch changes to that p
 
 ### Updating documentation
 
-Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx?` files and KSS markup in `.scss` files. This documentation is extracted
-and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).
+Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx?` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).
 
-If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app`), you'll need to run `yarn generate-docs-data` from the `docs-app`
-package to see it reflected in the application. Note that `yarn bundle` in this package also runs this script.
+If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app`), you'll need to run `yarn generate-docs-data` from the `docs-app` package to see it reflected in the application. Note that `yarn bundle` in this package also runs this script.
 
 ### Updating icons
 

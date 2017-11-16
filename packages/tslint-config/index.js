@@ -53,7 +53,7 @@ module.exports = {
         },
         "no-unnecessary-callback-wrapper": true,
         "no-unnecessary-initializer": true,
-        // TODO: enable no-unused-expression. Currently, a lot of chai assertions are not writtten as proper statements.
+        // TODO: enable no-unused-expression. Currently, a lot of chai assertions are not written as proper statements.
         "no-unused-expression": false,
         "prefer-conditional-expression": false,
         "prettier": {

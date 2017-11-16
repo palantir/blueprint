@@ -18,7 +18,7 @@
     "dev:docs": "lerna run dev --scope '@blueprintjs/docs-app'",
     "dev:datetime": "lerna run dev --scope '@blueprintjs/{core,datetime,docs-app}'",
     "dev:labs": "lerna run dev --scope '@blueprintjs/{core,labs,docs-app}'",
-    "dev:table": "lerna run dev --scope '@blueprintjs/table'",
+    "dev:table": "lerna run dev --scope '@blueprintjs/{core,table}'",
     "dist": "npm-run-all 'dist:*'",
     "dist:libs-apps": "lerna run --parallel dist",
     "dist:docs": "npm-run-all clean-gh-pages copy-docs-app copy-landing-app",
