@@ -631,7 +631,7 @@ describe("DragSelectable", () => {
         const expectedCoords =
             region.rows != null
                 ? { col: region.cols[0], row: region.rows[0] }
-                : regionOrCoords as IFocusedCellCoordinates;
+                : (regionOrCoords as IFocusedCellCoordinates);
         expect(onFocus.firstCall.args[0], "should call onFocus with correct arg").to.deep.equal({
             ...expectedCoords,
             focusSelectionIndex,
