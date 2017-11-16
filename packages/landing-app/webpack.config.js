@@ -28,13 +28,13 @@ module.exports = Object.assign({}, baseConfig, {
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "./dist"),
-        publicPath: "/",
+        publicPath: "./",
     },
 
     plugins: baseConfig.plugins.concat([
         new CopyWebpackPlugin([
             // to: is relative to dist/
-            { from: "src/assets", to: "asseta" },
+            { from: "src/assets", to: "assets" },
             { from: "src/index.html", to: "." },
         ])
     ]),
