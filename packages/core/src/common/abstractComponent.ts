@@ -41,9 +41,9 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
      * @returns a "cancel" function that will clear timeout when invoked.
      */
     public setTimeout(callback: () => void, timeout?: number) {
-        const handle = setTimeout(callback, timeout);
+        const handle = window.setTimeout(callback, timeout);
         this.timeoutIds.push(handle);
-        return () => clearTimeout(handle);
+        return () => window.clearTimeout(handle);
     }
 
     /**
@@ -52,7 +52,7 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
     public clearTimeouts = () => {
         if (this.timeoutIds.length > 0) {
             for (const timeoutId of this.timeoutIds) {
-                clearTimeout(timeoutId);
+                window.clearTimeout(timeoutId);
             }
             this.timeoutIds = [];
         }

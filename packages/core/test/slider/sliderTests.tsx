@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
@@ -157,7 +158,7 @@ describe("<Slider>", () => {
         const trackSelector = `.${Classes.SLIDER}-track`;
         const slider = renderSlider(<Slider disabled={true} />);
         // spy on instance method instead of onChange because we can't supply nativeEvent
-        const trackClickSpy = sinon.spy(slider.instance(), "handleTrackClick");
+        const trackClickSpy = sinon.spy(slider.instance() as any, "handleTrackClick");
         slider.find(trackSelector).simulate("mousedown", { target: testsContainerElement.query(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackClick was called when disabled");
     });
@@ -166,7 +167,7 @@ describe("<Slider>", () => {
         const trackSelector = `.${Classes.SLIDER}-track`;
         const slider = renderSlider(<Slider disabled={true} />);
         // spy on instance method instead of onChange because we can't supply nativeEvent
-        const trackClickSpy = sinon.spy(slider.instance(), "handleTrackTouch");
+        const trackClickSpy = sinon.spy(slider.instance() as any, "handleTrackTouch");
         slider.find(trackSelector).simulate("touchstart", { target: testsContainerElement.query(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackTouch was called when disabled");
     });
@@ -197,8 +198,8 @@ describe("<Slider>", () => {
     });
 
     describe("vertical orientation", () => {
-        let changeSpy: Sinon.SinonSpy;
-        let releaseSpy: Sinon.SinonSpy;
+        let changeSpy: sinon.SinonSpy;
+        let releaseSpy: sinon.SinonSpy;
 
         before(() => {
             changeSpy = sinon.spy();

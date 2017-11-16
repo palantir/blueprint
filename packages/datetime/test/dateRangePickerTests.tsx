@@ -11,6 +11,7 @@ import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
+import * as sinon from "sinon";
 
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
@@ -28,8 +29,8 @@ import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/d
 describe("<DateRangePicker>", () => {
     let testsContainerElement: Element;
     let dateRangePicker: DateRangePicker;
-    let onDateRangePickerChangeSpy: Sinon.SinonSpy;
-    let onDateRangePickerHoverChangeSpy: Sinon.SinonSpy;
+    let onDateRangePickerChangeSpy: sinon.SinonSpy;
+    let onDateRangePickerHoverChangeSpy: sinon.SinonSpy;
 
     before(() => {
         // this is essentially what TestUtils.renderIntoDocument does

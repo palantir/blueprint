@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+/**
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * @fileoverview Generates icons Sass and TypeScript source code from JSON metadata about icons.
+ */
+
+const fs = require("fs");
+const path = require("path");
+const { COPYRIGHT_HEADER } = require("./constants");
+
+const ICONS_METADATA = require(path.resolve(process.cwd(), "./resources/icons/icons.json"));
+const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
+
+if (!fs.existsSync(GENERATED_SRC_DIR)) {
+    fs.mkdirSync(GENERATED_SRC_DIR);
+}
+
+// great big map for iteration
+writeLinesToFile(
+    "_icon-map.scss",
+    [
+        '@import "icon-variables";',
+        "$icons: (",
+        ...ICONS_METADATA.map(i => `  "${i.className.replace("pt-icon-", "")}": $${i.className},`),
+        ");",
+    ]
+);
+
+
+// simple variable definitions
+writeLinesToFile(
+    "_icon-variables.scss",
+    ICONS_METADATA.map((icon) => `$${icon.className}: "${icon.content}";`)
+);
+
+// map ENUM_NAME to className (cast as string constant so it can be used as IconName)
+writeLinesToFile(
+    "iconClasses.ts",
+    buildTSObject("IconClasses", (icon) => `${icon.className}" as "${icon.className}`)
+);
+
+// union type of all valid string names
+writeLinesToFile(
+    "iconName.ts",
+    buildUnionType()
+);
+
+// map ENUM_NAME to unicode character
+writeLinesToFile(
+    "iconStrings.ts",
+    buildTSObject("IconContents", (icon) => icon.content.replace("\\", "\\u"))
+);
+
+function writeLinesToFile(filename, lines) {
+    const outputPath = path.join(GENERATED_SRC_DIR, filename);
+    const contents = [COPYRIGHT_HEADER, ...lines, ""].join("\n");
+    fs.writeFileSync(outputPath, contents);
+}
+
+function toEnumName(icon) {
+    return icon.className.replace("pt-icon-", "").replace(/-/g, "_").toUpperCase();
+}
+
+function buildTSObject(objectName, valueGetter) {
+    return [
+        "// tslint:disable:object-literal-sort-keys",
+        `export const ${objectName} = {`,
+        ...ICONS_METADATA.map((prop) => `    ${toEnumName(prop)}: "${valueGetter(prop)}",`),
+        "};",
+    ];
+}
+
+function buildUnionType() {
+    const iconNames = ICONS_METADATA.reduce((arr, { className }) => {
+        // support un/prefixed variants
+        arr.push(`"${className}"`, `"${className.replace("pt-icon-", "")}"`);
+        return arr;
+    }, []).sort();
+    return [
+        `export type IconName =\n    | ${iconNames.join("\n    | ")};`,
+    ];
+}

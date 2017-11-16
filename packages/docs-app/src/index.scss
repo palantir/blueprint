@@ -1,0 +1,25 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "~normalize.css/normalize.css";
+
+// import these first cuz they're the base layer
+@import "~@blueprintjs/core/dist/blueprint.css";
+@import "~@blueprintjs/datetime/dist/blueprint-datetime.css";
+@import "~@blueprintjs/labs/dist/blueprint-labs.css";
+@import "~@blueprintjs/table/dist/table.css";
+
+// then the docs theme styles
+@import "~@blueprintjs/docs/dist/docs.css";
+@import "~@blueprintjs/docs/src/styles/variables";
+
+// then our own styles
+@import "styles/colors";
+@import "styles/examples";
+@import "styles/icons";
+@import "styles/resources";
+@import "styles/sections";
+
+.docs-logo {
+  background-image: url("./assets/blueprint-logo.svg");
+}

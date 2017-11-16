@@ -91,6 +91,7 @@ export class Slider extends CoreSlider<ISliderProps> {
             this.handle.beginHandleTouchMovement(event);
         }
     }
+    // tslint:enable member-ordering
 
     private handleHandleRef = (ref: Handle) => {
         this.handle = ref;

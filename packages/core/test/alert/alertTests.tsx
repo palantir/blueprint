@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
+import { SinonSpy, spy } from "sinon";
 
 import { Alert, Button, Classes, Icon, Intent } from "../../src/index";
 
@@ -47,10 +48,10 @@ describe("<Alert>", () => {
 
     describe("confirm button", () => {
         let wrapper: ShallowWrapper<any, any>;
-        let onConfirm: Sinon.SinonSpy;
+        let onConfirm: SinonSpy;
 
         beforeEach(() => {
-            onConfirm = sinon.spy();
+            onConfirm = spy();
             wrapper = shallow(
                 <Alert
                     iconName="warning-sign"
@@ -81,11 +82,11 @@ describe("<Alert>", () => {
 
     describe("cancel button", () => {
         let wrapper: ShallowWrapper<any, any>;
-        let onCancel: Sinon.SinonSpy;
+        let onCancel: SinonSpy;
         let cancelButton: ShallowWrapper<any, any>;
 
         beforeEach(() => {
-            onCancel = sinon.spy();
+            onCancel = spy();
             wrapper = shallow(
                 <Alert
                     iconName="warning-sign"

@@ -6,6 +6,8 @@
 
 import { expect } from "chai";
 import * as React from "react";
+import * as sinon from "sinon";
+
 import { EditableName } from "../src/index";
 import { ReactHarness } from "./harness";
 

@@ -8,6 +8,7 @@ import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import { Simulate } from "react-dom/test-utils";
+import { SinonSpy, spy } from "sinon";
 
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
@@ -38,7 +39,7 @@ describe("<Popover>", () => {
         });
 
         it("warns if given > 2 target elements", () => {
-            const warnSpy = sinon.spy(console, "warn");
+            const warnSpy = spy(console, "warn");
             shallow(
                 <Popover>
                     <h1 />
@@ -51,14 +52,14 @@ describe("<Popover>", () => {
         });
 
         it("warns if given children and target prop", () => {
-            const warnSpy = sinon.spy(console, "warn");
+            const warnSpy = spy(console, "warn");
             shallow(<Popover target="boom">pow</Popover>);
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
             warnSpy.restore();
         });
 
         it("warns if given two children and content prop", () => {
-            const warnSpy = sinon.spy(console, "warn");
+            const warnSpy = spy(console, "warn");
             shallow(
                 <Popover content="boom">
                     {"pow"}
@@ -98,7 +99,7 @@ describe("<Popover>", () => {
     });
 
     it("empty content disables it and warns", () => {
-        const warnSpy = sinon.spy(console, "warn");
+        const warnSpy = spy(console, "warn");
         const popover = mount(
             <Popover content={undefined} isOpen={true}>
                 <button />
@@ -114,13 +115,13 @@ describe("<Popover>", () => {
     });
 
     it("lifecycle methods are called appropriately", () => {
-        const popoverWillOpen = sinon.spy(() =>
+        const popoverWillOpen = spy(() =>
             assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 0),
         );
-        const popoverDidOpen = sinon.spy(() =>
+        const popoverDidOpen = spy(() =>
             assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1),
         );
-        const popoverWillClose = sinon.spy(() =>
+        const popoverWillClose = spy(() =>
             assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1),
         );
 
@@ -141,7 +142,7 @@ describe("<Popover>", () => {
     });
 
     it("popoverDidOpen is called even if popoverWillOpen is not specified", () => {
-        const popoverDidOpen = sinon.spy();
+        const popoverDidOpen = spy();
         renderPopover({
             interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
             popoverDidOpen,
@@ -335,15 +336,15 @@ describe("<Popover>", () => {
         });
 
         it("onClose is invoked with event when popover would close", () => {
-            const onClose = sinon.spy();
+            const onClose = spy();
             renderPopover({ isOpen: true, onClose }).simulateTarget("click");
             assert.isTrue(onClose.calledOnce);
             assert.isNotNull(onClose.args[0][0]);
         });
 
         describe("onInteraction()", () => {
-            let onInteraction: Sinon.SinonSpy;
-            beforeEach(() => (onInteraction = sinon.spy()));
+            let onInteraction: SinonSpy;
+            beforeEach(() => (onInteraction = spy()));
 
             it("is invoked with `true` when closed popover target is clicked", () => {
                 renderPopover({ isOpen: false, onInteraction }).simulateTarget("click");
@@ -499,7 +500,7 @@ describe("<Popover>", () => {
         });
 
         it("console.warns if onInteraction is set", () => {
-            const warnSpy = sinon.spy(console, "warn");
+            const warnSpy = spy(console, "warn");
             renderPopover({ onInteraction: () => false });
             assert.strictEqual(warnSpy.firstCall.args[0], Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
             warnSpy.restore();

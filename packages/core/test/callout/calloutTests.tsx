@@ -28,13 +28,6 @@ describe("<Callout>", () => {
         assert.isTrue(wrapper.hasClass(Classes.INTENT_DANGER));
     });
 
-    it("spreads HTML props", () => {
-        const onClick = sinon.spy();
-        const wrapper = shallow(<Callout label="label" onClick={onClick} />);
-        assert.strictEqual(wrapper.prop("label"), "label");
-        assert.strictEqual(wrapper.prop("onClick"), onClick);
-    });
-
     it("renders optional title element", () => {
         const title = "I am the title";
         const wrapper = shallow(<Callout title={title} />);

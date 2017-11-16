@@ -1,0 +1,23 @@
+{
+  "name": "@blueprintjs/node-build-scripts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "exit 0"
+  },
+  "bin": {
+    "assert-package-layout": "./assert-package-layout",
+    "generate-css-variables": "./generate-css-variables",
+    "generate-docs-data": "./generate-docs-data",
+    "generate-icons-source": "./generate-icons-source"
+  },
+  "dependencies": {
+    "strip-css-comments": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "author": "Palantir Technologies",
+  "license": "Apache-2.0"
+}

@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Placement } from "popper.js";
+import PopperJS from "popper.js";
 import * as React from "react";
 import { Arrow } from "react-popper";
 
@@ -21,7 +21,7 @@ const SVG_ARROW_PATH =
     "c0-1.654-.983-3.9-2.21-5.03l-7.183-6.616c-.81-.746-.802-1.96 0-2.7l7.183-6.614z";
 
 /** Modifier helper function to compute arrow rotate() transform */
-export function getArrowAngle(placement: Placement) {
+export function getArrowAngle(placement: PopperJS.Placement) {
     // can only be top/left/bottom/right - auto is resolved internally
     switch (getPosition(placement)) {
         case "top":

@@ -1,9 +1,6 @@
 {
-    "extends": "../tsconfig",
-    "include": [
-        "*.*"
-    ],
-    "exclude": [
-        "dist"
-    ]
+    "extends": "../src/tsconfig",
+    "compilerOptions": {
+        "declaration": false
+    }
 }

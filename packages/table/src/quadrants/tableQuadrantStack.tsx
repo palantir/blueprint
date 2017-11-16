@@ -750,7 +750,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         } else {
             // update asynchronously after a debounced delay
             clearInterval(this.debouncedViewSyncInterval);
-            this.debouncedViewSyncInterval = setTimeout(this.syncQuadrantViews, viewSyncDelay);
+            this.debouncedViewSyncInterval = window.setTimeout(this.syncQuadrantViews, viewSyncDelay);
         }
     };
 

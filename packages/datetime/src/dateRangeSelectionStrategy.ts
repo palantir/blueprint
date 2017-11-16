@@ -154,8 +154,8 @@ export class DateRangeSelectionStrategy {
 
     private static createRangeForBoundary(boundary: DateRangeBoundary, boundaryDate: Date, otherBoundaryDate: Date) {
         return boundary === DateRangeBoundary.START
-            ? [boundaryDate, otherBoundaryDate] as DateRange
-            : [otherBoundaryDate, boundaryDate] as DateRange;
+            ? ([boundaryDate, otherBoundaryDate] as DateRange)
+            : ([otherBoundaryDate, boundaryDate] as DateRange);
     }
 
     private static createRange(a: Date, b: Date, allowSingleDayRange: boolean): DateRange {

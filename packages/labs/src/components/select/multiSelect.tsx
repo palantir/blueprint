@@ -1,6 +1,5 @@
-/*
+/**
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
@@ -68,7 +67,7 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
     public static displayName = "Blueprint.MultiSelect";
 
     public static ofType<T>() {
-        return MultiSelect as new () => MultiSelect<T>;
+        return (MultiSelect as any) as new () => MultiSelect<T>;
     }
 
     public state: IMultiSelectState<T> = {

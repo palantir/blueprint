@@ -260,7 +260,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         Utils.safeInvoke(this.props.inputProps.onFocus, event);
     };
 
-    private handleInputChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ activeIndex: NONE, inputValue: event.currentTarget.value });
         Utils.safeInvoke(this.props.inputProps.onChange, event);
     };

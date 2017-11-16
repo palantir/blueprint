@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import { Classes, ITooltipProps, Overlay, Popover, SVGTooltip, Tooltip } from "../../src/index";
 
@@ -53,7 +54,7 @@ describe("<Tooltip>", () => {
         });
 
         it("empty content disables Popover and warns", () => {
-            const warnSpy = sinon.spy(console, "warn");
+            const warnSpy = spy(console, "warn");
             const tooltip = renderTooltip({ isOpen: true });
 
             function assertDisabledPopover(content?: string) {
@@ -88,7 +89,7 @@ describe("<Tooltip>", () => {
         });
 
         it("empty content disables Popover and warns", () => {
-            const warnSpy = sinon.spy(console, "warn");
+            const warnSpy = spy(console, "warn");
             const tooltip = renderTooltip({ content: "", isOpen: true });
             assert.isFalse(tooltip.find(Overlay).prop("isOpen"));
             assert.isTrue(warnSpy.calledOnce);
@@ -97,7 +98,7 @@ describe("<Tooltip>", () => {
 
         describe("onInteraction()", () => {
             it("is invoked with `true` when closed tooltip target is hovered", () => {
-                const handleInteraction = sinon.spy();
+                const handleInteraction = spy();
                 renderTooltip({ isOpen: false, onInteraction: handleInteraction })
                     .find(Popover)
                     .simulate("mouseenter");

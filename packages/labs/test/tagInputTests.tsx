@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import { Button, Classes, Intent, Keys, Tag } from "@blueprintjs/core";
 import { ITagInputProps, TagInput } from "../src/index";
@@ -145,7 +146,7 @@ describe("<TagInput>", () => {
             assert.deepEqual(onAdd.args[0][0], [value]);
         });
 
-        function mountTagInput(onAdd: Sinon.SinonStub, props?: Partial<ITagInputProps>) {
+        function mountTagInput(onAdd: sinon.SinonStub, props?: Partial<ITagInputProps>) {
             return shallow(<TagInput onAdd={onAdd} values={VALUES} {...props} />);
         }
     });

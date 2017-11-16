@@ -1,9 +1,7 @@
 {
-    "extends": "../tsconfig",
-    "include": [
-        "../typings/tsd.d.ts",
-        "../../../test/typings/tsd.d.ts",
-        "**/*"
-    ],
-    "exclude": []
+    "extends": "../../../config/tsconfig.base",
+    "compilerOptions": {
+        "declaration": false,
+        "noEmit": true
+    }
 }
