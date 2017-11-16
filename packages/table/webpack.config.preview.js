@@ -4,6 +4,7 @@
  */
 
 const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
 const webpack = require("webpack");
 
@@ -38,6 +39,14 @@ module.exports = Object.assign({}, baseConfig, {
 
     output: {
         filename: "[name].bundle.js",
-        path: path.resolve(__dirname, "./dist"),
+        path: path.resolve(__dirname, "./dist/preview"),
+        publicPath: "./",
     },
+
+    plugins: baseConfig.plugins.concat([
+        new CopyWebpackPlugin([
+            // to: is relative to dist/preview/
+            { from: "preview/index.html", to: "." },
+        ])
+    ]),
 });

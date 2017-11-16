@@ -17,8 +17,6 @@ general:
     - packages/docs-app/dist
     - packages/landing-app/dist
     - packages/table/dist
-    # preview pages
-    - packages/table/preview
     # GH Pages content
     - docs
 
