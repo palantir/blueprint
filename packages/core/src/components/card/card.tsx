@@ -38,7 +38,7 @@ export interface ICardProps extends IProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-export type Elevation  = 0 | 1 | 2 | 3 | 4;
+export type Elevation = 0 | 1 | 2 | 3 | 4;
 
 const ELEVATION_CLASSES = [
     Classes.ELEVATION_0,

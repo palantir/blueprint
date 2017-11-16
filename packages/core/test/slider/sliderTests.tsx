@@ -7,7 +7,7 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import { spy } from "sinon";
+import * as sinon from "sinon";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
@@ -64,7 +64,7 @@ describe("<Slider>", () => {
     });
 
     it("moving mouse calls onChange with nearest value", () => {
-        const changeSpy = spy();
+        const changeSpy = sinon.spy();
         const slider = renderSlider(<Slider onChange={changeSpy} />).simulate("mousedown", { clientX: 0 });
         mouseMoveHorizontal(slider.state("tickSize"), 5);
         // called 4 times, for the move to 1, 2, 3, and 4
@@ -73,7 +73,7 @@ describe("<Slider>", () => {
     });
 
     it("releasing mouse calls onRelease with nearest value", () => {
-        const releaseSpy = spy();
+        const releaseSpy = sinon.spy();
         const slider = renderSlider(<Slider onRelease={releaseSpy} />).simulate("mousedown", { clientX: 0 });
         mouseMoveHorizontal(slider.state("tickSize"), 1);
         mouseUpHorizontal(slider.state("tickSize"));
@@ -82,7 +82,7 @@ describe("<Slider>", () => {
     });
 
     it("moving touch calls onChange with nearest value", () => {
-        const changeSpy = spy();
+        const changeSpy = sinon.spy();
         const slider = renderSlider(<Slider onChange={changeSpy} />).simulate("touchstart", {
             changedTouches: [{ clientX: 0 }],
         });
@@ -93,7 +93,7 @@ describe("<Slider>", () => {
     });
 
     it("releasing touch calls onRelease with nearest value", () => {
-        const releaseSpy = spy();
+        const releaseSpy = sinon.spy();
         const slider = renderSlider(<Slider onRelease={releaseSpy} />).simulate("touchstart", {
             changedTouches: [{ clientX: 0 }],
         });
@@ -104,7 +104,7 @@ describe("<Slider>", () => {
     });
 
     it("pressing arrow key down reduces value by stepSize", () => {
-        const changeSpy = spy();
+        const changeSpy = sinon.spy();
         renderSlider(<Slider value={3} onChange={changeSpy} />)
             .find(Handle)
             .simulate("keydown", { which: Keys.ARROW_DOWN });
@@ -112,7 +112,7 @@ describe("<Slider>", () => {
     });
 
     it("pressing arrow key up increases value by stepSize", () => {
-        const changeSpy = spy();
+        const changeSpy = sinon.spy();
         renderSlider(<Slider stepSize={4} value={3} onChange={changeSpy} />)
             .find(Handle)
             .simulate("keydown", { which: Keys.ARROW_UP });
@@ -120,7 +120,7 @@ describe("<Slider>", () => {
     });
 
     it("releasing arrow key calls onRelease with value", () => {
-        const releaseSpy = spy();
+        const releaseSpy = sinon.spy();
         renderSlider(<Slider stepSize={4} value={3} onRelease={releaseSpy} />)
             .find(Handle)
             .simulate("keydown", { which: Keys.ARROW_UP })
@@ -129,7 +129,7 @@ describe("<Slider>", () => {
     });
 
     it("disabled slider does not respond to mouse movement", () => {
-        const changeSpy = spy();
+        const changeSpy = sinon.spy();
         const slider = renderSlider(<Slider disabled={true} onChange={changeSpy} />).simulate("mousedown", {
             clientX: 0,
         });
@@ -138,7 +138,7 @@ describe("<Slider>", () => {
     });
 
     it("disabled slider does not respond to touch movement", () => {
-        const changeSpy = spy();
+        const changeSpy = sinon.spy();
         const slider = renderSlider(<Slider disabled={true} onChange={changeSpy} />).simulate("touchstart", {
             changedTouches: [{ clientX: 0 }],
         });
@@ -147,7 +147,7 @@ describe("<Slider>", () => {
     });
 
     it("disabled slider does not respond to key presses", () => {
-        const changeSpy = spy();
+        const changeSpy = sinon.spy();
         renderSlider(<Slider disabled={true} onChange={changeSpy} />)
             .find(Handle)
             .simulate("keydown", { which: Keys.ARROW_DOWN });
@@ -158,7 +158,7 @@ describe("<Slider>", () => {
         const trackSelector = `.${Classes.SLIDER}-track`;
         const slider = renderSlider(<Slider disabled={true} />);
         // spy on instance method instead of onChange because we can't supply nativeEvent
-        const trackClickSpy = spy(slider.instance() as any, "handleTrackClick");
+        const trackClickSpy = sinon.spy(slider.instance() as any, "handleTrackClick");
         slider.find(trackSelector).simulate("mousedown", { target: testsContainerElement.query(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackClick was called when disabled");
     });
@@ -167,7 +167,7 @@ describe("<Slider>", () => {
         const trackSelector = `.${Classes.SLIDER}-track`;
         const slider = renderSlider(<Slider disabled={true} />);
         // spy on instance method instead of onChange because we can't supply nativeEvent
-        const trackClickSpy = spy(slider.instance() as any, "handleTrackTouch");
+        const trackClickSpy = sinon.spy(slider.instance() as any, "handleTrackTouch");
         slider.find(trackSelector).simulate("touchstart", { target: testsContainerElement.query(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackTouch was called when disabled");
     });
@@ -198,8 +198,8 @@ describe("<Slider>", () => {
     });
 
     describe("vertical orientation", () => {
-        let changeSpy: Sinon.SinonSpy;
-        let releaseSpy: Sinon.SinonSpy;
+        let changeSpy: sinon.SinonSpy;
+        let releaseSpy: sinon.SinonSpy;
 
         before(() => {
             changeSpy = sinon.spy();
