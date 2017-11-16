@@ -4233,12 +4233,6 @@ karma-sourcemap-loader@^0.3.7:
   dependencies:
     graceful-fs "^4.1.2"
 
-karma-typescript-preprocessor@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/karma-typescript-preprocessor/-/karma-typescript-preprocessor-0.3.1.tgz#a4ed4976af02a0801d17843756ad8ccc80053d5a"
-  dependencies:
-    typescript "^2.1.4"
-
 karma-webpack@^2.0.5:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/karma-webpack/-/karma-webpack-2.0.6.tgz#967918e59750ebe0f40829263435fde7ac81bdb4"
@@ -8000,10 +7994,6 @@ typescript@2.1:
 typescript@2.3.4:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.4.tgz#3d38321828231e434f287514959c37a82b629f42"
-
-typescript@^2.1.4:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.1.tgz#ef39cdea27abac0b500242d6726ab90e0c846631"
 
 typescript@~2.4.2:
   version "2.4.2"
