@@ -17,10 +17,6 @@ general:
     - packages/docs-app/dist
     - packages/landing-app/dist
     - packages/table/dist
-    # code coverage reports
-    - packages/core/coverage
-    - packages/datetime/coverage
-    - packages/table/coverage
     # preview pages
     - packages/table/preview
     # GH Pages content
