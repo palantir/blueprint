@@ -37,10 +37,11 @@ dependencies:
     - yarn
     - echo "Checking if lockfiles changed..." && git diff --exit-code
     - npm rebuild node-sass
+    - yarn compile-libs
 
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) yarn compile-libs && yarn dist ;; 1) yarn test ;; 2) yarn lint ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) yarn dist ;; 1) yarn test ;; 2) yarn lint ;; esac:
         parallel: true
 
 deployment:
