@@ -47,7 +47,7 @@ The `Navbar`, `Navbar.Group`, `Navbar.Heading`, and `Navbar.Divider` components
 are available in the __@blueprintjs/core__ package. Make sure to review the
 [general usage docs for JS components](#blueprint.usage).
 
-These components are simple wrappers around the corresponding CSS APIs.
+These components are simple wrappers around the corresponding CSS APIs. Each of them supports the full range of HTML props.
 
 ```
 <Navbar>
