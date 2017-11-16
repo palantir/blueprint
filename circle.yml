@@ -15,7 +15,7 @@ general:
     - packages/docs/dist
     - packages/labs/dist
     - packages/docs-app/dist
-    - packages/site-landing/dist
+    - packages/landing-app/dist
     - packages/table/dist
     # code coverage reports
     - packages/core/coverage
