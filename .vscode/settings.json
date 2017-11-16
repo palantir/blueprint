@@ -4,6 +4,7 @@
         "**/build": true,
         "**/coverage": true,
         "**/dist": true,
+        "**/tmp": true,
         "docs": true
     },
     "search.exclude": {

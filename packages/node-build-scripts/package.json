@@ -9,7 +9,8 @@
     "assert-package-layout": "./assert-package-layout",
     "generate-css-variables": "./generate-css-variables",
     "generate-docs-data": "./generate-docs-data",
-    "generate-icons-source": "./generate-icons-source"
+    "generate-icons-source": "./generate-icons-source",
+    "prepare-es-modules": "./prepare-es-modules"
   },
   "dependencies": {
     "strip-css-comments": "^3.0.0"
