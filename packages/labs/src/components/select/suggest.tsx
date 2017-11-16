@@ -73,7 +73,7 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
     public static displayName = "Blueprint.Suggest";
 
     public static ofType<T>() {
-        return Suggest as new () => Suggest<T>;
+        return (Suggest as any) as new () => Suggest<T>;
     }
 
     public state: ISuggestState<T> = {

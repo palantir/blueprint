@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+/**
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * @fileoverview Asserts that all library packages adhere to the layout spec.
+ */
+
+const fs = require("fs");
+const path = require("path");
+const stripCssComments = require("strip-css-comments");
+const { COPYRIGHT_HEADER } = require("./constants");
+
+const SRC_DIR = path.resolve(process.cwd(), "./src");
+const DIST_DIR = path.resolve(process.cwd(), "./dist");
+
+const VARIABLES_SOURCES = [
+    "common/_colors.scss",
+    "common/_color-aliases.scss",
+    "common/_variables.scss",
+    "generated/_icon-variables.scss",
+];
+
+// concatenate sources
+let variablesScss = VARIABLES_SOURCES.reduce((str, currentFilename) => {
+    return str + fs.readFileSync(`${SRC_DIR}/${currentFilename}`).toString();
+}, "");
+
+// strip comments, clean up for consumption
+variablesScss = stripCssComments(variablesScss);
+variablesScss = variablesScss
+    .replace(" !default", "")
+    .replace(/(@import|\/\/).*\n+/g, "")
+    .replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)")
+    .replace(/\n{3,}/g, "\n\n");
+variablesScss = COPYRIGHT_HEADER + "\n" + variablesScss;
+
+fs.writeFileSync(`${DIST_DIR}/variables.scss`, variablesScss);
+
+// convert scss to less
+const variablesLess = variablesScss
+    .replace(
+        /rgba\((\$[\w-]+), ([\d\.]+)\)/g,
+        (match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`
+    ).replace(
+        /rgba\((\$[\w-]+), (\$[\w-]+)\)/g,
+        (match, color, variable) => `fade(${color}, ${variable} * 100%)`
+    ).replace(
+        /\$/g,
+        "@"
+    );
+
+fs.writeFileSync(`${DIST_DIR}/variables.less`, variablesLess);

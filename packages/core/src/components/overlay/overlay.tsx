@@ -236,6 +236,33 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
         this.overlayWillClose();
     }
 
+    /**
+     * @public for testing
+     * @internal
+     */
+    public bringFocusInsideOverlay() {
+        // always delay focus manipulation to just before repaint to prevent scroll jumping
+        return requestAnimationFrame(() => {
+            // container ref may be undefined between component mounting and Portal rendering
+            // activeElement may be undefined in some rare cases in IE
+            if (this.containerElement == null || document.activeElement == null || !this.props.isOpen) {
+                return;
+            }
+
+            const isFocusOutsideModal = !this.containerElement.contains(document.activeElement);
+            if (isFocusOutsideModal) {
+                // element marked autofocus has higher priority than the other clowns
+                const autofocusElement = this.containerElement.query("[autofocus]") as HTMLElement;
+                const wrapperElement = this.containerElement.query("[tabindex]") as HTMLElement;
+                if (autofocusElement != null) {
+                    autofocusElement.focus();
+                } else if (wrapperElement != null) {
+                    wrapperElement.focus();
+                }
+            }
+        });
+    }
+
     private maybeRenderBackdrop() {
         const { backdropClassName, backdropProps, hasBackdrop, isOpen } = this.props;
         if (hasBackdrop && isOpen) {
@@ -295,29 +322,6 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
             // add a class to the body to prevent scrolling of content below the overlay
             document.body.classList.add(Classes.OVERLAY_OPEN);
         }
-    }
-
-    private bringFocusInsideOverlay() {
-        // always delay focus manipulation to just before repaint to prevent scroll jumping
-        return requestAnimationFrame(() => {
-            // container ref may be undefined between component mounting and Portal rendering
-            // activeElement may be undefined in some rare cases in IE
-            if (this.containerElement == null || document.activeElement == null || !this.props.isOpen) {
-                return;
-            }
-
-            const isFocusOutsideModal = !this.containerElement.contains(document.activeElement);
-            if (isFocusOutsideModal) {
-                // element marked autofocus has higher priority than the other clowns
-                const autofocusElement = this.containerElement.query("[autofocus]") as HTMLElement;
-                const wrapperElement = this.containerElement.query("[tabindex]") as HTMLElement;
-                if (autofocusElement != null) {
-                    autofocusElement.focus();
-                } else if (wrapperElement != null) {
-                    wrapperElement.focus();
-                }
-            }
-        });
     }
 
     private handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {

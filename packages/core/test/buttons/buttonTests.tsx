@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import * as Keys from "../../src/common/keys";
 import { AnchorButton, Button, Classes, IButtonProps, Spinner } from "../../src/index";
@@ -57,13 +58,13 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         });
 
         it("clicking button triggers onClick prop", () => {
-            const onClick = sinon.spy();
+            const onClick = spy();
             button({ onClick }).simulate("click");
             assert.equal(onClick.callCount, 1);
         });
 
         it("clicking disabled button does not trigger onClick prop", () => {
-            const onClick = sinon.spy();
+            const onClick = spy();
             // full DOM mount so `button` element will ignore click
             button({ disabled: true, onClick }, true).simulate("click");
             assert.equal(onClick.callCount, 0);
@@ -100,7 +101,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             // mock the DOM click() function, because enzyme only handles
             // simulated React events
             const buttonRef = (wrapper.instance() as any).buttonRef;
-            const onClick = sinon.spy(buttonRef, "click");
+            const onClick = spy(buttonRef, "click");
 
             wrapper.simulate("keyup", keyEventProps);
 
@@ -112,7 +113,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         }
 
         function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, keyCode: number) {
-            const callback = sinon.spy();
+            const callback = spy();
 
             // IButtonProps doesn't include onKeyDown or onKeyUp in its
             // definition, even though Buttons support those props. Casting as

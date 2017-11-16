@@ -18,8 +18,7 @@ install dependencies:
 ```sh
 git clone git@github.com:<username>/blueprint.git # using ssh
 cd blueprint
-npm install
-npm run bootstrap
+yarn
 ```
 
 ## Developing

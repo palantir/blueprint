@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import { ClassNames } from "react-day-picker";
 import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";

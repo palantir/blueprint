@@ -1,0 +1,47 @@
+{
+  "name": "@blueprintjs/landing-app",
+  "version": "1.5.0",
+  "description": "Blueprint landing page",
+  "private": true,
+  "scripts": {
+    "bundle": "webpack --config ./webpack.config.js",
+    "clean": "rm -rf dist/*",
+    "dev": "webpack-dev-server --config ./webpack.config.js",
+    "dist": "NODE_ENV=production yarn bundle",
+    "lint": "npm-run-all -p lint:stylelint lint:tslint",
+    "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
+    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config",
+    "lint-fix": "yarn lint:tslint --fix",
+    "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/img",
+    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/inline && node scripts/dedupe-svg-ids.js",
+    "test": "exit 0",
+    "verify": "npm-run-all -p dist lint"
+  },
+  "dependencies": {
+    "@blueprintjs/core": "^1.25.1",
+    "classnames": "^2.2.5",
+    "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "@blueprintjs/webpack-build-scripts": "^0.1.0",
+    "copy-webpack-plugin": "^4.2.0",
+    "node-sass": "^4.5.3",
+    "npm-run-all": "^4.1.1",
+    "raw-loader": "^0.5.1",
+    "svgo": "^0.7.2",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "keywords": [
+    "blueprint",
+    "landing page"
+  ],
+  "author": "Palantir Technologies",
+  "license": "Apache-2.0"
+}

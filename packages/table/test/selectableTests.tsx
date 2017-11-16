@@ -6,6 +6,7 @@
 
 import { expect } from "chai";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
 import * as FocusedCellUtils from "../src/common/internal/focusedCellUtils";
@@ -352,8 +353,8 @@ describe("DragSelectable", () => {
         });
 
         describe("if SHIFT depressed", () => {
-            let expandFocusedSpy: Sinon.SinonSpy;
-            let expandSpy: Sinon.SinonSpy;
+            let expandFocusedSpy: sinon.SinonSpy;
+            let expandSpy: sinon.SinonSpy;
 
             beforeEach(() => {
                 expandFocusedSpy = sinon.spy(FocusedCellUtils, "expandFocusedRegion");
@@ -630,7 +631,7 @@ describe("DragSelectable", () => {
         const expectedCoords =
             region.rows != null
                 ? { col: region.cols[0], row: region.rows[0] }
-                : regionOrCoords as IFocusedCellCoordinates;
+                : (regionOrCoords as IFocusedCellCoordinates);
         expect(onFocus.firstCall.args[0], "should call onFocus with correct arg").to.deep.equal({
             ...expectedCoords,
             focusSelectionIndex,

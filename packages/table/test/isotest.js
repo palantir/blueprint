@@ -3,9 +3,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+const { generateIsomorphicTests } = require("@blueprintjs/node-build-scripts");
 const React = require("react");
-
-const generateIsomorphicTests = require("../../../test/isotest");
 const Table = require("../dist");
 
 const draggableElement = React.createElement("button");

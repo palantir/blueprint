@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import { Breadcrumb, Classes } from "../../src/index";
 
@@ -19,13 +20,13 @@ describe("Breadcrumb", () => {
     });
 
     it("clicking triggers onClick", () => {
-        const onClick = sinon.spy();
+        const onClick = spy();
         shallow(<Breadcrumb onClick={onClick} text="Hello" />).simulate("click");
         assert.isTrue(onClick.calledOnce, "onClick not called once");
     });
 
     it("clicking disabled does not trigger onClick", () => {
-        const onClick = sinon.spy();
+        const onClick = spy();
         shallow(<Breadcrumb disabled={true} onClick={onClick} text="Hello" />).simulate("click");
         assert.isTrue(onClick.notCalled, "onClick called");
     });

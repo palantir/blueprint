@@ -9,8 +9,9 @@ import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
-import { Film, TOP_100_FILMS } from "../examples/data";
+import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/labs-examples/data";
 import { ISelectItemRendererProps } from "../src/components/select/select";
 import { ISuggestProps, Suggest } from "../src/components/select/suggest";
 
@@ -24,10 +25,10 @@ describe("Suggest", () => {
         query: "",
     };
     let handlers: {
-        inputValueRenderer: Sinon.SinonSpy;
-        itemPredicate: Sinon.SinonSpy;
-        itemRenderer: Sinon.SinonSpy;
-        onItemSelect: Sinon.SinonSpy;
+        inputValueRenderer: sinon.SinonSpy;
+        itemPredicate: sinon.SinonSpy;
+        itemRenderer: sinon.SinonSpy;
+        onItemSelect: sinon.SinonSpy;
     };
 
     beforeEach(() => {

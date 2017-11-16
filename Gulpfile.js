@@ -98,10 +98,6 @@ const projects = [
             entry: "src/index.tsx",
             dest: "dist",
         },
-        copy: {
-            "resources/favicon.png": { to: ["resources/"], base: "resources/" },
-            "src/index.html": { to: [""], base: "src/" },
-        },
     }, {
         id: "site-landing",
         cwd: "packages/site-landing/",

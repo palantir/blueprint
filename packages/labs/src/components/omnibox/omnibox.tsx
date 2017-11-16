@@ -85,7 +85,7 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
     public static displayName = "Blueprint.Omnibox";
 
     public static ofType<T>() {
-        return Omnibox as new () => Omnibox<T>;
+        return (Omnibox as any) as new () => Omnibox<T>;
     }
 
     public state: IOmniboxState<T> = {

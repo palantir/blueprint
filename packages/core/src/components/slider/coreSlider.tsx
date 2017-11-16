@@ -178,7 +178,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
 
         const stepSize = Math.round(this.state.tickSize * labelStepSize);
         const labels: JSX.Element[] = [];
-        // tslint:disable-next-line:one-variable-per-declaration
+        // tslint:disable-next-line:one-variable-per-declaration ban-comma-operator
         for (let i = min, offset = 0; i < max || approxEqual(i, max); i += labelStepSize, offset += stepSize) {
             const style = this.props.vertical ? { bottom: offset } : { left: offset };
             labels.push(

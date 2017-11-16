@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuItem } from "../../src/index";
 
@@ -27,14 +28,14 @@ describe("ContextMenu", () => {
     });
 
     it("invokes onClose callback when menu closed", () => {
-        const onClose = sinon.spy();
+        const onClose = spy();
         ContextMenu.show(MENU, { left: 0, top: 0 }, onClose);
         ContextMenu.hide();
         assert.isTrue(onClose.calledOnce, "onClose not called");
     });
 
     it("does not invoke previous onClose callback", () => {
-        const onClose = sinon.spy();
+        const onClose = spy();
         ContextMenu.show(MENU, { left: 0, top: 0 }, onClose);
         ContextMenu.show(MENU, { left: 10, top: 10 });
         ContextMenu.hide();

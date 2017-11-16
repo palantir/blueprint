@@ -6,6 +6,8 @@
 
 import { assert } from "chai";
 import * as React from "react";
+import { SinonSpy, spy } from "sinon";
+
 import * as Utils from "../../src/common/utils";
 
 describe("Utils", () => {
@@ -18,7 +20,7 @@ describe("Utils", () => {
         assert.doesNotThrow(() => Utils.safeInvoke(undefined, 1, "2", true, 4));
 
         // try the max number of args (4)
-        const callback = sinon.spy();
+        const callback = spy();
         Utils.safeInvoke(callback, 1, "2", true, 4);
         assert.isTrue(callback.firstCall.calledWith(1, "2", true, 4));
     });
@@ -27,7 +29,7 @@ describe("Utils", () => {
         assert.doesNotThrow(() => Utils.safeInvokeOrValue(undefined, 1, "2", true, 4));
 
         // try the max number of args (4)
-        const callback = sinon.spy();
+        const callback = spy();
         Utils.safeInvokeOrValue(callback, 1, "2", true, 4);
         assert.isTrue(callback.firstCall.calledWith(1, "2", true, 4));
 
@@ -91,13 +93,13 @@ describe("Utils", () => {
     it.skip("throttleEvent");
 
     describe("throttleReactEventCallback", () => {
-        let callback: Sinon.SinonSpy;
+        let callback: SinonSpy;
         let fakeEvent: any; // cast as `any` to avoid having to set every required property on the event
         let throttledCallback: (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => void;
 
         beforeEach(() => {
-            callback = sinon.spy();
-            fakeEvent = { persist: sinon.spy(), preventDefault: sinon.spy() };
+            callback = spy();
+            fakeEvent = { persist: spy(), preventDefault: spy() };
         });
 
         afterEach(() => {

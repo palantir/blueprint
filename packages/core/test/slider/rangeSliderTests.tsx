@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
@@ -210,8 +211,8 @@ describe("<RangeSlider>", () => {
     });
 
     describe("vertical orientation", () => {
-        let changeSpy: Sinon.SinonSpy;
-        let releaseSpy: Sinon.SinonSpy;
+        let changeSpy: sinon.SinonSpy;
+        let releaseSpy: sinon.SinonSpy;
 
         before(() => {
             changeSpy = sinon.spy();

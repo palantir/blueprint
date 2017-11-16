@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -ex
+set -o pipefail
+
+if [ -z ${CIRCLECI+x} ]; then
+    echo "Not on Circle; refusing to run."
+    exit 1
+fi
+
+SCRIPTS_DIR="$( dirname "$(readlink -f "$0")" )"
+
+branch="$CIRCLE_BRANCH"
+if [ ! -z "$CIRCLE_TAG" ]; then
+    branch='develop'
+fi
+
+if ! [[ "$branch" == "master" || "$branch" == "develop" || "$branch" == "next" || "$branch" == release/* ]]; then
+    echo "Not on master, develop, next, release/* or a tag - not publishing."
+    exit 1
+fi
+
+# See https://circleci.com/docs/npm-login/
+echo -e "$NPM_USER\n$NPM_PASSWORD\n$NPM_EMAIL" | npm login
+
+if [[ "$branch" == "next" ]]; then
+    echo "Publishing with next tag because branch name is next"
+    # must set public access for scoped packages
+    npm publish --tag next --access public
+else
+    npm publish --access public
+fi

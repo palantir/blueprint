@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import * as Keys from "../../src/common/keys";
 import { Classes, Dialog } from "../../src/index";
@@ -31,7 +32,7 @@ describe("<Dialog>", () => {
     });
 
     it("attempts to close when .pt-overlay-backdrop element is moused down", () => {
-        const onClose = sinon.spy();
+        const onClose = spy();
         const dialog = mount(
             <Dialog inline={true} isOpen={true} onClose={onClose}>
                 {createDialogContents()}
@@ -42,7 +43,7 @@ describe("<Dialog>", () => {
     });
 
     it("attempts to close when .pt-dialog-container element is moused down", () => {
-        const onClose = sinon.spy();
+        const onClose = spy();
         const dialog = mount(
             <Dialog inline={true} isOpen={true} onClose={onClose}>
                 {createDialogContents()}
@@ -53,7 +54,7 @@ describe("<Dialog>", () => {
     });
 
     it("doesn't close when canOutsideClickClose=false and .pt-overlay-backdrop element is moused down", () => {
-        const onClose = sinon.spy();
+        const onClose = spy();
         const dialog = mount(
             <Dialog canOutsideClickClose={false} inline={true} isOpen={true} onClose={onClose}>
                 {createDialogContents()}
@@ -64,7 +65,7 @@ describe("<Dialog>", () => {
     });
 
     it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
-        const onClose = sinon.spy();
+        const onClose = spy();
         const dialog = mount(
             <Dialog canEscapeKeyClose={false} inline={true} isOpen={true} onClose={onClose}>
                 {createDialogContents()}
@@ -97,7 +98,7 @@ describe("<Dialog>", () => {
         });
 
         it("clicking close button triggers onClose", () => {
-            const onClose = sinon.spy();
+            const onClose = spy();
             const dialog = mount(
                 <Dialog inline={true} isCloseButtonShown={true} isOpen={true} onClose={onClose} title="Hello!">
                     dialog body

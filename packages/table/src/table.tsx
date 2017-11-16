@@ -508,7 +508,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         let newRowHeights = Utils.times(numRows, () => defaultRowHeight);
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
-        const selectedRegions = props.selectedRegions == null ? [] as IRegion[] : props.selectedRegions;
+        const selectedRegions = props.selectedRegions == null ? ([] as IRegion[]) : props.selectedRegions;
         const focusedCell = FocusedCellUtils.getInitialFocusedCell(
             props.enableFocus,
             props.focusedCell,

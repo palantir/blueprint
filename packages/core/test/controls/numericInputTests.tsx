@@ -7,6 +7,7 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import * as Errors from "../../src/common/errors";
 import {
@@ -145,7 +146,7 @@ describe("<NumericInput>", () => {
         });
 
         it("provides numeric value to onValueChange as a number and a string", () => {
-            const onValueChangeSpy = sinon.spy();
+            const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} value={1} />);
 
             component.find("input").simulate("change");
@@ -155,7 +156,7 @@ describe("<NumericInput>", () => {
         });
 
         it("provides non-numeric value to onValueChange as NaN and a string", () => {
-            const onValueChangeSpy = sinon.spy();
+            const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} value={"non-numeric-value"} />);
 
             component.find("input").simulate("change");
@@ -187,7 +188,7 @@ describe("<NumericInput>", () => {
         });
 
         it("fires onValueChange with the number value and the string value when the value changes", () => {
-            const onValueChangeSpy = sinon.spy();
+            const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
             const incrementButton = component.find(Button).first();
@@ -198,7 +199,7 @@ describe("<NumericInput>", () => {
         });
 
         it("fires onButtonClick with the number value and the string value when either button is pressed", () => {
-            const onButtonClickSpy = sinon.spy();
+            const onButtonClickSpy = spy();
             const component = mount(<NumericInput onButtonClick={onButtonClickSpy} />);
 
             const incrementButton = component.find(Button).first();
@@ -626,7 +627,7 @@ describe("<NumericInput>", () => {
             });
 
             it("fires onValueChange with clamped value if nextProps.min > value ", () => {
-                const onValueChangeSpy = sinon.spy();
+                const onValueChangeSpy = spy();
                 const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
 
                 component.setProps({ min: 0 });
@@ -638,7 +639,7 @@ describe("<NumericInput>", () => {
             });
 
             it("does not fire onValueChange if nextProps.min < value", () => {
-                const onValueChangeSpy = sinon.spy();
+                const onValueChangeSpy = spy();
                 const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
 
                 component.setProps({ min: -20 });
@@ -699,7 +700,7 @@ describe("<NumericInput>", () => {
             });
 
             it("fires onValueChange with clamped value if nextProps.max < value ", () => {
-                const onValueChangeSpy = sinon.spy();
+                const onValueChangeSpy = spy();
                 const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
 
                 component.setProps({ max: 0 });
@@ -711,7 +712,7 @@ describe("<NumericInput>", () => {
             });
 
             it("does not fire onValueChange if nextProps.max > value", () => {
-                const onValueChangeSpy = sinon.spy();
+                const onValueChangeSpy = spy();
                 const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
 
                 component.setProps({ max: 20 });
@@ -726,7 +727,7 @@ describe("<NumericInput>", () => {
             it("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", () => {
                 // should be false by default
                 const VALUE = "-5";
-                const onValueChange = sinon.spy();
+                const onValueChange = spy();
                 const component = mount(<NumericInput clampValueOnBlur={false} onValueChange={onValueChange} />);
                 const inputField = component.find("input");
 
@@ -758,7 +759,7 @@ describe("<NumericInput>", () => {
             });
 
             it("invokes onValueChange when out-of-bounds value clamped on blur", () => {
-                const onValueChange = sinon.spy();
+                const onValueChange = spy();
                 const MIN = 0;
                 const component = mount(
                     <NumericInput clampValueOnBlur={true} min={MIN} onValueChange={onValueChange} />,
@@ -1133,7 +1134,7 @@ describe("<NumericInput>", () => {
         eventOptions?: Partial<KeyboardEvent>,
         allowNumericCharactersOnly?: boolean,
     ) {
-        const onKeyPressSpy = sinon.spy();
+        const onKeyPressSpy = spy();
         const component = mount(
             <NumericInput allowNumericCharactersOnly={allowNumericCharactersOnly} onKeyPress={onKeyPressSpy} />,
         );

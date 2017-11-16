@@ -1,6 +1,5 @@
 config/
 coverage/
 preview/
+dist/preview/
 test/
-typings/
-typings.json
