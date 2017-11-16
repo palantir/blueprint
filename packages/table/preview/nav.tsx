@@ -1,14 +1,7 @@
 /**
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
-
-// styles are bundled and loaded with webpack
-// tslint:disable:no-var-requires no-submodule-imports
-require("@blueprintjs/core/dist/blueprint.css");
-require("../dist/table.css");
-// tslint:enable:no-var-requires no-submodule-imports
 
 import * as React from "react";
 
