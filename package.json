@@ -7,9 +7,9 @@
     "packages/*"
   ],
   "scripts": {
-    "bundle-apps": "lerna run bundle",
+    "bundle-apps": "lerna run --parallel bundle",
     "compile-libs": "lerna run compile",
-    "clean": "lerna run clean",
+    "clean": "lerna run --parallel clean",
     "clean-gh-pages": "rm -rf docs && git checkout docs/CNAME",
     "copy-docs-app": "cp -rf packages/docs-app/dist docs/docs",
     "copy-landing-app": "cp -rf packages/landing-app/dist/* docs/.",
@@ -20,11 +20,11 @@
     "dev:labs": "lerna run dev --scope '@blueprintjs/{core,labs,docs-app}'",
     "dev:table": "lerna run dev --scope '@blueprintjs/table'",
     "dist": "npm-run-all 'dist:*'",
-    "dist:libs-apps": "lerna run dist",
+    "dist:libs-apps": "lerna run --parallel dist",
     "dist:docs": "npm-run-all clean-gh-pages copy-docs-app copy-landing-app",
-    "lint": "lerna run lint",
-    "lint-fix": "lerna run lint-fix",
-    "test": "lerna run test",
+    "lint": "lerna run --parallel lint",
+    "lint-fix": "lerna run --parallel lint-fix",
+    "test": "lerna run --parallel test",
     "verify": "npm-run-all compile-libs -p dist test lint",
     "serve": "http-server docs"
   },
