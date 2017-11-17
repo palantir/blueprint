@@ -7,6 +7,7 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { spy } from "sinon";
 
 import * as Classes from "../../src/common/classes";
 import * as Keys from "../../src/common/keys";
@@ -118,7 +119,7 @@ describe("<Tabs2>", () => {
 
     it("clicking selected tab still fires onChange", () => {
         const tabId = TAB_IDS[0];
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const wrapper = mount(
             <Tabs2 defaultSelectedTabId={tabId} id={ID} onChange={changeSpy}>
                 {getTabsContents()}
@@ -130,7 +131,7 @@ describe("<Tabs2>", () => {
     });
 
     it("clicking nested tab should not affect parent", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const wrapper = mount(
             <Tabs2 id={ID} onChange={changeSpy}>
                 {getTabsContents()}
@@ -175,7 +176,7 @@ describe("<Tabs2>", () => {
     });
 
     it("enter and space keys click focused tab", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const wrapper = mount(
             <Tabs2 id={ID} onChange={changeSpy}>
                 {getTabsContents()}
@@ -231,7 +232,7 @@ describe("<Tabs2>", () => {
                     {getTabsContents()}
                 </Tabs2>,
             );
-            assert.isTrue(findTabById(wrapper, TAB_ID_TO_SELECT).prop("selected"));
+            assert.isTrue(findTabById(wrapper, TAB_ID_TO_SELECT).prop("aria-selected"));
         });
 
         it("unknown tab ID hides moving indicator element", () => {
@@ -252,11 +253,11 @@ describe("<Tabs2>", () => {
             );
             findTabById(wrapper, TAB_ID_TO_SELECT).simulate("click");
             wrapper.update();
-            assert.isTrue(findTabById(wrapper, TAB_ID_TO_SELECT).prop("selected"));
+            assert.isTrue(findTabById(wrapper, TAB_ID_TO_SELECT).prop("aria-selected"));
         });
 
         it("invokes onChange() callback", () => {
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = spy();
             const wrapper = mount(
                 <Tabs2 id={ID} onChange={onChangeSpy}>
                     {getTabsContents()}
@@ -303,7 +304,7 @@ describe("<Tabs2>", () => {
         });
 
         it("invokes onChange() callback but does not change state", () => {
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = spy();
             const tabs = mount(
                 <Tabs2 id={ID} selectedTabId={SELECTED_TAB_ID} onChange={onChangeSpy}>
                     {getTabsContents()}

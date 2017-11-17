@@ -1,0 +1,79 @@
+#!/usr/bin/env node
+/**
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * @fileoverview Finds the subset of packages which are ready to be published based on the latest Lerna publish commit.
+ */
+
+"use strict";
+
+const child_process = require("child_process");
+const path = require("path");
+
+const yargs = require("yargs")
+    .option("sls", {
+        default: false,
+        describe: "filter to packages that specify an SLS packaging configuration",
+        type: "boolean",
+    })
+    .option("npm", {
+        default: false,
+        describe: "filter to packages that are non-private and can be published to npm",
+        type: "boolean",
+    })
+    .usage("$0 {--sls,--npm} <commitish>")
+    .help();
+
+const args = yargs.argv;
+
+if (!!args.sls === !!args.npm) {
+    yargs.showHelp();
+    console.error("error: exactly one of --sls or --npm should be provided");
+    process.exit(1);
+}
+
+const commitish = args._[0] || "HEAD";
+
+child_process.exec(`git tag --points-at ${commitish}`, (err, stdout) => {
+    if (err) {
+        throw err;
+    }
+
+    const taggedPackageNames = stdout
+        .toString()
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => line.length > 0)
+        .map(tag => {
+            const match = /^(.+)\@([^@]+)$/.exec(tag);
+            if (!match) {
+                return null;
+            } else {
+                return match[1];
+            }
+        })
+        .filter(name => name != null);
+
+    const publishablePackagePaths = taggedPackageNames
+        .map(name => {
+            const nameParts = name.split("/");
+            const unscopedName = nameParts[nameParts.length - 1];
+            const packagePath = path.join("packages", unscopedName);
+            return {
+                path: packagePath,
+                // This will throw if the package name isn't also the path, which is desirable.
+                packageJson: require(path.resolve(packagePath, "package.json")),
+            };
+        })
+        .filter(({ packageJson }) => {
+            if (args.sls) {
+                return !!packageJson.sls;
+            } else if (args.npm) {
+                return !packageJson.private;
+            } else {
+                throw new Error("programmer error: neither sls nor npm was specified?");
+            }
+        })
+        .map(pkg => pkg.path);
+
+    publishablePackagePaths.forEach(pkgPath => console.log(pkgPath));
+});

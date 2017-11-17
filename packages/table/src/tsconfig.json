@@ -1,0 +1,7 @@
+{
+    "extends": "../../../config/tsconfig.base",
+    "compilerOptions": {
+        "lib": ["dom", "es5", "es6"],
+        "outDir": "../dist"
+    }
+}

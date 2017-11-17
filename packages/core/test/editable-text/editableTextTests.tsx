@@ -8,6 +8,7 @@ import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { spy } from "sinon";
 
 import * as Keys from "../../src/common/keys";
 import { EditableText } from "../../src/index";
@@ -45,7 +46,7 @@ describe("<EditableText>", () => {
         });
 
         it("calls onChange when input is changed", () => {
-            const changeSpy = sinon.spy();
+            const changeSpy = spy();
             const wrapper = shallow(
                 <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." value="alphabet" />,
             );
@@ -59,7 +60,7 @@ describe("<EditableText>", () => {
         });
 
         it("calls onChange when escape key pressed and value is unconfirmed", () => {
-            const changeSpy = sinon.spy();
+            const changeSpy = spy();
             const input = shallow(
                 <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />,
             ).find("input");
@@ -73,8 +74,8 @@ describe("<EditableText>", () => {
         });
 
         it("calls onCancel, does not call onConfirm, and reverts value when escape key pressed", () => {
-            const cancelSpy = sinon.spy();
-            const confirmSpy = sinon.spy();
+            const cancelSpy = spy();
+            const confirmSpy = spy();
 
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
@@ -94,8 +95,8 @@ describe("<EditableText>", () => {
         });
 
         it("calls onConfirm, does not call onCancel, and saves value when enter key pressed", () => {
-            const cancelSpy = sinon.spy();
-            const confirmSpy = sinon.spy();
+            const cancelSpy = spy();
+            const confirmSpy = spy();
 
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
@@ -115,8 +116,8 @@ describe("<EditableText>", () => {
         });
 
         it("calls onConfirm when enter key pressed even if value didn't change", () => {
-            const cancelSpy = sinon.spy();
-            const confirmSpy = sinon.spy();
+            const cancelSpy = spy();
+            const confirmSpy = spy();
 
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
@@ -136,7 +137,7 @@ describe("<EditableText>", () => {
         });
 
         it("calls onEdit when entering edit mode", () => {
-            const editSpy = sinon.spy();
+            const editSpy = spy();
             shallow(<EditableText onEdit={editSpy} />)
                 .find("div")
                 .simulate("focus");
@@ -196,7 +197,7 @@ describe("<EditableText>", () => {
         });
 
         it("does not call onConfirm when enter key is pressed", () => {
-            const confirmSpy = sinon.spy();
+            const confirmSpy = spy();
             shallow(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />)
                 .find("textarea")
                 .simulate("change", { target: { value: "hello" } })
@@ -205,7 +206,7 @@ describe("<EditableText>", () => {
         });
 
         it("calls onConfirm when cmd+, ctrl+, shift+, or alt+ enter is pressed", () => {
-            const confirmSpy = sinon.spy();
+            const confirmSpy = spy();
             const wrapper = mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />);
             simulateHelper(wrapper, "control", { ctrlKey: true, which: Keys.ENTER });
             wrapper.setState({ isEditing: true });
@@ -231,7 +232,7 @@ describe("<EditableText>", () => {
         });
 
         it("confirmOnEnterKey={true} calls onConfirm when enter is pressed", () => {
-            const confirmSpy = sinon.spy();
+            const confirmSpy = spy();
             const wrapper = mount(
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
@@ -242,7 +243,7 @@ describe("<EditableText>", () => {
         });
 
         it("confirmOnEnterKey={true} adds newline when cmd+, ctrl+, shift+, or alt+ enter is pressed", () => {
-            const confirmSpy = sinon.spy();
+            const confirmSpy = spy();
             const wrapper = mount(
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );

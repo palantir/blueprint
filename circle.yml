@@ -1,3 +1,12 @@
+machine:
+  pre:
+    - mkdir ~/yarn
+  environment:
+    PATH: $PATH:$HOME/yarn/bin:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin:$HOME/$CIRCLE_PROJECT_REPONAME/scripts
+    YARN_VERSION: 1.2.1
+  node:
+    version: 8.5.0
+
 general:
   artifacts:
     # compiled assets for each package
@@ -5,59 +14,38 @@ general:
     - packages/datetime/dist
     - packages/docs/dist
     - packages/labs/dist
-    - packages/site-docs/dist
-    - packages/site-landing/dist
+    - packages/docs-app/dist
+    - packages/landing-app/dist
     - packages/table/dist
-    # code coverage reports
-    - packages/core/coverage
-    - packages/datetime/coverage
-    - packages/table/coverage
-    # preview pages
-    - packages/table/preview
     # GH Pages content
     - docs
-
-machine:
-  pre:
-    - mkdir ~/yarn
-  environment:
-    YARN_VERSION: 0.28.4
-    PATH: $PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin
-  node:
-    version: 7.10.0
 
 dependencies:
   cache_directories:
     - ~/yarn
     - ~/.cache/yarn
-    - ~/$CIRCLE_PROJECT_REPONAME/packages/core/node_modules
-    - ~/$CIRCLE_PROJECT_REPONAME/packages/datetime/node_modules
-    - ~/$CIRCLE_PROJECT_REPONAME/packages/docs/node_modules
-    - ~/$CIRCLE_PROJECT_REPONAME/packages/labs/node_modules
-    - ~/$CIRCLE_PROJECT_REPONAME/packages/site-docs/node_modules
-    - ~/$CIRCLE_PROJECT_REPONAME/packages/site-landing/node_modules
-    - ~/$CIRCLE_PROJECT_REPONAME/packages/table/node_modules
   # non-zero exit codes in `dependencies` group will fail the build early
   # so these following commands will block the build and prevent tests
   override:
     - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
-    - yarn install --pure-lockfile
-    - echo "Checking if yarn.lock changed..." && git diff --exit-code
-    - yarn bootstrap
-    - yarn build:gulp
+    - yarn
+    - echo "Checking if lockfiles changed..." && git diff --exit-code
+    - npm rebuild node-sass
+    - yarn compile-libs
 
 test:
   override:
-    - gulp check
-    - gulp test
+    - case $CIRCLE_NODE_INDEX in 0) yarn dist ;; 1) yarn test ;; 2) yarn lint ;; esac:
+        parallel: true
 
 deployment:
   preview:
     branch: /.*/
     commands:
-      - ./scripts/preview.sh
+      - build-docs-artifacts
+      - submit-preview-comment
   npm:
     tag: /release-.*/
     owner: palantir
     commands:
-      - ./scripts/npmPublish.sh
+      - publish-npm-semver-tagged

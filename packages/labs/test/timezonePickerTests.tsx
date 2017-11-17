@@ -8,6 +8,7 @@ import { assert } from "chai";
 import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as moment from "moment-timezone";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import {
     Button,

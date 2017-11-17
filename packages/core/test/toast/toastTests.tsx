@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
+import { SinonSpy, spy } from "sinon";
 
 import { AnchorButton, Button, Toast } from "../../src/index";
 
@@ -19,7 +20,7 @@ describe("<Toast>", () => {
     });
 
     it("clicking dismiss button triggers onDismiss callback with `false`", () => {
-        const handleDismiss = sinon.spy();
+        const handleDismiss = spy();
         wrap(<Toast message="Hello" onDismiss={handleDismiss} />).dismiss.simulate("click");
         assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
@@ -33,13 +34,13 @@ describe("<Toast>", () => {
     });
 
     it("clicking action button triggers onClick callback", () => {
-        const onClick = sinon.spy();
+        const onClick = spy();
         wrap(<Toast action={{ onClick, text: "Undo" }} message="Hello" />).action.simulate("click");
         assert.isTrue(onClick.calledOnce, "action onClick not called once");
     });
 
     it("clicking action button also triggers onDismiss callback with `false`", () => {
-        const handleDismiss = sinon.spy();
+        const handleDismiss = spy();
         wrap(<Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />).action.simulate("click");
         assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
@@ -55,8 +56,8 @@ describe("<Toast>", () => {
     }
 
     describe("timeout", () => {
-        let handleDismiss: Sinon.SinonSpy;
-        beforeEach(() => (handleDismiss = sinon.spy()));
+        let handleDismiss: SinonSpy;
+        beforeEach(() => (handleDismiss = spy()));
 
         it("calls onDismiss automatically after timeout expires with `true`", done => {
             // mounting for lifecycle methods to start timeout

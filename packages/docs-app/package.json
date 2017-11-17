@@ -1,0 +1,60 @@
+{
+  "name": "@blueprintjs/docs-app",
+  "version": "1.33.0",
+  "description": "Blueprint Documentation Site",
+  "private": true,
+  "scripts": {
+    "bundle": "npm-run-all -s bundle:pre bundle:webpack",
+    "bundle:pre": "generate-docs-data",
+    "bundle:webpack": "webpack --config ./webpack.config.js",
+    "clean": "rm -rf dist/*",
+    "dev": "webpack-dev-server --config ./webpack.config.js",
+    "dist": "NODE_ENV=production yarn bundle",
+    "lint": "npm-run-all -p lint:stylelint lint:tslint",
+    "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
+    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config",
+    "lint-fix": "yarn lint:tslint --fix",
+    "test": "exit 0",
+    "verify": "npm-run-all -p dist lint"
+  },
+  "dependencies": {
+    "@blueprintjs/core": "^1.32.0",
+    "@blueprintjs/datetime": "^1.23.0",
+    "@blueprintjs/docs": "^1.1.1",
+    "@blueprintjs/labs": "^0.13.0",
+    "@blueprintjs/table": "^1.29.0",
+    "chroma-js": "^1.3.4",
+    "classnames": "^2.2.5",
+    "dom4": "^1.8.3",
+    "moment": "^2.18.1",
+    "normalize.css": "~4.1.1",
+    "popper.js": "^1.12.6",
+    "pure-render-decorator": "^1.2.1",
+    "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "tslib": "^1.7.1"
+  },
+  "devDependencies": {
+    "@blueprintjs/node-build-scripts": "^0.1.0",
+    "@blueprintjs/webpack-build-scripts": "^0.1.0",
+    "@types/chroma-js": "^1.3.3",
+    "bourbon": "^4.3.4",
+    "npm-run-all": "^4.1.2",
+    "tslint": "^5.8.0",
+    "stylelint": "^8.2.0",
+    "webpack-dev-server": "^2.9.3",
+    "webpack": "^3.8.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "keywords": [
+    "palantir",
+    "blueprint",
+    "docs"
+  ],
+  "author": "Palantir Technologies",
+  "license": "Apache-2.0"
+}

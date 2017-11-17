@@ -1,24 +1,44 @@
 {
   "name": "@blueprintjs/docs",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Blueprint theme for documentalist",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/docs.css",
   "unpkg": "dist/docs.bundle.js",
+  "scripts": {
+    "compile": "npm-run-all -p compile:typescript compile:sass",
+    "compile:typescript": "tsc -p ./src",
+    "compile:sass": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
+    "clean": "rm -rf dist/*",
+    "dev": "npm-run-all -p 'compile:typescript --watch' 'compile:sass --watch'",
+    "dist": "npm-run-all -s 'dist:*'",
+    "dist:bundle": "NODE_ENV=production webpack",
+    "dist:verify": "assert-package-layout",
+    "lint": "npm-run-all -p lint:stylelint lint:tslint",
+    "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
+    "lint:tslint": "tslint 'src/**/*.{ts,tsx}' -c ../tslint-config",
+    "lint-fix": "yarn lint:tslint --fix",
+    "verify": "npm-run-all compile -p dist lint"
+  },
   "dependencies": {
     "@blueprintjs/core": "^1.25.1",
     "classnames": "^2.2",
-    "documentalist": "^0.0.7",
-    "fuzzaldrin-plus": "^0.3.1",
-    "react": "^15.3.0",
-    "react-addons-css-transition-group": "^15.3.0",
-    "react-dom": "^15.3.0",
+    "documentalist": "^0.0.8",
+    "fuzzaldrin-plus": "^0.5.0",
     "tslib": "^1.5.0"
   },
   "devDependencies": {
+    "@blueprintjs/node-build-scripts": "*",
     "@types/fuzzaldrin-plus": "^0.0.1",
-    "bourbon": "^4.3.4"
+    "bourbon": "^4.3.4",
+    "node-sass": "^4.5.3",
+    "npm-run-all": "^4.1.1",
+    "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "typescript": "~2.4.2",
+    "webpack": "^3.8.1"
   },
   "repository": {
     "type": "git",

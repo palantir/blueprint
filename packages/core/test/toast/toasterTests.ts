@@ -6,6 +6,7 @@
 
 import { assert } from "chai";
 import * as ReactDOM from "react-dom";
+import { spy } from "sinon";
 
 import * as Classes from "../../src/common/classes";
 import { IToaster, Toaster } from "../../src/index";
@@ -70,7 +71,7 @@ describe("Toaster", () => {
     });
 
     it("action onClick callback invoked when action clicked", () => {
-        const onClick = sinon.spy();
+        const onClick = spy();
         toaster.show({
             action: { onClick, text: "action" },
             message: "message",
@@ -82,7 +83,7 @@ describe("Toaster", () => {
     });
 
     it("onDismiss callback invoked when close button clicked", () => {
-        const handleDismiss = sinon.spy();
+        const handleDismiss = spy();
         toaster.show({
             message: "dismiss",
             onDismiss: handleDismiss,
@@ -94,21 +95,21 @@ describe("Toaster", () => {
     });
 
     it("onDismiss callback invoked on toaster.dismiss()", () => {
-        const onDismiss = sinon.spy();
+        const onDismiss = spy();
         const key = toaster.show({ message: "dismiss me", onDismiss });
         toaster.dismiss(key);
         assert.isTrue(onDismiss.calledOnce, "onDismiss not called");
     });
 
     it("onDismiss callback invoked on toaster.clear()", () => {
-        const onDismiss = sinon.spy();
+        const onDismiss = spy();
         toaster.show({ message: "dismiss me", onDismiss });
         toaster.clear();
         assert.isTrue(onDismiss.calledOnce, "onDismiss not called");
     });
 
     it("reusing props object does not produce React errors", () => {
-        const errorSpy = sinon.spy(console, "error");
+        const errorSpy = spy(console, "error");
         // if Toaster doesn't clone the props object before injecting key then there will be a
         // React error that both toasts have the same key, because both instances refer to the
         // same object.

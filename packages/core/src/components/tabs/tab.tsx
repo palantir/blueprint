@@ -56,7 +56,6 @@ export class Tab extends React.Component<ITabProps, {}> {
                 className={classNames(Classes.TAB, this.props.className)}
                 id={this.props.id}
                 role="tab"
-                selected={this.props.isSelected ? true : null}
                 tabIndex={this.props.isDisabled ? null : 0}
             >
                 {this.props.children}

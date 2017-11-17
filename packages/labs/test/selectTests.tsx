@@ -9,8 +9,9 @@ import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
-import { Film, TOP_100_FILMS } from "../examples/data";
+import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/labs-examples/data";
 import { ISelectItemRendererProps, ISelectProps, Popover2, Select } from "../src/index";
 
 describe("<Select>", () => {
@@ -21,9 +22,9 @@ describe("<Select>", () => {
         query: "",
     };
     let handlers: {
-        itemPredicate: Sinon.SinonSpy;
-        itemRenderer: Sinon.SinonSpy;
-        onItemSelect: Sinon.SinonSpy;
+        itemPredicate: sinon.SinonSpy;
+        itemRenderer: sinon.SinonSpy;
+        onItemSelect: sinon.SinonSpy;
     };
 
     beforeEach(() => {

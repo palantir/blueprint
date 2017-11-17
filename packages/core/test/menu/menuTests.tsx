@@ -9,6 +9,7 @@ import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
+import { spy } from "sinon";
 
 import {
     Classes,
@@ -77,7 +78,7 @@ describe("MenuItem", () => {
     });
 
     it("Clicking MenuItem triggers onClick prop", () => {
-        const onClick = sinon.spy();
+        const onClick = spy();
         shallow(<MenuItem text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
@@ -85,7 +86,7 @@ describe("MenuItem", () => {
     });
 
     it("Clicking disabled MenuItem does not trigger onClick prop", () => {
-        const onClick = sinon.spy();
+        const onClick = spy();
         shallow(<MenuItem disabled={true} text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
@@ -93,7 +94,7 @@ describe("MenuItem", () => {
     });
 
     it("shouldDismissPopover=false prevents a clicked MenuItem from closing the Popover automatically", () => {
-        const handleClose = sinon.spy();
+        const handleClose = spy();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
         const wrapper = mount(
             <Popover content={menu} isOpen={true} inline={true} onInteraction={handleClose}>

@@ -277,7 +277,7 @@ describe("scrollUtils", () => {
         let containerElement: HTMLElement;
 
         const baseStyles = { display: "block" };
-        const parentStyle = {
+        const parentStyle: React.CSSProperties = {
             ...baseStyles,
             background: "yellow",
             height: PARENT_HEIGHT,

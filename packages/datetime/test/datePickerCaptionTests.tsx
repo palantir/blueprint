@@ -7,7 +7,9 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
+import { ClassNames } from "react-day-picker";
 import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
 import { Classes, IDatePickerLocaleUtils } from "../src/index";
 
@@ -72,11 +74,14 @@ describe("<DatePickerCaption>", () => {
     function renderDatePickerCaption(props?: Partial<IDatePickerCaptionProps>) {
         const wrapper = mount(
             <DatePickerCaption
+                // tslint:disable-next-line:no-object-literal-type-assertion
+                classNames={{} as ClassNames}
                 date={new Date(2015, 0)}
                 locale="en"
                 localeUtils={LOCALE_UTILS}
                 maxDate={new Date(2020, 0)}
                 minDate={new Date(2010, 0)}
+                months={undefined}
                 {...props}
             />,
         );

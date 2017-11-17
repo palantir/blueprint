@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
@@ -23,6 +24,11 @@ describe("<RangeSlider>", () => {
     });
 
     afterEach(() => testsContainerElement.remove());
+
+    it("does not render progress bar if handles are equal", () => {
+        const slider = renderSlider(<RangeSlider value={[4, 4]} />);
+        assert.isFalse(slider.find(`.${Classes.SLIDER}-progress`).exists());
+    });
 
     it("throws error if range value contains null", () => {
         assert.throws(() => renderSlider(<RangeSlider value={[null, 5]} />));
@@ -205,8 +211,8 @@ describe("<RangeSlider>", () => {
     });
 
     describe("vertical orientation", () => {
-        let changeSpy: Sinon.SinonSpy;
-        let releaseSpy: Sinon.SinonSpy;
+        let changeSpy: sinon.SinonSpy;
+        let releaseSpy: sinon.SinonSpy;
 
         before(() => {
             changeSpy = sinon.spy();

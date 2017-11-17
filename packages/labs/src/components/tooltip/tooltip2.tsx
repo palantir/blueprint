@@ -5,7 +5,7 @@
  */
 
 import * as classNames from "classnames";
-import { Modifiers as PopperModifiers, Placement } from "popper.js";
+import PopperJS from "popper.js";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
@@ -71,7 +71,7 @@ export interface ITooltip2Props extends IProps, IIntentProps {
      * Popper modifier options, passed directly to internal Popper instance.
      * See https://popper.js.org/popper-documentation.html#modifiers for complete details.
      */
-    modifiers?: PopperModifiers;
+    modifiers?: PopperJS.Modifiers;
 
     /**
      * Callback invoked in controlled mode when the tooltip open state *would* change due to
@@ -98,7 +98,7 @@ export interface ITooltip2Props extends IProps, IIntentProps {
      * the popover to reposition itself to remain onscreen as the user scrolls around.
      * @default "auto"
      */
-    placement?: Placement;
+    placement?: PopperJS.Placement;
 
     /**
      * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).

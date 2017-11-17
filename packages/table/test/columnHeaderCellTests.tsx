@@ -10,6 +10,7 @@ import { Menu, MenuItem } from "@blueprintjs/core";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
 import * as Classes from "../src/common/classes";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src/index";
@@ -117,7 +118,7 @@ describe("<ColumnHeaderCell>", () => {
             consoleWarn.restore();
         });
 
-        function getMenuComponent(menuClickSpy: Sinon.SinonSpy) {
+        function getMenuComponent(menuClickSpy: sinon.SinonSpy) {
             return (
                 <Menu>
                     <MenuItem iconName="export" onClick={menuClickSpy} text="Teleport" />
@@ -127,7 +128,7 @@ describe("<ColumnHeaderCell>", () => {
             );
         }
 
-        function expectMenuToOpen(table: ElementHarness, menuClickSpy: Sinon.SinonSpy) {
+        function expectMenuToOpen(table: ElementHarness, menuClickSpy: sinon.SinonSpy) {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
             table
                 .find(`.${Classes.TABLE_TH_MENU}`)

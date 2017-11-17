@@ -10,6 +10,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
+import * as sinon from "sinon";
 
 import { Classes, ITimePickerProps, TimePicker, TimePickerPrecision } from "../src/index";
 import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";
@@ -17,7 +18,7 @@ import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";
 describe("<TimePicker>", () => {
     let testsContainerElement: Element;
     let timePicker: TimePicker;
-    let onTimePickerChange: Sinon.SinonSpy;
+    let onTimePickerChange: sinon.SinonSpy;
     const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
 
     before(() => {

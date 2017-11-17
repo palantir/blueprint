@@ -7,8 +7,10 @@
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
+import * as sinon from "sinon";
 
-import { Film, TOP_100_FILMS } from "../examples/data";
+// this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
+import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/labs-examples/data";
 import { IQueryListRendererProps, QueryList } from "../src/index";
 
 describe("<QueryList>", () => {
@@ -16,9 +18,9 @@ describe("<QueryList>", () => {
     let props: {
         activeItem: Film;
         items: Film[];
-        onActiveItemChange: Sinon.SinonSpy;
-        onItemSelect: Sinon.SinonSpy;
-        renderer: Sinon.SinonSpy;
+        onActiveItemChange: sinon.SinonSpy;
+        onItemSelect: sinon.SinonSpy;
+        renderer: sinon.SinonSpy;
     };
 
     beforeEach(() => {

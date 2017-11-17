@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import { IOptionProps, Radio, RadioGroup } from "../../src/index";
 
@@ -36,7 +37,7 @@ describe("RadioGroup", () => {
     });
 
     it("invokes onChange handler when a radio is clicked", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = spy();
         const group = mount(
             <RadioGroup onChange={changeSpy}>
                 <Radio value="one" label="One" />

@@ -65,13 +65,13 @@ class HotkeysDialog {
         this.hotkeysQueue.push(hotkeys);
 
         // reset timeout for debounce
-        clearTimeout(this.showTimeoutToken);
-        this.showTimeoutToken = setTimeout(this.show, DELAY_IN_MS);
+        window.clearTimeout(this.showTimeoutToken);
+        this.showTimeoutToken = window.setTimeout(this.show, DELAY_IN_MS);
     }
 
     public hideAfterDelay() {
-        clearTimeout(this.hideTimeoutToken);
-        this.hideTimeoutToken = setTimeout(this.hide, DELAY_IN_MS);
+        window.clearTimeout(this.hideTimeoutToken);
+        this.hideTimeoutToken = window.setTimeout(this.hide, DELAY_IN_MS);
     }
 
     public show = () => {

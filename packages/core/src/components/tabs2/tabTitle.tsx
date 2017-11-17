@@ -39,7 +39,6 @@ export class TabTitle extends React.Component<ITabTitleProps, {}> {
                 id={generateTabTitleId(parentId, id)}
                 onClick={disabled ? undefined : this.handleClick}
                 role="tab"
-                selected={selected ? true : undefined}
                 tabIndex={disabled ? undefined : 0}
             >
                 {this.props.title}
