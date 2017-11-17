@@ -5,17 +5,29 @@
  */
 
 import * as classNames from "classnames";
+import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 // allow the empty interface so we can label it clearly in the docs
 // tslint:disable-next-line:no-empty-interface
-export interface INavbarHeadingProps extends IProps {
+export interface INavbarHeadingProps extends React.HTMLProps<HTMLDivElement>, IProps {
     // Empty
 }
 
-export const NavbarHeading: React.SFC<INavbarHeadingProps & { children?: React.ReactNode[] }> = ({
-    children,
-    className,
-}) => <div className={classNames(Classes.NAVBAR_HEADING, className)}>{children}</div>;
+// this component is simple enough that tests would be purely tautological.
+/* istanbul ignore next */
+@PureRender
+export class NavbarHeading extends React.Component<React.HTMLProps<HTMLDivElement>, {}> {
+    public static displayName = "Blueprint.NavbarHeading";
+
+    public render() {
+        const { children, className, ...htmlProps } = this.props;
+        return (
+            <div className={classNames(Classes.NAVBAR_HEADING, className)} {...htmlProps}>
+                {children}
+            </div>
+        );
+    }
+}
