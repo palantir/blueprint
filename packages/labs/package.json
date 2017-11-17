@@ -11,7 +11,7 @@
     "compile:typescript": "tsc -p ./src",
     "compile:sass": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
     "clean": "rm -rf dist/*",
-    "dev": "npm-run-all -p 'compile:typescript --watch' 'compile:sass --watch'",
+    "dev": "npm-run-all -p 'compile:typescript -- --watch' 'compile:sass -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
     "dist:verify": "assert-package-layout",
