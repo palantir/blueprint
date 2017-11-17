@@ -21,6 +21,8 @@ export interface INavbarProps extends React.HTMLProps<HTMLDivElement>, IProps {
     // Empty
 }
 
+// this component is simple enough that tests would be purely tautological.
+/* istanbul ignore next */
 @PureRender
 export class Navbar extends React.Component<INavbarProps, {}> {
     public static displayName = "Blueprint.Navbar";
