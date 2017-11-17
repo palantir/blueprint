@@ -18,7 +18,6 @@ module.exports = Object.assign({}, baseConfig, {
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "./dist"),
-        publicPath: "./",
     },
 
     plugins: baseConfig.plugins.concat([
