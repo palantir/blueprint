@@ -23,6 +23,13 @@ import {
 import * as Classes from "../../common/classes";
 
 export interface ITagInputProps extends IProps {
+    /**
+     * Whether the component is non-interactive.
+     * Note that you'll also need to disable the component's rightElement, if appropriate.
+     * @default false
+     */
+    disabled?: boolean;
+
     /** React props to pass to the `<input>` element */
     inputProps?: HTMLInputProps;
 
@@ -157,6 +164,9 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             {
                 [CoreClasses.ACTIVE]: this.state.isInputFocused,
             },
+            {
+                [CoreClasses.DISABLED]: this.props.disabled,
+            },
             className,
         );
         const isLarge = classes.indexOf(CoreClasses.LARGE) > NONE;
@@ -178,6 +188,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     placeholder={resolvedPlaceholder}
                     ref={this.refHandlers.input}
                     className={classNames(Classes.INPUT_GHOST, inputProps.className)}
+                    disabled={this.props.disabled}
                 />
                 {this.props.rightElement}
             </div>
@@ -195,7 +206,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 active={index === this.state.activeIndex}
                 data-tag-index={index}
                 key={tag + "__" + index}
-                onRemove={this.handleRemoveTag}
+                onRemove={this.props.disabled ? null : this.handleRemoveTag}
                 {...props}
             >
                 {tag}
