@@ -3,9 +3,10 @@
 
 @import "~normalize.css/normalize.css";
 @import "~@blueprintjs/core/dist/blueprint.css";
-@import "~@blueprintjs/table/src/table.scss";
+@import "~@blueprintjs/table/src/table";
 
 // TODO: convert below CSS to SCSS
+/* stylelint-disable */
 
 body {
   position: absolute;
