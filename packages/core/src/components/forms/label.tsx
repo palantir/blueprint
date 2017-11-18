@@ -14,10 +14,16 @@ import { IProps } from "../../common/props";
 // tslint:disable-next-line:no-empty-interface
 export interface ILabelProps extends React.HTMLProps<HTMLDivElement>, IProps {
     /**
-     * Whether the label is non-interactive or not.
-     * @default false
+     * Whether the label is non-interactive.
+     * Be sure to explicitly disable any child controls as well.
      */
     disabled?: boolean;
+
+    /** The helper text to show next to the label. */
+    helperText?: JSX.Element | string;
+
+    /** The text to show in the label. */
+    text: JSX.Element | string;
 }
 
 // this component is simple enough that tests would be purely tautological.
@@ -26,12 +32,8 @@ export interface ILabelProps extends React.HTMLProps<HTMLDivElement>, IProps {
 export class Label extends React.Component<ILabelProps, {}> {
     public static displayName = "Blueprint.Label";
 
-    public defaultProps: ILabelProps = {
-        disabled: false,
-    };
-
     public render() {
-        const { children, className, disabled, ...htmlProps } = this.props;
+        const { children, className, disabled, helperText, text, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
             Classes.LABEL,
@@ -43,6 +45,8 @@ export class Label extends React.Component<ILabelProps, {}> {
 
         return (
             <div {...htmlProps} className={rootClasses}>
+                {text}
+                <span className={classNames(Classes.TEXT_MUTED)}>{helperText}</span>
                 {children}
             </div>
         );
