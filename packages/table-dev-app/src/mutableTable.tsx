@@ -34,12 +34,12 @@ import {
     TruncatedFormat,
     TruncatedPopoverMode,
     Utils,
-} from "../src/index";
+} from "@blueprintjs/table/src";
 
-import { IFocusedCellCoordinates } from "../src/common/cell";
-import { IColumnIndices, IRowIndices } from "../src/common/grid";
-import { RenderMode } from "../src/common/renderMode";
-import { IRegion } from "../src/regions";
+import { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
+import { IColumnIndices, IRowIndices } from "@blueprintjs/table/src/common/grid";
+import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
+import { IRegion } from "@blueprintjs/table/src/regions";
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";
 import { SlowLayoutStack } from "./slowLayoutStack";
@@ -1103,7 +1103,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         // show 3 styled regions as samples
         return !this.state.showCustomRegions
             ? []
-            : [
+            : ([
                   {
                       className: "tbl-styled-region-success",
                       regions: [Regions.cell(0, 0, 3, 3)],
@@ -1116,6 +1116,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                       className: "tbl-styled-region-danger",
                       regions: [Regions.cell(5, 3, 7, 7)],
                   },
-              ] as IStyledRegionGroup[];
+              ] as IStyledRegionGroup[]);
     }
 }

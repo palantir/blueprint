@@ -15,7 +15,7 @@ import * as TableExamples from "../examples/table-examples";
 
 import { getTheme } from "../components/blueprintDocs";
 
-const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages";
+const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages/docs-app/src/examples";
 
 export const reactExamples: IExampleMap = {};
 
@@ -28,7 +28,7 @@ function addPackageExamples(
         const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
         reactExamples[exampleName] = {
             render: props => React.createElement(example, { ...props, themeName: getTheme() }),
-            sourceUrl: [SRC_HREF_BASE, packageName, "examples", fileName].join("/"),
+            sourceUrl: [SRC_HREF_BASE, `${packageName}-examples`, fileName].join("/"),
         };
     }
 }

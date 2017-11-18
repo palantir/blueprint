@@ -48,7 +48,8 @@ module.exports = {
             options: [
                 "documentalist",
                 "lodash",
-                "react-dom"
+                "react-dom",
+                "@blueprintjs/table/src"
             ]
         },
         "no-unnecessary-callback-wrapper": true,
