@@ -72,7 +72,8 @@ If you were previously in a working state and have just pulled new code from `de
 
 Each library has its own dev script which you can run to watch changes to that package and run the docs application with webpack-dev-server: `yarn dev:core`, `yarn dev:datetime`, etc.
 
-- One exception is `table`&mdash;since it has its own playground application for development, the `dev:table` script doesn't run the docs site.
+- One exception is `table`&mdash;since it has its own dev application, the `dev:table` script doesn't run the docs site.
+  - Run the table dev application using `yarn dev` in the packages/table-dev-app folder.
 - You may also choose to watch changes across all packages by running `yarn dev:all` from the root directory.
 
 ### Updating dependencies

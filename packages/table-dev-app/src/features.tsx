@@ -28,7 +28,7 @@ import {
     SelectionModes,
     Table,
     Utils,
-} from "../src/index";
+} from "@blueprintjs/table/src";
 
 import { Nav } from "./nav";
 ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));

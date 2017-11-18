@@ -4,8 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Utils } from "@blueprintjs/table/src";
 import * as React from "react";
-import { Utils } from "../src/index";
 
 export interface ISlowLayoutStackProps {
     /**
