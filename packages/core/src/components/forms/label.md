@@ -9,7 +9,9 @@ Labels enhance the usability of your forms.
     <p>Form groups support more complex control layouts but require more markup to maintain consistent visuals.</p>
 </div>
 
-@## Simple labels
+@## CSS API
+
+@### Simple labels
 
 Simple labels are useful for basic forms for a single `<input>`.
 
@@ -20,7 +22,7 @@ can click to activate the control. Notice how in the examples below, clicking a 
 
 @css pt-label
 
-@## Disabled labels
+@### Disabled labels
 
 Add the `.pt-label` and `.pt-disabled` class modifiers to a `<label>` to make the label appear
 disabled.
@@ -30,3 +32,21 @@ must add the `:disabled` attribute directly to any nested elements to disable th
 `pt-*` form control will need a `.pt-disabled` modifier. See the examples below.
 
 @css pt-label.pt-disabled
+
+@### JavaScript API
+
+The `Label` component is available in the @blueprintjs/core package. Make sure to review the general usage docs for JS components.
+
+This components is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
+
+```tsx
+<Label
+    helperText="Helper text with details..."
+    text="Label A"
+    required={true}
+>
+    <input id="text-input" placeholder="Placeholder text" />
+</Label>
+```
+
+@interface ILabelProps
