@@ -9,7 +9,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, Keys, Popover, Position } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -22,6 +22,18 @@ describe("<DateInput>", () => {
     it("handles string inputs without crashing", () => {
         // strings are not permitted in the interface, but are handled correctly by moment.
         assert.doesNotThrow(() => mount(<DateInput value={"1988-08-07 11:01:12" as any} />));
+    });
+
+    it("passes custom classNames to popover target", () => {
+        const CLASS_1 = "foo";
+        const CLASS_2 = "bar";
+
+        const wrapper = mount(<DateInput className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
+        wrapper.setState({ isOpen: true });
+
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`);
+        assert.isTrue(popoverTarget.hasClass(CLASS_1));
+        assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
 
     it("Popover opens on input focus", () => {
