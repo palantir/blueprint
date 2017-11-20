@@ -424,7 +424,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.which === Keys.ENTER) {
-            this.handleDateChange(new Date(this.state.valueString), true);
+            const nextValue = this.createMoment(this.state.valueString);
+            const nextDate = fromMomentToDate(nextValue);
+            this.handleDateChange(nextDate, true);
             this.inputRef.blur();
         }
     };

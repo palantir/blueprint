@@ -145,6 +145,15 @@ describe("<DateInput>", () => {
     });
 
     describe("when uncontrolled", () => {
+        it("Pressing Enter saves the inputted date and closes the popover", () => {
+            const wrapper = mount(<DateInput />).setState({ isOpen: true });
+            const input = wrapper.find("input").first();
+            input.simulate("change", { target: { value: "2/15/15" } });
+            input.simulate("keydown", { which: Keys.ENTER });
+            assert.isFalse(wrapper.state("isOpen"));
+            assert.equal(wrapper.find(InputGroup).prop("value"), "2015-02-15");
+        });
+
         it("Clicking a date puts it in the input box and closes the popover", () => {
             const wrapper = mount(<DateInput />).setState({ isOpen: true });
             assert.equal(wrapper.find(InputGroup).prop("value"), "");
@@ -322,6 +331,20 @@ describe("<DateInput>", () => {
         const DATE2 = new Date(2015, Months.FEBRUARY, 1);
         const DATE2_STR = "2015-02-01";
         const DATE2_DE_STR = "01.02.2015";
+
+        it("Pressing Enter saves the inputted date and closes the popover", () => {
+            const onChange = sinon.spy();
+            const { root } = wrap(<DateInput onChange={onChange} value={DATE} />);
+            root.setState({ isOpen: true });
+
+            const input = root.find("input").first();
+            input.simulate("change", { target: { value: DATE2_STR } });
+            input.simulate("keydown", { which: Keys.ENTER });
+
+            // onChange is called once on change, once on Enter
+            assert.isTrue(onChange.calledTwice, "onChange called twice");
+            assertDateEquals(onChange.args[1][0], DATE2_STR);
+        });
 
         it("Clicking a date invokes onChange callback with that date", () => {
             const onChange = sinon.spy();
