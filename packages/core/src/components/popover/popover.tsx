@@ -672,7 +672,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     }
 
     private setOpenStateDirectly(isOpen: boolean | ((previousIsOpen: boolean) => boolean)) {
-        if (typeof isOpen === "function") {
+        if (Utils.isFunction(isOpen)) {
             this.setState(previousState => {
                 const nextIsOpen = isOpen(previousState.isOpen);
                 if (nextIsOpen) {
