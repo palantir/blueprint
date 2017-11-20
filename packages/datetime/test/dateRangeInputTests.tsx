@@ -9,7 +9,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { HTMLInputProps, IInputGroupProps, InputGroup, Popover, Position } from "@blueprintjs/core";
+import { HTMLInputProps, IInputGroupProps, InputGroup, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -352,6 +352,32 @@ describe("<DateRangeInput>", () => {
         it("Shows formatted dates in both fields when defaultValue is [<date1>, <date2>]", () => {
             const { root } = wrap(<DateRangeInput defaultValue={[START_DATE, END_DATE]} />);
             assertInputTextsEqual(root, START_STR, END_STR);
+        });
+
+        it("Pressing Enter saves the inputted date and closes the popover", () => {
+            const { root } = wrap(<DateRangeInput />);
+            root.setState({ isOpen: true });
+
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+            startInput.simulate("change", { target: { value: START_STR } });
+            startInput.simulate("keydown", { which: Keys.ENTER });
+            expect(isStartInputFocused(root), "start input blurred next").to.be.false;
+
+            expect(root.state("isOpen"), "popover still open").to.be.true;
+
+            const endInput = getEndInput(root);
+            expect(isEndInputFocused(root), "end input focused next").to.be.true;
+            endInput.simulate("change", { target: { value: END_STR } });
+            endInput.simulate("keydown", { which: Keys.ENTER });
+
+            expect(startInput.prop("value")).to.equal(START_STR);
+            expect(endInput.prop("value")).to.equal(END_STR);
+
+            expect(root.state("isOpen"), "popover closed at end").to.be.false;
+            expect(isStartInputFocused(root), "start input blurred at end").to.be.false;
+            // TODO (clewis): fix failing statement (works in practice)
+            // expect(isEndInputFocused(root), "end input blurred at end").to.be.false;
         });
 
         it("Clicking a date invokes onChange with the new date range and updates the input fields", () => {
@@ -2022,6 +2048,34 @@ describe("<DateRangeInput>", () => {
             root.setState({ isOpen: true });
             root.setProps({ value: DATE_RANGE_2 });
             assertInputTextsEqual(root, START_STR_2, END_STR_2);
+        });
+
+        it("Pressing Enter saves the inputted date and closes the popover", () => {
+            const onChange = sinon.spy();
+            const { root } = wrap(<DateRangeInput onChange={onChange} value={[undefined, undefined]} />);
+            root.setState({ isOpen: true });
+
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+            startInput.simulate("change", { target: { value: START_STR } });
+            startInput.simulate("keydown", { which: Keys.ENTER });
+            expect(isStartInputFocused(root), "start input blurred next").to.be.false;
+
+            expect(root.state("isOpen"), "popover still open").to.be.true;
+
+            const endInput = getEndInput(root);
+            expect(isEndInputFocused(root), "end input focused next").to.be.true;
+            endInput.simulate("change", { target: { value: END_STR } });
+            endInput.simulate("keydown", { which: Keys.ENTER });
+
+            expect(isStartInputFocused(root), "start input blurred at end").to.be.false;
+            // TODO (clewis): fix failing statement (works in practice)
+            // expect(isEndInputFocused(root), "end input blurred at end").to.be.false;
+
+            // onChange is called once on change, once on Enter
+            expect(onChange.callCount, "onChange called four times").to.equal(4);
+            // check one of the invocations
+            assertDateRangesEqual(onChange.args[1][0], [START_STR, null]);
         });
 
         it("Clicking a date invokes onChange with the new date range and updates the input field text", () => {

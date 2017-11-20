@@ -561,15 +561,17 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             isStartInputFocused = true;
             isEndInputFocused = false;
         } else if (wasStartFieldFocused && isEnterPressed) {
-            const nextStartValue = new Date(this.state.startInputString);
-            const nextEndValue = isMomentNull(selectedEnd) ? undefined : fromMomentToDate(selectedEnd);
-            this.handleDateRangePickerChange([nextStartValue, nextEndValue] as DateRange);
+            const nextStartValue = this.dateStringToMoment(this.state.startInputString);
+            const nextStartDate = fromMomentToDate(nextStartValue);
+            const nextEndDate = isMomentNull(selectedEnd) ? undefined : fromMomentToDate(selectedEnd);
+            this.handleDateRangePickerChange([nextStartDate, nextEndDate] as DateRange);
             isStartInputFocused = false;
             isEndInputFocused = true;
         } else if (wasEndFieldFocused && isEnterPressed) {
-            const nextStartValue = isMomentNull(selectedStart) ? undefined : fromMomentToDate(selectedStart);
-            const nextEndValue = new Date(this.state.endInputString);
-            this.handleDateRangePickerChange([nextStartValue, nextEndValue] as DateRange);
+            const nextStartDate = isMomentNull(selectedStart) ? undefined : fromMomentToDate(selectedStart);
+            const nextEndValue = this.dateStringToMoment(this.state.endInputString);
+            const nextEndDate = fromMomentToDate(nextEndValue);
+            this.handleDateRangePickerChange([nextStartDate, nextEndDate] as DateRange);
             isStartInputFocused = false;
             isEndInputFocused = false;
             // need to explicitly blur, because only .focus() is triggered in
