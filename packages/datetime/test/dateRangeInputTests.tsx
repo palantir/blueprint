@@ -108,6 +108,15 @@ describe("<DateRangeInput>", () => {
                 expect(getInputPlaceholderText(inputGetterFn(root))).to.equal("Hello");
             });
 
+            it("supports custom style", () => {
+                const { root } = mountFn({ style: { background: "yellow" } });
+                const inputElement = root
+                    .find("input")
+                    .first()
+                    .getDOMNode() as HTMLElement;
+                expect(inputElement.style.background).to.equal("yellow");
+            });
+
             // verify custom callbacks are called for each event that we listen for internally.
             // (note: we could be more clever and accept just one string param here, but this
             // approach keeps both string params grep-able in the codebase.)
