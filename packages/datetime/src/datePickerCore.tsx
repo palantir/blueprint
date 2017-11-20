@@ -47,6 +47,13 @@ export interface IDatePickerBaseProps {
      * See the [**react-day-picker** documentation](http://react-day-picker.js.org/Modifiers.html) to learn more.
      */
     modifiers?: IDatePickerModifiers;
+
+    /**
+     * If `true`, the month menu will appear to the left of the year menu.
+     * Otherwise, the month menu will apear to the right of the year menu.
+     * @default false
+     */
+    reverseMonthAndYearMenus?: boolean;
 }
 
 export const DISABLED_MODIFIER = "disabled";

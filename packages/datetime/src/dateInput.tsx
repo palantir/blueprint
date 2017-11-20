@@ -129,13 +129,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     popoverProps?: Partial<IPopoverProps> & object;
 
     /**
-     * If `true`, the month menu will appear to the left of the year menu.
-     * Otherwise, the month menu will apear to the right of the year menu.
-     * @default false
-     */
-    reverseMonthAndYearMenus?: boolean;
-
-    /**
      * Element to render on right side of input.
      */
     rightElement?: JSX.Element;
