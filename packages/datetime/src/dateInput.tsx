@@ -16,6 +16,7 @@ import {
     InputGroup,
     IPopoverProps,
     IProps,
+    Keys,
     Popover,
     Position,
     Utils,
@@ -248,6 +249,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
+                    onKeyDown={this.handleInputKeyDown}
                     value={dateString}
                 />
             </Popover>
@@ -390,7 +392,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     };
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-        const valueString = this.state.valueString;
+        const { valueString } = this.state;
         const value = this.createMoment(valueString);
         if (
             valueString.length > 0 &&
@@ -418,6 +420,13 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             }
         }
         this.safeInvokeInputProp("onBlur", e);
+    };
+
+    private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.which === Keys.ENTER) {
+            this.handleDateChange(new Date(this.state.valueString), true);
+            this.inputRef.blur();
+        }
     };
 
     private setInputRef = (el: HTMLElement) => {
