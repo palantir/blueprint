@@ -25,7 +25,8 @@ import * as Classes from "../../common/classes";
 export interface ITagInputProps extends IProps {
     /**
      * Whether the component is non-interactive.
-     * Note that you'll also need to disable the component's rightElement, if appropriate.
+     * Note that you'll also need to disable the component's `rightElement`,
+     * if appropriate.
      * @default false
      */
     disabled?: boolean;
