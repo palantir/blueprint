@@ -49,6 +49,13 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     onChange?: (selectedDate: Date, hasUserManuallySelectedDate: boolean) => void;
 
     /**
+     * If `true`, the month menu will appear to the left of the year menu.
+     * Otherwise, the month menu will apear to the right of the year menu.
+     * @default false
+     */
+    reverseMonthAndYearMenus?: boolean;
+
+    /**
      * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown.
      * @default false
      */
@@ -73,6 +80,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         dayPickerProps: {},
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
+        reverseMonthAndYearMenus: false,
         showActionsBar: false,
     };
 
@@ -204,6 +212,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
             minDate={this.props.minDate}
             onMonthChange={this.handleMonthSelectChange}
             onYearChange={this.handleYearSelectChange}
+            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
         />
     );
 

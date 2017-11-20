@@ -17,6 +17,7 @@ export interface IDatePickerCaptionProps extends ReactDayPicker.CaptionElementPr
     minDate: Date;
     onMonthChange?: (month: number) => void;
     onYearChange?: (year: number) => void;
+    reverseMonthAndYearMenus?: boolean;
 }
 
 export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, {}> {
@@ -72,28 +73,39 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
         this.displayedYearText = displayYear.toString();
 
         const caretClasses = classNames("pt-icon-standard", "pt-icon-caret-down", Classes.DATEPICKER_CAPTION_CARET);
+
+        const monthSelect = (
+            <div className={Classes.DATEPICKER_CAPTION_SELECT} key="month">
+                <select
+                    className={Classes.DATEPICKER_MONTH_SELECT}
+                    onChange={this.handleMonthSelectChange}
+                    value={displayMonth.toString()}
+                >
+                    {monthOptionElements}
+                </select>
+                <span className={caretClasses} ref={this.monthArrowRefHandler} />
+            </div>
+        );
+        const yearSelect = (
+            <div className={Classes.DATEPICKER_CAPTION_SELECT} key="year">
+                <select
+                    className={Classes.DATEPICKER_YEAR_SELECT}
+                    onChange={this.handleYearSelectChange}
+                    value={displayYear.toString()}
+                >
+                    {yearOptionElements}
+                </select>
+                <span className={caretClasses} ref={this.yearArrowRefHandler} />
+            </div>
+        );
+
+        const orderedSelects = this.props.reverseMonthAndYearMenus
+            ? [yearSelect, monthSelect]
+            : [monthSelect, yearSelect];
+
         return (
             <div className={Classes.DATEPICKER_CAPTION} ref={this.containerRefHandler}>
-                <div className={Classes.DATEPICKER_CAPTION_SELECT}>
-                    <select
-                        className={Classes.DATEPICKER_MONTH_SELECT}
-                        onChange={this.handleMonthSelectChange}
-                        value={displayMonth.toString()}
-                    >
-                        {monthOptionElements}
-                    </select>
-                    <span className={caretClasses} ref={this.monthArrowRefHandler} />
-                </div>
-                <div className={Classes.DATEPICKER_CAPTION_SELECT}>
-                    <select
-                        className={Classes.DATEPICKER_YEAR_SELECT}
-                        onChange={this.handleYearSelectChange}
-                        value={displayYear.toString()}
-                    >
-                        {yearOptionElements}
-                    </select>
-                    <span className={caretClasses} ref={this.yearArrowRefHandler} />
-                </div>
+                {orderedSelects}
             </div>
         );
     }
