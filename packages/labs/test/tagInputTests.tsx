@@ -352,7 +352,7 @@ describe("<TagInput>", () => {
                 .find(".pt-input-ghost")
                 .first()
                 .prop("disabled"),
-            ".pt-input-ghost does not have a 'disabled' attribute",
+            ".pt-input-ghost should have a 'disabled' attribute",
         );
         wrapper.find(Tag).forEach(tag => {
             assert.isFalse(tag.hasClass("pt-tag-removeable"), ".pt-tag should not have .pt-tag-removable applied");
