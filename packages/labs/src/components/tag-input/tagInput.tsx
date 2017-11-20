@@ -164,8 +164,6 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             Classes.TAG_INPUT,
             {
                 [CoreClasses.ACTIVE]: this.state.isInputFocused,
-            },
-            {
                 [CoreClasses.DISABLED]: this.props.disabled,
             },
             className,
