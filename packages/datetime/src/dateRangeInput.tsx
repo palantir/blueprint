@@ -537,8 +537,11 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // - if focused in start field, Tab moves focus to end field
     // - if focused in end field, Shift+Tab moves focus to start field
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const isTabPressed = e.keyCode === Keys.TAB;
+        const isTabPressed = e.which === Keys.TAB;
+        const isEnterPressed = e.which === Keys.ENTER;
         const isShiftPressed = e.shiftKey;
+
+        const { selectedStart, selectedEnd } = this.state;
 
         // order of JS events is our enemy here. when tabbing between fields,
         // this handler will fire in the middle of a focus exchange when no
@@ -557,6 +560,21 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         } else if (wasEndFieldFocused && isTabPressed && isShiftPressed) {
             isStartInputFocused = true;
             isEndInputFocused = false;
+        } else if (wasStartFieldFocused && isEnterPressed) {
+            const nextStartValue = new Date(this.state.startInputString);
+            const nextEndValue = isMomentNull(selectedEnd) ? undefined : fromMomentToDate(selectedEnd);
+            this.handleDateRangePickerChange([nextStartValue, nextEndValue] as DateRange);
+            isStartInputFocused = false;
+            isEndInputFocused = true;
+        } else if (wasEndFieldFocused && isEnterPressed) {
+            const nextStartValue = isMomentNull(selectedStart) ? undefined : fromMomentToDate(selectedStart);
+            const nextEndValue = new Date(this.state.endInputString);
+            this.handleDateRangePickerChange([nextStartValue, nextEndValue] as DateRange);
+            isStartInputFocused = false;
+            isEndInputFocused = false;
+            // need to explicitly blur, because only .focus() is triggered in
+            // componentShouldUpdate.
+            this.endInputRef.blur();
         } else {
             // let the default keystroke happen without side effects
             return;
