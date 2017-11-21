@@ -8,7 +8,6 @@ import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
-import { Intent } from "../../common/intent";
 import { IIntentProps, IProps } from "../../common/props";
 
 export interface ITextAreaProps extends React.HTMLProps<HTMLTextAreaElement>, IIntentProps, IProps {
