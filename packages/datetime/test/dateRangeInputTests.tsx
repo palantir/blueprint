@@ -110,10 +110,7 @@ describe("<DateRangeInput>", () => {
 
             it("supports custom style", () => {
                 const { root } = mountFn({ style: { background: "yellow" } });
-                const inputElement = root
-                    .find("input")
-                    .first()
-                    .getDOMNode() as HTMLElement;
+                const inputElement = inputGetterFn(root).getDOMNode() as HTMLElement;
                 expect(inputElement.style.background).to.equal("yellow");
             });
 
