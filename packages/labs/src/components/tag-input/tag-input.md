@@ -2,6 +2,12 @@
 
 `TagInput` renders [`Tag`](#core/components/tag)s inside an input, followed by an actual text input. The container is merely styled to look like a Blueprint input; the actual editable element appears after the last tag. Clicking anywhere on the container will focus the text input for seamless interaction.
 
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    <h5>Disabling a TagInput</h5>
+    <p>Disabling this component requires setting the `disabled` prop to `true` and separately disabling the component's `rightElement` as appropriate (because `TagInput` accepts any `JSX.Element` as its `rightElement`).</p>
+    <p>In the example below, when you slide the `Disabled` toggle switch on, the result becomes `<TagInput ... disabled={true} rightElement={<Button ... disabled={true} />} />`</p>
+</div>
+
 @reactExample TagInputExample
 
 **`TagInput` must be controlled,** meaning the `values` prop is required and event handlers are strongly suggested. Typing in the input and pressing <kbd class="pt-key">enter</kbd> will **add new items** by invoking callbacks. A `separator` prop is supported to allow multiple items to be added at once; the default splits on commas.
