@@ -85,6 +85,8 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
     }
 
     .pt-input-ghost {
+      @include pt-dark-input-placeholder();
+
       color: $dark-input-color;
     }
 
