@@ -30,6 +30,7 @@ export * from "./forms/controls";
 export * from "./forms/fileUpload";
 export * from "./forms/formGroup";
 export * from "./forms/inputGroup";
+export * from "./forms/label";
 export * from "./forms/numericInput";
 export * from "./forms/radioGroup";
 export * from "./hotkeys/hotkeys";
