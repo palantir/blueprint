@@ -48,7 +48,7 @@ Make sure to review the [general usage docs for JS components](#blueprint.usage)
 
 These components are simple wrappers around the corresponding CSS APIs. Each of them supports the full range of HTML props.
 
-```
+```tsx
 <Navbar>
     <div style="margin: 0 auto; width: 480px;"> <!-- ADD ME -->
         <NavbarGroup>
