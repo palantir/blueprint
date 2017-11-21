@@ -39,3 +39,18 @@ Add the class `pt-vertical` to create a vertical control group. Controls in a ve
 will all have the same width as the widest control.
 
 @css pt-control-group.pt-vertical
+
+@## JavaScript API
+
+The `ControlGroup` component is available in the @blueprintjs/core package. Make sure to review the general usage docs for JS components.
+
+This components is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
+
+```tsx
+<ControlGroup fill={true} vertical={false}>
+    <Button iconName="filter">Filter</Button>
+    <InputGroup placeholder="Find filters..." />
+</ControlGroup>
+```
+
+@interface IControlGroupProps
