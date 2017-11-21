@@ -32,7 +32,7 @@ export interface IFileUploadProps extends React.HTMLProps<HTMLLabelElement>, IPr
     /**
      * Whether the file upload should appear with large styling.
      */
-    large: boolean;
+    large?: boolean;
 
     /**
      * The text to display.
