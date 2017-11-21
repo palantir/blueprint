@@ -40,3 +40,38 @@ Wrap your `.pt-navbar-group`s in an element with your desired `width` and `margi
 horizontally center it.
 
 @css pt-navbar.pt-container
+
+@## JavaScript API
+
+The `Navbar`, `Navbar.Group`, `Navbar.Heading`, and `Navbar.Divider` components
+are available in the __@blueprintjs/core__ package. Make sure to review the
+[general usage docs for JS components](#blueprint.usage).
+
+These components are simple wrappers around the corresponding CSS APIs. Each of them supports the full range of HTML props.
+
+```
+<Navbar>
+    <Navbar.Group>
+        <Navbar.Heading>Blueprint</Navbar.Heading>
+    </Navbar.Group>
+    <Navbar.Group align="right">
+        <Button className="pt-minimal" iconName="home">
+            Home
+        </Button>
+        <Button className="pt-minimal" iconName="document">
+            Files
+        </Button>
+        <Navbar.Divider />
+        <Button className="pt-minimal" iconName="user" />
+        <Button className="pt-minimal" iconName="notifications" />
+        <Button className="pt-minimal" iconName="cog" />
+    </Navbar.Group>
+</Navbar>
+```
+
+@reactExample NavbarExample
+
+@interface INavbarProps
+@interface INavbarGroupProps
+@interface INavbarHeadingProps
+@interface INavbarDividerProps
