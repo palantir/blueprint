@@ -20,7 +20,10 @@ describe("<InputGroup>", () => {
 
     it("supports custom style", () => {
         const input = mount(<InputGroup leftIconName="star" style={{ background: "yellow" }} />);
-        const inputElement = input.find("input").getDOMNode() as HTMLElement;
+        const inputElement = input
+            .find("input")
+            .first()
+            .getDOMNode() as HTMLElement;
         assert.equal(inputElement.style.background, "yellow");
     });
 
