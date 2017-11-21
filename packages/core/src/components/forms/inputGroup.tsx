@@ -69,7 +69,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
             },
             className,
         );
-        const style: React.CSSProperties = { paddingRight: this.state.rightElementWidth };
+        const style: React.CSSProperties = { ...this.props.style, paddingRight: this.state.rightElementWidth };
 
         return (
             <div className={classes}>

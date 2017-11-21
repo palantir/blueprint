@@ -18,6 +18,15 @@ describe("<InputGroup>", () => {
         assert.isTrue(input.childAt(1).hasClass("pt-input"));
     });
 
+    it("supports custom style", () => {
+        const input = mount(<InputGroup leftIconName="star" style={{ background: "yellow" }} />);
+        const inputElement = input
+            .find("input")
+            .first()
+            .getDOMNode() as HTMLElement;
+        assert.equal(inputElement.style.background, "yellow");
+    });
+
     it("renders right element inside .pt-input-action after input", () => {
         const action = mount(<InputGroup rightElement={<address />} />).childAt(2);
         assert.isTrue(action.hasClass("pt-input-action"));

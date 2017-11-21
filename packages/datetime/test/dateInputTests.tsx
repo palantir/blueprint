@@ -24,6 +24,15 @@ describe("<DateInput>", () => {
         assert.doesNotThrow(() => mount(<DateInput value={"1988-08-07 11:01:12" as any} />));
     });
 
+    it("supports custom input style", () => {
+        const wrapper = mount(<DateInput inputProps={{ style: { background: "yellow" } }} />);
+        const inputElement = wrapper
+            .find("input")
+            .first()
+            .getDOMNode() as HTMLElement;
+        assert.equal(inputElement.style.background, "yellow");
+    });
+
     it("Popover opens on input focus", () => {
         const wrapper = mount(<DateInput openOnFocus={true} />);
         wrapper.find("input").simulate("focus");
