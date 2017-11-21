@@ -25,6 +25,7 @@ export * from "./collapsible-list/collapsibleList";
 export * from "./context-menu/contextMenuTarget";
 export * from "./dialog/dialog";
 export * from "./editable-text/editableText";
+export * from "./forms/controlGroup";
 export * from "./forms/controls";
 export * from "./forms/formGroup";
 export * from "./forms/inputGroup";
