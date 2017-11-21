@@ -21,11 +21,16 @@ export class ControlGroupExample extends BaseExample<IControlGroupExampleState> 
     };
 
     private toggleFill = handleBooleanChange(fill => this.setState({ fill }));
-    private toggleVertical = handleBooleanChange(fill => this.setState({ fill }));
+    private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
     protected renderExample() {
+        // have the container take up the full-width if `fill` is true;
+        // otherwise, disable full-width styles to keep a vertical control group
+        // from taking up the full width.
+        const style: React.CSSProperties = { flexGrow: this.state.fill ? 1 : undefined };
+
         return (
-            <ControlGroup {...this.state}>
+            <ControlGroup style={style} {...this.state}>
                 <Button iconName="filter">Filter</Button>
                 <InputGroup placeholder="Find filters..." />
             </ControlGroup>
