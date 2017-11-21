@@ -27,6 +27,7 @@ export * from "./dialog/dialog";
 export * from "./editable-text/editableText";
 export * from "./forms/controlGroup";
 export * from "./forms/controls";
+export * from "./forms/fileUpload";
 export * from "./forms/formGroup";
 export * from "./forms/inputGroup";
 export * from "./forms/numericInput";
