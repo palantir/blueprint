@@ -37,7 +37,7 @@ must add the `:disabled` attribute directly to any nested elements to disable th
 
 The `Label` component is available in the @blueprintjs/core package. Make sure to review the general usage docs for JS components.
 
-This components is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
+This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
 
 ```tsx
 <Label

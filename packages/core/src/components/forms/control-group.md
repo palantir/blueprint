@@ -44,7 +44,7 @@ will all have the same width as the widest control.
 
 The `ControlGroup` component is available in the @blueprintjs/core package. Make sure to review the general usage docs for JS components.
 
-This components is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
+This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
 
 ```tsx
 <ControlGroup fill={true} vertical={false}>
