@@ -148,7 +148,7 @@ describe("<DateInput>", () => {
         it("Pressing Enter saves the inputted date and closes the popover", () => {
             const wrapper = mount(<DateInput />).setState({ isOpen: true });
             const input = wrapper.find("input").first();
-            input.simulate("change", { target: { value: "2/15/15" } });
+            input.simulate("change", { target: { value: "2015-02-15" } });
             input.simulate("keydown", { which: Keys.ENTER });
             assert.isFalse(wrapper.state("isOpen"));
             assert.equal(wrapper.find(InputGroup).prop("value"), "2015-02-15");
