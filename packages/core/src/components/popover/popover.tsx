@@ -360,11 +360,11 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
         if (nextProps.isOpen == null && nextProps.isDisabled && !this.props.isDisabled) {
             // ok to use setOpenState here because isDisabled and isOpen are mutex.
-            this.setOpenState(false);
+            this.setOpenStateByPropCallback(false);
         } else if (nextProps.isOpen !== this.props.isOpen) {
             // propagate isOpen prop directly to state, circumventing onInteraction callback
             // (which would be invoked if this went through setOpenState)
-            this.setState({ isOpen: nextProps.isOpen });
+            this.setOpenStateDirectly(nextProps.isOpen);
         }
     }
 
@@ -432,8 +432,10 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             });
         }
         if (!this.props.inline) {
-            this.hasDarkParent = isDarkTheme(this.targetElement);
             this.updateTether();
+        }
+        if (!this.props.inline && this.state.isOpen) {
+            this.checkDOMForDarkTheme();
         }
     }
 
@@ -555,13 +557,13 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             this.handleMouseLeave(e);
         } else if (!this.props.isDisabled) {
             // only begin opening popover when it is enabled
-            this.setOpenState(true, e, this.props.hoverOpenDelay);
+            this.setOpenStateByPropCallback(true, e, this.props.hoverOpenDelay);
         }
     };
 
     private handleMouseLeave = (e: React.SyntheticEvent<HTMLElement>) => {
         // user-configurable closing delay is helpful when moving mouse from target to popover
-        this.setOpenState(false, e, this.props.hoverCloseDelay);
+        this.setOpenStateByPropCallback(false, e, this.props.hoverCloseDelay);
     };
 
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -569,7 +571,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         const shouldDismiss = eventTarget.closest(`.${Classes.POPOVER_DISMISS}`) != null;
         const overrideDismiss = eventTarget.closest(`.${Classes.POPOVER_DISMISS_OVERRIDE}`) != null;
         if (shouldDismiss && !overrideDismiss) {
-            this.setOpenState(false, e);
+            this.setOpenStateByPropCallback(false, e);
         }
     };
 
@@ -577,7 +579,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         const eventTarget = e.target as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
         if (!Utils.elementIsOrContains(this.targetElement, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
-            this.setOpenState(false, e);
+            this.setOpenStateByPropCallback(false, e);
         }
     };
 
@@ -585,9 +587,9 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
         // ensure click did not originate from within inline popover before closing
         if (!this.props.isDisabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
-                this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+                this.setOpenStateDirectly(previousIsOpen => !previousIsOpen);
             } else {
-                this.setOpenState(!this.props.isOpen, e);
+                this.setOpenStateByPropCallback(!this.props.isOpen, e);
             }
         }
     };
@@ -652,20 +654,37 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
 
     // a wrapper around setState({isOpen}) that will call props.onInteraction instead when in controlled mode.
     // starts a timeout to delay changing the state if a non-zero duration is provided.
-    private setOpenState(isOpen: boolean, e?: React.SyntheticEvent<HTMLElement>, timeout?: number) {
+    private setOpenStateByPropCallback(isOpen: boolean, e?: React.SyntheticEvent<HTMLElement>, timeout?: number) {
         // cancel any existing timeout because we have new state
         Utils.safeInvoke(this.cancelOpenTimeout);
         if (timeout > 0) {
-            this.cancelOpenTimeout = this.setTimeout(() => this.setOpenState(isOpen, e), timeout);
+            this.cancelOpenTimeout = this.setTimeout(() => this.setOpenStateByPropCallback(isOpen, e), timeout);
         } else {
             if (this.props.isOpen == null) {
-                this.setState({ isOpen });
+                this.setOpenStateDirectly(isOpen);
             } else {
                 Utils.safeInvoke(this.props.onInteraction, isOpen);
             }
             if (!isOpen) {
                 Utils.safeInvoke(this.props.onClose, e);
             }
+        }
+    }
+
+    private setOpenStateDirectly(isOpen: boolean | ((previousIsOpen: boolean) => boolean)) {
+        if (Utils.isFunction(isOpen)) {
+            this.setState(previousState => {
+                const nextIsOpen = isOpen(previousState.isOpen);
+                if (nextIsOpen) {
+                    this.checkDOMForDarkTheme();
+                }
+                return { isOpen: nextIsOpen };
+            });
+        } else {
+            if (isOpen) {
+                this.checkDOMForDarkTheme();
+            }
+            this.setState({ isOpen });
         }
     }
 
@@ -678,6 +697,11 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             this.props.interactionKind === PopoverInteractionKind.HOVER ||
             this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
         );
+    }
+
+    // This may cause a preemptive DOM reflow so should be avoided when the tether is not present
+    private checkDOMForDarkTheme() {
+        this.hasDarkParent = isDarkTheme(this.targetElement);
     }
 }
 

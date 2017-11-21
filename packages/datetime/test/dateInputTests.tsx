@@ -35,6 +35,15 @@ describe("<DateInput>", () => {
         assert.isTrue(popoverTarget.hasClass(CLASS_1));
         assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
+          
+    it("supports custom input style", () => {
+        const wrapper = mount(<DateInput inputProps={{ style: { background: "yellow" } }} />);
+        const inputElement = wrapper
+            .find("input")
+            .first()
+            .getDOMNode() as HTMLElement;
+        assert.equal(inputElement.style.background, "yellow");
+    });
 
     it("Popover opens on input focus", () => {
         const wrapper = mount(<DateInput openOnFocus={true} />);
