@@ -19,7 +19,7 @@ export interface IControlGroupProps extends React.HTMLProps<HTMLDivElement>, IPr
     /**
      * Whether the button group should appear with vertical styling.
      */
-    vertical: boolean;
+    vertical?: boolean;
 }
 
 // this component is simple enough that tests would be purely tautological.
