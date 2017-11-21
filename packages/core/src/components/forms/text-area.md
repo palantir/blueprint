@@ -18,12 +18,9 @@ This component is a simple wrapper around the corresponding CSS API. It supports
 
 ```tsx
 <TextArea
-    dir="auto"
-    fill={true}
-    large={false}
+    large={true}
     intent={Intent.PRIMARY}
-    onChange={/* ... */}
+    onChange={this.handleChange}
+    value={this.state.value}
 />
 ```
-
-@interface ITextAreaProps
