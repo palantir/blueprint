@@ -42,7 +42,7 @@ Make sure to review the [general usage docs for JS components](#blueprint.usage)
 
 This component is a simple wrapper around the CSS API, and supports the full range of HTML props.
 
-```
+```tsx
 <ButtonGroup minimal={true} large={false} onMouseEnter={...}>
     <Button>Queries</Button>
     <Button>Functions</Button>
