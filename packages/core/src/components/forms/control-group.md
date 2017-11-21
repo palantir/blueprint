@@ -46,6 +46,8 @@ The `ControlGroup` component is available in the @blueprintjs/core package. Make
 
 This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
 
+@reactExample ControlGroupExample
+
 ```tsx
 <ControlGroup fill={true} vertical={false}>
     <Button iconName="filter">Filter</Button>
