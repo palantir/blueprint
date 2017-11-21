@@ -10,6 +10,7 @@ export * from "./checkboxExample";
 export * from "./collapseExample";
 export * from "./cardExample";
 export * from "./collapsibleListExample";
+export * from "./controlGroupExample";
 export * from "./dialogExample";
 export * from "./contextMenuExample";
 export * from "./dropdownMenuExample";
