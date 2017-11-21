@@ -17,7 +17,7 @@ Wrap that all in a `label` with class `pt-file-upload`.
 
 The `FileUpload` component is available in the @blueprintjs/core package. Make sure to review the general usage docs for JS components.
 
-This components is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
+This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
 
 ```tsx
 <FileUpload disabled={true} text="Choose file..." inputProps={{ onChange: /* ... */ }} />
