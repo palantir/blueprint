@@ -44,10 +44,10 @@ This component is a simple wrapper around the CSS API, and supports the full ran
 
 ```tsx
 <ButtonGroup minimal={true} large={false} onMouseEnter={...}>
-    <Button>Queries</Button>
-    <Button>Functions</Button>
-    <AnchorButton>Options</AnchorButton>
-</div>
+    <Button iconName="database">Queries</Button>
+    <Button iconName="function">Functions</Button>
+    <AnchorButton rightIconName="caret-down">Options</AnchorButton>
+</ButtonGroup>
 ```
 
 @reactExample ButtonGroupExample

@@ -38,10 +38,7 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
             <ButtonGroup style={style} {...this.state}>
                 <Button iconName="database">Queries</Button>
                 <Button iconName="function">Functions</Button>
-                <AnchorButton iconName="function">
-                    Options
-                    <Icon iconName="caret-down" className={Classes.ALIGN_RIGHT} />
-                </AnchorButton>
+                <AnchorButton rightIconName="caret-down">Options</AnchorButton>
             </ButtonGroup>
         );
     }
