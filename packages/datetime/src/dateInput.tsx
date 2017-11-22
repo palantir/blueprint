@@ -173,6 +173,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         openOnFocus: true,
         outOfRangeMessage: "Out of range",
         popoverPosition: Position.BOTTOM,
+        reverseMonthAndYearMenus: false,
         timePickerProps: {},
     };
 

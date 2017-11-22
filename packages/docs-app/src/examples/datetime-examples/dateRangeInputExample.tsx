@@ -17,6 +17,7 @@ export interface IDateRangeInputExampleState {
     contiguousCalendarMonths?: boolean;
     disabled?: boolean;
     format?: string;
+    reverseMonthAndYearMenus?: boolean;
     selectAllOnFocus?: boolean;
 }
 
@@ -27,6 +28,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         contiguousCalendarMonths: true,
         disabled: false,
         format: FORMATS[0],
+        reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
     };
 
@@ -35,6 +37,9 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     });
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
     private toggleFormat = handleStringChange(format => this.setState({ format }));
+    private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
+        this.setState({ reverseMonthAndYearMenus }),
+    );
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
     private toggleSelectAllOnFocus = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
@@ -74,6 +79,12 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
                     label="Select all on focus"
                     key="Select all on focus"
                     onChange={this.toggleSelectAllOnFocus}
+                />,
+                <Switch
+                    checked={this.state.reverseMonthAndYearMenus}
+                    label="Reverse month and year menus"
+                    key="Reverse month and year menus"
+                    onChange={this.toggleReverseMonthAndYearMenus}
                 />,
             ],
         ];
