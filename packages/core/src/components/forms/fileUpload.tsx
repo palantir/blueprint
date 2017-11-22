@@ -25,6 +25,7 @@ export interface IFileUploadProps extends React.HTMLProps<HTMLLabelElement>, IPr
     /**
      * The props to pass to the child input.
      * `disabled` will be ignored in favor of the top-level prop.
+     * `type` will be ignored, because the input _must_ be `type="file"`.
      * Pass `onChange` here to be notified when the user uploads a file.
      */
     inputProps?: React.HTMLProps<HTMLInputElement>;
@@ -36,7 +37,7 @@ export interface IFileUploadProps extends React.HTMLProps<HTMLLabelElement>, IPr
 
     /**
      * The text to display.
-     * @default "Choose a file..."
+     * @default "Choose file..."
      */
     text?: string;
 }
@@ -46,6 +47,10 @@ export interface IFileUploadProps extends React.HTMLProps<HTMLLabelElement>, IPr
 @PureRender
 export class FileUpload extends React.Component<IFileUploadProps, {}> {
     public static displayName = "Blueprint.FileUpload";
+
+    public static defaultProps: IFileUploadProps = {
+        text: "Choose file...",
+    };
 
     public render() {
         const { className, fill, disabled, inputProps, large, text, ...htmlProps } = this.props;
