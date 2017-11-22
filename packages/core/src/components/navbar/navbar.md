@@ -50,19 +50,17 @@ These components are simple wrappers around the corresponding CSS APIs. Each of 
 
 ```tsx
 <Navbar>
-    <div style="margin: 0 auto; width: 480px;"> <!-- ADD ME -->
-        <NavbarGroup>
-            <NavbarHeading text="Blueprint" />
-        </NavbarGroup>
-        <NavbarGroup align="right">
-            <button class="pt-button pt-minimal pt-icon-home">Home</button>
-            <button class="pt-button pt-minimal pt-icon-document">Files</button>
-            <NavbarDivider />
-            <button class="pt-button pt-minimal pt-icon-user"></button>
-            <button class="pt-button pt-minimal pt-icon-notifications"></button>
-            <button class="pt-button pt-minimal pt-icon-cog"></button>
-        </NavbarGroup>
-    </div>
+    <NavbarGroup>
+        <NavbarHeading text="Blueprint" />
+    </NavbarGroup>
+    <NavbarGroup align="right">
+        <Button class="pt-minimal" iconName="home">Home</Button>
+        <Button class="pt-minimal" iconName="document">Files</Button>
+        <NavbarDivider />
+        <Button class="pt-minimal" iconName="user"></Button>
+        <Button class="pt-minimal" iconName="notifications"></Button>
+        <Button class="pt-minimal" iconName="cog"></Button>
+    </NavbarGroup>
 </Navbar>
 ```
 
