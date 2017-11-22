@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, ButtonGroup, Classes, Icon, Switch } from "@blueprintjs/core";
+import { AnchorButton, Button, ButtonGroup, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 
 export interface IButtonGroupExampleState {
