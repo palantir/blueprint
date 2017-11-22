@@ -33,6 +33,7 @@ export * from "./forms/inputGroup";
 export * from "./forms/label";
 export * from "./forms/numericInput";
 export * from "./forms/radioGroup";
+export * from "./forms/textArea";
 export * from "./hotkeys/hotkeys";
 export * from "./icon/icon";
 export * from "./menu/menu";
