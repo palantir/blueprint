@@ -35,7 +35,7 @@ describe("<DateInput>", () => {
         assert.isTrue(popoverTarget.hasClass(CLASS_1));
         assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
-          
+
     it("supports custom input style", () => {
         const wrapper = mount(<DateInput inputProps={{ style: { background: "yellow" } }} />);
         const inputElement = wrapper
