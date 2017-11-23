@@ -198,6 +198,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     onFocus={this.handleInputFocus}
                     onChange={this.handleInputChange}
                     onKeyDown={this.handleInputKeyDown}
+                    onKeyUp={this.handleInputKeyUp}
                     placeholder={resolvedPlaceholder}
                     ref={this.refHandlers.input}
                     className={classNames(Classes.INPUT_GHOST, inputProps.className)}
@@ -318,6 +319,12 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             }
         }
         Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
+        Utils.safeInvoke(this.props.onKeyDown, event, undefined);
+    };
+
+    private handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        Utils.safeInvoke(this.props.inputProps.onKeyUp, event);
+        Utils.safeInvoke(this.props.onKeyUp, event, undefined);
     };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {
