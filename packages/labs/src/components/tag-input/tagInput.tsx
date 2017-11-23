@@ -70,6 +70,20 @@ export interface ITagInputProps extends IProps {
     onChange?: (values: React.ReactNode[]) => boolean | void;
 
     /**
+     * Callback invoked when the user depresses a keyboard key.
+     * Receives the event and the index of the active tag (or `undefined` if
+     * focused in the input).
+     */
+    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>, index?: number) => void;
+
+    /**
+     * Callback invoked when the user releases a keyboard key.
+     * Receives the event and the index of the active tag (or `undefined` if
+     * focused in the input).
+     */
+    onKeyUp?: (event: React.KeyboardEvent<HTMLElement>, index?: number) => void;
+
+    /**
      * Callback invoked when the user clicks the X button on a tag.
      * Receives value and index of removed tag.
      */
