@@ -169,16 +169,20 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         Utils.safeInvoke(this.props.onComponentUpdate, activePageId);
     }
 
+    private getTitle() {
+        // Either get the title from the document, or return the default title
+        let title = "Blueprint - Documentation";
+        const docsTitle = document.getElementsByClassName("docs-title")[0].textContent;
+        // Check to make sure the textContent of docsTitle has a useable value
+        if (docsTitle !== undefined && docsTitle !== null) {
+            title = `${docsTitle} - Blueprint`;
+        }
+        return title;
+    }
+
     private updateTitle() {
         // Update the page <title> when the hash changes
-        let title: string;
-        if (this.state.activePageId === "blueprint" && this.state.activeSectionId === "blueprint") {
-            const indexTitle: string = "Blueprint - Documentation";
-            title = indexTitle;
-        } else {
-            const newTitle: string = document.getElementsByClassName("docs-title")[0].textContent;
-            title = `${newTitle} - Blueprint`;
-        }
+        const title = this.getTitle();
         document.title = title;
     }
 
