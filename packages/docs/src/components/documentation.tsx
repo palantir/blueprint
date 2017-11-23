@@ -175,7 +175,10 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const docsTitle = document.getElementsByClassName("docs-title")[0].textContent;
         // Check to make sure the textContent of docsTitle has a useable value
         if (docsTitle !== undefined && docsTitle !== null) {
-            title = `${docsTitle} - Blueprint`;
+            // Only change the title if we aren't on the index homepage
+            if (this.state.activePageId !== "blueprint" && this.state.activeSectionId !== "blueprint") {
+                title = `${docsTitle} - Blueprint`;
+            }
         }
         return title;
     }
