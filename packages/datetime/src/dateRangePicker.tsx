@@ -119,6 +119,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
         dayPickerProps: {},
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
+        reverseMonthAndYearMenus: false,
         shortcuts: true,
     };
 
@@ -365,6 +366,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
             minDate={this.props.minDate}
             onMonthChange={this.handleLeftMonthSelectChange}
             onYearChange={this.handleLeftYearSelectChange}
+            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
         />
     );
 
@@ -375,6 +377,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
             minDate={this.props.minDate}
             onMonthChange={this.handleLeftMonthSelectChange}
             onYearChange={this.handleLeftYearSelectChange}
+            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
         />
     );
 
@@ -385,6 +388,7 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
             minDate={DateUtils.getDateNextMonth(this.props.minDate)}
             onMonthChange={this.handleRightMonthSelectChange}
             onYearChange={this.handleRightYearSelectChange}
+            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
         />
     );
 

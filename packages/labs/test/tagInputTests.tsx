@@ -343,6 +343,22 @@ describe("<TagInput>", () => {
         );
     });
 
+    it("is non-interactive when disabled", () => {
+        const wrapper = mount(<TagInput values={VALUES} disabled={true} />);
+
+        assert.isTrue(wrapper.hasClass(Classes.DISABLED), `.${Classes.DISABLED} should be applied to .pt-tag-input`);
+        assert.isTrue(
+            wrapper
+                .find(".pt-input-ghost")
+                .first()
+                .prop("disabled"),
+            ".pt-input-ghost should have a 'disabled' attribute",
+        );
+        wrapper.find(Tag).forEach(tag => {
+            assert.isFalse(tag.hasClass("pt-tag-removeable"), ".pt-tag should not have .pt-tag-removable applied");
+        });
+    });
+
     function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {
         wrapper.find("input").simulate("keydown", {
             currentTarget: { value },

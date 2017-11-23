@@ -1,22 +1,27 @@
-/**
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+/*
+ * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-const baseConfig = require("@blueprintjs/webpack-build-scripts/webpack.config.base");
+const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        "docs-app": [
-            "./src/index.tsx",
-            "./src/index.scss"
-        ],
+         features: [
+             "./src/index.scss",
+             "./src/features.tsx",
+         ],
+         index: [
+             "./src/index.scss",
+             "./src/index.tsx",
+         ],
     },
 
     output: {
-        filename: "[name].js",
+        filename: "[name].bundle.js",
         path: path.resolve(__dirname, "./dist"),
     },
 

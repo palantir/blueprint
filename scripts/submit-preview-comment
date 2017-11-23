@@ -8,8 +8,6 @@ source scripts/artifact-variables
 # Docs
 echo "Docs preview...RENDER"
 PREVIEWS="$(artifactLink '/packages/docs-app/dist/index.html' 'documentation')"
-COVERAGES="$(coverageLink '/packages/core/' 'core')"
-COVERAGES="$COVERAGES | $(coverageLink 'packages/datetime/' 'datetime')"
 
 # Landing
 echo -n "landing-app preview..."
@@ -30,7 +28,7 @@ if [ $? -eq 0 ]; then
 else
     echo "RENDER"
     (cd packages/table; npm run build)
-    PREVIEWS="$PREVIEWS | $(artifactLink '/packages/table/dist/preview/index.html' 'table')"
+    PREVIEWS="$PREVIEWS | $(artifactLink '/packages/table-dev-app/dist/index.html' 'table')"
 fi
 
 # Actual public site
@@ -51,4 +49,4 @@ else
 fi
 
 # Submit comment
-submitPreviewComment "<h3>${COMMIT_MESSAGE}</h3>\n\nPreview: <strong>${PREVIEWS}</strong>\nCoverage: ${COVERAGES}"
+submitPreviewComment "<h3>${COMMIT_MESSAGE}</h3>\n\nPreview: <strong>${PREVIEWS}</strong>"

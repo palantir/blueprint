@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Utils } from "../src/common/utils";
+import { Utils } from "@blueprintjs/table/src";
 
 interface IDataRow<T> {
     [key: string]: T;

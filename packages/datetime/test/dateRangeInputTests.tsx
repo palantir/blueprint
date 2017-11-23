@@ -9,7 +9,14 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { HTMLInputProps, IInputGroupProps, InputGroup, Popover, Position } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    HTMLInputProps,
+    IInputGroupProps,
+    InputGroup,
+    Popover,
+    Position,
+} from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -69,6 +76,18 @@ describe("<DateRangeInput>", () => {
         expect(component.find(InputGroup).length).to.equal(2);
     });
 
+    it("passes custom classNames to popover target", () => {
+        const CLASS_1 = "foo";
+        const CLASS_2 = "bar";
+
+        const wrapper = mount(<DateRangeInput className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
+        wrapper.setState({ isOpen: true });
+
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`);
+        expect(popoverTarget.hasClass(CLASS_1)).to.be.true;
+        expect(popoverTarget.hasClass(CLASS_2)).to.be.true;
+    });
+
     it("inner DateRangePicker receives all supported props", () => {
         const component = mount(<DateRangeInput locale="uk" contiguousCalendarMonths={false} />);
         component.setState({ isOpen: true });
@@ -106,6 +125,12 @@ describe("<DateRangeInput>", () => {
             it("allows custom placeholder text", () => {
                 const { root } = mountFn({ placeholder: "Hello" });
                 expect(getInputPlaceholderText(inputGetterFn(root))).to.equal("Hello");
+            });
+
+            it("supports custom style", () => {
+                const { root } = mountFn({ style: { background: "yellow" } });
+                const inputElement = inputGetterFn(root).getDOMNode() as HTMLElement;
+                expect(inputElement.style.background).to.equal("yellow");
             });
 
             // verify custom callbacks are called for each event that we listen for internally.

@@ -12,7 +12,7 @@
     "compile:typescript": "tsc -p ./src",
     "compile:sass": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
     "clean": "rm -rf dist/*",
-    "dev": "webpack-dev-server --config webpack.config.preview.js",
+    "dev": "npm-run-all -p 'compile:typescript -- --watch' 'compile:sass -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
     "dist:esm": "tsc -p ./src/tsconfig.esm.json && prepare-es-modules",

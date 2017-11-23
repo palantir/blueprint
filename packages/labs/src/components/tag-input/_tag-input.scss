@@ -48,6 +48,11 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
       padding: 0 ($input-padding-horizontal - $ti-padding);
     }
 
+    &:disabled,
+    &.pt-disabled {
+      cursor: not-allowed;
+    }
+
     ~ * {
       // shift right element up (to ignore top padding) so flex box will center it correctly
       margin-top: -$ti-padding;
@@ -80,6 +85,8 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
     }
 
     .pt-input-ghost {
+      @include pt-dark-input-placeholder();
+
       color: $dark-input-color;
     }
 

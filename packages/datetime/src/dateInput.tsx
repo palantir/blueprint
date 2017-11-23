@@ -173,6 +173,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         openOnFocus: true,
         outOfRangeMessage: "Out of range",
         popoverPosition: Position.BOTTOM,
+        reverseMonthAndYearMenus: false,
         timePickerProps: {},
     };
 
@@ -222,6 +223,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             },
             inputProps.className,
         );
+        const popoverClassName = classNames(popoverProps.className, this.props.className);
 
         return (
             <Popover
@@ -230,8 +232,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 position={this.props.popoverPosition}
                 {...popoverProps}
                 autoFocus={false}
-                enforceFocus={false}
+                className={popoverClassName}
                 content={popoverContent}
+                enforceFocus={false}
                 onClose={this.handleClosePopover}
                 popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
             >
