@@ -189,7 +189,13 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         const resolvedPlaceholder = placeholder == null || isSomeValueDefined ? inputProps.placeholder : placeholder;
 
         return (
-            <div className={classes} onBlur={this.handleBlur} onClick={this.handleContainerClick}>
+            <div
+                className={classes}
+                onBlur={this.handleContainerBlur}
+                onClick={this.handleContainerClick}
+                onKeyDown={this.handleContainerKeyDown}
+                onKeyUp={this.handleContainerKeyUp}
+            >
                 <Icon className={Classes.TAG_INPUT_ICON} iconName={leftIconName} iconSize={isLarge ? 20 : 16} />
                 {values.map(this.maybeRenderTag)}
                 <input
@@ -270,7 +276,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         }
     };
 
-    private handleBlur = () =>
+    private handleContainerBlur = () => {
         requestAnimationFrame(() => {
             // this event is attached to the container element to capture all blur events from inside.
             // we only need to "unfocus" if the blur event is leaving the container.
@@ -279,6 +285,15 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 this.setState({ activeIndex: NONE, isInputFocused: false });
             }
         });
+    };
+
+    private handleContainerKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        Utils.safeInvoke(this.props.onKeyDown, event, this.state.activeIndex);
+    };
+
+    private handleContainerKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        Utils.safeInvoke(this.props.onKeyUp, event, this.state.activeIndex);
+    };
 
     private handleInputFocus = (event: React.FocusEvent<HTMLElement>) => {
         this.setState({ isInputFocused: true });
@@ -318,11 +333,19 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 this.handleBackspaceToRemove(event);
             }
         }
-        Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
+
+        // stop the event from propagating to the container's onKeyDown
+        // callback. we'll invoke the top-level callback directly with an
+        // `undefined` index.
+        event.stopPropagation();
+
         Utils.safeInvoke(this.props.onKeyDown, event, undefined);
+        Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
     };
 
     private handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        // again, stop propagation to the container's onKeyUp callback.
+        event.stopPropagation();
         Utils.safeInvoke(this.props.inputProps.onKeyUp, event);
         Utils.safeInvoke(this.props.onKeyUp, event, undefined);
     };
