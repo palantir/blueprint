@@ -286,6 +286,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     }
 
     public render() {
+        const { popoverProps = {} } = this.props;
+
         const popoverContent = (
             <DateRangePicker
                 {...this.props}
@@ -296,6 +298,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
             />
         );
 
+        const popoverClassName = classNames(popoverProps.className, this.props.className);
+
         // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
@@ -305,6 +309,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
                 position={Position.BOTTOM_LEFT}
                 {...this.props.popoverProps}
                 autoFocus={false}
+                className={popoverClassName}
                 content={popoverContent}
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}

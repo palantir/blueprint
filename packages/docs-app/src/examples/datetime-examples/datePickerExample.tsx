@@ -29,16 +29,21 @@ export const Moment: React.SFC<{ date: Date; format?: string }> = ({ date, forma
 
 export interface IDatePickerExampleState {
     date?: Date;
+    reverseMonthAndYearMenus?: boolean;
     showActionsBar?: boolean;
 }
 
 export class DatePickerExample extends BaseExample<IDatePickerExampleState> {
     public state: IDatePickerExampleState = {
         date: null,
+        reverseMonthAndYearMenus: false,
         showActionsBar: false,
     };
 
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
+    private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
+        this.setState({ reverseMonthAndYearMenus }),
+    );
 
     protected renderExample() {
         return (
@@ -46,6 +51,7 @@ export class DatePickerExample extends BaseExample<IDatePickerExampleState> {
                 <DatePicker
                     className={Classes.ELEVATION_1}
                     onChange={this.handleDateChange}
+                    reverseMonthAndYearMenus={this.state.reverseMonthAndYearMenus}
                     showActionsBar={this.state.showActionsBar}
                 />
                 <Moment date={this.state.date} />
@@ -61,6 +67,12 @@ export class DatePickerExample extends BaseExample<IDatePickerExampleState> {
                     label="Show actions bar"
                     key="Actions"
                     onChange={this.toggleActionsBar}
+                />,
+                <Switch
+                    checked={this.state.reverseMonthAndYearMenus}
+                    label="Reverse month and year menus"
+                    key="Reverse month and year menus"
+                    onChange={this.toggleReverseMonthAndYearMenus}
                 />,
             ],
         ];

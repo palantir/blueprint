@@ -25,6 +25,7 @@ const VALUES = [
 ];
 
 export interface ITagInputExampleState {
+    disabled?: boolean;
     fill?: boolean;
     intent?: boolean;
     large?: boolean;
@@ -34,6 +35,7 @@ export interface ITagInputExampleState {
 
 export class TagInputExample extends BaseExample<ITagInputExampleState> {
     public state: ITagInputExampleState = {
+        disabled: false,
         fill: false,
         intent: false,
         large: false,
@@ -41,13 +43,14 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         values: VALUES,
     };
 
+    private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleIntentChange = handleBooleanChange(intent => this.setState({ intent }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
 
     protected renderExample() {
-        const { fill, large, values } = this.state;
+        const { disabled, fill, large, values } = this.state;
 
         const classes = classNames({
             [Classes.FILL]: fill,
@@ -57,6 +60,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         const clearButton = (
             <Button
                 className={classNames(Classes.MINIMAL, Classes.SMALL)}
+                disabled={disabled}
                 iconName={values.length > 1 ? "cross" : "refresh"}
                 onClick={this.handleClear}
             />
@@ -73,6 +77,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         return (
             <TagInput
                 className={classes}
+                disabled={disabled}
                 rightElement={clearButton}
                 leftIconName="user"
                 onChange={this.handleChange}
@@ -93,6 +98,12 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                     onChange={this.handleFillChange}
                 />,
                 <Switch checked={this.state.large} label="Large" key="large" onChange={this.handleLargeChange} />,
+                <Switch
+                    checked={this.state.disabled}
+                    label="Disabled"
+                    key="disabled"
+                    onChange={this.handleDisabledChange}
+                />,
             ],
             [
                 <label key="heading" className={Classes.LABEL}>

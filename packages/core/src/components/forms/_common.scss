@@ -153,15 +153,19 @@ $control-group-stack: (
   color: $dark-input-color-disabled;
 }
 
+@mixin pt-dark-input-placeholder() {
+  &::placeholder {
+    color: $dark-input-placeholder-color;
+  }
+}
+
 @mixin pt-dark-input() {
+  @include pt-dark-input-placeholder();
+
   box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
               $pt-dark-input-box-shadow;
   background: $dark-input-background-color;
   color: $dark-input-color;
-
-  &::placeholder {
-    color: $dark-input-placeholder-color;
-  }
 
   &:focus {
     box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),

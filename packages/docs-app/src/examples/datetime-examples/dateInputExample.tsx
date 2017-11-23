@@ -17,6 +17,7 @@ export interface IDateInputExampleState {
     disabled?: boolean;
     format?: string;
     openOnFocus?: boolean;
+    reverseMonthAndYearMenus?: boolean;
     timePrecision?: TimePickerPrecision;
 }
 
@@ -26,12 +27,16 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
         disabled: false,
         format: FORMATS[0],
         openOnFocus: true,
+        reverseMonthAndYearMenus: false,
     };
 
     private toggleFocus = handleBooleanChange(openOnFocus => this.setState({ openOnFocus }));
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
     private toggleFormat = handleStringChange(format => this.setState({ format }));
+    private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
+        this.setState({ reverseMonthAndYearMenus }),
+    );
     private toggleTimePrecision = handleNumberChange(timePrecision =>
         this.setState({
             timePrecision: timePrecision < 0 ? undefined : timePrecision,
@@ -39,7 +44,15 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     );
 
     protected renderExample() {
-        return <DateInput {...this.state} defaultValue={new Date()} />;
+        return (
+            <DateInput
+                {...this.state}
+                defaultValue={new Date()}
+                className="foofoofoo"
+                popoverProps={{ popoverClassName: "barbarbar" }}
+                inputProps={{ className: "bazbazbaz" }}
+            />
+        );
     }
 
     protected renderOptions() {
@@ -58,6 +71,12 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     onChange={this.toggleSelection}
                 />,
                 <Switch checked={this.state.disabled} label="Disabled" key="Disabled" onChange={this.toggleDisabled} />,
+                <Switch
+                    checked={this.state.reverseMonthAndYearMenus}
+                    label="Reverse month and year menus"
+                    key="Reverse month and year menus"
+                    onChange={this.toggleReverseMonthAndYearMenus}
+                />,
                 <PrecisionSelect
                     label="Time Precision"
                     key="precision"

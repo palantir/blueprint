@@ -73,6 +73,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         dayPickerProps: {},
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
+        reverseMonthAndYearMenus: false,
         showActionsBar: false,
     };
 
@@ -204,6 +205,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
             minDate={this.props.minDate}
             onMonthChange={this.handleMonthSelectChange}
             onYearChange={this.handleYearSelectChange}
+            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
         />
     );
 
