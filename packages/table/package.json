@@ -16,7 +16,6 @@
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
     "dist:esm": "tsc -p ./src/tsconfig.esm.json && prepare-es-modules",
-    "dist:preview": "NODE_ENV=production webpack --config webpack.config.preview.js",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
