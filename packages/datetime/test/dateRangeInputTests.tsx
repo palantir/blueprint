@@ -257,6 +257,26 @@ describe("<DateRangeInput>", () => {
         expect(root.find(DateRangePicker).prop("shortcuts")).to.be.false;
     });
 
+    it("pressing Shift+Tab in the start field blurs the start field and closes the popover", () => {
+        const startInputProps = { onKeyDown: sinon.spy() };
+        const { root } = wrap(<DateRangeInput {...{ startInputProps }} />);
+        const startInput = getStartInput(root);
+        startInput.simulate("keydown", { which: Keys.TAB, shiftKey: true });
+        expect(root.state("isStartInputFocused"), "start input blurred").to.be.false;
+        expect(startInputProps.onKeyDown.calledOnce, "onKeyDown called once").to.be.true;
+        expect(root.state("isOpen"), "popover closed").to.be.false;
+    });
+
+    it("pressing Tab in the end field blurs the end field and closes the popover", () => {
+        const endInputProps = { onKeyDown: sinon.spy() };
+        const { root } = wrap(<DateRangeInput {...{ endInputProps }} />);
+        const endInput = getEndInput(root);
+        endInput.simulate("keydown", { which: Keys.TAB });
+        expect(root.state("isEndInputFocused"), "end input blurred").to.be.false;
+        expect(endInputProps.onKeyDown.calledOnce, "onKeyDown called once").to.be.true;
+        expect(root.state("isOpen"), "popover closed").to.be.false;
+    });
+
     describe("selectAllOnFocus", () => {
         it("if false (the default), does not select any text on focus", () => {
             const attachTo = document.createElement("div");
@@ -381,29 +401,31 @@ describe("<DateRangeInput>", () => {
         });
 
         it("Pressing Enter saves the inputted date and closes the popover", () => {
-            const { root } = wrap(<DateRangeInput />);
+            const startInputProps = { onKeyDown: sinon.spy() };
+            const endInputProps = { onKeyDown: sinon.spy() };
+            const { root } = wrap(<DateRangeInput {...{ startInputProps, endInputProps }} />);
             root.setState({ isOpen: true });
 
             const startInput = getStartInput(root);
             startInput.simulate("focus");
             startInput.simulate("change", { target: { value: START_STR } });
             startInput.simulate("keydown", { which: Keys.ENTER });
-            expect(isStartInputFocused(root), "start input blurred next").to.be.false;
+            expect(startInputProps.onKeyDown.calledOnce, "startInputProps.onKeyDown called once");
+            expect(isStartInputFocused(root), "start input still focused").to.be.false;
 
             expect(root.state("isOpen"), "popover still open").to.be.true;
 
             const endInput = getEndInput(root);
-            expect(isEndInputFocused(root), "end input focused next").to.be.true;
+            endInput.simulate("focus");
             endInput.simulate("change", { target: { value: END_STR } });
             endInput.simulate("keydown", { which: Keys.ENTER });
+            expect(endInputProps.onKeyDown.calledOnce, "endInputProps.onKeyDown called once");
+            expect(isEndInputFocused(root), "end input still focused").to.be.true;
 
             expect(startInput.prop("value")).to.equal(START_STR);
             expect(endInput.prop("value")).to.equal(END_STR);
 
             expect(root.state("isOpen"), "popover closed at end").to.be.false;
-            expect(isStartInputFocused(root), "start input blurred at end").to.be.false;
-            // TODO (clewis): fix failing statement (works in practice)
-            // expect(isEndInputFocused(root), "end input blurred at end").to.be.false;
         });
 
         it("Clicking a date invokes onChange with the new date range and updates the input fields", () => {
@@ -2095,8 +2117,7 @@ describe("<DateRangeInput>", () => {
             endInput.simulate("keydown", { which: Keys.ENTER });
 
             expect(isStartInputFocused(root), "start input blurred at end").to.be.false;
-            // TODO (clewis): fix failing statement (works in practice)
-            // expect(isEndInputFocused(root), "end input blurred at end").to.be.false;
+            expect(isEndInputFocused(root), "end input still focused at end").to.be.true;
 
             // onChange is called once on change, once on Enter
             expect(onChange.callCount, "onChange called four times").to.equal(4);

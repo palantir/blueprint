@@ -308,7 +308,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         this.setState({ isOpen: false });
     };
 
-    private handleDateChange = (date: Date, hasUserManuallySelectedDate: boolean) => {
+    private handleDateChange = (date: Date, hasUserManuallySelectedDate: boolean, didSubmitWithEnter = false) => {
         const prevMomentDate = this.state.value;
         const momentDate = fromDateToMoment(date);
 
@@ -321,10 +321,17 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             this.hasTimeChanged(prevMomentDate, momentDate) ||
             !this.props.closeOnSelection;
 
+        // if selecting a date via click or Tab, the input will already be
+        // blurred by now, so sync isInputFocused to false. if selecting via
+        // Enter, setting isInputFocused to false won't do anything by itself,
+        // plus we want the field to retain focus anyway.
+        // (note: spelling out the ternary explicitly reads more clearly.)
+        const isInputFocused = didSubmitWithEnter ? true : false;
+
         if (this.props.value === undefined) {
-            this.setState({ isInputFocused: false, isOpen, value: momentDate });
+            this.setState({ isInputFocused, isOpen, value: momentDate });
         } else {
-            this.setState({ isInputFocused: false, isOpen });
+            this.setState({ isInputFocused, isOpen });
         }
         Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
     };
@@ -429,9 +436,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         if (e.which === Keys.ENTER) {
             const nextValue = this.createMoment(this.state.valueString);
             const nextDate = fromMomentToDate(nextValue);
-            this.handleDateChange(nextDate, true);
-            this.inputRef.blur();
+            this.handleDateChange(nextDate, true, true);
         }
+        this.safeInvokeInputProp("onKeyDown", e);
     };
 
     private setInputRef = (el: HTMLElement) => {

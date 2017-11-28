@@ -167,12 +167,15 @@ describe("<DateInput>", () => {
 
     describe("when uncontrolled", () => {
         it("Pressing Enter saves the inputted date and closes the popover", () => {
-            const wrapper = mount(<DateInput />).setState({ isOpen: true });
+            const onKeyDown = sinon.spy();
+            const wrapper = mount(<DateInput inputProps={{ onKeyDown }} />).setState({ isOpen: true });
             const input = wrapper.find("input").first();
             input.simulate("change", { target: { value: "2015-02-15" } });
             input.simulate("keydown", { which: Keys.ENTER });
-            assert.isFalse(wrapper.state("isOpen"));
-            assert.equal(wrapper.find(InputGroup).prop("value"), "2015-02-15");
+            assert.isFalse(wrapper.state("isOpen"), "popover closed");
+            assert.isTrue(wrapper.state("isInputFocused"), "input still focused");
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), "2015-02-15");
+            assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
         });
 
         it("Clicking a date puts it in the input box and closes the popover", () => {
@@ -354,8 +357,9 @@ describe("<DateInput>", () => {
         const DATE2_DE_STR = "01.02.2015";
 
         it("Pressing Enter saves the inputted date and closes the popover", () => {
+            const onKeyDown = sinon.spy();
             const onChange = sinon.spy();
-            const { root } = wrap(<DateInput onChange={onChange} value={DATE} />);
+            const { root } = wrap(<DateInput inputProps={{ onKeyDown }} onChange={onChange} value={DATE} />);
             root.setState({ isOpen: true });
 
             const input = root.find("input").first();
@@ -365,6 +369,8 @@ describe("<DateInput>", () => {
             // onChange is called once on change, once on Enter
             assert.isTrue(onChange.calledTwice, "onChange called twice");
             assertDateEquals(onChange.args[1][0], DATE2_STR);
+            assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
+            assert.isTrue(root.state("isInputFocused"), "input still focused");
         });
 
         it("Clicking a date invokes onChange callback with that date", () => {

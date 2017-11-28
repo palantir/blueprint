@@ -392,7 +392,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // Callbacks - DateRangePicker
     // ===========================
 
-    private handleDateRangePickerChange = (selectedRange: DateRange) => {
+    private handleDateRangePickerChange = (selectedRange: DateRange, didSubmitWithEnter = false) => {
         // ignore mouse events in the date-range picker if the popover is animating closed.
         if (!this.state.isOpen) {
             return;
@@ -424,7 +424,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         } else if (this.props.closeOnSelection) {
             isOpen = false;
             isStartInputFocused = false;
-            isEndInputFocused = false;
+            // if we submit via click or Tab, the focus will have moved already.
+            // it we submit with Enter, the focus won't have moved, and setting
+            // the flag to false won't have an effect anyway, so leave it true.
+            isEndInputFocused = didSubmitWithEnter ? true : false;
         } else if (this.state.lastFocusedField === DateRangeBoundary.START) {
             // keep the start field focused
             isStartInputFocused = true;
@@ -555,47 +558,50 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const wasStartFieldFocused = this.state.lastFocusedField === DateRangeBoundary.START;
         const wasEndFieldFocused = this.state.lastFocusedField === DateRangeBoundary.END;
 
-        let isEndInputFocused: boolean;
-        let isStartInputFocused: boolean;
-
         // move focus to the other field
-        if (wasStartFieldFocused && isTabPressed && !isShiftPressed) {
-            isStartInputFocused = false;
-            isEndInputFocused = true;
-        } else if (wasEndFieldFocused && isTabPressed && isShiftPressed) {
-            isStartInputFocused = true;
-            isEndInputFocused = false;
+        if (isTabPressed) {
+            let isEndInputFocused: boolean;
+            let isStartInputFocused: boolean;
+            let isOpen = true;
+
+            if (wasStartFieldFocused && !isShiftPressed) {
+                isStartInputFocused = false;
+                isEndInputFocused = true;
+
+                // prevent the default focus-change behavior to avoid race conditions;
+                // we'll handle the focus change ourselves in componentDidUpdate.
+                e.preventDefault();
+            } else if (wasEndFieldFocused && isShiftPressed) {
+                isStartInputFocused = true;
+                isEndInputFocused = false;
+                e.preventDefault();
+            } else {
+                // don't prevent default here, otherwise Tab won't do anything.
+                isStartInputFocused = false;
+                isEndInputFocused = false;
+                isOpen = false;
+            }
+
+            this.setState({
+                isEndInputFocused,
+                isOpen,
+                isStartInputFocused,
+                wasLastFocusChangeDueToHover: false,
+            });
         } else if (wasStartFieldFocused && isEnterPressed) {
             const nextStartValue = this.dateStringToMoment(this.state.startInputString);
             const nextStartDate = fromMomentToDate(nextStartValue);
             const nextEndDate = isMomentNull(selectedEnd) ? undefined : fromMomentToDate(selectedEnd);
-            this.handleDateRangePickerChange([nextStartDate, nextEndDate] as DateRange);
-            isStartInputFocused = false;
-            isEndInputFocused = true;
+            this.handleDateRangePickerChange([nextStartDate, nextEndDate] as DateRange, true);
         } else if (wasEndFieldFocused && isEnterPressed) {
             const nextStartDate = isMomentNull(selectedStart) ? undefined : fromMomentToDate(selectedStart);
             const nextEndValue = this.dateStringToMoment(this.state.endInputString);
             const nextEndDate = fromMomentToDate(nextEndValue);
-            this.handleDateRangePickerChange([nextStartDate, nextEndDate] as DateRange);
-            isStartInputFocused = false;
-            isEndInputFocused = false;
-            // need to explicitly blur, because only .focus() is triggered in
-            // componentShouldUpdate.
-            this.endInputRef.blur();
+            this.handleDateRangePickerChange([nextStartDate, nextEndDate] as DateRange, true);
         } else {
             // let the default keystroke happen without side effects
             return;
         }
-
-        // prevent the default focus-change behavior to avoid race conditions;
-        // we'll handle the focus change ourselves in componentDidUpdate.
-        e.preventDefault();
-
-        this.setState({
-            isEndInputFocused,
-            isStartInputFocused,
-            wasLastFocusChangeDueToHover: false,
-        });
     };
 
     private handleInputMouseDown = () => {
