@@ -43,10 +43,14 @@ horizontally center it.
 
 @## JavaScript API
 
-The `Navbar` component is available in the __@blueprintjs/core__ package.
+The `Navbar` component is available in the __@blueprintjs/core__ package. The
+package also includes three small helper components: `NavbarGroup`,
+`NavbarHeading`, and `NavbarDivider`. These can be referenced by their aliases
+as well: `Navbar.Group`, `Navbar.Heading`, and `Navbar.Divider`, respectively.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
-These components are simple wrappers around the corresponding CSS APIs. Each of them supports the full range of HTML props.
+These components are simple wrappers around the corresponding CSS APIs. Each of
+them supports the full range of HTML props.
 
 ```tsx
 <Navbar>
@@ -54,12 +58,12 @@ These components are simple wrappers around the corresponding CSS APIs. Each of 
         <NavbarHeading text="Blueprint" />
     </NavbarGroup>
     <NavbarGroup align="right">
-        <Button class="pt-minimal" iconName="home">Home</Button>
-        <Button class="pt-minimal" iconName="document">Files</Button>
+        <Button className="pt-minimal" iconName="home">Home</Button>
+        <Button className="pt-minimal" iconName="document">Files</Button>
         <NavbarDivider />
-        <Button class="pt-minimal" iconName="user"></Button>
-        <Button class="pt-minimal" iconName="notifications"></Button>
-        <Button class="pt-minimal" iconName="cog"></Button>
+        <Button className="pt-minimal" iconName="user"></Button>
+        <Button className="pt-minimal" iconName="notifications"></Button>
+        <Button className="pt-minimal" iconName="cog"></Button>
     </NavbarGroup>
 </Navbar>
 ```

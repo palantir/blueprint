@@ -23,14 +23,12 @@ export class NavbarExample extends BaseExample<INavbarExampleState> {
     protected renderExample() {
         return (
             <Navbar>
-                <div style={{ margin: "0 auto", width: 480 }}>
-                    <NavbarGroup align={this.state.alignRight ? "right" : "left"}>
-                        <NavbarHeading>Blueprint</NavbarHeading>
-                        <NavbarDivider />
-                        <button className="pt-button pt-minimal pt-icon-home">Home</button>
-                        <button className="pt-button pt-minimal pt-icon-document">Files</button>
-                    </NavbarGroup>
-                </div>
+                <NavbarGroup align={this.state.alignRight ? "right" : "left"}>
+                    <NavbarHeading>Blueprint</NavbarHeading>
+                    <NavbarDivider />
+                    <button className="pt-button pt-minimal pt-icon-home">Home</button>
+                    <button className="pt-button pt-minimal pt-icon-document">Files</button>
+                </NavbarGroup>
             </Navbar>
         );
     }
