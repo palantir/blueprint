@@ -121,7 +121,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
 
     private renderTag = (film: Film) => film.title;
 
-    private renderFilm({ item: film, modifiers, handleClick }: ISelectItemRendererProps<Film>) {
+    private renderFilm = ({ item: film, modifiers, handleClick }: ISelectItemRendererProps<Film>) => {
         // NOTE: not using Films.itemRenderer here so we can set icons.
         const classes = classNames({
             [Classes.ACTIVE]: modifiers.focused,
@@ -139,7 +139,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                 shouldDismissPopover={false}
             />
         );
-    }
+    };
 
     private handleTagRemove = (_tag: string, index: number) => {
         this.deselectFilm(index);
