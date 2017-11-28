@@ -5,6 +5,7 @@
  */
 
 import * as moment from "moment";
+import { DateFormat } from "../dateFormatter";
 import { Months } from "./months";
 
 export type DateRange = [Date | undefined, Date | undefined];
@@ -290,4 +291,21 @@ export function getDateNextMonth(date: Date): Date {
 export function toLocalizedDateString(momentDate: moment.Moment, format: string, locale: string | undefined) {
     const adjustedMomentDate = locale != null ? momentDate.locale(locale) : momentDate;
     return adjustedMomentDate.format(format);
+}
+
+export function dateToString(momentDate: moment.Moment, format: DateFormat, locale: string | undefined) {
+    if (typeof format === "string") {
+        return toLocalizedDateString(momentDate, format, locale);
+    } else {
+        return format.dateToString(momentDate.toDate());
+    }
+}
+
+export function stringToDate(dateString: string, format: DateFormat, locale: string | undefined) {
+    if (typeof format === "string") {
+        return moment(dateString, format, locale);
+    } else {
+        const date = format.stringToDate(dateString);
+        return date === undefined ? moment.invalid() : moment(date);
+    }
 }

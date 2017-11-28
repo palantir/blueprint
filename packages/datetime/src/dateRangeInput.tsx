@@ -5,6 +5,7 @@
  */
 
 import * as classNames from "classnames";
+import { isNil } from "lodash";
 import * as moment from "moment";
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
@@ -26,6 +27,7 @@ import {
 import {
     DateRange,
     DateRangeBoundary,
+    dateToString,
     fromDateRangeToMomentDateRange,
     fromDateToMoment,
     fromMomentToDate,
@@ -33,9 +35,10 @@ import {
     isMomentNull,
     isMomentValidAndInRange,
     MomentDateRange,
-    toLocalizedDateString,
+    stringToDate,
 } from "./common/dateUtils";
 import * as Errors from "./common/errors";
+import { DateFormat } from "./dateFormatter";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
 
@@ -93,9 +96,10 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
      * The format of each date in the date range. See options
      * here: http://momentjs.com/docs/#/displaying/format/
+     * Alternatively pass an IDateFormatter for custom date rendering.
      * @default "YYYY-MM-DD"
      */
-    format?: string;
+    format?: DateFormat;
 
     /**
      * The error message to display when the selected date is invalid.
@@ -713,7 +717,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         if (this.isInputEmpty(dateString)) {
             return moment(null);
         }
-        return moment(dateString, this.props.format, this.props.locale);
+        return stringToDate(dateString, this.props.format, this.props.locale);
     };
 
     private getInitialRange = (props = this.props) => {
@@ -818,14 +822,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return boundary === DateRangeBoundary.START ? this.refHandlers.startInputRef : this.refHandlers.endInputRef;
     };
 
-    private getFormattedDateString = (momentDate: moment.Moment, formatOverride?: string) => {
+    private getFormattedDateString = (momentDate: moment.Moment, formatOverride?: DateFormat) => {
         if (isMomentNull(momentDate)) {
             return "";
         } else if (!momentDate.isValid()) {
             return this.props.invalidDateMessage;
         } else {
-            const format = formatOverride != null ? formatOverride : this.props.format;
-            return toLocalizedDateString(momentDate, format, this.props.locale);
+            const format = isNil(formatOverride) ? this.props.format : formatOverride;
+            return dateToString(momentDate, format, this.props.locale);
         }
     };
 
