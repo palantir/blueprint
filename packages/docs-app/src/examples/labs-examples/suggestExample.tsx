@@ -9,7 +9,7 @@ import * as React from "react";
 import { Classes, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 import { Suggest } from "@blueprintjs/labs";
-import * as Films from "./data";
+import * as Films from "./films";
 
 const FilmSuggest = Suggest.ofType<Films.Film>();
 

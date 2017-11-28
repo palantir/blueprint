@@ -10,7 +10,7 @@ import * as React from "react";
 import { Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 import { ISelectItemRendererProps, MultiSelect } from "@blueprintjs/labs";
-import * as Films from "./data";
+import * as Films from "./films";
 
 type Film = Films.Film;
 const FilmMultiSelect = MultiSelect.ofType<Film>();

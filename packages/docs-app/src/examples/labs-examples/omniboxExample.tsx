@@ -9,7 +9,7 @@ import * as React from "react";
 import { Button, Hotkey, Hotkeys, HotkeysTarget, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 import { Omnibox } from "@blueprintjs/labs";
-import * as Films from "./data";
+import * as Films from "./films";
 
 const FilmOmnibox = Omnibox.ofType<Films.Film>();
 
