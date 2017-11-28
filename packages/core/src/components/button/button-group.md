@@ -37,7 +37,7 @@ You can also combine vertical groups with the `pt-fill` and `pt-minimal` class m
 
 @## JavaScript API
 
-Then `ButtonGroup` component is available in the __@blueprintjs/core__ package.
+The `ButtonGroup` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 This component is a simple wrapper around the CSS API, and supports the full range of HTML props.
