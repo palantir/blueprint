@@ -8,6 +8,7 @@ import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
 
+/** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
     /** Array of items in the list. */
     items: T[];
@@ -79,16 +80,19 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
     query: string;
 }
 
+export interface IItemModifiers {
+    /** Whether this item is disabled and should ignore interactions. */
+    disabled: boolean;
+
+    /** Whether this is the focused item, so keyboard interactions will act upon it. */
+    focused: boolean;
+
+    /** Whether this item matches the predicate. A typical renderer could hide `false` values. */
+    filtered: boolean;
+}
+
+/** Interface for object passed to `QueryList` `renderer` function. */
 export interface IQueryListRendererProps<T> extends IProps {
-    /** The item focused by the keyboard (arrow keys). This item should stand out visually from the rest. */
-    activeItem: T | undefined;
-
-    /**
-     * Array of filtered items from the list (those that matched the predicate with the current `query`).
-     * See `items` for the full unfiltered list.
-     */
-    filteredItems: T[];
-
     /**
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
@@ -111,7 +115,7 @@ export interface IQueryListRendererProps<T> extends IProps {
      * Array of all (unfiltered) items in the list.
      * See `filteredItems` for a filtered array based on `query`.
      */
-    items: T[];
+    items: Array<{ item: T; modifiers: IItemModifiers }>;
 
     /**
      * A ref handler that should be applied to the HTML element that contains the rendererd items.
@@ -149,16 +153,13 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private shouldCheckActiveItemInViewport: boolean;
 
     public render() {
-        const { activeItem, items, renderer, query } = this.props;
-        const { filteredItems } = this.state;
+        const { renderer, query } = this.props;
 
         return renderer({
-            activeItem,
-            filteredItems,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
-            items,
+            items: this.getModifierItems(),
             itemsParentRef: this.refHandlers.itemsParent,
             query,
         });
@@ -242,6 +243,21 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             paddingBottom: pxToNumber(paddingBottom),
             paddingTop: pxToNumber(paddingTop),
         };
+    }
+
+    private getModifierItems(): IQueryListRendererProps<T>["items"] {
+        const { activeItem, items, itemListPredicate, itemPredicate, query } = this.props;
+        const isFiltered = Utils.isFunction(itemListPredicate)
+            ? (item: T) => this.state.filteredItems.indexOf(item) >= 0
+            : (item: T, index: number) => itemPredicate(query, item, index);
+        return items.map((item, index) => {
+            const modifiers: IItemModifiers = {
+                disabled: false,
+                filtered: isFiltered(item, index),
+                focused: activeItem === item,
+            };
+            return { item, modifiers };
+        });
     }
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {

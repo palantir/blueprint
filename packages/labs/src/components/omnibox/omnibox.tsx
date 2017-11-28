@@ -23,7 +23,7 @@ import {
 
 import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
-import { ISelectItemRendererProps } from "../select/select";
+import { SelectItemRenderer } from "../select/select";
 
 export interface IOmniboxProps<T> extends IListItemsProps<T> {
     /**
@@ -36,7 +36,7 @@ export interface IOmniboxProps<T> extends IListItemsProps<T> {
      * this item is active (selected by keyboard arrows) and an `onClick` event handler that
      * should be attached to the returned element.
      */
-    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
+    itemRenderer: SelectItemRenderer<T>;
 
     /** React child to render when filtering items returns zero results. */
     noResults?: React.ReactChild;
@@ -155,19 +155,13 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
         );
     };
 
-    private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
+    private renderItems({ items, handleItemSelect }: IQueryListRendererProps<T>) {
         const { itemRenderer, noResults } = this.props;
-        if (filteredItems.length === 0) {
-            return noResults;
-        }
-        return filteredItems.map((item, index) =>
-            itemRenderer({
-                handleClick: e => handleItemSelect(item, e),
-                index,
-                isActive: item === activeItem,
-                item,
-            }),
-        );
+
+        const renderedItems = items
+            .filter(item => item.modifiers.filtered)
+            .map(({ item, modifiers }, index) => itemRenderer(item, modifiers, e => handleItemSelect(item, e), index));
+        return renderedItems.length > 0 ? renderedItems : noResults;
     }
 
     private maybeRenderMenu(listProps: IQueryListRendererProps<T>) {

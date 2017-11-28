@@ -19,8 +19,16 @@ import {
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
+import { IItemModifiers } from "../index";
 import { IPopover2Props, Popover2 } from "../popover/popover2";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
+
+export type SelectItemRenderer<T> = (
+    item: T,
+    modifiers: IItemModifiers,
+    onClick: React.MouseEventHandler<HTMLElement>,
+    index: number,
+) => JSX.Element;
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -40,7 +48,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * this item is active (selected by keyboard arrows) and an `onClick` event handler that
      * should be attached to the returned element.
      */
-    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
+    itemRenderer: SelectItemRenderer<T>;
 
     /**
      * Whether the component is non-interactive.
@@ -82,26 +90,6 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * through user input or when the filter is reset.
      */
     onQueryChange?: (query: string) => void;
-}
-
-export interface ISelectItemRendererProps<T> {
-    /**
-     * Click handler that should be attached to item's `onClick` event.
-     * Will invoke `Select` `onItemSelect` prop with this `item`.
-     */
-    handleClick: React.MouseEventHandler<HTMLElement>;
-
-    /** Index of item in array of filtered items (_not_ the absolute position of item in full array). */
-    index: number;
-
-    /** The item being rendered */
-    item: T;
-
-    /**
-     * Whether the item is active according to keyboard navigation.
-     * An active item should have a distinct visual appearance.
-     */
-    isActive: boolean;
 }
 
 export interface ISelectState<T> {
@@ -226,22 +214,15 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         );
     };
 
-    private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
+    private renderItems({ items, handleItemSelect }: IQueryListRendererProps<T>) {
         const { initialContent, itemRenderer, noResults } = this.props;
         if (initialContent != null && this.isQueryEmpty()) {
             return initialContent;
         }
-        if (filteredItems.length === 0) {
-            return noResults;
-        }
-        return filteredItems.map((item, index) =>
-            itemRenderer({
-                handleClick: e => handleItemSelect(item, e),
-                index,
-                isActive: item === activeItem,
-                item,
-            }),
-        );
+        const renderedItems = items
+            .filter(item => item.modifiers.filtered)
+            .map(({ item, modifiers }, index) => itemRenderer(item, modifiers, e => handleItemSelect(item, e), index));
+        return renderedItems.length > 0 ? renderedItems : noResults;
     }
 
     private maybeRenderInputClearButton() {
