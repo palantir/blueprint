@@ -160,7 +160,9 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
 
         const renderedItems = items
             .filter(item => item.modifiers.filtered)
-            .map(({ item, modifiers }, index) => itemRenderer(item, modifiers, e => handleItemSelect(item, e), index));
+            .map(({ item, modifiers }, index) =>
+                itemRenderer({ item, modifiers, index, handleClick: e => handleItemSelect(item, e) }),
+            );
         return renderedItems.length > 0 ? renderedItems : noResults;
     }
 

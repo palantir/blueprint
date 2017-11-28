@@ -23,12 +23,17 @@ import { IItemModifiers } from "../index";
 import { IPopover2Props, Popover2 } from "../popover/popover2";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export type SelectItemRenderer<T> = (
-    item: T,
-    modifiers: IItemModifiers,
-    onClick: React.MouseEventHandler<HTMLElement>,
-    index: number,
-) => JSX.Element;
+export type SelectItemRenderer<T> = (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
+
+export interface ISelectItemRendererProps<T> {
+    handleClick: React.MouseEventHandler<HTMLElement>;
+
+    index: number;
+
+    item: T;
+
+    modifiers: IItemModifiers;
+}
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -221,7 +226,9 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         }
         const renderedItems = items
             .filter(item => item.modifiers.filtered)
-            .map(({ item, modifiers }, index) => itemRenderer(item, modifiers, e => handleItemSelect(item, e), index));
+            .map(({ item, modifiers }, index) =>
+                itemRenderer({ handleClick: e => handleItemSelect(item, e), index, item, modifiers }),
+            );
         return renderedItems.length > 0 ? renderedItems : noResults;
     }
 

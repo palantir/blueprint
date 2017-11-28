@@ -9,10 +9,11 @@ import * as React from "react";
 
 import { Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
-import { MultiSelect, SelectItemRenderer } from "@blueprintjs/labs";
+import { ISelectItemRendererProps, MultiSelect } from "@blueprintjs/labs";
 import * as Films from "./data";
 
-const FilmMultiSelect = MultiSelect.ofType<Films.Film>();
+type Film = Films.Film;
+const FilmMultiSelect = MultiSelect.ofType<Film>();
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
@@ -118,9 +119,9 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         ];
     }
 
-    private renderTag = (film: Films.Film) => film.title;
+    private renderTag = (film: Film) => film.title;
 
-    private renderFilm: SelectItemRenderer<Films.Film> = (film, modifiers, handleClick) => {
+    private renderFilm({ item: film, modifiers, handleClick }: ISelectItemRendererProps<Film>) {
         // NOTE: not using Films.itemRenderer here so we can set icons.
         const classes = classNames({
             [Classes.ACTIVE]: modifiers.focused,
@@ -138,21 +139,21 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                 shouldDismissPopover={false}
             />
         );
-    };
+    }
 
     private handleTagRemove = (_tag: string, index: number) => {
         this.deselectFilm(index);
     };
 
-    private getSelectedFilmIndex(film: Films.Film) {
+    private getSelectedFilmIndex(film: Film) {
         return this.state.films.indexOf(film);
     }
 
-    private isFilmSelected(film: Films.Film) {
+    private isFilmSelected(film: Film) {
         return this.getSelectedFilmIndex(film) !== -1;
     }
 
-    private selectFilm(film: Films.Film) {
+    private selectFilm(film: Film) {
         this.setState({ films: [...this.state.films, film] });
     }
 
@@ -160,7 +161,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         this.setState({ films: this.state.films.filter((_film, i) => i !== index) });
     }
 
-    private handleFilmSelect = (film: Films.Film) => {
+    private handleFilmSelect = (film: Film) => {
         if (!this.isFilmSelected(film)) {
             this.selectFilm(film);
         } else {
