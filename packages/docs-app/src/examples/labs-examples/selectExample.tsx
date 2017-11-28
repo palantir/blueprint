@@ -4,18 +4,17 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, MenuItem, Switch } from "@blueprintjs/core";
+import { Button, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
-import { ISelectItemRendererProps, Select } from "@blueprintjs/labs";
-import { Film, TOP_100_FILMS } from "./data";
+import { Select } from "@blueprintjs/labs";
+import * as Films from "./data";
 
-const FilmSelect = Select.ofType<Film>();
+const FilmSelect = Select.ofType<Films.Film>();
 
 export interface ISelectExampleState {
-    film?: Film;
+    film?: Films.Film;
     filterable?: boolean;
     hasInitialContent?: boolean;
     minimal?: boolean;
@@ -27,7 +26,7 @@ export interface ISelectExampleState {
 export class SelectExample extends BaseExample<ISelectExampleState> {
     public state: ISelectExampleState = {
         disabled: false,
-        film: TOP_100_FILMS[0],
+        film: Films.items[0],
         filterable: true,
         hasInitialContent: false,
         minimal: false,
@@ -46,19 +45,17 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         const { disabled, film, minimal, ...flags } = this.state;
 
         const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
+            <MenuItem disabled={true} text={`${Films.items.length} items loaded.`} />
         ) : (
             undefined
         );
 
         return (
             <FilmSelect
+                {...Films}
                 {...flags}
                 disabled={disabled}
                 initialContent={initialContent}
-                items={TOP_100_FILMS}
-                itemPredicate={this.filterFilm}
-                itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled={true} text="No results." />}
                 onItemSelect={this.handleValueChange}
                 popoverProps={{ minimal }}
@@ -111,27 +108,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         ];
     }
 
-    private renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
-        const classes = classNames({
-            [Classes.ACTIVE]: isActive,
-            [Classes.INTENT_PRIMARY]: isActive,
-        });
-        return (
-            <MenuItem
-                className={classes}
-                label={film.year.toString()}
-                key={film.rank}
-                onClick={handleClick}
-                text={`${film.rank}. ${film.title}`}
-            />
-        );
-    }
-
-    private filterFilm(query: string, film: Film, index: number) {
-        return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
-    }
-
-    private handleValueChange = (film: Film) => this.setState({ film });
+    private handleValueChange = (film: Films.Film) => this.setState({ film });
 
     private handleSwitchChange(prop: keyof ISelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {

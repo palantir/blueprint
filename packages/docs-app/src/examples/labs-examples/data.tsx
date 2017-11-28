@@ -4,8 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Classes, MenuItem } from "@blueprintjs/core";
+import { SelectItemRenderer } from "@blueprintjs/labs";
+import * as classNames from "classnames";
+import * as React from "react";
+
 /** Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top */
-export const TOP_100_FILMS = [
+export const items = [
     { title: "The Shawshank Redemption", year: 1994 },
     { title: "The Godfather", year: 1972 },
     { title: "The Godfather: Part II", year: 1974 },
@@ -108,4 +113,24 @@ export const TOP_100_FILMS = [
     { title: "Monty Python and the Holy Grail", year: 1975 },
 ].map((m, index) => ({ ...m, rank: index + 1 }));
 
-export type Film = typeof TOP_100_FILMS[0];
+export type Film = typeof items[0];
+
+export const itemRenderer: SelectItemRenderer<Film> = (film, modifiers, handleClick) => {
+    const classes = classNames({
+        [Classes.ACTIVE]: modifiers.focused,
+        [Classes.INTENT_PRIMARY]: modifiers.focused,
+    });
+    return (
+        <MenuItem
+            className={classes}
+            label={film.year.toString()}
+            key={film.rank}
+            onClick={handleClick}
+            text={`${film.rank}. ${film.title}`}
+        />
+    );
+};
+
+export function itemPredicate(query: string, film: Film, index: number) {
+    return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
+}

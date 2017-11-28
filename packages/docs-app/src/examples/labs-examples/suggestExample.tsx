@@ -4,19 +4,18 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
-import { ISelectItemRendererProps, Suggest } from "@blueprintjs/labs";
-import { Film, TOP_100_FILMS } from "./data";
+import { Suggest } from "@blueprintjs/labs";
+import * as Films from "./data";
 
-const FilmSuggest = Suggest.ofType<Film>();
+const FilmSuggest = Suggest.ofType<Films.Film>();
 
 export interface ISuggestExampleState {
     closeOnSelect?: boolean;
-    film?: Film;
+    film?: Films.Film;
     minimal?: boolean;
     openOnKeyDown?: boolean;
 }
@@ -24,7 +23,7 @@ export interface ISuggestExampleState {
 export class SuggestExample extends BaseExample<ISuggestExampleState> {
     public state: ISuggestExampleState = {
         closeOnSelect: true,
-        film: TOP_100_FILMS[0],
+        film: Films.items[0],
         minimal: true,
         openOnKeyDown: false,
     };
@@ -37,11 +36,9 @@ export class SuggestExample extends BaseExample<ISuggestExampleState> {
         const { film, minimal, ...flags } = this.state;
         return (
             <FilmSuggest
+                {...Films}
                 {...flags}
                 inputValueRenderer={this.renderInputValue}
-                items={TOP_100_FILMS}
-                itemPredicate={this.filterFilm}
-                itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled={true} text="No results." />}
                 onItemSelect={this.handleValueChange}
                 popoverProps={{ popoverClassName: minimal ? Classes.MINIMAL : "" }}
@@ -74,31 +71,9 @@ export class SuggestExample extends BaseExample<ISuggestExampleState> {
         ];
     }
 
-    private renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
-        const classes = classNames({
-            [Classes.ACTIVE]: isActive,
-            [Classes.INTENT_PRIMARY]: isActive,
-        });
-        return (
-            <MenuItem
-                className={classes}
-                label={film.year.toString()}
-                key={film.rank}
-                onClick={handleClick}
-                text={`${film.rank}. ${film.title}`}
-            />
-        );
-    }
+    private renderInputValue = (film: Films.Film) => film.title;
 
-    private renderInputValue = (film: Film) => {
-        return film.title;
-    };
-
-    private filterFilm(query: string, film: Film, index: number) {
-        return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
-    }
-
-    private handleValueChange = (film: Film) => this.setState({ film });
+    private handleValueChange = (film: Films.Film) => this.setState({ film });
 
     private handleSwitchChange(prop: keyof ISuggestExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {

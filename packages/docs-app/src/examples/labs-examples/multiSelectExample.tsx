@@ -9,10 +9,10 @@ import * as React from "react";
 
 import { Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
-import { ISelectItemRendererProps, MultiSelect } from "@blueprintjs/labs";
-import { Film, TOP_100_FILMS } from "./data";
+import { MultiSelect, SelectItemRenderer } from "@blueprintjs/labs";
+import * as Films from "./data";
 
-const FilmMultiSelect = MultiSelect.ofType<Film>();
+const FilmMultiSelect = MultiSelect.ofType<Films.Film>();
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
@@ -52,17 +52,16 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         });
 
         const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
+            <MenuItem disabled={true} text={`${Films.items.length} items loaded.`} />
         ) : (
             undefined
         );
 
         return (
             <FilmMultiSelect
+                {...Films}
                 {...flags}
                 initialContent={initialContent}
-                items={TOP_100_FILMS}
-                itemPredicate={this.filterFilm}
                 itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled={true} text="No results." />}
                 onItemSelect={this.handleFilmSelect}
@@ -119,14 +118,13 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         ];
     }
 
-    private renderTag = (film: Film) => {
-        return film.title;
-    };
+    private renderTag = (film: Films.Film) => film.title;
 
-    private renderFilm = ({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) => {
+    private renderFilm: SelectItemRenderer<Films.Film> = (film, modifiers, handleClick) => {
+        // NOTE: not using Films.itemRenderer here so we can set icons.
         const classes = classNames({
-            [Classes.ACTIVE]: isActive,
-            [Classes.INTENT_PRIMARY]: isActive,
+            [Classes.ACTIVE]: modifiers.focused,
+            [Classes.INTENT_PRIMARY]: modifiers.focused,
         });
 
         return (
@@ -142,23 +140,19 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         );
     };
 
-    private filterFilm(query: string, film: Film, index: number) {
-        return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
-    }
-
     private handleTagRemove = (_tag: string, index: number) => {
         this.deselectFilm(index);
     };
 
-    private getSelectedFilmIndex(film: Film) {
+    private getSelectedFilmIndex(film: Films.Film) {
         return this.state.films.indexOf(film);
     }
 
-    private isFilmSelected(film: Film) {
+    private isFilmSelected(film: Films.Film) {
         return this.getSelectedFilmIndex(film) !== -1;
     }
 
-    private selectFilm(film: Film) {
+    private selectFilm(film: Films.Film) {
         this.setState({ films: [...this.state.films, film] });
     }
 
@@ -166,7 +160,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         this.setState({ films: this.state.films.filter((_film, i) => i !== index) });
     }
 
-    private handleFilmSelect = (film: Film) => {
+    private handleFilmSelect = (film: Films.Film) => {
         if (!this.isFilmSelected(film)) {
             this.selectFilm(film);
         } else {
