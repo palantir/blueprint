@@ -6,6 +6,7 @@
 
 export * from "./alertExample";
 export * from "./buttonsExample";
+export * from "./buttonGroupExample";
 export * from "./checkboxExample";
 export * from "./collapseExample";
 export * from "./cardExample";
