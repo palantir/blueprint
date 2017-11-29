@@ -6,7 +6,7 @@ const path = require("path");
 const webpack = require("webpack");
 const webpackConfig = require("./webpack.karma.config");
 
-const COVERAGE_PERCENT = 80;
+const COVERAGE_PERCENT = 75;
 const COVERAGE_PERCENT_HIGH = 90;
 const KARMA_SERVER_PORT = 9876;
 
