@@ -22,13 +22,13 @@ import {
 } from "@blueprintjs/core";
 
 import {
-    dateToString,
     fromDateToMoment,
     fromMomentToDate,
     isMomentInRange,
     isMomentNull,
     isMomentValidAndInRange,
-    stringToDate,
+    momentToString,
+    stringToMoment,
 } from "./common/dateUtils";
 import { DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS, DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
 import { DateFormat } from "./dateFormatter";
@@ -74,7 +74,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * The format of the date. See http://momentjs.com/docs/#/displaying/format/.
-     * Alternatively pass an IDateFormatter for custom date rendering.
+     * Alternatively pass an `IDateFormatter` for custom date rendering.
      * @default "YYYY-MM-DD"
      */
     format?: DateFormat;
@@ -280,7 +280,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private createMoment(valueString: string) {
         // Locale here used for parsing, does not set the locale on the moment itself
-        return stringToDate(valueString, this.props.format, this.props.locale);
+        return stringToMoment(valueString, this.props.format, this.props.locale);
     }
 
     private getDateString = (value: moment.Moment) => {
@@ -289,7 +289,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         }
         if (value.isValid()) {
             if (this.isMomentInRange(value)) {
-                return dateToString(value, this.props.format, this.props.locale);
+                return momentToString(value, this.props.format, this.props.locale);
             } else {
                 return this.props.outOfRangeMessage;
             }
@@ -359,7 +359,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         if (isMomentNull(this.state.value)) {
             valueString = "";
         } else {
-            valueString = dateToString(this.state.value, this.props.format, this.props.locale);
+            valueString = momentToString(this.state.value, this.props.format, this.props.locale);
         }
 
         if (this.props.openOnFocus) {

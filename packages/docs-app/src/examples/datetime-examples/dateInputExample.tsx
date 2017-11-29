@@ -6,7 +6,6 @@
 
 import { Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs";
-import { keys } from "lodash";
 import * as React from "react";
 
 import { DateInput, TimePickerPrecision } from "@blueprintjs/datetime";
@@ -26,7 +25,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     public state: IDateInputExampleState = {
         closeOnSelection: true,
         disabled: false,
-        formatKey: keys(FORMATS)[0],
+        formatKey: Object.keys(FORMATS)[0],
         openOnFocus: true,
         reverseMonthAndYearMenus: false,
     };

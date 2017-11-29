@@ -6,7 +6,6 @@
 
 import { Classes, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
-import { keys } from "lodash";
 import * as React from "react";
 
 import { DateRangeInput } from "@blueprintjs/datetime";
@@ -28,7 +27,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         closeOnSelection: false,
         contiguousCalendarMonths: true,
         disabled: false,
-        formatKey: keys(FORMATS)[0],
+        formatKey: Object.keys(FORMATS)[0],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
     };

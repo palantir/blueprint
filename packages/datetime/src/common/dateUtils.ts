@@ -293,7 +293,7 @@ export function toLocalizedDateString(momentDate: moment.Moment, format: string,
     return adjustedMomentDate.format(format);
 }
 
-export function dateToString(momentDate: moment.Moment, format: DateFormat, locale: string | undefined) {
+export function momentToString(momentDate: moment.Moment, format: DateFormat, locale: string | undefined) {
     if (typeof format === "string") {
         return toLocalizedDateString(momentDate, format, locale);
     } else {
@@ -301,7 +301,7 @@ export function dateToString(momentDate: moment.Moment, format: DateFormat, loca
     }
 }
 
-export function stringToDate(dateString: string, format: DateFormat, locale: string | undefined) {
+export function stringToMoment(dateString: string, format: DateFormat, locale: string | undefined) {
     if (typeof format === "string") {
         return moment(dateString, format, locale);
     } else {

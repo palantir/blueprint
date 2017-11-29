@@ -6,7 +6,6 @@
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
 import { DateFormat } from "@blueprintjs/datetime";
-import { keyBy, keys } from "lodash";
 import * as moment from "moment";
 import * as React from "react";
 
@@ -20,6 +19,16 @@ export interface IFormatSelectProps {
      * The callback to fire when the selected value changes.
      */
     onChange: (event: React.FormEvent<HTMLElement>) => void;
+}
+
+function keyBy<T>(array: T[], func: (t: T) => string): { [key: string]: T } {
+    const result: { [key: string]: T } = {};
+    array.forEach(val => (result[func(val)] = val));
+    return result;
+}
+
+function asString(format: DateFormat) {
+    return typeof format === "string" ? format : format.placeholder || "unnamed";
 }
 
 export const FORMATS = keyBy(
@@ -67,12 +76,8 @@ export const FORMATS = keyBy(
     asString,
 );
 
-function asString(format: DateFormat) {
-    return typeof format === "string" ? format : format.placeholder || "unnamed";
-}
-
 export const FormatSelect: React.SFC<IFormatSelectProps> = props => (
     <RadioGroup label="Date format" onChange={props.onChange} selectedValue={props.selectedValue}>
-        {keys(FORMATS).map(value => <Radio key={value} label={value} value={value} />)}
+        {Object.keys(FORMATS).map(value => <Radio key={value} label={value} value={value} />)}
     </RadioGroup>
 );

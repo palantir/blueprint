@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import { isNil } from "lodash";
 import * as moment from "moment";
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
@@ -27,7 +26,6 @@ import {
 import {
     DateRange,
     DateRangeBoundary,
-    dateToString,
     fromDateRangeToMomentDateRange,
     fromDateToMoment,
     fromMomentToDate,
@@ -35,7 +33,8 @@ import {
     isMomentNull,
     isMomentValidAndInRange,
     MomentDateRange,
-    stringToDate,
+    momentToString,
+    stringToMoment,
 } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { DateFormat } from "./dateFormatter";
@@ -96,7 +95,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
      * The format of each date in the date range. See options
      * here: http://momentjs.com/docs/#/displaying/format/
-     * Alternatively pass an IDateFormatter for custom date rendering.
+     * Alternatively pass an `IDateFormatter` for custom date rendering.
      * @default "YYYY-MM-DD"
      */
     format?: DateFormat;
@@ -717,7 +716,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         if (this.isInputEmpty(dateString)) {
             return moment(null);
         }
-        return stringToDate(dateString, this.props.format, this.props.locale);
+        return stringToMoment(dateString, this.props.format, this.props.locale);
     };
 
     private getInitialRange = (props = this.props) => {
@@ -828,8 +827,8 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         } else if (!momentDate.isValid()) {
             return this.props.invalidDateMessage;
         } else {
-            const format = isNil(formatOverride) ? this.props.format : formatOverride;
-            return dateToString(momentDate, format, this.props.locale);
+            const format = formatOverride == null ? this.props.format : formatOverride;
+            return momentToString(momentDate, format, this.props.locale);
         }
     };
 
