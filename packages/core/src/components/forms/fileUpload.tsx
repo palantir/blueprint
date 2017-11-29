@@ -7,6 +7,7 @@
 import * as classNames from "classnames";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { Utils } from "../../common";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
@@ -36,6 +37,18 @@ export interface IFileUploadProps extends React.HTMLProps<HTMLLabelElement>, IPr
     large?: boolean;
 
     /**
+     * Callback invoked on `input` `change` events.
+     *
+     * This callback is offered as a convenience; it is equivalent to passing
+     * `onChange` to `inputProps`.
+     *
+     * __Note:__ If you pass `onChange` as a top-level prop, it will be passed
+     * to the wrapping `label` rather than the `input`, which may not be what
+     * you expect.
+     */
+    onInputChange?: React.FormEventHandler<HTMLInputElement>;
+
+    /**
      * The text to display.
      * @default "Choose file..."
      */
@@ -49,6 +62,7 @@ export class FileUpload extends React.Component<IFileUploadProps, {}> {
     public static displayName = "Blueprint.FileUpload";
 
     public static defaultProps: IFileUploadProps = {
+        inputProps: {},
         text: "Choose file...",
     };
 
@@ -67,9 +81,14 @@ export class FileUpload extends React.Component<IFileUploadProps, {}> {
 
         return (
             <label {...htmlProps} className={rootClasses}>
-                <input {...inputProps} type="file" disabled={disabled} />
+                <input {...inputProps} onChange={this.handleInputChange} type="file" disabled={disabled} />
                 <span className={Classes.FILE_UPLOAD_INPUT}>{text}</span>
             </label>
         );
     }
+
+    private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+        Utils.safeInvoke(this.props.onInputChange, e);
+        Utils.safeInvoke(this.props.inputProps.onChange, e);
+    };
 }

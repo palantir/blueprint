@@ -65,12 +65,18 @@ describe("<FileUpload>", () => {
         assert.strictEqual(span.text(), "Upload file...");
     });
 
-    it("onChange works", () => {
+    it("invokes change callbacks", () => {
+        const inputProps = { onChange: sinon.spy() };
         const onChange = sinon.spy();
-        const wrapper = shallow(<FileUpload inputProps={{ onChange }} />);
+        const onInputChange = sinon.spy();
+
+        const wrapper = shallow(<FileUpload {...{ onChange, onInputChange, inputProps }} />);
         const input = getInput(wrapper);
         input.simulate("change");
-        assert.isTrue(onChange.calledOnce);
+
+        assert.isFalse(onChange.called, "onChange not called"); // because it's spread to the label, not the input
+        assert.isTrue(onInputChange.calledOnce, "onInputChange called");
+        assert.isTrue(inputProps.onChange.calledOnce, "inputProps.onChange called");
     });
 });
 
