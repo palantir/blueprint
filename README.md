@@ -31,14 +31,18 @@ These are the component libraries we publish to NPM.
 
 ### Applications
 
-These are hosted on GitHub Pages as static web applications.
+These are hosted on GitHub Pages as static web applications:
 
-- `docs-app`
-- `landing-app`
+- `docs-app` &ndash; Documentation site at blueprintjs.com/docs
+- `landing-app` &ndash; Landnig page at blueprintjs.com
+
+These are used as development playground environments:
+
+- `table-dev-app` &ndash; demo page that supports manual testing of all table features
 
 ### Build tooling
 
-These private packages define development dependencies and contain build configuration. They adhere to standard NPM package layout&mdash;this allows us to keep clear API boundaries for build configuration and isolate groups of `devDependencies`. In the future, we might publish these packages to allow other Blueprint projects to use this infrastructure outside this monorepo.
+These private packages define development dependencies and contain build configuration. They adhere to the standard NPM package layout, which allows us to keep clear API boundaries for build configuration and isolate groups of `devDependencies`. In the future, we might publish these packages to allow other Blueprint projects to use this infrastructure outside this monorepo.
 
 - `karma-build-scripts`
 - `node-build-scripts`
