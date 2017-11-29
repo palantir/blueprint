@@ -10,6 +10,10 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
+import { Utils } from "../../common/utils";
+
+import { Locator } from "../../locator";
+import { IResizeRowsByApproximateHeightOptions } from "../../table";
 
 // amount in pixels that the content div width changes when truncated vs when
 // not truncated. Note: could be modified by styles
@@ -21,6 +25,7 @@ export enum TruncatedPopoverMode {
     ALWAYS,
     NEVER,
     WHEN_TRUNCATED,
+    WHEN_TRUNCATED_APPROX,
 }
 
 export interface ITruncatedFormatProps extends IProps {
@@ -90,6 +95,18 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
         truncateLength: 2000,
         truncationSuffix: "...",
+    };
+
+    // these default values for `resizeRowsByApproximateHeight` have been
+    // fine-tuned to work well with default Table font styles.
+    private static resizeRowsByApproximateHeightDefaults: Record<
+        keyof IResizeRowsByApproximateHeightOptions,
+        number
+    > = {
+        getApproximateCharWidth: 8,
+        getApproximateLineHeight: 18,
+        getCellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
+        getNumBufferLines: 0,
     };
 
     public state: ITruncatedFormatState = {
@@ -202,6 +219,32 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                 return detectTruncation
                     ? this.state.isTruncated
                     : truncateLength > 0 && content.length > truncateLength;
+            case TruncatedPopoverMode.WHEN_TRUNCATED_APPROX:
+                if (!detectTruncation) {
+                    return truncateLength > 0 && content.length > truncateLength;
+                }
+                const {
+                    getApproximateCharWidth: approxCharWidth,
+                    getApproximateLineHeight: approxLineHeight,
+                    getCellHorizontalPadding: horizontalPadding,
+                    getNumBufferLines: numBufferLines,
+                } = TruncatedFormat.resizeRowsByApproximateHeightDefaults;
+
+                const cellWidth = parseInt(this.props.parentCellWidth, 10);
+                const approxCellHeight = Utils.getApproxCellHeight(
+                    content,
+                    cellWidth,
+                    approxCharWidth,
+                    approxLineHeight,
+                    horizontalPadding,
+                    numBufferLines,
+                );
+
+                let shouldTruncate = false;
+                if (approxCellHeight > parseInt(this.props.parentCellHeight, 10)) {
+                    shouldTruncate = true;
+                }
+                return shouldTruncate;
             default:
                 return false;
         }
@@ -218,7 +261,6 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         const { isTruncated } = this.state;
-
         // take all measurements at once to avoid excessive DOM reflows.
         const {
             clientHeight: containerHeight,
