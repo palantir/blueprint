@@ -9,7 +9,7 @@
  */
 export interface IDateFormatter {
     /**
-     * Optional placeholder to show in inputs whose content will be passed to this formatter. 
+     * Optional placeholder to show in inputs whose content will be passed to this formatter.
      */
     placeholder?: string;
 
