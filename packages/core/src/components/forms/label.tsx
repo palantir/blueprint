@@ -18,10 +18,10 @@ export interface ILabelProps extends React.HTMLProps<HTMLDivElement>, IProps {
     disabled?: boolean;
 
     /** The helper text to show next to the label. */
-    helperText?: JSX.Element | string;
+    helperText?: React.ReactNode;
 
     /** The text to show in the label. */
-    text: JSX.Element | string;
+    text: React.ReactNode;
 }
 
 // this component is simple enough that tests would be purely tautological.
