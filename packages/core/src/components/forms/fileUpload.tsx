@@ -92,3 +92,5 @@ export class FileUpload extends React.Component<IFileUploadProps, {}> {
         Utils.safeInvoke(this.props.inputProps.onChange, e);
     };
 }
+
+export const FileUploadFactory = React.createFactory(FileUpload);

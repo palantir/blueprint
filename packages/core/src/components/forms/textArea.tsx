@@ -44,3 +44,5 @@ export class TextArea extends React.Component<ITextAreaProps, {}> {
         return <textarea {...htmlProps} className={rootClasses} />;
     }
 }
+
+export const TextAreaFactory = React.createFactory(TextArea);

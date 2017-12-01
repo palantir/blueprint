@@ -50,3 +50,5 @@ export class Label extends React.Component<ILabelProps, {}> {
         );
     }
 }
+
+export const LabelFactory = React.createFactory(Label);

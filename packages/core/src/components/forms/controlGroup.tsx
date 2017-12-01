@@ -47,3 +47,5 @@ export class ControlGroup extends React.Component<IControlGroupProps, {}> {
         );
     }
 }
+
+export const ControlGroupFactory = React.createFactory(ControlGroup);
