@@ -37,7 +37,7 @@ import {
     stringToMoment,
 } from "./common/dateUtils";
 import * as Errors from "./common/errors";
-import { DateFormat } from "./dateFormatter";
+import { DateFormat, IDateFormatter } from "./dateFormatter";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
 
@@ -95,10 +95,10 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
      * The format of each date in the date range. See options
      * here: http://momentjs.com/docs/#/displaying/format/
-     * Alternatively pass an `IDateFormatter` for custom date rendering.
+     * Alternatively, pass an `IDateFormatter` for custom date rendering.
      * @default "YYYY-MM-DD"
      */
-    format?: DateFormat;
+    format?: string | IDateFormatter;
 
     /**
      * The error message to display when the selected date is invalid.

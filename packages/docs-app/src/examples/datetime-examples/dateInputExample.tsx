@@ -44,11 +44,11 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     );
 
     protected renderExample() {
-        const { formatKey, ...otherState } = this.state;
+        const { formatKey, ...spreadableState } = this.state;
         return (
             <DateInput
+                {...spreadableState}
                 format={FORMATS[formatKey]}
-                {...otherState}
                 defaultValue={new Date()}
                 className="foofoofoo"
                 popoverProps={{ popoverClassName: "barbarbar" }}

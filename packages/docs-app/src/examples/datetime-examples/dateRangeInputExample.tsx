@@ -45,8 +45,8 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
 
     protected renderExample() {
-        const { formatKey, ...otherState } = this.state;
-        return <DateRangeInput format={FORMATS[formatKey]} {...otherState} />;
+        const { formatKey, ...spreadableState } = this.state;
+        return <DateRangeInput format={FORMATS[formatKey]} {...spreadableState} />;
     }
 
     protected renderOptions() {

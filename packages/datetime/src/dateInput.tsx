@@ -31,7 +31,7 @@ import {
     stringToMoment,
 } from "./common/dateUtils";
 import { DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS, DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
-import { DateFormat } from "./dateFormatter";
+import { IDateFormatter } from "./dateFormatter";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateTimePicker } from "./dateTimePicker";
@@ -74,10 +74,10 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * The format of the date. See http://momentjs.com/docs/#/displaying/format/.
-     * Alternatively pass an `IDateFormatter` for custom date rendering.
+     * Alternatively, pass an `IDateFormatter` for custom date rendering.
      * @default "YYYY-MM-DD"
      */
-    format?: DateFormat;
+    format?: string | IDateFormatter;
 
     /**
      * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).

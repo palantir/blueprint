@@ -9,7 +9,9 @@
  */
 export interface IDateFormatter {
     /**
-     * Optional placeholder to show in inputs whose content will be passed to this formatter.
+     * Placeholder text to display in empty input fields.
+     * Recommended practice is to indicate the date format that `stringToDate`
+     * expects.
      */
     placeholder?: string;
 
@@ -19,7 +21,8 @@ export interface IDateFormatter {
     dateToString(date: Date): string;
 
     /**
-     * Function to deserialize a date from a string. Return undefined if the string is invalid.
+     * Function to deserialize a string to a date.
+     * Can return `undefined` to signal that the string is invalid.
      */
     stringToDate(str: string): Date | undefined;
 }
