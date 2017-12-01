@@ -383,7 +383,10 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
     private updateDarkParent() {
         if (!this.props.inline && this.state.isOpen) {
-            const hasDarkParent = this.targetElement !== null && this.targetElement.closest(`.${Classes.DARK}`) != null;
+            const hasDarkParent =
+                this.targetElement != null &&
+                typeof this.targetElement !== "undefined" &&
+                this.targetElement.closest(`.${Classes.DARK}`) != null;
             this.setState({ hasDarkParent });
         }
     }
