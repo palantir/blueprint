@@ -54,6 +54,6 @@ export class KeyCombo extends React.Component<IKeyComboProps, {}> {
                 );
             }
         }
-        return <div className="pt-key-combo">{components}</div>;
+        return <span className="pt-key-combo">{components}</span>;
     }
 }
