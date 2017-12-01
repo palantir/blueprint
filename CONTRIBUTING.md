@@ -9,7 +9,7 @@ PRs](https://github.com/palantir/blueprint/labels/Status%3A%20accepting%20PRs) l
 
 ### Installation
 
-First, ensure you have Node v6+ installed on your machine. Run `node -v` in the terminal to confirm.
+First, ensure you have Node v8+ and [yarn](https://yarnpkg.com) v1.0+ installed on your machine.
 
 As an external contributor (not a member of the Palantir org), you will have to fork Blueprint in
 order to contribute code. Clone your fork onto your machine and run the following commands to
@@ -27,21 +27,19 @@ A typical contributor workflow looks like this:
 
 1. Create a new feature branch. We use a format like `[your-initials]/[short-name]`:
    `bd/refactor-buttons`.
-1. Run the development server via `gulp` (no arguments).
-    - Navigate to http://localhost:9000/packages/site-docs/dist/ when the server starts.
-    - See [Build tasks](https://github.com/palantir/blueprint/wiki/Build-tasks) on the wiki for more
-      details on the inner workings of the Gulp build.
-    - If you are contributing to the `table` or `landing` packages then run `npm start` in those
-      directories instead, as they have separate webpack-based development builds.
+1. Run the development script for the relevant part of the project (see README for the full list).
+    - webpack-dev-server will automatically launch a browser window where you can iterate on changes.
 1. Write some code. :hammer: **Refer to the wiki in this repo for detailed instructions on:**
     - [Development practices](https://github.com/palantir/blueprint/wiki/Development-practices)
     - [Coding guidelines](https://github.com/palantir/blueprint/wiki/Coding-guidelines)
     - [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)
 1. Ensure your code is **tested** and **linted**.
-    - Add unit tests as necessary when fixing bugs or adding features; run them with `gulp test`.
+    - Add unit tests as necessary when fixing bugs or adding features; run them with `yarn test`
+      in the relevant package folder.
     - Linting is best handled by your editor for real-time feedback (see
       [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)). Run
-      `gulp check` to be 100% safe.
+      `yarn lint` to be 100% safe.
+    - Lint errors can often be automatically fixed by TSLint. Run lint fixes with `yarn lint-fix`.
 1. Submit a Pull Request on GitHub.
     - Write a thorough description of your work so that reviewers
 and future developers can understand your code changes.
