@@ -55,7 +55,7 @@ them supports the full range of HTML props.
 ```tsx
 <Navbar>
     <NavbarGroup>
-        <NavbarHeading text="Blueprint" />
+        <NavbarHeading>Blueprint</NavbarHeading>
     </NavbarGroup>
     <NavbarGroup align="right">
         <Button className="pt-minimal" iconName="home">Home</Button>
