@@ -19,6 +19,7 @@ export * from "./focusExample";
 export * from "./hotkeyPiano";
 export * from "./hotkeyTester";
 export * from "./menuExample";
+export * from "./navbarExample";
 export * from "./numericInputBasicExample";
 export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";
