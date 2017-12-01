@@ -20,10 +20,10 @@
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
-    "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
-    "webpack": "^3.5.4",
-    "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.9.4",
+    "uglifyjs-webpack-plugin": "^1.1.2",
+    "webpack": "^3.9.1",
+    "webpack-bundle-analyzer": "^2.9.1",
+    "webpack-dev-server": "^2.9.5",
     "webpack-notifier": "^1.5.0"
   },
   "repository": {

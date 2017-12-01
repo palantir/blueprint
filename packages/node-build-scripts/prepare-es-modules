@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# Rewrite .js file extensions to .mjs
-find -L ./tmp/ -type f -name "*.js" -print0 | while IFS= read -r -d '' FNAME; do
-    mv -- "$FNAME" "${FNAME%.js}.mjs"
-done
-
-cp -r tmp/* dist/
-rm -rf tmp

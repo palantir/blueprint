@@ -43,8 +43,8 @@
     "npm-run-all": "^4.1.2",
     "tslint": "^5.8.0",
     "stylelint": "^8.2.0",
-    "webpack-dev-server": "^2.9.3",
-    "webpack": "^3.8.1"
+    "webpack-dev-server": "^2.9.5",
+    "webpack": "^3.9.1"
   },
   "repository": {
     "type": "git",

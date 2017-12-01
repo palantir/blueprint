@@ -3,6 +3,6 @@
     "compilerOptions": {
         "declaration": false,
         "module": "es2015",
-        "outDir": "../tmp"
+        "outDir": "../dist/esm"
     }
 }
