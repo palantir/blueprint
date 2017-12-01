@@ -20,6 +20,5 @@ yarn-error.log
 # Blueprint
 build
 dist
-tmp
 generated
 coverage
