@@ -81,11 +81,11 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
 }
 
 export interface IItemModifiers {
+    /** Whether this is the "active" (focused) item, meaning keyboard interactions will act upon it. */
+    active: boolean;
+
     /** Whether this item is disabled and should ignore interactions. */
     disabled: boolean;
-
-    /** Whether this is the focused item, so keyboard interactions will act upon it. */
-    focused: boolean;
 
     /** Whether this item matches the predicate. A typical renderer could hide `false` values. */
     filtered: boolean;
@@ -252,9 +252,9 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             : (item: T, index: number) => itemPredicate(query, item, index);
         return items.map((item, index) => {
             const modifiers: IItemModifiers = {
+                active: activeItem === item,
                 disabled: false,
                 filtered: isFiltered(item, index),
-                focused: activeItem === item,
             };
             return { item, modifiers };
         });

@@ -117,8 +117,8 @@ export type Film = typeof items[0];
 
 export const itemRenderer: SelectItemRenderer<Film> = ({ item: film, handleClick, modifiers }) => {
     const classes = classNames({
-        [Classes.ACTIVE]: modifiers.focused,
-        [Classes.INTENT_PRIMARY]: modifiers.focused,
+        [Classes.ACTIVE]: modifiers.active,
+        [Classes.INTENT_PRIMARY]: modifiers.active,
     });
     return (
         <MenuItem
