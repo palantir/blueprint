@@ -24,3 +24,5 @@ import { DateInput } from "@blueprintjs/datetime";
 ```
 
 @interface IDateInputProps
+
+@interface IDateFormatter

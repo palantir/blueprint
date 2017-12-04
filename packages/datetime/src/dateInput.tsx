@@ -27,9 +27,11 @@ import {
     isMomentInRange,
     isMomentNull,
     isMomentValidAndInRange,
-    toLocalizedDateString,
+    momentToString,
+    stringToMoment,
 } from "./common/dateUtils";
 import { DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS, DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
+import { IDateFormatter } from "./dateFormatter";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateTimePicker } from "./dateTimePicker";
@@ -72,9 +74,10 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * The format of the date. See http://momentjs.com/docs/#/displaying/format/.
+     * Alternatively, pass an `IDateFormatter` for custom date rendering.
      * @default "YYYY-MM-DD"
      */
-    format?: string;
+    format?: string | IDateFormatter;
 
     /**
      * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).
@@ -213,7 +216,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 />
             );
         // assign default empty object here to prevent mutation
-        const { inputProps = {}, popoverProps = {} } = this.props;
+        const { inputProps = {}, popoverProps = {}, format } = this.props;
         // exclude ref (comes from HTMLInputProps typings, not InputGroup)
         const { ref, ...htmlInputProps } = inputProps;
 
@@ -224,6 +227,8 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             inputProps.className,
         );
         const popoverClassName = classNames(popoverProps.className, this.props.className);
+
+        const placeholder = typeof format === "string" ? format : format.placeholder;
 
         return (
             <Popover
@@ -240,7 +245,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             >
                 <InputGroup
                     autoComplete="off"
-                    placeholder={this.props.format}
+                    placeholder={placeholder}
                     rightElement={this.props.rightElement}
                     {...htmlInputProps}
                     className={inputClasses}
@@ -275,7 +280,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private createMoment(valueString: string) {
         // Locale here used for parsing, does not set the locale on the moment itself
-        return moment(valueString, this.props.format, this.props.locale);
+        return stringToMoment(valueString, this.props.format, this.props.locale);
     }
 
     private getDateString = (value: moment.Moment) => {
@@ -284,7 +289,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         }
         if (value.isValid()) {
             if (this.isMomentInRange(value)) {
-                return toLocalizedDateString(value, this.props.format, this.props.locale);
+                return momentToString(value, this.props.format, this.props.locale);
             } else {
                 return this.props.outOfRangeMessage;
             }
@@ -354,7 +359,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         if (isMomentNull(this.state.value)) {
             valueString = "";
         } else {
-            valueString = toLocalizedDateString(this.state.value, this.props.format, this.props.locale);
+            valueString = momentToString(this.state.value, this.props.format, this.props.locale);
         }
 
         if (this.props.openOnFocus) {
