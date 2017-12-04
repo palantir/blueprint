@@ -3,7 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-const baseConfig = require("@blueprintjs/webpack-build-scripts/webpack.config.base");
+const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
 

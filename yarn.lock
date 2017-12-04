@@ -1256,9 +1256,13 @@ commander@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.0.0.tgz#d1b86f901f8b64bd941bdeadaf924530393be928"
 
-commander@2.11.0, commander@^2.9.0, commander@~2.11.0:
+commander@2.11.0, commander@^2.9.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
+
+commander@~2.12.1:
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"
 
 commondir@^1.0.1:
   version "1.0.1"
@@ -2591,7 +2595,7 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-express@^4.13.3, express@^4.15.2:
+express@^4.15.2, express@^4.16.2:
   version "4.16.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.2.tgz#e35c6dfe2d64b7dca0a5cd4f21781be3299e076c"
   dependencies:
@@ -8003,11 +8007,11 @@ ua-parser-js@^0.7.9:
   version "0.7.17"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
 
-uglify-es@^3.1.3:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.1.9.tgz#6c82df628ac9eb7af9c61fd70c744a084abe6161"
+uglify-es@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.2.0.tgz#fbbfb9dc465ec7e5065701b9720d0de977d0bc24"
   dependencies:
-    commander "~2.11.0"
+    commander "~2.12.1"
     source-map "~0.6.1"
 
 uglify-js@^2.6, uglify-js@^2.8.29:
@@ -8031,15 +8035,15 @@ uglifyjs-webpack-plugin@^0.4.6:
     uglify-js "^2.8.29"
     webpack-sources "^1.0.1"
 
-uglifyjs-webpack-plugin@^1.0.0-beta.2:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/uglifyjs-webpack-plugin/-/uglifyjs-webpack-plugin-1.0.1.tgz#d324da7144d321202df0968c09f6f8e057d5cdc2"
+uglifyjs-webpack-plugin@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/uglifyjs-webpack-plugin/-/uglifyjs-webpack-plugin-1.1.2.tgz#8a9abc238d01a33daaf86fa9a84c7ebc1e67b0f9"
   dependencies:
     cacache "^10.0.0"
     find-cache-dir "^1.0.0"
     schema-utils "^0.3.0"
-    source-map "^0.5.6"
-    uglify-es "^3.1.3"
+    source-map "^0.6.1"
+    uglify-es "^3.2.0"
     webpack-sources "^1.0.1"
     worker-farm "^1.4.1"
 
@@ -8266,7 +8270,7 @@ wcwidth@^1.0.0:
   dependencies:
     defaults "^1.0.3"
 
-webpack-bundle-analyzer@^2.9.0:
+webpack-bundle-analyzer@^2.9.1:
   version "2.9.1"
   resolved "https://registry.yarnpkg.com/webpack-bundle-analyzer/-/webpack-bundle-analyzer-2.9.1.tgz#c2c8e03e8e5768ed288b39ae9e27a8b8d7b9d476"
   dependencies:
@@ -8292,9 +8296,9 @@ webpack-dev-middleware@^1.11.0, webpack-dev-middleware@^1.12.0:
     range-parser "^1.0.3"
     time-stamp "^2.0.0"
 
-webpack-dev-server@^2.9.3, webpack-dev-server@^2.9.4:
-  version "2.9.4"
-  resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.9.4.tgz#7883e61759c6a4b33e9b19ec4037bd4ab61428d1"
+webpack-dev-server@^2.9.5:
+  version "2.9.5"
+  resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.9.5.tgz#79336fba0087a66ae491f4869f6545775b18daa8"
   dependencies:
     ansi-html "0.0.7"
     array-includes "^3.0.3"
@@ -8304,7 +8308,7 @@ webpack-dev-server@^2.9.3, webpack-dev-server@^2.9.4:
     connect-history-api-fallback "^1.3.0"
     debug "^3.1.0"
     del "^3.0.0"
-    express "^4.13.3"
+    express "^4.16.2"
     html-entities "^1.2.0"
     http-proxy-middleware "~0.17.4"
     import-local "^0.1.1"
@@ -8339,9 +8343,9 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@^3.5.4, webpack@^3.8.1:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.8.1.tgz#b16968a81100abe61608b0153c9159ef8bb2bd83"
+webpack@^3.9.1:
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.9.1.tgz#9a60aa544ed5d4d454c069e3f521aa007e02643c"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"

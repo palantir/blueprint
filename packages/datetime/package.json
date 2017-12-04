@@ -3,6 +3,7 @@
   "version": "1.24.0",
   "description": "Components for interacting with dates and times",
   "main": "dist/index.js",
+  "module": "dist/esm/index.js",
   "typings": "dist/index.d.ts",
   "style": "dist/blueprint-datetime.css",
   "unpkg": "dist/datetime.bundle.js",
@@ -14,6 +15,7 @@
     "dev": "npm-run-all -p 'compile:typescript -- --watch' 'compile:sass -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
+    "dist:esm": "tsc -p ./src/tsconfig.esm.json",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
@@ -46,7 +48,7 @@
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
     "typescript": "~2.4.2",
-    "webpack": "^3.8.1"
+    "webpack": "^3.9.1"
   },
   "repository": {
     "type": "git",
