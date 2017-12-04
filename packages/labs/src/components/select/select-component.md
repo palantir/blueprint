@@ -14,22 +14,22 @@ Use `Select<T>` for choosing one item from a list. The component's children will
 ```tsx
 import { Button, MenuItem } from "@blueprintjs/core";
 import { Select } from "@blueprintjs/labs";
-import { Film, TOP_100_FILMS, filterFilm, renderFilm } from "./demoData";
+import * as Films from "./films";
 
 // Select<T> is a generic component to work with your data types.
 // In TypeScript, you must first obtain a non-generic reference:
-const FilmSelect = Select.ofType<Film>();
+const FilmSelect = Select.ofType<Films.Film>();
 
 ReactDOM.render(
     <FilmSelect
-        items={TOP_100_FILMS}
-        itemPredicate={filterFilm}
-        itemRenderer={renderFilm}
-        noResults={<MenuItem disabled text="No results." />}
+        items={Films.items}
+        itemPredicate={Films.itemPredicate}
+        itemRenderer={Films.itemRenderer}
+        noResults={<MenuItem disabled={true} text="No results." />}
         onItemSelect={...}
     >
         {/* children become the popover target; render value here */}
-        <Button text={TOP_100_FILMS[0].title} rightIconName="double-caret-vertical" />
+        <Button text={Films.items[0].title} rightIconName="double-caret-vertical" />
     </FilmSelect>,
     document.querySelector("#root")
 );
@@ -78,9 +78,9 @@ import { Classes, MenuItem } from "@blueprintjs/core";
 import { Select, ISelectItemRendererProps } from "@blueprintjs/labs";
 const FilmSelect = Select.ofType<Film>();
 
-const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRendererProps<Film>) => (
+const renderMenuItem = ({ handleClick, item: film, modifiers }: ISelectItemRendererProps<Film>) => (
     <MenuItem
-        className={isActive ? Classes.ACTIVE : ""}
+        className={modifiers.active ? Classes.ACTIVE : ""}
         key={film.title}
         label={film.year}
         onClick={handleClick}
