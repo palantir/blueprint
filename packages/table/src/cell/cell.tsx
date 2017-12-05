@@ -157,8 +157,8 @@ export class Cell extends React.Component<ICellProps, {}> {
                     // only add props if child is truncated format
                     if (isTruncatedFormat) {
                         return React.cloneElement(child as React.ReactElement<any>, {
-                            parentCellHeight: style.height,
-                            parentCellWidth: style.width,
+                            parentCellHeight: parseInt(style.height, 10),
+                            parentCellWidth: parseInt(style.width, 10),
                         });
                     }
                 }

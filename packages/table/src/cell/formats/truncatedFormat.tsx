@@ -13,7 +13,6 @@ import * as Classes from "../../common/classes";
 import { Utils } from "../../common/utils";
 
 import { Locator } from "../../locator";
-import { IResizeRowsByApproximateHeightOptions } from "../../table";
 
 // amount in pixels that the content div width changes when truncated vs when
 // not truncated. Note: could be modified by styles
@@ -42,12 +41,12 @@ export interface ITruncatedFormatProps extends IProps {
     /**
      * Height of the parent cell. Used by shouldComponentUpdate only
      */
-    parentCellHeight?: string;
+    parentCellHeight?: number;
 
     /**
      * Width of the parent cell. Used by shouldComponentUpdate only
      */
-    parentCellWidth?: string;
+    parentCellWidth?: number;
 
     /**
      * Sets the popover content style to `white-space: pre` if `true` or
@@ -80,6 +79,37 @@ export interface ITruncatedFormatProps extends IProps {
      * @default "..."
      */
     truncationSuffix?: string;
+
+    /**
+     * Approximate character width, used to determine whether to display the popover in approx truncation mode.
+     * The default value should work for normal table styles,
+     * but should be changed as necessary if the fonts or styles are changed significantly.
+     * @default 8
+     */
+    approximateCharWidth?: number;
+
+    /**
+     * Approximate character width, used to determine whether to display the popover in approx truncation mode.
+     * The default value should work for normal table styles, but should be changed if the fonts or styles are changed significantly.
+     * @default 18
+     */
+    approximateLineHeight?: number;
+
+    /**
+     * Total horizonal cell padding (both sides), used to determine whether to display the popover in approx truncation mode.
+     * The default value should work for normal table styles,
+     * but should be changed as necessary if the fonts or styles are changed significantly.
+     * @default 20
+     */
+    cellHorizontalPadding?: number;
+
+    /**
+     * Number of buffer lines desired, used to determine whether to display the popover in approx truncation mode.
+     * The default value should work for normal table styles,
+     * but should be changed as necessary if the fonts or styles are changed significantly.
+     * @default 0
+     */
+    numBufferLines?: number;
 }
 
 export interface ITruncatedFormatState {
@@ -90,23 +120,15 @@ export interface ITruncatedFormatState {
 @PureRender
 export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
+        approximateCharWidth: 8,
+        approximateLineHeight: 18,
+        cellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
         detectTruncation: false,
+        numBufferLines: 0,
         preformatted: false,
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
         truncateLength: 2000,
         truncationSuffix: "...",
-    };
-
-    // these default values for `resizeRowsByApproximateHeight` have been
-    // fine-tuned to work well with default Table font styles.
-    private static resizeRowsByApproximateHeightDefaults: Record<
-        keyof IResizeRowsByApproximateHeightOptions,
-        number
-    > = {
-        getApproximateCharWidth: 8,
-        getApproximateLineHeight: 18,
-        getCellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
-        getNumBufferLines: 0,
     };
 
     public state: ITruncatedFormatState = {
@@ -208,7 +230,15 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
     };
 
     private shouldShowPopover(content: string) {
-        const { detectTruncation, showPopover, truncateLength } = this.props;
+        const {
+            approximateCharWidth,
+            approximateLineHeight,
+            cellHorizontalPadding,
+            detectTruncation,
+            numBufferLines,
+            showPopover,
+            truncateLength,
+        } = this.props;
 
         switch (showPopover) {
             case TruncatedPopoverMode.ALWAYS:
@@ -223,27 +253,21 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                 if (!detectTruncation) {
                     return truncateLength > 0 && content.length > truncateLength;
                 }
-                const {
-                    getApproximateCharWidth: approxCharWidth,
-                    getApproximateLineHeight: approxLineHeight,
-                    getCellHorizontalPadding: horizontalPadding,
-                    getNumBufferLines: numBufferLines,
-                } = TruncatedFormat.resizeRowsByApproximateHeightDefaults;
+                if (this.props.parentCellHeight == null || this.props.parentCellWidth == null) {
+                    return false;
+                }
 
-                const cellWidth = parseInt(this.props.parentCellWidth, 10);
+                const cellWidth = this.props.parentCellWidth;
                 const approxCellHeight = Utils.getApproxCellHeight(
                     content,
                     cellWidth,
-                    approxCharWidth,
-                    approxLineHeight,
-                    horizontalPadding,
+                    approximateCharWidth,
+                    approximateLineHeight,
+                    cellHorizontalPadding,
                     numBufferLines,
                 );
 
-                let shouldTruncate = false;
-                if (approxCellHeight > parseInt(this.props.parentCellHeight, 10)) {
-                    shouldTruncate = true;
-                }
+                const shouldTruncate = approxCellHeight > this.props.parentCellHeight;
                 return shouldTruncate;
             default:
                 return false;
@@ -261,6 +285,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
         }
 
         const { isTruncated } = this.state;
+
         // take all measurements at once to avoid excessive DOM reflows.
         const {
             clientHeight: containerHeight,
