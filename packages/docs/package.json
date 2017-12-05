@@ -3,7 +3,8 @@
   "version": "1.2.0",
   "description": "Blueprint theme for documentalist",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "module": "dist/esm/index.js",
+  "typings": "dist/esm/index.d.ts",
   "style": "dist/docs.css",
   "unpkg": "dist/docs.bundle.js",
   "scripts": {
@@ -14,6 +15,7 @@
     "dev": "npm-run-all -p 'compile:typescript -- --watch' 'compile:sass -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
+    "dist:cjs": "tsc -p ./src/tsconfig.cjs.json",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",

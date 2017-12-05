@@ -4,7 +4,7 @@
   "description": "Core styles & components",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/esm/index.d.ts",
   "style": "dist/blueprint.css",
   "unpkg": "dist/core.bundle.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "dev": "npm-run-all -p 'compile:typescript -- --watch' 'compile:sass -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
-    "dist:esm": "tsc -p ./src/tsconfig.esm.json",
+    "dist:cjs": "tsc -p ./src/tsconfig.cjs.json",
     "dist:variables": "generate-css-variables",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",

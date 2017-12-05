@@ -2,7 +2,7 @@
     "extends": "./tsconfig",
     "compilerOptions": {
         "declaration": false,
-        "module": "es2015",
-        "outDir": "../dist/esm"
+        "module": "commonjs",
+        "outDir": "../dist"
     }
 }
