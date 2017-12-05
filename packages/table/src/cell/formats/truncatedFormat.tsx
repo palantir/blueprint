@@ -81,7 +81,7 @@ export interface ITruncatedFormatProps extends IProps {
     truncationSuffix?: string;
 
     /**
-     * Approximate character width, used to determine whether to display the popover in approx truncation mode.
+     * Approximate character width (in pixels), used to determine whether to display the popover in approx truncation mode.
      * The default value should work for normal table styles,
      * but should be changed as necessary if the fonts or styles are changed significantly.
      * @default 8
@@ -89,7 +89,7 @@ export interface ITruncatedFormatProps extends IProps {
     approximateCharWidth?: number;
 
     /**
-     * Approximate character width, used to determine whether to display the popover in approx truncation mode.
+     * Approximate line height (in pixels), used to determine whether to display the popover in approx truncation mode.
      * The default value should work for normal table styles, but should be changed if the fonts or styles are changed significantly.
      * @default 18
      */
@@ -105,6 +105,8 @@ export interface ITruncatedFormatProps extends IProps {
 
     /**
      * Number of buffer lines desired, used to determine whether to display the popover in approx truncation mode.
+     * Buffer lines are extra lines at the bottom of the cell that space is made for, to make sure that the cell text will fit
+     * after the math calculates how many lines the text is expected to take.
      * The default value should work for normal table styles,
      * but should be changed as necessary if the fonts or styles are changed significantly.
      * @default 0
