@@ -78,6 +78,12 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     resetOnClose?: boolean;
 
     /**
+     * Whether the popover should close once the user selects an option.
+     * @default true
+     */
+    closeOnSelect?: boolean;    
+
+    /**
      * Callback invoked when the query value changes,
      * through user input or when the filter is reset.
      */
@@ -144,10 +150,11 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     public render() {
         // omit props specific to this component, spread the rest.
         const {
+            closeOnSelect,
             filterable,
             initialContent,
-            itemRenderer,
             inputProps,
+            itemRenderer,
             noResults,
             popoverProps,
             ...restProps,
@@ -264,7 +271,14 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
     };
 
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
-        this.setState({ isOpen: false });
+        const { closeOnSelect = true } = this.props;
+
+        if (!closeOnSelect) {
+            event.stopPropagation();
+        } else {
+            this.setState({ isOpen: false });
+        }
+
         if (this.props.resetOnSelect) {
             this.resetQuery();
         }
