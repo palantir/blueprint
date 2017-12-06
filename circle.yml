@@ -41,11 +41,14 @@ test:
 
 deployment:
   preview:
-    branch: /.*/
+    branch: /((?!master).)*/
     commands:
       - submit-preview-comment
-  npm:
-    tag: /release-.*/
+  publish-npm:
+    branch: master
     owner: palantir
     commands:
+      # These are here and not in a tag block because Github won't notify Circle of tag-creation events that Circle
+      # uses to trigger tag builds if there are more than three tags in a single commit, which is likely to happen
+      # with Lerna. Really. https://developer.github.com/v3/activity/events/types/#createevent
       - publish-npm-semver-tagged
