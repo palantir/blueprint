@@ -131,6 +131,7 @@ workflows:
   version: 2
   compile_lint_test_dist_deploy:
     jobs:
+      - install-dependencies
       - compile-libs:
           requires: [install-dependencies]
       - lint
