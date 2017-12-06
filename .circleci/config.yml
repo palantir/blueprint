@@ -1,14 +1,8 @@
-defaults: &defaults
-    docker:
-      - image: circleci/node:latest
-    environment:
-      PATH: $PATH:$HOME/yarn/bin:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin:$HOME/$CIRCLE_PROJECT_REPONAME/scripts
-      YARN_VERSION: 1.2.1
-
 version: 2
 jobs:
   install-dependencies:
-    <<: *defaults
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
       - restore_cache:
@@ -22,7 +16,8 @@ jobs:
       - run: npm rebuild node-sass
 
   compile-libs:
-    <<: *defaults
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
       - restore_cache:
@@ -39,7 +34,8 @@ jobs:
             - packages/table/dist
 
   lint:
-    <<: *defaults
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
       - attach_workspace:
@@ -49,7 +45,8 @@ jobs:
       - run: yarn lint
 
   dist:
-    <<: *defaults
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
       - attach_workspace:
@@ -68,64 +65,70 @@ jobs:
             - packages/table/dist
 
   test-core:
-    <<: *defaults
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: lerna run test --scope '@blueprintjs/core'
+      - run: ./node_modules/.bin/lerna run test --scope '@blueprintjs/core'
 
   test-datetime:
-    <<: *defaults
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: lerna run test --scope '@blueprintjs/datetime'
+      - run: ./node_modules/.bin/lerna run test --scope '@blueprintjs/datetime'
 
   test-labs:
-    <<: *defaults
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: lerna run test --scope '@blueprintjs/labs'
+      - run: ./node_modules/.bin/lerna run test --scope '@blueprintjs/labs'
 
   test-table:
-    <<: *defaults
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: lerna run test --scope '@blueprintjs/table'
+      - run: ./node_modules/.bin/lerna run test --scope '@blueprintjs/table'
 
   deploy-preview:
-    <<: *defaults
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: submit-preview-comment
+      - run: ./scripts/submit-preview-comment
 
   deploy-npm:
-    <<: *defaults
+    docker:
+      - image: circleci/node:latest
     steps:
       - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: publish-npm-semver-tagged
+      - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
   version: 2
