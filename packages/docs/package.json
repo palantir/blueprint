@@ -8,7 +8,7 @@
   "style": "dist/docs.css",
   "unpkg": "dist/docs.bundle.js",
   "scripts": {
-    "compile": "npm-run-all -p compile:esm compile:css",
+    "compile": "npm-run-all -p 'compile:*'",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
     "compile:css": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
