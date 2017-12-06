@@ -43,7 +43,6 @@ deployment:
   preview:
     branch: /.*/
     commands:
-      - build-docs-artifacts
       - submit-preview-comment
   npm:
     tag: /release-.*/

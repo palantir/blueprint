@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/core",
-  "version": "1.33.0",
+  "version": "1.34.0",
   "description": "Core styles & components",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -45,8 +45,8 @@
     "react-dom": "^16.0.0 || ^15.0.1 || ^0.14"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "*",
-    "@blueprintjs/karma-build-scripts": "*",
+    "@blueprintjs/karma-build-scripts": "^0.2.0",
+    "@blueprintjs/node-build-scripts": "^0.2.0",
     "bourbon": "^4.3.4",
     "enzyme": "~2.9.1",
     "karma": "^1.7.1",

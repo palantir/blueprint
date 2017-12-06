@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/datetime",
-  "version": "1.24.0",
+  "version": "1.25.0",
   "description": "Components for interacting with dates and times",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -35,8 +35,8 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "*",
-    "@blueprintjs/karma-build-scripts": "*",
+    "@blueprintjs/karma-build-scripts": "^0.2.0",
+    "@blueprintjs/node-build-scripts": "^0.2.0",
     "bourbon": "^4.3.4",
     "enzyme": "~2.9.1",
     "karma": "^1.7.1",
