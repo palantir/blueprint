@@ -154,7 +154,7 @@ workflows:
             - test-table
       - deploy-npm:
           requires: [deploy-preview]
-          filter:
+          filters:
             tags:
               only:
                 - /^release-.*/
