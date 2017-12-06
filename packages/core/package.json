@@ -8,7 +8,7 @@
   "style": "dist/blueprint.css",
   "unpkg": "dist/core.bundle.js",
   "scripts": {
-    "compile": "npm-run-all -s compile:pre -p compile:esm compile:css",
+    "compile": "npm-run-all -s compile:pre -p 'compile:*'",
     "compile:pre": "generate-icons-source",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
