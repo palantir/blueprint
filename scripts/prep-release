@@ -8,7 +8,7 @@ $(npm bin)/lerna publish --skip-git --skip-npm
 
 echo ""
 echo "Building GH Pages site into docs/ directory..."
-npm run build:site
+yarn dist
 
 echo ""
 echo "Review git changes and commit when ready."
