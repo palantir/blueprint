@@ -5,6 +5,7 @@
 
 const { generateIsomorphicTests } = require("@blueprintjs/node-build-scripts");
 const React = require("react");
+// TODO: get this to work with require("@std/esm")(module)("../dist/esm")
 const Core = require("../dist");
 
 const tooltipContent = { content: React.createElement("h1", {}, "content") };

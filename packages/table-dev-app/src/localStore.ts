@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import defaults = require("lodash/defaults");
+import { defaults } from "lodash";
 
 /**
  * Simple typed storage API for a JSON serializable object in web local storage

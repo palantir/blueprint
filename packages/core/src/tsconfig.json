@@ -1,6 +1,6 @@
 {
     "extends": "../../../config/tsconfig.base",
     "compilerOptions": {
-        "outDir": "../dist"
+        "outDir": "../dist/esm"
     }
 }

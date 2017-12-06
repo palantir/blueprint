@@ -8,7 +8,7 @@ const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        "table.bundle": [
+        table: [
             "./src/index.ts"
         ],
     },
@@ -16,7 +16,7 @@ module.exports = Object.assign({}, baseConfig, {
     externals: COMMON_EXTERNALS,
 
     output: {
-        filename: "[name].js",
+        filename: "[name].bundle.js",
         library: ["Blueprint", "Table"],
         libraryTarget: "umd",
         path: path.resolve(__dirname, "./dist")
