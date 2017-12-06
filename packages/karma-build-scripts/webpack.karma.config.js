@@ -52,7 +52,10 @@ module.exports = {
             {
                 enforce: "post",
                 test: /src\/.*\.tsx?$/,
-                use: "istanbul-instrumenter-loader",
+                loader: "istanbul-instrumenter-loader",
+                options: {
+                    esModules: true,
+                },
             },
             {
                 test: /\.(eot|ttf|woff|woff2|svg|png)$/,

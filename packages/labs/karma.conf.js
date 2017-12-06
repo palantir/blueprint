@@ -6,7 +6,9 @@ const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
 const path = require("path");
 
 module.exports = function (config) {
-    const baseConfig = createKarmaConfig(__dirname);
+    const baseConfig = createKarmaConfig({
+        dirname: __dirname,
+    });
     config.set(baseConfig);
     config.set({
         // disable coverage reporter
