@@ -22,7 +22,7 @@
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config",
     "lint-fix": "yarn lint:tslint --fix",
     "test": "npm-run-all -s compile:typescript test:pre -p test:karma test:iso",
-    "test:pre": "tsc -p ./test",
+    "test:pre": "tsc -p ./test && yarn dist:cjs",
     "test:karma": "karma start",
     "test:iso": "mocha test/isotest.js",
     "verify": "npm-run-all compile -p dist test lint"
