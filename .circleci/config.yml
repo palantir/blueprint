@@ -1,0 +1,163 @@
+defaults: &defaults
+    docker:
+      - image: circleci/node:latest
+    environment:
+      PATH: $PATH:$HOME/yarn/bin:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin:$HOME/$CIRCLE_PROJECT_REPONAME/scripts
+      YARN_VERSION: 1.2.1
+
+version: 2
+jobs:
+  install-dependencies:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn
+      - run: echo "Checking if lockfiles changed..." && git diff --exit-code
+      - save_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run: npm rebuild node-sass
+
+  compile-libs:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn compile-libs
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - yarn.lock
+            - packages/core/dist
+            - packages/datetime/dist
+            - packages/docs/dist
+            - packages/labs/dist
+            - packages/table/dist
+
+  lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn lint
+
+  dist:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn dist
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - yarn.lock
+            - packages/core/dist
+            - packages/datetime/dist
+            - packages/docs/dist
+            - packages/labs/dist
+            - packages/table/dist
+
+  test-core:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: lerna run test --scope '@blueprintjs/core'
+
+  test-datetime:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: lerna run test --scope '@blueprintjs/datetime'
+
+  test-labs:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: lerna run test --scope '@blueprintjs/labs'
+
+  test-table:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: lerna run test --scope '@blueprintjs/table'
+
+  deploy-preview:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: submit-preview-comment
+
+  deploy-npm:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: publish-npm-semver-tagged
+
+workflows:
+  version: 2
+  compile_lint_test_dist_deploy:
+    jobs:
+      - compile-libs:
+          requires: [install-dependencies]
+      - lint
+      - dist:
+          requires: [compile-libs]
+      - test-core:
+          requires: [compile-libs]
+      - test-datetime:
+          requires: [compile-libs]
+      - test-labs:
+          requires: [compile-libs]
+      - test-table:
+          requires: [compile-libs]
+      - deploy-preview:
+          requires:
+            - lint
+            - dist
+            - test-core
+            - test-datetime
+            - test-labs
+            - test-table
+      - deploy-npm:
+          requires: [deploy-preview]
+          filter:
+            tags:
+              only:
+                - /^release-.*/
+            branches:
+              ignore:
+                - /.*/
