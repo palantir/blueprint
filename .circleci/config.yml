@@ -137,7 +137,8 @@ workflows:
       - install-dependencies
       - compile-libs:
           requires: [install-dependencies]
-      - lint
+      - lint:
+          requires: [install-dependencies]
       - dist:
           requires: [compile-libs]
       - test-core:
