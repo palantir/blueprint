@@ -28,6 +28,8 @@ jobs:
       - image: circleci/node:latest
     steps:
       - checkout
+      - attach_workspace:
+          at: '.'
       - restore_cache:
           keys:
             - v1-dependency-cache-{{ checksum "yarn.lock" }}
@@ -46,6 +48,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
+      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
