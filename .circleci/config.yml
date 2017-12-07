@@ -18,6 +18,10 @@ jobs:
             - ~/.cache/yarn
             - node_modules
       - run: npm rebuild node-sass
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - yarn.lock
 
   compile-libs:
     docker:
