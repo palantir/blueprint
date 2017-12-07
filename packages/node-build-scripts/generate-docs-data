@@ -29,14 +29,20 @@ try {
 
     const globalTsVersion = getGlobalTsVersion();
     console.info("Installing typescript@2.1 for documentalist...");
-    execSync(`yarn add typescript@2.1 --dev --exact`);
+    execSync(`pushd ../../ && yarn add typescript@2.1 --ignore-workspace-root-check --exact && popd`);
 
-    generateDocumentalistData();
-    generateReleasesData();
-    generateVersionsData();
+    generateDocumentalistData().then(
+        () => {
+            generateReleasesData();
+            generateVersionsData();
 
-    console.info(`Restoring typescript@${globalTsVersion} for monorepo...`);
-    execSync(`yarn add typescript@~${globalTsVersion} --dev`);
+            console.info(`Restoring typescript@${globalTsVersion} for monorepo...`);
+            execSync(`pushd ../../ && yarn add typescript@~${globalTsVersion} --ignore-workspace-root-check && popd`);
+        },
+        rejectedReason => {
+            throw new Error(rejectedReason);
+        },
+    );
 } catch (err) {
     throw err;
     process.exit(1);
@@ -45,8 +51,8 @@ try {
 /**
  * Run documentalist to generate docs data from source code.
  */
-function generateDocumentalistData() {
-    new dm.Documentalist({
+function generateDocumentalistData(done) {
+    return new dm.Documentalist({
         markdown: { renderer: docsUtils.markedRenderer },
         // must mark our @Decorator APIs as reserved so we can use them in code samples
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget"],
