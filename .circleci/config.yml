@@ -61,6 +61,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
+      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
@@ -80,6 +81,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
+      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
@@ -90,6 +92,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
+      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
@@ -100,6 +103,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
+      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
@@ -110,6 +114,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
+      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
@@ -127,6 +132,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
+      - checkout
       - attach_workspace:
           at: '.'
       - deploy: ./scripts/submit-preview-comment
@@ -135,6 +141,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
+      - checkout
       - attach_workspace:
           at: '.'
       - deploy: ./scripts/publish-npm-semver-tagged
