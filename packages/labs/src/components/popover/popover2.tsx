@@ -283,6 +283,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         targetProps.className = classNames(
             Classes.POPOVER_TARGET,
             {
+                [Classes.ACTIVE]: isOpen && !isHoverInteractionKind,
                 [Classes.POPOVER_OPEN]: isOpen,
             },
             className,
@@ -292,7 +293,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         const targetTabIndex = this.props.openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const target: JSX.Element = React.cloneElement(children.target, {
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            className: classNames({ [Classes.ACTIVE]: isOpen && !isHoverInteractionKind }),
             disabled: isOpen && children.target.type === Tooltip2 ? true : children.target.props.disabled,
             tabIndex: targetTabIndex,
         });
