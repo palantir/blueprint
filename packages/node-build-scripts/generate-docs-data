@@ -40,31 +40,33 @@ function generateDocumentalistData() {
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget"],
     })
         .use(".md", new dm.MarkdownPlugin({ navPage: NAV_PAGE_NAME }))
-        .use(/\.d\.ts$/, new dm.TypescriptPlugin({
-            excludeNames: [/Factory$/, /^I.+State$/],
-            excludePaths: ["node_modules/"],
-            includeDefinitionFiles: true,
-        }))
+        .use(
+            /\.d\.ts$/,
+            new dm.TypescriptPlugin({
+                excludeNames: [/Factory$/, /^I.+State$/],
+                excludePaths: ["node_modules/"],
+                includeDefinitionFiles: true,
+            }),
+        )
         .use(".scss", new dm.KssPlugin())
         .documentGlobs("../*/src/**/*", "../*/dist/index.d.ts")
-        .then((docs) => JSON.stringify(docs, null, 2))
-        .then((content) => (
-            fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_DATA_FILENAME), content)
-        ));
+        .then(docs => JSON.stringify(docs, null, 2))
+        .then(content => fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_DATA_FILENAME), content));
 }
 
 /**
  * Create a JSON file containing latest released version of each project
  */
 function generateReleasesData() {
-    const packageDirectories = fs.readdirSync(PACKAGES_DIR)
+    const packageDirectories = fs
+        .readdirSync(PACKAGES_DIR)
         .map(name => path.join(PACKAGES_DIR, name))
         .filter(source => fs.lstatSync(source).isDirectory());
 
     const releases = packageDirectories
-        .map((packagePath) => require(path.resolve(packagePath, "package.json")))
+        .map(packagePath => require(path.resolve(packagePath, "package.json")))
         // only include non-private projects
-        .filter((project) => !project.private)
+        .filter(project => !project.private)
         // just these two fields from package.json:
         .map(({ name, version }) => ({ name, version }));
 
@@ -78,10 +80,13 @@ function generateVersionsData() {
     let stdout = "";
     const child = spawn("git", ["tag"]);
     child.stdout.setEncoding("utf8");
-    child.stdout.on("data", data => { stdout += data; });
+    child.stdout.on("data", data => {
+        stdout += data;
+    });
     child.on("close", () => {
         /** @type {Map<string, string>} */
-        const majorVersionMap = stdout.split("\n")
+        const majorVersionMap = stdout
+            .split("\n")
             // turn release-* tags into version numbers
             .filter(val => /release-[1-9]\d*\.\d+\.\d+.*/.test(val))
             .map(val => val.slice(8))
