@@ -47,6 +47,7 @@
     "react-addons-css-transition-group": "^15.6.0",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
+    "tslint": "^5.8.0",
     "typescript": "~2.4.2",
     "webpack": "^3.9.1"
   },
