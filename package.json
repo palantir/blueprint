@@ -61,7 +61,8 @@
     "stylelint-config-palantir": "^2.1.0",
     "stylelint-config-standard": "^17.0.0",
     "stylelint-scss": "^2.1.0",
-    "ts-quick-docs": "^0.5.3"
+    "ts-quick-docs": "^0.5.3",
+    "typescript": "~2.4.2"
   },
   "engines": {
     "node": ">=6.1"
