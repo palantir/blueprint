@@ -13,6 +13,7 @@ const semver = require("semver");
 const docsUtils = require("./docsUtils");
 
 // assume we are running from packages/docs-app
+const ROOT_DIR = path.resolve(process.cwd(), "../../");
 const PACKAGES_DIR = path.resolve(process.cwd(), "../");
 const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
 const BUILD_DIR = path.resolve(process.cwd(), "build");
@@ -22,37 +23,40 @@ const DOCS_DATA_FILENAME = "docs.json";
 const DOCS_RELEASES_FILENAME = "releases.json";
 const DOCS_VERSIONS_FIELENAME = "versions.json";
 
+const globalTsVersion = getGlobalTsVersion();
+
 try {
     if (!fs.existsSync(GENERATED_SRC_DIR)) {
         fs.mkdirSync(GENERATED_SRC_DIR);
     }
 
-    const globalTsVersion = getGlobalTsVersion();
-    const rootDir = path.resolve(__dirname, "../../");
     console.info("Installing typescript@2.1 for documentalist...");
     execSync(`yarn add typescript@2.1 --ignore-workspace-root-check --exact`, {
-        cwd: rootDir,
+        cwd: ROOT_DIR,
     });
 
     generateDocumentalistData().then(
         () => {
             generateReleasesData();
             generateVersionsData();
-
-            console.info(`Restoring typescript@${globalTsVersion} for monorepo...`);
-            execSync(`yarn add typescript@~${globalTsVersion} --ignore-workspace-root-check`, {
-                cwd: rootDir,
-            });
-            console.info("Running yarn at root again...");
-            execSync(`yarn`, { cwd: rootDir });
         },
         rejectedReason => {
             throw new Error(rejectedReason);
         },
     );
 } catch (err) {
+    console.error(`[generate-docs-data] Failed to generate JSON data`);
+    console.error(err);
     throw err;
-    process.exit(1);
+} finally {
+    console.info(`Restoring typescript@${globalTsVersion} for monorepo...`);
+    execSync(`yarn add typescript@~${globalTsVersion} --ignore-workspace-root-check`, {
+        cwd: ROOT_DIR,
+    });
+    console.info(`Running yarn at root...`);
+    execSync(`yarn`, {
+        cwd: ROOT_DIR,
+    });
 }
 
 /**
