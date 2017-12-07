@@ -6,12 +6,16 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          keys:
+            - v1-dependency-cache-{{ checksum "yarn.lock" }}
+            - v1-dependency-cache-
       - run: yarn
       - run: echo "Checking if lockfiles changed..." && git diff --exit-code
       - save_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
+            - ~/yarn
+            - ~/.cache/yarn
             - node_modules
       - run: npm rebuild node-sass
 
@@ -21,12 +25,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          keys:
+            - v1-dependency-cache-{{ checksum "yarn.lock" }}
+            - v1-dependency-cache-
       - run: yarn compile-libs
       - persist_to_workspace:
           root: '.'
           paths:
-            - yarn.lock
             - packages/core/dist
             - packages/datetime/dist
             - packages/docs/dist
@@ -37,18 +42,18 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
-      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          keys:
+            - v1-dependency-cache-{{ checksum "yarn.lock" }}
+            - v1-dependency-cache-
       - run: yarn lint
 
   dist:
     docker:
       - image: circleci/node:latest
     steps:
-      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
@@ -68,67 +73,64 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
-      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: ./node_modules/.bin/lerna run test --scope '@blueprintjs/core'
+      - run: yarn lerna run test --scope '@blueprintjs/core'
 
   test-datetime:
     docker:
       - image: circleci/node:latest
     steps:
-      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: ./node_modules/.bin/lerna run test --scope '@blueprintjs/datetime'
+      - run: yarn lerna run test --scope '@blueprintjs/datetime'
 
   test-labs:
     docker:
       - image: circleci/node:latest
     steps:
-      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: ./node_modules/.bin/lerna run test --scope '@blueprintjs/labs'
+      - run: yarn lerna run test --scope '@blueprintjs/labs'
 
   test-table:
     docker:
       - image: circleci/node:latest
     steps:
-      - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: ./node_modules/.bin/lerna run test --scope '@blueprintjs/table'
+      - run: yarn lerna run test --scope '@blueprintjs/table'
+
+  # dummy job to make the fan-in part of the workflow easy to declare
+  accept-verify:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - run: exit 0
 
   deploy-preview:
     docker:
       - image: circleci/node:latest
     steps:
-      - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: ./scripts/submit-preview-comment
+      - deploy: ./scripts/submit-preview-comment
 
   deploy-npm:
     docker:
       - image: circleci/node:latest
     steps:
-      - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: ./scripts/publish-npm-semver-tagged
+      - deploy: ./scripts/publish-npm-semver-tagged
 
 workflows:
   version: 2
@@ -149,7 +151,7 @@ workflows:
           requires: [compile-libs]
       - test-table:
           requires: [compile-libs]
-      - deploy-preview:
+      - accept-verify:
           requires:
             - lint
             - dist
@@ -157,8 +159,10 @@ workflows:
             - test-datetime
             - test-labs
             - test-table
+      - deploy-preview:
+          requires: [accept-verify]
       - deploy-npm:
-          requires: [deploy-preview]
+          requires: [accept-verify]
           filters:
             tags:
               only:
