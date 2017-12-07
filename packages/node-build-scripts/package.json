@@ -12,6 +12,7 @@
     "generate-icons-source": "./generate-icons-source"
   },
   "dependencies": {
+    "documentalist": "^0.0.8",
     "strip-css-comments": "^3.0.0"
   },
   "repository": {

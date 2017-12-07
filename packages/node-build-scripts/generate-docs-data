@@ -4,7 +4,7 @@
  * @fileoverview Generates data for packages/docs-app
  */
 
-const { spawn } = require("child_process");
+const { exec, spawn } = require("child_process");
 const dm = require("documentalist");
 const fs = require("fs");
 const glob = require("glob");
@@ -26,9 +26,25 @@ if (!fs.existsSync(GENERATED_SRC_DIR)) {
     fs.mkdirSync(GENERATED_SRC_DIR);
 }
 
-generateDocumentalistData();
-generateReleasesData();
-generateVersionsData();
+const globalTsVersion = getGlobalTsVersion();
+
+console.info("Installing typescript@2.1 for documentalist...");
+exec(`npm install typescript@2.1`, err => {
+    if (err) {
+        throw err;
+    }
+
+    generateDocumentalistData();
+    generateReleasesData();
+    generateVersionsData();
+
+    console.info(`Restoring typescript@${globalTsVersion} for monorepo...`);
+    exec(`npm install typescript@${globalTsVersion}`, err2 => {
+        if (err2) {
+            throw err2;
+        }
+    });
+});
 
 /**
  * Run documentalist to generate docs data from source code.
@@ -102,8 +118,15 @@ function generateVersionsData() {
         // sort in reverse order (so latest is first)
         const majorVersions = Array.from(majorVersionMap.values()).sort(semver.rcompare);
 
-        console.log("[generate-docs-data] Versions:", majorVersions.join(", "));
+        console.info("[generate-docs-data] Versions:", majorVersions.join(", "));
 
         fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_VERSIONS_FIELENAME), JSON.stringify(majorVersions, null, 2));
     });
+}
+
+function getGlobalTsVersion() {
+    const rootManifest = require("../../package.json");
+    return rootManifest != null && rootManifest.resolutions != null && rootManifest.resolutions.typescript != null
+        ? rootManifest.resolutions.typescript
+        : "2.4.2";
 }
