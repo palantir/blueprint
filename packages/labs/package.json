@@ -19,7 +19,7 @@
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
-    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config",
+    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
     "test": "npm-run-all -s test:pre -p test:karma",
     "test:pre": "tsc -p ./test",

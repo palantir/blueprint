@@ -12,7 +12,7 @@
     "dist": "NODE_ENV=production yarn bundle",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
-    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config",
+    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
     "test": "exit 0",
     "verify": "npm-run-all -p dist lint"
