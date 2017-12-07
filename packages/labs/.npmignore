@@ -1,4 +1,5 @@
 coverage/
 test/
-typings/
-tsd.json
+webpack.config.js
+karma.conf.js
+.npmrc
