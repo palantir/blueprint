@@ -39,6 +39,7 @@ jobs:
           root: '.'
           paths:
             - packages/core/dist
+            - packages/core/src/generated
             - packages/datetime/dist
             - packages/docs/dist
             - packages/labs/dist
