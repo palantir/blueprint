@@ -23,8 +23,6 @@ const DOCS_DATA_FILENAME = "docs.json";
 const DOCS_RELEASES_FILENAME = "releases.json";
 const DOCS_VERSIONS_FIELENAME = "versions.json";
 
-const globalTsVersion = getGlobalTsVersion();
-
 (async () => {
     try {
         if (!fs.existsSync(GENERATED_SRC_DIR)) {
@@ -53,7 +51,7 @@ const globalTsVersion = getGlobalTsVersion();
 /**
  * Run documentalist to generate docs data from source code.
  */
-function generateDocumentalistData(done) {
+function generateDocumentalistData() {
     return new dm.Documentalist({
         markdown: { renderer: docsUtils.markedRenderer },
         // must mark our @Decorator APIs as reserved so we can use them in code samples
