@@ -11,13 +11,13 @@ jobs:
             - v1-dependency-cache-
       - run: yarn
       - run: echo "Checking if lockfiles changed..." && git diff --exit-code
+      - run: npm rebuild node-sass
       - save_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ~/yarn
             - ~/.cache/yarn
             - node_modules
-      - run: npm rebuild node-sass --force
       - persist_to_workspace:
           root: '.'
           paths:
