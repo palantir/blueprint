@@ -25,39 +25,30 @@ const DOCS_VERSIONS_FIELENAME = "versions.json";
 
 const globalTsVersion = getGlobalTsVersion();
 
-try {
-    if (!fs.existsSync(GENERATED_SRC_DIR)) {
-        fs.mkdirSync(GENERATED_SRC_DIR);
+(async () => {
+    try {
+        if (!fs.existsSync(GENERATED_SRC_DIR)) {
+            fs.mkdirSync(GENERATED_SRC_DIR);
+        }
+
+        console.info("Installing typescript@2.1 for documentalist...");
+        execSync(`yarn add typescript@2.1 --ignore-workspace-root-check --exact`, {
+            cwd: ROOT_DIR,
+        });
+
+        await generateDocumentalistData();
+        generateReleasesData();
+        generateVersionsData();
+    } catch (err) {
+        console.error(`[generate-docs-data] Failed to generate JSON data`);
+        console.error(err);
+        throw err;
+    } finally {
+        console.info(`Restoring node modules from git checkout...`);
+        execSync(`git checkout yarn.lock package.json`, { cwd: ROOT_DIR });
+        execSync(`yarn`, { cwd: ROOT_DIR });
     }
-
-    console.info("Installing typescript@2.1 for documentalist...");
-    execSync(`yarn add typescript@2.1 --ignore-workspace-root-check --exact`, {
-        cwd: ROOT_DIR,
-    });
-
-    generateDocumentalistData().then(
-        () => {
-            generateReleasesData();
-            generateVersionsData();
-        },
-        rejectedReason => {
-            throw new Error(rejectedReason);
-        },
-    );
-} catch (err) {
-    console.error(`[generate-docs-data] Failed to generate JSON data`);
-    console.error(err);
-    throw err;
-} finally {
-    console.info(`Restoring typescript@${globalTsVersion} for monorepo...`);
-    execSync(`yarn add typescript@~${globalTsVersion} --ignore-workspace-root-check`, {
-        cwd: ROOT_DIR,
-    });
-    console.info(`Running yarn at root...`);
-    execSync(`yarn`, {
-        cwd: ROOT_DIR,
-    });
-}
+})();
 
 /**
  * Run documentalist to generate docs data from source code.
@@ -135,11 +126,4 @@ function generateVersionsData() {
 
         fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_VERSIONS_FIELENAME), JSON.stringify(majorVersions, null, 2));
     });
-}
-
-function getGlobalTsVersion() {
-    const rootManifest = require("../../package.json");
-    return rootManifest != null && rootManifest.resolutions != null && rootManifest.resolutions.typescript != null
-        ? rootManifest.resolutions.typescript
-        : "2.4.2";
 }
