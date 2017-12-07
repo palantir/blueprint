@@ -18,11 +18,13 @@ jobs:
             - ~/yarn
             - ~/.cache/yarn
             - node_modules
+            - packages/core/node_modules
+            - packages//node_modules
       - persist_to_workspace:
           root: '.'
           paths:
             - yarn.lock
-            - packages/*/node_modules
+            - packages/*/node_modules/.bin
 
   compile-libs:
     docker:
@@ -55,7 +57,7 @@ jobs:
             - v1-dependency-cache-
       - run: yarn lint
 
-  dist:
+  dist-libs:
     docker:
       - image: circleci/node:8
     steps:
@@ -64,16 +66,32 @@ jobs:
           at: '.'
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: yarn dist
+      - run: yarn dist:libs
       - persist_to_workspace:
           root: '.'
           paths:
-            - yarn.lock
             - packages/core/dist
             - packages/datetime/dist
             - packages/docs/dist
             - packages/labs/dist
             - packages/table/dist
+
+  dist-apps:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn dist:apps
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - packages/docs-app/dist
+            - packages/landing-app/dist
+            - packages/table-dev-app/dist
 
   test-core:
     docker:
@@ -119,13 +137,6 @@ jobs:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/table'
 
-  # dummy job to make the fan-in part of the workflow easy to declare
-  accept-verify:
-    docker:
-      - image: circleci/node:8
-    steps:
-      - run: exit 0
-
   deploy-preview:
     docker:
       - image: circleci/node:8
@@ -153,7 +164,9 @@ workflows:
           requires: [install-dependencies]
       - lint:
           requires: [install-dependencies]
-      - dist:
+      - dist-libs:
+          requires: [compile-libs]
+      - dist-apps:
           requires: [compile-libs]
       - test-core:
           requires: [compile-libs]
@@ -163,18 +176,17 @@ workflows:
           requires: [compile-libs]
       - test-table:
           requires: [compile-libs]
-      - accept-verify:
+      - deploy-preview:
           requires:
             - lint
-            - dist
+            - dist-libs
+            - dist-apps
             - test-core
             - test-datetime
             - test-labs
             - test-table
-      - deploy-preview:
-          requires: [accept-verify]
       - deploy-npm:
-          requires: [accept-verify]
+          requires: [deploy-preview]
           filters:
             tags:
               only:

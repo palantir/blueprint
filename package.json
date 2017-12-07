@@ -20,13 +20,14 @@
     "dev:labs": "lerna run dev --parallel --scope '@blueprintjs/{core,labs,docs-app}'",
     "dev:landing": "lerna run dev --parallel --scope '@blueprintjs/{core,landing-app}'",
     "dev:table": "lerna run dev --parallel --scope '@blueprintjs/table-dev-app'",
-    "dist": "npm-run-all 'dist:*'",
-    "dist:libs-apps": "lerna run --parallel dist",
-    "dist:docs": "npm-run-all clean-gh-pages copy-docs-app copy-landing-app",
+    "dist": "npm-run-all dist:libs dist:apps dist:gh-pages",
+    "dist:libs": "lerna run dist --parallel --scope '@blueprintjs/{core,datetime,docs,labs,table}'",
+    "dist:apps": "lerna run dist --scope '@blueprintjs/{landing-app,table-dev-app}' && lerna run dist --scope '@blueprintjs/docs-app'",
+    "dist:gh-pages": "npm-run-all clean-gh-pages copy-docs-app copy-landing-app",
     "lint": "lerna run --parallel lint",
     "lint-fix": "lerna run --parallel lint-fix",
     "test": "lerna run --parallel test",
-    "verify": "npm-run-all compile-libs -p dist test lint",
+    "verify": "npm-run-all compile-libs dist:libs dist:apps -p test lint",
     "serve": "http-server docs"
   },
   "dependencies": {
