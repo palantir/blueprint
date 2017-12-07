@@ -29,7 +29,9 @@ try {
 
     const globalTsVersion = getGlobalTsVersion();
     console.info("Installing typescript@2.1 for documentalist...");
-    execSync(`cd $CIRCLE_WORKING_DIRECTORY && yarn add typescript@2.1 --ignore-workspace-root-check --exact`);
+    execSync(`yarn add typescript@2.1 --ignore-workspace-root-check --exact`, {
+        cwd: path.resolve(__dirname, "../../"),
+    });
 
     generateDocumentalistData().then(
         () => {
@@ -37,9 +39,9 @@ try {
             generateVersionsData();
 
             console.info(`Restoring typescript@${globalTsVersion} for monorepo...`);
-            execSync(
-                `cd $CIRCLE_WORKING_DIRECTORY && yarn add typescript@~${globalTsVersion} --ignore-workspace-root-check`,
-            );
+            execSync(`yarn add typescript@~${globalTsVersion} --ignore-workspace-root-check`, {
+                cwd: path.resolve(__dirname, "../../"),
+            });
         },
         rejectedReason => {
             throw new Error(rejectedReason);
