@@ -5383,7 +5383,7 @@ node-sass-package-importer@^3.0.4:
   dependencies:
     resolve "^1.1.7"
 
-node-sass@^4.5.3:
+node-sass@^4.7.2:
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-4.7.2.tgz#9366778ba1469eb01438a9e8592f4262bcb6794e"
   dependencies:

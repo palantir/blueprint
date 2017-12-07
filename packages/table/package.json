@@ -40,7 +40,7 @@
     "karma": "^1.7.1",
     "lodash": "^4.17.4",
     "mocha": "^4.0.1",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.1",
