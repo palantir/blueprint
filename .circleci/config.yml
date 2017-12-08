@@ -18,8 +18,6 @@ jobs:
             - ~/yarn
             - ~/.cache/yarn
             - node_modules
-            - packages/core/node_modules
-            - packages//node_modules
       - persist_to_workspace:
           root: '.'
           paths:
