@@ -10,7 +10,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface IControlGroupProps extends React.HTMLProps<HTMLDivElement>, IProps {
+export interface IControlGroupProps extends React.AllHTMLAttributes<HTMLDivElement>, IProps {
     /**
      * Whether the control group should take up the full width of its container.
      */

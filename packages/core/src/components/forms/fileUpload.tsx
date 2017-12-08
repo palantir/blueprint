@@ -11,7 +11,7 @@ import { Utils } from "../../common";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface IFileUploadProps extends React.HTMLProps<HTMLLabelElement>, IProps {
+export interface IFileUploadProps extends React.AllHTMLAttributes<HTMLLabelElement>, IProps {
     /**
      * Whether the file upload is non-interactive.
      * Setting this to `true` will automatically disable the child input too.

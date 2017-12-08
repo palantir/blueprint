@@ -10,7 +10,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface ILabelProps extends React.HTMLProps<HTMLDivElement>, IProps {
+export interface ILabelProps extends React.AllHTMLAttributes<HTMLDivElement>, IProps {
     /**
      * Whether the label is non-interactive.
      * Be sure to explicitly disable any child controls as well.
