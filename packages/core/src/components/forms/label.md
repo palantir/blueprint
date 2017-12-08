@@ -45,7 +45,7 @@ This component is a simple wrapper around the corresponding CSS API. It supports
     text="Label A"
     required={true}
 >
-    <input id="text-input" placeholder="Placeholder text" />
+    <input className="pt-input" id="text-input" placeholder="Placeholder text" />
 </Label>
 ```
 
