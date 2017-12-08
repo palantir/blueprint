@@ -167,14 +167,16 @@ describe("<DateInput>", () => {
 
     describe("when uncontrolled", () => {
         it("Pressing Enter saves the inputted date and closes the popover", () => {
+            const IMPROPERLY_FORMATTED_DATE_STRING = "2015-2-15";
+            const PROPERLY_FORMATTED_DATE_STRING = "2015-02-15";
             const onKeyDown = sinon.spy();
             const wrapper = mount(<DateInput inputProps={{ onKeyDown }} />).setState({ isOpen: true });
             const input = wrapper.find("input").first();
-            input.simulate("change", { target: { value: "2015-02-15" } });
+            input.simulate("change", { target: { value: IMPROPERLY_FORMATTED_DATE_STRING } });
             input.simulate("keydown", { which: Keys.ENTER });
             assert.isFalse(wrapper.state("isOpen"), "popover closed");
             assert.isTrue(wrapper.state("isInputFocused"), "input still focused");
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), "2015-02-15");
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), PROPERLY_FORMATTED_DATE_STRING);
             assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
         });
 

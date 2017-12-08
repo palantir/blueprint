@@ -329,7 +329,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const isInputFocused = didSubmitWithEnter ? true : false;
 
         if (this.props.value === undefined) {
-            this.setState({ isInputFocused, isOpen, value: momentDate });
+            this.setState({ isInputFocused, isOpen, value: momentDate, valueString: this.getDateString(momentDate) });
         } else {
             this.setState({ isInputFocused, isOpen });
         }
