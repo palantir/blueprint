@@ -16,7 +16,6 @@ if [ $? -eq 0 ]; then
     echo "SKIP"
 else
     echo "RENDER"
-    (cd packages/landing-app; npm run build)
     PREVIEWS="$PREVIEWS | $(artifactLink '/packages/landing-app/dist/index.html' 'landing')"
 fi
 
@@ -27,7 +26,6 @@ if [ $? -eq 0 ]; then
     echo "SKIP"
 else
     echo "RENDER"
-    (cd packages/table; npm run build)
     PREVIEWS="$PREVIEWS | $(artifactLink '/packages/table-dev-app/dist/index.html' 'table')"
 fi
 
