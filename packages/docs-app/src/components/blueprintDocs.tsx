@@ -6,8 +6,9 @@
 
 import { setHotkeysDialogProps } from "@blueprintjs/core";
 import { Documentation, IDocumentationProps } from "@blueprintjs/docs";
+import { IPackageInfo } from "@blueprintjs/docs-data";
 import * as React from "react";
-import { IPackageInfo, NavbarActions } from "./navbarActions";
+import { NavbarActions } from "./navbarActions";
 
 const DARK_THEME = "pt-dark";
 const LIGHT_THEME = "";

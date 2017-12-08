@@ -4,7 +4,7 @@
  * @fileoverview Generates data for packages/docs-app
  */
 
-const { spawn } = require("child_process");
+const { execSync, spawn } = require("child_process");
 const dm = require("documentalist");
 const fs = require("fs");
 const glob = require("glob");
@@ -13,6 +13,7 @@ const semver = require("semver");
 const docsUtils = require("./docsUtils");
 
 // assume we are running from packages/docs-app
+const ROOT_DIR = path.resolve(process.cwd(), "../../");
 const PACKAGES_DIR = path.resolve(process.cwd(), "../");
 const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
 const BUILD_DIR = path.resolve(process.cwd(), "build");
@@ -22,49 +23,59 @@ const DOCS_DATA_FILENAME = "docs.json";
 const DOCS_RELEASES_FILENAME = "releases.json";
 const DOCS_VERSIONS_FIELENAME = "versions.json";
 
-if (!fs.existsSync(GENERATED_SRC_DIR)) {
-    fs.mkdirSync(GENERATED_SRC_DIR);
-}
+(async () => {
+    try {
+        if (!fs.existsSync(GENERATED_SRC_DIR)) {
+            fs.mkdirSync(GENERATED_SRC_DIR);
+        }
 
-generateDocumentalistData();
-generateReleasesData();
-generateVersionsData();
+        await generateDocumentalistData();
+        generateReleasesData();
+        generateVersionsData();
+    } catch (err) {
+        console.error(`[docs-data] Failed to generate JSON data:`);
+        console.error(err);
+        throw err;
+    }
+})();
 
 /**
  * Run documentalist to generate docs data from source code.
  */
 function generateDocumentalistData() {
-    new dm.Documentalist({
+    return new dm.Documentalist({
         markdown: { renderer: docsUtils.markedRenderer },
         // must mark our @Decorator APIs as reserved so we can use them in code samples
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget"],
     })
         .use(".md", new dm.MarkdownPlugin({ navPage: NAV_PAGE_NAME }))
-        .use(/\.d\.ts$/, new dm.TypescriptPlugin({
-            excludeNames: [/Factory$/, /^I.+State$/],
-            excludePaths: ["node_modules/"],
-            includeDefinitionFiles: true,
-        }))
+        .use(
+            /\.d\.ts$/,
+            new dm.TypescriptPlugin({
+                excludeNames: [/Factory$/, /^I.+State$/],
+                excludePaths: ["node_modules/"],
+                includeDefinitionFiles: true,
+            }),
+        )
         .use(".scss", new dm.KssPlugin())
         .documentGlobs("../*/src/**/*", "../*/dist/index.d.ts")
-        .then((docs) => JSON.stringify(docs, null, 2))
-        .then((content) => (
-            fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_DATA_FILENAME), content)
-        ));
+        .then(docs => JSON.stringify(docs, null, 2))
+        .then(content => fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_DATA_FILENAME), content));
 }
 
 /**
  * Create a JSON file containing latest released version of each project
  */
 function generateReleasesData() {
-    const packageDirectories = fs.readdirSync(PACKAGES_DIR)
+    const packageDirectories = fs
+        .readdirSync(PACKAGES_DIR)
         .map(name => path.join(PACKAGES_DIR, name))
         .filter(source => fs.lstatSync(source).isDirectory());
 
     const releases = packageDirectories
-        .map((packagePath) => require(path.resolve(packagePath, "package.json")))
+        .map(packagePath => require(path.resolve(packagePath, "package.json")))
         // only include non-private projects
-        .filter((project) => !project.private)
+        .filter(project => !project.private)
         // just these two fields from package.json:
         .map(({ name, version }) => ({ name, version }));
 
@@ -78,10 +89,13 @@ function generateVersionsData() {
     let stdout = "";
     const child = spawn("git", ["tag"]);
     child.stdout.setEncoding("utf8");
-    child.stdout.on("data", data => { stdout += data; });
+    child.stdout.on("data", data => {
+        stdout += data;
+    });
     child.on("close", () => {
         /** @type {Map<string, string>} */
-        const majorVersionMap = stdout.split("\n")
+        const majorVersionMap = stdout
+            .split("\n")
             // turn release-* tags into version numbers
             .filter(val => /release-[1-9]\d*\.\d+\.\d+.*/.test(val))
             .map(val => val.slice(8))
@@ -97,7 +111,7 @@ function generateVersionsData() {
         // sort in reverse order (so latest is first)
         const majorVersions = Array.from(majorVersionMap.values()).sort(semver.rcompare);
 
-        console.log("[generate-docs-data] Versions:", majorVersions.join(", "));
+        console.info("[docs-data] Major versions found:", majorVersions.join(", "));
 
         fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_VERSIONS_FIELENAME), JSON.stringify(majorVersions, null, 2));
     });

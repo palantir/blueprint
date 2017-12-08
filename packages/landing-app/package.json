@@ -10,7 +10,7 @@
     "dist": "NODE_ENV=production yarn bundle",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
-    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config",
+    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
     "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/img",
     "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/inline && node scripts/dedupe-svg-ids.js",
@@ -27,10 +27,11 @@
   "devDependencies": {
     "@blueprintjs/webpack-build-scripts": "^0.2.0",
     "copy-webpack-plugin": "^4.2.0",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.1",
     "raw-loader": "^0.5.1",
     "svgo": "^0.7.2",
+    "tslint": "^5.8.0",
     "webpack": "^3.9.1",
     "webpack-dev-server": "^2.9.5"
   },

@@ -13,7 +13,7 @@
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.7.2",
     "postcss": "^6.0.8",
     "postcss-cli": "^4.1.0",
     "postcss-loader": "^2.0.6",
