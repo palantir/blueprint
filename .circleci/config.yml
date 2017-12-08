@@ -142,7 +142,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: '.'
-      - deploy: ./scripts/submit-preview-comment
+      - run: ./scripts/submit-preview-comment
 
   deploy-npm:
     docker:
@@ -151,7 +151,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: '.'
-      - deploy: ./scripts/publish-npm-semver-tagged
+      - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
   version: 2
