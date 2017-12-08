@@ -143,6 +143,8 @@ jobs:
       - attach_workspace:
           at: '.'
       - store_artifacts:
+          path: docs
+      - store_artifacts:
           path: packages/docs-app/dist
       - store_artifacts:
           path: packages/landing-app/dist
