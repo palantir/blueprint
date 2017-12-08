@@ -362,10 +362,7 @@ describe("<TagInput>", () => {
         it("pressing backspace does not remove item", () => {
             const onRemove = sinon.spy();
             const wrapper = shallow(<TagInput onRemove={onRemove} values={VALUES} />);
-            wrapper.find("input").simulate("keydown", {
-                currentTarget: { value: "text" },
-                which: Keys.BACKSPACE,
-            });
+            wrapper.find("input").simulate("keydown", createInputKeydownEventMetadata("text", Keys.BACKSPACE));
             assert.isTrue(onRemove.notCalled);
         });
     });
@@ -421,9 +418,17 @@ describe("<TagInput>", () => {
     });
 
     function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {
-        wrapper.find("input").simulate("keydown", {
+        wrapper.find("input").simulate("keydown", createInputKeydownEventMetadata(value, Keys.ENTER));
+    }
+
+    function createInputKeydownEventMetadata(value: string, which: number) {
+        return {
             currentTarget: { value },
-            which: Keys.ENTER,
-        });
+            // Enzyme throws errors if we don't mock the stopPropagation method.
+            stopPropagation: () => {
+                return;
+            },
+            which,
+        };
     }
 });
