@@ -19,7 +19,7 @@
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
-    "lint:tslint": "tslint 'src/**/*.{ts,tsx}' -c ../tslint-config",
+    "lint:tslint": "tslint 'src/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
     "verify": "npm-run-all compile -p dist lint"
   },
@@ -34,11 +34,12 @@
     "@blueprintjs/node-build-scripts": "^0.2.0",
     "@types/fuzzaldrin-plus": "^0.0.1",
     "bourbon": "^4.3.4",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.1",
     "react-dom": "^15.6.1",
+    "tslint": "^5.8.0",
     "typescript": "~2.4.2",
     "webpack": "^3.9.1"
   },

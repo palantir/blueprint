@@ -150,7 +150,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
             inputProps,
             noResults,
             popoverProps,
-            ...restProps,
+            ...restProps
         } = this.props;
 
         return (

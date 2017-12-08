@@ -57,7 +57,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
             rowIndexEnd: indexEnd,
 
             // from IHeaderProps
-            ...spreadableProps,
+            ...spreadableProps
         } = this.props;
 
         return (

@@ -8,22 +8,19 @@ import "dom4";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { createDefaultRenderers, IDocsData, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs";
+import { createDefaultRenderers, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs";
+import { docsData as docs, IPackageInfo, releasesData, versionsData } from "@blueprintjs/docs-data";
 
 import { BlueprintDocs } from "./components/blueprintDocs";
-import { IPackageInfo } from "./components/navbarActions";
 import * as ReactDocs from "./tags/reactDocs";
 import { reactExamples } from "./tags/reactExamples";
 
-/* tslint:disable:no-var-requires */
-const docs: IDocsData = require("./generated/docs.json");
-
-const releases = (require("./generated/releases.json") as IPackageInfo[]).map(pkg => {
+const releases = releasesData.map((pkg: IPackageInfo) => {
     pkg.url = `https://www.npmjs.com/package/${pkg.name}`;
     return pkg;
 });
 
-const versions = (require("./generated/versions.json") as string[]).map(version => ({
+const versions = versionsData.map((version: string) => ({
     url: `https://palantir.github.io/blueprint/docs/${version}`,
     version,
 }));

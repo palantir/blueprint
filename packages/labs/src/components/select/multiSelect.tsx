@@ -93,7 +93,7 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
             popoverProps,
             resetOnSelect,
             tagInputProps,
-            ...restProps,
+            ...restProps
         } = this.props;
 
         return (

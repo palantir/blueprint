@@ -1266,7 +1266,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             loadingOptions,
             renderCell,
             renderColumnHeader: renderColumnHeaderCell,
-            ...spreadableProps,
+            ...spreadableProps
         } = props;
 
         const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
@@ -1435,7 +1435,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             name,
             renderName,
             useInteractionBar,
-            ...restColumnProps,
+            ...restColumnProps
         } = this.getColumnProps(columnIndex);
 
         const cell = renderCell(rowIndex, columnIndex);

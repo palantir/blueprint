@@ -21,6 +21,7 @@ import "./controls/numericInputTests";
 import "./controls/radioGroupTests";
 import "./dialog/dialogTests";
 import "./editable-text/editableTextTests";
+import "./forms/fileUploadTests";
 import "./forms/formGroupTests";
 import "./hotkeys/hotkeysTests";
 import "./icon/iconTests";
