@@ -5,7 +5,7 @@
         "experimentalDecorators": true,
         "importHelpers": true,
         "jsx": "react",
-        "module": "commonjs",
+        "module": "es2015",
         "moduleResolution": "node",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,

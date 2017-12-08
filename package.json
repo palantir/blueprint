@@ -1,6 +1,6 @@
 {
   "name": "blueprintjs-monorepo",
-  "version": "1.33.0",
+  "version": "1.34.0",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "workspaces": [
@@ -11,7 +11,7 @@
     "compile-libs": "lerna run compile",
     "clean": "lerna run --parallel clean",
     "clean-gh-pages": "rm -rf docs && git checkout docs/CNAME",
-    "copy-docs-app": "cp -rf packages/docs-app/dist docs/docs",
+    "copy-docs-app": "mkdir -p docs/docs/ && cp -rf packages/docs-app/dist/* docs/docs/.",
     "copy-landing-app": "cp -rf packages/landing-app/dist/* docs/.",
     "dev:all": "lerna run dev --parallel --scope '!@blueprintjs/landing-app'",
     "dev:core": "lerna run dev --parallel --scope '@blueprintjs/{core,docs-app}'",
@@ -20,13 +20,14 @@
     "dev:labs": "lerna run dev --parallel --scope '@blueprintjs/{core,labs,docs-app}'",
     "dev:landing": "lerna run dev --parallel --scope '@blueprintjs/{core,landing-app}'",
     "dev:table": "lerna run dev --parallel --scope '@blueprintjs/table-dev-app'",
-    "dist": "npm-run-all 'dist:*'",
-    "dist:libs-apps": "lerna run --parallel dist",
-    "dist:docs": "npm-run-all clean-gh-pages copy-docs-app copy-landing-app",
+    "dist": "run-s dist:libs dist:apps dist:gh-pages",
+    "dist:libs": "lerna run dist --parallel --scope '@blueprintjs/{core,datetime,docs,labs,table}'",
+    "dist:apps": "lerna run dist --parallel --scope '@blueprintjs/{docs-app,landing-app,table-dev-app}'",
+    "dist:gh-pages": "run-s clean-gh-pages copy-docs-app copy-landing-app",
     "lint": "lerna run --parallel lint",
     "lint-fix": "lerna run --parallel lint-fix",
     "test": "lerna run --parallel test",
-    "verify": "npm-run-all compile-libs -p dist test lint",
+    "verify": "npm-run-all -s compile-libs dist:libs dist:apps -p test lint",
     "serve": "http-server docs"
   },
   "dependencies": {
@@ -45,13 +46,10 @@
     "@types/webpack": "^3.8.0",
     "better-handlebars": "github:wmeldon/better-handlebars",
     "chai": "^4.1.2",
-    "documentalist": "^0.0.8",
-    "highlights": "^3.1.1",
     "http-server": "^0.10.0",
     "language-less": "github:atom/language-less",
     "language-typescript": "github:giladgray/language-typescript#10.1.15",
     "lerna": "^2.5.0",
-    "marked": "^0.3.6",
     "node-sass-package-importer": "^3.0.4",
     "npm-run-all": "^4.1.1",
     "postcss-import": "^11.0.0",
@@ -61,7 +59,7 @@
     "stylelint-config-palantir": "^2.1.0",
     "stylelint-config-standard": "^17.0.0",
     "stylelint-scss": "^2.1.0",
-    "ts-quick-docs": "^0.5.3"
+    "typescript": "~2.4.2"
   },
   "engines": {
     "node": ">=6.1"

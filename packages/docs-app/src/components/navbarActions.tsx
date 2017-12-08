@@ -5,17 +5,11 @@
  */
 
 import { AnchorButton, Classes, Hotkey, Hotkeys, HotkeysTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { IPackageInfo } from "@blueprintjs/docs-data";
 import { Popover2 } from "@blueprintjs/labs";
 
 import * as classNames from "classnames";
 import * as React from "react";
-
-export interface IPackageInfo {
-    /** Name of package. Ignored for documentation site versions. */
-    name?: string;
-    url: string;
-    version: string;
-}
 
 export interface INavbarActionsProps {
     onToggleDark: (useDark: boolean) => void;

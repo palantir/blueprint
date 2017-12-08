@@ -33,9 +33,11 @@ import {
     isMomentNull,
     isMomentValidAndInRange,
     MomentDateRange,
-    toLocalizedDateString,
+    momentToString,
+    stringToMoment,
 } from "./common/dateUtils";
 import * as Errors from "./common/errors";
+import { DateFormat, IDateFormatter } from "./dateFormatter";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
 
@@ -93,9 +95,10 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
      * The format of each date in the date range. See options
      * here: http://momentjs.com/docs/#/displaying/format/
+     * Alternatively, pass an `IDateFormatter` for custom date rendering.
      * @default "YYYY-MM-DD"
      */
-    format?: string;
+    format?: string | IDateFormatter;
 
     /**
      * The error message to display when the selected date is invalid.
@@ -392,7 +395,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // Callbacks - DateRangePicker
     // ===========================
 
-    private handleDateRangePickerChange = (selectedRange: DateRange) => {
+    private handleDateRangePickerChange = (selectedRange: DateRange, didSubmitWithEnter = false) => {
         // ignore mouse events in the date-range picker if the popover is animating closed.
         if (!this.state.isOpen) {
             return;
@@ -424,7 +427,10 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         } else if (this.props.closeOnSelection) {
             isOpen = false;
             isStartInputFocused = false;
-            isEndInputFocused = false;
+            // if we submit via click or Tab, the focus will have moved already.
+            // it we submit with Enter, the focus won't have moved, and setting
+            // the flag to false won't have an effect anyway, so leave it true.
+            isEndInputFocused = didSubmitWithEnter ? true : false;
         } else if (this.state.lastFocusedField === DateRangeBoundary.START) {
             // keep the start field focused
             isStartInputFocused = true;
@@ -542,8 +548,11 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     // - if focused in start field, Tab moves focus to end field
     // - if focused in end field, Shift+Tab moves focus to start field
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const isTabPressed = e.keyCode === Keys.TAB;
+        const isTabPressed = e.which === Keys.TAB;
+        const isEnterPressed = e.which === Keys.ENTER;
         const isShiftPressed = e.shiftKey;
+
+        const { selectedStart, selectedEnd } = this.state;
 
         // order of JS events is our enemy here. when tabbing between fields,
         // this handler will fire in the middle of a focus exchange when no
@@ -552,30 +561,50 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         const wasStartFieldFocused = this.state.lastFocusedField === DateRangeBoundary.START;
         const wasEndFieldFocused = this.state.lastFocusedField === DateRangeBoundary.END;
 
-        let isEndInputFocused: boolean;
-        let isStartInputFocused: boolean;
-
         // move focus to the other field
-        if (wasStartFieldFocused && isTabPressed && !isShiftPressed) {
-            isStartInputFocused = false;
-            isEndInputFocused = true;
-        } else if (wasEndFieldFocused && isTabPressed && isShiftPressed) {
-            isStartInputFocused = true;
-            isEndInputFocused = false;
+        if (isTabPressed) {
+            let isEndInputFocused: boolean;
+            let isStartInputFocused: boolean;
+            let isOpen = true;
+
+            if (wasStartFieldFocused && !isShiftPressed) {
+                isStartInputFocused = false;
+                isEndInputFocused = true;
+
+                // prevent the default focus-change behavior to avoid race conditions;
+                // we'll handle the focus change ourselves in componentDidUpdate.
+                e.preventDefault();
+            } else if (wasEndFieldFocused && isShiftPressed) {
+                isStartInputFocused = true;
+                isEndInputFocused = false;
+                e.preventDefault();
+            } else {
+                // don't prevent default here, otherwise Tab won't do anything.
+                isStartInputFocused = false;
+                isEndInputFocused = false;
+                isOpen = false;
+            }
+
+            this.setState({
+                isEndInputFocused,
+                isOpen,
+                isStartInputFocused,
+                wasLastFocusChangeDueToHover: false,
+            });
+        } else if (wasStartFieldFocused && isEnterPressed) {
+            const nextStartValue = this.dateStringToMoment(this.state.startInputString);
+            const nextStartDate = fromMomentToDate(nextStartValue);
+            const nextEndDate = isMomentNull(selectedEnd) ? undefined : fromMomentToDate(selectedEnd);
+            this.handleDateRangePickerChange([nextStartDate, nextEndDate] as DateRange, true);
+        } else if (wasEndFieldFocused && isEnterPressed) {
+            const nextStartDate = isMomentNull(selectedStart) ? undefined : fromMomentToDate(selectedStart);
+            const nextEndValue = this.dateStringToMoment(this.state.endInputString);
+            const nextEndDate = fromMomentToDate(nextEndValue);
+            this.handleDateRangePickerChange([nextStartDate, nextEndDate] as DateRange, true);
         } else {
             // let the default keystroke happen without side effects
             return;
         }
-
-        // prevent the default focus-change behavior to avoid race conditions;
-        // we'll handle the focus change ourselves in componentDidUpdate.
-        e.preventDefault();
-
-        this.setState({
-            isEndInputFocused,
-            isStartInputFocused,
-            wasLastFocusChangeDueToHover: false,
-        });
     };
 
     private handleInputMouseDown = () => {
@@ -713,7 +742,7 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         if (this.isInputEmpty(dateString)) {
             return moment(null);
         }
-        return moment(dateString, this.props.format, this.props.locale);
+        return stringToMoment(dateString, this.props.format, this.props.locale);
     };
 
     private getInitialRange = (props = this.props) => {
@@ -818,14 +847,14 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
         return boundary === DateRangeBoundary.START ? this.refHandlers.startInputRef : this.refHandlers.endInputRef;
     };
 
-    private getFormattedDateString = (momentDate: moment.Moment, formatOverride?: string) => {
+    private getFormattedDateString = (momentDate: moment.Moment, formatOverride?: DateFormat) => {
         if (isMomentNull(momentDate)) {
             return "";
         } else if (!momentDate.isValid()) {
             return this.props.invalidDateMessage;
         } else {
-            const format = formatOverride != null ? formatOverride : this.props.format;
-            return toLocalizedDateString(momentDate, format, this.props.locale);
+            const format = formatOverride == null ? this.props.format : formatOverride;
+            return momentToString(momentDate, format, this.props.locale);
         }
     };
 

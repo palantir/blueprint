@@ -5,6 +5,8 @@
  */
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
+import { DateFormat } from "@blueprintjs/datetime";
+import * as moment from "moment";
 import * as React from "react";
 
 export interface IFormatSelectProps {
@@ -19,10 +21,63 @@ export interface IFormatSelectProps {
     onChange: (event: React.FormEvent<HTMLElement>) => void;
 }
 
-export const FORMATS = ["MM/DD/YYYY", "YYYY-MM-DD", "YYYY-MM-DD HH:mm:ss"];
+function keyBy<T>(array: T[], func: (t: T) => string): { [key: string]: T } {
+    const result: { [key: string]: T } = {};
+    array.forEach(val => (result[func(val)] = val));
+    return result;
+}
+
+function asString(format: DateFormat) {
+    return typeof format === "string" ? format : format.placeholder || "unnamed";
+}
+
+export const FORMATS = keyBy(
+    [
+        "MM/DD/YYYY",
+        "YYYY-MM-DD",
+        "YYYY-MM-DD HH:mm:ss",
+        {
+            dateToString(date: Date) {
+                const durationMillis = new Date().getTime() - date.getTime();
+                const days = Math.floor(moment.duration(durationMillis).asDays());
+                return Math.abs(days) + (days >= 0 ? " days ago" : " days from now");
+            },
+            stringToDate(str: string) {
+                const parts = str.split(/\s+/);
+                if (parts.length < 3) {
+                    return undefined;
+                }
+                if (parts[1].toLowerCase() !== "days") {
+                    return undefined;
+                }
+                const numDays = +parts[0];
+                if (isNaN(numDays)) {
+                    return undefined;
+                }
+
+                if (parts[2].toLowerCase() === "ago") {
+                    return moment()
+                        .subtract(numDays, "days")
+                        .toDate();
+                } else if (
+                    parts.length === 4 &&
+                    parts[2].toLowerCase() === "from" &&
+                    parts[3].toLowerCase() === "now"
+                ) {
+                    return moment()
+                        .add(numDays, "days")
+                        .toDate();
+                }
+                return undefined;
+            },
+            placeholder: "custom",
+        },
+    ],
+    asString,
+);
 
 export const FormatSelect: React.SFC<IFormatSelectProps> = props => (
     <RadioGroup label="Date format" onChange={props.onChange} selectedValue={props.selectedValue}>
-        {FORMATS.map(value => <Radio key={value} label={value} value={value} />)}
+        {Object.keys(FORMATS).map(value => <Radio key={value} label={value} value={value} />)}
     </RadioGroup>
 );

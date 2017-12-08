@@ -16,7 +16,7 @@ export interface IDateRangeInputExampleState {
     closeOnSelection?: boolean;
     contiguousCalendarMonths?: boolean;
     disabled?: boolean;
-    format?: string;
+    formatKey: string;
     reverseMonthAndYearMenus?: boolean;
     selectAllOnFocus?: boolean;
 }
@@ -27,7 +27,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         closeOnSelection: false,
         contiguousCalendarMonths: true,
         disabled: false,
-        format: FORMATS[0],
+        formatKey: Object.keys(FORMATS)[0],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
     };
@@ -36,7 +36,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         this.setState({ contiguousCalendarMonths: contiguous });
     });
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
-    private toggleFormat = handleStringChange(format => this.setState({ format }));
+    private toggleFormatKey = handleStringChange(formatKey => this.setState({ formatKey }));
     private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
         this.setState({ reverseMonthAndYearMenus }),
     );
@@ -45,12 +45,13 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
 
     protected renderExample() {
-        return <DateRangeInput {...this.state} />;
+        const { formatKey, ...spreadableState } = this.state;
+        return <DateRangeInput format={FORMATS[formatKey]} {...spreadableState} />;
     }
 
     protected renderOptions() {
         return [
-            [<FormatSelect key="Format" onChange={this.toggleFormat} selectedValue={this.state.format} />],
+            [<FormatSelect key="Format" onChange={this.toggleFormatKey} selectedValue={this.state.formatKey} />],
             [
                 <label className={Classes.LABEL} key="modifierslabel">
                     Modifiers

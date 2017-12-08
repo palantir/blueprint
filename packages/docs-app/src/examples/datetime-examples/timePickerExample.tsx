@@ -11,7 +11,7 @@ import { PrecisionSelect } from "./common/precisionSelect";
 
 import { TimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
 // tslint:disable-next-line:no-submodule-imports
-import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/dist/timePicker";
+import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/dist/esm/timePicker";
 
 export interface ITimePickerExampleState {
     precision?: TimePickerPrecision;

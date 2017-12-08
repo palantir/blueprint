@@ -27,7 +27,7 @@ let variablesScss = VARIABLES_SOURCES.reduce((str, currentFilename) => {
 // strip comments, clean up for consumption
 variablesScss = stripCssComments(variablesScss);
 variablesScss = variablesScss
-    .replace(" !default", "")
+    .replace(/\ \!default/g, "")
     .replace(/(@import|\/\/).*\n+/g, "")
     .replace(/border-shadow\((.+)\)/g, "0 0 0 1px rgba($black, $1)")
     .replace(/\n{3,}/g, "\n\n");
@@ -37,15 +37,8 @@ fs.writeFileSync(`${DIST_DIR}/variables.scss`, variablesScss);
 
 // convert scss to less
 const variablesLess = variablesScss
-    .replace(
-        /rgba\((\$[\w-]+), ([\d\.]+)\)/g,
-        (match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`
-    ).replace(
-        /rgba\((\$[\w-]+), (\$[\w-]+)\)/g,
-        (match, color, variable) => `fade(${color}, ${variable} * 100%)`
-    ).replace(
-        /\$/g,
-        "@"
-    );
+    .replace(/rgba\((\$[\w-]+), ([\d\.]+)\)/g, (match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`)
+    .replace(/rgba\((\$[\w-]+), (\$[\w-]+)\)/g, (match, color, variable) => `fade(${color}, ${variable} * 100%)`)
+    .replace(/\$/g, "@");
 
 fs.writeFileSync(`${DIST_DIR}/variables.less`, variablesLess);

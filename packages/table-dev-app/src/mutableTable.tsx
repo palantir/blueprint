@@ -85,6 +85,7 @@ const TRUNCATED_POPOVER_MODES: TruncatedPopoverMode[] = [
     TruncatedPopoverMode.ALWAYS,
     TruncatedPopoverMode.NEVER,
     TruncatedPopoverMode.WHEN_TRUNCATED,
+    TruncatedPopoverMode.WHEN_TRUNCATED_APPROX,
 ];
 
 const TRUNCATION_LENGTHS: number[] = [20, 80, 100, 1000];
@@ -884,6 +885,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 return "Never";
             case TruncatedPopoverMode.WHEN_TRUNCATED:
                 return "When truncated";
+            case TruncatedPopoverMode.WHEN_TRUNCATED_APPROX:
+                return "Truncated approx";
             default:
                 return "";
         }

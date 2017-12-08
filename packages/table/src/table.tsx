@@ -566,14 +566,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                 } = this.resolveResizeRowsByApproximateHeightOptions(options, rowIndex, columnIndex);
 
                 const cellText = getCellText(rowIndex, columnIndex);
-                const numCharsInCell = cellText == null ? 0 : cellText.length;
-
-                const actualCellWidth = columnWidths[columnIndex];
-                const availableCellWidth = actualCellWidth - horizontalPadding;
-                const approxCharsPerLine = availableCellWidth / approxCharWidth;
-                const approxNumLinesDesired = Math.ceil(numCharsInCell / approxCharsPerLine) + numBufferLines;
-
-                const approxCellHeight = approxNumLinesDesired * approxLineHeight;
+                const approxCellHeight = Utils.getApproxCellHeight(
+                    cellText,
+                    columnWidths[columnIndex],
+                    approxCharWidth,
+                    approxLineHeight,
+                    horizontalPadding,
+                    numBufferLines,
+                );
 
                 if (approxCellHeight > maxCellHeightInRow) {
                     maxCellHeightInRow = approxCellHeight;
@@ -1266,7 +1266,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             loadingOptions,
             renderCell,
             renderColumnHeader: renderColumnHeaderCell,
-            ...spreadableProps,
+            ...spreadableProps
         } = props;
 
         const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
@@ -1435,7 +1435,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             name,
             renderName,
             useInteractionBar,
-            ...restColumnProps,
+            ...restColumnProps
         } = this.getColumnProps(columnIndex);
 
         const cell = renderCell(rowIndex, columnIndex);

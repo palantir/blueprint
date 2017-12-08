@@ -6,10 +6,12 @@
 
 export * from "./alertExample";
 export * from "./buttonsExample";
+export * from "./buttonGroupExample";
 export * from "./checkboxExample";
 export * from "./collapseExample";
 export * from "./cardExample";
 export * from "./collapsibleListExample";
+export * from "./controlGroupExample";
 export * from "./dialogExample";
 export * from "./contextMenuExample";
 export * from "./dropdownMenuExample";
@@ -18,6 +20,7 @@ export * from "./focusExample";
 export * from "./hotkeyPiano";
 export * from "./hotkeyTester";
 export * from "./menuExample";
+export * from "./navbarExample";
 export * from "./numericInputBasicExample";
 export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";

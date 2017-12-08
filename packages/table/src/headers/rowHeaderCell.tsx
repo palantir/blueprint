@@ -33,7 +33,7 @@ export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
             isRowSelected,
 
             // from IHeaderProps
-            ...spreadableProps,
+            ...spreadableProps
         } = this.props;
 
         return (

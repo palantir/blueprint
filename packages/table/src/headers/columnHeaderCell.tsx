@@ -115,7 +115,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             useInteractionBar,
 
             // from IHeaderProps
-            ...spreadableProps,
+            ...spreadableProps
         } = this.props;
 
         const classes = classNames(spreadableProps.className, Classes.TABLE_COLUMN_HEADER_CELL, {

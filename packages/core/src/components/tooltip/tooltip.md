@@ -27,7 +27,7 @@ but you should keep it simple. If you need more space, consider using a popover 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
     <h5>Button targets</h5>
     Buttons make great tooltip targets, but the `disabled` attribute will prevent all events so the enclosing `Tooltip`
-    will not know when to respond. Use [`AnchorButton`](#ore/components/button.anchor-button) instead;
+    will not know when to respond. Use [`AnchorButton`](#core/components/button.anchor-button) instead;
     see the [callout here](#core/components/button.javascript-api) for more details.
 </div>
 

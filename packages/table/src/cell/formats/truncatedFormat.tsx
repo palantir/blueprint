@@ -10,6 +10,9 @@ import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
+import { Utils } from "../../common/utils";
+
+import { Locator } from "../../locator";
 
 // amount in pixels that the content div width changes when truncated vs when
 // not truncated. Note: could be modified by styles
@@ -21,6 +24,42 @@ export enum TruncatedPopoverMode {
     ALWAYS,
     NEVER,
     WHEN_TRUNCATED,
+    WHEN_TRUNCATED_APPROX,
+}
+
+export interface ITrucatedFormateMeasureByApproximateOptions {
+    /**
+     * Approximate character width (in pixels), used to determine whether to display the popover in approx truncation mode.
+     * The default value should work for normal table styles,
+     * but should be changed as necessary if the fonts or styles are changed significantly.
+     * @default 8
+     */
+    approximateCharWidth: number;
+
+    /**
+     * Approximate line height (in pixels), used to determine whether to display the popover in approx truncation mode.
+     * The default value should work for normal table styles, but should be changed if the fonts or styles are changed significantly.
+     * @default 18
+     */
+    approximateLineHeight: number;
+
+    /**
+     * Total horizonal cell padding (both sides), used to determine whether to display the popover in approx truncation mode.
+     * The default value should work for normal table styles,
+     * but should be changed as necessary if the fonts or styles are changed significantly.
+     * @default 20
+     */
+    cellHorizontalPadding: number;
+
+    /**
+     * Number of buffer lines desired, used to determine whether to display the popover in approx truncation mode.
+     * Buffer lines are extra lines at the bottom of the cell that space is made for, to make sure that the cell text will fit
+     * after the math calculates how many lines the text is expected to take.
+     * The default value should work for normal table styles,
+     * but should be changed as necessary if the fonts or styles are changed significantly.
+     * @default 0
+     */
+    numBufferLines: number;
 }
 
 export interface ITruncatedFormatProps extends IProps {
@@ -35,14 +74,22 @@ export interface ITruncatedFormatProps extends IProps {
     detectTruncation?: boolean;
 
     /**
+     * Values to use for character width, line height, cell padding, and buffer lines desired, when using approximate truncation.
+     * These values are used to guess at the size of the text and determine if the popover should be drawn. They should work well
+     * enough for default table styles, but may need to be overridden for more accuracy if the default styles or font size, etc
+     * are changed.
+     */
+    measureByApproxOptions?: ITrucatedFormateMeasureByApproximateOptions;
+
+    /**
      * Height of the parent cell. Used by shouldComponentUpdate only
      */
-    parentCellHeight?: string;
+    parentCellHeight?: number;
 
     /**
      * Width of the parent cell. Used by shouldComponentUpdate only
      */
-    parentCellWidth?: string;
+    parentCellWidth?: number;
 
     /**
      * Sets the popover content style to `white-space: pre` if `true` or
@@ -86,6 +133,12 @@ export interface ITruncatedFormatState {
 export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
         detectTruncation: false,
+        measureByApproxOptions: {
+            approximateCharWidth: 8,
+            approximateLineHeight: 18,
+            cellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
+            numBufferLines: 0,
+        },
         preformatted: false,
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
         truncateLength: 2000,
@@ -191,7 +244,7 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
     };
 
     private shouldShowPopover(content: string) {
-        const { detectTruncation, showPopover, truncateLength } = this.props;
+        const { detectTruncation, measureByApproxOptions, showPopover, truncateLength } = this.props;
 
         switch (showPopover) {
             case TruncatedPopoverMode.ALWAYS:
@@ -202,6 +255,33 @@ export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITru
                 return detectTruncation
                     ? this.state.isTruncated
                     : truncateLength > 0 && content.length > truncateLength;
+            case TruncatedPopoverMode.WHEN_TRUNCATED_APPROX:
+                if (!detectTruncation) {
+                    return truncateLength > 0 && content.length > truncateLength;
+                }
+                if (this.props.parentCellHeight == null || this.props.parentCellWidth == null) {
+                    return false;
+                }
+
+                const {
+                    approximateCharWidth,
+                    approximateLineHeight,
+                    cellHorizontalPadding,
+                    numBufferLines,
+                } = measureByApproxOptions;
+
+                const cellWidth = this.props.parentCellWidth;
+                const approxCellHeight = Utils.getApproxCellHeight(
+                    content,
+                    cellWidth,
+                    approximateCharWidth,
+                    approximateLineHeight,
+                    cellHorizontalPadding,
+                    numBufferLines,
+                );
+
+                const shouldTruncate = approxCellHeight > this.props.parentCellHeight;
+                return shouldTruncate;
             default:
                 return false;
         }

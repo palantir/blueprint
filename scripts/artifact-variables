@@ -3,7 +3,7 @@
 # Compute all the fancy artifact variables for preview scripts
 
 BUILD_PATH="/home/ubuntu/blueprint"
-ARTIFACTS_URL="https://circleci.com/api/v1/project/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM/artifacts/0/$BUILD_PATH"
+ARTIFACTS_API_URL="https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM/artifacts?circle-token=$CIRCLE_AUTH_TOKEN"
 UPSTREAM_USERNAME=$(echo $CI_PULL_REQUEST | awk -F/ '{print $4;}')
 UPSTREAM_REPONAME=$(echo $CI_PULL_REQUEST | awk -F/ '{print $5;}')
 PR_NUMBER=$(basename $CI_PULL_REQUEST)
@@ -30,11 +30,17 @@ function submitPreviewComment {
     fi
 }
 
+# Use CircleCI API to download list of build artifacts
+function findBuildArtifacts {
+    curl $ARTIFACTS_API_URL | grep -o 'https://[^"]*' | grep 'index.html' > artifacts.txt
+}
+
 # Create a artifact link string
 function artifactLink {
-    local HREF="${ARTIFACTS_URL}${1}"
-    local LINK="$2"
-    echo "<a href='$HREF' target='_blank'>$LINK</a>"
+    local PACKAGE_NAME="$1"
+    local LINK_TEXT="$2"
+    local HREF="$(cat artifacts.txt | grep $1)"
+    echo "<a href='$HREF' target='_blank'>$LINK_TEXT</a>"
 }
 
 # Create a coverage link string
