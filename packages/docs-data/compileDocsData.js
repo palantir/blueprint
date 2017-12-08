@@ -29,25 +29,13 @@ const DOCS_VERSIONS_FIELENAME = "versions.json";
             fs.mkdirSync(GENERATED_SRC_DIR);
         }
 
-        console.info("Installing typescript@2.1 for documentalist...");
-        execSync(`yarn add typescript@2.1 --ignore-workspace-root-check --exact`, {
-            cwd: ROOT_DIR,
-        });
         await generateDocumentalistData();
         generateReleasesData();
         generateVersionsData();
     } catch (err) {
-        console.error(`[generate-docs-data] Failed to generate JSON data:`);
+        console.error(`[docs-data] Failed to generate JSON data:`);
         console.error(err);
-        console.info("Root tsc version is:");
-        execSync(`./node_modules/.bin/tsc --version`, {
-            cwd: ROOT_DIR,
-        });
         throw err;
-    } finally {
-        console.info(`Restoring node modules from git checkout...`);
-        execSync(`git checkout yarn.lock package.json`, { cwd: ROOT_DIR });
-        execSync(`yarn`, { cwd: ROOT_DIR });
     }
 })();
 
@@ -123,7 +111,7 @@ function generateVersionsData() {
         // sort in reverse order (so latest is first)
         const majorVersions = Array.from(majorVersionMap.values()).sort(semver.rcompare);
 
-        console.info("[generate-docs-data] Versions:", majorVersions.join(", "));
+        console.info("[docs-data] Major versions found:", majorVersions.join(", "));
 
         fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_VERSIONS_FIELENAME), JSON.stringify(majorVersions, null, 2));
     });
