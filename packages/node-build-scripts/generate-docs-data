@@ -33,6 +33,10 @@ const DOCS_VERSIONS_FIELENAME = "versions.json";
         execSync(`yarn add typescript@2.1 --ignore-workspace-root-check --exact`, {
             cwd: ROOT_DIR,
         });
+        console.info("Root tsc version is now:");
+        execSync(`yarn tsc --version`, {
+            cwd: ROOT_DIR,
+        });
 
         await generateDocumentalistData();
         generateReleasesData();

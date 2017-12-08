@@ -4,18 +4,18 @@
   "description": "Blueprint Documentation Site",
   "private": true,
   "scripts": {
-    "bundle": "npm-run-all -s bundle:pre bundle:webpack",
+    "bundle": "run-s bundle:pre bundle:webpack",
     "bundle:pre": "generate-docs-data",
     "bundle:webpack": "webpack --config ./webpack.config.js",
     "clean": "rm -rf dist/*",
     "dev": "webpack-dev-server --config ./webpack.config.js",
     "dist": "NODE_ENV=production yarn bundle",
-    "lint": "npm-run-all -p lint:stylelint lint:tslint",
+    "lint": "run-p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
     "test": "exit 0",
-    "verify": "npm-run-all -p dist lint"
+    "verify": "run-p dist lint"
   },
   "dependencies": {
     "@blueprintjs/core": "^1.34.0",
