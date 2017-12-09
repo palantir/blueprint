@@ -109,10 +109,17 @@ export interface IQueryListRendererProps<T> extends IProps {
     handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
 
     /**
+     * Call this function to render an `item`.
+     * `QueryList` will retrieve modifiers for the item and delegate to `itemRenderer` prop for the actual rendering.
+     * The second parameter `index` is optional here; if provided, it will be passed through `itemRenderer` props.
+     */
+    renderItem: (item: T, index?: number) => JSX.Element;
+
+    /**
      * Array of all (unfiltered) items in the list.
      * See `filteredItems` for a filtered array based on `query`.
      */
-    items: Array<{ item: T; modifiers: IItemModifiers }>;
+    items: T[];
 
     /**
      * A ref handler that should be applied to the HTML element that contains the rendererd items.
@@ -150,15 +157,15 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private shouldCheckActiveItemInViewport: boolean;
 
     public render() {
-        const { renderer, query } = this.props;
-
+        const { items, renderer, query } = this.props;
         return renderer({
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
-            items: this.getModifierItems(),
+            items,
             itemsParentRef: this.refHandlers.itemsParent,
             query,
+            renderItem: this.renderItem,
         });
     }
 
@@ -242,21 +249,6 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         };
     }
 
-    private getModifierItems(): IQueryListRendererProps<T>["items"] {
-        const { activeItem, items, itemListPredicate, itemPredicate, query } = this.props;
-        const isFiltered = Utils.isFunction(itemListPredicate)
-            ? (item: T) => this.state.filteredItems.indexOf(item) >= 0
-            : (item: T, index: number) => itemPredicate(query, item, index);
-        return items.map((item, index) => {
-            const modifiers: IItemModifiers = {
-                active: activeItem === item,
-                disabled: false,
-                filtered: isFiltered(item, index),
-            };
-            return { item, modifiers };
-        });
-    }
-
     private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
         Utils.safeInvoke(this.props.onActiveItemChange, item);
         Utils.safeInvoke(this.props.onItemSelect, item, event);
@@ -299,6 +291,23 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const nextActiveIndex = Utils.clamp(this.getActiveIndex() + direction, 0, maxIndex);
         Utils.safeInvoke(this.props.onActiveItemChange, filteredItems[nextActiveIndex]);
     }
+
+    private renderItem = (item: T, index?: number) => {
+        const { activeItem, itemListPredicate, itemPredicate, query } = this.props;
+        const isFiltered = Utils.isFunction(itemListPredicate)
+            ? this.state.filteredItems.indexOf(item) >= 0
+            : itemPredicate(query, item, index);
+        const modifiers: IItemModifiers = {
+            active: activeItem === item,
+            disabled: false,
+            filtered: isFiltered,
+        };
+        return this.props.itemRenderer(item, {
+            handleClick: e => this.handleItemSelect(item, e),
+            index,
+            modifiers,
+        });
+    };
 }
 
 function pxToNumber(value: string) {

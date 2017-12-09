@@ -158,14 +158,9 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
         );
     };
 
-    private renderItems({ items, handleItemSelect }: IQueryListRendererProps<T>) {
-        const { itemRenderer, noResults } = this.props;
-        const renderedItems = items
-            .filter(item => item.modifiers.filtered)
-            .map(({ item, modifiers }, index) =>
-                itemRenderer({ item, modifiers, index, handleClick: e => handleItemSelect(item, e) }),
-            );
-        return renderedItems.length > 0 ? renderedItems : noResults;
+    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
+        const renderedItems = items.map(renderItem).filter(item => item != null);
+        return renderedItems.length > 0 ? renderedItems : this.props.noResults;
     }
 
     private selectText = () => {

@@ -191,16 +191,12 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         );
     };
 
-    private renderItems({ items, handleItemSelect }: IQueryListRendererProps<T>) {
-        const { initialContent, itemRenderer, noResults } = this.props;
+    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
+        const { initialContent, noResults } = this.props;
         if (initialContent != null && this.isQueryEmpty()) {
             return initialContent;
         }
-        const renderedItems = items
-            .filter(item => item.modifiers.filtered)
-            .map(({ item, modifiers }, index) =>
-                itemRenderer({ handleClick: e => handleItemSelect(item, e), index, item, modifiers }),
-            );
+        const renderedItems = items.map(renderItem).filter(item => item != null);
         return renderedItems.length > 0 ? renderedItems : noResults;
     }
 
