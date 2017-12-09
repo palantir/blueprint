@@ -9,7 +9,7 @@ import * as React from "react";
 
 import { Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
-import { ISelectItemRendererProps, MultiSelect } from "@blueprintjs/labs";
+import { ItemRenderer, MultiSelect } from "@blueprintjs/labs";
 import * as Films from "./films";
 
 type Film = Films.Film;
@@ -121,11 +121,14 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
 
     private renderTag = (film: Film) => film.title;
 
-    private renderFilm = ({ item: film, modifiers, handleClick }: ISelectItemRendererProps<Film>) => {
+    private renderFilm: ItemRenderer<Film> = (film, { modifiers, handleClick }) => {
+        if (!modifiers.filtered) {
+            return null;
+        }
         // NOTE: not using Films.itemRenderer here so we can set icons.
         const classes = classNames({
-            [Classes.ACTIVE]: modifiers.focused,
-            [Classes.INTENT_PRIMARY]: modifiers.focused,
+            [Classes.ACTIVE]: modifiers.active,
+            [Classes.INTENT_PRIMARY]: modifiers.active,
         });
 
         return (

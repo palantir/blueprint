@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
-import { IItemModifiers } from "./itemRenderer";
+import { IItemModifiers, ItemRenderer } from "./itemRenderer";
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
@@ -31,6 +31,13 @@ export interface IListItemsProps<T> extends IProps {
      * If defined with `itemListPredicate`, this prop will be ignored.
      */
     itemPredicate?: (query: string, item: T, index: number) => boolean;
+
+    /**
+     * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
+     * this item is active (selected by keyboard arrows) and an `onClick` event handler that
+     * should be attached to the returned element.
+     */
+    itemRenderer: ItemRenderer<T>;
 
     /**
      * Callback invoked when an item from the list is selected,

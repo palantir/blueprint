@@ -21,7 +21,8 @@ import {
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
-import { ISelectItemRendererProps, Select } from "../select/select";
+import { IItemRendererProps } from "../query-list/itemRenderer";
+import { Select } from "../select/select";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
 import { filterWithQueryCandidates, getTimezoneQueryCandidates } from "./timezoneUtils";
@@ -216,11 +217,10 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         return filterWithQueryCandidates(items, query, item => getTimezoneQueryCandidates(item.timezone, date));
     };
 
-    private renderItem = (itemProps: ISelectItemRendererProps<ITimezoneItem>) => {
-        const { item, isActive, handleClick } = itemProps;
+    private renderItem = (item: ITimezoneItem, { handleClick, modifiers }: IItemRendererProps) => {
         const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
-            [CoreClasses.ACTIVE]: isActive,
-            [CoreClasses.INTENT_PRIMARY]: isActive,
+            [CoreClasses.ACTIVE]: modifiers.active,
+            [CoreClasses.INTENT_PRIMARY]: modifiers.active,
         });
 
         return (

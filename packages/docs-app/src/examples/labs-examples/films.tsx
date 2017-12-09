@@ -5,7 +5,7 @@
  */
 
 import { Classes, MenuItem } from "@blueprintjs/core";
-import { SelectItemRenderer } from "@blueprintjs/labs";
+import { ItemRenderer } from "@blueprintjs/labs";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -115,7 +115,10 @@ export const items = [
 
 export type Film = typeof items[0];
 
-export const itemRenderer: SelectItemRenderer<Film> = ({ item: film, handleClick, modifiers }) => {
+export const itemRenderer: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
+    if (!modifiers.filtered) {
+        return null;
+    }
     const classes = classNames({
         [Classes.ACTIVE]: modifiers.active,
         [Classes.INTENT_PRIMARY]: modifiers.active,
@@ -131,6 +134,6 @@ export const itemRenderer: SelectItemRenderer<Film> = ({ item: film, handleClick
     );
 };
 
-export function itemPredicate(query: string, film: Film, index: number) {
-    return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
+export function itemPredicate(query: string, film: Film) {
+    return `${film.rank}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
 }

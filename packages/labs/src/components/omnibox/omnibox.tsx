@@ -23,20 +23,12 @@ import {
 
 import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
-import { SelectItemRenderer } from "../select/select";
 
 export interface IOmniboxProps<T> extends IListItemsProps<T> {
     /**
      * React child to render when query is empty.
      */
     initialContent?: React.ReactChild;
-
-    /**
-     * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
-     * this item is active (selected by keyboard arrows) and an `onClick` event handler that
-     * should be attached to the returned element.
-     */
-    itemRenderer: SelectItemRenderer<T>;
 
     /** React child to render when filtering items returns zero results. */
     noResults?: React.ReactChild;
@@ -100,7 +92,7 @@ export class Omnibox<T> extends React.Component<IOmniboxProps<T>, IOmniboxState<
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { initialContent, isOpen, itemRenderer, inputProps, noResults, overlayProps, ...restProps } = this.props;
+        const { initialContent, isOpen, inputProps, noResults, overlayProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList

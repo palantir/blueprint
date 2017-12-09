@@ -21,7 +21,6 @@ import {
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
-import { SelectItemRenderer } from "../select/select";
 
 export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
@@ -29,13 +28,6 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
      * @default true
      */
     closeOnSelect?: boolean;
-
-    /**
-     * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
-     * this item is active (selected by keyboard arrows) and an `onClick` event handler that
-     * should be attached to the returned element.
-     */
-    itemRenderer: SelectItemRenderer<T>;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
@@ -104,7 +96,7 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { itemRenderer, inputProps, noResults, popoverProps, ...restProps } = this.props;
+        const { inputProps, noResults, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList

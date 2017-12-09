@@ -19,21 +19,8 @@ import {
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
-import { IItemModifiers } from "../index";
 import { IPopover2Props, Popover2 } from "../popover/popover2";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
-
-export type SelectItemRenderer<T> = (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
-
-export interface ISelectItemRendererProps<T> {
-    handleClick: React.MouseEventHandler<HTMLElement>;
-
-    index: number;
-
-    item: T;
-
-    modifiers: IItemModifiers;
-}
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -47,13 +34,6 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * React child to render when query is empty.
      */
     initialContent?: React.ReactChild;
-
-    /**
-     * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
-     * this item is active (selected by keyboard arrows) and an `onClick` event handler that
-     * should be attached to the returned element.
-     */
-    itemRenderer: SelectItemRenderer<T>;
 
     /**
      * Whether the component is non-interactive.
@@ -136,15 +116,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const {
-            filterable,
-            initialContent,
-            itemRenderer,
-            inputProps,
-            noResults,
-            popoverProps,
-            ...restProps,
-        } = this.props;
+        const { filterable, initialContent, inputProps, noResults, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList

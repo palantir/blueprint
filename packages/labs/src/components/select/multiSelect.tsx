@@ -10,7 +10,6 @@ import * as React from "react";
 import { HTMLInputProps, IPopoverProps, Keys, Menu, Popover, Position, Utils } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
-import { SelectItemRenderer } from "../select/select";
 import { ITagInputProps, TagInput } from "../tag-input/tagInput";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
@@ -21,13 +20,6 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
      * React child to render when query is empty.
      */
     initialContent?: React.ReactChild;
-
-    /**
-     * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
-     * this item is active (selected by keyboard arrows) and an `onClick` event handler that
-     * should be attached to the returned element.
-     */
-    itemRenderer: SelectItemRenderer<T>;
 
     /** React child to render when filtering items returns zero results. */
     noResults?: React.ReactChild;
@@ -87,7 +79,6 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
         // omit props specific to this component, spread the rest.
         const {
             initialContent,
-            itemRenderer,
             noResults,
             openOnKeyDown,
             popoverProps,
