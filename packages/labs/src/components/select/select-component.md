@@ -69,26 +69,32 @@ This "escape hatch" can be used to implement all sorts of advanced behavior on t
 
 @### Item Renderer API
 
-An object with the following properties will be passed to a `Select` `itemRenderer`, for each item being rendered. Only items which pass the predicate will be rendered. Don't forget to define a `key` for each item, or face React's console wrath!
-
-This interface is generic, accepting a type parameter `<T>` for an item in the list.
+`Select`'s `itemRenderer` will be called for each item and receives the item and a props object containing data specific
+to rendering this item in this frame. The renderer is called for all items, so don't forget to respect
+`modifiers.filtered` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item,
+or face React's console wrath!
 
 ```tsx
 import { Classes, MenuItem } from "@blueprintjs/core";
-import { Select, ISelectItemRendererProps } from "@blueprintjs/labs";
+import { ItemRenderer, Select } from "@blueprintjs/labs";
 const FilmSelect = Select.ofType<Film>();
 
-const renderMenuItem = ({ handleClick, item: film, modifiers }: ISelectItemRendererProps<Film>) => (
-    <MenuItem
-        className={modifiers.active ? Classes.ACTIVE : ""}
-        key={film.title}
-        label={film.year}
-        onClick={handleClick}
-        text={film.title}
-    />
-);
+const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
+    if (!modifiers.filtered) {
+        return null;
+    }
+    return (
+        <MenuItem
+            className={modifiers.active ? Classes.ACTIVE : ""}
+            key={film.title}
+            label={film.year}
+            onClick={handleClick}
+            text={film.title}
+        />
+    );
+};
 
-<FilmSelect itemRenderer={renderMenuItem} items={...} onItemSelect={...} />
+<FilmSelect itemRenderer={renderFilm} items={...} onItemSelect={...} />
 ```
 
-@interface ISelectItemRendererProps
+@interface IItemRendererProps
