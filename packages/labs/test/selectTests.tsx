@@ -4,20 +4,19 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, InputGroup } from "@blueprintjs/core";
+import { InputGroup } from "@blueprintjs/core";
 import { assert } from "chai";
-import * as classNames from "classnames";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/labs-examples/data";
-import { ISelectItemRendererProps, ISelectProps, Popover2, Select } from "../src/index";
+import * as Films from "../../docs-app/src/examples/labs-examples/films";
+import { ISelectProps, Popover2, Select } from "../src/index";
 
 describe("<Select>", () => {
-    const FilmSelect = Select.ofType<Film>();
+    const FilmSelect = Select.ofType<Films.Film>();
     const defaultProps = {
-        items: TOP_100_FILMS,
+        items: Films.items,
         popoverProps: { inline: true, isOpen: true },
         query: "",
     };
@@ -30,7 +29,7 @@ describe("<Select>", () => {
     beforeEach(() => {
         handlers = {
             itemPredicate: sinon.spy(filterByYear),
-            itemRenderer: sinon.spy(renderFilm),
+            itemRenderer: sinon.spy(Films.itemRenderer),
             onItemSelect: sinon.spy(),
         };
     });
@@ -53,10 +52,10 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), false);
     });
 
-    it("itemRenderer is called for each filtered child", () => {
+    it("itemRenderer is called for each child", () => {
         select({}, "1999");
-        // each item rendered before setting query, then 4 items filtered rendered twice (TODO: why)
-        assert.equal(handlers.itemRenderer.callCount, 108);
+        // each item is rendered three times :(
+        assert.equal(handlers.itemRenderer.callCount, Films.items.length * 3);
     });
 
     it("renders noResults when given empty list", () => {
@@ -75,7 +74,7 @@ describe("<Select>", () => {
             .find("a")
             .at(4)
             .simulate("click");
-        assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
+        assert.strictEqual(handlers.onItemSelect.args[0][0], Films.items[4]);
     });
 
     it("clicking item preserves state when resetOnSelect=false", () => {
@@ -84,7 +83,7 @@ describe("<Select>", () => {
             .find("a")
             .at(0)
             .simulate("click");
-        assert.strictEqual(wrapper.state("activeItem"), TOP_100_FILMS[1]);
+        assert.strictEqual(wrapper.state("activeItem"), Films.items[1]);
         assert.strictEqual(wrapper.state("query"), "1972");
     });
 
@@ -94,7 +93,7 @@ describe("<Select>", () => {
             .find("a")
             .at(0)
             .simulate("click");
-        assert.strictEqual(wrapper.state("activeItem"), TOP_100_FILMS[0]);
+        assert.strictEqual(wrapper.state("activeItem"), Films.items[0]);
         assert.strictEqual(wrapper.state("query"), "");
     });
 
@@ -121,7 +120,7 @@ describe("<Select>", () => {
 
     it("returns focus to focusable target after popover closed");
 
-    function select(props: Partial<ISelectProps<Film>> = {}, query?: string) {
+    function select(props: Partial<ISelectProps<Films.Film>> = {}, query?: string) {
         const wrapper = mount(
             <FilmSelect {...defaultProps} {...handlers} {...props}>
                 <table />
@@ -134,18 +133,6 @@ describe("<Select>", () => {
     }
 });
 
-function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
-    const classes = classNames({
-        [Classes.ACTIVE]: isActive,
-        [Classes.INTENT_PRIMARY]: isActive,
-    });
-    return (
-        <a className={classes} key={film.rank} onClick={handleClick}>
-            {film.rank}. {film.title}
-        </a>
-    );
-}
-
-function filterByYear(query: string, film: Film) {
+function filterByYear(query: string, film: Films.Film) {
     return query === "" || film.year.toString() === query;
 }

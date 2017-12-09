@@ -4,23 +4,21 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, InputGroup, Keys, Popover } from "@blueprintjs/core";
+import { Classes, InputGroup, Keys, MenuItem, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
-import * as classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/labs-examples/data";
-import { ISelectItemRendererProps } from "../src/components/select/select";
+import * as Films from "../../docs-app/src/examples/labs-examples/films";
 import { ISuggestProps, Suggest } from "../src/components/select/suggest";
 
-const FILM_ITEM_CLASS = "film-item";
+type Film = Films.Film;
 
 describe("Suggest", () => {
     const FilmSuggest = Suggest.ofType<Film>();
     const defaultProps = {
-        items: TOP_100_FILMS,
+        items: Films.items,
         popoverProps: { inline: true, isOpen: true },
         query: "",
     };
@@ -35,18 +33,18 @@ describe("Suggest", () => {
         handlers = {
             inputValueRenderer: sinon.spy(inputValueRenderer),
             itemPredicate: sinon.spy(filterByYear),
-            itemRenderer: sinon.spy(renderFilm),
+            itemRenderer: sinon.spy(Films.itemRenderer),
             onItemSelect: sinon.spy(),
         };
     });
 
     describe("Basic behavior", () => {
-        it("renders a input that triggers a popover containing items", () => {
+        it("renders an input that triggers a popover containing items", () => {
             const wrapper = suggest();
             const popover = wrapper.find(Popover);
             assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
             assert.lengthOf(popover, 1, "should render Popover");
-            assert.lengthOf(popover.find(`.${FILM_ITEM_CLASS}`), 100, "should render 100 items in popover");
+            assert.lengthOf(popover.find(MenuItem), 100, "should render 100 items in popover");
         });
 
         describe("when ESCAPE key pressed", () => {
@@ -110,7 +108,7 @@ describe("Suggest", () => {
                 simulateFocus(wrapper);
                 selectItem(wrapper, ITEM_INDEX);
                 simulateKeyDown(wrapper, which);
-                const selectedItem = TOP_100_FILMS[ITEM_INDEX];
+                const selectedItem = Films.items[ITEM_INDEX];
                 assert.strictEqual(wrapper.state().selectedItem, selectedItem, "should keep selected item");
             });
         }
@@ -136,7 +134,7 @@ describe("Suggest", () => {
         it("itemRenderer is called for each filtered child", () => {
             suggest();
             const { callCount } = handlers.itemRenderer;
-            const numItems = TOP_100_FILMS.length;
+            const numItems = Films.items.length;
             assert.strictEqual(callCount, numItems, "should invoke itemRenderer 100 times on render");
         });
     });
@@ -175,7 +173,7 @@ describe("Suggest", () => {
 
             assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
             selectItem(wrapper, ITEM_INDEX);
-            const selectedItem = TOP_100_FILMS[ITEM_INDEX];
+            const selectedItem = Films.items[ITEM_INDEX];
             const expectedValue = inputValueRenderer(selectedItem);
 
             assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
@@ -223,7 +221,7 @@ describe("Suggest", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest();
             selectItem(wrapper, ITEM_INDEX);
-            assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[ITEM_INDEX]);
+            assert.strictEqual(handlers.onItemSelect.args[0][0], Films.items[ITEM_INDEX]);
         });
     });
 
@@ -278,18 +276,6 @@ describe("Suggest", () => {
         return wrapper;
     }
 });
-
-function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
-    const classes = classNames(FILM_ITEM_CLASS, {
-        [Classes.ACTIVE]: isActive,
-        [Classes.INTENT_PRIMARY]: isActive,
-    });
-    return (
-        <a className={classes} key={film.rank} onClick={handleClick}>
-            {film.rank}. {film.title}
-        </a>
-    );
-}
 
 function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;

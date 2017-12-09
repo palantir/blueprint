@@ -4,21 +4,22 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, MenuItem, Tag } from "@blueprintjs/core";
+import { MenuItem, Tag } from "@blueprintjs/core";
 import { assert } from "chai";
-import * as classNames from "classnames";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
-import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/labs-examples/data";
-import { IMultiSelectProps, ISelectItemRendererProps, MultiSelect } from "../src/index";
+import * as Films from "../../docs-app/src/examples/labs-examples/films";
+import { IMultiSelectProps, MultiSelect } from "../src/index";
+
+type Film = Films.Film;
 
 describe("<MultiSelect>", () => {
     const FilmMultiSelect = MultiSelect.ofType<Film>();
     const defaultProps = {
-        items: TOP_100_FILMS,
+        items: Films.items,
         popoverProps: { inline: true, isOpen: true },
         query: "",
         selectedItems: [] as Film[],
@@ -33,7 +34,7 @@ describe("<MultiSelect>", () => {
     beforeEach(() => {
         handlers = {
             itemPredicate: sinon.spy(filterByYear),
-            itemRenderer: sinon.spy(renderFilm),
+            itemRenderer: sinon.spy(Films.itemRenderer),
             onItemSelect: sinon.spy(),
         };
     });
@@ -47,7 +48,7 @@ describe("<MultiSelect>", () => {
 
     it("tagRenderer can return JSX", () => {
         const wrapper = multiselect({
-            selectedItems: [TOP_100_FILMS[0]],
+            selectedItems: [Films.items[0]],
             tagRenderer: film => <strong>{film.title}</strong>,
         });
         assert.equal(wrapper.find(Tag).find("strong").length, 1);
@@ -57,13 +58,13 @@ describe("<MultiSelect>", () => {
         const placeholder = "look here";
 
         const wrapper = multiselect({ tagInputProps: { inputProps: { placeholder } } });
-        wrapper.setState({ activeItem: TOP_100_FILMS[4] });
+        wrapper.setState({ activeItem: Films.items[4] });
         wrapper
             .find(MenuItem)
             .at(4)
             .find("a")
             .simulate("click");
-        assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
+        assert.strictEqual(handlers.onItemSelect.args[0][0], Films.items[4]);
     });
 
     it("selectedItems is optional", () => {
@@ -82,24 +83,6 @@ describe("<MultiSelect>", () => {
         return wrapper;
     }
 });
-
-function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
-    const classes = classNames({
-        [Classes.ACTIVE]: isActive,
-        [Classes.INTENT_PRIMARY]: isActive,
-    });
-
-    return (
-        <MenuItem
-            className={classes}
-            key={film.rank}
-            label={film.year.toString()}
-            onClick={handleClick}
-            text={`${film.rank}. ${film.title}`}
-            shouldDismissPopover={false}
-        />
-    );
-}
 
 function renderTag(film: Film) {
     return film.title;
