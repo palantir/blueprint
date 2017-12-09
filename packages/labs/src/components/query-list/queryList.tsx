@@ -7,6 +7,7 @@
 import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
+import { IItemModifiers } from "./itemRenderer";
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
@@ -78,17 +79,6 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
      * handler to the relevant element in your `renderer` implementation.
      */
     query: string;
-}
-
-export interface IItemModifiers {
-    /** Whether this is the "active" (focused) item, meaning keyboard interactions will act upon it. */
-    active: boolean;
-
-    /** Whether this item is disabled and should ignore interactions. */
-    disabled: boolean;
-
-    /** Whether this item matches the predicate. A typical renderer could hide `false` values. */
-    filtered: boolean;
 }
 
 /** Interface for object passed to `QueryList` `renderer` function. */
