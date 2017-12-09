@@ -10,7 +10,12 @@ const COVERAGE_PERCENT = 80;
 const COVERAGE_PERCENT_HIGH = 90;
 const KARMA_SERVER_PORT = 9876;
 
-module.exports = function createKarmaConfig(dirname) {
+/**
+ * @param dirname string
+ * @param coverageExcludes string[]
+ * @param coverageOverrides { [glob: string]: object }
+ */
+module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverageOverrides }) {
     return {
         basePath: dirname,
         browserNoActivityTimeout: 100000,
@@ -23,6 +28,8 @@ module.exports = function createKarmaConfig(dirname) {
                 each: {
                     lines: COVERAGE_PERCENT,
                     statements: COVERAGE_PERCENT,
+                    excludes: coverageExcludes,
+                    overrides: coverageOverrides,
                 },
             },
             includeAllSources: true,

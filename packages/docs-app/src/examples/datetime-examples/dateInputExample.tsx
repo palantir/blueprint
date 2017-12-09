@@ -15,8 +15,9 @@ import { PrecisionSelect } from "./common/precisionSelect";
 export interface IDateInputExampleState {
     closeOnSelection?: boolean;
     disabled?: boolean;
-    format?: string;
+    formatKey?: string;
     openOnFocus?: boolean;
+    reverseMonthAndYearMenus?: boolean;
     timePrecision?: TimePickerPrecision;
 }
 
@@ -24,14 +25,18 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     public state: IDateInputExampleState = {
         closeOnSelection: true,
         disabled: false,
-        format: FORMATS[0],
+        formatKey: Object.keys(FORMATS)[0],
         openOnFocus: true,
+        reverseMonthAndYearMenus: false,
     };
 
     private toggleFocus = handleBooleanChange(openOnFocus => this.setState({ openOnFocus }));
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
-    private toggleFormat = handleStringChange(format => this.setState({ format }));
+    private toggleFormat = handleStringChange(formatKey => this.setState({ formatKey }));
+    private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
+        this.setState({ reverseMonthAndYearMenus }),
+    );
     private toggleTimePrecision = handleNumberChange(timePrecision =>
         this.setState({
             timePrecision: timePrecision < 0 ? undefined : timePrecision,
@@ -39,7 +44,17 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     );
 
     protected renderExample() {
-        return <DateInput {...this.state} defaultValue={new Date()} />;
+        const { formatKey, ...spreadableState } = this.state;
+        return (
+            <DateInput
+                {...spreadableState}
+                format={FORMATS[formatKey]}
+                defaultValue={new Date()}
+                className="foofoofoo"
+                popoverProps={{ popoverClassName: "barbarbar" }}
+                inputProps={{ className: "bazbazbaz" }}
+            />
+        );
     }
 
     protected renderOptions() {
@@ -58,6 +73,12 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     onChange={this.toggleSelection}
                 />,
                 <Switch checked={this.state.disabled} label="Disabled" key="Disabled" onChange={this.toggleDisabled} />,
+                <Switch
+                    checked={this.state.reverseMonthAndYearMenus}
+                    label="Reverse month and year menus"
+                    key="Reverse month and year menus"
+                    onChange={this.toggleReverseMonthAndYearMenus}
+                />,
                 <PrecisionSelect
                     label="Time Precision"
                     key="precision"
@@ -66,7 +87,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     onChange={this.toggleTimePrecision}
                 />,
             ],
-            [<FormatSelect key="Format" onChange={this.toggleFormat} selectedValue={this.state.format} />],
+            [<FormatSelect key="Format" onChange={this.toggleFormat} selectedValue={this.state.formatKey} />],
         ];
     }
 }

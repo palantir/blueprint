@@ -69,7 +69,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
             columnIndexEnd: indexEnd,
 
             // from IHeaderProps
-            ...spreadableProps,
+            ...spreadableProps
         } = this.props;
 
         return (

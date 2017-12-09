@@ -1,6 +1,6 @@
 <img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint.svg?style=svg&circle-token=4725ab38f16004566d6430180663d7e7f9f5da9d)](https://circleci.com/gh/palantir/blueprint)
+# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint.svg?style=svg&circle-token=4725ab38f16004566d6430180663d7e7f9f5da9d)](https://circleci.com/gh/palantir/workflows/blueprint)
 
 Blueprint is a React-based UI toolkit for the web.
 
@@ -31,14 +31,18 @@ These are the component libraries we publish to NPM.
 
 ### Applications
 
-These are hosted on GitHub Pages as static web applications.
+These are hosted on GitHub Pages as static web applications:
 
-- `docs-app`
-- `landing-app`
+- `docs-app` &ndash; Documentation site at blueprintjs.com/docs
+- `landing-app` &ndash; Landnig page at blueprintjs.com
+
+These are used as development playground environments:
+
+- `table-dev-app` &ndash; demo page that supports manual testing of all table features
 
 ### Build tooling
 
-These private packages define development dependencies and contain build configuration. They adhere to standard NPM package layout&mdash;this allows us to keep clear API boundaries for build configuration and isolate groups of `devDependencies`. In the future, we might publish these packages to allow other Blueprint projects to use this infrastructure outside this monorepo.
+These private packages define development dependencies and contain build configuration. They adhere to the standard NPM package layout, which allows us to keep clear API boundaries for build configuration and isolate groups of `devDependencies`. In the future, we might publish these packages to allow other Blueprint projects to use this infrastructure outside this monorepo.
 
 - `karma-build-scripts`
 - `node-build-scripts`
@@ -86,7 +90,7 @@ Each library has its own dev script which you can run to watch changes to that p
 
 Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx?` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).
 
-If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app`), you'll need to run `yarn generate-docs-data` from the `docs-app` package to see it reflected in the application. Note that `yarn bundle` in this package also runs this script.
+If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app`), you'll need to run `yarn compile` from the `docs-data` package to see it reflected in the application.
 
 ### Updating icons
 

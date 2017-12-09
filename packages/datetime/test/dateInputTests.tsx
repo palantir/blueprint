@@ -9,7 +9,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, Keys, Popover, Position } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -22,6 +22,18 @@ describe("<DateInput>", () => {
     it("handles string inputs without crashing", () => {
         // strings are not permitted in the interface, but are handled correctly by moment.
         assert.doesNotThrow(() => mount(<DateInput value={"1988-08-07 11:01:12" as any} />));
+    });
+
+    it("passes custom classNames to popover target", () => {
+        const CLASS_1 = "foo";
+        const CLASS_2 = "bar";
+
+        const wrapper = mount(<DateInput className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
+        wrapper.setState({ isOpen: true });
+
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`);
+        assert.isTrue(popoverTarget.hasClass(CLASS_1));
+        assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
 
     it("supports custom input style", () => {
@@ -154,6 +166,20 @@ describe("<DateInput>", () => {
     });
 
     describe("when uncontrolled", () => {
+        it("Pressing Enter saves the inputted date and closes the popover", () => {
+            const IMPROPERLY_FORMATTED_DATE_STRING = "2015-2-15";
+            const PROPERLY_FORMATTED_DATE_STRING = "2015-02-15";
+            const onKeyDown = sinon.spy();
+            const wrapper = mount(<DateInput inputProps={{ onKeyDown }} />).setState({ isOpen: true });
+            const input = wrapper.find("input").first();
+            input.simulate("change", { target: { value: IMPROPERLY_FORMATTED_DATE_STRING } });
+            input.simulate("keydown", { which: Keys.ENTER });
+            assert.isFalse(wrapper.state("isOpen"), "popover closed");
+            assert.isTrue(wrapper.state("isInputFocused"), "input still focused");
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), PROPERLY_FORMATTED_DATE_STRING);
+            assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
+        });
+
         it("Clicking a date puts it in the input box and closes the popover", () => {
             const wrapper = mount(<DateInput />).setState({ isOpen: true });
             assert.equal(wrapper.find(InputGroup).prop("value"), "");
@@ -331,6 +357,23 @@ describe("<DateInput>", () => {
         const DATE2 = new Date(2015, Months.FEBRUARY, 1);
         const DATE2_STR = "2015-02-01";
         const DATE2_DE_STR = "01.02.2015";
+
+        it("Pressing Enter saves the inputted date and closes the popover", () => {
+            const onKeyDown = sinon.spy();
+            const onChange = sinon.spy();
+            const { root } = wrap(<DateInput inputProps={{ onKeyDown }} onChange={onChange} value={DATE} />);
+            root.setState({ isOpen: true });
+
+            const input = root.find("input").first();
+            input.simulate("change", { target: { value: DATE2_STR } });
+            input.simulate("keydown", { which: Keys.ENTER });
+
+            // onChange is called once on change, once on Enter
+            assert.isTrue(onChange.calledTwice, "onChange called twice");
+            assertDateEquals(onChange.args[1][0], DATE2_STR);
+            assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
+            assert.isTrue(root.state("isInputFocused"), "input still focused");
+        });
 
         it("Clicking a date invokes onChange callback with that date", () => {
             const onChange = sinon.spy();

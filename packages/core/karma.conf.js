@@ -7,7 +7,12 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = function (config) {
-    const baseConfig = createKarmaConfig(__dirname);
+    const baseConfig = createKarmaConfig({
+        dirname: __dirname,
+        coverageExcludes: [
+            "src/accessibility/*",
+        ],
+    });
     config.set(baseConfig);
     config.set({
         webpack: Object.assign({}, baseConfig.webpack, {

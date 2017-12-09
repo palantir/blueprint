@@ -388,4 +388,23 @@ export const Utils = {
     shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
         return CoreUtils.shallowCompareKeys(objA, objB, keys);
     },
+
+    getApproxCellHeight(
+        cellText: string,
+        columnWidth: number,
+        approxCharWidth: number,
+        approxLineHeight: number,
+        horizontalPadding: number,
+        numBufferLines: number,
+    ) {
+        const numCharsInCell = cellText == null ? 0 : cellText.length;
+
+        const actualCellWidth = columnWidth;
+        const availableCellWidth = actualCellWidth - horizontalPadding;
+        const approxCharsPerLine = availableCellWidth / approxCharWidth;
+        const approxNumLinesDesired = Math.ceil(numCharsInCell / approxCharsPerLine) + numBufferLines;
+
+        const approxCellHeight = approxNumLinesDesired * approxLineHeight;
+        return approxCellHeight;
+    },
 };

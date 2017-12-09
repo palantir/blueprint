@@ -167,7 +167,9 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       background: none;
       cursor: pointer;
       height: $pt-input-height;
-      padding: 0 $pt-grid-size;
+      // increase the size of the click target, clearing the caret on the right.
+      padding-right: $pt-icon-size-standard;
+      padding-left: $pt-grid-size;
       line-height: $pt-input-height;
       color: $pt-text-color;
       font-weight: 600;
@@ -180,6 +182,10 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
         // IE11 styling to hide the arrow
         display: none;
       }
+
+      &:hover + .pt-datepicker-caption-caret {
+        color: $pt-text-color;
+      }
     }
   }
 
@@ -189,10 +195,13 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   }
 
   .pt-datepicker-caption-caret {
-    display: none;
     position: absolute;
     top: $pt-grid-size * 0.2;
-    margin-left: $pt-grid-size;
+    // override library-imposed left offset
+    // stylelint-disable declaration-no-important
+    right: 0;
+    left: auto !important;
+    color: $pt-text-color-muted;
     pointer-events: none;
   }
 
@@ -203,10 +212,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     margin-bottom: -$pt-grid-size / 2;
     border-top: 1px solid $pt-divider-black;
     padding-top: $pt-grid-size / 2;
-  }
-
-  .DayPicker-Month:hover .pt-datepicker-caption-caret {
-    display: inline;
   }
 }
 

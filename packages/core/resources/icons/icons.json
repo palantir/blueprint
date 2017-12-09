@@ -3001,5 +3001,12 @@
     "tags": "transportation, public, move",
     "group": "interface",
     "content": "\\e79f"
+  },
+  {
+    "name": "Heart: broken",
+    "className": "pt-icon-heart-broken",
+    "tags": "love, like, organ, human, feelings, split, torn, failed, health",
+    "group": "miscellaneous",
+    "content": "\\e7a2"
   }
 ]

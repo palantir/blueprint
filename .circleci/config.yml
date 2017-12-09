@@ -1,0 +1,204 @@
+version: 2
+jobs:
+  install-dependencies:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependency-cache-{{ checksum "yarn.lock" }}
+            - v1-dependency-cache-
+      - run: yarn
+      - run: echo "Checking if lockfiles changed..." && git diff --exit-code
+      - run: npm rebuild node-sass
+      - save_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/yarn
+            - ~/.cache/yarn
+            - node_modules
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - yarn.lock
+            - packages/*/node_modules/.bin
+
+  compile-libs:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          keys:
+            - v1-dependency-cache-{{ checksum "yarn.lock" }}
+            - v1-dependency-cache-
+      - run: yarn compile-libs
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - packages/*/dist
+            - packages/*/src/generated
+
+  lint:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          keys:
+            - v1-dependency-cache-{{ checksum "yarn.lock" }}
+            - v1-dependency-cache-
+      - run: yarn lint
+
+  dist-libs:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn dist:libs
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - packages/core/dist
+            - packages/datetime/dist
+            - packages/docs/dist
+            - packages/labs/dist
+            - packages/table/dist
+
+  dist-apps:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn dist:apps
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - packages/docs-app/dist
+            - packages/landing-app/dist
+            - packages/table-dev-app/dist
+
+  test-core:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn lerna run test --scope '@blueprintjs/core'
+
+  test-datetime:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn lerna run test --scope '@blueprintjs/datetime'
+
+  test-labs:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn lerna run test --scope '@blueprintjs/labs'
+
+  test-table:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn lerna run test --scope '@blueprintjs/table'
+
+  deploy-preview:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - store_artifacts:
+          path: docs
+      - store_artifacts:
+          path: packages/docs-app/dist
+      - store_artifacts:
+          path: packages/landing-app/dist
+      - store_artifacts:
+          path: packages/table-dev-app/dist
+      - run:
+          name: Submit Github comment with links to built artifacts
+          command: ./scripts/submit-preview-comment
+
+  deploy-npm:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - run: ./scripts/publish-npm-semver-tagged
+
+workflows:
+  version: 2
+  compile_lint_test_dist_deploy:
+    jobs:
+      - install-dependencies
+      - compile-libs:
+          requires: [install-dependencies]
+      - lint:
+          requires: [install-dependencies]
+      - dist-libs:
+          requires: [compile-libs]
+      - dist-apps:
+          requires: [compile-libs]
+      - test-core:
+          requires: [compile-libs]
+      - test-datetime:
+          requires: [compile-libs]
+      - test-labs:
+          requires: [compile-libs]
+      - test-table:
+          requires: [compile-libs]
+      - deploy-preview:
+          requires:
+            - lint
+            - dist-libs
+            - dist-apps
+            - test-core
+            - test-datetime
+            - test-labs
+            - test-table
+      - deploy-npm:
+          requires: [deploy-preview]
+          filters:
+            tags:
+              only:
+                - /^release-.*/
+            branches:
+              ignore:
+                - /.*/

@@ -18,6 +18,7 @@ export interface IDateRangePickerExampleState {
     dateRange?: DateRange;
     maxDateIndex?: number;
     minDateIndex?: number;
+    reverseMonthAndYearMenus?: boolean;
     shortcuts?: boolean;
 }
 
@@ -59,12 +60,16 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
         dateRange: [null, null],
         maxDateIndex: 0,
         minDateIndex: 0,
+        reverseMonthAndYearMenus: false,
         shortcuts: true,
     };
 
     private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
     private handleMinDateIndexChange = handleNumberChange(minDateIndex => this.setState({ minDateIndex }));
 
+    private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
+        this.setState({ reverseMonthAndYearMenus }),
+    );
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
     private toggleContiguousCalendarMonths = handleBooleanChange(contiguousCalendarMonths => {
@@ -86,6 +91,7 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                     maxDate={maxDate}
                     minDate={minDate}
                     onChange={this.handleDateChange}
+                    reverseMonthAndYearMenus={this.state.reverseMonthAndYearMenus}
                     shortcuts={this.state.shortcuts}
                 />
                 <div>
@@ -117,6 +123,12 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                     key="Shortcuts"
                     label="Show shortcuts"
                     onChange={this.toggleShortcuts}
+                />,
+                <Switch
+                    checked={this.state.reverseMonthAndYearMenus}
+                    label="Reverse month and year menus"
+                    key="Reverse month and year menus"
+                    onChange={this.toggleReverseMonthAndYearMenus}
                 />,
             ],
             [

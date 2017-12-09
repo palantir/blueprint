@@ -75,6 +75,6 @@ module.exports = {
     },
     jsRules: {
         "object-literal-sort-keys": false,
-        "trailing-comma": false
+        "trailing-comma": false,
     }
 };
