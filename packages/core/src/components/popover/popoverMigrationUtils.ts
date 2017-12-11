@@ -5,7 +5,7 @@
  */
 
 import { Position } from "../../common/position";
-import { Placement } from "./popover2";
+import { Placement } from "./popover";
 
 /**
  * Convert a position to a placement.

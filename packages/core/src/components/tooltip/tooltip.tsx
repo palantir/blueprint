@@ -11,8 +11,7 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { IIntentProps, IProps } from "../../common/props";
-import { PopoverInteractionKind } from "../popover/popover"; // TODO: move this to popover2/ directory
-import { Popover2 } from "../popover2/popover2";
+import { Popover2, PopoverInteractionKind } from "../popover/popover"; // TODO: move this to popover/ directory
 
 export interface ITooltip2Props extends IProps, IIntentProps {
     /**

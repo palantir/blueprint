@@ -17,7 +17,7 @@ import { Position } from "../../src/common/position";
 import * as Utils from "../../src/common/utils";
 import { Overlay } from "../../src/components/overlay/overlay";
 import { PopoverInteractionKind } from "../../src/components/popover/popover";
-import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../../src/components/popover2/popover2";
+import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../../src/components/popover/popover";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { dispatchMouseEvent } from "../common/utils";
 

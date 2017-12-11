@@ -71,7 +71,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
         sliderValue: 5,
     };
 
-    protected className = "docs-popover2-example";
+    protected className = "docs-popover-example";
 
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
     private handleInteractionChange = handleNumberChange(interactionKind => {
@@ -108,12 +108,12 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
 
     protected renderExample() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
-        const popover2ClassName = classNames(this.className, {
+        const popoverClassName = classNames(this.className, {
             "pt-popover-content-sizing": exampleIndex <= 2,
         });
         return (
-            <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
-                <Popover2 popoverClassName={popover2ClassName} portalClassName="foo" {...popoverProps}>
+            <div className="docs-popover-example-scroll" ref={this.centerScroll}>
+                <Popover2 popoverClassName={popoverClassName} portalClassName="foo" {...popoverProps}>
                     <Button intent={Intent.PRIMARY} text="Popover target" />
                     {this.getContents(exampleIndex)}
                 </Popover2>

@@ -21,7 +21,6 @@
 @page non-ideal-state
 @page overlay
 @page popover
-@page popover2
 @page portal
 @page progress
 @page sliders
