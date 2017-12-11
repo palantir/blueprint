@@ -371,13 +371,13 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
     protected validateProps(props: IPopover2Props & { children?: React.ReactNode }) {
         if (props.isDisabled !== undefined) {
-            console.warn(Errors.POPOVER2_WARN_DEPRECATED_IS_DISABLED);
+            console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_DISABLED);
         }
         if (props.isModal !== undefined) {
-            console.warn(Errors.POPOVER2_WARN_DEPRECATED_IS_MODAL);
+            console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_MODAL);
         }
         if (props.position !== undefined) {
-            console.warn(Errors.POPOVER2_WARN_DEPRECATED_POSITION);
+            console.warn(Errors.POPOVER_WARN_DEPRECATED_POSITION);
         }
     }
 

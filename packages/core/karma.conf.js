@@ -12,9 +12,9 @@ module.exports = function (config) {
         coverageExcludes: [
             "src/accessibility/*",
             // TODO (clewis): write tests for these component as part of the 2.0 effort:
-            "src/components/popover2/*",
+            "src/components/popover/*",
             "src/components/tag-input/*",
-            "src/components/tooltip2/*",
+            "src/components/tooltip/*",
         ],
     });
     config.set(baseConfig);

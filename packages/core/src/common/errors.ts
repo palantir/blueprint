@@ -54,9 +54,9 @@ export const POPOVER_WARN_INLINE_NO_TETHER =
     ns + ` <Popover inline={true}> ignores tetherOptions, constraints, and useSmartPositioning.`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
 
-export const POPOVER2_WARN_DEPRECATED_IS_DISABLED = `${deprec} <Popover2> isDisabled is deprecated. Use disabled.`;
-export const POPOVER2_WARN_DEPRECATED_IS_MODAL = `${deprec} <Popover2> isModal is deprecated. Use hasBackdrop.`;
-export const POPOVER2_WARN_DEPRECATED_POSITION = `${deprec} <Popover2> position is deprecated. Use placement.`;
+export const POPOVER_WARN_DEPRECATED_IS_DISABLED = `${deprec} <Popover2> isDisabled is deprecated. Use disabled.`;
+export const POPOVER_WARN_DEPRECATED_IS_MODAL = `${deprec} <Popover2> isModal is deprecated. Use hasBackdrop.`;
+export const POPOVER_WARN_DEPRECATED_POSITION = `${deprec} <Popover2> position is deprecated. Use placement.`;
 
 export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
 
