@@ -5,7 +5,7 @@
  */
 
 export * from "./multiSelectExample";
-export * from "./omniboxExample";
+export * from "./omnibarExample";
 export * from "./popover2Example";
 export * from "./selectExample";
 export * from "./suggestExample";
