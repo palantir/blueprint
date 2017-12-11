@@ -14,10 +14,10 @@ import {
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
-    IPopover2Props,
+    IPopoverProps,
     Keys,
     Menu,
-    Popover2,
+    Popover,
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
@@ -60,8 +60,8 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
-    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopover2Props> & object;
+    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected
@@ -199,7 +199,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
         const { handleKeyDown, handleKeyUp } = listProps;
         return (
-            <Popover2
+            <Popover
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
@@ -223,7 +223,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
                     {filterable ? input : undefined}
                     <Menu ulRef={listProps.itemsParentRef}>{this.renderItems(listProps)}</Menu>
                 </div>
-            </Popover2>
+            </Popover>
         );
     };
 

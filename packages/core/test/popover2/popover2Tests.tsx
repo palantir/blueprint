@@ -16,8 +16,13 @@ import * as Keys from "../../src/common/keys";
 import { Position } from "../../src/common/position";
 import * as Utils from "../../src/common/utils";
 import { Overlay } from "../../src/components/overlay/overlay";
-import { PopoverInteractionKind } from "../../src/components/popover/popover";
-import { IPopoverProps, IPopoverState, Placement, Popover } from "../../src/components/popover/popover";
+import {
+    IPopoverProps,
+    IPopoverState,
+    Placement,
+    Popover,
+    PopoverInteractionKind,
+} from "../../src/components/popover/popover";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { dispatchMouseEvent } from "../common/utils";
 

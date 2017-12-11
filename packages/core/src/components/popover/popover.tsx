@@ -32,7 +32,7 @@ export enum PopoverInteractionKind {
     HOVER_TARGET_ONLY,
 }
 
-export interface IPopover2Props extends IOverlayableProps, IProps {
+export interface IPopoverProps extends IOverlayableProps, IProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 

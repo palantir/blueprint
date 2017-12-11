@@ -11,7 +11,7 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { IIntentProps, IProps } from "../../common/props";
-import { Popover2, PopoverInteractionKind } from "../popover/popover"; // TODO: move this to popover/ directory
+import { Popover, PopoverInteractionKind } from "../popover/popover"; // TODO: move this to popover/ directory
 
 export interface ITooltip2Props extends IProps, IIntentProps {
     /**
@@ -139,7 +139,7 @@ export class Tooltip2 extends React.Component<ITooltip2Props, {}> {
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
 
         return (
-            <Popover2
+            <Popover
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
@@ -149,7 +149,7 @@ export class Tooltip2 extends React.Component<ITooltip2Props, {}> {
                 popoverClassName={classes}
             >
                 {children}
-            </Popover2>
+            </Popover>
         );
     }
 }

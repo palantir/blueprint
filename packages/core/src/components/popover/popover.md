@@ -1,4 +1,4 @@
-@# Popover2
+@# Popover
 
 **Changes from original [`Popover`](#core/components/popover):**
 
@@ -15,9 +15,9 @@
 - ...and one special addition:
   - `minimal: boolean` applies minimal styles, which includes removing the arrow and minimizing the transition
 
-@reactExample Popover2Example
+@reactExample PopoverExample
 
-@interface IPopover2Props
+@interface IPopoverProps
 
 @## Placement
 
@@ -48,7 +48,7 @@ And `right-end` places the Popover along the right edge with their bottom sides 
 
 @## Modifiers
 
-Modifiers are the tools through which you customize Popper.js's behavior. Popper.js defines several of its own modifiers to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow. `Popover2` defines a few additional modifiers to support itself. You can even define your own modifiers, and customize the Popper.js defaults, through the `modifiers` prop. (Note: it is not currently possible to configure `Popover2`'s modifiers through the `modifiers` prop, nor can you define your own with the same name.)
+Modifiers are the tools through which you customize Popper.js's behavior. Popper.js defines several of its own modifiers to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow. `Popover` defines a few additional modifiers to support itself. You can even define your own modifiers, and customize the Popper.js defaults, through the `modifiers` prop. (Note: it is not currently possible to configure `Popover`'s modifiers through the `modifiers` prop, nor can you define your own with the same name.)
 
 **Popper.js modifiers, which can be customized via the `modifiers` prop:**
 
@@ -62,10 +62,10 @@ Modifiers are the tools through which you customize Popper.js's behavior. Popper
 - [`hide`](https://popper.js.org/popper-documentation.html#modifiers..hide) hides the popper when its reference element is outside of the popper boundaries.
 - [`computeStyle`](https://popper.js.org/popper-documentation.html#modifiers..computeStyle) generates the CSS styles to apply to the DOM
 
-**`Popover2` modifiers, _which cannot be used by you_:**
+**`Popover` modifiers, _which cannot be used by you_:**
 
 - `arrowOffset` moves the popper a little bit to make room for the arrow
-- `updatePopoverState` saves off some popper data to `Popover2` React state for fancy things
+- `updatePopoverState` saves off some popper data to `Popover` React state for fancy things
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     To understand all the Popper.js modifiers available to you, you'll want to read [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers).

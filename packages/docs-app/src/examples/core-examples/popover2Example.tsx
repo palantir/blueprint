@@ -16,7 +16,7 @@ import {
     Menu,
     MenuDivider,
     MenuItem,
-    Popover2,
+    Popover,
     PopoverInteractionKind,
     RadioGroup,
     Slider,
@@ -39,7 +39,7 @@ const PLACEMENTS = PopperJS.placements.map((p: PopperJS.Placement) => (
 
 const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
 
-export interface IPopover2ExampleState {
+export interface IPopoverExampleState {
     canEscapeKeyClose?: boolean;
     exampleIndex?: number;
     hasBackdrop?: boolean;
@@ -52,8 +52,8 @@ export interface IPopover2ExampleState {
     sliderValue?: number;
 }
 
-export class Popover2Example extends BaseExample<IPopover2ExampleState> {
-    public state: IPopover2ExampleState = {
+export class PopoverExample extends BaseExample<IPopoverExampleState> {
+    public state: IPopoverExampleState = {
         canEscapeKeyClose: true,
         exampleIndex: 0,
         hasBackdrop: false,
@@ -113,10 +113,10 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
         });
         return (
             <div className="docs-popover-example-scroll" ref={this.centerScroll}>
-                <Popover2 popoverClassName={popoverClassName} portalClassName="foo" {...popoverProps}>
+                <Popover popoverClassName={popoverClassName} portalClassName="foo" {...popoverProps}>
                     <Button intent={Intent.PRIMARY} text="Popover target" />
                     {this.getContents(exampleIndex)}
-                </Popover2>
+                </Popover>
                 <p>
                     Scroll around this container to experiment<br />
                     with <code>flip</code> and <code>preventOverflow</code> modifiers.
@@ -146,7 +146,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                             <option value="1">Input</option>
                             <option value="2">Slider</option>
                             <option value="3">Menu</option>
-                            <option value="4">Popover2 Example</option>
+                            <option value="4">Popover Example</option>
                             <option value="5">Empty</option>
                         </select>
                     </div>
@@ -220,7 +220,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
     private getContents(index: number) {
         return [
             <div>
-                <h5>Popover2 title</h5>
+                <h5>Popover title</h5>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua.
@@ -252,7 +252,7 @@ export class Popover2Example extends BaseExample<IPopover2ExampleState> {
                     <MenuItem iconName="underline" text="Underline" />
                 </MenuItem>
             </Menu>,
-            <Popover2Example {...this.props} />,
+            <PopoverExample {...this.props} />,
         ][index];
     }
 

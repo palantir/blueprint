@@ -21,7 +21,6 @@ const popoverTarget = React.createElement("button");
 const customChildren = {
     Hotkeys: React.createElement(Core.Hotkey, customProps.Hotkey),
     Popover: popoverTarget,
-    Popover2: popoverTarget,
     SVGPopover: popoverTarget,
     SVGTooltip: popoverTarget,
     Tabs2: [Core.Tab2Factory({ key: 1, id: 1, title: "Tab one" })],

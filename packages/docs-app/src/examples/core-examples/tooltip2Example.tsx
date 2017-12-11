@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Intent, Popover2, Switch, Tooltip2 } from "@blueprintjs/core";
+import { Button, Intent, Popover, Switch, Tooltip2 } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
 export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
@@ -102,11 +102,11 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                     </Tooltip2>
                 </div>
                 <br />
-                <Popover2 content={<h1>Popover!</h1>} placement="right" popoverClassName="pt-popover-content-sizing">
+                <Popover content={<h1>Popover!</h1>} placement="right" popoverClassName="pt-popover-content-sizing">
                     <Tooltip2 content={<span>This button also has a popover!</span>} placement="right" inline={true}>
                         <Button intent={Intent.SUCCESS} text="Hover and click me" />
                     </Tooltip2>
-                </Popover2>
+                </Popover>
             </div>
         );
     }
