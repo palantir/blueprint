@@ -24,7 +24,7 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
             </span>
         );
         return (
-            <div className="docs-tooltip2-example">
+            <div className="docs-tooltip-example">
                 <div>
                     Inline text can have&nbsp;
                     <Tooltip2

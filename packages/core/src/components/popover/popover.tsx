@@ -20,7 +20,7 @@ import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
-import { Tooltip2 } from "../tooltip2/tooltip2";
+import { Tooltip2 } from "../tooltip/tooltip";
 import { getArrowAngle, PopoverArrow } from "./arrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";

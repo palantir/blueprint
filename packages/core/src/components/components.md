@@ -32,5 +32,4 @@
 @page text
 @page toast
 @page tooltip
-@page tooltip2
 @page tree
