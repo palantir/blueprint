@@ -14,13 +14,12 @@
 ///
 /// @argument {string} $file-path
 ///
+/// @argument {string | list} $file-formats
+///   List of the font file formats to include.
+///
 /// @argument {string} $weight
 ///
 /// @argument {string} $style
-///
-/// @argument {string | list} $file-formats
-///   List of the font file formats to include. Can also be set globally using
-///   the `global-font-file-formats` key in the Bourbon settings.
 ///
 /// @content
 ///   Any additional CSS properties that are included in the `@include`
@@ -30,15 +29,15 @@
   $font-family,
   $file-path,
   $file-formats,
-  $weight: normal,
-  $style: normal
+  $font-weight: normal,
+  $font-style: normal
 ) {
   @font-face {
     font-family: $font-family;
-    font-weight: $weight;
-    font-style: $style;
+    font-weight: $font-weight;
+    font-style: $font-style;
 
-    src: _font-source-declaration(
+    src: font-source-declaration(
       $font-family,
       $file-path,
       $file-formats
@@ -48,11 +47,7 @@
   }
 }
 
-@function _font-source-declaration(
-  $font-family,
-  $file-path,
-  $file-formats
-) {
+@function font-source-declaration($font-family, $file-path, $file-formats) {
   $src: ();
 
   $formats-map: (
@@ -64,7 +59,7 @@
   );
 
   @each $key, $values in $formats-map {
-    @if _contains($file-formats, $key) {
+    @if list-contains($file-formats, $key) {
       $file-path: nth($values, 1);
       $font-format: nth($values, 2);
 
@@ -76,10 +71,7 @@
 }
 
 /// Returns true if `$list` contains any of `$values`.
-@function _contains(
-  $list,
-  $values...
-) {
+@function list-contains($list, $values...) {
   @each $value in $values {
     @if type-of(index($list, $value)) != "number" {
       @return false;
