@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -142,8 +141,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
     useSmartPositioning?: boolean;
 }
 
-@PureRender
-export class Tooltip extends React.Component<ITooltipProps, {}> {
+export class Tooltip extends React.PureComponent<ITooltipProps, {}> {
     public static defaultProps: Partial<ITooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,

@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
@@ -101,7 +100,6 @@ export interface ITimezonePickerState {
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
-@PureRender
 export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITimezonePickerState> {
     public static displayName = "Blueprint.TimezonePicker";
 

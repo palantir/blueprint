@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
@@ -129,7 +128,6 @@ enum IncrementDirection {
     UP = +1,
 }
 
-@PureRender
 export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
     public static displayName = "Blueprint.NumericInput";
 

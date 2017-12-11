@@ -6,7 +6,6 @@
 
 import * as classNames from "classnames";
 import PopperJS from "popper.js";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes, IIntentProps, IProps, PopoverInteractionKind } from "@blueprintjs/core";
@@ -121,8 +120,7 @@ export interface ITooltip2Props extends IProps, IIntentProps {
     transitionDuration?: number;
 }
 
-@PureRender
-export class Tooltip2 extends React.Component<ITooltip2Props, {}> {
+export class Tooltip2 extends React.PureComponent<ITooltip2Props, {}> {
     public static displayName = "Blueprint.Tooltip2";
 
     public static defaultProps: Partial<ITooltip2Props> = {

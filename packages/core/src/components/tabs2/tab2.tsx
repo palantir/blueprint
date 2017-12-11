@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -39,8 +38,7 @@ export interface ITab2Props extends IProps {
     title?: string | JSX.Element;
 }
 
-@PureRender
-export class Tab2 extends React.Component<ITab2Props, {}> {
+export class Tab2 extends React.PureComponent<ITab2Props, {}> {
     public static defaultProps: ITab2Props = {
         disabled: false,
         id: undefined,

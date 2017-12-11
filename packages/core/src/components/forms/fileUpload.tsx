@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Utils } from "../../common";
 import * as Classes from "../../common/classes";
@@ -57,8 +56,7 @@ export interface IFileUploadProps extends React.AllHTMLAttributes<HTMLLabelEleme
 
 // TODO: write tests (ignoring for now to get a build passing quickly)
 /* istanbul ignore next */
-@PureRender
-export class FileUpload extends React.Component<IFileUploadProps, {}> {
+export class FileUpload extends React.PureComponent<IFileUploadProps, {}> {
     public static displayName = "Blueprint.FileUpload";
 
     public static defaultProps: IFileUploadProps = {

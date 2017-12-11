@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { AbstractComponent } from "../../common/abstractComponent";
@@ -44,7 +43,6 @@ export interface IToastProps extends IProps, IIntentProps {
     timeout?: number;
 }
 
-@PureRender
 export class Toast extends AbstractComponent<IToastProps, {}> {
     public static defaultProps: IToastProps = {
         className: "",

@@ -4,7 +4,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { HTMLInputProps, IPopoverProps, Keys, Menu, Popover, Position, Utils } from "@blueprintjs/core";
@@ -62,8 +61,7 @@ export interface IMultiSelectState<T> {
     query?: string;
 }
 
-@PureRender
-export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMultiSelectState<T>> {
+export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState<T>> {
     public static displayName = "Blueprint.MultiSelect";
 
     public static ofType<T>() {

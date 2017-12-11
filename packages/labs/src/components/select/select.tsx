@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
@@ -110,8 +109,7 @@ export interface ISelectState<T> {
     query?: string;
 }
 
-@PureRender
-export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>> {
+export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState<T>> {
     public static displayName = "Blueprint.Select";
 
     public static ofType<T>() {

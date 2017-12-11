@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { AbstractComponent } from "../../common/abstractComponent";
@@ -38,7 +37,6 @@ export interface IHandleState {
 // props that require number values, for validation
 const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
-@PureRender
 export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
     public static displayName = "Blueprint.SliderHandle";
 

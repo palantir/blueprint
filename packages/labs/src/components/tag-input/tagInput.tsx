@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
@@ -128,7 +127,6 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
-@PureRender
 export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> {
     public static displayName = "Blueprint.TagInput";
 

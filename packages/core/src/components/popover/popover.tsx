@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
 import * as Tether from "tether";
@@ -217,7 +216,6 @@ export interface IPopoverState {
     targetWidth?: number;
 }
 
-@PureRender
 export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
     public static defaultProps: IPopoverProps = {
         arrowSize: 30,

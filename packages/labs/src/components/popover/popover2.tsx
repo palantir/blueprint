@@ -6,7 +6,6 @@
 
 import * as classNames from "classnames";
 import PopperJS from "popper.js";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
 
@@ -207,7 +206,6 @@ export interface IPopover2State {
     placement?: Placement;
 }
 
-@PureRender
 export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> {
     public static displayName = "Blueprint.Popover2";
 

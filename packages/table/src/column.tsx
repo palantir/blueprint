@@ -4,11 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as PureRender from "pure-render-decorator";
-import * as React from "react";
-
 import { IProps } from "@blueprintjs/core";
-
+import * as React from "react";
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { IColumnHeaderRenderer } from "./headers/columnHeader";
 import { IColumnNameProps } from "./headers/columnHeaderCell";
@@ -47,8 +44,7 @@ export interface IColumnProps extends IColumnNameProps, IProps {
     renderColumnHeader?: IColumnHeaderRenderer;
 }
 
-@PureRender
-export class Column extends React.Component<IColumnProps, {}> {
+export class Column extends React.PureComponent<IColumnProps, {}> {
     public static defaultProps: IColumnProps = {
         renderCell: emptyCellRenderer,
     };

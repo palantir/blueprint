@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -78,7 +77,6 @@ export interface IToasterState {
     toasts: IToastOptions[];
 }
 
-@PureRender
 export class Toaster extends AbstractComponent<IToasterProps, IToasterState> implements IToaster {
     public static defaultProps: IToasterProps = {
         autoFocus: false,

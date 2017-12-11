@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
 
@@ -58,7 +57,6 @@ export interface ITabsState {
 
 const TAB_CSS_SELECTOR = "li[role=tab]";
 
-@PureRender
 export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
     public static defaultProps: ITabsProps = {
         initialSelectedTabIndex: 0,

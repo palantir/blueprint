@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { AbstractComponent } from "../../common/abstractComponent";
@@ -81,7 +80,6 @@ export interface ISliderState {
     tickSize?: number;
 }
 
-@PureRender
 export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractComponent<P, ISliderState> {
     public className = Classes.SLIDER;
 

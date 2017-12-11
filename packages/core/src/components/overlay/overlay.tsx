@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as CSSTransitionGroup from "react-addons-css-transition-group";
 
@@ -118,8 +117,7 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
-@PureRender
-export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
+export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
     public static displayName = "Blueprint.Overlay";
 
     public static defaultProps: IOverlayProps = {
