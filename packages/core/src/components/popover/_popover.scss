@@ -1,0 +1,146 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "./common";
+
+$popover-width: $pt-grid-size * 35 !default;
+
+.pt-popover {
+  @include popover-sizing(
+    $arrow-square-size: 30px,
+    $arrow-offset: 4px,
+    $arrow-target-offset: -4px
+  );
+  @include popover-appearance(
+    $popover-background-color,
+    inherit,
+    $pt-popover-box-shadow,
+    $pt-drop-shadow-opacity,
+    $pt-border-shadow-opacity
+  );
+  @include scale-transition();
+  display: inline-block;
+  z-index: $pt-z-index-overlay;
+  border-radius: $pt-border-radius;
+
+  .pt-popover-content {
+    position: relative;
+    border-radius: $pt-border-radius;
+  }
+
+  &.pt-popover-content-sizing {
+    .pt-popover-content {
+      max-width: $popover-width;
+      padding: $pt-grid-size * 2;
+    }
+
+    // only inline popovers get a width if this class is applied
+    .pt-popover-target & {
+      width: $popover-width;
+    }
+  }
+
+  &.pt-minimal {
+    // popovers with no obvious trigger will never have margin because the arrow
+    // is hidden so it is safe to remove in all cases always
+    margin: 0 !important; // stylelint-disable-line declaration-no-important
+
+    .pt-popover-arrow {
+      display: none;
+    }
+
+    &.pt-popover {
+      @include react-transition(
+        "pt-popover",
+        (transform: scale(1) scale(1)),
+        $duration: $pt-transition-duration,
+        $after: "> &"
+      );
+    }
+  }
+
+  &.pt-dark,
+  .pt-dark & {
+    @include popover-appearance(
+      $dark-popover-background-color,
+      inherit,
+      $pt-dark-popover-box-shadow,
+      $pt-dark-drop-shadow-opacity,
+      $pt-dark-border-shadow-opacity
+    );
+  }
+}
+
+// the box-shadow under the arrow SVG paths
+.pt-popover-arrow::before {
+  display: block;
+  position: absolute;
+  transform: rotate(45deg);
+  border-radius: $pt-border-radius - 1;
+  content: "";
+}
+
+// remove arrow when popover is pinned inside its container
+.pt-tether-pinned .pt-popover-arrow {
+  display: none;
+}
+
+.pt-popover-backdrop {
+  background: rgba($white, 0);
+}
+
+.pt-transition-container {
+  @include fade-transition();
+
+  // ensure element size exactly equals its children, no edge-case 4px spacing!
+  // (try removing this property with Slider content in example)
+  display: flex;
+  z-index: $pt-z-index-overlay;
+
+  &:focus {
+    outline: none;
+  }
+
+  // popover content should ignore pointer events during a popover's exit transition
+  &.pt-popover-leave .pt-popover-content {
+    pointer-events: none;
+  }
+}
+
+.pt-popover-target {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+
+  // avoid tether positioning bugs when nesting `display: inline` targets (BLUEPRINT-526)
+  // example: <Popover><Tooltip><button /></Tooltip></Popover>
+  > .pt-popover-target {
+    display: inline-block;
+  }
+
+  // position the transition container using CSS when it is inline
+  .pt-transition-container {
+    @include popover-inline-position();
+  }
+
+  // make sure inline overlays don't inherit from absolute positioning in cases
+  // where overlays are nested (i.e. Popover within Dialog)
+  .pt-overlay-inline {
+    position: static;
+  }
+}
+
+// fix positioning of popovers inside button groups (lots of extra nested elements)
+.pt-button-group {
+  &.pt-vertical .pt-popover-target {
+    display: block;
+  }
+
+  &:not(.pt-vertical) {
+    // make all containers float left to ensure proper sizing
+    .pt-popover-target,
+    .pt-tether-target {
+      float: left;
+    }
+  }
+}

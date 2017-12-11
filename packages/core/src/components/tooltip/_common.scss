@@ -1,0 +1,11 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+$tooltip-background-color: $dark-gray5 !default;
+$tooltip-text-color: $light-gray5 !default;
+
+$dark-tooltip-background-color: $light-gray3 !default;
+$dark-tooltip-text-color: $dark-gray5 !default;
+
+$tooltip-padding-vertical: $pt-grid-size !default;
+$tooltip-padding-horizontal: 1.2 * $pt-grid-size !default;

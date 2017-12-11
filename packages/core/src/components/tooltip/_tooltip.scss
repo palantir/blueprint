@@ -1,0 +1,67 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "~bourbon/app/assets/stylesheets/bourbon";
+@import "../../common/variables";
+@import "../popover/common";
+@import "./common";
+
+.pt-tooltip {
+  @include popover-sizing(
+    $arrow-square-size: 22px,
+    $arrow-offset: 3px,
+    $arrow-target-offset: -4px
+  );
+  @include popover-appearance(
+    $tooltip-background-color,
+    $tooltip-text-color,
+    $pt-tooltip-box-shadow,
+    $pt-drop-shadow-opacity,
+    $pt-border-shadow-opacity
+  );
+  // lightweight scale for tooltips
+  @include react-transition(
+    "pt-popover",
+    (transform: scale(0.8) scale(1)),
+    $duration: $pt-transition-duration,
+    $after: "> &"
+  );
+
+  .pt-popover-content {
+    padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
+  }
+
+  &.pt-dark,
+  .pt-dark & {
+    @include popover-appearance(
+      $dark-tooltip-background-color,
+      $dark-tooltip-text-color,
+      $pt-dark-tooltip-box-shadow,
+      $pt-dark-drop-shadow-opacity,
+      $pt-dark-border-shadow-opacity
+    );
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.pt-intent-#{$intent} {
+      .pt-popover-content {
+        background: $color;
+        color: $white;
+      }
+
+      .pt-popover-arrow-fill {
+        fill: $color;
+      }
+    }
+  }
+}
+
+.pt-popover-target .pt-tooltip {
+  // inline tooltips don't get auto-sizing, so this sort of emulates it
+  white-space: nowrap;
+}
+
+.pt-tooltip-indicator {
+  border-bottom: dotted 1px;
+  cursor: help;
+}
