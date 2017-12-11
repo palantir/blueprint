@@ -17,13 +17,13 @@ import { Position } from "../../src/common/position";
 import * as Utils from "../../src/common/utils";
 import { Overlay } from "../../src/components/overlay/overlay";
 import { PopoverInteractionKind } from "../../src/components/popover/popover";
-import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../../src/components/popover/popover";
+import { IPopoverProps, IPopoverState, Placement, Popover } from "../../src/components/popover/popover";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { dispatchMouseEvent } from "../common/utils";
 
-type ShallowPopover2Wrapper = ShallowWrapper<IPopover2Props, IPopover2State>;
+type ShallowPopoverWrapper = ShallowWrapper<IPopoverProps, IPopoverState>;
 
-describe("<Popover2>", () => {
+describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper;
 
@@ -43,17 +43,17 @@ describe("<Popover2>", () => {
 
     describe.skip("validation:", () => {
         it("throws error if given no target", () => {
-            assert.throws(() => shallow(<Popover2 />), Errors.POPOVER_REQUIRES_TARGET);
+            assert.throws(() => shallow(<Popover />), Errors.POPOVER_REQUIRES_TARGET);
         });
 
         it("warns if given > 2 target elements", () => {
             const warnSpy = sinon.spy(console, "warn");
             shallow(
-                <Popover2>
+                <Popover>
                     <h1 />
                     <h2 />
                     {"h3"}
-                </Popover2>,
+                </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
             warnSpy.restore();
@@ -61,7 +61,7 @@ describe("<Popover2>", () => {
 
         it("warns if given children and target prop", () => {
             const warnSpy = sinon.spy(console, "warn");
-            shallow(<Popover2 target="boom">pow</Popover2>);
+            shallow(<Popover target="boom">pow</Popover>);
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
             warnSpy.restore();
         });
@@ -69,10 +69,10 @@ describe("<Popover2>", () => {
         it("warns if given two children and content prop", () => {
             const warnSpy = sinon.spy(console, "warn");
             shallow(
-                <Popover2 content="boom">
+                <Popover content="boom">
                     {"pow"}
                     {"jab"}
-                </Popover2>,
+                </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
             warnSpy.restore();
@@ -109,9 +109,9 @@ describe("<Popover2>", () => {
     it("empty content disables it and warns", () => {
         const warnSpy = sinon.spy(console, "warn");
         const popover = mount(
-            <Popover2 content={undefined} isOpen={true}>
+            <Popover content={undefined} isOpen={true}>
                 <button />
-            </Popover2>,
+            </Popover>,
         );
         assert.isFalse(popover.find(Overlay).prop("isOpen"));
 
@@ -519,11 +519,11 @@ describe("<Popover2>", () => {
         let root: ReactWrapper<any, any>;
         beforeEach(() => {
             root = mount(
-                <Popover2 content="popover" hoverOpenDelay={0} hoverCloseDelay={0} inline={true}>
+                <Popover content="popover" hoverOpenDelay={0} hoverCloseDelay={0} inline={true}>
                     <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} inline={true}>
                         <button>Target</button>
                     </Tooltip>
-                </Popover2>,
+                </Popover>,
                 { attachTo: testsContainerElement },
             );
         });
@@ -586,9 +586,9 @@ describe("<Popover2>", () => {
     describe("deprecated prop shims", () => {
         it("should convert position to placement", () => {
             const popover = shallow(
-                <Popover2 inline={true} position={Position.BOTTOM_LEFT}>
+                <Popover inline={true} position={Position.BOTTOM_LEFT}>
                     child
-                </Popover2>,
+                </Popover>,
             );
             assertPlacement(popover, "bottom-start");
 
@@ -598,9 +598,9 @@ describe("<Popover2>", () => {
 
         it("should convert isModal to hasBackdrop", () => {
             const popover = shallow(
-                <Popover2 inline={true} isModal={true}>
+                <Popover inline={true} isModal={true}>
                     child
-                </Popover2>,
+                </Popover>,
             );
             assert.isTrue(popover.find(Overlay).prop("hasBackdrop"));
 
@@ -622,9 +622,9 @@ describe("<Popover2>", () => {
 
         it("placement should take precedence over position", () => {
             const popover = shallow(
-                <Popover2 inline={true} placement="left-end" position={Position.BOTTOM_LEFT}>
+                <Popover inline={true} placement="left-end" position={Position.BOTTOM_LEFT}>
                     child
-                </Popover2>,
+                </Popover>,
             );
             assertPlacement(popover, "left-end");
 
@@ -634,9 +634,9 @@ describe("<Popover2>", () => {
 
         it("hasBackdrop should take precedence over isModal", () => {
             const popover = shallow(
-                <Popover2 inline={true} hasBackdrop={true} isModal={false}>
+                <Popover inline={true} hasBackdrop={true} isModal={false}>
                     child
-                </Popover2>,
+                </Popover>,
             );
             assert.isTrue(popover.find(Overlay).prop("hasBackdrop"));
 
@@ -658,7 +658,7 @@ describe("<Popover2>", () => {
         });
     });
 
-    interface IPopoverWrapper extends ReactWrapper<IPopover2Props, IPopover2State> {
+    interface IPopoverWrapper extends ReactWrapper<IPopoverProps, IPopoverState> {
         popover: HTMLElement;
         assertIsOpen(isOpen?: boolean): this;
         simulateTarget(eventName: string): this;
@@ -667,15 +667,15 @@ describe("<Popover2>", () => {
         then(next: (wrap: IPopoverWrapper) => void, done?: MochaDone): void;
     }
 
-    function renderPopover(props: Partial<IPopover2Props> = {}, content?: any) {
+    function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
         wrapper = mount(
-            <Popover2 inline={true} {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
+            <Popover inline={true} {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>
                 <p>Text {content}</p>
-            </Popover2>,
+            </Popover>,
             { attachTo: testsContainerElement },
         ) as IPopoverWrapper;
-        wrapper.popover = (wrapper.instance() as Popover2).popoverElement;
+        wrapper.popover = (wrapper.instance() as Popover).popoverElement;
         wrapper.assertIsOpen = (isOpen = true) => {
             assert.equal(wrapper.find(Overlay).prop("isOpen"), isOpen);
             return wrapper;
@@ -705,7 +705,7 @@ describe("<Popover2>", () => {
         return (element as any).node as Element;
     }
 
-    function assertPlacement(popover: ShallowPopover2Wrapper, placement: Placement) {
+    function assertPlacement(popover: ShallowPopoverWrapper, placement: Placement) {
         assert.strictEqual(popover.find(Popper).prop("placement"), placement);
     }
 });

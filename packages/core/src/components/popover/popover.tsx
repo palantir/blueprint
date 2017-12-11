@@ -193,7 +193,7 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
     target?: string | JSX.Element;
 }
 
-export interface IPopover2State {
+export interface IPopoverState {
     arrowRotation?: number;
     transformOrigin?: string;
     isOpen?: boolean;
@@ -210,10 +210,10 @@ export interface IPopover2State {
 }
 
 @PureRender
-export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> {
-    public static displayName = "Blueprint.Popover2";
+export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
+    public static displayName = "Blueprint.Popover";
 
-    public static defaultProps: IPopover2Props = {
+    public static defaultProps: IPopoverProps = {
         defaultIsOpen: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
@@ -245,7 +245,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         target: (ref: HTMLElement) => (this.targetElement = ref),
     };
 
-    public constructor(props?: IPopover2Props, context?: any) {
+    public constructor(props?: IPopoverProps, context?: any) {
         super(props, context);
 
         const disabled = getDisabled(props);
@@ -303,7 +303,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
 
         const isContentEmpty = children.content == null;
         if (isContentEmpty && !disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
-            console.warn("[Blueprint] Disabling <Popover2> with empty/whitespace content...");
+            console.warn("[Blueprint] Disabling <Popover> with empty/whitespace content...");
         }
 
         return (
@@ -337,7 +337,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         this.updateDarkParent();
     }
 
-    public componentWillReceiveProps(nextProps: IPopover2Props) {
+    public componentWillReceiveProps(nextProps: IPopoverProps) {
         super.componentWillReceiveProps(nextProps);
 
         const nextDisabled = getDisabled(nextProps);
@@ -358,7 +358,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         });
     }
 
-    public componentWillUpdate(_: IPopover2Props, nextState: IPopover2State) {
+    public componentWillUpdate(_: IPopoverProps, nextState: IPopoverState) {
         if (!this.state.isOpen && nextState.isOpen) {
             this.isContentMounting = true;
             Utils.safeInvoke(this.props.popoverWillOpen);
@@ -375,7 +375,7 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         super.componentWillUnmount();
     }
 
-    protected validateProps(props: IPopover2Props & { children?: React.ReactNode }) {
+    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
         if (props.isDisabled !== undefined) {
             console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_DISABLED);
         }
@@ -596,7 +596,7 @@ function ensureElement(child: React.ReactChild | undefined) {
     }
 }
 
-function getDisabled(props: IPopover2Props): boolean {
+function getDisabled(props: IPopoverProps): boolean {
     if (props.disabled !== undefined) {
         return props.disabled;
     } else if (props.isDisabled !== undefined) {
@@ -606,7 +606,7 @@ function getDisabled(props: IPopover2Props): boolean {
     }
 }
 
-function getHasBackdrop(props: IPopover2Props): boolean {
+function getHasBackdrop(props: IPopoverProps): boolean {
     if (props.hasBackdrop !== undefined) {
         return props.hasBackdrop;
     } else if (props.isModal !== undefined) {
@@ -616,7 +616,7 @@ function getHasBackdrop(props: IPopover2Props): boolean {
     }
 }
 
-function getPlacement(props: IPopover2Props): Placement {
+function getPlacement(props: IPopoverProps): Placement {
     if (props.placement !== undefined) {
         return props.placement;
     } else if (props.position !== undefined) {
