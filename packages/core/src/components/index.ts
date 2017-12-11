@@ -67,5 +67,6 @@ export * from "./tag/tag";
 export * from "./toast/toast";
 export * from "./toast/toaster";
 export * from "./tooltip/tooltip";
+export * from "./tooltip2/tooltip2";
 export * from "./tree/tree";
 export * from "./tree/treeNode";

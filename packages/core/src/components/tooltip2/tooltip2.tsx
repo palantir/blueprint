@@ -11,7 +11,7 @@ import * as React from "react";
 
 import { Classes, IIntentProps, IProps, PopoverInteractionKind } from "@blueprintjs/core";
 
-import { Popover2 } from "../popover/popover2";
+import { Popover2 } from "../popover2/popover2";
 
 export interface ITooltip2Props extends IProps, IIntentProps {
     /**
