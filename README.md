@@ -15,6 +15,12 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 **Support question**? We use the [blueprintjs tag on Stack Overflow ▸](http://stackoverflow.com/questions/tagged/blueprintjs)
 
+## :construction: 2.0 in development :construction:
+
+The `master` branch of this repository is currently being used for development of the next major version of Blueprint. See the [2.0.0 milestone](https://github.com/palantir/blueprint/milestone/23) to track progress.
+
+To make a contribution that you wish to have released in a 1.x version of any `@blueprintjs` package, please submit a PR to the `release/1.x` branch.
+
 ## Packages
 
 This repository contains multiple projects in the `packages/` directory that fall into 3 categories:
