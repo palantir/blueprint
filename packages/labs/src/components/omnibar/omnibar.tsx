@@ -24,7 +24,7 @@ import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 import { ISelectItemRendererProps } from "../select/select";
 
-export interface IOmniboxProps<T> extends IListItemsProps<T> {
+export interface IOmnibarProps<T> extends IListItemsProps<T> {
     /**
      * React child to render when query is empty.
      */
@@ -48,7 +48,7 @@ export interface IOmniboxProps<T> extends IListItemsProps<T> {
     inputProps?: IInputGroupProps & HTMLInputProps;
 
     /**
-     * Toggles the visibility of the omnibox.
+     * Toggles the visibility of the omnibar.
      * This prop is required because the component is controlled.
      */
     isOpen: boolean;
@@ -74,19 +74,19 @@ export interface IOmniboxProps<T> extends IListItemsProps<T> {
     resetOnSelect?: boolean;
 }
 
-export interface IOmniboxState<T> extends IOverlayableProps, IBackdropProps {
+export interface IOmnibarState<T> extends IOverlayableProps, IBackdropProps {
     activeItem?: T;
     query?: string;
 }
 
-export class Omnibox<T> extends React.PureComponent<IOmniboxProps<T>, IOmniboxState<T>> {
-    public static displayName = "Blueprint.Omnibox";
+export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
+    public static displayName = "Blueprint.Omnibar";
 
     public static ofType<T>() {
-        return (Omnibox as any) as new () => Omnibox<T>;
+        return (Omnibar as any) as new () => Omnibar<T>;
     }
 
-    public state: IOmniboxState<T> = {
+    public state: IOmnibarState<T> = {
         query: "",
     };
 
@@ -113,7 +113,7 @@ export class Omnibox<T> extends React.PureComponent<IOmniboxProps<T>, IOmniboxSt
         );
     }
 
-    public componentWillReceiveProps(nextProps: IOmniboxProps<T>) {
+    public componentWillReceiveProps(nextProps: IOmnibarProps<T>) {
         const { isOpen } = nextProps;
         const canClearQuery = !this.props.isOpen && isOpen && this.props.resetOnSelect;
 
@@ -134,10 +134,10 @@ export class Omnibox<T> extends React.PureComponent<IOmniboxProps<T>, IOmniboxSt
                 hasBackdrop={true}
                 {...overlayProps}
                 isOpen={isOpen}
-                className={classNames(overlayProps.className, Classes.OMNIBOX_OVERLAY)}
+                className={classNames(overlayProps.className, Classes.OMNIBAR_OVERLAY)}
                 onClose={this.handleOverlayClose}
             >
-                <div className={classNames(listProps.className, Classes.OMNIBOX)} {...handlers}>
+                <div className={classNames(listProps.className, Classes.OMNIBAR)} {...handlers}>
                     <InputGroup
                         autoFocus={true}
                         className={CoreClasses.LARGE}
