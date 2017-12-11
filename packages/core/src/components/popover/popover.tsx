@@ -20,11 +20,17 @@ import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
-import { PopoverInteractionKind } from "../popover/popover";
 import { Tooltip2 } from "../tooltip2/tooltip2";
 import { getArrowAngle, PopoverArrow } from "./arrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
+
+export enum PopoverInteractionKind {
+    CLICK,
+    CLICK_TARGET_ONLY,
+    HOVER,
+    HOVER_TARGET_ONLY,
+}
 
 export interface IPopover2Props extends IOverlayableProps, IProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
