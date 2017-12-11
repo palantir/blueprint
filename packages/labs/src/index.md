@@ -19,8 +19,6 @@ reference: labs
 
 - [`QueryList`](#labs/query-list) is a higher-order component that provides interactions between a query string and a list of items.
 
-- [`TagInput`](#labs/tag-input) is an input component for [`Tag`](#core/components/tag)s.
-
 - [`TimezonePicker`](#labs/timezone-picker) for selecting timezones.
 
 @page select-component
@@ -28,5 +26,4 @@ reference: labs
 @page multi-select
 @page omnibox
 @page query-list
-@page tag-input
 @page timezone-picker

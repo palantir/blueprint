@@ -64,6 +64,7 @@ export * from "./tabs/tabPanel";
 export * from "./tabs2/tab2";
 export * from "./tabs2/tabs2";
 export * from "./tag/tag";
+export * from "./tag-input/tagInput";
 export * from "./toast/toast";
 export * from "./toast/toaster";
 export * from "./tooltip/tooltip";
