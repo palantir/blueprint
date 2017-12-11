@@ -18,7 +18,7 @@ import {
     Menu,
     Utils,
 } from "@blueprintjs/core";
-import * as Classes from "../../common/classes";
+import * as Classes from "../classes";
 import { IPopover2Props, Popover2 } from "../popover/popover2";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
