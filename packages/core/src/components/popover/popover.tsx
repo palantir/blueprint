@@ -20,7 +20,7 @@ import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
-import { Tooltip2 } from "../tooltip/tooltip";
+import { Tooltip } from "../tooltip/tooltip";
 import { getArrowAngle, PopoverArrow } from "./arrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
@@ -297,7 +297,7 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
                 [Classes.ACTIVE]: isOpen && !isHoverInteractionKind,
             }),
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            disabled: isOpen && children.target.type === Tooltip2 ? true : children.target.props.disabled,
+            disabled: isOpen && children.target.type === Tooltip ? true : children.target.props.disabled,
             tabIndex: targetTabIndex,
         });
 

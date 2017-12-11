@@ -6,10 +6,10 @@
 
 import * as React from "react";
 
-import { Button, Intent, Popover, Switch, Tooltip2 } from "@blueprintjs/core";
+import { Button, Intent, Popover, Switch, Tooltip } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
-export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
+export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
     public state = {
         isOpen: false,
     };
@@ -27,7 +27,7 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
             <div className="docs-tooltip-example">
                 <div>
                     Inline text can have&nbsp;
-                    <Tooltip2
+                    <Tooltip
                         className="pt-tooltip-indicator"
                         content={
                             <em>
@@ -36,35 +36,35 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                         }
                     >
                         a tooltip.
-                    </Tooltip2>
+                    </Tooltip>
                 </div>
                 <div>
-                    <Tooltip2 content={lotsOfText}>Or, hover anywhere over this whole line.</Tooltip2>
+                    <Tooltip content={lotsOfText}>Or, hover anywhere over this whole line.</Tooltip>
                 </div>
                 <div>
                     This line's tooltip&nbsp;
-                    <Tooltip2 className="pt-tooltip-indicator" content={<span>disabled</span>} disabled={true}>
+                    <Tooltip className="pt-tooltip-indicator" content={<span>disabled</span>} disabled={true}>
                         is disabled.
-                    </Tooltip2>
+                    </Tooltip>
                 </div>
                 <div>
                     This line's tooltip&nbsp;
-                    <Tooltip2
+                    <Tooltip
                         className="pt-tooltip-indicator"
                         content={<span>BRRAAAIINS</span>}
                         isOpen={this.state.isOpen}
                     >
                         is controlled by external state.
-                    </Tooltip2>
+                    </Tooltip>
                     <Switch
                         checked={this.state.isOpen}
                         label="Open"
-                        onChange={this.toggleControlledTooltip2}
+                        onChange={this.toggleControlledTooltip}
                         style={{ display: "inline-block", marginBottom: 0, marginLeft: 20 }}
                     />
                 </div>
                 <div>
-                    <Tooltip2
+                    <Tooltip
                         className="pt-tooltip-indicator"
                         content="Intent.PRIMARY"
                         inline={true}
@@ -72,8 +72,8 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                         placement="left"
                     >
                         Available
-                    </Tooltip2>&nbsp;
-                    <Tooltip2
+                    </Tooltip>&nbsp;
+                    <Tooltip
                         className="pt-tooltip-indicator"
                         content="Intent.SUCCESS"
                         inline={true}
@@ -81,8 +81,8 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                         placement="top"
                     >
                         in the full
-                    </Tooltip2>&nbsp;
-                    <Tooltip2
+                    </Tooltip>&nbsp;
+                    <Tooltip
                         className="pt-tooltip-indicator"
                         content="Intent.WARNING"
                         inline={true}
@@ -90,8 +90,8 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                         placement="bottom"
                     >
                         range of
-                    </Tooltip2>&nbsp;
-                    <Tooltip2
+                    </Tooltip>&nbsp;
+                    <Tooltip
                         className="pt-tooltip-indicator"
                         content="Intent.DANGER"
                         inline={true}
@@ -99,19 +99,19 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                         placement="right"
                     >
                         visual intents!
-                    </Tooltip2>
+                    </Tooltip>
                 </div>
                 <br />
                 <Popover content={<h1>Popover!</h1>} placement="right" popoverClassName="pt-popover-content-sizing">
-                    <Tooltip2 content={<span>This button also has a popover!</span>} placement="right" inline={true}>
+                    <Tooltip content={<span>This button also has a popover!</span>} placement="right" inline={true}>
                         <Button intent={Intent.SUCCESS} text="Hover and click me" />
-                    </Tooltip2>
+                    </Tooltip>
                 </Popover>
             </div>
         );
     }
 
-    private toggleControlledTooltip2 = () => {
+    private toggleControlledTooltip = () => {
         this.setState({ isOpen: !this.state.isOpen });
     };
 }

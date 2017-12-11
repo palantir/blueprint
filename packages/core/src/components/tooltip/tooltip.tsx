@@ -13,7 +13,7 @@ import * as Classes from "../../common/classes";
 import { IIntentProps, IProps } from "../../common/props";
 import { Popover, PopoverInteractionKind } from "../popover/popover"; // TODO: move this to popover/ directory
 
-export interface ITooltip2Props extends IProps, IIntentProps {
+export interface ITooltipProps extends IProps, IIntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
@@ -122,10 +122,10 @@ export interface ITooltip2Props extends IProps, IIntentProps {
 }
 
 @PureRender
-export class Tooltip2 extends React.Component<ITooltip2Props, {}> {
-    public static displayName = "Blueprint.Tooltip2";
+export class Tooltip extends React.Component<ITooltipProps, {}> {
+    public static displayName = "Blueprint.Tooltip";
 
-    public static defaultProps: Partial<ITooltip2Props> = {
+    public static defaultProps: Partial<ITooltipProps> = {
         defaultIsOpen: false,
         disabled: false,
         hoverCloseDelay: 0,

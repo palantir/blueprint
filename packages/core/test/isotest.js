@@ -25,7 +25,6 @@ const customChildren = {
     SVGTooltip: popoverTarget,
     Tabs2: [Core.Tab2Factory({ key: 1, id: 1, title: "Tab one" })],
     Tooltip: popoverTarget,
-    Tooltip2: popoverTarget,
 };
 
 describe("Core isomorphic rendering", () => {
