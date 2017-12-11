@@ -21,8 +21,6 @@ reference: labs
 
 - [`TagInput`](#labs/tag-input) is an input component for [`Tag`](#core/components/tag)s.
 
-- [`Tooltip2`](#labs/tooltip2) is like [`Tooltip`](#core/components/tooltip), but uses [`Popover2`](#labs/popover2).
-
 - [`TimezonePicker`](#labs/timezone-picker) for selecting timezones.
 
 @page select-component
@@ -31,5 +29,4 @@ reference: labs
 @page omnibox
 @page query-list
 @page tag-input
-@page tooltip2
 @page timezone-picker
