@@ -27,7 +27,7 @@
     "lint": "lerna run --parallel lint",
     "lint-fix": "lerna run --parallel lint-fix",
     "test": "lerna run --parallel test",
-    "verify": "npm-run-all -s compile-libs dist:libs dist:apps -p test lint",
+    "verify": "npm-run-all -s compile dist:libs dist:apps -p test lint",
     "serve": "http-server docs"
   },
   "dependencies": {
