@@ -112,3 +112,13 @@ $pt-dark-intent-text-colors: (
 @function centered-text($height, $line-height: floor($pt-font-size * $pt-line-height)) {
   @return floor(($height - $line-height) / 2);
 }
+
+// Removes the unit from a Sass numeric value (if present).
+// strip-unit(12px) => 12
+@function strip-unit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
