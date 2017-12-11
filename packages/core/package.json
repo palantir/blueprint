@@ -35,14 +35,13 @@
     "classnames": "^2.2",
     "dom4": "^1.8",
     "normalize.css": "4.1.1",
-    "pure-render-decorator": "^1.1",
     "tether": "^1.4",
     "tslib": "^1.5.0"
   },
   "peerDependencies": {
-    "react": "^16.0.0 || ^15.0.1 || ^0.14",
-    "react-addons-css-transition-group": "^15.0.1 || ^0.14",
-    "react-dom": "^16.0.0 || ^15.0.1 || ^0.14"
+    "react": "^16.0.0",
+    "react-transition-group" :"^2.2.1",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
     "@blueprintjs/karma-build-scripts": "^0.2.0",
@@ -53,10 +52,10 @@
     "mocha": "^4.0.1",
     "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.1",
-    "react": "^15.6.1",
-    "react-addons-css-transition-group": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-test-renderer": "^15.6.1",
+    "react": "^16.2.0",
+    "react-transition-group": "^2.2.1",
+    "react-dom": "^16.2.0",
+    "react-test-renderer": "^16.2.0",
     "tslint": "^5.8.0",
     "typescript": "~2.4.2",
     "webpack": "^3.9.1"

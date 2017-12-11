@@ -36,9 +36,9 @@
     "bourbon": "^4.3.4",
     "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.1",
-    "react": "^15.6.1",
-    "react-addons-css-transition-group": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.2.0",
+    "react-transition-group": "^2.2.1",
+    "react-dom": "^16.2.0",
     "tslint": "^5.8.0",
     "typescript": "~2.4.2",
     "webpack": "^3.9.1"

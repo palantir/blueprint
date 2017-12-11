@@ -33,7 +33,6 @@
     "moment": "^2.14.1",
     "moment-timezone": "^0.5.13",
     "popper.js": "^1.12.6",
-    "pure-render-decorator": "^1.2.1",
     "react-popper": "~0.7.4",
     "tslib": "^1.5.0"
   },
@@ -46,10 +45,10 @@
     "karma": "^1.7.1",
     "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.1",
-    "react": "^15.6.1",
-    "react-addons-css-transition-group": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-test-renderer": "^15.6.1",
+    "react": "^16.2.0",
+    "react-transition-group": "^2.2.1",
+    "react-dom": "^16.2.0",
+    "react-test-renderer": "^16.2.0",
     "tslint": "^5.8.0",
     "typescript": "~2.4.2",
     "webpack": "^3.9.1"
