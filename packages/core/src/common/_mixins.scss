@@ -24,6 +24,14 @@ $pt-dark-intent-text-colors: (
   "danger" : $red5,
 ) !default;
 
+@mixin position-all($position, $value) {
+  position: $position;
+  top: $value;
+  right: $value;
+  bottom: $value;
+  left: $value;
+}
+
 @mixin base-typography() {
   text-transform: none;
   line-height: $pt-line-height;

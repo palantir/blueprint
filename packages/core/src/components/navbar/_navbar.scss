@@ -56,7 +56,10 @@ $dark-navbar-background-color: $dark-gray5 !default;
   }
 
   &.pt-fixed-top {
-    @include position(fixed, 0 0 null);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
   }
 
   .pt-logo {
