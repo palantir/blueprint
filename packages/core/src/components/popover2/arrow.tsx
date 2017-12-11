@@ -8,7 +8,7 @@ import PopperJS from "popper.js";
 import * as React from "react";
 import { Arrow } from "react-popper";
 
-import { Classes } from "@blueprintjs/core";
+import * as Classes from "../../common/classes";
 import { getPosition } from "./popperUtils";
 
 // these paths come from the Core Kit Sketch file

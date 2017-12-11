@@ -9,8 +9,9 @@ import PopperJS from "popper.js";
 import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { Classes, IIntentProps, IProps, PopoverInteractionKind } from "@blueprintjs/core";
-
+import * as Classes from "../../common/classes";
+import { IIntentProps, IProps } from "../../common/props";
+import { PopoverInteractionKind } from "../popover/popover"; // TODO: move this to popover2/ directory
 import { Popover2 } from "../popover2/popover2";
 
 export interface ITooltip2Props extends IProps, IIntentProps {
