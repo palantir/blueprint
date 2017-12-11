@@ -136,6 +136,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
         this.maybeScrollToActivePageMenuItem();
+        this.updateTitle();
         Utils.safeInvoke(this.props.onComponentUpdate, this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", () => {
@@ -143,8 +144,10 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                 // captures a pageview for new location hashes that are dynamically rendered without a full page request
                 (window as any).ga("send", "pageview", { page: location.pathname + location.search + location.hash });
             }
+
             // Don't call componentWillMount since the HotkeysTarget decorator will be invoked on every hashchange.
             this.updateHash();
+            this.updateTitle();
         });
         document.addEventListener("scroll", this.handleScroll);
     }
@@ -164,6 +167,26 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         }
 
         Utils.safeInvoke(this.props.onComponentUpdate, activePageId);
+    }
+
+    private getTitle() {
+        // Either get the title from the document, or return the default title
+        let title = "Blueprint - Documentation";
+        const docsTitle = document.getElementsByClassName("docs-title")[0].textContent;
+        // Check to make sure the textContent of docsTitle has a useable value
+        if (docsTitle !== undefined && docsTitle !== null) {
+            // Only change the title if we aren't on the index homepage
+            if (this.state.activePageId !== "blueprint" && this.state.activeSectionId !== "blueprint") {
+                title = `${docsTitle} - Blueprint`;
+            }
+        }
+        return title;
+    }
+
+    private updateTitle() {
+        // Update the page <title> when the hash changes
+        const title = this.getTitle();
+        document.title = title;
     }
 
     private updateHash() {
