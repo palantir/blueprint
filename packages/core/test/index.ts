@@ -28,7 +28,6 @@ import "./icon/iconTests";
 import "./menu/menuTests";
 import "./non-ideal-state/nonIdealStateTests";
 import "./overlay/overlayTests";
-import "./popover/arrowsTests";
 import "./popover/popoverTests";
 import "./portal/portalTests";
 import "./progress/progressBarTests";

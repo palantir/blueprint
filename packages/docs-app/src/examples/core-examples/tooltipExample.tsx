@@ -1,12 +1,12 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import * as React from "react";
 
-import { Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
+import { Button, Intent, Popover, Switch, Tooltip } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
 export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
@@ -15,7 +15,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
     };
 
     protected renderExample() {
-        // using JSX instead of strings for all content so the Tooltips will re-render
+        // using JSX instead of strings for all content so the tooltips will re-render
         // with every update for dark theme inheritance.
         const lotsOfText = (
             <span>
@@ -24,8 +24,8 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
             </span>
         );
         return (
-            <div>
-                <p>
+            <div className="docs-tooltip-example">
+                <div>
                     Inline text can have&nbsp;
                     <Tooltip
                         className="pt-tooltip-indicator"
@@ -37,17 +37,17 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                     >
                         a tooltip.
                     </Tooltip>
-                </p>
-                <p>
+                </div>
+                <div>
                     <Tooltip content={lotsOfText}>Or, hover anywhere over this whole line.</Tooltip>
-                </p>
-                <p>
+                </div>
+                <div>
                     This line's tooltip&nbsp;
-                    <Tooltip className="pt-tooltip-indicator" content={<span>disabled</span>} isDisabled={true}>
+                    <Tooltip className="pt-tooltip-indicator" content={<span>disabled</span>} disabled={true}>
                         is disabled.
                     </Tooltip>
-                </p>
-                <p>
+                </div>
+                <div>
                     This line's tooltip&nbsp;
                     <Tooltip
                         className="pt-tooltip-indicator"
@@ -62,14 +62,14 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         onChange={this.toggleControlledTooltip}
                         style={{ display: "inline-block", marginBottom: 0, marginLeft: 20 }}
                     />
-                </p>
+                </div>
                 <div>
                     <Tooltip
                         className="pt-tooltip-indicator"
                         content="Intent.PRIMARY"
                         inline={true}
                         intent={Intent.PRIMARY}
-                        position={Position.LEFT}
+                        placement="left"
                     >
                         Available
                     </Tooltip>&nbsp;
@@ -78,7 +78,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.SUCCESS"
                         inline={true}
                         intent={Intent.SUCCESS}
-                        position={Position.TOP}
+                        placement="top"
                     >
                         in the full
                     </Tooltip>&nbsp;
@@ -87,7 +87,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.WARNING"
                         inline={true}
                         intent={Intent.WARNING}
-                        position={Position.BOTTOM}
+                        placement="bottom"
                     >
                         range of
                     </Tooltip>&nbsp;
@@ -96,23 +96,15 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.DANGER"
                         inline={true}
                         intent={Intent.DANGER}
-                        position={Position.RIGHT}
+                        placement="right"
                     >
                         visual intents!
                     </Tooltip>
                 </div>
                 <br />
-                <Popover
-                    content={<h1>Popover!</h1>}
-                    popoverClassName="pt-popover-content-sizing"
-                    position={Position.RIGHT}
-                >
-                    <Tooltip
-                        content={<span>This button also has a popover!</span>}
-                        inline={true}
-                        position={Position.RIGHT}
-                    >
-                        <button className="pt-button pt-intent-success">Hover and click me</button>
+                <Popover content={<h1>Popover!</h1>} placement="right" popoverClassName="pt-popover-content-sizing">
+                    <Tooltip content={<span>This button also has a popover!</span>} placement="right" inline={true}>
+                        <Button intent={Intent.SUCCESS} text="Hover and click me" />
                     </Tooltip>
                 </Popover>
             </div>
