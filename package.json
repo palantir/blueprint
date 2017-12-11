@@ -7,8 +7,8 @@
     "packages/*"
   ],
   "scripts": {
-    "bundle-apps": "lerna run --parallel bundle",
-    "compile-libs": "lerna run compile",
+    "bundle": "lerna run --parallel bundle",
+    "compile": "lerna run compile",
     "clean": "lerna run --parallel clean",
     "clean-gh-pages": "rm -rf docs && git checkout docs/CNAME",
     "copy-docs-app": "mkdir -p docs/docs/ && cp -rf packages/docs-app/dist/* docs/docs/.",
