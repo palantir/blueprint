@@ -71,7 +71,7 @@ After cloning this repo, run:
 
 ### Incorporating upstream changes
 
-If you were previously in a working state and have just pulled new code from `develop`:
+If you were previously in a working state and have just pulled new code from `master`:
 
 - If there were package dependency changes, run `yarn` at the root.
   - This command is very quick if there are no new things to install.
