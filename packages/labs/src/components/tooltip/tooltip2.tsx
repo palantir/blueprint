@@ -112,7 +112,7 @@ export interface ITooltip2Props extends IProps, IIntentProps {
 
     /**
      * Indicates how long (in milliseconds) the tooltip's appear/disappear transition takes.
-     * This is used by React `CSSTransitionGroup` to know when a transition completes
+     * This is used by React `CSSTransition` to know when a transition completes
      * and must match the duration of the animation in CSS.
      * Only set this prop if you override Blueprint's default transitions with new transitions of a different length.
      * @default 100

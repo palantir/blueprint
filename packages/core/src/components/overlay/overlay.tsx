@@ -6,7 +6,7 @@
 
 import * as classNames from "classnames";
 import * as React from "react";
-import * as CSSTransitionGroup from "react-addons-css-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
@@ -57,7 +57,7 @@ export interface IOverlayableProps {
 
     /**
      * Indicates how long (in milliseconds) the overlay's enter/leave transition takes.
-     * This is used by React `CSSTransitionGroup` to know when a transition completes and must match
+     * This is used by React `CSSTransition` to know when a transition completes and must match
      * the duration of the animation in CSS. Only set this prop if you override Blueprint's default
      * transitions with new transitions of a different length.
      * @default 100
@@ -106,7 +106,7 @@ export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps
     isOpen: boolean;
 
     /**
-     * Name of the transition for internal `CSSTransitionGroup`.
+     * Name of the transition for internal `CSSTransition`.
      * Providing your own name here will require defining new CSS transition properties.
      * @default "pt-overlay"
      */
@@ -156,27 +156,26 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
 
         const { children, className, inline, isOpen, transitionDuration, transitionName } = this.props;
 
-        // add a special class to each child that will automatically set the appropriate
-        // CSS position mode under the hood. also, make the container focusable so we can
-        // trap focus inside it (via `enforceFocus`).
-        const decoratedChildren = React.Children.map(children, (child: React.ReactElement<any>) => {
-            return React.cloneElement(child, {
+        const childrenWithTransitions = React.Children.map(children, (child: React.ReactElement<any>) => {
+            // add a special class to each child that will automatically set the appropriate
+            // CSS position mode under the hood. also, make the container focusable so we can
+            // trap focus inside it (via `enforceFocus`).
+            const decoratedChild = React.cloneElement(child, {
                 className: classNames(child.props.className, Classes.OVERLAY_CONTENT),
                 tabIndex: 0,
             });
+            return (
+                <CSSTransition classNames={transitionName} timeout={transitionDuration}>
+                    {decoratedChild}
+                </CSSTransition>
+            );
         });
 
         const transitionGroup = (
-            <CSSTransitionGroup
-                transitionAppear={true}
-                transitionAppearTimeout={transitionDuration}
-                transitionEnterTimeout={transitionDuration}
-                transitionLeaveTimeout={transitionDuration}
-                transitionName={transitionName}
-            >
+            <TransitionGroup appear={true}>
                 {this.maybeRenderBackdrop()}
-                {isOpen ? decoratedChildren : null}
-            </CSSTransitionGroup>
+                {isOpen ? childrenWithTransitions : null}
+            </TransitionGroup>
         );
 
         const mergedClassName = classNames(
@@ -262,15 +261,25 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
     }
 
     private maybeRenderBackdrop() {
-        const { backdropClassName, backdropProps, hasBackdrop, isOpen } = this.props;
+        const {
+            backdropClassName,
+            backdropProps,
+            hasBackdrop,
+            isOpen,
+            transitionDuration,
+            transitionName,
+        } = this.props;
+
         if (hasBackdrop && isOpen) {
             return (
-                <div
-                    {...backdropProps}
-                    className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps.className)}
-                    onMouseDown={this.handleBackdropMouseDown}
-                    tabIndex={this.props.canOutsideClickClose ? 0 : null}
-                />
+                <CSSTransition classNames={transitionName} timeout={transitionDuration}>
+                    <div
+                        {...backdropProps}
+                        className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps.className)}
+                        onMouseDown={this.handleBackdropMouseDown}
+                        tabIndex={this.props.canOutsideClickClose ? 0 : null}
+                    />
+                </CSSTransition>
             );
         } else {
             return undefined;

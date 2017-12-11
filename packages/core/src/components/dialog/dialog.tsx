@@ -56,7 +56,7 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     title?: string | JSX.Element;
 
     /**
-     * Name of the transition for internal `CSSTransitionGroup`.
+     * Name of the transition for internal `CSSTransition`.
      * Providing your own name here will require defining new CSS transition properties.
      */
     transitionName?: string;

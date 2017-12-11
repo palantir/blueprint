@@ -20,7 +20,7 @@ module.exports = {
         "moment": "moment",
         "moment-timezone": "moment",
         "react": "React",
-        "react-addons-css-transition-group": "React.addons.CSSTransitionGroup",
+        "react-transition-group": "ReactTransitionGroup",
         "react-day-picker": "DayPicker",
         "react-dom": "ReactDOM",
         "tether": "Tether",
