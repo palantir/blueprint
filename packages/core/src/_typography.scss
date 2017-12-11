@@ -190,10 +190,11 @@ Markup:
 <pre>
 %pt-select {
   @include pt-button();
-  @include prefixer(appearance, none, webkit moz);
   border-radius: $pt-border-radius;
   height: $pt-button-height;
   padding: 0 ($input-padding-horizontal * 3) 0 $input-padding-horizontal;
+  -moz-appearance: none;
+  -webkit-appearance: none;
 }
 </pre>
 <pre><code>export function hasModifier(modifiers: ts.ModifiersArray, ...modifierKinds: ts.SyntaxKind[]) {
