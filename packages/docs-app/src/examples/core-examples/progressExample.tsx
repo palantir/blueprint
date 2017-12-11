@@ -49,7 +49,7 @@ export class ProgressExample extends BaseExample<IProgressExampleState> {
                     min={0}
                     max={1}
                     onChange={this.handleValueChange}
-                    renderLabel={this.renderLabel}
+                    labelRenderer={this.labelRenderer}
                     stepSize={0.1}
                     showTrackFill={false}
                     value={this.state.value}
@@ -59,7 +59,7 @@ export class ProgressExample extends BaseExample<IProgressExampleState> {
         ];
     }
 
-    private renderLabel = (value: number) => value.toFixed(1);
+    private labelRenderer = (value: number) => value.toFixed(1);
 
     private handleValueChange = (value: number) => this.setState({ value });
 }

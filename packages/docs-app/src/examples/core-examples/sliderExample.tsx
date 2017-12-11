@@ -51,7 +51,7 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     stepSize={0.01}
                     labelStepSize={0.14}
                     onChange={this.getChangeHandler("value1")}
-                    renderLabel={this.renderLabel1}
+                    labelRenderer={this.labelRenderer1}
                     value={this.state.value1}
                     vertical={vertical}
                 />
@@ -61,7 +61,7 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     stepSize={6}
                     labelStepSize={10}
                     onChange={this.getChangeHandler("value3")}
-                    renderLabel={this.renderLabel3}
+                    labelRenderer={this.labelRenderer3}
                     showTrackFill={false}
                     value={this.state.value3}
                     vertical={vertical}
@@ -80,11 +80,11 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
         return (value: number) => this.setState({ [key]: value });
     }
 
-    private renderLabel1(val: number) {
+    private labelRenderer1(val: number) {
         return `${Math.round(val * 100)}%`;
     }
 
-    private renderLabel3(val: number) {
+    private labelRenderer3(val: number) {
         return val === 0 ? `£${val}` : `£${val},000`;
     }
 }
