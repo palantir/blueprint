@@ -50,7 +50,6 @@
     "language-less": "github:atom/language-less",
     "language-typescript": "github:giladgray/language-typescript#10.1.15",
     "lerna": "^2.5.0",
-    "node-sass-package-importer": "^3.0.4",
     "npm-run-all": "^4.1.1",
     "postcss-import": "^11.0.0",
     "postcss-url": "^7.1.2",
