@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -405,8 +405,9 @@ export interface ITableState {
     viewportRect?: Rect;
 }
 
+// avoid using AbstractComponent since this component is impure
 @HotkeysTarget
-export class Table extends AbstractComponent<ITableProps, ITableState> {
+export class Table extends React.Component<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
         allowMultipleSelection: true,
         defaultColumnWidth: 150,
@@ -492,8 +493,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // time. it serves as a signal that we can switch to batch rendering.
     private didCompletelyMount = false;
 
-    public constructor(props: ITableProps, context?: any) {
+    public constructor(props: ITableProps & { children: React.ReactNode }, context?: any) {
         super(props, context);
+        if (!CoreUtils.isNodeEnv("production")) {
+            this.validateProps(props);
+        }
 
         const { children, columnWidths, defaultRowHeight, defaultColumnWidth, numRows, rowHeights } = this.props;
 
@@ -664,8 +668,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    public componentWillReceiveProps(nextProps: ITableProps) {
-        super.componentWillReceiveProps(nextProps);
+    public componentWillReceiveProps(nextProps: ITableProps & { children: React.ReactNode }) {
+        if (!CoreUtils.isNodeEnv("production")) {
+            this.validateProps(nextProps);
+        }
 
         const {
             children,
