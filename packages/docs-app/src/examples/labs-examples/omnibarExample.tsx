@@ -19,19 +19,19 @@ import {
     Toaster,
 } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
-import { ISelectItemRendererProps, Omnibox } from "@blueprintjs/labs";
+import { ISelectItemRendererProps, Omnibar } from "@blueprintjs/labs";
 import { Film, TOP_100_FILMS } from "./data";
 
-const FilmOmnibox = Omnibox.ofType<Film>();
+const FilmOmnibar = Omnibar.ofType<Film>();
 
-export interface IOmniboxExampleState {
+export interface IOmnibarExampleState {
     isOpen: boolean;
     resetOnSelect: boolean;
 }
 
 @HotkeysTarget
-export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
-    public state: IOmniboxExampleState = {
+export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
+    public state: IOmnibarExampleState = {
         isOpen: false,
         resetOnSelect: true,
     };
@@ -50,7 +50,7 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
                     allowInInput={true}
                     global={true}
                     combo="meta + k"
-                    label="Show Omnibox"
+                    label="Show Omnibar"
                     onKeyDown={this.handleToggle}
                 />
             </Hotkeys>
@@ -60,7 +60,7 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
     protected renderExample() {
         return (
             <div>
-                <FilmOmnibox
+                <FilmOmnibar
                     {...this.state}
                     items={TOP_100_FILMS}
                     itemPredicate={this.filterFilm}
@@ -72,7 +72,7 @@ export class OmniboxExample extends BaseExample<IOmniboxExampleState> {
                 />
                 <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
                 <span>
-                    <Button text="Click to show Omnibox" onClick={this.handleClick} />
+                    <Button text="Click to show Omnibar" onClick={this.handleClick} />
                     {" or press "}
                     <span className="pt-key-combo">
                         <kbd className="pt-key pt-modifier-key">
