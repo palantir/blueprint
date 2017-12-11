@@ -158,7 +158,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 
   input:focus + .docs-color-swatch-trigger,
   &:hover .docs-color-swatch-trigger {
-    @include position(absolute, $swatch-hover-offset);
+    @include position-all(absolute, $swatch-hover-offset);
     z-index: $pt-z-index-base + 1;
     border-radius: $pt-border-radius;
     box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
