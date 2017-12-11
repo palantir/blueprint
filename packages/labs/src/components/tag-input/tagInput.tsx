@@ -288,10 +288,16 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     };
 
     private handleContainerKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.isDefaultPrevented()) {
+            return;
+        }
         Utils.safeInvoke(this.props.onKeyDown, event, this.state.activeIndex);
     };
 
     private handleContainerKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.isDefaultPrevented()) {
+            return;
+        }
         Utils.safeInvoke(this.props.onKeyUp, event, this.state.activeIndex);
     };
 
@@ -337,7 +343,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         // stop the event from propagating to the container's onKeyDown
         // callback. we'll invoke the top-level callback directly with an
         // `undefined` index.
-        event.stopPropagation();
+        event.preventDefault();
 
         Utils.safeInvoke(this.props.onKeyDown, event, undefined);
         Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
@@ -345,7 +351,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     private handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         // again, stop propagation to the container's onKeyUp callback.
-        event.stopPropagation();
+        event.preventDefault();
         Utils.safeInvoke(this.props.inputProps.onKeyUp, event);
         Utils.safeInvoke(this.props.onKeyUp, event, undefined);
     };

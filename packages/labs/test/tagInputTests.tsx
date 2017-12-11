@@ -424,8 +424,8 @@ describe("<TagInput>", () => {
     function createInputKeydownEventMetadata(value: string, which: number) {
         return {
             currentTarget: { value },
-            // Enzyme throws errors if we don't mock the stopPropagation method.
-            stopPropagation: () => {
+            // Enzyme throws errors if we don't mock the preventDefault method.
+            preventDefault: () => {
                 return;
             },
             which,
