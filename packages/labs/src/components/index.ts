@@ -5,7 +5,6 @@
  */
 
 export * from "./omnibox/omnibox";
-export * from "./popover/popover2";
 export * from "./tooltip/tooltip2";
 export * from "./query-list/queryList";
 export * from "./select/multiSelect";
