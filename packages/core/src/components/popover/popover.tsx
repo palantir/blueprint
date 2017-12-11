@@ -538,7 +538,10 @@ export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
             // popover open. we must do this check *after* the next element focuses, so we use a
             // timeout of 0 to flush the rest of the event queue before proceeding.
             requestAnimationFrame(() => {
-                if (this.popoverElement == null || !this.popoverElement.contains(document.activeElement)) {
+                const targetOrPopoverContainsFocusedElement =
+                    this.popoverElement.contains(document.activeElement) ||
+                    this.targetElement.contains(document.activeElement);
+                if (this.popoverElement == null || !targetOrPopoverContainsFocusedElement) {
                     this.handleMouseLeave(e);
                 }
             });
