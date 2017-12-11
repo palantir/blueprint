@@ -9,7 +9,7 @@ import * as ReactDOM from "react-dom";
 
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { IProps } from "../../common/props";
+import { IProps, removeNonHTMLProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
 export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
@@ -62,7 +62,12 @@ export class Portal extends React.Component<IPortalProps, {}> {
     }
 
     public render() {
-        return ReactDOM.createPortal(this.props.children, this.targetElement);
+        return ReactDOM.createPortal(
+            <div {...removeNonHTMLProps(this.props)} ref={this.props.containerRef}>
+                {this.props.children}
+            </div>,
+            this.targetElement,
+        );
     }
 
     public componentDidMount() {
