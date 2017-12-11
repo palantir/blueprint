@@ -79,7 +79,7 @@ export const INPUT_GROUP = "pt-input-group";
 export const CHECKBOX = "pt-checkbox";
 export const RADIO = "pt-radio";
 export const SWITCH = "pt-switch";
-export const FILE_UPLOAD = "pt-file-upload";
+export const FILE_INPUT = "pt-file-input";
 export const FILE_UPLOAD_INPUT = "pt-file-upload-input";
 
 export const INTENT_PRIMARY = "pt-intent-primary";

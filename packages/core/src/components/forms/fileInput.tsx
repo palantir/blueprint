@@ -11,15 +11,15 @@ import { Utils } from "../../common";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface IFileUploadProps extends React.AllHTMLAttributes<HTMLLabelElement>, IProps {
+export interface IFileInputProps extends React.AllHTMLAttributes<HTMLLabelElement>, IProps {
     /**
-     * Whether the file upload is non-interactive.
+     * Whether the file input is non-interactive.
      * Setting this to `true` will automatically disable the child input too.
      */
     disabled?: boolean;
 
     /**
-     * Whether the file upload should take up the full width of its container.
+     * Whether the file input should take up the full width of its container.
      */
     fill?: boolean;
 
@@ -27,12 +27,12 @@ export interface IFileUploadProps extends React.AllHTMLAttributes<HTMLLabelEleme
      * The props to pass to the child input.
      * `disabled` will be ignored in favor of the top-level prop.
      * `type` will be ignored, because the input _must_ be `type="file"`.
-     * Pass `onChange` here to be notified when the user uploads a file.
+     * Pass `onChange` here to be notified when the user inputs a file.
      */
     inputProps?: React.HTMLProps<HTMLInputElement>;
 
     /**
-     * Whether the file upload should appear with large styling.
+     * Whether the file input should appear with large styling.
      */
     large?: boolean;
 
@@ -58,10 +58,10 @@ export interface IFileUploadProps extends React.AllHTMLAttributes<HTMLLabelEleme
 // TODO: write tests (ignoring for now to get a build passing quickly)
 /* istanbul ignore next */
 @PureRender
-export class FileUpload extends React.Component<IFileUploadProps, {}> {
-    public static displayName = "Blueprint.FileUpload";
+export class FileInput extends React.Component<IFileInputProps, {}> {
+    public static displayName = "Blueprint.FileInput";
 
-    public static defaultProps: IFileUploadProps = {
+    public static defaultProps: IFileInputProps = {
         inputProps: {},
         text: "Choose file...",
     };
@@ -70,7 +70,7 @@ export class FileUpload extends React.Component<IFileUploadProps, {}> {
         const { className, fill, disabled, inputProps, large, text, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
-            Classes.FILE_UPLOAD,
+            Classes.FILE_INPUT,
             {
                 [Classes.DISABLED]: disabled,
                 [Classes.FILL]: fill,
@@ -93,4 +93,4 @@ export class FileUpload extends React.Component<IFileUploadProps, {}> {
     };
 }
 
-export const FileUploadFactory = React.createFactory(FileUpload);
+export const FileInputFactory = React.createFactory(FileInput);

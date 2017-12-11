@@ -5,10 +5,10 @@
 @import "../button/common";
 
 /*
-File upload
+File input
 
 Markup:
-<label class="pt-file-upload {{.modifier}}">
+<label class="pt-file-input {{.modifier}}">
   <input type="file" {{:modifier}}/>
   <span class="pt-file-upload-input">Choose file...</span>
 </label>
@@ -17,15 +17,15 @@ Markup:
 .pt-large - Larger size
 .pt-fill - Take up full width of parent element
 
-Styleguide pt-file-upload
+Styleguide pt-file-input
 */
 
-$file-upload-button-width: $pt-grid-size * 7;
-$file-upload-button-width-large: $pt-grid-size * 8.5;
-$file-upload-button-padding: ($pt-input-height - $pt-button-height-small) / 2;
-$file-upload-button-padding-large: ($pt-input-height-large - $pt-button-height) / 2;
+$file-input-button-width: $pt-grid-size * 7;
+$file-input-button-width-large: $pt-grid-size * 8.5;
+$file-input-button-padding: ($pt-input-height - $pt-button-height-small) / 2;
+$file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) / 2;
 
-.pt-file-upload {
+.pt-file-input {
   display: inline-block;
   position: relative;
   cursor: pointer;
@@ -37,7 +37,7 @@ $file-upload-button-padding-large: ($pt-input-height-large - $pt-button-height) 
     min-width: $pt-grid-size * 20;
 
     // unlike other form controls that directly style native elements,
-    // pt-file-upload wraps and hides the native element for better control over
+    // pt-file-input wraps and hides the native element for better control over
     // visual styles. to disable, we need to disable the hidden child input, not
     // the surrounding wrapper. see #689 for gory details.
     &:disabled + .pt-file-upload-input,
@@ -75,7 +75,7 @@ $file-upload-button-padding-large: ($pt-input-height-large - $pt-button-height) 
   top: 0;
   right: 0;
   left: 0;
-  padding-right: $file-upload-button-width + $input-padding-horizontal;
+  padding-right: $file-input-button-width + $input-padding-horizontal;
   user-select: none;
 
   &::after {
@@ -84,9 +84,9 @@ $file-upload-button-padding-large: ($pt-input-height-large - $pt-button-height) 
     position: absolute;
     top: 0;
     right: 0;
-    margin: $file-upload-button-padding;
+    margin: $file-input-button-padding;
     border-radius: $pt-border-radius;
-    width: $file-upload-button-width;
+    width: $file-input-button-width;
     text-align: center;
     content: "Browse";
   }
@@ -101,12 +101,12 @@ $file-upload-button-padding-large: ($pt-input-height-large - $pt-button-height) 
 
   .pt-large & {
     @include pt-input-large();
-    padding-right: $file-upload-button-width-large + $input-padding-horizontal;
+    padding-right: $file-input-button-width-large + $input-padding-horizontal;
 
     &::after {
       @include pt-button-height($pt-button-height);
-      margin: $file-upload-button-padding-large;
-      width: $file-upload-button-width-large;
+      margin: $file-input-button-padding-large;
+      width: $file-input-button-width-large;
     }
   }
 
