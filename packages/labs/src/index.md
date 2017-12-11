@@ -15,7 +15,7 @@ reference: labs
 
 - [`MultiSelect`](#labs/multi-select) for selecting multiple items in a list.
 
-- [`Omnibox`](#labs/omnibox) is a macOS spotlight-style typeahead component.
+- [`Omnibar`](#labs/omnibar) is a macOS spotlight-style typeahead component.
 
 - [`QueryList`](#labs/query-list) is a higher-order component that provides interactions between a query string and a list of items.
 
@@ -24,6 +24,6 @@ reference: labs
 @page select-component
 @page suggest
 @page multi-select
-@page omnibox
+@page omnibar
 @page query-list
 @page timezone-picker

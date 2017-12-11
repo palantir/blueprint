@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-export * from "./omnibox/omnibox";
+export * from "./omnibar/omnibar";
 export * from "./query-list/queryList";
 export * from "./select/multiSelect";
 export * from "./select/select";
