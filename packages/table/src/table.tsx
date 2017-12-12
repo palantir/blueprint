@@ -77,14 +77,6 @@ interface IResizeRowsByApproximateHeightResolvedOptions {
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
-     * If `false`, only a single region of a single column/row/cell may be
-     * selected at one time. Using `ctrl` or `meta` key will have no effect,
-     * and a mouse drag will select the current column/row/cell only.
-     * @default true
-     */
-    enableMultipleSelection?: boolean;
-
-    /**
      * The children of a `Table` component, which must be React elements
      * that use `IColumnProps`.
      */
@@ -97,6 +89,39 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * drag-resizes a column, you may define a callback for `onColumnWidthChanged`.
      */
     columnWidths?: Array<number | null | undefined>;
+
+    /**
+     * An optional callback for displaying a context menu when right-clicking
+     * on the table body. The callback is supplied with an array of
+     * `IRegion`s. If the mouse click was on a selection, the array will
+     * contain all selected regions. Otherwise it will have one `IRegion` that
+     * represents the clicked cell.
+     */
+    bodyContextMenuRenderer?: IContextMenuRenderer;
+
+    /**
+     * If `true`, adds an interaction bar on top of all column header cells, and
+     * moves interaction triggers into it.
+     *
+     * This value defaults to `undefined` so that, by default, it won't override
+     * the `enableColumnInteractionBar` values that you might have provided directly to
+     * each `<ColumnHeaderCell>`.
+     *
+     * @default undefined
+     */
+    enableColumnInteractionBar?: boolean;
+
+    /**
+     * If `false`, disables reordering of columns.
+     * @default false
+     */
+    enableColumnReordering?: boolean;
+
+    /**
+     * If `false`, disables resizing of columns.
+     * @default true
+     */
+    enableColumnResizing?: boolean;
 
     /**
      * If `true`, there will be a single "focused" cell at all times,
@@ -114,32 +139,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     enableGhostCells?: boolean;
 
     /**
-     * If defined, will set the focused cell state. This changes
-     * the focused cell to controlled mode, meaning you are in charge of
-     * setting the focus in response to events in the `onFocusedCell` callback.
-     */
-    focusedCell?: IFocusedCellCoordinates;
-
-    /**
-     * If defined, this callback will be invoked for each cell when the user
-     * attempts to copy a selection via `mod+c`. The returned data will be copied
-     * to the clipboard and need not match the display value of the `<Cell>`.
-     * The data will be invisibly added as `textContent` into the DOM before
-     * copying. If not defined, keyboard copying via `mod+c` will be disabled.
-     */
-    getCellClipboardData?: (row: number, col: number) => any;
-
-    /**
-     * If `false`, disables reordering of columns.
-     * @default false
-     */
-    enableColumnReordering?: boolean;
-
-    /**
-     * If `false`, disables resizing of columns.
+     * If `false`, only a single region of a single column/row/cell may be
+     * selected at one time. Using `ctrl` or `meta` key will have no effect,
+     * and a mouse drag will select the current column/row/cell only.
      * @default true
      */
-    enableColumnResizing?: boolean;
+    enableMultipleSelection?: boolean;
 
     /**
      * If `false`, hides the row headers and settings menu.
@@ -158,6 +163,22 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * @default false
      */
     enableRowResizing?: boolean;
+
+    /**
+     * If defined, will set the focused cell state. This changes
+     * the focused cell to controlled mode, meaning you are in charge of
+     * setting the focus in response to events in the `onFocusedCell` callback.
+     */
+    focusedCell?: IFocusedCellCoordinates;
+
+    /**
+     * If defined, this callback will be invoked for each cell when the user
+     * attempts to copy a selection via `mod+c`. The returned data will be copied
+     * to the clipboard and need not match the display value of the `<Cell>`.
+     * The data will be invisibly added as `textContent` into the DOM before
+     * copying. If not defined, keyboard copying via `mod+c` will be disabled.
+     */
+    getCellClipboardData?: (row: number, col: number) => any;
 
     /**
      * A list of `TableLoadingOption`. Set this prop to specify whether to
@@ -242,15 +263,6 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onVisibleCellsChange?: (rowIndices: IRowIndices, columnIndices: IColumnIndices) => void;
 
     /**
-     * An optional callback for displaying a context menu when right-clicking
-     * on the table body. The callback is supplied with an array of
-     * `IRegion`s. If the mouse click was on a selection, the array will
-     * contain all selected regions. Otherwise it will have one `IRegion` that
-     * represents the clicked cell.
-     */
-    bodyContextMenuRenderer?: IContextMenuRenderer;
-
-    /**
      * Dictates how cells should be rendered. Supported modes are:
      * - `RenderMode.BATCH`: renders cells in batches to improve performance
      * - `RenderMode.BATCH_ON_UPDATE`: renders cells synchronously on mount and
@@ -324,18 +336,6 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * marked with their own `className` for custom styling.
      */
     styledRegionGroups?: IStyledRegionGroup[];
-
-    /**
-     * If `true`, adds an interaction bar on top of all column header cells, and
-     * moves interaction triggers into it.
-     *
-     * This value defaults to `undefined` so that, by default, it won't override
-     * the `enableColumnInteractionBar` values that you might have provided directly to
-     * each `<ColumnHeaderCell>`.
-     *
-     * @default undefined
-     */
-    enableColumnInteractionBar?: boolean;
 }
 
 export interface ITableState {
