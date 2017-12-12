@@ -228,7 +228,7 @@ function queryHTMLElement(parent: Element, selector: string) {
 /**
  * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
  */
-function getScrolledReference(offset: number, container: HTMLElement, scrollParent = document.body) {
+function getScrolledReference(offset: number, container: HTMLElement, scrollParent = document.scrollingElement) {
     const headings = container.queryAll(".docs-title");
     while (headings.length > 0) {
         // iterating in reverse order (popping from end / bottom of page)
@@ -236,7 +236,7 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
         const element = headings.pop() as HTMLElement;
         if (element.offsetTop < scrollParent.scrollTop + offset) {
             // relying on DOM structure to get reference
-            return element.query("[name]").getAttribute("name");
+            return element.query("[data-route]").getAttribute("data-route");
         }
     }
     return undefined;
@@ -245,8 +245,8 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
 /**
  * Scroll the scrollParent such that the reference heading appears at the top of the viewport.
  */
-function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.body) {
-    const headingAnchor = queryHTMLElement(container, `a[name="${reference}"]`);
+function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.scrollingElement) {
+    const headingAnchor = queryHTMLElement(container, `a[data-route="${reference}"]`);
     if (headingAnchor == null || headingAnchor.parentElement == null) {
         return;
     }
