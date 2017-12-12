@@ -11,8 +11,7 @@ import * as ReactDOM from "react-dom";
 import * as sinon from "sinon";
 
 import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
-// tslint:disable-next-line:no-submodule-imports
-import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";

@@ -18,6 +18,8 @@ import {
     Popover,
     Position,
 } from "@blueprintjs/core";
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -103,7 +105,7 @@ describe("<DateRangeInput>", () => {
     });
 
     it("throws error if value === null", () => {
-        expect(() => mount(<DateRangeInput value={null} />)).to.throw;
+        expectPropValidationError(DateRangeInput, { value: null });
     });
 
     describe("startInputProps and endInputProps", () => {

@@ -4,6 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { expect } from "chai";
+import * as React from "react";
+
 /**
  * Dispatch a native KeyBoardEvent on the target element with the given type
  * and event arguments. `type` can be one of "keydown|keyup|keypress".
@@ -117,4 +120,24 @@ export function createTouchEvent(eventType = "touchstart", clientX = 0, clientY 
 
 export function dispatchTouchEvent(target: EventTarget, eventType = "touchstart", clientX = 0, clientY = 0) {
     target.dispatchEvent(createTouchEvent(eventType, clientX, clientY));
+}
+
+/**
+ * Helper utility to test validateProps behavior.
+ * We can't simply call mount() here since React 16 throws before we can even validate the errors thrown
+ * in component constructors.
+ */
+export function expectPropValidationError<P extends object>(
+    Component: React.ComponentClass<P>,
+    props: P & { children?: React.ReactNode },
+    errorMessage?: string,
+    assertionMessage?: string,
+) {
+    const { defaultProps = {} } = Component;
+    // HACKHACK: weird casts ahead
+    // tslint:disable-next-line no-object-literal-type-assertion
+    expect(() => new Component({ ...(defaultProps as object), ...(props as object) } as P)).to.throw(
+        errorMessage,
+        assertionMessage,
+    );
 }

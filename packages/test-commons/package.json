@@ -1,0 +1,29 @@
+{
+  "name": "@blueprintjs/test-commons",
+  "version": "0.1.0",
+  "description": "Common utilities for tests",
+  "private": true,
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "compile": "tsc -p ./src",
+    "clean": "rm -rf dist/*",
+    "dev": "yarn compile --watch",
+    "lint": "tslint 'src/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
+    "test": "exit 0"
+  },
+  "dependencies": {
+    "chai": "^4.1.2"
+  },
+  "devDependencies": {
+    "tslint": "^5.8.0",
+    "typescript": "~2.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "author": "Palantir Technologies",
+  "license": "Apache-2.0"
+}

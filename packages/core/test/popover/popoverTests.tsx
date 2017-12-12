@@ -10,10 +10,11 @@ import * as React from "react";
 import { Simulate } from "react-dom/test-utils";
 import { SinonSpy, spy } from "sinon";
 
+import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import { Classes, IPopoverProps, Overlay, Popover, PopoverInteractionKind, SVGPopover, Tooltip } from "../../src/index";
-import { dispatchMouseEvent } from "../common/utils";
 
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;

@@ -9,10 +9,11 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
+import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
+
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
 import { Classes, ISliderProps, Slider } from "../../src/index";
-import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
 describe("<Slider>", () => {
     let testsContainerElement: HTMLElement;

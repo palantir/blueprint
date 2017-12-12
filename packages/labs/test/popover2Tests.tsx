@@ -13,8 +13,7 @@ import * as sinon from "sinon";
 import { Classes, Keys, Overlay, PopoverInteractionKind, Position, Tooltip, Utils } from "@blueprintjs/core";
 // tslint:disable-next-line:no-submodule-imports
 import * as Errors from "@blueprintjs/core/src/common/errors";
-// tslint:disable-next-line:no-submodule-imports
-import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../src/index";
 

@@ -9,6 +9,8 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import * as Errors from "../../src/common/errors";
 import {
     Button,
@@ -781,45 +783,39 @@ describe("<NumericInput>", () => {
     // in component constructors
     describe("Validation", () => {
         it("throws an error if min >= max", () => {
-            expect(() => {
-                new NumericInput({ min: 2, max: 1 });
-            }).to.throw(Errors.NUMERIC_INPUT_MIN_MAX);
+            expectPropValidationError(NumericInput, { min: 2, max: 1 }, Errors.NUMERIC_INPUT_MIN_MAX);
         });
 
         it("throws an error if stepSize is null", () => {
-            expect(() => {
-                new NumericInput({ stepSize: null });
-            }).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
+            expectPropValidationError(NumericInput, { stepSize: null }, Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
         });
 
         it("throws an error if stepSize <= 0", () => {
-            expect(() => {
-                new NumericInput({ stepSize: -1 });
-            }).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
+            expectPropValidationError(NumericInput, { stepSize: -1 }, Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if minorStepSize <= 0", () => {
-            expect(() => {
-                new NumericInput({ minorStepSize: -0.1 });
-            }).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
+            expectPropValidationError(
+                NumericInput,
+                { minorStepSize: -0.1 },
+                Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE,
+            );
         });
 
         it("throws an error if majorStepSize <= 0", () => {
-            expect(() => {
-                new NumericInput({ majorStepSize: -0.1 });
-            }).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
+            expectPropValidationError(
+                NumericInput,
+                { majorStepSize: -0.1 },
+                Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE,
+            );
         });
 
         it("throws an error if majorStepSize <= stepSize", () => {
-            expect(() => {
-                new NumericInput({ majorStepSize: 0.5 });
-            }).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
+            expectPropValidationError(NumericInput, { majorStepSize: 0.5 }, Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         });
 
         it("throws an error if stepSize <= minorStepSize", () => {
-            expect(() => {
-                new NumericInput({ minorStepSize: 2 });
-            }).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
+            expectPropValidationError(NumericInput, { minorStepSize: 2 }, Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         });
 
         it("clears the field if the value is invalid when incrementing", () => {
