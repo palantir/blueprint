@@ -27,5 +27,7 @@ const customChildren = {
 };
 
 describe("Core isomorphic rendering", () => {
-    generateIsomorphicTests(Core, customProps, customChildren);
+    generateIsomorphicTests(Core, customProps, customChildren, [
+        "Portal", // doesn't render any DOM inline
+    ]);
 });
