@@ -6,25 +6,25 @@
 // https://github.com/thoughtbot/bourbon/blob/master/core/bourbon/library/_font-face.scss
 // https://github.com/thoughtbot/bourbon/blob/master/core/bourbon/utilities/_font-source-declaration.scss
 
-/// Generates an `@font-face` declaration. You can choose the specific file
-/// formats you need to output; the mixin supports `eot`, `ttf`, `svg`, `woff2`
-/// and `woff`.
-///
-/// @argument {string} $font-family
-///
-/// @argument {string} $file-path
-///
-/// @argument {string | list} $file-formats
-///   List of the font file formats to include.
-///
-/// @argument {string} $weight
-///
-/// @argument {string} $style
-///
-/// @content
-///   Any additional CSS properties that are included in the `@include`
-///   directive will be output within the `@font-face` declaration, e.g. you can
-///   pass in `font-weight`, `font-style` and/or `unicode-range`.
+// Generates an `@font-face` declaration. You can choose the specific file
+// formats you need to output; the mixin supports `eot`, `ttf`, `svg`, `woff2`
+// and `woff`.
+//
+// @argument {string} $font-family
+//
+// @argument {string} $file-path
+//
+// @argument {string | list} $file-formats
+//   List of the font file formats to include.
+//
+// @argument {string} $weight
+//
+// @argument {string} $style
+//
+// @content
+//   Any additional CSS properties that are included in the `@include`
+//   directive will be output within the `@font-face` declaration, e.g. you can
+//   pass in `font-weight`, `font-style` and/or `unicode-range`.
 @mixin font-face(
   $font-family,
   $file-path,
@@ -70,7 +70,7 @@
   @return $src;
 }
 
-/// Returns true if `$list` contains any of `$values`.
+// Returns true if `$list` contains any of `$values`.
 @function list-contains($list, $values...) {
   @each $value in $values {
     @if type-of(index($list, $value)) != "number" {
