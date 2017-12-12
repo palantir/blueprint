@@ -35,15 +35,17 @@ abstract class AbstractSortableColumn implements ISortableColumn {
     constructor(protected name: string, protected index: number) {}
 
     public getColumn(getCellData: ICellLookup, sortColumn: ISortCallback) {
-        const cellRenderer = (rowIndex: number, columnIndex: number) => <Cell>{getCellData(rowIndex, columnIndex)}</Cell>;
+        const cellRenderer = (rowIndex: number, columnIndex: number) => (
+            <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
+        );
         const renderMenu = this.renderMenu.bind(this, sortColumn);
         const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} renderMenu={renderMenu} />;
         return (
             <Column
-                key={this.index}
-                name={this.name}
                 cellRenderer={cellRenderer}
                 columnHeaderCellRenderer={columnHeaderCellRenderer}
+                key={this.index}
+                name={this.name}
             />
         );
     }
@@ -196,8 +198,8 @@ export class TableSortableExample extends BaseExample<{}> {
         const columns = this.state.columns.map(col => col.getColumn(this.getCellData, this.sortColumn));
         return (
             <Table
-                numRows={numRows}
                 bodyContextMenuRenderer={this.renderBodyContextMenu}
+                numRows={numRows}
                 selectionModes={SelectionModes.COLUMNS_AND_CELLS}
             >
                 {columns}
