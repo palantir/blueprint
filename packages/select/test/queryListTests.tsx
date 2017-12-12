@@ -10,7 +10,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
-import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/labs-examples/data";
+import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/data";
 import { IQueryListRendererProps, QueryList } from "../src/index";
 
 describe("<QueryList>", () => {

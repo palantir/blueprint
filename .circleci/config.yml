@@ -7,13 +7,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ checksum "yarn.lock" }}
-            - v1-dependency-cache-
+            - v2-dependency-cache-{{ checksum "yarn.lock" }}
+            - v2-dependency-cache-
       - run: yarn
       - run: echo "Checking if lockfiles changed..." && git diff --exit-code
       - run: npm rebuild node-sass
       - save_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ~/yarn
             - ~/.cache/yarn
@@ -33,8 +33,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ checksum "yarn.lock" }}
-            - v1-dependency-cache-
+            - v2-dependency-cache-{{ checksum "yarn.lock" }}
+            - v2-dependency-cache-
       - run: yarn compile
       - persist_to_workspace:
           root: '.'
@@ -51,8 +51,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ checksum "yarn.lock" }}
-            - v1-dependency-cache-
+            - v2-dependency-cache-{{ checksum "yarn.lock" }}
+            - v2-dependency-cache-
       - run: yarn lint
 
   dist-libs:
@@ -63,7 +63,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:libs
       - persist_to_workspace:
           root: '.'
@@ -72,6 +72,7 @@ jobs:
             - packages/datetime/dist
             - packages/docs/dist
             - packages/labs/dist
+            - packages/select/dist
             - packages/table/dist
 
   dist-apps:
@@ -82,7 +83,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:apps
       - persist_to_workspace:
           root: '.'
@@ -99,7 +100,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/core'
 
   test-datetime:
@@ -110,7 +111,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/datetime'
 
   test-labs:
@@ -121,8 +122,19 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/labs'
+
+  test-select:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn lerna run test --scope '@blueprintjs/select'
 
   test-table:
     docker:
@@ -132,7 +144,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/table'
 
   deploy-preview:
@@ -182,6 +194,8 @@ workflows:
           requires: [compile-libs]
       - test-labs:
           requires: [compile-libs]
+      - test-select:
+          requires: [compile-libs]
       - test-table:
           requires: [compile-libs]
       - deploy-preview:
@@ -192,6 +206,7 @@ workflows:
             - test-core
             - test-datetime
             - test-labs
+            - test-select
             - test-table
       - deploy-npm:
           requires: [deploy-preview]

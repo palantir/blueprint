@@ -1,12 +1,12 @@
 {
-  "name": "@blueprintjs/labs",
-  "version": "0.14.0",
-  "description": "Incubator for unstable and in-development Blueprint components",
+  "name": "@blueprintjs/select",
+  "version": "1.0.0",
+  "description": "Components related to selecting items from a list",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
   "typings": "dist/esm/index.d.ts",
-  "style": "dist/blueprint-labs.css",
-  "unpkg": "dist/labs.bundle.js",
+  "style": "dist/blueprint-select.css",
+  "unpkg": "dist/select.bundle.js",
   "scripts": {
     "compile": "npm-run-all -p 'compile:*'",
     "compile:esm": "tsc -p ./src",
@@ -21,27 +21,24 @@
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
-    "test": "npm-run-all -s test:pre -p test:karma",
+    "test": "npm-run-all -s compile:cjs test:pre -p test:karma test:iso",
     "test:pre": "tsc -p ./test",
     "test:karma": "karma start",
+    "test:iso": "mocha test/isotest.js",
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
     "@blueprintjs/core": "^1.34.0",
-    "@blueprintjs/select": "^1.0.0",
     "classnames": "^2.2",
-    "fuzzaldrin-plus": "^0.5.0",
-    "moment": "^2.14.1",
-    "moment-timezone": "^0.5.13",
     "pure-render-decorator": "^1.2.1",
     "tslib": "^1.5.0"
   },
   "devDependencies": {
+    "@blueprintjs/karma-build-scripts": "^0.2.0",
     "@blueprintjs/node-build-scripts": "^0.2.0",
-    "@types/fuzzaldrin-plus": "^0.0.1",
-    "@types/moment-timezone": "^0.5.0",
     "enzyme": "~2.9.1",
     "karma": "^1.7.1",
+    "mocha": "^4.0.1",
     "npm-run-all": "^4.1.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.1",
@@ -58,8 +55,14 @@
   "keywords": [
     "palantir",
     "blueprint",
-    "react",
-    "labs"
+    "components",
+    "select",
+    "select2",
+    "query",
+    "multiselect",
+    "suggest",
+    "typeahead",
+    "ui"
   ],
   "author": "Palantir Technologies",
   "license": "Apache-2.0"

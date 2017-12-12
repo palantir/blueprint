@@ -19,7 +19,7 @@ import {
     Toaster,
 } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
-import { ISelectItemRendererProps, Omnibar } from "@blueprintjs/labs";
+import { ISelectItemRendererProps, Omnibar } from "@blueprintjs/select";
 import { Film, TOP_100_FILMS } from "./data";
 
 const FilmOmnibar = Omnibar.ofType<Film>();
