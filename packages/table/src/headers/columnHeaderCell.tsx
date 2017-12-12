@@ -28,7 +28,7 @@ export interface IColumnNameProps {
      * `EditableName` component for editing column names.
      *
      * If you define this callback, we recommend you also set
-     * `useInteractionBar` to `true`, to avoid issues with menus or selection.
+     * `enableColumnInteractionBar` to `true`, to avoid issues with menus or selection.
      *
      * The callback will also receive the column index if an `index` was originally
      * provided via props.
@@ -46,14 +46,14 @@ export interface IColumnNameProps {
      * @deprecated since blueprintjs/table v1.27.0; pass this prop to `Table`
      * instead.
      */
-    useInteractionBar?: boolean;
+    enableColumnInteractionBar?: boolean;
 }
 
 export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps {
     /**
      * Specifies if the column is reorderable.
      */
-    isColumnReorderable?: boolean;
+    enableColumnReordering?: boolean;
 
     /**
      * Specifies if the full column is part of a selection.
@@ -77,9 +77,9 @@ export function HorizontalCellDivider(): JSX.Element {
 
 export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, IColumnHeaderCellState> {
     public static defaultProps: IColumnHeaderCellProps = {
+        enableColumnInteractionBar: false,
         isActive: false,
         menuIconName: "chevron-down",
-        useInteractionBar: false,
     };
 
     /**
@@ -105,27 +105,27 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
     public render() {
         const {
             // from IColumnHeaderCellProps
-            isColumnReorderable,
+            enableColumnReordering,
             isColumnSelected,
             menuIconName,
 
             // from IColumnNameProps
             name,
             renderName,
-            useInteractionBar,
+            enableColumnInteractionBar,
 
             // from IHeaderProps
             ...spreadableProps
         } = this.props;
 
         const classes = classNames(spreadableProps.className, Classes.TABLE_COLUMN_HEADER_CELL, {
-            [Classes.TABLE_HAS_INTERACTION_BAR]: useInteractionBar,
+            [Classes.TABLE_HAS_INTERACTION_BAR]: enableColumnInteractionBar,
             [Classes.TABLE_HAS_REORDER_HANDLE]: this.props.reorderHandle != null,
         });
 
         return (
             <HeaderCell
-                isReorderable={this.props.isColumnReorderable}
+                isReorderable={this.props.enableColumnReordering}
                 isSelected={this.props.isColumnSelected}
                 {...spreadableProps}
                 className={classes}
@@ -147,7 +147,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
     }
 
     private renderName() {
-        const { index, loading, name, renderName, reorderHandle, useInteractionBar } = this.props;
+        const { index, loading, name, renderName, reorderHandle, enableColumnInteractionBar } = this.props;
 
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
@@ -160,7 +160,7 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             </LoadableContent>
         );
 
-        if (useInteractionBar) {
+        if (enableColumnInteractionBar) {
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
                     <div className={Classes.TABLE_INTERACTION_BAR}>

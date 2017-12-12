@@ -17,7 +17,7 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     /**
      * Specifies if the row is reorderable.
      */
-    isRowReorderable?: boolean;
+    enableRowReordering?: boolean;
 
     /**
      * Specifies whether the full row is part of a selection.
@@ -29,7 +29,7 @@ export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
     public render() {
         const {
             // from IRowHeaderCellProps
-            isRowReorderable,
+            enableRowReordering,
             isRowSelected,
 
             // from IHeaderProps
@@ -38,7 +38,7 @@ export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
 
         return (
             <HeaderCell
-                isReorderable={this.props.isRowReorderable}
+                isReorderable={this.props.enableRowReordering}
                 isSelected={this.props.isRowSelected}
                 {...spreadableProps}
             >

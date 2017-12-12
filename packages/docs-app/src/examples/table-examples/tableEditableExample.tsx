@@ -36,10 +36,12 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
 
     public render() {
         const columns = this.state.columnNames.map((_: string, index: number) => {
-            return <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />;
+            return (
+                <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
+            );
         });
         return (
-            <Table numRows={7} useInteractionBar={true}>
+            <Table numRows={7} enableColumnInteractionBar={true}>
                 {columns}
             </Table>
         );
