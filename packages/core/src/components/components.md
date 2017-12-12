@@ -21,6 +21,7 @@
 @page non-ideal-state
 @page overlay
 @page popover
+@page popover2
 @page portal
 @page progress
 @page sliders
@@ -28,7 +29,9 @@
 @page tabs
 @page tabs2
 @page tag
+@page tag-input
 @page text
 @page toast
 @page tooltip
+@page tooltip2
 @page tree

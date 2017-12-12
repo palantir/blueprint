@@ -3,9 +3,9 @@
 // Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-@import "~@blueprintjs/core/src/common/variables";
-@import "~@blueprintjs/core/src/components/forms/common";
-@import "~@blueprintjs/core/src/components/tag/common";
+@import "../../common/variables";
+@import "../forms/common";
+@import "../tag/common";
 
 $ti-padding: ($pt-input-height - $tag-height) / 2;
 $ti-padding-right: ($pt-input-height - $pt-button-height-small) / 2;

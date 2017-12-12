@@ -4,9 +4,18 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AnchorButton, Classes, Hotkey, Hotkeys, HotkeysTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import {
+    AnchorButton,
+    Classes,
+    Hotkey,
+    Hotkeys,
+    HotkeysTarget,
+    Menu,
+    MenuDivider,
+    MenuItem,
+    Popover2,
+} from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
-import { Popover2 } from "@blueprintjs/labs";
 
 import * as classNames from "classnames";
 import * as React from "react";

@@ -14,12 +14,13 @@ import {
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
+    IPopover2Props,
     Keys,
     Menu,
+    Popover2,
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
-import { IPopover2Props, Popover2 } from "../popover/popover2";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
