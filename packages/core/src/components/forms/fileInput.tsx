@@ -27,7 +27,7 @@ export interface IFileInputProps extends React.AllHTMLAttributes<HTMLLabelElemen
      * The props to pass to the child input.
      * `disabled` will be ignored in favor of the top-level prop.
      * `type` will be ignored, because the input _must_ be `type="file"`.
-     * Pass `onChange` here to be notified when the user inputs a file.
+     * Pass `onChange` here to be notified when the user selects a file.
      */
     inputProps?: React.HTMLProps<HTMLInputElement>;
 
