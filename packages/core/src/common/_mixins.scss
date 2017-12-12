@@ -113,8 +113,8 @@ $pt-dark-intent-text-colors: (
   @return floor(($height - $line-height) / 2);
 }
 
-// Removes the unit from a Sass numeric value (if present).
-// strip-unit(12px) => 12
+// Removes the unit from a Sass numeric value (if present): `strip-unit(12px) => 12`
+// @see https://css-tricks.com/snippets/sass/strip-unit-function/
 @function strip-unit($number) {
   @if type-of($number) == "number" and not unitless($number) {
     @return $number / ($number * 0 + 1);
