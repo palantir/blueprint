@@ -2020,7 +2020,7 @@ describe("<Table>", () => {
         setTimeout(callback);
     }
 
-    function createKeyEventConfig(component: ReactWrapper<any, any>, key: string, keyCode: number, shiftKey = false) {
+    function createKeyEventConfig(wrapper: ReactWrapper<any, any>, key: string, keyCode: number, shiftKey = false) {
         const eventConfig = {
             key,
             keyCode,
@@ -2031,7 +2031,7 @@ describe("<Table>", () => {
             stopPropagation: () => {
                 /* Empty */
             },
-            target: (component as any).instance(),
+            target: wrapper.instance(),
             which: keyCode,
         };
         return {

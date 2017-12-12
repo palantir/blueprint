@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
@@ -83,7 +83,7 @@ export interface ITabs2State {
     selectedTabId?: TabId;
 }
 
-export class Tabs2 extends AbstractComponent<ITabs2Props, ITabs2State> {
+export class Tabs2 extends AbstractPureComponent<ITabs2Props, ITabs2State> {
     /** Insert a `Tabs2.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;
 

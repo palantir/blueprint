@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import {
-    AbstractComponent,
+    AbstractPureComponent,
     Button,
     Classes as CoreClasses,
     HTMLInputProps,
@@ -100,7 +100,7 @@ export interface ITimezonePickerState {
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
-export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITimezonePickerState> {
+export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
     public static displayName = "Blueprint.TimezonePicker";
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
