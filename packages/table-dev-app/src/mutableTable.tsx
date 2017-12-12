@@ -106,7 +106,7 @@ const LONG_TEXT_WORD_SPLIT_REGEXP = /.{1,5}/g;
 const LARGE_JSON_PROP_COUNT = 3;
 const LARGE_JSON_OBJECT_DEPTH = 2;
 
-const CELL_CONTENT_GENERATORS = {
+const CELL_CONTENT_GENERATORS: { [name: string]: (ri: number, ci: number) => string | object } = {
     [CellContent.CELL_NAMES]: Utils.toBase26CellName,
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
@@ -115,7 +115,7 @@ const CELL_CONTENT_GENERATORS = {
             .match(LONG_TEXT_WORD_SPLIT_REGEXP)
             .join(" ");
     },
-    [CellContent.LARGE_JSON]: (_ri: number, _ci: number) => {
+    [CellContent.LARGE_JSON]: () => {
         return getRandomObject(LARGE_JSON_PROP_COUNT, LARGE_JSON_OBJECT_DEPTH);
     },
 };
