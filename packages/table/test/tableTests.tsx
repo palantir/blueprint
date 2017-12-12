@@ -389,15 +389,32 @@ describe("<Table>", () => {
 
         it("Selects and deselects column/row headers when selecting and deselecting the full table", () => {
             const table = mountTable();
-            const columnHeader = table.find(COLUMN_HEADER_SELECTOR).at(0);
-            const rowHeader = table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
 
+            // selet the full table
             selectFullTable(table);
+            let columnHeader = table
+                .find(COLUMN_HEADER_SELECTOR)
+                .hostNodes()
+                .at(0);
+            let rowHeader = table
+                .find(`.${Classes.TABLE_ROW_HEADERS}`)
+                .find(`.${Classes.TABLE_HEADER}`)
+                .hostNodes()
+                .at(0);
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
 
             // deselect the full table
             table.setProps({ selectedRegions: [] });
+            columnHeader = table
+                .find(COLUMN_HEADER_SELECTOR)
+                .hostNodes()
+                .at(0);
+            rowHeader = table
+                .find(`.${Classes.TABLE_ROW_HEADERS}`)
+                .find(`.${Classes.TABLE_HEADER}`)
+                .hostNodes()
+                .at(0);
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
         });
@@ -415,6 +432,7 @@ describe("<Table>", () => {
             const bottomContainer = table
                 .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
                 .find(`.${Classes.TABLE_BOTTOM_CONTAINER}`)
+                .hostNodes()
                 .getDOMNode() as HTMLElement;
             const { width: expectedWidth, height: expectedHeight } = bottomContainer.style;
             const [expectedWidthAsNumber, expectedHeightAsNumber] = [expectedWidth, expectedHeight].map(n =>
@@ -427,6 +445,7 @@ describe("<Table>", () => {
                 .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
                 .find(`.${Classes.TABLE_QUADRANT_BODY_CONTAINER}`)
                 .find(`.${Classes.TABLE_SELECTION_REGION}`)
+                .hostNodes()
                 .getDOMNode() as HTMLElement;
             const { width: actualWidth, height: actualHeight } = selectionOverlay.style;
             const [actualWidthAsNumber, actualHeightAsNumber] = [actualWidth, actualHeight].map(n =>
@@ -2012,7 +2031,7 @@ describe("<Table>", () => {
             stopPropagation: () => {
                 /* Empty */
             },
-            target: (component as any).getNode(), // `getNode` is a real Enzyme method, just not in the typings?
+            target: (component as any).instance(),
             which: keyCode,
         };
         return {
