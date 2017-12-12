@@ -10,7 +10,7 @@ import * as React from "react";
 import { Simulate } from "react-dom/test-utils";
 import { SinonSpy, spy } from "sinon";
 
-import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
@@ -36,7 +36,7 @@ describe("<Popover>", () => {
 
     describe("validation:", () => {
         it("throws error if given no target", () => {
-            assert.throws(() => shallow(<Popover />), Errors.POPOVER_REQUIRES_TARGET);
+            expectPropValidationError(Popover, {}, Errors.POPOVER_REQUIRES_TARGET);
         });
 
         it("warns if given > 2 target elements", () => {

@@ -13,7 +13,7 @@ import * as sinon from "sinon";
 import { Classes, Keys, Overlay, PopoverInteractionKind, Position, Tooltip, Utils } from "@blueprintjs/core";
 // tslint:disable-next-line:no-submodule-imports
 import * as Errors from "@blueprintjs/core/src/common/errors";
-import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../src/index";
 
@@ -39,7 +39,7 @@ describe("<Popover2>", () => {
 
     describe.skip("validation:", () => {
         it("throws error if given no target", () => {
-            assert.throws(() => shallow(<Popover2 />), Errors.POPOVER_REQUIRES_TARGET);
+            expectPropValidationError(Popover2, {}, Errors.POPOVER_REQUIRES_TARGET);
         });
 
         it("warns if given > 2 target elements", () => {

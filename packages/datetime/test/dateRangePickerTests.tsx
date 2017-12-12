@@ -13,6 +13,8 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
@@ -555,9 +557,7 @@ describe("<DateRangePicker>", () => {
         it("maxDate must be later than minDate", () => {
             const minDate = new Date(2000, Months.JANUARY, 10);
             const maxDate = new Date(2000, Months.JANUARY, 8);
-            assert.throws(() => {
-                renderDateRangePicker({ minDate, maxDate });
-            }, Errors.DATERANGEPICKER_MAX_DATE_INVALID);
+            expectPropValidationError(DateRangePicker, { minDate, maxDate }, Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         });
 
         it("only days outside bounds have disabled class", () => {
@@ -574,18 +574,22 @@ describe("<DateRangePicker>", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const defaultValue = [new Date(2015, Months.JANUARY, 12), null] as DateRange;
-            assert.throws(() => {
-                renderDateRangePicker({ defaultValue, minDate, maxDate });
-            }, Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID);
+            expectPropValidationError(
+                DateRangePicker,
+                { defaultValue, minDate, maxDate },
+                Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID,
+            );
         });
 
         it("an error is thrown if initialMonth is outside month bounds", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const initialMonth = new Date(2015, Months.FEBRUARY, 12);
-            assert.throws(() => {
-                renderDateRangePicker({ initialMonth, minDate, maxDate });
-            }, Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
+            expectPropValidationError(
+                DateRangePicker,
+                { initialMonth, minDate, maxDate },
+                Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID,
+            );
         });
 
         it("an error is not thrown if initialMonth is outside day bounds but inside month bounds", () => {
@@ -601,9 +605,11 @@ describe("<DateRangePicker>", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const value = [new Date(2015, Months.JANUARY, 12), null] as DateRange;
-            assert.throws(() => {
-                renderDateRangePicker({ value, minDate, maxDate });
-            }, Errors.DATERANGEPICKER_VALUE_INVALID);
+            expectPropValidationError(
+                DateRangePicker,
+                { value, minDate, maxDate },
+                Errors.DATERANGEPICKER_VALUE_INVALID,
+            );
         });
 
         it("onChange not fired when a day outside of bounds is clicked", () => {

@@ -9,7 +9,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent, dispatchTouchEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
@@ -32,8 +32,8 @@ describe("<RangeSlider>", () => {
     });
 
     it("throws error if range value contains null", () => {
-        assert.throws(() => renderSlider(<RangeSlider value={[null, 5]} />));
-        assert.throws(() => renderSlider(<RangeSlider value={[100, null]} />));
+        expectPropValidationError(RangeSlider, { value: [null, 5] });
+        expectPropValidationError(RangeSlider, { value: [100, null] });
     });
 
     it("moving mouse on left handle updates first value in range", () => {
