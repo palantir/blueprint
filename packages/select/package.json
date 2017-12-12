@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@blueprintjs/core": "^1.34.0",
-    "@blueprintjs/labs": "^0.14.0",
     "classnames": "^2.2",
     "pure-render-decorator": "^1.2.1",
     "tslib": "^1.5.0"
