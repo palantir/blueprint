@@ -494,9 +494,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     public constructor(props: ITableProps & { children: React.ReactNode }, context?: any) {
         super(props, context);
-        if (!CoreUtils.isNodeEnv("production")) {
-            this.validateProps(props);
-        }
 
         const { children, columnWidths, defaultRowHeight, defaultColumnWidth, numRows, rowHeights } = this.props;
 
@@ -668,9 +665,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public componentWillReceiveProps(nextProps: ITableProps & { children: React.ReactNode }) {
-        if (!CoreUtils.isNodeEnv("production")) {
-            this.validateProps(nextProps);
-        }
+        // calls validateProps
+        super.componentWillReceiveProps(nextProps);
 
         const {
             children,
