@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { IActionProps, IIntentProps, ILinkProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
@@ -43,7 +43,7 @@ export interface IToastProps extends IProps, IIntentProps {
     timeout?: number;
 }
 
-export class Toast extends AbstractComponent<IToastProps, {}> {
+export class Toast extends AbstractPureComponent<IToastProps, {}> {
     public static defaultProps: IToastProps = {
         className: "",
         message: "",

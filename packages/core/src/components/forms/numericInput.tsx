@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import {
-    AbstractComponent,
+    AbstractPureComponent,
     Classes,
     HTMLInputProps,
     IconName,
@@ -128,7 +128,7 @@ enum IncrementDirection {
     UP = +1,
 }
 
-export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
+export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
     public static displayName = "Blueprint.NumericInput";
 
     public static VALUE_EMPTY = "";

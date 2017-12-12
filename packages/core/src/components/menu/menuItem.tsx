@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
@@ -75,7 +75,7 @@ const REACT_CONTEXT_TYPES: React.ValidationMap<IMenuItemState> = {
     },
 };
 
-export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> {
+export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemState> {
     public static defaultProps: IMenuItemProps = {
         disabled: false,
         popoverProps: {},
