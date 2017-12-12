@@ -26,7 +26,7 @@ module.exports = function (config) {
             entry: {
                 core: [
                     path.resolve(__dirname, "test/index.ts"),
-                    path.resolve(__dirname, "src/blueprint.scss"),
+                    path.resolve(__dirname, "dist/blueprint.css"),
                 ],
             },
         }),
