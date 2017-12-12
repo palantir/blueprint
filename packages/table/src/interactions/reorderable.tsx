@@ -42,7 +42,7 @@ export interface IReorderableProps {
      * When the user reorders something, this callback is called with the new
      * focus cell for the newly selected set of regions.
      */
-    onFocus: (focusedCell: IFocusedCellCoordinates) => void;
+    onFocusedCell: (focusedCell: IFocusedCellCoordinates) => void;
 
     /**
      * An array containing the table's selection Regions.
@@ -191,7 +191,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
             this.props.onSelection(nextSelectedRegions);
 
             // move the focused cell into the newly selected region
-            this.props.onFocus({
+            this.props.onFocusedCell({
                 ...Regions.getFocusCellCoordinatesFromRegion(region),
                 focusSelectionIndex: 0,
             });

@@ -24,7 +24,7 @@ describe("DragSelectable", () => {
     const harness = new ReactHarness();
 
     const onSelection = sinon.spy();
-    const onFocus = sinon.spy();
+    const onFocusedCell = sinon.spy();
     const locateClick = sinon.stub();
     const locateDrag = sinon.stub();
 
@@ -40,7 +40,7 @@ describe("DragSelectable", () => {
         harness.unmount();
 
         onSelection.reset();
-        onFocus.reset();
+        onFocusedCell.reset();
 
         locateClick.returns(undefined);
         locateDrag.returns(undefined);
@@ -157,9 +157,9 @@ describe("DragSelectable", () => {
                 locateClick.returns(REGION_2);
             });
 
-            it("does not expand selection if allowMultipleSelection=false", () => {
+            it("does not expand selection if enableMultipleSelection=false", () => {
                 const component = mountDragSelectable({
-                    allowMultipleSelection: false,
+                    enableMultipleSelection: false,
                     selectedRegions: [REGION],
                 });
 
@@ -258,9 +258,9 @@ describe("DragSelectable", () => {
                 locateClick.returns(REGION_2);
             });
 
-            it("does not add disjoint selection if allowMultipleSelection=false", () => {
+            it("does not add disjoint selection if enableMultipleSelection=false", () => {
                 const component = mountDragSelectable({
-                    allowMultipleSelection: false,
+                    enableMultipleSelection: false,
                     selectedRegions: [REGION],
                 });
 
@@ -387,7 +387,7 @@ describe("DragSelectable", () => {
                 ).to.be.true;
 
                 expect(expandSpy.called, "doesn't call Regions.expandRegion").to.be.false;
-                expect(onFocus.called, "doesn't call onFocus").to.be.false;
+                expect(onFocusedCell.called, "doesn't call onFocusedCell").to.be.false;
             });
 
             it("expands selection using Regions.expandRegion if focusedCell not provided", () => {
@@ -406,7 +406,7 @@ describe("DragSelectable", () => {
                 ).to.be.true;
 
                 expect(expandFocusedSpy.called, "calls FocusedCellUtils.expandFocusedRegion").to.be.false;
-                expect(onFocus.called, "doesn't call onFocus").to.be.false;
+                expect(onFocusedCell.called, "doesn't call onFocusedCell").to.be.false;
             });
         });
 
@@ -433,7 +433,7 @@ describe("DragSelectable", () => {
                 onSelection.secondCall.calledWith([REGION, boundingRegion]),
                 "calls onSelection on mousemove with proper args",
             ).to.be.true;
-            expect(onFocus.calledTwice, "doesn't call onFocus on mousedown").to.be.false;
+            expect(onFocusedCell.calledTwice, "doesn't call onFocusedCell on mousedown").to.be.false;
         });
 
         it("has no effect if dragged region is invalid", () => {
@@ -447,7 +447,7 @@ describe("DragSelectable", () => {
 
             item.mouse("mousemove");
             expect(onSelection.calledTwice, "doesn't call onSelection on mousemove").to.be.false;
-            expect(onFocus.calledTwice, "doesn't call onFocus on mousemove").to.be.false;
+            expect(onFocusedCell.calledTwice, "doesn't call onFocusedCell on mousemove").to.be.false;
         });
 
         it("applies a selectedRegionTransform if provided", () => {
@@ -476,12 +476,12 @@ describe("DragSelectable", () => {
         });
 
         // tslint:disable-next-line:max-line-length
-        it("if allowMultipleSelection=false, moves selection (and focused cell) instead of expanding it", () => {
+        it("if enableMultipleSelection=false, moves selection (and focused cell) instead of expanding it", () => {
             locateClick.onCall(0).returns(REGION_2);
             locateClick.onCall(1).returns(REGION_3);
 
             const component = mountDragSelectable({
-                allowMultipleSelection: false,
+                enableMultipleSelection: false,
                 selectedRegions: [REGION],
             });
 
@@ -494,7 +494,10 @@ describe("DragSelectable", () => {
             expect(onSelection.calledTwice, "calls onSelection on mousemove").to.be.true;
             expect(onSelection.secondCall.calledWith([REGION_3]), "calls onSelection on mousemove with proper args").to
                 .be.true;
-            expect(onFocus.secondCall.calledWith(toFocusedCell(REGION_3)), "moves focusedCell with the selection");
+            expect(
+                onFocusedCell.secondCall.calledWith(toFocusedCell(REGION_3)),
+                "moves focusedCell with the selection",
+            );
         });
 
         it("invokes onSelection even if the selection changed, even if controlled selectedRegions are the same", () => {
@@ -550,7 +553,7 @@ describe("DragSelectable", () => {
         function runMouseDownChecks() {
             expect(locateClick.calledOnce, "calls locateClick on mousedown").to.be.true;
             expect(onSelection.calledOnce, "calls onSelection on mousedown").to.be.true;
-            expect(onFocus.calledOnce, "calls onFocus on mousedown").to.be.true;
+            expect(onFocusedCell.calledOnce, "calls onFocusedCell on mousedown").to.be.true;
         }
     });
 
@@ -576,8 +579,8 @@ describe("DragSelectable", () => {
     function mountDragSelectable(props: Partial<IDragSelectableProps> & object = {}) {
         return harness.mount(
             <DragSelectable
-                allowMultipleSelection={true}
-                onFocus={onFocus}
+                enableMultipleSelection={true}
+                onFocusedCell={onFocusedCell}
                 onSelection={onSelection}
                 locateClick={locateClick}
                 locateDrag={locateDrag}
@@ -614,7 +617,7 @@ describe("DragSelectable", () => {
     }
 
     function expectOnFocusNotCalled() {
-        expect(onFocus.called).to.be.false;
+        expect(onFocusedCell.called).to.be.false;
     }
 
     function expectOnSelectionCalledWith(selectedRegions: IRegion[]) {
@@ -625,14 +628,14 @@ describe("DragSelectable", () => {
     }
 
     function expectOnFocusCalledWith(regionOrCoords: IRegion | IFocusedCellCoordinates, focusSelectionIndex: number) {
-        expect(onFocus.called, "should call onFocus").to.be.true;
+        expect(onFocusedCell.called, "should call onFocusedCell").to.be.true;
 
         const region = regionOrCoords as IRegion;
         const expectedCoords =
             region.rows != null
                 ? { col: region.cols[0], row: region.rows[0] }
                 : (regionOrCoords as IFocusedCellCoordinates);
-        expect(onFocus.firstCall.args[0], "should call onFocus with correct arg").to.deep.equal({
+        expect(onFocusedCell.firstCall.args[0], "should call onFocusedCell with correct arg").to.deep.equal({
             ...expectedCoords,
             focusSelectionIndex,
         });

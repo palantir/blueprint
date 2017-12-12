@@ -1,7 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
 @import "../../common/react-transition";
 
@@ -147,7 +146,10 @@ $toast-margin: $pt-grid-size * 2 !default;
 }
 
 .pt-toast-container {
-  @include position(fixed, null 0 null);
+  position: fixed;
+  right: 0;
+  left: 0;
+
   // #975 ensure toasts are on top of everything (esp dialogs)
   z-index: $pt-z-index-overlay * 2;
   // toasts have margin-top so omit it on container

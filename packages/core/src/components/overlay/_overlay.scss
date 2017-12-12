@@ -12,7 +12,7 @@ body.pt-overlay-open {
 
 .pt-overlay {
   // 0-out all positions so page won't jump when position changes (0s already there)
-  @include position(static, 0);
+  @include position-all(static, 0);
   z-index: $pt-z-index-overlay;
 
   &:not(.pt-overlay-open) {
@@ -57,7 +57,7 @@ body.pt-overlay-open {
 
 // fixed position so the backdrop forecefully covers the whole screen
 .pt-overlay-backdrop {
-  @include position(fixed, 0);
+  @include position-all(fixed, 0);
   @include react-transition(
     "pt-overlay",
     (opacity: 0 1),

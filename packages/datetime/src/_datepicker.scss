@@ -1,7 +1,6 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../core/src/common/icons";
 @import "../../core/src/common/variables";
 @import "../../core/src/components/popover/common";
@@ -161,7 +160,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     text-align: center;
 
     select {
-      @include prefixer(appearance, none, webkit moz);
       margin: -$datepicker-header-margin 0 $datepicker-header-margin;
       border: 0;
       background: none;
@@ -173,6 +171,11 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       line-height: $pt-input-height;
       color: $pt-text-color;
       font-weight: 600;
+
+      // stylelint-disable property-no-vendor-prefix
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      // stylelint-enable property-no-vendor-prefix
 
       &:focus + .pt-datepicker-caption-caret {
         display: inline;

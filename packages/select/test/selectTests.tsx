@@ -4,8 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, InputGroup } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/labs";
+import { Classes, InputGroup, Popover2 } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount } from "enzyme";
