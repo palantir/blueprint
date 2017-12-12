@@ -104,6 +104,8 @@ export interface ITruncatedFormatProps extends IProps {
      * - `ALWAYS`: show the popover.
      * - `NEVER`: don't show the popover.
      * - `WHEN_TRUNCATED`: show the popover only when the text is truncated (default).
+     * - `WHEN_TRUNCATED_APPROX`: show the popover only when the text is trunctated, but use
+     *   a formula to calculate this based on text length, which is faster but less accurate.
      * @default WHEN_TRUNCATED
      */
     showPopover?: TruncatedPopoverMode;

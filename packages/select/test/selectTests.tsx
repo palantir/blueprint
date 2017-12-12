@@ -11,7 +11,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/labs-examples/data";
+import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/data";
 import { ISelectItemRendererProps, ISelectProps, Select } from "../src/index";
 
 describe("<Select>", () => {
