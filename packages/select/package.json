@@ -11,7 +11,7 @@
     "compile": "npm-run-all -p 'compile:*'",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
-    "compile:css": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
+    "compile:css": "sass-compile ./src",
     "clean": "rm -rf dist/*",
     "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
