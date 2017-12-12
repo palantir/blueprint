@@ -347,35 +347,35 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderTable() {
         return (
             <Table
-                enableMultipleSelection={this.state.enableMultiSelection}
+                bodyContextMenuRenderer={this.renderBodyContextMenu}
+                enableColumnInteractionBar={this.state.showTableInteractionBar}
+                enableColumnReordering={this.state.enableColumnReordering}
+                enableColumnResizing={this.state.enableColumnResizing}
                 enableFocusedCell={this.state.showFocusCell}
                 enableGhostCells={this.state.showGhostCells}
-                getCellClipboardData={this.getCellValue}
-                enableColumnResizing={this.state.enableColumnResizing}
-                enableColumnReordering={this.state.enableColumnReordering}
+                enableMultipleSelection={this.state.enableMultiSelection}
                 enableRowHeader={this.state.showRowHeaders}
                 enableRowReordering={this.state.enableRowReordering}
                 enableRowResizing={this.state.enableRowResizing}
+                getCellClipboardData={this.getCellValue}
                 loadingOptions={this.getEnabledLoadingOptions()}
                 numFrozenColumns={this.state.numFrozenCols}
                 numFrozenRows={this.state.numFrozenRows}
                 numRows={this.state.numRows}
-                onSelection={this.onSelection}
-                onCompleteRender={this.onCompleteRender}
                 onColumnsReordered={this.onColumnsReordered}
                 onColumnWidthChanged={this.onColumnWidthChanged}
+                onCompleteRender={this.onCompleteRender}
                 onCopy={this.onCopy}
                 onFocusedCell={this.onFocus}
-                onVisibleCellsChange={this.onVisibleCellsChange}
                 onRowHeightChanged={this.onRowHeightChanged}
                 onRowsReordered={this.onRowsReordered}
+                onSelection={this.onSelection}
+                onVisibleCellsChange={this.onVisibleCellsChange}
                 ref={this.refHandlers.table}
-                bodyContextMenuRenderer={this.renderBodyContextMenu}
                 renderMode={this.state.renderMode}
                 rowHeaderCellRenderer={this.renderRowHeader}
                 selectionModes={this.getEnabledSelectionModes()}
                 styledRegionGroups={this.getStyledRegionGroups()}
-                enableColumnInteractionBar={this.state.showTableInteractionBar}
             >
                 {this.renderColumns()}
             </Table>
