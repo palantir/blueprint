@@ -81,7 +81,7 @@ describe("<Table>", () => {
 
     it("Renders ghost cells", () => {
         const table = harness.mount(
-            <Table fillBodyWithGhostCells={true}>
+            <Table enableGhostCells={true}>
                 <Column />
             </Table>,
         );
@@ -364,11 +364,11 @@ describe("<Table>", () => {
     });
 
     describe("Full-table selection", () => {
-        const onFocus = sinon.spy();
+        const onFocusedCell = sinon.spy();
         const onSelection = sinon.spy();
 
         afterEach(() => {
-            onFocus.reset();
+            onFocusedCell.reset();
             onSelection.reset();
         });
 
@@ -377,7 +377,7 @@ describe("<Table>", () => {
             selectFullTable(table);
 
             expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
-            expect(onFocus.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
+            expect(onFocusedCell.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
         });
 
         it("Does not move focused cell on shift+click", () => {
@@ -385,7 +385,7 @@ describe("<Table>", () => {
             selectFullTable(table, { shiftKey: true });
 
             expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
-            expect(onFocus.called).to.be.false;
+            expect(onFocusedCell.called).to.be.false;
         });
 
         it("Selects and deselects column/row headers when selecting and deselecting the full table", () => {
@@ -444,7 +444,7 @@ describe("<Table>", () => {
 
         function mountTable() {
             return mount(
-                <Table enableFocus={true} onFocus={onFocus} onSelection={onSelection} numRows={10}>
+                <Table enableFocusedCell={true} onFocusedCell={onFocusedCell} onSelection={onSelection} numRows={10}>
                     <Column renderCell={renderDummyCell} />
                     <Column renderCell={renderDummyCell} />
                     <Column renderCell={renderDummyCell} />
@@ -649,7 +649,7 @@ describe("<Table>", () => {
         });
 
         it("Resizes columns when row headers are hidden without throwing an error", () => {
-            const table = mountTable({ isRowHeaderShown: false });
+            const table = mountTable({ enableRowHeader: false });
             const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
             const resizeHandleTarget = getResizeHandle(columnHeader, 0);
 
@@ -748,7 +748,7 @@ describe("<Table>", () => {
                 // set the row height so small so they can all fit in the viewport and be rendered
                 <Table
                     defaultRowHeight={1}
-                    isRowResizable={true}
+                    enableRowResizing={true}
                     minRowHeight={1}
                     numRows={10}
                     selectedRegions={[Regions.row(0, 1), Regions.row(4, 6), Regions.row(8)]}
@@ -800,7 +800,7 @@ describe("<Table>", () => {
 
         it("Shows preview guide and invokes callback when selected columns reordered", () => {
             const table = mountTable({
-                isColumnReorderable: true,
+                enableColumnReordering: true,
                 onColumnsReordered,
                 selectedRegions: [Regions.column(OLD_INDEX, LENGTH - 1)],
             });
@@ -818,7 +818,7 @@ describe("<Table>", () => {
 
         it("Shows preview guide and invokes callback when selected rows reordered", () => {
             const table = mountTable({
-                isRowReorderable: true,
+                enableRowReordering: true,
                 onRowsReordered,
                 selectedRegions: [Regions.row(OLD_INDEX, LENGTH - 1)],
             });
@@ -839,7 +839,7 @@ describe("<Table>", () => {
 
         it("Reorders an unselected column and selects it afterward", () => {
             const table = mountTable({
-                isColumnReorderable: true,
+                enableColumnReordering: true,
                 onColumnsReordered,
                 onSelection,
             });
@@ -855,7 +855,7 @@ describe("<Table>", () => {
 
         it("Doesn't work on rows if there is no selected region defined yet", () => {
             const table = mountTable({
-                isColumnReorderable: true,
+                enableColumnReordering: true,
                 onColumnsReordered,
             });
             getHeaderCell(getColumnHeadersWrapper(table), 0)
@@ -867,7 +867,7 @@ describe("<Table>", () => {
 
         it("Clears all selections except the reordered column after reordering", () => {
             const table = mountTable({
-                isColumnReorderable: true,
+                enableColumnReordering: true,
                 onColumnsReordered,
                 onSelection,
                 selectedRegions: [Regions.column(2)], // some other column
@@ -892,7 +892,7 @@ describe("<Table>", () => {
 
         it("Deselects a selected row on cmd+click (without reordering)", () => {
             const table = mountTable({
-                isRowReorderable: true,
+                enableRowReordering: true,
                 onRowsReordered,
                 onSelection,
                 selectedRegions: [Regions.row(OLD_INDEX)],
@@ -911,7 +911,7 @@ describe("<Table>", () => {
 
         it("Deselects a selected column on cmd+click (without reordering)", () => {
             const table = mountTable({
-                isColumnReorderable: true,
+                enableColumnReordering: true,
                 onColumnsReordered,
                 onSelection,
                 selectedRegions: [Regions.column(OLD_INDEX)],
@@ -930,7 +930,7 @@ describe("<Table>", () => {
 
         it("Does not deselect a selected column when the reorder handle is cmd+click'd", () => {
             const table = mountTable({
-                isColumnReorderable: true,
+                enableColumnReordering: true,
                 onColumnsReordered,
                 onSelection,
             });
@@ -987,7 +987,7 @@ describe("<Table>", () => {
     });
 
     describe("Focused cell", () => {
-        let onFocus: sinon.SinonSpy;
+        let onFocusedCell: sinon.SinonSpy;
         let onVisibleCellsChange: sinon.SinonSpy;
 
         const NUM_ROWS = 3;
@@ -1007,15 +1007,15 @@ describe("<Table>", () => {
         const OVERSIZED_COL_WIDTH = 10000;
 
         beforeEach(() => {
-            onFocus = sinon.spy();
+            onFocusedCell = sinon.spy();
             onVisibleCellsChange = sinon.spy();
         });
 
-        it("removes the focused cell if enableFocus is reset to false", () => {
+        it("removes the focused cell if enableFocusedCell is reset to false", () => {
             const { component } = mountTable();
             const focusCellSelector = `.${Classes.TABLE_FOCUS_REGION}`;
             expect(component.find(focusCellSelector).exists()).to.be.true;
-            component.setProps({ enableFocus: false });
+            component.setProps({ enableFocusedCell: false });
             expect(component.find(focusCellSelector).exists()).to.be.false;
         });
 
@@ -1028,15 +1028,15 @@ describe("<Table>", () => {
             it("doesn't move a focus cell if modifier key is pressed", () => {
                 const { component } = mountTable();
                 component.simulate("keyDown", createKeyEventConfig(component, "right", Keys.ARROW_RIGHT, true));
-                expect(onFocus.called).to.be.false;
+                expect(onFocusedCell.called).to.be.false;
             });
 
             function runFocusCellMoveTest(key: string, keyCode: number, expectedCoords: IFocusedCellCoordinates) {
                 it(key, () => {
                     const { component } = mountTable();
                     component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
-                    expect(onFocus.called).to.be.true;
-                    expect(onFocus.getCall(0).args[0]).to.deep.equal(expectedCoords);
+                    expect(onFocusedCell.called).to.be.true;
+                    expect(onFocusedCell.getCall(0).args[0]).to.deep.equal(expectedCoords);
                 });
             }
         });
@@ -1055,9 +1055,9 @@ describe("<Table>", () => {
                     const tableHarness = mount(
                         <Table
                             numRows={5}
-                            enableFocus={true}
+                            enableFocusedCell={true}
                             focusedCell={focusCellCoords}
-                            onFocus={onFocus}
+                            onFocusedCell={onFocusedCell}
                             selectedRegions={selectedRegions}
                         >
                             <Column name="Column0" renderCell={renderDummyCell} />
@@ -1068,7 +1068,7 @@ describe("<Table>", () => {
                         </Table>,
                     );
                     tableHarness.simulate("keyDown", createKeyEventConfig(tableHarness, key, keyCode, shiftKey));
-                    expect(onFocus.args[0][0]).to.deep.equal(expectedCoords);
+                    expect(onFocusedCell.args[0][0]).to.deep.equal(expectedCoords);
                 });
             }
             runFocusCellMoveInternalTest(
@@ -1238,9 +1238,9 @@ describe("<Table>", () => {
             const component = mount(
                 <Table
                     columnWidths={Array(NUM_ROWS).fill(colWidth)}
-                    enableFocus={true}
+                    enableFocusedCell={true}
                     focusedCell={DEFAULT_FOCUSED_CELL_COORDS}
-                    onFocus={onFocus}
+                    onFocusedCell={onFocusedCell}
                     onVisibleCellsChange={onVisibleCellsChange}
                     rowHeights={Array(NUM_ROWS).fill(rowHeight)}
                     numRows={NUM_ROWS}
@@ -1857,8 +1857,8 @@ describe("<Table>", () => {
             // normal [row, column] parameter order. :/
             return mount(
                 createTableOfSize(numCols, numRows, {
-                    fillBodyWithGhostCells: true,
-                    isRowHeaderShown: true,
+                    enableGhostCells: true,
+                    enableRowHeader: true,
                     renderCell: renderDummyCell,
                     ...tableProps,
                 }),
@@ -1920,7 +1920,7 @@ describe("<Table>", () => {
 
             const onSelection = sinon.spy();
             const focusedCell = { row: SELECTED_CELL_ROW, col: SELECTED_CELL_COL, focusSelectionIndex: 0 };
-            const tableProps = { enableFocus: true, focusedCell, onSelection, selectedRegions };
+            const tableProps = { enableFocusedCell: true, focusedCell, onSelection, selectedRegions };
             const component = mount(createTableOfSize(NUM_COLS, NUM_ROWS, {}, tableProps), {
                 attachTo: containerElement,
             });
@@ -1944,12 +1944,12 @@ describe("<Table>", () => {
             expect(onSelection.firstCall.args).to.deep.equal([selectedRegions]);
         });
 
-        it("does not change a selection on shift + arrow keys if allowMultipleSelection=false", () => {
+        it("does not change a selection on shift + arrow keys if enableMultipleSelection=false", () => {
             const containerElement = document.createElement("div");
             document.body.appendChild(containerElement);
 
             const onSelection = sinon.spy();
-            const tableProps = { allowMultipleSelection: false, onSelection, selectedRegions };
+            const tableProps = { enableMultipleSelection: false, onSelection, selectedRegions };
             const component = mount(createTableOfSize(NUM_COLS, NUM_ROWS, {}, tableProps), {
                 attachTo: containerElement,
             });

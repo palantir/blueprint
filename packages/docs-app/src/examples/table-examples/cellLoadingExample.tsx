@@ -60,7 +60,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
 
     public renderExample() {
         return (
-            <Table numRows={bigSpaceRocks.length} renderRowHeader={this.renderRowHeaderCell} useInteractionBar={true}>
+            <Table numRows={bigSpaceRocks.length} rowHeaderCellRenderer={this.renderRowHeaderCell} enableColumnInteractionBar={true}>
                 {this.renderColumns()}
             </Table>
         );
@@ -88,7 +88,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
                 <Column
                     key={formattedColumnName}
                     renderCell={this.renderCell}
-                    renderColumnHeader={this.renderColumnHeaderCell}
+                    columnHeaderCellRenderer={this.renderColumnHeaderCell}
                 />,
             );
         });

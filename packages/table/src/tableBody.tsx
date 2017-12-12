@@ -40,7 +40,7 @@ export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps 
      * on the table body. The callback is supplied with an `IMenuContext`
      * containing the `IRegion`s of interest.
      */
-    renderBodyContextMenu?: IContextMenuRenderer;
+    bodyContextMenuRenderer?: IContextMenuRenderer;
 }
 
 const DEEP_COMPARE_KEYS: Array<keyof ITableBodyProps> = ["selectedRegions"];
@@ -77,11 +77,11 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
 
         return (
             <DragSelectable
-                allowMultipleSelection={this.props.allowMultipleSelection}
+                enableMultipleSelection={this.props.enableMultipleSelection}
                 focusedCell={this.props.focusedCell}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
-                onFocus={this.props.onFocus}
+                onFocusedCell={this.props.onFocusedCell}
                 onSelection={this.props.onSelection}
                 onSelectionEnd={this.handleSelectionEnd}
                 selectedRegions={this.props.selectedRegions}
@@ -111,10 +111,10 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
     }
 
     public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
-        const { grid, onFocus, onSelection, renderBodyContextMenu, selectedRegions } = this.props;
+        const { grid, onFocusedCell, onSelection, bodyContextMenuRenderer, selectedRegions } = this.props;
         const { numRows, numCols } = grid;
 
-        if (renderBodyContextMenu == null) {
+        if (bodyContextMenuRenderer == null) {
             return undefined;
         }
 
@@ -134,11 +134,11 @@ export class TableBody extends React.Component<ITableBodyProps, {}> {
                 ...Regions.getFocusCellCoordinatesFromRegion(targetRegion),
                 focusSelectionIndex: 0,
             };
-            onFocus(nextFocusedCell);
+            onFocusedCell(nextFocusedCell);
         }
 
         const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
-        const contextMenu = renderBodyContextMenu(menuContext);
+        const contextMenu = bodyContextMenuRenderer(menuContext);
 
         return contextMenu == null ? undefined : contextMenu;
     };

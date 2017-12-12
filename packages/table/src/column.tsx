@@ -44,7 +44,7 @@ export interface IColumnProps extends IColumnNameProps, IProps {
      * An instance of `IColumnHeaderRenderer`, a function that takes a column
      * index and returns a `ColumnHeaderCell` React element.
      */
-    renderColumnHeader?: IColumnHeaderRenderer;
+    columnHeaderCellRenderer?: IColumnHeaderRenderer;
 }
 
 @PureRender

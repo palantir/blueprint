@@ -27,12 +27,12 @@ export function getFocusedOrLastSelectedIndex(selectedRegions: IRegion[], focuse
  * Returns the proper focused cell for the given set of initial conditions.
  */
 export function getInitialFocusedCell(
-    enableFocus: boolean,
+    enableFocusedCell: boolean,
     focusedCellFromProps: IFocusedCellCoordinates,
     focusedCellFromState: IFocusedCellCoordinates,
     selectedRegions: IRegion[],
 ): IFocusedCellCoordinates {
-    if (!enableFocus) {
+    if (!enableFocusedCell) {
         return undefined;
     } else if (focusedCellFromProps != null) {
         // controlled mode

@@ -347,15 +347,15 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderTable() {
         return (
             <Table
-                allowMultipleSelection={this.state.enableMultiSelection}
-                enableFocus={this.state.showFocusCell}
-                fillBodyWithGhostCells={this.state.showGhostCells}
+                enableMultipleSelection={this.state.enableMultiSelection}
+                enableFocusedCell={this.state.showFocusCell}
+                enableGhostCells={this.state.showGhostCells}
                 getCellClipboardData={this.getCellValue}
-                isColumnResizable={this.state.enableColumnResizing}
-                isColumnReorderable={this.state.enableColumnReordering}
-                isRowHeaderShown={this.state.showRowHeaders}
-                isRowReorderable={this.state.enableRowReordering}
-                isRowResizable={this.state.enableRowResizing}
+                enableColumnResizing={this.state.enableColumnResizing}
+                enableColumnReordering={this.state.enableColumnReordering}
+                enableRowHeader={this.state.showRowHeaders}
+                enableRowReordering={this.state.enableRowReordering}
+                enableRowResizing={this.state.enableRowResizing}
                 loadingOptions={this.getEnabledLoadingOptions()}
                 numFrozenColumns={this.state.numFrozenCols}
                 numFrozenRows={this.state.numFrozenRows}
@@ -365,17 +365,17 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 onColumnsReordered={this.onColumnsReordered}
                 onColumnWidthChanged={this.onColumnWidthChanged}
                 onCopy={this.onCopy}
-                onFocus={this.onFocus}
+                onFocusedCell={this.onFocus}
                 onVisibleCellsChange={this.onVisibleCellsChange}
                 onRowHeightChanged={this.onRowHeightChanged}
                 onRowsReordered={this.onRowsReordered}
                 ref={this.refHandlers.table}
-                renderBodyContextMenu={this.renderBodyContextMenu}
+                bodyContextMenuRenderer={this.renderBodyContextMenu}
                 renderMode={this.state.renderMode}
-                renderRowHeader={this.renderRowHeader}
+                rowHeaderCellRenderer={this.renderRowHeader}
                 selectionModes={this.getEnabledSelectionModes()}
                 styledRegionGroups={this.getStyledRegionGroups()}
-                useInteractionBar={this.state.showTableInteractionBar}
+                enableColumnInteractionBar={this.state.showTableInteractionBar}
             >
                 {this.renderColumns()}
             </Table>
@@ -387,7 +387,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             return (
                 <Column
                     key={this.store.getColumnKey(columnIndex)}
-                    renderColumnHeader={this.renderColumnHeaderCell}
+                    columnHeaderCellRenderer={this.renderColumnHeaderCell}
                     renderCell={this.renderCell}
                 />
             );
@@ -928,7 +928,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private onFocus = (focusedCell: IFocusedCellCoordinates) => {
-        this.maybeLogCallback("[onFocus] focusedCell =", focusedCell);
+        this.maybeLogCallback("[onFocusedCell] focusedCell =", focusedCell);
     };
 
     private onCopy = (success: boolean) => {

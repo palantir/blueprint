@@ -81,7 +81,7 @@ export class TableFormatsExample extends BaseExample<{}> {
 
     public render() {
         return (
-            <Table isRowResizable={true} numRows={this.data.length}>
+            <Table enableRowResizing={true} numRows={this.data.length}>
                 <Column name="Timezone" renderCell={this.renderTimezone} />
                 <Column name="UTC Offset" renderCell={this.renderOffset} />
                 <Column name="Local Time" renderCell={this.renderLocalTime} />
