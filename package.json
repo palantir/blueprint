@@ -19,6 +19,7 @@
     "dev:datetime": "lerna run dev --parallel --scope '@blueprintjs/{core,datetime,docs-app}'",
     "dev:labs": "lerna run dev --parallel --scope '@blueprintjs/{core,labs,docs-app}'",
     "dev:landing": "lerna run dev --parallel --scope '@blueprintjs/{core,landing-app}'",
+    "dev:select": "lerna run dev --parallel --scope '@blueprintjs/{core,select}'",
     "dev:table": "lerna run dev --parallel --scope '@blueprintjs/table-dev-app'",
     "dist": "run-s dist:libs dist:apps dist:gh-pages",
     "dist:libs": "lerna run dist --parallel --scope '@blueprintjs/{core,datetime,docs,labs,table}'",
