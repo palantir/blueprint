@@ -30,7 +30,7 @@
   "dependencies": {
     "@blueprintjs/core": "^1.34.0",
     "classnames": "^2.2",
-    "es6-shim": "^0.35",
+    "es6-shim": "^0.35.3",
     "tslib": "^1.5.0"
   },
   "devDependencies": {

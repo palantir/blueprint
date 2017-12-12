@@ -49,6 +49,7 @@
     "bourbon": "^4.3.4",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
+    "es6-shim": "^0.35.3",
     "karma": "^1.7.1",
     "mocha": "^4.0.1",
     "node-sass": "^4.7.2",
