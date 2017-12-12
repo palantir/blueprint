@@ -4,7 +4,7 @@ reference: select
 
 @# Select
 
-The **[@blueprintjs/select](https://www.npmjs.com/package/@blueprintjs/select)** NPM package provides React components related to selecting items from a list:
+The **@blueprintjs/select** NPM package provides React components related to selecting items from a list:
 
 - [`Select`](#select/select-component) for selecting items in a list.
 
@@ -15,6 +15,12 @@ The **[@blueprintjs/select](https://www.npmjs.com/package/@blueprintjs/select)**
 - [`Omnibar`](#select/omnibar), a macOS spotlight-style typeahead component.
 
 - [`QueryList`](#select/query-list), a higher-order component that provides interactions between a query string and a list of items.
+
+Make sure to review the [general usage docs for JS components](#blueprint.usage).
+
+```sh
+npm install --save @blueprintjs/select
+```
 
 @page select-component
 @page suggest
