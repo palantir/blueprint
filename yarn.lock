@@ -708,10 +708,6 @@ boom@5.x.x:
   dependencies:
     hoek "4.x.x"
 
-bourbon@^4.3.4:
-  version "4.3.4"
-  resolved "https://artifactory.palantir.build:443/artifactory/api/npm/all-npm/bourbon/-/bourbon-4.3.4.tgz#4da380029e92c0c8f9764c779451a134b11e7cc3"
-
 brace-expansion@^1.1.7:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.8.tgz#c07b211c7c952ec1f8efd51a77ef0d1d3990a292"
@@ -8327,10 +8323,6 @@ typescript@2.1:
 typescript@2.3.4:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.4.tgz#3d38321828231e434f287514959c37a82b629f42"
-
-typescript@~2.4.2:
-  version "2.4.2"
-  resolved "https://artifactory.palantir.build:443/artifactory/api/npm/all-npm/typescript/-/typescript-2.4.2.tgz#f8395f85d459276067c988aa41837a8f82870844"
 
 typescript@~2.6.2:
   version "2.6.2"

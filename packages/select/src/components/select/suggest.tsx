@@ -19,7 +19,7 @@ import {
     Position,
     Utils,
 } from "@blueprintjs/core";
-import * as Classes from "../classes";
+import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 import { ISelectItemRendererProps } from "../select/select";
 
