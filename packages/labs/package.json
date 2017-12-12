@@ -11,7 +11,7 @@
     "compile": "npm-run-all -p 'compile:*'",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
-    "compile:css": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
+    "compile:css": "sass-compile ./src",
     "clean": "rm -rf dist/*",
     "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
@@ -32,8 +32,6 @@
     "fuzzaldrin-plus": "^0.5.0",
     "moment": "^2.14.1",
     "moment-timezone": "^0.5.13",
-    "popper.js": "^1.12.6",
-    "react-popper": "~0.7.4",
     "tslib": "^1.5.0"
   },
   "devDependencies": {
@@ -46,7 +44,6 @@
     "enzyme-adapter-react-16": "^1.1.0",
     "es6-shim": "^0.35.3",
     "karma": "^1.7.1",
-    "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.1",
     "react": "^16.2.0",
     "react-transition-group": "^2.2.1",

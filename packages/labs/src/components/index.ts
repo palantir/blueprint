@@ -5,11 +5,8 @@
  */
 
 export * from "./omnibar/omnibar";
-export * from "./popover/popover2";
-export * from "./tooltip/tooltip2";
 export * from "./query-list/queryList";
 export * from "./select/multiSelect";
 export * from "./select/select";
 export * from "./select/suggest";
-export * from "./tag-input/tagInput";
 export * from "./timezone-picker/timezonePicker";

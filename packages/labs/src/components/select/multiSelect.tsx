@@ -6,11 +6,20 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { HTMLInputProps, IPopoverProps, Keys, Menu, Popover, Position, Utils } from "@blueprintjs/core";
+import {
+    HTMLInputProps,
+    IPopoverProps,
+    ITagInputProps,
+    Keys,
+    Menu,
+    Popover,
+    Position,
+    TagInput,
+    Utils,
+} from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 import { ISelectItemRendererProps } from "../select/select";
-import { ITagInputProps, TagInput } from "../tag-input/tagInput";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /** Controlled selected values. */

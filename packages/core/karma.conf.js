@@ -10,8 +10,14 @@ module.exports = function (config) {
     const baseConfig = createKarmaConfig({
         dirname: __dirname,
         coverageExcludes: [
+            // pretty hard to test, not worth it
             "src/accessibility/*",
+            // deprecated component
             "src/components/tabs/*",
+            // TODO (clewis): write tests for these component as part of the 2.0 effort:
+            "src/components/popover2/*",
+            "src/components/tag-input/*",
+            "src/components/tooltip2/*",
         ],
     });
     config.set(baseConfig);

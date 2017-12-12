@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, InputGroup } from "@blueprintjs/core";
+import { Classes, InputGroup, Popover2 } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount } from "enzyme";
@@ -12,7 +12,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/labs-examples/data";
-import { ISelectItemRendererProps, ISelectProps, Popover2, Select } from "../src/index";
+import { ISelectItemRendererProps, ISelectProps, Select } from "../src/index";
 
 describe("<Select>", () => {
     const FilmSelect = Select.ofType<Film>();

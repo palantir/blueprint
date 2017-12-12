@@ -19,6 +19,7 @@ import {
     IPopoverProps,
     IPopoverState,
     MenuItem,
+    Popover2,
 } from "@blueprintjs/core";
 import {
     getInitialTimezoneItems,
@@ -33,7 +34,6 @@ import {
     ISelectState,
     ITimezonePickerProps,
     ITimezonePickerState,
-    Popover2,
     QueryList,
     Select,
     TimezoneDisplayFormat,

@@ -7,19 +7,13 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import {
-    AbstractComponent,
-    Classes as CoreClasses,
-    HTMLInputProps,
-    Icon,
-    IconName,
-    IProps,
-    ITagProps,
-    Keys,
-    Tag,
-    Utils,
-} from "@blueprintjs/core";
+import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
+import * as Keys from "../../common/keys";
+import { HTMLInputProps, IProps } from "../../common/props";
+import * as Utils from "../../common/utils";
+import { Icon, IconName } from "../icon/icon";
+import { ITagProps, Tag } from "../tag/tag";
 
 export interface ITagInputProps extends IProps {
     /**
@@ -158,15 +152,15 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         const { className, inputProps, leftIconName, placeholder, values } = this.props;
 
         const classes = classNames(
-            CoreClasses.INPUT,
+            Classes.INPUT,
             Classes.TAG_INPUT,
             {
-                [CoreClasses.ACTIVE]: this.state.isInputFocused,
-                [CoreClasses.DISABLED]: this.props.disabled,
+                [Classes.ACTIVE]: this.state.isInputFocused,
+                [Classes.DISABLED]: this.props.disabled,
             },
             className,
         );
-        const isLarge = classes.indexOf(CoreClasses.LARGE) > NONE;
+        const isLarge = classes.indexOf(Classes.LARGE) > NONE;
 
         // use placeholder prop only if it's defined and values list is empty or contains only falsy values
         const isSomeValueDefined = values.some(val => !!val);

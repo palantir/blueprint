@@ -12,19 +12,15 @@ import { Manager, Popper, Target } from "react-popper";
 export type PopperModifiers = PopperJS.Modifiers;
 export type Placement = PopperJS.Placement;
 
-import {
-    AbstractComponent,
-    Classes,
-    IOverlayableProps,
-    IProps,
-    Overlay,
-    PopoverInteractionKind,
-    Position,
-    Utils,
-} from "@blueprintjs/core";
-
+import { AbstractComponent } from "../../common/abstractComponent";
+import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { Tooltip2 } from "../tooltip/tooltip2";
+import { Position } from "../../common/position";
+import { IProps } from "../../common/props";
+import * as Utils from "../../common/utils";
+import { IOverlayableProps, Overlay } from "../overlay/overlay";
+import { PopoverInteractionKind } from "../popover/popover";
+import { Tooltip2 } from "../tooltip2/tooltip2";
 import { getArrowAngle, PopoverArrow } from "./arrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
