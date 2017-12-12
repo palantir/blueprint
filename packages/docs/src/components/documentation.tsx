@@ -176,6 +176,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const activePageId = this.routeToPage[activeSectionId];
         if (activeSectionId !== undefined && activePageId !== undefined) {
             this.setState({ activePageId, activeSectionId });
+            this.scrollToActiveSection();
         }
     };
 
@@ -188,7 +189,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             return;
         }
         // use the longer (deeper) name to avoid jumping up between sections
-        this.setState({ ...this.state, activeSectionId });
+        this.setState({ activeSectionId });
     };
 
     private maybeScrollToActivePageMenuItem() {
@@ -204,7 +205,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     }
 
     private scrollToActiveSection() {
-        scrollToReference(this.state.activeSectionId, this.contentElement);
+        if (this.contentElement != null) {
+            scrollToReference(this.state.activeSectionId, this.contentElement);
+        }
     }
 
     private shiftSection(direction: 1 | -1) {
