@@ -14,8 +14,6 @@
 
       &::after {
         @include pt-icon();
-        position: absolute;
-        right: $half-grid-size;
         content: $pt-icon-caret-right;
 
         .pt-large & {
