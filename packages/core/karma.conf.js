@@ -12,7 +12,8 @@ module.exports = function (config) {
         coverageExcludes: [
             // pretty hard to test, not worth it
             "src/accessibility/*",
-            // deprecated component
+            // deprecated components
+            "src/components/popover/*",
             "src/components/tabs/*",
             // TODO (clewis): write tests for these component as part of the 2.0 effort:
             "src/components/popover2/*",

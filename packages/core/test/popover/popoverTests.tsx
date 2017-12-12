@@ -16,7 +16,8 @@ import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import { Classes, IPopoverProps, Overlay, Popover, PopoverInteractionKind, SVGPopover, Tooltip } from "../../src/index";
 
-describe("<Popover>", () => {
+// Skipping tests since this component is deprecated
+describe.skip("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper;
 
