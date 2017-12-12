@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { safeInvoke } from "../../common/utils";
@@ -33,7 +33,7 @@ const TETHER_OPTIONS = {
 const TRANSITION_DURATION = 100;
 
 /* istanbul ignore next */
-class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
+class ContextMenu extends AbstractPureComponent<{}, IContextMenuState> {
     public state: IContextMenuState = {
         isOpen: false,
     };

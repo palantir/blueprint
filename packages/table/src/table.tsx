@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -405,9 +405,8 @@ export interface ITableState {
     viewportRect?: Rect;
 }
 
-// avoid using AbstractComponent since this component is impure
 @HotkeysTarget
-export class Table extends React.Component<ITableProps, ITableState> {
+export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
