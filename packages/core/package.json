@@ -34,7 +34,7 @@
     "@types/tether": "^1.1.27",
     "classnames": "^2.2",
     "dom4": "^1.8",
-    "normalize.css": "4.1.1",
+    "normalize.css": "^7.0.0",
     "popper.js": "^1.12.6",
     "react-popper": "~0.7.4",
     "tether": "^1.4",

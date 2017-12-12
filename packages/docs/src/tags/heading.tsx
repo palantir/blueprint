@@ -13,7 +13,7 @@ const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>
     React.createElement(
         `h${level}`,
         { className: "docs-title" },
-        <a className="docs-anchor" key="anchor" />,
+        <a className="docs-anchor" data-route={route} key="anchor" />,
         <a className="docs-anchor-link" href={"#" + route} key="link">
             <span className="pt-icon-standard pt-icon-link" />
         </a>,
