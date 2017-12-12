@@ -214,7 +214,7 @@ describe("TableBody", () => {
 
         return mount(
             <TableBody
-                cellRenderer={renderCell}
+                cellRenderer={cellRenderer}
                 grid={grid}
                 loading={false}
                 locator={null}
@@ -236,7 +236,7 @@ describe("TableBody", () => {
         );
     }
 
-    function renderCell() {
+    function cellRenderer() {
         return <Cell>gg</Cell>;
     }
 

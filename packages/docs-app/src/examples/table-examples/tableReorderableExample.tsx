@@ -36,11 +36,11 @@ export class TableReorderableExample extends BaseExample<ITableReorderableExampl
 
     public componentDidMount() {
         const columns = [
-            <Column key="1" name="Letter" renderCell={this.renderLetterCell} />,
-            <Column key="2" name="Fruit" renderCell={this.renderFruitCell} />,
-            <Column key="3" name="Animal" renderCell={this.renderAnimalCell} />,
-            <Column key="4" name="Country" renderCell={this.renderCountryCell} />,
-            <Column key="5" name="City" renderCell={this.renderCityCell} />,
+            <Column key="1" name="Letter" cellRenderer={this.renderLetterCell} />,
+            <Column key="2" name="Fruit" cellRenderer={this.renderFruitCell} />,
+            <Column key="3" name="Animal" cellRenderer={this.renderAnimalCell} />,
+            <Column key="4" name="Country" cellRenderer={this.renderCountryCell} />,
+            <Column key="5" name="City" cellRenderer={this.renderCityCell} />,
         ];
         this.setState({ columns });
     }

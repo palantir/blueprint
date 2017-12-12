@@ -47,7 +47,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
 
     private handleConfigurationChange = handleStringChange(configuration => {
         if (configuration === CellsLoadingConfiguration.RANDOM) {
-            // calculate random numbers just once instead of inside renderCell which is called during table scrolling
+            // calculate random numbers just once instead of inside cellRenderer which is called during table scrolling
             const randomNumbers: number[] = [];
             const numberOfCells = bigSpaceRocks.length * Object.keys(bigSpaceRocks[0]).length;
             for (let i = 0; i < numberOfCells; i++) {
@@ -91,7 +91,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             columns.push(
                 <Column
                     key={formattedColumnName}
-                    renderCell={this.renderCell}
+                    cellRenderer={this.renderCell}
                     columnHeaderCellRenderer={this.renderColumnHeaderCell}
                 />,
             );

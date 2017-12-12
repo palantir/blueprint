@@ -134,6 +134,7 @@ rename enableFocus enableFocusedCell
 rename onFocus onFocusedCell
 rename renderBody bodyRenderer
 rename renderBodyContextMenu bodyContextMenuRenderer
+rename renderCell cellRenderer
 rename renderColumnHeader columnHeaderCellRenderer
 rename renderRowHeader rowHeaderCellRenderer
 rename useInteractionBar enableColumnInteractionBar

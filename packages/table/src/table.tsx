@@ -1270,7 +1270,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             id,
             loadingOptions,
-            renderCell,
+            cellRenderer,
             columnHeaderCellRenderer: renderColumnHeaderCell,
             ...spreadableProps
         } = props;
@@ -1436,7 +1436,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             id,
             loadingOptions,
-            renderCell,
+            cellRenderer,
             columnHeaderCellRenderer,
             name,
             renderName,
@@ -1444,7 +1444,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             ...restColumnProps
         } = this.getColumnProps(columnIndex);
 
-        const cell = renderCell(rowIndex, columnIndex);
+        const cell = cellRenderer(rowIndex, columnIndex);
         const { loading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS) } = cell.props;
 
         const cellProps: ICellProps = {

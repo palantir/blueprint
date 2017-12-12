@@ -98,8 +98,8 @@ describe("<Table>", () => {
         ];
         const tableHarness = harness.mount(
             <Table loadingOptions={loadingOptions} numRows={2}>
-                <Column name="Column0" renderCell={renderDummyCell} />
-                <Column name="Column1" renderCell={renderDummyCell} />
+                <Column name="Column0" cellRenderer={renderDummyCell} />
+                <Column name="Column1" cellRenderer={renderDummyCell} />
             </Table>,
         );
 
@@ -117,10 +117,10 @@ describe("<Table>", () => {
 
     it("Invokes onVisibleCellsChange on mount", () => {
         const onVisibleCellsChange = sinon.spy();
-        const renderCell = () => <Cell>foo</Cell>;
+        const cellRenderer = () => <Cell>foo</Cell>;
         mount(
             <Table onVisibleCellsChange={onVisibleCellsChange} numRows={3}>
-                <Column name="Column0" renderCell={renderCell} />
+                <Column name="Column0" cellRenderer={cellRenderer} />
             </Table>,
         );
 
@@ -134,10 +134,10 @@ describe("<Table>", () => {
 
     it("Invokes onVisibleCellsChange when the table body scrolls", () => {
         const onVisibleCellsChange = sinon.spy();
-        const renderCell = () => <Cell>foo</Cell>;
+        const cellRenderer = () => <Cell>foo</Cell>;
         const table = mount(
             <Table onVisibleCellsChange={onVisibleCellsChange} numRows={3}>
-                <Column name="Column0" renderCell={renderCell} />
+                <Column name="Column0" cellRenderer={cellRenderer} />
             </Table>,
         );
         table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`).simulate("scroll");
@@ -159,7 +159,7 @@ describe("<Table>", () => {
             const getCellText = (rowIndex: number) => {
                 return rowIndex === 0 ? cellTextShort : cellTextLong;
             };
-            const renderCell = (rowIndex: number) => {
+            const cellRenderer = (rowIndex: number) => {
                 return <Cell wrapText={true}>{getCellText(rowIndex)}</Cell>;
             };
 
@@ -169,8 +169,8 @@ describe("<Table>", () => {
             beforeEach(() => {
                 harness.mount(
                     <Table ref={saveTable} numRows={NUM_ROWS}>
-                        <Column name="Column0" renderCell={renderCell} />
-                        <Column name="Column1" renderCell={renderCell} />
+                        <Column name="Column0" cellRenderer={cellRenderer} />
+                        <Column name="Column1" cellRenderer={cellRenderer} />
                     </Table>,
                 );
             });
@@ -209,8 +209,8 @@ describe("<Table>", () => {
 
                 harness.mount(
                     <Table ref={saveTable} numRows={4}>
-                        <Column name="Column0" renderCell={renderCellLong} />
-                        <Column name="Column1" renderCell={renderCellShort} />
+                        <Column name="Column0" cellRenderer={renderCellLong} />
+                        <Column name="Column1" cellRenderer={renderCellShort} />
                     </Table>,
                 );
 
@@ -236,7 +236,7 @@ describe("<Table>", () => {
                 const EXPECTED_MAX_ROW_HEIGHT = 20;
                 const FROZEN_COLUMN_INDEX = 0;
 
-                const renderCell = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
+                const cellRenderer = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
 
                 // huge values that will force scrolling
                 const LARGE_COLUMN_WIDTH = 1000;
@@ -254,11 +254,11 @@ describe("<Table>", () => {
                 // need to mount directly into the DOM for this test to work
                 const table = mount(
                     <Table numRows={4} numFrozenColumns={1} columnWidths={columnWidths}>
-                        <Column name="Column0" renderCell={renderCell} />
-                        <Column name="Column1" renderCell={renderCell} />
-                        <Column name="Column2" renderCell={renderCell} />
-                        <Column name="Column3" renderCell={renderCell} />
-                        <Column name="Column4" renderCell={renderCell} />
+                        <Column name="Column0" cellRenderer={cellRenderer} />
+                        <Column name="Column1" cellRenderer={cellRenderer} />
+                        <Column name="Column2" cellRenderer={cellRenderer} />
+                        <Column name="Column3" cellRenderer={cellRenderer} />
+                        <Column name="Column4" cellRenderer={cellRenderer} />
                     </Table>,
                     { attachTo: containerElement },
                 );
@@ -353,9 +353,9 @@ describe("<Table>", () => {
                             ref={saveTable}
                             {...tableProps}
                         >
-                            <Column renderCell={renderDummyCell} />
-                            <Column renderCell={renderDummyCell} />
-                            <Column renderCell={renderDummyCell} />
+                            <Column cellRenderer={renderDummyCell} />
+                            <Column cellRenderer={renderDummyCell} />
+                            <Column cellRenderer={renderDummyCell} />
                         </Table>
                     </div>,
                 );
@@ -445,9 +445,9 @@ describe("<Table>", () => {
         function mountTable() {
             return mount(
                 <Table enableFocusedCell={true} onFocusedCell={onFocusedCell} onSelection={onSelection} numRows={10}>
-                    <Column renderCell={renderDummyCell} />
-                    <Column renderCell={renderDummyCell} />
-                    <Column renderCell={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
                 </Table>,
             );
         }
@@ -484,7 +484,7 @@ describe("<Table>", () => {
             const onCompleteRenderSpy = sinon.spy();
             const table = mount(
                 <Table numRows={100} onCompleteRender={onCompleteRenderSpy} renderMode={RenderMode.NONE}>
-                    <Column renderCell={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
                 </Table>,
             );
             expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
@@ -496,7 +496,7 @@ describe("<Table>", () => {
             const onCompleteRenderSpy = sinon.spy();
             mount(
                 <Table onCompleteRender={onCompleteRenderSpy} numRows={100} renderMode={RenderMode.BATCH_ON_UPDATE}>
-                    <Column renderCell={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
                 </Table>,
             );
             expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
@@ -509,7 +509,7 @@ describe("<Table>", () => {
             // RenderMode.BATCH is the default
             const table = mount(
                 <Table numRows={numRows} onCompleteRender={onCompleteRenderSpy}>
-                    <Column renderCell={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
                 </Table>,
             );
 
@@ -683,7 +683,7 @@ describe("<Table>", () => {
             const EXPECTED_ROW_HEADER_WIDTH = 30;
             const FROZEN_COLUMN_INDEX = 0;
 
-            const renderCell = () => <Cell wrapText={false}>my cell value with lots and lots of words</Cell>;
+            const cellRenderer = () => <Cell wrapText={false}>my cell value with lots and lots of words</Cell>;
 
             // huge values that will force scrolling
             const LARGE_COLUMN_WIDTH = 1000;
@@ -703,11 +703,11 @@ describe("<Table>", () => {
             const saveTable = (ref: Table) => (table = ref);
             const tableElement = harness.mount(
                 <Table ref={saveTable} numRows={1} numFrozenColumns={1} columnWidths={columnWidths}>
-                    <Column name="Column0" renderCell={renderCell} />
-                    <Column name="Column1" renderCell={renderCell} />
-                    <Column name="Column2" renderCell={renderCell} />
-                    <Column name="Column3" renderCell={renderCell} />
-                    <Column name="Column4" renderCell={renderCell} />
+                    <Column name="Column0" cellRenderer={cellRenderer} />
+                    <Column name="Column1" cellRenderer={cellRenderer} />
+                    <Column name="Column2" cellRenderer={cellRenderer} />
+                    <Column name="Column3" cellRenderer={cellRenderer} />
+                    <Column name="Column4" cellRenderer={cellRenderer} />
                 </Table>,
             );
 
@@ -754,9 +754,9 @@ describe("<Table>", () => {
                     selectedRegions={[Regions.row(0, 1), Regions.row(4, 6), Regions.row(8)]}
                     {...tableProps}
                 >
-                    <Column renderCell={renderDummyCell} />
-                    <Column renderCell={renderDummyCell} />
-                    <Column renderCell={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
                 </Table>,
             );
         }
@@ -953,11 +953,11 @@ describe("<Table>", () => {
                         rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT_IN_PX)}
                         {...props}
                     >
-                        <Column renderCell={renderDummyCell} />
-                        <Column renderCell={renderDummyCell} />
-                        <Column renderCell={renderDummyCell} />
-                        <Column renderCell={renderDummyCell} />
-                        <Column renderCell={renderDummyCell} />
+                        <Column cellRenderer={renderDummyCell} />
+                        <Column cellRenderer={renderDummyCell} />
+                        <Column cellRenderer={renderDummyCell} />
+                        <Column cellRenderer={renderDummyCell} />
+                        <Column cellRenderer={renderDummyCell} />
                     </Table>
                 </div>,
             );
@@ -1060,11 +1060,11 @@ describe("<Table>", () => {
                             onFocusedCell={onFocusedCell}
                             selectedRegions={selectedRegions}
                         >
-                            <Column name="Column0" renderCell={renderDummyCell} />
-                            <Column name="Column1" renderCell={renderDummyCell} />
-                            <Column name="Column2" renderCell={renderDummyCell} />
-                            <Column name="Column3" renderCell={renderDummyCell} />
-                            <Column name="Column4" renderCell={renderDummyCell} />
+                            <Column name="Column0" cellRenderer={renderDummyCell} />
+                            <Column name="Column1" cellRenderer={renderDummyCell} />
+                            <Column name="Column2" cellRenderer={renderDummyCell} />
+                            <Column name="Column3" cellRenderer={renderDummyCell} />
+                            <Column name="Column4" cellRenderer={renderDummyCell} />
                         </Table>,
                     );
                     tableHarness.simulate("keyDown", createKeyEventConfig(tableHarness, key, keyCode, shiftKey));
@@ -1234,7 +1234,7 @@ describe("<Table>", () => {
             // need to `.fill` with some explicit value so that mapping will work, apparently
             const columns = Array(NUM_COLS)
                 .fill(undefined)
-                .map((_, i) => <Column key={i} renderCell={renderDummyCell} />);
+                .map((_, i) => <Column key={i} cellRenderer={renderDummyCell} />);
             const component = mount(
                 <Table
                     columnWidths={Array(NUM_ROWS).fill(colWidth)}
@@ -1347,7 +1347,7 @@ describe("<Table>", () => {
 
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
             // need to explicitly `.fill` a new array with empty values for mapping to work
-            const defineColumn = (_unused: any, i: number) => <Column key={i} renderCell={renderDummyCell} />;
+            const defineColumn = (_unused: any, i: number) => <Column key={i} cellRenderer={renderDummyCell} />;
             const columns = Array(NUM_COLS)
                 .fill(undefined)
                 .map(defineColumn);
@@ -1470,7 +1470,7 @@ describe("<Table>", () => {
         }
 
         function renderColumn(_unused: any, i: number) {
-            return <Column key={i} renderCell={renderDummyCell} />;
+            return <Column key={i} cellRenderer={renderDummyCell} />;
         }
 
         function scrollTable(
@@ -1857,9 +1857,9 @@ describe("<Table>", () => {
             // normal [row, column] parameter order. :/
             return mount(
                 createTableOfSize(numCols, numRows, {
+                    cellRenderer: renderDummyCell,
                     enableGhostCells: true,
                     enableRowHeader: true,
-                    renderCell: renderDummyCell,
                     ...tableProps,
                 }),
             );

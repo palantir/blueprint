@@ -388,7 +388,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 <Column
                     key={this.store.getColumnKey(columnIndex)}
                     columnHeaderCellRenderer={this.renderColumnHeaderCell}
-                    renderCell={this.renderCell}
+                    cellRenderer={this.renderCell}
                 />
             );
         });

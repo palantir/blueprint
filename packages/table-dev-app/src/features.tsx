@@ -43,7 +43,7 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
 
     // combine column overrides
     const columnPropsWithDefaults = {
-        renderCell: (rowIndex: number, columnIndex: number) => {
+        cellRenderer: (rowIndex: number, columnIndex: number) => {
             return <Cell>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
         },
         ...columnProps,
@@ -105,11 +105,11 @@ class FormatsTable extends React.Component<{}, {}> {
 
         return (
             <Table ref={saveTable} numRows={FormatsTable.ROWS} enableRowResizing={true}>
-                <Column name="Default" renderCell={this.renderDefaultCell} />
-                <Column name="Wrapped Text" renderCell={this.renderDefaultCellWrapped} />
-                <Column name="JSON" renderCell={this.renderJSONCell} />
-                <Column name="JSON wrapped text" renderCell={this.renderJSONCellWrappedText} />
-                <Column name="JSON wrapped cell" renderCell={this.renderJSONWrappedCell} />
+                <Column name="Default" cellRenderer={this.renderDefaultCell} />
+                <Column name="Wrapped Text" cellRenderer={this.renderDefaultCellWrapped} />
+                <Column name="JSON" cellRenderer={this.renderJSONCell} />
+                <Column name="JSON wrapped text" cellRenderer={this.renderJSONCellWrappedText} />
+                <Column name="JSON wrapped cell" cellRenderer={this.renderJSONWrappedCell} />
             </Table>
         );
     }
@@ -177,7 +177,7 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
 
     public render() {
         const columns = this.state.names.map((_, index) => (
-            <Column key={index} renderCell={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
+            <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
         ));
         return (
             <Table
@@ -423,7 +423,7 @@ ReactDOM.render(
         3,
         7,
         {
-            renderCell(rowIndex: number, columnIndex: number) {
+            cellRenderer(rowIndex: number, columnIndex: number) {
                 return <Cell intent={rowIndex as Intent}>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
             },
         },
@@ -568,7 +568,7 @@ const longContentRenderCell = () => {
 ReactDOM.render(
     <Table numRows={4}>
         <Column name="My" />
-        <Column name="Table" renderCell={longContentRenderCell} />
+        <Column name="Table" cellRenderer={longContentRenderCell} />
     </Table>,
     document.getElementById("table-8"),
 );
@@ -617,11 +617,11 @@ class ReorderableTableExample extends React.Component<{}, IReorderableTableExamp
 
     public componentDidMount() {
         const children = [
-            <Column key="1" name="Letter" renderCell={this.renderLetterCell} />,
-            <Column key="2" name="Fruit" renderCell={this.renderFruitCell} />,
-            <Column key="3" name="Animal" renderCell={this.renderAnimalCell} />,
-            <Column key="4" name="Country" renderCell={this.renderCountryCell} />,
-            <Column key="5" name="City" renderCell={this.renderCityCell} />,
+            <Column key="1" name="Letter" cellRenderer={this.renderLetterCell} />,
+            <Column key="2" name="Fruit" cellRenderer={this.renderFruitCell} />,
+            <Column key="3" name="Animal" cellRenderer={this.renderAnimalCell} />,
+            <Column key="4" name="Country" cellRenderer={this.renderCountryCell} />,
+            <Column key="5" name="City" cellRenderer={this.renderCityCell} />,
         ];
         this.setState({ children });
     }

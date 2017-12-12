@@ -37,7 +37,7 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
     public render() {
         const columns = this.state.columnNames.map((_: string, index: number) => {
             return (
-                <Column key={index} renderCell={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
+                <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
             );
         });
         return (

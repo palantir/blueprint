@@ -35,14 +35,14 @@ abstract class AbstractSortableColumn implements ISortableColumn {
     constructor(protected name: string, protected index: number) {}
 
     public getColumn(getCellData: ICellLookup, sortColumn: ISortCallback) {
-        const renderCell = (rowIndex: number, columnIndex: number) => <Cell>{getCellData(rowIndex, columnIndex)}</Cell>;
+        const cellRenderer = (rowIndex: number, columnIndex: number) => <Cell>{getCellData(rowIndex, columnIndex)}</Cell>;
         const renderMenu = this.renderMenu.bind(this, sortColumn);
         const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} renderMenu={renderMenu} />;
         return (
             <Column
                 key={this.index}
                 name={this.name}
-                renderCell={renderCell}
+                cellRenderer={cellRenderer}
                 columnHeaderCellRenderer={columnHeaderCellRenderer}
             />
         );

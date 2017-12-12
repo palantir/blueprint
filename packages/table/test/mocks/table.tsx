@@ -25,7 +25,7 @@ export function createTableOfSize(numColumns: number, numRows: number, columnPro
 export function createTableWithData(columnNames: string[], data: string[][], columnProps?: any, tableProps?: any) {
     // combine column overrides
     const columnPropsWithDefaults: IColumnProps = {
-        renderCell: (rowIndex: number, columnIndex: number) => <Cell>{data[rowIndex][columnIndex]}</Cell>,
+        cellRenderer: (rowIndex: number, columnIndex: number) => <Cell>{data[rowIndex][columnIndex]}</Cell>,
         ...columnProps,
     };
 

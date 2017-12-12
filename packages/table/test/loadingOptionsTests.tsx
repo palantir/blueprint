@@ -27,7 +27,7 @@ class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTest
         }
     };
 
-    private static renderCell = (rowIndex: number) => {
+    private static cellRenderer = (rowIndex: number) => {
         return <Cell loading={TableLoadingOptionsTester.isCellLoading(rowIndex)}>some cell text</Cell>;
     };
 
@@ -49,7 +49,7 @@ class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTest
             >
                 <Column
                     loadingOptions={columnLoadingOptions}
-                    renderCell={TableLoadingOptionsTester.renderCell}
+                    cellRenderer={TableLoadingOptionsTester.cellRenderer}
                     columnHeaderCellRenderer={TableLoadingOptionsTester.columnHeaderCellRenderer}
                 />
                 <Column
