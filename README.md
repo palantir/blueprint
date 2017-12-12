@@ -75,7 +75,7 @@ If you were previously in a working state and have just pulled new code from `ma
 
 - If there were package dependency changes, run `yarn` at the root.
   - This command is very quick if there are no new things to install.
-- Run `yarn compile-libs` to get the latest built versions of the library packages in this repo.
+- Run `yarn compile` to get the latest built versions of the library packages in this repo.
   - This command is quicker than `yarn verify` since it doesn't build the application packages (`docs-app`, `landing-app`, etc.) or run tests
 
 ### Developing libraries

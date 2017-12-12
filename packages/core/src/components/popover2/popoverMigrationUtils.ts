@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Position } from "@blueprintjs/core";
+import { Position } from "../../common/position";
 import { Placement } from "./popover2";
 
 /**

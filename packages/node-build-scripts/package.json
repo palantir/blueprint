@@ -8,9 +8,13 @@
   "bin": {
     "assert-package-layout": "./assert-package-layout",
     "generate-css-variables": "./generate-css-variables",
-    "generate-icons-source": "./generate-icons-source"
+    "generate-icons-source": "./generate-icons-source",
+    "sass-compile": "./sass-compile"
   },
   "dependencies": {
+    "node-sass": "^4.7.2",
+    "node-sass-chokidar": "^0.0.3",
+    "node-sass-package-importer": "^3.0.4",
     "strip-css-comments": "^3.0.0"
   },
   "repository": {

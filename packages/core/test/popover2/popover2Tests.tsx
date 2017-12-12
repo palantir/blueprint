@@ -10,13 +10,16 @@ import * as React from "react";
 import { Arrow, Popper } from "react-popper";
 import * as sinon from "sinon";
 
-import { Classes, Keys, Overlay, PopoverInteractionKind, Position, Tooltip, Utils } from "@blueprintjs/core";
-// tslint:disable-next-line:no-submodule-imports
-import * as Errors from "@blueprintjs/core/src/common/errors";
-// tslint:disable-next-line:no-submodule-imports
-import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
-
-import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../src/index";
+import * as Classes from "../../src/common/classes";
+import * as Errors from "../../src/common/errors";
+import * as Keys from "../../src/common/keys";
+import { Position } from "../../src/common/position";
+import * as Utils from "../../src/common/utils";
+import { Overlay } from "../../src/components/overlay/overlay";
+import { PopoverInteractionKind } from "../../src/components/popover/popover";
+import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../../src/components/popover2/popover2";
+import { Tooltip } from "../../src/components/tooltip/tooltip";
+import { dispatchMouseEvent } from "../common/utils";
 
 type ShallowPopover2Wrapper = ShallowWrapper<IPopover2Props, IPopover2State>;
 

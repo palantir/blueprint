@@ -16,13 +16,13 @@ import {
     Menu,
     MenuDivider,
     MenuItem,
+    Popover2,
     PopoverInteractionKind,
     RadioGroup,
     Slider,
     Switch,
 } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs";
-import { Popover2 } from "@blueprintjs/labs";
 
 const INTERACTION_KINDS = [
     { label: "Click", value: PopoverInteractionKind.CLICK.toString() },
