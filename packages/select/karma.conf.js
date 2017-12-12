@@ -11,6 +11,8 @@ module.exports = function (config) {
     });
     config.set(baseConfig);
     config.set({
+        // disable coverage reporter
+        reporters: ["mocha"],
         webpack: Object.assign({}, baseConfig.webpack, {
             entry: {
                 core: path.resolve(__dirname, "test/index.ts"),

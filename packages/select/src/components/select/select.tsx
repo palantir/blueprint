@@ -18,8 +18,8 @@ import {
     Menu,
     Utils,
 } from "@blueprintjs/core";
+import { IPopover2Props, Popover2 } from "@blueprintjs/labs";
 import * as Classes from "../classes";
-import { IPopover2Props, Popover2 } from "../popover/popover2";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {

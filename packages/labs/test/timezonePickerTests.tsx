@@ -31,11 +31,15 @@ import {
     IQueryListState,
     ISelectProps,
     ISelectState,
+    QueryList,
+    Select,
+// HACKHACK do a cross-package import for now in lieu of moving timezonePicker to its own package
+} from "../../select/src"; // replace with @blueprintjs/select soon
+
+import {
     ITimezonePickerProps,
     ITimezonePickerState,
     Popover2,
-    QueryList,
-    Select,
     TimezoneDisplayFormat,
     TimezonePicker,
 } from "../src/index";
