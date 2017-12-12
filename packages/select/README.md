@@ -1,6 +1,6 @@
 <img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-# [Blueprint](http://blueprintjs.com/) Laboratory for Component Development
+# [Blueprint](http://blueprintjs.com/) Select Components
 
 Blueprint is a React UI toolkit for the web.
 
