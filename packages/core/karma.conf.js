@@ -11,6 +11,7 @@ module.exports = function (config) {
         dirname: __dirname,
         coverageExcludes: [
             "src/accessibility/*",
+            "src/components/tabs/*",
         ],
     });
     config.set(baseConfig);
