@@ -13,9 +13,9 @@ import * as DateUtils from "./common/dateUtils";
 import * as Utils from "./common/utils";
 
 export enum TimePickerPrecision {
-    MINUTE,
-    SECOND,
-    MILLISECOND,
+    MINUTE = "minute",
+    SECOND = "second",
+    MILLISECOND = "millisecond",
 }
 
 export interface ITimePickerProps extends IProps {
