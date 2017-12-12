@@ -197,8 +197,8 @@ export function iconClass(iconName?: string) {
 }
 
 export function intentClass(intent = Intent.NONE) {
-    if (intent === Intent.NONE || Intent[intent] == null) {
+    if (intent == null || intent === Intent.NONE) {
         return undefined;
     }
-    return `pt-intent-${Intent[intent].toLowerCase()}`;
+    return `pt-intent-${intent.toLowerCase()}`;
 }
