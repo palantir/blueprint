@@ -197,13 +197,6 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             return undefined;
         }
 
-        const constraints = [
-            {
-                attachment: "together",
-                pin: true,
-                to: "window",
-            },
-        ];
         const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, {
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
         });
@@ -215,13 +208,12 @@ export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, 
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
                 <Popover
-                    tetherOptions={{ constraints }}
                     content={content}
                     position={Position.BOTTOM}
                     className={Classes.TABLE_TH_MENU}
+                    modifiers={{ preventOverflow: { boundariesElement: "window" } }}
                     popoverDidOpen={this.handlePopoverDidOpen}
                     popoverWillClose={this.handlePopoverWillClose}
-                    useSmartArrowPositioning={true}
                 >
                     <Icon iconName={menuIconName} />
                 </Popover>

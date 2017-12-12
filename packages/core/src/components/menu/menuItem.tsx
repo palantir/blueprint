@@ -147,7 +147,6 @@ export class MenuItem extends AbstractComponent<IMenuItemProps, IMenuItemState> 
                     inline={true}
                     interactionKind={PopoverInteractionKind.HOVER}
                     position={this.state.alignLeft ? Position.LEFT_TOP : Position.RIGHT_TOP}
-                    useSmartArrowPositioning={false}
                     {...popoverProps}
                     content={submenuElement}
                     popoverClassName={popoverClasses}

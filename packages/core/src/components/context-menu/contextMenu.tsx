@@ -12,7 +12,7 @@ import { AbstractComponent } from "../../common/abstractComponent";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { safeInvoke } from "../../common/utils";
-import { Popover } from "../popover/popover";
+import { Popover, PopperModifiers } from "../popover/popover";
 
 export interface IOffset {
     left: number;
@@ -27,8 +27,8 @@ interface IContextMenuState {
     onClose?: () => void;
 }
 
-const TETHER_OPTIONS = {
-    constraints: [{ attachment: "together", pin: true, to: "window" }],
+const POPPER_MODIFIERS: PopperModifiers = {
+    preventOverflow: { boundariesElement: "window" },
 };
 const TRANSITION_DURATION = 100;
 
@@ -49,11 +49,10 @@ class ContextMenu extends AbstractComponent<{}, IContextMenuState> {
                 enforceFocus={false}
                 isModal={true}
                 isOpen={this.state.isOpen}
+                modifiers={POPPER_MODIFIERS}
                 onInteraction={this.handlePopoverInteraction}
                 position={Position.RIGHT_TOP}
                 popoverClassName={popoverClassName}
-                useSmartArrowPositioning={false}
-                tetherOptions={TETHER_OPTIONS}
                 transitionDuration={TRANSITION_DURATION}
             >
                 <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset} />
