@@ -88,29 +88,9 @@ describe("TableQuadrantStack", () => {
     it("on row resize, doesn't throw an error if handleRowResizeGuide not provided", () => {
         type ResizeHandler = (verticalGuides: number[]) => void;
         let resizeHandlerMain: ResizeHandler;
-        let resizeHandlerTop: ResizeHandler;
-        let resizeHandlerLeft: ResizeHandler;
-        let resizeHandlerTopLeft: ResizeHandler;
 
-        let callCount = 0;
         const renderRowHeader = (_a: any, resizeHandler: any) => {
-            switch (callCount) {
-                case 0:
-                    resizeHandlerMain = resizeHandler;
-                    break;
-                case 1:
-                    resizeHandlerTop = resizeHandler;
-                    break;
-                case 2:
-                    resizeHandlerLeft = resizeHandler;
-                    break;
-                case 3:
-                    resizeHandlerTopLeft = resizeHandler;
-                    break;
-                default:
-                    break;
-            }
-            callCount += 1;
+            resizeHandlerMain = resizeHandler;
             return <div />;
         };
 
@@ -513,7 +493,6 @@ describe("TableQuadrantStack", () => {
 
     describe("Scroll syncing", () => {
         let container: HTMLElement;
-        let component: TableQuadrantStack;
         let leftScrollContainer: HTMLElement;
         let mainScrollContainer: HTMLElement;
         let topScrollContainer: HTMLElement;
@@ -550,7 +529,6 @@ describe("TableQuadrantStack", () => {
                 </div>,
             );
             container = result.container;
-            component = result.component;
 
             // can't destructure into existing, mutable variables; so need to assign each explicitly
             const scrollContainers = findQuadrantScrollContainers(container);

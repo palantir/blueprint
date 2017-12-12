@@ -138,19 +138,12 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         this.maybeScrollToActivePageMenuItem();
         Utils.safeInvoke(this.props.onComponentUpdate, this.state.activePageId);
         // whoa handling future history...
-        window.addEventListener("hashchange", () => {
-            if (location.hostname.indexOf("blueprint") !== -1) {
-                // captures a pageview for new location hashes that are dynamically rendered without a full page request
-                (window as any).ga("send", "pageview", { page: location.pathname + location.search + location.hash });
-            }
-            // Don't call componentWillMount since the HotkeysTarget decorator will be invoked on every hashchange.
-            this.updateHash();
-        });
+        window.addEventListener("hashchange", this.handleHashChange);
         document.addEventListener("scroll", this.handleScroll);
     }
 
     public componentWillUnmount() {
-        window.removeEventListener("hashchange");
+        window.removeEventListener("hashchange", this.handleHashChange);
         document.removeEventListener("scroll", this.handleScroll);
     }
 
@@ -170,6 +163,15 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         // update state based on current hash location
         this.handleNavigation(location.hash.slice(1));
     }
+
+    private handleHashChange = () => {
+        if (location.hostname.indexOf("blueprint") !== -1) {
+            // captures a pageview for new location hashes that are dynamically rendered without a full page request
+            (window as any).ga("send", "pageview", { page: location.pathname + location.search + location.hash });
+        }
+        // Don't call componentWillMount since the HotkeysTarget decorator will be invoked on every hashchange.
+        this.updateHash();
+    };
 
     private handleNavigation = (activeSectionId: string) => {
         // only update state if this section reference is valid
