@@ -72,6 +72,7 @@ jobs:
             - packages/datetime/dist
             - packages/docs/dist
             - packages/labs/dist
+            - packages/select/dist
             - packages/table/dist
 
   dist-apps:
@@ -123,6 +124,17 @@ jobs:
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/labs'
+
+  test-select:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn lerna run test --scope '@blueprintjs/select'
 
   test-table:
     docker:
@@ -182,6 +194,8 @@ workflows:
           requires: [compile-libs]
       - test-labs:
           requires: [compile-libs]
+      - test-select:
+          requires: [compile-libs]
       - test-table:
           requires: [compile-libs]
       - deploy-preview:
@@ -192,6 +206,7 @@ workflows:
             - test-core
             - test-datetime
             - test-labs
+            - test-select
             - test-table
       - deploy-npm:
           requires: [deploy-preview]
