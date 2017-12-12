@@ -1,7 +1,6 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/icons";
 @import "../../common/variables";
 @import "../button/common";
@@ -225,10 +224,14 @@ $control-group-stack: (
 %pt-select {
   @include pt-button-base();
   @include pt-button();
-  @include prefixer(appearance, none, webkit moz);
   border-radius: $pt-border-radius;
   height: $pt-button-height;
   padding: 0 ($input-padding-horizontal * 2.5) 0 $input-padding-horizontal;
+
+  // stylelint-disable property-no-vendor-prefix
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  // stylelint-enable property-no-vendor-prefix
 }
 
 %pt-select-minimal {

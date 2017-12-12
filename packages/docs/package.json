@@ -33,7 +33,6 @@
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.2.0",
     "@types/fuzzaldrin-plus": "^0.0.1",
-    "bourbon": "^4.3.4",
     "npm-run-all": "^4.1.1",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.1",

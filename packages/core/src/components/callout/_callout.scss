@@ -1,7 +1,6 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
 
 /*
@@ -34,7 +33,9 @@ Styleguide pt-callout
 
     &::before {
       @include pt-icon($pt-icon-size-large);
-      @include position(absolute, $pt-grid-size null null $pt-grid-size);
+      position: absolute;
+      top: $pt-grid-size;
+      left: $pt-grid-size;
       color: $pt-icon-color;
     }
   }
