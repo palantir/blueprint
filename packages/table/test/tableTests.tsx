@@ -2001,7 +2001,7 @@ describe("<Table>", () => {
         setTimeout(callback);
     }
 
-    function createKeyEventConfig(component: ReactWrapper<any, any>, key: string, keyCode: number, shiftKey = false) {
+    function createKeyEventConfig(wrapper: ReactWrapper<any, any>, key: string, keyCode: number, shiftKey = false) {
         const eventConfig = {
             key,
             keyCode,
@@ -2012,7 +2012,7 @@ describe("<Table>", () => {
             stopPropagation: () => {
                 /* Empty */
             },
-            target: (component as any).getNode(), // `getNode` is a real Enzyme method, just not in the typings?
+            target: wrapper.instance(),
             which: keyCode,
         };
         return {
