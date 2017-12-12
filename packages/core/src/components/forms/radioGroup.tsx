@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IOptionProps, IProps } from "../../common/props";
@@ -56,7 +56,7 @@ function nextName() {
     return `${RadioGroup.displayName}-${counter++}`;
 }
 
-export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
+export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
     public static displayName = "Blueprint.RadioGroup";
 
     // a unique name for this group, which can be overridden by `name` prop.

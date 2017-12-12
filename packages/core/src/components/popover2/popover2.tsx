@@ -12,7 +12,7 @@ import { Manager, Popper, Target } from "react-popper";
 export type PopperModifiers = PopperJS.Modifiers;
 export type Placement = PopperJS.Placement;
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
@@ -202,7 +202,7 @@ export interface IPopover2State {
     placement?: Placement;
 }
 
-export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> {
+export class Popover2 extends AbstractPureComponent<IPopover2Props, IPopover2State> {
     public static displayName = "Blueprint.Popover2";
 
     public static defaultProps: IPopover2Props = {

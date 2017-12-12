@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
@@ -62,7 +62,7 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     transitionName?: string;
 }
 
-export class Dialog extends AbstractComponent<IDialogProps, {}> {
+export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
     public static defaultProps: IDialogProps = {
         canOutsideClickClose: true,
         isOpen: false,

@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
@@ -37,7 +37,7 @@ export interface IHandleState {
 // props that require number values, for validation
 const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
-export class Handle extends AbstractComponent<IHandleProps, IHandleState> {
+export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
     public static displayName = "Blueprint.SliderHandle";
 
     public state = {
