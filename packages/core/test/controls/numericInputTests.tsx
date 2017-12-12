@@ -777,54 +777,49 @@ describe("<NumericInput>", () => {
         });
     });
 
+    // Note: we don't call mount() here since React 16 throws before we can even validate the errors thrown
+    // in component constructors
     describe("Validation", () => {
         it("throws an error if min >= max", () => {
-            const fn = () => {
-                mount(<NumericInput min={2} max={1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MIN_MAX);
+            expect(() => {
+                new NumericInput({ min: 2, max: 1 });
+            }).to.throw(Errors.NUMERIC_INPUT_MIN_MAX);
         });
 
         it("throws an error if stepSize is null", () => {
-            const fn = () => {
-                mount(<NumericInput stepSize={null} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
+            expect(() => {
+                new NumericInput({ stepSize: null });
+            }).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
         });
 
         it("throws an error if stepSize <= 0", () => {
-            const fn = () => {
-                mount(<NumericInput stepSize={-1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
+            expect(() => {
+                new NumericInput({ stepSize: -1 });
+            }).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if minorStepSize <= 0", () => {
-            const fn = () => {
-                mount(<NumericInput minorStepSize={-0.1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
+            expect(() => {
+                new NumericInput({ minorStepSize: -0.1 });
+            }).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if majorStepSize <= 0", () => {
-            const fn = () => {
-                mount(<NumericInput majorStepSize={-0.1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
+            expect(() => {
+                new NumericInput({ majorStepSize: -0.1 });
+            }).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if majorStepSize <= stepSize", () => {
-            const fn = () => {
-                mount(<NumericInput majorStepSize={0.5} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
+            expect(() => {
+                new NumericInput({ majorStepSize: 0.5 });
+            }).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         });
 
         it("throws an error if stepSize <= minorStepSize", () => {
-            const fn = () => {
-                mount(<NumericInput minorStepSize={2} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
+            expect(() => {
+                new NumericInput({ minorStepSize: 2 });
+            }).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         });
 
         it("clears the field if the value is invalid when incrementing", () => {
