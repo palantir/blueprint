@@ -454,10 +454,10 @@ ReactDOM.render(
         7,
         {},
         {
-            enableMultipleSelection: true,
-            enableColumnResizing: true,
-            enableRowResizing: true,
             bodyContextMenuRenderer,
+            enableColumnResizing: true,
+            enableMultipleSelection: true,
+            enableRowResizing: true,
             selectionModes: SelectionModes.ALL,
         },
     ),

@@ -99,8 +99,8 @@ export interface IDragSelectableProps extends ISelectableProps {
 @PureRender
 export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
     public static defaultProps: Partial<IDragSelectableProps> = {
-        enableMultipleSelection: false,
         disabled: false,
+        enableMultipleSelection: false,
         selectedRegions: [],
     };
 

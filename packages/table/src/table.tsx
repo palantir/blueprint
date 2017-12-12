@@ -408,11 +408,11 @@ export interface ITableState {
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
-        enableMultipleSelection: true,
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
         enableFocusedCell: false,
         enableGhostCells: false,
+        enableMultipleSelection: true,
         enableRowHeader: true,
         loadingOptions: [],
         minColumnWidth: 50,
@@ -737,7 +737,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { children, className, enableRowHeader, loadingOptions, numRows, enableColumnInteractionBar } = this.props;
+        const {
+            children,
+            className,
+            enableRowHeader,
+            loadingOptions,
+            numRows,
+            enableColumnInteractionBar,
+        } = this.props;
         const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
         this.validateGrid();
 
@@ -757,14 +764,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             <div className={classes} ref={this.refHandlers.rootTable} onScroll={this.handleRootScroll}>
                 <TableQuadrantStack
                     bodyRef={this.refHandlers.cellContainer}
+                    bodyRenderer={this.renderBody}
+                    columnHeaderCellRenderer={this.renderColumnHeader}
                     columnHeaderRef={this.refHandlers.columnHeader}
+                    enableColumnInteractionBar={enableColumnInteractionBar}
+                    enableRowHeader={enableRowHeader}
                     grid={this.grid}
                     handleColumnResizeGuide={this.handleColumnResizeGuide}
                     handleColumnsReordering={this.handleColumnsReordering}
                     handleRowResizeGuide={this.handleRowResizeGuide}
                     handleRowsReordering={this.handleRowsReordering}
                     isHorizontalScrollDisabled={this.shouldDisableHorizontalScroll()}
-                    enableRowHeader={enableRowHeader}
                     isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
                     loadingOptions={loadingOptions}
                     numColumns={React.Children.count(children)}
@@ -774,13 +784,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
                     ref={this.refHandlers.quadrantStack}
-                    bodyRenderer={this.renderBody}
-                    columnHeaderCellRenderer={this.renderColumnHeader}
                     renderMenu={this.renderMenu}
                     rowHeaderCellRenderer={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
-                    enableColumnInteractionBar={enableColumnInteractionBar}
                 />
                 <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
                 <GuideLayer
@@ -1181,8 +1188,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
 
         const isViewportUnscrolledHorizontally = viewportRect != null && viewportRect.left === 0;
-        const areGhostColumnsVisible =
-            enableGhostCells && this.grid.isGhostIndex(0, columnIndices.columnIndexEnd);
+        const areGhostColumnsVisible = enableGhostCells && this.grid.isGhostIndex(0, columnIndices.columnIndexEnd);
         const areColumnHeadersLoading = this.hasLoadingOption(
             this.props.loadingOptions,
             TableLoadingOption.COLUMN_HEADERS,
@@ -1288,16 +1294,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             }
 
             const columnHeaderCellProps: IColumnHeaderCellProps = {
-                loading: columnHeaderCellLoading != null ? columnHeaderCellLoading : columnLoading,
                 enableColumnInteractionBar: tableUseInteractionBar,
+                loading: columnHeaderCellLoading != null ? columnHeaderCellLoading : columnLoading,
             };
             return React.cloneElement(columnHeaderCell, columnHeaderCellProps);
         }
 
         const baseProps: IColumnHeaderCellProps = {
+            enableColumnInteractionBar: tableUseInteractionBar,
             index: columnIndex,
             loading: columnLoading,
-            enableColumnInteractionBar: tableUseInteractionBar,
             ...spreadableProps,
         };
 

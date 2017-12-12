@@ -494,7 +494,10 @@ describe("DragSelectable", () => {
             expect(onSelection.calledTwice, "calls onSelection on mousemove").to.be.true;
             expect(onSelection.secondCall.calledWith([REGION_3]), "calls onSelection on mousemove with proper args").to
                 .be.true;
-            expect(onFocusedCell.secondCall.calledWith(toFocusedCell(REGION_3)), "moves focusedCell with the selection");
+            expect(
+                onFocusedCell.secondCall.calledWith(toFocusedCell(REGION_3)),
+                "moves focusedCell with the selection",
+            );
         });
 
         it("invokes onSelection even if the selection changed, even if controlled selectedRegions are the same", () => {

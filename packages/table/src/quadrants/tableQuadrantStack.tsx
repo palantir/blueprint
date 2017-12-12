@@ -247,11 +247,11 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantStackProps> = {
-        isHorizontalScrollDisabled: false,
+        enableColumnInteractionBar: undefined,
         enableRowHeader: true,
+        isHorizontalScrollDisabled: false,
         isVerticalScrollDisabled: false,
         throttleScrolling: true,
-        enableColumnInteractionBar: undefined,
         viewSyncDelay: DEFAULT_VIEW_SYNC_DELAY,
     };
 
@@ -355,10 +355,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const onWheel = throttleScrolling ? this.throttledHandleWheel : this.handleWheel;
 
         const baseProps = {
-            grid,
-            enableRowHeader,
-            onWheel,
             bodyRenderer,
+            enableRowHeader,
+            grid,
+            onWheel,
         };
 
         const shouldRenderLeftQuadrants = this.shouldRenderLeftQuadrants();

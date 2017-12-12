@@ -37,7 +37,9 @@ describe("Selection", () => {
     it("Selects a single column on click", () => {
         const onSelection = sinon.spy();
         const onFocusedCell = sinon.spy();
-        const table = harness.mount(createTableOfSize(3, 7, {}, { enableFocusedCell: true, onSelection, onFocusedCell }));
+        const table = harness.mount(
+            createTableOfSize(3, 7, {}, { enableFocusedCell: true, onSelection, onFocusedCell }),
+        );
 
         table
             .find(COLUMN_TH_SELECTOR)

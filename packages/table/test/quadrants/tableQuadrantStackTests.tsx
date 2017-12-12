@@ -114,7 +114,9 @@ describe("TableQuadrantStack", () => {
             return <div />;
         };
 
-        mount(<TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} rowHeaderCellRenderer={rowHeaderCellRenderer} />);
+        mount(
+            <TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} rowHeaderCellRenderer={rowHeaderCellRenderer} />,
+        );
 
         const HORIZONTAL_GUIDES = [1, 2, 3];
         expect(() => resizeHandlerMain(HORIZONTAL_GUIDES)).not.to.throw();
@@ -214,14 +216,26 @@ describe("TableQuadrantStack", () => {
         it("invokes columnHeaderCellRenderer once for each quadrant on mount", () => {
             const bodyRenderer = sinon.spy();
             const columnHeaderCellRenderer = sinon.spy();
-            mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} columnHeaderCellRenderer={columnHeaderCellRenderer} />);
+            mount(
+                <TableQuadrantStack
+                    grid={grid}
+                    bodyRenderer={bodyRenderer}
+                    columnHeaderCellRenderer={columnHeaderCellRenderer}
+                />,
+            );
             expect(columnHeaderCellRenderer.callCount).to.equal(4);
         });
 
         it("invokes rowHeaderCellRenderer once for each quadrant on mount", () => {
             const bodyRenderer = sinon.spy();
             const rowHeaderCellRenderer = sinon.spy();
-            mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} rowHeaderCellRenderer={rowHeaderCellRenderer} />);
+            mount(
+                <TableQuadrantStack
+                    grid={grid}
+                    bodyRenderer={bodyRenderer}
+                    rowHeaderCellRenderer={rowHeaderCellRenderer}
+                />,
+            );
             expect(rowHeaderCellRenderer.callCount).to.equal(4);
         });
 

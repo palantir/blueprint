@@ -172,7 +172,10 @@ describe("TableBody", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
                 expect(onFocusedCell.calledOnce).to.be.true;
-                expect(onFocusedCell.firstCall.args[0]).to.deep.equal({ ...TARGET_CELL_COORDS, focusSelectionIndex: 0 });
+                expect(onFocusedCell.firstCall.args[0]).to.deep.equal({
+                    ...TARGET_CELL_COORDS,
+                    focusSelectionIndex: 0,
+                });
             });
         }
 
@@ -181,12 +184,12 @@ describe("TableBody", () => {
             selectedRegions: IRegion[],
         ) {
             return mountTableBody({
+                bodyContextMenuRenderer,
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
                 onFocusedCell,
                 onSelection,
-                bodyContextMenuRenderer,
                 selectedRegions,
             });
         }
