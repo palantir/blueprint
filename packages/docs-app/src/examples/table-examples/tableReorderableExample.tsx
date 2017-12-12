@@ -30,7 +30,9 @@ export class TableReorderableExample extends BaseExample<ITableReorderableExampl
         enableColumnInteractionBar: false,
     };
 
-    private toggleUseInteractionBar = handleBooleanChange(enableColumnInteractionBar => this.setState({ enableColumnInteractionBar }));
+    private toggleUseInteractionBar = handleBooleanChange(enableColumnInteractionBar =>
+        this.setState({ enableColumnInteractionBar }),
+    );
 
     public componentDidMount() {
         const columns = [

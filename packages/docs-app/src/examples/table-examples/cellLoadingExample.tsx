@@ -60,7 +60,11 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
 
     public renderExample() {
         return (
-            <Table numRows={bigSpaceRocks.length} rowHeaderCellRenderer={this.renderRowHeaderCell} enableColumnInteractionBar={true}>
+            <Table
+                numRows={bigSpaceRocks.length}
+                rowHeaderCellRenderer={this.renderRowHeaderCell}
+                enableColumnInteractionBar={true}
+            >
                 {this.renderColumns()}
             </Table>
         );
