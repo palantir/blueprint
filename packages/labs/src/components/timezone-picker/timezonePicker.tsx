@@ -20,9 +20,7 @@ import {
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
-
-// HACKHACK do a cross-package import for now in lieu of moving timezonePicker to its own package
-import { ISelectItemRendererProps, Select } from "../../../../select/src";
+import { ISelectItemRendererProps, Select } from "@blueprintjs/select";
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
@@ -102,7 +100,6 @@ export interface ITimezonePickerState {
 }
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
-console.log("abc 123", TypedSelect);
 
 @PureRender
 export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITimezonePickerState> {

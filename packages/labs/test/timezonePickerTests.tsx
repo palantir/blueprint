@@ -21,28 +21,14 @@ import {
     MenuItem,
     Popover2,
 } from "@blueprintjs/core";
+import { IQueryListProps, IQueryListState, ISelectProps, ISelectState, QueryList, Select } from "@blueprintjs/select";
 import {
     getInitialTimezoneItems,
     getLocalTimezoneItem,
     getTimezoneItems,
     ITimezoneItem,
 } from "../src/components/timezone-picker/timezoneItems";
-import {
-    IQueryListProps,
-    IQueryListState,
-    ISelectProps,
-    ISelectState,
-    QueryList,
-    Select,
-// HACKHACK do a cross-package import for now in lieu of moving timezonePicker to its own package
-} from "../../select/src"; // replace with @blueprintjs/select soon
-
-import {
-    ITimezonePickerProps,
-    ITimezonePickerState,
-    TimezoneDisplayFormat,
-    TimezonePicker,
-} from "../src/index";
+import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src/index";
 
 type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezonePickerState>;
 type SelectShallowWrapper = ShallowWrapper<ISelectProps<ITimezoneItem>, ISelectState<ITimezoneItem>>;
