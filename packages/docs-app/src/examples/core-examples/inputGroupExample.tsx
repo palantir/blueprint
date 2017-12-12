@@ -52,7 +52,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
         const maybeSpinner = filterValue ? <Spinner className={Classes.SMALL} /> : undefined;
 
         const lockButton = (
-            <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} isDisabled={disabled}>
+            <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
                 <Button
                     className={Classes.MINIMAL}
                     intent={Intent.WARNING}
