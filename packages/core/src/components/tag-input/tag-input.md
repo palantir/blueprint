@@ -1,9 +1,9 @@
-@# TagInput
+@# Tag inputs
 
-`TagInput` renders [`Tag`](#core/components/tag)s inside an input, followed by an actual text input. The container is merely styled to look like a Blueprint input; the actual editable element appears after the last tag. Clicking anywhere on the container will focus the text input for seamless interaction.
+Tag inputs render [`Tag`](#core/components/tag)s inside an input, followed by an actual text input. The container is merely styled to look like a Blueprint input; the actual editable element appears after the last tag. Clicking anywhere on the container will focus the text input for seamless interaction.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>Disabling a TagInput</h5>
+    <h5>Disabling a tag input</h5>
     <p>Disabling this component requires setting the `disabled` prop to `true` and separately disabling the component's `rightElement` as appropriate (because `TagInput` accepts any `JSX.Element` as its `rightElement`).</p>
     <p>In the example below, when you slide the `Disabled` toggle switch on, the result becomes `<TagInput ... disabled={true} rightElement={<Button ... disabled={true} />} />`</p>
 </div>

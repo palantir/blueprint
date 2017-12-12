@@ -15,24 +15,15 @@ reference: labs
 
 - [`MultiSelect`](#labs/multi-select) for selecting multiple items in a list.
 
-- [`Omnibox`](#labs/omnibox) is a macOS spotlight-style typeahead component.
+- [`Omnibar`](#labs/omnibar) is a macOS spotlight-style typeahead component.
 
 - [`QueryList`](#labs/query-list) is a higher-order component that provides interactions between a query string and a list of items.
-
-- [`TagInput`](#labs/tag-input) is an input component for [`Tag`](#core/components/tag)s.
-
-- [`Popover2`](#labs/popover2) is an improvement over [`Popover`](#core/components/popover), using [Popper.js](https://popper.js.org/).
-
-- [`Tooltip2`](#labs/tooltip2) is like [`Tooltip`](#core/components/tooltip), but uses [`Popover2`](#labs/popover2).
 
 - [`TimezonePicker`](#labs/timezone-picker) for selecting timezones.
 
 @page select-component
 @page suggest
 @page multi-select
-@page omnibox
+@page omnibar
 @page query-list
-@page tag-input
-@page popover2
-@page tooltip2
 @page timezone-picker

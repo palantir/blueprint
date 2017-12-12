@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# dependencies are hoisted to root node_modules, so load packages from there
+ROOT_NM=../../node_modules
+
+$ROOT_NM/.bin/node-sass-chokidar \
+  --importer $ROOT_NM/node-sass-package-importer/dist/cli.js \
+  --output dist/ \
+  --source-map true \
+  $1

@@ -11,6 +11,10 @@ module.exports = function (config) {
         dirname: __dirname,
         coverageExcludes: [
             "src/accessibility/*",
+            // TODO (clewis): write tests for these component as part of the 2.0 effort:
+            "src/components/popover2/*",
+            "src/components/tag-input/*",
+            "src/components/tooltip2/*",
         ],
     });
     config.set(baseConfig);

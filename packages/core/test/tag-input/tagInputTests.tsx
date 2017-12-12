@@ -9,8 +9,7 @@ import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Button, Classes, Intent, Keys, Tag } from "@blueprintjs/core";
-import { ITagInputProps, TagInput } from "../src/index";
+import { Button, Classes, Intent, ITagInputProps, Keys, Tag, TagInput } from "../../src/index";
 
 describe("<TagInput>", () => {
     const VALUES = ["one", "two", "three"];
