@@ -1,0 +1,140 @@
+#!/bin/bash
+
+function usage() {
+    cat << EOF
+
+Blueprint 2.0.0 Upgrade script
+
+Usage
+
+    $0 [--path=path] [--include=glob] [--exclude=glob] [--prefix=regexp]
+
+Description
+
+    This script finds instances of various renamed methods and properties and
+    replaces them in place.
+
+Options
+
+    --help
+        Display this message and exit.
+
+    --path=.
+
+        The path where the recursive search begins, relative to the current
+        working directory.
+
+    --include=*.{ts,tsx}
+
+        A glob string to match specific file extensions in the search path.
+
+    --exclude={dist,build,node_modules}
+
+        A glob string to omit specific directories from the search path.
+
+    --prefix=(?!(?<=public )|(?<=private )|(?<=this\.))
+
+        A regexp prefix for each find/replace string. The default includes
+        groups of non-capturing negative lookbehinds. This helps limit the
+        renames to props and not class methods. If you are applying this script
+        to files other than typescript (e.g. markdown), you should probably set
+        this to ''.
+
+EOF
+}
+
+# Arguments
+for i in "$@" ; do
+    case $i in
+        --path=*)
+        SEARCH_PATH="${i#*=}"
+        shift
+        ;;
+        --include=*)
+        INCLUDE_GLOB="${i#*=}"
+        shift
+        ;;
+        --exclude=*)
+        EXCLUDE_GLOB="${i#*=}"
+        shift
+        ;;
+        --prefix=*)
+        PREFIX="${i#*=}"
+        shift
+        ;;
+        -h|--help)
+        usage
+        exit 1
+        ;;
+        *)
+        ;;
+    esac
+done
+
+# Default argument values
+SEARCH_PATH=${SEARCH_PATH:-'.'}
+INCLUDE_GLOB=${INCLUDE_GLOB:-'*.{ts,tsx}'}
+EXCLUDE_GLOB=${EXCLUDE_GLOB:-'{dist,build,node_modules}'}
+PREFIX=${PREFIX:-'(?!(?<=public )|(?<=private )|(?<=this\.))'}
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+RESET='\033[0m'
+
+function rename() {
+    # Name parameters
+    fromString=$1
+    toString=$2
+
+    # Add prefix and word boundaries to search string
+    findRegexp="$PREFIX\\b$1\\b"
+
+    # Find all files containing regexp. Use grep's glob syntax for
+    # include/exclude paths. Use perl's regexp syntax.
+    cmd="grep \
+        --recursive \
+        --files-with-matches \
+        --include=$INCLUDE_GLOB \
+        --exclude-dir=$EXCLUDE_GLOB \
+        . \
+        ${SEARCH_PATH} \
+        | xargs perl -lne 'if (/$findRegexp/) { print \$ARGV; close ARGV }'
+    "
+    files=$(eval $cmd)
+
+    if [[ -z ${files// } ]]; then
+        echo -e "No files contain ${RED}${fromString}${RESET}"
+    else
+        count=$(echo "$files" | wc -l | awk '{print $1}')
+        echo -e "Renaming ${RED}${fromString}${RESET} -> ${GREEN}${toString}${RESET} in ${BLUE}${count}${RESET} files"
+
+        # Iterate and search&replace
+        echo "$files" | while read -r file ; do
+            echo -n "$file ... "
+
+            # Search&replace in place with perl
+            perl -p -i -e "s/$findRegexp/$toString/g" $file
+            echo -e "${GREEN}done${RESET}"
+        done
+    fi
+}
+
+# Renames
+
+### Table
+rename allowMultipleSelection enableMultipleSelection
+rename fillBodyWithGhostCells enableGhostCells
+rename isColumnReorderable enableColumnReordering
+rename isColumnResizable enableColumnResizing
+rename isRowHeaderShown enableRowHeader
+rename isRowReorderable enableRowReordering
+rename isRowResizable enableRowResizing
+rename enableFocus enableFocusedCell
+rename onFocus onFocusedCell
+rename renderBody bodyRenderer
+rename renderBodyContextMenu bodyContextMenuRenderer
+rename renderCell cellRenderer
+rename renderColumnHeader columnHeaderCellRenderer
+rename renderRowHeader rowHeaderCellRenderer
+rename useInteractionBar enableColumnInteractionBar

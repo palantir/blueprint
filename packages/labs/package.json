@@ -40,7 +40,6 @@
     "@blueprintjs/test-commons": "^0.1.0",
     "@types/fuzzaldrin-plus": "^0.0.1",
     "@types/moment-timezone": "^0.5.0",
-    "bourbon": "^4.3.4",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
     "es6-shim": "^0.35.3",
@@ -51,7 +50,7 @@
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
     "tslint": "^5.8.0",
-    "typescript": "~2.4.2",
+    "typescript": "~2.6.2",
     "webpack": "^3.9.1"
   },
   "repository": {

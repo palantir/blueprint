@@ -320,13 +320,11 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
             return 0;
         }
 
-        let index = 0;
         let panelCount = 0;
         React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
             if (child.type === TabPanel) {
                 panelCount++;
             }
-            index++;
         });
 
         return panelCount;

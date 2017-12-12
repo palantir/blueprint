@@ -35,17 +35,17 @@ export interface IColumnProps extends IColumnNameProps, IProps {
      * An instance of `ICellRenderer`, a function that takes a row and column
      * index, and returns a `Cell` React element.
      */
-    renderCell?: ICellRenderer;
+    cellRenderer?: ICellRenderer;
 
     /**
      * An instance of `IColumnHeaderRenderer`, a function that takes a column
      * index and returns a `ColumnHeaderCell` React element.
      */
-    renderColumnHeader?: IColumnHeaderRenderer;
+    columnHeaderCellRenderer?: IColumnHeaderRenderer;
 }
 
 export class Column extends React.PureComponent<IColumnProps, {}> {
     public static defaultProps: IColumnProps = {
-        renderCell: emptyCellRenderer,
+        cellRenderer: emptyCellRenderer,
     };
 }

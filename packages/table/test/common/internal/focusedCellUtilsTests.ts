@@ -158,7 +158,7 @@ describe("FocusedCellUtils", () => {
         const FOCUSED_CELL_FROM_STATE = getFocusedCell(3, 4);
         const SELECTED_REGIONS = [Regions.cell(1, 1, 4, 5), Regions.cell(5, 1, 6, 2)];
 
-        it("returns undefined if enableFocus=false", () => {
+        it("returns undefined if enableFocusedCell=false", () => {
             const focusedCell = FocusedCellUtils.getInitialFocusedCell(
                 false,
                 FOCUSED_CELL_FROM_PROPS,

@@ -52,7 +52,7 @@ export interface ITableQuadrantProps extends IProps {
      * If `false`, hides the row headers and settings menu.
      * @default true
      */
-    isRowHeaderShown?: boolean;
+    enableRowHeader?: boolean;
 
     /**
      * An optional callback invoked when the quadrant is scrolled via the scrollbar OR the trackpad/mouse wheel.
@@ -87,17 +87,17 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that renders either all of or just the frozen section of the column header.
      */
-    renderColumnHeader?: (showFrozenColumnsOnly?: boolean) => JSX.Element;
+    columnHeaderCellRenderer?: (showFrozenColumnsOnly?: boolean) => JSX.Element;
 
     /**
      * A callback that renders either all of or just the frozen section of the row header.
      */
-    renderRowHeader?: (showFrozenRowsOnly?: boolean) => JSX.Element;
+    rowHeaderCellRenderer?: (showFrozenRowsOnly?: boolean) => JSX.Element;
 
     /**
      * A callback that renders either all of or just frozen sections of the table body.
      */
-    renderBody: (
+    bodyRenderer: (
         quadrantType?: QuadrantType,
         showFrozenRowsOnly?: boolean,
         showFrozenColumnsOnly?: boolean,
@@ -118,22 +118,25 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantProps> & object = {
-        isRowHeaderShown: true,
+        enableRowHeader: true,
     };
 
     public render() {
-        const { grid, isRowHeaderShown, quadrantType, renderBody } = this.props;
+        const { grid, enableRowHeader, quadrantType, bodyRenderer } = this.props;
 
         const showFrozenRowsOnly = quadrantType === QuadrantType.TOP || quadrantType === QuadrantType.TOP_LEFT;
         const showFrozenColumnsOnly = quadrantType === QuadrantType.LEFT || quadrantType === QuadrantType.TOP_LEFT;
 
         const className = classNames(Classes.TABLE_QUADRANT, this.getQuadrantCssClass(), this.props.className);
 
-        const maybeMenu = isRowHeaderShown && CoreUtils.safeInvoke(this.props.renderMenu);
-        const maybeRowHeader = isRowHeaderShown && CoreUtils.safeInvoke(this.props.renderRowHeader, showFrozenRowsOnly);
-        const maybeColumnHeader = CoreUtils.safeInvoke(this.props.renderColumnHeader, showFrozenColumnsOnly);
+        const maybeMenu = enableRowHeader && CoreUtils.safeInvoke(this.props.renderMenu);
+        const maybeRowHeader =
+            enableRowHeader && CoreUtils.safeInvoke(this.props.rowHeaderCellRenderer, showFrozenRowsOnly);
+        const maybeColumnHeader = CoreUtils.safeInvoke(this.props.columnHeaderCellRenderer, showFrozenColumnsOnly);
         const body =
-            quadrantType != null ? renderBody(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly) : renderBody();
+            quadrantType != null
+                ? bodyRenderer(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly)
+                : bodyRenderer();
 
         // need to set bottom container size to prevent overlay clipping on scroll
         const bottomContainerStyle = {

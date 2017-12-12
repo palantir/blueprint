@@ -24,7 +24,7 @@ export interface ISelectableProps {
      * and a mouse drag will select the current column/row/cell only.
      * @default false
      */
-    allowMultipleSelection?: boolean;
+    enableMultipleSelection?: boolean;
 
     /**
      * The currently focused cell.
@@ -36,7 +36,7 @@ export interface ISelectableProps {
      * focused cell coordinates. This should be considered the new focused cell
      * state for the entire table.
      */
-    onFocus: (focusedCell: IFocusedCellCoordinates) => void;
+    onFocusedCell: (focusedCell: IFocusedCellCoordinates) => void;
 
     /**
      * When the user selects something, this callback is called with a new
@@ -97,8 +97,8 @@ export interface IDragSelectableProps extends ISelectableProps {
 
 export class DragSelectable extends React.PureComponent<IDragSelectableProps, {}> {
     public static defaultProps: Partial<IDragSelectableProps> = {
-        allowMultipleSelection: false,
         disabled: false,
+        enableMultipleSelection: false,
         selectedRegions: [],
     };
 
@@ -168,7 +168,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps, {}
 
     private handleDragMove = (event: MouseEvent, coords: ICoordinateData) => {
         const {
-            allowMultipleSelection,
+            enableMultipleSelection,
             focusedCell,
             locateClick,
             locateDrag,
@@ -176,7 +176,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps, {}
             selectedRegionTransform,
         } = this.props;
 
-        let region = allowMultipleSelection
+        let region = enableMultipleSelection
             ? locateDrag(event, coords, /* returnEndOnly? */ this.didExpandSelectionOnActivate)
             : locateClick(event);
 
@@ -192,7 +192,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps, {}
 
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
-        if (!allowMultipleSelection) {
+        if (!enableMultipleSelection) {
             // move the focused cell with the selected region
             const lastIndex = nextSelectedRegions.length - 1;
             const mostRecentRegion = nextSelectedRegions[lastIndex];
@@ -212,13 +212,13 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps, {}
     // ==============
 
     private shouldExpandSelection = (event: MouseEvent) => {
-        const { allowMultipleSelection } = this.props;
-        return allowMultipleSelection && event.shiftKey;
+        const { enableMultipleSelection } = this.props;
+        return enableMultipleSelection && event.shiftKey;
     };
 
     private shouldAddDisjointSelection = (event: MouseEvent) => {
-        const { allowMultipleSelection } = this.props;
-        return allowMultipleSelection && DragEvents.isAdditive(event);
+        const { enableMultipleSelection } = this.props;
+        return enableMultipleSelection && DragEvents.isAdditive(event);
     };
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
@@ -317,9 +317,9 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps, {}
     }
 
     private invokeOnFocusCallbackForRegion = (focusRegion: IRegion, focusSelectionIndex = 0) => {
-        const { onFocus } = this.props;
+        const { onFocusedCell } = this.props;
         const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(focusRegion);
-        onFocus(FocusedCellUtils.toFullCoordinates(focusedCellCoords, focusSelectionIndex));
+        onFocusedCell(FocusedCellUtils.toFullCoordinates(focusedCellCoords, focusSelectionIndex));
     };
 
     // Other

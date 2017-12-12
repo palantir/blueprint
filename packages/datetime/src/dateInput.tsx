@@ -183,8 +183,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     public static displayName = "Blueprint.DateInput";
 
-    private inputRef: HTMLElement = null;
-
     public constructor(props?: IDateInputProps, context?: any) {
         super(props, context);
 
@@ -251,7 +249,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                     {...htmlInputProps}
                     className={inputClasses}
                     disabled={this.props.disabled}
-                    inputRef={this.setInputRef}
                     type="text"
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
@@ -449,12 +446,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             this.setState({ isOpen: false });
         }
         this.safeInvokeInputProp("onKeyDown", e);
-    };
-
-    private setInputRef = (el: HTMLElement) => {
-        this.inputRef = el;
-        const { inputProps = {} } = this.props;
-        Utils.safeInvoke(inputProps.inputRef, el);
     };
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
