@@ -2375,20 +2375,6 @@ describe("<DateRangeInput>", () => {
     });
 
     function getStartInput(root: WrappedComponentRoot): WrappedComponentInput {
-        // console.log(root.find(InputGroup).debug());
-        // console.log(
-        //     root
-        //         .find(InputGroup)
-        //         .first()
-        //         .debug(),
-        // );
-        // console.log(
-        //     root
-        //         .find(InputGroup)
-        //         .first()
-        //         .find("input")
-        //         .debug(),
-        // );
         return root
             .find(InputGroup)
             .first()
