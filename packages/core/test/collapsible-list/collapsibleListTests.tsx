@@ -22,7 +22,7 @@ import {
 describe("<CollapsibleList>", () => {
     it("adds className to itself", () => {
         const list = renderCollapsibleList(3, { className: "winner" });
-        assert.isNotEmpty(list.find(".winner"));
+        assert.lengthOf(list.find(".winner").hostNodes(), 1);
     });
 
     it("adds visibleItemClassName to each item", () => {

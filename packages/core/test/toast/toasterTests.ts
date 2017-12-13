@@ -128,7 +128,7 @@ describe("Toaster", () => {
 
         it("focuses on newly created toast", done => {
             toaster.show({ message: "focus on me" });
-            // small explicity timeout reduces flakiness of these tests
+            // small explicit timeout reduces flakiness of these tests
             setTimeout(() => {
                 assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);
                 done();

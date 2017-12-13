@@ -302,7 +302,7 @@ describe("<Overlay>", () => {
 
         function assertFocus(selector: string, done: MochaDone) {
             wrapper.update();
-            // small explicity timeout reduces flakiness of these tests,
+            // small explicit timeout reduces flakiness of these tests,
             // which rely on requestAnimationFrame to update focus state.
             setTimeout(() => {
                 assert.strictEqual(document.querySelector(selector), document.activeElement);
