@@ -10,27 +10,30 @@ For example:
 */
 
 // parent styles
-.pt-flex-parent {
+@mixin pt-flex-parent() {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.pt-flex-parent.pt-fill {
+@mixin pt-flex-parent-fill() {
   display: flex;
+  width: 100%;
 }
 
-.pt-flex-parent-direction-horizontal {
+@mixin pt-flex-parent-direction-horizontal {
   flex-direction: row;
 }
 
-.pt-flex-parent-direction-vertical {
+@mixin pt-flex-parent-direction-vertical {
   flex-direction: column;
 }
 
 // child styles
-.pt-flex-child {
+@mixin pt-flex-child {
   flex: 0;
 }
 
-.pt-flex-child.pt-fill {
+@mixin pt-flex-child-fill {
   flex: 1;
 }
