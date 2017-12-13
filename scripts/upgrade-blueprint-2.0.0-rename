@@ -17,6 +17,7 @@ Description
 Options
 
     --help
+
         Display this message and exit.
 
     --path=.
@@ -24,7 +25,7 @@ Options
         The path where the recursive search begins, relative to the current
         working directory.
 
-    --include=*.{ts,tsx}
+    --include=*.{ts,tsx,scss,less}
 
         A glob string to match specific file extensions in the search path.
 
@@ -34,7 +35,7 @@ Options
 
     --prefix=(?!(?<=public )|(?<=private )|(?<=this\.))
 
-        A regexp prefix for each find/replace string. The default includes
+        A regexp prefix for each find/replace prop string. The default includes
         groups of non-capturing negative lookbehinds. This helps limit the
         renames to props and not class methods. If you are applying this script
         to files other than typescript (e.g. markdown), you should probably set
@@ -73,7 +74,7 @@ done
 
 # Default argument values
 SEARCH_PATH=${SEARCH_PATH:-'.'}
-INCLUDE_GLOB=${INCLUDE_GLOB:-'*.{ts,tsx}'}
+INCLUDE_GLOB=${INCLUDE_GLOB:-'*.{ts,tsx,scss,less}'}
 EXCLUDE_GLOB=${EXCLUDE_GLOB:-'{dist,build,node_modules}'}
 PREFIX=${PREFIX:-'(?!(?<=public )|(?<=private )|(?<=this\.))'}
 
@@ -86,9 +87,7 @@ function rename() {
     # Name parameters
     fromString=$1
     toString=$2
-
-    # Add prefix and word boundaries to search string
-    findRegexp="$PREFIX\\b$1\\b"
+    findRegexp=$3
 
     # Find all files containing regexp. Use grep's glob syntax for
     # include/exclude paths. Use perl's regexp syntax.
@@ -120,21 +119,47 @@ function rename() {
     fi
 }
 
+function renameProp() {
+    # Add prefix and word boundaries to search string
+    rename $1 $2 "$PREFIX\\b$1\\b"
+}
+
+function renamePartialClass() {
+    # Don't add word boundary so that partial css classnames rename
+    rename $1 $2 "\\b$1"
+}
+
+function renameString() {
+    # Don't add word boundary so that partial css classnames rename
+    rename $1 $2 "\\b$1\\b"
+}
+
 # Renames
 
 ### Table
-rename allowMultipleSelection enableMultipleSelection
-rename fillBodyWithGhostCells enableGhostCells
-rename isColumnReorderable enableColumnReordering
-rename isColumnResizable enableColumnResizing
-rename isRowHeaderShown enableRowHeader
-rename isRowReorderable enableRowReordering
-rename isRowResizable enableRowResizing
-rename enableFocus enableFocusedCell
-rename onFocus onFocusedCell
-rename renderBody bodyRenderer
-rename renderBodyContextMenu bodyContextMenuRenderer
-rename renderCell cellRenderer
-rename renderColumnHeader columnHeaderCellRenderer
-rename renderRowHeader rowHeaderCellRenderer
-rename useInteractionBar enableColumnInteractionBar
+renameProp allowMultipleSelection enableMultipleSelection
+renameProp fillBodyWithGhostCells enableGhostCells
+renameProp isColumnReorderable enableColumnReordering
+renameProp isColumnResizable enableColumnResizing
+renameProp isRowHeaderShown enableRowHeader
+renameProp isRowReorderable enableRowReordering
+renameProp isRowResizable enableRowResizing
+renameProp enableFocus enableFocusedCell
+renameProp onFocus onFocusedCell
+renameProp renderBody bodyRenderer
+renameProp renderBodyContextMenu bodyContextMenuRenderer
+renameProp renderCell cellRenderer
+renameProp renderColumnHeader columnHeaderCellRenderer
+renameProp renderRowHeader rowHeaderCellRenderer
+renameProp useInteractionBar enableColumnInteractionBar
+renamePartialClass bp-table- pt-table-
+
+### Core
+renameProp renderVisibleItem visibleItemRenderer
+renameProp renderLabel labelRenderer
+renameString FileUpload FileInput
+renameString fileUpload fileInput
+renameString pt-file-upload pt-file-input
+renameString pt-condensed pt-small
+
+
