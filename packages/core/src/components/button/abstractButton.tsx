@@ -131,7 +131,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
             loading ? <Spinner className={classNames(Classes.SMALL, "pt-button-spinner")} key="spinner" /> : undefined,
             text != null ? <span key="text">{text}</span> : undefined,
             ...children,
-            <Icon iconName={rightIconName} key="icon" />
+            <Icon iconName={rightIconName} key="icon" />,
         ];
     }
 }
