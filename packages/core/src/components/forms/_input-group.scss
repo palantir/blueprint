@@ -10,7 +10,7 @@ Input groups
 
 Markup:
 <div class="pt-input-group {{.modifier}}">
-  <span class="pt-icon pt-icon-filter"></span>
+  <span class="pt-icon-standard pt-icon-filter"></span>
   <input type="text" class="pt-input" {{:modifier}} placeholder="Filter histogram..." />
 </div>
 <div class="pt-input-group {{.modifier}}">
@@ -18,7 +18,7 @@ Markup:
   <button class="pt-button pt-minimal pt-intent-warning pt-icon-lock" {{:modifier}}></button>
 </div>
 <div class="pt-input-group {{.modifier}}">
-  <span class="pt-icon pt-icon-search"></span>
+  <span class="pt-icon-standard pt-icon-search"></span>
   <input type="text" class="pt-input" {{:modifier}} placeholder="Search" />
   <button class="pt-button pt-minimal pt-intent-primary pt-icon-arrow-right" {{:modifier}}></button>
 </div>
