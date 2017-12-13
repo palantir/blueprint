@@ -55,13 +55,16 @@ Styleguide pt-menu
   &::before {
     // support pt-icon-* classes directly on this element
     @include pt-icon();
-    float: left;
     margin-right: $menu-item-padding;
   }
 
   &::before,
   &::after {
     color: $pt-icon-color;
+  }
+
+  .pt-menu-item-text {
+    flex: 1;
   }
 
   .pt-menu-item-label {

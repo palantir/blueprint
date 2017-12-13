@@ -94,7 +94,9 @@ $button-intents: (
 ) !default;
 
 @mixin pt-button-base() {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   border-radius: $pt-border-radius;
   cursor: pointer;
