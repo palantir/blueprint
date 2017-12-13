@@ -31,9 +31,9 @@ For example:
 
 // child styles
 @mixin pt-flex-child {
-  flex: 0;
+  flex: 0 0 auto;
 }
 
 @mixin pt-flex-child-fill {
-  flex: 1;
+  flex: 1 1 auto;
 }
