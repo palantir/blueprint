@@ -48,7 +48,7 @@ export class Tab extends React.Component<ITabProps, {}> {
 
     public static displayName = "Blueprint.Tab";
 
-    // this component is never rendered directly; see Tabs2#renderTabPanel()
+    // this component is never rendered directly; see Tabs#renderTabPanel()
     /* istanbul ignore next */
     public render() {
         const { className, panel } = this.props;

@@ -63,8 +63,7 @@ The associated tab `panel` will be visible when the `Tab` is active. Omitting `p
 safe and allows you to control exactly where the panel appears in the DOM (by rendering it yourself
 as needed).
 
-@interface ITab2Props
-
+@interface ITabProps
 
 @### Usage with React Router
 

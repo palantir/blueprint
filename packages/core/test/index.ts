@@ -36,7 +36,6 @@ import "./progress/progressBarTests";
 import "./slider/rangeSliderTests";
 import "./slider/sliderTests";
 import "./spinner/spinnerTests";
-import "./tabs/tabs2Tests";
 import "./tabs/tabsTests";
 import "./tag/tagTests";
 import "./text/textTests";

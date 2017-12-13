@@ -27,7 +27,6 @@
 @page sliders
 @page table
 @page tabs
-@page tabs2
 @page tag
 @page tag-input
 @page text
