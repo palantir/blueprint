@@ -6,14 +6,13 @@
 
 import * as classNames from "classnames";
 import PopperJS from "popper.js";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
 
 export type PopperModifiers = PopperJS.Modifiers;
 export type Placement = PopperJS.Placement;
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
@@ -209,8 +208,7 @@ export interface IPopoverState {
     placement?: Placement;
 }
 
-@PureRender
-export class Popover extends AbstractComponent<IPopoverProps, IPopoverState> {
+export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
     public static displayName = "Blueprint.Popover";
 
     public static defaultProps: IPopoverProps = {

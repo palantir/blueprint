@@ -6,7 +6,6 @@
 
 import * as classNames from "classnames";
 import PopperJS from "popper.js";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -113,7 +112,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Indicates how long (in milliseconds) the tooltip's appear/disappear transition takes.
-     * This is used by React `CSSTransitionGroup` to know when a transition completes
+     * This is used by React `CSSTransition` to know when a transition completes
      * and must match the duration of the animation in CSS.
      * Only set this prop if you override Blueprint's default transitions with new transitions of a different length.
      * @default 100
@@ -121,8 +120,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
     transitionDuration?: number;
 }
 
-@PureRender
-export class Tooltip extends React.Component<ITooltipProps, {}> {
+export class Tooltip extends React.PureComponent<ITooltipProps, {}> {
     public static displayName = "Blueprint.Tooltip";
 
     public static defaultProps: Partial<ITooltipProps> = {

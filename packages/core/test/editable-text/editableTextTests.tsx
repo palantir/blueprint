@@ -47,7 +47,7 @@ describe("<EditableText>", () => {
 
         it("calls onChange when input is changed", () => {
             const changeSpy = spy();
-            const wrapper = shallow(
+            const wrapper = mount(
                 <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." value="alphabet" />,
             );
             wrapper
@@ -61,7 +61,7 @@ describe("<EditableText>", () => {
 
         it("calls onChange when escape key pressed and value is unconfirmed", () => {
             const changeSpy = spy();
-            const input = shallow(
+            const input = mount(
                 <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />,
             ).find("input");
 
@@ -80,7 +80,7 @@ describe("<EditableText>", () => {
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
 
-            const component = shallow(
+            const component = mount(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
             component
@@ -101,7 +101,7 @@ describe("<EditableText>", () => {
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
 
-            const component = shallow(
+            const component = mount(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
             component
@@ -122,7 +122,7 @@ describe("<EditableText>", () => {
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
 
-            const component = shallow(
+            const component = mount(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
             component
@@ -138,14 +138,14 @@ describe("<EditableText>", () => {
 
         it("calls onEdit when entering edit mode", () => {
             const editSpy = spy();
-            shallow(<EditableText onEdit={editSpy} />)
+            mount(<EditableText onEdit={editSpy} />)
                 .find("div")
                 .simulate("focus");
             assert.isTrue(editSpy.calledOnce, "onEdit called once");
         });
 
         it("stops editing when disabled", () => {
-            const wrapper = shallow(<EditableText isEditing={true} disabled={true} />);
+            const wrapper = mount(<EditableText isEditing={true} disabled={true} />);
             assert.isFalse(wrapper.state("isEditing"));
         });
 
@@ -193,12 +193,12 @@ describe("<EditableText>", () => {
 
     describe("multiline", () => {
         it("renders a <textarea> when editing", () => {
-            assert.lengthOf(shallow(<EditableText isEditing={true} multiline={true} />).find("textarea"), 1);
+            assert.lengthOf(mount(<EditableText isEditing={true} multiline={true} />).find("textarea"), 1);
         });
 
         it("does not call onConfirm when enter key is pressed", () => {
             const confirmSpy = spy();
-            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />)
+            mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />)
                 .find("textarea")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("keydown", { which: Keys.ENTER });

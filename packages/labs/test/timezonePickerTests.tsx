@@ -21,24 +21,14 @@ import {
     MenuItem,
     Popover,
 } from "@blueprintjs/core";
+import { IQueryListProps, IQueryListState, ISelectProps, ISelectState, QueryList, Select } from "@blueprintjs/select";
 import {
     getInitialTimezoneItems,
     getLocalTimezoneItem,
     getTimezoneItems,
     ITimezoneItem,
 } from "../src/components/timezone-picker/timezoneItems";
-import {
-    IQueryListProps,
-    IQueryListState,
-    ISelectProps,
-    ISelectState,
-    ITimezonePickerProps,
-    ITimezonePickerState,
-    QueryList,
-    Select,
-    TimezoneDisplayFormat,
-    TimezonePicker,
-} from "../src/index";
+import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src/index";
 
 type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezonePickerState>;
 type SelectShallowWrapper = ShallowWrapper<ISelectProps<ITimezoneItem>, ISelectState<ITimezoneItem>>;

@@ -1,3 +1,5 @@
+<!-- IF YOU ARE A PALANTIR EMPLOYEE, DO NOT POST INTERNAL LINKS OR REFERENCES HERE -->
+
 <!-- Is this a support question? Please post to Stack Overflow with the "blueprintjs" tag instead. -->
 <!-- Delete this template for feature requests. -->
 

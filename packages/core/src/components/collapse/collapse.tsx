@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
@@ -83,7 +83,7 @@ export enum AnimationStates {
  * isOpen = false: OPEN -> CLOSING_START -> CLOSING_END -> CLOSED
  * These are all animated.
  */
-export class Collapse extends AbstractComponent<ICollapseProps, ICollapseState> {
+export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseState> {
     public static displayName = "Blueprint.Collapse";
 
     public static defaultProps: ICollapseProps = {

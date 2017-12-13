@@ -2,7 +2,7 @@
 
 The `CollapsibleList` React component accepts a list of menu items and a count of visible items. It
 shows precisely that many items and collapses the rest into a dropdown menu. The required
-`renderVisibleItem` callback prop allows for customizing the appearance of visible items, using the
+`visibleItemRenderer` callback prop allows for customizing the appearance of visible items, using the
 props from the `MenuItem` children.
 
 @reactExample CollapsibleListExample
@@ -13,7 +13,7 @@ The `CollapsibleList` component is available in the __@blueprintjs/core__ packag
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 Children of the `CollapsibleList` component _must_ be `MenuItem`s so they can be easily rendered
-in the dropdown. Define a `renderVisibleItem` callback to customize the appearance of visible
+in the dropdown. Define a `visibleItemRenderer` callback to customize the appearance of visible
 items using their [`IMenuItemProps`](#core/components/menu.menu-item).
 
 @interface ICollapsibleListProps

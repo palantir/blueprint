@@ -3,6 +3,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import "es6-shim";
+
+import * as Enzyme from "enzyme";
+import * as Adapter from "enzyme-adapter-react-16";
+
+Enzyme.configure({ adapter: new Adapter() });
+
 import "./alert/alertTests";
 import "./breadcrumbs/breadcrumbTests";
 import "./buttons/buttonTests";
@@ -21,7 +28,7 @@ import "./controls/numericInputTests";
 import "./controls/radioGroupTests";
 import "./dialog/dialogTests";
 import "./editable-text/editableTextTests";
-import "./forms/fileUploadTests";
+import "./forms/fileInputTests";
 import "./forms/formGroupTests";
 import "./hotkeys/hotkeysTests";
 import "./icon/iconTests";
@@ -34,8 +41,8 @@ import "./progress/progressBarTests";
 import "./slider/rangeSliderTests";
 import "./slider/sliderTests";
 import "./spinner/spinnerTests";
-import "./tabs/tabs2Tests";
-import "./tabs/tabsTests";
+// import "./tabs/tabsTests";
+import "./tabs2/tabs2Tests";
 import "./tag/tagTests";
 import "./text/textTests";
 import "./toast/toasterTests";

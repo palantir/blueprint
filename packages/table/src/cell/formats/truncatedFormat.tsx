@@ -6,7 +6,6 @@
 
 import { Icon, IProps, Popover, Position } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -105,6 +104,8 @@ export interface ITruncatedFormatProps extends IProps {
      * - `ALWAYS`: show the popover.
      * - `NEVER`: don't show the popover.
      * - `WHEN_TRUNCATED`: show the popover only when the text is truncated (default).
+     * - `WHEN_TRUNCATED_APPROX`: show the popover only when the text is trunctated, but use
+     *   a formula to calculate this based on text length, which is faster but less accurate.
      * @default WHEN_TRUNCATED
      */
     showPopover?: TruncatedPopoverMode;
@@ -129,8 +130,7 @@ export interface ITruncatedFormatState {
     isPopoverOpen?: boolean;
 }
 
-@PureRender
-export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
+export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
         detectTruncation: false,
         measureByApproxOptions: {

@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -25,8 +24,7 @@ export interface ITextState {
     isContentOverflowing: boolean;
 }
 
-@PureRender
-export class Text extends React.Component<ITextProps, ITextState> {
+export class Text extends React.PureComponent<ITextProps, ITextState> {
     public state: ITextState = {
         isContentOverflowing: false,
         textContent: "",

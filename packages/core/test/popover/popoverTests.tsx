@@ -10,21 +10,21 @@ import * as React from "react";
 import { Arrow, Popper } from "react-popper";
 import * as sinon from "sinon";
 
-import * as Classes from "../../src/common/classes";
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
-import { Position } from "../../src/common/position";
-import * as Utils from "../../src/common/utils";
-import { Overlay } from "../../src/components/overlay/overlay";
 import {
+    Classes,
     IPopoverProps,
     IPopoverState,
+    Overlay,
     Placement,
     Popover,
     PopoverInteractionKind,
-} from "../../src/components/popover/popover";
-import { Tooltip } from "../../src/components/tooltip/tooltip";
-import { dispatchMouseEvent } from "../common/utils";
+    Position,
+    Tooltip,
+    Utils,
+} from "../../src/index";
 
 type ShallowPopoverWrapper = ShallowWrapper<IPopoverProps, IPopoverState>;
 
@@ -48,7 +48,7 @@ describe("<Popover>", () => {
 
     describe.skip("validation:", () => {
         it("throws error if given no target", () => {
-            assert.throws(() => shallow(<Popover />), Errors.POPOVER_REQUIRES_TARGET);
+            expectPropValidationError(Popover, {}, Errors.POPOVER_REQUIRES_TARGET);
         });
 
         it("warns if given > 2 target elements", () => {

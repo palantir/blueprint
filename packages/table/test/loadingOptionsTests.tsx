@@ -27,15 +27,15 @@ class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTest
         }
     };
 
-    private static renderCell = (rowIndex: number) => {
+    private static cellRenderer = (rowIndex: number) => {
         return <Cell loading={TableLoadingOptionsTester.isCellLoading(rowIndex)}>some cell text</Cell>;
     };
 
-    private static renderColumnHeader = (columnIndex: number) => {
+    private static columnHeaderCellRenderer = (columnIndex: number) => {
         return <ColumnHeaderCell loading={TableLoadingOptionsTester.isCellLoading(columnIndex)} name="column header" />;
     };
 
-    private static renderRowHeader = (rowIndex: number) => {
+    private static rowHeaderCellRenderer = (rowIndex: number) => {
         return <RowHeaderCell loading={TableLoadingOptionsTester.isCellLoading(rowIndex)} name="row header" />;
     };
 
@@ -45,20 +45,20 @@ class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTest
             <Table
                 loadingOptions={tableLoadingOptions}
                 numRows={3}
-                renderRowHeader={TableLoadingOptionsTester.renderRowHeader}
+                rowHeaderCellRenderer={TableLoadingOptionsTester.rowHeaderCellRenderer}
             >
                 <Column
                     loadingOptions={columnLoadingOptions}
-                    renderCell={TableLoadingOptionsTester.renderCell}
-                    renderColumnHeader={TableLoadingOptionsTester.renderColumnHeader}
+                    cellRenderer={TableLoadingOptionsTester.cellRenderer}
+                    columnHeaderCellRenderer={TableLoadingOptionsTester.columnHeaderCellRenderer}
                 />
                 <Column
                     loadingOptions={columnLoadingOptions}
-                    renderColumnHeader={TableLoadingOptionsTester.renderColumnHeader}
+                    columnHeaderCellRenderer={TableLoadingOptionsTester.columnHeaderCellRenderer}
                 />
                 <Column
                     loadingOptions={columnLoadingOptions}
-                    renderColumnHeader={TableLoadingOptionsTester.renderColumnHeader}
+                    columnHeaderCellRenderer={TableLoadingOptionsTester.columnHeaderCellRenderer}
                 />
             </Table>
         );

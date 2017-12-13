@@ -10,7 +10,7 @@ import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
 
 import {
-    AbstractComponent,
+    AbstractPureComponent,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -165,7 +165,7 @@ export interface IDateInputState {
     isOpen?: boolean;
 }
 
-export class DateInput extends AbstractComponent<IDateInputProps, IDateInputState> {
+export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
     public static defaultProps: IDateInputProps = {
         closeOnSelection: true,
         dayPickerProps: {},
@@ -182,8 +182,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     };
 
     public static displayName = "Blueprint.DateInput";
-
-    private inputRef: HTMLElement = null;
 
     public constructor(props?: IDateInputProps, context?: any) {
         super(props, context);
@@ -251,7 +249,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                     {...htmlInputProps}
                     className={inputClasses}
                     disabled={this.props.disabled}
-                    inputRef={this.setInputRef}
                     type="text"
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
@@ -449,12 +446,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             this.setState({ isOpen: false });
         }
         this.safeInvokeInputProp("onKeyDown", e);
-    };
-
-    private setInputRef = (el: HTMLElement) => {
-        this.inputRef = el;
-        const { inputProps = {} } = this.props;
-        Utils.safeInvoke(inputProps.inputRef, el);
     };
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */

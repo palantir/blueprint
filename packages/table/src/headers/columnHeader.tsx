@@ -28,7 +28,7 @@ export interface IColumnWidths {
 export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumnIndices {
     /**
      * A IColumnHeaderRenderer that, for each `<Column>`, will delegate to:
-     * 1. The `renderColumnHeader` method from the `<Column>`
+     * 1. The `columnHeaderCellRenderer` method from the `<Column>`
      * 2. A `<ColumnHeaderCell>` using the `name` prop from the `<Column>`
      * 3. A `<ColumnHeaderCell>` with a `name` generated from `Utils.toBase26Alpha`
      */
@@ -85,7 +85,7 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 handleResizeDoubleClick={this.handleResizeDoubleClick}
                 handleResizeEnd={this.handleResizeEnd}
                 handleSizeChanged={this.handleSizeChanged}
-                headerCellIsReorderablePropName={"isColumnReorderable"}
+                headerCellIsReorderablePropName={"enableColumnReordering"}
                 headerCellIsSelectedPropName={"isColumnSelected"}
                 indexEnd={indexEnd}
                 indexStart={indexStart}

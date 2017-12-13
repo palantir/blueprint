@@ -1,7 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
 @import "../forms/common";
 
@@ -15,7 +14,7 @@
 
   // input styles on the ::before
   &::before {
-    @include position(absolute, (-$pt-border-radius) (-$pt-border-radius));
+    @include position-all(absolute, -$pt-border-radius);
     border-radius: $pt-border-radius;
     content: "";
     transition: background-color $pt-transition-duration $pt-transition-ease,

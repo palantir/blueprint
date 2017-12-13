@@ -38,7 +38,7 @@ export class TableFreezingExample extends BaseExample<ITableFreezingExampleState
                 <Column
                     key={columnIndex}
                     name={`Column ${Utils.toBase26Alpha(columnIndex)}`}
-                    renderCell={this.renderCell}
+                    cellRenderer={this.renderCell}
                 />
             );
         });
