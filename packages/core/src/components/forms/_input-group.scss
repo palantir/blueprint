@@ -204,11 +204,9 @@ $input-button-height-large: $pt-button-height !default;
 
   @each $intent, $color in $pt-intent-colors {
     &.pt-intent-#{$intent} {
-      .pt-input {
-        @include pt-input-intent($color);
-      }
+      @include pt-input-intent($color);
 
-      .pt-icon {
+      .pt-icon-standard {
         color: map-get($pt-intent-text-colors, $intent);
 
         .pt-dark & {
