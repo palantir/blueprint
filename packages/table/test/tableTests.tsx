@@ -390,17 +390,17 @@ describe("<Table>", () => {
         it("Selects and deselects column/row headers when selecting and deselecting the full table", () => {
             const table = mountTable();
 
-            // selet the full table
+            // select the full table
             selectFullTable(table);
             let columnHeader = table
                 .find(COLUMN_HEADER_SELECTOR)
                 .hostNodes()
-                .at(0);
+                .first();
             let rowHeader = table
                 .find(`.${Classes.TABLE_ROW_HEADERS}`)
                 .find(`.${Classes.TABLE_HEADER}`)
                 .hostNodes()
-                .at(0);
+                .first();
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
 
@@ -409,12 +409,12 @@ describe("<Table>", () => {
             columnHeader = table
                 .find(COLUMN_HEADER_SELECTOR)
                 .hostNodes()
-                .at(0);
+                .first();
             rowHeader = table
                 .find(`.${Classes.TABLE_ROW_HEADERS}`)
                 .find(`.${Classes.TABLE_HEADER}`)
                 .hostNodes()
-                .at(0);
+                .first();
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
         });
