@@ -29,7 +29,7 @@ Options
 
         A glob string to match specific file extensions in the search path.
 
-    --exclude={dist,build,node_modules}
+    --exclude={dist,build,coverage,node_modules}
 
         A glob string to omit specific directories from the search path.
 
@@ -83,12 +83,8 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RESET='\033[0m'
 
-function rename() {
-    # Name parameters
-    fromString=$1
-    toString=$2
-    findRegexp=$3
 
+function matchingFiles() {
     # Find all files containing regexp. Use grep's glob syntax for
     # include/exclude paths. Use perl's regexp syntax.
     cmd="grep \
@@ -98,30 +94,61 @@ function rename() {
         --exclude-dir=$EXCLUDE_GLOB \
         . \
         ${SEARCH_PATH} \
-        | xargs perl -lne 'if (/$findRegexp/) { print \$ARGV; close ARGV }'
+        | xargs perl -lne 'if (/$1/) { print \$ARGV; close ARGV }'
     "
-    files=$(eval $cmd)
+    echo "$(eval $cmd)"
+}
+
+function rename() {
+    # Name parameters
+    fromString=$1
+    toString=$2
+    findRegexp=$3
+    files=$(matchingFiles "$findRegexp")
 
     if [[ -z ${files// } ]]; then
-        echo -e "No files contain ${RED}${fromString}${RESET}"
+        echo -e "No files contain ${BLUE}${fromString}${RESET}"
     else
         count=$(echo "$files" | wc -l | awk '{print $1}')
-        echo -e "Renaming ${RED}${fromString}${RESET} -> ${GREEN}${toString}${RESET} in ${BLUE}${count}${RESET} files"
+        echo -e "Renaming ${BLUE}${fromString}${RESET} -> ${GREEN}${toString}${RESET} in ${BLUE}${count}${RESET} files"
 
         # Iterate and search&replace
         echo "$files" | while read -r file ; do
             echo -n "$file ... "
 
             # Search&replace in place with perl
-            perl -p -i -e "s/$findRegexp/$toString/g" $file
+            perl -p -i -e "s/$findRegexp/$toString/g" "$file"
             echo -e "${GREEN}done${RESET}"
         done
+    fi
+}
+
+function warn() {
+    # Name parameters
+    fromString=$1
+    toString=$2
+    findRegexp=$3
+    files=$(matchingFiles "$findRegexp")
+
+    if [[ -z ${files// } ]]; then
+        echo -e "No files contain ${BLUE}${fromString}${RESET}"
+    else
+        count=$(echo "$files" | wc -l | awk '{print $1}')
+        echo ""
+        echo -e "${RED}WARNING: Skipping ${BLUE}${fromString}${RESET} -> ${GREEN}${toString}${RESET}"
+        echo -e "${RED}Since ${BLUE}${fromString}${RED} is very common, you'll need to manually rename this string.${RESET}"
+        echo -e "${RED}It was found in these files ${BLUE}${count}${RED} files:${RESET}"
+        echo "$files"
     fi
 }
 
 function renameProp() {
     # Add prefix and word boundaries to search string
     rename $1 $2 "$PREFIX\\b$1\\b"
+}
+
+function warnProp() {
+    warn $1 $2 "$PREFIX\\b$1\\b"
 }
 
 function renamePartialClass() {
@@ -134,9 +161,10 @@ function renameString() {
     rename $1 $2 "\\b$1\\b"
 }
 
-# Renames
-
 ### Table
+echo "
+
+Renames for @blueprintjs/table"
 renameProp allowMultipleSelection enableMultipleSelection
 renameProp fillBodyWithGhostCells enableGhostCells
 renameProp isColumnReorderable enableColumnReordering
@@ -144,8 +172,6 @@ renameProp isColumnResizable enableColumnResizing
 renameProp isRowHeaderShown enableRowHeader
 renameProp isRowReorderable enableRowReordering
 renameProp isRowResizable enableRowResizing
-renameProp enableFocus enableFocusedCell
-renameProp onFocus onFocusedCell
 renameProp renderBody bodyRenderer
 renameProp renderBodyContextMenu bodyContextMenuRenderer
 renameProp renderCell cellRenderer
@@ -153,13 +179,18 @@ renameProp renderColumnHeader columnHeaderCellRenderer
 renameProp renderRowHeader rowHeaderCellRenderer
 renameProp useInteractionBar enableColumnInteractionBar
 renamePartialClass bp-table- pt-table-
+warnProp enableFocus enableFocusedCell
+warnProp onFocus onFocusedCell
 
 ### Core
+echo "
+
+Renames for @blueprintjs/core"
 renameProp renderVisibleItem visibleItemRenderer
 renameProp renderLabel labelRenderer
 renameString FileUpload FileInput
 renameString fileUpload fileInput
 renameString pt-file-upload pt-file-input
+renameString FILE_UPLOAD FILE_INPUT
 renameString pt-condensed pt-small
-
-
+renameString TABLE_CONDENSED SMALL
