@@ -16,6 +16,7 @@ import {
     InputGroup,
     IPopoverProps,
     IProps,
+    Keys,
     Popover,
     Position,
     Utils,
@@ -256,6 +257,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
+                    onKeyDown={this.handleInputKeyDown}
                     value={dateString}
                 />
             </Popover>
@@ -311,7 +313,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         this.setState({ isOpen: false });
     };
 
-    private handleDateChange = (date: Date, hasUserManuallySelectedDate: boolean) => {
+    private handleDateChange = (date: Date, hasUserManuallySelectedDate: boolean, didSubmitWithEnter = false) => {
         const prevMomentDate = this.state.value;
         const momentDate = fromDateToMoment(date);
 
@@ -324,10 +326,17 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             this.hasTimeChanged(prevMomentDate, momentDate) ||
             !this.props.closeOnSelection;
 
+        // if selecting a date via click or Tab, the input will already be
+        // blurred by now, so sync isInputFocused to false. if selecting via
+        // Enter, setting isInputFocused to false won't do anything by itself,
+        // plus we want the field to retain focus anyway.
+        // (note: spelling out the ternary explicitly reads more clearly.)
+        const isInputFocused = didSubmitWithEnter ? true : false;
+
         if (this.props.value === undefined) {
-            this.setState({ isInputFocused: false, isOpen, value: momentDate });
+            this.setState({ isInputFocused, isOpen, value: momentDate, valueString: this.getDateString(momentDate) });
         } else {
-            this.setState({ isInputFocused: false, isOpen });
+            this.setState({ isInputFocused, isOpen });
         }
         Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
     };
@@ -398,7 +407,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     };
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-        const valueString = this.state.valueString;
+        const { valueString } = this.state;
         const value = this.createMoment(valueString);
         if (
             valueString.length > 0 &&
@@ -426,6 +435,20 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             }
         }
         this.safeInvokeInputProp("onBlur", e);
+    };
+
+    private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.which === Keys.ENTER) {
+            const nextValue = this.createMoment(this.state.valueString);
+            const nextDate = fromMomentToDate(nextValue);
+            this.handleDateChange(nextDate, true, true);
+        } else if (e.which === Keys.TAB && e.shiftKey) {
+            // close the popover if focus will move to the previous element on
+            // the page. tabbing forward should *not* close the popover, because
+            // focus will be moving into the popover itself.
+            this.setState({ isOpen: false });
+        }
+        this.safeInvokeInputProp("onKeyDown", e);
     };
 
     private setInputRef = (el: HTMLElement) => {
