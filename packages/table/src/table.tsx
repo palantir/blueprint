@@ -492,7 +492,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // time. it serves as a signal that we can switch to batch rendering.
     private didCompletelyMount = false;
 
-    public constructor(props: ITableProps & { children: React.ReactNode }, context?: any) {
+    public constructor(props: ITableProps, context?: any) {
         super(props, context);
 
         const { children, columnWidths, defaultRowHeight, defaultColumnWidth, numRows, rowHeights } = this.props;
@@ -664,7 +664,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    public componentWillReceiveProps(nextProps: ITableProps & { children: React.ReactNode }) {
+    public componentWillReceiveProps(nextProps: ITableProps) {
         // calls validateProps
         super.componentWillReceiveProps(nextProps);
 
