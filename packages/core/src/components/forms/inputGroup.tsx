@@ -43,7 +43,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
 }
 
 export interface IInputGroupState {
-    rightElementWidth?: number;
+    isActive: boolean;
 }
 
 @PureRender
@@ -51,7 +51,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
     public static displayName = "Blueprint.InputGroup";
 
     public state: IInputGroupState = {
-        rightElementWidth: 30,
+        isActive: false,
     };
 
     private rightElement: HTMLElement;
@@ -62,38 +62,29 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
     public render() {
         const { className, intent, leftIconName } = this.props;
         const classes = classNames(
-            Classes.FLEX_PARENT,
-            Classes.FLEX_PARENT_DIRECTION_HORIZONTAL,
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: this.props.disabled,
+                [Classes.ACTIVE]: this.state.isActive,
             },
             className,
         );
-        const style: React.CSSProperties = { ...this.props.style, paddingRight: this.state.rightElementWidth };
 
         return (
             <div className={classes}>
-                <Icon className={Classes.FLEX_CHILD} iconName={leftIconName} iconSize="inherit" />
+                <Icon iconName={leftIconName} iconSize={Icon.SIZE_STANDARD} />
                 <input
                     type="text"
                     {...removeNonHTMLProps(this.props)}
-                    className={classNames(Classes.INPUT, Classes.FLEX_CHILD, Classes.FILL)}
+                    className={Classes.INPUT}
+                    onBlur={this.toggleFocus}
+                    onFocus={this.toggleFocus}
                     ref={this.props.inputRef}
-                    style={style}
                 />
                 {this.maybeRenderRightElement()}
             </div>
         );
-    }
-
-    public componentDidMount() {
-        this.updateInputWidth();
-    }
-
-    public componentDidUpdate() {
-        this.updateInputWidth();
     }
 
     private maybeRenderRightElement() {
@@ -102,23 +93,15 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
             return undefined;
         }
         return (
-            <span className={classNames("pt-input-action", Classes.FLEX_CHILD)} ref={this.refHandlers.rightElement}>
+            <span className="pt-input-action" ref={this.refHandlers.rightElement}>
                 {rightElement}
             </span>
         );
     }
 
-    private updateInputWidth() {
-        if (this.rightElement != null) {
-            const { clientWidth } = this.rightElement;
-            // small threshold to prevent infinite loops
-            if (Math.abs(clientWidth - this.state.rightElementWidth) > 2) {
-                this.setState({ rightElementWidth: clientWidth });
-            }
-        } else {
-            this.setState({ rightElementWidth: 0 });
-        }
-    }
+    private toggleFocus = () => {
+        this.setState({ isActive: !this.state.isActive });
+    };
 }
 
 export const InputGroupFactory = React.createFactory(InputGroup);
