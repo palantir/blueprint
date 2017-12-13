@@ -1,0 +1,36 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+/*
+A collection of classes that utilize the CSS Flexbox model to standardize the
+layout and composition of Blueprint components.
+
+For example:
+<div class="pt-button pt-flex-parent pt-fill">Click Me!</div>
+*/
+
+// parent styles
+.pt-flex-parent {
+  display: inline-flex;
+}
+
+.pt-flex-parent.pt-fill {
+  display: flex;
+}
+
+.pt-flex-parent-direction-horizontal {
+  flex-direction: horizontal;
+}
+
+.pt-flex-parent-direction-vertical {
+  flex-direction: vertical;
+}
+
+// child styles
+.pt-flex-child {
+  flex: 0;
+}
+
+.pt-flex-child.pt-fill {
+  flex: 1;
+}

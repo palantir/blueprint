@@ -74,6 +74,11 @@ export const ELEVATION_2 = "pt-elevation-2";
 export const ELEVATION_3 = "pt-elevation-3";
 export const ELEVATION_4 = "pt-elevation-4";
 
+export const FLEX_CHILD = "pt-flex-child";
+export const FLEX_PARENT = "pt-flex-parent";
+export const FLEX_PARENT_DIRECTION_HORIZONTAL = "pt-flex-parent-direction-horizontal";
+export const FLEX_PARENT_DIRECTION_VERTICAL = "pt-flex-parent-direction-vertical";
+
 export const INPUT = "pt-input";
 export const INPUT_GROUP = "pt-input-group";
 export const CHECKBOX = "pt-checkbox";
