@@ -119,9 +119,7 @@ describe("Toaster", () => {
         assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
     });
 
-    // this test was flaky, but we should reenable eventually.
-    // see: https://github.com/palantir/blueprint/issues/1680
-    describe.skip("with autoFocus set to true", () => {
+    describe("with autoFocus set to true", () => {
         before(() => {
             testsContainerElement = document.createElement("div");
             document.documentElement.appendChild(testsContainerElement);
@@ -130,10 +128,11 @@ describe("Toaster", () => {
 
         it("focuses on newly created toast", done => {
             toaster.show({ message: "focus on me" });
+            // small explicity timeout reduces flakiness of these tests
             setTimeout(() => {
                 assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);
                 done();
-            });
+            }, 10);
         });
     });
 });

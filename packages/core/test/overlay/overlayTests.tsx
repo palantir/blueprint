@@ -164,8 +164,6 @@ describe("<Overlay>", () => {
         const testsContainerElement = document.createElement("div");
         document.documentElement.appendChild(testsContainerElement);
 
-        // this test was flaky, but we should reenable eventually.
-        // see: https://github.com/palantir/blueprint/issues/1680
         it("brings focus to overlay if autoFocus=true", done => {
             wrapper = mount(
                 <Overlay autoFocus={true} inline={false} isOpen={true}>
@@ -304,12 +302,12 @@ describe("<Overlay>", () => {
 
         function assertFocus(selector: string, done: MochaDone) {
             wrapper.update();
-            setTimeout(() => {
-                assert.strictEqual(document.activeElement, document.querySelector(selector));
-                done();
-            }, 10);
             // small explicity timeout reduces flakiness of these tests,
             // which rely on requestAnimationFrame to update focus state.
+            setTimeout(() => {
+                assert.strictEqual(document.querySelector(selector), document.activeElement);
+                done();
+            }, 10);
         }
     });
 
