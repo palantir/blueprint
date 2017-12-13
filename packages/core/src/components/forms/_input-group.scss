@@ -156,12 +156,10 @@ $input-button-height-large: $pt-button-height !default;
     }
   }
 
-  &.pt-round {
-    .pt-button,
-    .pt-input,
-    .pt-tag {
-      border-radius: $pt-input-height;
-    }
+  &.pt-round,
+  &.pt-round .pt-button,
+  &.pt-round .pt-tag, {
+    border-radius: $pt-input-height;
   }
 
   .pt-dark & {
