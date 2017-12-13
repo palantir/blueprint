@@ -3,7 +3,7 @@
 function usage() {
     cat << EOF
 
-Blueprint 2.0.0 Upgrade script
+Blueprint 2.0.0 Upgrade Script
 
 Usage
 
@@ -12,11 +12,12 @@ Usage
 Description
 
     This script finds instances of various renamed methods and properties and
-    replaces them in place.
+    replaces them in place. This includes renames for React props, css classes,
+    and enum constants.
 
 Options
 
-    --help
+    -h,--help
 
         Display this message and exit.
 
@@ -82,7 +83,6 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RESET='\033[0m'
-
 
 function matchingFiles() {
     # Find all files containing regexp. Use grep's glob syntax for
@@ -161,7 +161,6 @@ function renameString() {
     rename $1 $2 "\\b$1\\b"
 }
 
-### Table
 echo "
 
 Renames for @blueprintjs/table"
@@ -182,7 +181,6 @@ renamePartialClass bp-table- pt-table-
 warnProp enableFocus enableFocusedCell
 warnProp onFocus onFocusedCell
 
-### Core
 echo "
 
 Renames for @blueprintjs/core"
@@ -190,7 +188,7 @@ renameProp renderVisibleItem visibleItemRenderer
 renameProp renderLabel labelRenderer
 renameString FileUpload FileInput
 renameString fileUpload fileInput
-renameString pt-file-upload pt-file-input
+renameString "pt-file-upload(?!-)" pt-file-input # only rename full classname, not partial classname like pt-file-upload-input
 renameString FILE_UPLOAD FILE_INPUT
 renameString pt-condensed pt-small
 renameString TABLE_CONDENSED SMALL
