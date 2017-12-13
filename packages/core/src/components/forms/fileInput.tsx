@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Utils } from "../../common";
 import * as Classes from "../../common/classes";
@@ -57,7 +56,6 @@ export interface IFileInputProps extends React.AllHTMLAttributes<HTMLLabelElemen
 
 // TODO: write tests (ignoring for now to get a build passing quickly)
 /* istanbul ignore next */
-@PureRender
 export class FileInput extends React.Component<IFileInputProps, {}> {
     public static displayName = "Blueprint.FileInput";
 

@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
@@ -26,8 +25,7 @@ export interface ILabelProps extends React.AllHTMLAttributes<HTMLDivElement>, IP
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@PureRender
-export class Label extends React.Component<ILabelProps, {}> {
+export class Label extends React.PureComponent<ILabelProps, {}> {
     public static displayName = "Blueprint.Label";
 
     public render() {

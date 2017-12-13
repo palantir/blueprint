@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, IProps, Utils } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -57,7 +57,7 @@ export interface IDateTimePickerState {
     timeValue?: Date;
 }
 
-export class DateTimePicker extends AbstractComponent<IDateTimePickerProps, IDateTimePickerState> {
+export class DateTimePicker extends AbstractPureComponent<IDateTimePickerProps, IDateTimePickerState> {
     public static defaultProps: IDateTimePickerProps = {
         canClearSelection: true,
         defaultValue: new Date(),

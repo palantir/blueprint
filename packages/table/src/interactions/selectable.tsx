@@ -5,7 +5,6 @@
  */
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { IFocusedCellCoordinates } from "../common/cell";
@@ -96,8 +95,7 @@ export interface IDragSelectableProps extends ISelectableProps {
     locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => IRegion;
 }
 
-@PureRender
-export class DragSelectable extends React.Component<IDragSelectableProps, {}> {
+export class DragSelectable extends React.PureComponent<IDragSelectableProps, {}> {
     public static defaultProps: Partial<IDragSelectableProps> = {
         disabled: false,
         enableMultipleSelection: false,

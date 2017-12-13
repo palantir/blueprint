@@ -111,7 +111,7 @@ describe("<Dialog>", () => {
 
     it("only adds its className in one location", () => {
         const dialog = mount(<Dialog className="foo" inline={true} isOpen={true} title="title" />);
-        assert.lengthOf(dialog.find(".foo"), 1);
+        assert.lengthOf(dialog.find(".foo").hostNodes(), 1);
     });
 
     // everything else about Dialog is tested by Overlay

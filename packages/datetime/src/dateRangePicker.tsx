@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
@@ -112,7 +112,7 @@ export interface IDateRangePickerState {
     value?: DateRange;
 }
 
-export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, IDateRangePickerState> {
+export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps, IDateRangePickerState> {
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,

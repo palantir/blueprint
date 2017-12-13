@@ -73,7 +73,7 @@ describe("Suggest", () => {
 
         it("scrolls active item into view when popover opens", () => {
             const wrapper = suggest();
-            const queryList = (wrapper.getNode() as any).queryList; // private ref
+            const queryList = ((wrapper.instance() as Suggest<Film>) as any).queryList; // private ref
             const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
             wrapper.setState({ isOpen: false });
             assert.isFalse(scrollActiveItemIntoViewSpy.called);

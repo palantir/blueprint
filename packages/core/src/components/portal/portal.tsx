@@ -52,37 +52,30 @@ export class Portal extends React.Component<IPortalProps, {}> {
 
     private targetElement: HTMLElement;
 
-    public render() {
-        return null as JSX.Element;
-    }
-
-    public componentDidMount() {
-        const targetElement = document.createElement("div");
-        targetElement.classList.add(Classes.PORTAL);
-
-        if (this.context.blueprintPortalClassName != null) {
-            targetElement.classList.add(this.context.blueprintPortalClassName);
+    constructor(props: IPortalProps, context: IPortalContext) {
+        super(props, context);
+        this.targetElement = document.createElement("div");
+        this.targetElement.classList.add(Classes.PORTAL);
+        if (context.blueprintPortalClassName != null) {
+            this.targetElement.classList.add(context.blueprintPortalClassName);
         }
-
-        document.body.appendChild(targetElement);
-        this.targetElement = targetElement;
-        this.componentDidUpdate();
     }
 
-    public componentDidUpdate() {
-        // use special render function to preserve React context, in case children need it
-        ReactDOM.unstable_renderSubtreeIntoContainer(
-            /* parentComponent */ this,
+    public render() {
+        return ReactDOM.createPortal(
             <div {...removeNonHTMLProps(this.props)} ref={this.props.containerRef}>
                 {this.props.children}
             </div>,
             this.targetElement,
-            () => safeInvoke(this.props.onChildrenMount),
         );
     }
 
+    public componentDidMount() {
+        document.body.appendChild(this.targetElement);
+        safeInvoke(this.props.onChildrenMount);
+    }
+
     public componentWillUnmount() {
-        ReactDOM.unmountComponentAtNode(this.targetElement);
         this.targetElement.remove();
     }
 }

@@ -5,7 +5,7 @@ entire application.
 
 It combines a [`Portal`](#core/components/portal), which allows the JSX children to be rendered at a
 different place in the DOM tree, with a
-[`CSSTransitionGroup`](https://facebook.github.io/react/docs/animation.html) to support elegant
+[`CSSTransition`](https://reactcommunity.org/react-transition-group/) to support elegant
 enter and leave transitions.
 
 An optional "backdrop" element can be rendered behind the overlaid children to provide modal
