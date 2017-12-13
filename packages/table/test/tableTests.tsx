@@ -5,14 +5,13 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper, shallow } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as sinon from "sinon";
 
 import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
-// tslint:disable-next-line:no-submodule-imports
-import { dispatchMouseEvent } from "@blueprintjs/core/test/common/utils";
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
@@ -390,15 +389,32 @@ describe("<Table>", () => {
 
         it("Selects and deselects column/row headers when selecting and deselecting the full table", () => {
             const table = mountTable();
-            const columnHeader = table.find(COLUMN_HEADER_SELECTOR).at(0);
-            const rowHeader = table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(0);
 
+            // select the full table
             selectFullTable(table);
+            let columnHeader = table
+                .find(COLUMN_HEADER_SELECTOR)
+                .hostNodes()
+                .first();
+            let rowHeader = table
+                .find(`.${Classes.TABLE_ROW_HEADERS}`)
+                .find(`.${Classes.TABLE_HEADER}`)
+                .hostNodes()
+                .first();
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.true;
 
             // deselect the full table
             table.setProps({ selectedRegions: [] });
+            columnHeader = table
+                .find(COLUMN_HEADER_SELECTOR)
+                .hostNodes()
+                .first();
+            rowHeader = table
+                .find(`.${Classes.TABLE_ROW_HEADERS}`)
+                .find(`.${Classes.TABLE_HEADER}`)
+                .hostNodes()
+                .first();
             expect(columnHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
             expect(rowHeader.hasClass(Classes.TABLE_HEADER_SELECTED)).to.be.false;
         });
@@ -416,6 +432,7 @@ describe("<Table>", () => {
             const bottomContainer = table
                 .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
                 .find(`.${Classes.TABLE_BOTTOM_CONTAINER}`)
+                .hostNodes()
                 .getDOMNode() as HTMLElement;
             const { width: expectedWidth, height: expectedHeight } = bottomContainer.style;
             const [expectedWidthAsNumber, expectedHeightAsNumber] = [expectedWidth, expectedHeight].map(n =>
@@ -428,6 +445,7 @@ describe("<Table>", () => {
                 .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
                 .find(`.${Classes.TABLE_QUADRANT_BODY_CONTAINER}`)
                 .find(`.${Classes.TABLE_SELECTION_REGION}`)
+                .hostNodes()
                 .getDOMNode() as HTMLElement;
             const { width: actualWidth, height: actualHeight } = selectionOverlay.style;
             const [actualWidthAsNumber, actualHeightAsNumber] = [actualWidth, actualHeight].map(n =>
@@ -528,38 +546,38 @@ describe("<Table>", () => {
 
         it("prints a warning and clamps out-of-bounds numFrozenColumns if > number of columns", () => {
             const table1 = mount(<Table />);
-            expect(table1.state().numFrozenColumnsClamped).to.equal(0);
+            expect(table1.state("numFrozenColumnsClamped")).to.equal(0);
             expect(consoleWarn.callCount).to.equal(0);
 
             const table2 = mount(<Table numFrozenColumns={1} />);
-            expect(table2.state().numFrozenColumnsClamped).to.equal(0);
-            expect(consoleWarn.callCount).to.equal(1);
+            expect(table2.state("numFrozenColumnsClamped")).to.equal(0);
+            expect(consoleWarn.callCount).to.equal(1, "warned 1");
 
             const table3 = mount(
                 <Table numFrozenColumns={2}>
                     <Column />
                 </Table>,
             );
-            expect(table3.state().numFrozenColumnsClamped).to.equal(1);
-            expect(consoleWarn.callCount).to.equal(2);
+            expect(table3.state("numFrozenColumnsClamped")).to.equal(1, "clamped");
+            expect(consoleWarn.callCount).to.equal(2, "warned 2");
         });
 
         it("prints a warning and clamps out-of-bounds numFrozenRows if > numRows", () => {
             const table1 = mount(<Table />);
-            expect(table1.state().numFrozenRowsClamped).to.equal(0);
+            expect(table1.state("numFrozenRowsClamped")).to.equal(0);
             expect(consoleWarn.callCount).to.equal(0);
 
             const table2 = mount(<Table numFrozenRows={1} numRows={0} />);
-            expect(table2.state().numFrozenRowsClamped).to.equal(0);
-            expect(consoleWarn.callCount).to.equal(1);
+            expect(table2.state("numFrozenRowsClamped")).to.equal(0);
+            expect(consoleWarn.callCount).to.equal(1, "warned 1");
 
             const table3 = mount(
                 <Table numFrozenRows={2} numRows={1}>
                     <Column />
                 </Table>,
             );
-            expect(table3.state().numFrozenRowsClamped).to.equal(1);
-            expect(consoleWarn.callCount).to.equal(2);
+            expect(table3.state("numFrozenRowsClamped")).to.equal(1, "clamped");
+            expect(consoleWarn.callCount).to.equal(2, "warned 3");
         });
 
         const NUM_ROWS = 4;
@@ -1495,50 +1513,51 @@ describe("<Table>", () => {
         describe("on mount", () => {
             describe("errors", () => {
                 it("throws an error if numRows < 0", () => {
-                    const renderErroneousTable = () => shallow(<Table numRows={-1} />);
-                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
+                    expectPropValidationError(Table, { numRows: -1 }, Errors.TABLE_NUM_ROWS_NEGATIVE);
                 });
 
                 it("throws an error if numFrozenRows < 0", () => {
-                    const renderErroneousTable = () => shallow(<Table numFrozenRows={-1} />);
-                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+                    expectPropValidationError(Table, { numFrozenRows: -1 }, Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
                 });
 
                 it("throws an error if numFrozenColumns < 0", () => {
-                    const renderErroneousTable = () => shallow(<Table numFrozenColumns={-1} />);
-                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+                    expectPropValidationError(
+                        Table,
+                        { numFrozenColumns: -1 },
+                        Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE,
+                    );
                 });
 
                 it("throws an error if rowHeights.length !== numRows", () => {
-                    const renderErroneousTable = () => shallow(<Table numRows={3} rowHeights={[1, 2]} />);
-                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+                    expectPropValidationError(
+                        Table,
+                        { numRows: 3, rowHeights: [1, 2] },
+                        Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH,
+                    );
                 });
 
                 it("throws an error if columnWidths.length !== number of <Column>s", () => {
-                    const renderErroneousTable = () => {
-                        shallow(
-                            <Table columnWidths={[1, 2]}>
-                                <Column />
-                                <Column />
-                                <Column />
-                            </Table>,
-                        );
-                    };
-                    expect(renderErroneousTable).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+                    expectPropValidationError(
+                        Table,
+                        {
+                            children: [<Column />, <Column />, <Column />],
+                            columnWidths: [1, 2],
+                        },
+                        Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH,
+                    );
                 });
 
                 it("throws an error if a non-<Column> child is provided", () => {
                     // we were printing a warning before, but the Table would
                     // eventually throw an error from deep inside, so might as
                     // well just throw a clear error at the outset.
-                    const renderErroneousTable = () => {
-                        shallow(
-                            <Table>
-                                <span>I'm a span, not a column</span>
-                            </Table>,
-                        );
-                    };
-                    expect(renderErroneousTable).to.throw(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
+                    expectPropValidationError(
+                        Table,
+                        {
+                            children: <span>I'm a span, not a column</span>,
+                        },
+                        Errors.TABLE_NON_COLUMN_CHILDREN_WARNING,
+                    );
                 });
             });
 
@@ -1558,153 +1577,21 @@ describe("<Table>", () => {
                 });
 
                 it("should print a warning when numFrozenRows > numRows", () => {
-                    shallow(<Table numRows={1} numFrozenRows={2} />);
+                    const table = mount(<Table numRows={1} numFrozenRows={2} />);
                     expect(consoleWarn.calledOnce);
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
+                    table.unmount();
                 });
 
                 it("should print a warning when numFrozenColumns > num <Column>s", () => {
-                    shallow(
+                    const table = mount(
                         <Table numFrozenColumns={2}>
                             <Column />
                         </Table>,
                     );
                     expect(consoleWarn.calledOnce);
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
-                });
-            });
-        });
-
-        describe("on update", () => {
-            describe("errors", () => {
-                it("on numRows update, throws an error if numRows < 0", () => {
-                    const table = shallow(<Table numRows={1} />);
-                    const updateErroneously = () => table.setProps({ numRows: -1 });
-                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_NEGATIVE);
-                });
-
-                it("on numFrozenRows update, throws an error if numFrozenRows < 0", () => {
-                    const table = shallow(<Table numFrozenRows={0} />);
-                    const updateErroneously = () => table.setProps({ numFrozenRows: -1 });
-                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
-                });
-
-                it("on numFrozenColumns update, throws an error if numFrozenColumns < 0", () => {
-                    const table = shallow(<Table numFrozenColumns={0} />);
-                    const updateErroneously = () => table.setProps({ numFrozenColumns: -1 });
-                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
-                });
-
-                it("on numRows update, throws an error if rowHeights.length !== numRows", () => {
-                    const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
-                    const updateErroneously = () => table.setProps({ numRows: 4 });
-                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
-                });
-
-                it("on rowHeights update, throws an error if rowHeights.length !== numRows", () => {
-                    const table = shallow(<Table numRows={3} rowHeights={[1, 2, 3]} />);
-                    const updateErroneously = () => table.setProps({ rowHeights: [1, 2, 3, 4] });
-                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
-                });
-
-                it("on children update, throws an error if columnWidths.length !== number of <Column>s", () => {
-                    const table = shallow(
-                        <Table columnWidths={[1, 2, 3]}>
-                            <Column />
-                            <Column />
-                            <Column />
-                        </Table>,
-                    );
-                    const updateErroneously = () => table.setProps({ children: [<Column />, <Column />] });
-                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
-                });
-
-                it("on columnWidths update, throws an error if columnWidths.length !== number of <Column>s", () => {
-                    const table = shallow(
-                        <Table columnWidths={[1, 2, 3]}>
-                            <Column />
-                            <Column />
-                            <Column />
-                        </Table>,
-                    );
-                    const updateErroneously = () => table.setProps({ columnWidths: [1, 2, 3, 4] });
-                    expect(updateErroneously).to.throw(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
-                });
-
-                it("on children update, throws an error if a non-<Column> child is provided", () => {
-                    const table = shallow(
-                        <Table>
-                            <Column />
-                        </Table>,
-                    );
-                    const updateErroneously = () => table.setProps({ children: [<Cell />] });
-                    expect(updateErroneously).to.throw(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
-                });
-            });
-
-            describe("warnings", () => {
-                let consoleWarn: sinon.SinonSpy;
-
-                before(() => {
-                    consoleWarn = sinon.spy(console, "warn");
-                });
-
-                afterEach(() => {
-                    consoleWarn.reset();
-                });
-
-                after(() => {
-                    consoleWarn.restore();
-                });
-
-                it("on numFrozenRows update, should print a warning when numFrozenRows > numRows", () => {
-                    const table = shallow(<Table numRows={1} numFrozenRows={1} />);
-                    expect(consoleWarn.called).to.be.false;
-                    table.setProps({ numFrozenRows: 2 });
-                    expect(consoleWarn.calledOnce).to.be.true;
-                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
-                });
-
-                it("on numRows update, should print a warning when numFrozenRows > numRows", () => {
-                    const table = shallow(<Table numRows={1} numFrozenRows={1} />);
-                    expect(consoleWarn.called).to.be.false;
-                    table.setProps({ numRows: 0 });
-                    expect(consoleWarn.calledOnce).to.be.true;
-                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
-                });
-
-                it("on numFrozenColumns update, should print a warning when numFrozenColumns > num <Column>s", () => {
-                    const table = shallow(
-                        <Table numFrozenColumns={1}>
-                            <Column />
-                        </Table>,
-                    );
-                    expect(consoleWarn.called).to.be.false;
-                    table.setProps({ numFrozenColumns: 2 });
-                    expect(consoleWarn.calledOnce).to.be.true;
-                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
-                });
-
-                it("on children update, should print a warning when numFrozenColumns > num <Column>s", () => {
-                    const table = shallow(
-                        <Table numFrozenColumns={1}>
-                            <Column />
-                        </Table>,
-                    );
-                    expect(consoleWarn.called).to.be.false;
-                    table.setProps({ children: [] });
-                    expect(consoleWarn.calledOnce).to.be.true;
-                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
-                });
-
-                it("should print a warning when numFrozenColumns > num <Column>s", () => {
-                    shallow(
-                        <Table numFrozenColumns={2}>
-                            <Column />
-                        </Table>,
-                    );
-                    expect(consoleWarn.calledOnce);
-                    expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
+                    table.unmount();
                 });
             });
         });
@@ -2001,7 +1888,7 @@ describe("<Table>", () => {
         setTimeout(callback);
     }
 
-    function createKeyEventConfig(component: ReactWrapper<any, any>, key: string, keyCode: number, shiftKey = false) {
+    function createKeyEventConfig(wrapper: ReactWrapper<any, any>, key: string, keyCode: number, shiftKey = false) {
         const eventConfig = {
             key,
             keyCode,
@@ -2012,7 +1899,7 @@ describe("<Table>", () => {
             stopPropagation: () => {
                 /* Empty */
             },
-            target: (component as any).getNode(), // `getNode` is a real Enzyme method, just not in the typings?
+            target: wrapper.instance(),
             which: keyCode,
         };
         return {

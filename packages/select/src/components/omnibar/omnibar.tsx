@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
@@ -80,8 +79,7 @@ export interface IOmnibarState<T> extends IOverlayableProps, IBackdropProps {
     query?: string;
 }
 
-@PureRender
-export class Omnibar<T> extends React.Component<IOmnibarProps<T>, IOmnibarState<T>> {
+export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
     public static displayName = "Blueprint.Omnibar";
 
     public static ofType<T>() {

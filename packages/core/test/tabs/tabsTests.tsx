@@ -15,7 +15,8 @@ import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import { Tab, TabList, TabPanel, Tabs } from "../../src/index";
 
-describe("<Tabs>", () => {
+// Skipping tests since this component is deprecated
+describe.skip("<Tabs>", () => {
     let testsContainerElement: HTMLElement;
 
     beforeEach(() => {

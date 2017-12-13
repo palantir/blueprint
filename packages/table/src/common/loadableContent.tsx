@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
@@ -24,8 +23,7 @@ export interface ILoadableContentProps {
 }
 
 // This class expects a single, non-string child.
-@PureRender
-export class LoadableContent extends React.Component<ILoadableContentProps, {}> {
+export class LoadableContent extends React.PureComponent<ILoadableContentProps, {}> {
     private style: React.CSSProperties;
 
     public constructor(props: ILoadableContentProps) {

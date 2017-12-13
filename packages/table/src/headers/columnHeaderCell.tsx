@@ -7,7 +7,15 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent, Icon, IconName, IProps, Popover, Position, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    AbstractPureComponent,
+    Icon,
+    IconName,
+    IProps,
+    Popover,
+    Position,
+    Utils as CoreUtils,
+} from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -75,7 +83,7 @@ export function HorizontalCellDivider(): JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
 }
 
-export class ColumnHeaderCell extends AbstractComponent<IColumnHeaderCellProps, IColumnHeaderCellState> {
+export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellProps, IColumnHeaderCellState> {
     public static defaultProps: IColumnHeaderCellProps = {
         enableColumnInteractionBar: false,
         isActive: false,

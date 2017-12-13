@@ -22,7 +22,7 @@ import {
 describe("<CollapsibleList>", () => {
     it("adds className to itself", () => {
         const list = renderCollapsibleList(3, { className: "winner" });
-        assert.lengthOf(list.find(".winner"), 1);
+        assert.lengthOf(list.find(".winner").hostNodes(), 1);
     });
 
     it("adds visibleItemClassName to each item", () => {
@@ -43,23 +43,26 @@ describe("<CollapsibleList>", () => {
 
     it("CollapseFrom.START renders popover target first", () => {
         const list = renderCollapsibleList(5, { collapseFrom: CollapseFrom.START });
-        assert.isTrue(
+        assert.strictEqual(
             list
-                .children()
-                .first()
-                .childAt(0)
-                .is(Popover),
+                .find("ul")
+                .childAt(0) // li
+                .childAt(0) // Popover
+                .type(),
+            Popover,
         );
     });
 
     it("CollapseFrom.END renders popover target last", () => {
         const list = renderCollapsibleList(5, { collapseFrom: CollapseFrom.END });
-        assert.isTrue(
+        assert.strictEqual(
             list
+                .find("ul")
                 .children()
-                .last()
-                .childAt(0)
-                .is(Popover),
+                .last() // li
+                .childAt(0) // Popover
+                .type(),
+            Popover,
         );
     });
 
