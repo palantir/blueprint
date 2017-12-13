@@ -89,8 +89,12 @@ $input-button-height-large: $pt-button-height !default;
 
   // adjusting the margin of spinners in input groups
   // we have to avoid targetting buttons that contain a spinner
-  .pt-input-action > .pt-spinner {
-    margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
+  .pt-input-action {
+    @include pt-flex-child();
+
+    > .pt-spinner {
+      margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
+    }
   }
 
   .pt-tag {
@@ -142,13 +146,21 @@ $input-button-height-large: $pt-button-height !default;
       line-height: 0;
     }
 
-    .pt-icon {
-      margin: 0 ($pt-input-height-large - $pt-icon-size-standard) / 2;
-      line-height: $pt-input-height-large;
+    > .pt-icon-standard {
+      padding: 0 ($pt-input-height-large - $pt-icon-size-standard) / 2;
     }
 
     .pt-input {
       @include pt-input-large();
+
+      // take out padding if there's something before or after the input
+      &:not(:first-child) {
+        padding-left: 0;
+      }
+
+      &:not(:last-child) {
+        padding-right: 0;
+      }
     }
 
     .pt-input-action > .pt-spinner {
