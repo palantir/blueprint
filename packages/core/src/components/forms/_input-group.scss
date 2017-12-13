@@ -51,7 +51,8 @@ $input-button-height-large: $pt-button-height !default;
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
   }
 
-  .pt-input {
+  // adding more specificity here so it also works when .pt-dark applied
+  input.pt-input {
     @include pt-flex-child-fill();
     box-shadow: none;
     background: none;
@@ -139,7 +140,8 @@ $input-button-height-large: $pt-button-height !default;
       color: $input-color-disabled;
     }
 
-    .pt-input {
+    // adding more specificity here so it also works when .pt-dark applied
+    input.pt-input {
       background: none;
     }
 
@@ -184,11 +186,16 @@ $input-button-height-large: $pt-button-height !default;
   }
 
   .pt-dark & {
-    .pt-icon {
+    box-shadow: input-transition-shadow($dark-input-shadow-color-focus), $pt-dark-input-box-shadow;
+    background: $dark-input-background-color;
+
+    .pt-icon-standard {
       color: $pt-dark-icon-color;
     }
 
     &.pt-disabled {
+      @include pt-dark-input-disabled();
+
       .pt-icon-standard {
         color: $dark-input-color-disabled;
       }
