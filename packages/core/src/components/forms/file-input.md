@@ -1,7 +1,7 @@
-@# File upload
+@# File input
 
 Use the standard `input type="file"` along with a `span` with class `pt-file-upload-input`.
-Wrap that all in a `label` with class `pt-file-upload`.
+Wrap that all in a `label` with class `pt-file-input`.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
     <h5>Static file name</h5>
@@ -11,16 +11,16 @@ Wrap that all in a `label` with class `pt-file-upload`.
 
 @## CSS API
 
-@css pt-file-upload
+@css pt-file-input
 
 @## JavaScript API
 
-The `FileUpload` component is available in the __@blueprintjs/core__ package. Make sure to review the [general usage docs for JS components](#blueprint.usage).
+The `FileInput` component is available in the __@blueprintjs/core__ package. Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
 
 ```tsx
-<FileUpload disabled={true} text="Choose file..." onInputChange={...} />
+<FileInput disabled={true} text="Choose file..." onInputChange={...} />
 ```
 
-@interface IFileUploadProps
+@interface IFileInputProps

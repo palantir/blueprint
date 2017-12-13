@@ -9,13 +9,13 @@ import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes, FileUpload } from "../../src/index";
+import { Classes, FileInput } from "../../src/index";
 
-describe("<FileUpload>", () => {
+describe("<FileInput>", () => {
     it("supports className, fill, & large", () => {
         const CUSTOM_CLASS = "foo";
-        const wrapper = shallow(<FileUpload className={CUSTOM_CLASS} fill={true} large={true} />);
-        assert.isTrue(wrapper.hasClass(Classes.FILE_UPLOAD), "Classes.FILE_UPLOAD");
+        const wrapper = shallow(<FileInput className={CUSTOM_CLASS} fill={true} large={true} />);
+        assert.isTrue(wrapper.hasClass(Classes.FILE_INPUT), "Classes.FILE_INPUT");
         assert.isTrue(wrapper.hasClass(CUSTOM_CLASS), CUSTOM_CLASS);
         assert.isTrue(wrapper.hasClass(Classes.FILL), "Classes.FILL");
         assert.isTrue(wrapper.hasClass(Classes.LARGE), "Classes.LARGE");
@@ -23,7 +23,7 @@ describe("<FileUpload>", () => {
 
     it("supports custom input props", () => {
         const wrapper = mount(
-            <FileUpload
+            <FileInput
                 inputProps={{
                     className: "bar",
                     required: true,
@@ -39,30 +39,29 @@ describe("<FileUpload>", () => {
     });
 
     it("applies top-level disabled prop to the root and input (overriding inputProps.disabled)", () => {
-        const wrapper = mount(<FileUpload disabled={true} inputProps={{ disabled: false }} />);
-        const input = getInput(wrapper);
+        const wrapper = mount(<FileInput disabled={true} inputProps={{ disabled: false }} />);
 
         // should ignore inputProps.disabled in favor of the top-level prop
-        assert.isTrue(wrapper.hasClass(Classes.DISABLED), "wrapper has disabled class");
-        assert.isTrue(input.prop("disabled"), "input is disabled");
+        assert.isTrue(wrapper.children().hasClass(Classes.DISABLED), "wrapper has disabled class");
+        assert.isTrue(getInput(wrapper).prop("disabled"), "input is disabled");
 
         wrapper.setProps({ disabled: false, inputProps: { disabled: true } });
 
         // ensure inputProps.disabled is overriden in this case too
-        assert.isFalse(wrapper.hasClass(Classes.DISABLED), "wrapper no longer has disabled class");
-        assert.isFalse(input.prop("disabled"), "input no longer disabled");
+        assert.isFalse(wrapper.children().hasClass(Classes.DISABLED), "wrapper no longer has disabled class");
+        assert.isFalse(getInput(wrapper).prop("disabled"), "input no longer disabled");
     });
 
     it("renders default or custom text", () => {
-        const wrapper = mount(<FileUpload />);
+        const wrapper = mount(<FileInput />);
         const span = wrapper.find(`.${Classes.FILE_UPLOAD_INPUT}`);
 
         // default text
         assert.strictEqual(span.text(), "Choose file...");
 
         // custom text
-        wrapper.setProps({ text: "Upload file..." });
-        assert.strictEqual(span.text(), "Upload file...");
+        wrapper.setProps({ text: "Input file..." });
+        assert.strictEqual(span.text(), "Input file...");
     });
 
     it("invokes change callbacks", () => {
@@ -70,7 +69,7 @@ describe("<FileUpload>", () => {
         const onChange = sinon.spy();
         const onInputChange = sinon.spy();
 
-        const wrapper = shallow(<FileUpload {...{ onChange, onInputChange, inputProps }} />);
+        const wrapper = shallow(<FileInput {...{ onChange, onInputChange, inputProps }} />);
         const input = getInput(wrapper);
         input.simulate("change");
 

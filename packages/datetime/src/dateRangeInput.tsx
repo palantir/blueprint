@@ -10,7 +10,7 @@ import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
 
 import {
-    AbstractComponent,
+    AbstractPureComponent,
     Classes,
     HTMLInputProps,
     IInputGroupProps,
@@ -215,7 +215,7 @@ interface IStateKeysAndValuesObject {
     };
 }
 
-export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
+export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
         allowSingleDayRange: false,
         closeOnSelection: true,

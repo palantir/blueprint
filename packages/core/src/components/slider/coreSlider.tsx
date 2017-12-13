@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
@@ -29,7 +29,7 @@ export interface ICoreSliderProps extends IProps {
     /**
      * Number of decimal places to use when rendering label value. Default value is the number of
      * decimals used in the `stepSize` prop. This prop has _no effect_ if you supply a custom
-     * `renderLabel` callback.
+     * `labelRenderer` callback.
      * @default inferred from stepSize
      */
     labelPrecision?: number;
@@ -65,7 +65,7 @@ export interface ICoreSliderProps extends IProps {
      * If `false`, labels will not be shown.
      * @default true
      */
-    renderLabel?: boolean | ((value: number) => string | JSX.Element);
+    labelRenderer?: boolean | ((value: number) => string | JSX.Element);
 
     /**
      * Whether to show the slider in a vertical orientation.
@@ -80,7 +80,7 @@ export interface ISliderState {
     tickSize?: number;
 }
 
-export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractComponent<P, ISliderState> {
+export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPureComponent<P, ISliderState> {
     public className = Classes.SLIDER;
 
     private trackElement: HTMLElement;
@@ -101,7 +101,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
             this.className,
             {
                 [Classes.DISABLED]: this.props.disabled,
-                [`${Classes.SLIDER}-unlabeled`]: this.props.renderLabel === false,
+                [`${Classes.SLIDER}-unlabeled`]: this.props.labelRenderer === false,
                 [Classes.VERTICAL]: this.props.vertical,
             },
             this.props.className,
@@ -136,11 +136,11 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
     protected abstract handleTrackTouch(event: React.TouchEvent<HTMLElement>): void;
 
     protected formatLabel(value: number): React.ReactChild {
-        const { renderLabel } = this.props;
-        if (renderLabel === false) {
+        const { labelRenderer } = this.props;
+        if (labelRenderer === false) {
             return undefined;
-        } else if (isFunction(renderLabel)) {
-            return renderLabel(value);
+        } else if (isFunction(labelRenderer)) {
+            return labelRenderer(value);
         } else {
             return value.toFixed(this.state.labelPrecision);
         }
@@ -170,7 +170,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractCom
         const max: number = this.props.max;
         const min: number = this.props.min;
         const labelStepSize: number = this.props.labelStepSize;
-        if (this.props.renderLabel === false) {
+        if (this.props.labelRenderer === false) {
             return undefined;
         }
 

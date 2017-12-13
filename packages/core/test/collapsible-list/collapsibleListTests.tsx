@@ -88,22 +88,22 @@ describe("<CollapsibleList>", () => {
         assert.doesNotThrow(() => renderCollapsibleList(0));
     });
 
-    describe("renderVisibleItem", () => {
+    describe("visibleItemRenderer", () => {
         it("is called with props of each child", () => {
-            const renderVisibleItem = spy();
+            const visibleItemRenderer = spy();
             // using END so it won't reverse the list
-            renderCollapsibleList(5, { collapseFrom: CollapseFrom.END, renderVisibleItem, visibleItemCount: 3 });
-            assert.equal(renderVisibleItem.callCount, 3);
-            renderVisibleItem.args.map((arg, index) => {
+            renderCollapsibleList(5, { collapseFrom: CollapseFrom.END, visibleItemRenderer, visibleItemCount: 3 });
+            assert.equal(visibleItemRenderer.callCount, 3);
+            visibleItemRenderer.args.map((arg, index) => {
                 const props: IMenuItemProps = arg[0];
                 assert.deepEqual(props.text, `Item ${index}`);
             });
         });
 
         it("is called with absolute index of item in props array when CollapseFrom.START", () => {
-            const renderVisibleItem = spy();
-            renderCollapsibleList(7, { renderVisibleItem, visibleItemCount: 3 });
-            renderVisibleItem.args.map(arg => {
+            const visibleItemRenderer = spy();
+            renderCollapsibleList(7, { visibleItemRenderer, visibleItemCount: 3 });
+            visibleItemRenderer.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
                 const absoluteIndex = +props.text.slice(5); // "Item #"
                 assert.equal(absoluteIndex, arg[1]);
@@ -111,9 +111,9 @@ describe("<CollapsibleList>", () => {
         });
 
         it("is called with absolute index of item in props array when CollapseFrom.END", () => {
-            const renderVisibleItem = spy();
-            renderCollapsibleList(6, { collapseFrom: CollapseFrom.END, renderVisibleItem, visibleItemCount: 3 });
-            renderVisibleItem.args.map(arg => {
+            const visibleItemRenderer = spy();
+            renderCollapsibleList(6, { collapseFrom: CollapseFrom.END, visibleItemRenderer, visibleItemCount: 3 });
+            visibleItemRenderer.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
                 const absoluteIndex = +props.text.slice(5); // "Item #"
                 assert.equal(absoluteIndex, arg[1]);
@@ -135,7 +135,7 @@ describe("<CollapsibleList>", () => {
 
     function renderCollapsibleList(broodSize: number, props?: Partial<ICollapsibleListProps>) {
         return mount(
-            <CollapsibleList dropdownTarget={<button />} renderVisibleItem={renderItem} {...props}>
+            <CollapsibleList dropdownTarget={<button />} visibleItemRenderer={renderItem} {...props}>
                 {withItems(broodSize)}
             </CollapsibleList>,
         );

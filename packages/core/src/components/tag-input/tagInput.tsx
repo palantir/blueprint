@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { HTMLInputProps, IProps } from "../../common/props";
@@ -121,7 +121,7 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
-export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> {
+export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState> {
     public static displayName = "Blueprint.TagInput";
 
     public static defaultProps: Partial<ITagInputProps> & object = {

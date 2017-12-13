@@ -11,7 +11,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/labs-examples/data";
+import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/data";
 import { ISelectItemRendererProps } from "../src/components/select/select";
 import { ISuggestProps, Suggest } from "../src/components/select/suggest";
 
@@ -73,7 +73,7 @@ describe("Suggest", () => {
 
         it("scrolls active item into view when popover opens", () => {
             const wrapper = suggest();
-            const queryList = (wrapper.getNode() as any).queryList; // private ref
+            const queryList = ((wrapper.instance() as Suggest<Film>) as any).queryList; // private ref
             const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
             wrapper.setState({ isOpen: false });
             assert.isFalse(scrollActiveItemIntoViewSpy.called);
