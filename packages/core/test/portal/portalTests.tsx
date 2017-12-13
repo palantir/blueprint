@@ -27,8 +27,6 @@ describe("<Portal>", () => {
                 <p className={CLASS_TO_TEST}>test</p>
             </Portal>,
         );
-
-        assert.lengthOf(portal.find(`.${CLASS_TO_TEST}`), 0);
         assert.lengthOf(document.getElementsByClassName(CLASS_TO_TEST), 1);
     });
 
