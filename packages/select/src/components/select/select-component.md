@@ -1,6 +1,6 @@
 @# Select
 
-Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover2`](#labs/popover2) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
+Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover2`](#select/popover2) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     <h5>Disabling a Select</h5>
@@ -13,7 +13,7 @@ Use `Select<T>` for choosing one item from a list. The component's children will
 
 ```tsx
 import { Button, MenuItem } from "@blueprintjs/core";
-import { Select } from "@blueprintjs/labs";
+import { Select } from "@blueprintjs/select";
 import { Film, TOP_100_FILMS, filterFilm, renderFilm } from "./demoData";
 
 // Select<T> is a generic component to work with your data types.
@@ -75,7 +75,7 @@ This interface is generic, accepting a type parameter `<T>` for an item in the l
 
 ```tsx
 import { Classes, MenuItem } from "@blueprintjs/core";
-import { Select, ISelectItemRendererProps } from "@blueprintjs/labs";
+import { Select, ISelectItemRendererProps } from "@blueprintjs/select";
 const FilmSelect = Select.ofType<Film>();
 
 const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRendererProps<Film>) => (
