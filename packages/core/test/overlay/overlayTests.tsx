@@ -308,6 +308,8 @@ describe("<Overlay>", () => {
                 assert.strictEqual(document.activeElement, document.querySelector(selector));
                 done();
             }, 10);
+            // small explicity timeout reduces flakiness of these tests,
+            // which rely on requestAnimationFrame to update focus state.
         }
     });
 

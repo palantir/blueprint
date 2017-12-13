@@ -1,5 +1,4 @@
 /*
-*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
@@ -876,8 +875,8 @@ describe("<NumericInput>", () => {
             const icon = component
                 .find(InputGroup)
                 .children()
-                .childAt(0)
-                .childAt(0);
+                .childAt(0) // Icon
+                .childAt(0); // span
             expect(icon.hasClass("pt-icon-variable")).to.be.true;
         });
 
