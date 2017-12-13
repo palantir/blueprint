@@ -62,6 +62,8 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
     public render() {
         const { className, intent, leftIconName } = this.props;
         const classes = classNames(
+            Classes.FLEX_PARENT,
+            Classes.FLEX_PARENT_DIRECTION_HORIZONTAL,
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
@@ -73,11 +75,11 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
 
         return (
             <div className={classes}>
-                <Icon iconName={leftIconName} iconSize="inherit" />
+                <Icon className={Classes.FLEX_CHILD} iconName={leftIconName} iconSize="inherit" />
                 <input
                     type="text"
                     {...removeNonHTMLProps(this.props)}
-                    className={Classes.INPUT}
+                    className={classNames(Classes.INPUT, Classes.FLEX_CHILD, Classes.FILL)}
                     ref={this.props.inputRef}
                     style={style}
                 />
@@ -100,7 +102,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
             return undefined;
         }
         return (
-            <span className="pt-input-action" ref={this.refHandlers.rightElement}>
+            <span className={classNames("pt-input-action", Classes.FLEX_CHILD)} ref={this.refHandlers.rightElement}>
                 {rightElement}
             </span>
         );
