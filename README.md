@@ -102,8 +102,8 @@ running any of the dev scripts.
 
 ## Contributing
 
-Looking for places to contribute to the codebase? Check out the
-[Status: accepting PRs](https://github.com/palantir/blueprint/labels/Status%3A%20accepting%20PRs) label.
+Looking for places to contribute to the codebase?
+[Check out the "help wanted" label](https://github.com/palantir/blueprint/labels/help%20wanted).
 
 Read about our [contribution guidelines](https://github.com/palantir/blueprint/blob/master/CONTRIBUTING.md) and
 [development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) to give your PR
