@@ -133,6 +133,15 @@ $input-button-height-large: $pt-button-height !default;
   // this class echoes `input:disabled` on the child input, but each action must individually be disabled
   &.pt-disabled {
     // note that enabled buttons inside this input group are still clickable
+    @include pt-input-disabled();
+
+    .pt-icon-standard {
+      color: $input-color-disabled;
+    }
+
+    .pt-input {
+      background: none;
+    }
 
     .pt-icon {
       @include pt-input-disabled();
@@ -179,8 +188,10 @@ $input-button-height-large: $pt-button-height !default;
       color: $pt-dark-icon-color;
     }
 
-    &.pt-disabled .pt-icon {
-      color: $pt-dark-icon-color-disabled;
+    &.pt-disabled {
+      .pt-icon-standard {
+        color: $dark-input-color-disabled;
+      }
     }
   }
 
