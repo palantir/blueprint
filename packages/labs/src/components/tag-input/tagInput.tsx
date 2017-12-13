@@ -288,17 +288,16 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     };
 
     private handleContainerKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        if (event.isDefaultPrevented()) {
-            return;
+        // preventDefault may have been called from the input's keydown handler.
+        if (!event.isDefaultPrevented()) {
+            Utils.safeInvoke(this.props.onKeyDown, event, this.state.activeIndex);
         }
-        Utils.safeInvoke(this.props.onKeyDown, event, this.state.activeIndex);
     };
 
     private handleContainerKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        if (event.isDefaultPrevented()) {
-            return;
+        if (!event.isDefaultPrevented()) {
+            Utils.safeInvoke(this.props.onKeyUp, event, this.state.activeIndex);
         }
-        Utils.safeInvoke(this.props.onKeyUp, event, this.state.activeIndex);
     };
 
     private handleInputFocus = (event: React.FocusEvent<HTMLElement>) => {
@@ -340,17 +339,16 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             }
         }
 
-        // stop the event from propagating to the container's onKeyDown
-        // callback. we'll invoke the top-level callback directly with an
-        // `undefined` index.
+        // preventDefault to tell the wrapping container that we've already
+        // invoked onKeyDown at this level (with an `undefined` index).
         event.preventDefault();
-
         Utils.safeInvoke(this.props.onKeyDown, event, undefined);
         Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
     };
 
     private handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        // again, stop propagation to the container's onKeyUp callback.
+        // again, prevent onKeyUp from being reinvoked when the event bubbles up
+        // to the container.
         event.preventDefault();
         Utils.safeInvoke(this.props.inputProps.onKeyUp, event);
         Utils.safeInvoke(this.props.onKeyUp, event, undefined);
