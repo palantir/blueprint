@@ -367,7 +367,7 @@ class RowSelectableTable extends React.Component<{}, {}> {
 
 ReactDOM.render(<RowSelectableTable />, document.getElementById("table-select-rows"));
 
-document.getElementById("table-ledger").classList.add("bp-table-striped");
+document.getElementById("table-ledger").classList.add("pt-table-striped");
 
 ReactDOM.render(getTableComponent(3, 7, {}, { className: "" }), document.getElementById("table-ledger"));
 
