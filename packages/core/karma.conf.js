@@ -21,19 +21,6 @@ module.exports = function (config) {
             "src/components/tag-input/*",
             "src/components/tooltip2/*",
         ],
-        coverageOverrides: {
-            "src/cell/cell*": {
-                lines: 70,
-            },
-            "src/common/clipboard*": {
-                lines: 60,
-                statements: 60,
-            },
-            "src/headers/headerCell*": {
-                lines: 70,
-                statements: 70,
-            },
-        },
     });
     config.set(baseConfig);
     config.set({
