@@ -15,12 +15,12 @@ import {
     HTMLInputProps,
     IButtonProps,
     IInputGroupProps,
-    IPopoverProps,
     IProps,
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
+import { IPopover2Props } from "../popover/popover2";
 import { ISelectItemRendererProps, Select } from "../select/select";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
@@ -89,8 +89,8 @@ export interface ITimezonePickerProps extends IProps {
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
-    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps> & object;
+    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<IPopover2Props> & object;
 }
 
 export interface ITimezonePickerState {
@@ -135,7 +135,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
             placeholder: "Search for timezones...",
             ...inputProps,
         };
-        const finalPopoverProps: Partial<IPopoverProps> & object = {
+        const finalPopoverProps: Partial<IPopover2Props> & object = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
         };
