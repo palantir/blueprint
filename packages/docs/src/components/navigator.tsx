@@ -5,7 +5,6 @@
  */
 
 import { Classes, Hotkey, Hotkeys, HotkeysTarget, InputGroup, Keys, Popover, Position, Utils } from "@blueprintjs/core";
-
 import { IconContents } from "@blueprintjs/icons";
 
 import * as classNames from "classnames";

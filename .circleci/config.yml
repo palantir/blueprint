@@ -114,6 +114,17 @@ jobs:
           key: v3-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/datetime'
 
+  test-icons:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn lerna run test --scope '@blueprintjs/icons'
+
   test-labs:
     docker:
       - image: circleci/node:8
@@ -191,6 +202,8 @@ workflows:
       - test-core:
           requires: [compile-libs]
       - test-datetime:
+          requires: [compile-libs]
+      - test-icons:
           requires: [compile-libs]
       - test-labs:
           requires: [compile-libs]

@@ -12,7 +12,6 @@ with Sass and Less variables, an elegant color palette, and 300+ UI icons in two
 @page accessibility
 @page colors
 @page typography
-@page icons
 @page variables
 @page components
 @page resources
