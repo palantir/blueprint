@@ -5,10 +5,9 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
-import PopperJS from "popper.js";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import { Arrow, Popper } from "react-popper";
+import { Arrow } from "react-popper";
 import * as sinon from "sinon";
 
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
@@ -23,8 +22,6 @@ import { PopoverInteractionKind } from "../../src/components/popover/popover";
 import { IPopover2Props, IPopover2State, Popover2 } from "../../src/components/popover2/popover2";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { Portal } from "../../src/index";
-
-type ShallowPopover2Wrapper = ShallowWrapper<IPopover2Props, IPopover2State>;
 
 describe("<Popover2>", () => {
     let testsContainerElement: HTMLElement;
