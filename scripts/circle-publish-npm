@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 set -o pipefail
 
 if [ -z ${CIRCLECI+x} ]; then
