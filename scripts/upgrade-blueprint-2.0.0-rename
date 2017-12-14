@@ -186,6 +186,7 @@ renameString "pt-bordered(?!-)" pt-html-table-bordered
 renameString "pt-table(?!-)" pt-html-table
 warnProp enableFocus enableFocusedCell
 warnProp onFocus onFocusedCell
+warnProp renderMenu menuRenderer
 
 echo "
 

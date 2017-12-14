@@ -219,7 +219,7 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
         };
         return (
             <ColumnHeaderCell
-                renderMenu={renderTestMenu}
+                menuRenderer={renderTestMenu}
                 name={this.state.names[columnIndex]}
                 nameRenderer={nameRenderer}
             />
@@ -523,7 +523,7 @@ ReactDOM.render(
                 return (
                     <ColumnHeaderCell
                         name={`${alpha} Column with a substantially long header name`}
-                        renderMenu={renderTestMenu}
+                        menuRenderer={renderTestMenu}
                     >
                         <h4>Header {alpha}</h4>
                         <p>Whatever interactive header content goes here lorem ipsum.</p>
@@ -533,7 +533,7 @@ ReactDOM.render(
         },
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell name={`${rowIndex + 1}`} renderMenu={renderTestMenu} />;
+                return <RowHeaderCell name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
             },
         },
     ),

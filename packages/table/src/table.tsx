@@ -785,7 +785,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
                     ref={this.refHandlers.quadrantStack}
-                    renderMenu={this.renderMenu}
+                    menuRenderer={this.renderMenu}
                     rowHeaderCellRenderer={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}

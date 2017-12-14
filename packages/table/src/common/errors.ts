@@ -8,12 +8,12 @@ const ns = "[Blueprint Table]";
 const deprec = `${ns} DEPRECATION:`;
 
 export const COLUMN_HEADER_CELL_MENU_DEPRECATED =
-    deprec + ` <ColumnHeaderCell> menu is deprecated. Use renderMenu instead.`;
+    deprec + ` <ColumnHeaderCell> menu is deprecated. Use menuRenderer instead.`;
 export const COLUMN_HEADER_CELL_USE_INTERACTION_BAR_DEPRECATED =
     deprec +
     ` <ColumnHeaderCell> enableColumnInteractionBar is deprecated. Pass the prop to the top-level <Table> instead. When you pass the prop to <Table>, that value will override the one provided directly to <ColumnHeaderCell>.`;
 
-export const ROW_HEADER_CELL_MENU_DEPRECATED = deprec + ` <RowHeaderCell> menu is deprecated. Use renderMenu instead.`;
+export const ROW_HEADER_CELL_MENU_DEPRECATED = deprec + ` <RowHeaderCell> menu is deprecated. Use menuRenderer instead.`;
 
 export const QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED =
     ns + ` <TableQuadrant> onScroll need not be defined for any quadrant aside from the MAIN quadrant.`;

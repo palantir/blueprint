@@ -199,9 +199,9 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
     }
 
     private maybeRenderDropdownMenu() {
-        const { index, menu, menuIconName, renderMenu } = this.props;
+        const { index, menu, menuIconName, menuRenderer } = this.props;
 
-        if (renderMenu == null && menu == null) {
+        if (menuRenderer == null && menu == null) {
             return undefined;
         }
 
@@ -216,8 +216,8 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
         });
 
-        // prefer renderMenu if it's defined
-        const content = CoreUtils.isFunction(renderMenu) ? renderMenu(index) : menu;
+        // prefer menuRenderer if it's defined
+        const content = CoreUtils.isFunction(menuRenderer) ? menuRenderer(index) : menu;
 
         return (
             <div className={classes}>

@@ -38,8 +38,8 @@ abstract class AbstractSortableColumn implements ISortableColumn {
         const cellRenderer = (rowIndex: number, columnIndex: number) => (
             <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
         );
-        const renderMenu = this.renderMenu.bind(this, sortColumn);
-        const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} renderMenu={renderMenu} />;
+        const menuRenderer = this.renderMenu.bind(this, sortColumn);
+        const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} menuRenderer={menuRenderer} />;
         return (
             <Column
                 cellRenderer={cellRenderer}
@@ -50,11 +50,11 @@ abstract class AbstractSortableColumn implements ISortableColumn {
         );
     }
 
-    protected abstract renderMenu(sortColumn: ISortCallback): JSX.Element;
+    protected abstract menuRenderer(sortColumn: ISortCallback): JSX.Element;
 }
 
 class TextSortableColumn extends AbstractSortableColumn {
-    protected renderMenu(sortColumn: ISortCallback) {
+    protected menuRenderer(sortColumn: ISortCallback) {
         const sortAsc = () => sortColumn(this.index, (a, b) => this.compare(a, b));
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
@@ -81,7 +81,7 @@ class RankSortableColumn extends AbstractSortableColumn {
         Y: 0, // Yokozuna
     };
 
-    protected renderMenu(sortColumn: ISortCallback) {
+    protected menuRenderer(sortColumn: ISortCallback) {
         const sortAsc = () => sortColumn(this.index, (a, b) => this.compare(a, b));
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
@@ -109,7 +109,7 @@ class RankSortableColumn extends AbstractSortableColumn {
 class RecordSortableColumn extends AbstractSortableColumn {
     private static WIN_LOSS_PATTERN = /^([0-9]+)(-([0-9]+))?(-([0-9]+)) ?.*/;
 
-    protected renderMenu(sortColumn: ISortCallback) {
+    protected menuRenderer(sortColumn: ISortCallback) {
         // tslint:disable:jsx-no-lambda
         return (
             <Menu>
