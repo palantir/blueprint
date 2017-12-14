@@ -5,13 +5,15 @@
  */
 
 import * as React from "react";
-import { IConstructor } from "../../common/constructor";
-import { getDisplayName, isFunction, safeInvoke } from "../../common/utils";
 
+import { IConstructor } from "../../common/constructor";
+import { HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT, HOTKEYS_WARN_DECORATOR_NO_METHOD } from "../../common/errors";
+import { getDisplayName, isFunction, safeInvoke } from "../../common/utils";
 import { IHotkeysProps } from "./hotkeys";
 import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
 
 export interface IHotkeysTarget extends React.Component<any, any>, React.ComponentLifecycle<any, any> {
+    render(): React.ReactElement<any> | null | undefined;
     /**
      * Components decorated with the `HotkeysTarget` decorator must implement
      * this method, and it must return a `Hotkeys` React element.
@@ -21,7 +23,7 @@ export interface IHotkeysTarget extends React.Component<any, any>, React.Compone
 
 export function HotkeysTarget<T extends IConstructor<IHotkeysTarget>>(WrappedComponent: T) {
     if (!isFunction(WrappedComponent.prototype.renderHotkeys)) {
-        throw new Error(`@HotkeysTarget-decorated class must implement \`renderHotkeys\`. ${WrappedComponent}`);
+        console.warn(HOTKEYS_WARN_DECORATOR_NO_METHOD);
     }
 
     return class HotkeysTargetClass extends WrappedComponent {
@@ -63,29 +65,40 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTarget>>(WrappedCom
         }
 
         public render() {
-            // TODO handle being applied on a Component that doesn't return an actual Element
             const element = super.render() as JSX.Element;
-            const hotkeys = this.renderHotkeys();
-            this.localHotkeysEvents.setHotkeys(hotkeys.props);
-            this.globalHotkeysEvents.setHotkeys(hotkeys.props);
 
-            if (element != null && this.localHotkeysEvents.count() > 0) {
-                const tabIndex = hotkeys.props.tabIndex === undefined ? 0 : hotkeys.props.tabIndex;
-
-                const { keyDown: existingKeyDown, keyUp: existingKeyUp } = element.props;
-                const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-                    this.localHotkeysEvents.handleKeyDown(e.nativeEvent as KeyboardEvent);
-                    safeInvoke(existingKeyDown, e);
-                };
-
-                const onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
-                    this.localHotkeysEvents.handleKeyUp(e.nativeEvent as KeyboardEvent);
-                    safeInvoke(existingKeyUp, e);
-                };
-                return React.cloneElement(element, { tabIndex, onKeyDown, onKeyUp });
-            } else {
+            if (element == null) {
+                // always return `element` in case caller is distinguishing between `null` and `undefined`
                 return element;
             }
+
+            if (!React.isValidElement<any>(element)) {
+                console.warn(HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT);
+                return element;
+            }
+
+            if (isFunction(this.renderHotkeys)) {
+                const hotkeys = this.renderHotkeys();
+                this.localHotkeysEvents.setHotkeys(hotkeys.props);
+                this.globalHotkeysEvents.setHotkeys(hotkeys.props);
+
+                if (this.localHotkeysEvents.count() > 0) {
+                    const tabIndex = hotkeys.props.tabIndex === undefined ? 0 : hotkeys.props.tabIndex;
+
+                    const { keyDown: existingKeyDown, keyUp: existingKeyUp } = element.props;
+                    const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+                        this.localHotkeysEvents.handleKeyDown(e.nativeEvent as KeyboardEvent);
+                        safeInvoke(existingKeyDown, e);
+                    };
+
+                    const onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
+                        this.localHotkeysEvents.handleKeyUp(e.nativeEvent as KeyboardEvent);
+                        safeInvoke(existingKeyUp, e);
+                    };
+                    return React.cloneElement(element, { tabIndex, onKeyDown, onKeyUp });
+                }
+            }
+            return element;
         }
     };
 }

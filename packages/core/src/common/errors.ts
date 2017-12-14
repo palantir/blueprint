@@ -15,8 +15,13 @@ export const COLLAPSIBLE_LIST_INVALID_CHILD = ns + ` <CollapsibleList> children 
 
 export const CONTEXTMENU_WARN_DECORATOR_NO_METHOD =
     ns + ` @ContextMenuTarget-decorated class should implement renderContextMenu.`;
+export const CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
+    ns + ` "@ContextMenuTarget-decorated components must return a single JSX.Element or an empty render.`;
 
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
+export const HOTKEYS_WARN_DECORATOR_NO_METHOD = ns + ` @HotkeysTarget-decorated class should implement renderHotkeys.`;
+export const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
+    ns + ` "@HotkeysTarget-decorated components must return a single JSX.Element or an empty render.`;
 
 export const MENU_WARN_CHILDREN_SUBMENU_MUTEX =
     ns + ` <MenuItem> children and submenu props are mutually exclusive, with children taking priority.`;

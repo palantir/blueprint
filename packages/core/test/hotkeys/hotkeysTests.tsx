@@ -49,6 +49,10 @@ describe("Hotkeys", () => {
 
     it("Decorator does not mutate the original class", () => {
         class TestComponent extends React.Component<{}, {}> {
+            public render() {
+                return <div />;
+            }
+
             public renderHotkeys() {
                 return <Hotkeys />;
             }
