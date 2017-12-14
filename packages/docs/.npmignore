@@ -2,3 +2,4 @@ coverage/
 test/
 webpack.config.js
 karma.conf.js
+.npmrc
