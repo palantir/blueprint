@@ -3,7 +3,6 @@
   "version": "0.2.0",
   "description": "Common utilities for tests in @blueprintjs packages",
   "main": "dist/index.js",
-  "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "compile": "tsc -p ./src",
