@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/test-commons",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Common utilities for tests in @blueprintjs packages",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
