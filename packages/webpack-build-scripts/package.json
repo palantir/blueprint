@@ -2,7 +2,6 @@
   "name": "@blueprintjs/webpack-build-scripts",
   "version": "0.2.0",
   "description": "Webpack build scripts for @blueprintjs packages",
-  "private": true,
   "scripts": {
     "test": "exit 0"
   },
