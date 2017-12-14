@@ -46,15 +46,9 @@ describe("<DateInput>", () => {
     });
 
     it("Popover opens on input focus", () => {
-        const wrapper = mount(<DateInput openOnFocus={true} />);
+        const wrapper = mount(<DateInput />);
         wrapper.find("input").simulate("focus");
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
-    });
-
-    it("Popover does not open on input focus if openOnFocus=false", () => {
-        const wrapper = mount(<DateInput openOnFocus={false} />);
-        wrapper.find("input").simulate("focus");
-        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("Popover doesn't open if disabled=true", () => {
