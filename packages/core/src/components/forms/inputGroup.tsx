@@ -78,8 +78,8 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
                     type="text"
                     {...removeNonHTMLProps(this.props)}
                     className={Classes.INPUT}
-                    onBlur={this.toggleFocus}
-                    onFocus={this.toggleFocus}
+                    onBlur={this.handleOnBlur}
+                    onFocus={this.handleOnFocus}
                     ref={this.props.inputRef}
                 />
                 {this.maybeRenderRightElement()}
@@ -99,7 +99,13 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
         );
     }
 
-    private toggleFocus = () => {
+    private handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        this.props.onBlur != null ? this.props.onBlur(e) : undefined;
+        this.setState({ isActive: !this.state.isActive });
+    };
+
+    private handleOnFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+        this.props.onFocus != null ? this.props.onFocus(e) : undefined;
         this.setState({ isActive: !this.state.isActive });
     };
 }
