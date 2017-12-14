@@ -211,9 +211,7 @@ workflows:
       - deploy-npm:
           requires: [deploy-preview]
           filters:
-            tags:
-              only:
-                - /^release-.*/
             branches:
-              ignore:
-                - /.*/
+              only:
+                - master
+                - /^release\/.*/

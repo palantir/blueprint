@@ -35,15 +35,8 @@ fi
 echo -n "Full site preview..."
 git rev-parse --abbrev-ref HEAD | grep -q -e '^release/'
 if [ $? -eq 0 ]; then
-    git diff HEAD..origin/master --quiet -- docs
-    if [ $? -eq 0 ]; then
-        echo "ERROR"
-        echo "New release detected, but docs were not updated."
-        exit 1
-    else
-        echo "DONE"
-        PREVIEWS="$PREVIEWS | $(artifactLink 'docs/index' 'github pages')"
-    fi
+    echo "DONE"
+    PREVIEWS="$PREVIEWS | $(artifactLink 'docs/index' 'github pages')"
 else
     echo "SKIP"
 fi
