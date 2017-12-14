@@ -5,7 +5,6 @@
  */
 
 import { IMenuItemProps, MenuItem } from "@blueprintjs/core";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Clipboard } from "../../common/clipboard";
@@ -37,8 +36,7 @@ export interface ICopyCellsMenuItemProps extends IMenuItemProps {
     onCopy?: (success: boolean) => void;
 }
 
-@PureRender
-export class CopyCellsMenuItem extends React.Component<ICopyCellsMenuItemProps, {}> {
+export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemProps, {}> {
     public render() {
         return <MenuItem {...this.props} onClick={this.handleClick} />;
     }

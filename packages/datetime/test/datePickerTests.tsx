@@ -11,6 +11,8 @@ import { LocaleUtils } from "react-day-picker";
 import * as sinon from "sinon";
 
 import { Button } from "@blueprintjs/core";
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
@@ -253,46 +255,45 @@ describe("<DatePicker>", () => {
         const MIN_DATE = new Date(2015, Months.JANUARY, 7);
         const MAX_DATE = new Date(2015, Months.JANUARY, 12);
         it("maxDate must be later than minDate", () => {
-            assert.throws(
-                () => wrap(<DatePicker maxDate={MIN_DATE} minDate={MAX_DATE} />),
+            expectPropValidationError(
+                DatePicker,
+                { maxDate: MIN_DATE, minDate: MAX_DATE },
                 Errors.DATEPICKER_MAX_DATE_INVALID,
             );
         });
 
         it("an error is thrown if defaultValue is outside bounds", () => {
-            assert.throws(
-                () =>
-                    wrap(
-                        <DatePicker
-                            defaultValue={new Date(2015, Months.JANUARY, 5)}
-                            minDate={MIN_DATE}
-                            maxDate={MAX_DATE}
-                        />,
-                    ),
+            expectPropValidationError(
+                DatePicker,
+                {
+                    defaultValue: new Date(2015, Months.JANUARY, 5),
+                    maxDate: MAX_DATE,
+                    minDate: MIN_DATE,
+                },
                 Errors.DATEPICKER_DEFAULT_VALUE_INVALID,
             );
         });
 
         it("an error is thrown if value is outside bounds", () => {
-            assert.throws(
-                () =>
-                    wrap(
-                        <DatePicker value={new Date(2015, Months.JANUARY, 20)} minDate={MIN_DATE} maxDate={MAX_DATE} />,
-                    ),
+            expectPropValidationError(
+                DatePicker,
+                {
+                    maxDate: MAX_DATE,
+                    minDate: MIN_DATE,
+                    value: new Date(2015, Months.JANUARY, 20),
+                },
                 Errors.DATEPICKER_VALUE_INVALID,
             );
         });
 
         it("an error is thrown if initialMonth is outside month bounds", () => {
-            assert.throws(
-                () =>
-                    wrap(
-                        <DatePicker
-                            initialMonth={new Date(2015, Months.FEBRUARY, 12)}
-                            minDate={MIN_DATE}
-                            maxDate={MAX_DATE}
-                        />,
-                    ),
+            expectPropValidationError(
+                DatePicker,
+                {
+                    initialMonth: new Date(2015, Months.FEBRUARY, 12),
+                    maxDate: MAX_DATE,
+                    minDate: MIN_DATE,
+                },
                 Errors.DATEPICKER_INITIAL_MONTH_INVALID,
             );
         });

@@ -40,17 +40,16 @@ describe("<FileInput>", () => {
 
     it("applies top-level disabled prop to the root and input (overriding inputProps.disabled)", () => {
         const wrapper = mount(<FileInput disabled={true} inputProps={{ disabled: false }} />);
-        const input = getInput(wrapper);
 
         // should ignore inputProps.disabled in favor of the top-level prop
-        assert.isTrue(wrapper.hasClass(Classes.DISABLED), "wrapper has disabled class");
-        assert.isTrue(input.prop("disabled"), "input is disabled");
+        assert.isTrue(wrapper.children().hasClass(Classes.DISABLED), "wrapper has disabled class");
+        assert.isTrue(getInput(wrapper).prop("disabled"), "input is disabled");
 
         wrapper.setProps({ disabled: false, inputProps: { disabled: true } });
 
         // ensure inputProps.disabled is overriden in this case too
-        assert.isFalse(wrapper.hasClass(Classes.DISABLED), "wrapper no longer has disabled class");
-        assert.isFalse(input.prop("disabled"), "input no longer disabled");
+        assert.isFalse(wrapper.children().hasClass(Classes.DISABLED), "wrapper no longer has disabled class");
+        assert.isFalse(getInput(wrapper).prop("disabled"), "input no longer disabled");
     });
 
     it("renders default or custom text", () => {

@@ -5,10 +5,9 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
@@ -84,8 +83,7 @@ export interface ITabsState {
     selectedTabId?: TabId;
 }
 
-@PureRender
-export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
+export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;
 

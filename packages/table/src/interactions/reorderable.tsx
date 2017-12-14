@@ -5,7 +5,6 @@
  */
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
 import { Utils } from "../common/utils";
@@ -78,8 +77,7 @@ export interface IDragReorderable extends IReorderableProps {
     toRegion: (index1: number, index2?: number) => IRegion;
 }
 
-@PureRender
-export class DragReorderable extends React.Component<IDragReorderable, {}> {
+export class DragReorderable extends React.PureComponent<IDragReorderable, {}> {
     public static defaultProps: Partial<IDragReorderable> = {
         selectedRegions: [],
     };

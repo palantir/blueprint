@@ -5,7 +5,6 @@
  */
 
 import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -128,8 +127,7 @@ const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof
  * If `false` is returned from the onActivate callback, no further events
  * will be fired until the next activation.
  */
-@PureRender
-export class Draggable extends React.Component<IDraggableProps, {}> {
+export class Draggable extends React.PureComponent<IDraggableProps, {}> {
     public static defaultProps = {
         preventDefault: true,
         stopPropagation: false,

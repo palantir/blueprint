@@ -6,7 +6,6 @@
 
 import { Icon, IProps, Popover, Position } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -131,8 +130,7 @@ export interface ITruncatedFormatState {
     isPopoverOpen?: boolean;
 }
 
-@PureRender
-export class TruncatedFormat extends React.Component<ITruncatedFormatProps, ITruncatedFormatState> {
+export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, ITruncatedFormatState> {
     public static defaultProps: ITruncatedFormatProps = {
         detectTruncation: false,
         measureByApproxOptions: {

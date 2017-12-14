@@ -665,6 +665,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
+        // calls validateProps
         super.componentWillReceiveProps(nextProps);
 
         const {

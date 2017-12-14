@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -25,7 +25,7 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     isRowSelected?: boolean;
 }
 
-export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
+export class RowHeaderCell extends AbstractPureComponent<IRowHeaderCellProps, {}> {
     public render() {
         const {
             // from IRowHeaderCellProps

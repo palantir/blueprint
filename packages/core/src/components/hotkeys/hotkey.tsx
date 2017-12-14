@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent } from "../../common";
+import { AbstractPureComponent } from "../../common";
 import { KeyCombo } from "./keyCombo";
 
 export interface IHotkeyProps {
@@ -72,7 +72,7 @@ export interface IHotkeyProps {
     onKeyUp?(e: KeyboardEvent): any;
 }
 
-export class Hotkey extends AbstractComponent<IHotkeyProps, {}> {
+export class Hotkey extends AbstractPureComponent<IHotkeyProps, {}> {
     public static defaultProps = {
         allowInInput: false,
         disabled: false,

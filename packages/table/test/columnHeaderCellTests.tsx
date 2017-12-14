@@ -4,8 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "es6-shim";
-
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { expect } from "chai";
 import { shallow } from "enzyme";
