@@ -74,6 +74,7 @@ jobs:
             - packages/labs/dist
             - packages/select/dist
             - packages/table/dist
+            - packages/timezone/dist
 
   dist-apps:
     docker:
@@ -147,6 +148,17 @@ jobs:
           key: v2-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/table'
 
+  test-timezone:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn lerna run test --scope '@blueprintjs/timezone'
+
   deploy-preview:
     docker:
       - image: circleci/node:8
@@ -198,6 +210,8 @@ workflows:
           requires: [compile-libs]
       - test-table:
           requires: [compile-libs]
+      - test-timezone:
+          requires: [compile-libs]
       - deploy-preview:
           requires:
             - lint
@@ -208,6 +222,7 @@ workflows:
             - test-labs
             - test-select
             - test-table
+            - test-timezone
       - deploy-npm:
           requires: [deploy-preview]
           filters:

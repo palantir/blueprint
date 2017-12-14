@@ -1,12 +1,12 @@
 {
-  "name": "@blueprintjs/labs",
-  "version": "0.14.1",
-  "description": "Incubator for unstable and in-development Blueprint components",
+  "name": "@blueprintjs/timezone",
+  "version": "1.0.0",
+  "description": "Components related to timezone selection and UI",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
   "typings": "dist/esm/index.d.ts",
-  "style": "dist/blueprint-labs.css",
-  "unpkg": "dist/labs.bundle.js",
+  "style": "dist/blueprint-timezone.css",
+  "unpkg": "dist/timezone.bundle.js",
   "scripts": {
     "compile": "npm-run-all -p 'compile:*'",
     "compile:esm": "tsc -p ./src",
@@ -62,7 +62,9 @@
     "palantir",
     "blueprint",
     "react",
-    "labs"
+    "timezone",
+    "time",
+    "select"
   ],
   "author": "Palantir Technologies",
   "license": "Apache-2.0"

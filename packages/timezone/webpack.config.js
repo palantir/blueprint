@@ -8,7 +8,7 @@ const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        labs: [
+        timezone: [
             "./src/index.ts"
         ],
     },
@@ -17,7 +17,7 @@ module.exports = Object.assign({}, baseConfig, {
 
     output: {
         filename: "[name].bundle.js",
-        library: ["Blueprint", "Labs"],
+        library: ["Blueprint", "Timezone"],
         libraryTarget: "umd",
         path: path.resolve(__dirname, "./dist")
     },

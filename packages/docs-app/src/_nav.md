@@ -7,4 +7,5 @@ This file enumerates the exact order of root pages in the left sidebar.
 @page datetime
 @page select
 @page table-js
+@page timezone
 @page labs
