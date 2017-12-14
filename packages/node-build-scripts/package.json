@@ -12,8 +12,6 @@
     "sass-compile": "./sass-compile"
   },
   "dependencies": {
-    "enzyme": "^3.2.0",
-    "enzyme-adapter-react-16": "^1.1.0",
     "node-sass": "^4.7.2",
     "node-sass-chokidar": "^0.0.3",
     "node-sass-package-importer": "^3.0.4",
