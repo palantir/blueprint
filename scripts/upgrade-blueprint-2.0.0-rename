@@ -176,6 +176,7 @@ renameProp renderBodyContextMenu bodyContextMenuRenderer
 renameProp renderCell cellRenderer
 renameProp renderColumnHeader columnHeaderCellRenderer
 renameProp renderRowHeader rowHeaderCellRenderer
+renameProp renderName nameRenderer
 renameProp useInteractionBar enableColumnInteractionBar
 renamePartialClass bp-table- pt-table-
 renameString "pt-table(?!-)" pt-html-table

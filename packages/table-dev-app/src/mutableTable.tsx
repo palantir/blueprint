@@ -400,7 +400,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 index={columnIndex}
                 name={this.store.getColumnName(columnIndex)}
                 renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
-                renderName={this.getColumnNameRenderer()}
+                nameRenderer={this.getColumnNameRenderer()}
             />
         );
     };

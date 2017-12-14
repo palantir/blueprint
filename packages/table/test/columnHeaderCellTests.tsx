@@ -39,12 +39,12 @@ describe("<ColumnHeaderCell>", () => {
         expect(hasCustomClass).to.be.true;
     });
 
-    it("passes index prop to renderName callback if index was provided", () => {
+    it("passes index prop to nameRenderer callback if index was provided", () => {
         const renderNameStub = sinon.stub();
         renderNameStub.returns("string");
         const NAME = "my-name";
         const INDEX = 17;
-        shallow(<ColumnHeaderCell index={INDEX} name={NAME} renderName={renderNameStub} />);
+        shallow(<ColumnHeaderCell index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
         expect(renderNameStub.firstCall.args).to.deep.equal([NAME, INDEX]);
     });
 

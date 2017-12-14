@@ -1440,7 +1440,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             cellRenderer,
             columnHeaderCellRenderer,
             name,
-            renderName,
+            nameRenderer,
             enableColumnInteractionBar,
             ...restColumnProps
         } = this.getColumnProps(columnIndex);

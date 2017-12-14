@@ -206,7 +206,7 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
     };
 
     public renderColumnHeader = (columnIndex: number) => {
-        const renderName = (name: string) => {
+        const nameRenderer = (name: string) => {
             return (
                 <EditableName
                     name={name}
@@ -221,7 +221,7 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
             <ColumnHeaderCell
                 renderMenu={renderTestMenu}
                 name={this.state.names[columnIndex]}
-                renderName={renderName}
+                nameRenderer={nameRenderer}
             />
         );
     };
