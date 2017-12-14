@@ -5,9 +5,9 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import { Arrow, Popper } from "react-popper";
+import { Arrow } from "react-popper";
 import * as sinon from "sinon";
 
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
@@ -19,11 +19,9 @@ import { Position } from "../../src/common/position";
 import * as Utils from "../../src/common/utils";
 import { Overlay } from "../../src/components/overlay/overlay";
 import { PopoverInteractionKind } from "../../src/components/popover/popover";
-import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../../src/components/popover2/popover2";
+import { IPopover2Props, IPopover2State, Popover2 } from "../../src/components/popover2/popover2";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { Portal } from "../../src/index";
-
-type ShallowPopover2Wrapper = ShallowWrapper<IPopover2Props, IPopover2State>;
 
 describe("<Popover2>", () => {
     let testsContainerElement: HTMLElement;
@@ -563,7 +561,7 @@ describe("<Popover2>", () => {
         });
 
         it("computes arrow rotation", done => {
-            renderPopover({ isOpen: true, placement: "top" }).then(
+            renderPopover({ isOpen: true, position: Position.TOP }).then(
                 () => assert.equal(wrapper.state("arrowRotation"), 90),
                 done,
             );
@@ -584,18 +582,6 @@ describe("<Popover2>", () => {
     });
 
     describe("deprecated prop shims", () => {
-        it("should convert position to placement", () => {
-            const popover = shallow(
-                <Popover2 inline={true} position={Position.BOTTOM_LEFT}>
-                    child
-                </Popover2>,
-            );
-            assertPlacement(popover, "bottom-start");
-
-            popover.setProps({ position: Position.LEFT_BOTTOM });
-            assertPlacement(popover, "left-end");
-        });
-
         it("should convert isModal to hasBackdrop", () => {
             const popover = shallow(
                 <Popover2 inline={true} isModal={true}>
@@ -618,18 +604,6 @@ describe("<Popover2>", () => {
                 .setProps({ isDisabled: false })
                 .simulateTarget("click")
                 .assertIsOpen(true);
-        });
-
-        it("placement should take precedence over position", () => {
-            const popover = shallow(
-                <Popover2 inline={true} placement="left-end" position={Position.BOTTOM_LEFT}>
-                    child
-                </Popover2>,
-            );
-            assertPlacement(popover, "left-end");
-
-            popover.setProps({ placement: "bottom-start", position: Position.LEFT_BOTTOM });
-            assertPlacement(popover, "bottom-start");
         });
 
         it("hasBackdrop should take precedence over isModal", () => {
@@ -699,9 +673,5 @@ describe("<Popover2>", () => {
             });
         };
         return wrapper;
-    }
-
-    function assertPlacement(popover: ShallowPopover2Wrapper, placement: Placement) {
-        assert.strictEqual(popover.find(Popper).prop("placement"), placement);
     }
 });
