@@ -41,6 +41,7 @@ $input-button-height: $pt-button-height - 6px !default;
 $input-button-height-large: $pt-button-height !default;
 
 .pt-input-group {
+  // .pt-input-group should be styled to look like a .pt-input
   @include pt-flex-parent();
   border-radius: $pt-border-radius;
   box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
@@ -50,11 +51,13 @@ $input-button-height-large: $pt-button-height !default;
     @include pt-flex-parent-fill();
   }
 
+  // apply the :focus state on .pt-input-group, not .pt-input
   &:focus,
   &.pt-active {
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
   }
 
+  // remove styling because .pt-input-group now looks like .pt-input
   // adding more specificity here so it also works when .pt-dark applied
   input.pt-input {
     @include pt-flex-child-fill();
@@ -77,8 +80,8 @@ $input-button-height-large: $pt-button-height !default;
     }
   }
 
-  > :nth-child(3),
-  > :nth-child(2):not(.pt-input) {
+  // children which are not .pt-input should not fill the container
+  > :not(.pt-input) {
     @include pt-flex-child();
   }
 
@@ -148,15 +151,6 @@ $input-button-height-large: $pt-button-height !default;
     .pt-icon-standard {
       color: $input-color-disabled;
     }
-
-    // adding more specificity here so it also works when .pt-dark applied
-    input.pt-input {
-      background: none;
-    }
-
-    .pt-icon {
-      @include pt-input-disabled();
-    }
   }
 
   &.pt-large {
@@ -172,15 +166,6 @@ $input-button-height-large: $pt-button-height !default;
 
     .pt-input {
       @include pt-input-large();
-
-      // take out padding if there's something before or after the input
-      &:not(:first-child) {
-        padding-left: 0;
-      }
-
-      &:not(:last-child) {
-        padding-right: 0;
-      }
     }
 
     .pt-input-action > .pt-spinner {
@@ -205,6 +190,11 @@ $input-button-height-large: $pt-button-height !default;
     &[disabled],
     &.pt-disabled {
       @include pt-dark-input-disabled();
+
+      // requrired to overwrite Blueprint's default .pt-input:disabled
+      input.pt-input {
+        background: none;
+      }
 
       .pt-icon-standard {
         color: $dark-input-color-disabled;
