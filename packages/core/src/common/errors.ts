@@ -75,7 +75,6 @@ export const TABS_WARN_DEPRECATED =
     " https://blueprintjs.com/#components.tabs.js";
 
 export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop as it always creates a new element.`;
-export const TOASTER_WARN_LEFT_RIGHT = ns + ` Toaster does not support LEFT or RIGHT positions.`;
 
 export const DIALOG_WARN_NO_HEADER_ICON = ns + ` <Dialog> iconName is ignored if title is omitted.`;
 export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
