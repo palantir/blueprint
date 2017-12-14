@@ -5,6 +5,7 @@
  */
 
 import * as React from "react";
+import { IConstructor } from "../../common/constructor";
 import { isFunction, safeInvoke } from "../../common/utils";
 
 import { IHotkeysProps } from "./hotkeys";
@@ -16,10 +17,6 @@ export interface IHotkeysTarget extends React.Component<any, any>, React.Compone
      * this method, and it must return a `Hotkeys` React element.
      */
     renderHotkeys(): React.ReactElement<IHotkeysProps>;
-}
-
-export interface IConstructor<T> {
-    new (...args: any[]): T;
 }
 
 export function HotkeysTarget<T extends IConstructor<IHotkeysTarget>>(WrappedComponent: T) {
@@ -64,8 +61,8 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTarget>>(WrappedCom
         }
 
         public render() {
-            // TODO handle HotkeysTarget being applied on a Component that doesn't return an actual Element
-            const element = super.render() as React.ReactElement<any>;
+            // TODO handle being applied on a Component that doesn't return an actual Element
+            const element = super.render() as JSX.Element;
             const hotkeys = this.renderHotkeys();
             this.localHotkeysEvents.setHotkeys(hotkeys.props);
             this.globalHotkeysEvents.setHotkeys(hotkeys.props);
@@ -73,7 +70,7 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTarget>>(WrappedCom
             if (element != null && this.localHotkeysEvents.count() > 0) {
                 const tabIndex = hotkeys.props.tabIndex === undefined ? 0 : hotkeys.props.tabIndex;
 
-                const { keyDown: existingKeyDown, keyUp: existingKeyUp } = this.props;
+                const { keyDown: existingKeyDown, keyUp: existingKeyUp } = element.props;
                 const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
                     this.localHotkeysEvents.handleKeyDown(e.nativeEvent as KeyboardEvent);
                     safeInvoke(existingKeyDown, e);

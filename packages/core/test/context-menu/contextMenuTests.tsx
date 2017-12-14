@@ -22,6 +22,19 @@ describe("ContextMenu", () => {
     before(() => assert.isNull(getPopover()));
     afterEach(() => ContextMenu.hide());
 
+    it("Decorator does not mutate the original class", () => {
+        class TestComponent extends React.Component<{}, {}> {
+            public renderContextMenu() {
+                return MENU;
+            }
+        }
+
+        const TargettedTestComponent = ContextMenuTarget(TestComponent);
+
+        // it's not the same Component
+        assert.notStrictEqual(TargettedTestComponent, TestComponent);
+    });
+
     it("React renders ContextMenu", () => {
         ContextMenu.show(MENU, { left: 0, top: 0 });
         assertContextMenuWasRendered();
