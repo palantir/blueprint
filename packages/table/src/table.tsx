@@ -790,7 +790,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
                 />
-                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "pt-table-reordering-cursor-overlay")} />
+                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_OVERLAY_REORDERING_CURSOR)} />
                 <GuideLayer
                     className={Classes.TABLE_RESIZE_GUIDES}
                     verticalGuides={verticalGuides}

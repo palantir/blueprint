@@ -45,6 +45,7 @@ export const TABLE_NO_WRAP_TEXT = "pt-table-no-wrap-text";
 export const TABLE_NULL = "pt-table-null";
 export const TABLE_OVERLAY = "pt-table-overlay";
 export const TABLE_OVERLAY_LAYER = "pt-table-overlay-layer";
+export const TABLE_OVERLAY_REORDERING_CURSOR = "pt-table-reordering-cursor-overlay";
 export const TABLE_POPOVER_WHITESPACE_NORMAL = "pt-table-popover-whitespace-normal";
 export const TABLE_POPOVER_WHITESPACE_PRE = "pt-table-popover-whitespace-pre";
 export const TABLE_QUADRANT = "pt-table-quadrant";
