@@ -37,8 +37,8 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^0.2.0",
-    "@blueprintjs/test-commons": "^0.2.0",
+    "@blueprintjs/node-build-scripts": "^0.3.0",
+    "@blueprintjs/test-commons": "^0.3.0",
     "@types/fuzzaldrin-plus": "^0.0.1",
     "@types/moment-timezone": "^0.5.0",
     "enzyme": "^3.2.0",
