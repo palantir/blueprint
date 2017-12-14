@@ -17,6 +17,7 @@
     "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
+    "dist:variables": "generate-css-variables generated/_icon-variables.scss",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
