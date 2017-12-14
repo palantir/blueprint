@@ -3,11 +3,11 @@
 @import "../../common/variables";
 @import "../common";
 
-.bp-table-null {
+.pt-table-null {
   color: $pt-text-color-disabled;
 }
 
-.bp-table-truncated-value {
+.pt-table-truncated-value {
   position: absolute;
   top: 0;
   // note: changing this value can throw off the width calculation in truncated popover
@@ -19,7 +19,7 @@
   text-overflow: ellipsis;
 }
 
-.bp-table-truncated-format-text {
+.pt-table-truncated-format-text {
   position: absolute;
   top: 0;
   // note: changing this value can throw off the width calculation in truncated popover
@@ -31,7 +31,7 @@
   text-overflow: ellipsis;
 }
 
-.bp-table-truncated-popover-target {
+.pt-table-truncated-popover-target {
   position: absolute;
   top: 0;
   right: $pt-grid-size / 2;
@@ -61,7 +61,7 @@
   }
 }
 
-.bp-table-truncated-popover {
+.pt-table-truncated-popover {
   min-width: 20 * $pt-grid-size;
   max-width: 60 * $pt-grid-size;
   max-height: 30 * $pt-grid-size;
@@ -70,11 +70,11 @@
   font-family: $pt-font-family-monospace;
 }
 
-.bp-table-popover-whitespace-pre {
+.pt-table-popover-whitespace-pre {
   white-space: pre;
 }
 
-.bp-table-popover-whitespace-normal {
+.pt-table-popover-whitespace-normal {
   white-space: normal;
 }
 

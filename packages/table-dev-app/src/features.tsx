@@ -206,7 +206,7 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
     };
 
     public renderColumnHeader = (columnIndex: number) => {
-        const renderName = (name: string) => {
+        const nameRenderer = (name: string) => {
             return (
                 <EditableName
                     name={name}
@@ -219,9 +219,9 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
         };
         return (
             <ColumnHeaderCell
-                renderMenu={renderTestMenu}
+                menuRenderer={renderTestMenu}
                 name={this.state.names[columnIndex]}
-                renderName={renderName}
+                nameRenderer={nameRenderer}
             />
         );
     };
@@ -367,7 +367,7 @@ class RowSelectableTable extends React.Component<{}, {}> {
 
 ReactDOM.render(<RowSelectableTable />, document.getElementById("table-select-rows"));
 
-document.getElementById("table-ledger").classList.add("bp-table-striped");
+document.getElementById("table-ledger").classList.add("pt-table-striped");
 
 ReactDOM.render(getTableComponent(3, 7, {}, { className: "" }), document.getElementById("table-ledger"));
 
@@ -523,7 +523,7 @@ ReactDOM.render(
                 return (
                     <ColumnHeaderCell
                         name={`${alpha} Column with a substantially long header name`}
-                        renderMenu={renderTestMenu}
+                        menuRenderer={renderTestMenu}
                     >
                         <h4>Header {alpha}</h4>
                         <p>Whatever interactive header content goes here lorem ipsum.</p>
@@ -533,7 +533,7 @@ ReactDOM.render(
         },
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell name={`${rowIndex + 1}`} renderMenu={renderTestMenu} />;
+                return <RowHeaderCell name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
             },
         },
     ),
