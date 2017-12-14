@@ -4,6 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// tslint:disable max-classes-per-file
+
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";

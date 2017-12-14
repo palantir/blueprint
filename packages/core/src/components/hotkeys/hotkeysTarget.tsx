@@ -24,7 +24,7 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTarget>>(WrappedCom
         throw new Error(`@HotkeysTarget-decorated class must implement \`renderHotkeys\`. ${WrappedComponent}`);
     }
 
-    return class HotkeysTarget extends WrappedComponent {
+    return class HotkeysTargetClass extends WrappedComponent {
         /** @internal */
         public globalHotkeysEvents?: HotkeysEvents;
 

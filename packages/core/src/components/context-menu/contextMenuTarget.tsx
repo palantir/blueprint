@@ -23,7 +23,7 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTarget>>(Wr
         console.warn(CONTEXTMENU_WARN_DECORATOR_NO_METHOD);
     }
 
-    return class ContextMenuTarget extends WrappedComponent {
+    return class ContextMenuTargetClass extends WrappedComponent {
         public render() {
             // TODO handle being applied on a Component that doesn't return an actual Element
             const element = super.render() as JSX.Element;
@@ -46,12 +46,7 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTarget>>(Wr
                         const htmlElement = ReactDOM.findDOMNode(this);
                         const darkTheme = htmlElement != null && isDarkTheme(htmlElement);
                         e.preventDefault();
-                        ContextMenu.show(
-                            menu,
-                            { left: e.clientX, top: e.clientY },
-                            this.onContextMenuClose,
-                            darkTheme
-                        );
+                        ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, this.onContextMenuClose, darkTheme);
                     }
                 }
 
