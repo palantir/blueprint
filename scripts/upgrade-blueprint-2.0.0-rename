@@ -34,7 +34,7 @@ Options
 
         A glob string to omit specific directories from the search path.
 
-    --prefix=(?!(?<=public )|(?<=private )|(?<=this\.))
+    --prefix=(?!(?<=public )|(?<=protected )|(?<=abstract )|(?<=private )|(?<=this\.))
 
         A regexp prefix for each find/replace prop string. The default includes
         groups of non-capturing negative lookbehinds. This helps limit the
@@ -77,7 +77,7 @@ done
 SEARCH_PATH=${SEARCH_PATH:-'.'}
 INCLUDE_GLOB=${INCLUDE_GLOB:-'*.{ts,tsx,scss,less}'}
 EXCLUDE_GLOB=${EXCLUDE_GLOB:-'{dist,build,node_modules}'}
-PREFIX=${PREFIX:-'(?!(?<=public )|(?<=private )|(?<=this\.))'}
+PREFIX=${PREFIX:-'(?!(?<=public )|(?<=protected )|(?<=abstract )|(?<=private )|(?<=this\.))'}
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
