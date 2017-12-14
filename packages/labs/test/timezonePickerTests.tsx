@@ -16,34 +16,24 @@ import {
     IInputGroupProps,
     IInputGroupState,
     InputGroup,
-    IPopoverProps,
+    IPopover2Props,
     IPopoverState,
     MenuItem,
+    Popover2,
 } from "@blueprintjs/core";
+import { IQueryListProps, IQueryListState, ISelectProps, ISelectState, QueryList, Select } from "@blueprintjs/select";
 import {
     getInitialTimezoneItems,
     getLocalTimezoneItem,
     getTimezoneItems,
     ITimezoneItem,
 } from "../src/components/timezone-picker/timezoneItems";
-import {
-    IQueryListProps,
-    IQueryListState,
-    ISelectProps,
-    ISelectState,
-    ITimezonePickerProps,
-    ITimezonePickerState,
-    Popover2,
-    QueryList,
-    Select,
-    TimezoneDisplayFormat,
-    TimezonePicker,
-} from "../src/index";
+import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src/index";
 
 type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezonePickerState>;
 type SelectShallowWrapper = ShallowWrapper<ISelectProps<ITimezoneItem>, ISelectState<ITimezoneItem>>;
 type QueryListShallowWrapper = ShallowWrapper<IQueryListProps<ITimezoneItem>, IQueryListState<ITimezoneItem>>;
-type PopoverShallowWrapper = ShallowWrapper<IPopoverProps, IPopoverState>;
+type PopoverShallowWrapper = ShallowWrapper<IPopover2Props, IPopoverState>;
 type InputGroupShallowWrapper = ShallowWrapper<IInputGroupProps, IInputGroupState>;
 
 describe("<TimezonePicker>", () => {
@@ -221,16 +211,15 @@ describe("<TimezonePicker>", () => {
     });
 
     it("popover can be controlled with popover props", () => {
-        const popoverProps: IPopoverProps = {
+        const popoverProps: IPopover2Props = {
             inline: true,
             isOpen: true,
-            tetherOptions: { constraints: [{ attachment: "together", pin: true, to: "window" }] },
-            useSmartArrowPositioning: true,
+            placement: "right",
         };
         const timezonePicker = shallow(<TimezonePicker popoverProps={popoverProps} />);
         const popover = findPopover(timezonePicker);
         for (const key of Object.keys(popoverProps)) {
-            assert.deepEqual(popover.prop(key), popoverProps[key as keyof IPopoverProps]);
+            assert.deepEqual(popover.prop(key), popoverProps[key as keyof IPopover2Props]);
         }
     });
 
@@ -260,10 +249,10 @@ describe("<TimezonePicker>", () => {
     });
 
     function getPopoverProps(
-        overrides: Partial<IPopoverProps> = {},
-        keysToUnset: Array<keyof IPopoverProps> = [],
-    ): Partial<IPopoverProps> {
-        const popoverProps: Partial<IPopoverProps> = {
+        overrides: Partial<IPopover2Props> = {},
+        keysToUnset: Array<keyof IPopover2Props> = [],
+    ): Partial<IPopover2Props> {
+        const popoverProps: Partial<IPopover2Props> = {
             inline: true,
             isOpen: true,
             ...overrides,

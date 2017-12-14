@@ -36,10 +36,12 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
 
     public render() {
         const columns = this.state.columnNames.map((_: string, index: number) => {
-            return <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />;
+            return (
+                <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
+            );
         });
         return (
-            <Table numRows={7} useInteractionBar={true}>
+            <Table numRows={7} enableColumnInteractionBar={true}>
                 {columns}
             </Table>
         );
@@ -60,7 +62,7 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
     };
 
     public renderColumnHeader = (columnIndex: number) => {
-        const renderName = (name: string) => {
+        const nameRenderer = (name: string) => {
             return (
                 <EditableName
                     name={name}
@@ -71,7 +73,7 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
                 />
             );
         };
-        return <ColumnHeaderCell name={this.state.columnNames[columnIndex]} renderName={renderName} />;
+        return <ColumnHeaderCell name={this.state.columnNames[columnIndex]} nameRenderer={nameRenderer} />;
     };
 
     private isValidValue(value: string) {

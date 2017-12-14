@@ -7,7 +7,7 @@
 Tables
 
 Markup:
-<table class="pt-table {{.modifier}}">
+<table class="pt-html-table {{.modifier}}">
   <thead>
     <tr>
       <th>Project</th>
@@ -34,21 +34,21 @@ Markup:
   </tbody>
 </table>
 
-.pt-condensed - Condensed appearance
-.pt-striped   - Striped appearance
-.pt-bordered  - Bordered appearance
+.pt-small - Small, condensed appearance
+.pt-html-table-striped   - Striped appearance
+.pt-html-table-bordered  - Bordered appearance
 .pt-interactive  - Enables hover styles on rows
 
-Styleguide pt-table
+Styleguide pt-html-table
 */
 
 $table-row-height: $pt-grid-size * 4 !default;
-$table-row-height-condensed: $pt-grid-size * 3 !default;
+$table-row-height-small: $pt-grid-size * 3 !default;
 $table-border-width: 1px !default;
 $table-border-color: $pt-divider-black !default;
 $dark-table-border-color: $pt-dark-divider-white !default;
 
-table.pt-table {
+table.pt-html-table {
   border-spacing: 0;
   font-size: $pt-font-size;
 
@@ -72,24 +72,24 @@ table.pt-table {
     box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
   }
 
-  &.pt-condensed {
-    $condensed-vertical-padding: centered-text($table-row-height-condensed);
+  &.pt-small {
+    $small-vertical-padding: centered-text($table-row-height-small);
 
     th,
     td {
-      padding-top: $condensed-vertical-padding;
-      padding-bottom: $condensed-vertical-padding;
+      padding-top: $small-vertical-padding;
+      padding-bottom: $small-vertical-padding;
     }
   }
 
-  &.pt-striped {
+  &.pt-html-table-striped {
     tbody tr:nth-child(odd) td {
       background: rgba($gray5, 0.2);
     }
   }
 
   // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
-  &.pt-bordered {
+  &.pt-html-table-bordered {
     th:not(:first-child) {
       box-shadow: inset $table-border-width 0 0 0 $table-border-color;
     }
@@ -102,7 +102,7 @@ table.pt-table {
       }
     }
 
-    &.pt-striped {
+    &.pt-html-table-striped {
       tbody tr:not(:first-child) td {
         box-shadow: none;
 
@@ -136,14 +136,14 @@ table.pt-table {
       box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
     }
 
-    &.pt-striped {
+    &.pt-html-table-striped {
       tbody tr:nth-child(odd) td {
         background: rgba($gray1, 0.15);
       }
     }
 
     // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
-    &.pt-bordered {
+    &.pt-html-table-bordered {
       th:not(:first-child) {
         box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
       }
@@ -156,7 +156,7 @@ table.pt-table {
         }
       }
 
-      &.pt-striped {
+      &.pt-html-table-striped {
         tbody tr:not(:first-child) td {
           box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
 

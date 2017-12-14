@@ -11,7 +11,7 @@
     "compile": "npm-run-all -p 'compile:*'",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
-    "compile:css": "node-sass --importer ../../node_modules/node-sass-package-importer/dist/cli.js --recursive src --output dist/ --source-map true",
+    "compile:css": "sass-compile ./src",
     "clean": "rm -rf dist/*",
     "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
@@ -33,14 +33,12 @@
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.2.0",
     "@types/fuzzaldrin-plus": "^0.0.1",
-    "bourbon": "^4.3.4",
-    "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.1",
-    "react": "^15.6.1",
-    "react-addons-css-transition-group": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.2.0",
+    "react-transition-group": "^2.2.1",
+    "react-dom": "^16.2.0",
     "tslint": "^5.8.0",
-    "typescript": "~2.4.2",
+    "typescript": "~2.6.2",
     "webpack": "^3.9.1"
   },
   "repository": {

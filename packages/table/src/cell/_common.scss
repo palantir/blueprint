@@ -55,11 +55,11 @@ $cell-transition-duration: $pt-transition-duration * 3;
 }
 
 @mixin cell-cursors() {
-  .bp-table-editing-enabled & {
+  .pt-table-editing-enabled & {
     cursor: $select-text-cursor;
   }
 
-  .bp-table-selection-enabled & {
+  .pt-table-selection-enabled & {
     cursor: $select-cell-cursor;
   }
 }

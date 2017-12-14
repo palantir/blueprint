@@ -19,15 +19,6 @@ module.exports = {
         extensions: [".js", ".ts", ".tsx"],
     },
 
-    // these externals are necessary for Enzyme harness
-    externals: {
-        "cheerio": "window",
-        "react/addons": true,
-        "react/lib/ExecutionEnvironment": true,
-        "react/lib/ReactContext": true,
-        "react-addons-test-utils": true,
-    },
-
     module: {
         rules: [
             {
@@ -40,6 +31,13 @@ module.exports = {
                 options: {
                     configFileName: "./test/tsconfig.json",
                 },
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    require.resolve("style-loader"),
+                    require.resolve("css-loader"),
+                ],
             },
             {
                 test: /\.scss$/,

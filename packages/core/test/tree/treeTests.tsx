@@ -131,10 +131,10 @@ describe("<Tree>", () => {
         contents[2].iconName = "pt-icon-document";
 
         const tree = renderTree({ contents });
-        const iconSelector = `.${Classes.TREE_NODE_ICON}.pt-icon-document`;
-        assert.lengthOf(tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_ICON}`), 0);
-        assert.lengthOf(tree.find(`.c1 > .${Classes.TREE_NODE_CONTENT} ${iconSelector}`), 1);
-        assert.lengthOf(tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT} ${iconSelector}`), 1);
+        const iconSelector = `span.${Classes.TREE_NODE_ICON}.pt-icon-document`;
+        assert.lengthOf(tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT} span.${Classes.TREE_NODE_ICON}`), 0, "c0");
+        assert.lengthOf(tree.find(`.c1 > .${Classes.TREE_NODE_CONTENT} ${iconSelector}`), 1, "c1");
+        assert.lengthOf(tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT} ${iconSelector}`), 1, "c2");
     });
 
     it("isExpanded controls node expansion", () => {
@@ -142,13 +142,13 @@ describe("<Tree>", () => {
         contents[3].isExpanded = false;
         contents[4].isExpanded = true;
 
-        const tree = renderTree({ contents });
-        assert.lengthOf(tree.find(`.c1.${Classes.TREE_NODE_EXPANDED}`), 0);
-        assert.lengthOf(tree.find(".c5"), 0);
-        assert.lengthOf(tree.find(`.c3.${Classes.TREE_NODE_EXPANDED}`), 0);
-        assert.lengthOf(tree.find(".c6"), 0);
-        assert.lengthOf(tree.find(`.c4.${Classes.TREE_NODE_EXPANDED}`), 1);
-        assert.lengthOf(tree.find(".c7"), 1);
+        const nodes = renderTree({ contents }).find("li");
+        assert.lengthOf(nodes.filter(`.c1.${Classes.TREE_NODE_EXPANDED}`), 0);
+        assert.lengthOf(nodes.filter(".c5"), 0);
+        assert.lengthOf(nodes.filter(`.c3.${Classes.TREE_NODE_EXPANDED}`), 0);
+        assert.lengthOf(nodes.filter(".c6"), 0);
+        assert.lengthOf(nodes.filter(`.c4.${Classes.TREE_NODE_EXPANDED}`), 1);
+        assert.lengthOf(nodes.filter(".c7"), 1);
     });
 
     it("isSelected selects nodes", () => {
@@ -156,11 +156,10 @@ describe("<Tree>", () => {
         contents[1].isSelected = false;
         contents[2].isSelected = true;
 
-        const tree = renderTree({ contents });
-
-        assert.lengthOf(tree.find(`.c0.${Classes.TREE_NODE_SELECTED}`), 0);
-        assert.lengthOf(tree.find(`.c1.${Classes.TREE_NODE_SELECTED}`), 0);
-        assert.lengthOf(tree.find(`.c2.${Classes.TREE_NODE_SELECTED}`), 1);
+        const nodes = renderTree({ contents }).find("li");
+        assert.lengthOf(nodes.filter(`.c0.${Classes.TREE_NODE_SELECTED}`), 0);
+        assert.lengthOf(nodes.filter(`.c1.${Classes.TREE_NODE_SELECTED}`), 0);
+        assert.lengthOf(nodes.filter(`.c2.${Classes.TREE_NODE_SELECTED}`), 1);
     });
 
     it("secondaryLabel renders correctly", () => {
@@ -168,7 +167,7 @@ describe("<Tree>", () => {
         contents[1].secondaryLabel = "Secondary";
         contents[2].secondaryLabel = <p>Paragraph</p>;
 
-        const tree = renderTree({ contents });
+        const tree = renderTree({ contents }).find("li");
 
         const secondaryLabelSelector = `> .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_SECONDARY_LABEL}`;
         assert.lengthOf(tree.find(`.c0 ${secondaryLabelSelector}`), 0);

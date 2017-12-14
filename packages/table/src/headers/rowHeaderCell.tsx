@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -17,7 +17,7 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     /**
      * Specifies if the row is reorderable.
      */
-    isRowReorderable?: boolean;
+    enableRowReordering?: boolean;
 
     /**
      * Specifies whether the full row is part of a selection.
@@ -25,11 +25,11 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     isRowSelected?: boolean;
 }
 
-export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
+export class RowHeaderCell extends AbstractPureComponent<IRowHeaderCellProps, {}> {
     public render() {
         const {
             // from IRowHeaderCellProps
-            isRowReorderable,
+            enableRowReordering,
             isRowSelected,
 
             // from IHeaderProps
@@ -38,7 +38,7 @@ export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
 
         return (
             <HeaderCell
-                isReorderable={this.props.isRowReorderable}
+                isReorderable={this.props.enableRowReordering}
                 isSelected={this.props.isRowSelected}
                 {...spreadableProps}
             >

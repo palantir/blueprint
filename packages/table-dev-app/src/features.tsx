@@ -39,11 +39,11 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
         return Utils.toBase26Alpha(col) + (row + 1);
     };
 
-    const tablePropsWithDefaults = { numRows, getCellClipboardData, enableFocus: true, ...tableProps };
+    const tablePropsWithDefaults = { numRows, getCellClipboardData, enableFocusedCell: true, ...tableProps };
 
     // combine column overrides
     const columnPropsWithDefaults = {
-        renderCell: (rowIndex: number, columnIndex: number) => {
+        cellRenderer: (rowIndex: number, columnIndex: number) => {
             return <Cell>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
         },
         ...columnProps,
@@ -104,12 +104,12 @@ class FormatsTable extends React.Component<{}, {}> {
         };
 
         return (
-            <Table ref={saveTable} numRows={FormatsTable.ROWS} isRowResizable={true}>
-                <Column name="Default" renderCell={this.renderDefaultCell} />
-                <Column name="Wrapped Text" renderCell={this.renderDefaultCellWrapped} />
-                <Column name="JSON" renderCell={this.renderJSONCell} />
-                <Column name="JSON wrapped text" renderCell={this.renderJSONCellWrappedText} />
-                <Column name="JSON wrapped cell" renderCell={this.renderJSONWrappedCell} />
+            <Table ref={saveTable} numRows={FormatsTable.ROWS} enableRowResizing={true}>
+                <Column name="Default" cellRenderer={this.renderDefaultCell} />
+                <Column name="Wrapped Text" cellRenderer={this.renderDefaultCellWrapped} />
+                <Column name="JSON" cellRenderer={this.renderJSONCell} />
+                <Column name="JSON wrapped text" cellRenderer={this.renderJSONCellWrappedText} />
+                <Column name="JSON wrapped cell" cellRenderer={this.renderJSONWrappedCell} />
             </Table>
         );
     }
@@ -177,14 +177,14 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
 
     public render() {
         const columns = this.state.names.map((_, index) => (
-            <Column key={index} renderCell={this.renderCell} renderColumnHeader={this.renderColumnHeader} />
+            <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
         ));
         return (
             <Table
                 numRows={7}
                 selectionModes={SelectionModes.COLUMNS_AND_CELLS}
-                enableFocus={true}
-                useInteractionBar={true}
+                enableFocusedCell={true}
+                enableColumnInteractionBar={true}
             >
                 {columns}
             </Table>
@@ -206,7 +206,7 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
     };
 
     public renderColumnHeader = (columnIndex: number) => {
-        const renderName = (name: string) => {
+        const nameRenderer = (name: string) => {
             return (
                 <EditableName
                     name={name}
@@ -219,9 +219,9 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
         };
         return (
             <ColumnHeaderCell
-                renderMenu={renderTestMenu}
+                menuRenderer={renderTestMenu}
                 name={this.state.names[columnIndex]}
-                renderName={renderName}
+                nameRenderer={nameRenderer}
             />
         );
     };
@@ -286,7 +286,7 @@ ReactDOM.render(
         2,
         {},
         {
-            fillBodyWithGhostCells: true,
+            enableGhostCells: true,
             selectionModes: SelectionModes.ALL,
         },
     ),
@@ -299,7 +299,7 @@ ReactDOM.render(
         2,
         {},
         {
-            fillBodyWithGhostCells: true,
+            enableGhostCells: true,
             selectionModes: SelectionModes.ALL,
         },
     ),
@@ -312,7 +312,7 @@ ReactDOM.render(
         100 * 1000,
         {},
         {
-            fillBodyWithGhostCells: true,
+            enableGhostCells: true,
             selectionModes: SelectionModes.ALL,
         },
     ),
@@ -328,9 +328,9 @@ class RowSelectableTable extends React.Component<{}, {}> {
         return (
             <div>
                 <Table
-                    renderBodyContextMenu={renderBodyContextMenu}
+                    bodyContextMenuRenderer={bodyContextMenuRenderer}
                     numRows={7}
-                    isRowHeaderShown={false}
+                    enableRowHeader={false}
                     onSelection={this.handleSelection}
                     selectedRegions={this.state.selectedRegions}
                     selectedRegionTransform={this.selectedRegionTransform}
@@ -367,7 +367,7 @@ class RowSelectableTable extends React.Component<{}, {}> {
 
 ReactDOM.render(<RowSelectableTable />, document.getElementById("table-select-rows"));
 
-document.getElementById("table-ledger").classList.add("bp-table-striped");
+document.getElementById("table-ledger").classList.add("pt-table-striped");
 
 ReactDOM.render(getTableComponent(3, 7, {}, { className: "" }), document.getElementById("table-ledger"));
 
@@ -423,20 +423,20 @@ ReactDOM.render(
         3,
         7,
         {
-            renderCell(rowIndex: number, columnIndex: number) {
+            cellRenderer(rowIndex: number, columnIndex: number) {
                 return <Cell intent={rowIndex as Intent}>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
             },
         },
         {
-            isColumnResizable: false,
-            isRowResizable: false,
+            enableColumnResizing: false,
+            enableRowResizing: false,
             selectionModes: SelectionModes.NONE,
         },
     ),
     document.getElementById("table-1"),
 );
 
-const renderBodyContextMenu = (context: IMenuContext) => {
+const bodyContextMenuRenderer = (context: IMenuContext) => {
     const getCellData = (row: number, col: number) => {
         return Utils.toBase26Alpha(col) + (row + 1);
     };
@@ -454,10 +454,10 @@ ReactDOM.render(
         7,
         {},
         {
-            allowMultipleSelection: true,
-            isColumnResizable: true,
-            isRowResizable: true,
-            renderBodyContextMenu,
+            bodyContextMenuRenderer,
+            enableColumnResizing: true,
+            enableMultipleSelection: true,
+            enableRowResizing: true,
             selectionModes: SelectionModes.ALL,
         },
     ),
@@ -471,7 +471,7 @@ ReactDOM.render(
         {},
         {
             defaultColumnWidth: 60,
-            isRowHeaderShown: false,
+            enableRowHeader: false,
         },
     ),
     document.getElementById("table-3"),
@@ -497,7 +497,7 @@ ReactDOM.render(
         3,
         7,
         {
-            renderColumnHeader: (columnIndex: number) => {
+            columnHeaderCellRenderer: (columnIndex: number) => {
                 return <ColumnHeaderCell name={Utils.toBase26Alpha(columnIndex)} isActive={columnIndex % 3 === 0} />;
             },
         },
@@ -518,12 +518,12 @@ ReactDOM.render(
         10,
         70,
         {
-            renderColumnHeader: (columnIndex: number) => {
+            columnHeaderCellRenderer: (columnIndex: number) => {
                 const alpha = Utils.toBase26Alpha(columnIndex);
                 return (
                     <ColumnHeaderCell
                         name={`${alpha} Column with a substantially long header name`}
-                        renderMenu={renderTestMenu}
+                        menuRenderer={renderTestMenu}
                     >
                         <h4>Header {alpha}</h4>
                         <p>Whatever interactive header content goes here lorem ipsum.</p>
@@ -533,7 +533,7 @@ ReactDOM.render(
         },
         {
             renderRowHeaderCell: (rowIndex: number) => {
-                return <RowHeaderCell name={`${rowIndex + 1}`} renderMenu={renderTestMenu} />;
+                return <RowHeaderCell name={`${rowIndex + 1}`} menuRenderer={renderTestMenu} />;
             },
         },
     ),
@@ -551,10 +551,10 @@ ReactDOM.render(
         2,
         5,
         {
-            renderColumnHeader: () => <CustomHeaderCell name="sup" />,
+            columnHeaderCellRenderer: () => <CustomHeaderCell name="sup" />,
         },
         {
-            allowMultipleSelection: false,
+            enableMultipleSelection: false,
         },
     ),
     document.getElementById("table-7"),
@@ -568,7 +568,7 @@ const longContentRenderCell = () => {
 ReactDOM.render(
     <Table numRows={4}>
         <Column name="My" />
-        <Column name="Table" renderCell={longContentRenderCell} />
+        <Column name="Table" cellRenderer={longContentRenderCell} />
     </Table>,
     document.getElementById("table-8"),
 );
@@ -617,11 +617,11 @@ class ReorderableTableExample extends React.Component<{}, IReorderableTableExamp
 
     public componentDidMount() {
         const children = [
-            <Column key="1" name="Letter" renderCell={this.renderLetterCell} />,
-            <Column key="2" name="Fruit" renderCell={this.renderFruitCell} />,
-            <Column key="3" name="Animal" renderCell={this.renderAnimalCell} />,
-            <Column key="4" name="Country" renderCell={this.renderCountryCell} />,
-            <Column key="5" name="City" renderCell={this.renderCityCell} />,
+            <Column key="1" name="Letter" cellRenderer={this.renderLetterCell} />,
+            <Column key="2" name="Fruit" cellRenderer={this.renderFruitCell} />,
+            <Column key="3" name="Animal" cellRenderer={this.renderAnimalCell} />,
+            <Column key="4" name="Country" cellRenderer={this.renderCountryCell} />,
+            <Column key="5" name="City" cellRenderer={this.renderCityCell} />,
         ];
         this.setState({ children });
     }
@@ -629,8 +629,8 @@ class ReorderableTableExample extends React.Component<{}, IReorderableTableExamp
     public render() {
         return (
             <Table
-                isColumnReorderable={true}
-                isRowReorderable={true}
+                enableColumnReordering={true}
+                enableRowReordering={true}
                 numRows={this.state.data.length}
                 onColumnsReordered={this.handleColumnsReordered}
                 onRowsReordered={this.handleRowsReordered}

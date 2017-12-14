@@ -15,7 +15,7 @@ describe("<Text>", () => {
         const textContent = "textContent";
         const className = "bp-test-class";
         const wrapper = mount(<Text className={className}>{textContent}</Text>);
-        const element = wrapper.find(`.${className}`);
+        const element = wrapper.find(`.${className}`).hostNodes();
         assert.lengthOf(element, 1, `expected to find 1 .${className}`);
         assert.strictEqual(element.text(), textContent, "content incorrect value");
     });
