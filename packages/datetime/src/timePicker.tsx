@@ -382,10 +382,10 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 }
 
 enum TimeUnit {
-    HOUR,
-    MINUTE,
-    SECOND,
-    MS,
+    HOUR = "hour",
+    MINUTE = "minute",
+    SECOND = "second",
+    MS = "ms",
 }
 
 function formatTime(time: number, unit: TimeUnit) {
@@ -454,7 +454,7 @@ function loopTime(time: number, unit: TimeUnit) {
 }
 
 function minTime(unit: TimeUnit) {
-    const min: { [unit: number]: number } = {
+    const min: Record<TimeUnit, number> = {
         [TimeUnit.HOUR]: DEFAULT_MIN_HOUR,
         [TimeUnit.MINUTE]: DEFAULT_MIN_MINUTE,
         [TimeUnit.SECOND]: DEFAULT_MIN_SECOND,
@@ -464,7 +464,7 @@ function minTime(unit: TimeUnit) {
 }
 
 function maxTime(unit: TimeUnit) {
-    const max: { [unit: number]: number } = {
+    const max: Record<TimeUnit, number> = {
         [TimeUnit.HOUR]: DEFAULT_MAX_HOUR,
         [TimeUnit.MINUTE]: DEFAULT_MAX_MINUTE,
         [TimeUnit.SECOND]: DEFAULT_MAX_SECOND,

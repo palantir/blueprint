@@ -20,10 +20,10 @@ import { Locator } from "../../locator";
 const CONTENT_DIV_WIDTH_DELTA = 25;
 
 export enum TruncatedPopoverMode {
-    ALWAYS,
-    NEVER,
-    WHEN_TRUNCATED,
-    WHEN_TRUNCATED_APPROX,
+    ALWAYS = "always",
+    NEVER = "never",
+    WHEN_TRUNCATED = "when_truncated",
+    WHEN_TRUNCATED_APPROX = "when_truncated_approx",
 }
 
 export interface ITrucatedFormateMeasureByApproximateOptions {
