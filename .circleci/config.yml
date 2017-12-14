@@ -173,6 +173,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: '.'
+      - restore_cache:
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
