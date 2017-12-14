@@ -9,7 +9,7 @@ import * as ReactDOM from "react-dom";
 
 import { IConstructor } from "../../common/constructor";
 import { CONTEXTMENU_WARN_DECORATOR_NO_METHOD } from "../../common/errors";
-import { isFunction, safeInvoke } from "../../common/utils";
+import { getDisplayName, isFunction, safeInvoke } from "../../common/utils";
 import { isDarkTheme } from "../../common/utils/isDarkTheme";
 import * as ContextMenu from "./contextMenu";
 
@@ -24,6 +24,8 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTarget>>(Wr
     }
 
     return class ContextMenuTargetClass extends WrappedComponent {
+        public static displayName = `ContextMenuTarget(${getDisplayName(WrappedComponent)})`;
+
         public render() {
             // TODO handle being applied on a Component that doesn't return an actual Element
             const element = super.render() as JSX.Element;

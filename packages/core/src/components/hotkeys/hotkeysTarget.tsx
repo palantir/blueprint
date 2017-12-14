@@ -6,7 +6,7 @@
 
 import * as React from "react";
 import { IConstructor } from "../../common/constructor";
-import { isFunction, safeInvoke } from "../../common/utils";
+import { getDisplayName, isFunction, safeInvoke } from "../../common/utils";
 
 import { IHotkeysProps } from "./hotkeys";
 import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
@@ -25,6 +25,8 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTarget>>(WrappedCom
     }
 
     return class HotkeysTargetClass extends WrappedComponent {
+        public static displayName = `HotkeysTarget(${getDisplayName(WrappedComponent)})`;
+
         /** @internal */
         public globalHotkeysEvents?: HotkeysEvents;
 

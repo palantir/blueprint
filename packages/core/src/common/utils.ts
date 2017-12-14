@@ -22,6 +22,16 @@ export function isFunction(value: any): value is Function {
     return typeof value === "function";
 }
 
+export interface IHasName {
+    name?: string;
+}
+
+export function getDisplayName(ComponentClass: React.ComponentClass | IHasName) {
+    return (ComponentClass as React.ComponentClass).displayName ||
+        (ComponentClass as IHasName).name ||
+        "Unknown";
+}
+
 /**
  * Safely invoke the function with the given arguments, if it is indeed a
  * function, and return its value.
