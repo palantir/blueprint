@@ -22,12 +22,15 @@ export function isFunction(value: any): value is Function {
     return typeof value === "function";
 }
 
-export interface IHasName {
+/**
+ * Represents anything that has a `name` property such as Functions.
+ */
+export interface INamed {
     name?: string;
 }
 
-export function getDisplayName(ComponentClass: React.ComponentClass | IHasName) {
-    return (ComponentClass as React.ComponentClass).displayName || (ComponentClass as IHasName).name || "Unknown";
+export function getDisplayName(ComponentClass: React.ComponentClass | INamed) {
+    return (ComponentClass as React.ComponentClass).displayName || (ComponentClass as INamed).name || "Unknown";
 }
 
 /**
