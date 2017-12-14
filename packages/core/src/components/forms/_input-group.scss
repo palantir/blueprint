@@ -73,6 +73,11 @@ $input-button-height-large: $pt-button-height !default;
     }
   }
 
+  > :nth-child(3),
+  > :nth-child(2):not(.pt-input) {
+    @include pt-flex-child();
+  }
+
   .pt-button {
     @include pt-button-height($input-button-height);
     margin: ($pt-input-height - $input-button-height) / 2;
@@ -91,8 +96,6 @@ $input-button-height-large: $pt-button-height !default;
   // adjusting the margin of spinners in input groups
   // we have to avoid targetting buttons that contain a spinner
   .pt-input-action {
-    @include pt-flex-child();
-
     > .pt-spinner {
       margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
     }
