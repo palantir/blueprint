@@ -93,7 +93,7 @@ $input-button-height-large: $pt-button-height !default;
   }
 
   > .pt-icon-standard {
-    padding: 0 ($pt-input-height - $pt-icon-size-standard) / 2;
+    margin: 0 ($pt-input-height - $pt-icon-size-standard) / 2;
   }
 
   .pt-icon-standard {
@@ -161,7 +161,7 @@ $input-button-height-large: $pt-button-height !default;
     }
 
     > .pt-icon-standard {
-      padding: 0 ($pt-input-height-large - $pt-icon-size-standard) / 2;
+      margin: 0 ($pt-input-height-large - $pt-icon-size-standard) / 2;
     }
 
     .pt-input {
