@@ -7,8 +7,11 @@
 // TODO: make this an executable script that takes configuration from CLI arguments so we don't need
 // to use the `mocha` CLI and write an isotest.js file in every project
 
-const { render } = require("enzyme");
+const Enzyme = require("enzyme");
+const Adapter = require("enzyme-adapter-react-16");
 const React = require("react");
+
+Enzyme.configure({ adapter: new Adapter() });
 
 /**
  * Determines if the passed Component is a React Class or not
@@ -46,7 +49,7 @@ module.exports = function generateIsomorphicTests(Components, props, children, s
                     // render to static HTML, just as a server would.
                     // we care merely that `render()` succeeds: it can be server-rendered.
                     // errors will fail the test and log full stack traces to the console. nifty!
-                    render(element);
+                    Enzyme.render(element);
                 });
             }
         }

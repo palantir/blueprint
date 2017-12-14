@@ -5,23 +5,22 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
-    AbstractComponent,
+    AbstractPureComponent,
     Button,
     Classes as CoreClasses,
     HTMLInputProps,
     IButtonProps,
     IInputGroupProps,
+    IPopover2Props,
     IProps,
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
+import { ISelectItemRendererProps, Select } from "@blueprintjs/select";
 import * as Classes from "../../common/classes";
-import { IPopover2Props } from "../popover/popover2";
-import { ISelectItemRendererProps, Select } from "../select/select";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
 import { filterWithQueryCandidates, getTimezoneQueryCandidates } from "./timezoneUtils";
@@ -101,8 +100,7 @@ export interface ITimezonePickerState {
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
-@PureRender
-export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITimezonePickerState> {
+export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
     public static displayName = "Blueprint.TimezonePicker";
 
     public static defaultProps: Partial<ITimezonePickerProps> = {

@@ -4,8 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "es6-shim";
-
 import { expect } from "chai";
 import * as sinon from "sinon";
 
@@ -36,8 +34,10 @@ describe("Selection", () => {
 
     it("Selects a single column on click", () => {
         const onSelection = sinon.spy();
-        const onFocus = sinon.spy();
-        const table = harness.mount(createTableOfSize(3, 7, {}, { enableFocus: true, onSelection, onFocus }));
+        const onFocusedCell = sinon.spy();
+        const table = harness.mount(
+            createTableOfSize(3, 7, {}, { enableFocusedCell: true, onSelection, onFocusedCell }),
+        );
 
         table
             .find(COLUMN_TH_SELECTOR)
@@ -46,8 +46,8 @@ describe("Selection", () => {
 
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
-        expect(onFocus.called).to.equal(true);
-        expect(onFocus.lastCall.args).to.deep.equal([{ col: 0, row: 0, focusSelectionIndex: 0 }]);
+        expect(onFocusedCell.called).to.equal(true);
+        expect(onFocusedCell.lastCall.args).to.deep.equal([{ col: 0, row: 0, focusSelectionIndex: 0 }]);
     });
 
     // TODO: Fix

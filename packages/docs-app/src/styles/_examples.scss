@@ -81,7 +81,7 @@
   );
   @include react-transition-phase(
     "pt-overlay",
-    "leave",
+    "exit",
     $leave,
     $pt-transition-duration * 5,
     $before: "&"

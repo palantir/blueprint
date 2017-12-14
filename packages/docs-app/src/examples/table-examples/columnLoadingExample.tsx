@@ -66,7 +66,7 @@ export class ColumnLoadingExample extends BaseExample<IColumnLoadingExampleState
                     key={index}
                     loadingOptions={this.loadingOptions(index)}
                     name={this.formatColumnName(columnName)}
-                    renderCell={this.renderCell}
+                    cellRenderer={this.renderCell}
                 />,
             );
         });

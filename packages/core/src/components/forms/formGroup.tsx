@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IIntentProps, IProps } from "../../common/props";
@@ -44,8 +43,7 @@ export interface IFormGroupProps extends IIntentProps, IProps {
     requiredLabel?: boolean | React.ReactNode;
 }
 
-@PureRender
-export class FormGroup extends React.Component<IFormGroupProps, {}> {
+export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
     /**
      * Element used to render `required` message when a boolean value is provided for that prop.
      * Modifying the value of this property will change the default globally in your app.

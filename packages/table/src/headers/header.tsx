@@ -323,14 +323,14 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
         const baseChildren = (
             <DragSelectable
-                allowMultipleSelection={this.props.allowMultipleSelection}
+                enableMultipleSelection={this.props.enableMultipleSelection}
                 disabled={this.isDragSelectableDisabled}
                 focusedCell={this.props.focusedCell}
                 ignoredSelectors={[`.${Classes.TABLE_REORDER_HANDLE_TARGET}`]}
                 key={getIndexClass(index)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForSelection}
-                onFocus={this.props.onFocus}
+                onFocusedCell={this.props.onFocusedCell}
                 onSelection={this.handleDragSelectableSelection}
                 onSelectionEnd={this.handleDragSelectableSelectionEnd}
                 selectedRegions={selectedRegions}
@@ -394,7 +394,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                 onReordered={this.props.onReordered}
                 onReordering={this.props.onReordering}
                 onSelection={this.props.onSelection}
-                onFocus={this.props.onFocus}
+                onFocusedCell={this.props.onFocusedCell}
                 selectedRegions={this.props.selectedRegions}
                 toRegion={this.props.toRegion}
             >

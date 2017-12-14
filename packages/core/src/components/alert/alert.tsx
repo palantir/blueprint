@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent, Classes, Intent, IProps } from "../../common";
+import { AbstractPureComponent, Classes, Intent, IProps } from "../../common";
 import { ALERT_WARN_CANCEL_PROPS } from "../../common/errors";
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
@@ -55,7 +55,7 @@ export interface IAlertProps extends IProps {
     onConfirm(e: React.MouseEvent<HTMLButtonElement>): void;
 }
 
-export class Alert extends AbstractComponent<IAlertProps, {}> {
+export class Alert extends AbstractPureComponent<IAlertProps, {}> {
     public static defaultProps: IAlertProps = {
         confirmButtonText: "OK",
         isOpen: false,

@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
@@ -24,8 +23,7 @@ export interface IControlGroupProps extends React.AllHTMLAttributes<HTMLDivEleme
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@PureRender
-export class ControlGroup extends React.Component<IControlGroupProps, {}> {
+export class ControlGroup extends React.PureComponent<IControlGroupProps, {}> {
     public static displayName = "Blueprint.ControlGroup";
 
     public render() {

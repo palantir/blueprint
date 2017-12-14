@@ -10,12 +10,14 @@ import * as React from "react";
 import { Simulate } from "react-dom/test-utils";
 import { SinonSpy, spy } from "sinon";
 
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import { Classes, IPopoverProps, Overlay, Popover, PopoverInteractionKind, SVGPopover, Tooltip } from "../../src/index";
-import { dispatchMouseEvent } from "../common/utils";
 
-describe("<Popover>", () => {
+// Skipping tests since this component is deprecated
+describe.skip("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper;
 
@@ -35,7 +37,7 @@ describe("<Popover>", () => {
 
     describe("validation:", () => {
         it("throws error if given no target", () => {
-            assert.throws(() => shallow(<Popover />), Errors.POPOVER_REQUIRES_TARGET);
+            expectPropValidationError(Popover, {}, Errors.POPOVER_REQUIRES_TARGET);
         });
 
         it("warns if given > 2 target elements", () => {

@@ -265,7 +265,7 @@ describe("DragReorderable", () => {
                 .mouse("mousemove")
                 .mouse("mouseup");
             expect(callbacks.onSelection.called).to.be.false;
-            expect(callbacks.onFocus.called).to.be.false;
+            expect(callbacks.onFocusedCell.called).to.be.false;
         });
     });
 
@@ -290,8 +290,8 @@ describe("DragReorderable", () => {
             const element = reorderable.find(ELEMENT_SELECTOR, UNSELECTED_INDEX);
 
             element.mouse("mousedown");
-            expect(callbacks.onFocus.called).to.be.true;
-            expect(callbacks.onFocus.firstCall.args[0]).to.deep.equal({
+            expect(callbacks.onFocusedCell.called).to.be.true;
+            expect(callbacks.onFocusedCell.firstCall.args[0]).to.deep.equal({
                 col: UNSELECTED_INDEX,
                 focusSelectionIndex: 0,
                 row: 0,
@@ -320,8 +320,8 @@ describe("DragReorderable", () => {
                 .mouse("mouseup");
 
             // called once on mousedown and again on mouseup
-            expect(callbacks.onFocus.calledTwice).to.be.true;
-            expect(callbacks.onFocus.secondCall.args[0]).to.deep.equal({
+            expect(callbacks.onFocusedCell.calledTwice).to.be.true;
+            expect(callbacks.onFocusedCell.secondCall.args[0]).to.deep.equal({
                 col: NEW_INDEX,
                 focusSelectionIndex: 0,
                 row: 0,
@@ -333,7 +333,7 @@ describe("DragReorderable", () => {
         return {
             locateClick: sinon.stub(),
             locateDrag: sinon.stub(),
-            onFocus: sinon.stub(),
+            onFocusedCell: sinon.stub(),
             onReordered: sinon.stub(),
             onReordering: sinon.stub(),
             onSelection: sinon.stub(),

@@ -16,7 +16,6 @@ export interface IDateInputExampleState {
     closeOnSelection?: boolean;
     disabled?: boolean;
     formatKey?: string;
-    openOnFocus?: boolean;
     reverseMonthAndYearMenus?: boolean;
     timePrecision?: TimePickerPrecision;
 }
@@ -26,11 +25,9 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
         closeOnSelection: true,
         disabled: false,
         formatKey: Object.keys(FORMATS)[0],
-        openOnFocus: true,
         reverseMonthAndYearMenus: false,
     };
 
-    private toggleFocus = handleBooleanChange(openOnFocus => this.setState({ openOnFocus }));
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
     private toggleFormat = handleStringChange(formatKey => this.setState({ formatKey }));
@@ -60,12 +57,6 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     protected renderOptions() {
         return [
             [
-                <Switch
-                    checked={this.state.openOnFocus}
-                    label="Open on input focus"
-                    key="Focus"
-                    onChange={this.toggleFocus}
-                />,
                 <Switch
                     checked={this.state.closeOnSelection}
                     label="Close on selection"

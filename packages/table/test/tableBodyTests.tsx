@@ -100,21 +100,21 @@ describe("TableBody", () => {
         }
     });
 
-    describe("renderBodyContextMenu", () => {
+    describe("bodyContextMenuRenderer", () => {
         // 0-indexed coordinates
         const TARGET_ROW = 1;
         const TARGET_COLUMN = 1;
         const TARGET_CELL_COORDS = { row: TARGET_ROW, col: TARGET_COLUMN };
         const TARGET_REGION = Regions.cell(TARGET_ROW, TARGET_COLUMN);
 
-        const onFocus = sinon.spy();
+        const onFocusedCell = sinon.spy();
         const onSelection = sinon.spy();
-        const renderBodyContextMenu = sinon.stub().returns(<div />);
+        const bodyContextMenuRenderer = sinon.stub().returns(<div />);
 
         afterEach(() => {
-            onFocus.reset();
+            onFocusedCell.reset();
             onSelection.reset();
-            renderBodyContextMenu.reset();
+            bodyContextMenuRenderer.reset();
         });
 
         describe("on right-click", () => {
@@ -164,15 +164,18 @@ describe("TableBody", () => {
             it("renders context menu using new selection if selection changed on right-click", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                const menuContext = renderBodyContextMenu.firstCall.args[0] as MenuContext;
+                const menuContext = bodyContextMenuRenderer.firstCall.args[0] as MenuContext;
                 expect(menuContext.getSelectedRegions()).to.deep.equal([TARGET_REGION]);
             });
 
             it("moves focused cell to right-clicked cell if selection changed on right-click", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                expect(onFocus.calledOnce).to.be.true;
-                expect(onFocus.firstCall.args[0]).to.deep.equal({ ...TARGET_CELL_COORDS, focusSelectionIndex: 0 });
+                expect(onFocusedCell.calledOnce).to.be.true;
+                expect(onFocusedCell.firstCall.args[0]).to.deep.equal({
+                    ...TARGET_CELL_COORDS,
+                    focusSelectionIndex: 0,
+                });
             });
         }
 
@@ -181,12 +184,12 @@ describe("TableBody", () => {
             selectedRegions: IRegion[],
         ) {
             return mountTableBody({
+                bodyContextMenuRenderer,
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
-                onFocus,
+                onFocusedCell,
                 onSelection,
-                renderBodyContextMenu,
                 selectedRegions,
             });
         }
@@ -211,15 +214,15 @@ describe("TableBody", () => {
 
         return mount(
             <TableBody
-                cellRenderer={renderCell}
+                cellRenderer={cellRenderer}
                 grid={grid}
                 loading={false}
                 locator={null}
                 renderMode={renderMode as RenderMode.BATCH | RenderMode.NONE}
                 viewportRect={viewportRect}
                 // ISelectableProps
-                allowMultipleSelection={true}
-                onFocus={noop}
+                enableMultipleSelection={true}
+                onFocusedCell={noop}
                 onSelection={noop}
                 selectedRegions={[]}
                 // IRowIndices
@@ -233,7 +236,7 @@ describe("TableBody", () => {
         );
     }
 
-    function renderCell() {
+    function cellRenderer() {
         return <Cell>gg</Cell>;
     }
 

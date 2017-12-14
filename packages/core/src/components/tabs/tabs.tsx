@@ -5,11 +5,10 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { findDOMNode } from "react-dom";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import * as Keys from "../../common/keys";
@@ -58,8 +57,7 @@ export interface ITabsState {
 
 const TAB_CSS_SELECTOR = "li[role=tab]";
 
-@PureRender
-export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
+export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     public static defaultProps: ITabsProps = {
         initialSelectedTabIndex: 0,
     };
@@ -322,13 +320,11 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
             return 0;
         }
 
-        let index = 0;
         let panelCount = 0;
         React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
             if (child.type === TabPanel) {
                 panelCount++;
             }
-            index++;
         });
 
         return panelCount;

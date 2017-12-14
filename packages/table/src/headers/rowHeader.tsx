@@ -33,19 +33,19 @@ export interface IRowHeaderProps extends IHeaderProps, IRowHeights, IRowIndices 
     /**
      * Renders the cell for each row header
      */
-    renderRowHeader?: IRowHeaderRenderer;
+    rowHeaderCellRenderer?: IRowHeaderRenderer;
 }
 
 export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     public static defaultProps = {
-        renderRowHeader: renderDefaultRowHeader,
+        rowHeaderCellRenderer: renderDefaultRowHeader,
     };
 
     public render() {
         const {
             // from IRowHeaderProps
             onRowHeightChanged,
-            renderRowHeader: renderHeaderCell,
+            rowHeaderCellRenderer: renderHeaderCell,
 
             // from IRowHeights
             minRowHeight: minSize,
@@ -72,7 +72,7 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 getMouseCoordinate={this.getMouseCoordinate}
                 handleResizeEnd={this.handleResizeEnd}
                 handleSizeChanged={this.handleSizeChanged}
-                headerCellIsReorderablePropName={"isRowReorderable"}
+                headerCellIsReorderablePropName={"enableRowReordering"}
                 headerCellIsSelectedPropName={"isRowSelected"}
                 indexEnd={indexEnd}
                 indexStart={indexStart}
