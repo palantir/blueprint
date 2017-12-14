@@ -64,34 +64,3 @@ safe and allows you to control exactly where the panel appears in the DOM (by re
 as needed).
 
 @interface ITabProps
-
-@### Usage with React Router
-
-Often, you'll want to link tab navigation to overall app navigation, including updating the URL.
-[react-router](https://github.com/reactjs/react-router) is a commonly-used library for React
-applications. Here's how you might configure tabs to work with it:
-
-```tsx
-import { render } from "react-dom";
-import { Router, Route } from "react-router";
-import { Tabs, Tab } from "@blueprintjs/core";
-
-const App = () => { ... };
-
-// keys are necessary in JSX.Element lists to keep React happy
-const contents = [
-    <Tab key="home" id="home" title="Home" panel={<HomePanel />}>,
-    <Tab key="proj" id="projects" title="Projects" panel={<ProjectsPanel />}>,
-];
-
-export const Home = () => <Tabs selectedTabId="home">{contents}</Tabs>;
-export const Projects = () => <Tabs selectedTabId="projects">{contents}</Tabs>;
-
-render(
-    <Router path="/" component={App}>
-        <Route path="home" component={Home}/>
-        <Route path="projects" component={Projects}/>
-    </Router>,
-    document.querySelector("#app")
-);
-```
