@@ -304,8 +304,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             console.warn("[Blueprint] Disabling <Popover> with empty/whitespace content...");
         }
 
+        // set tag=false to not wrap the provided target in another DOM node.
         return (
-            <Manager tag={this.props.rootElementTag}>
+            <Manager tag={false}>
                 <Target {...targetProps} innerRef={this.refHandlers.target}>
                     {target}
                 </Target>
