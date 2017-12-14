@@ -102,8 +102,16 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                     </Tooltip2>
                 </div>
                 <br />
-                <Popover2 content={<h1>Popover!</h1>} position={Position.RIGHT} popoverClassName="pt-popover-content-sizing">
-                    <Tooltip2 content={<span>This button also has a popover!</span>} position={Position.RIGHT} inline={true}>
+                <Popover2
+                    content={<h1>Popover!</h1>}
+                    position={Position.RIGHT}
+                    popoverClassName="pt-popover-content-sizing"
+                >
+                    <Tooltip2
+                        content={<span>This button also has a popover!</span>}
+                        position={Position.RIGHT}
+                        inline={true}
+                    >
                         <Button intent={Intent.SUCCESS} text="Hover and click me" />
                     </Tooltip2>
                 </Popover2>
