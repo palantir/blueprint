@@ -132,6 +132,8 @@ $pt-dark-intent-text-colors: (
 
 @mixin pt-flex-child-fill {
   flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
 }
 
 @function border-shadow($alpha, $color: $black, $size: 1px) {
