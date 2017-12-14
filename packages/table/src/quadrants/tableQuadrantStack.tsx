@@ -162,7 +162,7 @@ export interface ITableQuadrantStackProps extends IProps {
     /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
      */
-    renderMenu?: (refHandler: (ref: HTMLElement) => void) => JSX.Element;
+    menuRenderer?: (refHandler: (ref: HTMLElement) => void) => JSX.Element;
 
     /**
      * A callback that renders either all of or just the frozen section of the row header.
@@ -368,7 +368,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
                 quadrantType={QuadrantType.LEFT}
                 columnHeaderCellRenderer={this.renderLeftQuadrantColumnHeader}
-                renderMenu={this.renderLeftQuadrantMenu}
+                menuRenderer={this.renderLeftQuadrantMenu}
                 rowHeaderCellRenderer={this.renderLeftQuadrantRowHeader}
                 scrollContainerRef={this.quadrantRefHandlers[QuadrantType.LEFT].scrollContainer}
             />
@@ -381,7 +381,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].quadrant}
                 quadrantType={QuadrantType.TOP_LEFT}
                 columnHeaderCellRenderer={this.renderTopLeftQuadrantColumnHeader}
-                renderMenu={this.renderTopLeftQuadrantMenu}
+                menuRenderer={this.renderTopLeftQuadrantMenu}
                 rowHeaderCellRenderer={this.renderTopLeftQuadrantRowHeader}
                 scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].scrollContainer}
             />
@@ -398,7 +398,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.MAIN].quadrant}
                     quadrantType={QuadrantType.MAIN}
                     columnHeaderCellRenderer={this.renderMainQuadrantColumnHeader}
-                    renderMenu={this.renderMainQuadrantMenu}
+                    menuRenderer={this.renderMainQuadrantMenu}
                     rowHeaderCellRenderer={this.renderMainQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.MAIN].scrollContainer}
                 />
@@ -407,7 +407,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP].quadrant}
                     quadrantType={QuadrantType.TOP}
                     columnHeaderCellRenderer={this.renderTopQuadrantColumnHeader}
-                    renderMenu={this.renderTopQuadrantMenu}
+                    menuRenderer={this.renderTopQuadrantMenu}
                     rowHeaderCellRenderer={this.renderTopQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP].scrollContainer}
                 />
@@ -434,19 +434,19 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // Menu
 
     private renderMainQuadrantMenu = () => {
-        return CoreUtils.safeInvoke(this.props.renderMenu, this.quadrantRefHandlers[QuadrantType.MAIN].menu);
+        return CoreUtils.safeInvoke(this.props.menuRenderer, this.quadrantRefHandlers[QuadrantType.MAIN].menu);
     };
 
     private renderTopQuadrantMenu = () => {
-        return CoreUtils.safeInvoke(this.props.renderMenu, this.quadrantRefHandlers[QuadrantType.TOP].menu);
+        return CoreUtils.safeInvoke(this.props.menuRenderer, this.quadrantRefHandlers[QuadrantType.TOP].menu);
     };
 
     private renderLeftQuadrantMenu = () => {
-        return CoreUtils.safeInvoke(this.props.renderMenu, this.quadrantRefHandlers[QuadrantType.LEFT].menu);
+        return CoreUtils.safeInvoke(this.props.menuRenderer, this.quadrantRefHandlers[QuadrantType.LEFT].menu);
     };
 
     private renderTopLeftQuadrantMenu = () => {
-        return CoreUtils.safeInvoke(this.props.renderMenu, this.quadrantRefHandlers[QuadrantType.TOP_LEFT].menu);
+        return CoreUtils.safeInvoke(this.props.menuRenderer, this.quadrantRefHandlers[QuadrantType.TOP_LEFT].menu);
     };
 
     // Column header

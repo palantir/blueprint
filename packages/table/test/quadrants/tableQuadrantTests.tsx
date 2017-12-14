@@ -134,22 +134,22 @@ describe("TableQuadrant", () => {
         describe("Menu", () => {
             const MENU_CLASS = "foo";
 
-            it("renders menu if renderMenu provided", () => {
-                const renderMenu = sinon.stub().returns(<div className={MENU_CLASS} />);
-                const component = mountTableQuadrant({ renderMenu });
-                expect(renderMenu.called).to.be.true;
+            it("renders menu if menuRenderer provided", () => {
+                const menuRenderer = sinon.stub().returns(<div className={MENU_CLASS} />);
+                const component = mountTableQuadrant({ menuRenderer });
+                expect(menuRenderer.called).to.be.true;
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${MENU_CLASS}`).length).to.equal(1);
             });
 
-            it("does not render menu if renderMenu not provided", () => {
+            it("does not render menu if menuRenderer not provided", () => {
                 const component = mountTableQuadrant();
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
             });
 
             it("does not render menu if enableRowHeader=false", () => {
-                const renderMenu = sinon.stub().returns(<div className={MENU_CLASS} />);
-                const component = mountTableQuadrant({ enableRowHeader: false, renderMenu });
-                expect(renderMenu.called).to.be.false;
+                const menuRenderer = sinon.stub().returns(<div className={MENU_CLASS} />);
+                const component = mountTableQuadrant({ enableRowHeader: false, menuRenderer });
+                expect(menuRenderer.called).to.be.false;
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
             });
         });
