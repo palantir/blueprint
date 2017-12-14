@@ -238,6 +238,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     private isContentMounting = false;
     private cancelOpenTimeout: () => void;
 
+    // a flag that lets us detect mouse movement between the target and popover,
+    // now that mouseleave is triggered when you cross the gap between the two.
+    private isMouseInTargetOrPopover = false;
+
     private refHandlers = {
         popover: (ref: HTMLDivElement) => (this.popoverElement = ref),
         target: (ref: HTMLElement) => (this.targetElement = ref),
@@ -306,6 +310,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         // set tag=false to not wrap the provided target in another DOM node.
         return (
+            // <Manager tag="span" className={classNames("pt-popover-manager", className)}>
             <Manager tag={false}>
                 <Target {...targetProps} innerRef={this.refHandlers.target}>
                     {target}
@@ -490,6 +495,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     };
 
     private handleMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
+        this.isMouseInTargetOrPopover = true;
+
         // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
         // trigger the mouse leave event, as hovering over the popover shouldn't count.
         if (
@@ -506,8 +513,18 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     };
 
     private handleMouseLeave = (e: React.SyntheticEvent<HTMLElement>) => {
-        // user-configurable closing delay is helpful when moving mouse from target to popover
-        this.setOpenState(false, e, this.props.hoverCloseDelay);
+        this.isMouseInTargetOrPopover = false;
+
+        // wait until the event queue is flushed, because we want to leave the
+        // popover open if the mouse entered the popover immediately after
+        // leaving the target (or vice versa).
+        this.setTimeout(() => {
+            if (this.isMouseInTargetOrPopover) {
+                return;
+            }
+            // user-configurable closing delay is helpful when moving mouse from target to popover
+            this.setOpenState(false, e, this.props.hoverCloseDelay);
+        });
     };
 
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {

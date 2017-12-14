@@ -146,6 +146,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
                     hoverCloseDelay={0}
                     inline={true}
                     interactionKind={PopoverInteractionKind.HOVER}
+                    minimal={true}
                     position={this.state.alignLeft ? Position.LEFT_TOP : Position.RIGHT_TOP}
                     {...popoverProps}
                     content={submenuElement}
