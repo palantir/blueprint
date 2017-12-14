@@ -101,6 +101,7 @@ $input-button-height-large: $pt-button-height !default;
   // we have to avoid targetting buttons that contain a spinner
   .pt-input-action {
     > .pt-spinner {
+      display: block;
       margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
     }
   }
