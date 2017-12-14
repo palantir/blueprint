@@ -7,8 +7,8 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
+import { IconName } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
-import { IconName } from "../../generated/iconName";
 
 export { IconName };
 

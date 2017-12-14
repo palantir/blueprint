@@ -4,18 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import {
-    Classes,
-    Hotkey,
-    Hotkeys,
-    HotkeysTarget,
-    IconContents,
-    InputGroup,
-    Keys,
-    Popover,
-    Position,
-    Utils,
-} from "@blueprintjs/core";
+import { Classes, Hotkey, Hotkeys, HotkeysTarget, InputGroup, Keys, Popover, Position, Utils } from "@blueprintjs/core";
+
+import { IconContents } from "@blueprintjs/icons";
 
 import * as classNames from "classnames";
 import { IHeadingNode, IPageNode } from "documentalist/dist/client";
