@@ -103,6 +103,37 @@ $pt-dark-intent-text-colors: (
   @include force-hardware-acceleration();
 }
 
+// A collection of mixins that utilize the CSS Flexbox model to standardize
+// the layout and composition of Blueprint components.
+
+// pt-flex-parent styles
+@mixin pt-flex-parent() {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin pt-flex-parent-fill() {
+  width: 100%;
+}
+
+@mixin pt-flex-parent-direction-horizontal {
+  flex-direction: row;
+}
+
+@mixin pt-flex-parent-direction-vertical {
+  flex-direction: column;
+}
+
+// pt-flex-child styles
+@mixin pt-flex-child {
+  flex: 0 0 auto;
+}
+
+@mixin pt-flex-child-fill {
+  flex: 1 1 auto;
+}
+
 @function border-shadow($alpha, $color: $black, $size: 1px) {
   @return 0 0 0 $size rgba($color, $alpha);
 }
