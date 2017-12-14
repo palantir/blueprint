@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Intent, Popover2, Switch, Tooltip2 } from "@blueprintjs/core";
+import { Button, Intent, Popover2, Position, Switch, Tooltip2 } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
 export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
@@ -69,7 +69,7 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.PRIMARY"
                         inline={true}
                         intent={Intent.PRIMARY}
-                        placement="left"
+                        position={Position.LEFT}
                     >
                         Available
                     </Tooltip2>&nbsp;
@@ -78,7 +78,7 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.SUCCESS"
                         inline={true}
                         intent={Intent.SUCCESS}
-                        placement="top"
+                        position={Position.TOP}
                     >
                         in the full
                     </Tooltip2>&nbsp;
@@ -87,7 +87,7 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.WARNING"
                         inline={true}
                         intent={Intent.WARNING}
-                        placement="bottom"
+                        position={Position.BOTTOM}
                     >
                         range of
                     </Tooltip2>&nbsp;
@@ -96,14 +96,14 @@ export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.DANGER"
                         inline={true}
                         intent={Intent.DANGER}
-                        placement="right"
+                        position={Position.RIGHT}
                     >
                         visual intents!
                     </Tooltip2>
                 </div>
                 <br />
-                <Popover2 content={<h1>Popover!</h1>} placement="right" popoverClassName="pt-popover-content-sizing">
-                    <Tooltip2 content={<span>This button also has a popover!</span>} placement="right" inline={true}>
+                <Popover2 content={<h1>Popover!</h1>} position={Position.RIGHT} popoverClassName="pt-popover-content-sizing">
+                    <Tooltip2 content={<span>This button also has a popover!</span>} position={Position.RIGHT} inline={true}>
                         <Button intent={Intent.SUCCESS} text="Hover and click me" />
                     </Tooltip2>
                 </Popover2>
