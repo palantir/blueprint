@@ -11,16 +11,6 @@ dictated by the HTML markup: an element specified before the `input` appears on 
 vice versa. You do not need to apply sizing classes to the children&mdash;they inherit the size of
 the parent input.
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>Icons only</h5>
-    <p>You cannot use buttons with text in the CSS API for input groups. The padding for text inputs
-    in CSS cannot accomodate buttons whose width varies due to text content. You should use icons on
-    buttons instead.</p>
-
-    Conversely, the [`InputGroup`](#core/components/forms/input-group.javascript-api) React
-    component _does_ support arbitrary content in its right element.
-</div>
-
 @css pt-input-group
 
 @## JavaScript API
