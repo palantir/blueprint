@@ -74,8 +74,13 @@ export const ELEVATION_2 = "pt-elevation-2";
 export const ELEVATION_3 = "pt-elevation-3";
 export const ELEVATION_4 = "pt-elevation-4";
 
+export const HTML_TABLE = "pt-html-table";
+export const HTML_TABLE_STRIPED = "pt-striped";
+export const HTML_TABLE_BORDERED = "pt-bordered";
+
 export const INPUT = "pt-input";
 export const INPUT_GROUP = "pt-input-group";
+
 export const CHECKBOX = "pt-checkbox";
 export const RADIO = "pt-radio";
 export const SWITCH = "pt-switch";
@@ -155,10 +160,6 @@ export const TAB = "pt-tab";
 export const TAB_LIST = "pt-tab-list";
 export const TAB_PANEL = "pt-tab-panel";
 export const TABS = "pt-tabs";
-
-export const TABLE = "pt-html-table";
-export const TABLE_STRIPED = "pt-striped";
-export const TABLE_BORDERED = "pt-bordered";
 
 export const TAG = "pt-tag";
 export const TAG_REMOVABLE = "pt-tag-removable";
