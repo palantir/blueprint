@@ -4,11 +4,4 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-export * from "./multiSelectExample";
-export * from "./omnibarExample";
-export * from "./popover2Example";
-export * from "./selectExample";
-export * from "./suggestExample";
-export * from "./tagInputExample";
-export * from "./tooltip2Example";
 export * from "./timezonePickerExample";

@@ -4,10 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes } from "@blueprintjs/core";
-
 import { expect } from "chai";
 import * as React from "react";
+
+import { Classes } from "@blueprintjs/core";
 
 import { LoadableContent } from "../src/common/loadableContent";
 import { ReactHarness } from "./harness";
@@ -32,21 +32,6 @@ describe("LoadableContent", () => {
         );
 
         expect(loadableContentHarness.element.textContent).to.equal(someText);
-    });
-
-    it("throws error on string content", () => {
-        expect(() => harness.mount(<LoadableContent loading={false}>some text</LoadableContent>)).to.throw(Error);
-    });
-
-    it("throws error on multiple children", () => {
-        expect(() =>
-            harness.mount(
-                <LoadableContent loading={false}>
-                    <span>some</span>
-                    <span>text</span>
-                </LoadableContent>,
-            ),
-        ).to.throw(Error);
     });
 
     it("renders skeleton instead of child when loading", () => {

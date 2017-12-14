@@ -20,10 +20,10 @@
     "@blueprintjs/table": "^1.31.0",
     "classnames": "^2.2.5",
     "dom4": "^1.8.3",
-    "normalize.css": "~4.1.1",
-    "pure-render-decorator": "^1.2.1",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "normalize.css": "^7.0.0",
+    "react": "^16.2.0",
+    "react-transition-group": "^2.2.1",
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
     "@blueprintjs/webpack-build-scripts": "^0.2.0",

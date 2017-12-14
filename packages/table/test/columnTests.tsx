@@ -57,16 +57,16 @@ describe("Column", () => {
     it("renders correctly with loading options", () => {
         const NUM_ROWS = 5;
         const cellValue = "my cell value";
-        const renderCell = () => <Cell>{cellValue}</Cell>;
+        const cellRenderer = () => <Cell>{cellValue}</Cell>;
         const table = harness.mount(
             <Table numRows={NUM_ROWS}>
-                <Column name="Zero" loadingOptions={[ColumnLoadingOption.CELLS]} renderCell={renderCell} />
+                <Column name="Zero" loadingOptions={[ColumnLoadingOption.CELLS]} cellRenderer={cellRenderer} />
                 <Column
                     name="One"
                     loadingOptions={[ColumnLoadingOption.CELLS, ColumnLoadingOption.HEADER]}
-                    renderCell={renderCell}
+                    cellRenderer={cellRenderer}
                 />
-                <Column name="Two" renderCell={renderCell} />
+                <Column name="Two" cellRenderer={cellRenderer} />
             </Table>,
         );
 

@@ -6,11 +6,7 @@ Blueprint is a React UI toolkit for the web.
 
 This package contains in-progress and unstable React components as we develop them.
 
-Current components:
-
-- `QueryList` is a low-level component for filtering an array of `items` with keyboard selection interactions.
-- `Select` is a high-level component for choosing items from a list. It can be used instead of the
-  HTML `<select>` element.
+There are no components currently in labs.
 
 ## Installation
 

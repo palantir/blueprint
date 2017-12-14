@@ -37,7 +37,7 @@ export interface ICollapsibleListProps extends IProps {
      * Callback invoked to render each visible item. The item will be wrapped in an `li` with
      * the optional `visibleItemClassName` prop.
      */
-    renderVisibleItem: (props: IMenuItemProps, index: number) => JSX.Element;
+    visibleItemRenderer: (props: IMenuItemProps, index: number) => JSX.Element;
 
     /**
      * Which direction the items should collapse from: start or end of the children.
@@ -63,8 +63,8 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
     public static defaultProps: ICollapsibleListProps = {
         collapseFrom: CollapseFrom.START,
         dropdownTarget: null,
-        renderVisibleItem: null,
         visibleItemCount: 3,
+        visibleItemRenderer: null,
     };
 
     public render() {
@@ -76,7 +76,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
             const absoluteIndex = collapseFrom === CollapseFrom.START ? childrenLength - 1 - index : index;
             return (
                 <li className={this.props.visibleItemClassName} key={absoluteIndex}>
-                    {this.props.renderVisibleItem(child.props, absoluteIndex)}
+                    {this.props.visibleItemRenderer(child.props, absoluteIndex)}
                 </li>
             );
         });

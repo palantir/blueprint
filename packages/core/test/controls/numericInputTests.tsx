@@ -1,6 +1,5 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
@@ -8,6 +7,8 @@ import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
+
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as Errors from "../../src/common/errors";
 import {
@@ -24,10 +25,10 @@ import {
 describe("<NumericInput>", () => {
     describe("Defaults", () => {
         it("renders the buttons on the right by default", () => {
-            const component = mount(<NumericInput />);
+            const component = mount(<NumericInput />).children();
             const leftGroup = component.childAt(0);
             const rightGroup = component.childAt(1);
-            expect(leftGroup.type()).to.equal(InputGroup);
+            expect(leftGroup.is(InputGroup)).to.be.true;
             expect(rightGroup.key()).to.equal("button-group");
         });
 
@@ -777,54 +778,43 @@ describe("<NumericInput>", () => {
         });
     });
 
+    // Note: we don't call mount() here since React 16 throws before we can even validate the errors thrown
+    // in component constructors
     describe("Validation", () => {
         it("throws an error if min >= max", () => {
-            const fn = () => {
-                mount(<NumericInput min={2} max={1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MIN_MAX);
+            expectPropValidationError(NumericInput, { min: 2, max: 1 }, Errors.NUMERIC_INPUT_MIN_MAX);
         });
 
         it("throws an error if stepSize is null", () => {
-            const fn = () => {
-                mount(<NumericInput stepSize={null} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
+            expectPropValidationError(NumericInput, { stepSize: null }, Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
         });
 
         it("throws an error if stepSize <= 0", () => {
-            const fn = () => {
-                mount(<NumericInput stepSize={-1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
+            expectPropValidationError(NumericInput, { stepSize: -1 }, Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if minorStepSize <= 0", () => {
-            const fn = () => {
-                mount(<NumericInput minorStepSize={-0.1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
+            expectPropValidationError(
+                NumericInput,
+                { minorStepSize: -0.1 },
+                Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE,
+            );
         });
 
         it("throws an error if majorStepSize <= 0", () => {
-            const fn = () => {
-                mount(<NumericInput majorStepSize={-0.1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
+            expectPropValidationError(
+                NumericInput,
+                { majorStepSize: -0.1 },
+                Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE,
+            );
         });
 
         it("throws an error if majorStepSize <= stepSize", () => {
-            const fn = () => {
-                mount(<NumericInput majorStepSize={0.5} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
+            expectPropValidationError(NumericInput, { majorStepSize: 0.5 }, Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         });
 
         it("throws an error if stepSize <= minorStepSize", () => {
-            const fn = () => {
-                mount(<NumericInput minorStepSize={2} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
+            expectPropValidationError(NumericInput, { minorStepSize: 2 }, Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         });
 
         it("clears the field if the value is invalid when incrementing", () => {
@@ -882,9 +872,11 @@ describe("<NumericInput>", () => {
         it("shows a left icon if provided", () => {
             const component = mount(<NumericInput leftIconName={"variable"} />);
 
-            const inputGroup = component.find(InputGroup);
-            const icon = inputGroup.childAt(0);
-
+            const icon = component
+                .find(InputGroup)
+                .children()
+                .childAt(0) // Icon
+                .childAt(0); // span
             expect(icon.hasClass("pt-icon-variable")).to.be.true;
         });
 
@@ -900,42 +892,40 @@ describe("<NumericInput>", () => {
         it("changes max precision of displayed value to that of the smallest step size defined", () => {
             const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
             const incrementButton = component.find(Button).first();
-            const input = component.find("input");
 
             incrementButton.simulate("click");
-            expect(input.prop("value")).to.equal("0.1");
+            expect(component.find("input").prop("value")).to.equal("0.1");
 
             incrementButton.simulate("click", { altKey: true });
-            expect(input.prop("value")).to.equal("0.101");
+            expect(component.find("input").prop("value")).to.equal("0.101");
 
             incrementButton.simulate("click", { shiftKey: true });
-            expect(input.prop("value")).to.equal("1.101");
+            expect(component.find("input").prop("value")).to.equal("1.101");
 
             // one significant digit too many
             component.setState({ value: "1.0001" });
             incrementButton.simulate("click", { altKey: true });
-            expect(input.prop("value")).to.equal("1.001");
+            expect(component.find("input").prop("value")).to.equal("1.001");
         });
 
         it("changes max precision appropriately when the [*]stepSize props change", () => {
             const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
             const incrementButton = component.find(Button).first();
-            const input = component.find("input");
 
             // excess digits should truncate to max precision
             component.setState({ value: "0.0001" });
             incrementButton.simulate("click", { altKey: true });
-            expect(input.prop("value")).to.equal("0.001");
+            expect(component.find("input").prop("value")).to.equal("0.001");
 
             // now try a smaller step size, and expect no truncation
             component.setProps({ minorStepSize: 0.0001, value: "0.0001" });
             incrementButton.simulate("click", { altKey: true });
-            expect(input.prop("value")).to.equal("0.0002");
+            expect(component.find("input").prop("value")).to.equal("0.0002");
 
             // now try a larger step size, and expect more truncation than before
             component.setProps({ minorStepSize: 0.1, value: "0.0001" });
             incrementButton.simulate("click", { altKey: true });
-            expect(input.prop("value")).to.equal("0.1");
+            expect(component.find("input").prop("value")).to.equal("0.1");
         });
     });
 

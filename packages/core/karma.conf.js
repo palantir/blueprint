@@ -10,7 +10,16 @@ module.exports = function (config) {
     const baseConfig = createKarmaConfig({
         dirname: __dirname,
         coverageExcludes: [
+            // not worth full coverage
             "src/accessibility/*",
+            "src/common/abstractComponent*",
+            // deprecated components
+            "src/components/popover/*",
+            "src/components/tabs/*",
+            // TODO (clewis): write tests for these component as part of the 2.0 effort:
+            "src/components/popover2/*",
+            "src/components/tag-input/*",
+            "src/components/tooltip2/*",
         ],
     });
     config.set(baseConfig);
@@ -19,7 +28,7 @@ module.exports = function (config) {
             entry: {
                 core: [
                     path.resolve(__dirname, "test/index.ts"),
-                    path.resolve(__dirname, "src/blueprint.scss"),
+                    path.resolve(__dirname, "dist/blueprint.css"),
                 ],
             },
         }),

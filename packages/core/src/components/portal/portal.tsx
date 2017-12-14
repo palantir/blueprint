@@ -26,6 +26,10 @@ export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
     onChildrenMount?: () => void;
 }
 
+export interface IPortalState {
+    hasMounted: boolean;
+}
+
 export interface IPortalContext {
     /** Additional class to add to portal element */
     blueprintPortalClassName?: string;
@@ -45,44 +49,43 @@ const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
-export class Portal extends React.Component<IPortalProps, {}> {
+export class Portal extends React.Component<IPortalProps, IPortalState> {
     public static displayName = "Blueprint.Portal";
     public static contextTypes = REACT_CONTEXT_TYPES;
+
     public context: IPortalContext;
+    public state: IPortalState = { hasMounted: false };
 
     private targetElement: HTMLElement;
 
-    public render() {
-        return null as JSX.Element;
-    }
-
-    public componentDidMount() {
-        const targetElement = document.createElement("div");
-        targetElement.classList.add(Classes.PORTAL);
-
-        if (this.context.blueprintPortalClassName != null) {
-            targetElement.classList.add(this.context.blueprintPortalClassName);
+    constructor(props: IPortalProps, context: IPortalContext) {
+        super(props, context);
+        this.targetElement = document.createElement("div");
+        this.targetElement.classList.add(Classes.PORTAL);
+        if (context.blueprintPortalClassName != null) {
+            this.targetElement.classList.add(context.blueprintPortalClassName);
         }
-
-        document.body.appendChild(targetElement);
-        this.targetElement = targetElement;
-        this.componentDidUpdate();
     }
 
-    public componentDidUpdate() {
-        // use special render function to preserve React context, in case children need it
-        ReactDOM.unstable_renderSubtreeIntoContainer(
-            /* parentComponent */ this,
+    public render() {
+        // Only render `children` once this component has mounted, so they are immediately attached to the DOM tree and
+        // can do DOM things like measuring or `autoFocus`. See long comment on componentDidMount in
+        // https://reactjs.org/docs/portals.html#event-bubbling-through-portals
+        return ReactDOM.createPortal(
             <div {...removeNonHTMLProps(this.props)} ref={this.props.containerRef}>
-                {this.props.children}
+                {this.state.hasMounted ? this.props.children : null}
             </div>,
             this.targetElement,
-            () => safeInvoke(this.props.onChildrenMount),
         );
     }
 
+    public componentDidMount() {
+        document.body.appendChild(this.targetElement);
+        safeInvoke(this.props.onChildrenMount);
+        this.setState({ hasMounted: true });
+    }
+
     public componentWillUnmount() {
-        ReactDOM.unmountComponentAtNode(this.targetElement);
         this.targetElement.remove();
     }
 }

@@ -6,7 +6,6 @@
 
 import { EditableText, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../common/classes";
 
@@ -49,8 +48,7 @@ export interface IEditableNameState {
     dirtyName?: string;
 }
 
-@PureRender
-export class EditableName extends React.Component<IEditableNameProps, IEditableNameState> {
+export class EditableName extends React.PureComponent<IEditableNameProps, IEditableNameState> {
     public constructor(props: IEditableNameProps, context?: any) {
         super(props, context);
         this.state = {

@@ -1,7 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
 @import "../../common/react-transition";
 
@@ -36,7 +35,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   // leaving toasts simply fade away
   @include react-transition-phase(
     "pt-toast",
-    "leave",
+    "exit",
     $leave-blur,
     $duration: $pt-transition-duration * 3,
     $before: "&"
@@ -44,7 +43,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   // younger siblings of leaving toasts wait a moment before moving to fill gap
   @include react-transition-phase(
     "pt-toast",
-    "leave",
+    "exit",
     $enter-translate,
     $delay: $pt-transition-duration / 2,
     $before: "&",
@@ -147,7 +146,10 @@ $toast-margin: $pt-grid-size * 2 !default;
 }
 
 .pt-toast-container {
-  @include position(fixed, null 0 null);
+  position: fixed;
+  right: 0;
+  left: 0;
+
   // #975 ensure toasts are on top of everything (esp dialogs)
   z-index: $pt-z-index-overlay * 2;
   // toasts have margin-top so omit it on container
@@ -155,8 +157,8 @@ $toast-margin: $pt-grid-size * 2 !default;
   // container will not block clicks on elements behind it
   pointer-events: none;
 
-  // CSSTransitionGroup
-  > span {
+  // TransitionGroup
+  > div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -176,16 +178,16 @@ $toast-margin: $pt-grid-size * 2 !default;
     top: auto;
     bottom: 0;
 
-    > span {
+    > div {
       flex-direction: column-reverse;
     }
   }
 
-  &.pt-toast-container-left > span {
+  &.pt-toast-container-left > div {
     align-items: flex-start;
   }
 
-  &.pt-toast-container-right > span {
+  &.pt-toast-container-right > div {
     align-items: flex-end;
   }
 }

@@ -88,7 +88,9 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
         const columns: JSX.Element[] = [];
 
         Object.keys(bigSpaceRocks[0]).forEach((columnName, index) => {
-            columns.push(<Column key={index} name={this.formatColumnName(columnName)} renderCell={this.renderCell} />);
+            columns.push(
+                <Column key={index} name={this.formatColumnName(columnName)} cellRenderer={this.renderCell} />,
+            );
         });
 
         return columns;

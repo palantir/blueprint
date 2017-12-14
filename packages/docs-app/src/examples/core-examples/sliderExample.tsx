@@ -51,7 +51,7 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     stepSize={0.01}
                     labelStepSize={0.14}
                     onChange={this.getChangeHandler("value1")}
-                    renderLabel={this.renderLabel1}
+                    labelRenderer={this.renderLabel1}
                     value={this.state.value1}
                     vertical={vertical}
                 />
@@ -61,7 +61,7 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     stepSize={6}
                     labelStepSize={10}
                     onChange={this.getChangeHandler("value3")}
-                    renderLabel={this.renderLabel3}
+                    labelRenderer={this.renderLabel3}
                     showTrackFill={false}
                     value={this.state.value3}
                     vertical={vertical}

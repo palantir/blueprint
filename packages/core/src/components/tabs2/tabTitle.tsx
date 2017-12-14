@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -22,8 +21,7 @@ export interface ITabTitleProps extends ITab2Props {
     selected: boolean;
 }
 
-@PureRender
-export class TabTitle extends React.Component<ITabTitleProps, {}> {
+export class TabTitle extends React.PureComponent<ITabTitleProps, {}> {
     public static displayName = "Blueprint.TabTitle";
 
     public render() {

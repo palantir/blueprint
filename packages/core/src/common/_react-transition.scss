@@ -2,12 +2,12 @@
 // Licensed under the terms of the LICENSE file distributed with this project.
 
 /*
-A mixin to generate the classes for a React CSSTransitionGroup which animates any number of CSS
+A mixin to generate the classes for a React CSSTransition which animates any number of CSS
 properties at once.
 
 Transitioned properties are specificed as a map of property names to lists of (inital value, final
 value). For enter & appear transitions, each property will transition from its initial to its final
-value. For leave transitions, each property will transition in reverse, from final to initial.
+value. For exit transitions, each property will transition in reverse, from final to initial.
 
 **Simple example:**
 `@include react-transition("pt-popover", (opacity: 0 1), $before: "&");`
@@ -39,17 +39,17 @@ $after: selector text to insert after transiton name (to select children)
     $before, $after
   );
   @include react-transition-phase(
-    $name, "leave", $properties,
+    $name, "exit", $properties,
     $duration, $easing, $delay,
     $before, $after
   );
 }
 
 /*
-A mixin to generate the classes for one phase of a React CSSTransitionGroup.
-`$phase` must be `appear` or `enter` or `leave`.
+A mixin to generate the classes for one phase of a React CSSTransition.
+`$phase` must be `appear` or `enter` or `exit`.
 If `enter` phase is given then `appear` phase will be generated at the same time.
-If `leave` phase is given then property values are animated in reverse, from final to initial.
+If `exit` phase is given then property values are animated in reverse, from final to initial.
 
 **Example:**
 @include react-transition-phase(pt-toast, enter, $enter-translate, $before: "&");
@@ -68,11 +68,11 @@ If `leave` phase is given then property values are animated in reverse, from fin
   $start-index: 1;
   $end-index: 2;
 
-  @if ($phase == "leave") {
+  @if ($phase == "exit") {
     $start-index: 2;
     $end-index: 1;
   } @else if ($phase != "enter" and $phase != "appear") {
-    @error "Unknown transition phase: #{$phase}. Expected appear|enter|leave.";
+    @error "Unknown transition phase: #{$phase}. Expected appear|enter|exit.";
   }
 
   #{transition-name($phase, $name, $before, $after)} {

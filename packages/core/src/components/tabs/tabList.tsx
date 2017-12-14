@@ -5,10 +5,9 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
@@ -27,8 +26,7 @@ export interface ITabListState {
     shouldAnimate?: boolean;
 }
 
-@PureRender
-export class TabList extends AbstractComponent<ITabListProps, {}> {
+export class TabList extends AbstractPureComponent<ITabListProps, {}> {
     public static displayName = "Blueprint.TabList";
 
     public state: ITabListState = {
