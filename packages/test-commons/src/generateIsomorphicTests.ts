@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Generates isomorphic tests for React components
