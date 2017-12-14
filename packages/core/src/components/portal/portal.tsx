@@ -26,6 +26,10 @@ export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
     onChildrenMount?: () => void;
 }
 
+export interface IPortalState {
+    hasMounted: boolean;
+}
+
 export interface IPortalContext {
     /** Additional class to add to portal element */
     blueprintPortalClassName?: string;
@@ -45,10 +49,12 @@ const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
-export class Portal extends React.Component<IPortalProps, {}> {
+export class Portal extends React.Component<IPortalProps, IPortalState> {
     public static displayName = "Blueprint.Portal";
     public static contextTypes = REACT_CONTEXT_TYPES;
+
     public context: IPortalContext;
+    public state: IPortalState = { hasMounted: false };
 
     private targetElement: HTMLElement;
 
@@ -62,9 +68,12 @@ export class Portal extends React.Component<IPortalProps, {}> {
     }
 
     public render() {
+        // Only render `children` once this component has mounted, so they are immediately attached to the DOM tree and
+        // can do DOM things like measuring or `autoFocus`. See long comment on componentDidMount in
+        // https://reactjs.org/docs/portals.html#event-bubbling-through-portals
         return ReactDOM.createPortal(
             <div {...removeNonHTMLProps(this.props)} ref={this.props.containerRef}>
-                {this.props.children}
+                {this.state.hasMounted ? this.props.children : null}
             </div>,
             this.targetElement,
         );
@@ -73,6 +82,7 @@ export class Portal extends React.Component<IPortalProps, {}> {
     public componentDidMount() {
         document.body.appendChild(this.targetElement);
         safeInvoke(this.props.onChildrenMount);
+        this.setState({ hasMounted: true });
     }
 
     public componentWillUnmount() {

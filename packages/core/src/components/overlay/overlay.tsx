@@ -314,17 +314,19 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         }
         openStack.push(this);
 
-        if (this.props.canOutsideClickClose && !this.props.hasBackdrop) {
-            document.addEventListener("mousedown", this.handleDocumentClick);
+        if (this.props.autoFocus) {
+            this.bringFocusInsideOverlay();
         }
         if (this.props.enforceFocus) {
             document.addEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         }
+
+        if (this.props.canOutsideClickClose && !this.props.hasBackdrop) {
+            document.addEventListener("mousedown", this.handleDocumentClick);
+        }
+
         if (this.props.inline) {
             safeInvoke(this.props.didOpen);
-            if (this.props.autoFocus) {
-                this.bringFocusInsideOverlay();
-            }
         } else if (this.props.hasBackdrop) {
             // add a class to the body to prevent scrolling of content below the overlay
             document.body.classList.add(Classes.OVERLAY_OPEN);
@@ -356,9 +358,6 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
     private handleContentMount = () => {
         if (this.props.isOpen) {
             safeInvoke(this.props.didOpen);
-        }
-        if (this.props.autoFocus) {
-            this.bringFocusInsideOverlay();
         }
     };
 
