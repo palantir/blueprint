@@ -7,7 +7,7 @@
 Tables
 
 Markup:
-<table class="pt-table {{.modifier}}">
+<table class="pt-html-table {{.modifier}}">
   <thead>
     <tr>
       <th>Project</th>
@@ -39,7 +39,7 @@ Markup:
 .pt-bordered  - Bordered appearance
 .pt-interactive  - Enables hover styles on rows
 
-Styleguide pt-table
+Styleguide pt-html-table
 */
 
 $table-row-height: $pt-grid-size * 4 !default;
@@ -48,7 +48,7 @@ $table-border-width: 1px !default;
 $table-border-color: $pt-divider-black !default;
 $dark-table-border-color: $pt-dark-divider-white !default;
 
-table.pt-table {
+table.pt-html-table {
   border-spacing: 0;
   font-size: $pt-font-size;
 

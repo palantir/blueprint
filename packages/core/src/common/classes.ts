@@ -156,7 +156,7 @@ export const TAB_LIST = "pt-tab-list";
 export const TAB_PANEL = "pt-tab-panel";
 export const TABS = "pt-tabs";
 
-export const TABLE = "pt-table";
+export const TABLE = "pt-html-table";
 export const TABLE_STRIPED = "pt-striped";
 export const TABLE_BORDERED = "pt-bordered";
 

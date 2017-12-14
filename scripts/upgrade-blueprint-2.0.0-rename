@@ -178,6 +178,7 @@ renameProp renderColumnHeader columnHeaderCellRenderer
 renameProp renderRowHeader rowHeaderCellRenderer
 renameProp useInteractionBar enableColumnInteractionBar
 renamePartialClass bp-table- pt-table-
+renameString "pt-table(?!-)" pt-html-table
 warnProp enableFocus enableFocusedCell
 warnProp onFocus onFocusedCell
 
