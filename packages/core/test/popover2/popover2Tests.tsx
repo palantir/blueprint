@@ -6,6 +6,7 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
+import PopperJS from "popper.js";
 import * as React from "react";
 import { Arrow, Popper } from "react-popper";
 import * as sinon from "sinon";
@@ -19,7 +20,7 @@ import { Position } from "../../src/common/position";
 import * as Utils from "../../src/common/utils";
 import { Overlay } from "../../src/components/overlay/overlay";
 import { PopoverInteractionKind } from "../../src/components/popover/popover";
-import { IPopover2Props, IPopover2State, Placement, Popover2 } from "../../src/components/popover2/popover2";
+import { IPopover2Props, IPopover2State, Popover2 } from "../../src/components/popover2/popover2";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { Portal } from "../../src/index";
 
@@ -563,7 +564,7 @@ describe("<Popover2>", () => {
         });
 
         it("computes arrow rotation", done => {
-            renderPopover({ isOpen: true, position: "top" }).then(
+            renderPopover({ isOpen: true, position: Position.TOP }).then(
                 () => assert.equal(wrapper.state("arrowRotation"), 90),
                 done,
             );
@@ -689,7 +690,7 @@ describe("<Popover2>", () => {
         return wrapper;
     }
 
-    function assertPlacement(popover: ShallowPopover2Wrapper, placement: Placement) {
+    function assertPlacement(popover: ShallowPopover2Wrapper, placement: PopperJS.Placement) {
         assert.strictEqual(popover.find(Popper).state("placement"), placement);
     }
 });
