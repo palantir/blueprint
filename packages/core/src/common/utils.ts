@@ -27,9 +27,7 @@ export interface IHasName {
 }
 
 export function getDisplayName(ComponentClass: React.ComponentClass | IHasName) {
-    return (ComponentClass as React.ComponentClass).displayName ||
-        (ComponentClass as IHasName).name ||
-        "Unknown";
+    return (ComponentClass as React.ComponentClass).displayName || (ComponentClass as IHasName).name || "Unknown";
 }
 
 /**
