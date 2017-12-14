@@ -585,18 +585,6 @@ describe("<Popover2>", () => {
     });
 
     describe("deprecated prop shims", () => {
-        it("should convert position to placement", () => {
-            const popover = shallow(
-                <Popover2 inline={true} position={Position.BOTTOM_LEFT}>
-                    child
-                </Popover2>,
-            );
-            assertPlacement(popover, "bottom-start");
-
-            popover.setProps({ position: Position.LEFT_BOTTOM });
-            assertPlacement(popover, "left-end");
-        });
-
         it("should convert isModal to hasBackdrop", () => {
             const popover = shallow(
                 <Popover2 inline={true} isModal={true}>
@@ -688,9 +676,5 @@ describe("<Popover2>", () => {
             });
         };
         return wrapper;
-    }
-
-    function assertPlacement(popover: ShallowPopover2Wrapper, placement: PopperJS.Placement) {
-        assert.strictEqual(popover.find(Popper).state("placement"), placement);
     }
 });

@@ -204,6 +204,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 disabled={disabled}
+                position={Position.BOTTOM_LEFT}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
@@ -211,7 +212,6 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 popoverWillOpen={this.handlePopoverWillOpen}
                 popoverDidOpen={this.handlePopoverDidOpen}
                 popoverWillClose={this.handlePopoverWillClose}
-                position={Position.BOTTOM_LEFT}
             >
                 <div
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}

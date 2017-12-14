@@ -370,9 +370,6 @@ export class Popover2 extends AbstractPureComponent<IPopover2Props, IPopover2Sta
         if (props.isModal !== undefined) {
             console.warn(Errors.POPOVER2_WARN_DEPRECATED_IS_MODAL);
         }
-        if (props.position !== undefined) {
-            console.warn(Errors.POPOVER2_WARN_DEPRECATED_POSITION);
-        }
     }
 
     private updateDarkParent() {
