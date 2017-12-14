@@ -82,7 +82,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
      */
-    renderMenu?: () => JSX.Element;
+    menuRenderer?: () => JSX.Element;
 
     /**
      * A callback that renders either all of or just the frozen section of the column header.
@@ -129,7 +129,7 @@ export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
 
         const className = classNames(Classes.TABLE_QUADRANT, this.getQuadrantCssClass(), this.props.className);
 
-        const maybeMenu = enableRowHeader && CoreUtils.safeInvoke(this.props.renderMenu);
+        const maybeMenu = enableRowHeader && CoreUtils.safeInvoke(this.props.menuRenderer);
         const maybeRowHeader =
             enableRowHeader && CoreUtils.safeInvoke(this.props.rowHeaderCellRenderer, showFrozenRowsOnly);
         const maybeColumnHeader = CoreUtils.safeInvoke(this.props.columnHeaderCellRenderer, showFrozenColumnsOnly);

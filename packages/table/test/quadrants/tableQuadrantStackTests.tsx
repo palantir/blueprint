@@ -186,11 +186,11 @@ describe("TableQuadrantStack", () => {
             expect(element.children.item(3).classList.contains(Classes.TABLE_QUADRANT_TOP_LEFT));
         });
 
-        it("invokes renderMenu once for each quadrant on mount", () => {
+        it("invokes menuRenderer once for each quadrant on mount", () => {
             const bodyRenderer = sinon.spy();
-            const renderMenu = sinon.spy();
-            mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} renderMenu={renderMenu} />);
-            expect(renderMenu.callCount).to.equal(4);
+            const menuRenderer = sinon.spy();
+            mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} menuRenderer={menuRenderer} />);
+            expect(menuRenderer.callCount).to.equal(4);
         });
 
         it("invokes columnHeaderCellRenderer once for each quadrant on mount", () => {

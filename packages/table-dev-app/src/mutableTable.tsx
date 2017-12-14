@@ -399,8 +399,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             <ColumnHeaderCell
                 index={columnIndex}
                 name={this.store.getColumnName(columnIndex)}
-                renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
-                renderName={this.getColumnNameRenderer()}
+                menuRenderer={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
+                nameRenderer={this.getColumnNameRenderer()}
             />
         );
     };
@@ -468,7 +468,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private renderRowHeader = (rowIndex: number) => {
-        return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} renderMenu={this.renderRowMenu} />;
+        return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} menuRenderer={this.renderRowMenu} />;
     };
 
     private renderRowMenu = (rowIndex: number) => {
