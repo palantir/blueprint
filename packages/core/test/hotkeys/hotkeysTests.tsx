@@ -47,6 +47,19 @@ describe("Hotkeys", () => {
         ).to.throw(HOTKEYS_HOTKEY_CHILDREN, "undefined");
     });
 
+    it("Decorator does not mutate the original class", () => {
+        class TestComponent extends React.Component<{}, {}> {
+            public renderHotkeys() {
+                return <Hotkeys />;
+            }
+        }
+
+        const TargettedTestComponent = HotkeysTarget(TestComponent);
+
+        // it's not the same Component
+        expect(TargettedTestComponent).to.not.equal(TestComponent);
+    });
+
     describe("Local/Global @HotkeysTarget", () => {
         let localKeyDownSpy: SinonSpy = null;
         let localKeyUpSpy: SinonSpy = null;

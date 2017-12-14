@@ -17,6 +17,8 @@ export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo 
 export { IHotkeysDialogProps, hideHotkeysDialog, setHotkeysDialogProps } from "./hotkeysDialog";
 
 export interface IHotkeysProps extends IProps {
+    children?: React.ReactNode;
+
     /**
      * In order to make local hotkeys work on elements that are not normally
      * focusable, such as `<div>`s or `<span>`s, we add a `tabIndex` attribute
