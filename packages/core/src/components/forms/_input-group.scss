@@ -9,15 +9,15 @@
 Input groups
 
 Markup:
-<div class="pt-input-group {{.modifier}}">
+<div class="pt-input-group {{.modifier}}" {{:modifier}}>
   <span class="pt-icon-standard pt-icon-filter"></span>
   <input type="text" class="pt-input" {{:modifier}} placeholder="Filter histogram..." />
 </div>
-<div class="pt-input-group {{.modifier}}">
+<div class="pt-input-group {{.modifier}}" {{:modifier}}>
   <input type="password" class="pt-input" {{:modifier}} placeholder="Enter your password..." />
   <button class="pt-button pt-minimal pt-intent-warning pt-icon-lock" {{:modifier}}></button>
 </div>
-<div class="pt-input-group {{.modifier}}">
+<div class="pt-input-group {{.modifier}}" {{:modifier}}>
   <span class="pt-icon-standard pt-icon-search"></span>
   <input type="text" class="pt-input" {{:modifier}} placeholder="Search" />
   <button class="pt-button pt-minimal pt-intent-primary" {{:modifier}}>
@@ -26,7 +26,7 @@ Markup:
   </button>
 </div>
 
-:disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>. Also add <code>.pt-disabled</code> to <code>.pt-input-group</code> for icon coloring (not shown below).
+:disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>.
 .pt-round - Rounded caps. Button will also be rounded.
 .pt-intent-primary - Primary intent. (All 4 intents are supported.)
 .pt-large - Large group. Children will adjust size accordingly.
@@ -139,6 +139,7 @@ $input-button-height-large: $pt-button-height !default;
   }
 
   // this class echoes `input:disabled` on the child input, but each action must individually be disabled
+  &[disabled],
   &.pt-disabled {
     // note that enabled buttons inside this input group are still clickable
     @include pt-input-disabled();
@@ -200,6 +201,7 @@ $input-button-height-large: $pt-button-height !default;
       color: $pt-dark-icon-color;
     }
 
+    &[disabled],
     &.pt-disabled {
       @include pt-dark-input-disabled();
 
