@@ -157,7 +157,7 @@ function renamePartialClass() {
 }
 
 function renameString() {
-    # Don't add word boundary so that partial css classnames rename
+    # Add simple word boundaries
     rename $1 $2 "\\b$1\\b"
 }
 
@@ -179,6 +179,10 @@ renameProp renderRowHeader rowHeaderCellRenderer
 renameProp renderName nameRenderer
 renameProp useInteractionBar enableColumnInteractionBar
 renamePartialClass bp-table- pt-table-
+renameProp "(?<!_)TABLE_STRIPED" HTML_TABLE_STRIPED
+renameProp "(?<!_)TABLE_BORDERED" HTML_TABLE_BORDERED
+renameString "pt-striped(?!-)" pt-html-table-striped
+renameString "pt-bordered(?!-)" pt-html-table-bordered
 renameString "pt-table(?!-)" pt-html-table
 warnProp enableFocus enableFocusedCell
 warnProp onFocus onFocusedCell

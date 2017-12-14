@@ -35,8 +35,8 @@ Markup:
 </table>
 
 .pt-small - Small, condensed appearance
-.pt-striped   - Striped appearance
-.pt-bordered  - Bordered appearance
+.pt-html-table-striped   - Striped appearance
+.pt-html-table-bordered  - Bordered appearance
 .pt-interactive  - Enables hover styles on rows
 
 Styleguide pt-html-table
@@ -82,14 +82,14 @@ table.pt-html-table {
     }
   }
 
-  &.pt-striped {
+  &.pt-html-table-striped {
     tbody tr:nth-child(odd) td {
       background: rgba($gray5, 0.2);
     }
   }
 
   // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
-  &.pt-bordered {
+  &.pt-html-table-bordered {
     th:not(:first-child) {
       box-shadow: inset $table-border-width 0 0 0 $table-border-color;
     }
@@ -102,7 +102,7 @@ table.pt-html-table {
       }
     }
 
-    &.pt-striped {
+    &.pt-html-table-striped {
       tbody tr:not(:first-child) td {
         box-shadow: none;
 
@@ -136,14 +136,14 @@ table.pt-html-table {
       box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
     }
 
-    &.pt-striped {
+    &.pt-html-table-striped {
       tbody tr:nth-child(odd) td {
         background: rgba($gray1, 0.15);
       }
     }
 
     // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
-    &.pt-bordered {
+    &.pt-html-table-bordered {
       th:not(:first-child) {
         box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
       }
@@ -156,7 +156,7 @@ table.pt-html-table {
         }
       }
 
-      &.pt-striped {
+      &.pt-html-table-striped {
         tbody tr:not(:first-child) td {
           box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
 
