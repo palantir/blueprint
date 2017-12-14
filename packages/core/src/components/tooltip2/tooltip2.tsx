@@ -9,6 +9,7 @@ import PopperJS from "popper.js";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
+import { Position } from "../../common/position";
 import { IIntentProps, IProps } from "../../common/props";
 import { PopoverInteractionKind } from "../popover/popover"; // TODO: move this to popover2/ directory
 import { Popover2 } from "../popover2/popover2";
@@ -94,11 +95,13 @@ export interface ITooltip2Props extends IProps, IIntentProps {
 
     /**
      * The position (relative to the target) at which the popover should appear.
-     * The default value of `"auto"` will choose the best placement when opened and will allow
-     * the popover to reposition itself to remain onscreen as the user scrolls around.
+     *
+     * The default value of `"auto"` will choose the best position when opened
+     * and will allow the popover to reposition itself to remain onscreen as the
+     * user scrolls around.
      * @default "auto"
      */
-    placement?: PopperJS.Placement;
+    position?: Position | "auto";
 
     /**
      * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).

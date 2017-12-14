@@ -563,7 +563,7 @@ describe("<Popover2>", () => {
         });
 
         it("computes arrow rotation", done => {
-            renderPopover({ isOpen: true, placement: "top" }).then(
+            renderPopover({ isOpen: true, position: "top" }).then(
                 () => assert.equal(wrapper.state("arrowRotation"), 90),
                 done,
             );
@@ -618,18 +618,6 @@ describe("<Popover2>", () => {
                 .setProps({ isDisabled: false })
                 .simulateTarget("click")
                 .assertIsOpen(true);
-        });
-
-        it("placement should take precedence over position", () => {
-            const popover = shallow(
-                <Popover2 inline={true} placement="left-end" position={Position.BOTTOM_LEFT}>
-                    child
-                </Popover2>,
-            );
-            assertPlacement(popover, "left-end");
-
-            popover.setProps({ placement: "bottom-start", position: Position.LEFT_BOTTOM });
-            assertPlacement(popover, "bottom-start");
         });
 
         it("hasBackdrop should take precedence over isModal", () => {
@@ -702,6 +690,6 @@ describe("<Popover2>", () => {
     }
 
     function assertPlacement(popover: ShallowPopover2Wrapper, placement: Placement) {
-        assert.strictEqual(popover.find(Popper).prop("placement"), placement);
+        assert.strictEqual(popover.find(Popper).state("placement"), placement);
     }
 });
