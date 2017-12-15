@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import { Target } from "react-popper";
 import { spy } from "sinon";
 
 import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src/index";
@@ -23,7 +24,7 @@ describe("<Tooltip>", () => {
             const tooltip = renderTooltip();
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
 
-            tooltip.find(Popover).simulate("mouseenter");
+            tooltip.find(Target).simulate("mouseenter");
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
         });
 
@@ -31,7 +32,7 @@ describe("<Tooltip>", () => {
             const tooltip = renderTooltip();
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
 
-            tooltip.find(Popover).simulate("focus");
+            tooltip.find(Target).simulate("focus");
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
         });
 
@@ -49,8 +50,8 @@ describe("<Tooltip>", () => {
                 isOpen: true,
                 tooltipClassName: "foo",
             });
-            assert.lengthOf(tooltip.find(`.${Classes.TOOLTIP}.foo`), 1);
-            assert.lengthOf(tooltip.find(`.${Classes.POPOVER_TARGET}.bar`), 1);
+            assert.lengthOf(tooltip.find(`.${Classes.TOOLTIP}.foo`).hostNodes(), 1, "tooltip");
+            assert.lengthOf(tooltip.find(`.${Classes.POPOVER_WRAPPER}.bar`).hostNodes(), 1, "popover wrapper");
         });
 
         it("empty content disables Popover and warns", () => {
@@ -100,17 +101,17 @@ describe("<Tooltip>", () => {
             it("is invoked with `true` when closed tooltip target is hovered", () => {
                 const handleInteraction = spy();
                 renderTooltip({ isOpen: false, onInteraction: handleInteraction })
-                    .find(Popover)
+                    .find(Target)
                     .simulate("mouseenter");
-                assert.isTrue(handleInteraction.calledOnce);
-                assert.isTrue(handleInteraction.calledWith(true));
+                assert.isTrue(handleInteraction.calledOnce, "called once");
+                assert.isTrue(handleInteraction.calledWith(true), "call args");
             });
         });
     });
 
     it("rootElementTag prop renders the right elements", () => {
-        const tooltip = renderTooltip({ isOpen: true, rootElementTag: "g" });
-        assert.lengthOf(tooltip.find(`g.${Classes.POPOVER_WRAPPER}`), 1);
+        const tooltip = renderTooltip({ isOpen: true, rootElementTag: "section" });
+        assert.lengthOf(tooltip.find(`section.${Classes.POPOVER_WRAPPER}`), 1);
     });
 
     function renderTooltip(props?: Partial<ITooltipProps>) {

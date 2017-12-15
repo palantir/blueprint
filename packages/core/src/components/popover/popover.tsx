@@ -140,7 +140,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     openOnTargetFocus?: boolean;
 
     /**
-     * A space-delimited string of class names that are applied to the popover (but not the target).
+     * A space-delimited string of class names applied to the popover.
      */
     popoverClassName?: string;
 
