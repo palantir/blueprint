@@ -110,7 +110,7 @@ describe("<Tooltip>", () => {
 
     it("rootElementTag prop renders the right elements", () => {
         const tooltip = renderTooltip({ isOpen: true, rootElementTag: "g" });
-        assert.lengthOf(tooltip.find(`g.${Classes.POPOVER_TARGET}`), 1);
+        assert.lengthOf(tooltip.find(`g.${Classes.POPOVER_WRAPPER}`), 1);
     });
 
     it("SVGTooltip sets rootElementTag correctly", () => {

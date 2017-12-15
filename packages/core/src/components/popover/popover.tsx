@@ -317,7 +317,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
 
         return (
-            <Manager tag="span" className={classNames("pt-popover-wrapper", className)}>
+            <Manager tag={this.props.rootElementTag} className={classNames(Classes.POPOVER_WRAPPER, className)}>
                 <Target {...targetProps} innerRef={this.refHandlers.target}>
                     {target}
                 </Target>
