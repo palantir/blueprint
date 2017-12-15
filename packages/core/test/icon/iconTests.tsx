@@ -8,7 +8,9 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Classes, Icon, IconClasses, IIconProps, Intent } from "../../src/index";
+import { IconClasses } from "@blueprintjs/icons";
+
+import { Classes, Icon, IIconProps, Intent } from "../../src/index";
 
 describe("<Icon>", () => {
     it("iconSize=16 renders standard size", () =>

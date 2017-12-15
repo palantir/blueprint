@@ -4,7 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes as CoreClasses, IconClasses, Utils as CoreUtils } from "@blueprintjs/core";
+import { Classes as CoreClasses, Utils as CoreUtils } from "@blueprintjs/core";
+import { IconClasses } from "@blueprintjs/icons";
 import * as classNames from "classnames";
 import * as React from "react";
 
