@@ -4,8 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "es6-shim";
-
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { expect } from "chai";
 import { shallow } from "enzyme";
@@ -41,12 +39,12 @@ describe("<ColumnHeaderCell>", () => {
         expect(hasCustomClass).to.be.true;
     });
 
-    it("passes index prop to renderName callback if index was provided", () => {
+    it("passes index prop to nameRenderer callback if index was provided", () => {
         const renderNameStub = sinon.stub();
         renderNameStub.returns("string");
         const NAME = "my-name";
         const INDEX = 17;
-        shallow(<ColumnHeaderCell index={INDEX} name={NAME} renderName={renderNameStub} />);
+        shallow(<ColumnHeaderCell index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
         expect(renderNameStub.firstCall.args).to.deep.equal([NAME, INDEX]);
     });
 
@@ -79,19 +77,19 @@ describe("<ColumnHeaderCell>", () => {
             const renderMenuFn = () => menu;
 
             const columnHeaderCellRenderer = (columnIndex: number) => {
-                return <ColumnHeaderCell name={`COL-${columnIndex}`} renderMenu={renderMenuFn} />;
+                return <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={renderMenuFn} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
             expectMenuToOpen(table, menuClickSpy);
         });
 
-        it("renders custom menu items with a renderMenu callback", () => {
+        it("renders custom menu items with a menuRenderer callback", () => {
             const menuClickSpy = sinon.spy();
             const menu = getMenuComponent(menuClickSpy);
-            const renderMenu = sinon.stub().returns(menu);
+            const menuRenderer = sinon.stub().returns(menu);
 
             const columnHeaderCellRenderer = (columnIndex: number) => (
-                <ColumnHeaderCell name={`COL-${columnIndex}`} renderMenu={renderMenu} />
+                <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={menuRenderer} />
             );
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
             expectMenuToOpen(table, menuClickSpy);

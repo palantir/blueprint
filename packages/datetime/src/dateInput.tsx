@@ -10,7 +10,7 @@ import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
 
 import {
-    AbstractComponent,
+    AbstractPureComponent,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -31,7 +31,7 @@ import {
     momentToString,
     stringToMoment,
 } from "./common/dateUtils";
-import { DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS, DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
+import { DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
 import { IDateFormatter } from "./dateFormatter";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
@@ -107,13 +107,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     onError?: (errorDate: Date) => void;
 
     /**
-     * If `true`, the popover will open when the user clicks on the input.
-     * @deprecated since 1.13.0.
-     * @default true
-     */
-    openOnFocus?: boolean;
-
-    /**
      * The error message to display when the date selected is out of range.
      * @default "Out of range"
      */
@@ -165,7 +158,7 @@ export interface IDateInputState {
     isOpen?: boolean;
 }
 
-export class DateInput extends AbstractComponent<IDateInputProps, IDateInputState> {
+export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
     public static defaultProps: IDateInputProps = {
         closeOnSelection: true,
         dayPickerProps: {},
@@ -174,7 +167,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         invalidDateMessage: "Invalid date",
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
-        openOnFocus: true,
         outOfRangeMessage: "Out of range",
         popoverPosition: Position.BOTTOM,
         reverseMonthAndYearMenus: false,
@@ -272,9 +264,6 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         if (props.popoverPosition !== DateInput.defaultProps.popoverPosition) {
             console.warn(DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION);
         }
-        if (props.openOnFocus !== DateInput.defaultProps.openOnFocus) {
-            console.warn(DATEINPUT_WARN_DEPRECATED_OPEN_ON_FOCUS);
-        }
     }
 
     private createMoment(valueString: string) {
@@ -368,18 +357,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             valueString = momentToString(this.state.value, this.props.format, this.props.locale);
         }
 
-        if (this.props.openOnFocus) {
-            this.setState({ isInputFocused: true, isOpen: true, valueString });
-        } else {
-            this.setState({ isInputFocused: true, valueString });
-        }
+        this.setState({ isInputFocused: true, isOpen: true, valueString });
         this.safeInvokeInputProp("onFocus", e);
     };
 
     private handleInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        if (this.props.openOnFocus) {
-            e.stopPropagation();
-        }
         this.safeInvokeInputProp("onClick", e);
     };
 

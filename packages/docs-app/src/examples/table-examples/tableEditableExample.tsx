@@ -62,7 +62,7 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
     };
 
     public renderColumnHeader = (columnIndex: number) => {
-        const renderName = (name: string) => {
+        const nameRenderer = (name: string) => {
             return (
                 <EditableName
                     name={name}
@@ -73,7 +73,7 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
                 />
             );
         };
-        return <ColumnHeaderCell name={this.state.columnNames[columnIndex]} renderName={renderName} />;
+        return <ColumnHeaderCell name={this.state.columnNames[columnIndex]} nameRenderer={nameRenderer} />;
     };
 
     private isValidValue(value: string) {

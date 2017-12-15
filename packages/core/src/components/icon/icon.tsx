@@ -5,11 +5,10 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { IconName } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
-import { IconName } from "../../generated/iconName";
 
 export { IconName };
 
@@ -31,8 +30,7 @@ export interface IIconProps extends IIntentProps, IProps {
     iconSize?: 16 | 20 | "inherit";
 }
 
-@PureRender
-export class Icon extends React.Component<IIconProps & React.HTMLAttributes<HTMLSpanElement>, never> {
+export class Icon extends React.PureComponent<IIconProps & React.HTMLAttributes<HTMLSpanElement>, never> {
     public static displayName = "Blueprint.Icon";
 
     public static readonly SIZE_STANDARD = 16 as 16;

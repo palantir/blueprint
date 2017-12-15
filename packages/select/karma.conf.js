@@ -15,7 +15,11 @@ module.exports = function (config) {
         reporters: ["mocha"],
         webpack: Object.assign({}, baseConfig.webpack, {
             entry: {
-                core: path.resolve(__dirname, "test/index.ts"),
+                select: [
+                    path.resolve(__dirname, "test/index.ts"),
+                    path.resolve(__dirname, "../core/dist/blueprint.css"),
+                    path.resolve(__dirname, "dist/blueprint-select.css"),
+                ],
             },
         }),
     })

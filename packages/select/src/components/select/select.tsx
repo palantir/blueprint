@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
@@ -18,6 +17,7 @@ import {
     Keys,
     Menu,
     Popover2,
+    Position,
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
@@ -111,8 +111,7 @@ export interface ISelectState<T> {
     query?: string;
 }
 
-@PureRender
-export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>> {
+export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState<T>> {
     public static displayName = "Blueprint.Select";
 
     public static ofType<T>() {
@@ -187,6 +186,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
         const { ref, ...htmlInputProps } = inputProps;
         const input = (
             <InputGroup
+                autoFocus={true}
                 leftIconName="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
@@ -203,8 +203,8 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
-                placement="bottom-start"
                 disabled={disabled}
+                position={Position.BOTTOM_LEFT}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}

@@ -26,7 +26,11 @@ module.exports = function (config) {
     config.set({
         webpack: Object.assign({}, baseConfig.webpack, {
             entry: {
-                core: path.resolve(__dirname, "test/index.ts"),
+                table: [
+                    path.resolve(__dirname, "test/index.ts"),
+                    path.resolve(__dirname, "../core/dist/blueprint.css"),
+                    path.resolve(__dirname, "dist/table.css"),
+                ],
             },
         }),
     })

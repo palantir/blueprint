@@ -5,25 +5,15 @@
  */
 
 import { expect } from "chai";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
 import { EditableName } from "../src/index";
-import { ReactHarness } from "./harness";
 
 describe("<EditableName>", () => {
-    const harness = new ReactHarness();
-
-    afterEach(() => {
-        harness.unmount();
-    });
-
-    after(() => {
-        harness.destroy();
-    });
-
     it("renders", () => {
-        const elem = harness.mount(<EditableName name="test-name-5000" />);
+        const elem = mount(<EditableName name="test-name-5000" />);
         expect(elem.find(".pt-editable-content").text()).to.equal("test-name-5000");
     });
 
@@ -31,22 +21,22 @@ describe("<EditableName>", () => {
         const onCancel = sinon.spy();
         const onChange = sinon.spy();
         const onConfirm = sinon.spy();
-        const elem = harness.mount(
+        const elem = mount(
             <EditableName name="test-name-5000" onCancel={onCancel} onChange={onChange} onConfirm={onConfirm} />,
         );
 
         // focus
-        elem.find(".pt-editable-text").focus();
+        elem.find(".pt-editable-text").simulate("focus");
 
         // edit
-        const input = elem.find(".pt-editable-input").change("my-changed-name");
+        const input = elem.find(".pt-editable-input").simulate("change", { target: { value: "my-changed-name" } });
         expect(onChange.called).to.be.true;
         expect(onCancel.called).to.be.false;
         expect(onConfirm.called).to.be.false;
         expect(elem.find(".pt-editable-content").text()).to.equal("my-changed-name");
 
         // confirm
-        input.blur();
+        input.simulate("blur");
         expect(onCancel.called).to.be.false;
         expect(onConfirm.called).to.be.true;
     });

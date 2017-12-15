@@ -5,17 +5,16 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
-    AbstractComponent,
+    AbstractPureComponent,
     Button,
     Classes as CoreClasses,
     HTMLInputProps,
     IButtonProps,
     IInputGroupProps,
-    IPopoverProps,
+    IPopover2Props,
     IProps,
     MenuItem,
     Utils,
@@ -89,8 +88,8 @@ export interface ITimezonePickerProps extends IProps {
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
-    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps> & object;
+    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<IPopover2Props> & object;
 }
 
 export interface ITimezonePickerState {
@@ -101,8 +100,7 @@ export interface ITimezonePickerState {
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
-@PureRender
-export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITimezonePickerState> {
+export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
     public static displayName = "Blueprint.TimezonePicker";
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
@@ -135,7 +133,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
             placeholder: "Search for timezones...",
             ...inputProps,
         };
-        const finalPopoverProps: Partial<IPopoverProps> & object = {
+        const finalPopoverProps: Partial<IPopover2Props> & object = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
         };

@@ -5,11 +5,10 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { TOASTER_WARN_INLINE, TOASTER_WARN_LEFT_RIGHT } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
@@ -78,8 +77,7 @@ export interface IToasterState {
     toasts: IToastOptions[];
 }
 
-@PureRender
-export class Toaster extends AbstractComponent<IToasterProps, IToasterState> implements IToaster {
+export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState> implements IToaster {
     public static defaultProps: IToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,

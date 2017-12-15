@@ -5,13 +5,12 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { ITab2Props, TabId } from "./tab2";
+import { ITabProps, TabId } from "./tab";
 
-export interface ITabTitleProps extends ITab2Props {
+export interface ITabTitleProps extends ITabProps {
     /** Handler invoked when this tab is clicked. */
     onClick: (id: TabId, event: React.MouseEvent<HTMLElement>) => void;
 
@@ -22,8 +21,7 @@ export interface ITabTitleProps extends ITab2Props {
     selected: boolean;
 }
 
-@PureRender
-export class TabTitle extends React.Component<ITabTitleProps, {}> {
+export class TabTitle extends React.PureComponent<ITabTitleProps, {}> {
     public static displayName = "Blueprint.TabTitle";
 
     public render() {

@@ -1,8 +1,7 @@
 {
   "name": "@blueprintjs/tslint-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TSLint configuration for @blueprintjs packages",
-  "private": true,
   "scripts": {
     "test": "exit 0"
   },

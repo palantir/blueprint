@@ -33,14 +33,24 @@ The `main` module exports all symbols from all modules so you don't have to impo
 dependencies:
 
   ```sh
-  npm install --save @blueprintjs/core
+  yarn add @blueprintjs/core
   ```
 
 1. If you see `UNMET PEER DEPENDENCY` errors, you should manually install React:
 
   ```sh
-  npm install --save react react-dom react-addons-css-transition-group
+  yarn add react react-dom react-transition-group
   ```
+
+1. Note that since the minimum supported version of React is [v16](https://reactjs.org/blog/2017/09/26/react-v16.0.html),
+all of its [JavaScript Environment Requirements](https://reactjs.org/docs/javascript-environment-requirements.html) apply to
+Blueprint as well. Some Blueprint components use the following ES2015 features:
+
+  - `Map`
+  - `Set`
+
+  We recommend polyfilling these features using [es6-shim](https://github.com/paulmillr/es6-shim) or
+  [core-js](https://github.com/zloirock/core-js).
 
 1. After installation, you'll be able to import the React components in your application:
 
@@ -141,7 +151,7 @@ install typings for Blueprint's dependencies before you can consume it:
 
 ```sh
 # required for all @blueprintjs packages:
-npm install --save @types/pure-render-decorator @types/react @types/react-dom @types/react-addons-css-transition-group
+npm install --save @types/react @types/react-dom @types/react-transition-group
 
 # @blueprintjs/datetime requires:
 npm install --save @types/moment
@@ -190,10 +200,10 @@ ReactDOM.unmountComponentAtNode(myContainerElement);
 Check out the [React API docs](https://facebook.github.io/react/docs/react-api.html) for more details.
 
 
-You'll need to install React `v15.x` or `v0.14.x` alongside Blueprint.
+You'll need to install React `v16.x` alongside Blueprint.
 
 ```sh
-npm install --save @blueprintjs/core react react-dom react-addons-css-transition-group
+npm install --save @blueprintjs/core react react-dom react-transition-group
 ```
 
 Import components from the `@blueprintjs/core` module into your project.

@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
@@ -20,8 +19,7 @@ export interface INavbarGroupProps extends React.HTMLProps<HTMLDivElement>, IPro
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@PureRender
-export class NavbarGroup extends React.Component<INavbarGroupProps, {}> {
+export class NavbarGroup extends React.PureComponent<INavbarGroupProps, {}> {
     public static displayName = "Blueprint.NavbarGroup";
 
     public static defaultProps: INavbarGroupProps = {

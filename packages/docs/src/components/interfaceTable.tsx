@@ -96,7 +96,7 @@ export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({ iface, props, 
         <div className="docs-modifiers">
             <div className="docs-interface-name">{iface.name}</div>
             {renderContentsBlock(iface.documentation.contents, tagRenderers)}
-            <table className="pt-table">
+            <table className="pt-html-table">
                 <thead>
                     <tr>
                         <th>Prop</th>

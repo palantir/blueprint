@@ -9,7 +9,7 @@ We use box shadows instead of borders since it makes the size and position
 calculations much more well-behaved. This mixin allows us to define the themes
 for all borders with minimal duplication. See the bottom of this file.
 */
-@mixin bp-table-borders-mixin($border-width, $frozen-border-width, $border-color) {
+@mixin pt-table-borders-mixin($border-width, $frozen-border-width, $border-color) {
   $border-right-default: $border-width 0 0 $border-color;
   $border-bottom-default: 0 $border-width 0 $border-color;
   $inset-border-right-default: inset (-$border-width) 0 0 $border-color;
@@ -17,28 +17,28 @@ for all borders with minimal duplication. See the bottom of this file.
   $inset-border-right-frozen: inset (-$frozen-border-width) 0 0 $border-color;
   $inset-border-bottom-frozen: inset 0 (-$frozen-border-width) 0 $border-color;
 
-  .bp-table-container {
+  .pt-table-container {
     box-shadow: 0 0 0 $border-width $border-color;
   }
 
-  .bp-table-menu {
+  .pt-table-menu {
     box-shadow: $border-bottom-default, $border-right-default;
   }
 
-  .bp-table-header {
+  .pt-table-header {
     box-shadow: $border-bottom-default;
   }
 
-  .bp-table-cell {
+  .pt-table-cell {
     box-shadow: $inset-border-bottom-default, $inset-border-right-default;
   }
 
-  .bp-table-horizontal-cell-divider {
+  .pt-table-horizontal-cell-divider {
     box-shadow: inset 0 $border-width 0 $border-color;
     height: $border-width;
   }
 
-  .bp-table-column-headers .bp-table-header {
+  .pt-table-column-headers .pt-table-header {
     box-shadow: $border-bottom-default, $inset-border-right-default;
 
     &::before {
@@ -48,7 +48,7 @@ for all borders with minimal duplication. See the bottom of this file.
     }
   }
 
-  .bp-table-row-headers .bp-table-header {
+  .pt-table-row-headers .pt-table-header {
     box-shadow: $inset-border-bottom-default, $border-right-default;
 
     &::before {
@@ -58,37 +58,37 @@ for all borders with minimal duplication. See the bottom of this file.
     }
   }
 
-  .bp-table-body {
-    .bp-table-last-in-row {
+  .pt-table-body {
+    .pt-table-last-in-row {
       box-shadow: $inset-border-bottom-default, $border-right-default;
     }
 
-    .bp-table-last-in-column {
+    .pt-table-last-in-column {
       box-shadow: $border-bottom-default, $inset-border-right-default;
     }
 
-    .bp-table-last-in-row.bp-table-last-in-column {
+    .pt-table-last-in-row.pt-table-last-in-column {
       box-shadow: $border-bottom-default, $border-right-default;
     }
   }
 
-  .bp-table-quadrant-top-left {
-    .bp-table-cell {
-      &.bp-table-last-in-row {
+  .pt-table-quadrant-top-left {
+    .pt-table-cell {
+      &.pt-table-last-in-row {
         box-shadow: $inset-border-bottom-default, $inset-border-right-frozen;
       }
 
-      &.bp-table-last-in-column {
+      &.pt-table-last-in-column {
         box-shadow: $inset-border-bottom-frozen, $inset-border-right-default;
       }
 
-      &.bp-table-last-in-column.bp-table-last-in-row {
+      &.pt-table-last-in-column.pt-table-last-in-row {
         box-shadow: $inset-border-bottom-frozen, $inset-border-right-frozen;
       }
     }
 
-    .bp-table-header {
-      &.bp-table-last-in-row {
+    .pt-table-header {
+      &.pt-table-last-in-row {
         box-shadow: $border-bottom-default, $inset-border-right-frozen;
 
         &::before {
@@ -98,7 +98,7 @@ for all borders with minimal duplication. See the bottom of this file.
         }
       }
 
-      &.bp-table-last-in-column {
+      &.pt-table-last-in-column {
         box-shadow: $inset-border-bottom-frozen, $border-right-default;
 
         &::before {
@@ -110,19 +110,19 @@ for all borders with minimal duplication. See the bottom of this file.
     }
   }
 
-  .bp-table-quadrant-left .bp-table-cell.bp-table-last-in-row {
+  .pt-table-quadrant-left .pt-table-cell.pt-table-last-in-row {
     box-shadow: $inset-border-bottom-default, $inset-border-right-frozen;
   }
 
-  .bp-table-quadrant-top .bp-table-cell.bp-table-last-in-column {
+  .pt-table-quadrant-top .pt-table-cell.pt-table-last-in-column {
     box-shadow: $inset-border-bottom-frozen, $inset-border-right-default;
   }
 }
 
-@include bp-table-borders-mixin($cell-border-width, $frozen-cell-border-width, $cell-border-color);
+@include pt-table-borders-mixin($cell-border-width, $frozen-cell-border-width, $cell-border-color);
 
 .pt-dark {
-  @include bp-table-borders-mixin(
+  @include pt-table-borders-mixin(
     $cell-border-width,
     $frozen-cell-border-width,
     $dark-cell-border-color

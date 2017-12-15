@@ -6,10 +6,10 @@
 
 import * as classNames from "classnames";
 import PopperJS from "popper.js";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
+import { Position } from "../../common/position";
 import { IIntentProps, IProps } from "../../common/props";
 import { PopoverInteractionKind } from "../popover/popover"; // TODO: move this to popover2/ directory
 import { Popover2 } from "../popover2/popover2";
@@ -95,11 +95,13 @@ export interface ITooltip2Props extends IProps, IIntentProps {
 
     /**
      * The position (relative to the target) at which the popover should appear.
-     * The default value of `"auto"` will choose the best placement when opened and will allow
-     * the popover to reposition itself to remain onscreen as the user scrolls around.
+     *
+     * The default value of `"auto"` will choose the best position when opened
+     * and will allow the popover to reposition itself to remain onscreen as the
+     * user scrolls around.
      * @default "auto"
      */
-    placement?: PopperJS.Placement;
+    position?: Position | "auto";
 
     /**
      * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).
@@ -114,7 +116,7 @@ export interface ITooltip2Props extends IProps, IIntentProps {
 
     /**
      * Indicates how long (in milliseconds) the tooltip's appear/disappear transition takes.
-     * This is used by React `CSSTransitionGroup` to know when a transition completes
+     * This is used by React `CSSTransition` to know when a transition completes
      * and must match the duration of the animation in CSS.
      * Only set this prop if you override Blueprint's default transitions with new transitions of a different length.
      * @default 100
@@ -122,8 +124,7 @@ export interface ITooltip2Props extends IProps, IIntentProps {
     transitionDuration?: number;
 }
 
-@PureRender
-export class Tooltip2 extends React.Component<ITooltip2Props, {}> {
+export class Tooltip2 extends React.PureComponent<ITooltip2Props, {}> {
     public static displayName = "Blueprint.Tooltip2";
 
     public static defaultProps: Partial<ITooltip2Props> = {

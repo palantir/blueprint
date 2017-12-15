@@ -9,10 +9,11 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
+import { dispatchMouseEvent, dispatchTouchEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
 import { Classes, ISliderProps, Slider } from "../../src/index";
-import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
 describe("<Slider>", () => {
     let testsContainerElement: HTMLElement;
@@ -172,21 +173,15 @@ describe("<Slider>", () => {
         assert.isTrue(trackClickSpy.notCalled, "handleTrackTouch was called when disabled");
     });
 
-    it("throws error if given non-number values for number props", () => {
-        [{ max: "foo" }, { min: "foo" }, { stepSize: "foo" }].forEach((props: any) => {
-            assert.throws(() => renderSlider(<Slider {...props} />), "number");
-        });
-    });
-
     it("throws error if stepSize <= 0", () => {
         [{ stepSize: 0 }, { stepSize: -10 }].forEach((props: any) => {
-            assert.throws(() => renderSlider(<Slider {...props} />), "greater than zero");
+            expectPropValidationError(Slider, props, "greater than zero");
         });
     });
 
     it("throws error if labelStepSize <= 0", () => {
         [{ labelStepSize: 0 }, { labelStepSize: -10 }].forEach((props: any) => {
-            assert.throws(() => renderSlider(<Slider {...props} />), "greater than zero");
+            expectPropValidationError(Slider, props, "greater than zero");
         });
     });
 

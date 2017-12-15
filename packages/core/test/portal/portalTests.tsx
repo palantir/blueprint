@@ -8,6 +8,7 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
+import { spy } from "sinon";
 import { Classes, IPortalProps, Portal } from "../../src";
 
 describe("<Portal>", () => {
@@ -27,8 +28,6 @@ describe("<Portal>", () => {
                 <p className={CLASS_TO_TEST}>test</p>
             </Portal>,
         );
-
-        assert.lengthOf(portal.find(`.${CLASS_TO_TEST}`), 0);
         assert.lengthOf(document.getElementsByClassName(CLASS_TO_TEST), 1);
     });
 
@@ -55,5 +54,15 @@ describe("<Portal>", () => {
 
         const portalElement = document.querySelector(`.${CLASS_TO_TEST}`);
         assert.isTrue(portalElement.classList.contains(Classes.PORTAL));
+    });
+
+    it("mounts children after Portal has mounted (autoFocus)", () => {
+        const focusSpy = spy();
+        portal = mount(
+            <Portal>
+                <input autoFocus={true} onFocus={focusSpy} />
+            </Portal>,
+        );
+        assert.equal(focusSpy.callCount, 1);
     });
 });

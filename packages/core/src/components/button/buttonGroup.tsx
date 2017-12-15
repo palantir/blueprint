@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
@@ -38,8 +37,7 @@ export interface IButtonGroupProps extends IProps, React.HTMLProps<HTMLDivElemen
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@PureRender
-export class ButtonGroup extends React.Component<IButtonGroupProps, {}> {
+export class ButtonGroup extends React.PureComponent<IButtonGroupProps, {}> {
     public static displayName = "Blueprint.ButtonGroup";
 
     public render() {

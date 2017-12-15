@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import {
@@ -68,8 +67,7 @@ export interface ISuggestState<T> {
     selectedItem?: T;
 }
 
-@PureRender
-export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<T>> {
+export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
     public static displayName = "Blueprint.Suggest";
 
     public static ofType<T>() {

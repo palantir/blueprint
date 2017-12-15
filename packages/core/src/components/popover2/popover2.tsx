@@ -6,14 +6,13 @@
 
 import * as classNames from "classnames";
 import PopperJS from "popper.js";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
 
 export type PopperModifiers = PopperJS.Modifiers;
-export type Placement = PopperJS.Placement;
+type Placement = PopperJS.Placement;
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
@@ -135,12 +134,6 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
     openOnTargetFocus?: boolean;
 
     /**
-     * The position (relative to the target) at which the popover should appear.
-     * @deprecated use `placement`
-     */
-    position?: Position;
-
-    /**
      * A space-delimited string of class names that are applied to the popover (but not the target).
      */
     popoverClassName?: string;
@@ -168,11 +161,13 @@ export interface IPopover2Props extends IOverlayableProps, IProps {
 
     /**
      * The position (relative to the target) at which the popover should appear.
-     * The default value of `"auto"` will choose the best placement when opened and will allow
-     * the popover to reposition itself to remain onscreen as the user scrolls around.
+     *
+     * The default value of `"auto"` will choose the best position when opened
+     * and will allow the popover to reposition itself to remain onscreen as the
+     * user scrolls around.
      * @default "auto"
      */
-    placement?: Placement;
+    position?: Position | "auto";
 
     /**
      * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).
@@ -200,11 +195,10 @@ export interface IPopover2State {
     hasBackdrop?: boolean;
 
     /** Migrated `placement` value that considers the `placement` and `position` props. */
-    placement?: Placement;
+    placement?: PopperJS.Placement;
 }
 
-@PureRender
-export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> {
+export class Popover2 extends AbstractPureComponent<IPopover2Props, IPopover2State> {
     public static displayName = "Blueprint.Popover2";
 
     public static defaultProps: IPopover2Props = {
@@ -375,9 +369,6 @@ export class Popover2 extends AbstractComponent<IPopover2Props, IPopover2State> 
         }
         if (props.isModal !== undefined) {
             console.warn(Errors.POPOVER2_WARN_DEPRECATED_IS_MODAL);
-        }
-        if (props.position !== undefined) {
-            console.warn(Errors.POPOVER2_WARN_DEPRECATED_POSITION);
         }
     }
 
@@ -611,9 +602,7 @@ function getHasBackdrop(props: IPopover2Props): boolean {
 }
 
 function getPlacement(props: IPopover2Props): Placement {
-    if (props.placement !== undefined) {
-        return props.placement;
-    } else if (props.position !== undefined) {
+    if (props.position !== undefined) {
         return positionToPlacement(props.position);
     } else {
         return "auto";
