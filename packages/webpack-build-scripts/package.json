@@ -1,11 +1,11 @@
 {
   "name": "@blueprintjs/webpack-build-scripts",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Webpack build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
   },
-  "devDependencies": {
+  "dependencies": {
     "autoprefixer": "^7.1.2",
     "awesome-typescript-loader": "^3.2.2",
     "circular-dependency-plugin": "^3.0.0",

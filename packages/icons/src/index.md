@@ -1,3 +1,7 @@
+---
+reference: icons
+---
+
 @# Icons
 
 Blueprint provides over 300 UI icons in an icon font. They come in two sizes, 16px and 20px, and can
@@ -13,3 +17,4 @@ Many Blueprint [components](#core/components) provide an `iconName` prop, which 
 full name `pt-icon-projects` and the short name `projects`.
 
 @reactDocs Icons
+

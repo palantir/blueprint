@@ -7,13 +7,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v2-dependency-cache-{{ checksum "yarn.lock" }}
-            - v2-dependency-cache-
+            - v3-dependency-cache-{{ checksum "yarn.lock" }}
+            - v3-dependency-cache-
       - run: yarn
       - run: echo "Checking if lockfiles changed..." && git diff --exit-code
       - run: npm rebuild node-sass
       - save_cache:
-          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ~/yarn
             - ~/.cache/yarn
@@ -33,8 +33,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v2-dependency-cache-{{ checksum "yarn.lock" }}
-            - v2-dependency-cache-
+            - v3-dependency-cache-{{ checksum "yarn.lock" }}
+            - v3-dependency-cache-
       - run: yarn compile
       - persist_to_workspace:
           root: '.'
@@ -51,8 +51,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v2-dependency-cache-{{ checksum "yarn.lock" }}
-            - v2-dependency-cache-
+            - v3-dependency-cache-{{ checksum "yarn.lock" }}
+            - v3-dependency-cache-
       - run: yarn lint
 
   dist-libs:
@@ -63,7 +63,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:libs
       - persist_to_workspace:
           root: '.'
@@ -84,7 +84,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:apps
       - persist_to_workspace:
           root: '.'
@@ -101,7 +101,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/core'
 
   test-datetime:
@@ -112,8 +112,19 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/datetime'
+
+  test-icons:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn lerna run test --scope '@blueprintjs/icons'
 
   test-labs:
     docker:
@@ -123,7 +134,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/labs'
 
   test-select:
@@ -134,7 +145,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/select'
 
   test-table:
@@ -145,7 +156,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn lerna run test --scope '@blueprintjs/table'
 
   test-timezone:
@@ -205,6 +216,8 @@ workflows:
       - test-core:
           requires: [compile-libs]
       - test-datetime:
+          requires: [compile-libs]
+      - test-icons:
           requires: [compile-libs]
       - test-labs:
           requires: [compile-libs]
