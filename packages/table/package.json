@@ -31,7 +31,6 @@
   "dependencies": {
     "@blueprintjs/core": "^1.34.0",
     "classnames": "^2.2",
-    "es6-shim": "^0.35.3",
     "tslib": "^1.5.0"
   },
   "devDependencies": {
@@ -39,6 +38,7 @@
     "@blueprintjs/test-commons": "^0.3.0",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
+    "es6-shim": "^0.35.3",
     "karma": "^1.7.1",
     "lodash": "^4.17.4",
     "mocha": "^4.0.1",
