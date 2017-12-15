@@ -36,9 +36,9 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
-    "@blueprintjs/karma-build-scripts": "^0.2.0",
-    "@blueprintjs/node-build-scripts": "^0.2.0",
-    "@blueprintjs/test-commons": "^0.1.0",
+    "@blueprintjs/karma-build-scripts": "^0.3.0",
+    "@blueprintjs/node-build-scripts": "^0.3.0",
+    "@blueprintjs/test-commons": "^0.3.0",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
     "es6-shim": "^0.35.3",
