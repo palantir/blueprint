@@ -3,7 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-const { generateIsomorphicTests } = require("@blueprintjs/node-build-scripts");
+const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const Icons = require("../dist");
 
