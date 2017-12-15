@@ -41,22 +41,33 @@ class ContextMenu extends AbstractPureComponent<{}, IContextMenuState> {
     public render() {
         // prevent right-clicking in a context menu
         const content = <div onContextMenu={this.cancelContextMenu}>{this.state.menu}</div>;
-        const popoverClassName = classNames(Classes.MINIMAL, { [Classes.DARK]: this.state.isDarkTheme });
+        const popoverClassName = classNames({ [Classes.DARK]: this.state.isDarkTheme });
+
+        // the target isn't relevant in this case. the context menu simply
+        // appears overlayed at the desired offset on the screen.
+        const emptyTarget = <div />;
+
+        // make the positioned div a wrapper instead of the target. Popper.js
+        // inserts the popover into the DOM as a *sibling* of the target, so
+        // this is the best way to ensure the popover gets positioned properly.
         return (
-            <Popover
-                backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
-                content={content}
-                enforceFocus={false}
-                isModal={true}
-                isOpen={this.state.isOpen}
-                modifiers={POPPER_MODIFIERS}
-                onInteraction={this.handlePopoverInteraction}
-                position={Position.RIGHT_TOP}
-                popoverClassName={popoverClassName}
-                transitionDuration={TRANSITION_DURATION}
-            >
-                <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset} />
-            </Popover>
+            <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset}>
+                <Popover
+                    backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
+                    content={content}
+                    enforceFocus={false}
+                    isModal={true}
+                    isOpen={this.state.isOpen}
+                    minimal={true}
+                    modifiers={POPPER_MODIFIERS}
+                    onInteraction={this.handlePopoverInteraction}
+                    position={Position.RIGHT_TOP}
+                    popoverClassName={popoverClassName}
+                    transitionDuration={TRANSITION_DURATION}
+                >
+                    {emptyTarget}
+                </Popover>
+            </div>
         );
     }
 
