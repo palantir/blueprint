@@ -46,14 +46,14 @@ import { SlowLayoutStack } from "./slowLayoutStack";
 
 export enum FocusStyle {
     TAB = "tab",
-    TAB_OR_CLICK = "tab_or_click",
+    TAB_OR_CLICK = "tab-or-click",
 }
 
 export enum CellContent {
     EMPTY = "empty",
-    CELL_NAMES = "cell_names",
-    LONG_TEXT = "long_text",
-    LARGE_JSON = "large_json",
+    CELL_NAMES = "cell-names",
+    LONG_TEXT = "long-text",
+    LARGE_JSON = "large-json",
 }
 
 type IMutableStateUpdateCallback = (

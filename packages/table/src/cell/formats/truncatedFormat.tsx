@@ -22,8 +22,8 @@ const CONTENT_DIV_WIDTH_DELTA = 25;
 export enum TruncatedPopoverMode {
     ALWAYS = "always",
     NEVER = "never",
-    WHEN_TRUNCATED = "when_truncated",
-    WHEN_TRUNCATED_APPROX = "when_truncated_approx",
+    WHEN_TRUNCATED = "when-truncated",
+    WHEN_TRUNCATED_APPROX = "when-truncated-approx",
 }
 
 export interface ITrucatedFormateMeasureByApproximateOptions {
