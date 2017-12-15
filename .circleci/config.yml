@@ -159,8 +159,6 @@ workflows:
           requires: [compile-libs]
       - test:
           requires: [compile-libs]
-      - test-timezone:
-          requires: [compile-libs]
       - deploy-preview:
           requires: [dist-apps]
       - deploy-npm:
