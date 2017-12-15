@@ -36,8 +36,8 @@
     "tslib": "^1.7.1"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^0.2.0",
-    "@blueprintjs/webpack-build-scripts": "^0.2.0",
+    "@blueprintjs/node-build-scripts": "^0.3.0",
+    "@blueprintjs/webpack-build-scripts": "^0.3.0",
     "@types/chroma-js": "^1.3.3",
     "npm-run-all": "^4.1.2",
     "stylelint": "^8.2.0",

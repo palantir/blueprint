@@ -35,6 +35,23 @@ describe("Hotkeys", () => {
         expectPropValidationError(Hotkeys, { children: [undefined, null] }, HOTKEYS_HOTKEY_CHILDREN, "undefined");
     });
 
+    it("Decorator does not mutate the original class", () => {
+        class TestComponent extends React.Component<{}, {}> {
+            public render() {
+                return <div />;
+            }
+
+            public renderHotkeys() {
+                return <Hotkeys />;
+            }
+        }
+
+        const TargettedTestComponent = HotkeysTarget(TestComponent);
+
+        // it's not the same Component
+        expect(TargettedTestComponent).to.not.equal(TestComponent);
+    });
+
     describe("Local/Global @HotkeysTarget", () => {
         let localKeyDownSpy: SinonSpy = null;
         let localKeyUpSpy: SinonSpy = null;

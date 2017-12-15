@@ -23,6 +23,17 @@ export function isFunction(value: any): value is Function {
 }
 
 /**
+ * Represents anything that has a `name` property such as Functions.
+ */
+export interface INamed {
+    name?: string;
+}
+
+export function getDisplayName(ComponentClass: React.ComponentClass | INamed) {
+    return (ComponentClass as React.ComponentClass).displayName || (ComponentClass as INamed).name || "Unknown";
+}
+
+/**
  * Safely invoke the function with the given arguments, if it is indeed a
  * function, and return its value.
  */

@@ -7,55 +7,70 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { CONTEXTMENU_WARN_DECORATOR_NO_METHOD } from "../../common/errors";
-import { isFunction, safeInvoke } from "../../common/utils";
+import { IConstructor } from "../../common/constructor";
+import {
+    CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT,
+    CONTEXTMENU_WARN_DECORATOR_NO_METHOD,
+} from "../../common/errors";
+import { getDisplayName, isFunction, safeInvoke } from "../../common/utils";
 import { isDarkTheme } from "../../common/utils/isDarkTheme";
 import * as ContextMenu from "./contextMenu";
 
 export interface IContextMenuTarget extends React.Component<any, any> {
+    render(): React.ReactElement<any> | null | undefined;
     renderContextMenu(e: React.MouseEvent<HTMLElement>): JSX.Element | undefined;
     onContextMenuClose?(): void;
 }
 
-export function ContextMenuTarget<T extends { prototype: IContextMenuTarget }>(constructor: T) {
-    const { render, renderContextMenu, onContextMenuClose } = constructor.prototype;
-
-    if (!isFunction(renderContextMenu)) {
+export function ContextMenuTarget<T extends IConstructor<IContextMenuTarget>>(WrappedComponent: T) {
+    if (!isFunction(WrappedComponent.prototype.renderContextMenu)) {
         console.warn(CONTEXTMENU_WARN_DECORATOR_NO_METHOD);
     }
 
-    // patching classes like this requires preserving function context
-    // tslint:disable-next-line only-arrow-functions
-    constructor.prototype.render = function(this: IContextMenuTarget) {
-        /* tslint:disable:no-invalid-this */
-        const element = render.call(this) as JSX.Element;
+    return class ContextMenuTargetClass extends WrappedComponent {
+        public static displayName = `ContextMenuTarget(${getDisplayName(WrappedComponent)})`;
 
-        if (element == null) {
-            // always return `element` in case caller is distinguishing between `null` and `undefined`
-            return element;
-        }
+        public render() {
+            const element = super.render();
 
-        const oldOnContextMenu = element.props.onContextMenu as React.MouseEventHandler<HTMLElement>;
-        const onContextMenu = (e: React.MouseEvent<HTMLElement>) => {
-            // support nested menus (inner menu target would have called preventDefault())
-            if (e.defaultPrevented) {
-                return;
+            if (element == null) {
+                // always return `element` in case caller is distinguishing between `null` and `undefined`
+                return element;
             }
 
-            if (isFunction(this.renderContextMenu)) {
-                const menu = this.renderContextMenu(e);
-                if (menu != null) {
-                    const htmlElement = ReactDOM.findDOMNode(this);
-                    const darkTheme = htmlElement != null && isDarkTheme(htmlElement);
-                    e.preventDefault();
-                    ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, onContextMenuClose, darkTheme);
+            if (!React.isValidElement<any>(element)) {
+                console.warn(CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT);
+                return element;
+            }
+            const oldOnContextMenu = element.props.onContextMenu as React.MouseEventHandler<HTMLElement>;
+            const onContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+                // support nested menus (inner menu target would have called preventDefault())
+                if (e.defaultPrevented) {
+                    return;
                 }
-            }
 
-            safeInvoke(oldOnContextMenu, e);
-        };
+                if (isFunction(this.renderContextMenu)) {
+                    const menu = this.renderContextMenu(e);
+                    if (menu != null) {
+                        const htmlElement = ReactDOM.findDOMNode(this);
+                        const darkTheme = htmlElement != null && isDarkTheme(htmlElement);
+                        e.preventDefault();
+                        ContextMenu.show(
+                            menu,
+                            {
+                                left: e.clientX,
+                                top: e.clientY,
+                            },
+                            this.onContextMenuClose,
+                            darkTheme,
+                        );
+                    }
+                }
 
-        return React.cloneElement(element, { onContextMenu });
-        /* tslint:enable:no-invalid-this */
+                safeInvoke(oldOnContextMenu, e);
+            };
+
+            return React.cloneElement(element, { onContextMenu });
+        }
     };
 }

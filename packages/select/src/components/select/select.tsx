@@ -17,6 +17,7 @@ import {
     Keys,
     Menu,
     Popover2,
+    Position,
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
@@ -167,8 +168,8 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
-                placement="bottom-start"
                 disabled={disabled}
+                position={Position.BOTTOM_LEFT}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
