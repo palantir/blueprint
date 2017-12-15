@@ -5,7 +5,7 @@
   "scripts": {
     "test": "exit 0"
   },
-  "devDependencies": {
+  "dependencies": {
     "autoprefixer": "^7.1.2",
     "awesome-typescript-loader": "^3.2.2",
     "circular-dependency-plugin": "^3.0.0",
