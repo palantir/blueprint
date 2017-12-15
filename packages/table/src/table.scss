@@ -17,7 +17,7 @@ $column-z-index: $body-z-index + 1 !default;
 $row-z-index: $column-z-index + 1 !default;
 $menu-z-index: $row-z-index + 1 !default;
 
-.bp-table-container {
+.pt-table-container {
   @include force-hardware-acceleration();
   display: flex;
   flex-direction: column;
@@ -38,19 +38,19 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 }
 
-.bp-table-top-container {
+.pt-table-top-container {
   display: flex;
   flex: 0 0 auto;
   min-height: 0%; // Must use % unit for IE11
 
-  .bp-table-container.bp-table-no-rows & {
+  .pt-table-container.pt-table-no-rows & {
     // edge case when there are no rows: keep bottom borders visible on menu
     // element and column headers
     padding-bottom: 1px;
   }
 }
 
-.bp-table-bottom-container {
+.pt-table-bottom-container {
   display: flex;
   flex: 1 1 auto;
   height: 100%; // IE 11
@@ -62,7 +62,7 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 }
 
-.bp-table-menu {
+.pt-table-menu {
   flex: 0 0 auto;
   // Stay above the moving table-header
   position: relative;
@@ -75,7 +75,7 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 }
 
-.bp-table-column-headers {
+.pt-table-column-headers {
   display: block;
 
   // allow absolute position for region overlays
@@ -92,7 +92,7 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 }
 
-.bp-table-row-headers {
+.pt-table-row-headers {
   flex: 0 0 auto;
   // allow absolute position for region overlay
   position: relative;
@@ -111,18 +111,18 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 }
 
-.bp-table-body {
+.pt-table-body {
   flex: 1 1 100%;
   position: relative;
   z-index: $body-z-index;
   overflow: scroll;
 }
 
-.bp-table-body-virtual-client {
+.pt-table-body-virtual-client {
   position: relative;
 }
 
-.bp-table-cell-client {
+.pt-table-cell-client {
   background: $cell-background-color;
 
   .pt-dark & {
@@ -130,21 +130,21 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 }
 
-.bp-table-tbody {
+.pt-table-tbody {
   display: block;
   white-space: nowrap;
 }
 
-.bp-table-cell {
+.pt-table-cell {
   display: inline-block;
 }
 
-.bp-table-no-layout {
+.pt-table-no-layout {
   display: inline-block;
   position: absolute;
 }
 
-.bp-table-scrollbar-measure {
+.pt-table-scrollbar-measure {
   position: absolute;
   top: -9999px;
   width: $pt-grid-size * 10;

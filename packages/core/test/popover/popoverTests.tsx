@@ -5,28 +5,22 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import { Arrow, Popper } from "react-popper";
+import { Arrow } from "react-popper";
 import * as sinon from "sinon";
 
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+
+import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
-import {
-    Classes,
-    IPopoverProps,
-    IPopoverState,
-    Overlay,
-    Placement,
-    Popover,
-    PopoverInteractionKind,
-    Position,
-    Tooltip,
-    Utils,
-} from "../../src/index";
-
-type ShallowPopoverWrapper = ShallowWrapper<IPopoverProps, IPopoverState>;
+import { Position } from "../../src/common/position";
+import * as Utils from "../../src/common/utils";
+import { Overlay } from "../../src/components/overlay/overlay";
+import { IPopoverProps, IPopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
+import { Tooltip } from "../../src/components/tooltip/tooltip";
+import { Portal } from "../../src/index";
 
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
@@ -101,14 +95,14 @@ describe("<Popover>", () => {
         assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
     });
 
-    it("renders inside target container when inline=true", () => {
+    it("does not render Portal when inline=true", () => {
         wrapper = renderPopover({ inline: true, isOpen: true });
-        assert.lengthOf(wrapper.find(`.${Classes.POPOVER}`), 1);
+        assert.lengthOf(wrapper.find(Portal).find(`.${Classes.POPOVER}`), 0);
     });
 
-    it("does not render inside target container when inline=false", () => {
+    it("renders Portal when inline=false", () => {
         wrapper = renderPopover({ inline: false, isOpen: true });
-        assert.lengthOf(wrapper.find(`.${Classes.POPOVER}`), 0);
+        assert.lengthOf(wrapper.find(Portal).find(`.${Classes.POPOVER}`), 1);
     });
 
     it("empty content disables it and warns", () => {
@@ -247,7 +241,7 @@ describe("<Popover>", () => {
                     inline: false,
                     interactionKind: PopoverInteractionKind.HOVER,
                 });
-                const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
+                const targetElement = wrapper.findClass(Classes.POPOVER_TARGET);
                 targetElement.simulate("focus");
                 targetElement.simulate("blur");
                 assert.isTrue(wrapper.state("isOpen"));
@@ -298,7 +292,7 @@ describe("<Popover>", () => {
                 interactionKind,
                 openOnTargetFocus,
             });
-            const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
+            const targetElement = wrapper.findClass(Classes.POPOVER_TARGET);
             targetElement.simulate("focus");
             assert.equal(wrapper.state("isOpen"), isOpen);
         }
@@ -309,17 +303,15 @@ describe("<Popover>", () => {
             openOnTargetFocus?: boolean,
         ) {
             wrapper = renderPopover({ inline: false, interactionKind, openOnTargetFocus });
-            const targetElement = wrapper.find(`.${Classes.POPOVER_TARGET}`);
-            // accessing an html attribute in enyzme is a pain (see
-            // https://github.com/airbnb/enzyme/issues/336), so we have to go down to the vanilla
-            // DOM node. however, enzyme elements don't expose their `node` property, so we have to
-            // cast as `any` to get to it.
-            const targetOnlyChildElement = getNode(targetElement.childAt(0));
+            const targetElement = wrapper
+                .findClass(Classes.POPOVER_TARGET)
+                .childAt(0)
+                .getDOMNode();
 
             if (shouldTabIndexExist) {
-                assert.equal(targetOnlyChildElement.getAttribute("tabindex"), "0");
+                assert.equal(targetElement.getAttribute("tabindex"), "0");
             } else {
-                assert.isNull(targetOnlyChildElement.getAttribute("tabindex"));
+                assert.isNull(targetElement.getAttribute("tabindex"));
             }
         }
     });
@@ -469,7 +461,7 @@ describe("<Popover>", () => {
             wrapper.simulateTarget("click").assertIsOpen();
 
             dispatchMouseEvent(document.getElementsByClassName(Classes.POPOVER_DISMISS)[0], "click");
-            wrapper.assertIsOpen(false);
+            wrapper.update().assertIsOpen(false);
         });
 
         it("clicking .pt-popover-dismiss closes popover when inline=true", () => {
@@ -568,7 +560,7 @@ describe("<Popover>", () => {
         });
 
         it("computes arrow rotation", done => {
-            renderPopover({ isOpen: true, placement: "top" }).then(
+            renderPopover({ isOpen: true, position: Position.TOP }).then(
                 () => assert.equal(wrapper.state("arrowRotation"), 90),
                 done,
             );
@@ -589,18 +581,6 @@ describe("<Popover>", () => {
     });
 
     describe("deprecated prop shims", () => {
-        it("should convert position to placement", () => {
-            const popover = shallow(
-                <Popover inline={true} position={Position.BOTTOM_LEFT}>
-                    child
-                </Popover>,
-            );
-            assertPlacement(popover, "bottom-start");
-
-            popover.setProps({ position: Position.LEFT_BOTTOM });
-            assertPlacement(popover, "left-end");
-        });
-
         it("should convert isModal to hasBackdrop", () => {
             const popover = shallow(
                 <Popover inline={true} isModal={true}>
@@ -623,18 +603,6 @@ describe("<Popover>", () => {
                 .setProps({ isDisabled: false })
                 .simulateTarget("click")
                 .assertIsOpen(true);
-        });
-
-        it("placement should take precedence over position", () => {
-            const popover = shallow(
-                <Popover inline={true} placement="left-end" position={Position.BOTTOM_LEFT}>
-                    child
-                </Popover>,
-            );
-            assertPlacement(popover, "left-end");
-
-            popover.setProps({ placement: "bottom-start", position: Position.LEFT_BOTTOM });
-            assertPlacement(popover, "bottom-start");
         });
 
         it("hasBackdrop should take precedence over isModal", () => {
@@ -685,7 +653,7 @@ describe("<Popover>", () => {
             assert.equal(wrapper.find(Overlay).prop("isOpen"), isOpen);
             return wrapper;
         };
-        wrapper.findClass = (className: string) => wrapper.find(`.${className}`);
+        wrapper.findClass = (className: string) => wrapper.find(`.${className}`).hostNodes();
         wrapper.simulateTarget = (eventName: string) => {
             wrapper.findClass(Classes.POPOVER_TARGET).simulate(eventName);
             return wrapper;
@@ -704,13 +672,5 @@ describe("<Popover>", () => {
             });
         };
         return wrapper;
-    }
-
-    function getNode(element: ReactWrapper<React.HTMLAttributes<{}>, any>) {
-        return (element as any).node as Element;
-    }
-
-    function assertPlacement(popover: ShallowPopoverWrapper, placement: Placement) {
-        assert.strictEqual(popover.find(Popper).prop("placement"), placement);
     }
 });

@@ -29,7 +29,7 @@ $dark-selectable-header-menu-selected-background:
 $dark-selectable-header-menu-selected-hover-background:
   menu-background(mix($pt-intent-primary, $dark-header-hover-background-color, 10%));
 
-.bp-table-header {
+.pt-table-header {
   flex: 1 1 auto;
   align-items: flex-start;
   justify-content: space-between;
@@ -47,16 +47,16 @@ $dark-selectable-header-menu-selected-hover-background:
     content: "";
   }
 
-  .bp-table-row-name,
-  .bp-table-column-name,
-  .bp-table-header-content {
+  .pt-table-row-name,
+  .pt-table-column-name,
+  .pt-table-header-content {
     // push these above the ::before content
     position: relative;
     width: 100%;
   }
 
-  .bp-table-selection-enabled &:hover,
-  &.bp-table-header-active {
+  .pt-table-selection-enabled &:hover,
+  &.pt-table-header-active {
     &::before {
       background-color: $header-hover-background-color;
 
@@ -66,7 +66,7 @@ $dark-selectable-header-menu-selected-hover-background:
     }
   }
 
-  &.bp-table-header-selected::before {
+  &.pt-table-header-selected::before {
     background-image: linear-gradient(
       90deg,
       rgba($header-selected-background-color, 0.1),
@@ -75,25 +75,25 @@ $dark-selectable-header-menu-selected-hover-background:
   }
 }
 
-.bp-table-th-menu-container {
+.pt-table-th-menu-container {
   flex-shrink: 0;
   position: absolute;
   right: $cell-border-width; // don't overlap box-shadow border
   opacity: 0; // hide until header is hovered
   text-align: right;
 
-  .bp-table-header:hover &,
-  .bp-table-header-active &,
-  &.bp-table-th-menu-open {
+  .pt-table-header:hover &,
+  .pt-table-header-active &,
+  &.pt-table-th-menu-open {
     opacity: 1;
   }
 
-  .bp-table-interaction-bar & {
+  .pt-table-interaction-bar & {
     line-height: $interaction-bar-height;
   }
 }
 
-.bp-table-th-menu-container-background {
+.pt-table-th-menu-container-background {
   position: absolute;
   top: 0;
   right: 0;
@@ -101,11 +101,11 @@ $dark-selectable-header-menu-selected-hover-background:
   height: $column-header-min-height;
   pointer-events: none; // don't swallow clicks meant for the underlying header cell
 
-  .bp-table-interaction-bar & {
+  .pt-table-interaction-bar & {
     height: $interaction-bar-height;
   }
 
-  .bp-table-th-menu-open & {
+  .pt-table-th-menu-open & {
     background-image: $header-menu-hover-background;
 
     .pt-dark & {
@@ -114,9 +114,9 @@ $dark-selectable-header-menu-selected-hover-background:
   }
 
   // background doesn't change on hover when selection is disabled; match the default background
-  .bp-table-header:hover &,
-  .bp-table-header-active &,
-  .bp-table-th-menu-open & {
+  .pt-table-header:hover &,
+  .pt-table-header-active &,
+  .pt-table-th-menu-open & {
     background-image: $header-menu-hover-background;
 
     .pt-dark & {
@@ -125,8 +125,8 @@ $dark-selectable-header-menu-selected-hover-background:
   }
 
   // background changes on hover/select when selection is enabled; need to match the new background
-  .bp-table-selection-enabled .bp-table-header:hover &,
-  .bp-table-selection-enabled .bp-table-header-active & {
+  .pt-table-selection-enabled .pt-table-header:hover &,
+  .pt-table-selection-enabled .pt-table-header-active & {
     background-image: $selectable-header-menu-hover-background;
 
     .pt-dark & {
@@ -134,7 +134,7 @@ $dark-selectable-header-menu-selected-hover-background:
     }
   }
 
-  .bp-table-selection-enabled .bp-table-header.bp-table-header-selected & {
+  .pt-table-selection-enabled .pt-table-header.pt-table-header-selected & {
     background-image: $selectable-header-menu-selected-background;
 
     .pt-dark & {
@@ -142,7 +142,7 @@ $dark-selectable-header-menu-selected-hover-background:
     }
   }
 
-  .bp-table-selection-enabled .bp-table-header.bp-table-header-selected:hover & {
+  .pt-table-selection-enabled .pt-table-header.pt-table-header-selected:hover & {
     background-image: $selectable-header-menu-selected-hover-background;
 
     .pt-dark & {
@@ -151,12 +151,12 @@ $dark-selectable-header-menu-selected-hover-background:
   }
 }
 
-.bp-table-th-menu {
+.pt-table-th-menu {
   cursor: $action-cursor;
   width: $column-header-min-height; // create a larger, more accessible click target
   height: $column-header-min-height;
 
-  .bp-table-interaction-bar & {
+  .pt-table-interaction-bar & {
     right: $cell-border-width;
     width: $interaction-bar-height;
     height: $interaction-bar-height;
@@ -183,11 +183,11 @@ $dark-selectable-header-menu-selected-hover-background:
 
     // light theme
 
-    .bp-table-selection-enabled & {
+    .pt-table-selection-enabled & {
       background-color: $header-hover-background-color;
     }
 
-    .bp-table-selection-enabled .bp-table-header.bp-table-header-selected & {
+    .pt-table-selection-enabled .pt-table-header.pt-table-header-selected & {
       background-color: $selectable-header-menu-selected-background;
     }
 
@@ -199,13 +199,13 @@ $dark-selectable-header-menu-selected-hover-background:
       color: $pt-dark-icon-color;
     }
 
-    .pt-dark .bp-table-selection-enabled & {
+    .pt-dark .pt-table-selection-enabled & {
       background-color: $dark-header-hover-background-color;
     }
 
     // need to use a long selector here to properly scope the style
     // stylelint-disable-next-line selector-max-compound-selectors
-    .pt-dark .bp-table-selection-enabled .bp-table-header.bp-table-header-selected & {
+    .pt-dark .pt-table-selection-enabled .pt-table-header.pt-table-header-selected & {
       background-color: $dark-selectable-header-menu-selected-background;
     }
   }
@@ -233,32 +233,32 @@ $dark-selectable-header-menu-selected-hover-background:
   }
 }
 
-.bp-table-thead {
+.pt-table-thead {
   display: block;
   white-space: nowrap;
 }
 
-.bp-table-column-header-tr {
+.pt-table-column-header-tr {
   display: flex;
 
-  .bp-table-header {
+  .pt-table-header {
     // Using a fixed flex layout give us columns that match their height. Fixes #45
     flex: 0 0;
   }
 }
 
-.bp-table-column-headers .bp-table-interaction-bar {
+.pt-table-column-headers .pt-table-interaction-bar {
   position: relative;
   height: $interaction-bar-height;
 }
 
-.bp-table-column-headers .bp-table-header {
+.pt-table-column-headers .pt-table-header {
   min-height: $column-header-min-height;
   vertical-align: top;
   line-height: $column-header-min-height;
 }
 
-.bp-table-row-headers .bp-table-header {
+.pt-table-row-headers .pt-table-header {
   min-width: $row-header-min-width;
   // prevent text from leaking out of the cell during scroll, before the header
   // width is updated on scroll end.
@@ -266,27 +266,27 @@ $dark-selectable-header-menu-selected-hover-background:
   line-height: $cell-height;
 }
 
-.bp-table-column-name-text,
-.bp-table-row-name-text {
+.pt-table-column-name-text,
+.pt-table-row-name-text {
   flex-grow: 1;
   pointer-events: none;
 }
 
-.bp-table-truncated-text {
+.pt-table-truncated-text {
   max-height: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.bp-table-no-wrap-text {
+.pt-table-no-wrap-text {
   white-space: nowrap;
 }
 
-.bp-table-column-name-text {
+.pt-table-column-name-text {
   padding: $cell-padding;
 }
 
-.bp-table-editable-name {
+.pt-table-editable-name {
   display: block;
   pointer-events: all;
 
@@ -312,7 +312,7 @@ $dark-selectable-header-menu-selected-hover-background:
         cursor: $select-text-cursor;
       }
 
-      &.bp-table-editable-text {
+      &.pt-table-editable-text {
         &::before {
           right: $cell-border-width;
           left: $cell-border-width - 1px;
@@ -321,7 +321,7 @@ $dark-selectable-header-menu-selected-hover-background:
     }
   }
 
-  .bp-table-column-name &.pt-editable-text {
+  .pt-table-column-name &.pt-editable-text {
     &::before {
       bottom: -$cell-padding-vertical - 1px;
     }
@@ -332,25 +332,25 @@ $dark-selectable-header-menu-selected-hover-background:
   }
 }
 
-.bp-table-column-name-text .bp-table-editable-name input {
+.pt-table-column-name-text .pt-table-editable-name input {
   height: $large-cell-height; // fixed height for IE11
 }
 
-.bp-table-column-name {
+.pt-table-column-name {
   display: flex;
   flex-direction: column;
   text-align: left;
   font-size: $pt-font-size;
 }
 
-.bp-table-row-name {
+.pt-table-row-name {
   display: block;
   padding: 0 $pt-grid-size / 2;
   text-align: right;
   font-size: $pt-font-size-small;
 }
 
-.bp-table-header-content {
+.pt-table-header-content {
   white-space: normal;
   font-size: $pt-font-size;
 
@@ -377,20 +377,20 @@ $dark-selectable-header-menu-selected-hover-background:
   // stylelint-enable selector-class-pattern
 }
 
-.bp-table-column-name,
-.bp-table-row-name {
+.pt-table-column-name,
+.pt-table-row-name {
   transition: color $cell-transition-duration;
 }
 
-.bp-table-header.pt-loading {
+.pt-table-header.pt-loading {
   @include cell-content-align-vertical();
 
-  .bp-table-column-name,
-  .bp-table-row-name {
+  .pt-table-column-name,
+  .pt-table-row-name {
     flex: 1;
   }
 
-  .bp-table-column-name-text {
+  .pt-table-column-name-text {
     @include cell-content-align-vertical();
     padding: $pt-grid-size;
 
@@ -399,7 +399,7 @@ $dark-selectable-header-menu-selected-hover-background:
     }
   }
 
-  .bp-table-row-name {
+  .pt-table-row-name {
     @include cell-content-align-vertical();
   }
 }

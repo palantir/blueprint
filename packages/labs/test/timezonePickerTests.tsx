@@ -20,6 +20,7 @@ import {
     IPopoverState,
     MenuItem,
     Popover,
+    Position,
 } from "@blueprintjs/core";
 import { IQueryListProps, IQueryListState, ISelectProps, ISelectState, QueryList, Select } from "@blueprintjs/select";
 import {
@@ -214,8 +215,7 @@ describe("<TimezonePicker>", () => {
         const popoverProps: IPopoverProps = {
             inline: true,
             isOpen: true,
-            tetherOptions: { constraints: [{ attachment: "together", pin: true, to: "window" }] },
-            useSmartArrowPositioning: true,
+            position: Position.RIGHT,
         };
         const timezonePicker = shallow(<TimezonePicker popoverProps={popoverProps} />);
         const popover = findPopover(timezonePicker);

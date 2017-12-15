@@ -785,12 +785,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
                     ref={this.refHandlers.quadrantStack}
-                    renderMenu={this.renderMenu}
+                    menuRenderer={this.renderMenu}
                     rowHeaderCellRenderer={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
                 />
-                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
+                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_OVERLAY_REORDERING_CURSOR)} />
                 <GuideLayer
                     className={Classes.TABLE_RESIZE_GUIDES}
                     verticalGuides={verticalGuides}
@@ -1440,7 +1440,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             cellRenderer,
             columnHeaderCellRenderer,
             name,
-            renderName,
+            nameRenderer,
             enableColumnInteractionBar,
             ...restColumnProps
         } = this.getColumnProps(columnIndex);

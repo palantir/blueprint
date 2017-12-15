@@ -5,3 +5,4 @@
 
 export * from "./testErrorBoundary";
 export * from "./utils";
+export * from "./generateIsomorphicTests";

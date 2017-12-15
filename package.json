@@ -1,6 +1,6 @@
 {
   "name": "blueprintjs-monorepo",
-  "version": "1.34.0",
+  "version": "1.35.0",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "workspaces": [
@@ -22,7 +22,7 @@
     "dev:select": "lerna run dev --parallel --scope '@blueprintjs/{core,select,docs-app}'",
     "dev:table": "lerna run dev --parallel --scope '@blueprintjs/table-dev-app'",
     "dist": "run-s dist:libs dist:apps dist:gh-pages",
-    "dist:libs": "lerna run dist --parallel --scope '@blueprintjs/{core,datetime,docs,labs,select,table}'",
+    "dist:libs": "lerna run dist --parallel --scope '@blueprintjs/{core,datetime,docs,icons,labs,select,table}'",
     "dist:apps": "lerna run dist --parallel --scope '@blueprintjs/{docs-app,landing-app,table-dev-app}'",
     "dist:gh-pages": "run-s clean-gh-pages copy-docs-app copy-landing-app",
     "lint": "lerna run --parallel lint",

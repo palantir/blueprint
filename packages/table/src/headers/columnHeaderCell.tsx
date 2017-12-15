@@ -24,6 +24,19 @@ import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
 export interface IColumnNameProps {
     /**
+     * If `true`, adds an interaction bar on top of the column header cell and
+     * moves the menu and selection interactions to it.
+     *
+     * This allows you to override the rendering of column name without worry of
+     * clobbering the menu or other interactions.
+     *
+     * @default false
+     * @deprecated since blueprintjs/table v1.27.0; pass this prop to `Table`
+     * instead.
+     */
+    enableColumnInteractionBar?: boolean;
+
+    /**
      * The name displayed in the header of the column.
      */
     name?: string;
@@ -41,20 +54,7 @@ export interface IColumnNameProps {
      * The callback will also receive the column index if an `index` was originally
      * provided via props.
      */
-    renderName?: (name: string, index?: number) => React.ReactElement<IProps>;
-
-    /**
-     * If `true`, adds an interaction bar on top of the column header cell and
-     * moves the menu and selection interactions to it.
-     *
-     * This allows you to override the rendering of column name without worry of
-     * clobbering the menu or other interactions.
-     *
-     * @default false
-     * @deprecated since blueprintjs/table v1.27.0; pass this prop to `Table`
-     * instead.
-     */
-    enableColumnInteractionBar?: boolean;
+    nameRenderer?: (name: string, index?: number) => React.ReactElement<IProps>;
 }
 
 export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps {
@@ -119,7 +119,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
 
             // from IColumnNameProps
             name,
-            renderName,
+            nameRenderer,
             enableColumnInteractionBar,
 
             // from IHeaderProps
@@ -155,16 +155,16 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
     }
 
     private renderName() {
-        const { index, loading, name, renderName, reorderHandle, enableColumnInteractionBar } = this.props;
+        const { index, loading, name, nameRenderer, reorderHandle, enableColumnInteractionBar } = this.props;
 
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
 
         const nameComponent = (
             <LoadableContent loading={loading} variableLength={true}>
-                {renderName == null
+                {nameRenderer == null
                     ? defaultName
-                    : React.cloneElement(renderName(name, index) as JSX.Element, { index })}
+                    : React.cloneElement(nameRenderer(name, index) as JSX.Element, { index })}
             </LoadableContent>
         );
 
@@ -199,9 +199,9 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
     }
 
     private maybeRenderDropdownMenu() {
-        const { index, menu, menuIconName, renderMenu } = this.props;
+        const { index, menu, menuIconName, menuRenderer } = this.props;
 
-        if (renderMenu == null && menu == null) {
+        if (menuRenderer == null && menu == null) {
             return undefined;
         }
 
@@ -209,8 +209,8 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
         });
 
-        // prefer renderMenu if it's defined
-        const content = CoreUtils.isFunction(renderMenu) ? renderMenu(index) : menu;
+        // prefer menuRenderer if it's defined
+        const content = CoreUtils.isFunction(menuRenderer) ? menuRenderer(index) : menu;
 
         return (
             <div className={classes}>

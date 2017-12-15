@@ -3,7 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-const { generateIsomorphicTests } = require("@blueprintjs/node-build-scripts");
+const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 // TODO: get this to work with require("@std/esm")(module)("../dist/esm")
 const Core = require("../dist");
@@ -23,7 +23,7 @@ const customChildren = {
     Popover: popoverTarget,
     SVGPopover: popoverTarget,
     SVGTooltip: popoverTarget,
-    Tabs2: [Core.Tab2Factory({ key: 1, id: 1, title: "Tab one" })],
+    Tabs: React.createElement(Core.Tab, { key: 1, id: 1, title: "Tab one" }),
     Tooltip: popoverTarget,
 };
 

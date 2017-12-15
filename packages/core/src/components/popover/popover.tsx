@@ -10,7 +10,7 @@ import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
 
 export type PopperModifiers = PopperJS.Modifiers;
-export type Placement = PopperJS.Placement;
+type Placement = PopperJS.Placement;
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
@@ -140,12 +140,6 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     openOnTargetFocus?: boolean;
 
     /**
-     * The position (relative to the target) at which the popover should appear.
-     * @deprecated use `placement`
-     */
-    position?: Position;
-
-    /**
      * A space-delimited string of class names that are applied to the popover (but not the target).
      */
     popoverClassName?: string;
@@ -178,11 +172,12 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * The position (relative to the target) at which the popover should appear.
-     * The default value of `"auto"` will choose the best placement when opened and will allow
-     * the popover to reposition itself to remain onscreen as the user scrolls around.
-     * @default "auto"
+     *
+     * The default value of `"auto"` will choose the best position when opened
+     * and will allow the popover to reposition itself to remain onscreen as the
+     * user scrolls around.
      */
-    placement?: Placement;
+    position?: Position | "auto";
 
     /**
      * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).
@@ -215,7 +210,7 @@ export interface IPopoverState {
     hasBackdrop?: boolean;
 
     /** Migrated `placement` value that considers the `placement` and `position` props. */
-    placement?: Placement;
+    placement?: PopperJS.Placement;
 }
 
 export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
@@ -396,9 +391,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
         if (props.isModal !== undefined) {
             console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_MODAL);
-        }
-        if (props.position !== undefined) {
-            console.warn(Errors.POPOVER_WARN_DEPRECATED_POSITION);
         }
     }
 
@@ -644,9 +636,7 @@ function getHasBackdrop(props: IPopoverProps): boolean {
 }
 
 function getPlacement(props: IPopoverProps): Placement {
-    if (props.placement !== undefined) {
-        return props.placement;
-    } else if (props.position !== undefined) {
+    if (props.position !== undefined) {
         return positionToPlacement(props.position);
     } else {
         return "auto";
