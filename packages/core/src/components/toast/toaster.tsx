@@ -72,8 +72,13 @@ export interface IToasterProps extends IProps {
      * supports the top and bottom edge positioning.
      * @default Position.TOP
      */
-    position?: Position.TOP | Position.TOP_LEFT | Position.TOP_RIGHT |
-        Position.BOTTOM | Position.BOTTOM_LEFT | Position.BOTTOM_RIGHT;
+    position?:
+        | Position.TOP
+        | Position.TOP_LEFT
+        | Position.TOP_RIGHT
+        | Position.BOTTOM
+        | Position.BOTTOM_LEFT
+        | Position.BOTTOM_RIGHT;
 }
 
 export interface IToasterState {
