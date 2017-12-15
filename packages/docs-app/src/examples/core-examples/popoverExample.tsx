@@ -92,7 +92,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         const isModal = this.state.isModal && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, isModal });
     });
-    private handlePositionChange = handleNumberChange(position => this.setState({ position }));
+    private handlePositionChange = handleStringChange((position: Position) => this.setState({ position }));
 
     private toggleArrows = handleBooleanChange(useSmartArrowPositioning => {
         this.setState({ useSmartArrowPositioning });

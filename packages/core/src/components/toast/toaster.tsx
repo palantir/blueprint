@@ -19,6 +19,13 @@ import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
 
 export type IToastOptions = IToastProps & { key?: string };
+export type ToasterPosition =
+    | Position.TOP
+    | Position.TOP_LEFT
+    | Position.TOP_RIGHT
+    | Position.BOTTOM
+    | Position.BOTTOM_LEFT
+    | Position.BOTTOM_RIGHT;
 
 export interface IToaster {
     /** Show a new toast to the user. Returns the unique key of the new toast. */
@@ -72,13 +79,7 @@ export interface IToasterProps extends IProps {
      * supports the top and bottom edge positioning.
      * @default Position.TOP
      */
-    position?:
-        | Position.TOP
-        | Position.TOP_LEFT
-        | Position.TOP_RIGHT
-        | Position.BOTTOM
-        | Position.BOTTOM_LEFT
-        | Position.BOTTOM_RIGHT;
+    position?: ToasterPosition;
 }
 
 export interface IToasterState {
