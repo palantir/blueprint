@@ -13,8 +13,8 @@ import {
     AbstractPureComponent,
     Classes,
     HTMLInputProps,
-    IInputGroupProps,
-    InputGroup,
+    IInputProps,
+    Input,
     IPopoverProps,
     IProps,
     Keys,
@@ -90,7 +90,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
-    endInputProps?: HTMLInputProps & IInputGroupProps;
+    endInputProps?: HTMLInputProps & IInputProps;
 
     /**
      * The format of each date in the date range. See options
@@ -162,7 +162,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
-    startInputProps?: HTMLInputProps & IInputGroupProps;
+    startInputProps?: HTMLInputProps & IInputProps;
 
     /**
      * The currently selected date range.
@@ -318,8 +318,8 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
                 onClose={this.handlePopoverClose}
             >
                 <div className={Classes.CONTROL_GROUP}>
-                    {this.renderInputGroup(DateRangeBoundary.START)}
-                    {this.renderInputGroup(DateRangeBoundary.END)}
+                    {this.renderInput(DateRangeBoundary.START)}
+                    {this.renderInput(DateRangeBoundary.END)}
                 </div>
             </Popover>
         );
@@ -356,10 +356,10 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         }
     }
 
-    private renderInputGroup = (boundary: DateRangeBoundary) => {
+    private renderInput = (boundary: DateRangeBoundary) => {
         const inputProps = this.getInputProps(boundary);
 
-        // don't include `ref` in the returned HTML props, because passing it to the InputGroup
+        // don't include `ref` in the returned HTML props, because passing it to the input
         // leads to TS typing errors.
         const { ref, ...htmlProps } = inputProps;
 
@@ -374,7 +374,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         );
 
         return (
-            <InputGroup
+            <Input
                 autoComplete="off"
                 {...htmlProps}
                 className={classes}
@@ -539,7 +539,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         }
 
         const inputProps = this.getInputProps(boundary);
-        const callbackFn = this.getInputGroupCallbackForEvent(e, inputProps);
+        const callbackFn = this.getInputCallbackForEvent(e, inputProps);
 
         Utils.safeInvoke(callbackFn, e);
     };
@@ -778,9 +778,9 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         }) as DateRange;
     };
 
-    private getInputGroupCallbackForEvent = (
+    private getInputCallbackForEvent = (
         e: React.SyntheticEvent<HTMLInputElement>,
-        inputProps: HTMLInputProps & IInputGroupProps,
+        inputProps: HTMLInputProps & IInputProps,
     ) => {
         // use explicit switch cases to ensure callback function names remain grep-able in the codebase.
         switch (e.type) {

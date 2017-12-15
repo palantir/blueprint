@@ -13,7 +13,7 @@ import {
     Classes as CoreClasses,
     HTMLInputProps,
     IButtonProps,
-    IInputGroupProps,
+    IInputProps,
     IPopover2Props,
     IProps,
     MenuItem,
@@ -81,12 +81,12 @@ export interface ITimezonePickerProps extends IProps {
     buttonProps?: Partial<IButtonProps>;
 
     /**
-     * Props to spread to the filter `InputGroup`.
+     * Props to spread to the filter `Input`.
      * All props are supported except `ref` (use `inputRef` instead).
      * If you want to control the filter input, you can pass `value` and `onChange` here
      * to override `Select`'s own behavior.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: IInputProps & HTMLInputProps;
 
     /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopover2Props> & object;
@@ -129,7 +129,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         const { className, disabled, inputProps, popoverProps } = this.props;
         const { query } = this.state;
 
-        const finalInputProps: IInputGroupProps & HTMLInputProps = {
+        const finalInputProps: IInputProps & HTMLInputProps = {
             placeholder: "Search for timezones...",
             ...inputProps,
         };

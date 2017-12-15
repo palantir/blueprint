@@ -49,7 +49,7 @@ This component is a simple wrapper around the corresponding CSS API. It supports
 ```tsx
 <ControlGroup fill={true} vertical={false}>
     <Button iconName="filter">Filter</Button>
-    <InputGroup placeholder="Find filters..." />
+    <Input placeholder="Find filters..." />
 </ControlGroup>
 ```
 

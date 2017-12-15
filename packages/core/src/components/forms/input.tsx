@@ -11,7 +11,7 @@ import * as Classes from "../../common/classes";
 import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 
-export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps {
+export interface IInputProps extends IControlledProps, IIntentProps, IProps {
     /**
      * Whether the input is non-interactive.
      * Note that `rightElement` must be disabled separately; this prop will not affect it.
@@ -41,14 +41,14 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     type?: string;
 }
 
-export interface IInputGroupState {
+export interface IInputState {
     rightElementWidth?: number;
 }
 
-export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroupProps, IInputGroupState> {
-    public static displayName = "Blueprint.InputGroup";
+export class Input extends React.PureComponent<HTMLInputProps & IInputProps, IInputState> {
+    public static displayName = "Blueprint.Input";
 
-    public state: IInputGroupState = {
+    public state: IInputState = {
         rightElementWidth: 30,
     };
 
@@ -117,4 +117,4 @@ export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroup
     }
 }
 
-export const InputGroupFactory = React.createFactory(InputGroup);
+export const InputFactory = React.createFactory(Input);

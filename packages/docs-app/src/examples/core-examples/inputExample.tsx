@@ -10,7 +10,7 @@ import * as React from "react";
 import {
     Button,
     Classes,
-    InputGroup,
+    Input,
     Intent,
     Menu,
     MenuItem,
@@ -23,7 +23,7 @@ import {
 } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
-export interface IInputGroupExampleState {
+export interface IInputExampleState {
     disabled?: boolean;
     filterValue?: string;
     large?: boolean;
@@ -31,8 +31,8 @@ export interface IInputGroupExampleState {
     tagValue?: string;
 }
 
-export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
-    public state: IInputGroupExampleState = {
+export class InputExample extends BaseExample<IInputExampleState> {
+    public state: IInputExampleState = {
         filterValue: "",
         large: false,
         showPassword: false,
@@ -87,7 +87,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
         return (
             <div className="docs-input-group-example docs-flex-row">
                 <div className="docs-flex-column">
-                    <InputGroup
+                    <Input
                         className={largeClassName}
                         disabled={disabled}
                         leftIconName="filter"
@@ -96,7 +96,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         rightElement={maybeSpinner}
                         value={filterValue}
                     />
-                    <InputGroup
+                    <Input
                         className={largeClassName}
                         disabled={disabled}
                         placeholder="Enter your password..."
@@ -105,7 +105,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                     />
                 </div>
                 <div className="docs-flex-column">
-                    <InputGroup
+                    <Input
                         className={largeClassName}
                         disabled={disabled}
                         leftIconName="tag"
@@ -114,7 +114,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         rightElement={resultsTag}
                         value={tagValue}
                     />
-                    <InputGroup
+                    <Input
                         className={largeClassName}
                         disabled={disabled}
                         placeholder="Add people or groups..."

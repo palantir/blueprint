@@ -12,8 +12,8 @@ import * as ReactDayPicker from "react-day-picker";
 import {
     AbstractPureComponent,
     HTMLInputProps,
-    IInputGroupProps,
-    InputGroup,
+    IInputProps,
+    Input,
     IPopoverProps,
     IProps,
     Keys,
@@ -85,7 +85,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
      */
-    inputProps?: HTMLInputProps & IInputGroupProps;
+    inputProps?: HTMLInputProps & IInputProps;
 
     /**
      * The error message to display when the date selected is invalid.
@@ -208,7 +208,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             );
         // assign default empty object here to prevent mutation
         const { inputProps = {}, popoverProps = {}, format } = this.props;
-        // exclude ref (comes from HTMLInputProps typings, not InputGroup)
+        // exclude ref (comes from HTMLInputProps typings, not Input)
         const { ref, ...htmlInputProps } = inputProps;
 
         const inputClasses = classNames(
@@ -234,7 +234,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                 onClose={this.handleClosePopover}
                 popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
             >
-                <InputGroup
+                <Input
                     autoComplete="off"
                     placeholder={placeholder}
                     rightElement={this.props.rightElement}

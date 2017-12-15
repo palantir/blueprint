@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { InputGroup, NonIdealState } from "@blueprintjs/core";
+import { Input, NonIdealState } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
 export class NonIdealStateExample extends BaseExample<{}> {
@@ -21,7 +21,7 @@ export class NonIdealStateExample extends BaseExample<{}> {
                 visual="search"
                 title="No search results"
                 description={description}
-                action={<InputGroup className="pt-round" leftIconName="search" placeholder="Search..." />}
+                action={<Input className="pt-round" leftIconName="search" placeholder="Search..." />}
             />
         );
     }

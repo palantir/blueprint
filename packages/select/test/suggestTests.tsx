@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, InputGroup, Keys, Popover } from "@blueprintjs/core";
+import { Classes, Input, Keys, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
@@ -44,7 +44,7 @@ describe("Suggest", () => {
         it("renders a input that triggers a popover containing items", () => {
             const wrapper = suggest();
             const popover = wrapper.find(Popover);
-            assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
+            assert.lengthOf(wrapper.find(Input), 1, "should render Input");
             assert.lengthOf(popover, 1, "should render Popover");
             assert.lengthOf(popover.find(`.${FILM_ITEM_CLASS}`), 100, "should render 100 items in popover");
         });

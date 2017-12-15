@@ -9,15 +9,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import {
-    Classes as CoreClasses,
-    HTMLInputProps,
-    IInputGroupProps,
-    InputGroup,
-    Keys,
-    Popover,
-    Position,
-} from "@blueprintjs/core";
+import { Classes as CoreClasses, HTMLInputProps, IInputProps, Input, Keys, Popover, Position } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Months } from "../src/common/months";
@@ -78,9 +70,9 @@ describe("<DateRangeInput>", () => {
     // date-range equality checks just in this file
     const UNDEFINED_DATE_STR = "<UNDEFINED DATE>";
 
-    it("renders with two InputGroup children", () => {
+    it("renders with two Input children", () => {
         const component = mount(<DateRangeInput />);
-        expect(component.find(InputGroup).length).to.equal(2);
+        expect(component.find(Input).length).to.equal(2);
     });
 
     it("passes custom classNames to popover target", () => {
@@ -114,20 +106,20 @@ describe("<DateRangeInput>", () => {
 
     describe("startInputProps and endInputProps", () => {
         describe("startInputProps", () => {
-            runTestSuite(getStartInput, inputGroupProps => {
-                return mount(<DateRangeInput startInputProps={inputGroupProps} />);
+            runTestSuite(getStartInput, inputProps => {
+                return mount(<DateRangeInput startInputProps={inputProps} />);
             });
         });
 
         describe("endInputProps", () => {
-            runTestSuite(getEndInput, inputGroupProps => {
-                return mount(<DateRangeInput endInputProps={inputGroupProps} />);
+            runTestSuite(getEndInput, inputProps => {
+                return mount(<DateRangeInput endInputProps={inputProps} />);
             });
         });
 
         function runTestSuite(
             inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
-            mountFn: (inputGroupProps: HTMLInputProps & IInputGroupProps) => any,
+            mountFn: (inputProps: HTMLInputProps & IInputProps) => any,
         ) {
             it("allows custom placeholder text", () => {
                 const root = mountFn({ placeholder: "Hello" });
@@ -2376,14 +2368,14 @@ describe("<DateRangeInput>", () => {
 
     function getStartInput(root: WrappedComponentRoot): WrappedComponentInput {
         return root
-            .find(InputGroup)
+            .find(Input)
             .first()
             .find("input");
     }
 
     function getEndInput(root: WrappedComponentRoot): WrappedComponentInput {
         return root
-            .find(InputGroup)
+            .find(Input)
             .last()
             .find("input");
     }
