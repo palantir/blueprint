@@ -36,7 +36,7 @@ timezone metadata.
 </div>
 
 ```tsx
-import { TimezonePicker } from "@blueprintjs/labs";
+import { TimezonePicker } from "@blueprintjs/timezone";
 
 export interface ITimezoneExampleState {
     timezone: string;

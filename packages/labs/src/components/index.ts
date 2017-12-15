@@ -4,4 +4,5 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-export * from "./timezone-picker/timezonePicker";
+// Empty module since there's no components.
+export {};

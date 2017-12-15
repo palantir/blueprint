@@ -4,5 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-// Empty module since there's nothing to export.
-export {};
+import * as classes from "../common/classes";
+
+export const Classes = classes;
