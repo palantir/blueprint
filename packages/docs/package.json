@@ -31,12 +31,12 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^0.2.0",
+    "@blueprintjs/node-build-scripts": "^0.3.0",
     "@types/fuzzaldrin-plus": "^0.0.1",
     "npm-run-all": "^4.1.1",
-    "react": "^15.6.1",
-    "react-addons-css-transition-group": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.2.0",
+    "react-transition-group": "^2.2.1",
+    "react-dom": "^16.2.0",
     "tslint": "^5.8.0",
     "typescript": "~2.6.2",
     "webpack": "^3.9.1"

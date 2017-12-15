@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Classes, IIntentProps, IProps } from "../../common";
@@ -25,8 +24,7 @@ export interface ICalloutProps extends IIntentProps, IProps {
     title?: string;
 }
 
-@PureRender
-export class Callout extends React.Component<ICalloutProps & React.HTMLAttributes<HTMLDivElement>, {}> {
+export class Callout extends React.PureComponent<ICalloutProps & React.HTMLAttributes<HTMLDivElement>, {}> {
     public render() {
         const { className, children, iconName, intent, title, ...htmlProps } = this.props;
         const classes = classNames(

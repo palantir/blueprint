@@ -1,0 +1,64 @@
+{
+  "name": "@blueprintjs/icons",
+  "version": "1.0.0",
+  "description": "Components, fonts, icons, and css files for creating and displaying icons.",
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "typings": "dist/esm/index.d.ts",
+  "style": "dist/blueprint-icons.css",
+  "unpkg": "dist/icons.bundle.js",
+  "scripts": {
+    "compile": "npm-run-all -s 'compile:pre' -p 'compile:*'",
+    "compile:pre": "generate-icons-source",
+    "compile:esm": "tsc -p ./src",
+    "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
+    "compile:css": "sass-compile ./src",
+    "clean": "rm -rf dist/*",
+    "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
+    "dist": "npm-run-all -s 'dist:*'",
+    "dist:bundle": "NODE_ENV=production webpack",
+    "dist:variables": "generate-css-variables generated/_icon-variables.scss",
+    "dist:verify": "assert-package-layout",
+    "lint": "npm-run-all -p lint:stylelint lint:tslint",
+    "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
+    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
+    "lint-fix": "yarn lint:tslint --fix",
+    "test": "npm-run-all -s compile:pre compile:cjs test:pre -p test:iso",
+    "test:pre": "tsc -p ./test",
+    "test:iso": "mocha test/isotest.js",
+    "verify": "npm-run-all compile -p dist test lint"
+  },
+  "dependencies": {
+    "classnames": "^2.2",
+    "tslib": "^1.5.0"
+  },
+  "devDependencies": {
+    "@blueprintjs/node-build-scripts": "^0.3.0",
+    "@blueprintjs/test-commons": "^0.3.0",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "es6-shim": "^0.35.3",
+    "mocha": "^4.0.1",
+    "npm-run-all": "^4.1.1",
+    "react": "^16.2.0",
+    "react-transition-group": "^2.2.1",
+    "react-dom": "^16.2.0",
+    "react-test-renderer": "^16.2.0",
+    "tslint": "^5.8.0",
+    "typescript": "~2.6.2",
+    "webpack": "^3.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "keywords": [
+    "palantir",
+    "blueprint",
+    "theme",
+    "react",
+    "icon"
+  ],
+  "author": "Palantir Technologies",
+  "license": "Apache-2.0"
+}

@@ -19,5 +19,5 @@ provides, you'll overide the default value.
 @page input-group
 @page control-group
 @page select
-@page file-upload
+@page file-input
 @page numeric-input

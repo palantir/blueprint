@@ -4,6 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// tslint:disable max-classes-per-file
+
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -21,6 +23,23 @@ const MENU = <Menu>{MENU_ITEMS}</Menu>;
 describe("ContextMenu", () => {
     before(() => assert.isNull(getPopover()));
     afterEach(() => ContextMenu.hide());
+
+    it("Decorator does not mutate the original class", () => {
+        class TestComponent extends React.Component<{}, {}> {
+            public render() {
+                return <div />;
+            }
+
+            public renderContextMenu() {
+                return MENU;
+            }
+        }
+
+        const TargettedTestComponent = ContextMenuTarget(TestComponent);
+
+        // it's not the same Component
+        assert.notStrictEqual(TargettedTestComponent, TestComponent);
+    });
 
     it("React renders ContextMenu", () => {
         ContextMenu.show(MENU, { left: 0, top: 0 });

@@ -35,7 +35,7 @@
 
 // CSS examples
 
-#{reference("pt-file-upload")},
+#{reference("pt-file-input")},
 #{reference("pt-label")},
 #{reference("pt-menu")},
 #{reference("pt-select.pt-inline")},
@@ -258,7 +258,7 @@
 
 // give all Table examples a fixed height
 [data-page-id="table-js"] {
-  .bp-table-container,
+  .pt-table-container,
   .docs-react-example {
     width: 100%;
     height: $pt-grid-size * 30;

@@ -9,10 +9,11 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
+import { dispatchMouseEvent, dispatchTouchEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
 import { Classes, ISliderProps, Slider } from "../../src/index";
-import { dispatchMouseEvent, dispatchTouchEvent } from "../common/utils";
 
 describe("<Slider>", () => {
     let testsContainerElement: HTMLElement;
@@ -41,25 +42,25 @@ describe("<Slider>", () => {
         assert.lengthOf(wrapper.find(`.${Classes.SLIDER}-label`), 7);
     });
 
-    it("renders result of renderLabel() in each label", () => {
-        const renderLabel = (val: number) => val + "#";
-        const wrapper = renderSlider(<Slider min={0} max={50} labelStepSize={10} renderLabel={renderLabel} />);
+    it("renders result of labelRenderer() in each label", () => {
+        const labelRenderer = (val: number) => val + "#";
+        const wrapper = renderSlider(<Slider min={0} max={50} labelStepSize={10} labelRenderer={labelRenderer} />);
         assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "0#10#20#30#40#50#");
     });
 
-    it("default renderLabel() fixes decimal places to labelPrecision", () => {
+    it("default labelRenderer() fixes decimal places to labelPrecision", () => {
         const wrapper = renderSlider(<Slider labelPrecision={1} value={0.99 / 10} />);
         const labelText = wrapper.find(`.${Classes.SLIDER_HANDLE} .${Classes.SLIDER_LABEL}`).text();
         assert.strictEqual(labelText, "0.1");
     });
 
-    it("infers precision of default renderLabel from stepSize", () => {
+    it("infers precision of default labelRenderer from stepSize", () => {
         const wrapper = renderSlider(<Slider stepSize={0.01} />);
         assert.strictEqual(wrapper.state("labelPrecision"), 2);
     });
 
-    it("renderLabel={false} removes all labels", () => {
-        const wrapper = renderSlider(<Slider renderLabel={false} />);
+    it("labelRenderer={false} removes all labels", () => {
+        const wrapper = renderSlider(<Slider labelRenderer={false} />);
         assert.lengthOf(wrapper.find(`.${Classes.SLIDER}-label`), 0);
     });
 
@@ -172,21 +173,15 @@ describe("<Slider>", () => {
         assert.isTrue(trackClickSpy.notCalled, "handleTrackTouch was called when disabled");
     });
 
-    it("throws error if given non-number values for number props", () => {
-        [{ max: "foo" }, { min: "foo" }, { stepSize: "foo" }].forEach((props: any) => {
-            assert.throws(() => renderSlider(<Slider {...props} />), "number");
-        });
-    });
-
     it("throws error if stepSize <= 0", () => {
         [{ stepSize: 0 }, { stepSize: -10 }].forEach((props: any) => {
-            assert.throws(() => renderSlider(<Slider {...props} />), "greater than zero");
+            expectPropValidationError(Slider, props, "greater than zero");
         });
     });
 
     it("throws error if labelStepSize <= 0", () => {
         [{ labelStepSize: 0 }, { labelStepSize: -10 }].forEach((props: any) => {
-            assert.throws(() => renderSlider(<Slider {...props} />), "greater than zero");
+            expectPropValidationError(Slider, props, "greater than zero");
         });
     });
 

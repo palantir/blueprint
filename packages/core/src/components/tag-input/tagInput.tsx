@@ -5,10 +5,9 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { HTMLInputProps, IProps } from "../../common/props";
@@ -62,6 +61,20 @@ export interface ITagInputProps extends IProps {
      * ```
      */
     onChange?: (values: React.ReactNode[]) => boolean | void;
+
+    /**
+     * Callback invoked when the user depresses a keyboard key.
+     * Receives the event and the index of the active tag (or `undefined` if
+     * focused in the input).
+     */
+    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>, index?: number) => void;
+
+    /**
+     * Callback invoked when the user releases a keyboard key.
+     * Receives the event and the index of the active tag (or `undefined` if
+     * focused in the input).
+     */
+    onKeyUp?: (event: React.KeyboardEvent<HTMLElement>, index?: number) => void;
 
     /**
      * Callback invoked when the user clicks the X button on a tag.
@@ -122,8 +135,7 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
-@PureRender
-export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> {
+export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState> {
     public static displayName = "Blueprint.TagInput";
 
     public static defaultProps: Partial<ITagInputProps> & object = {
@@ -169,7 +181,13 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         const resolvedPlaceholder = placeholder == null || isSomeValueDefined ? inputProps.placeholder : placeholder;
 
         return (
-            <div className={classes} onBlur={this.handleBlur} onClick={this.handleContainerClick}>
+            <div
+                className={classes}
+                onBlur={this.handleContainerBlur}
+                onClick={this.handleContainerClick}
+                onKeyDown={this.handleContainerKeyDown}
+                onKeyUp={this.handleContainerKeyUp}
+            >
                 <Icon className={Classes.TAG_INPUT_ICON} iconName={leftIconName} iconSize={isLarge ? 20 : 16} />
                 {values.map(this.maybeRenderTag)}
                 <input
@@ -178,6 +196,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                     onFocus={this.handleInputFocus}
                     onChange={this.handleInputChange}
                     onKeyDown={this.handleInputKeyDown}
+                    onKeyUp={this.handleInputKeyUp}
                     placeholder={resolvedPlaceholder}
                     ref={this.refHandlers.input}
                     className={classNames(Classes.INPUT_GHOST, inputProps.className)}
@@ -249,7 +268,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         }
     };
 
-    private handleBlur = () =>
+    private handleContainerBlur = () => {
         requestAnimationFrame(() => {
             // this event is attached to the container element to capture all blur events from inside.
             // we only need to "unfocus" if the blur event is leaving the container.
@@ -258,6 +277,20 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 this.setState({ activeIndex: NONE, isInputFocused: false });
             }
         });
+    };
+
+    private handleContainerKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        // preventDefault may have been called from the input's keydown handler.
+        if (!event.isDefaultPrevented()) {
+            Utils.safeInvoke(this.props.onKeyDown, event, this.state.activeIndex);
+        }
+    };
+
+    private handleContainerKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (!event.isDefaultPrevented()) {
+            Utils.safeInvoke(this.props.onKeyUp, event, this.state.activeIndex);
+        }
+    };
 
     private handleInputFocus = (event: React.FocusEvent<HTMLElement>) => {
         this.setState({ isInputFocused: true });
@@ -297,7 +330,20 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 this.handleBackspaceToRemove(event);
             }
         }
+
+        // preventDefault to tell the wrapping container that we've already
+        // invoked onKeyDown at this level (with an `undefined` index).
+        event.preventDefault();
+        Utils.safeInvoke(this.props.onKeyDown, event, undefined);
         Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
+    };
+
+    private handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        // again, prevent onKeyUp from being reinvoked when the event bubbles up
+        // to the container.
+        event.preventDefault();
+        Utils.safeInvoke(this.props.inputProps.onKeyUp, event);
+        Utils.safeInvoke(this.props.onKeyUp, event, undefined);
     };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {

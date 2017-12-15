@@ -7,13 +7,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ checksum "yarn.lock" }}
-            - v1-dependency-cache-
+            - v3-dependency-cache-{{ checksum "yarn.lock" }}
+            - v3-dependency-cache-
       - run: yarn
       - run: echo "Checking if lockfiles changed..." && git diff --exit-code
       - run: npm rebuild node-sass
       - save_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ~/yarn
             - ~/.cache/yarn
@@ -22,7 +22,6 @@ jobs:
           root: '.'
           paths:
             - yarn.lock
-            - packages/*/node_modules/.bin
 
   compile-libs:
     docker:
@@ -33,8 +32,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ checksum "yarn.lock" }}
-            - v1-dependency-cache-
+            - v3-dependency-cache-{{ checksum "yarn.lock" }}
+            - v3-dependency-cache-
       - run: yarn compile
       - persist_to_workspace:
           root: '.'
@@ -51,8 +50,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ checksum "yarn.lock" }}
-            - v1-dependency-cache-
+            - v3-dependency-cache-{{ checksum "yarn.lock" }}
+            - v3-dependency-cache-
       - run: yarn lint
 
   dist-libs:
@@ -63,7 +62,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:libs
       - persist_to_workspace:
           root: '.'
@@ -72,6 +71,7 @@ jobs:
             - packages/datetime/dist
             - packages/docs/dist
             - packages/labs/dist
+            - packages/select/dist
             - packages/table/dist
 
   dist-apps:
@@ -82,7 +82,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:apps
       - persist_to_workspace:
           root: '.'
@@ -91,49 +91,26 @@ jobs:
             - packages/landing-app/dist
             - packages/table-dev-app/dist
 
-  test-core:
+  test:
     docker:
       - image: circleci/node:8
+    parallelism: 6
     steps:
       - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: yarn lerna run test --scope '@blueprintjs/core'
-
-  test-datetime:
-    docker:
-      - image: circleci/node:8
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: yarn lerna run test --scope '@blueprintjs/datetime'
-
-  test-labs:
-    docker:
-      - image: circleci/node:8
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: yarn lerna run test --scope '@blueprintjs/labs'
-
-  test-table:
-    docker:
-      - image: circleci/node:8
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: yarn lerna run test --scope '@blueprintjs/table'
+          key: v3-dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          command: |
+              case $CIRCLE_NODE_INDEX in \
+              0) yarn lerna run test --scope '@blueprintjs/core' ;; \
+              1) yarn lerna run test --scope '@blueprintjs/datetime' ;; \
+              2) yarn lerna run test --scope '@blueprintjs/icons' ;; \
+              3) yarn lerna run test --scope '@blueprintjs/labs' ;; \
+              4) yarn lerna run test --scope '@blueprintjs/select' ;; \
+              5) yarn lerna run test --scope '@blueprintjs/table' ;; \
+              esac
 
   deploy-preview:
     docker:
@@ -161,6 +138,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: '.'
+      - restore_cache:
+          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
@@ -176,29 +155,14 @@ workflows:
           requires: [compile-libs]
       - dist-apps:
           requires: [compile-libs]
-      - test-core:
-          requires: [compile-libs]
-      - test-datetime:
-          requires: [compile-libs]
-      - test-labs:
-          requires: [compile-libs]
-      - test-table:
+      - test:
           requires: [compile-libs]
       - deploy-preview:
-          requires:
-            - lint
-            - dist-libs
-            - dist-apps
-            - test-core
-            - test-datetime
-            - test-labs
-            - test-table
+          requires: [dist-apps]
       - deploy-npm:
           requires: [deploy-preview]
           filters:
-            tags:
-              only:
-                - /^release-.*/
             branches:
-              ignore:
-                - /.*/
+              only:
+                - master
+                - /^release\/.*/

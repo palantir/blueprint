@@ -8,7 +8,7 @@ A highly interactive React `Table` component.
 
 <div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
   If you are looking instead for the Blueprint-styled HTML table, see
-  [`.pt-table` in **@blueprintjs/core**](#core/components/table).
+  [`.pt-html-table` in **@blueprintjs/core**](#core/components/table).
 </div>
 
 ### Features
@@ -44,17 +44,17 @@ For example, this code creates an empty table with three columns and five rows:
 
 The table is **data-agnostic**. It doesn't store any data internally, so it is up to you to bind the table to your data.
 
-You can specify how the data is displayed by defining the `renderCell` prop on each `Column` component.
+You can specify how the data is displayed by defining the `cellRenderer` prop on each `Column` component.
 This is useful when working with typed columnar data, like database results.
 
 For example, this creates a table that renders dollar values:
 
 ```tsx
-const renderCell = (rowIndex: number) => {
+const cellRenderer = (rowIndex: number) => {
     return <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>
 };
 <Table numRows={10}>
-    <Column name="Dollars" renderCell={renderCell}/>
+    <Column name="Dollars" cellRenderer={cellRenderer}/>
 </Table>
 ```
 
@@ -84,7 +84,7 @@ To make your table editable, use the `EditableCell` and
 
 To further extend the interactivity of the column headers, you can
 add children components to each `ColumnHeaderCell` defined in the
-`renderColumnHeader` prop of `Column`.
+`columnHeaderCellRenderer` prop of `Column`.
 
 The following example renders a table with editable column names (single
 click), editable table cells (double click), and selectable column types. In
@@ -96,13 +96,13 @@ regular expression (`[a-zA-Z]`). If the content is invalid, a
 
 @### Reordering
 
-The table supports drag-reordering of columns and rows via the `isColumnReorderable` and `isRowReorderable`
+The table supports drag-reordering of columns and rows via the `enableColumnReordering` and `enableRowReordering`
 props, respectively.
 
 #### Reordering columns
 
-When `isColumnReorderable={true}`, a drag handle will appear in the column header (or in the
-interaction bar, if `useInteractionBar={true}`).
+When `enableColumnReordering={true}`, a drag handle will appear in the column header (or in the
+interaction bar, if `enableColumnInteractionBar={true}`).
 
 ##### Single column
 
@@ -114,7 +114,7 @@ then release. This will work whether or not column selection is enabled.
 To allow reordering of multiple contiguous columns at once, first set the following additional
 props:
 
-- `allowMultipleSelection={true}`
+- `enableMultipleSelection={true}`
 - `selectionModes={[RegionCardinality.FULL_COLUMNS, ...]}`
 
 Then drag-select the desired columns into a single selection, and grab any selected column's drag
@@ -135,10 +135,10 @@ Rows do not have a drag handle, so they must be selected before reordering. To r
 of one or more rows, simply click and drag anywhere in a selected row header, then release. Note
 that the following props must be set for row reordering to work:
 
-- `isRowHeaderShown={true}`
-- `isRowReorderable={true}`
+- `enableRowHeader={true}`
+- `enableRowReordering={true}`
 - `selectionModes={[RegionCardinality.FULL_ROWS, ...]}`
-- `allowMultipleSelection={true}` (to optionally enable multi-row reordering)
+- `enableMultipleSelection={true}` (to optionally enable multi-row reordering)
 
 #### Example
 
@@ -284,14 +284,14 @@ The table is designed to best support columnar data, meaning data where each col
 has only one type of value (for example, strings, dates, currency amounts).
 Because of this, the table's children are a list of `Column` components.
 
-Use the `renderRowHeaderCell` prop of `Table` to define row headers.
+Use the `rowHeaderCellRenderer` prop of `Table` to define row headers.
 
 @interface IColumnProps
 
 @### Cell
 
 The `Cell` component renders content in the table body. `Cell`s should be
-returned from the `renderCell` method of each `Column`.
+returned from the `cellRenderer` method of each `Column`.
 
 @interface ICellProps
 
@@ -299,16 +299,16 @@ returned from the `renderCell` method of each `Column`.
 
 Customize how each column header is displayed.
 
-The `renderColumnHeaderCell` method on each `Column` should return a
+The `columnHeaderCellRenderer` method on each `Column` should return a
 `ColumnHeaderCell`. Children of a `ColumnHeaderCell` are rendered below
 the name of the column. If you want to override the render behavior of the
-name, you can supply a `renderName` prop to the `ColumnHeaderCell`.
+name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell`.
 
 @interface IColumnHeaderCellProps
 
 @### EditableName
 
-Return a `EditableName` component from the `renderName` prop on a
+Return a `EditableName` component from the `nameRenderer` prop on a
 `ColumnHeaderCell` to enable click-to-edit functionality in the column
 header.
 
@@ -316,7 +316,7 @@ header.
 
 @### EditableCell
 
-Return a `EditableCell` component from the `renderCell` prop on a
+Return a `EditableCell` component from the `cellRenderer` prop on a
 `Column` to enable double-click-to-edit functionality in the table body.
 
 @interface IEditableCellProps

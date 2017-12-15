@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { AbstractComponent, IProps } from "../../common";
+import { AbstractPureComponent, IProps } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { Hotkey, IHotkeyProps } from "./hotkey";
 
@@ -28,7 +28,7 @@ export interface IHotkeysProps extends IProps {
     tabIndex?: number;
 }
 
-export class Hotkeys extends AbstractComponent<IHotkeysProps, {}> {
+export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
     public static defaultProps = {
         tabIndex: 0,
     };

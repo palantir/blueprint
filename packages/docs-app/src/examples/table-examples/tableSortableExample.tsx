@@ -38,8 +38,8 @@ abstract class AbstractSortableColumn implements ISortableColumn {
         const cellRenderer = (rowIndex: number, columnIndex: number) => (
             <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
         );
-        const renderMenu = this.renderMenu.bind(this, sortColumn);
-        const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} renderMenu={renderMenu} />;
+        const menuRenderer = this.renderMenu.bind(this, sortColumn);
+        const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} menuRenderer={menuRenderer} />;
         return (
             <Column
                 cellRenderer={cellRenderer}
