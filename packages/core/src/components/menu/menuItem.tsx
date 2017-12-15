@@ -6,7 +6,6 @@
 
 import * as classNames from "classnames";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
