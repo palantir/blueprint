@@ -95,7 +95,7 @@ Each library has its own dev script which you can run to watch changes to that p
 
 ### Updating documentation
 
-Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx?` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).
+Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).
 
 If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app`), you'll need to run `yarn compile` from the `docs-data` package to see it reflected in the application.
 
