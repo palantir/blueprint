@@ -9,7 +9,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, ITooltipProps, Overlay, Popover, SVGTooltip, Tooltip } from "../../src/index";
+import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src/index";
 
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 
@@ -111,20 +111,6 @@ describe("<Tooltip>", () => {
     it("rootElementTag prop renders the right elements", () => {
         const tooltip = renderTooltip({ isOpen: true, rootElementTag: "g" });
         assert.lengthOf(tooltip.find(`g.${Classes.POPOVER_WRAPPER}`), 1);
-    });
-
-    it("SVGTooltip sets rootElementTag correctly", () => {
-        const TEST_CLASS_NAME = "svg-popover-target";
-        const svgTooltip = mount(
-            <SVGTooltip content={<p>Lorem ipsum</p>} isOpen={true}>
-                <g className={TEST_CLASS_NAME}>Target</g>
-            </SVGTooltip>,
-        );
-
-        assert.lengthOf(svgTooltip.find("span"), 0);
-        assert.lengthOf(svgTooltip.find(`.${TEST_CLASS_NAME}`), 1);
-
-        svgTooltip.unmount();
     });
 
     function renderTooltip(props?: Partial<ITooltipProps>) {

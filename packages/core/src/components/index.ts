@@ -61,7 +61,6 @@ export * from "./tag/tag";
 export * from "./tag-input/tagInput";
 export * from "./toast/toast";
 export * from "./toast/toaster";
-export * from "./tooltip/svgTooltip";
 export * from "./tooltip/tooltip";
 export * from "./tree/tree";
 export * from "./tree/treeNode";
