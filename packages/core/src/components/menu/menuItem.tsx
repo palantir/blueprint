@@ -140,6 +140,9 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         if (hasSubmenu) {
             const submenuRef = <Menu>{this.renderChildren()}</Menu>;
             const popoverClasses = classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName, {
+                // apply this class to make the popover anchor to the *left*
+                // side of the menu (setting Position.LEFT_TOP alone would still
+                // anchor the popover to the right edge of the target).
                 [Classes.ALIGN_LEFT]: this.state.alignLeft,
             });
 
