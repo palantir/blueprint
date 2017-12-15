@@ -95,7 +95,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
                 onInteraction={this.handlePopoverInteraction}
                 inline={true}
                 isOpen={this.state.query.length > 0}
-                popoverClassName={Classes.MINIMAL}
+                minimal={true}
                 position={Position.BOTTOM_LEFT}
             >
                 <InputGroup
