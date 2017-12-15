@@ -94,7 +94,12 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         alignLeft: false,
     };
 
-    private liElement: HTMLElement;
+    private liRef: HTMLElement;
+    private popoverRef: HTMLElement;
+    private refHandlers = {
+        li: (ref: HTMLElement) => (this.liRef = ref),
+        popover: (ref: HTMLElement) => (this.popoverRef = ref),
+    };
 
     public render() {
         const { children, disabled, label, submenu, popoverProps } = this.props;
@@ -133,8 +138,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         );
 
         if (hasSubmenu) {
-            const measureSubmenu = this.props.useSmartPositioning ? this.measureSubmenu : null;
-            const submenuElement = <Menu ref={measureSubmenu}>{this.renderChildren()}</Menu>;
+            const submenuRef = <Menu>{this.renderChildren()}</Menu>;
             const popoverClasses = classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName, {
                 [Classes.ALIGN_LEFT]: this.state.alignLeft,
             });
@@ -148,9 +152,11 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
                     interactionKind={PopoverInteractionKind.HOVER}
                     position={this.state.alignLeft ? Position.LEFT_TOP : Position.RIGHT_TOP}
                     {...popoverProps}
-                    content={submenuElement}
+                    content={submenuRef}
                     minimal={true}
                     popoverClassName={popoverClasses}
+                    popoverDidOpen={this.handlePopoverDidOpen}
+                    popoverRef={this.refHandlers.popover}
                 >
                     {content}
                 </Popover>
@@ -158,7 +164,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         }
 
         return (
-            <li className={liClasses} ref={this.liRefHandler}>
+            <li className={liClasses} ref={this.refHandlers.li}>
                 {content}
             </li>
         );
@@ -174,47 +180,56 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         }
     }
 
-    private liRefHandler = (r: HTMLElement) => (this.liElement = r);
-
-    private measureSubmenu = (el: Menu) => {
-        if (el != null) {
-            const submenuRect = ReactDOM.findDOMNode(el).getBoundingClientRect();
-            const parentWidth = this.liElement.parentElement.getBoundingClientRect().width;
-            const adjustmentWidth = submenuRect.width + parentWidth;
-
-            // this ensures that the left and right measurements represent a submenu opened to the right
-            let submenuLeft = submenuRect.left;
-            let submenuRight = submenuRect.right;
-            if (this.state.alignLeft) {
-                submenuLeft += adjustmentWidth;
-                submenuRight += adjustmentWidth;
-            }
-
-            const { left = 0 } = this.props.submenuViewportMargin;
-            let { right = 0 } = this.props.submenuViewportMargin;
-            if (
-                typeof document !== "undefined" &&
-                typeof document.documentElement !== "undefined" &&
-                Number(document.documentElement.clientWidth)
-            ) {
-                // we're in a browser context and the clientWidth is available,
-                // use it to set calculate 'right'
-                right = document.documentElement.clientWidth - right;
-            }
-            // uses context to prioritize the previous positioning
-            let alignLeft = this.context.alignLeft || false;
-            if (alignLeft) {
-                if (submenuLeft - adjustmentWidth <= left) {
-                    alignLeft = false;
-                }
-            } else {
-                if (submenuRight >= right) {
-                    alignLeft = true;
-                }
-            }
-            this.setState({ alignLeft });
+    private handlePopoverDidOpen = () => {
+        if (this.props.useSmartPositioning) {
+            // Popper.js renders the popover in the DOM before relocating its
+            // position on the next tick. We need to rAF to wait for that to happen.
+            requestAnimationFrame(() => this.maybeAlignSubmenuLeft());
         }
     };
+
+    private maybeAlignSubmenuLeft() {
+        if (this.popoverRef == null) {
+            return;
+        }
+
+        const submenuRect = this.popoverRef.getBoundingClientRect();
+        const parentWidth = this.liRef.parentElement.getBoundingClientRect().width;
+        const adjustmentWidth = submenuRect.width + parentWidth;
+
+        // this ensures that the left and right measurements represent a submenu opened to the right
+        let submenuLeft = submenuRect.left;
+        let submenuRight = submenuRect.right;
+        if (this.state.alignLeft) {
+            submenuLeft += adjustmentWidth;
+            submenuRight += adjustmentWidth;
+        }
+
+        const { left = 0 } = this.props.submenuViewportMargin;
+        let { right = 0 } = this.props.submenuViewportMargin;
+        if (
+            typeof document !== "undefined" &&
+            typeof document.documentElement !== "undefined" &&
+            Number(document.documentElement.clientWidth)
+        ) {
+            // we're in a browser context and the clientWidth is available,
+            // use it to set calculate 'right'
+            right = document.documentElement.clientWidth - right;
+        }
+        // uses context to prioritize the previous positioning
+        let alignLeft = this.context.alignLeft || false;
+        if (alignLeft) {
+            if (submenuLeft - adjustmentWidth <= left) {
+                alignLeft = false;
+            }
+        } else {
+            if (submenuRight >= right) {
+                alignLeft = true;
+            }
+        }
+
+        this.setState({ alignLeft });
+    }
 
     private renderChildren = () => {
         const { children, submenu } = this.props;
