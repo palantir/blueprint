@@ -7,13 +7,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v4-dependency-cache-{{ checksum "yarn.lock" }}
-            - v4-dependency-cache-
+            - v5-dependency-cache-{{ checksum "yarn.lock" }}
+            - v5-dependency-cache-
       - run: yarn
       - run: echo "Checking if lockfiles changed..." && git diff --exit-code
       - run: npm rebuild node-sass
       - save_cache:
-          key: v4-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v5-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ~/yarn
             - ~/.cache/yarn
@@ -32,8 +32,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v4-dependency-cache-{{ checksum "yarn.lock" }}
-            - v4-dependency-cache-
+            - v5-dependency-cache-{{ checksum "yarn.lock" }}
+            - v5-dependency-cache-
       - run: yarn compile
       - persist_to_workspace:
           root: '.'
@@ -50,8 +50,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v4-dependency-cache-{{ checksum "yarn.lock" }}
-            - v4-dependency-cache-
+            - v5-dependency-cache-{{ checksum "yarn.lock" }}
+            - v5-dependency-cache-
       - run: yarn lint
 
   dist-libs:
@@ -62,7 +62,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v4-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v5-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:libs
       - persist_to_workspace:
           root: '.'
@@ -83,7 +83,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v4-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v5-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:apps
       - persist_to_workspace:
           root: '.'
@@ -101,7 +101,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v4-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v5-dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           command: |
               case $CIRCLE_NODE_INDEX in \
