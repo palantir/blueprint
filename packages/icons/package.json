@@ -25,8 +25,6 @@
     "lint-fix": "yarn lint:tslint --fix",
     "test": "npm-run-all -s compile:pre compile:cjs test:pre -p test:iso",
     "test:pre": "tsc -p ./test",
-    "test:karma": "karma start",
-    "test:karma:debug": "karma start --single-run=false --reporters=mocha --debug",
     "test:iso": "mocha test/isotest.js",
     "verify": "npm-run-all compile -p dist test lint"
   },
@@ -35,13 +33,11 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
-    "@blueprintjs/karma-build-scripts": "^0.2.0",
     "@blueprintjs/node-build-scripts": "^0.2.0",
     "@blueprintjs/test-commons": "^0.1.0",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
     "es6-shim": "^0.35.3",
-    "karma": "^1.7.1",
     "mocha": "^4.0.1",
     "npm-run-all": "^4.1.1",
     "react": "^16.2.0",
