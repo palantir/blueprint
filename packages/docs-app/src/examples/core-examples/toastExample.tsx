@@ -18,7 +18,7 @@ import {
     Switch,
     Toaster,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
 
 type IToastDemo = IToastProps & { button: string };
 
@@ -88,7 +88,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
         toaster: (ref: Toaster) => (this.toaster = ref),
     };
 
-    private handlePositionChange = handleNumberChange(position => this.setState({ position }));
+    private handlePositionChange = handleStringChange((position: Position) => this.setState({ position }));
     private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClear => this.setState({ canEscapeKeyClear }));
 

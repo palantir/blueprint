@@ -88,7 +88,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         this.setState({ tetherConstraints: JSON.parse(constraints) });
     });
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
-    private handleInteractionChange = handleNumberChange(interactionKind => {
+    private handleInteractionChange = handleStringChange((interactionKind: PopoverInteractionKind) => {
         const isModal = this.state.isModal && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, isModal });
     });
