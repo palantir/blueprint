@@ -83,9 +83,11 @@ describe("<Popover>", () => {
             className: "bar",
             interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
             popoverClassName: "foo",
+            targetClassName: "baz",
         }).simulateTarget("click");
         assert.isTrue(wrapper.findClass(Classes.POPOVER).hasClass("foo"));
-        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass("bar"));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_WRAPPER).hasClass("bar"));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass("baz"));
     });
 
     it("adds .pt-popover-open class to target when the popover is open", () => {
