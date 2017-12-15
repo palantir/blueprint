@@ -107,25 +107,17 @@ $pt-dark-intent-text-colors: (
 // the layout and composition of Blueprint components.
 
 // pt-flex-parent styles
-@mixin pt-flex-parent() {
-  display: inline-flex;
+@mixin pt-flex-parent($direction: row, $inline: false) {
+  @if $inline == true {
+    display: inline-flex;
+  } @else {
+    display: flex;
+  }
+  flex-direction: $direction;
   align-items: center;
   justify-content: center;
 }
 
-@mixin pt-flex-parent-fill() {
-  width: 100%;
-}
-
-@mixin pt-flex-parent-direction-horizontal {
-  flex-direction: row;
-}
-
-@mixin pt-flex-parent-direction-vertical {
-  flex-direction: column;
-}
-
-// pt-flex-child styles
 @mixin pt-flex-child {
   flex: 0 0 auto;
 }

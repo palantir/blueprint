@@ -34,7 +34,7 @@ Styleguide pt-button
   }
 
   &.pt-fill {
-    @include pt-flex-parent-fill();
+    width: 100%;
   }
 
   &:not([class*="pt-intent-"]) {

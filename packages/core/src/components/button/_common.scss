@@ -94,7 +94,7 @@ $button-intents: (
 ) !default;
 
 @mixin pt-button-base() {
-  @include pt-flex-parent();
+  @include pt-flex-parent($inline: true);
   border: none;
   border-radius: $pt-border-radius;
   cursor: pointer;
