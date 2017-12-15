@@ -71,13 +71,6 @@ export const SLIDER_ZERO_STEP = ns + ` <Slider> stepSize must be greater than ze
 export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be greater than zero.`;
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
 
-export const TABS_FIRST_CHILD = ns + ` First child of <Tabs> component must be a <TabList>`;
-export const TABS_MISMATCH = ns + ` Number of <Tab> components must equal number of <TabPanel> components`;
-export const TABS_WARN_DEPRECATED =
-    deprec +
-    ` <Tabs> is deprecated since v1.11.0; consider upgrading to <Tabs2>.` +
-    " https://blueprintjs.com/#components.tabs.js";
-
 export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop as it always creates a new element.`;
 export const TOASTER_WARN_LEFT_RIGHT = ns + ` Toaster does not support LEFT or RIGHT positions.`;
 
