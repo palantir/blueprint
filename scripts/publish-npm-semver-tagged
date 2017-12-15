@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 set -o pipefail
 
 git fetch --tags
@@ -9,7 +9,8 @@ SCRIPTS_DIR="$( dirname "$(readlink -f "$0")" )"
 
 publishable_paths=$("$SCRIPTS_DIR/get-publishable-paths-from-semver-tags" --npm | sed -E -e '/^ *$/d')
 for path in $publishable_paths; do
-  pushd "$path"
-  "$SCRIPTS_DIR/circle-publish-npm"
-  popd
+    pushd "$path"
+    echo "Attempting to publish package at path '$path'"
+    "$SCRIPTS_DIR/circle-publish-npm"
+    popd
 done

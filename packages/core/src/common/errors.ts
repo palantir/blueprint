@@ -15,8 +15,13 @@ export const COLLAPSIBLE_LIST_INVALID_CHILD = ns + ` <CollapsibleList> children 
 
 export const CONTEXTMENU_WARN_DECORATOR_NO_METHOD =
     ns + ` @ContextMenuTarget-decorated class should implement renderContextMenu.`;
+export const CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
+    ns + ` "@ContextMenuTarget-decorated components must return a single JSX.Element or an empty render.`;
 
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
+export const HOTKEYS_WARN_DECORATOR_NO_METHOD = ns + ` @HotkeysTarget-decorated class should implement renderHotkeys.`;
+export const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
+    ns + ` "@HotkeysTarget-decorated components must return a single JSX.Element or an empty render.`;
 
 export const MENU_WARN_CHILDREN_SUBMENU_MUTEX =
     ns + ` <MenuItem> children and submenu props are mutually exclusive, with children taking priority.`;
@@ -56,7 +61,6 @@ export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onIntera
 
 export const POPOVER2_WARN_DEPRECATED_IS_DISABLED = `${deprec} <Popover2> isDisabled is deprecated. Use disabled.`;
 export const POPOVER2_WARN_DEPRECATED_IS_MODAL = `${deprec} <Popover2> isModal is deprecated. Use hasBackdrop.`;
-export const POPOVER2_WARN_DEPRECATED_POSITION = `${deprec} <Popover2> position is deprecated. Use placement.`;
 
 export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
 
@@ -66,13 +70,6 @@ export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
 export const SLIDER_ZERO_STEP = ns + ` <Slider> stepSize must be greater than zero.`;
 export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be greater than zero.`;
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
-
-export const TABS_FIRST_CHILD = ns + ` First child of <Tabs> component must be a <TabList>`;
-export const TABS_MISMATCH = ns + ` Number of <Tab> components must equal number of <TabPanel> components`;
-export const TABS_WARN_DEPRECATED =
-    deprec +
-    ` <Tabs> is deprecated since v1.11.0; consider upgrading to <Tabs2>.` +
-    " https://blueprintjs.com/#components.tabs.js";
 
 export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop as it always creates a new element.`;
 

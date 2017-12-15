@@ -8,8 +8,7 @@
   "style": "dist/blueprint.css",
   "unpkg": "dist/core.bundle.js",
   "scripts": {
-    "compile": "npm-run-all -s compile:pre -p 'compile:*'",
-    "compile:pre": "generate-icons-source",
+    "compile": "npm-run-all -p 'compile:*'",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
     "compile:css": "sass-compile ./src",
@@ -17,13 +16,13 @@
     "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
-    "dist:variables": "generate-css-variables",
+    "dist:variables": "generate-css-variables common/_colors.scss common/_color-aliases.scss common/_variables.scss",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
     "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
-    "test": "npm-run-all -s compile:pre compile:cjs test:pre -p test:karma test:iso",
+    "test": "npm-run-all -s compile:cjs test:pre -p test:karma test:iso",
     "test:pre": "tsc -p ./test",
     "test:karma": "karma start",
     "test:karma:debug": "karma start --single-run=false --reporters=mocha --debug",
@@ -31,6 +30,7 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
+    "@blueprintjs/icons": "^1.0.0",
     "@types/dom4": "^1.5.20",
     "@types/tether": "^1.1.27",
     "classnames": "^2.2",
@@ -47,9 +47,9 @@
     "react-dom": "^16.0.0"
   },
   "devDependencies": {
-    "@blueprintjs/karma-build-scripts": "^0.2.0",
-    "@blueprintjs/node-build-scripts": "^0.2.0",
-    "@blueprintjs/test-commons": "^0.1.0",
+    "@blueprintjs/karma-build-scripts": "^0.3.0",
+    "@blueprintjs/node-build-scripts": "^0.3.0",
+    "@blueprintjs/test-commons": "^0.3.0",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
     "es6-shim": "^0.35.3",

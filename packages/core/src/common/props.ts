@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { IconName } from "../generated/iconName";
+import { IconName } from "@blueprintjs/icons";
 import { Intent } from "./intent";
 
 export type HTMLInputProps = React.HTMLProps<HTMLInputElement>;

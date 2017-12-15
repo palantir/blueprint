@@ -33,14 +33,24 @@ The `main` module exports all symbols from all modules so you don't have to impo
 dependencies:
 
   ```sh
-  npm install --save @blueprintjs/core
+  yarn add @blueprintjs/core
   ```
 
 1. If you see `UNMET PEER DEPENDENCY` errors, you should manually install React:
 
   ```sh
-  npm install --save react react-dom react-transition-group
+  yarn add react react-dom react-transition-group
   ```
+
+1. Note that since the minimum supported version of React is [v16](https://reactjs.org/blog/2017/09/26/react-v16.0.html),
+all of its [JavaScript Environment Requirements](https://reactjs.org/docs/javascript-environment-requirements.html) apply to
+Blueprint as well. Some Blueprint components use the following ES2015 features:
+
+  - `Map`
+  - `Set`
+
+  We recommend polyfilling these features using [es6-shim](https://github.com/paulmillr/es6-shim) or
+  [core-js](https://github.com/zloirock/core-js).
 
 1. After installation, you'll be able to import the React components in your application:
 

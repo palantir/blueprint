@@ -1,9 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "variables";
-@import "../generated/icon-variables";
-@import "../generated/icon-map";
+@import "generated/icon-variables";
+@import "generated/icon-map";
 
 $icon-classes: (
   ".pt-icon",

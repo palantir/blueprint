@@ -1,8 +1,7 @@
 {
   "name": "@blueprintjs/karma-build-scripts",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "Karma build scripts for @blueprintjs packages",
-  "private": true,
   "scripts": {
     "test": "exit 0"
   },

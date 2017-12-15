@@ -1,7 +1,7 @@
 @# Icon
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    See [**Icons**](#core/icons) for a searchable list of all available UI icons.
+    See [**Icons**](#icons) for a searchable list of all available UI icons.
 </div>
 
 This section describes two ways of using the UI icon font: via CSS or via React component.

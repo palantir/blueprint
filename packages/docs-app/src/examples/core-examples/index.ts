@@ -36,7 +36,6 @@ export * from "./tagInputExample";
 export * from "./textExample";
 export * from "./spinnerExample";
 export * from "./tabsExample";
-export * from "./tabs2Example";
 export * from "./tooltip2Example";
 export * from "./inputGroupExample";
 export * from "./tagExample";
