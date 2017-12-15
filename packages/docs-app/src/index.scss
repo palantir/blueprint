@@ -20,6 +20,67 @@
 @import "styles/resources";
 @import "styles/sections";
 
+$package-colors: (
+  "blueprint": $gray1,
+  "core": $blue3,
+  "datetime": $red3,
+  "table-js": $forest3,
+  "labs": $indigo3
+);
+
+$dark-package-colors: (
+  "blueprint": $gray3,
+  "core": $blue4,
+  "datetime": $red4,
+  "table-js": $forest4,
+  "labs": $indigo4
+);
+
 .docs-logo {
   background-image: url("./assets/blueprint-logo.svg");
+
+  .pt-dark & {
+    background-image: url("./assets/blueprint-logo-white.svg");
+  }
+}
+
+@mixin nav-colors($package-name, $item-background-color) {
+  > .docs-package-#{$package-name} {
+    .docs-menu-item-icon {
+      background-color: rgba($item-background-color, 0.2);
+      background-image: url(./assets/nav/#{$package-name}.svg);
+    }
+
+    ~ .docs-nav-menu .pt-menu-item.pt-active {
+      color: $item-background-color;
+    }
+  }
+
+  &:hover,
+  &.docs-nav-expanded {
+    > .docs-package-#{$package-name} {
+      &.pt-menu-item {
+        color: $item-background-color;
+      }
+
+      .docs-menu-item-icon {
+        background-color: rgba($item-background-color, 0.8);
+        background-image: url(./assets/nav/#{$package-name}-active.svg);
+      }
+
+      &:active .docs-menu-item-icon {
+        background-color: $item-background-color;
+      }
+    }
+  }
+}
+
+.docs-menu-item.depth-1 {
+  @each $package in map-keys($package-colors) {
+    @include nav-colors($package, map-get($package-colors, $package));
+
+    .pt-dark & {
+      @include nav-colors($package, map-get($dark-package-colors, $package));
+    }
+  }
 }

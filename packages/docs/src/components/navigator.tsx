@@ -93,7 +93,6 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
                 className="docs-navigator"
                 content={this.renderPopover()}
                 onInteraction={this.handlePopoverInteraction}
-                inline={true}
                 isOpen={this.state.query.length > 0}
                 popoverClassName={Classes.MINIMAL}
                 position={Position.BOTTOM_LEFT}
@@ -188,7 +187,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
             ];
         }
         return (
-            <div className={Classes.MENU} ref={this.refHandlers.menu}>
+            <div className={classNames(Classes.MENU, "docs-navigator-menu")} ref={this.refHandlers.menu}>
                 {items}
             </div>
         );

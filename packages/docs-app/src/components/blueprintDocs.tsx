@@ -38,9 +38,6 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             <div className="pt-navbar-heading docs-heading" key="_title">
                 Blueprint
             </div>,
-            <div className="pt-text-muted" key="_version">
-                v{this.props.versions[0].version}
-            </div>,
         ];
         const navbarRight = (
             <NavbarActions

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>datetime</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="nav_icons-exports" transform="translate(-48.000000, 0.000000)" fill="#F55656">
+            <g id="datetime" transform="translate(54.000000, 6.000000)">
+                <path d="M0,4 L12,4 L12,10 C12,11.1045695 11.1045695,12 10,12 L2,12 C0.8954305,12 1.3527075e-16,11.1045695 0,10 L0,4 Z" id="Rectangle-5" opacity="0.600000024"></path>
+                <path d="M2,-4.06575815e-20 L10,4.4408921e-16 C11.1045695,2.41180773e-16 12,0.8954305 12,2 L12,3 L0,3 L0,2 C-1.3527075e-16,0.8954305 0.8954305,6.46997646e-16 2,4.4408921e-16 Z" id="Rectangle-5"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -35,11 +35,13 @@ export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.React
     const itemClasses = classNames(Classes.MENU_ITEM, {
         [Classes.ACTIVE]: props.isActive,
         [Classes.INTENT_PRIMARY]: props.isActive,
+        [`docs-package-${item.route}`]: item.level === 1,
     });
     const handleClick = () => props.onClick(item.route);
     return (
         <li className={classes} key={item.route}>
             <a className={itemClasses} href={"#" + item.route} onClick={handleClick}>
+                <span className="docs-menu-item-icon" />
                 {item.title}
             </a>
             {props.children}

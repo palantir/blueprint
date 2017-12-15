@@ -3,19 +3,15 @@
 
 $navigator-height: $pt-grid-size * 24.5;
 $navigator-min-width: $pt-grid-size * 22;
+$navigator-width: $pt-grid-size * 30;
 
-.docs-navigator {
-  .pt-input,
-  .pt-menu {
-    min-width: $navigator-min-width;
-  }
+.docs-navigator-menu {
+  width: $navigator-width;
+  min-width: $navigator-min-width;
+  max-height: $navigator-height;
+  overflow: auto;
 
-  .pt-menu {
-    max-height: $navigator-height;
-    overflow: auto;
-  }
-
-  .pt-menu-item:not(.pt-active) {
+  &:not(.pt-active) {
     background: inherit;
   }
 }

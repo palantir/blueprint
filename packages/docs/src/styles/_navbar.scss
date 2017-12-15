@@ -8,33 +8,6 @@
 All the components that live *inside* the navbar.
 */
 
-.pt-navbar.docs-navbar {
-  box-shadow: $navbar-box-shadow;
-  background-color: $content-background-color;
-  padding-right: $sidebar-padding;
-  padding-left: 0;
-
-  .pt-navbar-group {
-    padding-left: $content-padding;
-
-    &:first-child {
-      width: $sidebar-width;
-      padding-left: 0;
-    }
-
-    // last child fills remaining space and right-aligns children
-    &:last-child {
-      flex: 1 1 auto;
-      justify-content: flex-end;
-    }
-  }
-
-  .pt-dark & {
-    box-shadow: $dark-navbar-box-shadow;
-    background-color: $dark-content-background-color;
-  }
-}
-
 .docs-logo {
   margin: $pt-grid-size;
   background-repeat: no-repeat;
@@ -48,6 +21,7 @@ All the components that live *inside* the navbar.
   margin-right: $pt-grid-size;
   // vertically centers heading with version selector
   margin-bottom: 2px;
+  font-size: $pt-grid-size * 2;
   font-weight: 600;
 }
 

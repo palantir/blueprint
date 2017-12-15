@@ -8,6 +8,8 @@ $nav-item-height: $pt-grid-size * 3;
 $nav-item-line-height: 16px;
 $nav-item-padding: $pt-grid-size;
 $nav-item-indent: $pt-grid-size * 2;
+$nav-item-icon-size: $pt-grid-size * 2.4;
+$nav-item-icon-margin: $pt-grid-size;
 
 $nav-item-color-hover: $minimal-button-background-color-hover;
 $nav-item-color-active: $minimal-button-background-color-active;
@@ -17,7 +19,7 @@ $dark-nav-item-color-active: $dark-minimal-button-background-color-active;
 $navbar-box-shadow: 0 1px 0 $pt-divider-black;
 $dark-navbar-box-shadow: 0 1px 0 $pt-dark-divider-black;
 
-$logo-width: $pt-grid-size * 2.8;
+$logo-width: $pt-grid-size * 6.5;
 
 /*
 Flex utils
@@ -53,29 +55,38 @@ Page layout elements
   // center container in window
   margin: auto;
   width: $container-width;
-  padding-top: $pt-navbar-height;
-}
-
-// navbar fixed to top of screen with same width as rest of app
-.docs-navbar {
-  position: fixed;
-  top: 0;
-  width: inherit;
 }
 
 .docs-content {
   // leave space for nav menu on the left (position: fixed)
   margin-left: $sidebar-width;
-  padding: 0 $sidebar-padding $content-padding $content-padding;
+  // 1px top padding fixes removes extra top spacing
+  padding: 1px 0 $content-padding $content-padding * 2;
 }
 
 .docs-nav {
   position: fixed;
-  top: $pt-navbar-height;
+  top: 0;
   bottom: 0;
+  // box-shadow: 1px 0 0 $pt-divider-black;
   width: $sidebar-width;
   overflow: auto;
-  padding: $content-padding $sidebar-padding;
+  padding: $sidebar-padding 0;
+
+  .pt-navbar-group {
+    margin-bottom: $pt-grid-size;
+    height: auto;
+  }
+
+  .docs-navigator {
+    margin-bottom: $pt-grid-size * 2;
+    width: 100%;
+    padding: 0 $pt-grid-size / 2;
+  }
+
+  .pt-button-group {
+    margin-bottom: $pt-grid-size * 2;
+  }
 }
 
 /*
@@ -111,11 +122,45 @@ Lefthand navigation menu
     padding-right: $nav-item-padding;
     padding-left: $nav-item-padding;
     white-space: initial;
+
+    &:hover,
+    &.pt-active {
+      background-color: transparent !important; // stylelint-disable declaration-no-important
+      font-weight: 600;
+    }
   }
+
+  // stylelint-disable max-nesting-depth
+  &.depth-1 {
+    > .pt-menu-item {
+      // padding-left: $nav-item-padding + $nav-item-indent;
+      display: flex;
+      align-items: center;
+      text-transform: uppercase;
+      font-weight: 600;
+
+      .docs-menu-item-icon {
+        display: inline-block;
+        margin-right: $nav-item-icon-margin;
+        border-radius: $nav-item-icon-size / 3;
+        // box-shadow: inset 0 0 0 1px rgba($black, 0.2);
+        background-repeat: no-repeat;
+        background-position: center;
+        width: $nav-item-icon-size;
+        height: $nav-item-icon-size;
+      }
+
+      &.pt-active {
+        color: inherit;
+      }
+    }
+  }
+  // stylelint-enable max-nesting-depth
 
   @each $depth in (2, 3, 4, 5, 6) {
     &.depth-#{$depth} > .pt-menu-item {
-      padding-left: $nav-item-padding + $nav-item-indent * ($depth - 1);
+      padding-left: $nav-item-padding +
+        $nav-item-indent * ($depth - 2) + ($nav-item-icon-size + $nav-item-icon-margin);
     }
   }
 }
