@@ -22,7 +22,7 @@ import {
 import * as Errors from "../../common/errors";
 
 import { Button } from "../button/buttons";
-import { InputGroup } from "./inputGroup";
+import { Input } from "./input";
 
 export interface INumericInputProps extends IIntentProps, IProps {
     /**
@@ -116,7 +116,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
 }
 
 export interface INumericInputState {
-    isInputGroupFocused?: boolean;
+    isInputFocused?: boolean;
     isButtonGroupFocused?: boolean;
     shouldSelectAfterUpdate?: boolean;
     stepMaxPrecision?: number;
@@ -209,7 +209,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     public render() {
         const { buttonPosition, className, large } = this.props;
 
-        const inputGroupHtmlProps = removeNonHTMLProps(
+        const inputHtmlProps = removeNonHTMLProps(
             this.props,
             [
                 "allowNumericCharactersOnly",
@@ -228,10 +228,10 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             true,
         );
 
-        const inputGroup = (
-            <InputGroup
+        const input = (
+            <Input
                 autoComplete="off"
-                {...inputGroupHtmlProps}
+                {...inputHtmlProps}
                 className={classNames({ [Classes.LARGE]: large })}
                 intent={this.props.intent}
                 inputRef={this.inputRef}
@@ -254,7 +254,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             // text field with squared border-radii on the left side, causing it
             // to look weird. This problem goes away if we simply don't nest within
             // a control group.
-            return <div className={className}>{inputGroup}</div>;
+            return <div className={className}>{input}</div>;
         } else {
             const incrementButton = this.renderButton(
                 NumericInput.INCREMENT_KEY,
@@ -274,7 +274,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
                 </div>
             );
 
-            const inputElems = buttonPosition === Position.LEFT ? [buttonGroup, inputGroup] : [inputGroup, buttonGroup];
+            const inputElems = buttonPosition === Position.LEFT ? [buttonGroup, input] : [input, buttonGroup];
 
             const classes = classNames(
                 Classes.NUMERIC_INPUT,
@@ -397,7 +397,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
         this.shouldSelectAfterUpdate = this.props.selectAllOnFocus;
-        this.setState({ isInputGroupFocused: true });
+        this.setState({ isInputFocused: true });
         Utils.safeInvoke(this.props.onFocus, e);
     };
 
@@ -406,7 +406,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         // hoarding on IE11 (#704)
         this.shouldSelectAfterUpdate = false;
 
-        const baseStateChange: INumericInputState = { isInputGroupFocused: false };
+        const baseStateChange: INumericInputState = { isInputFocused: false };
         if (this.props.clampValueOnBlur) {
             const value = (e.target as HTMLInputElement).value;
             const sanitizedValue = this.getSanitizedValue(value);

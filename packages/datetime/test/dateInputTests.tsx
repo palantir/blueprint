@@ -9,7 +9,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, InputGroup, Keys, Popover, Position } from "@blueprintjs/core";
+import { Classes as CoreClasses, Input, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
 import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -116,7 +116,7 @@ describe("<DateInput>", () => {
         assert.equal(timePicker.prop("disabled"), true);
     });
 
-    it("inputProps are passed to InputGroup", () => {
+    it("inputProps are passed to Input", () => {
         const inputRef = sinon.spy();
         const onFocus = sinon.spy();
         const wrapper = mount(
@@ -127,7 +127,7 @@ describe("<DateInput>", () => {
         );
         wrapper.find("input").simulate("focus");
 
-        const input = wrapper.find(InputGroup);
+        const input = wrapper.find(Input);
         assert.isFalse(input.prop("disabled"), "disabled comes from DateInput props");
         assert.notStrictEqual(input.prop("value"), "fail", "value cannot be changed");
         assert.strictEqual(input.prop("leftIconName"), "star");
@@ -170,19 +170,19 @@ describe("<DateInput>", () => {
             input.simulate("keydown", { which: Keys.ENTER });
             assert.isFalse(wrapper.state("isOpen"), "popover closed");
             assert.isTrue(wrapper.state("isInputFocused"), "input still focused");
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), PROPERLY_FORMATTED_DATE_STRING);
+            assert.strictEqual(wrapper.find(Input).prop("value"), PROPERLY_FORMATTED_DATE_STRING);
             assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
         });
 
         it("Clicking a date puts it in the input box and closes the popover", () => {
             const wrapper = mount(<DateInput />).setState({ isOpen: true });
-            assert.equal(wrapper.find(InputGroup).prop("value"), "");
+            assert.equal(wrapper.find(Input).prop("value"), "");
             wrapper
                 .find(`.${Classes.DATEPICKER_DAY}`)
                 .first()
                 .simulate("click");
             assert.isFalse(wrapper.state("isOpen"));
-            assert.notEqual(wrapper.find(InputGroup).prop("value"), "");
+            assert.notEqual(wrapper.find(Input).prop("value"), "");
         });
 
         it("Clicking a date in the same month closes the popover when there is already a default value", () => {
@@ -204,7 +204,7 @@ describe("<DateInput>", () => {
             );
             root.setState({ isOpen: true });
             getDay(22).simulate("click");
-            assert.equal(root.find(InputGroup).prop("value"), "");
+            assert.equal(root.find(Input).prop("value"), "");
             assert.isTrue(onChange.calledWith(null));
         });
 
@@ -255,7 +255,7 @@ describe("<DateInput>", () => {
         it("Clicking a date in a different month sets input value but keeps popover open", () => {
             const date = new Date(2016, Months.APRIL, 3);
             const wrapper = mount(<DateInput defaultValue={date} />).setState({ isOpen: true });
-            assert.equal(wrapper.find(InputGroup).prop("value"), "2016-04-03");
+            assert.equal(wrapper.find(Input).prop("value"), "2016-04-03");
 
             wrapper
                 .find(`.${Classes.DATEPICKER_DAY}`)
@@ -264,7 +264,7 @@ describe("<DateInput>", () => {
                 .simulate("click");
 
             assert.isTrue(wrapper.state("isOpen"));
-            assert.equal(wrapper.find(InputGroup).prop("value"), "2016-03-27");
+            assert.equal(wrapper.find(Input).prop("value"), "2016-03-27");
         });
 
         it("Typing in a valid date invokes onChange and inputProps.onChange", () => {
@@ -296,8 +296,8 @@ describe("<DateInput>", () => {
                 .simulate("change", { target: { value: "2015-02-01" } })
                 .simulate("blur");
 
-            assert.strictEqual(wrapper.find(InputGroup).prop("className"), "pt-intent-danger");
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
+            assert.strictEqual(wrapper.find(Input).prop("className"), "pt-intent-danger");
+            assert.strictEqual(wrapper.find(Input).prop("value"), rangeMessage);
 
             assert.isTrue(onError.calledOnce);
             assertDateEquals(onError.args[0][0], "2015-02-01");
@@ -318,8 +318,8 @@ describe("<DateInput>", () => {
                 .simulate("change", { target: { value: "not a date" } })
                 .simulate("blur");
 
-            assert.strictEqual(wrapper.find(InputGroup).prop("className"), "pt-intent-danger");
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), invalidDateMessage);
+            assert.strictEqual(wrapper.find(Input).prop("className"), "pt-intent-danger");
+            assert.strictEqual(wrapper.find(Input).prop("value"), invalidDateMessage);
 
             assert.isTrue(onError.calledOnce);
             assert.isNaN((onError.args[0][0] as Date).valueOf());
@@ -384,15 +384,15 @@ describe("<DateInput>", () => {
             const { root, getDay } = wrap(<DateInput value={DATE} onChange={onChange} />);
             root.setState({ isOpen: true });
             getDay(4).simulate("click");
-            assert.equal(root.find(InputGroup).prop("value"), "2016-04-04");
+            assert.equal(root.find(Input).prop("value"), "2016-04-04");
             assert.isTrue(onChange.calledWith(null));
         });
 
         it("Updating value updates the text box", () => {
             const wrapper = mount(<DateInput value={DATE} />);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE_STR);
+            assert.strictEqual(wrapper.find(Input).prop("value"), DATE_STR);
             wrapper.setProps({ value: DATE2 });
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_STR);
+            assert.strictEqual(wrapper.find(Input).prop("value"), DATE2_STR);
         });
 
         it("Typing in a date invokes onChange and inputProps.onChange", () => {
@@ -417,7 +417,7 @@ describe("<DateInput>", () => {
 
         it("Formats locale-specific format strings properly", () => {
             const wrapper = mount(<DateInput locale="de" format="L" value={DATE2} />);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_DE_STR);
+            assert.strictEqual(wrapper.find(Input).prop("value"), DATE2_DE_STR);
         });
 
         it("Clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {

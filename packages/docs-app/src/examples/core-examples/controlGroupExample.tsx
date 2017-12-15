@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, ControlGroup, InputGroup, Switch } from "@blueprintjs/core";
+import { Button, ControlGroup, Input, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
 
 export interface IControlGroupExampleState {
@@ -32,7 +32,7 @@ export class ControlGroupExample extends BaseExample<IControlGroupExampleState> 
         return (
             <ControlGroup style={style} {...this.state}>
                 <Button iconName="filter">Filter</Button>
-                <InputGroup placeholder="Find filters..." />
+                <Input placeholder="Find filters..." />
             </ControlGroup>
         );
     }

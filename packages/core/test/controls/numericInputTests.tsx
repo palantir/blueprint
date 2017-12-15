@@ -15,7 +15,7 @@ import {
     Button,
     Classes,
     HTMLInputProps,
-    InputGroup,
+    Input,
     INumericInputProps,
     Keys,
     NumericInput,
@@ -28,7 +28,7 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput />).children();
             const leftGroup = component.childAt(0);
             const rightGroup = component.childAt(1);
-            expect(leftGroup.is(InputGroup)).to.be.true;
+            expect(leftGroup.is(Input)).to.be.true;
             expect(rightGroup.key()).to.equal("button-group");
         });
 
@@ -70,33 +70,33 @@ describe("<NumericInput>", () => {
     describe("Button position", () => {
         it("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
             const component = mount(<NumericInput buttonPosition={Position.RIGHT} />);
-            const inputGroup = component.find(InputGroup);
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            const input = component.find(Input);
+            expect(input.name()).to.equal("Blueprint.Input");
         });
 
         it("renders the buttons on the left when buttonPosition == Position.LEFT", () => {
             const component = mount(<NumericInput buttonPosition={Position.LEFT} />);
-            const inputGroup = component.find(InputGroup);
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            const input = component.find(Input);
+            expect(input.name()).to.equal("Blueprint.Input");
         });
 
         it('does not render the buttons when buttonPosition == "none"', () => {
             const component = mount(<NumericInput buttonPosition={"none"} />);
 
-            const inputGroup = component.find(InputGroup);
+            const input = component.find(Input);
             const numChildren = component.children().length;
 
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            expect(input.name()).to.equal("Blueprint.Input");
             expect(numChildren).to.equal(1);
         });
 
         it("does not render the buttons when buttonPosition is null", () => {
             const component = mount(<NumericInput buttonPosition={null} />);
 
-            const inputGroup = component.find(InputGroup);
+            const input = component.find(Input);
             const numChildren = component.children().length;
 
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            expect(input.name()).to.equal("Blueprint.Input");
             expect(numChildren).to.equal(1);
         });
 
@@ -253,7 +253,7 @@ describe("<NumericInput>", () => {
                 const attachTo = document.createElement("div");
                 const component = mount(<NumericInput value="12345678" />, { attachTo });
 
-                const wrappedInput = component.find(InputGroup).find("input");
+                const wrappedInput = component.find(Input).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
                 const input = attachTo.query("input") as HTMLInputElement;
@@ -265,7 +265,7 @@ describe("<NumericInput>", () => {
                 const attachTo = document.createElement("div");
                 const component = mount(<NumericInput value={VALUE} selectAllOnIncrement={true} />, { attachTo });
 
-                const wrappedInput = component.find(InputGroup).find("input");
+                const wrappedInput = component.find(Input).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
                 const input = attachTo.query("input") as HTMLInputElement;
@@ -449,7 +449,7 @@ describe("<NumericInput>", () => {
             mergedMockEvent.keyCode = Keys.ARROW_UP;
             mergedMockEvent.which = Keys.ARROW_UP;
 
-            const inputField = component.find(InputGroup).find("input");
+            const inputField = component.find(Input).find("input");
             inputField.simulate("keyDown", mergedMockEvent);
         };
 
@@ -458,7 +458,7 @@ describe("<NumericInput>", () => {
             mergedMockEvent.keyCode = Keys.ARROW_DOWN;
             mergedMockEvent.which = Keys.ARROW_DOWN;
 
-            const inputField = component.find(InputGroup).find("input");
+            const inputField = component.find(Input).find("input");
             inputField.simulate("keyDown", mergedMockEvent);
         };
 
@@ -848,11 +848,11 @@ describe("<NumericInput>", () => {
         it("disables the input field and buttons when disabled is true", () => {
             const component = mount(<NumericInput disabled={true} />);
 
-            const inputGroup = component.find(InputGroup);
+            const input = component.find(Input);
             const decrementButton = component.find(Button).last();
             const incrementButton = component.find(Button).first();
 
-            expect(inputGroup.props().disabled).to.be.true;
+            expect(input.props().disabled).to.be.true;
             expect(decrementButton.props().disabled).to.be.true;
             expect(incrementButton.props().disabled).to.be.true;
         });
@@ -860,11 +860,11 @@ describe("<NumericInput>", () => {
         it("disables the buttons and sets the input field to read-only when readOnly is true", () => {
             const component = mount(<NumericInput readOnly={true} />);
 
-            const inputGroup = component.find(InputGroup);
+            const input = component.find(Input);
             const decrementButton = component.find(Button).last();
             const incrementButton = component.find(Button).first();
 
-            expect(inputGroup.props().readOnly).to.be.true;
+            expect(input.props().readOnly).to.be.true;
             expect(decrementButton.props().disabled).to.be.true;
             expect(incrementButton.props().disabled).to.be.true;
         });
@@ -873,7 +873,7 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput leftIconName={"variable"} />);
 
             const icon = component
-                .find(InputGroup)
+                .find(Input)
                 .children()
                 .childAt(0) // Icon
                 .childAt(0); // span

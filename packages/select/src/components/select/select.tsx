@@ -11,8 +11,8 @@ import {
     Button,
     Classes as CoreClasses,
     HTMLInputProps,
-    IInputGroupProps,
-    InputGroup,
+    IInputProps,
+    Input,
     IPopover2Props,
     Keys,
     Menu,
@@ -26,7 +26,7 @@ import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-li
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
      * Whether the dropdown list can be filtered.
-     * Disabling this option will remove the `InputGroup` and ignore `inputProps`.
+     * Disabling this option will remove the `Input` and ignore `inputProps`.
      * @default true
      */
     filterable?: boolean;
@@ -54,11 +54,11 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     noResults?: React.ReactChild;
 
     /**
-     * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
+     * Props to spread to `Input`. All props are supported except `ref` (use `inputRef` instead).
      * If you want to control the filter input, you can pass `value` and `onChange` here
      * to override `Select`'s own behavior.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: IInputProps & HTMLInputProps;
 
     /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopover2Props> & object;
@@ -185,7 +185,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
         const { ref, ...htmlInputProps } = inputProps;
         const input = (
-            <InputGroup
+            <Input
                 autoFocus={true}
                 leftIconName="search"
                 placeholder="Filter..."

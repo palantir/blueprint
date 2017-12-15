@@ -9,8 +9,8 @@ import * as React from "react";
 
 import {
     HTMLInputProps,
-    IInputGroupProps,
-    InputGroup,
+    IInputProps,
+    Input,
     IPopoverProps,
     Keys,
     Menu,
@@ -37,11 +37,11 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /**
-     * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
+     * Props to spread to `Input`. All props are supported except `ref` (use `inputRef` instead).
      * If you want to control the filter input, you can pass `value` and `onChange` here
      * to override `Suggest`'s own behavior.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: IInputProps & HTMLInputProps;
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
@@ -147,7 +147,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 popoverDidOpen={this.handlePopoverDidOpen}
                 popoverWillClose={this.handlePopoverWillClose}
             >
-                <InputGroup
+                <Input
                     placeholder="Search..."
                     value={inputValue}
                     {...htmlInputProps}

@@ -1,6 +1,6 @@
 @# Select
 
-Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover2`](#select/popover2) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
+Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover2`](#select/popover2) that contains the list and an optional `Input` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     <h5>Disabling a Select</h5>
@@ -39,9 +39,9 @@ In TypeScript, `Select<T>` is a *generic component* so you must define a local t
 
 @## Querying
 
-Supply a predicate to automatically query items based on the `InputGroup` value. Use `itemPredicate` to filter each item individually; this is great for lightweight searches. Use `itemListPredicate` to query the entire array in one go, and even reorder it, such as with [fuzz-aldrin-plus](https://github.com/jeancroy/fuzz-aldrin-plus). The array of filtered items is cached internally by `QueryList` state and only recomputed when `query` or `items`-related props change.
+Supply a predicate to automatically query items based on the `Input` value. Use `itemPredicate` to filter each item individually; this is great for lightweight searches. Use `itemListPredicate` to query the entire array in one go, and even reorder it, such as with [fuzz-aldrin-plus](https://github.com/jeancroy/fuzz-aldrin-plus). The array of filtered items is cached internally by `QueryList` state and only recomputed when `query` or `items`-related props change.
 
-Omitting both `itemPredicate` and `itemListPredicate` props will cause the component to always render all `items`. It will not hide the `InputGroup`; use the `filterable` prop for that. In this case, you can implement your own filtering and simply change the `items` prop.
+Omitting both `itemPredicate` and `itemListPredicate` props will cause the component to always render all `items`. It will not hide the `Input`; use the `filterable` prop for that. In this case, you can implement your own filtering and simply change the `items` prop.
 
 @### Non-ideal states
 
@@ -49,7 +49,7 @@ If the query returns no results or `items` is empty, then `noResults` will be re
 
 @## Controlled usage
 
-The `InputGroup` value is managed by `Select`'s internal state and is not exposed via props. If you would like to control it, you can circumvent `Select` state by passing your `value` state and `onChange` handler to `inputProps`. You can then query the `items` array directly and omit both predicate props.
+The `Input` value is managed by `Select`'s internal state and is not exposed via props. If you would like to control it, you can circumvent `Select` state by passing your `value` state and `onChange` handler to `inputProps`. You can then query the `items` array directly and omit both predicate props.
 
 ```tsx
 // controlling query involves controlling the input and doing your own filtering

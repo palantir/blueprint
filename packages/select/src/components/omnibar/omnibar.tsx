@@ -11,8 +11,8 @@ import {
     Classes as CoreClasses,
     HTMLInputProps,
     IBackdropProps,
-    IInputGroupProps,
-    InputGroup,
+    IInputProps,
+    Input,
     IOverlayableProps,
     IOverlayProps,
     Menu,
@@ -41,11 +41,11 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
     noResults?: React.ReactChild;
 
     /**
-     * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
+     * Props to spread to `Input`. All props are supported except `ref` (use `inputRef` instead).
      * If you want to control the filter input, you can pass `value` and `onChange` here
      * to override `Select`'s own behavior.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: IInputProps & HTMLInputProps;
 
     /**
      * Toggles the visibility of the omnibar.
@@ -138,7 +138,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                 onClose={this.handleOverlayClose}
             >
                 <div className={classNames(listProps.className, Classes.OMNIBAR)} {...handlers}>
-                    <InputGroup
+                    <Input
                         autoFocus={true}
                         className={CoreClasses.LARGE}
                         leftIconName="search"

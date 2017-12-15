@@ -37,7 +37,7 @@ export * from "./textExample";
 export * from "./spinnerExample";
 export * from "./tabsExample";
 export * from "./tooltip2Example";
-export * from "./inputGroupExample";
+export * from "./inputExample";
 export * from "./tagExample";
 export * from "./toastExample";
 export * from "./tooltipExample";

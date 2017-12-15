@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Hotkey, Hotkeys, HotkeysTarget, InputGroup, Keys, Popover, Position, Utils } from "@blueprintjs/core";
+import { Classes, Hotkey, Hotkeys, HotkeysTarget, Input, Keys, Popover, Position, Utils } from "@blueprintjs/core";
 import { IconContents } from "@blueprintjs/icons";
 
 import * as classNames from "classnames";
@@ -88,7 +88,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
                 popoverClassName={Classes.MINIMAL}
                 position={Position.BOTTOM_LEFT}
             >
-                <InputGroup
+                <Input
                     autoComplete="off"
                     autoFocus={true}
                     inputRef={this.refHandlers.input}

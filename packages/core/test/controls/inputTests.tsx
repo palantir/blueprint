@@ -9,17 +9,17 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Icon, InputGroup } from "../../src/index";
+import { Icon, Input } from "../../src/index";
 
-describe("<InputGroup>", () => {
+describe("<Input>", () => {
     it("renders left icon before input", () => {
-        const input = mount(<InputGroup leftIconName="star" />).children();
+        const input = mount(<Input leftIconName="star" />).children();
         assert.isTrue(input.childAt(0).is(Icon));
         assert.isTrue(input.childAt(1).hasClass("pt-input"));
     });
 
     it("supports custom style", () => {
-        const input = mount(<InputGroup leftIconName="star" style={{ background: "yellow" }} />);
+        const input = mount(<Input leftIconName="star" style={{ background: "yellow" }} />);
         const inputElement = input
             .find("input")
             .first()
@@ -28,7 +28,7 @@ describe("<InputGroup>", () => {
     });
 
     it("renders right element inside .pt-input-action after input", () => {
-        const action = mount(<InputGroup rightElement={<address />} />)
+        const action = mount(<Input rightElement={<address />} />)
             .children()
             .childAt(2);
         assert.isTrue(action.hasClass("pt-input-action"));
@@ -37,7 +37,7 @@ describe("<InputGroup>", () => {
 
     it("works like a text input", () => {
         const changeSpy = spy();
-        const input = mount(<InputGroup value="value" onChange={changeSpy} />).find("input");
+        const input = mount(<Input value="value" onChange={changeSpy} />).find("input");
         assert.strictEqual(input.prop("type"), "text");
         assert.strictEqual(input.prop("value"), "value");
 
@@ -46,7 +46,7 @@ describe("<InputGroup>", () => {
     });
 
     it("supports custom type attribute", () => {
-        const group = mount(<InputGroup type="email" />);
+        const group = mount(<Input type="email" />);
         assert.strictEqual(group.find("input").prop("type"), "email");
 
         group.setProps({ type: "password" });

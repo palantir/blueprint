@@ -13,9 +13,9 @@ import * as sinon from "sinon";
 import {
     Button,
     IButtonProps,
-    IInputGroupProps,
-    IInputGroupState,
-    InputGroup,
+    IInputProps,
+    IInputState,
+    Input,
     IPopover2Props,
     IPopoverState,
     MenuItem,
@@ -35,7 +35,7 @@ type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezo
 type SelectShallowWrapper = ShallowWrapper<ISelectProps<ITimezoneItem>, ISelectState<ITimezoneItem>>;
 type QueryListShallowWrapper = ShallowWrapper<IQueryListProps<ITimezoneItem>, IQueryListState<ITimezoneItem>>;
 type PopoverShallowWrapper = ShallowWrapper<IPopover2Props, IPopoverState>;
-type InputGroupShallowWrapper = ShallowWrapper<IInputGroupProps, IInputGroupState>;
+type InputShallowWrapper = ShallowWrapper<IInputProps, IInputState>;
 
 describe("<TimezonePicker>", () => {
     it("clicking on button target opens popover", () => {
@@ -57,8 +57,8 @@ describe("<TimezonePicker>", () => {
         const timezonePicker = shallow(
             <TimezonePicker inputProps={{ placeholder }} popoverProps={getPopoverProps()} />,
         );
-        const inputGroup = findInputGroup(timezonePicker);
-        assert.strictEqual(inputGroup.prop("placeholder"), placeholder);
+        const input = findInput(timezonePicker);
+        assert.strictEqual(input.prop("placeholder"), placeholder);
     });
 
     it("shows initial items when the query is empty", () => {
@@ -81,21 +81,21 @@ describe("<TimezonePicker>", () => {
 
     it("if inputProps.value is non-empty and it changes to a different non-empty value, the same items are shown", () => {
         let select: SelectShallowWrapper;
-        let inputGroup: InputGroupShallowWrapper;
+        let input: InputShallowWrapper;
 
         const timezonePicker = shallow(<TimezonePicker popoverProps={getPopoverProps()} />);
 
-        inputGroup = findInputGroup(timezonePicker);
+        input = findInput(timezonePicker);
         const query1 = "test query 1";
-        inputGroup.simulate("change", { currentTarget: { value: query1 } });
+        input.simulate("change", { currentTarget: { value: query1 } });
         assert.strictEqual(timezonePicker.state("query"), query1);
 
         select = findSelect(timezonePicker);
         const items1 = select.prop("items");
 
-        inputGroup = findInputGroup(timezonePicker);
+        input = findInput(timezonePicker);
         const query2 = "test query 2";
-        inputGroup.simulate("change", { currentTarget: { value: query2 } });
+        input.simulate("change", { currentTarget: { value: query2 } });
         assert.strictEqual(timezonePicker.state("query"), query2);
 
         select = findSelect(timezonePicker);
@@ -206,8 +206,8 @@ describe("<TimezonePicker>", () => {
         const timezonePicker = shallow(
             <TimezonePicker inputProps={{ onChange: onInputChange }} popoverProps={getPopoverProps()} />,
         );
-        const inputGroup = findInputGroup(timezonePicker);
-        inputGroup.simulate("change", { currentTarget: { value: query } });
+        const input = findInput(timezonePicker);
+        input.simulate("change", { currentTarget: { value: query } });
         assert.isTrue(onInputChange.calledOnce);
     });
 
@@ -225,15 +225,15 @@ describe("<TimezonePicker>", () => {
     });
 
     it("input can be controlled with input props", () => {
-        const inputProps: IInputGroupProps = {
+        const inputProps: IInputProps = {
             disabled: true,
             leftIconName: "airplane",
             placeholder: "test placeholder",
         };
         const timezonePicker = shallow(<TimezonePicker inputProps={inputProps} />);
-        const inputGroup = findInputGroup(timezonePicker);
+        const input = findInput(timezonePicker);
         for (const key of Object.keys(inputProps)) {
-            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof IInputGroupProps]);
+            assert.deepEqual(input.prop(key), inputProps[key as keyof IInputProps]);
         }
     });
 
@@ -282,10 +282,10 @@ describe("<TimezonePicker>", () => {
             .find(Popover2);
     }
 
-    function findInputGroup(timezonePicker: TimezonePickerShallowWrapper): InputGroupShallowWrapper {
+    function findInput(timezonePicker: TimezonePickerShallowWrapper): InputShallowWrapper {
         return findQueryList(timezonePicker)
             .shallow()
-            .find(InputGroup);
+            .find(Input);
     }
 
     function clickFirstMenuItem(timezonePicker: TimezonePickerShallowWrapper): void {

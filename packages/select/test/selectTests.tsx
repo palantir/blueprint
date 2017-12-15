@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, InputGroup, Popover2 } from "@blueprintjs/core";
+import { Classes, Input, Popover2 } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount } from "enzyme";
@@ -35,15 +35,15 @@ describe("<Select>", () => {
         };
     });
 
-    it("renders a Popover around children that contains InputGroup and items", () => {
+    it("renders a Popover around children that contains Input and items", () => {
         const wrapper = select();
-        assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
+        assert.lengthOf(wrapper.find(Input), 1, "should render Input");
         assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover");
     });
 
-    it("filterable=false hides InputGroup", () => {
+    it("filterable=false hides Input", () => {
         const wrapper = select({ filterable: false });
-        assert.lengthOf(wrapper.find(InputGroup), 0, "should not render InputGroup");
+        assert.lengthOf(wrapper.find(Input), 0, "should not render Input");
         assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover");
     });
 
