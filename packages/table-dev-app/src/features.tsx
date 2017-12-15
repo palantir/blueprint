@@ -418,13 +418,7 @@ class AdjustableColumnsTable extends React.Component<{}, {}> {
 
 ReactDOM.render(<AdjustableColumnsTable />, document.getElementById("table-cols"));
 
-const intentRows: Intent[] = [
-    Intent.NONE,
-    Intent.PRIMARY,
-    Intent.SUCCESS,
-    Intent.WARNING,
-    Intent.DANGER,
-];
+const intentRows: Intent[] = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.WARNING, Intent.DANGER];
 
 ReactDOM.render(
     getTableComponent(
