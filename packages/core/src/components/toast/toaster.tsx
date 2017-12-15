@@ -72,7 +72,8 @@ export interface IToasterProps extends IProps {
      * supports the top and bottom edge positioning.
      * @default Position.TOP
      */
-    position?: Position.TOP | Position.BOTTOM;
+    position?: Position.TOP | Position.TOP_LEFT | Position.TOP_RIGHT |
+        Position.BOTTOM | Position.BOTTOM_LEFT | Position.BOTTOM_RIGHT;
 }
 
 export interface IToasterState {
@@ -175,7 +176,7 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
     }
 
     private getPositionClasses() {
-        const positions = this.props.position.split("_");
+        const positions = this.props.position.split("-");
         // NOTE that there is no -center class because that's the default style
         return positions.map(p => `${Classes.TOAST_CONTAINER}-${p.toLowerCase()}`);
     }

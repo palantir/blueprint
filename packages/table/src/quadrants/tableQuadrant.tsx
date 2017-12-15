@@ -32,7 +32,7 @@ export enum QuadrantType {
      * The top-left quadrant, containing the headers and cells common to both
      * the frozen columns and frozen rows.
      */
-    TOP_LEFT = "top_left",
+    TOP_LEFT = "top-left",
 }
 
 export interface ITableQuadrantProps extends IProps {

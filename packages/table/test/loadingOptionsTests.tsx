@@ -181,7 +181,7 @@ function testLoadingOptionOverrides(
             columnLoadingOptions != null
         ) {
             // cast is safe because cellType is guaranteed to not be TableLoadingOption.ROW_HEADERS
-            const loading = columnLoadingOptions.indexOf(cellType as ColumnLoadingOption) >= 0;
+            const loading = columnLoadingOptions.indexOf(cellType as any as ColumnLoadingOption) >= 0;
             expectCellLoading(cell, cellType, loading);
         } else if (tableLoadingOptions != null) {
             expectCellLoading(cell, cellType, tableLoadingOptions.indexOf(cellType) >= 0);
