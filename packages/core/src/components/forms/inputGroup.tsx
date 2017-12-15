@@ -43,7 +43,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
 }
 
 export interface IInputGroupState {
-    isActive: boolean;
+    rightElementWidth?: number;
 }
 
 @PureRender
@@ -51,7 +51,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
     public static displayName = "Blueprint.InputGroup";
 
     public state: IInputGroupState = {
-        isActive: false,
+        rightElementWidth: 30,
     };
 
     private rightElement: HTMLElement;
@@ -66,25 +66,32 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: this.props.disabled,
-                [Classes.ACTIVE]: this.state.isActive,
             },
             className,
         );
+        const style: React.CSSProperties = { ...this.props.style, paddingRight: this.state.rightElementWidth };
 
         return (
             <div className={classes}>
-                <Icon iconName={leftIconName} iconSize={Icon.SIZE_STANDARD} />
+                <Icon iconName={leftIconName} iconSize="inherit" />
                 <input
                     type="text"
                     {...removeNonHTMLProps(this.props)}
                     className={Classes.INPUT}
-                    onBlur={this.handleOnBlur}
-                    onFocus={this.handleOnFocus}
                     ref={this.props.inputRef}
+                    style={style}
                 />
                 {this.maybeRenderRightElement()}
             </div>
         );
+    }
+
+    public componentDidMount() {
+        this.updateInputWidth();
+    }
+
+    public componentDidUpdate() {
+        this.updateInputWidth();
     }
 
     private maybeRenderRightElement() {
@@ -99,15 +106,17 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
         );
     }
 
-    private handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-        this.props.onBlur != null ? this.props.onBlur(e) : undefined;
-        this.setState({ isActive: !this.state.isActive });
-    };
-
-    private handleOnFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-        this.props.onFocus != null ? this.props.onFocus(e) : undefined;
-        this.setState({ isActive: !this.state.isActive });
-    };
+    private updateInputWidth() {
+        if (this.rightElement != null) {
+            const { clientWidth } = this.rightElement;
+            // small threshold to prevent infinite loops
+            if (Math.abs(clientWidth - this.state.rightElementWidth) > 2) {
+                this.setState({ rightElementWidth: clientWidth });
+            }
+        } else {
+            this.setState({ rightElementWidth: 0 });
+        }
+    }
 }
 
 export const InputGroupFactory = React.createFactory(InputGroup);

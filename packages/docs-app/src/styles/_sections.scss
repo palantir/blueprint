@@ -36,7 +36,6 @@
 // CSS examples
 
 #{reference("pt-file-upload")},
-#{reference("pt-input-group")},
 #{reference("pt-label")},
 #{reference("pt-menu")},
 #{reference("pt-select.pt-inline")},
@@ -49,6 +48,7 @@
 #{reference("pt-button")},
 #{reference("pt-button.pt-minimal")},
 #{reference("pt-card")},
+#{reference("pt-input-group")},
 #{reference("pt-progress-bar")},
 #{reference("pt-spinner")},
 #{reference("pt-textarea")} {
@@ -95,7 +95,6 @@
 #{reference("pt-input-group")} {
   .pt-input-group {
     margin-bottom: $pt-grid-size;
-    width: 100%;
   }
 }
 

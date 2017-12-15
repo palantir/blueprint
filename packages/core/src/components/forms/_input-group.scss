@@ -9,28 +9,24 @@
 Input groups
 
 Markup:
-<div class="pt-input-group {{.modifier}}" {{:modifier}}>
-  <span class="pt-icon-standard pt-icon-filter"></span>
+<div class="pt-input-group {{.modifier}}">
+  <span class="pt-icon pt-icon-filter"></span>
   <input type="text" class="pt-input" {{:modifier}} placeholder="Filter histogram..." />
 </div>
-<div class="pt-input-group {{.modifier}}" {{:modifier}}>
+<div class="pt-input-group {{.modifier}}">
   <input type="password" class="pt-input" {{:modifier}} placeholder="Enter your password..." />
   <button class="pt-button pt-minimal pt-intent-warning pt-icon-lock" {{:modifier}}></button>
 </div>
-<div class="pt-input-group {{.modifier}}" {{:modifier}}>
-  <span class="pt-icon-standard pt-icon-search"></span>
+<div class="pt-input-group {{.modifier}}">
+  <span class="pt-icon pt-icon-search"></span>
   <input type="text" class="pt-input" {{:modifier}} placeholder="Search" />
-  <button class="pt-button pt-minimal pt-intent-primary" {{:modifier}}>
-    Go
-    <span class="pt-icon-standard pt-icon-arrow-right"></span>
-  </button>
+  <button class="pt-button pt-minimal pt-intent-primary pt-icon-arrow-right" {{:modifier}}></button>
 </div>
 
-:disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>.
+:disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>. Also add <code>.pt-disabled</code> to <code>.pt-input-group</code> for icon coloring (not shown below).
 .pt-round - Rounded caps. Button will also be rounded.
-.pt-intent-primary - Primary intent. (All 4 intents are supported.)
 .pt-large - Large group. Children will adjust size accordingly.
-.pt-fill - Fill the parent container.
+.pt-intent-primary - Primary intent. (All 4 intents are supported.)
 
 Styleguide pt-input-group
 */
@@ -41,48 +37,38 @@ $input-button-height: $pt-button-height - 6px !default;
 $input-button-height-large: $pt-button-height !default;
 
 .pt-input-group {
-  // .pt-input-group should be styled to look like a .pt-input
-  @include pt-flex-parent();
-  border-radius: $pt-border-radius;
-  box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
-  background: $input-background-color;
+  display: block;
+  position: relative;
 
-  &.pt-fill {
-    @include pt-flex-parent-fill();
-  }
+  .pt-input {
+    // explicit position prevents shadow clipping https://github.com/palantir/blueprint/pull/490#issuecomment-273342170
+    position: relative;
+    width: 100%;
 
-  // apply the :focus state on .pt-input-group, not .pt-input
-  &:focus,
-  &.pt-active {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
-  }
-
-  // remove styling because .pt-input-group now looks like .pt-input
-  // adding more specificity here so it also works when .pt-dark applied
-  input.pt-input {
-    @include pt-flex-child-fill();
-    box-shadow: none;
-    background: none;
-
-    // take out padding if there's something before or after the input
+    // add space if there's something before or after the input
     &:not(:first-child) {
-      padding-left: 0;
+      padding-left: $pt-input-height;
     }
 
     &:not(:last-child) {
-      padding-right: 0;
-    }
-
-    // .pt-input-group now handles showing the active state
-    &:focus,
-    &.pt-active {
-      box-shadow: none;
+      padding-right: $pt-input-height;
     }
   }
 
-  // children which are not .pt-input should not fill the container
-  > :not(.pt-input) {
-    @include pt-flex-child();
+  .pt-input-action,
+  > .pt-button,
+  > .pt-icon {
+    position: absolute;
+    top: 0;
+
+    // glue it to the end it appears on
+    &:first-child {
+      left: 0;
+    }
+
+    &:last-child {
+      right: 0;
+    }
   }
 
   .pt-button {
@@ -92,21 +78,20 @@ $input-button-height-large: $pt-button-height !default;
     padding-bottom: 0;
   }
 
-  > .pt-icon-standard {
-    margin: 0 ($pt-input-height - $pt-icon-size-standard) / 2;
-  }
+  .pt-icon {
+    @include pt-icon($pt-icon-size-standard);
 
-  .pt-icon-standard {
+    // bump icon up so it sits above input
+    z-index: 1;
+    margin: 0 ($pt-input-height - $pt-icon-size-standard) / 2;
+    line-height: $pt-input-height;
     color: $pt-icon-color;
   }
 
   // adjusting the margin of spinners in input groups
   // we have to avoid targetting buttons that contain a spinner
-  .pt-input-action {
-    > .pt-spinner {
-      display: block;
-      margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
-    }
+  .pt-input-action > .pt-spinner {
+    margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
   }
 
   .pt-tag {
@@ -143,13 +128,12 @@ $input-button-height-large: $pt-button-height !default;
   }
 
   // this class echoes `input:disabled` on the child input, but each action must individually be disabled
-  &[disabled],
   &.pt-disabled {
     // note that enabled buttons inside this input group are still clickable
-    @include pt-input-disabled();
+    cursor: not-allowed;
 
-    .pt-icon-standard {
-      color: $input-color-disabled;
+    .pt-icon {
+      color: $pt-icon-color-disabled;
     }
   }
 
@@ -160,12 +144,21 @@ $input-button-height-large: $pt-button-height !default;
       line-height: 0;
     }
 
-    > .pt-icon-standard {
+    .pt-icon {
       margin: 0 ($pt-input-height-large - $pt-icon-size-standard) / 2;
+      line-height: $pt-input-height-large;
     }
 
     .pt-input {
       @include pt-input-large();
+
+      &:not(:first-child) {
+        padding-left: $pt-button-height-large;
+      }
+
+      &:not(:last-child) {
+        padding-right: $pt-button-height-large;
+      }
     }
 
     .pt-input-action > .pt-spinner {
@@ -173,40 +166,31 @@ $input-button-height-large: $pt-button-height !default;
     }
   }
 
-  &.pt-round,
-  &.pt-round .pt-button,
-  &.pt-round .pt-tag, {
-    border-radius: $pt-input-height;
+  &.pt-round {
+    .pt-button,
+    .pt-input,
+    .pt-tag {
+      border-radius: $pt-input-height;
+    }
   }
 
   .pt-dark & {
-    box-shadow: input-transition-shadow($dark-input-shadow-color-focus), $pt-dark-input-box-shadow;
-    background: $dark-input-background-color;
-
-    .pt-icon-standard {
+    .pt-icon {
       color: $pt-dark-icon-color;
     }
 
-    &[disabled],
-    &.pt-disabled {
-      @include pt-dark-input-disabled();
-
-      // requrired to overwrite Blueprint's default .pt-input:disabled
-      input.pt-input {
-        background: none;
-      }
-
-      .pt-icon-standard {
-        color: $dark-input-color-disabled;
-      }
+    &.pt-disabled .pt-icon {
+      color: $pt-dark-icon-color-disabled;
     }
   }
 
   @each $intent, $color in $pt-intent-colors {
     &.pt-intent-#{$intent} {
-      @include pt-input-intent($color);
+      .pt-input {
+        @include pt-input-intent($color);
+      }
 
-      .pt-icon-standard {
+      .pt-icon {
         color: map-get($pt-intent-text-colors, $intent);
 
         .pt-dark & {
