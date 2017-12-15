@@ -190,6 +190,11 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * This can instead be provided as the first `children` element.
      */
     target?: string | JSX.Element;
+
+    /**
+     * Space-delimited string of class names applied to the target.
+     */
+    targetClassName?: string;
 }
 
 export interface IPopoverState {
@@ -266,7 +271,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     public render() {
-        const { className } = this.props;
+        const { className, targetClassName } = this.props;
         const { isOpen, disabled, hasBackdrop } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
@@ -289,7 +294,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             {
                 [Classes.POPOVER_OPEN]: isOpen,
             },
-            className,
+            targetClassName,
         );
 
         const children = this.understandChildren();
@@ -308,10 +313,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             console.warn("[Blueprint] Disabling <Popover> with empty/whitespace content...");
         }
 
-        // set tag=false to not wrap the provided target in another DOM node.
         return (
-            // <Manager tag="span" className={classNames("pt-popover-manager", className)}>
-            <Manager tag={false}>
+            <Manager tag="span" className={classNames("pt-popover-wrapper", className)}>
                 <Target {...targetProps} innerRef={this.refHandlers.target}>
                     {target}
                 </Target>
