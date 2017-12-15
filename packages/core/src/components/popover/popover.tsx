@@ -156,6 +156,11 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     popoverDidOpen?: () => void;
 
     /**
+     * Ref supplied to the `pt-popover` element.
+     */
+    popoverRef?: (ref: HTMLDivElement) => void;
+
+    /**
      * Callback invoked when a popover begins to close.
      */
     popoverWillClose?: () => void;
@@ -248,7 +253,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     private isMouseInTargetOrPopover = false;
 
     private refHandlers = {
-        popover: (ref: HTMLDivElement) => (this.popoverElement = ref),
+        popover: (ref: HTMLDivElement) => {
+            this.popoverElement = ref;
+            Utils.safeInvoke(this.props.popoverRef, ref);
+        },
         target: (ref: HTMLElement) => (this.targetElement = ref),
     };
 
