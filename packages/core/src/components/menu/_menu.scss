@@ -64,6 +64,10 @@ Styleguide pt-menu
     color: $pt-icon-color;
   }
 
+  .pt-menu-item-text {
+    @include pt-flex-child-fill();
+  }
+
   .pt-menu-item-label {
     color: $pt-text-color-muted;
   }
