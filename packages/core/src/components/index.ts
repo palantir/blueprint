@@ -48,7 +48,6 @@ export * from "./non-ideal-state/nonIdealState";
 export * from "./overlay/overlay";
 export * from "./text/text";
 export * from "./popover/popover";
-export * from "./popover/svgPopover";
 export * from "./portal/portal";
 export * from "./progress/progressBar";
 export * from "./slider/rangeSlider";
