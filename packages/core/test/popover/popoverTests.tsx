@@ -7,7 +7,7 @@
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import { Arrow } from "react-popper";
+import { Arrow, Target } from "react-popper";
 import * as sinon from "sinon";
 
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
@@ -423,7 +423,10 @@ describe("<Popover>", () => {
                 .simulateTarget("mouseenter")
                 .assertIsOpen()
                 .simulateTarget("mouseleave")
-                .assertIsOpen(false);
+                .then(popover => {
+                    // Popover defers popover closing, so need to defer this check
+                    popover.assertIsOpen(false);
+                });
         });
 
         it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", () => {
@@ -436,7 +439,10 @@ describe("<Popover>", () => {
             wrapper.simulateTarget("mouseenter").assertIsOpen();
 
             wrapper.findClass(Classes.POPOVER).simulate("mouseenter");
-            wrapper.assertIsOpen(false);
+            setTimeout(() => {
+                // Popover defers popover closing, so need to defer this check
+                wrapper.assertIsOpen(false);
+            });
         });
 
         it("inline HOVER works properly", () => {
@@ -448,7 +454,10 @@ describe("<Popover>", () => {
             wrapper.assertIsOpen();
 
             wrapper.findClass(Classes.POPOVER).simulate("mouseleave");
-            wrapper.assertIsOpen(false);
+            setTimeout(() => {
+                // Popover defers popover closing, so need to defer this check
+                wrapper.assertIsOpen(false);
+            });
         });
 
         it("clicking .pt-popover-dismiss closes popover when inline=false", () => {
@@ -652,12 +661,12 @@ describe("<Popover>", () => {
         ) as IPopoverWrapper;
         wrapper.popover = (wrapper.instance() as Popover).popoverElement;
         wrapper.assertIsOpen = (isOpen = true) => {
-            assert.equal(wrapper.find(Overlay).prop("isOpen"), isOpen);
+            assert.equal(wrapper.find(Overlay).prop("isOpen"), isOpen, "assertIsOpen");
             return wrapper;
         };
         wrapper.findClass = (className: string) => wrapper.find(`.${className}`).hostNodes();
         wrapper.simulateTarget = (eventName: string) => {
-            wrapper.findClass(Classes.POPOVER_TARGET).simulate(eventName);
+            wrapper.find(Target).simulate(eventName);
             return wrapper;
         };
         wrapper.sendEscapeKey = () => {
