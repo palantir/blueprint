@@ -291,7 +291,6 @@ describe("MenuItem", () => {
             // if popover's hoverOpenDelay !== 0 this function needs to also be slowed down;
             // otherwise, the submenu will not have been opened yet for the test
             const a = TestUtils.scryRenderedDOMComponentsWithTag(menuItem, "a")[index];
-            console.log(a);
             // TODO: (BLUEPRINT-536) try and find an alternative to SimulateNative
             (TestUtils as any).SimulateNative.mouseOver(a);
             return setTimeout(handler, timeout);
