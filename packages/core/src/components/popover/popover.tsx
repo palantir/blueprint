@@ -14,7 +14,6 @@ type Placement = PopperJS.Placement;
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";

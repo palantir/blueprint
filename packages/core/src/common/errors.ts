@@ -5,7 +5,6 @@
  */
 
 const ns = "[Blueprint]";
-const deprec = `${ns} DEPRECATION:`;
 
 export const CLAMP_MIN_MAX = ns + ` clamp: max cannot be less than min`;
 
