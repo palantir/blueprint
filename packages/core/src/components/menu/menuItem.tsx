@@ -127,7 +127,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
                 tabIndex={disabled ? undefined : 0}
                 target={this.props.target}
             >
-                {this.props.text}
+                <span className="pt-menu-item-text">{this.props.text}</span>
                 {labelElement}
             </a>
         );
