@@ -11,7 +11,9 @@ import { Position } from "../../common/position";
  * Convert a position to a placement.
  * @param position the position to convert
  */
+
 export function positionToPlacement(position: Position | "auto"): PopperJS.Placement {
+    /* istanbul ignore next */
     switch (position) {
         case Position.TOP_LEFT:
             return "top-start";
@@ -44,6 +46,7 @@ export function positionToPlacement(position: Position | "auto"): PopperJS.Place
     }
 }
 
+/* istanbul ignore next */
 function assertNever(x: never): never {
     throw new Error("Unexpected position: " + x);
 }
