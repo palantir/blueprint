@@ -372,15 +372,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         super.componentWillUnmount();
     }
 
-    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
-        if (props.disabled !== undefined) {
-            console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_DISABLED);
-        }
-        if (props.hasBackdrop !== undefined) {
-            console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_MODAL);
-        }
-    }
-
     private updateDarkParent() {
         if (!this.props.inline && this.state.isOpen) {
             const hasDarkParent = this.targetElement != null && this.targetElement.closest(`.${Classes.DARK}`) != null;
