@@ -71,7 +71,7 @@ describe("<Tooltip>", () => {
             warnSpy.restore();
         });
 
-        it("setting isDisabled=true prevents opening tooltip", () => {
+        it("setting disabled=true prevents opening tooltip", () => {
             const tooltip = renderTooltip({ disabled: true });
             tooltip.find(Popover).simulate("mouseenter");
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);

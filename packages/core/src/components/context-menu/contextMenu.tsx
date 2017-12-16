@@ -56,7 +56,7 @@ class ContextMenu extends AbstractPureComponent<{}, IContextMenuState> {
                     backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
                     content={content}
                     enforceFocus={false}
-                    isModal={true}
+                    hasBackdrop={true}
                     isOpen={this.state.isOpen}
                     minimal={true}
                     modifiers={POPPER_MODIFIERS}

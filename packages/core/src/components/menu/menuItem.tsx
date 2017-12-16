@@ -147,7 +147,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
 
             content = (
                 <Popover
-                    isDisabled={disabled}
+                    disabled={disabled}
                     enforceFocus={false}
                     hoverCloseDelay={0}
                     inline={true}

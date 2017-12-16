@@ -63,7 +63,7 @@ describe("MenuItem", () => {
                 <MenuItem iconName="underline" text="Underline" />
             </MenuItem>,
         );
-        assert.isTrue(wrapper.find(Popover).prop("isDisabled"));
+        assert.isTrue(wrapper.find(Popover).prop("disabled"));
     });
 
     it("renders children if given children and submenu", () => {

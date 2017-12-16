@@ -84,12 +84,6 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     disabled?: boolean;
 
     /**
-     * Prevents the popover from appearing when `true`.
-     * @deprecated use `disabled`
-     */
-    isDisabled?: boolean;
-
-    /**
      * Enables an invisible overlay beneath the popover that captures clicks and prevents
      * interaction with the rest of the document until the popover is closed.
      * This prop is only available when `interactionKind` is `PopoverInteractionKind.CLICK`.
@@ -97,13 +91,6 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * @default false
      */
     hasBackdrop?: boolean;
-
-    /**
-     * Enables an invisible overlay beneath the popover that captures clicks and prevents
-     * interaction with the rest of the document until the popover is closed.
-     * @deprecated use `hasBackdrop`
-     */
-    isModal?: boolean;
 
     /**
      * Whether the popover is visible. Passing this prop puts the popover in
@@ -203,10 +190,10 @@ export interface IPopoverState {
     isOpen?: boolean;
     hasDarkParent?: boolean;
 
-    /** Migrated `disabled` value that considers the `disabled` and `isDisabled` props. */
+    /** Migrated `disabled` value that considers the `disabled` and `disabled` props. */
     disabled?: boolean;
 
-    /** Migrated `hasBackdrop` value that considers the `hasBackdrop` and `isModal` props. */
+    /** Migrated `hasBackdrop` value that considers the `hasBackdrop` and `hasBackdrop` props. */
     hasBackdrop?: boolean;
 
     /** Migrated `placement` value that considers the `placement` and `position` props. */
@@ -386,10 +373,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
-        if (props.isDisabled !== undefined) {
+        if (props.disabled !== undefined) {
             console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_DISABLED);
         }
-        if (props.isModal !== undefined) {
+        if (props.hasBackdrop !== undefined) {
             console.warn(Errors.POPOVER_WARN_DEPRECATED_IS_MODAL);
         }
     }
@@ -618,8 +605,8 @@ function ensureElement(child: React.ReactChild | undefined) {
 function getDisabled(props: IPopoverProps): boolean {
     if (props.disabled !== undefined) {
         return props.disabled;
-    } else if (props.isDisabled !== undefined) {
-        return props.isDisabled;
+    } else if (props.disabled !== undefined) {
+        return props.disabled;
     } else {
         return false;
     }
@@ -628,8 +615,8 @@ function getDisabled(props: IPopoverProps): boolean {
 function getHasBackdrop(props: IPopoverProps): boolean {
     if (props.hasBackdrop !== undefined) {
         return props.hasBackdrop;
-    } else if (props.isModal !== undefined) {
-        return props.isModal;
+    } else if (props.hasBackdrop !== undefined) {
+        return props.hasBackdrop;
     } else {
         return false;
     }

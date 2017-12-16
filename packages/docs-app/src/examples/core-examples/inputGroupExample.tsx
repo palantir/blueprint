@@ -71,7 +71,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         <MenuItem text="can view" />
                     </Menu>
                 }
-                isDisabled={disabled}
+                disabled={disabled}
                 position={Position.BOTTOM_RIGHT}
             >
                 <Button className={Classes.MINIMAL} disabled={disabled} rightIconName="caret-down">

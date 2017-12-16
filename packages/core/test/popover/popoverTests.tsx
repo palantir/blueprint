@@ -591,57 +591,6 @@ describe("<Popover>", () => {
         });
     });
 
-    describe("deprecated prop shims", () => {
-        it("should convert isModal to hasBackdrop", () => {
-            const popover = shallow(
-                <Popover inline={true} isModal={true}>
-                    child
-                </Popover>,
-            );
-            assert.isTrue(popover.find(Overlay).prop("hasBackdrop"));
-
-            popover.setProps({ isModal: false });
-            assert.isFalse(popover.find(Overlay).prop("hasBackdrop"));
-        });
-
-        it("should convert isDisabled to disabled", () => {
-            renderPopover({
-                interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-                isDisabled: true,
-            })
-                .simulateTarget("click")
-                .assertIsOpen(false)
-                .setProps({ isDisabled: false })
-                .simulateTarget("click")
-                .assertIsOpen(true);
-        });
-
-        it("hasBackdrop should take precedence over isModal", () => {
-            const popover = shallow(
-                <Popover inline={true} hasBackdrop={true} isModal={false}>
-                    child
-                </Popover>,
-            );
-            assert.isTrue(popover.find(Overlay).prop("hasBackdrop"));
-
-            popover.setProps({ hasBackdrop: false, isModal: true });
-            assert.isFalse(popover.find(Overlay).prop("hasBackdrop"));
-        });
-
-        it("disabled should take precedence over isDisabled", () => {
-            renderPopover({
-                disabled: true,
-                interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-                isDisabled: false,
-            })
-                .simulateTarget("click")
-                .assertIsOpen(false)
-                .setProps({ disabled: false, isDisabled: true })
-                .simulateTarget("click")
-                .assertIsOpen(true);
-        });
-    });
-
     interface IPopoverWrapper extends ReactWrapper<IPopoverProps, IPopoverState> {
         popover: HTMLElement;
         assertIsOpen(isOpen?: boolean): this;
