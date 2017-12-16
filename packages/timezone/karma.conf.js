@@ -11,16 +11,14 @@ module.exports = function (config) {
     });
     config.set(baseConfig);
     config.set({
-        // test task should pass; we intentionally have no tests
-        failOnEmptyTestSuite: false,
         // disable coverage reporter
         reporters: ["mocha"],
         webpack: Object.assign({}, baseConfig.webpack, {
             entry: {
-                labs: [
+                timezone: [
                     path.resolve(__dirname, "test/index.ts"),
                     path.resolve(__dirname, "../core/dist/blueprint.css"),
-                    path.resolve(__dirname, "dist/blueprint-labs.css"),
+                    path.resolve(__dirname, "dist/blueprint-timezone.css"),
                 ],
             },
         }),

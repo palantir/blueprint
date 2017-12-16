@@ -5,11 +5,11 @@
 
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
-const Icons = require("../dist");
+const Timezone = require("../dist");
 
-describe("Icons isomorphic rendering", () => {
+describe("Timezone isomorphic rendering", () => {
     generateIsomorphicTests(
-        Icons,
+        Timezone,
         {},
         {}
     );
