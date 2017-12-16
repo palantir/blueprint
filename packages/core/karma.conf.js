@@ -13,13 +13,8 @@ module.exports = function (config) {
             // not worth full coverage
             "src/accessibility/*",
             "src/common/abstractComponent*",
-            // deprecated components
-            "src/components/popover/*",
-            "src/components/tabs/*",
             // TODO (clewis): write tests for these component as part of the 2.0 effort:
-            "src/components/popover/*",
             "src/components/tag-input/*",
-            "src/components/tooltip/*",
         ],
     });
     config.set(baseConfig);
