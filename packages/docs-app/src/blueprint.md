@@ -56,7 +56,7 @@ Blueprint as well. Some Blueprint components use the following ES2015 features:
 
   ```tsx
   // extract specific components
-  import { Intent, Spinner, DatePickerFactory } from "@blueprintjs/core";
+  import { Button, Intent, Spinner } from "@blueprintjs/core";
   // or just take everything!
   import * as Blueprint from "@blueprintjs/core";
 
@@ -64,11 +64,10 @@ Blueprint as well. Some Blueprint components use the following ES2015 features:
   const mySpinner = <Spinner intent={Intent.PRIMARY} />;
 
   // using the namespace import:
-  const anotherSpinner = <Blueprint.Spinner intent={Blueprint.Intent.PRIMARY}/>;
+  const anotherSpinner = <Blueprint.Spinner intent={Blueprint.Intent.PRIMARY} />;
 
-  // use factories for React.createElement shorthand if you're not using JSX.
-  // every component provides a corresponding <Name>Factory.
-  const myDatePicker = DatePickerFactory();
+  // use React.createElement if you're not using JSX.
+  const myButton = React.createElement(Button, { intent: Intent.SUCCESS }, "button content");
   ```
 
 1. Don't forget to include the main CSS file from each Blueprint package! Additionally, the
@@ -174,18 +173,21 @@ You can render any component in any JavaScript application with `ReactDOM.render
 using a jQuery plugin.
 
 ```tsx
-const myContainerElement = document.querySelector(".my-container");
+import { Classes, Intent, Spinner } from "@blueprintjs/core";
+
+const myContainerElement = document.getElementById("container");
 
 // with JSX
 ReactDOM.render(
-    <Spinner className="pt-intent-primary pt-small" />,
+    <Spinner className={Classes.SMALL} intent={Intent.PRIMARY} />,
     myContainerElement
 );
 
-// with vanilla JS, use the factory
+// with vanilla JS, use React.createElement
 ReactDOM.render(
-    SpinnerFactory({
-        className: "pt-intent-primary pt-small"
+    React.createElement(Spinner, {
+        className: Classes.SMALL,
+        intent: Intent.PRIMARY,
     }),
     myContainerElement
 );

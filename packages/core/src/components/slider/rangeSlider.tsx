@@ -161,5 +161,3 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         }
     };
 }
-
-export const RangeSliderFactory = React.createFactory(RangeSlider);

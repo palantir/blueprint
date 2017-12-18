@@ -17,10 +17,7 @@ import {
     IMenuProps,
     Menu,
     MenuDivider,
-    MenuDividerFactory,
-    MenuFactory,
     MenuItem,
-    MenuItemFactory,
     Popover,
     PopoverInteractionKind,
 } from "../../src/index";
@@ -106,12 +103,6 @@ describe("MenuItem", () => {
             .find("a")
             .simulate("click");
         assert.isTrue(handleClose.notCalled);
-    });
-
-    it("Factory renders MenuItem", () => {
-        const wrapper = shallow(MenuItemFactory({ iconName: "graph", text: "Object" }));
-        assert.lengthOf(wrapper.find(".pt-icon-graph"), 1);
-        assert.strictEqual(wrapper.text(), "Object");
     });
 
     it("popover can be controlled with popoverProps", () => {
@@ -323,11 +314,6 @@ describe("MenuDivider", () => {
         assert.isTrue(divider.hasClass(Classes.MENU_HEADER));
         assert.strictEqual(divider.text(), "Subject");
     });
-
-    it("Factory renders MenuDivider", () => {
-        const divider = shallow(MenuDividerFactory({ title: "Object" }));
-        assert.isTrue(divider.hasClass(Classes.MENU_HEADER));
-    });
 });
 
 describe("Menu", () => {
@@ -337,12 +323,6 @@ describe("Menu", () => {
                 <MenuItem iconName="graph" text="Graph" />
             </Menu>,
         );
-        assert.isTrue(menu.hasClass(Classes.MENU));
-        assert.lengthOf(menu.find(MenuItem), 1);
-    });
-
-    it("Factory renders Menu", () => {
-        const menu = shallow(MenuFactory({}, MenuItemFactory({ iconName: "layout", text: "Layout" })));
         assert.isTrue(menu.hasClass(Classes.MENU));
         assert.lengthOf(menu.find(MenuItem), 1);
     });

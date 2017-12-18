@@ -75,5 +75,3 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
         );
     }
 }
-
-export const SpinnerFactory = React.createFactory(Spinner);
