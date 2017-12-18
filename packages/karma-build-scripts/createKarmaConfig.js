@@ -70,7 +70,7 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
             [path.join(dirname, "test/index.ts")]: "webpack",
         },
         reporters: ["mocha", "coverage"],
-        singleRun: false,
+        singleRun: true,
         webpack: webpackConfig,
         webpackMiddleware: {
             noInfo: true,
