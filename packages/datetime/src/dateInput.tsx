@@ -217,7 +217,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             },
             inputProps.className,
         );
-        const popoverClassName = classNames(popoverProps.className, this.props.className);
 
         const placeholder = typeof format === "string" ? format : format.placeholder;
 
@@ -228,7 +227,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                 position={this.props.popoverPosition}
                 {...popoverProps}
                 autoFocus={false}
-                className={popoverClassName}
+                className={classNames(popoverProps.className, this.props.className)}
                 content={popoverContent}
                 enforceFocus={false}
                 onClose={this.handleClosePopover}
