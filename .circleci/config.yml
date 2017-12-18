@@ -21,6 +21,7 @@ jobs:
             - packages/core/node_modules
             - packages/datetime/node_modules
             - packages/docs/node_modules
+            - packages/icons/node_modules
             - packages/labs/node_modules
             - packages/select/node_modules
             - packages/table/node_modules
