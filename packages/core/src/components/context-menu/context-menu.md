@@ -83,8 +83,8 @@ enough room onscreen. The optional callback is invoked when this menu closes.
 
 This API is ideal for non-React-based apps or for programmatically triggered menus.
 
-```tsx
-import { ContextMenu, MenuFactory, MenuItemFactory } from "@blueprintjs/core";
+```ts
+import { ContextMenu, Menu, MenuItem } from "@blueprintjs/core";
 
 const rightClickMe = document.query("#right-click-me") as HTMLElement;
 rightClickMe.oncontextmenu = (e: MouseEvent) => {
@@ -92,12 +92,12 @@ rightClickMe.oncontextmenu = (e: MouseEvent) => {
     e.preventDefault();
 
     // render a Menu without JSX...
-    const menu = MenuFactory({
-        children: [
-            MenuItemFactory({ onClick: handleSave, text: "Save" }),
-            MenuItemFactory({ onClick: handleDelete, text: "Delete" }),
-        ]
-    });
+    const menu = React.createElement(
+        Menu,
+        {}, // empty props
+        React.createElement(MenuItem, { onClick: handleSave, text: "Save" }),
+        React.createElement(MenuItem, { onClick: handleDelete, text: "Delete" }),
+    );
 
     // mouse position is available on event
     ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, () => {

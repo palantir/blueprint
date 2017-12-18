@@ -116,5 +116,3 @@ export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroup
         }
     }
 }
-
-export const InputGroupFactory = React.createFactory(InputGroup);

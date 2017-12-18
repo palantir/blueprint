@@ -48,5 +48,3 @@ export class Label extends React.PureComponent<ILabelProps, {}> {
         );
     }
 }
-
-export const LabelFactory = React.createFactory(Label);

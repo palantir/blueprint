@@ -116,5 +116,3 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
         }
     };
 }
-
-export const ToastFactory = React.createFactory(Toast);

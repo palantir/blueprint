@@ -718,5 +718,3 @@ function ensureElement(child: React.ReactChild | undefined) {
         return child;
     }
 }
-
-export const PopoverFactory = React.createFactory(Popover);

@@ -127,5 +127,3 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         }
     };
 }
-
-export const DialogFactory = React.createFactory(Dialog);

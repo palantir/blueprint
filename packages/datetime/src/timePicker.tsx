@@ -491,5 +491,3 @@ function setTimeUnit(time: number, date: Date, unit: TimeUnit) {
             throw Error("Invalid TimeUnit");
     }
 }
-
-export const TimePickerFactory = React.createFactory(TimePicker);

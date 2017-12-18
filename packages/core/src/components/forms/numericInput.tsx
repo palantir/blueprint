@@ -594,5 +594,3 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         return Math.round(value * scaleFactor) / scaleFactor;
     }
 }
-
-export const NumericInputFactory = React.createFactory(NumericInput);

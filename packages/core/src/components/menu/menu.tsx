@@ -26,5 +26,3 @@ export class Menu extends React.Component<IMenuProps, {}> {
         );
     }
 }
-
-export const MenuFactory = React.createFactory(Menu);
