@@ -105,13 +105,13 @@ jobs:
       - run:
           command: |
               case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run test --scope '@blueprintjs/core' ;; \
-              1) yarn lerna run test --scope '@blueprintjs/datetime' ;; \
-              2) yarn lerna run test --scope '@blueprintjs/icons' ;; \
-              3) yarn lerna run test --scope '@blueprintjs/labs' ;; \
-              4) yarn lerna run test --scope '@blueprintjs/select' ;; \
-              5) yarn lerna run test --scope '@blueprintjs/table' ;; \
-              6) yarn lerna run test --scope '@blueprintjs/timezone' ;; \
+              0) cd packages/core && yarn test ;; \
+              1) cd packages/datetime && yarn test ;; \
+              2) cd packages/icons && yarn test ;; \
+              3) cd packages/labs && yarn test ;; \
+              4) cd packages/select && yarn test ;; \
+              5) cd packages/table && yarn test ;; \
+              6) cd packages/timezone && yarn test ;; \
               esac
 
   deploy-preview:
