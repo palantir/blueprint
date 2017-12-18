@@ -374,5 +374,3 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         Utils.safeInvoke(this.props.onChange, value, true);
     };
 }
-
-export const DatePickerFactory = React.createFactory(DatePicker);

@@ -57,5 +57,3 @@ export class Tab extends React.PureComponent<ITabProps, {}> {
         );
     }
 }
-
-export const TabFactory = React.createFactory(Tab);

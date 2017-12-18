@@ -59,5 +59,3 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
         Utils.safeInvoke(this.props.onRemove, e, this.props);
     };
 }
-
-export const TagFactory = React.createFactory(Tag);
