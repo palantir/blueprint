@@ -361,6 +361,10 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     };
 
     private handleInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        // stop propagation to the Popover's internal handleTargetClick handler;
+        // otherwise, the popover will flicker closed as soon as it opens.
+        e.stopPropagation();
+
         this.safeInvokeInputProp("onClick", e);
     };
 
