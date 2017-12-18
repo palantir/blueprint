@@ -18,7 +18,13 @@ jobs:
             - ~/yarn
             - ~/.cache/yarn
             - node_modules
-            - packages/*/node_modules
+            - packages/core/node_modules
+            - packages/datetime/node_modules
+            - packages/docs/node_modules
+            - packages/labs/node_modules
+            - packages/select/node_modules
+            - packages/table/node_modules
+            - packages/timezone/node_modules
       - persist_to_workspace:
           root: '.'
           paths:
