@@ -1,6 +1,11 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
+// Generate a selector for a page ID by reference
+@function page($ref, $comparator: "=") {
+  @return "[data-page-id#{$comparator}\"#{$ref}\"]";
+}
+
 // Generate a selector for a KSS example by reference
 @function reference($ref, $comparator: "=") {
   @return "[data-reference#{$comparator}\"#{$ref}\"]";
@@ -257,7 +262,7 @@
 }
 
 // give all Table examples a fixed height
-[data-page-id="table-js"] {
+#{page("table-js")} {
   .pt-table-container,
   .docs-react-example {
     width: 100%;
