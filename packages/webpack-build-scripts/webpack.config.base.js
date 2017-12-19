@@ -18,6 +18,7 @@ const { getPackageName } = require("./utils");
 
 // globals
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const LOCALES = process.env.LOCALES;
 const PACKAGE_NAME = getPackageName();
 
 /**
@@ -70,6 +71,19 @@ if (IS_PRODUCTION) {
 
         // add dev plugins here
     );
+}
+
+if (LOCALES) {
+    // load moment locales passed with env variable LOCALES
+    var locales = LOCALES.split(',').join('|');
+    plugins.push(
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, new RegExp(locales))
+    )
+} else {
+    // only load EN moment locale as default if no preferences are set
+    plugins.push(
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/)
+    )
 }
 
 // Module loaders for .scss files, used in reverse order (compile Sass, apply PostCSS, interpret CSS as modules)
