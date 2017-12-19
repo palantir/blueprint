@@ -47,9 +47,8 @@ class ContextMenu extends AbstractPureComponent<{}, IContextMenuState> {
         // appears overlayed at the desired offset on the screen.
         const emptyTarget = <div />;
 
-        // make the positioned div a wrapper instead of the target. Popper.js
-        // inserts the popover into the DOM as a *sibling* of the target, so
-        // this is the best way to ensure the popover gets positioned properly.
+        // wrap the popover in a positioned div to make sure it is properly
+        // offset on the screen.
         return (
             <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset}>
                 <Popover

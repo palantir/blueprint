@@ -39,7 +39,8 @@ export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
     ns + ` <NumericInput> requires stepSize to be strictly greater than zero.`;
 export const NUMERIC_INPUT_STEP_SIZE_NULL = ns + ` <NumericInput> requires stepSize to be defined.`;
 
-// TODO (clewis): Delete old Popover errors that aren't used anymore.
+// TODO (clewis): Migrate old Popover validation errors to the component formerly known as Popover2.
+// See: https://github.com/palantir/blueprint/issues/1940
 export const POPOVER_REQUIRES_TARGET = ns + ` <Popover> requires target prop or at least one child element.`;
 export const POPOVER_MODAL_INTERACTION =
     ns + ` <Popover isModal={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;

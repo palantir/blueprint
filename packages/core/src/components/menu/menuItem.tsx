@@ -93,11 +93,11 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         alignLeft: false,
     };
 
-    private liRef: HTMLElement;
-    private popoverRef: HTMLElement;
+    private liElement: HTMLElement;
+    private popoverElement: HTMLElement;
     private refHandlers = {
-        li: (ref: HTMLElement) => (this.liRef = ref),
-        popover: (ref: HTMLElement) => (this.popoverRef = ref),
+        li: (ref: HTMLElement) => (this.liElement = ref),
+        popover: (ref: HTMLElement) => (this.popoverElement = ref),
     };
 
     public render() {
@@ -137,7 +137,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         );
 
         if (hasSubmenu) {
-            const submenuRef = <Menu>{this.renderChildren()}</Menu>;
+            const submenuContent = <Menu>{this.renderChildren()}</Menu>;
             const popoverClasses = classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName, {
                 // apply this class to make the popover anchor to the *left*
                 // side of the menu (setting Position.LEFT_TOP alone would still
@@ -154,11 +154,11 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
                     interactionKind={PopoverInteractionKind.HOVER}
                     position={this.state.alignLeft ? Position.LEFT_TOP : Position.RIGHT_TOP}
                     {...popoverProps}
-                    content={submenuRef}
+                    content={submenuContent}
                     minimal={true}
                     popoverClassName={popoverClasses}
                     popoverDidOpen={this.handlePopoverDidOpen}
-                    popoverRef={this.refHandlers.popover}
+                    popoverElement={this.refHandlers.popover}
                 >
                     {content}
                 </Popover>
@@ -191,12 +191,12 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
     };
 
     private maybeAlignSubmenuLeft() {
-        if (this.popoverRef == null) {
+        if (this.popoverElement == null) {
             return;
         }
 
-        const submenuRect = this.popoverRef.getBoundingClientRect();
-        const parentWidth = this.liRef.parentElement.getBoundingClientRect().width;
+        const submenuRect = this.popoverElement.getBoundingClientRect();
+        const parentWidth = this.liElement.parentElement.getBoundingClientRect().width;
         const adjustmentWidth = submenuRect.width + parentWidth;
 
         // this ensures that the left and right measurements represent a submenu opened to the right
