@@ -158,7 +158,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
                     minimal={true}
                     popoverClassName={popoverClasses}
                     popoverDidOpen={this.handlePopoverDidOpen}
-                    popoverElement={this.refHandlers.popover}
+                    popoverRef={this.refHandlers.popover}
                 >
                     {content}
                 </Popover>
