@@ -193,9 +193,12 @@ echo "
 Renames for @blueprintjs/core"
 renameProp renderVisibleItem visibleItemRenderer
 renameProp renderLabel labelRenderer
+renameProp isDisabled disabled
+renameProp isModal hasBackdrop
 renameString FileUpload FileInput
 renameString fileUpload fileInput
 renameString "pt-file-upload(?!-)" pt-file-input # only rename full classname, not partial classname like pt-file-upload-input
 renameString FILE_UPLOAD FILE_INPUT
 renameString pt-condensed pt-small
 renameString TABLE_CONDENSED SMALL
+warnProp inline usePortal

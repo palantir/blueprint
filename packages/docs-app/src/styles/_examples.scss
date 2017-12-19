@@ -185,18 +185,14 @@
   margin-bottom: 0;
 }
 
-.pt-popover .docs-popover-example {
-  padding: $pt-grid-size;
-}
-
-.docs-popover2-example {
+.docs-popover-example {
   .docs-react-example {
     width: 100%;
     height: 350px;
     overflow: scroll;
   }
 
-  .docs-popover2-example-scroll {
+  .docs-popover-example-scroll {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -211,7 +207,7 @@
   }
 }
 
-.docs-tooltip2-example {
+.docs-tooltip-example {
   > div {
     margin-bottom: $pt-grid-size;
   }

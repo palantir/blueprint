@@ -13,7 +13,7 @@ import {
     Menu,
     MenuDivider,
     MenuItem,
-    Popover2,
+    Popover,
     Position,
 } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
@@ -33,9 +33,9 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
         return (
             <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
                 <AnchorButton href="https://github.com/palantir/blueprint" target="_blank" text="GitHub" />
-                <Popover2 inline={true} content={this.renderReleasesMenu()} position={Position.BOTTOM_RIGHT}>
+                <Popover inline={true} content={this.renderReleasesMenu()} position={Position.BOTTOM_RIGHT}>
                     <AnchorButton rightIconName="caret-down" text="Releases" />
-                </Popover2>
+                </Popover>
                 <AnchorButton
                     className="docs-dark-switch"
                     onClick={this.handleDarkSwitchChange}

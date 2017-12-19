@@ -135,6 +135,7 @@ export const POPOVER_DISMISS = "pt-popover-dismiss";
 export const POPOVER_DISMISS_OVERRIDE = "pt-popover-dismiss-override";
 export const POPOVER_OPEN = "pt-popover-open";
 export const POPOVER_TARGET = "pt-popover-target";
+export const POPOVER_WRAPPER = "pt-popover-wrapper";
 export const TRANSITION_CONTAINER = "pt-transition-container";
 
 export const PROGRESS_BAR = "pt-progress-bar";

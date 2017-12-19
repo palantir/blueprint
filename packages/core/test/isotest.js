@@ -21,12 +21,10 @@ const popoverTarget = React.createElement("button");
 const customChildren = {
     Hotkeys: React.createElement(Core.Hotkey, customProps.Hotkey),
     Popover: popoverTarget,
-    Popover2: popoverTarget,
     SVGPopover: popoverTarget,
     SVGTooltip: popoverTarget,
     Tabs: React.createElement(Core.Tab, { key: 1, id: 1, title: "Tab one" }),
     Tooltip: popoverTarget,
-    Tooltip2: popoverTarget,
 };
 
 describe("Core isomorphic rendering", () => {

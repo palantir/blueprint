@@ -5,7 +5,6 @@
  */
 
 const ns = "[Blueprint]";
-const deprec = `${ns} DEPRECATION:`;
 
 export const CLAMP_MIN_MAX = ns + ` clamp: max cannot be less than min`;
 
@@ -40,6 +39,8 @@ export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
     ns + ` <NumericInput> requires stepSize to be strictly greater than zero.`;
 export const NUMERIC_INPUT_STEP_SIZE_NULL = ns + ` <NumericInput> requires stepSize to be defined.`;
 
+// TODO (clewis): Migrate old Popover validation errors to the component formerly known as Popover2.
+// See: https://github.com/palantir/blueprint/issues/1940
 export const POPOVER_REQUIRES_TARGET = ns + ` <Popover> requires target prop or at least one child element.`;
 export const POPOVER_MODAL_INTERACTION =
     ns + ` <Popover isModal={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
@@ -58,9 +59,6 @@ export const POPOVER_WARN_DEPRECATED_CONSTRAINTS =
 export const POPOVER_WARN_INLINE_NO_TETHER =
     ns + ` <Popover inline={true}> ignores tetherOptions, constraints, and useSmartPositioning.`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
-
-export const POPOVER2_WARN_DEPRECATED_IS_DISABLED = `${deprec} <Popover2> isDisabled is deprecated. Use disabled.`;
-export const POPOVER2_WARN_DEPRECATED_IS_MODAL = `${deprec} <Popover2> isModal is deprecated. Use hasBackdrop.`;
 
 export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
 
