@@ -10,7 +10,6 @@ import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
 
 export type PopperModifiers = PopperJS.Modifiers;
-type Placement = PopperJS.Placement;
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
@@ -189,15 +188,6 @@ export interface IPopoverState {
     transformOrigin?: string;
     isOpen?: boolean;
     hasDarkParent?: boolean;
-
-    /** Migrated `disabled` value that considers the `disabled` and `disabled` props. */
-    disabled?: boolean;
-
-    /** Migrated `hasBackdrop` value that considers the `hasBackdrop` and `hasBackdrop` props. */
-    hasBackdrop?: boolean;
-
-    /** Migrated `placement` value that considers the `placement` and `position` props. */
-    placement?: PopperJS.Placement;
 }
 
 export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
@@ -205,6 +195,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public static defaultProps: IPopoverProps = {
         defaultIsOpen: false,
+        disabled: false,
+        hasBackdrop: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
         inheritDarkTheme: true,
@@ -213,6 +205,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         minimal: false,
         modifiers: {},
         openOnTargetFocus: true,
+        position: "auto",
         rootElementTag: "span",
         transitionDuration: 300,
     };
@@ -245,24 +238,21 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     public constructor(props?: IPopoverProps, context?: any) {
         super(props, context);
 
-        const disabled = getDisabled(props);
-        let isOpen = props.defaultIsOpen && !disabled;
+        // TODO: isOpen should always be false if disabled=true
+        let isOpen = props.defaultIsOpen && !props.disabled;
         if (props.isOpen != null) {
             isOpen = props.isOpen;
         }
 
         this.state = {
-            disabled,
-            hasBackdrop: getHasBackdrop(props),
             hasDarkParent: false,
             isOpen,
-            placement: getPlacement(props),
         };
     }
 
     public render() {
-        const { className, targetClassName } = this.props;
-        const { isOpen, disabled, hasBackdrop } = this.state;
+        const { className, disabled, hasBackdrop, targetClassName } = this.props;
+        const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
         let targetProps: React.HTMLAttributes<HTMLElement>;
@@ -339,9 +329,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     public componentWillReceiveProps(nextProps: IPopoverProps) {
         super.componentWillReceiveProps(nextProps);
 
-        const nextDisabled = getDisabled(nextProps);
-
-        if (nextProps.isOpen == null && nextDisabled && !this.state.disabled) {
+        if (nextProps.isOpen == null && nextProps.disabled && !this.props.disabled) {
             // ok to use setOpenState here because disabled and isOpen are mutex.
             this.setOpenState(false);
         } else if (nextProps.isOpen !== this.props.isOpen) {
@@ -349,12 +337,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             // (which would be invoked if this went through setOpenState)
             this.setState({ isOpen: nextProps.isOpen });
         }
-
-        this.setState({
-            disabled: nextDisabled,
-            hasBackdrop: getHasBackdrop(nextProps),
-            placement: getPlacement(nextProps),
-        });
     }
 
     public componentWillUpdate(_: IPopoverProps, nextState: IPopoverState) {
@@ -412,7 +394,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     private renderPopper(content: JSX.Element) {
         const { inline, interactionKind, modifiers } = this.props;
-        const { placement } = this.state;
 
         const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class
@@ -452,6 +433,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                 order: 900,
             },
         };
+
+        const placement = positionToPlacement(this.props.position);
 
         return (
             <Popper className={Classes.TRANSITION_CONTAINER} placement={placement} modifiers={allModifiers}>
@@ -518,7 +501,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             !this.props.openOnTargetFocus
         ) {
             this.handleMouseLeave(e);
-        } else if (!this.state.disabled) {
+        } else if (!this.props.disabled) {
             // only begin opening popover when it is enabled
             this.setOpenState(true, e, this.props.hoverOpenDelay);
         }
@@ -558,7 +541,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
-        if (!this.state.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
+        if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
                 this.setState(prevState => ({ isOpen: !prevState.isOpen }));
             } else {
@@ -621,33 +604,5 @@ function ensureElement(child: React.ReactChild | undefined) {
         return <span>{child}</span>;
     } else {
         return child;
-    }
-}
-
-function getDisabled(props: IPopoverProps): boolean {
-    if (props.disabled !== undefined) {
-        return props.disabled;
-    } else if (props.disabled !== undefined) {
-        return props.disabled;
-    } else {
-        return false;
-    }
-}
-
-function getHasBackdrop(props: IPopoverProps): boolean {
-    if (props.hasBackdrop !== undefined) {
-        return props.hasBackdrop;
-    } else if (props.hasBackdrop !== undefined) {
-        return props.hasBackdrop;
-    } else {
-        return false;
-    }
-}
-
-function getPlacement(props: IPopoverProps): Placement {
-    if (props.position !== undefined) {
-        return positionToPlacement(props.position);
-    } else {
-        return "auto";
     }
 }
