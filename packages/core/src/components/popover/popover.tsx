@@ -299,6 +299,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         });
 
         const isContentEmpty = children.content == null;
+        // need to do this check in render(), because `isOpen` is derived from
+        // state, and state can't necessarily be accessed in validateProps.
         if (isContentEmpty && !disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
             console.warn(Errors.POPOVER_WARN_EMPTY_CONTENT);
         }
@@ -370,6 +372,35 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public componentWillUnmount() {
         super.componentWillUnmount();
+    }
+
+    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
+        if (props.isOpen == null && props.onInteraction != null) {
+            console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
+        }
+        if (props.hasBackdrop && props.inline) {
+            console.warn(Errors.POPOVER_WARN_MODAL_INLINE);
+        }
+        if (props.hasBackdrop && props.interactionKind !== PopoverInteractionKind.CLICK) {
+            throw new Error(Errors.POPOVER_MODAL_INTERACTION);
+        }
+
+        const childrenCount = React.Children.count(props.children);
+        const hasContentProp = props.content !== undefined;
+        const hasTargetProp = props.target !== undefined;
+
+        if (childrenCount === 0 && !hasTargetProp) {
+            throw new Error(Errors.POPOVER_REQUIRES_TARGET);
+        }
+        if (childrenCount > 2) {
+            console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
+        }
+        if (childrenCount > 0 && hasTargetProp) {
+            console.warn(Errors.POPOVER_WARN_DOUBLE_TARGET);
+        }
+        if (childrenCount === 2 && hasContentProp) {
+            console.warn(Errors.POPOVER_WARN_DOUBLE_CONTENT);
+        }
     }
 
     private updateDarkParent() {
