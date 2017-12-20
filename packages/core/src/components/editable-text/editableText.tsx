@@ -370,5 +370,3 @@ function insertAtCaret(el: HTMLTextAreaElement, text: string) {
         el.selectionEnd = selectionStart + len;
     }
 }
-
-export const EditableTextFactory = React.createFactory(EditableText);

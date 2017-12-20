@@ -259,5 +259,3 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
 export function renderMenuItem(props: IMenuItemProps, key: string | number) {
     return <MenuItem key={key} {...props} />;
 }
-
-export const MenuItemFactory = React.createFactory(MenuItem);

@@ -311,8 +311,6 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     };
 }
 
-export const TabsFactory = React.createFactory(Tabs);
-
 function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
     return codes.indexOf(e.which) >= 0;
 }
