@@ -5,7 +5,7 @@
  */
 
 import { Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 import { DateInput, TimePickerPrecision } from "@blueprintjs/datetime";

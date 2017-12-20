@@ -1,5 +1,5 @@
 {
-  "name": "@blueprintjs/docs",
+  "name": "@blueprintjs/docs-theme",
   "version": "1.3.0",
   "description": "Blueprint theme for documentalist",
   "main": "dist/index.js",

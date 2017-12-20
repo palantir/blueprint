@@ -69,7 +69,7 @@ jobs:
           paths:
             - packages/core/dist
             - packages/datetime/dist
-            - packages/docs/dist
+            - packages/docs-theme/dist
             - packages/labs/dist
             - packages/select/dist
             - packages/table/dist

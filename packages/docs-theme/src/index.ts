@@ -4,8 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "dom4";
-
 export * from "./components/baseExample";
 export * from "./components/documentation";
 export * from "./common";

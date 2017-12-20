@@ -5,7 +5,7 @@
  */
 
 import { setHotkeysDialogProps } from "@blueprintjs/core";
-import { Documentation, IDocumentationProps } from "@blueprintjs/docs";
+import { Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 import * as React from "react";
 import { NavbarActions } from "./navbarActions";
