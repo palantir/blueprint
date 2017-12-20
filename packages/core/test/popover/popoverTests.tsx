@@ -76,6 +76,17 @@ describe("<Popover>", () => {
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
             warnSpy.restore();
         });
+
+        it("warns if attempting to open a popover with empty content", () => {
+            const warnSpy = sinon.spy(console, "warn");
+            shallow(
+                <Popover content={null} isOpen={true}>
+                    {"target"}
+                </Popover>,
+            );
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT));
+            warnSpy.restore();
+        });
     });
 
     it("propagates class names correctly", () => {

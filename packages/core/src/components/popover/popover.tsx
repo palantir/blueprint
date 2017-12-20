@@ -14,6 +14,7 @@ type Placement = PopperJS.Placement;
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -299,7 +300,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         const isContentEmpty = children.content == null;
         if (isContentEmpty && !disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
-            console.warn("[Blueprint] Disabling <Popover> with empty/whitespace content...");
+            console.warn(Errors.POPOVER_WARN_EMPTY_CONTENT);
         }
 
         return (
