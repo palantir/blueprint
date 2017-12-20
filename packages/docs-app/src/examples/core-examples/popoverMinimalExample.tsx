@@ -6,22 +6,15 @@
 
 import * as React from "react";
 
-import { Button, Intent, IPopoverProps, Menu, MenuItem, Popover, Position } from "@blueprintjs/core";
+import { Button, Intent, IPopoverProps, Popover, Position } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
+import { FileMenu } from "./common/fileMenu";
 
 export class PopoverMinimalExample extends BaseExample<{}> {
     protected className = "docs-popover-minimal-example";
 
     protected renderExample() {
-        const menuContent = (
-            <Menu>
-                <MenuItem text="New" iconName="document" />
-                <MenuItem text="Open" iconName="folder-shared" />
-                <MenuItem text="Close" iconName="add-to-folder" />
-            </Menu>
-        );
-
-        const baseProps: IPopoverProps = { content: menuContent, position: Position.BOTTOM_LEFT };
+        const baseProps: IPopoverProps = { content: <FileMenu />, position: Position.BOTTOM_LEFT };
 
         return (
             <div>

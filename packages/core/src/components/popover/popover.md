@@ -229,6 +229,10 @@ The supported values are:
     - __Opens when:__ the target is clicked
     - __Closes when:__ the target is clicked
 
+The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](http://localhost:9000/#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
+
+@reactExample PopoverInteractionKindExample
+
 The __@blueprintjs/core__ package exports the above values in the `PopoverInteractionKind` enumeration.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">

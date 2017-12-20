@@ -267,6 +267,13 @@
   }
 }
 
+.docs-popover-interaction-kind-example {
+  .pt-button {
+    margin-right: $pt-grid-size;
+    font-family: $pt-font-family-monospace;
+  }
+}
+
 .docs-tooltip-example {
   > div {
     margin-bottom: $pt-grid-size;
