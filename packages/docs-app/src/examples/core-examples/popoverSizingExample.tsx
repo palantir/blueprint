@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Intent, IPopoverProps, Popover, Position } from "@blueprintjs/core";
+import { Button, Popover, Position } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 import { FileMenu } from "./common/fileMenu";
 
