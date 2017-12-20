@@ -15,8 +15,6 @@ jobs:
       - save_cache:
           key: v6-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
-            - ~/yarn
-            - ~/.cache/yarn
             - node_modules
       - persist_to_workspace:
           root: '.'

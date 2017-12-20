@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
   "typings": "dist/esm/index.d.ts",
-  "style": "dist/docs.css",
-  "unpkg": "dist/docs.bundle.js",
+  "style": "dist/docs-theme.css",
+  "unpkg": "dist/docs-theme.bundle.js",
   "scripts": {
     "compile": "npm-run-all -p 'compile:*'",
     "compile:esm": "tsc -p ./src",
