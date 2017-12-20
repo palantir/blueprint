@@ -303,11 +303,6 @@ Minimal popovers are also useful for context menus that require quick enter and 
 support fast workflows. You can see an example in the [context menus](#core/components/context-menu)
 documentation.
 
-@## SVG popover
-
-`SVGPopover` is a convenience component provided for SVG contexts. It is a simple wrapper around
-`Popover` that sets `rootElementTag="g"`.
-
 @## Testing
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
