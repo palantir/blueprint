@@ -33,41 +33,43 @@ export class PopoverPositionExample extends BaseExample<{}> {
     protected renderExample() {
         return (
             <table className={TABLE_CLASS}>
-                <tr className={ROW_CLASS}>
-                    <td className={CELL_LEFT_CLASS} />
-                    <td className={classNames(CELL_CLASS, CELL_CENTER_CLASS)}>
-                        {this.renderPopover(Position.BOTTOM_LEFT, "BOTTOM", "LEFT")}
-                        {this.renderPopover(Position.BOTTOM, "BOTTOM")}
-                        {this.renderPopover(Position.BOTTOM_RIGHT, "BOTTOM", "RIGHT")}
-                    </td>
-                    <td className={CELL_RIGHT_CLASS} />
-                </tr>
-                <tr className={ROW_CLASS}>
-                    <td className={classNames(CELL_CLASS, CELL_LEFT_CLASS)}>
-                        {this.renderPopover(Position.RIGHT_TOP, "RIGHT", "TOP")}
-                        {this.renderPopover(Position.RIGHT, "RIGHT")}
-                        {this.renderPopover(Position.RIGHT_BOTTOM, "RIGHT", "BOTTOM")}
-                    </td>
-                    <td className={classNames(CELL_CLASS, CELL_CENTER_CLASS)}>
-                        <span className={INSTRUCTIONS_CLASS}>
-                            Button positions are flipped here so that all popovers open inward.
-                        </span>
-                    </td>
-                    <td className={classNames(CELL_CLASS, CELL_RIGHT_CLASS)}>
-                        {this.renderPopover(Position.LEFT_TOP, "LEFT", "TOP")}
-                        {this.renderPopover(Position.LEFT, "LEFT")}
-                        {this.renderPopover(Position.LEFT_BOTTOM, "LEFT", "BOTTOM")}
-                    </td>
-                </tr>
-                <tr className={ROW_CLASS}>
-                    <td className={CELL_LEFT_CLASS} />
-                    <td className={classNames(CELL_CLASS, CELL_CENTER_CLASS)}>
-                        {this.renderPopover(Position.TOP_LEFT, "TOP", "LEFT")}
-                        {this.renderPopover(Position.TOP, "TOP")}
-                        {this.renderPopover(Position.TOP_RIGHT, "TOP", "RIGHT")}
-                    </td>
-                    <td className={CELL_RIGHT_CLASS} />
-                </tr>
+                <tbody>
+                    <tr className={ROW_CLASS}>
+                        <td className={CELL_LEFT_CLASS} />
+                        <td className={classNames(CELL_CLASS, CELL_CENTER_CLASS)}>
+                            {this.renderPopover(Position.BOTTOM_LEFT, "BOTTOM", "LEFT")}
+                            {this.renderPopover(Position.BOTTOM, "BOTTOM")}
+                            {this.renderPopover(Position.BOTTOM_RIGHT, "BOTTOM", "RIGHT")}
+                        </td>
+                        <td className={CELL_RIGHT_CLASS} />
+                    </tr>
+                    <tr className={ROW_CLASS}>
+                        <td className={classNames(CELL_CLASS, CELL_LEFT_CLASS)}>
+                            {this.renderPopover(Position.RIGHT_TOP, "RIGHT", "TOP")}
+                            {this.renderPopover(Position.RIGHT, "RIGHT")}
+                            {this.renderPopover(Position.RIGHT_BOTTOM, "RIGHT", "BOTTOM")}
+                        </td>
+                        <td className={classNames(CELL_CLASS, CELL_CENTER_CLASS)}>
+                            <span className={INSTRUCTIONS_CLASS}>
+                                Button positions are flipped here so that all popovers open inward.
+                            </span>
+                        </td>
+                        <td className={classNames(CELL_CLASS, CELL_RIGHT_CLASS)}>
+                            {this.renderPopover(Position.LEFT_TOP, "LEFT", "TOP")}
+                            {this.renderPopover(Position.LEFT, "LEFT")}
+                            {this.renderPopover(Position.LEFT_BOTTOM, "LEFT", "BOTTOM")}
+                        </td>
+                    </tr>
+                    <tr className={ROW_CLASS}>
+                        <td className={CELL_LEFT_CLASS} />
+                        <td className={classNames(CELL_CLASS, CELL_CENTER_CLASS)}>
+                            {this.renderPopover(Position.TOP_LEFT, "TOP", "LEFT")}
+                            {this.renderPopover(Position.TOP, "TOP")}
+                            {this.renderPopover(Position.TOP_RIGHT, "TOP", "RIGHT")}
+                        </td>
+                        <td className={CELL_RIGHT_CLASS} />
+                    </tr>
+                </tbody>
             </table>
         );
     }
