@@ -7,6 +7,7 @@
 import * as moment from "moment";
 import { DateFormat } from "../dateFormatter";
 import { Months } from "./months";
+import * as dateFnFormat from "date-fns/format";
 
 export type DateRange = [Date | undefined, Date | undefined];
 export type MomentDateRange = [moment.Moment, moment.Moment];
@@ -307,5 +308,22 @@ export function stringToMoment(dateString: string, format: DateFormat, locale: s
     } else {
         const date = format.stringToDate(dateString);
         return date === undefined ? moment.invalid() : moment(date);
+    }
+}
+
+
+export function getLocale(localeString: String): any {
+    if(!localeString) {
+        return undefined;
+    }
+    return require(`date-fns/locale/${localeString}`);
+}
+
+
+export function dateToString(date: Date, format: DateFormat, locale: string | undefined) {
+    if (typeof format === "string") {
+        return dateFnFormat(date, format, {locale: getLocale(locale)});
+    } else {
+        return format.dateToString(date);
     }
 }
