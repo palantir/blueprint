@@ -53,7 +53,6 @@ export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
 
         let lastGroup = null as string;
         const elems = [] as JSX.Element[];
-        const rootClasses = classNames("pt-hotkey-column", this.props.className);
         for (const hotkey of hotkeys) {
             const groupLabel = hotkey.group;
             if (groupLabel !== lastGroup) {
@@ -66,7 +65,7 @@ export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
             }
             elems.push(<Hotkey key={elems.length} {...hotkey} />);
         }
-
+        const rootClasses = classNames("pt-hotkey-column", this.props.className);
         return <div className={rootClasses}>{elems}</div>;
     }
 

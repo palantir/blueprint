@@ -64,7 +64,7 @@ export interface IHotkeyProps extends IProps {
 
     /**
      * Space-delimited string of class names applied to the
-     * keyCombo contained in the hotkey.
+     * `KeyCombo` contained in the hotkey.
      */
     keyComboClassName?: string;
 
