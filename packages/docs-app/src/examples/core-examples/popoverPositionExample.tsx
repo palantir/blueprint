@@ -50,7 +50,7 @@ export class PopoverPositionExample extends BaseExample<{}> {
                     </td>
                     <td className={classNames(CELL_CLASS, CELL_CENTER_CLASS)}>
                         <span className={INSTRUCTIONS_CLASS}>
-                            Button positions are flipped so that all popovers open inward.
+                            Button positions are flipped here so that all popovers open inward.
                         </span>
                     </td>
                     <td className={classNames(CELL_CLASS, CELL_RIGHT_CLASS)}>

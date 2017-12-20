@@ -3,6 +3,11 @@
 Popovers display floating content next to a target element.
 
 `Popover` is built on top of the [__Popper.js__](https://popper.js.org) library.
+Popper.js is a small (~6kb) library that offers a powerful, customizable
+positioning engine and operates at blazing speed (~60fps).
+
+The example below demonstrates some of the capabilities of our Popper.js-backed
+`Popover`.
 
 @reactExample PopoverExample
 
@@ -47,7 +52,26 @@ The __target__ acts as the trigger for the popover; user interaction will show t
 positioned on the page next to the target; the `position` prop determines the relative position (on
 which side of the target).
 
-Internally, the provided target is wrapped in a `span.pt-popover-target`. This is turn is wrapped in a `span.pt-popover-wrapper` to ensure all component-related nodes are contained in a single element; this is particularly necessary when rendering popovers [inline](#core/components/popover.inline-popovers).
+Internally, the provided target is wrapped in a `span.pt-popover-target`. This in turn is wrapped in a `span.pt-popover-wrapper`:
+
+```tsx
+<span class="pt-popover-wrapper">
+    <span class="pt-popover-target">
+        <Button text="My target" />
+    </span>
+</span>
+```
+
+The extra `pt-popover-wrapper` is present so that both the popover and target will be wrapped in a single element when rendering popovers [inline](#core/components/popover.inline-popovers):
+
+```tsx
+<span class="pt-popover-wrapper">
+    <span class="pt-popover-target">
+        <Button text="My target" />
+    </span>
+    <!-- Popover HTML goes here -->
+</span>
+```
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
     <h5>Button targets</h5>
@@ -112,7 +136,7 @@ The `position` can also be set to the string literal `"auto"`, the default setti
 
 Modifiers are the tools through which you customize Popper.js's behavior. Popper.js defines several of its own modifiers to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow. `Popover` defines a few additional modifiers to support itself. You can even define your own modifiers, and customize the Popper.js defaults, through the `modifiers` prop. (Note: it is not currently possible to configure `Popover`'s modifiers through the `modifiers` prop, nor can you define your own with the same name.)
 
-**Popper.js modifiers, which can be customized via the `modifiers` prop:**
+**Popper.js modifiers that can be customized via the `modifiers` prop:**
 
 - [`shift`](https://popper.js.org/popper-documentation.html#modifiers..shift) applies the `-start`/`-end` portion of placement
 - [`offset`](https://popper.js.org/popper-documentation.html#modifiers..offset) can be configured to move the popper on both axes using a CSS-like syntax
@@ -124,7 +148,7 @@ Modifiers are the tools through which you customize Popper.js's behavior. Popper
 - [`hide`](https://popper.js.org/popper-documentation.html#modifiers..hide) hides the popper when its reference element is outside of the popper boundaries.
 - [`computeStyle`](https://popper.js.org/popper-documentation.html#modifiers..computeStyle) generates the CSS styles to apply to the DOM
 
-**`Popover` modifiers, _which cannot be used by you_:**
+**Popper.js modifiers that `Popover` manages and that cannot be customized:**
 
 - `arrowOffset` moves the popper a little bit to make room for the arrow
 - `updatePopoverState` saves off some popper data to `Popover` React state for fancy things
@@ -328,6 +352,11 @@ zeroing the default hover delays.
 `Popover` delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target, which may require special handling depending on the current [`interactionKind`](http://localhost:9000/#core/components/popover.opening-and-closing). Popper.js also throttles rendering updates to improve performance. If your components are not updating in a synchronous fashion as expected, you may need to introduce a `setTimeout` to wait for asynchronous Popover rendering to catch up:
 
 ```tsx
+import { Classes, Overlay, Popover, PopoverInteractionKind } from "@blueprintjs/core";
+import { assert } from "chai";
+import { mount } from "enzyme";
+import { Target } from "react-popper";
+
 wrapper = mount(
     <Popover inline={true} interactionKind={PopoverInteractionKind.HOVER}>
         <div>Target</div>
@@ -341,7 +370,8 @@ wrapper.findClass(Classes.POPOVER).simulate("mouseleave");
 
 setTimeout(() => {
     // Popover defers popover closing, so need to defer this check
-    wrapper.assertIsOpen(false);
+    const isOpen = wrapper.find(Overlay).prop("isOpen");
+    assert.equal(isOpen, false);
 });
 ```
 
