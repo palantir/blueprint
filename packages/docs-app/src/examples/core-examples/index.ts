@@ -29,6 +29,7 @@ export * from "./popoverExample";
 export * from "./popoverInteractionKindExample";
 export * from "./popoverMinimalExample";
 export * from "./popoverPositionExample";
+export * from "./popoverSizingExample";
 export * from "./progressExample";
 export * from "./rangeSliderExample";
 export * from "./radioExample";

@@ -313,10 +313,12 @@ and make its content scrollable, set the appropriate CSS rules on `.pt-popover-c
 ```css.scss
 // pass "my-popover" to `popoverClassName` prop.
 .my-popover .pt-popover-content {
-    max-height: $pt-grid-size * 30;
+    max-height: $pt-grid-size * 15;
     overflow-y: auto;
 }
 ```
+
+@reactExample PopoverSizingExample
 
 @### Minimal style
 

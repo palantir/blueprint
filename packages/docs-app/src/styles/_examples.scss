@@ -274,6 +274,13 @@
   }
 }
 
+.docs-popover-sizing-example {
+  .pt-popover-content {
+    max-height: $pt-grid-size * 15;
+    overflow-y: auto;
+  }
+}
+
 .docs-tooltip-example {
   > div {
     margin-bottom: $pt-grid-size;
