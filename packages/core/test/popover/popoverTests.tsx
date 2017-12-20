@@ -243,8 +243,8 @@ describe("<Popover>", () => {
     });
 
     it("rootElementTag prop renders the right elements", () => {
-        wrapper = renderPopover({ isOpen: true, rootElementTag: "g" });
-        assert.isNotNull(wrapper.find("g"));
+        wrapper = renderPopover({ isOpen: true, rootElementTag: "article" });
+        assert.isNotNull(wrapper.find("article"));
     });
 
     describe("openOnTargetFocus", () => {
