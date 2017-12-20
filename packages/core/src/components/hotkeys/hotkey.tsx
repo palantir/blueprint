@@ -4,12 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common";
+import { AbstractPureComponent, IProps } from "../../common";
 import { KeyCombo } from "./keyCombo";
 
-export interface IHotkeyProps {
+export interface IHotkeyProps extends IProps {
     /**
      * Whether the hotkey should be triggerable when focused in a text input.
      * @default false
@@ -62,6 +63,12 @@ export interface IHotkeyProps {
     stopPropagation?: boolean;
 
     /**
+     * Space-delimited string of class names applied to the
+     * keyCombo contained in the hotkey.
+     */
+    keyComboClassName?: string;
+
+    /**
      * `keydown` event handler.
      */
     onKeyDown?(e: KeyboardEvent): any;
@@ -86,11 +93,13 @@ export class Hotkey extends AbstractPureComponent<IHotkeyProps, {}> {
     }
 
     public render() {
-        const { label, ...spreadableProps } = this.props;
+        const { label, className, keyComboClassName, ...spreadableProps } = this.props;
+
+        const rootClasses = classNames("pt-hotkey", className);
         return (
-            <div className="pt-hotkey">
+            <div className={rootClasses}>
                 <div className="pt-hotkey-label">{label}</div>
-                <KeyCombo {...spreadableProps} />
+                <KeyCombo className={keyComboClassName} {...spreadableProps} />
             </div>
         );
     }

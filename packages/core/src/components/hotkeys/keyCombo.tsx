@@ -4,7 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
+import { IProps } from "../../common";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
 const KeyIcons: { [key: string]: string } = {
@@ -21,7 +23,7 @@ const KeyIcons: { [key: string]: string } = {
     up: "pt-icon-arrow-up",
 };
 
-export interface IKeyComboProps {
+export interface IKeyComboProps extends IProps {
     allowInInput?: boolean;
     combo: string;
     disabled?: boolean;
@@ -33,6 +35,7 @@ export class KeyCombo extends React.Component<IKeyComboProps, {}> {
     public render() {
         const keys = normalizeKeyCombo(this.props.combo);
         const components = [] as JSX.Element[];
+        const rootClasses = classNames("pt-key-combo", this.props.className);
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i];
             const icon = KeyIcons[key];
@@ -54,6 +57,6 @@ export class KeyCombo extends React.Component<IKeyComboProps, {}> {
                 );
             }
         }
-        return <span className="pt-key-combo">{components}</span>;
+        return <span className={rootClasses}>{components}</span>;
     }
 }
