@@ -26,6 +26,7 @@ export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";
 export * from "./overlayExample";
 export * from "./popoverExample";
+export * from "./popoverPositionExample";
 export * from "./progressExample";
 export * from "./rangeSliderExample";
 export * from "./radioExample";

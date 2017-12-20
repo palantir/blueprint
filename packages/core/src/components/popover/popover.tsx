@@ -436,8 +436,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         );
     }
 
-    // content and target can be specified as props or as children.
-    // this method normalizes the two approaches, preferring child over prop.
+    // content and target can be specified as props or as children. this method
+    // normalizes the two approaches, preferring child over prop.
     private understandChildren() {
         const { children, content: contentProp, target: targetProp } = this.props;
         // #validateProps asserts that 1 <= children.length <= 2 so content is optional

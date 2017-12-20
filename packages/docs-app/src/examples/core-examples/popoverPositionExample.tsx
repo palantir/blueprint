@@ -7,22 +7,25 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { Button, ButtonGroup, Classes, Popover, Position } from "@blueprintjs/core";
+import { Button, Popover, Position } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
-
-const CENTER_LABEL = "(center)";
 
 const EXAMPLE_CLASS = "docs-popover-position-example";
 
-const TABLE_CLASS = `${EXAMPLE_CLASS}-table`;
-const ROW_CLASS = `${EXAMPLE_CLASS}-row`;
-const CELL_CLASS = `${EXAMPLE_CLASS}-cell`;
+// Avoid interpolation to ensure these values remain grep-able.
+const BUTTON_CLASS = "docs-popover-position-example-button";
+const INSTRUCTIONS_CLASS = "docs-popover-position-example-instructions";
 
-const CELL_LEFT_CLASS = `${CELL_CLASS}-left`;
-const CELL_CENTER_CLASS = `${CELL_CLASS}-center`;
-const CELL_RIGHT_CLASS = `${CELL_CLASS}-right`;
+const TABLE_CLASS = "docs-popover-position-example-table";
+const ROW_CLASS = "docs-popover-position-example-row";
+const CELL_CLASS = "docs-popover-position-example-cell";
 
-const INSTRUCTIONS_CLASS = `${EXAMPLE_CLASS}-instructions`;
+const CELL_LEFT_CLASS = "docs-popover-position-example-cell-left";
+const CELL_CENTER_CLASS = "docs-popover-position-example-cell-center";
+const CELL_RIGHT_CLASS = "docs-popover-position-example-cell-right";
+
+const SIDE_LABEL_CLASS = "docs-popover-position-label-side";
+const ALIGNMENT_LABEL_CLASS = "docs-popover-position-label-alignment";
 
 export class PopoverPositionExample extends BaseExample<{}> {
     protected className = EXAMPLE_CLASS;
@@ -33,17 +36,17 @@ export class PopoverPositionExample extends BaseExample<{}> {
                 <tr className={ROW_CLASS}>
                     <td className={CELL_LEFT_CLASS} />
                     <td className={classNames(CELL_CLASS, CELL_CENTER_CLASS)}>
-                        {this.renderPopover(Position.BOTTOM_LEFT, "BOTTOM_LEFT", "BOTTOM", "LEFT")}
-                        {this.renderPopover(Position.BOTTOM, "BOTTOM", "BOTTOM", "(center)")}
-                        {this.renderPopover(Position.BOTTOM_RIGHT, "BOTTOM_RIGHT", "BOTTOM", "RIGHT")}
+                        {this.renderPopover(Position.BOTTOM_LEFT, "BOTTOM", "LEFT")}
+                        {this.renderPopover(Position.BOTTOM, "BOTTOM")}
+                        {this.renderPopover(Position.BOTTOM_RIGHT, "BOTTOM", "RIGHT")}
                     </td>
                     <td className={CELL_RIGHT_CLASS} />
                 </tr>
                 <tr className={ROW_CLASS}>
                     <td className={classNames(CELL_CLASS, CELL_LEFT_CLASS)}>
-                        {this.renderPopover(Position.RIGHT_TOP, "RIGHT_TOP", "RIGHT", "TOP")}
-                        {this.renderPopover(Position.RIGHT, "RIGHT", "RIGHT", "(center)")}
-                        {this.renderPopover(Position.RIGHT_BOTTOM, "RIGHT_BOTTOM", "RIGHT", "BOTTOM")}
+                        {this.renderPopover(Position.RIGHT_TOP, "RIGHT", "TOP")}
+                        {this.renderPopover(Position.RIGHT, "RIGHT")}
+                        {this.renderPopover(Position.RIGHT_BOTTOM, "RIGHT", "BOTTOM")}
                     </td>
                     <td className={classNames(CELL_CLASS, CELL_CENTER_CLASS)}>
                         <span className={INSTRUCTIONS_CLASS}>
@@ -51,17 +54,17 @@ export class PopoverPositionExample extends BaseExample<{}> {
                         </span>
                     </td>
                     <td className={classNames(CELL_CLASS, CELL_RIGHT_CLASS)}>
-                        {this.renderPopover(Position.LEFT_TOP, "LEFT_TOP", "LEFT", "TOP")}
-                        {this.renderPopover(Position.LEFT, "LEFT", "LEFT", "(center)")}
-                        {this.renderPopover(Position.LEFT_BOTTOM, "LEFT_BOTTOM", "LEFT", "BOTTOM")}
+                        {this.renderPopover(Position.LEFT_TOP, "LEFT", "TOP")}
+                        {this.renderPopover(Position.LEFT, "LEFT")}
+                        {this.renderPopover(Position.LEFT_BOTTOM, "LEFT", "BOTTOM")}
                     </td>
                 </tr>
                 <tr className={ROW_CLASS}>
                     <td className={CELL_LEFT_CLASS} />
                     <td className={classNames(CELL_CLASS, CELL_CENTER_CLASS)}>
-                        {this.renderPopover(Position.TOP_LEFT, "TOP_LEFT", "TOP", "LEFT")}
-                        {this.renderPopover(Position.TOP, "TOP", "TOP", "(center)")}
-                        {this.renderPopover(Position.TOP_RIGHT, "TOP_RIGHT", "TOP", "RIGHT")}
+                        {this.renderPopover(Position.TOP_LEFT, "TOP", "LEFT")}
+                        {this.renderPopover(Position.TOP, "TOP")}
+                        {this.renderPopover(Position.TOP_RIGHT, "TOP", "RIGHT")}
                     </td>
                     <td className={CELL_RIGHT_CLASS} />
                 </tr>
@@ -69,26 +72,39 @@ export class PopoverPositionExample extends BaseExample<{}> {
         );
     }
 
-    private renderPopover(position: "auto" | Position, buttonLabel: string, popoverLabel: string, arrowLabel: string) {
-        const alignMessage =
-            arrowLabel === CENTER_LABEL ? (
+    private renderPopover(position: "auto" | Position, sideLabel: string, alignmentLabel?: string) {
+        const sideSpan = <span className={SIDE_LABEL_CLASS}>{sideLabel}</span>;
+
+        const buttonLabel =
+            alignmentLabel === undefined ? (
+                <>{sideSpan}</>
+            ) : (
                 <>
-                    Aligned at <code>(center)</code>.
+                    {sideSpan}_{<span className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</span>}
+                </>
+            );
+
+        const popoverAlignmentSentence =
+            alignmentLabel === undefined ? (
+                <>
+                    Aligned at <code className={ALIGNMENT_LABEL_CLASS}>(center)</code>.
                 </>
             ) : (
                 <>
-                    Aligned on <code>{arrowLabel}</code> edge.
+                    Aligned on <code className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</code> edge.
                 </>
             );
+
         const content = (
             <div>
-                Popover on <code>{popoverLabel}</code>.<br />
-                {alignMessage}
+                Popover on <code className={SIDE_LABEL_CLASS}>{sideLabel}</code>.<br />
+                {popoverAlignmentSentence}
             </div>
         );
+
         return (
             <Popover content={content} inline={true} position={position}>
-                <Button>{buttonLabel}</Button>
+                <Button className={BUTTON_CLASS}>{buttonLabel}</Button>
             </Popover>
         );
     }

@@ -1,6 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
+@import "~@blueprintjs/core/src/common/variables";
+
 // Generate a selector for a page ID by reference
 @function page($ref, $comparator: "=") {
   @return "[data-page-id#{$comparator}\"#{$ref}\"]";
@@ -267,5 +269,21 @@
   .docs-react-example {
     width: 100%;
     height: $pt-grid-size * 30;
+  }
+}
+
+#{page("popover")} {
+  .docs-popover-position-value-code-block {
+    text-align: center;
+    font-size: $pt-font-size-large;
+    font-weight: 600;
+  }
+
+  .docs-popover-position-label-side {
+    color: $cobalt3;
+  }
+
+  .docs-popover-position-label-alignment {
+    color: $forest3;
   }
 }
