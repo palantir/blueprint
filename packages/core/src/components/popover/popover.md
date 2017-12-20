@@ -319,6 +319,8 @@ and make its content scrollable, set the appropriate CSS rules on `.pt-popover-c
 You can create a minimal popover with the `pt-minimal` modifier: `popoverClassName="pt-minimal"`.
 This removes the arrow from the popover and makes the transitions more subtle.
 
+@reactExample PopoverMinimalExample
+
 This minimal style is recommended for popovers that are not triggered by an obvious action like the
 user clicking or hovering over something. For example, a minimal popover is useful for making
 typeahead menus where the menu appears almost instantly after the user starts typing.

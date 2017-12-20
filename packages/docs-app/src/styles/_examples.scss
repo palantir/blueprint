@@ -261,6 +261,12 @@
   }
 }
 
+.docs-popover-minimal-example {
+  .pt-button:first-child {
+    margin-right: $pt-grid-size;
+  }
+}
+
 .docs-tooltip-example {
   > div {
     margin-bottom: $pt-grid-size;
