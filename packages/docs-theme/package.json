@@ -48,7 +48,9 @@
   "keywords": [
     "palantir",
     "blueprint",
-    "docs"
+    "docs",
+    "theme",
+    "documentalist"
   ],
   "author": "Palantir Technologies",
   "license": "Apache-2.0"
