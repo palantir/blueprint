@@ -800,6 +800,8 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
             return inputString == null ? "" : inputString;
         } else if (selectedValue == null) {
             return "";
+        } else if (!isValid(selectedValue)) {
+            return this.props.invalidDateMessage;
         } else if (!this.isDateInRange(selectedValue)) {
             return this.props.outOfRangeMessage;
         } else if (this.doesEndBoundaryOverlapStartBoundary(selectedValue, boundary)) {
@@ -916,9 +918,9 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
         const diffInDays = differenceInDays(boundaryDate, otherBoundaryDate);
         if (boundary === DateRangeBoundary.START) {
-            return allowSingleDayRange ? diffInDays > 0 : diffInDays === 0;
+            return allowSingleDayRange ? diffInDays > 0 : diffInDays >= 0;
         } else {
-            return allowSingleDayRange ? diffInDays < 0 : diffInDays === 0;
+            return allowSingleDayRange ? diffInDays < 0 : diffInDays <= 0;
         }
     };
 
@@ -969,8 +971,8 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         return isWithinRange(value, this.props.minDate, this.props.maxDate);
     }
 
-    private isNextDateRangeValid(nextMomentDate: Date, boundary: DateRangeBoundary) {
-        return this.isDateValidAndInRange(nextMomentDate) && !this.doBoundaryDatesOverlap(nextMomentDate, boundary);
+    private isNextDateRangeValid(nextDate: Date, boundary: DateRangeBoundary) {
+        return this.isDateValidAndInRange(nextDate) && !this.doBoundaryDatesOverlap(nextDate, boundary);
     }
 
     // this is a slightly kludgy function, but it saves us a good amount of repeated code between
