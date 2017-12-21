@@ -282,13 +282,15 @@ The backdrop element has the same opacity-fade transition as the `Dialog` backdr
 
 @### Inline rendering
 
-By default, popover contents are rendered in a newly created [`Portal`](#core/components/portal) appended to document.body. This works well for most layouts, because popovers by default will appear above everything else on the page without needing to manually adjust z-indices.
+By default, popover contents are rendered in a newly created [`Portal`](#core/components/portal) appended to `document.body`. This works well for most layouts, because popovers by default will appear above everything else on the page without needing to manually adjust z-indices.
 
 However, there are cases where it's preferable to render the popover contents inline in the DOM.
 
 For example, consider a scrolling table where cells have tooltips attached to them. As row items go out of view, cell tooltips should slide out of the viewport as well. This is best accomplished with inline popovers.
 
 Setting `inline={true}` will enable inline rendering.
+
+@reactExample PopoverInlineExample
 
 @## Style
 
