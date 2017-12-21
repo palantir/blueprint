@@ -6,11 +6,10 @@
 
 import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import { ITsInterfaceEntry } from "documentalist/dist/client";
+import { ITsClass, ITsInterface, ITsProperty } from "documentalist/dist/client";
 import * as React from "react";
-import { IInheritedPropertyEntry } from "../common/propsStore";
 import { ITagRendererMap } from "../tags";
-import { renderContentsBlock } from "./block";
+import { renderBlock } from "./block";
 
 // HACKHACK support `code` blocks until we get real markdown parsing in ts-quick-docs
 function dirtyMarkdown(text: string) {
@@ -31,35 +30,27 @@ function propTag(intent: Intent, title: string, ...children: React.ReactNode[]) 
     );
 }
 
-const renderPropRow = (prop: IInheritedPropertyEntry) => {
-    const { documentation, inheritedFrom, name, optional } = prop;
-    const { default: defaultValue, deprecated, internal } = prop.tags;
-
-    if (internal) {
-        return undefined;
-    }
+const renderPropRow = (prop: ITsProperty) => {
+    const { defaultValue, documentation, flags: { isDeprecated, isExternal, isOptional }, name } = prop;
 
     const classes = classNames("docs-prop-name", {
-        "docs-prop-is-deprecated": deprecated != null,
-        "docs-prop-is-internal": internal,
-        "docs-prop-is-required": !optional,
+        "docs-prop-is-deprecated": !!isDeprecated,
+        "docs-prop-is-internal": !isExternal,
+        "docs-prop-is-required": !isOptional,
     });
 
     const tags: JSX.Element[] = [];
-    if (!optional) {
+    if (!isOptional) {
         tags.push(propTag(Intent.SUCCESS, "Required"));
     }
-    if (deprecated) {
+    if (!!isDeprecated) {
         const maybeMessage =
-            typeof deprecated === "string" ? (
-                <span key="__deprecated_msg" dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} />
+            typeof isDeprecated === "string" ? (
+                <span key="__deprecated_msg" dangerouslySetInnerHTML={dirtyMarkdown(": " + isDeprecated)} />
             ) : (
                 ""
             );
         tags.push(propTag(Intent.DANGER, "Deprecated", maybeMessage));
-    }
-    if (inheritedFrom != null) {
-        tags.push(propTag(Intent.NONE, "Inherited", " from ", <code key="__code">{inheritedFrom}</code>));
     }
 
     const formattedType = prop.type.replace(/\b(JSX\.)?Element\b/, "JSX.Element");
@@ -86,8 +77,8 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
 };
 
 export interface IInterfaceTableProps {
-    iface: ITsInterfaceEntry;
-    props: IInheritedPropertyEntry[];
+    iface: ITsClass | ITsInterface;
+    props: ITsProperty[];
     tagRenderers: ITagRendererMap;
 }
 
@@ -95,7 +86,7 @@ export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({ iface, props, 
     return (
         <div className="docs-modifiers">
             <div className="docs-interface-name">{iface.name}</div>
-            {renderContentsBlock(iface.documentation.contents, tagRenderers)}
+            {renderBlock(iface.documentation, tagRenderers)}
             <table className="pt-html-table">
                 <thead>
                     <tr>

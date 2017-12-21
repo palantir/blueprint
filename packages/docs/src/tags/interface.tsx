@@ -14,7 +14,7 @@ export class InterfaceTagRenderer {
     private propsStore: PropsStore;
 
     constructor(docs: ITypescriptPluginData) {
-        this.propsStore = new PropsStore(docs.ts);
+        this.propsStore = new PropsStore(docs.typescript);
     }
 
     public render: TagRenderer = ({ value: name }, key, tagRenderers) => {
