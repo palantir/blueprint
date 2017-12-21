@@ -1846,7 +1846,7 @@ dashdash@^1.12.0:
 
 date-fns@^1.29.0:
   version "1.29.0"
-  resolved "https://artifactory.palantir.build:443/artifactory/api/npm/all-npm/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
 
 date-now@^0.1.4:
   version "0.1.4"
