@@ -231,12 +231,16 @@ Styleguide pt-button-group
       margin-bottom: -$button-border-width;
     }
 
-    &.pt-minimal .pt-button {
-      &:not(:last-child) {
+    &.pt-minimal {
+      // apply the margin and divider to the .pt-popover-wrapper so that the
+      // popover arrow remains centered on the button.
+      > .pt-popover-wrapper:not(:last-child),
+      > .pt-button:not(:last-child) {
         margin-bottom: $pt-grid-size + $minimal-button-divider-width;
       }
 
-      &::after {
+      > .pt-popover-wrapper .pt-popover-target .pt-button::after,
+      > .pt-button::after {
         top: 100%;
         right: 0;
         bottom: auto;

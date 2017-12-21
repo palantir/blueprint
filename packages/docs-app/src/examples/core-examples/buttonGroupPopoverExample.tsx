@@ -15,6 +15,7 @@ import { IntentSelect } from "./common/intentSelect";
 export interface IButtonGroupPopoverExampleState {
     intent?: Intent;
     large?: boolean;
+    minimal?: boolean;
     vertical?: boolean;
 }
 
@@ -22,6 +23,7 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
     public state: IButtonGroupPopoverExampleState = {
         intent: Intent.NONE,
         large: false,
+        minimal: false,
         vertical: false,
     };
 
@@ -29,15 +31,16 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
 
     private handleIntentChange = handleNumberChange(intent => this.setState({ intent }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+    private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 
     protected renderExample() {
-        const { intent, large, vertical } = this.state;
+        const { intent, large, minimal, vertical } = this.state;
         const menuContent = <FileMenu />;
         const rightIconName = vertical ? "caret-right" : "caret-down";
         const position = vertical ? Position.RIGHT_TOP : Position.BOTTOM_LEFT;
         return (
-            <ButtonGroup {...{ large, vertical }} className={classNames({ [Classes.ALIGN_LEFT]: vertical })}>
+            <ButtonGroup {...{ large, minimal, vertical }} className={classNames({ [Classes.ALIGN_LEFT]: vertical })}>
                 <Popover content={menuContent} {...{ position }}>
                     <Button intent={intent} iconName="document" {...{ rightIconName }} text="File" />
                 </Popover>
@@ -54,9 +57,20 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
     protected renderOptions() {
         return [
             [
-                <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />,
-                <Switch checked={this.state.large} onChange={this.handleLargeChange} label="Large" />,
-                <Switch checked={this.state.vertical} onChange={this.handleVerticalChange} label="Vertical" />,
+                <IntentSelect key="intent" intent={this.state.intent} onChange={this.handleIntentChange} />,
+                <Switch key="large" checked={this.state.large} onChange={this.handleLargeChange} label="Large" />,
+                <Switch
+                    key="minimal"
+                    checked={this.state.minimal}
+                    onChange={this.handleMinimalChange}
+                    label="Minimal"
+                />,
+                <Switch
+                    key="vertical"
+                    checked={this.state.vertical}
+                    onChange={this.handleVerticalChange}
+                    label="Vertical"
+                />,
             ],
         ];
     }
