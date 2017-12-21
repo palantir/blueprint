@@ -155,13 +155,18 @@ state.
 
 Providing a non-null value for `isOpen` disables all automatic interaction and instead invokes
 the `onInteraction` callback prop any time the opened state _would have changed_ in response to
-user interaction under the current `interactionKind`. As a result, the `isDisabled` prop is
-incompatible with `isOpen`, and an error is thrown if both are set.
+user interaction under the current `interactionKind`.
 
 Note that there are cases where `onInteraction` is invoked with an unchanged open state.
 It is important to pay attention to the value of the `nextOpenState` parameter and determine
 in your application logic whether you should care about a particular invocation (for instance,
 if the `nextOpenState` is not the same as the `Popover`'s current state).
+
+<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
+    <h5>Disabling controlled popovers</h5>
+    <p>If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
+    The popover will re-open when `disabled` is set to `false.</p>
+</div>
 
 #### Example controlled usage
 

@@ -77,7 +77,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     interactionKind?: PopoverInteractionKind;
 
     /**
-     * Prevents the popover from appearing when `true`.
+     * Prevents the popover from appearing when `true`, even if `isOpen={true}`.
      * @default false
      */
     disabled?: boolean;
@@ -94,6 +94,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     /**
      * Whether the popover is visible. Passing this prop puts the popover in
      * controlled mode, where the only way to change visibility is by updating this property.
+     * If `disabled={true}`, this prop will be ignored, and the popover will remain closed.
      * @default undefined
      */
     isOpen?: boolean;
