@@ -13,8 +13,6 @@ module.exports = function (config) {
             // not worth full coverage
             "src/accessibility/*",
             "src/common/abstractComponent*",
-            // TODO (clewis): write tests for these component as part of the 2.0 effort:
-            "src/components/tag-input/*",
         ],
     });
     config.set(baseConfig);
