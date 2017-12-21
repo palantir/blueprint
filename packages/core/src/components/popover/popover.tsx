@@ -237,16 +237,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public constructor(props?: IPopoverProps, context?: any) {
         super(props, context);
-
-        // TODO: isOpen should always be false if disabled=true
-        let isOpen = props.defaultIsOpen && !props.disabled;
-        if (props.isOpen != null) {
-            isOpen = props.isOpen;
-        }
-
         this.state = {
             hasDarkParent: false,
-            isOpen,
+            isOpen: this.getIsOpen(props),
         };
     }
 
@@ -329,13 +322,17 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     public componentWillReceiveProps(nextProps: IPopoverProps) {
         super.componentWillReceiveProps(nextProps);
 
-        if (nextProps.isOpen == null && nextProps.disabled && !this.props.disabled) {
-            // ok to use setOpenState here because disabled and isOpen are mutex.
+        const nextIsOpen = this.getIsOpen(nextProps);
+
+        if (nextProps.isOpen != null && nextIsOpen !== this.state.isOpen) {
+            this.setOpenState(nextIsOpen);
+            if (nextProps.isOpen != null) {
+                // setOpenState only calls setState if isOpen is not controlled.
+                this.setState({ isOpen: nextIsOpen });
+            }
+        } else if (this.state.isOpen && nextProps.isOpen == null && nextProps.disabled) {
+            // special case: close an uncontrolled popover when disabled is set to true
             this.setOpenState(false);
-        } else if (nextProps.isOpen !== this.props.isOpen) {
-            // propagate isOpen prop directly to state, circumventing onInteraction callback
-            // (which would be invoked if this went through setOpenState)
-            this.setState({ isOpen: nextProps.isOpen });
         }
     }
 
@@ -461,6 +458,17 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             content: ensureElement(contentChild == null ? contentProp : contentChild),
             target: ensureElement(targetChild == null ? targetProp : targetChild),
         };
+    }
+
+    private getIsOpen(props?: IPopoverProps) {
+        // disabled popovers should never be allowed to open.
+        if (props.disabled) {
+            return false;
+        } else if (props.isOpen != null) {
+            return props.isOpen;
+        } else {
+            return props.defaultIsOpen;
+        }
     }
 
     private handleContentMount = () => {

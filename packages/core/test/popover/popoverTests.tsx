@@ -25,6 +25,11 @@ import { Portal } from "../../src/index";
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper;
+    let onInteractionSpy: sinon.SinonSpy;
+
+    before(() => {
+        onInteractionSpy = sinon.spy();
+    });
 
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
@@ -32,6 +37,7 @@ describe("<Popover>", () => {
     });
 
     afterEach(() => {
+        onInteractionSpy.reset();
         if (wrapper !== undefined) {
             // clean up wrapper to remove Portal element from DOM
             wrapper.detach();
@@ -386,8 +392,41 @@ describe("<Popover>", () => {
                 .assertIsOpen();
         });
 
-        it("disabled is ignored", () => {
-            renderPopover({ disabled: true, isOpen: true }).assertIsOpen();
+        describe("disabled=true takes precedence over isOpen=true", () => {
+            it("on mount", () => {
+                renderPopover({ disabled: true, isOpen: true }).assertIsOpen(false);
+            });
+
+            it("onInteraction not called if changing from closed to open (b/c popover is still closed)", () => {
+                renderPopover({ disabled: true, isOpen: false, onInteraction: onInteractionSpy })
+                    .assertOnInteractionCalled(false)
+                    .setProps({ isOpen: true })
+                    .assertIsOpen(false)
+                    .assertOnInteractionCalled(false);
+            });
+
+            it("onInteraction not called if changing from open to closed (b/c popover was already closed)", () => {
+                renderPopover({ disabled: true, isOpen: true, onInteraction: onInteractionSpy })
+                    .assertOnInteractionCalled(false)
+                    .setProps({ isOpen: false })
+                    .assertOnInteractionCalled(false);
+            });
+
+            it("onInteraction called if open and changing to disabled (b/c popover will close)", () => {
+                renderPopover({ disabled: false, isOpen: true, onInteraction: onInteractionSpy })
+                    .assertIsOpen()
+                    .assertOnInteractionCalled(false)
+                    .setProps({ disabled: true })
+                    .assertOnInteractionCalled();
+            });
+
+            it("onInteraction called if open and changing to not-disabled (b/c popover will open)", () => {
+                renderPopover({ disabled: true, isOpen: true, onInteraction: onInteractionSpy })
+                    .assertOnInteractionCalled(false)
+                    .setProps({ disabled: false })
+                    .assertIsOpen()
+                    .assertOnInteractionCalled();
+            });
         });
 
         it("onClose is invoked with event when popover would close", () => {
@@ -642,6 +681,7 @@ describe("<Popover>", () => {
     interface IPopoverWrapper extends ReactWrapper<IPopoverProps, IPopoverState> {
         popover: HTMLElement;
         assertIsOpen(isOpen?: boolean): this;
+        assertOnInteractionCalled(called?: boolean): this;
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
@@ -659,6 +699,10 @@ describe("<Popover>", () => {
         wrapper.popover = (wrapper.instance() as Popover).popoverElement;
         wrapper.assertIsOpen = (isOpen = true) => {
             assert.equal(wrapper.find(Overlay).prop("isOpen"), isOpen, "assertIsOpen");
+            return wrapper;
+        };
+        wrapper.assertOnInteractionCalled = (called = true) => {
+            assert.strictEqual(onInteractionSpy.called, called, "assertOnInteractionCalled");
             return wrapper;
         };
         wrapper.findClass = (className: string) => wrapper.find(`.${className}`).hostNodes();
