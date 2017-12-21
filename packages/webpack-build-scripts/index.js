@@ -14,6 +14,7 @@ module.exports = {
         "@blueprintjs/labs": "var Blueprint.Labs",
         "@blueprintjs/table": "var Blueprint.Table",
         "classnames": "classNames",
+        "date-fns": "date-fns",
         "dom4": "window",
         "es6-shim": "window",
         "jquery": "$",
