@@ -13,7 +13,6 @@ export class PropsStore {
         // TODO: need better library support for this https://github.com/giladgray/ts-quick-docs/issues/25
         // remove generics from end of name
         const actualName = /^(\w+)<?/.exec(name)[1];
-        console.log(name, actualName);
         return this.props[actualName];
     };
 
