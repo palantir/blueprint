@@ -5,23 +5,13 @@
  */
 import { DateFormat } from "../dateFormatter";
 import { Months } from "./months";
-import * as dateFnFormat from "date-fns/format";
+import { format, isSameDay } from "date-fns";
 
 export type DateRange = [Date | undefined, Date | undefined];
 
 export enum DateRangeBoundary {
     START,
     END,
-}
-
-export function areEqual(date1: Date, date2: Date) {
-    if (date1 == null && date2 == null) {
-        return true;
-    } else if (date1 == null || date2 == null) {
-        return false;
-    } else {
-        return date1.getTime() === date2.getTime();
-    }
 }
 
 export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
@@ -32,29 +22,10 @@ export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
     } else {
         const [start1, end1] = dateRange1;
         const [start2, end2] = dateRange2;
-        const areStartsEqual = (start1 == null && start2 == null) || areSameDay(start1, start2);
-        const areEndsEqual = (end1 == null && end2 == null) || areSameDay(end1, end2);
+        const areStartsEqual = (start1 == null && start2 == null) || isSameDay(start1, start2);
+        const areEndsEqual = (end1 == null && end2 == null) || isSameDay(end1, end2);
         return areStartsEqual && areEndsEqual;
     }
-}
-
-export function areSameDay(date1: Date, date2: Date) {
-    return (
-        date1 != null &&
-        date2 != null &&
-        date1.getDate() === date2.getDate() &&
-        date1.getMonth() === date2.getMonth() &&
-        date1.getFullYear() === date2.getFullYear()
-    );
-}
-
-export function areSameMonth(date1: Date, date2: Date) {
-    return (
-        date1 != null &&
-        date2 != null &&
-        date1.getMonth() === date2.getMonth() &&
-        date1.getFullYear() === date2.getFullYear()
-    );
 }
 
 export function areSameTime(date1: Date, date2: Date) {
@@ -85,7 +56,7 @@ export function isDayInRange(date: Date, dateRange: DateRange, exclusive = false
     start.setHours(0, 0, 0, 0);
     end.setHours(0, 0, 0, 0);
 
-    return start <= day && day <= end && (!exclusive || (!areSameDay(start, day) && !areSameDay(day, end)));
+    return start <= day && day <= end && (!exclusive || (!isSameDay(start, day) && !isSameDay(day, end)));
 }
 
 export function isDayRangeInRange(innerRange: DateRange, outerRange: DateRange) {
@@ -211,10 +182,10 @@ export function getLocale(localeString: String): any {
 }
 
 
-export function dateToString(date: Date, format: DateFormat, locale: string | undefined) {
-    if (typeof format === "string") {
-        return dateFnFormat(date, format, {locale: getLocale(locale)});
+export function dateToString(date: Date, dateFormat: DateFormat, locale: string | undefined) {
+    if (typeof dateFormat === "string") {
+        return format(date, dateFormat, {locale: getLocale(locale)});
     } else {
-        return format.dateToString(date);
+        return dateFormat.dateToString(date);
     }
 }

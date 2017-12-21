@@ -15,6 +15,7 @@ import * as Errors from "./common/errors";
 
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { isSameDay } from 'date-fns';
 
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
@@ -181,7 +182,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
             throw new Error(Errors.DATEPICKER_INITIAL_MONTH_INVALID);
         }
 
-        if (maxDate != null && minDate != null && maxDate < minDate && !DateUtils.areSameDay(maxDate, minDate)) {
+        if (maxDate != null && minDate != null && maxDate < minDate && !isSameDay(maxDate, minDate)) {
             throw new Error(Errors.DATEPICKER_MAX_DATE_INVALID);
         }
 

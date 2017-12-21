@@ -28,6 +28,7 @@ import {
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
+import { isSameDay, isSameMonth } from 'date-fns';
 
 export interface IDateRangeShortcut {
     label: string;
@@ -135,8 +136,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             const { value } = this.state;
             return value[0] != null && value[1] != null && DateUtils.isDayInRange(day, value, true);
         },
-        [`${SELECTED_RANGE_MODIFIER}-start`]: day => DateUtils.areSameDay(this.state.value[0], day),
-        [`${SELECTED_RANGE_MODIFIER}-end`]: day => DateUtils.areSameDay(this.state.value[1], day),
+        [`${SELECTED_RANGE_MODIFIER}-start`]: day => isSameDay(this.state.value[0], day),
+        [`${SELECTED_RANGE_MODIFIER}-end`]: day => isSameDay(this.state.value[1], day),
 
         [HOVERED_RANGE_MODIFIER]: (day: Date) => {
             const { hoverValue, value } = this.state;
@@ -154,14 +155,14 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             if (hoverValue == null || hoverValue[0] == null) {
                 return false;
             }
-            return DateUtils.areSameDay(hoverValue[0], day);
+            return isSameDay(hoverValue[0], day);
         },
         [`${HOVERED_RANGE_MODIFIER}-end`]: (day: Date) => {
             const { hoverValue } = this.state;
             if (hoverValue == null || hoverValue[1] == null) {
                 return false;
             }
-            return DateUtils.areSameDay(hoverValue[1], day);
+            return isSameDay(hoverValue[1], day);
         },
     };
 
@@ -192,8 +193,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         // allowable range, the react-day-picker library will show
         // the max month on the left and the *min* month on the right.
         // subtracting one avoids that weird, wraparound state (#289).
-        const initialMonthEqualsMinMonth = DateUtils.areSameMonth(initialMonth, props.minDate);
-        const initalMonthEqualsMaxMonth = DateUtils.areSameMonth(initialMonth, props.maxDate);
+        const initialMonthEqualsMinMonth = isSameMonth(initialMonth, props.minDate);
+        const initalMonthEqualsMaxMonth = isSameMonth(initialMonth, props.maxDate);
         if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
             initialMonth.setMonth(initialMonth.getMonth() - 1);
         }
@@ -220,7 +221,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             maxDate,
             minDate,
         } = this.props;
-        const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
+        const isShowingOneMonth = isSameMonth(this.props.minDate, this.props.maxDate);
 
         const { leftView, rightView } = this.state;
         const disabledDays = this.getDisabledDaysModifier();
@@ -312,7 +313,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             throw new Error(Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
         }
 
-        if (maxDate != null && minDate != null && maxDate < minDate && !DateUtils.areSameDay(maxDate, minDate)) {
+        if (maxDate != null && minDate != null && maxDate < minDate && !isSameDay(maxDate, minDate)) {
             throw new Error(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         }
 
@@ -626,7 +627,7 @@ function getStateChange(
             // If the selected month isn't in either of the displayed months, then
             //   - set the left DayPicker to be the selected month
             //   - set the right DayPicker to +1
-            if (DateUtils.areSameMonth(nextValueStart, nextValueEnd)) {
+            if (isSameMonth(nextValueStart, nextValueEnd)) {
                 const potentialLeftEqualsNextValueStart = leftView.isSame(nextValueStartMonthAndYear);
                 const potentialRightEqualsNextValueStart = rightView.isSame(nextValueStartMonthAndYear);
 
