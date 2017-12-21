@@ -34,6 +34,9 @@ export interface ITagInputProps extends IProps {
     /** React props to pass to the `<input>` element */
     inputProps?: HTMLInputProps;
 
+    /** Initial value of the `<input>` element */
+    inputValue?: string;
+
     /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
     leftIconName?: IconName;
 
@@ -68,6 +71,9 @@ export interface ITagInputProps extends IProps {
      * ```
      */
     onChange?: (values: React.ReactNode[]) => boolean | void;
+
+    /** Callback invoked when the value of `<input>` element is changed */
+    onInputChange?: React.FormEventHandler<HTMLInputElement>;
 
     /**
      * Callback invoked when the user depresses a keyboard key.
@@ -148,13 +154,14 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     public static defaultProps: Partial<ITagInputProps> & object = {
         inputProps: {},
+        inputValue: "",
         separator: ",",
         tagProps: {},
     };
 
     public state: ITagInputState = {
         activeIndex: NONE,
-        inputValue: "",
+        inputValue: this.props.inputValue,
         isInputFocused: false,
     };
 
@@ -289,13 +296,13 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     private handleContainerKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
         // preventDefault may have been called from the input's keydown handler.
-        if (!event.isDefaultPrevented()) {
+        if (!event.isPropagationStopped()) {
             Utils.safeInvoke(this.props.onKeyDown, event, this.state.activeIndex);
         }
     };
 
     private handleContainerKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        if (!event.isDefaultPrevented()) {
+        if (!event.isPropagationStopped()) {
             Utils.safeInvoke(this.props.onKeyUp, event, this.state.activeIndex);
         }
     };
@@ -307,7 +314,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ activeIndex: NONE, inputValue: event.currentTarget.value });
-        Utils.safeInvoke(this.props.inputProps.onChange, event);
+        Utils.safeInvoke(this.props.onInputChange, event);
     };
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -338,10 +345,9 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
                 this.handleBackspaceToRemove(event);
             }
         }
-
         // preventDefault to tell the wrapping container that we've already
         // invoked onKeyDown at this level (with an `undefined` index).
-        event.preventDefault();
+        event.stopPropagation();
         Utils.safeInvoke(this.props.onKeyDown, event, undefined);
         Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
     };
@@ -349,7 +355,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     private handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         // again, prevent onKeyUp from being reinvoked when the event bubbles up
         // to the container.
-        event.preventDefault();
+        event.stopPropagation();
         Utils.safeInvoke(this.props.inputProps.onKeyUp, event);
         Utils.safeInvoke(this.props.onKeyUp, event, undefined);
     };

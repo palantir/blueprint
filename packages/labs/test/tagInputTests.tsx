@@ -25,6 +25,11 @@ describe("<TagInput>", () => {
         assert.strictEqual(onBlur.args[0][0], fakeEvent);
     });
 
+    it("passes inputValue to input element", () => {
+        const input = shallow(<TagInput values={VALUES} inputValue="test-val" />).find("input");
+        assert.isTrue(input.prop("value") === "test-val");
+    });
+
     it("renders a Tag for each value", () => {
         const wrapper = mount(<TagInput values={VALUES} />);
         assert.lengthOf(wrapper.find(Tag), VALUES.length);
@@ -270,6 +275,34 @@ describe("<TagInput>", () => {
         });
     });
 
+    describe("onInputChange", () => {
+        it("is not invoked on enter when input is empty", () => {
+            const onInputChange = sinon.stub();
+            const wrapper = shallow(<TagInput onInputChange={onInputChange} values={VALUES} />);
+            pressEnterInInput(wrapper, "");
+            assert.isTrue(onInputChange.notCalled);
+        });
+
+        it("is invoked when input text changes", () => {
+            const changeSpy: any = sinon.spy();
+            const wrapper = shallow(<TagInput onInputChange={changeSpy} values={VALUES} />);
+            wrapper.find("input").simulate("change", { currentTarget: { value: "hello" } });
+            assert.isTrue(changeSpy.calledOnce, "onChange called");
+            console.log(changeSpy.args[0][0]);
+            assert.equal("hello", changeSpy.args[0][0].currentTarget.value);
+
+            // wrapper
+            //     .find("input")
+            //     .simulate("change", { currentTarget: { value: "hello" } })
+            //     .simulate("change", { currentTarget: { value: " " } })
+            //     .simulate("change", { currentTarget: { value: "world" } });
+            // assert.isTrue(changeSpy.calledThrice, "onChange called thrice");
+            // console.log("CHANGE SPY");
+            // console.log(changeSpy.args);
+            // assert.deepEqual(changeSpy.args, [["hello"], [" "], ["world"]]);
+        });
+    });
+
     describe("onKeyDown", () => {
         it("pressing a key down when focused on the container, invokes with the active tag index", () => {
             const onKeyDown = sinon.spy();
@@ -424,8 +457,8 @@ describe("<TagInput>", () => {
     function createInputKeydownEventMetadata(value: string, which: number) {
         return {
             currentTarget: { value },
-            // Enzyme throws errors if we don't mock the preventDefault method.
-            preventDefault: () => {
+            // Enzyme throws errors if we don't mock the stopPropagation method.
+            stopPropagation: () => {
                 return;
             },
             which,

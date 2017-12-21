@@ -84,6 +84,9 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                 placeholder="Separate values with commas..."
                 tagProps={getTagProps}
                 values={values}
+                onKeyDown={this.handleKeyDown}
+                inputValue="test"
+                onInputChange={this.handleInputChange}
             />
         );
     }
@@ -125,7 +128,14 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         ];
     }
 
-    private handleChange = (values: React.ReactNode[]) => this.setState({ values });
+    private handleKeyDown = (event: any, index: number) => console.log(index);
+    private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+        console.log("Value changed to " + event.target.value);
+
+    private handleChange = (values: React.ReactNode[]) => {
+        this.setState({ values });
+        console.log(values);
+    };
 
     private handleClear = () => this.handleChange(this.state.values.length > 0 ? [] : VALUES);
 }
