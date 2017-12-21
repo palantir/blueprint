@@ -7,12 +7,6 @@ const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const Table = require("../dist");
 
-const draggableElement = React.createElement("button");
-const customChildren = {
-    DragSelectable: draggableElement,
-    Draggable: draggableElement,
-};
-
 const customProps = {
     ResizeHandle: {
         // needs at least one handler or it returns undefined
@@ -21,13 +15,14 @@ const customProps = {
 };
 
 const classNameChildList = [
-    "CopyCellsMenuItem"
+    "CopyCellsMenuItem",
+    "ResizeHandle"
 ]
 
 const skipList = [
+    // Pass-through renders
     "DragSelectable",
     "Draggable",
-    "ResizeHandle",
 ]
 
 
@@ -35,7 +30,7 @@ describe("Table isomorphic rendering", () => {
     generateIsomorphicTests(
         Table,
         customProps,
-        customChildren,
+        {},
         skipList,
         classNameChildList
     );
