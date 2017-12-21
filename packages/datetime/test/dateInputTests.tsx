@@ -348,9 +348,9 @@ describe("<DateInput>", () => {
     describe("when controlled", () => {
         const DATE = new Date(2016, Months.APRIL, 4);
         const DATE_STR = "2016-04-04";
-        const DATE2 = new Date(2015, Months.FEBRUARY, 1);
-        const DATE2_STR = "2015-02-01";
-        const DATE2_DE_STR = "01.02.2015";
+        const DATE2 = new Date(2015, Months.MAY, 1);
+        const DATE2_STR = "2015-05-01";
+        const DATE2_DE_STR = "01-Mai-2015";
 
         it("Pressing Enter saves the inputted date and closes the popover", () => {
             const onKeyDown = sinon.spy();
@@ -416,7 +416,7 @@ describe("<DateInput>", () => {
         });
 
         it("Formats locale-specific format strings properly", () => {
-            const wrapper = mount(<DateInput locale="de" format="L" value={DATE2} />);
+            const wrapper = mount(<DateInput locale="de" format="DD-MMM-YYYY" value={DATE2} />);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_DE_STR);
         });
 

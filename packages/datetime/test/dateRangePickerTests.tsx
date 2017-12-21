@@ -15,6 +15,7 @@ import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
+import { isSameDay } from "date-fns";
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
@@ -27,7 +28,6 @@ import {
     IDateRangePickerProps,
 } from "../src/index";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
-import { isSameDay } from 'date-fns';
 
 describe("<DateRangePicker>", () => {
     let testsContainerElement: Element;
