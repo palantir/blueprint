@@ -7,6 +7,7 @@
 export * from "./alertExample";
 export * from "./buttonsExample";
 export * from "./buttonGroupExample";
+export * from "./buttonGroupPopoverExample";
 export * from "./checkboxExample";
 export * from "./collapseExample";
 export * from "./cardExample";
@@ -26,7 +27,6 @@ export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";
 export * from "./overlayExample";
 export * from "./popoverExample";
-export * from "./popoverButtonGroupExample";
 export * from "./popoverInteractionKindExample";
 export * from "./popoverMinimalExample";
 export * from "./popoverPositionExample";

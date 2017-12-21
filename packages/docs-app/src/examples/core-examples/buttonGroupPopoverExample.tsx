@@ -12,14 +12,14 @@ import * as React from "react";
 import { FileMenu } from "./common/fileMenu";
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IPopoverButtonGroupExampleState {
+export interface IButtonGroupPopoverExampleState {
     intent?: Intent;
     large?: boolean;
     vertical?: boolean;
 }
 
-export class PopoverButtonGroupExample extends BaseExample<IPopoverButtonGroupExampleState> {
-    public state: IPopoverButtonGroupExampleState = {
+export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverExampleState> {
+    public state: IButtonGroupPopoverExampleState = {
         intent: Intent.NONE,
         large: false,
         vertical: false,
@@ -39,19 +39,13 @@ export class PopoverButtonGroupExample extends BaseExample<IPopoverButtonGroupEx
         return (
             <ButtonGroup {...{ large, vertical }} className={classNames({ [Classes.ALIGN_LEFT]: vertical })}>
                 <Popover content={menuContent} {...{ position }}>
-                    <Button intent={intent} iconName="document" {...{ rightIconName }}>
-                        File
-                    </Button>
+                    <Button intent={intent} iconName="document" {...{ rightIconName }} text="File" />
                 </Popover>
                 <Popover content={menuContent} {...{ position }}>
-                    <Button intent={intent} iconName="edit" {...{ rightIconName }}>
-                        Edit
-                    </Button>
+                    <Button intent={intent} iconName="edit" {...{ rightIconName }} text="Edit" />
                 </Popover>
                 <Popover content={menuContent} {...{ position }}>
-                    <Button intent={intent} iconName="eye-open" {...{ rightIconName }}>
-                        View
-                    </Button>
+                    <Button intent={intent} iconName="eye-open" {...{ rightIconName }} text="View" />
                 </Popover>
             </ButtonGroup>
         );
