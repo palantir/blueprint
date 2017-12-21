@@ -6,7 +6,7 @@ Popovers display floating content next to a target element.
 Popper.js is a small (~6kb) library that offers a powerful, customizable
 positioning engine and operates at blazing speed (~60fps).
 
-The example below demonstrates some of the capabilities of our Popper.js-backed
+The example below demonstrates some of the capabilities of our Popper.js-powered
 `Popover`.
 
 @reactExample PopoverExample
@@ -52,24 +52,14 @@ The __target__ acts as the trigger for the popover; user interaction will show t
 positioned on the page next to the target; the `position` prop determines the relative position (on
 which side of the target).
 
-Internally, the provided target is wrapped in a `span.pt-popover-target`. This in turn is wrapped in a `span.pt-popover-wrapper`:
+Internally, the provided target is wrapped in a `span.pt-popover-target`. This in turn is wrapped in a `span.pt-popover-wrapper`. The extra `pt-popover-wrapper` is present so that both the popover and target will be wrapped in a single element when rendering popovers [inline](#core/components/popover.inline-rendering).
 
 ```tsx
 <span class="pt-popover-wrapper">
     <span class="pt-popover-target">
         <Button text="My target" />
     </span>
-</span>
-```
-
-The extra `pt-popover-wrapper` is present so that both the popover and target will be wrapped in a single element when rendering popovers [inline](#core/components/popover.inline-popovers):
-
-```tsx
-<span class="pt-popover-wrapper">
-    <span class="pt-popover-target">
-        <Button text="My target" />
-    </span>
-    <!-- Popover HTML goes here -->
+    <!-- inline Popover would render here -->
 </span>
 ```
 
@@ -84,7 +74,7 @@ The extra `pt-popover-wrapper` is present so that both the popover and target wi
 ```tsx
 const { Button, Intent, Popover, PopoverInteractionKind, Position } = "@blueprintjs/core";
 
-export class PopoverExample extends React.Component<{}, {}> {
+export class PopoverExample extends React.Component {
     public render() {
         // popover content gets no padding by default; add the "pt-popover-content-sizing"
         // class to the popover to set nice padding between its border and content,
@@ -290,6 +280,16 @@ The backdrop element has the same opacity-fade transition as the `Dialog` backdr
     must be handled by your application code or simply avoided if possible.
 </div>
 
+@### Inline rendering
+
+By default, popover contents are rendered in a newly created [`Portal`](#core/components/portal) appended to document.body. This works well for most layouts, because popovers by default will appear above everything else on the page without needing to manually adjust z-indices.
+
+However, there are cases where it's preferable to render the popover contents inline in the DOM.
+
+For example, consider a scrolling table where cells have tooltips attached to them. As row items go out of view, cell tooltips should slide out of the viewport as well. This is best accomplished with inline popovers.
+
+Setting `inline={true}` will enable inline rendering.
+
 @## Style
 
 @### Dark theme
@@ -322,7 +322,7 @@ and make its content scrollable, set the appropriate CSS rules on `.pt-popover-c
 
 @### Minimal style
 
-You can create a minimal popover with the `pt-minimal` modifier: `popoverClassName="pt-minimal"`.
+You can create a minimal popover by setting `minimal={true}`.
 This removes the arrow from the popover and makes the transitions more subtle.
 
 @reactExample PopoverMinimalExample
@@ -350,7 +350,7 @@ Hover interactions can also be tricky due to delays and transitions; this can be
 zeroing the default hover delays.
 
 ```tsx
- <Popover inline {...yourProps} hoverCloseDelay={0} hoverOpenDelay={0}>
+<Popover inline {...yourProps} hoverCloseDelay={0} hoverOpenDelay={0}>
     {yourTarget}
 </Popover>
 ```
@@ -372,12 +372,14 @@ wrapper = mount(
     </Popover>
 );
 
-wrapper.find(Target).simulate("mouseenter")
-wrapper.findClass(Classes.POPOVER).simulate("mouseenter")
-wrapper.findClass(Classes.POPOVER).simulate("mouseleave");
+wrapper.find(Target).simulate("mouseenter");
+
+// hostNodes() is an Enzyme 3 helper that retains only native-HTML nodes.
+wrapper.find(Classes.POPOVER).hostNodes().simulate("mouseenter");
+wrapper.find(Classes.POPOVER).hostNodes().simulate("mouseleave");
 
 setTimeout(() => {
-    // Popover defers popover closing, so need to defer this check
+    // Popover delays closing using setTimeout, so need to defer this check too.
     const isOpen = wrapper.find(Overlay).prop("isOpen");
     assert.equal(isOpen, false);
 });

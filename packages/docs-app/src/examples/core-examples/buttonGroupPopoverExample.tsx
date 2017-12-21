@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Button, ButtonGroup, Classes, Intent, Popover, Position, Switch } from "@blueprintjs/core";
+import { Button, ButtonGroup, Classes, IconName, Intent, Popover, Position, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
 import * as classNames from "classnames";
 import * as React from "react";
@@ -35,21 +35,18 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 
     protected renderExample() {
-        const { intent, large, minimal, vertical } = this.state;
-        const menuContent = <FileMenu />;
-        const rightIconName = vertical ? "caret-right" : "caret-down";
-        const position = vertical ? Position.RIGHT_TOP : Position.BOTTOM_LEFT;
+        const { large, minimal, vertical } = this.state;
+
         return (
-            <ButtonGroup {...{ large, minimal, vertical }} className={classNames({ [Classes.ALIGN_LEFT]: vertical })}>
-                <Popover content={menuContent} {...{ position }}>
-                    <Button intent={intent} iconName="document" {...{ rightIconName }} text="File" />
-                </Popover>
-                <Popover content={menuContent} {...{ position }}>
-                    <Button intent={intent} iconName="edit" {...{ rightIconName }} text="Edit" />
-                </Popover>
-                <Popover content={menuContent} {...{ position }}>
-                    <Button intent={intent} iconName="eye-open" {...{ rightIconName }} text="View" />
-                </Popover>
+            <ButtonGroup
+                large={large}
+                minimal={minimal}
+                vertical={vertical}
+                className={classNames({ [Classes.ALIGN_LEFT]: vertical })}
+            >
+                {this.renderButton("File", "document")}
+                {this.renderButton("Edit", "edit")}
+                {this.renderButton("View", "eye-open")}
             </ButtonGroup>
         );
     }
@@ -73,5 +70,16 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
                 />,
             ],
         ];
+    }
+
+    private renderButton(text: string, iconName: IconName) {
+        const { intent, vertical } = this.state;
+        const rightIconName: IconName = vertical ? "caret-right" : "caret-down";
+        const position = vertical ? Position.RIGHT_TOP : Position.BOTTOM_LEFT;
+        return (
+            <Popover content={<FileMenu />} position={position}>
+                <Button intent={intent} rightIconName={rightIconName} iconName={iconName} text={text} />
+            </Popover>
+        );
     }
 }

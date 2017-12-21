@@ -27,6 +27,7 @@ export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";
 export * from "./overlayExample";
 export * from "./popoverExample";
+export * from "./popoverInlineExample";
 export * from "./popoverInteractionKindExample";
 export * from "./popoverMinimalExample";
 export * from "./popoverPositionExample";
