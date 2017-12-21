@@ -4,8 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { isSameDay } from "date-fns";
 import { DateRange, DateRangeBoundary } from "./common/dateUtils";
-import { isSameDay } from 'date-fns';
 
 export interface IDateRangeSelectionState {
     /**

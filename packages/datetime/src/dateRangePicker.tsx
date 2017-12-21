@@ -17,6 +17,7 @@ import DateRangeBoundary = DateUtils.DateRangeBoundary;
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
 
+import { addMonths, isSameDay, isSameMonth, subMonths } from "date-fns";
 import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
@@ -28,7 +29,6 @@ import {
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
-import { isSameDay, isSameMonth, addMonths, subMonths } from 'date-fns';
 
 export interface IDateRangeShortcut {
     label: string;

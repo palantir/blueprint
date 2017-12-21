@@ -22,20 +22,13 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import {
-    DateRange,
-    DateRangeBoundary,
-    dateToString
-} from "./common/dateUtils";
+import { DateRange, DateRangeBoundary, dateToString } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { DateFormat, IDateFormatter } from "./dateFormatter";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
 
-import * as parse from "date-fns/parse";
-import * as isValid from "date-fns/is_valid";
-import * as isWithinRange from "date-fns/is_within_range";
-import * as differenceInDays from 'date-fns/difference_in_days';
+import { differenceInDays, isValid, isWithinRange, parse } from "date-fns";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
@@ -743,7 +736,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         } else {
             return [null, null];
         }
-    };
+    }
 
     private getSelectedRange() {
         let selectedStart: Date;
@@ -765,7 +758,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         return dateRange.map((selectedBound?: Date) => {
             return this.isDateValidAndInRange(selectedBound) ? selectedBound : undefined;
         }) as DateRange;
-    };
+    }
 
     private getInputGroupCallbackForEvent = (
         e: React.SyntheticEvent<HTMLInputElement>,

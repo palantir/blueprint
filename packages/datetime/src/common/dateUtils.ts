@@ -3,8 +3,8 @@
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
-import { DateFormat } from "../dateFormatter";
 import { format, isSameDay } from "date-fns";
+import { DateFormat } from "../dateFormatter";
 
 export type DateRange = [Date | undefined, Date | undefined];
 
@@ -157,17 +157,16 @@ export function getDateOnlyWithTime(date: Date): Date {
     return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
 }
 
-export function getLocale(localeString: String): any {
-    if(!localeString) {
+export function getLocale(localeString: string): any {
+    if (!localeString) {
         return undefined;
     }
     return require(`date-fns/locale/${localeString}`);
 }
 
-
 export function dateToString(date: Date, dateFormat: DateFormat, locale: string | undefined) {
     if (typeof dateFormat === "string") {
-        return format(date, dateFormat, {locale: getLocale(locale)});
+        return format(date, dateFormat, { locale: getLocale(locale) });
     } else {
         return dateFormat.dateToString(date);
     }

@@ -13,9 +13,9 @@ import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
 
+import { isSameDay } from "date-fns";
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
-import { isSameDay } from 'date-fns';
 
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**

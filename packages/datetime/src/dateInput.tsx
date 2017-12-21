@@ -5,11 +5,9 @@
  */
 
 import * as classNames from "classnames";
+import { isValid, isWithinRange, parse } from "date-fns";
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
-import * as isValid from "date-fns/is_valid";
-import * as isWithinRange from "date-fns/is_within_range";
-import * as parse from "date-fns/parse";
 
 import {
     AbstractPureComponent,
@@ -24,13 +22,13 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
+import { dateToString } from "./common/dateUtils";
 import { DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
 import { IDateFormatter } from "./dateFormatter";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateTimePicker } from "./dateTimePicker";
 import { ITimePickerProps, TimePickerPrecision } from "./timePicker";
-import { dateToString } from "./common/dateUtils";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     /**
@@ -272,7 +270,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             }
         }
         return this.props.invalidDateMessage;
-    };
+    }
 
     private isDateValidAndInRange(value: Date) {
         return value != null && isValid(value) && this.isDateInRange(value);
@@ -320,10 +318,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     }
 
     private hasMonthChanged(prevDate: Date, nextDate: Date) {
-        return (
-            this.shouldCheckForDateChanges(prevDate, nextDate) &&
-            nextDate.getMonth() !== prevDate.getMonth()
-        );
+        return this.shouldCheckForDateChanges(prevDate, nextDate) && nextDate.getMonth() !== prevDate.getMonth();
     }
 
     private hasTimeChanged(prevDate: Date, nextDate: Date) {
@@ -338,7 +333,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     }
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-        let valueString = this.getDateString(this.state.value);
+        const valueString = this.getDateString(this.state.value);
         this.setState({ isInputFocused: true, isOpen: true, valueString });
         this.safeInvokeInputProp("onFocus", e);
     };
