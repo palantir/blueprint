@@ -28,7 +28,7 @@ import {
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
-import { isSameDay, isSameMonth } from 'date-fns';
+import { isSameDay, isSameMonth, addMonths, subMonths } from 'date-fns';
 
 export interface IDateRangeShortcut {
     label: string;
@@ -271,13 +271,13 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                         fromMonth={minDate}
                         month={leftView.getFullDate()}
                         onMonthChange={this.handleLeftMonthChange}
-                        toMonth={DateUtils.getDatePreviousMonth(maxDate)}
+                        toMonth={subMonths(maxDate, 1)}
                     />
                     <ReactDayPicker
                         {...dayPickerBaseProps}
                         canChangeMonth={true}
                         captionElement={this.renderRightCaption}
-                        fromMonth={DateUtils.getDateNextMonth(minDate)}
+                        fromMonth={addMonths(minDate, 1)}
                         month={rightView.getFullDate()}
                         onMonthChange={this.handleRightMonthChange}
                         toMonth={maxDate}
@@ -374,7 +374,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     private renderLeftCaption = (captionProps: ReactDayPicker.CaptionElementProps) => (
         <DatePickerCaption
             {...captionProps}
-            maxDate={DateUtils.getDatePreviousMonth(this.props.maxDate)}
+            maxDate={subMonths(this.props.maxDate, 1)}
             minDate={this.props.minDate}
             onMonthChange={this.handleLeftMonthSelectChange}
             onYearChange={this.handleLeftYearSelectChange}
@@ -386,7 +386,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         <DatePickerCaption
             {...captionProps}
             maxDate={this.props.maxDate}
-            minDate={DateUtils.getDateNextMonth(this.props.minDate)}
+            minDate={addMonths(this.props.minDate, 1)}
             onMonthChange={this.handleRightMonthSelectChange}
             onYearChange={this.handleRightYearSelectChange}
             reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
@@ -519,7 +519,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         let leftView = new MonthAndYear(this.state.leftView.getMonth(), leftDisplayYear);
         Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, leftView.getFullDate());
         const { minDate, maxDate } = this.props;
-        const adjustedMaxDate = DateUtils.getDatePreviousMonth(maxDate);
+        const adjustedMaxDate = subMonths(maxDate, 1);
 
         const minMonthAndYear = new MonthAndYear(minDate.getMonth(), minDate.getFullYear());
         const maxMonthAndYear = new MonthAndYear(adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear());
@@ -542,7 +542,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         let rightView = new MonthAndYear(this.state.rightView.getMonth(), rightDisplayYear);
         Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, rightView.getFullDate());
         const { minDate, maxDate } = this.props;
-        const adjustedMinDate = DateUtils.getDateNextMonth(minDate);
+        const adjustedMinDate = addMonths(minDate, 1);
 
         const minMonthAndYear = new MonthAndYear(adjustedMinDate.getMonth(), adjustedMinDate.getFullYear());
         const maxMonthAndYear = new MonthAndYear(maxDate.getMonth(), maxDate.getFullYear());
