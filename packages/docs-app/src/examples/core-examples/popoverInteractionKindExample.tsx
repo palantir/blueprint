@@ -32,7 +32,7 @@ export class PopoverInteractionKindExample extends BaseExample<{}> {
             <Popover
                 content={<FileMenu shouldDismissPopover={false} />}
                 position={Position.BOTTOM_LEFT}
-                {...{ interactionKind }}
+                interactionKind={interactionKind}
             >
                 <Button intent={Intent.PRIMARY}>{buttonLabel}</Button>
             </Popover>
