@@ -212,6 +212,8 @@ Styleguide pt-button-group
     .pt-button {
       // we never want that margin-right when vertical
       margin-right: 0 !important; // stylelint-disable-line declaration-no-important
+      // needed to ensure buttons take up the full width when wrapped in a Popover:
+      width: 100%;
     }
 
     > .pt-popover-wrapper:first-child .pt-popover-target .pt-button,
