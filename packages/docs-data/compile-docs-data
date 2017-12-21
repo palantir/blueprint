@@ -4,6 +4,7 @@
  * @fileoverview Generates data for packages/docs-app
  */
 
+// @ts-check
 const { execSync, spawn } = require("child_process");
 const dm = require("documentalist");
 const fs = require("fs");
@@ -22,6 +23,8 @@ const NAV_PAGE_NAME = "_nav";
 const DOCS_DATA_FILENAME = "docs.json";
 const DOCS_RELEASES_FILENAME = "releases.json";
 const DOCS_VERSIONS_FIELENAME = "versions.json";
+
+const PACKAGES = ["core", "datetime", "docs", "docs-app", "icons", "labs", "select", "table", "timezone"];
 
 (async () => {
     try {
@@ -50,17 +53,24 @@ function generateDocumentalistData() {
     })
         .use(".md", new dm.MarkdownPlugin({ navPage: NAV_PAGE_NAME }))
         .use(
-            /\.d\.ts$/,
+            /\.tsx?$/,
             new dm.TypescriptPlugin({
-                excludeNames: [/Factory$/, /^I.+State$/],
-                excludePaths: ["node_modules/"],
-                includeDefinitionFiles: true,
+                excludeNames: [/I.+State$/],
+                excludePaths: ["node_modules/", "docs-app/"],
             }),
         )
         .use(".scss", new dm.KssPlugin())
-        .documentGlobs("../*/src/**/*", "../*/dist/index.d.ts")
-        .then(docs => JSON.stringify(docs, null, 2))
+        .documentGlobs(`../{${PACKAGES.join(",")}}/src/**/*`)
+        .then(docs => JSON.stringify(docs, transformDocumentalistData, 2))
         .then(content => fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_DATA_FILENAME), content));
+}
+
+function transformDocumentalistData(key, value) {
+    // remove all class declarations as they're currently unused and only increase bundle size
+    if (value != null && value.kind !== "class") {
+        return value;
+    }
+    return undefined;
 }
 
 /**
