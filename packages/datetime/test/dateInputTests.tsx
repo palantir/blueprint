@@ -20,7 +20,7 @@ describe("<DateInput>", () => {
     });
 
     it("handles string inputs without crashing", () => {
-        // strings are not permitted in the interface, but are handled correctly by moment.
+        // strings are not permitted in the interface, but are handled correctly by date-fns.
         assert.doesNotThrow(() => mount(<DateInput value={"1988-08-07 11:01:12" as any} />));
     });
 

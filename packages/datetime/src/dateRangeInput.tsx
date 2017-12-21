@@ -83,7 +83,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
 
     /**
      * The format of each date in the date range. See options
-     * here: http://momentjs.com/docs/#/displaying/format/
+     * here: https://date-fns.org/v1.29.0/docs/format
      * Alternatively, pass an `IDateFormatter` for custom date rendering.
      * @default "YYYY-MM-DD"
      */
