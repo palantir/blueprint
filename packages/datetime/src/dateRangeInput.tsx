@@ -837,7 +837,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     };
 
     private getFormattedDateString = (date: Date, formatOverride?: DateFormat) => {
-        if (date === null) {
+        if (!date) {
             return "";
         } else if (!isValid(date)) {
             return this.props.invalidDateMessage;
@@ -962,7 +962,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     };
 
     private isDateValidAndInRange(value: Date) {
-        return value != null && isValid(value) && this.isDateInRange(value);
+        return value && isValid(value) && this.isDateInRange(value);
     }
 
     private isDateInRange(value: Date) {
