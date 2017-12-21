@@ -7,10 +7,18 @@ const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const Timezone = require("../dist");
 
+const skipList = []
+
+const classNameChildList = [
+    "TimezonePicker"
+]
+
 describe("Timezone isomorphic rendering", () => {
     generateIsomorphicTests(
         Timezone,
         {},
-        {}
+        {},
+        skipList,
+        classNameChildList
     );
 });

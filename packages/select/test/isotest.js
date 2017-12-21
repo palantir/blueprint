@@ -29,10 +29,24 @@ const customProps = {
     }
 };
 
+const skipList = [
+    "QueryList", // doesn't render any DOM itself
+]
+
+const classNameChildList = [
+    "MultiSelect",
+    "Omnibar",
+    "QueryList",
+    "Select",
+    "Suggest"
+]
+
 describe("Select isomorphic rendering", () => {
     generateIsomorphicTests(
         Select,
         customProps,
-        customChildren
+        customChildren,
+        skipList,
+        classNameChildList
     );
 });

@@ -11,7 +11,9 @@ const Core = require("../dist");
 const tooltipContent = { content: React.createElement("h1", {}, "content") };
 const customProps = {
     Hotkey: { combo: "mod+s", global: true, label: "save" },
+    Icon: { iconName: "pt-icon-build" },
     KeyCombo: { combo: "?" },
+    Overlay: { lazy: false, inline: true },
     SVGTooltip: tooltipContent,
     TagInput: { values: ["foo", "bar", "baz"] },
     Tooltip: tooltipContent,
@@ -29,9 +31,21 @@ const customChildren = {
     Tooltip2: popoverTarget,
 };
 
+const skipList = [
+    "Portal", // doesn't render any DOM inline
+    "Tabs", // deprecated component, logs a warning
+]
+
+const classNameChildList = [
+    "Alert",
+    "Dialog",
+    "MenuItem",
+    "Popover2",
+    "Portal",
+    "Toaster",
+    "Tooltip2"
+]
+
 describe("Core isomorphic rendering", () => {
-    generateIsomorphicTests(Core, customProps, customChildren, [
-        "Portal", // doesn't render any DOM inline
-        "Tabs", // deprecated component, logs a warning
-    ]);
+    generateIsomorphicTests(Core, customProps, customChildren, skipList, classNameChildList);
 });

@@ -20,10 +20,23 @@ const customProps = {
     },
 };
 
+const classNameChildList = [
+    "CopyCellsMenuItem"
+]
+
+const skipList = [
+    "DragSelectable",
+    "Draggable",
+    "ResizeHandle",
+]
+
+
 describe("Table isomorphic rendering", () => {
     generateIsomorphicTests(
         Table,
         customProps,
-        customChildren
+        customChildren,
+        skipList,
+        classNameChildList
     );
 });
