@@ -96,10 +96,10 @@ describe("<DateRangeInput>", () => {
     });
 
     it("inner DateRangePicker receives all supported props", () => {
-        const component = mount(<DateRangeInput locale="uk" contiguousCalendarMonths={false} />);
+        const component = mount(<DateRangeInput locale="en" contiguousCalendarMonths={false} />);
         component.setState({ isOpen: true });
         const picker = component.find(DateRangePicker);
-        expect(picker.prop("locale")).to.equal("uk");
+        expect(picker.prop("locale")).to.equal("en");
         expect(picker.prop("contiguousCalendarMonths")).to.be.false;
     });
 
