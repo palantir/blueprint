@@ -52,7 +52,7 @@ describe("<Popover>", () => {
         });
 
         it("warns if given > 2 target elements", () => {
-            // use sinon.stub to prevent warnings from appearing the test logs
+            // use sinon.stub to prevent warnings from appearing in the test logs
             const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover>
@@ -108,9 +108,9 @@ describe("<Popover>", () => {
         });
 
         describe("throws error if backdrop enabled with non-CLICK interactionKind", () => {
-            runErrorTest("HOVER", PopoverInteractionKind.HOVER);
-            runErrorTest("HOVER_TARGET_ONLY", PopoverInteractionKind.HOVER_TARGET_ONLY);
-            runErrorTest("CLICK_TARGET_ONLY", PopoverInteractionKind.CLICK_TARGET_ONLY);
+            runErrorTest("HOVER");
+            runErrorTest("HOVER_TARGET_ONLY");
+            runErrorTest("CLICK_TARGET_ONLY");
 
             it("doesn't throw error for CLICK", () => {
                 assert.doesNotThrow(() => (
@@ -118,11 +118,11 @@ describe("<Popover>", () => {
                 ));
             });
 
-            function runErrorTest(testName: string, interactionKind: PopoverInteractionKind) {
-                it(testName, () => {
+            function runErrorTest(interactionKindKey: keyof typeof PopoverInteractionKind) {
+                it(interactionKindKey, () => {
                     expectPropValidationError(
                         Popover,
-                        { hasBackdrop: true, interactionKind },
+                        { hasBackdrop: true, interactionKind: PopoverInteractionKind[interactionKindKey] },
                         Errors.POPOVER_MODAL_INTERACTION,
                     );
                 });

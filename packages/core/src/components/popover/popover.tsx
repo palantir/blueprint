@@ -326,10 +326,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         if (nextProps.isOpen != null && nextIsOpen !== this.state.isOpen) {
             this.setOpenState(nextIsOpen);
-            if (nextProps.isOpen != null) {
-                // setOpenState only calls setState if isOpen is not controlled.
-                this.setState({ isOpen: nextIsOpen });
-            }
+            // tricky: setOpenState calls setState only if this.props.isOpen is
+            // not controlled, so we need to invoke setState manually here.
+            this.setState({ isOpen: nextIsOpen });
         } else if (this.state.isOpen && nextProps.isOpen == null && nextProps.disabled) {
             // special case: close an uncontrolled popover when disabled is set to true
             this.setOpenState(false);
@@ -462,7 +461,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     private getIsOpen(props?: IPopoverProps) {
         // disabled popovers should never be allowed to open.
-        if (props.disabled) {
+        if (props == null || props.disabled) {
             return false;
         } else if (props.isOpen != null) {
             return props.isOpen;
