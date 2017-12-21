@@ -51,10 +51,10 @@ describe("<DateRangeInput>", () => {
 
     const START_DATE_2 = new Date(2017, Months.JANUARY, 1);
     const START_STR_2 = DateTestUtils.toHyphenatedDateString(START_DATE_2);
-    const START_DE_STR_2 = "01.01.2017";
-    const END_DATE_2 = new Date(2017, Months.JANUARY, 31);
+    const START_DE_STR_2 = "01-Jan-2017";
+    const END_DATE_2 = new Date(2017, Months.MAY, 31);
     const END_STR_2 = DateTestUtils.toHyphenatedDateString(END_DATE_2);
-    const END_DE_STR_2 = "31.01.2017";
+    const END_DE_STR_2 = "31-Mai-2017";
     const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
 
     const INVALID_STR = "<this is an invalid date string>";
@@ -2369,7 +2369,7 @@ describe("<DateRangeInput>", () => {
         });
 
         it("Formats locale-specific format strings properly", () => {
-            const { root } = wrap(<DateRangeInput locale="de" format="L" value={DATE_RANGE_2} />);
+            const { root } = wrap(<DateRangeInput locale="de" format="DD-MMM-YYYY" value={DATE_RANGE_2} />);
             assertInputTextsEqual(root, START_DE_STR_2, END_DE_STR_2);
         });
     });
