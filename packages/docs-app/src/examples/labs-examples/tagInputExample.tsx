@@ -25,6 +25,7 @@ const VALUES = [
 ];
 
 export interface ITagInputExampleState {
+    addOnBlur?: boolean;
     disabled?: boolean;
     fill?: boolean;
     intent?: boolean;
@@ -35,6 +36,7 @@ export interface ITagInputExampleState {
 
 export class TagInputExample extends BaseExample<ITagInputExampleState> {
     public state: ITagInputExampleState = {
+        addOnBlur: false,
         disabled: false,
         fill: false,
         intent: false,
@@ -43,6 +45,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         values: VALUES,
     };
 
+    private handleAddOnBlurChange = handleBooleanChange(addOnBlur => this.setState({ addOnBlur }));
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleIntentChange = handleBooleanChange(intent => this.setState({ intent }));
@@ -50,7 +53,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
 
     protected renderExample() {
-        const { disabled, fill, large, values } = this.state;
+        const { addOnBlur, disabled, fill, large, values } = this.state;
 
         const classes = classNames({
             [Classes.FILL]: fill,
@@ -84,6 +87,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                 placeholder="Separate values with commas..."
                 tagProps={getTagProps}
                 values={values}
+                addOnBlur={addOnBlur}
             />
         );
     }
@@ -103,6 +107,12 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                     label="Disabled"
                     key="disabled"
                     onChange={this.handleDisabledChange}
+                />,
+                <Switch
+                    checked={this.state.addOnBlur}
+                    label="Add on blur"
+                    key="addOnBlur"
+                    onChange={this.handleAddOnBlurChange}
                 />,
             ],
             [
@@ -125,7 +135,9 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         ];
     }
 
-    private handleChange = (values: React.ReactNode[]) => this.setState({ values });
+    private handleChange = (values: React.ReactNode[]) => {
+        this.setState({ values });
+    };
 
     private handleClear = () => this.handleChange(this.state.values.length > 0 ? [] : VALUES);
 }

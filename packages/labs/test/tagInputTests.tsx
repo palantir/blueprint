@@ -25,6 +25,11 @@ describe("<TagInput>", () => {
         assert.strictEqual(onBlur.args[0][0], fakeEvent);
     });
 
+    it("passes inputValue to input element", () => {
+        const input = shallow(<TagInput values={VALUES} inputValue="test-val" />).find("input");
+        assert.isTrue(input.prop("value") === "test-val");
+    });
+
     it("renders a Tag for each value", () => {
         const wrapper = mount(<TagInput values={VALUES} />);
         assert.lengthOf(wrapper.find(Tag), VALUES.length);
@@ -96,6 +101,28 @@ describe("<TagInput>", () => {
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.isTrue(onAdd.calledOnce);
             assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
+        });
+
+        it("is invoked on blur when addOnBlur is true", done => {
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} inputValue={NEW_VALUE} onAdd={onAdd} />);
+            const fakeEvent = { flag: "yes" };
+            wrapper.simulate("blur", fakeEvent);
+            setTimeout(() => {
+                assert.isTrue(onAdd.calledOnce);
+                done();
+            });
+        });
+
+        it("is not invoked on blur when addOnBlur is false", done => {
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} inputValue={NEW_VALUE} onAdd={onAdd} />);
+            const fakeEvent = { flag: "yes" };
+            wrapper.simulate("blur", fakeEvent);
+            setTimeout(() => {
+                assert.isTrue(onAdd.notCalled);
+                done();
+            });
         });
 
         it("does not clear the input if onAdd returns false", () => {
@@ -270,6 +297,23 @@ describe("<TagInput>", () => {
         });
     });
 
+    describe("onInputChange", () => {
+        it("is not invoked on enter when input is empty", () => {
+            const onInputChange = sinon.stub();
+            const wrapper = shallow(<TagInput onInputChange={onInputChange} values={VALUES} />);
+            pressEnterInInput(wrapper, "");
+            assert.isTrue(onInputChange.notCalled);
+        });
+
+        it("is invoked when input text changes", () => {
+            const changeSpy: any = sinon.spy();
+            const wrapper = shallow(<TagInput onInputChange={changeSpy} values={VALUES} />);
+            wrapper.find("input").simulate("change", { currentTarget: { value: "hello" } });
+            assert.isTrue(changeSpy.calledOnce, "onChange called");
+            assert.equal("hello", changeSpy.args[0][0].currentTarget.value);
+        });
+    });
+
     describe("onKeyDown", () => {
         it("emits the active tag index on key down", () => {
             runKeyPressTest("onKeyDown", 1, 1);
@@ -383,8 +427,8 @@ describe("<TagInput>", () => {
     function createInputKeydownEventMetadata(value: string, which: number) {
         return {
             currentTarget: { value },
-            // Enzyme throws errors if we don't mock the preventDefault method.
-            preventDefault: () => {
+            // Enzyme throws errors if we don't mock the stopPropagation method.
+            stopPropagation: () => {
                 return;
             },
             which,
