@@ -18,7 +18,6 @@
 
 -`TagInput` provides granular `onAdd` and `onRemove` **event props**, which are passed the added or removed items in response to the user interactions above. It also provides `onChange`, which combines both events and is passed the updated `values` array, with new items appended to the end and removed items filtered away. Supply `inputProps` to customize the `<input>` element or add your own event handlers.
 
-
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     <h5>Handling long words</h5>
     Set an explicit `width` on `.pt-tag-input` to cause long words to wrap onto multiple lines. Either supply a specific pixel value, or use `<TagInput className="pt-fill">` to fill its container's width (try this in the example above).
