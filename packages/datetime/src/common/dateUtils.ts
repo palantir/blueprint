@@ -164,8 +164,10 @@ export function getLocale(localeString: string): any {
     return require(`date-fns/locale/${localeString}`);
 }
 
-export function dateToString(date: Date, dateFormat: DateFormat, locale: string | undefined) {
-    if (typeof dateFormat === "string") {
+export function dateToString(date: Date, dateFormat: DateFormat, locale = "en") {
+    if (!date) {
+        return "";
+    } else if (typeof dateFormat === "string") {
         return format(date, dateFormat, { locale: getLocale(locale) });
     } else {
         return dateFormat.dateToString(date);
@@ -174,7 +176,7 @@ export function dateToString(date: Date, dateFormat: DateFormat, locale: string 
 
 /**
  * wrapper around date-fn's parse function
- * adds support for dates of format YYYY-M-DD, YYYY-MM-D, YYYY-M-D, YY-M-DD, YY-MM-D, YY-M-D
+ * adds support for dates of format YYYY-M-DD, YYYY-MM-D, YYYY-M-D
  * date-fn's parse does not support single digit month or day formats
  */
 export function stringToDate(date: string | number | Date) {
@@ -188,6 +190,7 @@ export function stringToDate(date: string | number | Date) {
 
             return parse(`${year}-${month}-${day}`);
         }
+        return parse(date);
     }
     return parse(date);
 }

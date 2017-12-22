@@ -4,12 +4,12 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { expect } from "chai";
+import { assert, expect } from "chai";
 
 import { DateRange } from "../../src/";
 import * as DateUtils from "../../src/common/dateUtils";
 import { Months } from "../../src/common/months";
-import { assertTimeIs, createTimeObject } from "./dateTestUtils";
+import { assertTimeIs, createTimeObject, toHyphenatedDateString } from "./dateTestUtils";
 
 describe("dateUtils", () => {
     describe("areRangesEqual", () => {
@@ -219,6 +219,85 @@ describe("dateUtils", () => {
             const time = DateUtils.getTimeInRange(createTimeObject(10, 20), minTime, maxTime);
 
             assertTimeIs(time, 11, 20);
+        });
+    });
+
+    describe("dateToString", () => {
+        const date = new Date(2017, Months.MAY, 9, 3, 15, 22);
+
+        it("handles null input without breaking", () => {
+            assert.doesNotThrow(() => DateUtils.dateToString(null, null, null));
+        });
+
+        it("handles 'MM/DD/YYYY'", () => {
+            const format = "MM/DD/YYYY";
+
+            const dateString = DateUtils.dateToString(date, format);
+            expect(dateString).to.equal("05/09/2017");
+        });
+
+        it("handles 'YYYY-MM-DD'", () => {
+            const format = "YYYY-MM-DD";
+
+            const dateString = DateUtils.dateToString(date, format);
+            expect(dateString).to.equal("2017-05-09");
+        });
+
+        it("handles 'YYYY-MM-DD HH:mm:ss'", () => {
+            const format = "YYYY-MM-DD HH:mm:ss";
+
+            const dateString = DateUtils.dateToString(date, format);
+            expect(dateString).to.equal("2017-05-09 03:15:22");
+        });
+    });
+
+    describe("stringToDate", () => {
+        it("handles null input without breaking", () => {
+            assert.doesNotThrow(() => DateUtils.stringToDate(null));
+        });
+
+        it("handles empty input without breaking", () => {
+            assert.doesNotThrow(() => DateUtils.stringToDate(""));
+        });
+
+        it("handles 'YYYY-MM-DD'", () => {
+            const date = DateUtils.stringToDate("2015-02-15");
+            expect(toHyphenatedDateString(date)).to.equal("2015-02-15");
+        });
+
+        it("handles improperly formatted 'YYYY-M-DD'", () => {
+            const date = DateUtils.stringToDate("2015-2-15");
+            expect(toHyphenatedDateString(date)).to.equal("2015-02-15");
+        });
+
+        it("handles 'YYYY-MM-D'", () => {
+            const date = DateUtils.stringToDate("2015-10-5");
+            expect(toHyphenatedDateString(date)).to.equal("2015-10-05");
+        });
+
+        it("handles improperly formatted  'YYYY-M-D'", () => {
+            const date = DateUtils.stringToDate("2015-2-5");
+            expect(toHyphenatedDateString(date)).to.equal("2015-02-05");
+        });
+
+        it("handles 'MM/DD/YYYY'", () => {
+            const date = DateUtils.stringToDate("12/15/2015");
+            expect(toHyphenatedDateString(date)).to.equal("2015-12-15");
+        });
+
+        it("handles improperly formatted  'M/DD/YYYY'", () => {
+            const date = DateUtils.stringToDate("2/15/2015");
+            expect(toHyphenatedDateString(date)).to.equal("2015-02-15");
+        });
+
+        it("handles improperly formatted  'MM/D/YYYY'", () => {
+            const date = DateUtils.stringToDate("12/5/2015");
+            expect(toHyphenatedDateString(date)).to.equal("2015-12-05");
+        });
+
+        it("handles improperly formatted  'M/D/YYYY'", () => {
+            const date = DateUtils.stringToDate("2/5/2015");
+            expect(toHyphenatedDateString(date)).to.equal("2015-02-05");
         });
     });
 });
