@@ -12,9 +12,9 @@ import * as sinon from "sinon";
 import { Button, Classes, Intent, Keys, Tag } from "@blueprintjs/core";
 import { ITagInputProps, TagInput } from "../src/index";
 
-describe("<TagInput>", () => {
-    const VALUES = ["one", "two", "three"];
+const VALUES = ["one", "two", "three"];
 
+describe("<TagInput>", () => {
     it("passes inputProps to input element", () => {
         const onBlur = sinon.spy();
         const input = shallow(<TagInput values={VALUES} inputProps={{ autoFocus: true, onBlur }} />).find("input");
@@ -317,63 +317,22 @@ describe("<TagInput>", () => {
     });
 
     describe("onKeyDown", () => {
-        it("pressing a key down when focused on the container, invokes with the active tag index", () => {
-            const onKeyDown = sinon.spy();
-            const wrapper = mount(<TagInput values={VALUES} onKeyDown={onKeyDown} />);
-
-            wrapper.simulate("keydown", { which: Keys.ARROW_LEFT });
-
-            assert.strictEqual(onKeyDown.callCount, 1, "container callback called");
-            assert.strictEqual(onKeyDown.firstCall.args[0].which, Keys.ARROW_LEFT, "first arg is the event");
-            assert.strictEqual(onKeyDown.firstCall.args[1], -1, "second arg (active index) is -1");
+        it("emits the active tag index on key down", () => {
+            runKeyPressTest("onKeyDown", 1, 1);
         });
 
-        it("pressing a key down when focused on the input, invokes with the active tag index", () => {
-            const onKeyDown = sinon.spy();
-            const inputProps = { onKeyDown: sinon.spy() };
-            const wrapper = mount(<TagInput values={VALUES} onKeyDown={onKeyDown} inputProps={inputProps} />);
-            wrapper
-                .find("input")
-                .simulate("focus")
-                .simulate("keydown", { which: Keys.ARROW_LEFT });
-
-            assert.strictEqual(onKeyDown.callCount, 1, "container callback called once");
-            assert.strictEqual(onKeyDown.firstCall.args[0].which, Keys.ARROW_LEFT, "first arg is the event");
-            assert.strictEqual(onKeyDown.firstCall.args[1], undefined, "second arg (active index) is -1");
-
-            // invokes inputProps.onKeyDown as well
-            assert.strictEqual(inputProps.onKeyDown.callCount, 1, "inputProps.onKeyDown called once");
+        it("emits undefined on key down if active index == NONE (-1)", () => {
+            runKeyPressTest("onKeyDown", -1, undefined);
         });
     });
 
     describe("onKeyUp", () => {
-        it("pressing a key down when focused on the container, invokes with the active tag index", () => {
-            const onKeyUp = sinon.spy();
-            const wrapper = mount(<TagInput values={VALUES} onKeyUp={onKeyUp} />);
-
-            wrapper.simulate("keyup", { which: Keys.ARROW_LEFT });
-
-            assert.strictEqual(onKeyUp.callCount, 1, "container callback called");
-            assert.strictEqual(onKeyUp.firstCall.args[0].which, Keys.ARROW_LEFT, "first arg is the event");
-            assert.strictEqual(onKeyUp.firstCall.args[1], -1, "second arg (active index) is -1");
+        it("emits the active tag index on key down", () => {
+            runKeyPressTest("onKeyUp", 1, 1);
         });
 
-        it("pressing a key down when focused on the input, invokes with the active tag index", () => {
-            const onKeyUp = sinon.spy();
-            const inputProps = { onKeyUp: sinon.spy() };
-            const wrapper = mount(<TagInput values={VALUES} onKeyUp={onKeyUp} inputProps={inputProps} />);
-
-            wrapper
-                .find("input")
-                .simulate("focus")
-                .simulate("keyup", { which: Keys.ARROW_LEFT });
-
-            assert.strictEqual(onKeyUp.callCount, 1, "container callback called once");
-            assert.strictEqual(onKeyUp.firstCall.args[0].which, Keys.ARROW_LEFT, "first arg is the event");
-            assert.strictEqual(onKeyUp.firstCall.args[1], undefined, "second arg is undefined");
-
-            // invokes inputProps.onKeyUp as well
-            assert.isTrue(inputProps.onKeyUp.calledOnce, "inputProps.onKeyUp called");
+        it("emits undefined on key down if active index == NONE (-1)", () => {
+            runKeyPressTest("onKeyUp", -1, undefined);
         });
     });
 
@@ -478,3 +437,23 @@ describe("<TagInput>", () => {
         };
     }
 });
+
+function runKeyPressTest(callbackName: "onKeyDown" | "onKeyUp", startIndex: number, expectedIndex: number | undefined) {
+    const callbackSpy = sinon.spy();
+    const inputProps = { [callbackName]: sinon.spy() };
+    const wrapper = mount(<TagInput values={VALUES} inputProps={inputProps} {...{ [callbackName]: callbackSpy }} />);
+
+    wrapper.setState({ activeIndex: startIndex });
+
+    const eventName = callbackName === "onKeyDown" ? "keydown" : "keyup";
+    wrapper
+        .find("input")
+        .simulate("focus")
+        .simulate(eventName, { which: Keys.ENTER });
+
+    assert.strictEqual(callbackSpy.callCount, 1, "container callback call count");
+    assert.strictEqual(callbackSpy.firstCall.args[0].which, Keys.ENTER, "first arg (event)");
+    assert.strictEqual(callbackSpy.firstCall.args[1], expectedIndex, "second arg (active index)");
+    // invokes inputProps.callbackSpy as well
+    assert.strictEqual(inputProps[callbackName].callCount, 1, "inputProps.onKeyDown call count");
+}
