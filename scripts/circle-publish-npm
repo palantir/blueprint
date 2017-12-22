@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 set -o pipefail
 
 if [ -z ${CIRCLECI+x} ]; then
@@ -20,8 +20,8 @@ if ! [[ "$branch" == "master" || "$branch" == "develop" || "$branch" == "next" |
     exit 1
 fi
 
-# See https://circleci.com/docs/npm-login/
-echo -e "$NPM_USER\n$NPM_PASSWORD\n$NPM_EMAIL" | npm login
+echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
+chmod 0600 .npmrc
 
 if [[ "$branch" == "next" ]]; then
     echo "Publishing with next tag because branch name is next"
