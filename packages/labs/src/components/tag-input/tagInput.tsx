@@ -41,9 +41,6 @@ export interface ITagInputProps extends IProps {
     /** React props to pass to the `<input>` element */
     inputProps?: HTMLInputProps;
 
-    /** Initial value of the `<input>` element */
-    inputValue?: string;
-
     /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
     leftIconName?: IconName;
 
@@ -78,9 +75,6 @@ export interface ITagInputProps extends IProps {
      * ```
      */
     onChange?: (values: React.ReactNode[]) => boolean | void;
-
-    /** Callback invoked when the value of `<input>` element is changed */
-    onInputChange?: React.FormEventHandler<HTMLInputElement>;
 
     /**
      * Callback invoked when the user depresses a keyboard key.
@@ -161,14 +155,13 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     public static defaultProps: Partial<ITagInputProps> & object = {
         inputProps: {},
-        inputValue: "",
         separator: ",",
         tagProps: {},
     };
 
     public state: ITagInputState = {
         activeIndex: NONE,
-        inputValue: this.props.inputValue,
+        inputValue: "",
         isInputFocused: false,
     };
 
@@ -320,7 +313,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ activeIndex: NONE, inputValue: event.currentTarget.value });
-        Utils.safeInvoke(this.props.onInputChange, event);
+        Utils.safeInvoke(this.props.inputProps.onChange, event);
     };
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
