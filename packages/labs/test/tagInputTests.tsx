@@ -288,18 +288,7 @@ describe("<TagInput>", () => {
             const wrapper = shallow(<TagInput onInputChange={changeSpy} values={VALUES} />);
             wrapper.find("input").simulate("change", { currentTarget: { value: "hello" } });
             assert.isTrue(changeSpy.calledOnce, "onChange called");
-            console.log(changeSpy.args[0][0]);
             assert.equal("hello", changeSpy.args[0][0].currentTarget.value);
-
-            // wrapper
-            //     .find("input")
-            //     .simulate("change", { currentTarget: { value: "hello" } })
-            //     .simulate("change", { currentTarget: { value: " " } })
-            //     .simulate("change", { currentTarget: { value: "world" } });
-            // assert.isTrue(changeSpy.calledThrice, "onChange called thrice");
-            // console.log("CHANGE SPY");
-            // console.log(changeSpy.args);
-            // assert.deepEqual(changeSpy.args, [["hello"], [" "], ["world"]]);
         });
     });
 

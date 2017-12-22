@@ -25,6 +25,7 @@ const VALUES = [
 ];
 
 export interface ITagInputExampleState {
+    addTagOnBlur?: boolean;
     disabled?: boolean;
     fill?: boolean;
     intent?: boolean;
@@ -35,6 +36,7 @@ export interface ITagInputExampleState {
 
 export class TagInputExample extends BaseExample<ITagInputExampleState> {
     public state: ITagInputExampleState = {
+        addTagOnBlur: false,
         disabled: false,
         fill: false,
         intent: false,
@@ -43,6 +45,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         values: VALUES,
     };
 
+    private handleAddTagOnBlurChange = handleBooleanChange(addTagOnBlur => this.setState({ addTagOnBlur }));
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleIntentChange = handleBooleanChange(intent => this.setState({ intent }));
@@ -50,7 +53,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
 
     protected renderExample() {
-        const { disabled, fill, large, values } = this.state;
+        const { addTagOnBlur, disabled, fill, large, values } = this.state;
 
         const classes = classNames({
             [Classes.FILL]: fill,
@@ -87,6 +90,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                 onKeyDown={this.handleKeyDown}
                 inputValue="test"
                 onInputChange={this.handleInputChange}
+                addTagOnBlur={addTagOnBlur}
             />
         );
     }
@@ -106,6 +110,12 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                     label="Disabled"
                     key="disabled"
                     onChange={this.handleDisabledChange}
+                />,
+                <Switch
+                    checked={this.state.addTagOnBlur}
+                    label="Add tag on blur"
+                    key="addTagOnBlur"
+                    onChange={this.handleAddTagOnBlurChange}
                 />,
             ],
             [

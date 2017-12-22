@@ -24,6 +24,13 @@ import * as Classes from "../../common/classes";
 
 export interface ITagInputProps extends IProps {
     /**
+     * If this is set to true, a new tag will be created from a populated input field when
+     * the user either clicks out of the component or presses `enter` on the input.
+     * @default false
+     */
+    addTagOnBlur?: boolean;
+
+    /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's `rightElement`,
      * if appropriate.
@@ -222,6 +229,21 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
         );
     }
 
+    private addTag = (value: string) => {
+        const { onAdd, onChange, values } = this.props;
+        // enter key on non-empty string invokes onAdd
+        const newValues = this.getValues(value);
+        let shouldClearInput = Utils.safeInvoke(onAdd, newValues);
+        // avoid a potentially expensive computation if this prop is omitted
+        if (Utils.isFunction(onChange)) {
+            shouldClearInput = shouldClearInput || onChange([...values, ...newValues]);
+        }
+        // only explicit return false cancels text clearing
+        if (shouldClearInput !== false) {
+            this.setState({ inputValue: "" });
+        }
+    };
+
     private maybeRenderTag = (tag: React.ReactNode, index: number) => {
         if (!tag) {
             return null;
@@ -289,6 +311,9 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             // we only need to "unfocus" if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
             if (this.inputElement != null && !this.inputElement.parentElement.contains(document.activeElement)) {
+                if (this.state.inputValue.length > 0 && this.props.addTagOnBlur) {
+                    this.addTag(this.state.inputValue);
+                }
                 this.setState({ activeIndex: NONE, isInputFocused: false });
             }
         });
@@ -320,18 +345,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const { selectionEnd, value } = event.currentTarget;
         if (event.which === Keys.ENTER && value.length > 0) {
-            const { onAdd, onChange, values } = this.props;
-            // enter key on non-empty string invokes onAdd
-            const newValues = this.getValues(value);
-            let shouldClearInput = Utils.safeInvoke(onAdd, newValues);
-            // avoid a potentially expensive computation if this prop is omitted
-            if (Utils.isFunction(onChange)) {
-                shouldClearInput = shouldClearInput || onChange([...values, ...newValues]);
-            }
-            // only explicit return false cancels text clearing
-            if (shouldClearInput !== false) {
-                this.setState({ inputValue: "" });
-            }
+            this.addTag(value);
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.
