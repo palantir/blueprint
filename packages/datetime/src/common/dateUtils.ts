@@ -3,7 +3,7 @@
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
-import { format, isSameDay } from "date-fns";
+import { format, isSameDay, parse } from "date-fns";
 import { DateFormat } from "../dateFormatter";
 
 export type DateRange = [Date | undefined, Date | undefined];
@@ -170,4 +170,24 @@ export function dateToString(date: Date, dateFormat: DateFormat, locale: string 
     } else {
         return dateFormat.dateToString(date);
     }
+}
+
+/**
+ * wrapper around date-fn's parse function
+ * adds support for dates of format YYYY-M-DD, YYYY-MM-D, YYYY-M-D, YY-M-DD, YY-MM-D, YY-M-D
+ * date-fn's parse does not support single digit month or day formats
+ */
+export function stringToDate(date: string | number | Date) {
+    if (typeof date === "string") {
+        const parseToken = /^(\d{4}|\d{2})-?(\d{1,2})-?(\d{1,2})$/;
+        const token = parseToken.exec(date.toString());
+        if (token) {
+            const year = token[1];
+            const month = ("0" + token[2]).slice(-2);
+            const day = ("0" + token[3]).slice(-2);
+
+            return parse(`${year}-${month}-${day}`);
+        }
+    }
+    return parse(date);
 }

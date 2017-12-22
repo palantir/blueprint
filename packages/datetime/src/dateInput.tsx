@@ -5,7 +5,7 @@
  */
 
 import * as classNames from "classnames";
-import { isValid, isWithinRange, parse } from "date-fns";
+import { isValid, isWithinRange } from "date-fns";
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
 
@@ -22,7 +22,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { dateToString } from "./common/dateUtils";
+import { dateToString, stringToDate } from "./common/dateUtils";
 import { DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
 import { IDateFormatter } from "./dateFormatter";
 import { DatePicker } from "./datePicker";
@@ -175,7 +175,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         this.state = {
             isInputFocused: false,
             isOpen: false,
-            value: this.props.value !== undefined ? parse(this.props.value) : defaultValue,
+            value: this.props.value !== undefined ? stringToDate(this.props.value) : defaultValue,
             valueString: null,
         };
     }
@@ -183,7 +183,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     public render() {
         const { value, valueString } = this.state;
         const dateString = this.state.isInputFocused ? valueString : this.getDateString(value);
-        const date = this.state.isInputFocused ? parse(valueString) : value;
+        const date = this.state.isInputFocused ? stringToDate(valueString) : value;
         const dateValue = this.isDateValidAndInRange(value) ? value : null;
 
         const popoverContent =
@@ -344,7 +344,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const valueString = (e.target as HTMLInputElement).value;
-        const value = parse(valueString);
+        const value = stringToDate(valueString);
 
         if (isValid(value) && this.isDateInRange(value)) {
             if (this.props.value === undefined) {
@@ -364,7 +364,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         const { valueString } = this.state;
-        const value = parse(valueString);
+        const value = stringToDate(valueString);
         if (
             valueString.length > 0 &&
             valueString !== this.getDateString(this.state.value) &&
@@ -395,7 +395,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.which === Keys.ENTER) {
-            this.handleDateChange(parse(this.state.valueString), true, true);
+            this.handleDateChange(stringToDate(this.state.valueString), true, true);
         } else if (e.which === Keys.TAB && e.shiftKey) {
             // close the popover if focus will move to the previous element on
             // the page. tabbing forward should *not* close the popover, because
