@@ -59,7 +59,8 @@
     "stylelint-config-palantir": "^2.1.0",
     "stylelint-config-standard": "^17.0.0",
     "stylelint-scss": "^2.1.0",
-    "typescript": "~2.4.2"
+    "typescript": "~2.4.2",
+    "yargs": "^10.0.3"
   },
   "engines": {
     "node": ">=6.1"
