@@ -382,8 +382,8 @@ wrapper = mount(
 wrapper.find(Target).simulate("mouseenter");
 
 // hostNodes() is an Enzyme 3 helper that retains only native-HTML nodes.
-wrapper.find(Classes.POPOVER).hostNodes().simulate("mouseenter");
-wrapper.find(Classes.POPOVER).hostNodes().simulate("mouseleave");
+wrapper.find(`.${Classes.POPOVER}`).hostNodes().simulate("mouseenter");
+wrapper.find(`.${Classes.POPOVER}`).hostNodes().simulate("mouseleave");
 
 setTimeout(() => {
     // Popover delays closing using setTimeout, so need to defer this check too.
