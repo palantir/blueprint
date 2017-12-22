@@ -10,7 +10,7 @@
 
 @reactExample TagInputExample
 
-**`TagInput` must be controlled,** meaning the `values` prop is required and event handlers are strongly suggested. Typing in the input and pressing <kbd class="pt-key">enter</kbd> will **add new items** by invoking callbacks. If `addTagOnBlur` is set to true, clicking out of the component will also trigger the callback to add new items. A `separator` prop is supported to allow multiple items to be added at once; the default splits on commas.
+**`TagInput` must be controlled,** meaning the `values` prop is required and event handlers are strongly suggested. Typing in the input and pressing <kbd class="pt-key">enter</kbd> will **add new items** by invoking callbacks. If `addOnBlur` is set to true, clicking out of the component will also trigger the callback to add new items. A `separator` prop is supported to allow multiple items to be added at once; the default splits on commas.
 
 **Tags can be removed** by clicking their <span class="pt-icon-standard pt-icon-cross"></span> buttons, or by pressing <kbd class="pt-key">backspace</kbd> repeatedly. Arrow keys can also be used to focus on a particular tag before removing it. The cursor must be at the beginning of the text input for these interactions.
 

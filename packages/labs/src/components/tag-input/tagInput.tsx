@@ -24,11 +24,11 @@ import * as Classes from "../../common/classes";
 
 export interface ITagInputProps extends IProps {
     /**
-     * If this is set to true, a new tag will be created from a populated input field when
-     * the user either clicks out of the component or presses `enter` on the input.
+     * If true, onAdd will also be invoked when the input loses focus.
+     * By default, onAdd is only invoked on enter.
      * @default false
      */
-    addTagOnBlur?: boolean;
+    addOnBlur?: boolean;
 
     /**
      * Whether the component is non-interactive.
@@ -305,7 +305,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             // we only need to "unfocus" if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
             if (this.inputElement != null && !this.inputElement.parentElement.contains(document.activeElement)) {
-                if (this.state.inputValue.length > 0 && this.props.addTagOnBlur) {
+                if (this.state.inputValue.length > 0 && this.props.addOnBlur) {
                     this.addTag(this.state.inputValue);
                 }
                 this.setState({ activeIndex: NONE, isInputFocused: false });

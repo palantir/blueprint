@@ -103,11 +103,9 @@ describe("<TagInput>", () => {
             assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
         });
 
-        it("is invoked on blur when addTagOnBlur is true", done => {
+        it("is invoked on blur when addOnBlur is true", done => {
             const onAdd = sinon.stub();
-            const wrapper = mount(
-                <TagInput values={VALUES} addTagOnBlur={true} inputValue={NEW_VALUE} onAdd={onAdd} />,
-            );
+            const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} inputValue={NEW_VALUE} onAdd={onAdd} />);
             const fakeEvent = { flag: "yes" };
             wrapper.simulate("blur", fakeEvent);
             setTimeout(() => {
@@ -116,7 +114,7 @@ describe("<TagInput>", () => {
             });
         });
 
-        it("is not invoked on blur when addTagOnBlur is false", done => {
+        it("is not invoked on blur when addOnBlur is false", done => {
             const onAdd = sinon.stub();
             const wrapper = mount(<TagInput values={VALUES} inputValue={NEW_VALUE} onAdd={onAdd} />);
             const fakeEvent = { flag: "yes" };

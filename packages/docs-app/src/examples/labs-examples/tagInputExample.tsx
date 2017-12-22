@@ -25,7 +25,7 @@ const VALUES = [
 ];
 
 export interface ITagInputExampleState {
-    addTagOnBlur?: boolean;
+    addOnBlur?: boolean;
     disabled?: boolean;
     fill?: boolean;
     intent?: boolean;
@@ -36,7 +36,7 @@ export interface ITagInputExampleState {
 
 export class TagInputExample extends BaseExample<ITagInputExampleState> {
     public state: ITagInputExampleState = {
-        addTagOnBlur: false,
+        addOnBlur: false,
         disabled: false,
         fill: false,
         intent: false,
@@ -45,7 +45,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         values: VALUES,
     };
 
-    private handleAddTagOnBlurChange = handleBooleanChange(addTagOnBlur => this.setState({ addTagOnBlur }));
+    private handleAddOnBlurChange = handleBooleanChange(addOnBlur => this.setState({ addOnBlur }));
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleIntentChange = handleBooleanChange(intent => this.setState({ intent }));
@@ -53,7 +53,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
 
     protected renderExample() {
-        const { addTagOnBlur, disabled, fill, large, values } = this.state;
+        const { addOnBlur, disabled, fill, large, values } = this.state;
 
         const classes = classNames({
             [Classes.FILL]: fill,
@@ -87,7 +87,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                 placeholder="Separate values with commas..."
                 tagProps={getTagProps}
                 values={values}
-                addTagOnBlur={addTagOnBlur}
+                addOnBlur={addOnBlur}
             />
         );
     }
@@ -109,10 +109,10 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                     onChange={this.handleDisabledChange}
                 />,
                 <Switch
-                    checked={this.state.addTagOnBlur}
-                    label="Add tag on blur"
-                    key="addTagOnBlur"
-                    onChange={this.handleAddTagOnBlurChange}
+                    checked={this.state.addOnBlur}
+                    label="Add on blur"
+                    key="addOnBlur"
+                    onChange={this.handleAddOnBlurChange}
                 />,
             ],
             [
