@@ -10,10 +10,10 @@ import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
 
 export type PopperModifiers = PopperJS.Modifiers;
-type Placement = PopperJS.Placement;
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -189,15 +189,6 @@ export interface IPopoverState {
     transformOrigin?: string;
     isOpen?: boolean;
     hasDarkParent?: boolean;
-
-    /** Migrated `disabled` value that considers the `disabled` and `disabled` props. */
-    disabled?: boolean;
-
-    /** Migrated `hasBackdrop` value that considers the `hasBackdrop` and `hasBackdrop` props. */
-    hasBackdrop?: boolean;
-
-    /** Migrated `placement` value that considers the `placement` and `position` props. */
-    placement?: PopperJS.Placement;
 }
 
 export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
@@ -205,6 +196,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public static defaultProps: IPopoverProps = {
         defaultIsOpen: false,
+        disabled: false,
+        hasBackdrop: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
         inheritDarkTheme: true,
@@ -213,6 +206,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         minimal: false,
         modifiers: {},
         openOnTargetFocus: true,
+        position: "auto",
         rootElementTag: "span",
         transitionDuration: 300,
     };
@@ -244,25 +238,15 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public constructor(props?: IPopoverProps, context?: any) {
         super(props, context);
-
-        const disabled = getDisabled(props);
-        let isOpen = props.defaultIsOpen && !disabled;
-        if (props.isOpen != null) {
-            isOpen = props.isOpen;
-        }
-
         this.state = {
-            disabled,
-            hasBackdrop: getHasBackdrop(props),
             hasDarkParent: false,
-            isOpen,
-            placement: getPlacement(props),
+            isOpen: this.getIsOpen(props),
         };
     }
 
     public render() {
-        const { className, targetClassName } = this.props;
-        const { isOpen, disabled, hasBackdrop } = this.state;
+        const { className, disabled, hasBackdrop, targetClassName } = this.props;
+        const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
         let targetProps: React.HTMLAttributes<HTMLElement>;
@@ -299,8 +283,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         });
 
         const isContentEmpty = children.content == null;
+        // need to do this check in render(), because `isOpen` is derived from
+        // state, and state can't necessarily be accessed in validateProps.
         if (isContentEmpty && !disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
-            console.warn("[Blueprint] Disabling <Popover> with empty/whitespace content...");
+            console.warn(Errors.POPOVER_WARN_EMPTY_CONTENT);
         }
 
         return (
@@ -337,22 +323,17 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     public componentWillReceiveProps(nextProps: IPopoverProps) {
         super.componentWillReceiveProps(nextProps);
 
-        const nextDisabled = getDisabled(nextProps);
+        const nextIsOpen = this.getIsOpen(nextProps);
 
-        if (nextProps.isOpen == null && nextDisabled && !this.state.disabled) {
-            // ok to use setOpenState here because disabled and isOpen are mutex.
+        if (nextProps.isOpen != null && nextIsOpen !== this.state.isOpen) {
+            this.setOpenState(nextIsOpen);
+            // tricky: setOpenState calls setState only if this.props.isOpen is
+            // not controlled, so we need to invoke setState manually here.
+            this.setState({ isOpen: nextIsOpen });
+        } else if (this.state.isOpen && nextProps.isOpen == null && nextProps.disabled) {
+            // special case: close an uncontrolled popover when disabled is set to true
             this.setOpenState(false);
-        } else if (nextProps.isOpen !== this.props.isOpen) {
-            // propagate isOpen prop directly to state, circumventing onInteraction callback
-            // (which would be invoked if this went through setOpenState)
-            this.setState({ isOpen: nextProps.isOpen });
         }
-
-        this.setState({
-            disabled: nextDisabled,
-            hasBackdrop: getHasBackdrop(nextProps),
-            placement: getPlacement(nextProps),
-        });
     }
 
     public componentWillUpdate(_: IPopoverProps, nextState: IPopoverState) {
@@ -372,6 +353,35 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         super.componentWillUnmount();
     }
 
+    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
+        if (props.isOpen == null && props.onInteraction != null) {
+            console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
+        }
+        if (props.hasBackdrop && props.inline) {
+            console.warn(Errors.POPOVER_WARN_MODAL_INLINE);
+        }
+        if (props.hasBackdrop && props.interactionKind !== PopoverInteractionKind.CLICK) {
+            throw new Error(Errors.POPOVER_MODAL_INTERACTION);
+        }
+
+        const childrenCount = React.Children.count(props.children);
+        const hasContentProp = props.content !== undefined;
+        const hasTargetProp = props.target !== undefined;
+
+        if (childrenCount === 0 && !hasTargetProp) {
+            throw new Error(Errors.POPOVER_REQUIRES_TARGET);
+        }
+        if (childrenCount > 2) {
+            console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
+        }
+        if (childrenCount > 0 && hasTargetProp) {
+            console.warn(Errors.POPOVER_WARN_DOUBLE_TARGET);
+        }
+        if (childrenCount === 2 && hasContentProp) {
+            console.warn(Errors.POPOVER_WARN_DOUBLE_CONTENT);
+        }
+    }
+
     private updateDarkParent() {
         if (!this.props.inline && this.state.isOpen) {
             const hasDarkParent = this.targetElement != null && this.targetElement.closest(`.${Classes.DARK}`) != null;
@@ -381,7 +391,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     private renderPopper(content: JSX.Element) {
         const { inline, interactionKind, modifiers } = this.props;
-        const { placement } = this.state;
 
         const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class
@@ -422,6 +431,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             },
         };
 
+        const placement = positionToPlacement(this.props.position);
+
         return (
             <Popper className={Classes.TRANSITION_CONTAINER} placement={placement} modifiers={allModifiers}>
                 <div
@@ -447,6 +458,17 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             content: ensureElement(contentChild == null ? contentProp : contentChild),
             target: ensureElement(targetChild == null ? targetProp : targetChild),
         };
+    }
+
+    private getIsOpen(props?: IPopoverProps) {
+        // disabled popovers should never be allowed to open.
+        if (props == null || props.disabled) {
+            return false;
+        } else if (props.isOpen != null) {
+            return props.isOpen;
+        } else {
+            return props.defaultIsOpen;
+        }
     }
 
     private handleContentMount = () => {
@@ -487,7 +509,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             !this.props.openOnTargetFocus
         ) {
             this.handleMouseLeave(e);
-        } else if (!this.state.disabled) {
+        } else if (!this.props.disabled) {
             // only begin opening popover when it is enabled
             this.setOpenState(true, e, this.props.hoverOpenDelay);
         }
@@ -527,7 +549,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
-        if (!this.state.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
+        if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
                 this.setState(prevState => ({ isOpen: !prevState.isOpen }));
             } else {
@@ -590,33 +612,5 @@ function ensureElement(child: React.ReactChild | undefined) {
         return <span>{child}</span>;
     } else {
         return child;
-    }
-}
-
-function getDisabled(props: IPopoverProps): boolean {
-    if (props.disabled !== undefined) {
-        return props.disabled;
-    } else if (props.disabled !== undefined) {
-        return props.disabled;
-    } else {
-        return false;
-    }
-}
-
-function getHasBackdrop(props: IPopoverProps): boolean {
-    if (props.hasBackdrop !== undefined) {
-        return props.hasBackdrop;
-    } else if (props.hasBackdrop !== undefined) {
-        return props.hasBackdrop;
-    } else {
-        return false;
-    }
-}
-
-function getPlacement(props: IPopoverProps): Placement {
-    if (props.position !== undefined) {
-        return positionToPlacement(props.position);
-    } else {
-        return "auto";
     }
 }
