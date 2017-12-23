@@ -34,6 +34,9 @@ export interface ITagInputProps extends IProps {
     /** React props to pass to the `<input>` element */
     inputProps?: HTMLInputProps;
 
+    /** Controlled value of the `<input>` element */
+    inputValue?: string;
+
     /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
     leftIconName?: IconName;
 
@@ -47,6 +50,9 @@ export interface ITagInputProps extends IProps {
      * not be added as a tag.
      */
     onAdd?: (values: string[]) => boolean | void;
+
+    /** Callback invoked when the value of `<input>` element is changed */
+    onInputChange?: React.FormEventHandler<HTMLInputElement>;
 
     /**
      * Callback invoked when new tags are added or removed. Receives the updated list of `values`:
@@ -148,13 +154,14 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     public static defaultProps: Partial<ITagInputProps> & object = {
         inputProps: {},
+        inputValue: "",
         separator: ",",
         tagProps: {},
     };
 
     public state: ITagInputState = {
         activeIndex: NONE,
-        inputValue: "",
+        inputValue: this.props.inputValue,
         isInputFocused: false,
     };
 
@@ -169,6 +176,14 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
             }
         },
     };
+
+    public componentWillReceiveProps(nextProps: HTMLInputProps & ITagInputProps) {
+        super.componentWillReceiveProps(nextProps);
+
+        if (nextProps.inputValue !== this.props.inputValue) {
+            this.setState({ inputValue: nextProps.inputValue });
+        }
+    }
 
     public render() {
         const { className, inputProps, leftIconName, placeholder, values } = this.props;
@@ -288,7 +303,7 @@ export class TagInput extends AbstractComponent<ITagInputProps, ITagInputState> 
 
     private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ activeIndex: NONE, inputValue: event.currentTarget.value });
-        Utils.safeInvoke(this.props.inputProps.onChange, event);
+        Utils.safeInvoke(this.props.onInputChange, event);
     };
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
