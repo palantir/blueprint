@@ -46,8 +46,9 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
             // `keepTogether` functionality apparently doesn't work once you
             // render an open popover in a portal on mount.
             isOpen: this.state.hasMounted ? true : false,
-            // prevent-overflow functionality is irrelevant to this example
-            modifiers: { preventOverflow: { enabled: false } },
+            // not relevant to this example, but required in order for default
+            // modifiers to work (e.g. `hide`).
+            modifiers: { preventOverflow: { boundariesElement: "window" } },
             popoverClassName: "docs-popover-inline-example-popover",
             position: Position.BOTTOM,
         };
