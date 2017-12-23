@@ -57,7 +57,6 @@ export class PopoverInteractionKindExample extends BaseExample<{}> {
             <Popover
                 {...popoverProps}
                 content={<FileMenu shouldDismissPopover={false} />}
-                inline={true}
                 position={Position.BOTTOM_LEFT}
                 interactionKind={interactionKind}
             >
