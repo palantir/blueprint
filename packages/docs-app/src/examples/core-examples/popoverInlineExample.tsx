@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Popover, Position } from "@blueprintjs/core";
+import { Button, IPopoverProps, Popover, Position } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs";
 
 export class PopoverInlineExample extends BaseExample<{}> {
@@ -24,18 +24,20 @@ export class PopoverInlineExample extends BaseExample<{}> {
     }
 
     protected renderExample() {
+        const popoverBaseProps: IPopoverProps = {
+            enforceFocus: false,
+            isOpen: true,
+            // prevent-overflow functionality is irrelevant to this example
+            modifiers: { preventOverflow: { enabled: false } },
+            popoverClassName: "docs-popover-inline-example-popover",
+            position: Position.BOTTOM,
+        };
+
         return (
             <div className="docs-popover-inline-example-content">
                 <div className="docs-popover-inline-example-scroll-container" ref={this.refHandlers.scrollContainer1}>
                     <div className="docs-popover-inline-example-scroll-content">
-                        <Popover
-                            content="I am a default popover."
-                            inline={false}
-                            isOpen={true}
-                            modifiers={{ preventOverflow: { boundariesElement: "window" } }}
-                            popoverClassName="docs-popover-inline-example-popover"
-                            position={Position.BOTTOM}
-                        >
+                        <Popover {...popoverBaseProps} content="I am a default popover." inline={false}>
                             <Button>
                                 <code>{`inline={false}`}</code>
                             </Button>
@@ -44,14 +46,7 @@ export class PopoverInlineExample extends BaseExample<{}> {
                 </div>
                 <div className="docs-popover-inline-example-scroll-container" ref={this.refHandlers.scrollContainer2}>
                     <div className="docs-popover-inline-example-scroll-content">
-                        <Popover
-                            content="I am an inline popover."
-                            inline={true}
-                            isOpen={true}
-                            modifiers={{ preventOverflow: { boundariesElement: "window" } }}
-                            popoverClassName="docs-popover-inline-example-popover"
-                            position={Position.BOTTOM}
-                        >
+                        <Popover {...popoverBaseProps} content="I am an inline popover." inline={true}>
                             <Button>
                                 <code>{`inline={true}`}</code>
                             </Button>
