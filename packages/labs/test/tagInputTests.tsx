@@ -403,7 +403,6 @@ describe("<TagInput>", () => {
         it("accepts successive input value changes", () => {
             const wrapper = mount(<TagInput values={VALUES} />);
             wrapper.setProps({ inputValue: "a" });
-            console.log(wrapper.state());
             expect(wrapper.state().inputValue).to.equal("a");
             wrapper.setProps({ inputValue: "b" });
             expect(wrapper.state().inputValue).to.equal("b");
