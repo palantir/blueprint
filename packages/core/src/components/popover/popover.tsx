@@ -358,10 +358,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
         }
         if (props.hasBackdrop && props.inline) {
-            console.warn(Errors.POPOVER_WARN_MODAL_INLINE);
+            console.warn(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE);
         }
         if (props.hasBackdrop && props.interactionKind !== PopoverInteractionKind.CLICK) {
-            throw new Error(Errors.POPOVER_MODAL_INTERACTION);
+            throw new Error(Errors.POPOVER_HAS_BACKDROP_INTERACTION);
         }
 
         const childrenCount = React.Children.count(props.children);

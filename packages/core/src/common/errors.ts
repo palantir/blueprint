@@ -42,8 +42,8 @@ export const NUMERIC_INPUT_STEP_SIZE_NULL = ns + ` <NumericInput> requires stepS
 // TODO (clewis): Migrate old Popover validation errors to the component formerly known as Popover2.
 // See: https://github.com/palantir/blueprint/issues/1940
 export const POPOVER_REQUIRES_TARGET = ns + ` <Popover> requires target prop or at least one child element.`;
-export const POPOVER_MODAL_INTERACTION =
-    ns + ` <Popover isModal={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
+export const POPOVER_HAS_BACKDROP_INTERACTION =
+    ns + ` <Popover hasBackdrop={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
 export const POPOVER_WARN_TOO_MANY_CHILDREN =
     ns +
     ` <Popover> supports one or two children; additional children are ignored.` +
@@ -53,7 +53,7 @@ export const POPOVER_WARN_DOUBLE_CONTENT =
 export const POPOVER_WARN_DOUBLE_TARGET =
     ns + ` <Popover> with children ignores target prop; use either prop or children.`;
 export const POPOVER_WARN_EMPTY_CONTENT = ns + ` Disabling <Popover> with empty/whitespace content...`;
-export const POPOVER_WARN_MODAL_INLINE = ns + ` <Popover inline={true}> ignores isModal`;
+export const POPOVER_WARN_HAS_BACKDROP_INLINE = ns + ` <Popover inline={true}> ignores hasBackdrop`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
 
 export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
