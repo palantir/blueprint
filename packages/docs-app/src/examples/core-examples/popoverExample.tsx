@@ -271,9 +271,13 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
 
     private centerScroll = (div: HTMLDivElement) => {
         if (div != null) {
-            const container = div.parentElement;
-            container.scrollTop = div.clientHeight / 4;
-            container.scrollLeft = div.clientWidth / 4;
+            // if we don't requestAnimationFrame, this function apparently executes
+            // before styles are applied to the page, so the centering is way off.
+            requestAnimationFrame(() => {
+                const container = div.parentElement;
+                container.scrollTop = div.clientHeight / 4;
+                container.scrollLeft = div.clientWidth / 4;
+            });
         }
     };
 }

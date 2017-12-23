@@ -20,7 +20,9 @@ export class PopoverInlineExample extends BaseExample<{}> {
     };
 
     public componentDidMount() {
-        this.recenter();
+        // if we don't requestAnimationFrame, this function apparently executes
+        // before styles are applied to the page, so the centering is way off.
+        requestAnimationFrame(this.recenter);
     }
 
     protected renderExample() {
