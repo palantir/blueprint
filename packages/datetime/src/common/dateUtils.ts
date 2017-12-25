@@ -6,6 +6,18 @@
 import { format, isSameDay, parse } from "date-fns";
 import { DateFormat } from "../dateFormatter";
 
+const LOCALE = {
+    de: require("date-fns/locale/de"),
+    en: require("date-fns/locale/en"),
+    es: require("date-fns/locale/es"),
+    fr: require("date-fns/locale/fr"),
+    it: require("date-fns/locale/it"),
+    ko: require("date-fns/locale/ko"),
+    ru: require("date-fns/locale/ru"),
+    uk: require("date-fns/locale/en"),
+    zn_cn: require("date-fns/locale/zn_cn")
+}
+
 export type DateRange = [Date | undefined, Date | undefined];
 
 export enum DateRangeBoundary {
@@ -160,8 +172,11 @@ export function getDateOnlyWithTime(date: Date): Date {
 export function getLocale(localeString: string): any {
     if (!localeString) {
         return undefined;
+    } else if (LOCALE.hasOwnProperty(localeString)){
+        return LOCALE[localeString];
+    } else {
+        return LOCALE.en;
     }
-    return require(`date-fns/locale/${localeString}`);
 }
 
 export function dateToString(date: Date, dateFormat: DateFormat, locale = "en") {
