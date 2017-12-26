@@ -5,7 +5,12 @@
  */
 
 import * as classNames from "classnames";
-import { isValid, isWithinRange } from "date-fns";
+
+/* tslint:disable:no-submodule-imports */
+import * as isValid from "date-fns/is_valid";
+import * as isWithinRange from "date-fns/is_within_range";
+/* tslint:enable:no-submodule-imports */
+
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
 

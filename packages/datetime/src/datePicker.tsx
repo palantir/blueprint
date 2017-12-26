@@ -13,7 +13,9 @@ import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
 
-import { isSameDay } from "date-fns";
+/* tslint:disable:no-submodule-imports */
+import * as isSameDay from "date-fns/is_same_day";
+/* tslint:enable:no-submodule-imports */
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 

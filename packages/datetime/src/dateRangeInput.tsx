@@ -28,7 +28,11 @@ import { DateFormat, IDateFormatter } from "./dateFormatter";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
 
-import { differenceInDays, isValid, isWithinRange } from "date-fns";
+/* tslint:disable:no-submodule-imports */
+import * as differenceInDays from "date-fns/difference_in_days";
+import * as isValid from "date-fns/is_valid";
+import * as isWithinRange from "date-fns/is_within_range";
+/* tslint:enable:no-submodule-imports */
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**

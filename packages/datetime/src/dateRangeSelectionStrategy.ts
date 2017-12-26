@@ -3,8 +3,9 @@
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
-
-import { isSameDay } from "date-fns";
+/* tslint:disable:no-submodule-imports */
+import * as isSameDay from "date-fns/is_same_day";
+/* tslint:enable:no-submodule-imports */
 import { DateRange, DateRangeBoundary } from "./common/dateUtils";
 
 export interface IDateRangeSelectionState {

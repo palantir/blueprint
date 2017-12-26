@@ -3,7 +3,12 @@
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
-import { format, isSameDay, parse } from "date-fns";
+
+/* tslint:disable:no-submodule-imports */
+import * as format from "date-fns/format";
+import * as isSameDay from "date-fns/is_same_day";
+import * as parse from "date-fns/parse";
+/* tslint:enable:no-submodule-imports */
 import { DateFormat } from "../dateFormatter";
 
 const LOCALE = {

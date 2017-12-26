@@ -17,7 +17,12 @@ import DateRangeBoundary = DateUtils.DateRangeBoundary;
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
 
-import { addMonths, isSameDay, isSameMonth, subMonths } from "date-fns";
+/* tslint:disable:no-submodule-imports */
+import * as addMonths from "date-fns/add_months";
+import * as isSameDay from "date-fns/is_same_day";
+import * as isSameMonth from "date-fns/is_same_month";
+import * as subMonths from "date-fns/sub_months";
+/* tslint:enable:no-submodule-imports */
 import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,

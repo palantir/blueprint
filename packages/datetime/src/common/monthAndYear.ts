@@ -4,7 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { addMonths, subMonths } from "date-fns";
+/* tslint:disable:no-submodule-imports */
+import * as addMonths from "date-fns/add_months";
+import * as subMonths from "date-fns/sub_months";
+/* tslint:enable:no-submodule-imports */
 
 export class MonthAndYear {
     public static fromDate(date: Date) {

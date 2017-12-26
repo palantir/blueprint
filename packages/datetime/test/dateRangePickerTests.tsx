@@ -15,7 +15,10 @@ import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { isSameDay } from "date-fns";
+/* tslint:disable:no-submodule-imports */
+import * as isSameDay from "date-fns/is_same_day";
+/* tslint:enable:no-submodule-imports */
+
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
