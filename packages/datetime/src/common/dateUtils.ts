@@ -8,10 +8,10 @@
 import * as format from "date-fns/format";
 import * as isSameDay from "date-fns/is_same_day";
 import * as parse from "date-fns/parse";
-/* tslint:enable:no-submodule-imports */
-import { DateFormat } from "../dateFormatter";
 
-const LOCALE = {
+// Import a subset of locales to reduce the bundle size of consuming apps
+// Following locales have been selected according to their popularity
+const LOCALE: { [index: string]: any } = {
     de: require("date-fns/locale/de"),
     en: require("date-fns/locale/en"),
     es: require("date-fns/locale/es"),
@@ -20,8 +20,10 @@ const LOCALE = {
     ko: require("date-fns/locale/ko"),
     ru: require("date-fns/locale/ru"),
     uk: require("date-fns/locale/en"),
-    zn_cn: require("date-fns/locale/zn_cn")
-}
+    zh_cn: require("date-fns/locale/zh_cn"),
+};
+/* tslint:enable:no-submodule-imports */
+import { DateFormat } from "../dateFormatter";
 
 export type DateRange = [Date | undefined, Date | undefined];
 
@@ -177,7 +179,7 @@ export function getDateOnlyWithTime(date: Date): Date {
 export function getLocale(localeString: string): any {
     if (!localeString) {
         return undefined;
-    } else if (LOCALE.hasOwnProperty(localeString)){
+    } else if (LOCALE.hasOwnProperty(localeString)) {
         return LOCALE[localeString];
     } else {
         return LOCALE.en;
