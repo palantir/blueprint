@@ -53,6 +53,10 @@
   version "9.1.8"
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.1.8.tgz#d227f18bcb8f3f187e16965f2444859a04689758"
 
+"@types/kss@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/kss/-/kss-3.0.0.tgz#8456ebcaccfd70fb7396033d9416bda710e56b95"
+
 "@types/lodash@4.14.74":
   version "4.14.74"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.74.tgz#ac3bd8db988e7f7038e5d22bd76a7ba13f876168"
@@ -2021,10 +2025,11 @@ dns-txt@^2.0.2:
   dependencies:
     buffer-indexof "^1.0.0"
 
-documentalist@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/documentalist/-/documentalist-0.1.1.tgz#109003f74e94d71667d020c5b370750e14af1810"
+documentalist@^1.0.0-beta.0:
+  version "1.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/documentalist/-/documentalist-1.0.0-beta.0.tgz#3b6f1c6f5193a6b8360c0988853a0b13a747594b"
   dependencies:
+    "@types/kss" "^3.0.0"
     glob "^7.1.1"
     js-yaml "^3.10.0"
     kss "^3.0.0-beta.18"
