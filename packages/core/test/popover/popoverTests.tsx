@@ -103,7 +103,7 @@ describe("<Popover>", () => {
                     {"content"}
                 </Popover>,
             );
-            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_MODAL_INLINE));
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE));
             warnSpy.restore();
         });
 
@@ -123,7 +123,7 @@ describe("<Popover>", () => {
                     expectPropValidationError(
                         Popover,
                         { hasBackdrop: true, interactionKind: PopoverInteractionKind[interactionKindKey] },
-                        Errors.POPOVER_MODAL_INTERACTION,
+                        Errors.POPOVER_HAS_BACKDROP_INTERACTION,
                     );
                 });
             }
