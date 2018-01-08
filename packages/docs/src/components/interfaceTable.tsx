@@ -6,7 +6,7 @@
 
 import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import { ITsClass, ITsInterface, ITsProperty } from "documentalist/dist/client";
+import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty } from "documentalist/dist/client";
 import * as React from "react";
 import { ITagRendererMap } from "../tags";
 import { renderBlock } from "./block";
@@ -30,8 +30,26 @@ function propTag(intent: Intent, title: string, ...children: React.ReactNode[]) 
     );
 }
 
-const renderPropRow = (prop: ITsProperty) => {
-    const { defaultValue, documentation, flags: { isDeprecated, isExternal, isOptional }, inheritedFrom, name } = prop;
+function renderPropType(prop: ITsProperty | ITsMethod) {
+    if (isTsProperty(prop)) {
+        const formattedType = prop.type.replace(/\b(JSX\.)?Element\b/, "JSX.Element");
+        return (
+            <code className="docs-prop-type">
+                <strong>{formattedType}</strong>
+                <em className="docs-prop-default pt-text-muted">{prop.defaultValue}</em>
+            </code>
+        );
+    } else {
+        return (
+            <code className="docs-prop-type">
+                <strong>{prop.signatures[0].type}</strong>
+            </code>
+        );
+    }
+}
+
+function renderPropRow(prop: ITsProperty | ITsMethod) {
+    const { flags: { isDeprecated, isExternal, isOptional }, inheritedFrom, name } = prop;
 
     const classes = classNames("docs-prop-name", {
         "docs-prop-is-deprecated": !!isDeprecated,
@@ -56,8 +74,7 @@ const renderPropRow = (prop: ITsProperty) => {
         tags.push(propTag(Intent.NONE, "Inherited from ", <code key="__inherited">{inheritedFrom}</code>));
     }
 
-    const formattedType = prop.type.replace(/\b(JSX\.)?Element\b/, "JSX.Element");
-
+    const documentation = isTsProperty(prop) ? prop.documentation : prop.signatures[0].documentation;
     // TODO: this ignores tags in prop docs, but that's kind of OK cuz they all get processed
     // into prop.tags by the TS compiler.
     const html = documentation.contents.reduce<string>((a, b) => (typeof b === "string" ? a + b : a), "");
@@ -68,16 +85,13 @@ const renderPropRow = (prop: ITsProperty) => {
                 <code>{name}</code>
             </td>
             <td className="docs-prop-details">
-                <code className="docs-prop-type">
-                    <strong>{formattedType}</strong>
-                    <em className="docs-prop-default pt-text-muted">{defaultValue}</em>
-                </code>
+                {renderPropType(prop)}
                 <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: html }} />
                 <p className="docs-prop-tags">{tags}</p>
             </td>
         </tr>
     );
-};
+}
 
 export interface IInterfaceTableProps {
     iface: ITsClass | ITsInterface;
