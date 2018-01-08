@@ -33,6 +33,8 @@ function isReactClass(Component: any): boolean {
  * @param props custom props per component
  * @param children custom children per component
  * @param skipList array of component names to skip
+ * @param classNameChildList array of component names for which className is legitimately passed down to
+ * child element
  */
 export function generateIsomorphicTests(
     Components: { [name: string]: any },
@@ -62,7 +64,7 @@ export function generateIsomorphicTests(
                             {
                                 ...props[componentName],
                                 className: "test",
-                            } as any,
+                            },
                             children[componentName],
                         );
                         if (classNameChildList.includes(componentName)) {
