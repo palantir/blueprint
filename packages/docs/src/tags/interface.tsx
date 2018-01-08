@@ -4,25 +4,22 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { ITypescriptPluginData } from "documentalist/dist/client";
+import { isTsClass, isTsInterface, ITypescriptPluginData } from "documentalist/dist/client";
 import * as React from "react";
-import { PropsStore } from "../common/propsStore";
 import { InterfaceTable } from "../components/interfaceTable";
 import { TagRenderer } from "./";
 
 export class InterfaceTagRenderer {
-    private propsStore: PropsStore;
-
-    constructor(docs: ITypescriptPluginData) {
-        this.propsStore = new PropsStore(docs.typescript);
-    }
+    constructor(private docs: ITypescriptPluginData) {}
 
     public render: TagRenderer = ({ value: name }, key, tagRenderers) => {
-        const iface = this.propsStore.getInterface(name);
-        const props = this.propsStore.getProps(iface);
+        const iface = this.docs.typescript[name];
         if (iface === undefined) {
             throw new Error(`Unknown @interface ${name}`);
         }
-        return <InterfaceTable key={key} iface={iface} props={props} tagRenderers={tagRenderers} />;
+        if (isTsClass(iface) || isTsInterface(iface)) {
+            return <InterfaceTable key={key} iface={iface} tagRenderers={tagRenderers} />;
+        }
+        throw new Error(`@interface cannot render ${iface.kind}`);
     };
 }
