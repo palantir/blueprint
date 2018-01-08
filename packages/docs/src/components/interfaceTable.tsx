@@ -31,7 +31,7 @@ function propTag(intent: Intent, title: string, ...children: React.ReactNode[]) 
 }
 
 const renderPropRow = (prop: ITsProperty) => {
-    const { defaultValue, documentation, flags: { isDeprecated, isExternal, isOptional }, name } = prop;
+    const { defaultValue, documentation, flags: { isDeprecated, isExternal, isOptional }, inheritedFrom, name } = prop;
 
     const classes = classNames("docs-prop-name", {
         "docs-prop-is-deprecated": !!isDeprecated,
@@ -51,6 +51,9 @@ const renderPropRow = (prop: ITsProperty) => {
                 ""
             );
         tags.push(propTag(Intent.DANGER, "Deprecated", maybeMessage));
+    }
+    if (inheritedFrom != null) {
+        tags.push(propTag(Intent.NONE, "Inherited from ", <code key="__inherited">{inheritedFrom}</code>));
     }
 
     const formattedType = prop.type.replace(/\b(JSX\.)?Element\b/, "JSX.Element");
@@ -78,11 +81,13 @@ const renderPropRow = (prop: ITsProperty) => {
 
 export interface IInterfaceTableProps {
     iface: ITsClass | ITsInterface;
-    props: ITsProperty[];
     tagRenderers: ITagRendererMap;
 }
 
-export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({ iface, props, tagRenderers }) => {
+export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({ iface, tagRenderers }) => {
+    const propRows = [...iface.properties, ...iface.methods]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(renderPropRow);
     return (
         <div className="docs-modifiers">
             <div className="docs-interface-name">{iface.name}</div>
@@ -94,7 +99,7 @@ export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({ iface, props, 
                         <th>Description</th>
                     </tr>
                 </thead>
-                <tbody>{props.map(renderPropRow)}</tbody>
+                <tbody>{propRows}</tbody>
             </table>
         </div>
     );
