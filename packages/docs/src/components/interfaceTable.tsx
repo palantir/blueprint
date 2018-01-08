@@ -77,7 +77,8 @@ function renderPropRow(prop: ITsProperty | ITsMethod) {
     const documentation = isTsProperty(prop) ? prop.documentation : prop.signatures[0].documentation;
     // TODO: this ignores tags in prop docs, but that's kind of OK cuz they all get processed
     // into prop.tags by the TS compiler.
-    const html = documentation.contents.reduce<string>((a, b) => (typeof b === "string" ? a + b : a), "");
+    const html =
+        documentation && documentation.contents.reduce<string>((a, b) => (typeof b === "string" ? a + b : a), "");
 
     return (
         <tr key={name}>
