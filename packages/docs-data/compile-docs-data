@@ -24,8 +24,6 @@ const DOCS_DATA_FILENAME = "docs.json";
 const DOCS_RELEASES_FILENAME = "releases.json";
 const DOCS_VERSIONS_FIELENAME = "versions.json";
 
-const PACKAGES = ["core", "datetime", "docs", "docs-app", "icons", "labs", "select", "table", "timezone"];
-
 (async () => {
     try {
         if (!fs.existsSync(GENERATED_SRC_DIR)) {
@@ -56,11 +54,11 @@ function generateDocumentalistData() {
             /\.tsx?$/,
             new dm.TypescriptPlugin({
                 excludeNames: [/I.+State$/],
-                excludePaths: ["node_modules/", "docs-app/"],
+                excludePaths: ["node_modules/", "-app/", "test-commons/"],
             }),
         )
         .use(".scss", new dm.KssPlugin())
-        .documentGlobs(`../{${PACKAGES.join(",")}}/src/**/*`)
+        .documentGlobs("../*/src/**/*.{ts,tsx,scss,md}")
         .then(docs => JSON.stringify(docs, transformDocumentalistData, 2))
         .then(content => fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_DATA_FILENAME), content));
 }
