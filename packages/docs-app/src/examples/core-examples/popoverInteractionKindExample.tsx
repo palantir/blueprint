@@ -31,6 +31,7 @@ export class PopoverInteractionKindExample extends BaseExample<{}> {
         return (
             <Popover
                 content={<FileMenu shouldDismissPopover={false} />}
+                enforceFocus={false}
                 position={Position.BOTTOM_LEFT}
                 interactionKind={interactionKind}
             >
