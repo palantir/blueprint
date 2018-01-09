@@ -8,7 +8,7 @@ const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        "docs.bundle": [
+        "docs-theme": [
             "./src/index.ts"
         ],
     },
@@ -16,8 +16,8 @@ module.exports = Object.assign({}, baseConfig, {
     externals: COMMON_EXTERNALS,
 
     output: {
-        filename: "[name].js",
-        library: ["Blueprint", "Docs"],
+        filename: "[name].bundle.js",
+        library: ["Blueprint", "DocsTheme"],
         libraryTarget: "umd",
         path: path.resolve(__dirname, "./dist")
     },

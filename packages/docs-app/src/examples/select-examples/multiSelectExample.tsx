@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 import { ISelectItemRendererProps, MultiSelect } from "@blueprintjs/select";
 import { Film, TOP_100_FILMS } from "./data";
 
