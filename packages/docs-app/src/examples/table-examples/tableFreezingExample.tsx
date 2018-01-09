@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table, Utils } from "@blueprintjs/table";
 
 export interface ITableFreezingExampleState {

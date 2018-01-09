@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
-import { BaseExample, handleStringChange } from "@blueprintjs/docs";
+import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
 
 export interface IRadioExampleState {
     radioValue?: string;

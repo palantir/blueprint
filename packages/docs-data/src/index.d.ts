@@ -2,7 +2,7 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-import { IDocsData } from "@blueprintjs/docs";
+import { IDocsData } from "@blueprintjs/docs-theme";
 
 export interface IPackageInfo {
     /** Name of package. Ignored for documentation site versions. */

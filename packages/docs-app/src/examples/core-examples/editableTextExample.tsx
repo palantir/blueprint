@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, EditableText, Intent, NumericInput, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
 import { IntentSelect } from "./common/intentSelect";
 
 const INPUT_ID = "EditableTextExample-max-length";

@@ -3,7 +3,7 @@
 
 @import "~normalize.css/normalize.css";
 
-// import these first cuz they're the base layer
+// import these first because they're the base layer
 @import "~@blueprintjs/core/dist/blueprint.css";
 @import "~@blueprintjs/datetime/dist/blueprint-datetime.css";
 @import "~@blueprintjs/icons/dist/blueprint-icons.css";
@@ -13,8 +13,8 @@
 @import "~@blueprintjs/timezone/dist/blueprint-timezone.css";
 
 // then the docs theme styles
-@import "~@blueprintjs/docs/dist/docs.css";
-@import "~@blueprintjs/docs/src/styles/variables";
+@import "~@blueprintjs/docs-theme/dist/docs-theme.css";
+@import "~@blueprintjs/docs-theme/src/styles/variables";
 
 // then our own styles
 @import "styles/colors";
