@@ -5,7 +5,7 @@
  */
 
 import { Classes, Switch } from "@blueprintjs/core";
-import { BaseExample, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
 
