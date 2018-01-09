@@ -5,12 +5,12 @@
  */
 
 import * as classNames from "classnames";
-import { IMarkdownPluginData, isPageNode, ITypescriptPluginData, linkify } from "documentalist/dist/client";
+import { isPageNode, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
 import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
+import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
 import { ITagRendererMap } from "../tags";
 import { renderBlock } from "./block";
@@ -26,9 +26,9 @@ export interface IDocumentationProps extends IProps {
 
     /**
      * All the docs data from Documentalist.
-     * Must include at least  `{ nav, pages }` from the MarkdownPlugin.
+     * This theme requires the Markdown plugin, and optionally supports Typescript and KSS data.
      */
-    docs: IMarkdownPluginData;
+    docs: IDocsData;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -93,10 +93,13 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     }
 
     public getChildContext(): IDocumentationContext {
+        const { docs } = this.props;
         return {
             getDocsData: () => this.props.docs,
             renderBlock: block => renderBlock(block, this.props.tagRenderers),
-            renderType: type => linkify(type, this.props.docs.typescript, name => <ApiLink key={name} name={name} />),
+            renderType: hasTypescriptData(docs)
+                ? type => linkify(type, docs.typescript, name => <ApiLink key={name} name={name} />)
+                : type => type,
         };
     }
 

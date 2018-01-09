@@ -7,6 +7,17 @@
 import { Utils } from "@blueprintjs/core";
 import { IBlock, IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/client";
 
+/** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
+export type IDocsData = IMarkdownPluginData & (ITypescriptPluginData | {}) & (IKssPluginData | {});
+
+export function hasTypescriptData(docs: IDocsData): docs is IMarkdownPluginData & ITypescriptPluginData {
+    return docs != null && (docs as ITypescriptPluginData).typescript != null;
+}
+
+export function hasKssData(docs: IDocsData): docs is IMarkdownPluginData & IKssPluginData {
+    return docs != null && (docs as IKssPluginData).css != null;
+}
+
 /**
  * Gonna use React context to pass some helpful functions around.
  * This is basically the pauper's Redux store connector: some central state from the root
@@ -14,12 +25,12 @@ import { IBlock, IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } fr
  * directly to their parent.
  */
 export interface IDocumentationContext {
-    getDocsData(): IMarkdownPluginData & (ITypescriptPluginData | {}) & (IKssPluginData | {});
+    getDocsData(): IDocsData;
 
     /** Render a block of Documentalist documentation to a React node. */
     renderBlock(block: IBlock): React.ReactNode;
 
-    /** Render a Documentalist type string to a React node. */
+    /** Render a Documentalist Typescript type string to a React node. */
     renderType(type: string): React.ReactNode;
 }
 
