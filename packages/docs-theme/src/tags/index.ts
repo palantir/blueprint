@@ -4,15 +4,11 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IPageData, ITag } from "documentalist/dist/client";
+import { ITag } from "documentalist/dist/client";
 
 export interface ITagRendererMap {
-    [tagName: string]: TagRenderer;
+    [tagName: string]: React.SFC<ITag> | undefined;
 }
-
-export type TagElement = JSX.Element | undefined;
-
-export type TagRenderer = (tag: ITag, key: React.Key, tagRenderers: ITagRendererMap, page?: IPageData) => TagElement;
 
 export * from "./css";
 export * from "./defaults";

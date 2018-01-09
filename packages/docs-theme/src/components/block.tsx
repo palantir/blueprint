@@ -4,12 +4,12 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IBlock, IPageData } from "documentalist/dist/client";
+import { IBlock } from "documentalist/dist/client";
 import * as React from "react";
 
-import { ITagRendererMap, TagElement } from "../tags";
+import { ITagRendererMap } from "../tags";
 
-export function renderBlock(block: IBlock | undefined, tagRenderers: ITagRendererMap, page?: IPageData): TagElement[] {
+export function renderBlock(block: IBlock | undefined, tagRenderers: ITagRendererMap): JSX.Element[] {
     if (block === undefined) {
         return [];
     }
@@ -22,11 +22,11 @@ export function renderBlock(block: IBlock | undefined, tagRenderers: ITagRendere
             if (renderer === undefined) {
                 throw new Error(`Unknown @tag: ${node.tag}`);
             }
-            return renderer(node, i, tagRenderers, page);
+            return React.createElement(renderer, { ...node, key: i });
         } catch (ex) {
             console.error(ex.message);
             return (
-                <h3>
+                <h3 key={`__error-${i}`}>
                     <code>{ex.message}</code>
                 </h3>
             );
