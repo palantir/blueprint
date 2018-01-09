@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Button, IPopoverProps, Popover, Position } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 
 export interface IPopoverInlineExampleState {
     hasMounted?: boolean;

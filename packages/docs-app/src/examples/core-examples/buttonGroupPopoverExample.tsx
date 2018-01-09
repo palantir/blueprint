@@ -5,7 +5,7 @@
  */
 
 import { Button, ButtonGroup, Classes, IconName, Intent, Popover, Position, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as classNames from "classnames";
 import * as React from "react";
 
