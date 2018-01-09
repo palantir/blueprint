@@ -7,13 +7,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v6-dependency-cache-{{ checksum "yarn.lock" }}
-            - v6-dependency-cache-
+            - v7-dependency-cache-{{ checksum "yarn.lock" }}
+            - v7-dependency-cache-
       - run: yarn
       - run: echo "Checking if lockfiles changed..." && git diff --exit-code
       - run: npm rebuild node-sass
       - save_cache:
-          key: v6-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
       - persist_to_workspace:
@@ -30,8 +30,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v6-dependency-cache-{{ checksum "yarn.lock" }}
-            - v6-dependency-cache-
+            - v7-dependency-cache-{{ checksum "yarn.lock" }}
+            - v7-dependency-cache-
       - run: yarn compile
       - persist_to_workspace:
           root: '.'
@@ -48,8 +48,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v6-dependency-cache-{{ checksum "yarn.lock" }}
-            - v6-dependency-cache-
+            - v7-dependency-cache-{{ checksum "yarn.lock" }}
+            - v7-dependency-cache-
       - run: yarn lint
 
   dist-libs:
@@ -60,7 +60,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v6-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:libs
       - persist_to_workspace:
           root: '.'
@@ -81,7 +81,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v6-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:apps
       - persist_to_workspace:
           root: '.'
@@ -99,7 +99,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v6-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           command: |
               case $CIRCLE_NODE_INDEX in \
@@ -139,7 +139,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v2-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
