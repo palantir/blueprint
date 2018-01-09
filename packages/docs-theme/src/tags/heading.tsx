@@ -6,9 +6,8 @@
 
 import { IHeadingTag } from "documentalist/dist/client";
 import * as React from "react";
-import { TagRenderer } from "./";
 
-const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>
+export const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>
     // use createElement so we can dynamically choose tag based on depth
     React.createElement(
         `h${level}`,
@@ -20,7 +19,3 @@ const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>
         value,
     );
 Heading.displayName = "Docs.Heading";
-
-export class HeadingTagRenderer {
-    public render: TagRenderer = (heading: IHeadingTag, key) => <Heading key={key} {...heading} />;
-}

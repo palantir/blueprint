@@ -4,30 +4,32 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IKssExample, IKssModifier, IKssPluginData } from "documentalist/dist/client";
+import { IKssModifier, IKssPluginData, ITag } from "documentalist/dist/client";
 import * as React from "react";
+import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
 import { ModifierTable } from "../components/modifierTable";
-import { TagRenderer } from "./";
 
-const MODIFIER_PLACEHOLDER = /\{\{([\.\:]?)modifier\}\}/g;
-const DEFAULT_MODIFIER: IKssModifier = {
-    documentation: "Default",
-    name: "default",
-};
-
-const CssExample: React.SFC<IKssExample> = ({ markup, markupHtml, modifiers, reference }) => (
-    <div>
-        {modifiers.length > 0 ? <ModifierTable modifiers={modifiers} /> : undefined}
-        <div className="docs-example-wrapper" data-reference={reference}>
-            {renderMarkupForModifier(markup, DEFAULT_MODIFIER)}
-            {modifiers.map(mod => renderMarkupForModifier(markup, mod))}
+export const CssExample: React.SFC<ITag> = ({ value }, { getDocsData }: IDocumentationContext) => {
+    const { css } = getDocsData() as IKssPluginData;
+    if (css == null || css[value] == null) {
+        return null;
+    }
+    const { markup, markupHtml, modifiers, reference } = css[value];
+    return (
+        <div>
+            {modifiers.length > 0 ? <ModifierTable modifiers={modifiers} /> : undefined}
+            <div className="docs-example-wrapper" data-reference={reference}>
+                {renderMarkupForModifier(markup, DEFAULT_MODIFIER)}
+                {modifiers.map(mod => renderMarkupForModifier(markup, mod))}
+            </div>
+            <div className="docs-markup" dangerouslySetInnerHTML={{ __html: markupHtml }} />
         </div>
-        <div className="docs-markup" dangerouslySetInnerHTML={{ __html: markupHtml }} />
-    </div>
-);
+    );
+};
+CssExample.contextTypes = DocumentationContextTypes;
+CssExample.displayName = "Docs.CssExample";
 
-function renderMarkupForModifier(markup: string, modifier: IKssModifier) {
-    const { name } = modifier;
+function renderMarkupForModifier(markup: string, { name }: IKssModifier) {
     const html = markup.replace(MODIFIER_PLACEHOLDER, (_, prefix) => {
         if (prefix && name.charAt(0) === prefix) {
             return name.slice(1);
@@ -38,21 +40,15 @@ function renderMarkupForModifier(markup: string, modifier: IKssModifier) {
         }
     });
     return (
-        <div className="docs-example" data-modifier={modifier.name} key={modifier.name}>
-            <code>{modifier.name}</code>
+        <div className="docs-example" data-modifier={name} key={name}>
+            <code>{name}</code>
             <div dangerouslySetInnerHTML={{ __html: html }} />
         </div>
     );
 }
 
-export class CssTagRenderer {
-    constructor(private docs: IKssPluginData) {}
-
-    public render: TagRenderer = ({ value: reference }, key) => {
-        const example = this.docs.css[reference];
-        if (example === undefined || example.reference === undefined) {
-            throw new Error(`Unknown @css reference: ${reference}`);
-        }
-        return <CssExample {...example} key={key} />;
-    };
-}
+const MODIFIER_PLACEHOLDER = /\{\{([.:]?)modifier\}\}/g;
+const DEFAULT_MODIFIER: IKssModifier = {
+    documentation: "Default",
+    name: "default",
+};
