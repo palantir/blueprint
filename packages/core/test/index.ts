@@ -41,6 +41,7 @@ import "./slider/rangeSliderTests";
 import "./slider/sliderTests";
 import "./spinner/spinnerTests";
 import "./tabs/tabsTests";
+import "./tag-input/tagInputTests";
 import "./tag/tagTests";
 import "./text/textTests";
 import "./toast/toasterTests";
