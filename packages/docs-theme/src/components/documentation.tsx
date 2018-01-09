@@ -5,13 +5,15 @@
  */
 
 import * as classNames from "classnames";
-import { IMarkdownPluginData, isPageNode } from "documentalist/dist/client";
+import { IMarkdownPluginData, isPageNode, ITypescriptPluginData, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
 import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
 
+import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
-import { TagRenderer } from "../tags";
+import { ITagRendererMap } from "../tags";
+import { renderBlock } from "./block";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Page } from "./page";
@@ -36,7 +38,7 @@ export interface IDocumentationProps extends IProps {
     onComponentUpdate?: (pageId: string) => void;
 
     /** Tag renderer functions. Unknown tags will log console errors. */
-    tagRenderers: { [tag: string]: TagRenderer };
+    tagRenderers: ITagRendererMap;
 
     /**
      * Elements to render on the left side of the navbar, typically logo and title.
@@ -59,6 +61,8 @@ export interface IDocumentationState {
 
 @HotkeysTarget
 export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
+    public static childContextTypes = DocumentationContextTypes;
+
     public static defaultProps = {
         navbarLeft: "Documentation",
     };
@@ -86,6 +90,14 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             const { reference } = isPageNode(node) ? node : parents[0];
             this.routeToPage[node.route] = reference;
         });
+    }
+
+    public getChildContext(): IDocumentationContext {
+        return {
+            getDocsData: () => this.props.docs,
+            renderBlock: block => renderBlock(block, this.props.tagRenderers),
+            renderType: type => linkify(type, this.props.docs.typescript, name => <ApiLink key={name} name={name} />),
+        };
     }
 
     public render() {
