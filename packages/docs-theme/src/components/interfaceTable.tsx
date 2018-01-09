@@ -50,9 +50,9 @@ function renderPropType(prop: ITsProperty | ITsMethod) {
 
 function renderPropRow(prop: ITsProperty | ITsMethod) {
     const { flags: { isDeprecated, isExternal, isOptional }, inheritedFrom, name } = prop;
-
+    const isDeprecatedBoolean = isDeprecated === true || typeof isDeprecated === "string";
     const classes = classNames("docs-prop-name", {
-        "docs-prop-is-deprecated": !!isDeprecated,
+        "docs-prop-is-deprecated": isDeprecatedBoolean,
         "docs-prop-is-internal": !isExternal,
         "docs-prop-is-required": !isOptional,
     });
@@ -61,7 +61,7 @@ function renderPropRow(prop: ITsProperty | ITsMethod) {
     if (!isOptional) {
         tags.push(propTag(Intent.SUCCESS, "Required"));
     }
-    if (!!isDeprecated) {
+    if (isDeprecatedBoolean) {
         const maybeMessage =
             typeof isDeprecated === "string" ? (
                 <span key="__deprecated_msg" dangerouslySetInnerHTML={dirtyMarkdown(": " + isDeprecated)} />
