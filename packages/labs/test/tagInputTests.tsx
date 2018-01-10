@@ -398,9 +398,10 @@ describe("<TagInput>", () => {
         it("passes initial inputValue to input element", () => {
             const input = shallow(<TagInput values={VALUES} inputValue={NEW_VALUE} />).find("input");
             assert.isTrue(input.prop("value") === NEW_VALUE);
+            expect(input.prop("value")).to.equal(NEW_VALUE);
         });
 
-        it("accepts successive input value changes", () => {
+        it("prop changes are reflected in state", () => {
             const wrapper = mount(<TagInput values={VALUES} />);
             wrapper.setProps({ inputValue: "a" });
             expect(wrapper.state().inputValue).to.equal("a");
@@ -412,11 +413,10 @@ describe("<TagInput>", () => {
 
         it("Updating inputValue updates input element", () => {
             const wrapper = mount(<TagInput values={VALUES} />);
-            const input = wrapper.find("input");
             wrapper.setProps({
                 inputValue: NEW_VALUE,
             });
-            assert.isTrue(input.prop("value") === NEW_VALUE);
+            expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
         });
     });
 

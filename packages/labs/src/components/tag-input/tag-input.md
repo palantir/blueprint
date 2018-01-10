@@ -18,7 +18,7 @@
 
 `TagInput` provides granular `onAdd` and `onRemove` **event props**, which are passed the added or removed items in response to the user interactions above. It also provides `onChange`, which combines both events and is passed the updated `values` array, with new items appended to the end and removed items filtered away.
 
-`inputValue` allows for direct manipulation of the `<input>` element's text. Use `onInputChange` to respond to changes to the `<input>` text. Additional properties (such as custom event handlers) can be applied to the `<input>` element via `inputProps`.
+The `<input>` element can be controlled directly via the `inputValue` and `onInputChange` props. Additional properties (such as custom event handlers) can be applied to the input via `inputProps`.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     <h5>Handling long words</h5>
