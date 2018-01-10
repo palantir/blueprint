@@ -6,7 +6,7 @@
 
 import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import { isTsMethod, ITsEnum, ITsEnumMember } from "documentalist/dist/client";
+import { ITsEnum, ITsEnumMember } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ApiHeader } from "./apiHeader";
@@ -44,7 +44,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
     }
 
     private renderPropRow = (entry: ITsEnumMember) => {
-        const { renderBlock, renderType } = this.context;
+        const { renderBlock } = this.context;
         const { flags: { isDeprecated, isExternal, isOptional }, name } = entry;
 
         const classes = classNames("docs-prop-name", {
@@ -53,24 +53,16 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
             "docs-prop-is-required": !isOptional,
         });
 
-        const typeInfo = isTsMethod(entry) ? (
-            <>
-                <strong>{renderType(entry.signatures[0].type)}</strong>
-            </>
-        ) : (
-            <>
-                <strong>{entry.name}</strong>
-                {entry.defaultValue && <em className="docs-prop-default pt-text-muted">{entry.defaultValue}</em>}
-            </>
-        );
-
         return (
             <tr key={name}>
                 <td className={classes}>
                     <code>{name}</code>
                 </td>
                 <td className="docs-prop-details">
-                    <code className="docs-prop-type">{typeInfo}</code>
+                    <code className="docs-prop-type">
+                        <strong>{entry.name}</strong>
+                        <em className="docs-prop-default pt-text-muted">{entry.defaultValue}</em>
+                    </code>
                     <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>
                     <p className="docs-prop-tags">{this.renderTags(entry)}</p>
                 </td>

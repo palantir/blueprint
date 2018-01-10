@@ -72,6 +72,7 @@
 
 .docs-interface-header {
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
   margin-bottom: $pt-grid-size;
   border-bottom: 1px solid $pt-divider-black;
