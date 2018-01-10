@@ -397,7 +397,7 @@ describe("<TagInput>", () => {
         const NEW_VALUE = "new item";
         it("passes initial inputValue to input element", () => {
             const input = shallow(<TagInput values={VALUES} inputValue={NEW_VALUE} />).find("input");
-            assert.isTrue(input.prop("value") === NEW_VALUE);
+            expect(input.prop("value")).to.equal(NEW_VALUE);
             expect(input.prop("value")).to.equal(NEW_VALUE);
         });
 
