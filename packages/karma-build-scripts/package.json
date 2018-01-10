@@ -19,7 +19,7 @@
     "karma-sinon": "^1.0.5",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.5",
-    "mocha": "^4.0.1",
+    "mocha": "^4.1.0",
     "phantomjs-prebuilt": "^2.1.15"
   },
   "repository": {
