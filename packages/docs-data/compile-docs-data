@@ -55,10 +55,11 @@ function generateDocumentalistData() {
             new dm.TypescriptPlugin({
                 excludeNames: [/I.+State$/],
                 excludePaths: ["node_modules/", "-app/", "test-commons/"],
+                tsconfigPath: path.resolve(__dirname, "../../config/tsconfig.base.json"),
             }),
         )
         .use(".scss", new dm.KssPlugin())
-        .documentGlobs("../*/src/**/*.{ts,tsx,scss,md}")
+        .documentGlobs("../*/src/**/*.{scss,md}", "../*/src/index.{ts,tsx}")
         .then(docs => JSON.stringify(docs, transformDocumentalistData, 2))
         .then(content => fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_DATA_FILENAME), content));
 }
