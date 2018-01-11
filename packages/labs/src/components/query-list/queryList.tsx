@@ -149,11 +149,12 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private shouldCheckActiveItemInViewport: boolean;
 
     public render() {
-        const { activeItem, items, renderer, query } = this.props;
+        const { activeItem, className, items, renderer, query } = this.props;
         const { filteredItems } = this.state;
 
         return renderer({
             activeItem,
+            className,
             filteredItems,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
