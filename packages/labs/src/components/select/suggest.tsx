@@ -127,7 +127,6 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const {
-            className,
             inputValueRenderer,
             inputProps = this.DEFAULT_PROPS.inputProps,
             popoverProps = this.DEFAULT_PROPS.popoverProps,
@@ -144,7 +143,7 @@ export class Suggest<T> extends React.Component<ISuggestProps<T>, ISuggestState<
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
                 {...popoverProps}
-                className={classNames(className, listProps.className, popoverProps.className)}
+                className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 popoverDidOpen={this.handlePopoverDidOpen}
