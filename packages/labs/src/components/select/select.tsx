@@ -181,7 +181,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
+        const { className, filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
         const { ref, ...htmlInputProps } = inputProps;
         const input = (
@@ -205,7 +205,7 @@ export class Select<T> extends React.Component<ISelectProps<T>, ISelectState<T>>
                 placement="bottom-start"
                 disabled={disabled}
                 {...popoverProps}
-                className={classNames(listProps.className, popoverProps.className)}
+                className={classNames(className, listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 popoverWillOpen={this.handlePopoverWillOpen}
