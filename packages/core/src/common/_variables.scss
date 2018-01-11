@@ -40,7 +40,7 @@ $pt-icon-size-large: 20px !default;
 
 // Grids & dimensions
 
-$pt-border-radius: floor($pt-grid-size / 3) !default;
+$pt-border-radius: $pt-grid-size * 0.4 !default;
 
 // Buttons
 $pt-button-height: $pt-grid-size * 3 !default;
