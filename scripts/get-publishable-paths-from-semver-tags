@@ -6,34 +6,17 @@
 
 "use strict";
 
-const child_process = require("child_process");
+const cp = require("child_process");
 const path = require("path");
 
 const yargs = require("yargs")
-    .option("sls", {
-        default: false,
-        describe: "filter to packages that specify an SLS packaging configuration",
-        type: "boolean",
-    })
-    .option("npm", {
-        default: false,
-        describe: "filter to packages that are non-private and can be published to npm",
-        type: "boolean",
-    })
-    .usage("$0 {--sls,--npm} <commitish>")
+    .usage("$0 <commitish>")
     .help();
 
 const args = yargs.argv;
-
-if (!!args.sls === !!args.npm) {
-    yargs.showHelp();
-    console.error("error: exactly one of --sls or --npm should be provided");
-    process.exit(1);
-}
-
 const commitish = args._[0] || "HEAD";
 
-child_process.exec(`git tag --points-at ${commitish}`, (err, stdout) => {
+cp.exec(`git tag --points-at ${commitish}`, (err, stdout) => {
     if (err) {
         throw err;
     }
@@ -59,20 +42,12 @@ child_process.exec(`git tag --points-at ${commitish}`, (err, stdout) => {
             const unscopedName = nameParts[nameParts.length - 1];
             const packagePath = path.join("packages", unscopedName);
             return {
-                path: packagePath,
                 // This will throw if the package name isn't also the path, which is desirable.
                 packageJson: require(path.resolve(packagePath, "package.json")),
+                path: packagePath,
             };
         })
-        .filter(({ packageJson }) => {
-            if (args.sls) {
-                return !!packageJson.sls;
-            } else if (args.npm) {
-                return !packageJson.private;
-            } else {
-                throw new Error("programmer error: neither sls nor npm was specified?");
-            }
-        })
+        .filter(({ packageJson }) => !packageJson.private)
         .map(pkg => pkg.path);
 
     publishablePackagePaths.forEach(pkgPath => console.log(pkgPath));
