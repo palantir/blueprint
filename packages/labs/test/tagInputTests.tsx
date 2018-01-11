@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { assert } from "chai";
+import { assert, expect } from "chai";
 import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
@@ -373,6 +373,50 @@ describe("<TagInput>", () => {
         );
         wrapper.find(Tag).forEach(tag => {
             assert.isFalse(tag.hasClass("pt-tag-removeable"), ".pt-tag should not have .pt-tag-removable applied");
+        });
+    });
+
+    describe("onInputChange", () => {
+        it("is not invoked on enter when input is empty", () => {
+            const onInputChange = sinon.stub();
+            const wrapper = shallow(<TagInput onInputChange={onInputChange} values={VALUES} />);
+            pressEnterInInput(wrapper, "");
+            assert.isTrue(onInputChange.notCalled);
+        });
+
+        it("is invoked when input text changes", () => {
+            const changeSpy: any = sinon.spy();
+            const wrapper = shallow(<TagInput onInputChange={changeSpy} values={VALUES} />);
+            wrapper.find("input").simulate("change", { currentTarget: { value: "hello" } });
+            assert.isTrue(changeSpy.calledOnce, "onChange called");
+            assert.equal("hello", changeSpy.args[0][0].currentTarget.value);
+        });
+    });
+
+    describe("inputValue", () => {
+        const NEW_VALUE = "new item";
+        it("passes initial inputValue to input element", () => {
+            const input = shallow(<TagInput values={VALUES} inputValue={NEW_VALUE} />).find("input");
+            expect(input.prop("value")).to.equal(NEW_VALUE);
+            expect(input.prop("value")).to.equal(NEW_VALUE);
+        });
+
+        it("prop changes are reflected in state", () => {
+            const wrapper = mount(<TagInput values={VALUES} />);
+            wrapper.setProps({ inputValue: "a" });
+            expect(wrapper.state().inputValue).to.equal("a");
+            wrapper.setProps({ inputValue: "b" });
+            expect(wrapper.state().inputValue).to.equal("b");
+            wrapper.setProps({ inputValue: "c" });
+            expect(wrapper.state().inputValue).to.equal("c");
+        });
+
+        it("Updating inputValue updates input element", () => {
+            const wrapper = mount(<TagInput values={VALUES} />);
+            wrapper.setProps({
+                inputValue: NEW_VALUE,
+            });
+            expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
         });
     });
 
