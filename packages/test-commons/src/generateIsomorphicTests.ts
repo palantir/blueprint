@@ -6,7 +6,6 @@
 // TODO: make this an executable script that takes configuration from CLI arguments so we don't need
 // to use the `mocha` CLI and write an isotest.js file in every project
 
-import { assert } from "chai";
 import * as Enzyme from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
@@ -55,22 +54,6 @@ export function generateIsomorphicTests(
                         // we care merely that `render()` succeeds: it can be server-rendered.
                         // errors will fail the test and log full stack traces to the console. nifty!
                         Enzyme.render(element);
-                    });
-
-                    it(`<${componentName}> className`, () => {
-                        const className = "TEST_CLASS";
-                        // simply assert that `className` prop appears in rendered tree.
-                        const wrapper = Enzyme.shallow(
-                            React.createElement(
-                                Component,
-                                { ...props[componentName], className },
-                                children[componentName],
-                            ),
-                            // this suite runs in a node environment (no browser), so we skip lifecycles to avoid DOM
-                            // interactions. all we need is the resulting JSX tree, to see if `className` appears in it.
-                            { disableLifecycleMethods: true },
-                        );
-                        assert.isTrue(wrapper.hasClass(className) || wrapper.find("." + className).length > 0);
                     });
                 }
             }
