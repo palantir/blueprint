@@ -19,12 +19,16 @@ export function hasKssData(docs: IDocsData): docs is IMarkdownPluginData & IKssP
 }
 
 /**
- * Gonna use React context to pass some helpful functions around.
+ * Use React context to transparently provide helpful functions to children.
  * This is basically the pauper's Redux store connector: some central state from the root
  * `Documentation` component is exposed to its children so those in the know can speak
  * directly to their parent.
  */
 export interface IDocumentationContext {
+    /**
+     * Get the Documentalist data.
+     * Use the `hasTypescriptData` and `hasKssData` typeguards before accessing those plugins' data.
+     */
     getDocsData(): IDocsData;
 
     /** Render a block of Documentalist documentation to a React node. */
@@ -34,12 +38,27 @@ export interface IDocumentationContext {
     renderType(type: string): React.ReactNode;
 }
 
+/**
+ * To enable context access in a React component, assign `static contextTypes` and declare `context` type:
+ *
+ * ```tsx
+ * export class ContextComponent extends React.PureComponent<IApiLinkProps> {
+ *     public static contextTypes = DocumentationContextTypes;
+ *     public context: IDocumentationContext;
+ *
+ *     public render() {
+ *         return this.context.renderBlock(this.props.block);
+ *     }
+ * }
+ * ```
+ */
 export const DocumentationContextTypes: React.ValidationMap<IDocumentationContext> = {
     getDocsData: assertFunctionProp,
     renderBlock: assertFunctionProp,
     renderType: assertFunctionProp,
 };
 
+// simple alternative to prop-types dependency
 function assertFunctionProp<T>(obj: T, key: keyof T) {
     if (obj[key] != null && Utils.isFunction(obj[key])) {
         return undefined;
