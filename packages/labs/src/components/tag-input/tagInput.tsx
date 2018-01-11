@@ -34,7 +34,7 @@ export interface ITagInputProps extends IProps {
     /** React props to pass to the `<input>` element. */
     inputProps?: HTMLInputProps;
 
-    /** Controlled value of the `<input>` element. This is shorthand for inputProps={{ value }}. */
+    /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;
 
     /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
@@ -50,12 +50,6 @@ export interface ITagInputProps extends IProps {
      * not be added as a tag.
      */
     onAdd?: (values: string[]) => boolean | void;
-
-    /**
-     * Callback invoked when the value of `<input>` element is changed.
-     * This is shorthand for inputProps={{ onChange }}.
-     */
-    onInputChange?: React.FormEventHandler<HTMLInputElement>;
 
     /**
      * Callback invoked when new tags are added or removed. Receives the updated list of `values`:
@@ -77,6 +71,12 @@ export interface ITagInputProps extends IProps {
      * ```
      */
     onChange?: (values: React.ReactNode[]) => boolean | void;
+
+    /**
+     * Callback invoked when the value of `<input>` element is changed.
+     * This is shorthand for `inputProps={{ onChange }}`.
+     */
+    onInputChange?: React.FormEventHandler<HTMLInputElement>;
 
     /**
      * Callback invoked when the user depresses a keyboard key.
