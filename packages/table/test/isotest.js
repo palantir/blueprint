@@ -3,6 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// @ts-check
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const Table = require("../dist");
@@ -13,11 +14,6 @@ const customProps = {
         onDoubleClick: () => undefined,
     },
 };
-
-const classNameChildList = [
-    "CopyCellsMenuItem",
-    "ResizeHandle"
-]
 
 const skipList = [
     // Pass-through renders
@@ -31,7 +27,6 @@ describe("Table isomorphic rendering", () => {
         Table,
         customProps,
         {},
-        skipList,
-        classNameChildList
+        skipList
     );
 });

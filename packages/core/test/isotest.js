@@ -3,6 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// @ts-check
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 // TODO: get this to work with require("@std/esm")(module)("../dist/esm")
@@ -17,6 +18,7 @@ const customProps = {
     SVGTooltip: tooltipContent,
     TagInput: { values: ["foo", "bar", "baz"] },
     Tooltip: tooltipContent,
+    Toaster: { inline: true },
 };
 
 const popoverTarget = React.createElement("button");
@@ -29,23 +31,13 @@ const customChildren = {
     Tabs: React.createElement(Core.Tab, { key: 1, id: 1, title: "Tab one" }),
     Tooltip: popoverTarget,
     Tooltip2: popoverTarget,
+    Toaster: React.createElement(Core.Toast, { message: "Toast" }),
 };
 
 const skipList = [
     "Portal", // doesn't render any DOM inline
-    "Tabs", // deprecated component, logs a warning
-]
-
-const classNameChildList = [
-    "Alert",
-    "Dialog",
-    "MenuItem",
-    "Popover2",
-    "Portal",
-    "Toaster",
-    "Tooltip2"
 ]
 
 describe("Core isomorphic rendering", () => {
-    generateIsomorphicTests(Core, customProps, customChildren, skipList, classNameChildList);
+    generateIsomorphicTests(Core, customProps, customChildren, skipList);
 });

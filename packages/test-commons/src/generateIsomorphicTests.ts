@@ -33,7 +33,6 @@ function isReactClass(Component: any): boolean {
  * @param props custom props per component
  * @param children custom children per component
  * @param skipList array of component names to skip
- * @param classNameChildList array of component names where className is rendered on an arbitrary child
  * element, rather than directly on the root element
  */
 export function generateIsomorphicTests(
@@ -41,7 +40,6 @@ export function generateIsomorphicTests(
     props: { [name: string]: any },
     children: { [name: string]: React.ReactNode },
     skipList: string[] = [],
-    classNameChildList: string[] = [],
 ) {
     Object.keys(Components)
         .sort()
@@ -58,20 +56,21 @@ export function generateIsomorphicTests(
                         // errors will fail the test and log full stack traces to the console. nifty!
                         Enzyme.render(element);
                     });
-                    it(`<${componentName}> className is applied to outer element`, () => {
-                        const element = React.createElement(
-                            Component,
-                            {
-                                ...props[componentName],
-                                className: "test",
-                            },
-                            children[componentName],
+
+                    it(`<${componentName}> className`, () => {
+                        const className = "TEST_CLASS";
+                        // simply assert that `className` prop appears in rendered tree.
+                        const wrapper = Enzyme.shallow(
+                            React.createElement(
+                                Component,
+                                { ...props[componentName], className },
+                                children[componentName],
+                            ),
+                            // this suite runs in a node environment (no browser), so we skip lifecycles to avoid DOM
+                            // interactions. all we need is the resulting JSX tree, to see if `className` appears in it.
+                            { disableLifecycleMethods: true },
                         );
-                        if (classNameChildList.includes(componentName)) {
-                            assert.isAtLeast(Enzyme.render(element).find(".test").length, 1);
-                        } else {
-                            assert.isTrue(Enzyme.render(element).hasClass("test"));
-                        }
+                        assert.isTrue(wrapper.hasClass(className) || wrapper.find("." + className).length > 0);
                     });
                 }
             }

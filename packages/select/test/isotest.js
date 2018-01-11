@@ -3,6 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// @ts-check
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const Select = require("../dist");
@@ -22,10 +23,10 @@ const customProps = {
         renderer: () => null
     },
     Select: {
-        items: []
+        items: [],
     },
     Suggest: {
-        items: []
+        items: [],
     }
 };
 
@@ -33,20 +34,6 @@ const skipList = [
     "QueryList", // doesn't render any DOM itself
 ]
 
-const classNameChildList = [
-    "MultiSelect",
-    "Omnibar",
-    "QueryList",
-    "Select",
-    "Suggest"
-]
-
 describe("Select isomorphic rendering", () => {
-    generateIsomorphicTests(
-        Select,
-        customProps,
-        customChildren,
-        skipList,
-        classNameChildList
-    );
+    generateIsomorphicTests(Select, customProps, customChildren, skipList);
 });
