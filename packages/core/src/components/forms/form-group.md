@@ -30,7 +30,7 @@ This component is a simple wrapper around the CSS API that abstracts away the HT
     helperText="Helper text with details..."
     label="Label A"
     labelFor="text-input"
-    required={true}
+    requiredLabel={true}
 >
     <input id="text-input" placeholder="Placeholder text" />
 </FormGroup>
