@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/labs",
-  "version": "0.14.1",
+  "version": "0.14.3",
   "description": "Incubator for unstable and in-development Blueprint components",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",

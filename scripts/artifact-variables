@@ -39,7 +39,8 @@ function findBuildArtifacts {
 function artifactLink {
     local PACKAGE_NAME="$1"
     local LINK_TEXT="$2"
-    local HREF="$(cat artifacts.txt | grep $1)"
+    # search list of build artifacts for first match
+    local HREF="$(cat artifacts.txt | grep --max-count=1 $PACKAGE_NAME)"
     echo "<a href='$HREF' target='_blank'>$LINK_TEXT</a>"
 }
 

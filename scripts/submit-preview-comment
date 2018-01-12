@@ -35,7 +35,7 @@ fi
 echo -n "Full site preview..."
 git rev-parse --abbrev-ref HEAD | grep -q -e '^release/'
 if [ $? -eq 0 ]; then
-    echo "DONE"
+    echo "RENDER"
     PREVIEWS="$PREVIEWS | $(artifactLink 'docs/index' 'github pages')"
 else
     echo "SKIP"
