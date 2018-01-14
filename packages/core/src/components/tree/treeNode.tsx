@@ -60,6 +60,12 @@ export interface ITreeNode {
      * A secondary label/component that is displayed at the right side of the node.
      */
     secondaryLabel?: string | JSX.Element;
+
+    /**
+     * An optional custom user object to associate with the node. This property can then be used in the onClick, onContextMenu and onDoubleClick event handlers for doing custom logic per node.
+     */
+    userData?: any;
+
 }
 
 export interface ITreeNodeProps extends ITreeNode {
