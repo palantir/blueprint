@@ -5,7 +5,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const coreManifest = require("../core/package.json");
-const webpackConfig = require("./webpack.karma.config");
+const webpackBuildScripts = require("@blueprintjs/webpack-build-scripts");
 
 const COVERAGE_PERCENT = 80;
 const COVERAGE_PERCENT_HIGH = 90;
@@ -17,6 +17,8 @@ const KARMA_SERVER_PORT = 9876;
  * @param coverageOverrides { [glob: string]: object }
  */
 module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverageOverrides }) {
+    const packageManifest = require(`${dirname}/package.json`);
+
     return {
         basePath: dirname,
         browserNoActivityTimeout: 100000,
@@ -59,7 +61,7 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
                 watched: false,
             },
             path.join(dirname, `../core/${coreManifest.style}`),
-            path.join(dirname, "lib/css/*.css"),
+            path.join(dirname, packageManifest.style),
             path.join(dirname, "test/index.ts"),
         ],
         frameworks: ["mocha", "chai", "phantomjs-shim", "sinon"],
@@ -73,7 +75,7 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
         },
         reporters: ["mocha", "coverage"],
         singleRun: true,
-        webpack: Object.assign({}, webpackConfig, {
+        webpack: Object.assign({}, webpackBuildScripts.karmaConfig, {
             entry: {
                 testIndex: [
                     path.resolve(dirname, "test/index.ts"),
