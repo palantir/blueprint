@@ -54,8 +54,8 @@ export function createTetherOptions(
 }
 
 /** @internal */
-export function getTargetAttachment(position: Position) {
-    const attachments: { [p: number]: string } = {
+export function getTargetAttachment(position: Position): string {
+    const attachments: Record<Position, string> = {
         [Position.TOP_LEFT]: "top left",
         [Position.TOP]: "top center",
         [Position.TOP_RIGHT]: "top right",
@@ -73,8 +73,8 @@ export function getTargetAttachment(position: Position) {
 }
 
 /** @internal */
-export function getPopoverAttachment(position: Position) {
-    const attachments: { [p: number]: string } = {
+export function getPopoverAttachment(position: Position): string {
+    const attachments: Record<Position, string> = {
         [Position.TOP_LEFT]: "bottom left",
         [Position.TOP]: "bottom center",
         [Position.TOP_RIGHT]: "bottom right",

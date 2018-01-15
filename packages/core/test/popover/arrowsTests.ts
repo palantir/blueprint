@@ -19,7 +19,7 @@ describe("Arrows", () => {
     const marginTop = Arrows.MIN_ARROW_SPACING - (dimensions.height - arrowSize) / 2;
 
     describe("getPopoverTransformOrigin", () => {
-        const origins: { [pos: number]: string } = {
+        const origins: Partial<Record<Position, string>> = {
             [Position.TOP]: undefined,
             [Position.TOP_LEFT]: `${offsetX}px bottom`,
             [Position.TOP_RIGHT]: `calc(100% - ${offsetX}px) bottom`,
@@ -29,16 +29,16 @@ describe("Arrows", () => {
         };
 
         for (const key of Object.keys(origins)) {
-            const position: Position = +key;
+            const position = key as Position;
             const value: string = origins[position];
-            it(`Position.${Position[position]} => ${value}`, () => {
+            it(`${position} => ${value}`, () => {
                 assert.deepEqual(Arrows.getPopoverTransformOrigin(position, arrowSize, dimensions), value);
             });
         }
     });
 
     describe("getArrowPositionStyles", () => {
-        const styles: { [pos: number]: CSSProperties[] } = {
+        const styles: Partial<Record<Position, CSSProperties[]>> = {
             [Position.TOP_LEFT]: [{ left: offsetX }, { marginLeft: -0 }],
             [Position.TOP_RIGHT]: [{ right: offsetX }, { marginLeft: 0 }],
             [Position.BOTTOM_RIGHT]: [{ right: offsetX }, { marginLeft: 0 }],
@@ -47,8 +47,8 @@ describe("Arrows", () => {
         };
 
         for (const key of Object.keys(styles)) {
-            const position: Position = +key;
-            it(`Position.${Position[position]}`, () => {
+            const position = key as Position;
+            it(position, () => {
                 const [expectedArrow, expectedContainer] = styles[position];
                 const { arrow, container } = Arrows.getArrowPositionStyles(
                     position,

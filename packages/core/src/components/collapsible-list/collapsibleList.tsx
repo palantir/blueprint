@@ -18,8 +18,8 @@ import { IPopoverProps, Popover } from "../popover/popover";
 type CollapsibleItem = React.ReactElement<IMenuItemProps>;
 
 export enum CollapseFrom {
-    START,
-    END,
+    START = "start",
+    END = "end",
 }
 
 export interface ICollapsibleListProps extends IProps {

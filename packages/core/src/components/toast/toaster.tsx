@@ -10,7 +10,7 @@ import * as ReactDOM from "react-dom";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import { TOASTER_WARN_INLINE, TOASTER_WARN_LEFT_RIGHT } from "../../common/errors";
+import { TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
@@ -19,6 +19,13 @@ import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
 
 export type IToastOptions = IToastProps & { key?: string };
+export type ToasterPosition =
+    | Position.TOP
+    | Position.TOP_LEFT
+    | Position.TOP_RIGHT
+    | Position.BOTTOM
+    | Position.BOTTOM_LEFT
+    | Position.BOTTOM_RIGHT;
 
 export interface IToaster {
     /** Show a new toast to the user. Returns the unique key of the new toast. */
@@ -66,11 +73,13 @@ export interface IToasterProps extends IProps {
     inline?: boolean;
 
     /**
-     * Position of `Toaster` within its container. Note that `LEFT` and `RIGHT` are disallowed
-     * because Toaster only supports the top and bottom edges.
+     * Position of `Toaster` within its container.
+     *
+     * Note that only `TOP` and `BOTTOM` are supported because Toaster only
+     * supports the top and bottom edge positioning.
      * @default Position.TOP
      */
-    position?: Position;
+    position?: ToasterPosition;
 }
 
 export interface IToasterState {
@@ -163,12 +172,6 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
         );
     }
 
-    protected validateProps(props: IToasterProps) {
-        if (props.position === Position.LEFT || props.position === Position.RIGHT) {
-            console.warn(TOASTER_WARN_LEFT_RIGHT);
-        }
-    }
-
     private renderToast(toast: IToastOptions) {
         return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
     }
@@ -179,7 +182,7 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
     }
 
     private getPositionClasses() {
-        const positions = Position[this.props.position].split("_");
+        const positions = this.props.position.split("-");
         // NOTE that there is no -center class because that's the default style
         return positions.map(p => `${Classes.TOAST_CONTAINER}-${p.toLowerCase()}`);
     }

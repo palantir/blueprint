@@ -72,7 +72,6 @@ export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be grea
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
 
 export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop as it always creates a new element.`;
-export const TOASTER_WARN_LEFT_RIGHT = ns + ` Toaster does not support LEFT or RIGHT positions.`;
 
 export const DIALOG_WARN_NO_HEADER_ICON = ns + ` <Dialog> iconName is ignored if title is omitted.`;
 export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =

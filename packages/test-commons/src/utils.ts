@@ -38,12 +38,12 @@ export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string
  * Enum of possible browsers
  */
 enum Browser {
-    CHROME,
-    EDGE,
-    FIREFOX,
-    IE,
-    UNKNOWN,
-    WEBKIT,
+    CHROME = "Chrome",
+    EDGE = "Edge",
+    FIREFOX = "Firefox",
+    IE = "IE",
+    UNKNOWN = "unknown",
+    WEBKIT = "WebKit",
 }
 
 /**
