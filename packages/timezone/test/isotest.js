@@ -5,7 +5,7 @@
 
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
-const Timezone = require("../dist");
+const Timezone = require("../lib/cjs");
 
 describe("Timezone isomorphic rendering", () => {
     generateIsomorphicTests(
