@@ -7,7 +7,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent, NumericInput, Position, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 

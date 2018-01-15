@@ -689,5 +689,3 @@ function createDefaultShortcuts() {
         createShortcut("Past 2 years", [twoYearsAgo, today]),
     ];
 }
-
-export const DateRangePickerFactory = React.createFactory(DateRangePicker);

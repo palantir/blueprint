@@ -11,6 +11,8 @@ module.exports = function (config) {
     });
     config.set(baseConfig);
     config.set({
+        // test task should pass; we intentionally have no tests
+        failOnEmptyTestSuite: false,
         // disable coverage reporter
         reporters: ["mocha"],
         webpack: Object.assign({}, baseConfig.webpack, {

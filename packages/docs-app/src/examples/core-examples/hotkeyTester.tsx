@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { getKeyComboString, KeyCombo } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 
 export interface IHotkeyTesterState {
     combo: string;

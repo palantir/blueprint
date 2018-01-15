@@ -130,5 +130,3 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
         return [childrenArray.slice(0, visibleItemCount), childrenArray.slice(visibleItemCount)];
     }
 }
-
-export const CollapsibleListFactory = React.createFactory(CollapsibleList);

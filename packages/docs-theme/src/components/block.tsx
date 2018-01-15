@@ -4,17 +4,16 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IPageData, StringOrTag } from "documentalist/dist/client";
+import { IBlock, IPageData } from "documentalist/dist/client";
 import * as React from "react";
 
 import { ITagRendererMap, TagElement } from "../tags";
 
-export function renderContentsBlock(
-    contents: StringOrTag[],
-    tagRenderers: ITagRendererMap,
-    page?: IPageData,
-): TagElement[] {
-    return contents.map((node, i) => {
+export function renderBlock(block: IBlock | undefined, tagRenderers: ITagRendererMap, page?: IPageData): TagElement[] {
+    if (block === undefined) {
+        return [];
+    }
+    return block.contents.map((node, i) => {
         if (typeof node === "string") {
             return <div className="docs-section pt-running-text" dangerouslySetInnerHTML={{ __html: node }} key={i} />;
         }
