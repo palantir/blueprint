@@ -6,11 +6,10 @@
 
 import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import { ITsInterfaceEntry } from "documentalist/dist/client";
+import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty } from "documentalist/dist/client";
 import * as React from "react";
-import { IInheritedPropertyEntry } from "../common/propsStore";
 import { ITagRendererMap } from "../tags";
-import { renderContentsBlock } from "./block";
+import { renderBlock } from "./block";
 
 // HACKHACK support `code` blocks until we get real markdown parsing in ts-quick-docs
 function dirtyMarkdown(text: string) {
@@ -31,42 +30,55 @@ function propTag(intent: Intent, title: string, ...children: React.ReactNode[]) 
     );
 }
 
-const renderPropRow = (prop: IInheritedPropertyEntry) => {
-    const { documentation, inheritedFrom, name, optional } = prop;
-    const { default: defaultValue, deprecated, internal } = prop.tags;
-
-    if (internal) {
-        return undefined;
+function renderPropType(prop: ITsProperty | ITsMethod) {
+    if (isTsProperty(prop)) {
+        const formattedType = prop.type.replace(/\b(JSX\.)?Element\b/, "JSX.Element");
+        return (
+            <code className="docs-prop-type">
+                <strong>{formattedType}</strong>
+                <em className="docs-prop-default pt-text-muted">{prop.defaultValue}</em>
+            </code>
+        );
+    } else {
+        return (
+            <code className="docs-prop-type">
+                <strong>{prop.signatures[0].type}</strong>
+            </code>
+        );
     }
+}
 
+function renderPropRow(prop: ITsProperty | ITsMethod) {
+    const { flags: { isDeprecated, isExternal, isOptional }, inheritedFrom, name } = prop;
+    const isDeprecatedBoolean = isDeprecated === true || typeof isDeprecated === "string";
     const classes = classNames("docs-prop-name", {
-        "docs-prop-is-deprecated": deprecated != null,
-        "docs-prop-is-internal": internal,
-        "docs-prop-is-required": !optional,
+        "docs-prop-is-deprecated": isDeprecatedBoolean,
+        "docs-prop-is-internal": !isExternal,
+        "docs-prop-is-required": !isOptional,
     });
 
     const tags: JSX.Element[] = [];
-    if (!optional) {
+    if (!isOptional) {
         tags.push(propTag(Intent.SUCCESS, "Required"));
     }
-    if (deprecated) {
+    if (isDeprecatedBoolean) {
         const maybeMessage =
-            typeof deprecated === "string" ? (
-                <span key="__deprecated_msg" dangerouslySetInnerHTML={dirtyMarkdown(": " + deprecated)} />
+            typeof isDeprecated === "string" ? (
+                <span key="__deprecated_msg" dangerouslySetInnerHTML={dirtyMarkdown(": " + isDeprecated)} />
             ) : (
                 ""
             );
         tags.push(propTag(Intent.DANGER, "Deprecated", maybeMessage));
     }
     if (inheritedFrom != null) {
-        tags.push(propTag(Intent.NONE, "Inherited", " from ", <code key="__code">{inheritedFrom}</code>));
+        tags.push(propTag(Intent.NONE, "Inherited from ", <code key="__inherited">{inheritedFrom}</code>));
     }
 
-    const formattedType = prop.type.replace(/\b(JSX\.)?Element\b/, "JSX.Element");
-
+    const documentation = isTsProperty(prop) ? prop.documentation : prop.signatures[0].documentation;
     // TODO: this ignores tags in prop docs, but that's kind of OK cuz they all get processed
     // into prop.tags by the TS compiler.
-    const html = documentation.contents.reduce<string>((a, b) => (typeof b === "string" ? a + b : a), "");
+    const html =
+        documentation && documentation.contents.reduce<string>((a, b) => (typeof b === "string" ? a + b : a), "");
 
     return (
         <tr key={name}>
@@ -74,28 +86,27 @@ const renderPropRow = (prop: IInheritedPropertyEntry) => {
                 <code>{name}</code>
             </td>
             <td className="docs-prop-details">
-                <code className="docs-prop-type">
-                    <strong>{formattedType}</strong>
-                    <em className="docs-prop-default pt-text-muted">{defaultValue}</em>
-                </code>
+                {renderPropType(prop)}
                 <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: html }} />
                 <p className="docs-prop-tags">{tags}</p>
             </td>
         </tr>
     );
-};
+}
 
 export interface IInterfaceTableProps {
-    iface: ITsInterfaceEntry;
-    props: IInheritedPropertyEntry[];
+    iface: ITsClass | ITsInterface;
     tagRenderers: ITagRendererMap;
 }
 
-export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({ iface, props, tagRenderers }) => {
+export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({ iface, tagRenderers }) => {
+    const propRows = [...iface.properties, ...iface.methods]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(renderPropRow);
     return (
         <div className="docs-modifiers">
             <div className="docs-interface-name">{iface.name}</div>
-            {renderContentsBlock(iface.documentation.contents, tagRenderers)}
+            {renderBlock(iface.documentation, tagRenderers)}
             <table className="pt-html-table">
                 <thead>
                     <tr>
@@ -103,7 +114,7 @@ export const InterfaceTable: React.SFC<IInterfaceTableProps> = ({ iface, props, 
                         <th>Description</th>
                     </tr>
                 </thead>
-                <tbody>{props.map(renderPropRow)}</tbody>
+                <tbody>{propRows}</tbody>
             </table>
         </div>
     );

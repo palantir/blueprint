@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { smartSearch } from "@blueprintjs/docs";
+import { smartSearch } from "@blueprintjs/docs-theme";
 
 import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
 
