@@ -81,7 +81,7 @@ Blueprint as well. Some Blueprint components use the following ES2015 features:
       ...
       <!-- include dependencies manually -->
       <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
-      <link href="path/to/node_modules/@blueprintjs/core/dist/blueprint.css" rel="stylesheet" />
+      <link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
       ...
     </head>
     ...
@@ -101,7 +101,8 @@ Blueprint supports the venerable [unpkg CDN](https://unpkg.com). Each package pr
 library on the `Blueprint` global variable: `Blueprint.Core`, `Blueprint.Datetime`, etc.
 
 These bundles _do not include_ external dependencies; your application will need to ensure that
-`normalize.css`, `React`, `classnames`, and `Tether` are available at runtime.
+`normalize.css`, `react`, `react-dom`, `react-transition-group`, `classnames`, `popper.js`, and
+`react-popper`are available at runtime.
 
 ```html
 <!DOCTYPE html>
@@ -110,16 +111,18 @@ These bundles _do not include_ external dependencies; your application will need
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Blueprint Starter Kit</title>
-    <link href="https://unpkg.com/normalize.css@^4.1.1" rel="stylesheet" />
-    <link href="https://unpkg.com/@blueprintjs/core@^1.11.0/dist/blueprint.css" rel="stylesheet" />
+    <link href="https://unpkg.com/normalize.css@^7.0.0" rel="stylesheet" />
+    <link href="https://unpkg.com/@blueprintjs/core@^2.0.0/lib/css/blueprint.css" rel="stylesheet" />
   </head>
   <body>
     <script src="https://unpkg.com/classnames@^2.2"></script>
     <script src="https://unpkg.com/dom4@^1.8"></script>
-    <script src="https://unpkg.com/tether@^1.4"></script>
-    <script src="https://unpkg.com/react@^15.3.1/dist/react-with-addons.min.js"></script>
-    <script src="https://unpkg.com/react-dom@^15.3.1/dist/react-dom.min.js"></script>
-    <script src="https://unpkg.com/@blueprintjs/core@^1.11.0"></script>
+    <script src="https://unpkg.com/react@^16.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@^16.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/react-transition-group@^2.2.1/dist/react-transition-group.min.js"></script>
+    <script src="https://unpkg.com/popper.js@^1.12.6/dist/umd/popper.js"></script>
+    <script src="https://unpkg.com/react-popper@~0.7.4/dist/react-popper.min.js"></script>
+    <script src="https://unpkg.com/@blueprintjs/core@^2.0.0"></script>
 
     <div id="btn"></div>
     <script>

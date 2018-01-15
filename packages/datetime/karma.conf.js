@@ -15,8 +15,8 @@ module.exports = function (config) {
             entry: {
                 datetime: [
                     path.resolve(__dirname, "test/index.ts"),
-                    path.resolve(__dirname, "../core/dist/blueprint.css"),
-                    path.resolve(__dirname, "dist/blueprint-datetime.css"),
+                    path.resolve(__dirname, "../core/lib/css/blueprint.css"),
+                    path.resolve(__dirname, "lib/css/blueprint-datetime.css"),
                 ],
             },
         }),

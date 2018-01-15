@@ -17,8 +17,8 @@ module.exports = function (config) {
             entry: {
                 select: [
                     path.resolve(__dirname, "test/index.ts"),
-                    path.resolve(__dirname, "../core/dist/blueprint.css"),
-                    path.resolve(__dirname, "dist/blueprint-select.css"),
+                    path.resolve(__dirname, "../core/lib/css/blueprint.css"),
+                    path.resolve(__dirname, "lib/css/blueprint-select.css"),
                 ],
             },
         }),

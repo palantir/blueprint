@@ -28,8 +28,8 @@ module.exports = function (config) {
             entry: {
                 table: [
                     path.resolve(__dirname, "test/index.ts"),
-                    path.resolve(__dirname, "../core/dist/blueprint.css"),
-                    path.resolve(__dirname, "dist/table.css"),
+                    path.resolve(__dirname, "../core/lib/css/blueprint.css"),
+                    path.resolve(__dirname, "lib/css/table.css"),
                 ],
             },
         }),
