@@ -22,6 +22,4 @@ build
 dist
 generated
 coverage
-docs/*.d.ts
-docs/**/*.d.ts
-docs/assets/inline
+/docs
