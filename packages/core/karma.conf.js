@@ -5,7 +5,6 @@
 const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
 const fs = require("fs");
 const path = require("path");
-const packageManifest = require("./package.json");
 
 module.exports = function (config) {
     const baseConfig = createKarmaConfig({
@@ -25,13 +24,6 @@ module.exports = function (config) {
     });
     config.set(baseConfig);
     config.set({
-        webpack: Object.assign({}, baseConfig.webpack, {
-            entry: {
-                core: [
-                    path.resolve(__dirname, "test/index.ts"),
-                    path.resolve(__dirname, packageManifest.style),
-                ],
-            },
-        }),
-    })
+        // overrides here
+    });
 };

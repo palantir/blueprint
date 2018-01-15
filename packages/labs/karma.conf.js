@@ -17,14 +17,5 @@ module.exports = function (config) {
         failOnEmptyTestSuite: false,
         // disable coverage reporter
         reporters: ["mocha"],
-        webpack: Object.assign({}, baseConfig.webpack, {
-            entry: {
-                labs: [
-                    path.resolve(__dirname, "test/index.ts"),
-                    path.resolve(__dirname, `../core/${coreManifest.style}`),
-                    path.resolve(__dirname, packageManifest.style),
-                ],
-            },
-        }),
-    })
+    });
 };

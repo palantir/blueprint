@@ -4,6 +4,7 @@
 
 const path = require("path");
 const webpack = require("webpack");
+const coreManifest = require("../core/package.json");
 const webpackConfig = require("./webpack.karma.config");
 
 const COVERAGE_PERCENT = 80;
@@ -57,7 +58,8 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
                 pattern: path.join(dirname, "resources/**/*"),
                 watched: false,
             },
-            path.join(dirname, "dist/**/*.css"),
+            path.join(dirname, `../core/${coreManifest.style}`),
+            path.join(dirname, "lib/css/*.css"),
             path.join(dirname, "test/index.ts"),
         ],
         frameworks: ["mocha", "chai", "phantomjs-shim", "sinon"],
@@ -71,7 +73,13 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
         },
         reporters: ["mocha", "coverage"],
         singleRun: true,
-        webpack: webpackConfig,
+        webpack: Object.assign({}, webpackConfig, {
+            entry: {
+                testIndex: [
+                    path.resolve(dirname, "test/index.ts"),
+                ],
+            },
+        }),
         webpackMiddleware: {
             noInfo: true,
             stats: {

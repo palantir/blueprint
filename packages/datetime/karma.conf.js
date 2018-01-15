@@ -13,14 +13,6 @@ module.exports = function (config) {
     });
     config.set(baseConfig);
     config.set({
-        webpack: Object.assign({}, baseConfig.webpack, {
-            entry: {
-                datetime: [
-                    path.resolve(__dirname, "test/index.ts"),
-                    path.resolve(__dirname, `../core/${coreManifest.style}`),
-                    path.resolve(__dirname, packageManifest.style),
-                ],
-            },
-        }),
-    })
+        // overrides here
+    });
 };
