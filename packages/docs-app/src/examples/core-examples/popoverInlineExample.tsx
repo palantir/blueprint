@@ -28,15 +28,8 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
     };
 
     public componentDidMount() {
-        // if we don't requestAnimationFrame, this function apparently executes
-        // before styles are applied to the page, so the centering is way off.
-        requestAnimationFrame(this.recenter);
-        // likewise, Popper.js doesn't handle controlled, non-inline popovers
-        // properly if rendered with isOpen={true} on initial mount: popovers
-        // won't follow the target when scrolled. to fix, defer opening.
-        requestAnimationFrame(() => {
-            this.setState({ hasMounted: true });
-        });
+        this.recenter();
+        this.setState({ hasMounted: true });
     }
 
     protected renderExample() {
