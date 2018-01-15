@@ -20,11 +20,11 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
 
     protected className = "docs-popover-inline-example";
 
-    private scrollContainer1Ref: HTMLDivElement;
-    private scrollContainer2Ref: HTMLDivElement;
+    private scrollContainerLeftRef: HTMLDivElement;
+    private scrollContainerRightRef: HTMLDivElement;
     private refHandlers = {
-        scrollContainer1: (ref: HTMLDivElement) => (this.scrollContainer1Ref = ref),
-        scrollContainer2: (ref: HTMLDivElement) => (this.scrollContainer2Ref = ref),
+        scrollContainerLeft: (ref: HTMLDivElement) => (this.scrollContainerLeftRef = ref),
+        scrollContainerRight: (ref: HTMLDivElement) => (this.scrollContainerRightRef = ref),
     };
 
     public componentDidMount() {
@@ -50,8 +50,8 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
             <div className="docs-popover-inline-example-content">
                 <div
                     className="docs-popover-inline-example-scroll-container"
-                    ref={this.refHandlers.scrollContainer1}
-                    onScroll={this.syncScroll1}
+                    ref={this.refHandlers.scrollContainerLeft}
+                    onScroll={this.syncScrollLeft}
                 >
                     <div className="docs-popover-inline-example-scroll-content">
                         <Popover {...popoverBaseProps} content="I am a default popover." inline={false}>
@@ -63,8 +63,8 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
                 </div>
                 <div
                     className="docs-popover-inline-example-scroll-container"
-                    ref={this.refHandlers.scrollContainer2}
-                    onScroll={this.syncScroll2}
+                    ref={this.refHandlers.scrollContainerRight}
+                    onScroll={this.syncScrollRight}
                 >
                     <div className="docs-popover-inline-example-scroll-content">
                         <Popover {...popoverBaseProps} content="I am an inline popover." inline={true}>
@@ -92,8 +92,8 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
     }
 
     private recenter = () => {
-        this.scrollToCenter(this.scrollContainer1Ref);
-        this.scrollToCenter(this.scrollContainer2Ref);
+        this.scrollToCenter(this.scrollContainerLeftRef);
+        this.scrollToCenter(this.scrollContainerRightRef);
     };
 
     private scrollToCenter = (scrollContainer?: HTMLDivElement) => {
@@ -103,13 +103,13 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
         }
     };
 
-    private syncScroll1 = () => {
+    private syncScrollLeft = () => {
         // use rAF to throttle scroll-sync calculations; otherwise, scrolling is noticeably choppy.
-        return requestAnimationFrame(() => this.syncScroll(this.scrollContainer1Ref, this.scrollContainer2Ref));
+        return requestAnimationFrame(() => this.syncScroll(this.scrollContainerLeftRef, this.scrollContainerRightRef));
     };
 
-    private syncScroll2 = () => {
-        return requestAnimationFrame(() => this.syncScroll(this.scrollContainer2Ref, this.scrollContainer1Ref));
+    private syncScrollRight = () => {
+        return requestAnimationFrame(() => this.syncScroll(this.scrollContainerRightRef, this.scrollContainerLeftRef));
     };
 
     private syncScroll(sourceContainer: HTMLDivElement, otherContainer: HTMLDivElement) {
