@@ -37,6 +37,7 @@ jobs:
           root: '.'
           paths:
             - packages/*/dist
+            - packages/*/lib
             - packages/*/src/generated
 
   lint:
