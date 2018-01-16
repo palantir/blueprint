@@ -175,6 +175,8 @@ renameProp renderBody bodyRenderer
 renameProp renderBodyContextMenu bodyContextMenuRenderer
 renameProp renderCell cellRenderer
 renameProp renderColumnHeader columnHeaderCellRenderer
+renameProp renderGhostCell ghostCellRenderer
+renameProp renderHeaderCell headerCellRenderer
 renameProp renderRowHeader rowHeaderCellRenderer
 renameProp renderName nameRenderer
 renameProp useInteractionBar enableColumnInteractionBar
