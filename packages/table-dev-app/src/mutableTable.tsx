@@ -211,7 +211,7 @@ export interface IMutableTableState {
     scrollToRegionType?: RegionCardinality;
     scrollToRowIndex?: number;
     selectedFocusStyle?: FocusStyle;
-    selectedRegions: IRegion[];
+    selectedRegions?: IRegion[];
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
