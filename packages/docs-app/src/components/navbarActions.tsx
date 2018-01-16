@@ -73,10 +73,8 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
             "@blueprintjs/table",
             "@blueprintjs/labs",
         ];
-        const libs = releases.filter(({ name }: IPackageInfo) => COMPONENT_PACKAGES.indexOf(name) >= 0).map(renderItem);
-        const tooling = releases
-            .filter(({ name }: IPackageInfo) => COMPONENT_PACKAGES.indexOf(name) === -1)
-            .map(renderItem);
+        const libs = releases.filter(({ name }) => COMPONENT_PACKAGES.indexOf(name) >= 0).map(renderItem);
+        const tooling = releases.filter(({ name }) => COMPONENT_PACKAGES.indexOf(name) === -1).map(renderItem);
         return (
             <Menu>
                 <MenuItem
