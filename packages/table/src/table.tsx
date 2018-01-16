@@ -681,28 +681,36 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             selectionModes,
         } = nextProps;
 
-        const newChildArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
+        const hasNewChildren = this.props.children !== nextProps.children;
+        const newChildArray = hasNewChildren ? React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>> : this.childrenArray;
         const numCols = newChildArray.length;
 
-        // Try to maintain widths of columns by looking up the width of the
-        // column that had the same `ID` prop. If none is found, use the
-        // previous width at the same index.
-        const previousColumnWidths = newChildArray.map((child: React.ReactElement<IColumnProps>, index: number) => {
-            const mappedIndex = this.columnIdToIndex[child.props.id];
-            return this.state.columnWidths[mappedIndex != null ? mappedIndex : index];
-        });
-
-        // Make sure the width/height arrays have the correct length, but keep
-        // as many existing widths/heights when possible. Also, apply the
-        // sparse width/heights from props.
+        let gridInvalidationRequired = false;
         let newColumnWidths = this.state.columnWidths;
-        newColumnWidths = Utils.arrayOfLength(newColumnWidths, numCols, defaultColumnWidth);
-        newColumnWidths = Utils.assignSparseValues(newColumnWidths, previousColumnWidths);
-        newColumnWidths = Utils.assignSparseValues(newColumnWidths, columnWidths);
+        if (defaultColumnWidth !== this.props.defaultColumnWidth || columnWidths !== this.props.columnWidths || (hasNewChildren && !this.areChildrenSameShape(newChildArray))) {
+            // Try to maintain widths of columns by looking up the width of the
+            // column that had the same `ID` prop. If none is found, use the
+            // previous width at the same index.
+            const previousColumnWidths = newChildArray.map((child: React.ReactElement<IColumnProps>, index: number) => {
+                const mappedIndex = this.columnIdToIndex[child.props.id];
+                return this.state.columnWidths[mappedIndex != null ? mappedIndex : index];
+            });
+
+            // Make sure the width/height arrays have the correct length, but keep
+            // as many existing widths/heights when possible. Also, apply the
+            // sparse width/heights from props.
+            newColumnWidths = Utils.arrayOfLength(newColumnWidths, numCols, defaultColumnWidth);
+            newColumnWidths = Utils.assignSparseValues(newColumnWidths, previousColumnWidths);
+            newColumnWidths = Utils.assignSparseValues(newColumnWidths, columnWidths);
+            gridInvalidationRequired = true;
+        }
 
         let newRowHeights = this.state.rowHeights;
-        newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
-        newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
+        if (defaultRowHeight !== this.props.defaultRowHeight || rowHeights !== this.props.rowHeights) {
+            newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
+            newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
+            gridInvalidationRequired = true;
+        }
 
         let newSelectedRegions = selectedRegions;
         if (selectedRegions == null) {
@@ -724,9 +732,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             newSelectedRegions,
         );
 
-        this.childrenArray = newChildArray;
-        this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
-        this.invalidateGrid();
+        if (hasNewChildren) {
+            this.childrenArray = newChildArray;
+            this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
+        }
+        if (gridInvalidationRequired) {
+            this.invalidateGrid();
+        }
         this.setState({
             columnWidths: newColumnWidths,
             focusedCell: newFocusedCell,
@@ -734,6 +746,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             numFrozenRowsClamped: clampNumFrozenRows(nextProps),
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
+        });
+    }
+
+    private areChildrenSameShape(newChildArray: Array<React.ReactElement<IColumnProps>>) {
+        if (this.childrenArray.length !== newChildArray.length) {
+            return false;
+        }
+        return this.childrenArray.every((child, index) => {
+            const newChild = newChildArray[index];
+            if (child === newChild) {
+                return true;
+            }
+            if (child == null || newChild == null) {
+                return false;
+            }
+            return child.props.id === newChild.props.id;
         });
     }
 

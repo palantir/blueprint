@@ -45,15 +45,15 @@ import { LocalStore } from "./localStore";
 import { SlowLayoutStack } from "./slowLayoutStack";
 
 export enum FocusStyle {
-    TAB = "tab",
-    TAB_OR_CLICK = "tab-or-click",
+    TAB,
+    TAB_OR_CLICK,
 }
 
 export enum CellContent {
-    EMPTY = "empty",
-    CELL_NAMES = "cell-names",
-    LONG_TEXT = "long-text",
-    LARGE_JSON = "large-json",
+    EMPTY,
+    CELL_NAMES,
+    LONG_TEXT,
+    LARGE_JSON,
 }
 
 type IMutableStateUpdateCallback = (
@@ -211,6 +211,7 @@ export interface IMutableTableState {
     scrollToRegionType?: RegionCardinality;
     scrollToRowIndex?: number;
     selectedFocusStyle?: FocusStyle;
+    selectedRegions: IRegion[];
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
@@ -256,6 +257,7 @@ const DEFAULT_STATE: IMutableTableState = {
     scrollToRegionType: RegionCardinality.CELLS,
     scrollToRowIndex: 0,
     selectedFocusStyle: FocusStyle.TAB,
+    selectedRegions: [],
     showCallbackLogs: true,
     showCellsLoading: false,
     showColumnHeadersLoading: false,
@@ -375,6 +377,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 renderMode={this.state.renderMode}
                 rowHeaderCellRenderer={this.renderRowHeader}
                 selectionModes={this.getEnabledSelectionModes()}
+                selectedRegions={this.state.selectedRegions}
                 styledRegionGroups={this.getStyledRegionGroups()}
             >
                 {this.renderColumns()}
@@ -905,6 +908,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private onSelection = (selectedRegions: IRegion[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
+        this.setState({selectedRegions});
     };
 
     private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {

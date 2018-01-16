@@ -7,7 +7,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../common/classes";
 
-import { Classes as CoreClasses, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { Classes as CoreClasses, IIntentProps, IProps } from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
 import { JSONFormat } from "./formats/jsonFormat";
@@ -93,19 +93,18 @@ export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.Rea
 
 export const emptyCellRenderer = () => <Cell />;
 
+/*
+ * Not a PureComponent because any children don't get included in the shallow comparison.
+ * - if we have children we always want to rerender in case the children have changed.
+ * - if we don't have children the rerender is so cheap it isn't a problem.
+ *
+ * Note that due to React's typings we can't check for the presence of children in shouldComponentUpdate() in a typesafe way.
+ */
 export class Cell extends React.Component<ICellProps, {}> {
     public static defaultProps = {
         truncated: true,
         wrapText: false,
     };
-
-    public shouldComponentUpdate(nextProps: ICellProps) {
-        // deeply compare "style," because a new but identical object might have been provided.
-        return (
-            !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
-            !CoreUtils.deepCompareKeys(this.props.style, nextProps.style)
-        );
-    }
 
     public render() {
         const {
