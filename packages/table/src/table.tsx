@@ -712,7 +712,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         let newRowHeights = this.state.rowHeights;
-        if (defaultRowHeight !== this.props.defaultRowHeight || rowHeights !== this.props.rowHeights) {
+        if (
+            defaultRowHeight !== this.props.defaultRowHeight ||
+            rowHeights !== this.props.rowHeights ||
+            numRows !== this.props.numRows
+        ) {
             newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
             newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
             gridInvalidationRequired = true;
