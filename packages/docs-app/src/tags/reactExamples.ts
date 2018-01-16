@@ -15,7 +15,7 @@ import * as TableExamples from "../examples/table-examples";
 
 import { getTheme } from "../components/blueprintDocs";
 
-const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages/docs-app/src/examples";
+const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
 
 export const reactExamples: IExampleMap = {};
 
