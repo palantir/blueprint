@@ -12,7 +12,7 @@ import * as Classes from "../../common/classes";
 import { getPosition } from "./popperUtils";
 
 // these paths come from the Core Kit Sketch file
-// https://github.com/palantir/blueprint/blob/master/resources/sketch/Core%20Kit.sketch
+// https://github.com/palantir/blueprint/blob/develop/resources/sketch/Core%20Kit.sketch
 const SVG_SHADOW_PATH =
     "M8.11 6.302c1.015-.936 1.887-2.922 1.887-4.297v26c0-1.378" +
     "-.868-3.357-1.888-4.297L.925 17.09c-1.237-1.14-1.233-3.034 0-4.17L8.11 6.302z";
