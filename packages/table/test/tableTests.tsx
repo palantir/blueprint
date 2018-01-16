@@ -215,7 +215,6 @@ describe("<Table>", () => {
                     </Table>,
                 );
 
-                
                 table.resizeRowsByTallestCell(0);
                 expect(table.state.rowHeights[0], "resizes by first column").to.equal(MAX_HEIGHT);
 
