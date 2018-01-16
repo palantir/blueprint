@@ -11,6 +11,7 @@ import * as React from "react";
 import {
     Button,
     Classes,
+    FormGroup,
     Icon,
     Intent,
     Menu,
@@ -63,6 +64,7 @@ export interface IPopoverExampleState {
     inheritDarkTheme?: boolean;
     inline?: boolean;
     interactionKind?: PopoverInteractionKind;
+    isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperJS.Modifiers;
     position?: Position | "auto";
@@ -77,6 +79,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         inheritDarkTheme: true,
         inline: false,
         interactionKind: PopoverInteractionKind.CLICK,
+        isOpen: false,
         minimal: false,
         modifiers: {
             arrow: { enabled: true },
@@ -120,6 +123,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
             this.setState({ inline });
         }
     });
+    private toggleIsOpen = handleBooleanChange(isOpen => this.setState({ isOpen }));
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
 
     protected renderExample() {
@@ -129,7 +133,13 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         });
         return (
             <div className="docs-popover-example-scroll" ref={this.centerScroll}>
-                <Popover popoverClassName={popoverClassName} portalClassName="foo" {...popoverProps}>
+                <Popover
+                    popoverClassName={popoverClassName}
+                    portalClassName="foo"
+                    {...popoverProps}
+                    enforceFocus={false}
+                    isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
+                >
                     <Button intent={Intent.PRIMARY} text="Popover target" />
                     {this.getContents(exampleIndex)}
                 </Popover>
@@ -146,14 +156,17 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         return [
             [
                 <h5 key="app">Appearance</h5>,
-                <label className={Classes.LABEL} key="position">
-                    Popover position
+                <FormGroup
+                    helperText="May be overridden to prevent overflow"
+                    label="Position when opened"
+                    labelFor="position"
+                >
                     <div className={Classes.SELECT}>
                         <select value={this.state.position} onChange={this.handlePositionChange}>
                             {POSITION_OPTIONS}
                         </select>
                     </div>
-                </label>,
+                </FormGroup>,
                 <label className={Classes.LABEL} key="example">
                     Example content
                     <div className={Classes.SELECT}>
@@ -170,9 +183,15 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                 <Switch checked={this.state.inline} label="Inline" key="inline" onChange={this.toggleInline} />,
                 <Switch
                     checked={this.state.minimal}
-                    label="Minimal (no arrow, simple transition)"
+                    label="Minimal appearance"
                     key="minimal"
                     onChange={this.toggleMinimal}
+                />,
+                <Switch
+                    checked={this.state.isOpen}
+                    label="Open (controlled mode)"
+                    key="open"
+                    onChange={this.toggleIsOpen}
                 />,
             ],
             [
