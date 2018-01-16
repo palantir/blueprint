@@ -202,22 +202,14 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
                 preformatted ? Classes.TABLE_POPOVER_WHITESPACE_PRE : Classes.TABLE_POPOVER_WHITESPACE_NORMAL,
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
-            const constraints = [
-                {
-                    attachment: "together",
-                    to: "window",
-                },
-            ];
-
             return (
                 <Popover
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
-                    tetherOptions={{ constraints }}
+                    modifiers={{ preventOverflow: { boundariesElement: "window" } }}
                     content={popoverContent}
                     position={Position.BOTTOM}
                     isOpen={true}
                     onClose={this.handlePopoverClose}
-                    useSmartArrowPositioning={true}
                 >
                     <Icon iconName="more" />
                 </Popover>

@@ -12,7 +12,7 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { safeInvoke } from "../../common/utils";
-import { Popover } from "../popover/popover";
+import { Popover, PopperModifiers } from "../popover/popover";
 
 export interface IOffset {
     left: number;
@@ -27,8 +27,8 @@ interface IContextMenuState {
     onClose?: () => void;
 }
 
-const TETHER_OPTIONS = {
-    constraints: [{ attachment: "together", pin: true, to: "window" }],
+const POPPER_MODIFIERS: PopperModifiers = {
+    preventOverflow: { boundariesElement: "window" },
 };
 const TRANSITION_DURATION = 100;
 
@@ -41,23 +41,32 @@ class ContextMenu extends AbstractPureComponent<{}, IContextMenuState> {
     public render() {
         // prevent right-clicking in a context menu
         const content = <div onContextMenu={this.cancelContextMenu}>{this.state.menu}</div>;
-        const popoverClassName = classNames(Classes.MINIMAL, { [Classes.DARK]: this.state.isDarkTheme });
+        const popoverClassName = classNames({ [Classes.DARK]: this.state.isDarkTheme });
+
+        // the target isn't relevant in this case. the context menu simply
+        // appears overlayed at the desired offset on the screen.
+        const emptyTarget = <div />;
+
+        // wrap the popover in a positioned div to make sure it is properly
+        // offset on the screen.
         return (
-            <Popover
-                backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
-                content={content}
-                enforceFocus={false}
-                isModal={true}
-                isOpen={this.state.isOpen}
-                onInteraction={this.handlePopoverInteraction}
-                position={Position.RIGHT_TOP}
-                popoverClassName={popoverClassName}
-                useSmartArrowPositioning={false}
-                tetherOptions={TETHER_OPTIONS}
-                transitionDuration={TRANSITION_DURATION}
-            >
-                <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset} />
-            </Popover>
+            <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset}>
+                <Popover
+                    backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
+                    content={content}
+                    enforceFocus={false}
+                    hasBackdrop={true}
+                    isOpen={this.state.isOpen}
+                    minimal={true}
+                    modifiers={POPPER_MODIFIERS}
+                    onInteraction={this.handlePopoverInteraction}
+                    position={Position.RIGHT_TOP}
+                    popoverClassName={popoverClassName}
+                    transitionDuration={TRANSITION_DURATION}
+                >
+                    {emptyTarget}
+                </Popover>
+            </div>
         );
     }
 

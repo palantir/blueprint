@@ -43,7 +43,6 @@
     "@types/react-dom": "^16.0.3",
     "@types/react-transition-group": "^2.0.6",
     "@types/sinon": "^4.1.2",
-    "@types/tether": "^1.4.3",
     "@types/webpack": "^3.8.2",
     "better-handlebars": "github:wmeldon/better-handlebars",
     "chai": "^4.1.2",
