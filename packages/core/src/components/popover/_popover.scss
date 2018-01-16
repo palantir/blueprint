@@ -34,8 +34,10 @@ $popover-width: $pt-grid-size * 35 !default;
       padding: $pt-grid-size * 2;
     }
 
-    // only inline popovers get a width if this class is applied
-    .pt-popover-target & {
+    // only inline popovers get a width if this class is applied.
+    // note that an inline overlay will be an immediate next sibling
+    // of the popover target as of Blueprint 2.0.
+    .pt-popover-target + .pt-overlay & {
       width: $popover-width;
     }
   }
