@@ -5,7 +5,7 @@
  */
 
 import { Button, ButtonGroup, Classes, IconName, Intent, Popover, Position, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -29,7 +29,7 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
 
     protected className = "docs-popover-button-group-example";
 
-    private handleIntentChange = handleNumberChange(intent => this.setState({ intent }));
+    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
