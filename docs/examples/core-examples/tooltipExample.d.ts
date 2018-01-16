@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 export declare class TooltipExample extends BaseExample<{
     isOpen: boolean;
 }> {

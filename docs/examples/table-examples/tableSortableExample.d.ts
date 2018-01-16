@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 export declare type ICellLookup = (rowIndex: number, columnIndex: number) => any;
 export declare type ISortCallback = (columnIndex: number, comparator: (a: any, b: any) => number) => void;
 export interface ISortableColumn {

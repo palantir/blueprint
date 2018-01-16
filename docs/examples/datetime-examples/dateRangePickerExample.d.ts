@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 import { DateRange } from "@blueprintjs/datetime";
 export interface IDateRangePickerExampleState {
     allowSingleDayRange?: boolean;

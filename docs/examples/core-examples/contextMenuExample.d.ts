@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import * as React from "react";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 /**
  * This component uses the decorator API and implements the IContextMenuTarget interface.
  */

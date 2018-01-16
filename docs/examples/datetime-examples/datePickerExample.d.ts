@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 import * as React from "react";
 export declare const Moment: React.SFC<{
     date: Date;

@@ -1,7 +1,7 @@
 /// <reference types="react" />
 import * as React from "react";
 import { Elevation } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 export interface ICardExampleState {
     elevation?: Elevation;
     interactive?: boolean;

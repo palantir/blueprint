@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { IToasterProps } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 export declare class ToastExample extends BaseExample<IToasterProps> {
     state: IToasterProps;
     private TOAST_BUILDERS;

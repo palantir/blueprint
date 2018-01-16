@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { CollapseFrom } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 export interface ICollapsibleListExampleState {
     collapseFrom?: CollapseFrom;
     visibleItemCount?: number;

@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 export declare type CellsLoadingConfiguration = "all" | "first-column" | "first-row" | "none" | "random";
 export declare const CellsLoadingConfiguration: {
     ALL: CellsLoadingConfiguration;

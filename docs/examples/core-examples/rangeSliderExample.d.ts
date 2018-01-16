@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { NumberRange } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 export interface IRangeSliderExampleState {
     range?: NumberRange;
     vertical?: boolean;

@@ -1,9 +1,9 @@
 /// <reference types="react" />
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 export interface ITableReorderableExampleState {
     columns?: JSX.Element[];
     data?: any[];
-    enableColumnInteractionBar?: boolean;
+    useInteractionBar?: boolean;
 }
 export declare class TableReorderableExample extends BaseExample<ITableReorderableExampleState> {
     state: ITableReorderableExampleState;

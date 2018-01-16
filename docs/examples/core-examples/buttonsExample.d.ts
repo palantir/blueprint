@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { Intent } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 export interface IButtonsExampleState {
     active?: boolean;
     disabled?: boolean;

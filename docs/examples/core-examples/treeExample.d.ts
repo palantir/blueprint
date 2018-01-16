@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { ITreeNode } from "@blueprintjs/core";
-import { BaseExample, IBaseExampleProps } from "@blueprintjs/docs-theme";
+import { BaseExample, IBaseExampleProps } from "@blueprintjs/docs";
 export interface ITreeExampleState {
     nodes: ITreeNode[];
 }

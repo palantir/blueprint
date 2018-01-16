@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 import { TimePickerPrecision } from "@blueprintjs/datetime";
 export interface ITimePickerExampleState {
     precision?: TimePickerPrecision;

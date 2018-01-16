@@ -1,6 +1,6 @@
 /// <reference types="react" />
+import { IDocumentationProps } from "@blueprintjs/docs";
 import { IPackageInfo } from "@blueprintjs/docs-data";
-import { IDocumentationProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 /** Return the current theme className. */
 export declare function getTheme(): string;
@@ -17,6 +17,7 @@ export declare class BlueprintDocs extends React.Component<IBlueprintDocsProps, 
         themeName: string;
     };
     render(): JSX.Element;
+    private renderVersionsMenu();
     private handleComponentUpdate;
     private handleToggleDark;
 }

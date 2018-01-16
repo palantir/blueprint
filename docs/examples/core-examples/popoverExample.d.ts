@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { ITetherConstraint, PopoverInteractionKind, Position } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { BaseExample } from "@blueprintjs/docs";
 export interface IPopoverExampleState {
     canEscapeKeyClose?: boolean;
     exampleIndex?: number;
