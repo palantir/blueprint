@@ -74,11 +74,10 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
     protected className = "docs-popover-example";
 
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
-    private handleInteractionChange = handleNumberChange(interactionKind => {
+    private handleInteractionChange = handleStringChange((interactionKind: PopoverInteractionKind) => {
         const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, hasBackdrop });
     });
-
     private handlePlacementChange = handleStringChange((placement: PopperJS.Placement) => this.setState({ placement }));
     private handleBoundaryChange = handleStringChange((boundary: PopperJS.Boundary) =>
         this.setState({

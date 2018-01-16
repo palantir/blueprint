@@ -4,5 +4,4 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-export * from "./propsStore";
 export * from "./utils";

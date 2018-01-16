@@ -24,10 +24,10 @@ import { positionToPlacement } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 
 export enum PopoverInteractionKind {
-    CLICK,
-    CLICK_TARGET_ONLY,
-    HOVER,
-    HOVER_TARGET_ONLY,
+    CLICK = "click",
+    CLICK_TARGET_ONLY = "click-target",
+    HOVER = "hover",
+    HOVER_TARGET_ONLY = "hover-target",
 }
 
 export interface IPopoverProps extends IOverlayableProps, IProps {

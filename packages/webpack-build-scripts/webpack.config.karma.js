@@ -16,7 +16,7 @@ module.exports = {
     devtool: "inline-source-map",
 
     resolve: {
-        extensions: [".js", ".ts", ".tsx"],
+        extensions: [".css", ".js", ".ts", ".tsx"],
     },
 
     module: {
@@ -37,14 +37,6 @@ module.exports = {
                 use: [
                     require.resolve("style-loader"),
                     require.resolve("css-loader"),
-                ],
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    require.resolve("style-loader"),
-                    require.resolve("css-loader"),
-                    require.resolve("sass-loader"),
                 ],
             },
             {

@@ -8,7 +8,7 @@ import * as React from "react";
 
 import { IPageData } from "documentalist/dist/client";
 import { ITagRendererMap } from "../tags";
-import { renderContentsBlock } from "./block";
+import { renderBlock } from "./block";
 
 export interface IPageProps {
     page: IPageData;
@@ -16,7 +16,7 @@ export interface IPageProps {
 }
 
 export const Page: React.SFC<IPageProps> = ({ tagRenderers, page }) => {
-    const pageContents = renderContentsBlock(page.contents, tagRenderers, page);
+    const pageContents = renderBlock(page, tagRenderers, page);
     return (
         <div className="docs-page" data-page-id={page.reference}>
             {pageContents}

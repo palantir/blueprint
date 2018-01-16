@@ -10,7 +10,7 @@ const stripCssComments = require("strip-css-comments");
 const { COPYRIGHT_HEADER } = require("./constants");
 
 const SRC_DIR = path.resolve(process.cwd(), "./src");
-const DIST_DIR = path.resolve(process.cwd(), "./dist");
+const DEST_DIR = path.resolve(process.cwd(), "./lib");
 
 const variablesSources = process.argv.slice(2);
 
@@ -28,7 +28,10 @@ variablesScss = variablesScss
     .replace(/\n{3,}/g, "\n\n");
 variablesScss = COPYRIGHT_HEADER + "\n" + variablesScss;
 
-fs.writeFileSync(`${DIST_DIR}/variables.scss`, variablesScss);
+if (!fs.existsSync(`${DEST_DIR}/scss`)) {
+    fs.mkdirSync(`${DEST_DIR}/scss`);
+}
+fs.writeFileSync(`${DEST_DIR}/scss/variables.scss`, variablesScss);
 
 // convert scss to less
 const variablesLess = variablesScss
@@ -36,4 +39,7 @@ const variablesLess = variablesScss
     .replace(/rgba\((\$[\w-]+), (\$[\w-]+)\)/g, (match, color, variable) => `fade(${color}, ${variable} * 100%)`)
     .replace(/\$/g, "@");
 
-fs.writeFileSync(`${DIST_DIR}/variables.less`, variablesLess);
+if (!fs.existsSync(`${DEST_DIR}/less`)) {
+    fs.mkdirSync(`${DEST_DIR}/less`);
+}
+fs.writeFileSync(`${DEST_DIR}/less/variables.less`, variablesLess);

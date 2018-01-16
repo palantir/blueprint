@@ -17,7 +17,7 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 ## :construction: 2.0 in development :construction:
 
-The `master` branch of this repository is currently being used for development of the next major version of Blueprint. See the [2.0.0 milestone](https://github.com/palantir/blueprint/milestone/23) to track progress.
+The `develop` branch of this repository is currently being used for development of the next major version of Blueprint. See the [2.0.0 milestone](https://github.com/palantir/blueprint/milestone/23) to track progress.
 
 To make a contribution that you wish to have released in a 1.x version of any `@blueprintjs` package, please submit a PR to the `release/1.x` branch.
 
@@ -73,7 +73,7 @@ After cloning this repo, run:
 
 ### Incorporating upstream changes
 
-If you were previously in a working state and have just pulled new code from `master`:
+If you were previously in a working state and have just pulled new code from `develop`:
 
 - If there were package dependency changes, run `yarn` at the root.
   - This command is very quick if there are no new things to install.
@@ -113,10 +113,10 @@ running any of the dev scripts.
 Looking for places to contribute to the codebase?
 [Check out the "help wanted" label](https://github.com/palantir/blueprint/labels/help%20wanted).
 
-Read about our [contribution guidelines](https://github.com/palantir/blueprint/blob/master/CONTRIBUTING.md) and
+Read about our [contribution guidelines](https://github.com/palantir/blueprint/blob/develop/CONTRIBUTING.md) and
 [development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) to give your PR
 its best chance at getting merged.
 
 ## License
 
-This project is made available under the [Apache-2.0 License](https://github.com/palantir/blueprint/blob/master/LICENSE).
+This project is made available under the [Apache-2.0 License](https://github.com/palantir/blueprint/blob/develop/LICENSE).

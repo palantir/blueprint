@@ -34,7 +34,7 @@ export interface IListItemsProps<T> extends IProps {
      * Callback invoked when an item from the list is selected,
      * typically by clicking or pressing `enter` key.
      */
-    onItemSelect: (item: T | undefined, event?: React.SyntheticEvent<HTMLElement>) => void;
+    onItemSelect: (item: T, event?: React.SyntheticEvent<HTMLElement>) => void;
 }
 
 export interface IQueryListProps<T> extends IListItemsProps<T> {
@@ -149,11 +149,12 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private shouldCheckActiveItemInViewport: boolean;
 
     public render() {
-        const { activeItem, items, renderer, query } = this.props;
+        const { activeItem, className, items, renderer, query } = this.props;
         const { filteredItems } = this.state;
 
         return renderer({
             activeItem,
+            className,
             filteredItems,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,

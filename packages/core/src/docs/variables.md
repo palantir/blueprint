@@ -3,7 +3,13 @@
 Available for use with Sass and Less.
 
 ```css.scss
-@import "path/to/@blueprintjs/core/dist/variables";
+// Sass
+@import "path/to/@blueprintjs/core/lib/scss/variables";
+```
+
+```css.less
+// Less
+@import "path/to/@blueprintjs/core/lib/less/variables";
 ```
 
 The Sass `$` convention is used in this documentation for consistency with the original source code.
