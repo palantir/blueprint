@@ -114,10 +114,6 @@
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-0.2.4.tgz#8181a228da46185439300e600c5ae3b3b3982585"
 
-"@types/tether@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@types/tether/-/tether-1.4.3.tgz#bbcb46a35dfbeeaaf60d60afaba3d872b6e1ebf5"
-
 "@types/uglify-js@*":
   version "2.6.30"
   resolved "https://registry.yarnpkg.com/@types/uglify-js/-/uglify-js-2.6.30.tgz#257d2b6dd86673d60da476680fba90f2e30c6eef"
