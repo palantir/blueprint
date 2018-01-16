@@ -908,7 +908,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private onSelection = (selectedRegions: IRegion[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
-        this.setState({selectedRegions});
+        this.setState({ selectedRegions });
     };
 
     private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {

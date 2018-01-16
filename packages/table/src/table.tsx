@@ -682,12 +682,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         } = nextProps;
 
         const hasNewChildren = this.props.children !== nextProps.children;
-        const newChildArray = hasNewChildren ? React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>> : this.childrenArray;
+        const newChildArray = hasNewChildren
+            ? (React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>)
+            : this.childrenArray;
         const numCols = newChildArray.length;
 
         let gridInvalidationRequired = false;
         let newColumnWidths = this.state.columnWidths;
-        if (defaultColumnWidth !== this.props.defaultColumnWidth || columnWidths !== this.props.columnWidths || (hasNewChildren && !this.areChildrenSameShape(newChildArray))) {
+        if (
+            defaultColumnWidth !== this.props.defaultColumnWidth ||
+            columnWidths !== this.props.columnWidths ||
+            (hasNewChildren && !this.areChildrenSameShape(newChildArray))
+        ) {
             // Try to maintain widths of columns by looking up the width of the
             // column that had the same `ID` prop. If none is found, use the
             // previous width at the same index.
@@ -746,22 +752,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             numFrozenRowsClamped: clampNumFrozenRows(nextProps),
             rowHeights: newRowHeights,
             selectedRegions: newSelectedRegions,
-        });
-    }
-
-    private areChildrenSameShape(newChildArray: Array<React.ReactElement<IColumnProps>>) {
-        if (this.childrenArray.length !== newChildArray.length) {
-            return false;
-        }
-        return this.childrenArray.every((child, index) => {
-            const newChild = newChildArray[index];
-            if (child === newChild) {
-                return true;
-            }
-            if (child == null || newChild == null) {
-                return false;
-            }
-            return child.props.id === newChild.props.id;
         });
     }
 
@@ -923,6 +913,22 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (numFrozenColumns != null && numFrozenColumns > numColumns) {
             console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
+    }
+
+    private areChildrenSameShape(newChildArray: Array<React.ReactElement<IColumnProps>>) {
+        if (this.childrenArray.length !== newChildArray.length) {
+            return false;
+        }
+        return this.childrenArray.every((child, index) => {
+            const newChild = newChildArray[index];
+            if (child === newChild) {
+                return true;
+            }
+            if (child == null || newChild == null) {
+                return false;
+            }
+            return child.props.id === newChild.props.id;
+        });
     }
 
     // Hotkeys
