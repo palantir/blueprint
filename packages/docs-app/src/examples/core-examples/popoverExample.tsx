@@ -18,6 +18,7 @@ import {
     MenuItem,
     Popover,
     PopoverInteractionKind,
+    Position,
     RadioGroup,
     Slider,
     Switch,
@@ -31,7 +32,23 @@ const INTERACTION_KINDS = [
     { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
 ];
 
-const PLACEMENTS = PopperJS.placements.map((p: PopperJS.Placement) => (
+const VALID_POSITIONS: Array<Position | "auto"> = [
+    "auto",
+    Position.TOP_LEFT,
+    Position.TOP,
+    Position.TOP_RIGHT,
+    Position.RIGHT_TOP,
+    Position.RIGHT,
+    Position.RIGHT_BOTTOM,
+    Position.BOTTOM_LEFT,
+    Position.BOTTOM,
+    Position.BOTTOM_RIGHT,
+    Position.LEFT_TOP,
+    Position.LEFT,
+    Position.LEFT_BOTTOM,
+];
+
+const POSITION_OPTIONS = VALID_POSITIONS.map((p: Position) => (
     <option key={p} value={p}>
         {p}
     </option>
@@ -48,7 +65,7 @@ export interface IPopoverExampleState {
     interactionKind?: PopoverInteractionKind;
     minimal?: boolean;
     modifiers?: PopperJS.Modifiers;
-    placement?: PopperJS.Placement;
+    position?: Position | "auto";
     sliderValue?: number;
 }
 
@@ -67,7 +84,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
             keepTogether: { enabled: true },
             preventOverflow: { enabled: true, boundariesElement: "scrollParent" },
         },
-        placement: "auto",
+        position: "auto",
         sliderValue: 5,
     };
 
@@ -78,7 +95,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, hasBackdrop });
     });
-    private handlePlacementChange = handleStringChange((placement: PopperJS.Placement) => this.setState({ placement }));
+    private handlePositionChange = handleStringChange((position: Position | "auto") => this.setState({ position }));
     private handleBoundaryChange = handleStringChange((boundary: PopperJS.Boundary) =>
         this.setState({
             modifiers: {
@@ -129,11 +146,11 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         return [
             [
                 <h5 key="app">Appearance</h5>,
-                <label className={Classes.LABEL} key="placement">
-                    Popover placement
+                <label className={Classes.LABEL} key="position">
+                    Popover position
                     <div className={Classes.SELECT}>
-                        <select value={this.state.placement} onChange={this.handlePlacementChange}>
-                            {PLACEMENTS}
+                        <select value={this.state.position} onChange={this.handlePositionChange}>
+                            {POSITION_OPTIONS}
                         </select>
                     </div>
                 </label>,
