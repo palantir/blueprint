@@ -7,7 +7,8 @@
 import * as React from "react";
 
 import { Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IProgressExampleState {
@@ -26,7 +27,7 @@ export class ProgressExample extends BaseExample<IProgressExampleState> {
     protected className = "docs-progress-example";
 
     private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
-    private handleModifierChange = handleNumberChange(intent => this.setState({ intent }));
+    private handleModifierChange = handleStringChange((intent: Intent) => this.setState({ intent }));
 
     protected renderExample() {
         const { hasValue, intent, value } = this.state;

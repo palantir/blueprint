@@ -5,8 +5,8 @@
  */
 
 export enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
+    UP = "up",
+    DOWN = "down",
+    LEFT = "left",
+    RIGHT = "right",
 }

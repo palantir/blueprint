@@ -8,9 +8,9 @@
  * The four basic intents.
  */
 export enum Intent {
-    NONE = -1,
-    PRIMARY,
-    SUCCESS,
-    WARNING,
-    DANGER,
+    NONE = "none",
+    PRIMARY = "primary",
+    SUCCESS = "success",
+    WARNING = "warning",
+    DANGER = "danger",
 }

@@ -12,8 +12,8 @@ export type DateRange = [Date | undefined, Date | undefined];
 export type MomentDateRange = [moment.Moment, moment.Moment];
 
 export enum DateRangeBoundary {
-    START,
-    END,
+    START = "start",
+    END = "end",
 }
 
 export function areEqual(date1: Date, date2: Date) {

@@ -5,13 +5,13 @@
  */
 
 import { Classes, Switch } from "@blueprintjs/core";
-import { BaseExample, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 import { TimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
 // tslint:disable-next-line:no-submodule-imports
-import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/dist/esm/timePicker";
+import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/timePicker";
 
 export interface ITimePickerExampleState {
     precision?: TimePickerPrecision;

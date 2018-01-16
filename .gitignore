@@ -20,8 +20,7 @@ yarn-error.log
 # Blueprint
 build
 dist
+lib
 generated
 coverage
-docs/*.d.ts
-docs/**/*.d.ts
-docs/assets/inline
+/docs

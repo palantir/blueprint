@@ -17,22 +17,22 @@ export enum RegionCardinality {
     /**
      * A region that contains a finite rectangular group of table cells
      */
-    CELLS,
+    CELLS = "cells",
 
     /**
      * A region that represents all cells within 1 or more rows.
      */
-    FULL_ROWS,
+    FULL_ROWS = "full-rows",
 
     /**
      * A region that represents all cells within 1 or more columns.
      */
-    FULL_COLUMNS,
+    FULL_COLUMNS = "full-columns",
 
     /**
      * A region that represents all cells in the table.
      */
-    FULL_TABLE,
+    FULL_TABLE = "full-table",
 }
 
 /**
@@ -53,24 +53,21 @@ export const SelectionModes = {
     ROWS_ONLY: [RegionCardinality.FULL_ROWS],
 };
 
-export type ColumnLoadingOption = "cells" | "column-header";
-export const ColumnLoadingOption = {
-    CELLS: "cells" as ColumnLoadingOption,
-    HEADER: "column-header" as ColumnLoadingOption,
-};
+export enum ColumnLoadingOption {
+    CELLS = "cells",
+    HEADER = "column-header",
+}
 
-export type RowLoadingOption = "cells" | "row-header";
-export const RowLoadingOption = {
-    CELLS: "cells" as RowLoadingOption,
-    HEADER: "row-header" as RowLoadingOption,
-};
+export enum RowLoadingOption {
+    CELLS = "cells",
+    HEADER = "row-header",
+}
 
-export type TableLoadingOption = ColumnLoadingOption | RowLoadingOption;
-export const TableLoadingOption = {
-    CELLS: "cells" as TableLoadingOption,
-    COLUMN_HEADERS: ColumnLoadingOption.HEADER as TableLoadingOption,
-    ROW_HEADERS: RowLoadingOption.HEADER as TableLoadingOption,
-};
+export enum TableLoadingOption {
+    CELLS = "cells",
+    COLUMN_HEADERS = "column-header",
+    ROW_HEADERS = "row-header",
+}
 
 export interface IStyledRegionGroup {
     className?: string;
@@ -112,29 +109,26 @@ export class Regions {
      * an unbounded interval. Therefore, an example of a region containing the
      * second and third columns would be:
      *
-     *     {
-     *         rows: null,
-     *         cols: [1, 2]
-     *     }
+     * ```js
+     * { rows: null, cols: [1, 2] }
+     * ```
      *
      * In this case, this method would return `RegionCardinality.FULL_COLUMNS`.
      *
      * If both rows and columns are unbounded, then the region covers the
      * entire table. Therefore, a region like this:
      *
-     *     {
-     *         rows: null,
-     *         cols: null
-     *     }
+     * ```js
+     * { rows: null, cols: null }
+     * ```
      *
      * will return `RegionCardinality.FULL_TABLE`.
      *
      * An example of a region containing a single cell in the table would be:
      *
-     *     {
-     *         rows: [5, 5],
-     *         cols: [2, 2]
-     *     }
+     * ```js
+     * { rows: [5, 5], cols: [2, 2] }
+     * ```
      *
      * In this case, this method would return `RegionCardinality.CELLS`.
      */

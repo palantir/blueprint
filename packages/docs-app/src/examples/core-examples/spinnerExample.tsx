@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Classes, Spinner } from "@blueprintjs/core";
-import { handleStringChange } from "@blueprintjs/docs";
+import { handleStringChange } from "@blueprintjs/docs-theme";
 import { ProgressExample } from "./progressExample";
 
 const SIZES = [

@@ -20,7 +20,7 @@ import {
     Slider,
     Switch,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 const INTERACTION_KINDS = [
     { label: "Click", value: PopoverInteractionKind.CLICK.toString() },
@@ -88,11 +88,11 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         this.setState({ tetherConstraints: JSON.parse(constraints) });
     });
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
-    private handleInteractionChange = handleNumberChange(interactionKind => {
+    private handleInteractionChange = handleStringChange((interactionKind: PopoverInteractionKind) => {
         const isModal = this.state.isModal && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, isModal });
     });
-    private handlePositionChange = handleNumberChange(position => this.setState({ position }));
+    private handlePositionChange = handleStringChange((position: Position) => this.setState({ position }));
 
     private toggleArrows = handleBooleanChange(useSmartArrowPositioning => {
         this.setState({ useSmartArrowPositioning });

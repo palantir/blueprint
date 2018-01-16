@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Button, Intent, Popover2, Position, Switch, Tooltip2 } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 
 export class Tooltip2Example extends BaseExample<{ isOpen: boolean }> {
     public state = {
