@@ -20,10 +20,12 @@ const releases = releasesData.map((pkg: IPackageInfo) => {
     return pkg;
 });
 
-const versions = versionsData.map((version: string) => ({
-    url: `https://palantir.github.io/blueprint/docs/${version}`,
-    version,
-}));
+const versions = Object.keys(versionsData).map((majorVersion: string) => {
+    return {
+        url: `https://palantir.github.io/blueprint/docs/v${majorVersion}`,
+        version: versionsData[majorVersion],
+    };
+});
 /* tslint:enable:no-var-requires */
 
 const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);

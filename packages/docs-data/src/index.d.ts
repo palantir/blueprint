@@ -11,6 +11,10 @@ export interface IPackageInfo {
     version: string;
 }
 
+export interface IVersionsInfo {
+    [majorVersion: string]: string;
+}
+
 export const docsData: IDocsData;
 export const releasesData: IPackageInfo[];
-export const versionsData: string[];
+export const versionsData: IVersionsInfo;

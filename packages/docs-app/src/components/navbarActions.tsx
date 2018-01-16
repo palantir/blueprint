@@ -53,9 +53,20 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
      * Also include a link to the GitHub release notes.
      */
     private renderReleasesMenu() {
-        const menuItems = this.props.releases.map((version: IPackageInfo, index: number) => (
+        const { releases } = this.props;
+        const renderItem = (version: IPackageInfo, index: number) => (
             <MenuItem href={version.url} key={index} label={version.version} target="_blank" text={version.name} />
-        ));
+        );
+        const COMPONENT_PACKAGES = [
+            "@blueprintjs/core",
+            "@blueprintjs/datetime",
+            "@blueprintjs/table",
+            "@blueprintjs/labs",
+        ];
+        const libs = releases.filter(({ name }: IPackageInfo) => COMPONENT_PACKAGES.indexOf(name) >= 0).map(renderItem);
+        const tooling = releases
+            .filter(({ name }: IPackageInfo) => COMPONENT_PACKAGES.indexOf(name) === -1)
+            .map(renderItem);
         return (
             <Menu>
                 <MenuItem
@@ -64,8 +75,10 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
                     target="_blank"
                     text="Release notes"
                 />
-                <MenuDivider />
-                {menuItems}
+                <MenuDivider title="Components" />
+                {libs}
+                <MenuDivider title="Tooling" />
+                {tooling}
             </Menu>
         );
     }
