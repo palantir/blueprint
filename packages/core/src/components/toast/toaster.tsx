@@ -29,25 +29,11 @@ export type ToasterPosition =
 
 export interface IToaster {
     /**
-     * Show a new toast to the user.
+     * Shows a new toast to the user, or updates an existing toast corresponding to the provided key (optional).
      *
-     * Callers may optionally supply a key, or a unique key will be generated.
-     *
-     * Returns the unique key of the new toast.
+     * Returns the unique key of the toast.
      */
     show(props: IToastProps, key?: string): string;
-
-    /**
-     * Updates the toast with the given key to use the new props.
-     * Updating a key that does not exist is effectively a no-op.
-     */
-    update(key: string, props: IToastProps): void;
-
-    /**
-     * If the key provided corresponds to an existing toast, updates that toast to use the new props.
-     * Otherwise shows a new toast using the provided props and key.
-     */
-    showOrUpdate(key: string, props: IToastProps): void;
 
     /** Dismiss the given toast instantly. */
     dismiss(key: string): void;
@@ -128,25 +114,16 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
 
     public show(props: IToastProps, key?: string) {
         const options = this.createToastOptions(props, key);
-        this.setState(prevState => ({
-            toasts: [options, ...prevState.toasts],
-        }));
-        return options.key;
-    }
-
-    public showOrUpdate(key: string, props: IToastProps) {
-        if (this.hasToastWithKey(key)) {
-            this.update(key, props);
+        if (key === undefined || this.isNewToastKey(key)) {
+            this.setState(prevState => ({
+                toasts: [options, ...prevState.toasts],
+            }));
         } else {
-            this.show(props, key);
+            this.setState(prevState => ({
+                toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
+            }));
         }
-    }
-
-    public update(key: string, props: IToastProps) {
-        const options = this.createToastOptions(props, key);
-        this.setState(prevState => ({
-            toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
-        }));
+        return options.key;
     }
 
     public dismiss(key: string, timeoutExpired = false) {
@@ -192,13 +169,8 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
         );
     }
 
-    private hasToastWithKey(key: string) {
-        for (const toast of this.state.toasts) {
-            if (toast.key === key) {
-                return true;
-            }
-        }
-        return false;
+    private isNewToastKey(key: string) {
+        return this.state.toasts.every(toast => toast.key !== key);
     }
 
     private renderToast(toast: IToastOptions) {
