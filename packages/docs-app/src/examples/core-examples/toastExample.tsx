@@ -169,7 +169,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
                 clearInterval(interval);
             } else {
                 progress += 10 + Math.random() * 20;
-                this.toaster.update(key, this.renderProgress(progress));
+                this.toaster.show(this.renderProgress(progress), key);
             }
         }, 1000);
     };
