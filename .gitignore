@@ -24,3 +24,4 @@ lib
 generated
 coverage
 /docs
+docs-static/**/*.d.ts
