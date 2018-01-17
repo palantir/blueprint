@@ -2,11 +2,11 @@
   "name": "@blueprintjs/test-commons",
   "version": "0.3.1",
   "description": "Common utilities for tests in @blueprintjs packages",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "lib/cjs/index.js",
+  "typings": "lib/cjs/index.d.ts",
   "scripts": {
     "compile": "tsc -p ./src",
-    "clean": "rm -rf dist/*",
+    "clean": "rm -rf lib/*",
     "dev": "yarn compile --watch",
     "lint": "tslint 'src/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
     "test": "exit 0"
