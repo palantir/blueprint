@@ -14,20 +14,20 @@ $banner-height: $pt-grid-size * 4;
 
   z-index: $pt-z-index-overlay - 1;
   box-shadow: inset 0 -1px 0 $pt-divider-black;
-  background: $green3;
+  background: $blue3;
   height: $banner-height;
   text-align: center;
   line-height: $banner-height;
   color: $white;
 
   &:hover {
-    background-color: $green2;
+    background-color: $blue2;
     text-decoration: none;
     color: $white;
   }
 
   &:active {
-    background-color: $green1;
+    background-color: $blue1;
   }
 
   .pt-dark & {
