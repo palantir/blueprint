@@ -48,13 +48,18 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             />
         );
         return (
-            <Documentation
-                {...this.props}
-                className={this.state.themeName}
-                navbarLeft={navbarLeft}
-                navbarRight={navbarRight}
-                onComponentUpdate={this.handleComponentUpdate}
-            />
+            <div>
+                <a className="docs-banner" target="_blank" href="http://blueprintjs.com/docs/v2/">
+                    A new major version of Blueprint is under development. Click here to go to the v2 docs!
+                </a>
+                <Documentation
+                    {...this.props}
+                    className={this.state.themeName}
+                    navbarLeft={navbarLeft}
+                    navbarRight={navbarRight}
+                    onComponentUpdate={this.handleComponentUpdate}
+                />
+            </div>
         );
     }
 
