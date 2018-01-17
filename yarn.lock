@@ -4533,7 +4533,7 @@ ldjson-stream@^1.2.1:
     split2 "^0.2.1"
     through2 "^0.6.1"
 
-lerna@^2.6.0:
+lerna@^2.7.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/lerna/-/lerna-2.7.1.tgz#abd536376eca5e9f41a6d611da5b744534ef906f"
   dependencies:
