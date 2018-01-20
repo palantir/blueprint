@@ -67,7 +67,7 @@ export class FileUpload extends React.Component<IFileUploadProps, {}> {
     };
 
     public render() {
-        const { className, fill, disabled, inputProps, large, text, ...htmlProps } = this.props;
+        const { className, fill, disabled, inputProps, onInputChange, large, text, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
             Classes.FILE_UPLOAD,
