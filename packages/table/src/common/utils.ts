@@ -189,11 +189,11 @@ export const Utils = {
      * We use the computed font from the supplied element and a non-DOM canvas
      * context to measure the text.
      */
-    measureElementTextContent(element: HTMLElement): TextMetrics {
+    measureElementTextContent(element: Element): TextMetrics {
         const context = document.createElement("canvas").getContext("2d");
-        const style = getComputedStyleWithExclusions(element);
+        const style = getComputedStyle(element);
         context.font = CSS_FONT_PROPERTIES.map(prop => style.getPropertyValue(prop)).join(" ");
-        return context.measureText(element.textContent);
+        return measureTextContentWithExclusions(context, element);
     },
 
     /**
@@ -409,25 +409,27 @@ export const Utils = {
 };
 
 /**
- * Wrapper around document.getComputedStyle which applies some extra logic to exclude certain elements
- * from the computation.
+ * Wrapper around Canvas measureText which applies some extra logic to optionally
+ * exclude an element's text from the computation.
  */
-function getComputedStyleWithExclusions(element: HTMLElement) {
-    const elementsToExclude = element.querySelectorAll(`.${CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT}`);
+function measureTextContentWithExclusions(context: CanvasRenderingContext2D, element: Element): TextMetrics {
+    // We only expect one or zero excluded elements in this subtree
+    // We don't have a need for more than one, so we avoid that complexity altogether.
+    const elementToExclude = element.querySelector(`.${CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT}`);
+    let removedElementParent: Element | undefined;
+    let removedElementNextSibling: Node | undefined;
 
-    // hide all elements to exclude
-    for (let i = 0; i < elementsToExclude.length; i++) {
-        const el = elementsToExclude.item(i) as HTMLElement;
-        el.setAttribute("style", "display: none");
+    if (elementToExclude != null) {
+        removedElementParent = elementToExclude.parentElement;
+        removedElementNextSibling = elementToExclude.nextSibling;
+        removedElementParent.removeChild(elementToExclude);
     }
 
-    const style = getComputedStyle(element, null);
+    const metrics = context.measureText(element.textContent);
 
-    // remove the styles we injected
-    for (let i = 0; i < elementsToExclude.length; i++) {
-        const el = elementsToExclude.item(i) as HTMLElement;
-        el.setAttribute("style", "");
+    if (elementToExclude != null) {
+        removedElementParent.insertBefore(elementToExclude, removedElementNextSibling);
     }
 
-    return style;
+    return metrics;
 }
