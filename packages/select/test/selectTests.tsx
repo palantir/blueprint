@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, InputGroup, Popover2 } from "@blueprintjs/core";
+import { Classes, InputGroup, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import * as classNames from "classnames";
 import { mount } from "enzyme";
@@ -38,19 +38,19 @@ describe("<Select>", () => {
     it("renders a Popover around children that contains InputGroup and items", () => {
         const wrapper = select();
         assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
-        assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover");
+        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
     it("filterable=false hides InputGroup", () => {
         const wrapper = select({ filterable: false });
         assert.lengthOf(wrapper.find(InputGroup), 0, "should not render InputGroup");
-        assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover");
+        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
     it("disabled=true disables Popover", () => {
         const wrapper = select({ disabled: true, popoverProps: { inline: true } });
         wrapper.find("table").simulate("click");
-        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), false);
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
     });
 
     it("itemRenderer is called for each filtered child", () => {
@@ -115,7 +115,7 @@ describe("<Select>", () => {
         const modifiers = {}; // our own instance
         const wrapper = select({ popoverProps: { isOpen: undefined, popoverWillOpen, modifiers } });
         wrapper.find("table").simulate("click");
-        assert.strictEqual(wrapper.find(Popover2).prop("modifiers"), modifiers);
+        assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(popoverWillOpen.calledOnce);
     });
 

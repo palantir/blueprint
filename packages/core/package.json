@@ -1,18 +1,18 @@
 {
   "name": "@blueprintjs/core",
-  "version": "1.35.0",
+  "version": "2.0.0-beta.1",
   "description": "Core styles & components",
-  "main": "dist/index.js",
-  "module": "dist/esm/index.js",
-  "typings": "dist/esm/index.d.ts",
-  "style": "dist/blueprint.css",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/esm/index.d.ts",
+  "style": "lib/css/blueprint.css",
   "unpkg": "dist/core.bundle.js",
   "scripts": {
     "compile": "npm-run-all -p 'compile:*'",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
     "compile:css": "sass-compile ./src",
-    "clean": "rm -rf dist/*",
+    "clean": "rm -rf dist/* && rm -rf lib/*",
     "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
@@ -30,15 +30,13 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/icons": "^1.0.0",
+    "@blueprintjs/icons": "^2.0.0-beta.1",
     "@types/dom4": "^1.5.20",
-    "@types/tether": "^1.1.27",
     "classnames": "^2.2",
     "dom4": "^1.8",
     "normalize.css": "^7.0.0",
     "popper.js": "^1.12.6",
     "react-popper": "~0.7.4",
-    "tether": "^1.4",
     "tslib": "^1.5.0"
   },
   "peerDependencies": {
@@ -47,9 +45,9 @@
     "react-transition-group": "^2.2.1"
   },
   "devDependencies": {
-    "@blueprintjs/karma-build-scripts": "^0.3.0",
-    "@blueprintjs/node-build-scripts": "^0.3.0",
-    "@blueprintjs/test-commons": "^0.3.0",
+    "@blueprintjs/karma-build-scripts": "^0.4.0",
+    "@blueprintjs/node-build-scripts": "^0.4.0",
+    "@blueprintjs/test-commons": "^0.4.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "es6-shim": "^0.35.3",

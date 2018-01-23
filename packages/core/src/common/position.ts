@@ -5,18 +5,18 @@
  */
 
 export enum Position {
-    TOP_LEFT,
-    TOP,
-    TOP_RIGHT,
-    RIGHT_TOP,
-    RIGHT,
-    RIGHT_BOTTOM,
-    BOTTOM_RIGHT,
-    BOTTOM,
-    BOTTOM_LEFT,
-    LEFT_BOTTOM,
-    LEFT,
-    LEFT_TOP,
+    TOP_LEFT = "top-left",
+    TOP = "top",
+    TOP_RIGHT = "top-right",
+    RIGHT_TOP = "right-top",
+    RIGHT = "right",
+    RIGHT_BOTTOM = "right-bottom",
+    BOTTOM_RIGHT = "bottom-right",
+    BOTTOM = "bottom",
+    BOTTOM_LEFT = "bottom-left",
+    LEFT_BOTTOM = "left-bottom",
+    LEFT = "left",
+    LEFT_TOP = "left-top",
 }
 
 export function isPositionHorizontal(position: Position) {

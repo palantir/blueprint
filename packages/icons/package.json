@@ -1,11 +1,11 @@
 {
   "name": "@blueprintjs/icons",
-  "version": "1.0.0",
+  "version": "2.0.0-beta.1",
   "description": "Components, fonts, icons, and css files for creating and displaying icons.",
-  "main": "dist/index.js",
-  "module": "dist/esm/index.js",
-  "typings": "dist/esm/index.d.ts",
-  "style": "dist/blueprint-icons.css",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/esm/index.d.ts",
+  "style": "lib/css/blueprint-icons.css",
   "unpkg": "dist/icons.bundle.js",
   "scripts": {
     "compile": "npm-run-all -s 'compile:pre' -p 'compile:*'",
@@ -13,7 +13,7 @@
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
     "compile:css": "sass-compile ./src",
-    "clean": "rm -rf dist/*",
+    "clean": "rm -rf dist/* && rm -rf lib/*",
     "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",
@@ -33,8 +33,8 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^0.3.0",
-    "@blueprintjs/test-commons": "^0.3.0",
+    "@blueprintjs/node-build-scripts": "^0.4.0",
+    "@blueprintjs/test-commons": "^0.4.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "es6-shim": "^0.35.3",

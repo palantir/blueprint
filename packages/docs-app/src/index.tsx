@@ -15,16 +15,15 @@ import { BlueprintDocs } from "./components/blueprintDocs";
 import * as ReactDocs from "./tags/reactDocs";
 import { reactExamples } from "./tags/reactExamples";
 
-const releases = releasesData.map((pkg: IPackageInfo) => {
-    pkg.url = `https://www.npmjs.com/package/${pkg.name}`;
-    return pkg;
-});
-
-const versions = versionsData.map((version: string) => ({
-    url: `https://palantir.github.io/blueprint/docs/${version}`,
-    version,
+const releases: IPackageInfo[] = releasesData.map(pkg => ({
+    ...pkg,
+    url: `https://www.npmjs.com/package/${pkg.name}`,
 }));
-/* tslint:enable:no-var-requires */
+
+const versions: IPackageInfo[] = Object.keys(versionsData).map(majorVersion => ({
+    url: `https://palantir.github.io/blueprint/docs/v${majorVersion}`,
+    version: versionsData[majorVersion],
+}));
 
 const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);
 const reactExample = new ReactExampleTagRenderer(reactExamples);

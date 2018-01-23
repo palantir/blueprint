@@ -3008,5 +3008,26 @@
     "tags": "love, like, organ, human, feelings, split, torn, failed, health",
     "group": "miscellaneous",
     "content": "\\e7a2"
+  },
+  {
+    "name": "Join: inner",
+    "className": "pt-icon-inner-join",
+    "tags": "circles, combine, connect, add, part, slice",
+    "group": "action",
+    "content": "\\e7a3"
+  },
+  {
+    "name": "Join: left",
+    "className": "pt-icon-left-join",
+    "tags": "circles, combine, connect, add, part, slice",
+    "group": "action",
+    "content": "\\e7a4"
+  },
+  {
+    "name": "Join: right",
+    "className": "pt-icon-right-join",
+    "tags": "circles, combine, connect, add, part, slice",
+    "group": "action",
+    "content": "\\e7a5"
   }
 ]
