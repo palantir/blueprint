@@ -43,24 +43,35 @@ writeLinesToFile(
 writeLinesToFile("_icon-variables.scss", ...ICONS_METADATA.map(icon => `$${icon.className}: "${icon.content}";`));
 
 // map ENUM_NAME to className (cast as string constant so it can be used as IconName)
-writeLinesToFile(
-    "iconClasses.ts",
-    ...buildTSObject("IconClasses", icon => `"${icon.className}" as "${icon.className}"`),
-);
+writeLinesToFile("iconClasses.ts", ...buildTSObject("IconClasses", icon => `${icon.className}" as "${icon.className}`));
 
 // union type of all valid string names
 writeLinesToFile("iconName.ts", ...buildUnionType());
 
 // map ENUM_NAME to unicode character
-writeLinesToFile("iconStrings.ts", ...buildTSObject("IconContents", icon => `"${icon.content.replace("\\", "\\u")}"`));
+writeLinesToFile("iconStrings.ts", ...buildTSObject("IconContents", icon => icon.content.replace("\\", "\\u")));
 
-// JSX SVG elements. IIFE to unwrap async.
 (async () => {
+    // JSX SVG elements. IIFE to unwrap async.
     writeLinesToFile(
-        "iconContents.tsx",
-        "// tslint:disable:prettier",
-        'import * as React from "react";',
-        ...(await buildJSXContents()),
+        "iconSvgs.tsx",
+        ...(await buildJSXObject("IconSvgs", icon => {
+            const svg = fs.readFileSync(
+                path.resolve(__dirname, `../../resources/icons/16px/${icon.className}.svg`),
+                "utf-8",
+            );
+            /** @type {Promise<string>} - must define variable to type it before returning */
+            const promise = new Promise(resolve =>
+                svgo.optimize(svg, (/** @type {{ data: string }} */ { data }) => {
+                    const dataJsx = data
+                        .replace("class=", "className=")
+                        .replace(/<style>([^<]+)<\/style>/g, '<style>{"$1"}</style>');
+                    // TODO: <title> tag. can we strip <svg> tag?
+                    resolve(dataJsx);
+                }),
+            );
+            return promise;
+        })),
     );
 })();
 
@@ -105,35 +116,31 @@ function buildTSObject(objectName, valueGetter) {
  * Returns union type of all icon names, including both short (`"time"`) and long (`"pt-icon-time"`) formats.
  */
 function buildUnionType() {
-    const iconNames = [
-        // short names
-        ...ICONS_METADATA.map(({ className }) => `"${className.replace("pt-icon-", "")}"`),
-        // long names
-        ...ICONS_METADATA.map(({ className }) => `"${className}"`),
+    const shortNames = ICONS_METADATA.map(({ className }) => `"${className.replace("pt-icon-", "")}"`);
+    const longNames = ICONS_METADATA.map(({ className }) => `"${className}"`);
+    return [
+        `export type IconName =\n    | ${shortNames.join("\n    | ")};`,
+        "",
+        `export type LegacyIconName =\n    | ${longNames.join("\n    | ")};`,
     ];
-    return [`export type IconName =\n    | ${iconNames.join("\n    | ")};`];
 }
-
 /**
- * Builds array of `export const ${ICON_NAME} = <svg>...</svg>` for each icon.
+ * Builds `const ${objectName}`, keyed by icon enum name. Value is result of `valueGetter` function.
+ * @param {string} objectName
+ * @param {(icon: IconMetadata) => Promise<string>} valueGetter
  */
-async function buildJSXContents() {
-    return Promise.all(
-        ICONS_METADATA.map(icon => {
-            const svg = fs.readFileSync(
-                path.resolve(__dirname, `../../resources/icons/16px/${icon.className}.svg`),
-                "utf-8",
-            );
-            /** @type {Promise<string>} */
-            const promise = new Promise(resolve =>
-                svgo.optimize(svg, ({ data }) => {
-                    const cleaned = data
-                        .replace("class=", "className=")
-                        .replace(/<style>([^<]+)<\/style>/g, '<style>{"$1"}</style>');
-                    resolve(`export const ${toEnumName(icon)} = ${cleaned};`);
-                }),
-            );
-            return promise;
-        }),
+async function buildJSXObject(objectName, valueGetter) {
+    const lines = ICONS_METADATA.map(
+        async icon => `    "${icon.className.replace("pt-icon-", "")}": ${await valueGetter(icon)},`,
     );
+    return [
+        'import * as React from "react";',
+        'import { IconName } from "./iconName";',
+        "",
+        "// tslint:disable:prettier",
+        `export const ${objectName}: Record<IconName, JSX.Element> = {`,
+        ...(await Promise.all(lines)),
+        "};",
+        "// tslint:enable:prettier",
+    ];
 }
