@@ -101,7 +101,9 @@ export class Locator implements ILocator {
 
     public getWidestVisibleCellInColumn(columnIndex: number): number {
         const columnCellSelector = this.getColumnCellSelector(columnIndex);
-        const columnHeaderAndBodyCells = this.tableElement.querySelectorAll(columnCellSelector);
+        const columnHeaderAndBodyCells = this.tableElement.querySelectorAll(columnCellSelector) as NodeListOf<
+            HTMLElement
+        >;
 
         let maxWidth = 0;
         for (let i = 0; i < columnHeaderAndBodyCells.length; i++) {
