@@ -38,3 +38,8 @@ span.pt-icon {
     content: $content;
   }
 }
+
+svg.pt-icon {
+  vertical-align: middle;
+  fill: currentColor;
+}

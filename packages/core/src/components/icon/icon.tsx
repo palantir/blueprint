@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
+import { IconName, IconSvgs } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
 
 export { IconName };
@@ -20,14 +20,17 @@ export interface IIconProps extends IIntentProps, IProps {
     iconName: IconName | undefined;
 
     /**
-     * Size of the icon.
-     * Blueprint provides each icon in two sizes: 16px and 20px. The keyword `"inherit"` will
-     * render a 20px icon but inherit `font-size` from its parent.
-     * Constants are exposed for each of these values on the component itself:
-     * `Icon.SIZE_(STANDARD|LARGE|INHERIT)`,
+     * Height of icon. A number value will be interpreted as pixels. Use a string value for other units.
+     * By default, inherits height from surrounding styles, such as `line-height`.
+     * @default "inherit"
+     */
+    height?: number | string;
+
+    /**
+     * Width of icon. A number value will be interpreted as pixels. Use a string value for other units.
      * @default 16
      */
-    iconSize?: 16 | 20 | "inherit";
+    width?: number | string;
 }
 
 export class Icon extends React.PureComponent<IIconProps & React.HTMLAttributes<HTMLSpanElement>, never> {
@@ -35,32 +38,16 @@ export class Icon extends React.PureComponent<IIconProps & React.HTMLAttributes<
 
     public static readonly SIZE_STANDARD = 16 as 16;
     public static readonly SIZE_LARGE = 20 as 20;
-    public static readonly SIZE_INHERIT = "inherit" as "inherit";
 
     public render() {
-        if (this.props.iconName == null) {
+        const { className, iconName, intent, width = 16, height = "inherit" } = this.props;
+        if (iconName == null) {
             return null;
         }
-        const { className, iconName, intent, iconSize = Icon.SIZE_STANDARD, ...restProps } = this.props;
-
-        const classes = classNames(
-            getSizeClass(iconSize),
-            Classes.iconClass(iconName),
-            Classes.intentClass(intent),
-            className,
-        );
-        return <span className={classes} {...restProps} />;
-    }
-}
-
-// NOTE: not using a type alias here so the full union will appear in the interface docs
-function getSizeClass(size: 16 | 20 | "inherit") {
-    switch (size) {
-        case Icon.SIZE_STANDARD:
-            return Classes.ICON_STANDARD;
-        case Icon.SIZE_LARGE:
-            return Classes.ICON_LARGE;
-        default:
-            return Classes.ICON;
+        return React.cloneElement(IconSvgs[iconName], {
+            className: classNames("pt-icon", Classes.iconClass(iconName), Classes.intentClass(intent), className),
+            height,
+            width,
+        });
     }
 }
