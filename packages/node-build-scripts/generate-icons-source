@@ -4,10 +4,23 @@
  * @fileoverview Generates icons Sass and TypeScript source code from JSON metadata about icons.
  */
 
+// @ts-check
 const fs = require("fs");
 const path = require("path");
+const SVGO = require("svgo");
+const svgo = new SVGO();
 const { COPYRIGHT_HEADER } = require("./constants");
 
+/**
+ * @typedef {Object} IconMetadata
+ * @property {string} name - icon name for display
+ * @property {string} className - CSS class name
+ * @property {string} tags - comma separated list of tags describing this icon
+ * @property {string} group - group to which this icon belongs
+ * @property {string} content - unicode character for icon glyph in font
+ */
+
+/** @type {IconMetadata[]} */
 const ICONS_METADATA = require(path.resolve(process.cwd(), "./resources/icons/icons.json"));
 const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
 
@@ -16,31 +29,45 @@ if (!fs.existsSync(GENERATED_SRC_DIR)) {
 }
 
 // great big map for iteration
-writeLinesToFile("_icon-map.scss", [
+writeLinesToFile(
+    "_icon-map.scss",
     '@import "icon-variables";',
     "$icons: (",
     ...ICONS_METADATA.map(i => `  "${i.className.replace("pt-icon-", "")}": $${i.className},`),
     ");",
-]);
+);
 
 // simple variable definitions
-writeLinesToFile("_icon-variables.scss", ICONS_METADATA.map(icon => `$${icon.className}: "${icon.content}";`));
+writeLinesToFile("_icon-variables.scss", ...ICONS_METADATA.map(icon => `$${icon.className}: "${icon.content}";`));
 
 // map ENUM_NAME to className (cast as string constant so it can be used as IconName)
-writeLinesToFile("iconClasses.ts", buildTSObject("IconClasses", icon => `${icon.className}" as "${icon.className}`));
+writeLinesToFile(
+    "iconClasses.ts",
+    ...buildTSObject("IconClasses", icon => `"${icon.className}" as "${icon.className}"`),
+);
 
 // union type of all valid string names
-writeLinesToFile("iconName.ts", buildUnionType());
+writeLinesToFile("iconName.ts", ...buildUnionType());
 
 // map ENUM_NAME to unicode character
-writeLinesToFile("iconStrings.ts", buildTSObject("IconContents", icon => icon.content.replace("\\", "\\u")));
+writeLinesToFile("iconStrings.ts", ...buildTSObject("IconContents", icon => `"${icon.content.replace("\\", "\\u")}"`));
 
-function writeLinesToFile(filename, lines) {
+/**
+ * Writes lines to given filename in GENERATED_SRC_DIR.
+ * @param {string} filename
+ * @param {string[]} lines
+ */
+function writeLinesToFile(filename, ...lines) {
     const outputPath = path.join(GENERATED_SRC_DIR, filename);
     const contents = [COPYRIGHT_HEADER, ...lines, ""].join("\n");
     fs.writeFileSync(outputPath, contents);
 }
 
+/**
+ * Converts icon className to uppercase constant name.
+ * Example: `"pt-icon-time"` &rArr; `"TIME"`
+ * @param {IconMetadata} icon
+ */
 function toEnumName(icon) {
     return icon.className
         .replace("pt-icon-", "")
@@ -48,20 +75,29 @@ function toEnumName(icon) {
         .toUpperCase();
 }
 
+/**
+ * Builds `const ${objectName}`, keyed by icon enum name. Value is result of `valueGetter` function.
+ * @param {string} objectName
+ * @param {(icon: IconMetadata) => string} valueGetter
+ */
 function buildTSObject(objectName, valueGetter) {
     return [
         "// tslint:disable:object-literal-sort-keys",
         `export const ${objectName} = {`,
-        ...ICONS_METADATA.map(prop => `    ${toEnumName(prop)}: "${valueGetter(prop)}",`),
+        ...ICONS_METADATA.map(icon => `    ${toEnumName(icon)}: ${valueGetter(icon)},`),
         "};",
     ];
 }
 
+/**
+ * Returns union type of all icon names, including both short (`"time"`) and long (`"pt-icon-time"`) formats.
+ */
 function buildUnionType() {
-    const iconNames = ICONS_METADATA.reduce((arr, { className }) => {
-        // support un/prefixed variants
-        arr.push(`"${className}"`, `"${className.replace("pt-icon-", "")}"`);
-        return arr;
-    }, []).sort();
+    const iconNames = [
+        // short names
+        ...ICONS_METADATA.map(({ className }) => `"${className.replace("pt-icon-", "")}"`),
+        // long names
+        ...ICONS_METADATA.map(({ className }) => `"${className}"`),
+    ];
     return [`export type IconName =\n    | ${iconNames.join("\n    | ")};`];
 }
