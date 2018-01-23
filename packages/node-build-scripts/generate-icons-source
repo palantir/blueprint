@@ -21,7 +21,9 @@ const { COPYRIGHT_HEADER } = require("./constants");
  */
 
 /** @type {IconMetadata[]} */
-const ICONS_METADATA = require(path.resolve(process.cwd(), "./resources/icons/icons.json"));
+const ICONS_METADATA = require(path.resolve(process.cwd(), "./resources/icons/icons.json")).sort((a, b) =>
+    a.className.localeCompare(b.className),
+);
 const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
 
 if (!fs.existsSync(GENERATED_SRC_DIR)) {
@@ -52,12 +54,22 @@ writeLinesToFile("iconName.ts", ...buildUnionType());
 // map ENUM_NAME to unicode character
 writeLinesToFile("iconStrings.ts", ...buildTSObject("IconContents", icon => `"${icon.content.replace("\\", "\\u")}"`));
 
+// JSX SVG elements. IIFE to unwrap async.
+(async () => {
+    writeLinesToFile(
+        "iconContents.tsx",
+        "// tslint:disable:prettier",
+        'import * as React from "react";',
+        ...(await buildJSXContents()),
+    );
+})();
+
 /**
  * Writes lines to given filename in GENERATED_SRC_DIR.
  * @param {string} filename
- * @param {string[]} lines
+ * @param {Array<string>} lines
  */
-function writeLinesToFile(filename, ...lines) {
+async function writeLinesToFile(filename, ...lines) {
     const outputPath = path.join(GENERATED_SRC_DIR, filename);
     const contents = [COPYRIGHT_HEADER, ...lines, ""].join("\n");
     fs.writeFileSync(outputPath, contents);
@@ -84,7 +96,7 @@ function buildTSObject(objectName, valueGetter) {
     return [
         "// tslint:disable:object-literal-sort-keys",
         `export const ${objectName} = {`,
-        ...ICONS_METADATA.map(icon => `    ${toEnumName(icon)}: ${valueGetter(icon)},`),
+        ...ICONS_METADATA.map(icon => `    ${toEnumName(icon)}: "${valueGetter(icon)}",`),
         "};",
     ];
 }
@@ -100,4 +112,28 @@ function buildUnionType() {
         ...ICONS_METADATA.map(({ className }) => `"${className}"`),
     ];
     return [`export type IconName =\n    | ${iconNames.join("\n    | ")};`];
+}
+
+/**
+ * Builds array of `export const ${ICON_NAME} = <svg>...</svg>` for each icon.
+ */
+async function buildJSXContents() {
+    return Promise.all(
+        ICONS_METADATA.map(icon => {
+            const svg = fs.readFileSync(
+                path.resolve(__dirname, `../../resources/icons/16px/${icon.className}.svg`),
+                "utf-8",
+            );
+            /** @type {Promise<string>} */
+            const promise = new Promise(resolve =>
+                svgo.optimize(svg, ({ data }) => {
+                    const cleaned = data
+                        .replace("class=", "className=")
+                        .replace(/<style>([^<]+)<\/style>/g, '<style>{"$1"}</style>');
+                    resolve(`export const ${toEnumName(icon)} = ${cleaned};`);
+                }),
+            );
+            return promise;
+        }),
+    );
 }
