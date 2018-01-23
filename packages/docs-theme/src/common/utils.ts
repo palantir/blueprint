@@ -71,3 +71,16 @@ export function eachLayoutNode(
         }
     });
 }
+
+/**
+ * Minimal markdown renderer that supports only backtick `code` elements and triple-backtick `pre` elements.
+ * Does not provide any syntax highlighting.
+ */
+export function markdownCode(text: string) {
+    return {
+        __html: text
+            .replace("<", "&lt;")
+            .replace(/```([^`]+)```/g, (_, code) => `<pre>${code}</pre>`)
+            .replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`),
+    };
+}

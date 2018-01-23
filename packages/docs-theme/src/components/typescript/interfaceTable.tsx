@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { markdownCode } from "../../common/utils";
 import { ApiHeader } from "./apiHeader";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
@@ -92,7 +93,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
                 {(isDeprecated === true || typeof isDeprecated === "string") && (
                     <Tag className={Classes.MINIMAL} intent={Intent.DANGER}>
                         {typeof isDeprecated === "string" ? (
-                            <span dangerouslySetInnerHTML={dirtyMarkdown(`Deprecated: ${isDeprecated}`)} />
+                            <span dangerouslySetInnerHTML={markdownCode(`Deprecated: ${isDeprecated}`)} />
                         ) : (
                             "Deprecated"
                         )}
@@ -106,14 +107,4 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
             </>
         );
     }
-}
-
-// HACKHACK support `code` blocks until we get real markdown parsing in ts-quick-docs
-function dirtyMarkdown(text: string) {
-    return {
-        __html: text
-            .replace("<", "&lt;")
-            .replace(/```([^`]+)```/g, (_, code) => `<pre>${code}</pre>`)
-            .replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`),
-    };
 }
