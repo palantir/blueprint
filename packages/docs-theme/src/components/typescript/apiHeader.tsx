@@ -8,27 +8,37 @@ import { isTsClass, isTsInterface, ITsDocBase } from "documentalist/dist/client"
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 
-export const ApiHeader: React.SFC<ITsDocBase> = (data, { renderType }: IDocumentationContext) => {
-    const inheritance =
-        isTsClass(data) || isTsInterface(data)
-            ? maybeJoinArray("extends", data.extends) + " " + maybeJoinArray("implements", data.implements)
-            : "";
-    return (
-        <div className="docs-interface-header">
-            <div className="docs-interface-name">
-                <small>{data.kind}</small> {data.name} <small>{renderType(inheritance)}</small>
+export class ApiHeader extends React.PureComponent<ITsDocBase> {
+    public static contextTypes = DocumentationContextTypes;
+    public static displayName = "Docs.ApiHeader";
+
+    public context: IDocumentationContext;
+
+    public render() {
+        return (
+            <div className="docs-interface-header">
+                <div className="docs-interface-name">
+                    <small>{this.props.kind}</small> {this.props.name} <small>{this.renderInheritance()}</small>
+                </div>
+                <small className="docs-package-name">
+                    <a href={this.props.sourceUrl} target="_blank">
+                        @blueprintjs/{this.props.fileName.split("/", 2)[1]}
+                    </a>
+                </small>
+                {this.props.children}
             </div>
-            <small className="docs-package-name">
-                <a href={GITHUB_URL + data.fileName.slice(3)} target="__blank">
-                    @blueprintjs/{data.fileName.split("/", 2)[1]}
-                </a>
-            </small>
-            {data.children}
-        </div>
-    );
-};
-ApiHeader.contextTypes = DocumentationContextTypes;
-ApiHeader.displayName = "Docs.ApiHeader";
+        );
+    }
+
+    private renderInheritance() {
+        if (isTsClass(this.props) || isTsInterface(this.props)) {
+            const extendsTypes = maybeJoinArray("extends", this.props.extends);
+            const implementsTypes = maybeJoinArray("implements", this.props.implements);
+            return this.context.renderType(`${extendsTypes} ${implementsTypes}`);
+        }
+        return "";
+    }
+}
 
 function maybeJoinArray(title: string, array: string[] | undefined): string {
     if (array == null || array.length === 0) {
@@ -36,5 +46,3 @@ function maybeJoinArray(title: string, array: string[] | undefined): string {
     }
     return `${title} ${array.join(", ")}`;
 }
-
-const GITHUB_URL = "https://github.com/palantir/blueprint/tree/master/packages/";
