@@ -41,7 +41,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * this item is active (selected by keyboard arrows) and an `onClick` event handler that
      * should be attached to the returned element.
      */
-    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
+    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element | null;
 
     /**
      * Whether the component is non-interactive.
