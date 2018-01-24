@@ -8,8 +8,9 @@
 const fs = require("fs");
 const path = require("path");
 const SVGO = require("svgo");
-const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }] });
 const { COPYRIGHT_HEADER } = require("./constants");
+
+const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }] });
 
 /**
  * @typedef {Object} IconMetadata
@@ -57,7 +58,6 @@ writeLinesToFile("iconStrings.ts", ...buildTSObject("IconContents", icon => icon
         "iconSvgPaths.ts",
         'import { IconName } from "./iconName";',
         "",
-        "// tslint:disable:prettier",
         "export const IconSvgPaths16: Record<IconName, string[]> = {",
         ...(await buildPathsObject("IconSvgPaths", 16)),
         "};",
@@ -98,7 +98,6 @@ function toEnumName(icon) {
  */
 function buildTSObject(objectName, valueGetter) {
     return [
-        "// tslint:disable:object-literal-sort-keys",
         `export const ${objectName} = {`,
         ...ICONS_METADATA.map(icon => `    ${toEnumName(icon)}: "${valueGetter(icon)}",`),
         "};",
