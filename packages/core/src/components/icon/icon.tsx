@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSvgs, LegacyIconName } from "@blueprintjs/icons";
+import { IconName, IconSvgPaths, LegacyIconName } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
 
 export { IconName };
@@ -45,10 +45,12 @@ export class Icon extends React.PureComponent<IIconProps & React.HTMLAttributes<
             return null;
         }
         const shortName = iconName.replace("pt-icon-", "") as IconName;
-        return React.cloneElement(IconSvgs[shortName], {
-            className: classNames("pt-icon", Classes.iconClass(iconName), Classes.intentClass(intent), className),
-            height,
-            width,
-        });
+        const classes = classNames(Classes.ICON, Classes.iconClass(iconName), Classes.intentClass(intent), className);
+        return (
+            <svg className={classes} width={width} height={height} viewBox="0 0 16 16">
+                <title>{iconName}</title>
+                {IconSvgPaths[shortName].map((d, i) => <path key={i} d={d} clip-rule="evenodd" fill-rule="evenodd" />)}
+            </svg>
+        );
     }
 }

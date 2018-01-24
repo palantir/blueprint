@@ -7,4 +7,4 @@
 export { IconClasses } from "./generated/iconClasses";
 export { IconName, LegacyIconName } from "./generated/iconName";
 export { IconContents } from "./generated/iconStrings";
-export { IconSvgs } from "./generated/iconSvgs";
+export { IconSvgPaths } from "./generated/iconSvgPaths";

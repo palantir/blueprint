@@ -8,7 +8,7 @@
 const fs = require("fs");
 const path = require("path");
 const SVGO = require("svgo");
-const svgo = new SVGO();
+const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }] });
 const { COPYRIGHT_HEADER } = require("./constants");
 
 /**
@@ -52,27 +52,8 @@ writeLinesToFile("iconName.ts", ...buildUnionType());
 writeLinesToFile("iconStrings.ts", ...buildTSObject("IconContents", icon => icon.content.replace("\\", "\\u")));
 
 (async () => {
-    // JSX SVG elements. IIFE to unwrap async.
-    writeLinesToFile(
-        "iconSvgs.tsx",
-        ...(await buildJSXObject("IconSvgs", icon => {
-            const svg = fs.readFileSync(
-                path.resolve(__dirname, `../../resources/icons/16px/${icon.className}.svg`),
-                "utf-8",
-            );
-            /** @type {Promise<string>} - must define variable to type it before returning */
-            const promise = new Promise(resolve =>
-                svgo.optimize(svg, (/** @type {{ data: string }} */ { data }) => {
-                    const dataJsx = data
-                        .replace("class=", "className=")
-                        .replace(/<style>([^<]+)<\/style>/g, '<style>{"$1"}</style>');
-                    // TODO: <title> tag. can we strip <svg> tag?
-                    resolve(dataJsx);
-                }),
-            );
-            return promise;
-        })),
-    );
+    // SVG path strings. IIFE to unwrap async.
+    writeLinesToFile("iconSvgPaths.ts", ...(await buildPathsObject("IconSvgPaths")));
 })();
 
 /**
@@ -126,23 +107,27 @@ function buildUnionType() {
         `export type LegacyIconName =\n    | ${longNames.join("\n    | ")};`,
     ];
 }
+
 /**
- * Builds `const ${objectName}`, keyed by icon enum name. Value is result of `valueGetter` function.
+ * Loads SVG file for each icon, extracts path strings `d="path-string"`,
+ * and constructs map of icon name to array of path strings.
  * @param {string} objectName
- * @param {(icon: IconMetadata) => Promise<string>} valueGetter
  */
-async function buildJSXObject(objectName, valueGetter) {
-    const lines = ICONS_METADATA.map(
-        async icon => `    "${icon.className.replace("pt-icon-", "")}": ${await valueGetter(icon)},`,
-    );
+async function buildPathsObject(objectName) {
+    const lines = ICONS_METADATA.map(async icon => {
+        const filepath = path.resolve(__dirname, `../../resources/icons/16px/${icon.className}.svg`);
+        const svg = fs.readFileSync(filepath, "utf-8");
+        const pathStrings = await svgo
+            .optimize(svg, { path: filepath })
+            .then(({ data }) => data.match(/ d="[^"]+"/g) || [])
+            .then(paths => paths.map(s => s.slice(3)));
+        return `    "${icon.className.replace("pt-icon-", "")}": [${pathStrings.join(",\n")}],`;
+    });
     return [
-        'import * as React from "react";',
         'import { IconName } from "./iconName";',
-        "",
         "// tslint:disable:prettier",
-        `export const ${objectName}: Record<IconName, JSX.Element> = {`,
+        `export const ${objectName}: Record<IconName, string[]> = {`,
         ...(await Promise.all(lines)),
         "};",
-        "// tslint:enable:prettier",
     ];
 }
