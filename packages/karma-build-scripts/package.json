@@ -1,12 +1,12 @@
 {
   "name": "@blueprintjs/karma-build-scripts",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Karma build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
   },
   "dependencies": {
-    "@blueprintjs/webpack-build-scripts": "^0.3.0",
+    "@blueprintjs/webpack-build-scripts": "^0.4.0",
     "istanbul-instrumenter-loader": "^3.0.0",
     "karma": "^1.7.1",
     "karma-chai": "^0.1.0",
