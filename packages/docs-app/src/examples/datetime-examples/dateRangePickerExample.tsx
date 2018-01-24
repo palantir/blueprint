@@ -96,7 +96,7 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                 />
                 <div>
                     <Moment date={start} />
-                    <Icon iconName="arrow-right" width={20} />
+                    <Icon iconName="arrow-right" iconSize={20} />
                     <Moment date={end} />
                 </div>
             </div>

@@ -9,6 +9,8 @@ This section describes two ways of using the UI icon font: via CSS or via React 
 Many Blueprint components provide an `iconName` prop, which supports both the
 full name `pt-icon-projects` and the short name `projects`.
 
+@reactExample IconExample
+
 @## CSS API
 
 To use Blueprint UI icons via CSS, you must apply two classes to a `<span>` element:
@@ -41,12 +43,12 @@ The component also accepts all valid HTML props for a `<span>` element.
 ```tsx
 // string literals are supported through IconName union type
 <Icon iconName="cross" />
-<Icon iconName="pt-icon-globe" iconSize="inherit" />
-<Icon iconName="graph" iconSize={20} intent={Intent.PRIMARY} />
+<Icon iconName="pt-icon-globe" width="inherit" />
+<Icon iconName="graph" width={20} intent={Intent.PRIMARY} />
 
 // can also use IconClasses string enum and Icon.SIZE_* constants
 import { IconClasses } from "@blueprintjs/core";
-<Icon iconName={IconClasses.ALIGN_LEFT} iconSize={Icon.SIZE_LARGE} />
+<Icon iconName={IconClasses.ALIGN_LEFT} width={Icon.SIZE_LARGE} />
 
 // can pass all valid HTML props
 <Icon iconName="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys}>

@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSvgPaths, LegacyIconName } from "@blueprintjs/icons";
+import { IconName, IconSvgPaths16, IconSvgPaths20, LegacyIconName } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
 
 export { IconName };
@@ -20,37 +20,51 @@ export interface IIconProps extends IIntentProps, IProps {
     iconName: LegacyIconName | undefined;
 
     /**
-     * Height of icon. A number value will be interpreted as pixels. Use a string value for other units.
-     * By default, inherits height from surrounding styles, such as `line-height`.
-     * @default "inherit"
+     * Size of the icon, in pixels.
+     * Blueprint contains 16px and 20px SVG icon images,
+     * and chooses the appropriate resolution based on this prop.
      */
-    height?: number | string;
-
-    /**
-     * Width of icon. A number value will be interpreted as pixels. Use a string value for other units.
-     * @default 16
-     */
-    width?: number | string;
+    iconSize?: number;
 }
 
 export class Icon extends React.PureComponent<IIconProps & React.HTMLAttributes<HTMLSpanElement>, never> {
     public static displayName = "Blueprint.Icon";
 
-    public static readonly SIZE_STANDARD = 16 as 16;
-    public static readonly SIZE_LARGE = 20 as 20;
+    public static readonly SIZE_STANDARD = 16;
+    public static readonly SIZE_LARGE = 20;
 
     public render() {
-        const { className, iconName, intent, width = 16, height = "inherit" } = this.props;
+        const { className, iconName, iconSize = 16, intent } = this.props;
         if (iconName == null) {
             return null;
         }
-        const shortName = iconName.replace("pt-icon-", "") as IconName;
+        const pathsSize = this.determineIconDimension();
         const classes = classNames(Classes.ICON, Classes.iconClass(iconName), Classes.intentClass(intent), className);
         return (
-            <svg className={classes} width={width} height={height} viewBox="0 0 16 16">
+            <svg className={classes} width={iconSize} height={iconSize} viewBox={`0 0 ${pathsSize} ${pathsSize}`}>
                 <title>{iconName}</title>
-                {IconSvgPaths[shortName].map((d, i) => <path key={i} d={d} clip-rule="evenodd" fill-rule="evenodd" />)}
+                {this.renderSvgPaths(pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20)}
             </svg>
         );
     }
+
+    private determineIconDimension() {
+        const { iconSize = 16 } = this.props;
+        if (numberDiff(Icon.SIZE_STANDARD, iconSize) < numberDiff(Icon.SIZE_LARGE, iconSize)) {
+            return Icon.SIZE_STANDARD;
+        }
+        return Icon.SIZE_LARGE;
+    }
+
+    private renderSvgPaths(svgPaths: Record<IconName, string[]>) {
+        const paths = svgPaths[this.props.iconName.replace("pt-icon-", "") as IconName];
+        if (paths == null) {
+            return null;
+        }
+        return paths.map((d, i) => <path key={i} d={d} clip-rule="evenodd" fill-rule="evenodd" />);
+    }
+}
+
+function numberDiff(target: number, actual: number) {
+    return Math.abs(Math.round(actual / target) - actual / target);
 }

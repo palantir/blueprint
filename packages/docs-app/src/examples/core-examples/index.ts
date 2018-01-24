@@ -20,6 +20,7 @@ export * from "./editableTextExample";
 export * from "./focusExample";
 export * from "./hotkeyPiano";
 export * from "./hotkeyTester";
+export * from "./iconExample";
 export * from "./menuExample";
 export * from "./navbarExample";
 export * from "./numericInputBasicExample";
