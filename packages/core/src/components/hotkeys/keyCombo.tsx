@@ -5,20 +5,21 @@
  */
 
 import * as React from "react";
+import { Icon, IconName } from "../icon/icon";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
-const KeyIcons: { [key: string]: string } = {
-    alt: "pt-icon-key-option",
-    cmd: "pt-icon-key-command",
-    ctrl: "pt-icon-key-control",
-    delete: "pt-icon-key-delete",
-    down: "pt-icon-arrow-down",
-    enter: "pt-icon-key-enter",
-    left: "pt-icon-arrow-left",
-    meta: "pt-icon-key-command",
-    right: "pt-icon-arrow-right",
-    shift: "pt-icon-key-shift",
-    up: "pt-icon-arrow-up",
+const KeyIcons: { [key: string]: IconName } = {
+    alt: "key-option",
+    cmd: "key-command",
+    ctrl: "key-control",
+    delete: "key-delete",
+    down: "arrow-down",
+    enter: "key-enter",
+    left: "arrow-left",
+    meta: "key-command",
+    right: "arrow-right",
+    shift: "key-shift",
+    up: "arrow-up",
 };
 
 export interface IKeyComboProps {
@@ -39,8 +40,7 @@ export class KeyCombo extends React.Component<IKeyComboProps, {}> {
             if (icon != null) {
                 components.push(
                     <kbd className="pt-key pt-modifier-key" key={`key-${i}`}>
-                        <span className={`pt-icon-standard ${icon}`} />
-                        {key}
+                        <Icon iconName={icon} /> {key}
                     </kbd>,
                 );
             } else {

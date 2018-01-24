@@ -13,6 +13,7 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
+    KeyCombo,
     MenuItem,
     Position,
     Switch,
@@ -74,13 +75,7 @@ export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
                 <span>
                     <Button text="Click to show Omnibar" onClick={this.handleClick} />
                     {" or press "}
-                    <span className="pt-key-combo">
-                        <kbd className="pt-key pt-modifier-key">
-                            <span className="pt-icon-standard pt-icon-key-command" />
-                            cmd
-                        </kbd>
-                        <kbd className="pt-key">K</kbd>
-                    </span>
+                    <KeyCombo combo="meta + k" />
                 </span>
             </div>
         );
