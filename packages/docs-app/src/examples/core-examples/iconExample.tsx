@@ -6,46 +6,97 @@
 
 import * as React from "react";
 
-import { Classes, Icon, IconName, InputGroup, Slider } from "@blueprintjs/core";
+import { Classes, Icon, MenuItem, Slider } from "@blueprintjs/core";
 import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
+import { IconClasses, IconName } from "@blueprintjs/icons";
+import { ISelectItemRendererProps, Suggest } from "@blueprintjs/select";
+import * as classNames from "classnames";
 
 export interface IIconExampleState {
     iconName: IconName;
     iconSize: number;
+    query: string;
 }
 
 export class IconExample extends BaseExample<IIconExampleState> {
     public state: IIconExampleState = {
         iconName: "calendar",
         iconSize: Icon.SIZE_STANDARD,
+        query: "calendar",
     };
 
     protected renderExample() {
-        return <Icon {...this.state} />;
+        return (
+            <div className="docs-icon-example" style={{ height: MAX_ICON_SIZE, width: MAX_ICON_SIZE }}>
+                <Icon {...this.state} />
+            </div>
+        );
     }
 
     protected renderOptions() {
+        const { iconName, iconSize, query } = this.state;
+        const suggestInputProps = {
+            leftIconName: query === iconName ? iconName : "blank",
+            // control suggest value so it can have initial value from state
+            onChange: this.handleQueryChange,
+            value: query,
+        };
         return [
             [
-                <label className={Classes.LABEL} key="visible-label">
+                <label className={Classes.LABEL} key="icon-name-label">
+                    Icon name
+                </label>,
+                <IconSuggest
+                    key="icon-name"
+                    inputProps={suggestInputProps}
+                    items={ICON_NAMES.filter(item => item.indexOf(query) >= 0)}
+                    itemRenderer={this.renderIconItem}
+                    inputValueRenderer={this.renderIconValue}
+                    noResults={<MenuItem disabled={true} text="No results" />}
+                    onItemSelect={this.handleIconNameChange}
+                    popoverProps={{ minimal: true }}
+                />,
+            ],
+            [
+                <label className={Classes.LABEL} key="icon-size-label">
                     Icon size
                 </label>,
                 <Slider
-                    key="visible"
-                    labelStepSize={20}
+                    key="icon-size"
+                    labelStepSize={MAX_ICON_SIZE / 5}
                     min={0}
-                    max={100}
+                    max={MAX_ICON_SIZE}
                     showTrackFill={false}
-                    value={this.state.iconSize}
+                    value={iconSize}
                     onChange={this.handleIconSizeChange}
                 />,
-                <InputGroup placeholder="Icon name" value={this.state.iconName} onChange={this.handleIconNameChange} />,
             ],
         ];
     }
 
+    private renderIconItem({ handleClick, isActive, item: icon }: ISelectItemRendererProps<IconName>) {
+        const classes = classNames({
+            [Classes.ACTIVE]: isActive,
+            [Classes.INTENT_PRIMARY]: isActive,
+        });
+        return <MenuItem className={classes} iconName={icon} key={icon} onClick={handleClick} text={icon} />;
+    }
+
+    private renderIconValue(icon: IconName) {
+        return icon;
+    }
+
     private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
 
+    private handleIconNameChange = (iconName: IconName) => this.setState({ iconName, query: iconName });
+
     // tslint:disable-next-line:member-ordering
-    private handleIconNameChange = handleStringChange((iconName: IconName) => this.setState({ iconName }));
+    private handleQueryChange = handleStringChange((query: string) => this.setState({ query }));
 }
+
+const IconSuggest = Suggest.ofType<IconName>();
+const ICON_NAMES = Object.keys(IconClasses).map(
+    (name: keyof typeof IconClasses) => IconClasses[name].replace("pt-icon-", "") as IconName,
+);
+
+const MAX_ICON_SIZE = 100;

@@ -340,6 +340,12 @@
   }
 }
 
+.docs-icon-example {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .docs-wiggle {
   animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
 }
