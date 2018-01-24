@@ -124,7 +124,6 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             ...tagInputProps.inputProps,
             // tslint:disable-next-line:object-literal-sort-keys
             onChange: this.handleQueryChange,
-            ref: this.refHandlers.input,
             value: query,
         };
 
@@ -149,6 +148,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                     <TagInput
                         {...tagInputProps}
                         inputProps={defaultInputProps}
+                        inputRef={this.refHandlers.input}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
