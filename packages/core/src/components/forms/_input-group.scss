@@ -83,8 +83,7 @@ $input-button-height-large: $pt-button-height !default;
 
     // bump icon up so it sits above input
     z-index: 1;
-    margin: 0 ($pt-input-height - $pt-icon-size-standard) / 2;
-    line-height: $pt-input-height;
+    margin: ($pt-input-height - $pt-icon-size-standard) / 2;
     color: $pt-icon-color;
   }
 
@@ -145,8 +144,7 @@ $input-button-height-large: $pt-button-height !default;
     }
 
     .pt-icon {
-      margin: 0 ($pt-input-height-large - $pt-icon-size-standard) / 2;
-      line-height: $pt-input-height-large;
+      margin: ($pt-input-height-large - $pt-icon-size-standard) / 2;
     }
 
     .pt-input {
