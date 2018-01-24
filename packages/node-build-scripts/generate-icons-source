@@ -53,7 +53,19 @@ writeLinesToFile("iconStrings.ts", ...buildTSObject("IconContents", icon => icon
 
 (async () => {
     // SVG path strings. IIFE to unwrap async.
-    writeLinesToFile("iconSvgPaths.ts", ...(await buildPathsObject("IconSvgPaths")));
+    writeLinesToFile(
+        "iconSvgPaths.ts",
+        'import { IconName } from "./iconName";',
+        "",
+        "// tslint:disable:prettier",
+        "export const IconSvgPaths16: Record<IconName, string[]> = {",
+        ...(await buildPathsObject("IconSvgPaths", 16)),
+        "};",
+        "",
+        "export const IconSvgPaths20: Record<IconName, string[]> = {",
+        ...(await buildPathsObject("IconSvgPaths", 20)),
+        "};",
+    );
 })();
 
 /**
@@ -112,22 +124,18 @@ function buildUnionType() {
  * Loads SVG file for each icon, extracts path strings `d="path-string"`,
  * and constructs map of icon name to array of path strings.
  * @param {string} objectName
+ * @param {16 | 20} size
  */
-async function buildPathsObject(objectName) {
-    const lines = ICONS_METADATA.map(async icon => {
-        const filepath = path.resolve(__dirname, `../../resources/icons/16px/${icon.className}.svg`);
-        const svg = fs.readFileSync(filepath, "utf-8");
-        const pathStrings = await svgo
-            .optimize(svg, { path: filepath })
-            .then(({ data }) => data.match(/ d="[^"]+"/g) || [])
-            .then(paths => paths.map(s => s.slice(3)));
-        return `    "${icon.className.replace("pt-icon-", "")}": [${pathStrings.join(",\n")}],`;
-    });
-    return [
-        'import { IconName } from "./iconName";',
-        "// tslint:disable:prettier",
-        `export const ${objectName}: Record<IconName, string[]> = {`,
-        ...(await Promise.all(lines)),
-        "};",
-    ];
+async function buildPathsObject(objectName, size) {
+    return Promise.all(
+        ICONS_METADATA.map(async icon => {
+            const filepath = path.resolve(__dirname, `../../resources/icons/${size}px/${icon.className}.svg`);
+            const svg = fs.readFileSync(filepath, "utf-8");
+            const pathStrings = await svgo
+                .optimize(svg, { path: filepath })
+                .then(({ data }) => data.match(/ d="[^"]+"/g) || [])
+                .then(paths => paths.map(s => s.slice(3)));
+            return `    "${icon.className.replace("pt-icon-", "")}": [${pathStrings.join(",\n")}],`;
+        }),
+    );
 }
