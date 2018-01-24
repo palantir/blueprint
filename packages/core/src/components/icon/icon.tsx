@@ -34,37 +34,31 @@ export class Icon extends React.PureComponent<IIconProps & React.HTMLAttributes<
     public static readonly SIZE_LARGE = 20;
 
     public render() {
-        const { className, iconName, iconSize = 16, intent } = this.props;
+        const { className, iconName, iconSize = Icon.SIZE_STANDARD, intent } = this.props;
         if (iconName == null) {
             return null;
         }
-        const pathsSize = this.determineIconDimension();
+        const pathsSize = this.determinePathsSize();
         const classes = classNames(Classes.ICON, Classes.iconClass(iconName), Classes.intentClass(intent), className);
         return (
             <svg className={classes} width={iconSize} height={iconSize} viewBox={`0 0 ${pathsSize} ${pathsSize}`}>
                 <title>{iconName}</title>
-                {this.renderSvgPaths(pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20)}
+                {this.renderSvgPaths(pathsSize)}
             </svg>
         );
     }
 
-    private determineIconDimension() {
-        const { iconSize = 16 } = this.props;
-        if (numberDiff(Icon.SIZE_STANDARD, iconSize) < numberDiff(Icon.SIZE_LARGE, iconSize)) {
-            return Icon.SIZE_STANDARD;
-        }
-        return Icon.SIZE_LARGE;
+    private determinePathsSize() {
+        const { iconSize = Icon.SIZE_STANDARD } = this.props;
+        return iconSize <= Icon.SIZE_STANDARD ? Icon.SIZE_STANDARD : Icon.SIZE_LARGE;
     }
 
-    private renderSvgPaths(svgPaths: Record<IconName, string[]>) {
+    private renderSvgPaths(pathsSize: number) {
+        const svgPaths = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
         const paths = svgPaths[this.props.iconName.replace("pt-icon-", "") as IconName];
         if (paths == null) {
             return null;
         }
         return paths.map((d, i) => <path key={i} d={d} clip-rule="evenodd" fill-rule="evenodd" />);
     }
-}
-
-function numberDiff(target: number, actual: number) {
-    return Math.abs(Math.round(actual / target) - actual / target);
 }
