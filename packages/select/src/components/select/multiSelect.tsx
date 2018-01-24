@@ -35,7 +35,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
      * this item is active (selected by keyboard arrows) and an `onClick` event handler that
      * should be attached to the returned element.
      */
-    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
+    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element | null;
 
     /** React child to render when filtering items returns zero results. */
     noResults?: React.ReactChild;
