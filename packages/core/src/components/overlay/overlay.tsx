@@ -6,6 +6,7 @@
 
 import * as classNames from "classnames";
 import * as React from "react";
+import { findDOMNode } from "react-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import * as Classes from "../../common/classes";
@@ -348,8 +349,18 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
     private handleDocumentClick = (e: MouseEvent) => {
         const { isOpen, onClose } = this.props;
         const eventTarget = e.target as HTMLElement;
+
+        const { openStack } = Overlay;
+        const stackIndex = openStack.indexOf(this);
+
+        const isClickInDescendantOverlay = openStack
+            .slice(stackIndex)
+            .map(findDOMNode)
+            .some(elem => elem && elem.contains && elem.contains(eventTarget));
+
         const isClickInOverlay = this.containerElement != null && this.containerElement.contains(eventTarget);
-        if (isOpen && this.props.canOutsideClickClose && !isClickInOverlay) {
+
+        if (isOpen && this.props.canOutsideClickClose && !isClickInOverlay && !isClickInDescendantOverlay) {
             // casting to any because this is a native event
             safeInvoke(onClose, e as any);
         }
