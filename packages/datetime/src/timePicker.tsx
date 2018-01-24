@@ -182,7 +182,11 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         }
         const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, getTimeUnitClassName(timeUnit));
         const onClick = () => (isDirectionUp ? this.incrementTime : this.decrementTime)(timeUnit);
-        return <Icon className={classes} iconName={isDirectionUp ? "chevron-up" : "chevron-down"} onClick={onClick} />;
+        return (
+            <span className={classes} onClick={onClick}>
+                <Icon iconName={isDirectionUp ? "chevron-up" : "chevron-down"} />
+            </span>
+        );
     }
 
     private renderDivider(text = ":") {
@@ -283,19 +287,13 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         /* tslint:enable:object-literal-sort-keys */
     }
 
-    private incrementTime(unit: TimeUnit) {
+    private incrementTime = (unit: TimeUnit) => this.shiftTime(unit, 1);
+    private decrementTime = (unit: TimeUnit) => this.shiftTime(unit, -1);
+    private shiftTime(unit: TimeUnit, amount: number) {
         if (this.props.disabled) {
             return;
         }
-        const newTime = getTimeUnit(unit, this.state.value) + 1;
-        this.updateTime(wrapTimeAtUnit(unit, newTime), unit);
-    }
-
-    private decrementTime(unit: TimeUnit) {
-        if (this.props.disabled) {
-            return;
-        }
-        const newTime = getTimeUnit(unit, this.state.value) - 1;
+        const newTime = getTimeUnit(unit, this.state.value) + amount;
         this.updateTime(wrapTimeAtUnit(unit, newTime), unit);
     }
 
