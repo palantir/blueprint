@@ -64,6 +64,6 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
         if (paths == null) {
             return null;
         }
-        return paths.map((d, i) => <path key={i} d={d} clip-rule="evenodd" fill-rule="evenodd" />);
+        return paths.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
     }
 }
