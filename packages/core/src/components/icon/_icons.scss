@@ -40,6 +40,9 @@ span.pt-icon {
 }
 
 svg.pt-icon {
+  // respect dimensions exactly
+  flex: 0 0 auto;
   vertical-align: middle;
+  // inherit text color by default
   fill: currentColor;
 }

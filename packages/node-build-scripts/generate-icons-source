@@ -118,6 +118,8 @@ function buildTSObject(objectName, valueGetter) {
 function buildUnionType() {
     const shortNames = ICONS_METADATA.map(({ className }) => `"${className.replace("pt-icon-", "")}"`);
     const longNames = ICONS_METADATA.map(({ className }) => `"${className}"`);
+    // long names extend short names
+    longNames.unshift("IconName");
     return [
         `export type IconName =\n    | ${shortNames.join("\n    | ")};`,
         "",
