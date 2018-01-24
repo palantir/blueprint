@@ -1,6 +1,6 @@
 {
   "name": "blueprintjs-monorepo",
-  "version": "1.35.0",
+  "version": "2.0.0-beta.3",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "workspaces": [
@@ -11,7 +11,7 @@
     "compile": "lerna run compile",
     "clean": "lerna run --parallel clean",
     "clean-docs": "rm -rf docs/* && cp -rf docs-static/* docs/.",
-    "copy-docs-app": "mkdir -p docs/docs/ && cp -rf packages/docs-app/dist/* docs/docs/.",
+    "copy-docs-app": "mkdir -p docs/docs/v2 && cp -rf packages/docs-app/dist/* docs/docs/v2/.",
     "copy-landing-app": "cp -rf packages/landing-app/dist/* docs/.",
     "deploy": "gh-pages -d docs -b master",
     "dev:all": "lerna run dev --parallel --scope '!@blueprintjs/{landing-app,table-dev-app}'",
@@ -43,7 +43,6 @@
     "@types/react-dom": "^16.0.3",
     "@types/react-transition-group": "^2.0.6",
     "@types/sinon": "^4.1.2",
-    "@types/tether": "^1.4.3",
     "@types/webpack": "^3.8.2",
     "better-handlebars": "github:wmeldon/better-handlebars",
     "chai": "^4.1.2",
@@ -51,7 +50,7 @@
     "http-server": "^0.11.1",
     "language-less": "github:atom/language-less",
     "language-typescript": "github:giladgray/language-typescript#10.1.15",
-    "lerna": "^2.6.0",
+    "lerna": "^2.7.1",
     "npm-run-all": "^4.1.2",
     "postcss-import": "^11.0.0",
     "postcss-url": "^7.3.0",

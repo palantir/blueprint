@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/icons",
-  "version": "1.0.0",
+  "version": "2.0.0-beta.3",
   "description": "Components, fonts, icons, and css files for creating and displaying icons.",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -33,8 +33,8 @@
     "tslib": "^1.5.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^0.3.0",
-    "@blueprintjs/test-commons": "^0.3.0",
+    "@blueprintjs/node-build-scripts": "^0.4.0",
+    "@blueprintjs/test-commons": "^0.4.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "es6-shim": "^0.35.3",
