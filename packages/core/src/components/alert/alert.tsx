@@ -69,7 +69,7 @@ export class Alert extends AbstractPureComponent<IAlertProps, {}> {
         return (
             <Dialog className={classNames(Classes.ALERT, className)} isOpen={isOpen} style={style}>
                 <div className={Classes.ALERT_BODY}>
-                    <Icon iconName={iconName} width={40} intent={Intent.DANGER} />
+                    <Icon iconName={iconName} iconSize={40} intent={Intent.DANGER} />
                     <div className={Classes.ALERT_CONTENTS}>{children}</div>
                 </div>
                 <div className={Classes.ALERT_FOOTER}>
