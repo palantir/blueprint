@@ -128,7 +128,7 @@ describe("<Tree>", () => {
     it("icons are rendered correctly if present", () => {
         const contents = createDefaultContents();
         contents[1].iconName = "document";
-        contents[2].iconName = "pt-icon-document";
+        contents[2].iconName = "document";
 
         const tree = renderTree({ contents });
         const iconSelector = `span.${Classes.TREE_NODE_ICON}.pt-icon-document`;
