@@ -183,7 +183,6 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
-        const { ref, ...htmlInputProps } = inputProps;
         const input = (
             <InputGroup
                 autoFocus={true}
@@ -191,7 +190,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
                 value={listProps.query}
-                {...htmlInputProps}
+                {...inputProps}
                 inputRef={this.refHandlers.input}
                 onChange={this.handleQueryChange}
             />
