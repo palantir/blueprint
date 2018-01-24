@@ -199,7 +199,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
 
         return (
             <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>
-                <Icon className={Classes.TAG_INPUT_ICON} iconName={leftIconName} iconSize={isLarge ? 20 : 16} />
+                <Icon className={Classes.TAG_INPUT_ICON} iconName={leftIconName} width={isLarge ? 20 : 16} />
                 {values.map(this.maybeRenderTag)}
                 <input
                     value={this.state.inputValue}

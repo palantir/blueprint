@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSvgs } from "@blueprintjs/icons";
+import { IconName, IconSvgs, LegacyIconName } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
 
 export { IconName };
@@ -17,7 +17,7 @@ export interface IIconProps extends IIntentProps, IProps {
      * Name of the icon (with or without `"pt-icon-"` prefix).
      * If `undefined`, this component will render nothing.
      */
-    iconName: IconName | undefined;
+    iconName: LegacyIconName | undefined;
 
     /**
      * Height of icon. A number value will be interpreted as pixels. Use a string value for other units.
@@ -44,7 +44,8 @@ export class Icon extends React.PureComponent<IIconProps & React.HTMLAttributes<
         if (iconName == null) {
             return null;
         }
-        return React.cloneElement(IconSvgs[iconName], {
+        const shortName = iconName.replace("pt-icon-", "") as IconName;
+        return React.cloneElement(IconSvgs[shortName], {
             className: classNames("pt-icon", Classes.iconClass(iconName), Classes.intentClass(intent), className),
             height,
             width,

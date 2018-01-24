@@ -76,7 +76,7 @@ export class NonIdealState extends React.PureComponent<INonIdealStateProps, {}> 
         } else if (typeof visual === "string") {
             return (
                 <div className={classNames(Classes.NON_IDEAL_STATE_VISUAL, Classes.NON_IDEAL_STATE_ICON)}>
-                    <Icon iconName={visual} iconSize="inherit" />
+                    <Icon iconName={visual} width={Icon.SIZE_LARGE * 3} />
                 </div>
             );
         } else {

@@ -80,14 +80,7 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
 
     protected renderOptions() {
         return [
-            [
-                <Button
-                    key="recenter"
-                    text="Re-center"
-                    iconName="pt-icon-alignment-vertical-center"
-                    onClick={this.recenter}
-                />,
-            ],
+            [<Button key="recenter" text="Re-center" iconName="alignment-vertical-center" onClick={this.recenter} />],
         ];
     }
 
