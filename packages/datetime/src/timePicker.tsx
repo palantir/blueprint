@@ -10,6 +10,16 @@ import * as React from "react";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
+import {
+    getDefaultMaxTime,
+    getDefaultMinTime,
+    getTimeUnit,
+    getTimeUnitClassName,
+    isTimeUnitValid,
+    setTimeUnit,
+    TimeUnit,
+    wrapTimeAtUnit,
+} from "./common/timeUnit";
 import * as Utils from "./common/utils";
 
 export enum TimePickerPrecision {
@@ -85,24 +95,6 @@ export interface ITimePickerState {
     secondText?: string;
     millisecondText?: string;
     value?: Date;
-}
-
-const DEFAULT_MIN_HOUR = 0;
-const DEFAULT_MIN_MINUTE = 0;
-const DEFAULT_MIN_SECOND = 0;
-const DEFAULT_MIN_MILLISECOND = 0;
-
-const DEFAULT_MAX_HOUR = 23;
-const DEFAULT_MAX_MINUTE = 59;
-const DEFAULT_MAX_SECOND = 59;
-const DEFAULT_MAX_MILLISECOND = 999;
-
-export function getDefaultMinTime(): Date {
-    return new Date(0, 0, 0, DEFAULT_MIN_HOUR, DEFAULT_MIN_MINUTE, DEFAULT_MIN_SECOND, DEFAULT_MIN_MILLISECOND);
-}
-
-export function getDefaultMaxTime(): Date {
-    return new Date(0, 0, 0, DEFAULT_MAX_HOUR, DEFAULT_MAX_MINUTE, DEFAULT_MAX_SECOND, DEFAULT_MAX_MILLISECOND);
 }
 
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
@@ -324,23 +316,23 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         if (this.props.disabled) {
             return;
         }
-        const newTime = getTimeUnit(this.state.value, unit) + 1;
-        this.updateTime(loopTime(newTime, unit), unit);
+        const newTime = getTimeUnit(unit, this.state.value) + 1;
+        this.updateTime(wrapTimeAtUnit(unit, newTime), unit);
     }
 
     private decrementTime(unit: TimeUnit) {
         if (this.props.disabled) {
             return;
         }
-        const newTime = getTimeUnit(this.state.value, unit) - 1;
-        this.updateTime(loopTime(newTime, unit), unit);
+        const newTime = getTimeUnit(unit, this.state.value) - 1;
+        this.updateTime(wrapTimeAtUnit(unit, newTime), unit);
     }
 
     private updateTime(time: number, unit: TimeUnit) {
         const newValue = DateUtils.clone(this.state.value);
 
-        if (isTimeValid(time, unit)) {
-            setTimeUnit(time, newValue, unit);
+        if (isTimeUnitValid(unit, time)) {
+            setTimeUnit(unit, time, newValue);
             if (DateUtils.isTimeInRange(newValue, this.props.minTime, this.props.maxTime)) {
                 this.updateState({ value: newValue });
             } else if (!DateUtils.areSameTime(this.state.value, this.props.minTime)) {
@@ -381,13 +373,6 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 }
 
-enum TimeUnit {
-    HOUR = "hour",
-    MINUTE = "minute",
-    SECOND = "second",
-    MS = "ms",
-}
-
 function formatTime(time: number, unit: TimeUnit) {
     switch (unit) {
         case TimeUnit.HOUR:
@@ -406,21 +391,6 @@ function getStringValueFromInputEvent(e: React.SyntheticEvent<HTMLInputElement>)
     return (e.currentTarget as HTMLInputElement).value;
 }
 
-function getTimeUnit(date: Date, unit: TimeUnit) {
-    switch (unit) {
-        case TimeUnit.HOUR:
-            return date.getHours();
-        case TimeUnit.MINUTE:
-            return date.getMinutes();
-        case TimeUnit.SECOND:
-            return date.getSeconds();
-        case TimeUnit.MS:
-            return date.getMilliseconds();
-        default:
-            throw Error("Invalid TimeUnit");
-    }
-}
-
 interface IKeyEventMap {
     [key: number]: () => void;
 }
@@ -434,60 +404,5 @@ function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>, actions: IKeyE
             }
             actions[key]();
         }
-    }
-}
-
-function isTimeValid(time: number, unit: TimeUnit) {
-    return time != null && !isNaN(time) && minTime(unit) <= time && time <= maxTime(unit);
-}
-
-function loopTime(time: number, unit: TimeUnit) {
-    const max = maxTime(unit);
-    const min = minTime(unit);
-
-    if (time > max) {
-        return min;
-    } else if (time < min) {
-        return max;
-    }
-    return time;
-}
-
-function minTime(unit: TimeUnit) {
-    const min: Record<TimeUnit, number> = {
-        [TimeUnit.HOUR]: DEFAULT_MIN_HOUR,
-        [TimeUnit.MINUTE]: DEFAULT_MIN_MINUTE,
-        [TimeUnit.SECOND]: DEFAULT_MIN_SECOND,
-        [TimeUnit.MS]: DEFAULT_MIN_MILLISECOND,
-    };
-    return min[unit];
-}
-
-function maxTime(unit: TimeUnit) {
-    const max: Record<TimeUnit, number> = {
-        [TimeUnit.HOUR]: DEFAULT_MAX_HOUR,
-        [TimeUnit.MINUTE]: DEFAULT_MAX_MINUTE,
-        [TimeUnit.SECOND]: DEFAULT_MAX_SECOND,
-        [TimeUnit.MS]: DEFAULT_MAX_MILLISECOND,
-    };
-    return max[unit];
-}
-
-function setTimeUnit(time: number, date: Date, unit: TimeUnit) {
-    switch (unit) {
-        case TimeUnit.HOUR:
-            date.setHours(time);
-            break;
-        case TimeUnit.MINUTE:
-            date.setMinutes(time);
-            break;
-        case TimeUnit.SECOND:
-            date.setSeconds(time);
-            break;
-        case TimeUnit.MS:
-            date.setMilliseconds(time);
-            break;
-        default:
-            throw Error("Invalid TimeUnit");
     }
 }
