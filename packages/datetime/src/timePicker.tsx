@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes as CoreClasses, IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
+import { Classes as CoreClasses, Icon, IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -132,53 +132,27 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         return (
             <div className={classes}>
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
-                    {this.maybeRenderArrowButton(true, Classes.TIMEPICKER_HOUR, () =>
-                        this.incrementTime(TimeUnit.HOUR),
-                    )}
-                    {this.maybeRenderArrowButton(true, Classes.TIMEPICKER_MINUTE, () =>
-                        this.incrementTime(TimeUnit.MINUTE),
-                    )}
-                    {shouldRenderSeconds
-                        ? this.maybeRenderArrowButton(true, Classes.TIMEPICKER_SECOND, () =>
-                              this.incrementTime(TimeUnit.SECOND),
-                          )
-                        : null}
-                    {shouldRenderMilliseconds
-                        ? this.maybeRenderArrowButton(true, Classes.TIMEPICKER_MILLISECOND, () =>
-                              this.incrementTime(TimeUnit.MS),
-                          )
-                        : null}
+                    {this.maybeRenderArrowButton(true, TimeUnit.HOUR)}
+                    {this.maybeRenderArrowButton(true, TimeUnit.MINUTE)}
+                    {shouldRenderSeconds && this.maybeRenderArrowButton(true, TimeUnit.SECOND)}
+                    {shouldRenderMilliseconds && this.maybeRenderArrowButton(true, TimeUnit.MS)}
                 </div>
                 <div className={Classes.TIMEPICKER_INPUT_ROW}>
                     {this.renderInput(Classes.TIMEPICKER_HOUR, TimeUnit.HOUR, this.state.hourText)}
                     {this.renderDivider()}
                     {this.renderInput(Classes.TIMEPICKER_MINUTE, TimeUnit.MINUTE, this.state.minuteText)}
-                    {shouldRenderSeconds ? this.renderDivider() : null}
-                    {shouldRenderSeconds
-                        ? this.renderInput(Classes.TIMEPICKER_SECOND, TimeUnit.SECOND, this.state.secondText)
-                        : null}
-                    {shouldRenderMilliseconds ? this.renderDivider(".") : null}
-                    {shouldRenderMilliseconds
-                        ? this.renderInput(Classes.TIMEPICKER_MILLISECOND, TimeUnit.MS, this.state.millisecondText)
-                        : null}
+                    {shouldRenderSeconds && this.renderDivider()}
+                    {shouldRenderSeconds &&
+                        this.renderInput(Classes.TIMEPICKER_SECOND, TimeUnit.SECOND, this.state.secondText)}
+                    {shouldRenderMilliseconds && this.renderDivider(".")}
+                    {shouldRenderMilliseconds &&
+                        this.renderInput(Classes.TIMEPICKER_MILLISECOND, TimeUnit.MS, this.state.millisecondText)}
                 </div>
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
-                    {this.maybeRenderArrowButton(false, Classes.TIMEPICKER_HOUR, () =>
-                        this.decrementTime(TimeUnit.HOUR),
-                    )}
-                    {this.maybeRenderArrowButton(false, Classes.TIMEPICKER_MINUTE, () =>
-                        this.decrementTime(TimeUnit.MINUTE),
-                    )}
-                    {shouldRenderSeconds
-                        ? this.maybeRenderArrowButton(false, Classes.TIMEPICKER_SECOND, () =>
-                              this.decrementTime(TimeUnit.SECOND),
-                          )
-                        : null}
-                    {shouldRenderMilliseconds
-                        ? this.maybeRenderArrowButton(false, Classes.TIMEPICKER_MILLISECOND, () =>
-                              this.decrementTime(TimeUnit.MS),
-                          )
-                        : null}
+                    {this.maybeRenderArrowButton(false, TimeUnit.HOUR)}
+                    {this.maybeRenderArrowButton(false, TimeUnit.MINUTE)}
+                    {shouldRenderSeconds && this.maybeRenderArrowButton(false, TimeUnit.SECOND)}
+                    {shouldRenderMilliseconds && this.maybeRenderArrowButton(false, TimeUnit.MS)}
                 </div>
             </div>
         );
@@ -202,16 +176,13 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     // begin method definitions: rendering
 
-    private maybeRenderArrowButton(
-        isDirectionUp: boolean,
-        className: string,
-        onClick: React.MouseEventHandler<HTMLSpanElement>,
-    ) {
-        const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, className, "pt-icon-standard", {
-            "pt-icon-chevron-down": !isDirectionUp,
-            "pt-icon-chevron-up": isDirectionUp,
-        });
-        return this.props.showArrowButtons ? <span className={classes} onClick={onClick} /> : null;
+    private maybeRenderArrowButton(isDirectionUp: boolean, timeUnit: TimeUnit) {
+        if (!this.props.showArrowButtons) {
+            return null;
+        }
+        const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, getTimeUnitClassName(timeUnit));
+        const onClick = () => (isDirectionUp ? this.incrementTime : this.decrementTime)(timeUnit);
+        return <Icon className={classes} iconName={isDirectionUp ? "chevron-up" : "chevron-down"} onClick={onClick} />;
     }
 
     private renderDivider(text = ":") {
