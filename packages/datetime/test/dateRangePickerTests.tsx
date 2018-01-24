@@ -919,6 +919,17 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
         });
 
+        it("shortcuts fire onChange with correct values when single day range enabled", () => {
+            renderDateRangePicker({ allowSingleDayRange: true });
+            clickFirstShortcut();
+
+            const today = new Date();
+
+            assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
+            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][0]));
+            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
+        });
+
         it("custom shortcuts select the correct values", () => {
             const dateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.JANUARY, 5)] as DateRange;
             renderDateRangePicker({
