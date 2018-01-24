@@ -14,6 +14,11 @@ export { IconName };
 
 export interface IIconProps extends IIntentProps, IProps {
     /**
+     * Color of icon. Equivalent to setting CSS `fill` property.
+     */
+    color?: string;
+
+    /**
      * Name of the icon (with or without `"pt-icon-"` prefix).
      * If `undefined`, this component will render nothing.
      */
@@ -25,32 +30,32 @@ export interface IIconProps extends IIntentProps, IProps {
      * and chooses the appropriate resolution based on this prop.
      */
     iconSize?: number;
+
+    /** CSS style properties. */
+    style?: React.CSSProperties;
 }
 
-export class Icon extends React.PureComponent<IIconProps & React.HTMLAttributes<HTMLSpanElement>, never> {
+export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<SVGElement>> {
     public static displayName = "Blueprint.Icon";
 
     public static readonly SIZE_STANDARD = 16;
     public static readonly SIZE_LARGE = 20;
 
     public render() {
-        const { className, iconName, iconSize = Icon.SIZE_STANDARD, intent } = this.props;
+        const { className, iconName, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
         if (iconName == null) {
             return null;
         }
-        const pathsSize = this.determinePathsSize();
+        // choose which pixel grid is most appropriate for given icon size
+        const pixelGridSize = iconSize <= Icon.SIZE_STANDARD ? Icon.SIZE_STANDARD : Icon.SIZE_LARGE;
         const classes = classNames(Classes.ICON, Classes.iconClass(iconName), Classes.intentClass(intent), className);
+        const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
         return (
-            <svg className={classes} width={iconSize} height={iconSize} viewBox={`0 0 ${pathsSize} ${pathsSize}`}>
+            <svg {...svgProps} className={classes} width={iconSize} height={iconSize} viewBox={viewBox}>
                 <title>{iconName}</title>
-                {this.renderSvgPaths(pathsSize)}
+                {this.renderSvgPaths(pixelGridSize)}
             </svg>
         );
-    }
-
-    private determinePathsSize() {
-        const { iconSize = Icon.SIZE_STANDARD } = this.props;
-        return iconSize <= Icon.SIZE_STANDARD ? Icon.SIZE_STANDARD : Icon.SIZE_LARGE;
     }
 
     private renderSvgPaths(pathsSize: number) {
