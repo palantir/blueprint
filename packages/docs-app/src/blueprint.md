@@ -48,6 +48,7 @@ Blueprint as well. Blueprint components require the following ES2015 features:
 
   - `Map`
   - `Set`
+  - `Array.fill`
   - `Array.from`
 
   We recommend polyfilling these features using [es6-shim](https://github.com/paulmillr/es6-shim) or
