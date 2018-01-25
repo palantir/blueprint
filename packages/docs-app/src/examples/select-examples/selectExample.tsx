@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Button, MenuItem, Switch } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
 import * as Films from "./films";
 

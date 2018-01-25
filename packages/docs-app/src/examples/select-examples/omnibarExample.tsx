@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Button, Hotkey, Hotkeys, HotkeysTarget, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 import * as Films from "./films";
 

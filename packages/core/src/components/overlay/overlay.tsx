@@ -383,5 +383,3 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         }
     };
 }
-
-export const OverlayFactory = React.createFactory(Overlay);

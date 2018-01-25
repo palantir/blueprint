@@ -155,7 +155,3 @@ export class Radio extends Control<IRadioProps> {
         return this.renderControl("radio", "pt-radio");
     }
 }
-
-export const CheckboxFactory = React.createFactory(Checkbox);
-export const SwitchFactory = React.createFactory(Switch);
-export const RadioFactory = React.createFactory(Radio);

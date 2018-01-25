@@ -7,11 +7,11 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
+import { IconName } from "@blueprintjs/icons";
 import {
     AbstractPureComponent,
     Classes,
     HTMLInputProps,
-    IconName,
     IIntentProps,
     IProps,
     Keys,
@@ -594,5 +594,3 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         return Math.round(value * scaleFactor) / scaleFactor;
     }
 }
-
-export const NumericInputFactory = React.createFactory(NumericInput);

@@ -90,5 +90,3 @@ export class FileInput extends React.Component<IFileInputProps, {}> {
         Utils.safeInvoke(this.props.inputProps.onChange, e);
     };
 }
-
-export const FileInputFactory = React.createFactory(FileInput);

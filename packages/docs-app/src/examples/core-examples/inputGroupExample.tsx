@@ -21,7 +21,7 @@ import {
     Tag,
     Tooltip,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 export interface IInputGroupExampleState {
     disabled?: boolean;
@@ -52,7 +52,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
         const maybeSpinner = filterValue ? <Spinner className={Classes.SMALL} /> : undefined;
 
         const lockButton = (
-            <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} isDisabled={disabled}>
+            <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
                 <Button
                     className={Classes.MINIMAL}
                     intent={Intent.WARNING}
@@ -71,7 +71,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         <MenuItem text="can view" />
                     </Menu>
                 }
-                isDisabled={disabled}
+                disabled={disabled}
                 position={Position.BOTTOM_RIGHT}
             >
                 <Button className={Classes.MINIMAL} disabled={disabled} rightIconName="caret-down">

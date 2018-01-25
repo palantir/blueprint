@@ -4,10 +4,11 @@
  */
 
 const baseConfig = require("./webpack.config.base");
+const karmaConfig = require("./webpack.config.karma");
 
 module.exports = {
     baseConfig,
-
+    karmaConfig,
     COMMON_EXTERNALS: {
         "@blueprintjs/core": "var Blueprint.Core",
         "@blueprintjs/datetime": "var Blueprint.Datetime",

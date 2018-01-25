@@ -6,7 +6,6 @@
 
 import * as classNames from "classnames";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
@@ -95,6 +94,11 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
     };
 
     private liElement: HTMLElement;
+    private popoverElement: HTMLElement;
+    private refHandlers = {
+        li: (ref: HTMLElement) => (this.liElement = ref),
+        popover: (ref: HTMLElement) => (this.popoverElement = ref),
+    };
 
     public render() {
         const { children, disabled, label, submenu, popoverProps } = this.props;
@@ -133,24 +137,28 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         );
 
         if (hasSubmenu) {
-            const measureSubmenu = this.props.useSmartPositioning ? this.measureSubmenu : null;
-            const submenuElement = <Menu ref={measureSubmenu}>{this.renderChildren()}</Menu>;
-            const popoverClasses = classNames(Classes.MINIMAL, Classes.MENU_SUBMENU, popoverProps.popoverClassName, {
+            const submenuContent = <Menu>{this.renderChildren()}</Menu>;
+            const popoverClasses = classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName, {
+                // apply this class to make the popover anchor to the *left*
+                // side of the menu (setting Position.LEFT_TOP alone would still
+                // anchor the popover to the right edge of the target).
                 [Classes.ALIGN_LEFT]: this.state.alignLeft,
             });
 
             content = (
                 <Popover
-                    isDisabled={disabled}
+                    disabled={disabled}
                     enforceFocus={false}
                     hoverCloseDelay={0}
                     inline={true}
                     interactionKind={PopoverInteractionKind.HOVER}
                     position={this.state.alignLeft ? Position.LEFT_TOP : Position.RIGHT_TOP}
-                    useSmartArrowPositioning={false}
                     {...popoverProps}
-                    content={submenuElement}
+                    content={submenuContent}
+                    minimal={true}
                     popoverClassName={popoverClasses}
+                    popoverDidOpen={this.handlePopoverDidOpen}
+                    popoverRef={this.refHandlers.popover}
                 >
                     {content}
                 </Popover>
@@ -158,7 +166,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         }
 
         return (
-            <li className={liClasses} ref={this.liRefHandler}>
+            <li className={liClasses} ref={this.refHandlers.li}>
                 {content}
             </li>
         );
@@ -174,47 +182,56 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         }
     }
 
-    private liRefHandler = (r: HTMLElement) => (this.liElement = r);
-
-    private measureSubmenu = (el: Menu) => {
-        if (el != null) {
-            const submenuRect = ReactDOM.findDOMNode(el).getBoundingClientRect();
-            const parentWidth = this.liElement.parentElement.getBoundingClientRect().width;
-            const adjustmentWidth = submenuRect.width + parentWidth;
-
-            // this ensures that the left and right measurements represent a submenu opened to the right
-            let submenuLeft = submenuRect.left;
-            let submenuRight = submenuRect.right;
-            if (this.state.alignLeft) {
-                submenuLeft += adjustmentWidth;
-                submenuRight += adjustmentWidth;
-            }
-
-            const { left = 0 } = this.props.submenuViewportMargin;
-            let { right = 0 } = this.props.submenuViewportMargin;
-            if (
-                typeof document !== "undefined" &&
-                typeof document.documentElement !== "undefined" &&
-                Number(document.documentElement.clientWidth)
-            ) {
-                // we're in a browser context and the clientWidth is available,
-                // use it to set calculate 'right'
-                right = document.documentElement.clientWidth - right;
-            }
-            // uses context to prioritize the previous positioning
-            let alignLeft = this.context.alignLeft || false;
-            if (alignLeft) {
-                if (submenuLeft - adjustmentWidth <= left) {
-                    alignLeft = false;
-                }
-            } else {
-                if (submenuRight >= right) {
-                    alignLeft = true;
-                }
-            }
-            this.setState({ alignLeft });
+    private handlePopoverDidOpen = () => {
+        if (this.props.useSmartPositioning) {
+            // Popper.js renders the popover in the DOM before relocating its
+            // position on the next tick. We need to rAF to wait for that to happen.
+            requestAnimationFrame(() => this.maybeAlignSubmenuLeft());
         }
     };
+
+    private maybeAlignSubmenuLeft() {
+        if (this.popoverElement == null) {
+            return;
+        }
+
+        const submenuRect = this.popoverElement.getBoundingClientRect();
+        const parentWidth = this.liElement.parentElement.getBoundingClientRect().width;
+        const adjustmentWidth = submenuRect.width + parentWidth;
+
+        // this ensures that the left and right measurements represent a submenu opened to the right
+        let submenuLeft = submenuRect.left;
+        let submenuRight = submenuRect.right;
+        if (this.state.alignLeft) {
+            submenuLeft += adjustmentWidth;
+            submenuRight += adjustmentWidth;
+        }
+
+        const { left = 0 } = this.props.submenuViewportMargin;
+        let { right = 0 } = this.props.submenuViewportMargin;
+        if (
+            typeof document !== "undefined" &&
+            typeof document.documentElement !== "undefined" &&
+            Number(document.documentElement.clientWidth)
+        ) {
+            // we're in a browser context and the clientWidth is available,
+            // use it to set calculate 'right'
+            right = document.documentElement.clientWidth - right;
+        }
+        // uses context to prioritize the previous positioning
+        let alignLeft = this.context.alignLeft || false;
+        if (alignLeft) {
+            if (submenuLeft - adjustmentWidth <= left) {
+                alignLeft = false;
+            }
+        } else {
+            if (submenuRight >= right) {
+                alignLeft = true;
+            }
+        }
+
+        this.setState({ alignLeft });
+    }
 
     private renderChildren = () => {
         const { children, submenu } = this.props;
@@ -259,5 +276,3 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
 export function renderMenuItem(props: IMenuItemProps, key: string | number) {
     return <MenuItem key={key} {...props} />;
 }
-
-export const MenuItemFactory = React.createFactory(MenuItem);

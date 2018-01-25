@@ -43,7 +43,7 @@ export interface IListItemsProps<T> extends IProps {
      * Callback invoked when an item from the list is selected,
      * typically by clicking or pressing `enter` key.
      */
-    onItemSelect: (item: T | undefined, event?: React.SyntheticEvent<HTMLElement>) => void;
+    onItemSelect: (item: T, event?: React.SyntheticEvent<HTMLElement>) => void;
 }
 
 export interface IQueryListProps<T> extends IListItemsProps<T> {

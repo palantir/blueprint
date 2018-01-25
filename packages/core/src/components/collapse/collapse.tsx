@@ -49,11 +49,11 @@ export interface ICollapseState {
 }
 
 export enum AnimationStates {
-    CLOSED,
-    OPENING,
-    OPEN,
-    CLOSING_START,
-    CLOSING_END,
+    CLOSED = "closed",
+    OPENING = "opening",
+    OPEN = "open",
+    CLOSING_START = "closing-start",
+    CLOSING_END = "closing-end",
 }
 
 /*
