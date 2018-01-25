@@ -158,9 +158,6 @@ npm install --save @types/react @types/react-dom @types/react-transition-group
 
 # @blueprintjs/datetime requires:
 npm install --save @types/moment
-
-# @blueprintjs/table requires:
-npm install --save @types/es6-shim
 ```
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
