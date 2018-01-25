@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Icon } from "@blueprintjs/core";
 import { ITag } from "documentalist/dist/client";
 import * as React from "react";
 
@@ -27,7 +28,7 @@ export const ReactExample: React.SFC<IExampleProps> = props => (
     <div className="docs-example-wrapper">
         {props.example.render({ id: props.name })}
         <a className="view-example-source" href={props.example.sourceUrl} target="_blank">
-            <span className="pt-icon-standard pt-icon-code">&nbsp;</span>View source on GitHub
+            <Icon iconName="code" /> View source on GitHub
         </a>
     </div>
 );
