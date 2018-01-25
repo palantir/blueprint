@@ -117,7 +117,6 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
-        const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
         const handlers = isOpen && !this.isQueryEmpty() ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
 
@@ -136,7 +135,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                         leftIconName="search"
                         placeholder="Search..."
                         value={listProps.query}
-                        {...htmlInputProps}
+                        {...inputProps}
                         onChange={this.handleQueryChange}
                     />
                     {this.maybeRenderMenu(listProps)}

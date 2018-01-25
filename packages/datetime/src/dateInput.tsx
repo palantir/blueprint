@@ -208,8 +208,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             );
         // assign default empty object here to prevent mutation
         const { inputProps = {}, popoverProps = {}, format } = this.props;
-        // exclude ref (comes from HTMLInputProps typings, not InputGroup)
-        const { ref, ...htmlInputProps } = inputProps;
 
         const inputClasses = classNames(
             {
@@ -237,7 +235,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                     autoComplete="off"
                     placeholder={placeholder}
                     rightElement={this.props.rightElement}
-                    {...htmlInputProps}
+                    {...inputProps}
                     className={inputClasses}
                     disabled={this.props.disabled}
                     type="text"

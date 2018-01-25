@@ -122,7 +122,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             popoverProps = this.DEFAULT_PROPS.popoverProps,
         } = this.props;
         const { isTyping, selectedItem, query } = this.state;
-        const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
         const inputValue: string = isTyping ? query : selectedItem ? inputValueRenderer(selectedItem) : "";
 
@@ -142,7 +141,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 <InputGroup
                     placeholder="Search..."
                     value={inputValue}
-                    {...htmlInputProps}
+                    {...inputProps}
                     inputRef={this.refHandlers.input}
                     onChange={this.handleQueryChange}
                     onFocus={this.handleInputFocus}
