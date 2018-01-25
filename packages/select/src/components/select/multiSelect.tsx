@@ -19,7 +19,6 @@ import {
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
-import { ISelectItemRendererProps } from "../select/select";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /** Controlled selected values. */
@@ -29,13 +28,6 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
      * React child to render when query is empty.
      */
     initialContent?: React.ReactChild;
-
-    /**
-     * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
-     * this item is active (selected by keyboard arrows) and an `onClick` event handler that
-     * should be attached to the returned element.
-     */
-    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /** React child to render when filtering items returns zero results. */
     noResults?: React.ReactChild;
@@ -94,7 +86,6 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         // omit props specific to this component, spread the rest.
         const {
             initialContent,
-            itemRenderer,
             noResults,
             openOnKeyDown,
             popoverProps,
@@ -124,7 +115,6 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             ...tagInputProps.inputProps,
             // tslint:disable-next-line:object-literal-sort-keys
             onChange: this.handleQueryChange,
-            ref: this.refHandlers.input,
             value: query,
         };
 
@@ -149,6 +139,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                     <TagInput
                         {...tagInputProps}
                         inputProps={defaultInputProps}
+                        inputRef={this.refHandlers.input}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
@@ -160,22 +151,13 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         );
     };
 
-    private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
-        const { initialContent, itemRenderer, noResults } = this.props;
+    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
+        const { initialContent, noResults } = this.props;
         if (initialContent != null && this.isQueryEmpty()) {
             return initialContent;
         }
-        if (filteredItems.length === 0) {
-            return noResults;
-        }
-        return filteredItems.map((item, index) =>
-            itemRenderer({
-                handleClick: e => handleItemSelect(item, e),
-                index,
-                isActive: item === activeItem,
-                item,
-            }),
-        );
+        const renderedItems = items.map(renderItem).filter(item => item != null);
+        return renderedItems.length > 0 ? renderedItems : noResults;
     }
 
     private isQueryEmpty = () => this.state.query.length === 0;

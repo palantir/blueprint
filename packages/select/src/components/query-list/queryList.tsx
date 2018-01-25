@@ -7,7 +7,9 @@
 import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
+import { IItemModifiers, ItemRenderer } from "./itemRenderer";
 
+/** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
     /** Array of items in the list. */
     items: T[];
@@ -29,6 +31,13 @@ export interface IListItemsProps<T> extends IProps {
      * If defined with `itemListPredicate`, this prop will be ignored.
      */
     itemPredicate?: (query: string, item: T, index: number) => boolean;
+
+    /**
+     * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
+     * this item is active (selected by keyboard arrows) and an `onClick` event handler that
+     * should be attached to the returned element.
+     */
+    itemRenderer: ItemRenderer<T>;
 
     /**
      * Callback invoked when an item from the list is selected,
@@ -79,16 +88,8 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
     query: string;
 }
 
+/** Interface for object passed to `QueryList` `renderer` function. */
 export interface IQueryListRendererProps<T> extends IProps {
-    /** The item focused by the keyboard (arrow keys). This item should stand out visually from the rest. */
-    activeItem: T | undefined;
-
-    /**
-     * Array of filtered items from the list (those that matched the predicate with the current `query`).
-     * See `items` for the full unfiltered list.
-     */
-    filteredItems: T[];
-
     /**
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
@@ -106,6 +107,13 @@ export interface IQueryListRendererProps<T> extends IProps {
      * Attach this handler to any element that should support this interaction.
      */
     handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
+
+    /**
+     * Call this function to render an `item`.
+     * `QueryList` will retrieve modifiers for the item and delegate to `itemRenderer` prop for the actual rendering.
+     * The second parameter `index` is optional here; if provided, it will be passed through `itemRenderer` props.
+     */
+    renderItem: (item: T, index?: number) => JSX.Element;
 
     /**
      * Array of all (unfiltered) items in the list.
@@ -149,19 +157,15 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private shouldCheckActiveItemInViewport: boolean;
 
     public render() {
-        const { activeItem, className, items, renderer, query } = this.props;
-        const { filteredItems } = this.state;
-
+        const { items, renderer, query } = this.props;
         return renderer({
-            activeItem,
-            className,
-            filteredItems,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
             items,
             itemsParentRef: this.refHandlers.itemsParent,
             query,
+            renderItem: this.renderItem,
         });
     }
 
@@ -287,6 +291,23 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const nextActiveIndex = Utils.clamp(this.getActiveIndex() + direction, 0, maxIndex);
         Utils.safeInvoke(this.props.onActiveItemChange, filteredItems[nextActiveIndex]);
     }
+
+    private renderItem = (item: T, index?: number) => {
+        const { activeItem, itemListPredicate, itemPredicate, query } = this.props;
+        const matchesPredicate = Utils.isFunction(itemListPredicate)
+            ? this.state.filteredItems.indexOf(item) >= 0
+            : itemPredicate(query, item, index);
+        const modifiers: IItemModifiers = {
+            active: activeItem === item,
+            disabled: false,
+            matchesPredicate,
+        };
+        return this.props.itemRenderer(item, {
+            handleClick: e => this.handleItemSelect(item, e),
+            index,
+            modifiers,
+        });
+    };
 }
 
 function pxToNumber(value: string) {

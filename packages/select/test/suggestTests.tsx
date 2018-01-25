@@ -4,21 +4,17 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, InputGroup, Keys, Popover } from "@blueprintjs/core";
+import { Classes, InputGroup, Keys, MenuItem, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
-import * as classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/data";
-import { ISelectItemRendererProps } from "../src/components/select/select";
+import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { ISuggestProps, Suggest } from "../src/components/select/suggest";
 
-const FILM_ITEM_CLASS = "film-item";
-
 describe("Suggest", () => {
-    const FilmSuggest = Suggest.ofType<Film>();
+    const FilmSuggest = Suggest.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { inline: true, isOpen: true },
@@ -41,12 +37,12 @@ describe("Suggest", () => {
     });
 
     describe("Basic behavior", () => {
-        it("renders a input that triggers a popover containing items", () => {
+        it("renders an input that triggers a popover containing items", () => {
             const wrapper = suggest();
             const popover = wrapper.find(Popover);
             assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
             assert.lengthOf(popover, 1, "should render Popover");
-            assert.lengthOf(popover.find(`.${FILM_ITEM_CLASS}`), 100, "should render 100 items in popover");
+            assert.lengthOf(popover.find(MenuItem), 100, "should render 100 items in popover");
         });
 
         describe("when ESCAPE key pressed", () => {
@@ -73,7 +69,7 @@ describe("Suggest", () => {
 
         it("scrolls active item into view when popover opens", () => {
             const wrapper = suggest();
-            const queryList = ((wrapper.instance() as Suggest<Film>) as any).queryList; // private ref
+            const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList; // private ref
             const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
             wrapper.setState({ isOpen: false });
             assert.isFalse(scrollActiveItemIntoViewSpy.called);
@@ -270,7 +266,7 @@ describe("Suggest", () => {
         }
     });
 
-    function suggest(props: Partial<ISuggestProps<Film>> = {}, query?: string) {
+    function suggest(props: Partial<ISuggestProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
         if (query !== undefined) {
             wrapper.setState({ query });
@@ -279,19 +275,7 @@ describe("Suggest", () => {
     }
 });
 
-function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
-    const classes = classNames(FILM_ITEM_CLASS, {
-        [Classes.ACTIVE]: isActive,
-        [Classes.INTENT_PRIMARY]: isActive,
-    });
-    return (
-        <a className={classes} key={film.rank} onClick={handleClick}>
-            {film.rank}. {film.title}
-        </a>
-    );
-}
-
-function filterByYear(query: string, film: Film) {
+function filterByYear(query: string, film: IFilm) {
     return query === "" || film.year.toString() === query;
 }
 
@@ -302,7 +286,7 @@ function selectItem(wrapper: ReactWrapper<any, any>, index: number) {
         .simulate("click");
 }
 
-function inputValueRenderer(item: Film) {
+function inputValueRenderer(item: IFilm) {
     return item.title;
 }
 
