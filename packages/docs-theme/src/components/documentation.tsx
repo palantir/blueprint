@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import { isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
-import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
+import { Dialog, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
@@ -17,6 +17,8 @@ import { renderBlock } from "./block";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Page } from "./page";
+import { ApiBrowser } from "./typescript/apiBrowser";
+import { ApiLink } from "./typescript/apiLink";
 
 export interface IDocumentationProps extends IProps {
     /**
@@ -62,8 +64,10 @@ export interface IDocumentationProps extends IProps {
 }
 
 export interface IDocumentationState {
+    activeApiMember: string;
     activePageId: string;
     activeSectionId: string;
+    isApiBrowserOpen: boolean;
 }
 
 @HotkeysTarget
@@ -87,8 +91,10 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public constructor(props: IDocumentationProps) {
         super(props);
         this.state = {
+            activeApiMember: "IButtonProps",
             activePageId: props.defaultPageId,
             activeSectionId: props.defaultPageId,
+            isApiBrowserOpen: true,
         };
 
         // build up static map of all references to their page, for navigation / routing
@@ -105,11 +111,12 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             getDocsData: () => docs,
             renderBlock: block => renderBlock(block, this.props.tagRenderers),
             renderType: hasTypescriptData(docs)
-                ? type => linkify(type, docs.typescript, name => <u key={name}>{name}</u>)
+                ? type => linkify(type, docs.typescript, name => <ApiLink key={name} name={name} />)
                 : type => type,
             renderViewSourceLinkText: Utils.isFunction(renderViewSourceLinkText)
                 ? renderViewSourceLinkText
                 : () => "View source",
+            showApiDocs: this.handleApiBrowserOpen,
         };
     }
 
@@ -138,6 +145,13 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                     <article className="docs-content" ref={this.refHandlers.content} role="main">
                         <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
                     </article>
+                    <Dialog
+                        className="docs-api-dialog"
+                        isOpen={this.state.isApiBrowserOpen}
+                        onClose={this.handleApiBrowserClose}
+                    >
+                        <ApiBrowser section={this.state.activeApiMember} />
+                    </Dialog>
                 </div>
             </div>
         );
@@ -248,6 +262,10 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         // updating hash triggers event listener which sets new state.
         location.hash = sections[newIndex];
     }
+
+    private handleApiBrowserOpen = (activeApiMember: string) =>
+        this.setState({ activeApiMember, isApiBrowserOpen: true });
+    private handleApiBrowserClose = () => this.setState({ isApiBrowserOpen: false });
 }
 
 /** Shorthand for element.query() + cast to HTMLElement */
