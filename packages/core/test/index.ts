@@ -3,11 +3,11 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "@blueprintjs/test-commons/src/polyfills";
-
+import { applyPolyfills } from "@blueprintjs/test-commons";
 import * as Enzyme from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 
+applyPolyfills();
 Enzyme.configure({ adapter: new Adapter() });
 
 import "./alert/alertTests";
