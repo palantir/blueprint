@@ -46,10 +46,12 @@ module.exports = {
         },
         "no-submodule-imports": {
             options: [
+                "core-js",
                 "documentalist",
                 "lodash",
                 "react-dom",
-                "@blueprintjs/table/src"
+                "@blueprintjs/table/src",
+                "@blueprintjs/test-commons/src",
             ]
         },
         "no-unnecessary-callback-wrapper": true,

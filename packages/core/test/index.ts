@@ -3,7 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "es6-shim";
+import "@blueprintjs/test-commons/src/polyfills";
 
 import * as Enzyme from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
