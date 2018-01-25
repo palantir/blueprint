@@ -67,11 +67,15 @@ export class ResizeHandle extends React.PureComponent<IResizeHandleProps, IResiz
             return undefined;
         }
 
-        const targetClasses = classNames(Classes.TABLE_RESIZE_HANDLE_TARGET, {
-            [Classes.TABLE_DRAGGING]: this.state.isDragging,
-            [Classes.TABLE_RESIZE_HORIZONTAL]: orientation === Orientation.HORIZONTAL,
-            [Classes.TABLE_RESIZE_VERTICAL]: orientation === Orientation.VERTICAL,
-        });
+        const targetClasses = classNames(
+            Classes.TABLE_RESIZE_HANDLE_TARGET,
+            {
+                [Classes.TABLE_DRAGGING]: this.state.isDragging,
+                [Classes.TABLE_RESIZE_HORIZONTAL]: orientation === Orientation.HORIZONTAL,
+                [Classes.TABLE_RESIZE_VERTICAL]: orientation === Orientation.VERTICAL,
+            },
+            this.props.className,
+        );
 
         const handleClasses = classNames(Classes.TABLE_RESIZE_HANDLE, {
             [Classes.TABLE_DRAGGING]: this.state.isDragging,
