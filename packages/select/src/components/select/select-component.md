@@ -14,22 +14,22 @@ Use `Select<T>` for choosing one item from a list. The component's children will
 ```tsx
 import { Button, MenuItem } from "@blueprintjs/core";
 import { Select } from "@blueprintjs/select";
-import { Film, TOP_100_FILMS, filterFilm, renderFilm } from "./demoData";
+import * as Films from "./films";
 
 // Select<T> is a generic component to work with your data types.
 // In TypeScript, you must first obtain a non-generic reference:
-const FilmSelect = Select.ofType<Film>();
+const FilmSelect = Select.ofType<Films.Film>();
 
 ReactDOM.render(
     <FilmSelect
-        items={TOP_100_FILMS}
-        itemPredicate={filterFilm}
-        itemRenderer={renderFilm}
-        noResults={<MenuItem disabled text="No results." />}
+        items={Films.items}
+        itemPredicate={Films.itemPredicate}
+        itemRenderer={Films.itemRenderer}
+        noResults={<MenuItem disabled={true} text="No results." />}
         onItemSelect={...}
     >
         {/* children become the popover target; render value here */}
-        <Button text={TOP_100_FILMS[0].title} rightIconName="double-caret-vertical" />
+        <Button text={Films.items[0].title} rightIconName="double-caret-vertical" />
     </FilmSelect>,
     document.querySelector("#root")
 );
@@ -69,26 +69,32 @@ This "escape hatch" can be used to implement all sorts of advanced behavior on t
 
 @### Item Renderer API
 
-An object with the following properties will be passed to a `Select` `itemRenderer`, for each item being rendered. Only items which pass the predicate will be rendered. Don't forget to define a `key` for each item, or face React's console wrath!
-
-This interface is generic, accepting a type parameter `<T>` for an item in the list.
+`Select`'s `itemRenderer` will be called for each item and receives the item and a props object containing data specific
+to rendering this item in this frame. The renderer is called for all items, so don't forget to respect
+`modifiers.filtered` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item,
+or face React's console wrath!
 
 ```tsx
 import { Classes, MenuItem } from "@blueprintjs/core";
-import { Select, ISelectItemRendererProps } from "@blueprintjs/select";
+import { ItemRenderer, Select } from "@blueprintjs/select";
 const FilmSelect = Select.ofType<Film>();
 
-const renderMenuItem = ({ handleClick, item: film, isActive }: ISelectItemRendererProps<Film>) => (
-    <MenuItem
-        className={isActive ? Classes.ACTIVE : ""}
-        key={film.title}
-        label={film.year}
-        onClick={handleClick}
-        text={film.title}
-    />
-);
+const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
+    if (!modifiers.filtered) {
+        return null;
+    }
+    return (
+        <MenuItem
+            className={modifiers.active ? Classes.ACTIVE : ""}
+            key={film.title}
+            label={film.year}
+            onClick={handleClick}
+            text={film.title}
+        />
+    );
+};
 
-<FilmSelect itemRenderer={renderMenuItem} items={...} onItemSelect={...} />
+<FilmSelect itemRenderer={renderFilm} items={...} onItemSelect={...} />
 ```
 
-@interface ISelectItemRendererProps
+@interface IItemRendererProps

@@ -4,18 +4,17 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, MenuItem, Switch } from "@blueprintjs/core";
+import { Button, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
-import { ISelectItemRendererProps, Select } from "@blueprintjs/select";
-import { Film, TOP_100_FILMS } from "./data";
+import { Select } from "@blueprintjs/select";
+import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
 
-const FilmSelect = Select.ofType<Film>();
+const FilmSelect = Select.ofType<IFilm>();
 
 export interface ISelectExampleState {
-    film?: Film;
+    film?: IFilm;
     filterable?: boolean;
     hasInitialContent?: boolean;
     minimal?: boolean;
@@ -53,12 +52,10 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
 
         return (
             <FilmSelect
+                {...filmSelectProps}
                 {...flags}
                 disabled={disabled}
                 initialContent={initialContent}
-                items={TOP_100_FILMS}
-                itemPredicate={this.filterFilm}
-                itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled={true} text="No results." />}
                 onItemSelect={this.handleValueChange}
                 popoverProps={{ minimal }}
@@ -111,27 +108,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         ];
     }
 
-    private renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
-        const classes = classNames({
-            [Classes.ACTIVE]: isActive,
-            [Classes.INTENT_PRIMARY]: isActive,
-        });
-        return (
-            <MenuItem
-                className={classes}
-                label={film.year.toString()}
-                key={film.rank}
-                onClick={handleClick}
-                text={`${film.rank}. ${film.title}`}
-            />
-        );
-    }
-
-    private filterFilm(query: string, film: Film, index: number) {
-        return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
-    }
-
-    private handleValueChange = (film: Film) => this.setState({ film });
+    private handleValueChange = (film: IFilm) => this.setState({ film });
 
     private handleSwitchChange(prop: keyof ISelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
