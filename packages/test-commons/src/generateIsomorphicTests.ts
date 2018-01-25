@@ -32,7 +32,6 @@ function isReactClass(Component: any): boolean {
  * @param props custom props per component
  * @param children custom children per component
  * @param skipList array of component names to skip
- * element, rather than directly on the root element
  */
 export function generateIsomorphicTests(
     Components: { [name: string]: any },

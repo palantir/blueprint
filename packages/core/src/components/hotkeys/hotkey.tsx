@@ -63,12 +63,6 @@ export interface IHotkeyProps extends IProps {
     stopPropagation?: boolean;
 
     /**
-     * Space-delimited string of class names applied to the
-     * `KeyCombo` contained in the hotkey.
-     */
-    keyComboClassName?: string;
-
-    /**
      * `keydown` event handler.
      */
     onKeyDown?(e: KeyboardEvent): any;
@@ -93,13 +87,13 @@ export class Hotkey extends AbstractPureComponent<IHotkeyProps, {}> {
     }
 
     public render() {
-        const { label, className, keyComboClassName, ...spreadableProps } = this.props;
+        const { label, className, ...spreadableProps } = this.props;
 
         const rootClasses = classNames("pt-hotkey", className);
         return (
             <div className={rootClasses}>
                 <div className="pt-hotkey-label">{label}</div>
-                <KeyCombo className={keyComboClassName} {...spreadableProps} />
+                <KeyCombo {...spreadableProps} />
             </div>
         );
     }
