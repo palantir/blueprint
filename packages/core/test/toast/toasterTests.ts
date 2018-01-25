@@ -45,10 +45,10 @@ describe("Toaster", () => {
         assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
     });
 
-    it("update() updates existing toast", () => {
+    it("show() updates existing toast", () => {
         const key = toaster.show({ message: "one" });
         assert.deepEqual(toaster.getToasts()[0].message, "one");
-        toaster.update(key, { message: "two" });
+        toaster.show({ message: "two" }, key);
         assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
         assert.deepEqual(toaster.getToasts()[0].message, "two");
     });

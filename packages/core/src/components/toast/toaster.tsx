@@ -28,14 +28,12 @@ export type ToasterPosition =
     | Position.BOTTOM_RIGHT;
 
 export interface IToaster {
-    /** Show a new toast to the user. Returns the unique key of the new toast. */
-    show(props: IToastProps): string;
-
     /**
-     * Updates the toast with the given key to use the new props.
-     * Updating a key that does not exist is effectively a no-op.
+     * Shows a new toast to the user, or updates an existing toast corresponding to the provided key (optional).
+     *
+     * Returns the unique key of the toast.
      */
-    update(key: string, props: IToastProps): void;
+    show(props: IToastProps, key?: string): string;
 
     /** Dismiss the given toast instantly. */
     dismiss(key: string): void;
@@ -114,19 +112,18 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
     // auto-incrementing identifier for un-keyed toasts
     private toastId = 0;
 
-    public show(props: IToastProps) {
-        const options = this.createToastOptions(props);
-        this.setState(prevState => ({
-            toasts: [options, ...prevState.toasts],
-        }));
-        return options.key;
-    }
-
-    public update(key: string, props: IToastProps) {
+    public show(props: IToastProps, key?: string) {
         const options = this.createToastOptions(props, key);
-        this.setState(prevState => ({
-            toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
-        }));
+        if (key === undefined || this.isNewToastKey(key)) {
+            this.setState(prevState => ({
+                toasts: [options, ...prevState.toasts],
+            }));
+        } else {
+            this.setState(prevState => ({
+                toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
+            }));
+        }
+        return options.key;
     }
 
     public dismiss(key: string, timeoutExpired = false) {
@@ -170,6 +167,10 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
                 {this.state.toasts.map(this.renderToast, this)}
             </Overlay>
         );
+    }
+
+    private isNewToastKey(key: string) {
+        return this.state.toasts.every(toast => toast.key !== key);
     }
 
     private renderToast(toast: IToastOptions) {
