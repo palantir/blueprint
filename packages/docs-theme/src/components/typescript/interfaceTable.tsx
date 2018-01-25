@@ -9,8 +9,8 @@ import * as classNames from "classnames";
 import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
-import { markdownCode } from "../../common/utils";
 import { ApiHeader } from "./apiHeader";
+import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
@@ -90,15 +90,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
         return (
             <>
                 {!isOptional && <Tag children="Required" className={Classes.MINIMAL} intent={Intent.SUCCESS} />}
-                {(isDeprecated === true || typeof isDeprecated === "string") && (
-                    <Tag className={Classes.MINIMAL} intent={Intent.DANGER}>
-                        {typeof isDeprecated === "string" ? (
-                            <span dangerouslySetInnerHTML={markdownCode(`Deprecated: ${isDeprecated}`)} />
-                        ) : (
-                            "Deprecated"
-                        )}
-                    </Tag>
-                )}
+                <DeprecatedTag isDeprecated={isDeprecated} />
                 {inheritedFrom && (
                     <Tag className={Classes.MINIMAL}>
                         Inherited from <code>{renderType(inheritedFrom)}</code>

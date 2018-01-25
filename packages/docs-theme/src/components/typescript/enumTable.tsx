@@ -4,13 +4,12 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import { ITsEnum, ITsEnumMember } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
-import { markdownCode } from "../../common/utils";
 import { ApiHeader } from "./apiHeader";
+import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
@@ -73,16 +72,6 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
 
     private renderTags(entry: ITsEnumMember) {
         const { flags: { isDeprecated } } = entry;
-        return (
-            (isDeprecated === true || typeof isDeprecated === "string") && (
-                <Tag className={Classes.MINIMAL} intent={Intent.DANGER}>
-                    {typeof isDeprecated === "string" ? (
-                        <span dangerouslySetInnerHTML={markdownCode(`Deprecated: ${isDeprecated}`)} />
-                    ) : (
-                        "Deprecated"
-                    )}
-                </Tag>
-            )
-        );
+        return <DeprecatedTag isDeprecated={isDeprecated} />;
     }
 }
