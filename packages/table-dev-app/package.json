@@ -19,7 +19,7 @@
     "@blueprintjs/core": "^2.0.0-beta.1",
     "@blueprintjs/table": "^2.0.0-beta.1",
     "classnames": "^2.2.5",
-    "dom4": "^1.8.3",
+    "dom4": "^2.0.1",
     "normalize.css": "^7.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
