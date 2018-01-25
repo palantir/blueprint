@@ -5,13 +5,15 @@
  */
 
 import * as classNames from "classnames";
-import { IMarkdownPluginData, isPageNode } from "documentalist/dist/client";
+import { isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
 import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
 
+import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
-import { TagRenderer } from "../tags";
+import { ITagRendererMap } from "../tags";
+import { renderBlock } from "./block";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Page } from "./page";
@@ -24,9 +26,9 @@ export interface IDocumentationProps extends IProps {
 
     /**
      * All the docs data from Documentalist.
-     * Must include at least  `{ nav, pages }` from the MarkdownPlugin.
+     * This theme requires the Markdown plugin, and optionally supports Typescript and KSS data.
      */
-    docs: IMarkdownPluginData;
+    docs: IDocsData;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -35,8 +37,15 @@ export interface IDocumentationProps extends IProps {
      */
     onComponentUpdate?: (pageId: string) => void;
 
+    /**
+     * Callback invoked to render "View source" links in Typescript interfaces.
+     * The `href` of the link will be `entry.sourceUrl`.
+     * @default "View source"
+     */
+    renderViewSourceLinkText?: (entry: ITsDocBase) => React.ReactNode;
+
     /** Tag renderer functions. Unknown tags will log console errors. */
-    tagRenderers: { [tag: string]: TagRenderer };
+    tagRenderers: ITagRendererMap;
 
     /**
      * Elements to render on the left side of the navbar, typically logo and title.
@@ -59,6 +68,8 @@ export interface IDocumentationState {
 
 @HotkeysTarget
 export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
+    public static childContextTypes = DocumentationContextTypes;
+
     public static defaultProps = {
         navbarLeft: "Documentation",
     };
@@ -86,6 +97,20 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             const { reference } = isPageNode(node) ? node : parents[0];
             this.routeToPage[node.route] = reference;
         });
+    }
+
+    public getChildContext(): IDocumentationContext {
+        const { docs, renderViewSourceLinkText } = this.props;
+        return {
+            getDocsData: () => docs,
+            renderBlock: block => renderBlock(block, this.props.tagRenderers),
+            renderType: hasTypescriptData(docs)
+                ? type => linkify(type, docs.typescript, name => <u key={name}>{name}</u>)
+                : type => type,
+            renderViewSourceLinkText: Utils.isFunction(renderViewSourceLinkText)
+                ? renderViewSourceLinkText
+                : () => "View source",
+        };
     }
 
     public render() {
