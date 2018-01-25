@@ -57,9 +57,9 @@ describe("Locator", () => {
         );
 
         locator = new Locator(
-            containerElement.query(".table-wrapper") as HTMLElement,
-            containerElement.query(".body") as HTMLElement,
-            containerElement.query(".body-client") as HTMLElement,
+            containerElement.querySelector(".table-wrapper") as HTMLElement,
+            containerElement.querySelector(".body") as HTMLElement,
+            containerElement.querySelector(".body-client") as HTMLElement,
         );
         locator.setGrid(grid);
     });
@@ -75,7 +75,7 @@ describe("Locator", () => {
     describe("convertPointToColumn", () => {
         describe("when useMidpoint = false", () => {
             it("locates a column", () => {
-                const left = containerElement.query(".body").getBoundingClientRect().left;
+                const left = containerElement.querySelector(".body").getBoundingClientRect().left;
                 expect(locator.convertPointToColumn(left + 10)).to.equal(0);
                 expect(locator.convertPointToColumn(left + 30)).to.equal(1);
                 expect(locator.convertPointToColumn(-1000)).to.equal(-1);
@@ -88,7 +88,7 @@ describe("Locator", () => {
     describe("convertPointToRow", () => {
         describe("when useMidpoint = false", () => {
             it("locates a row", () => {
-                const top = containerElement.query(".body").getBoundingClientRect().top;
+                const top = containerElement.querySelector(".body").getBoundingClientRect().top;
                 expect(locator.convertPointToRow(top + 5)).to.equal(0);
                 expect(locator.convertPointToRow(top + 15)).to.equal(1);
                 expect(locator.convertPointToRow(top + N_ROWS * ROW_HEIGHT - ROW_HEIGHT / 2)).to.equal(N_ROWS - 1);
@@ -116,7 +116,7 @@ describe("Locator", () => {
             const NUM_ROWS_SCROLLED_OUT_OF_VIEW = 1;
 
             beforeEach(() => {
-                bodyElement = containerElement.query(".body") as HTMLElement;
+                bodyElement = containerElement.querySelector(".body") as HTMLElement;
 
                 originalOverflow = bodyElement.style.overflow;
                 originalHeight = bodyElement.style.height;
@@ -273,7 +273,7 @@ describe("Locator", () => {
 
         function runTest(clientCoord: number, expectedResult: number) {
             it(`${clientCoord}px => ${expectedResult}`, () => {
-                const { top, left } = containerElement.query(".body").getBoundingClientRect();
+                const { top, left } = containerElement.querySelector(".body").getBoundingClientRect();
                 const baseOffset = testFnName === "convertPointToColumn" ? left : top;
                 const actualResult = locator[testFnName](baseOffset + clientCoord, true);
                 expect(actualResult).to.equal(expectedResult);
@@ -287,7 +287,7 @@ describe("Locator", () => {
     }
 
     function getUnscrolledCellCoords(row: number, col: number) {
-        const bodyRect = containerElement.query(".body").getBoundingClientRect();
+        const bodyRect = containerElement.querySelector(".body").getBoundingClientRect();
 
         const colMidpointOffset = COL_WIDTH / 2;
         const rowMidpointOffset = ROW_HEIGHT / 2;

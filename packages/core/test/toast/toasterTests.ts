@@ -35,7 +35,7 @@ describe("Toaster", () => {
             message: "Hello world",
         });
         assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-        assert.isNotNull(document.query(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`));
+        assert.isNotNull(document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`));
     });
 
     it("multiple show()s renders them all", () => {
@@ -77,7 +77,8 @@ describe("Toaster", () => {
             message: "message",
             timeout: 0,
         });
-        const action = document.queryAll(`.${Classes.TOAST} .${Classes.BUTTON}`)[0] as HTMLElement;
+        // action is first descendant button
+        const action = document.querySelector(`.${Classes.TOAST} .${Classes.BUTTON}`) as HTMLElement;
         action.click();
         assert.isTrue(onClick.calledOnce, "expected onClick to be called once");
     });
@@ -89,7 +90,8 @@ describe("Toaster", () => {
             onDismiss: handleDismiss,
             timeout: 0,
         });
-        const dismiss = document.queryAll(`.${Classes.TOAST} .${Classes.BUTTON}`)[0] as HTMLElement;
+        // without action, dismiss is first descendant button
+        const dismiss = document.querySelector(`.${Classes.TOAST} .${Classes.BUTTON}`) as HTMLElement;
         dismiss.click();
         assert.isTrue(handleDismiss.calledOnce);
     });

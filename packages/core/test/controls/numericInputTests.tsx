@@ -227,7 +227,7 @@ describe("<NumericInput>", () => {
                 const attachTo = document.createElement("div");
                 mount(<NumericInput value="12345678" />, { attachTo });
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 input.focus();
 
                 expect(input.selectionStart).to.equal(input.selectionEnd);
@@ -240,7 +240,7 @@ describe("<NumericInput>", () => {
 
                 component.find("input").simulate("focus");
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 expect(input.selectionStart).to.equal(0);
                 expect(input.selectionEnd).to.equal(VALUE.length);
             });
@@ -256,7 +256,7 @@ describe("<NumericInput>", () => {
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
@@ -268,7 +268,7 @@ describe("<NumericInput>", () => {
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 expect(input.selectionStart).to.equal(0);
                 expect(input.selectionEnd).to.equal(VALUE.length);
             });
