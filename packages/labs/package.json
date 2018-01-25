@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/labs",
-  "version": "0.15.0",
+  "version": "0.15.2",
   "description": "Incubator for unstable and in-development Blueprint components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -28,8 +28,8 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^2.0.0-beta.1",
-    "@blueprintjs/select": "^2.0.0-beta.1",
+    "@blueprintjs/core": "^2.0.0-beta.3",
+    "@blueprintjs/select": "^2.0.0-beta.3",
     "classnames": "^2.2",
     "tslib": "^1.5.0"
   },
