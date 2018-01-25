@@ -5,8 +5,8 @@
  */
 
 import { Icon } from "@blueprintjs/core";
+import { ITag } from "documentalist/dist/client";
 import * as React from "react";
-import { TagRenderer } from "./";
 
 export interface IExample {
     sourceUrl: string;
@@ -42,15 +42,15 @@ export class ReactExampleTagRenderer {
      * it to an actual example component exported by one of the packages. Also returns
      * the URL of the source code on GitHub.
      */
-    public render: TagRenderer = ({ value: exampleName }, key) => {
+    public render: React.SFC<ITag> = ({ value: exampleName }) => {
         if (exampleName == null) {
-            return undefined;
+            return null;
         }
 
         const example = this.examples[exampleName];
         if (example == null) {
             throw new Error(`Unknown @example component: ${exampleName}`);
         }
-        return <ReactExample example={example} key={key} name={exampleName} />;
+        return <ReactExample example={example} name={exampleName} />;
     };
 }
