@@ -13,9 +13,8 @@ export interface IItemModifiers {
     /** Whether this item is disabled and should ignore interactions. */
     disabled: boolean;
 
-    // TODO: not happy with this name
     /** Whether this item matches the predicate. A typical renderer could hide `false` values. */
-    filtered: boolean;
+    matchesPredicate: boolean;
 }
 
 /**

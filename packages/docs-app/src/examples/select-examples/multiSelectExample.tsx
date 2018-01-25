@@ -121,7 +121,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
     private renderTag = (film: IFilm) => film.title;
 
     private renderFilm: ItemRenderer<IFilm> = (film, { modifiers, handleClick }) => {
-        if (!modifiers.filtered) {
+        if (!modifiers.matchesPredicate) {
             return null;
         }
         // NOTE: not using Films.itemRenderer here so we can set icons.

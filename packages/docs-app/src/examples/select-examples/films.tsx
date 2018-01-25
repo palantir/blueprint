@@ -123,7 +123,7 @@ export const TOP_100_FILMS: IFilm[] = [
 ].map((m, index) => ({ ...m, rank: index + 1 }));
 
 export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers }) => {
-    if (!modifiers.filtered) {
+    if (!modifiers.matchesPredicate) {
         return null;
     }
     const classes = classNames({
