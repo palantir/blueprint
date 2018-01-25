@@ -17,7 +17,7 @@ export interface IDocsIconProps {
     className: IconName;
 }
 
-const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/master/resources/icons";
+const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/develop/resources/icons";
 
 @ContextMenuTarget
 export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {

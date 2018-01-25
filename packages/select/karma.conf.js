@@ -4,6 +4,8 @@
 
 const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
 const path = require("path");
+const coreManifest = require("../core/package.json");
+const packageManifest = require("./package.json");
 
 module.exports = function (config) {
     const baseConfig = createKarmaConfig({
@@ -13,14 +15,5 @@ module.exports = function (config) {
     config.set({
         // disable coverage reporter
         reporters: ["mocha"],
-        webpack: Object.assign({}, baseConfig.webpack, {
-            entry: {
-                select: [
-                    path.resolve(__dirname, "test/index.ts"),
-                    path.resolve(__dirname, "../core/dist/blueprint.css"),
-                    path.resolve(__dirname, "dist/blueprint-select.css"),
-                ],
-            },
-        }),
-    })
+    });
 };

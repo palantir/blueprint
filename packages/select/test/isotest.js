@@ -6,7 +6,7 @@
 // @ts-check
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
-const Select = require("../dist");
+const Select = require("../lib/cjs");
 
 const customChildren = {
 };

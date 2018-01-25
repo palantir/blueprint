@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Button, Classes, Intent, ITagProps, Switch, TagInput } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 

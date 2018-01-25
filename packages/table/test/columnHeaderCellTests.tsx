@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Menu, MenuItem } from "@blueprintjs/core";
+import { Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
@@ -128,10 +128,7 @@ describe("<ColumnHeaderCell>", () => {
 
         function expectMenuToOpen(table: ElementHarness, menuClickSpy: sinon.SinonSpy) {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
-            table
-                .find(`.${Classes.TABLE_TH_MENU}`)
-                .mouse("mousemove")
-                .mouse("click");
+            table.find(`.${Classes.TABLE_TH_MENU} .${CoreClasses.POPOVER_TARGET}`).mouse("click");
             ElementHarness.document()
                 .find(".pt-icon-export")
                 .mouse("click");

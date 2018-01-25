@@ -3,20 +3,21 @@
 
 @import "~normalize.css/normalize.css";
 
-// import these first cuz they're the base layer
-@import "~@blueprintjs/core/dist/blueprint.css";
-@import "~@blueprintjs/datetime/dist/blueprint-datetime.css";
-@import "~@blueprintjs/icons/dist/blueprint-icons.css";
-@import "~@blueprintjs/labs/dist/blueprint-labs.css";
-@import "~@blueprintjs/select/dist/blueprint-select.css";
-@import "~@blueprintjs/table/dist/table.css";
-@import "~@blueprintjs/timezone/dist/blueprint-timezone.css";
+// import these first because they're the base layer
+@import "~@blueprintjs/core/lib/css/blueprint.css";
+@import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+@import "~@blueprintjs/labs/lib/css/blueprint-labs.css";
+@import "~@blueprintjs/select/lib/css/blueprint-select.css";
+@import "~@blueprintjs/table/lib/css/table.css";
+@import "~@blueprintjs/timezone/lib/css/blueprint-timezone.css";
 
 // then the docs theme styles
-@import "~@blueprintjs/docs/dist/docs.css";
-@import "~@blueprintjs/docs/src/styles/variables";
+@import "~@blueprintjs/docs-theme/lib/css/docs-theme.css";
+@import "~@blueprintjs/docs-theme/src/styles/variables";
 
 // then our own styles
+@import "styles/banner";
 @import "styles/colors";
 @import "styles/examples";
 @import "styles/icons";
@@ -25,4 +26,8 @@
 
 .docs-logo {
   background-image: url("./assets/blueprint-logo.svg");
+}
+
+.docs-releases-menu {
+  width: 320px;
 }

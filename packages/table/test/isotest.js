@@ -6,7 +6,7 @@
 // @ts-check
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
-const Table = require("../dist");
+const Table = require("../lib/cjs");
 
 const customProps = {
     ResizeHandle: {
