@@ -5,7 +5,13 @@
  */
 
 import { Utils } from "@blueprintjs/core";
-import { IBlock, IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/client";
+import {
+    IBlock,
+    IKssPluginData,
+    IMarkdownPluginData,
+    ITsDocBase,
+    ITypescriptPluginData,
+} from "documentalist/dist/client";
 
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
 export type IDocsData = IMarkdownPluginData & (ITypescriptPluginData | {}) & (IKssPluginData | {});
@@ -36,6 +42,9 @@ export interface IDocumentationContext {
 
     /** Render a Documentalist Typescript type string to a React node. */
     renderType(type: string): React.ReactNode;
+
+    /** Render the text of a "View source" link. */
+    renderViewSourceLinkText(entry: ITsDocBase): React.ReactNode;
 }
 
 /**
@@ -56,6 +65,7 @@ export const DocumentationContextTypes: React.ValidationMap<IDocumentationContex
     getDocsData: assertFunctionProp,
     renderBlock: assertFunctionProp,
     renderType: assertFunctionProp,
+    renderViewSourceLinkText: assertFunctionProp,
 };
 
 // simple alternative to prop-types dependency

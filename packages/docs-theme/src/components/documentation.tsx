@@ -5,7 +5,7 @@
  */
 
 import * as classNames from "classnames";
-import { isPageNode, linkify } from "documentalist/dist/client";
+import { isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
 import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
@@ -36,6 +36,13 @@ export interface IDocumentationProps extends IProps {
      * Use it to run non-React code on the newly rendered sections.
      */
     onComponentUpdate?: (pageId: string) => void;
+
+    /**
+     * Callback invoked to render "View source" links in Typescript interfaces.
+     * The `href` of the link will be `entry.sourceUrl`.
+     * @default "View source"
+     */
+    renderViewSourceLinkText?: (entry: ITsDocBase) => React.ReactNode;
 
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: ITagRendererMap;
@@ -93,13 +100,16 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     }
 
     public getChildContext(): IDocumentationContext {
-        const { docs } = this.props;
+        const { docs, renderViewSourceLinkText } = this.props;
         return {
             getDocsData: () => docs,
             renderBlock: block => renderBlock(block, this.props.tagRenderers),
             renderType: hasTypescriptData(docs)
                 ? type => linkify(type, docs.typescript, name => <u key={name}>{name}</u>)
                 : type => type,
+            renderViewSourceLinkText: Utils.isFunction(renderViewSourceLinkText)
+                ? renderViewSourceLinkText
+                : () => "View source",
         };
     }
 

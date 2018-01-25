@@ -7,6 +7,7 @@
 import { Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 import { Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
+import { ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
 import { NavbarActions } from "./navbarActions";
 
@@ -59,6 +60,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                     navbarLeft={navbarLeft}
                     navbarRight={navbarRight}
                     onComponentUpdate={this.handleComponentUpdate}
+                    renderViewSourceLinkText={this.renderViewSourceLinkText}
                 />
             </>
         );
@@ -87,6 +89,10 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 </button>
             </Popover>
         );
+    }
+
+    private renderViewSourceLinkText(entry: ITsDocBase) {
+        return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
     }
 
     // This function is called whenever the documentation page changes and should be used to

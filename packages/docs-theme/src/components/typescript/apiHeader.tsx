@@ -22,7 +22,7 @@ export class ApiHeader extends React.PureComponent<ITsDocBase> {
                 </div>
                 <small className="docs-package-name">
                     <a href={this.props.sourceUrl} target="_blank">
-                        @blueprintjs/{this.props.fileName.split("/", 2)[1]}
+                        {this.context.renderViewSourceLinkText(this.props)}
                     </a>
                 </small>
                 {this.props.children}
