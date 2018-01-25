@@ -3,6 +3,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// tslint:disable-next-line:no-submodule-imports
+import "@blueprintjs/test-commons/lib/cjs/polyfill";
 import "dom4";
 
 import * as React from "react";
