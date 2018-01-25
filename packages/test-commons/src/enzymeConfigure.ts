@@ -3,6 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-export * from "./generateIsomorphicTests";
-export * from "./testErrorBoundary";
-export * from "./utils";
+import * as Enzyme from "enzyme";
+import * as Adapter from "enzyme-adapter-react-16";
+
+Enzyme.configure({ adapter: new Adapter() });

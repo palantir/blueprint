@@ -51,6 +51,7 @@ module.exports = {
                 "lodash",
                 "react-dom",
                 "@blueprintjs/table/src",
+                "@blueprintjs/test-commons/bootstrap",
             ]
         },
         "no-unnecessary-callback-wrapper": true,
