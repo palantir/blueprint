@@ -91,10 +91,10 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public constructor(props: IDocumentationProps) {
         super(props);
         this.state = {
-            activeApiMember: "IButtonProps",
+            activeApiMember: "",
             activePageId: props.defaultPageId,
             activeSectionId: props.defaultPageId,
-            isApiBrowserOpen: true,
+            isApiBrowserOpen: false,
         };
 
         // build up static map of all references to their page, for navigation / routing
