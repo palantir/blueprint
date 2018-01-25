@@ -85,7 +85,7 @@ export type ICellInterval = [number, number];
 export type ICellCoordinate = [number, number];
 
 /**
- * @see `Regions.getRegionCardinality` for more about the format of this object.
+ * @see Regions.getRegionCardinality for more about the format of this object.
  */
 export interface IRegion {
     /**

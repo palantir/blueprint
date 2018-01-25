@@ -4,22 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
-import * as classNames from "classnames";
-import * as React from "react";
-
-/**
- * Re-declare matching types from the classnames library;
- */
-export type ClassValue = string | number | ClassDictionary | ClassArray;
-
-// tslint:disable interface-name no-empty-interface
-export interface ClassDictionary {
-    [id: string]: boolean;
-}
-
-export interface ClassArray extends Array<ClassValue> {}
-// tslint:enable
+import { Utils as CoreUtils } from "@blueprintjs/core";
 
 /**
  * Since Firefox doesn't provide a computed "font" property, we manually
@@ -37,17 +22,6 @@ export interface IKeyBlacklist<T> {
 }
 
 export const Utils = {
-    /**
-     * Returns a clone of the ReactElement with a className that includes the
-     * element's original className and any other classes passed in with variadic
-     * arguments matching the `classNames` api.
-     */
-    assignClasses<P extends IProps>(elem: React.ReactElement<P>, ...extendedClasses: ClassValue[]) {
-        const classes = classNames(elem.props.className, ...extendedClasses);
-        const props: IProps = { className: classes };
-        return React.cloneElement(elem, props);
-    },
-
     /**
      * Invokes the callback `n` times, collecting the results in an array, which
      * is the return value. Similar to _.times
