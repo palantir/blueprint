@@ -11,7 +11,7 @@ import { IKssPluginData, IMarkdownPluginData, ITag, ITypescriptPluginData } from
 
 export interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {}
 
-export function createDefaultRenderers(): Record<string, React.SFC<ITag>> {
+export function createDefaultRenderers(): Record<string, React.ComponentType<ITag>> {
     return {
         css: tags.CssExample,
         heading: tags.Heading,

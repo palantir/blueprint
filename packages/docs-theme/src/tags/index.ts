@@ -7,7 +7,7 @@
 import { ITag } from "documentalist/dist/client";
 
 export interface ITagRendererMap {
-    [tagName: string]: React.SFC<ITag> | undefined;
+    [tagName: string]: React.ComponentType<ITag> | undefined;
 }
 
 export * from "./css";
