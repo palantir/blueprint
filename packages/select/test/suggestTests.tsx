@@ -10,15 +10,13 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import * as Films from "../../docs-app/src/examples/select-examples/films";
+import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { ISuggestProps, Suggest } from "../src/components/select/suggest";
 
-type Film = Films.Film;
-
 describe("Suggest", () => {
-    const FilmSuggest = Suggest.ofType<Film>();
+    const FilmSuggest = Suggest.ofType<IFilm>();
     const defaultProps = {
-        items: Films.items,
+        items: TOP_100_FILMS,
         popoverProps: { inline: true, isOpen: true },
         query: "",
     };
@@ -33,7 +31,7 @@ describe("Suggest", () => {
         handlers = {
             inputValueRenderer: sinon.spy(inputValueRenderer),
             itemPredicate: sinon.spy(filterByYear),
-            itemRenderer: sinon.spy(Films.itemRenderer),
+            itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
     });
@@ -71,7 +69,7 @@ describe("Suggest", () => {
 
         it("scrolls active item into view when popover opens", () => {
             const wrapper = suggest();
-            const queryList = ((wrapper.instance() as Suggest<Film>) as any).queryList; // private ref
+            const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList; // private ref
             const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
             wrapper.setState({ isOpen: false });
             assert.isFalse(scrollActiveItemIntoViewSpy.called);
@@ -108,7 +106,7 @@ describe("Suggest", () => {
                 simulateFocus(wrapper);
                 selectItem(wrapper, ITEM_INDEX);
                 simulateKeyDown(wrapper, which);
-                const selectedItem = Films.items[ITEM_INDEX];
+                const selectedItem = TOP_100_FILMS[ITEM_INDEX];
                 assert.strictEqual(wrapper.state().selectedItem, selectedItem, "should keep selected item");
             });
         }
@@ -134,7 +132,7 @@ describe("Suggest", () => {
         it("itemRenderer is called for each filtered child", () => {
             suggest();
             const { callCount } = handlers.itemRenderer;
-            const numItems = Films.items.length;
+            const numItems = TOP_100_FILMS.length;
             assert.strictEqual(callCount, numItems, "should invoke itemRenderer 100 times on render");
         });
     });
@@ -173,7 +171,7 @@ describe("Suggest", () => {
 
             assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
             selectItem(wrapper, ITEM_INDEX);
-            const selectedItem = Films.items[ITEM_INDEX];
+            const selectedItem = TOP_100_FILMS[ITEM_INDEX];
             const expectedValue = inputValueRenderer(selectedItem);
 
             assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
@@ -221,7 +219,7 @@ describe("Suggest", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest();
             selectItem(wrapper, ITEM_INDEX);
-            assert.strictEqual(handlers.onItemSelect.args[0][0], Films.items[ITEM_INDEX]);
+            assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[ITEM_INDEX]);
         });
     });
 
@@ -268,7 +266,7 @@ describe("Suggest", () => {
         }
     });
 
-    function suggest(props: Partial<ISuggestProps<Film>> = {}, query?: string) {
+    function suggest(props: Partial<ISuggestProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
         if (query !== undefined) {
             wrapper.setState({ query });
@@ -277,7 +275,7 @@ describe("Suggest", () => {
     }
 });
 
-function filterByYear(query: string, film: Film) {
+function filterByYear(query: string, film: IFilm) {
     return query === "" || film.year.toString() === query;
 }
 
@@ -288,7 +286,7 @@ function selectItem(wrapper: ReactWrapper<any, any>, index: number) {
         .simulate("click");
 }
 
-function inputValueRenderer(item: Film) {
+function inputValueRenderer(item: IFilm) {
     return item.title;
 }
 

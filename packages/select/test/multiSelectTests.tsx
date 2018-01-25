@@ -11,18 +11,16 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
-import * as Films from "../../docs-app/src/examples/select-examples/films";
+import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { IMultiSelectProps, MultiSelect } from "../src/index";
 
-type Film = Films.Film;
-
 describe("<MultiSelect>", () => {
-    const FilmMultiSelect = MultiSelect.ofType<Film>();
+    const FilmMultiSelect = MultiSelect.ofType<IFilm>();
     const defaultProps = {
-        items: Films.items,
+        items: TOP_100_FILMS,
         popoverProps: { inline: true, isOpen: true },
         query: "",
-        selectedItems: [] as Film[],
+        selectedItems: [] as IFilm[],
         tagRenderer: renderTag,
     };
     let handlers: {
@@ -34,7 +32,7 @@ describe("<MultiSelect>", () => {
     beforeEach(() => {
         handlers = {
             itemPredicate: sinon.spy(filterByYear),
-            itemRenderer: sinon.spy(Films.itemRenderer),
+            itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
     });
@@ -48,7 +46,7 @@ describe("<MultiSelect>", () => {
 
     it("tagRenderer can return JSX", () => {
         const wrapper = multiselect({
-            selectedItems: [Films.items[0]],
+            selectedItems: [TOP_100_FILMS[0]],
             tagRenderer: film => <strong>{film.title}</strong>,
         });
         assert.equal(wrapper.find(Tag).find("strong").length, 1);
@@ -58,20 +56,20 @@ describe("<MultiSelect>", () => {
         const placeholder = "look here";
 
         const wrapper = multiselect({ tagInputProps: { inputProps: { placeholder } } });
-        wrapper.setState({ activeItem: Films.items[4] });
+        wrapper.setState({ activeItem: TOP_100_FILMS[4] });
         wrapper
             .find(MenuItem)
             .at(4)
             .find("a")
             .simulate("click");
-        assert.strictEqual(handlers.onItemSelect.args[0][0], Films.items[4]);
+        assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
     });
 
     it("selectedItems is optional", () => {
         assert.doesNotThrow(() => multiselect({ selectedItems: undefined }));
     });
 
-    function multiselect(props: Partial<IMultiSelectProps<Film>> = {}, query?: string) {
+    function multiselect(props: Partial<IMultiSelectProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(
             <FilmMultiSelect {...defaultProps} {...handlers} {...props}>
                 <table />
@@ -84,10 +82,10 @@ describe("<MultiSelect>", () => {
     }
 });
 
-function renderTag(film: Film) {
+function renderTag(film: IFilm) {
     return film.title;
 }
 
-function filterByYear(query: string, film: Film) {
+function filterByYear(query: string, film: IFilm) {
     return query === "" || film.year.toString() === query;
 }

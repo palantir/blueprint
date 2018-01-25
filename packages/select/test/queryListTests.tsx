@@ -10,17 +10,15 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
-import * as Films from "../../docs-app/src/examples/select-examples/films";
+import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { IQueryListRendererProps, QueryList } from "../src/index";
 
-type Film = Films.Film;
-
 describe("<QueryList>", () => {
-    const FilmQueryList = QueryList.ofType<Film>();
+    const FilmQueryList = QueryList.ofType<IFilm>();
     const testProps = {
-        activeItem: Films.items[0],
-        itemRenderer: Films.itemRenderer,
-        items: Films.items,
+        activeItem: TOP_100_FILMS[0],
+        itemRenderer: renderFilm,
+        items: TOP_100_FILMS,
         onActiveItemChange: sinon.spy(),
         onItemSelect: sinon.spy(),
         renderer: sinon.spy(() => <div />), // must render something,
@@ -34,21 +32,21 @@ describe("<QueryList>", () => {
 
     describe("filtering", () => {
         it("itemPredicate filters each item by query", () => {
-            const predicate = sinon.spy((query: string, film: Film) => film.year === +query);
+            const predicate = sinon.spy((query: string, film: IFilm) => film.year === +query);
             shallow(<FilmQueryList {...testProps} itemPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, testProps.items.length, "called once per item");
-            const { items, renderItem } = testProps.renderer.args[0][0] as IQueryListRendererProps<Film>;
+            const { items, renderItem } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
             const filteredItems = items.map(renderItem).filter(x => x != null);
             assert.lengthOf(filteredItems, 2, "returns only films from 1980");
         });
 
         it("itemListPredicate filters entire list by query", () => {
-            const predicate = sinon.spy((query: string, films: Film[]) => films.filter(f => f.year === +query));
+            const predicate = sinon.spy((query: string, films: IFilm[]) => films.filter(f => f.year === +query));
             shallow(<FilmQueryList {...testProps} itemListPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, 1, "called once for entire list");
-            const { items, renderItem } = testProps.renderer.args[0][0] as IQueryListRendererProps<Film>;
+            const { items, renderItem } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
             const filteredItems = items.map(renderItem).filter(x => x != null);
             assert.lengthOf(filteredItems, 2, "returns only films from 1980");
         });

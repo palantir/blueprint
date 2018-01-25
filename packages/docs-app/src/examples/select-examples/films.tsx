@@ -9,8 +9,17 @@ import { ItemRenderer } from "@blueprintjs/select";
 import * as classNames from "classnames";
 import * as React from "react";
 
+export interface IFilm {
+    /** Title of film. */
+    title: string;
+    /** Release year. */
+    year: number;
+    /** IMDb ranking. */
+    rank: number;
+}
+
 /** Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top */
-export const items = [
+export const TOP_100_FILMS: IFilm[] = [
     { title: "The Shawshank Redemption", year: 1994 },
     { title: "The Godfather", year: 1972 },
     { title: "The Godfather: Part II", year: 1974 },
@@ -113,9 +122,7 @@ export const items = [
     { title: "Monty Python and the Holy Grail", year: 1975 },
 ].map((m, index) => ({ ...m, rank: index + 1 }));
 
-export type Film = typeof items[0];
-
-export const itemRenderer: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
+export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers }) => {
     if (!modifiers.filtered) {
         return null;
     }
@@ -134,6 +141,12 @@ export const itemRenderer: ItemRenderer<Film> = (film, { handleClick, modifiers 
     );
 };
 
-export function itemPredicate(query: string, film: Film) {
+export function filterFilm(query: string, film: IFilm) {
     return `${film.rank}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
 }
+
+export const filmSelectProps = {
+    itemPredicate: filterFilm,
+    itemRenderer: renderFilm,
+    items: TOP_100_FILMS,
+};

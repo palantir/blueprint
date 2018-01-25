@@ -9,12 +9,12 @@ import * as React from "react";
 import { Button, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
-import * as Films from "./films";
+import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
 
-const FilmSelect = Select.ofType<Films.Film>();
+const FilmSelect = Select.ofType<IFilm>();
 
 export interface ISelectExampleState {
-    film?: Films.Film;
+    film?: IFilm;
     filterable?: boolean;
     hasInitialContent?: boolean;
     minimal?: boolean;
@@ -26,7 +26,7 @@ export interface ISelectExampleState {
 export class SelectExample extends BaseExample<ISelectExampleState> {
     public state: ISelectExampleState = {
         disabled: false,
-        film: Films.items[0],
+        film: TOP_100_FILMS[0],
         filterable: true,
         hasInitialContent: false,
         minimal: false,
@@ -45,14 +45,14 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         const { disabled, film, minimal, ...flags } = this.state;
 
         const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${Films.items.length} items loaded.`} />
+            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
         ) : (
             undefined
         );
 
         return (
             <FilmSelect
-                {...Films}
+                {...filmSelectProps}
                 {...flags}
                 disabled={disabled}
                 initialContent={initialContent}
@@ -108,7 +108,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
         ];
     }
 
-    private handleValueChange = (film: Films.Film) => this.setState({ film });
+    private handleValueChange = (film: IFilm) => this.setState({ film });
 
     private handleSwitchChange(prop: keyof ISelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {

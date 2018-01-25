@@ -10,13 +10,13 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import * as Films from "../../docs-app/src/examples/select-examples/films";
+import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { ISelectProps, Select } from "../src/index";
 
 describe("<Select>", () => {
-    const FilmSelect = Select.ofType<Films.Film>();
+    const FilmSelect = Select.ofType<IFilm>();
     const defaultProps = {
-        items: Films.items,
+        items: TOP_100_FILMS,
         popoverProps: { inline: true, isOpen: true },
         query: "",
     };
@@ -29,7 +29,7 @@ describe("<Select>", () => {
     beforeEach(() => {
         handlers = {
             itemPredicate: sinon.spy(filterByYear),
-            itemRenderer: sinon.spy(Films.itemRenderer),
+            itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
     });
@@ -55,7 +55,7 @@ describe("<Select>", () => {
     it("itemRenderer is called for each child", () => {
         select({}, "1999");
         // each item is rendered three times :(
-        assert.equal(handlers.itemRenderer.callCount, Films.items.length * 3);
+        assert.equal(handlers.itemRenderer.callCount, TOP_100_FILMS.length * 3);
     });
 
     it("renders noResults when given empty list", () => {
@@ -74,7 +74,7 @@ describe("<Select>", () => {
             .find("a")
             .at(4)
             .simulate("click");
-        assert.strictEqual(handlers.onItemSelect.args[0][0], Films.items[4]);
+        assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
     });
 
     it("clicking item preserves state when resetOnSelect=false", () => {
@@ -83,7 +83,7 @@ describe("<Select>", () => {
             .find("a")
             .at(0)
             .simulate("click");
-        assert.strictEqual(wrapper.state("activeItem"), Films.items[1]);
+        assert.strictEqual(wrapper.state("activeItem"), TOP_100_FILMS[1]);
         assert.strictEqual(wrapper.state("query"), "1972");
     });
 
@@ -93,7 +93,7 @@ describe("<Select>", () => {
             .find("a")
             .at(0)
             .simulate("click");
-        assert.strictEqual(wrapper.state("activeItem"), Films.items[0]);
+        assert.strictEqual(wrapper.state("activeItem"), TOP_100_FILMS[0]);
         assert.strictEqual(wrapper.state("query"), "");
     });
 
@@ -120,7 +120,7 @@ describe("<Select>", () => {
 
     it("returns focus to focusable target after popover closed");
 
-    function select(props: Partial<ISelectProps<Films.Film>> = {}, query?: string) {
+    function select(props: Partial<ISelectProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(
             <FilmSelect {...defaultProps} {...handlers} {...props}>
                 <table />
@@ -133,6 +133,6 @@ describe("<Select>", () => {
     }
 });
 
-function filterByYear(query: string, film: Films.Film) {
+function filterByYear(query: string, film: IFilm) {
     return query === "" || film.year.toString() === query;
 }

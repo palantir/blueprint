@@ -9,9 +9,9 @@ import * as React from "react";
 import { Button, Hotkey, Hotkeys, HotkeysTarget, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
-import * as Films from "./films";
+import { filmSelectProps, IFilm } from "./films";
 
-const FilmOmnibar = Omnibar.ofType<Films.Film>();
+const FilmOmnibar = Omnibar.ofType<IFilm>();
 
 export interface IOmnibarExampleState {
     isOpen: boolean;
@@ -50,7 +50,7 @@ export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
         return (
             <div>
                 <FilmOmnibar
-                    {...Films}
+                    {...filmSelectProps}
                     {...this.state}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleItemSelect}
@@ -90,7 +90,7 @@ export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
         this.setState({ isOpen: true });
     };
 
-    private handleItemSelect = (film: Films.Film) => {
+    private handleItemSelect = (film: IFilm) => {
         this.setState({ isOpen: false });
 
         this.toaster.show({

@@ -9,13 +9,13 @@ import * as React from "react";
 import { Classes, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 import { Suggest } from "@blueprintjs/select";
-import * as Films from "./films";
+import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
 
-const FilmSuggest = Suggest.ofType<Films.Film>();
+const FilmSuggest = Suggest.ofType<IFilm>();
 
 export interface ISuggestExampleState {
     closeOnSelect?: boolean;
-    film?: Films.Film;
+    film?: IFilm;
     minimal?: boolean;
     openOnKeyDown?: boolean;
 }
@@ -23,7 +23,7 @@ export interface ISuggestExampleState {
 export class SuggestExample extends BaseExample<ISuggestExampleState> {
     public state: ISuggestExampleState = {
         closeOnSelect: true,
-        film: Films.items[0],
+        film: TOP_100_FILMS[0],
         minimal: true,
         openOnKeyDown: false,
     };
@@ -36,7 +36,7 @@ export class SuggestExample extends BaseExample<ISuggestExampleState> {
         const { film, minimal, ...flags } = this.state;
         return (
             <FilmSuggest
-                {...Films}
+                {...filmSelectProps}
                 {...flags}
                 inputValueRenderer={this.renderInputValue}
                 noResults={<MenuItem disabled={true} text="No results." />}
@@ -71,9 +71,9 @@ export class SuggestExample extends BaseExample<ISuggestExampleState> {
         ];
     }
 
-    private renderInputValue = (film: Films.Film) => film.title;
+    private renderInputValue = (film: IFilm) => film.title;
 
-    private handleValueChange = (film: Films.Film) => this.setState({ film });
+    private handleValueChange = (film: IFilm) => this.setState({ film });
 
     private handleSwitchChange(prop: keyof ISuggestExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
