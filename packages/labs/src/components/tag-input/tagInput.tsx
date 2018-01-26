@@ -24,7 +24,7 @@ import * as Classes from "../../common/classes";
 
 export interface ITagInputProps extends IProps {
     /**
-     * If true, onAdd will also be invoked when the input loses focus.
+     * If true, onAdd will be invoked when the input loses focus.
      * By default, onAdd is only invoked on enter.
      * @default false
      */

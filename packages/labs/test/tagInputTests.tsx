@@ -104,8 +104,8 @@ describe("<TagInput>", () => {
             // simulate typing input text
             wrapper.setProps({ inputProps: { value: NEW_VALUE } });
             wrapper.find("input").simulate("change", { currentTarget: { value: NEW_VALUE } });
-            const fakeEvent = { flag: "yes" };
-            wrapper.simulate("blur", fakeEvent);
+            wrapper.simulate("blur");
+            // Need setTimeout here to wait for focus to change after blur event
             setTimeout(() => {
                 assert.isTrue(onAdd.calledOnce);
                 done();
@@ -115,8 +115,8 @@ describe("<TagInput>", () => {
         it("is not invoked on blur when addOnBlur is false", done => {
             const onAdd = sinon.stub();
             const wrapper = mount(<TagInput values={VALUES} inputProps={{ value: NEW_VALUE }} onAdd={onAdd} />);
-            const fakeEvent = { flag: "yes" };
-            wrapper.simulate("blur", fakeEvent);
+            wrapper.simulate("blur");
+            // Need setTimeout here to wait for focus to change after blur event
             setTimeout(() => {
                 assert.isTrue(onAdd.notCalled);
                 done();
