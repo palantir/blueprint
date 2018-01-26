@@ -125,6 +125,17 @@ describe("<TagInput>", () => {
             });
         });
 
+        it("is not invoked on blur when addOnBlur is true but inputValue is undefined", done => {
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} onAdd={onAdd} />);
+            wrapper.simulate("blur");
+            // Need setTimeout here to wait for focus to change after blur event
+            setTimeout(() => {
+                assert.isTrue(onAdd.notCalled);
+                done();
+            });
+        });
+
         it("is not invoked on blur when addOnBlur is false", done => {
             const onAdd = sinon.stub();
             const wrapper = mount(<TagInput values={VALUES} inputProps={{ value: NEW_VALUE }} onAdd={onAdd} />);

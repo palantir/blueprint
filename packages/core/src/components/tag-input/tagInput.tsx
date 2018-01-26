@@ -309,7 +309,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
             // we only need to "unfocus" if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
             if (this.inputElement != null && !this.inputElement.parentElement.contains(document.activeElement)) {
-                if (this.state.inputValue.length > 0 && this.props.addOnBlur) {
+                if (this.props.addOnBlur && this.state.inputValue !== undefined && this.state.inputValue.length > 0) {
                     this.addTag(this.state.inputValue);
                 }
                 this.setState({ activeIndex: NONE, isInputFocused: false });
