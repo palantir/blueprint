@@ -36,6 +36,7 @@
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.4.0",
     "@blueprintjs/test-commons": "^0.4.0",
+    "enzyme": "^3.3.0",
     "karma": "^1.7.1",
     "lodash": "^4.17.4",
     "mocha": "^4.1.0",
