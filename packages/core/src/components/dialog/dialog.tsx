@@ -95,11 +95,14 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
     }
 
     private maybeRenderCloseButton() {
-        // for now, show close button if prop is undefined or null
+        // show close button if prop is undefined or null
         // this gives us a behavior as if the default value were `true`
         if (this.props.isCloseButtonShown !== false) {
-            const classes = classNames(Classes.DIALOG_CLOSE_BUTTON, Classes.iconClass("small-cross"));
-            return <button aria-label="Close" className={classes} onClick={this.props.onClose} />;
+            return (
+                <button aria-label="Close" className={Classes.DIALOG_CLOSE_BUTTON} onClick={this.props.onClose}>
+                    <Icon iconName="small-cross" iconSize={Icon.SIZE_LARGE} />
+                </button>
+            );
         } else {
             return undefined;
         }
