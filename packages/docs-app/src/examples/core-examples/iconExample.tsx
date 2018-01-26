@@ -9,7 +9,7 @@ import * as React from "react";
 import { Classes, Icon, MenuItem, Slider } from "@blueprintjs/core";
 import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
 import { IconClasses, IconName } from "@blueprintjs/icons";
-import { ISelectItemRendererProps, Suggest } from "@blueprintjs/select";
+import { ItemRenderer, Suggest } from "@blueprintjs/select";
 import * as classNames from "classnames";
 
 export interface IIconExampleState {
@@ -50,7 +50,7 @@ export class IconExample extends BaseExample<IIconExampleState> {
                     key="icon-name"
                     inputProps={suggestInputProps}
                     items={ICON_NAMES.filter(item => item.indexOf(query) >= 0)}
-                    itemRenderer={this.renderIconItem}
+                    itemRenderer={renderIconItem}
                     inputValueRenderer={this.renderIconValue}
                     noResults={<MenuItem disabled={true} text="No results" />}
                     onItemSelect={this.handleIconNameChange}
@@ -74,14 +74,6 @@ export class IconExample extends BaseExample<IIconExampleState> {
         ];
     }
 
-    private renderIconItem({ handleClick, isActive, item: icon }: ISelectItemRendererProps<IconName>) {
-        const classes = classNames({
-            [Classes.ACTIVE]: isActive,
-            [Classes.INTENT_PRIMARY]: isActive,
-        });
-        return <MenuItem className={classes} iconName={icon} key={icon} onClick={handleClick} text={icon} />;
-    }
-
     private renderIconValue(icon: IconName) {
         return icon;
     }
@@ -98,5 +90,12 @@ const IconSuggest = Suggest.ofType<IconName>();
 const ICON_NAMES = Object.keys(IconClasses).map(
     (name: keyof typeof IconClasses) => IconClasses[name].replace("pt-icon-", "") as IconName,
 );
-
 const MAX_ICON_SIZE = 100;
+
+const renderIconItem: ItemRenderer<IconName> = (icon, { handleClick, modifiers: { active } }) => {
+    const classes = classNames({
+        [Classes.ACTIVE]: active,
+        [Classes.INTENT_PRIMARY]: active,
+    });
+    return <MenuItem className={classes} iconName={icon} key={icon} onClick={handleClick} text={icon} />;
+};
