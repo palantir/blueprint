@@ -4,8 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Icon } from "@blueprintjs/core";
+import { ITag } from "documentalist/dist/client";
 import * as React from "react";
-import { TagRenderer } from "./";
 
 export interface IExample {
     sourceUrl: string;
@@ -27,7 +28,7 @@ export const ReactExample: React.SFC<IExampleProps> = props => (
     <div className="docs-example-wrapper">
         {props.example.render({ id: props.name })}
         <a className="view-example-source" href={props.example.sourceUrl} target="_blank">
-            <span className="pt-icon-standard pt-icon-code">&nbsp;</span>View source on GitHub
+            <Icon iconName="code" /> View source on GitHub
         </a>
     </div>
 );
@@ -41,15 +42,15 @@ export class ReactExampleTagRenderer {
      * it to an actual example component exported by one of the packages. Also returns
      * the URL of the source code on GitHub.
      */
-    public render: TagRenderer = ({ value: exampleName }, key) => {
+    public render: React.SFC<ITag> = ({ value: exampleName }) => {
         if (exampleName == null) {
-            return undefined;
+            return null;
         }
 
         const example = this.examples[exampleName];
         if (example == null) {
             throw new Error(`Unknown @example component: ${exampleName}`);
         }
-        return <ReactExample example={example} key={key} name={exampleName} />;
+        return <ReactExample example={example} name={exampleName} />;
     };
 }

@@ -20,7 +20,6 @@ import {
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
-import { ISelectItemRendererProps } from "../select/select";
 
 export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
@@ -28,13 +27,6 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
      * @default true
      */
     closeOnSelect?: boolean;
-
-    /**
-     * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
-     * this item is active (selected by keyboard arrows) and an `onClick` event handler that
-     * should be attached to the returned element.
-     */
-    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
@@ -102,7 +94,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { itemRenderer, inputProps, noResults, popoverProps, ...restProps } = this.props;
+        const { inputProps, noResults, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -130,7 +122,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             popoverProps = this.DEFAULT_PROPS.popoverProps,
         } = this.props;
         const { isTyping, selectedItem, query } = this.state;
-        const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
         const inputValue: string = isTyping ? query : selectedItem ? inputValueRenderer(selectedItem) : "";
 
@@ -150,7 +141,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 <InputGroup
                     placeholder="Search..."
                     value={inputValue}
-                    {...htmlInputProps}
+                    {...inputProps}
                     inputRef={this.refHandlers.input}
                     onChange={this.handleQueryChange}
                     onFocus={this.handleInputFocus}
@@ -164,19 +155,9 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         );
     };
 
-    private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
-        const { itemRenderer, noResults } = this.props;
-        if (filteredItems.length === 0) {
-            return noResults;
-        }
-        return filteredItems.map((item, index) =>
-            itemRenderer({
-                handleClick: e => handleItemSelect(item, e),
-                index,
-                isActive: item === activeItem,
-                item,
-            }),
-        );
+    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
+        const renderedItems = items.map(renderItem).filter(item => item != null);
+        return renderedItems.length > 0 ? renderedItems : this.props.noResults;
     }
 
     private selectText = () => {

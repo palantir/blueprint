@@ -19,7 +19,7 @@ import {
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
-import { ISelectItemRendererProps, Select } from "@blueprintjs/select";
+import { ItemRenderer, Select } from "@blueprintjs/select";
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
@@ -214,11 +214,10 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         return filterWithQueryCandidates(items, query, item => getTimezoneQueryCandidates(item.timezone, date));
     };
 
-    private renderItem = (itemProps: ISelectItemRendererProps<ITimezoneItem>) => {
-        const { item, isActive, handleClick } = itemProps;
+    private renderItem: ItemRenderer<ITimezoneItem> = (item, { handleClick, modifiers }) => {
         const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
-            [CoreClasses.ACTIVE]: isActive,
-            [CoreClasses.INTENT_PRIMARY]: isActive,
+            [CoreClasses.ACTIVE]: modifiers.active,
+            [CoreClasses.INTENT_PRIMARY]: modifiers.active,
         });
 
         return (

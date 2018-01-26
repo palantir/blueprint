@@ -4,22 +4,19 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import * as React from "react";
 import * as tags from "./";
 
-import { IKssPluginData, IMarkdownPluginData, ITypescriptPluginData } from "documentalist/dist/client";
+import { IKssPluginData, IMarkdownPluginData, ITag, ITypescriptPluginData } from "documentalist/dist/client";
 
 export interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {}
 
-export function createDefaultRenderers(docs: IDocsData) {
-    const css = new tags.CssTagRenderer(docs);
-    const heading = new tags.HeadingTagRenderer();
-    const iface = new tags.InterfaceTagRenderer(docs);
-    const page = new tags.PageTagRenderer();
-
+export function createDefaultRenderers(): Record<string, React.ComponentType<ITag>> {
     return {
-        css: css.render,
-        heading: heading.render,
-        interface: iface.render,
-        page: page.render,
+        css: tags.CssExample,
+        heading: tags.Heading,
+        interface: tags.TypescriptExample,
+        page: () => null,
+        // TODO: @see
     };
 }

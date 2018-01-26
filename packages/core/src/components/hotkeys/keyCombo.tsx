@@ -4,24 +4,27 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import * as classNames from "classnames";
 import * as React from "react";
+import { IProps } from "../../common";
+import { Icon, IconName } from "../icon/icon";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
-const KeyIcons: { [key: string]: string } = {
-    alt: "pt-icon-key-option",
-    cmd: "pt-icon-key-command",
-    ctrl: "pt-icon-key-control",
-    delete: "pt-icon-key-delete",
-    down: "pt-icon-arrow-down",
-    enter: "pt-icon-key-enter",
-    left: "pt-icon-arrow-left",
-    meta: "pt-icon-key-command",
-    right: "pt-icon-arrow-right",
-    shift: "pt-icon-key-shift",
-    up: "pt-icon-arrow-up",
+const KeyIcons: { [key: string]: IconName } = {
+    alt: "key-option",
+    cmd: "key-command",
+    ctrl: "key-control",
+    delete: "key-delete",
+    down: "arrow-down",
+    enter: "key-enter",
+    left: "arrow-left",
+    meta: "key-command",
+    right: "arrow-right",
+    shift: "key-shift",
+    up: "arrow-up",
 };
 
-export interface IKeyComboProps {
+export interface IKeyComboProps extends IProps {
     allowInInput?: boolean;
     combo: string;
     disabled?: boolean;
@@ -33,14 +36,14 @@ export class KeyCombo extends React.Component<IKeyComboProps, {}> {
     public render() {
         const keys = normalizeKeyCombo(this.props.combo);
         const components = [] as JSX.Element[];
+        const rootClasses = classNames("pt-key-combo", this.props.className);
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i];
             const icon = KeyIcons[key];
             if (icon != null) {
                 components.push(
                     <kbd className="pt-key pt-modifier-key" key={`key-${i}`}>
-                        <span className={`pt-icon-standard ${icon}`} />
-                        {key}
+                        <Icon iconName={icon} /> {key}
                     </kbd>,
                 );
             } else {
@@ -54,6 +57,6 @@ export class KeyCombo extends React.Component<IKeyComboProps, {}> {
                 );
             }
         }
-        return <span className="pt-key-combo">{components}</span>;
+        return <span className={rootClasses}>{components}</span>;
     }
 }

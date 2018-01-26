@@ -4,55 +4,57 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IKssExample, IKssModifier, IKssPluginData } from "documentalist/dist/client";
+import { IKssPluginData, ITag } from "documentalist/dist/client";
 import * as React from "react";
+import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
 import { ModifierTable } from "../components/modifierTable";
-import { TagRenderer } from "./";
 
-const MODIFIER_PLACEHOLDER = /\{\{([\.\:]?)modifier\}\}/g;
-const DEFAULT_MODIFIER: IKssModifier = {
-    documentation: "Default",
-    name: "default",
-};
+export class CssExample extends React.PureComponent<ITag> {
+    public static contextTypes = DocumentationContextTypes;
+    public static displayName = "Docs.CssExample";
 
-const CssExample: React.SFC<IKssExample> = ({ markup, markupHtml, modifiers, reference }) => (
-    <div>
-        {modifiers.length > 0 ? <ModifierTable modifiers={modifiers} /> : undefined}
-        <div className="docs-example-wrapper" data-reference={reference}>
-            {renderMarkupForModifier(markup, DEFAULT_MODIFIER)}
-            {modifiers.map(mod => renderMarkupForModifier(markup, mod))}
-        </div>
-        <div className="docs-markup" dangerouslySetInnerHTML={{ __html: markupHtml }} />
-    </div>
-);
+    public context: IDocumentationContext;
 
-function renderMarkupForModifier(markup: string, modifier: IKssModifier) {
-    const { name } = modifier;
-    const html = markup.replace(MODIFIER_PLACEHOLDER, (_, prefix) => {
-        if (prefix && name.charAt(0) === prefix) {
-            return name.slice(1);
-        } else if (!prefix) {
-            return name;
-        } else {
-            return "";
+    public render() {
+        const { value } = this.props;
+        const { css } = this.context.getDocsData() as IKssPluginData;
+        if (css == null || css[value] == null) {
+            return null;
         }
-    });
-    return (
-        <div className="docs-example" data-modifier={modifier.name} key={modifier.name}>
-            <code>{modifier.name}</code>
-            <div dangerouslySetInnerHTML={{ __html: html }} />
-        </div>
-    );
+        const { markup, markupHtml, modifiers, reference } = css[value];
+        return (
+            <div>
+                {modifiers.length > 0 ? <ModifierTable modifiers={modifiers} /> : undefined}
+                <div className="docs-example-wrapper" data-reference={reference}>
+                    {this.renderMarkupExample(markup)}
+                    {modifiers.map(mod => this.renderMarkupExample(markup, mod.name))}
+                </div>
+                <div className="docs-markup" dangerouslySetInnerHTML={{ __html: markupHtml }} />
+            </div>
+        );
+    }
+
+    private renderMarkupExample(markup: string, modifierName = "default") {
+        return (
+            <div className="docs-example" data-modifier={modifierName} key={modifierName}>
+                <code>{modifierName}</code>
+                {this.renderMarkupForModifier(markup, modifierName)}
+            </div>
+        );
+    }
+
+    private renderMarkupForModifier(markup: string, modifierName: string) {
+        const html = markup.replace(MODIFIER_PLACEHOLDER_REGEXP, (_, prefix: string) => {
+            if (prefix && modifierName.charAt(0) === prefix) {
+                return modifierName.slice(1);
+            } else if (!prefix) {
+                return modifierName;
+            } else {
+                return "";
+            }
+        });
+        return <div dangerouslySetInnerHTML={{ __html: html }} />;
+    }
 }
 
-export class CssTagRenderer {
-    constructor(private docs: IKssPluginData) {}
-
-    public render: TagRenderer = ({ value: reference }, key) => {
-        const example = this.docs.css[reference];
-        if (example === undefined || example.reference === undefined) {
-            throw new Error(`Unknown @css reference: ${reference}`);
-        }
-        return <CssExample {...example} key={key} />;
-    };
-}
+const MODIFIER_PLACEHOLDER_REGEXP = /\{\{([.:]?)modifier\}\}/g;

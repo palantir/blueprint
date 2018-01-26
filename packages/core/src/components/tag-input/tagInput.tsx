@@ -24,8 +24,14 @@ export interface ITagInputProps extends IProps {
      */
     disabled?: boolean;
 
-    /** React props to pass to the `<input>` element. */
+    /**
+     * React props to pass to the `<input>` element.
+     * Note that `ref` and `key` are not supported here; use `inputRef` below.
+     */
     inputProps?: HTMLInputProps;
+
+    /** Ref handler for the `<input>` element. */
+    inputRef?: (input: HTMLInputElement) => void;
 
     /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;
@@ -163,11 +169,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     private refHandlers = {
         input: (ref: HTMLInputElement) => {
             this.inputElement = ref;
-            // can't use safeInvoke cuz inputProps.ref can be `string | function`
-            const refHandler = this.props.inputProps.ref;
-            if (Utils.isFunction(refHandler)) {
-                refHandler(ref);
-            }
+            Utils.safeInvoke(this.props.inputRef, ref);
         },
     };
 

@@ -214,9 +214,9 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
     private getTabElements(subselector = "") {
         if (this.tablistElement == null) {
-            return [] as Elements;
+            return [];
         }
-        return this.tablistElement.queryAll(TAB_SELECTOR + subselector);
+        return Array.from(this.tablistElement.querySelectorAll(TAB_SELECTOR + subselector));
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -265,7 +265,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         }
 
         const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
-        const selectedTabElement = this.tablistElement.query(tabIdSelector) as HTMLElement;
+        const selectedTabElement = this.tablistElement.querySelector(tabIdSelector) as HTMLElement;
 
         let indicatorWrapperStyle: React.CSSProperties = { display: "none" };
         if (selectedTabElement != null) {

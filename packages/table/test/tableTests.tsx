@@ -104,13 +104,15 @@ describe("<Table>", () => {
 
         expect(tableHarness.element.textContent).to.equal("");
 
-        const cells = tableHarness.element.queryAll(`.${Classes.TABLE_CELL}`);
+        const cells = Array.from(tableHarness.element.querySelectorAll(`.${Classes.TABLE_CELL}`));
         cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL));
 
-        const columnHeaders = tableHarness.element.queryAll(COLUMN_HEADER_SELECTOR);
+        const columnHeaders = Array.from(tableHarness.element.querySelectorAll(COLUMN_HEADER_SELECTOR));
         columnHeaders.forEach(columnHeader => expectCellLoading(columnHeader, CellType.COLUMN_HEADER));
 
-        const rowHeaders = tableHarness.element.queryAll(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`);
+        const rowHeaders = Array.from(
+            tableHarness.element.querySelectorAll(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`),
+        );
         rowHeaders.forEach(rowHeader => expectCellLoading(rowHeader, CellType.ROW_HEADER));
     });
 
