@@ -83,7 +83,6 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
                 className="docs-navigator"
                 content={this.renderPopover()}
                 onInteraction={this.handlePopoverInteraction}
-                inline={true}
                 isOpen={this.state.query.length > 0}
                 minimal={true}
                 position={Position.BOTTOM_LEFT}

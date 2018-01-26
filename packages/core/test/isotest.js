@@ -14,11 +14,11 @@ const customProps = {
     Hotkey: { combo: "mod+s", global: true, label: "save" },
     Icon: { iconName: "pt-icon-build" },
     KeyCombo: { combo: "?" },
-    Overlay: { lazy: false, inline: true },
+    Overlay: { lazy: false, usePortal: false },
     SVGTooltip: tooltipContent,
     TagInput: { values: ["foo", "bar", "baz"] },
     Tooltip: tooltipContent,
-    Toaster: { inline: true },
+    Toaster: { usePortal: false },
 };
 
 const popoverTarget = React.createElement("button");

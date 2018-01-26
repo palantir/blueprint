@@ -15,6 +15,7 @@ import {
     Classes,
     IMenuItemProps,
     IMenuProps,
+    IPopoverProps,
     Menu,
     MenuDivider,
     MenuItem,
@@ -94,7 +95,7 @@ describe("MenuItem", () => {
         const handleClose = spy();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
         const wrapper = mount(
-            <Popover content={menu} isOpen={true} inline={true} onInteraction={handleClose}>
+            <Popover content={menu} isOpen={true} onInteraction={handleClose}>
                 <button className="pt-button" type="button" />
             </Popover>,
         );
@@ -107,9 +108,8 @@ describe("MenuItem", () => {
 
     it("popover can be controlled with popoverProps", () => {
         // Ensures that popover props are passed to Popover component, except content property
-        const popoverProps = {
+        const popoverProps: Partial<IPopoverProps> = {
             content: "CUSTOM_CONTENT",
-            inline: false,
             interactionKind: PopoverInteractionKind.CLICK,
             popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
         };
@@ -119,7 +119,7 @@ describe("MenuItem", () => {
                 <MenuItem text="two" />
             </MenuItem>,
         );
-        assert.strictEqual(wrapper.find(Popover).prop("inline"), popoverProps.inline);
+        assert.strictEqual(wrapper.find(Popover).prop("usePortal"), popoverProps.usePortal);
         assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
         assert.notStrictEqual(
             wrapper

@@ -220,9 +220,9 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
         return (
             <Popover
-                inline={true}
                 isOpen={this.state.isOpen && !this.props.disabled}
                 position={this.props.popoverPosition}
+                usePortal={false}
                 {...popoverProps}
                 autoFocus={false}
                 className={classNames(popoverProps.className, this.props.className)}

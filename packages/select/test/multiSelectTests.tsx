@@ -18,7 +18,7 @@ describe("<MultiSelect>", () => {
     const FilmMultiSelect = MultiSelect.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
-        popoverProps: { inline: true, isOpen: true },
+        popoverProps: { isOpen: true },
         query: "",
         selectedItems: [] as IFilm[],
         tagRenderer: renderTag,

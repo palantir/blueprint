@@ -78,7 +78,7 @@ describe("<CollapsibleList>", () => {
 
     it("hides some items when visibleItemCount < number of children", () => {
         const list = renderCollapsibleList(5, {
-            dropdownProps: { inline: true, isOpen: true },
+            dropdownProps: { isOpen: true },
             visibleItemCount: 2,
         });
         assertListItems(list, 2, 3);

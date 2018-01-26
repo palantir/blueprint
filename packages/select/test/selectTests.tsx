@@ -17,7 +17,7 @@ describe("<Select>", () => {
     const FilmSelect = Select.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
-        popoverProps: { inline: true, isOpen: true },
+        popoverProps: { isOpen: true },
         query: "",
     };
     let handlers: {
@@ -47,7 +47,7 @@ describe("<Select>", () => {
     });
 
     it("disabled=true disables Popover", () => {
-        const wrapper = select({ disabled: true, popoverProps: { inline: true } });
+        const wrapper = select({ disabled: true });
         wrapper.find("table").simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
     });
