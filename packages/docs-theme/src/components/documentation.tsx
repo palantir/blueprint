@@ -223,7 +223,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navMenuElement = this.navElement.query(`a[href="#${activeSectionId}"]`).closest(".docs-menu-item-page");
+        const navMenuElement = this.navElement
+            .querySelector(`a[href="#${activeSectionId}"]`)
+            .closest(".docs-menu-item-page");
         const innerBounds = navMenuElement.getBoundingClientRect();
         const outerBounds = this.navElement.getBoundingClientRect();
         if (innerBounds.top < outerBounds.top || innerBounds.bottom > outerBounds.bottom) {
@@ -250,23 +252,23 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     }
 }
 
-/** Shorthand for element.query() + cast to HTMLElement */
+/** Shorthand for element.querySelector() + cast to HTMLElement */
 function queryHTMLElement(parent: Element, selector: string) {
-    return parent.query(selector) as HTMLElement;
+    return parent.querySelector(selector) as HTMLElement;
 }
 
 /**
  * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
  */
 function getScrolledReference(offset: number, container: HTMLElement, scrollParent = document.scrollingElement) {
-    const headings = container.queryAll(".docs-title");
+    const headings = Array.from(container.querySelectorAll(".docs-title"));
     while (headings.length > 0) {
         // iterating in reverse order (popping from end / bottom of page)
         // so the first element below the threshold is the one we want.
         const element = headings.pop() as HTMLElement;
         if (element.offsetTop < scrollParent.scrollTop + offset) {
             // relying on DOM structure to get reference
-            return element.query("[data-route]").getAttribute("data-route");
+            return element.querySelector("[data-route]").getAttribute("data-route");
         }
     }
     return undefined;

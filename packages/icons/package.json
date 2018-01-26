@@ -36,8 +36,6 @@
     "@blueprintjs/node-build-scripts": "^0.4.0",
     "@blueprintjs/test-commons": "^0.4.0",
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "es6-shim": "^0.35.3",
     "mocha": "^4.1.0",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
