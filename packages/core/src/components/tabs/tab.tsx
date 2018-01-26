@@ -5,63 +5,55 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface ITabProps extends IProps {
-    /**
-     * Element ID.
-     * @internal
-     */
-    id?: string;
+export type TabId = string | number;
 
+export interface ITabProps extends IProps {
     /**
      * Whether the tab is disabled.
      * @default false
      */
-    isDisabled?: boolean;
+    disabled?: boolean;
 
     /**
-     * Whether the tab is currently selected.
-     * @internal
+     * Unique identifier used to control which tab is selected
+     * and to generate ARIA attributes for accessibility.
      */
-    isSelected?: boolean;
+    id: TabId;
 
     /**
-     * The ID of the tab panel which this tab corresponds to.
-     * @internal
+     * Panel content, rendered by the parent `Tabs` when this tab is active.
+     * If omitted, no panel will be rendered for this tab.
      */
-    panelId?: string;
+    panel?: JSX.Element;
+
+    /**
+     * Content of tab title element, rendered in a list above the active panel.
+     * Can also be set via React `children`.
+     */
+    title?: string | JSX.Element;
 }
 
-@PureRender
-export class Tab extends React.Component<ITabProps, {}> {
+export class Tab extends React.PureComponent<ITabProps, {}> {
     public static defaultProps: ITabProps = {
-        isDisabled: false,
-        isSelected: false,
+        disabled: false,
+        id: undefined,
     };
 
     public static displayName = "Blueprint.Tab";
 
+    // this component is never rendered directly; see Tabs#renderTabPanel()
+    /* istanbul ignore next */
     public render() {
+        const { className, panel } = this.props;
         return (
-            <li
-                aria-controls={this.props.panelId}
-                aria-disabled={this.props.isDisabled}
-                aria-expanded={this.props.isSelected}
-                aria-selected={this.props.isSelected}
-                className={classNames(Classes.TAB, this.props.className)}
-                id={this.props.id}
-                role="tab"
-                tabIndex={this.props.isDisabled ? null : 0}
-            >
-                {this.props.children}
-            </li>
+            <div className={classNames(Classes.TAB_PANEL, className)} role="tablist">
+                {panel}
+            </div>
         );
     }
 }
-
-export const TabFactory = React.createFactory(Tab);

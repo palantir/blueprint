@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
@@ -112,7 +112,7 @@ export interface IDateRangePickerState {
     value?: DateRange;
 }
 
-export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, IDateRangePickerState> {
+export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps, IDateRangePickerState> {
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
@@ -343,7 +343,11 @@ export class DateRangePicker extends AbstractComponent<IDateRangePickerProps, ID
             return undefined;
         }
 
-        const shortcuts = typeof propsShortcuts === "boolean" ? createDefaultShortcuts() : propsShortcuts;
+        const shortcuts =
+            typeof propsShortcuts === "boolean"
+                ? createDefaultShortcuts(this.props.allowSingleDayRange)
+                : propsShortcuts;
+
         const shortcutElements = shortcuts.map((s, i) => {
             return (
                 <MenuItem
@@ -664,7 +668,7 @@ function createShortcut(label: string, dateRange: DateRange): IDateRangeShortcut
     return { dateRange, label };
 }
 
-function createDefaultShortcuts() {
+function createDefaultShortcuts(allowSingleDayRange: boolean) {
     const today = new Date();
     const makeDate = (action: (d: Date) => void) => {
         const returnVal = DateUtils.clone(today);
@@ -673,6 +677,7 @@ function createDefaultShortcuts() {
         return returnVal;
     };
 
+    const yesterday = makeDate(d => d.setDate(d.getDate() - 2));
     const oneWeekAgo = makeDate(d => d.setDate(d.getDate() - 7));
     const oneMonthAgo = makeDate(d => d.setMonth(d.getMonth() - 1));
     const threeMonthsAgo = makeDate(d => d.setMonth(d.getMonth() - 3));
@@ -680,7 +685,12 @@ function createDefaultShortcuts() {
     const oneYearAgo = makeDate(d => d.setFullYear(d.getFullYear() - 1));
     const twoYearsAgo = makeDate(d => d.setFullYear(d.getFullYear() - 2));
 
+    const singleDayShortcuts = allowSingleDayRange
+        ? [createShortcut("Today", [today, today]), createShortcut("Yesterday", [yesterday, yesterday])]
+        : [];
+
     return [
+        ...singleDayShortcuts,
         createShortcut("Past week", [oneWeekAgo, today]),
         createShortcut("Past month", [oneMonthAgo, today]),
         createShortcut("Past 3 months", [threeMonthsAgo, today]),
@@ -689,5 +699,3 @@ function createDefaultShortcuts() {
         createShortcut("Past 2 years", [twoYearsAgo, today]),
     ];
 }
-
-export const DateRangePickerFactory = React.createFactory(DateRangePicker);

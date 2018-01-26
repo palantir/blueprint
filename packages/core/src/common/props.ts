@@ -6,10 +6,14 @@
 
 import * as React from "react";
 
-import { IconName } from "../generated/iconName";
+import { IconName } from "@blueprintjs/icons";
 import { Intent } from "./intent";
 
-export type HTMLInputProps = React.HTMLProps<HTMLInputElement>;
+/**
+ * Alias for all valid HTML props for `<input>` element.
+ * Does not include React's `ref` or `key`.
+ */
+export type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 /**
  * A shared base interface for all Blueprint component props.

@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table, Utils } from "@blueprintjs/table";
 
 export interface ITableFreezingExampleState {
@@ -38,7 +38,7 @@ export class TableFreezingExample extends BaseExample<ITableFreezingExampleState
                 <Column
                     key={columnIndex}
                     name={`Column ${Utils.toBase26Alpha(columnIndex)}`}
-                    renderCell={this.renderCell}
+                    cellRenderer={this.renderCell}
                 />
             );
         });

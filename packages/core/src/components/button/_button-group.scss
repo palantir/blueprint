@@ -1,7 +1,6 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
 @import "../forms/common";
 @import "./common";
@@ -99,13 +98,13 @@ Styleguide pt-button-group
 
   // support wrapping buttons in a tooltip, which adds a wrapper element
   &:not(.pt-minimal) {
-    > .pt-popover-target:not(:first-child) .pt-button,
+    > .pt-popover-wrapper:not(:first-child) .pt-popover-target .pt-button,
     > .pt-button:not(:first-child) {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
 
-    > .pt-popover-target:not(:last-child) .pt-button,
+    > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
     > .pt-button:not(:last-child) {
       margin-right: -$button-border-width;
       border-top-right-radius: 0;
@@ -140,7 +139,7 @@ Styleguide pt-button-group
       }
     }
 
-    > .pt-popover-target:last-child .pt-button,
+    > .pt-popover-wrapper:last-child .pt-popover-target .pt-button,
     > .pt-button:last-child {
       margin-right: 0;
 
@@ -213,29 +212,35 @@ Styleguide pt-button-group
     .pt-button {
       // we never want that margin-right when vertical
       margin-right: 0 !important; // stylelint-disable-line declaration-no-important
+      // needed to ensure buttons take up the full width when wrapped in a Popover:
+      width: 100%;
     }
 
-    > .pt-popover-target:first-child .pt-button,
+    > .pt-popover-wrapper:first-child .pt-popover-target .pt-button,
     > .pt-button:first-child {
       border-radius: $pt-border-radius $pt-border-radius 0 0;
     }
 
-    > .pt-popover-target:last-child .pt-button,
+    > .pt-popover-wrapper:last-child .pt-popover-target .pt-button,
     > .pt-button:last-child {
       border-radius: 0 0 $pt-border-radius $pt-border-radius;
     }
 
-    > .pt-popover-target:not(:last-child) .pt-button,
+    > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
     > .pt-button:not(:last-child) {
       margin-bottom: -$button-border-width;
     }
 
-    &.pt-minimal .pt-button {
-      &:not(:last-child) {
+    &.pt-minimal {
+      // apply the margin and divider to the .pt-popover-wrapper so that the
+      // popover arrow remains centered on the button.
+      > .pt-popover-wrapper:not(:last-child),
+      > .pt-button:not(:last-child) {
         margin-bottom: $pt-grid-size + $minimal-button-divider-width;
       }
 
-      &::after {
+      > .pt-popover-wrapper .pt-popover-target .pt-button::after,
+      > .pt-button::after {
         top: 100%;
         right: 0;
         bottom: auto;
@@ -254,14 +259,18 @@ Styleguide pt-button-group
     // support wrapping buttons in a Blueprint.Tooltip, which adds a wrapper element
     // in dark theme, we adjust the spacing between buttons for best visual results
     &:not(.pt-minimal) {
-      > .pt-popover-target:not(:last-child) .pt-button,
+      // deeply nested selector necessary to target the appropriate popover
+      // wrapper, yet ensure we only style buttons within the target.
+      // stylelint-disable-next-line selector-max-compound-selectors
+      > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
       > .pt-button:not(:last-child) {
         margin-right: $button-border-width;
       }
     }
 
     &.pt-vertical {
-      > .pt-popover-target:not(:last-child) .pt-button,
+      // stylelint-disable-next-line selector-max-compound-selectors
+      > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
       > .pt-button:not(:last-child) {
         margin-bottom: $button-border-width;
       }

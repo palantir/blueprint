@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IIntentProps, IProps } from "../../common/props";
@@ -24,8 +23,7 @@ export interface ITextAreaProps extends React.AllHTMLAttributes<HTMLTextAreaElem
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@PureRender
-export class TextArea extends React.Component<ITextAreaProps, {}> {
+export class TextArea extends React.PureComponent<ITextAreaProps, {}> {
     public static displayName = "Blueprint.TextArea";
 
     public render() {
@@ -44,5 +42,3 @@ export class TextArea extends React.Component<ITextAreaProps, {}> {
         return <textarea {...htmlProps} className={rootClasses} />;
     }
 }
-
-export const TextAreaFactory = React.createFactory(TextArea);

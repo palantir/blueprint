@@ -20,15 +20,11 @@ $modifier-key-padding: 3px 8px 3px 6px !default;
   text-align: center;
   line-height: $pt-grid-size * 2;
   color: $pt-text-color-muted;
-  font-family: $pt-font-family;
+  font-family: inherit;
   font-size: $pt-font-size-small;
 
   &.pt-modifier-key {
     padding: $modifier-key-padding;
-
-    .pt-icon-standard {
-      margin-right: $pt-grid-size / 2;
-    }
   }
 
   .pt-dark & {

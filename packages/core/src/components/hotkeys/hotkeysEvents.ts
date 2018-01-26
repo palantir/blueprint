@@ -15,8 +15,8 @@ import { hideHotkeysDialogAfterDelay, isHotkeysDialogShowing, showHotkeysDialog 
 const SHOW_DIALOG_KEY = "?";
 
 export enum HotkeyScope {
-    LOCAL,
-    GLOBAL,
+    LOCAL = "local",
+    GLOBAL = "global",
 }
 
 export interface IHotkeyAction {
@@ -37,7 +37,7 @@ export class HotkeysEvents {
         this.actions = [];
     }
 
-    public setHotkeys(props: IHotkeysProps & { children: ReactNode[] }) {
+    public setHotkeys(props: IHotkeysProps & { children?: ReactNode }) {
         const actions = [] as IHotkeyAction[];
         Children.forEach(props.children, (child: ReactElement<any>) => {
             if (Hotkey.isInstance(child) && this.isScope(child.props)) {

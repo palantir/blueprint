@@ -118,7 +118,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
     public render() {
         const { renderMode } = this.props;
         const cells = renderMode === RenderMode.BATCH ? this.renderBatchedCells() : this.renderAllCells();
-        return <div className="bp-table-body-cells">{cells}</div>;
+        return <div className="pt-table-body-cells">{cells}</div>;
     }
 
     // Render modes

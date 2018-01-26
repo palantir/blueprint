@@ -35,7 +35,7 @@ export interface IHeaderCellProps extends IProps {
     /**
      * An element, like a `<Menu>`, this is displayed by right-clicking
      * anywhere in the header.
-     * @deprecated since v1.17.0; use `renderMenu` instead
+     * @deprecated since v1.17.0; use `menuRenderer` instead
      */
     menu?: JSX.Element;
 
@@ -49,7 +49,7 @@ export interface IHeaderCellProps extends IProps {
      * anywhere in the header. The callback will receive the cell index if it was provided via
      * props.
      */
-    renderMenu?: (index?: number) => JSX.Element;
+    menuRenderer?: (index?: number) => JSX.Element;
 
     /**
      * A `ReorderHandle` React component that allows users to drag-reorder the column header.
@@ -98,11 +98,11 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
     }
 
     public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
-        const { renderMenu } = this.props;
+        const { menuRenderer } = this.props;
 
-        if (CoreUtils.isFunction(renderMenu)) {
+        if (CoreUtils.isFunction(menuRenderer)) {
             // the preferred way (a consistent function instance that won't cause as many re-renders)
-            return renderMenu(this.props.index);
+            return menuRenderer(this.props.index);
         } else {
             // the deprecated way (leads to lots of unnecessary re-renders because of menu-item
             // callbacks needing access to the index of the right-clicked cell, which demands that

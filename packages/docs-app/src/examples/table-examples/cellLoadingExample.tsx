@@ -6,7 +6,7 @@
 import * as React from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
-import { BaseExample, handleStringChange } from "@blueprintjs/docs";
+import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
@@ -47,7 +47,7 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
 
     private handleConfigurationChange = handleStringChange(configuration => {
         if (configuration === CellsLoadingConfiguration.RANDOM) {
-            // calculate random numbers just once instead of inside renderCell which is called during table scrolling
+            // calculate random numbers just once instead of inside cellRenderer which is called during table scrolling
             const randomNumbers: number[] = [];
             const numberOfCells = bigSpaceRocks.length * Object.keys(bigSpaceRocks[0]).length;
             for (let i = 0; i < numberOfCells; i++) {
@@ -60,7 +60,11 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
 
     public renderExample() {
         return (
-            <Table numRows={bigSpaceRocks.length} renderRowHeader={this.renderRowHeaderCell} useInteractionBar={true}>
+            <Table
+                numRows={bigSpaceRocks.length}
+                rowHeaderCellRenderer={this.renderRowHeaderCell}
+                enableColumnInteractionBar={true}
+            >
                 {this.renderColumns()}
             </Table>
         );
@@ -87,8 +91,8 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
             columns.push(
                 <Column
                     key={formattedColumnName}
-                    renderCell={this.renderCell}
-                    renderColumnHeader={this.renderColumnHeaderCell}
+                    cellRenderer={this.renderCell}
+                    columnHeaderCellRenderer={this.renderColumnHeaderCell}
                 />,
             );
         });

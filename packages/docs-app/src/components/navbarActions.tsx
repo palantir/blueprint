@@ -4,9 +4,19 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AnchorButton, Classes, Hotkey, Hotkeys, HotkeysTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import {
+    AnchorButton,
+    Classes,
+    Hotkey,
+    Hotkeys,
+    HotkeysTarget,
+    Menu,
+    MenuDivider,
+    MenuItem,
+    Popover,
+    Position,
+} from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
-import { Popover2 } from "@blueprintjs/labs";
 
 import * as classNames from "classnames";
 import * as React from "react";
@@ -23,9 +33,9 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
         return (
             <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
                 <AnchorButton href="https://github.com/palantir/blueprint" target="_blank" text="GitHub" />
-                <Popover2 inline={true} content={this.renderReleasesMenu()} placement="bottom-end">
+                <Popover inline={true} content={this.renderReleasesMenu()} position={Position.BOTTOM_RIGHT}>
                     <AnchorButton rightIconName="caret-down" text="Releases" />
-                </Popover2>
+                </Popover>
                 <AnchorButton
                     className="docs-dark-switch"
                     onClick={this.handleDarkSwitchChange}
@@ -53,19 +63,33 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
      * Also include a link to the GitHub release notes.
      */
     private renderReleasesMenu() {
-        const menuItems = this.props.releases.map((version: IPackageInfo, index: number) => (
+        const { releases } = this.props;
+        const renderItem = (version: IPackageInfo, index: number) => (
             <MenuItem href={version.url} key={index} label={version.version} target="_blank" text={version.name} />
-        ));
+        );
+        const COMPONENT_PACKAGES = [
+            "@blueprintjs/core",
+            "@blueprintjs/datetime",
+            "@blueprintjs/table",
+            "@blueprintjs/labs",
+            "@blueprintjs/icons",
+            "@blueprintjs/select",
+            "@blueprintjs/timezone",
+        ];
+        const libs = releases.filter(({ name }) => COMPONENT_PACKAGES.indexOf(name) >= 0).map(renderItem);
+        const tooling = releases.filter(({ name }) => COMPONENT_PACKAGES.indexOf(name) === -1).map(renderItem);
         return (
-            <Menu>
+            <Menu className="docs-releases-menu">
                 <MenuItem
                     href="https://github.com/palantir/blueprint/releases"
                     iconName="book"
                     target="_blank"
                     text="Release notes"
                 />
-                <MenuDivider />
-                {menuItems}
+                <MenuDivider title="Components" />
+                {libs}
+                <MenuDivider title="Tooling" />
+                {tooling}
             </Menu>
         );
     }

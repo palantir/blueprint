@@ -5,14 +5,13 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
+import { IconName } from "@blueprintjs/icons";
 import {
-    AbstractComponent,
+    AbstractPureComponent,
     Classes,
     HTMLInputProps,
-    IconName,
     IIntentProps,
     IProps,
     Keys,
@@ -129,8 +128,7 @@ enum IncrementDirection {
     UP = +1,
 }
 
-@PureRender
-export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
+export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
     public static displayName = "Blueprint.NumericInput";
 
     public static VALUE_EMPTY = "";
@@ -596,5 +594,3 @@ export class NumericInput extends AbstractComponent<HTMLInputProps & INumericInp
         return Math.round(value * scaleFactor) / scaleFactor;
     }
 }
-
-export const NumericInputFactory = React.createFactory(NumericInput);

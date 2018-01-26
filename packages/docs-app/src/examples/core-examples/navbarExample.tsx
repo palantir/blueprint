@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Navbar, NavbarDivider, NavbarGroup, NavbarHeading, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface INavbarExampleState {
     alignRight?: boolean;

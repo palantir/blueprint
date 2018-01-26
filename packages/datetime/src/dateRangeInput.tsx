@@ -10,7 +10,7 @@ import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
 
 import {
-    AbstractComponent,
+    AbstractPureComponent,
     Classes,
     HTMLInputProps,
     IInputGroupProps,
@@ -215,7 +215,7 @@ interface IStateKeysAndValuesObject {
     };
 }
 
-export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDateRangeInputState> {
+export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: IDateRangeInputProps = {
         allowSingleDayRange: false,
         closeOnSelection: true,
@@ -359,24 +359,18 @@ export class DateRangeInput extends AbstractComponent<IDateRangeInputProps, IDat
     private renderInputGroup = (boundary: DateRangeBoundary) => {
         const inputProps = this.getInputProps(boundary);
 
-        // don't include `ref` in the returned HTML props, because passing it to the InputGroup
-        // leads to TS typing errors.
-        const { ref, ...htmlProps } = inputProps;
-
         const handleInputEvent =
             boundary === DateRangeBoundary.START ? this.handleStartInputEvent : this.handleEndInputEvent;
 
         const classes = classNames(
-            {
-                [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary),
-            },
+            { [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary) },
             inputProps.className,
         );
 
         return (
             <InputGroup
                 autoComplete="off"
-                {...htmlProps}
+                {...inputProps}
                 className={classes}
                 disabled={this.props.disabled}
                 inputRef={this.getInputRef(boundary)}

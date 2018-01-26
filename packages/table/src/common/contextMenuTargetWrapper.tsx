@@ -5,7 +5,6 @@
  */
 
 import { ContextMenuTarget, IProps } from "@blueprintjs/core";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 export interface IContextMenuTargetWrapper extends IProps {
@@ -20,8 +19,7 @@ export interface IContextMenuTargetWrapper extends IProps {
  * chains.
  */
 @ContextMenuTarget
-@PureRender
-export class ContextMenuTargetWrapper extends React.Component<IContextMenuTargetWrapper, {}> {
+export class ContextMenuTargetWrapper extends React.PureComponent<IContextMenuTargetWrapper, {}> {
     public render() {
         const { className, children, style } = this.props;
         return (

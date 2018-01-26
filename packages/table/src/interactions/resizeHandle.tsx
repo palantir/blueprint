@@ -6,7 +6,6 @@
 
 import { IProps } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -57,8 +56,7 @@ export interface IResizeHandleState {
     isDragging: boolean;
 }
 
-@PureRender
-export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHandleState> {
+export class ResizeHandle extends React.PureComponent<IResizeHandleProps, IResizeHandleState> {
     public state: IResizeHandleState = {
         isDragging: false,
     };
@@ -69,11 +67,15 @@ export class ResizeHandle extends React.Component<IResizeHandleProps, IResizeHan
             return undefined;
         }
 
-        const targetClasses = classNames(Classes.TABLE_RESIZE_HANDLE_TARGET, {
-            [Classes.TABLE_DRAGGING]: this.state.isDragging,
-            [Classes.TABLE_RESIZE_HORIZONTAL]: orientation === Orientation.HORIZONTAL,
-            [Classes.TABLE_RESIZE_VERTICAL]: orientation === Orientation.VERTICAL,
-        });
+        const targetClasses = classNames(
+            Classes.TABLE_RESIZE_HANDLE_TARGET,
+            {
+                [Classes.TABLE_DRAGGING]: this.state.isDragging,
+                [Classes.TABLE_RESIZE_HORIZONTAL]: orientation === Orientation.HORIZONTAL,
+                [Classes.TABLE_RESIZE_VERTICAL]: orientation === Orientation.VERTICAL,
+            },
+            this.props.className,
+        );
 
         const handleClasses = classNames(Classes.TABLE_RESIZE_HANDLE, {
             [Classes.TABLE_DRAGGING]: this.state.isDragging,

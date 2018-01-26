@@ -6,17 +6,19 @@
 
 import { Classes } from "@blueprintjs/core";
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
-import { IDateRangeShortcut } from "../src/dateRangePicker";
+import { IDateRangePickerState, IDateRangeShortcut } from "../src/dateRangePicker";
 import {
     Classes as DateClasses,
     DateRange,
@@ -555,9 +557,7 @@ describe("<DateRangePicker>", () => {
         it("maxDate must be later than minDate", () => {
             const minDate = new Date(2000, Months.JANUARY, 10);
             const maxDate = new Date(2000, Months.JANUARY, 8);
-            assert.throws(() => {
-                renderDateRangePicker({ minDate, maxDate });
-            }, Errors.DATERANGEPICKER_MAX_DATE_INVALID);
+            expectPropValidationError(DateRangePicker, { minDate, maxDate }, Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         });
 
         it("only days outside bounds have disabled class", () => {
@@ -574,18 +574,22 @@ describe("<DateRangePicker>", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const defaultValue = [new Date(2015, Months.JANUARY, 12), null] as DateRange;
-            assert.throws(() => {
-                renderDateRangePicker({ defaultValue, minDate, maxDate });
-            }, Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID);
+            expectPropValidationError(
+                DateRangePicker,
+                { defaultValue, minDate, maxDate },
+                Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID,
+            );
         });
 
         it("an error is thrown if initialMonth is outside month bounds", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const initialMonth = new Date(2015, Months.FEBRUARY, 12);
-            assert.throws(() => {
-                renderDateRangePicker({ initialMonth, minDate, maxDate });
-            }, Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
+            expectPropValidationError(
+                DateRangePicker,
+                { initialMonth, minDate, maxDate },
+                Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID,
+            );
         });
 
         it("an error is not thrown if initialMonth is outside day bounds but inside month bounds", () => {
@@ -601,9 +605,11 @@ describe("<DateRangePicker>", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const value = [new Date(2015, Months.JANUARY, 12), null] as DateRange;
-            assert.throws(() => {
-                renderDateRangePicker({ value, minDate, maxDate });
-            }, Errors.DATERANGEPICKER_VALUE_INVALID);
+            expectPropValidationError(
+                DateRangePicker,
+                { value, minDate, maxDate },
+                Errors.DATERANGEPICKER_VALUE_INVALID,
+            );
         });
 
         it("onChange not fired when a day outside of bounds is clicked", () => {
@@ -919,6 +925,17 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
         });
 
+        it("shortcuts fire onChange with correct values when single day range enabled", () => {
+            renderDateRangePicker({ allowSingleDayRange: true });
+            clickFirstShortcut();
+
+            const today = new Date();
+
+            assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
+            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][0]));
+            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
+        });
+
         it("custom shortcuts select the correct values", () => {
             const dateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.JANUARY, 5)] as DateRange;
             renderDateRangePicker({
@@ -1210,30 +1227,42 @@ describe("<DateRangePicker>", () => {
 
     function wrap(datepicker: JSX.Element) {
         const wrapper = mount(datepicker);
-        const dayPickers = wrapper.find(ReactDayPicker).find("Month");
-        const leftDayPicker = dayPickers.at(0);
-        const rightDayPicker = dayPickers.length > 1 ? dayPickers.at(1) : dayPickers.at(0);
+        // Don't cache the left/right day pickers into variables in this scope,
+        // because as of Enzyme 3.0 they can get stale if the views change.
         return {
             getDayLeftView: (dayNumber = 1) => {
-                return leftDayPicker
+                return getLeftDayPicker(wrapper)
                     .find(`.${DateClasses.DATEPICKER_DAY}`)
                     .filterWhere(
                         day => day.text() === "" + dayNumber && !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE),
                     );
             },
             getDayRightView: (dayNumber = 1) => {
-                return rightDayPicker
+                return getRightDayPicker(wrapper)
                     .find(`.${DateClasses.DATEPICKER_DAY}`)
                     .filterWhere(
                         day => day.text() === "" + dayNumber && !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE),
                     );
             },
             leftDayPickerNavbar: wrapper.find("Navbar").at(0),
-            leftView: leftDayPicker,
+            leftView: getLeftDayPicker(wrapper),
             rightDayPickerNavbar: wrapper.find("Navbar").at(1) || wrapper.find("Navbar").at(0),
-            rightView: rightDayPicker,
+            rightView: getRightDayPicker(wrapper),
             root: wrapper,
         };
+    }
+
+    function getLeftDayPicker(wrapper: ReactWrapper<IDateRangePickerProps, IDateRangePickerState>) {
+        return getDayPickers(wrapper).at(0);
+    }
+
+    function getRightDayPicker(wrapper: ReactWrapper<IDateRangePickerProps, IDateRangePickerState>) {
+        const dayPickers = getDayPickers(wrapper);
+        return dayPickers.length > 1 ? dayPickers.at(1) : dayPickers.at(0);
+    }
+
+    function getDayPickers(wrapper: ReactWrapper<IDateRangePickerProps, IDateRangePickerState>) {
+        return wrapper.find(ReactDayPicker).find("Month");
     }
 
     function clickDay(dayNumber = 1, fromLeftMonth = true) {

@@ -5,198 +5,253 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
-import { findDOMNode } from "react-dom";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import * as Errors from "../../common/errors";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 
-import { ITabProps, Tab } from "./tab";
-import { ITabListProps, TabList } from "./tabList";
-import { TabPanel } from "./tabPanel";
+import { ITabProps, Tab, TabId } from "./tab";
+import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
+
+export const Expander: React.SFC<{}> = () => <div className="pt-flex-expander" />;
+
+type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
+
+const TAB_SELECTOR = `.${Classes.TAB}`;
 
 export interface ITabsProps extends IProps {
     /**
-     * The index of the initially selected tab when this component renders.
-     * This prop has no effect if `selectedTabIndex` is also provided.
-     * @default 0
+     * Whether the selected tab indicator should animate its movement.
+     * @default true
      */
-    initialSelectedTabIndex?: number;
+    animate?: boolean;
 
     /**
-     * The index of the currently selected tab.
-     * Use this prop if you want to explicitly control the currently displayed panel
-     * yourself with the `onChange` event handler.
-     * If this prop is left undefined, the component changes tab panels automatically
-     * when tabs are clicked.
+     * Initial selected tab `id`, for uncontrolled usage.
+     * Note that this prop refers only to `<Tab>` children; other types of elements are ignored.
+     * @default first tab
      */
-    selectedTabIndex?: number;
+    defaultSelectedTabId?: TabId;
 
     /**
-     * A callback function that is invoked when tabs in the tab list are clicked.
+     * Unique identifier for this `Tabs` container. This will be combined with the `id` of each
+     * `Tab` child to generate ARIA accessibility attributes. IDs are required and should be
+     * unique on the page to support server-side rendering.
      */
-    onChange?(selectedTabIndex: number, prevSelectedTabIndex: number): void;
+    id: TabId;
+
+    /**
+     * If set to `true`, the tabs will display with larger styling.
+     * This is equivalent to setting `pt-large` on the `.pt-tab-list` element.
+     * This will apply large styles only to the tabs at this level, not to nested tabs.
+     * @default false
+     */
+    large?: boolean;
+
+    /**
+     * Whether inactive tab panels should be removed from the DOM and unmounted in React.
+     * This can be a performance enhancement when rendering many complex panels, but requires
+     * careful support for unmounting and remounting.
+     * @default false
+     */
+    renderActiveTabPanelOnly?: boolean;
+
+    /**
+     * Selected tab `id`, for controlled usage.
+     * Providing this prop will put the component in controlled mode.
+     * Unknown ids will result in empty selection (no errors).
+     */
+    selectedTabId?: TabId;
+
+    /**
+     * Whether to show tabs stacked vertically on the left side.
+     * @default false
+     */
+    vertical?: boolean;
+
+    /**
+     * A callback function that is invoked when a tab in the tab list is clicked.
+     */
+    onChange?(newTabId: TabId, prevTabId: TabId, event: React.MouseEvent<HTMLElement>): void;
 }
 
 export interface ITabsState {
-    /**
-     * The list of CSS rules to use on the indicator wrapper of the tab list.
-     */
     indicatorWrapperStyle?: React.CSSProperties;
-
-    /**
-     * The index of the currently selected tab.
-     * If a prop with the same name is set, this bit of state simply aliases the prop.
-     */
-    selectedTabIndex?: number;
+    selectedTabId?: TabId;
 }
 
-const TAB_CSS_SELECTOR = "li[role=tab]";
+export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
+    /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
+    public static Expander = Expander;
 
-@PureRender
-export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
-    public static defaultProps: ITabsProps = {
-        initialSelectedTabIndex: 0,
+    public static Tab = Tab;
+
+    public static defaultProps: Partial<ITabsProps> = {
+        animate: true,
+        large: false,
+        renderActiveTabPanelOnly: false,
+        vertical: false,
     };
 
     public static displayName = "Blueprint.Tabs";
 
-    // state is initialized in the constructor but getStateFromProps needs state defined
-    public state: ITabsState = {};
+    private tablistElement: HTMLDivElement;
+    private refHandlers = {
+        tablist: (tabElement: HTMLDivElement) => (this.tablistElement = tabElement),
+    };
 
-    private panelIds: string[] = [];
-    private tabIds: string[] = [];
-
-    constructor(props?: ITabsProps, context?: any) {
-        super(props, context);
-        this.state = this.getStateFromProps(this.props);
-
-        if (!Utils.isNodeEnv("production")) {
-            console.warn(Errors.TABS_WARN_DEPRECATED);
-        }
+    constructor(props?: ITabsProps) {
+        super(props);
+        const selectedTabId = this.getInitialSelectedTabId();
+        this.state = { selectedTabId };
     }
 
     public render() {
+        const { indicatorWrapperStyle, selectedTabId } = this.state;
+
+        const tabTitles = React.Children.map(
+            this.props.children,
+            child => (isTab(child) ? this.renderTabTitle(child) : child),
+        );
+
+        const tabPanels = this.getTabChildren()
+            .filter(this.props.renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
+            .map(this.renderTabPanel);
+
+        const tabIndicator = this.props.animate ? (
+            <div className="pt-tab-indicator-wrapper" style={indicatorWrapperStyle}>
+                <div className="pt-tab-indicator" />
+            </div>
+        ) : (
+            undefined
+        );
+
+        const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical }, this.props.className);
+        const tabListClasses = classNames(Classes.TAB_LIST, {
+            [Classes.LARGE]: this.props.large,
+        });
+
         return (
-            <div
-                className={classNames(Classes.TABS, this.props.className)}
-                onClick={this.handleClick}
-                onKeyPress={this.handleKeyPress}
-                onKeyDown={this.handleKeyDown}
-            >
-                {this.getChildren()}
+            <div className={classes}>
+                <div
+                    className={tabListClasses}
+                    onKeyDown={this.handleKeyDown}
+                    onKeyPress={this.handleKeyPress}
+                    ref={this.refHandlers.tablist}
+                    role="tablist"
+                >
+                    {tabIndicator}
+                    {tabTitles}
+                </div>
+                {tabPanels}
             </div>
         );
     }
 
-    public componentWillReceiveProps(newProps: ITabsProps) {
-        const newState = this.getStateFromProps(newProps);
-        this.setState(newState);
-    }
-
     public componentDidMount() {
-        const selectedTab = findDOMNode(this.refs[`tabs-${this.state.selectedTabIndex}`]) as HTMLElement;
-        this.setTimeout(() => this.moveIndicator(selectedTab));
+        this.moveSelectionIndicator();
     }
 
-    public componentDidUpdate(_: ITabsProps, prevState: ITabsState) {
-        const newIndex = this.state.selectedTabIndex;
-        if (newIndex !== prevState.selectedTabIndex) {
-            const tabElement = findDOMNode(this.refs[`tabs-${newIndex}`]) as HTMLElement;
-            // need to measure on the next frame in case the Tab children simultaneously change
-            this.setTimeout(() => this.moveIndicator(tabElement));
+    public componentWillReceiveProps({ selectedTabId }: ITabsProps) {
+        if (selectedTabId !== undefined) {
+            // keep state in sync with controlled prop, so state is canonical source of truth
+            this.setState({ selectedTabId });
         }
     }
 
-    protected validateProps(props: ITabsProps & { children?: React.ReactNode }) {
-        if (React.Children.count(props.children) > 0) {
-            const child = React.Children.toArray(props.children)[0] as React.ReactElement<any>;
-            if (child != null && child.type !== TabList) {
-                throw new Error(Errors.TABS_FIRST_CHILD);
-            }
-
-            if (this.getTabsCount() !== this.getPanelsCount()) {
-                throw new Error(Errors.TABS_MISMATCH);
+    public componentDidUpdate(prevProps: ITabsProps, prevState: ITabsState) {
+        if (this.state.selectedTabId !== prevState.selectedTabId) {
+            this.moveSelectionIndicator();
+        } else if (prevState.selectedTabId != null) {
+            // comparing React nodes is difficult to do with simple logic, so
+            // shallowly compare just their props as a workaround.
+            const didChildrenChange = !Utils.arraysEqual(
+                this.getTabChildrenProps(prevProps),
+                this.getTabChildrenProps(),
+                Utils.shallowCompareKeys,
+            );
+            if (didChildrenChange) {
+                this.moveSelectionIndicator();
             }
         }
     }
 
-    private handleClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
-        this.handleTabSelectingEvent(e);
+    private getInitialSelectedTabId() {
+        // NOTE: providing an unknown ID will hide the selection
+        const { defaultSelectedTabId, selectedTabId } = this.props;
+        if (selectedTabId !== undefined) {
+            return selectedTabId;
+        } else if (defaultSelectedTabId !== undefined) {
+            return defaultSelectedTabId;
+        } else {
+            // select first tab in absence of user input
+            const tabs = this.getTabChildren();
+            return tabs.length === 0 ? undefined : tabs[0].props.id;
+        }
+    }
+
+    private getKeyCodeDirection(e: React.KeyboardEvent<HTMLElement>) {
+        if (isEventKeyCode(e, Keys.ARROW_LEFT, Keys.ARROW_UP)) {
+            return -1;
+        } else if (isEventKeyCode(e, Keys.ARROW_RIGHT, Keys.ARROW_DOWN)) {
+            return 1;
+        }
+        return undefined;
+    }
+
+    private getTabChildrenProps(props: ITabsProps & { children?: React.ReactNode } = this.props) {
+        return this.getTabChildren(props).map(child => child.props);
+    }
+
+    /** Filters children to only `<Tab>`s */
+    private getTabChildren(props: ITabsProps & { children?: React.ReactNode } = this.props) {
+        return React.Children.toArray(props.children).filter(isTab) as TabElement[];
+    }
+
+    /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
+    private getTabElements(subselector = "") {
+        if (this.tablistElement == null) {
+            return [] as Elements;
+        }
+        return this.tablistElement.queryAll(TAB_SELECTOR + subselector);
+    }
+
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        const focusedElement = document.activeElement.closest(TAB_SELECTOR);
+        // rest of this is potentially expensive and futile, so bail if no tab is focused
+        if (focusedElement == null) {
+            return;
+        }
+
+        // must rely on DOM state because we have no way of mapping `focusedElement` to a JSX.Element
+        const enabledTabElements = this.getTabElements().filter(el => el.getAttribute("aria-disabled") === "false");
+        const focusedIndex = enabledTabElements.indexOf(focusedElement);
+        const direction = this.getKeyCodeDirection(e);
+
+        if (focusedIndex >= 0 && direction !== undefined) {
+            e.preventDefault();
+            const { length } = enabledTabElements;
+            // auto-wrapping at 0 and `length`
+            const nextFocusedIndex = (focusedIndex + direction + length) % length;
+            (enabledTabElements[nextFocusedIndex] as HTMLElement).focus();
+        }
     };
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const insideTab = (e.target as HTMLElement).closest(`.${Classes.TAB}`) != null;
-        if (insideTab && (e.which === Keys.SPACE || e.which === Keys.ENTER)) {
+        const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
+        if (targetTabElement != null && isEventKeyCode(e, Keys.SPACE, Keys.ENTER)) {
             e.preventDefault();
-            this.handleTabSelectingEvent(e);
+            targetTabElement.click();
         }
     };
 
-    private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        // don't want to handle keyDown events inside a tab panel
-        const insideTabList = (e.target as HTMLElement).closest(`.${Classes.TAB_LIST}`) != null;
-        if (!insideTabList) {
-            return;
-        }
-
-        const focusedTabIndex = this.getFocusedTabIndex();
-        if (focusedTabIndex === -1) {
-            return;
-        }
-
-        if (e.which === Keys.ARROW_LEFT) {
-            e.preventDefault();
-
-            // find previous tab that isn't disabled
-            let newTabIndex = focusedTabIndex - 1;
-            let tabIsDisabled = this.isTabDisabled(newTabIndex);
-
-            while (tabIsDisabled && newTabIndex !== -1) {
-                newTabIndex--;
-                tabIsDisabled = this.isTabDisabled(newTabIndex);
-            }
-
-            if (newTabIndex !== -1) {
-                this.focusTab(newTabIndex);
-            }
-        } else if (e.which === Keys.ARROW_RIGHT) {
-            e.preventDefault();
-
-            // find next tab that isn't disabled
-            const tabsCount = this.getTabsCount();
-
-            let newTabIndex = focusedTabIndex + 1;
-            let tabIsDisabled = this.isTabDisabled(newTabIndex);
-
-            while (tabIsDisabled && newTabIndex !== tabsCount) {
-                newTabIndex++;
-                tabIsDisabled = this.isTabDisabled(newTabIndex);
-            }
-
-            if (newTabIndex !== tabsCount) {
-                this.focusTab(newTabIndex);
-            }
-        }
-    };
-
-    private handleTabSelectingEvent = (e: React.SyntheticEvent<HTMLDivElement>) => {
-        const tabElement = (e.target as HTMLElement).closest(TAB_CSS_SELECTOR) as HTMLElement;
-
-        // select only if Tab is one of us and is enabled
-        if (
-            tabElement != null &&
-            this.tabIds.indexOf(tabElement.id) >= 0 &&
-            tabElement.getAttribute("aria-disabled") !== "true"
-        ) {
-            const index = tabElement.parentElement.queryAll(TAB_CSS_SELECTOR).indexOf(tabElement);
-
-            this.setSelectedTabIndex(index);
+    private handleTabClick = (newTabId: TabId, event: React.MouseEvent<HTMLElement>) => {
+        Utils.safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId, event);
+        if (this.props.selectedTabId === undefined) {
+            this.setState({ selectedTabId: newTabId });
         }
     };
 
@@ -204,187 +259,62 @@ export class Tabs extends AbstractComponent<ITabsProps, ITabsState> {
      * Calculate the new height, width, and position of the tab indicator.
      * Store the CSS values so the transition animation can start.
      */
-    private moveIndicator({ clientHeight, clientWidth, offsetLeft, offsetTop }: HTMLElement) {
-        const indicatorWrapperStyle = {
-            height: clientHeight,
-            transform: `translateX(${Math.floor(offsetLeft)}px) translateY(${Math.floor(offsetTop)}px)`,
-            width: clientWidth,
-        };
-        this.setState({ indicatorWrapperStyle });
-    }
-
-    /**
-     * Most of the component logic lives here. We clone the children provided by the user to set up refs,
-     * accessibility attributes, and selection props correctly.
-     */
-    private getChildren() {
-        for (let unassignedTabs = this.getTabsCount() - this.tabIds.length; unassignedTabs > 0; unassignedTabs--) {
-            this.tabIds.push(generateTabId());
-            this.panelIds.push(generatePanelId());
-        }
-
-        let childIndex = 0;
-        return React.Children.map(this.props.children, (child: React.ReactElement<any>) => {
-            let result: React.ReactElement<any>;
-
-            // can be null if conditionally rendering TabList / TabPanel
-            if (child == null) {
-                return null;
-            }
-
-            if (childIndex === 0) {
-                // clone TabList / Tab elements
-                result = this.cloneTabList(child);
-            } else {
-                const tabPanelIndex = childIndex - 1;
-                const shouldRenderTabPanel = this.state.selectedTabIndex === tabPanelIndex;
-                result = shouldRenderTabPanel ? this.cloneTabPanel(child, tabPanelIndex) : null;
-            }
-
-            childIndex++;
-            return result;
-        });
-    }
-
-    private cloneTabList(child: React.ReactElement<ITabListProps & { children?: React.ReactNode }>) {
-        let tabIndex = 0;
-        const tabs = React.Children.map(child.props.children, (tab: React.ReactElement<any>) => {
-            // can be null if conditionally rendering Tab
-            if (tab == null) {
-                return null;
-            }
-
-            const clonedTab = React.cloneElement(tab, {
-                id: this.tabIds[tabIndex],
-                isSelected: this.state.selectedTabIndex === tabIndex,
-                panelId: this.panelIds[tabIndex],
-                ref: `tabs-${tabIndex}`,
-            });
-            tabIndex++;
-            return clonedTab;
-        });
-        // tslint:disable-next-line no-object-literal-type-assertion
-        return React.cloneElement(child, {
-            children: tabs,
-            indicatorWrapperStyle: this.state.indicatorWrapperStyle,
-            ref: "tablist",
-        } as ITabListProps);
-    }
-
-    private cloneTabPanel(child: React.ReactElement<any>, tabIndex: number) {
-        return React.cloneElement(child, {
-            id: this.panelIds[tabIndex],
-            isSelected: this.state.selectedTabIndex === tabIndex,
-            ref: `panels-${tabIndex}`,
-            tabId: this.tabIds[tabIndex],
-        });
-    }
-
-    private focusTab(index: number) {
-        const ref = `tabs-${index}`;
-        const tab = findDOMNode(this.refs[ref]) as HTMLElement;
-        tab.focus();
-    }
-
-    private getFocusedTabIndex() {
-        const focusedElement = document.activeElement;
-        if (focusedElement != null && focusedElement.classList.contains(Classes.TAB)) {
-            const tabId = focusedElement.id;
-            return this.tabIds.indexOf(tabId);
-        }
-        return -1;
-    }
-
-    private getTabs() {
-        if (this.props.children == null) {
-            return [];
-        }
-        const tabs: Array<React.ReactElement<ITabProps>> = [];
-        if (React.Children.count(this.props.children) > 0) {
-            const firstChild = React.Children.toArray(this.props.children)[0] as React.ReactElement<any>;
-            if (firstChild != null) {
-                React.Children.forEach(firstChild.props.children, (tabListChild: React.ReactElement<any>) => {
-                    if (tabListChild.type === Tab) {
-                        tabs.push(tabListChild);
-                    }
-                });
-            }
-        }
-        return tabs;
-    }
-
-    private getTabsCount() {
-        return this.getTabs().length;
-    }
-
-    private getPanelsCount() {
-        if (this.props.children == null) {
-            return 0;
-        }
-
-        let index = 0;
-        let panelCount = 0;
-        React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
-            if (child.type === TabPanel) {
-                panelCount++;
-            }
-            index++;
-        });
-
-        return panelCount;
-    }
-
-    private getStateFromProps(props: ITabsProps): ITabsState {
-        const { selectedTabIndex, initialSelectedTabIndex } = props;
-
-        if (this.isValidTabIndex(selectedTabIndex)) {
-            return { selectedTabIndex };
-        } else if (this.isValidTabIndex(initialSelectedTabIndex) && this.state.selectedTabIndex == null) {
-            return { selectedTabIndex: initialSelectedTabIndex };
-        } else {
-            return this.state;
-        }
-    }
-
-    private isTabDisabled(index: number) {
-        const tab = this.getTabs()[index];
-        return tab != null && tab.props.isDisabled;
-    }
-
-    private isValidTabIndex(index: number) {
-        return index != null && index >= 0 && index < this.getTabsCount();
-    }
-
-    /**
-     * Updates the component's state if uncontrolled and calls onChange.
-     */
-    private setSelectedTabIndex(index: number) {
-        if (index === this.state.selectedTabIndex || !this.isValidTabIndex(index)) {
+    private moveSelectionIndicator() {
+        if (this.tablistElement === undefined || !this.props.animate) {
             return;
         }
 
-        const prevSelectedIndex = this.state.selectedTabIndex;
+        const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
+        const selectedTabElement = this.tablistElement.query(tabIdSelector) as HTMLElement;
 
-        if (this.props.selectedTabIndex == null) {
-            this.setState({
-                selectedTabIndex: index,
-            });
+        let indicatorWrapperStyle: React.CSSProperties = { display: "none" };
+        if (selectedTabElement != null) {
+            const { clientHeight, clientWidth, offsetLeft, offsetTop } = selectedTabElement;
+            indicatorWrapperStyle = {
+                height: clientHeight,
+                transform: `translateX(${Math.floor(offsetLeft)}px) translateY(${Math.floor(offsetTop)}px)`,
+                width: clientWidth,
+            };
         }
-
-        if (Utils.isFunction(this.props.onChange)) {
-            this.props.onChange(index, prevSelectedIndex);
-        }
+        this.setState({ indicatorWrapperStyle });
     }
+
+    private renderTabPanel = (tab: TabElement) => {
+        const { className, panel, id } = tab.props;
+        if (panel === undefined) {
+            return undefined;
+        }
+        return (
+            <div
+                aria-labelledby={generateTabTitleId(this.props.id, id)}
+                aria-hidden={id !== this.state.selectedTabId}
+                className={classNames(Classes.TAB_PANEL, className)}
+                id={generateTabPanelId(this.props.id, id)}
+                key={id}
+                role="tabpanel"
+            >
+                {panel}
+            </div>
+        );
+    };
+
+    private renderTabTitle = (tab: TabElement) => {
+        const { id } = tab.props;
+        return (
+            <TabTitle
+                {...tab.props}
+                parentId={this.props.id}
+                onClick={this.handleTabClick}
+                selected={id === this.state.selectedTabId}
+            />
+        );
+    };
 }
 
-let globalTabCount = 0;
-function generateTabId() {
-    return `pt-tab-${globalTabCount++}`;
+function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
+    return codes.indexOf(e.which) >= 0;
 }
 
-let globalPanelCount = 0;
-function generatePanelId() {
-    return `pt-tab-panel-${globalPanelCount++}`;
+function isTab(child: React.ReactChild): child is TabElement {
+    return child != null && (child as JSX.Element).type === Tab;
 }
-
-export const TabsFactory = React.createFactory(Tabs);

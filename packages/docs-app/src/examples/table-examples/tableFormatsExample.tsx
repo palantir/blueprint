@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "@blueprintjs/table";
 
 interface ITimezone {
@@ -81,11 +81,11 @@ export class TableFormatsExample extends BaseExample<{}> {
 
     public render() {
         return (
-            <Table isRowResizable={true} numRows={this.data.length}>
-                <Column name="Timezone" renderCell={this.renderTimezone} />
-                <Column name="UTC Offset" renderCell={this.renderOffset} />
-                <Column name="Local Time" renderCell={this.renderLocalTime} />
-                <Column name="Timezone JSON" renderCell={this.renderJSON} />
+            <Table enableRowResizing={true} numRows={this.data.length}>
+                <Column name="Timezone" cellRenderer={this.renderTimezone} />
+                <Column name="UTC Offset" cellRenderer={this.renderOffset} />
+                <Column name="Local Time" cellRenderer={this.renderLocalTime} />
+                <Column name="Timezone JSON" cellRenderer={this.renderJSON} />
             </Table>
         );
     }

@@ -4,10 +4,11 @@
  */
 
 const baseConfig = require("./webpack.config.base");
+const karmaConfig = require("./webpack.config.karma");
 
 module.exports = {
     baseConfig,
-
+    karmaConfig,
     COMMON_EXTERNALS: {
         "@blueprintjs/core": "var Blueprint.Core",
         "@blueprintjs/datetime": "var Blueprint.Datetime",
@@ -20,7 +21,7 @@ module.exports = {
         "moment": "moment",
         "moment-timezone": "moment",
         "react": "React",
-        "react-addons-css-transition-group": "React.addons.CSSTransitionGroup",
+        "react-transition-group": "ReactTransitionGroup",
         "react-day-picker": "DayPicker",
         "react-dom": "ReactDOM",
         "tether": "Tether",

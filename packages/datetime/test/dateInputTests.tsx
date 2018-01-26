@@ -24,14 +24,14 @@ describe("<DateInput>", () => {
         assert.doesNotThrow(() => mount(<DateInput value={"1988-08-07 11:01:12" as any} />));
     });
 
-    it("passes custom classNames to popover target", () => {
+    it("passes custom classNames to popover wrapper", () => {
         const CLASS_1 = "foo";
         const CLASS_2 = "bar";
 
         const wrapper = mount(<DateInput className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
         wrapper.setState({ isOpen: true });
 
-        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`);
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
         assert.isTrue(popoverTarget.hasClass(CLASS_1));
         assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
@@ -46,15 +46,9 @@ describe("<DateInput>", () => {
     });
 
     it("Popover opens on input focus", () => {
-        const wrapper = mount(<DateInput openOnFocus={true} />);
+        const wrapper = mount(<DateInput />);
         wrapper.find("input").simulate("focus");
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
-    });
-
-    it("Popover does not open on input focus if openOnFocus=false", () => {
-        const wrapper = mount(<DateInput openOnFocus={false} />);
-        wrapper.find("input").simulate("focus");
-        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("Popover doesn't open if disabled=true", () => {

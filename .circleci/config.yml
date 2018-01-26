@@ -7,24 +7,21 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ checksum "yarn.lock" }}
-            - v1-dependency-cache-
+            - v7-dependency-cache-{{ checksum "yarn.lock" }}
+            - v7-dependency-cache-
       - run: yarn
       - run: echo "Checking if lockfiles changed..." && git diff --exit-code
       - run: npm rebuild node-sass
       - save_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
-            - ~/yarn
-            - ~/.cache/yarn
             - node_modules
       - persist_to_workspace:
           root: '.'
           paths:
             - yarn.lock
-            - packages/*/node_modules/.bin
 
-  compile-libs:
+  compile:
     docker:
       - image: circleci/node:8
     steps:
@@ -33,13 +30,14 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ checksum "yarn.lock" }}
-            - v1-dependency-cache-
-      - run: yarn compile-libs
+            - v7-dependency-cache-{{ checksum "yarn.lock" }}
+            - v7-dependency-cache-
+      - run: yarn compile
       - persist_to_workspace:
           root: '.'
           paths:
             - packages/*/dist
+            - packages/*/lib
             - packages/*/src/generated
 
   lint:
@@ -51,11 +49,11 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ checksum "yarn.lock" }}
-            - v1-dependency-cache-
+            - v7-dependency-cache-{{ checksum "yarn.lock" }}
+            - v7-dependency-cache-
       - run: yarn lint
 
-  dist-libs:
+  dist:
     docker:
       - image: circleci/node:8
     steps:
@@ -63,77 +61,37 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:libs
-      - persist_to_workspace:
-          root: '.'
-          paths:
-            - packages/core/dist
-            - packages/datetime/dist
-            - packages/docs/dist
-            - packages/labs/dist
-            - packages/table/dist
-
-  dist-apps:
-    docker:
-      - image: circleci/node:8
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:apps
+      # we don't need to run dist:docs here until we start publishing GitHub Pages from CI
       - persist_to_workspace:
           root: '.'
           paths:
-            - packages/docs-app/dist
-            - packages/landing-app/dist
-            - packages/table-dev-app/dist
+            - packages/*/dist
+            - packages/*/lib
 
-  test-core:
+  test:
     docker:
       - image: circleci/node:8
+    parallelism: 7
     steps:
       - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: yarn lerna run test --scope '@blueprintjs/core'
-
-  test-datetime:
-    docker:
-      - image: circleci/node:8
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: yarn lerna run test --scope '@blueprintjs/datetime'
-
-  test-labs:
-    docker:
-      - image: circleci/node:8
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: yarn lerna run test --scope '@blueprintjs/labs'
-
-  test-table:
-    docker:
-      - image: circleci/node:8
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: yarn lerna run test --scope '@blueprintjs/table'
+          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          command: |
+              case $CIRCLE_NODE_INDEX in \
+              0) yarn lerna run test --scope '@blueprintjs/core' ;; \
+              1) yarn lerna run test --scope '@blueprintjs/datetime' ;; \
+              2) yarn lerna run test --scope '@blueprintjs/icons' ;; \
+              3) yarn lerna run test --scope '@blueprintjs/labs' ;; \
+              4) yarn lerna run test --scope '@blueprintjs/select' ;; \
+              5) yarn lerna run test --scope '@blueprintjs/table' ;; \
+              6) yarn lerna run test --scope '@blueprintjs/timezone' ;; \
+              esac
 
   deploy-preview:
     docker:
@@ -162,7 +120,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
@@ -170,35 +128,20 @@ workflows:
   compile_lint_test_dist_deploy:
     jobs:
       - install-dependencies
-      - compile-libs:
+      - compile:
           requires: [install-dependencies]
       - lint:
           requires: [install-dependencies]
-      - dist-libs:
-          requires: [compile-libs]
-      - dist-apps:
-          requires: [compile-libs]
-      - test-core:
-          requires: [compile-libs]
-      - test-datetime:
-          requires: [compile-libs]
-      - test-labs:
-          requires: [compile-libs]
-      - test-table:
-          requires: [compile-libs]
+      - dist:
+          requires: [compile]
+      - test:
+          requires: [compile]
       - deploy-preview:
-          requires:
-            - lint
-            - dist-libs
-            - dist-apps
-            - test-core
-            - test-datetime
-            - test-labs
-            - test-table
+          requires: [dist]
       - deploy-npm:
-          requires: [deploy-preview]
+          requires: [dist]
           filters:
             branches:
               only:
-                - master
+                - develop
                 - /^release\/.*/

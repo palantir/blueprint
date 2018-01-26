@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractComponent, Button, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, IProps, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
@@ -67,7 +67,7 @@ export interface IDatePickerState {
     value?: Date;
 }
 
-export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerState> {
+export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePickerState> {
     public static defaultProps: IDatePickerProps = {
         canClearSelection: true,
         dayPickerProps: {},
@@ -374,5 +374,3 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         Utils.safeInvoke(this.props.onChange, value, true);
     };
 }
-
-export const DatePickerFactory = React.createFactory(DatePicker);

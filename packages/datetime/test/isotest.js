@@ -3,9 +3,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-const { generateIsomorphicTests } = require("@blueprintjs/node-build-scripts");
+const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
-const DateTime = require("../dist");
+const DateTime = require("../lib/cjs");
 
 describe("DateTime isomorphic rendering", () => {
     generateIsomorphicTests(

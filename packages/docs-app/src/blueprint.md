@@ -33,20 +33,30 @@ The `main` module exports all symbols from all modules so you don't have to impo
 dependencies:
 
   ```sh
-  npm install --save @blueprintjs/core
+  yarn add @blueprintjs/core
   ```
 
 1. If you see `UNMET PEER DEPENDENCY` errors, you should manually install React:
 
   ```sh
-  npm install --save react react-dom react-addons-css-transition-group
+  yarn add react react-dom react-transition-group
   ```
+
+1. Note that since the minimum supported version of React is [v16](https://reactjs.org/blog/2017/09/26/react-v16.0.html),
+all of its [JavaScript Environment Requirements](https://reactjs.org/docs/javascript-environment-requirements.html) apply to
+Blueprint as well. Some Blueprint components use the following ES2015 features:
+
+  - `Map`
+  - `Set`
+
+  We recommend polyfilling these features using [es6-shim](https://github.com/paulmillr/es6-shim) or
+  [core-js](https://github.com/zloirock/core-js).
 
 1. After installation, you'll be able to import the React components in your application:
 
   ```tsx
   // extract specific components
-  import { Intent, Spinner, DatePickerFactory } from "@blueprintjs/core";
+  import { Button, Intent, Spinner } from "@blueprintjs/core";
   // or just take everything!
   import * as Blueprint from "@blueprintjs/core";
 
@@ -54,11 +64,10 @@ dependencies:
   const mySpinner = <Spinner intent={Intent.PRIMARY} />;
 
   // using the namespace import:
-  const anotherSpinner = <Blueprint.Spinner intent={Blueprint.Intent.PRIMARY}/>;
+  const anotherSpinner = <Blueprint.Spinner intent={Blueprint.Intent.PRIMARY} />;
 
-  // use factories for React.createElement shorthand if you're not using JSX.
-  // every component provides a corresponding <Name>Factory.
-  const myDatePicker = DatePickerFactory();
+  // use React.createElement if you're not using JSX.
+  const myButton = React.createElement(Button, { intent: Intent.SUCCESS }, "button content");
   ```
 
 1. Don't forget to include the main CSS file from each Blueprint package! Additionally, the
@@ -72,7 +81,7 @@ dependencies:
       ...
       <!-- include dependencies manually -->
       <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
-      <link href="path/to/node_modules/@blueprintjs/core/dist/blueprint.css" rel="stylesheet" />
+      <link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
       ...
     </head>
     ...
@@ -92,7 +101,8 @@ Blueprint supports the venerable [unpkg CDN](https://unpkg.com). Each package pr
 library on the `Blueprint` global variable: `Blueprint.Core`, `Blueprint.Datetime`, etc.
 
 These bundles _do not include_ external dependencies; your application will need to ensure that
-`normalize.css`, `React`, `classnames`, and `Tether` are available at runtime.
+`normalize.css`, `react`, `react-dom`, `react-transition-group`, `classnames`, `popper.js`, and
+`react-popper`are available at runtime.
 
 ```html
 <!DOCTYPE html>
@@ -101,16 +111,18 @@ These bundles _do not include_ external dependencies; your application will need
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Blueprint Starter Kit</title>
-    <link href="https://unpkg.com/normalize.css@^4.1.1" rel="stylesheet" />
-    <link href="https://unpkg.com/@blueprintjs/core@^1.11.0/dist/blueprint.css" rel="stylesheet" />
+    <link href="https://unpkg.com/normalize.css@^7.0.0" rel="stylesheet" />
+    <link href="https://unpkg.com/@blueprintjs/core@^2.0.0/lib/css/blueprint.css" rel="stylesheet" />
   </head>
   <body>
     <script src="https://unpkg.com/classnames@^2.2"></script>
     <script src="https://unpkg.com/dom4@^1.8"></script>
-    <script src="https://unpkg.com/tether@^1.4"></script>
-    <script src="https://unpkg.com/react@^15.3.1/dist/react-with-addons.min.js"></script>
-    <script src="https://unpkg.com/react-dom@^15.3.1/dist/react-dom.min.js"></script>
-    <script src="https://unpkg.com/@blueprintjs/core@^1.11.0"></script>
+    <script src="https://unpkg.com/react@^16.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@^16.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/react-transition-group@^2.2.1/dist/react-transition-group.min.js"></script>
+    <script src="https://unpkg.com/popper.js@^1.12.6/dist/umd/popper.js"></script>
+    <script src="https://unpkg.com/react-popper@~0.7.4/dist/react-popper.min.js"></script>
+    <script src="https://unpkg.com/@blueprintjs/core@^2.0.0"></script>
 
     <div id="btn"></div>
     <script>
@@ -141,7 +153,7 @@ install typings for Blueprint's dependencies before you can consume it:
 
 ```sh
 # required for all @blueprintjs packages:
-npm install --save @types/pure-render-decorator @types/react @types/react-dom @types/react-addons-css-transition-group
+npm install --save @types/react @types/react-dom @types/react-transition-group
 
 # @blueprintjs/datetime requires:
 npm install --save @types/moment
@@ -164,18 +176,21 @@ You can render any component in any JavaScript application with `ReactDOM.render
 using a jQuery plugin.
 
 ```tsx
-const myContainerElement = document.querySelector(".my-container");
+import { Classes, Intent, Spinner } from "@blueprintjs/core";
+
+const myContainerElement = document.getElementById("container");
 
 // with JSX
 ReactDOM.render(
-    <Spinner className="pt-intent-primary pt-small" />,
+    <Spinner className={Classes.SMALL} intent={Intent.PRIMARY} />,
     myContainerElement
 );
 
-// with vanilla JS, use the factory
+// with vanilla JS, use React.createElement
 ReactDOM.render(
-    SpinnerFactory({
-        className: "pt-intent-primary pt-small"
+    React.createElement(Spinner, {
+        className: Classes.SMALL,
+        intent: Intent.PRIMARY,
     }),
     myContainerElement
 );
@@ -190,10 +205,10 @@ ReactDOM.unmountComponentAtNode(myContainerElement);
 Check out the [React API docs](https://facebook.github.io/react/docs/react-api.html) for more details.
 
 
-You'll need to install React `v15.x` or `v0.14.x` alongside Blueprint.
+You'll need to install React `v16.x` alongside Blueprint.
 
 ```sh
-npm install --save @blueprintjs/core react react-dom react-addons-css-transition-group
+npm install --save @blueprintjs/core react react-dom react-transition-group
 ```
 
 Import components from the `@blueprintjs/core` module into your project.

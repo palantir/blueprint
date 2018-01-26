@@ -79,7 +79,7 @@ export interface ITableQuadrantStackProps extends IProps {
      *
      * @default true
      */
-    isRowHeaderShown?: boolean;
+    enableRowHeader?: boolean;
 
     /**
      * Whether vertical scrolling is currently disabled.
@@ -143,7 +143,7 @@ export interface ITableQuadrantStackProps extends IProps {
     /**
      * A callback that renders either all of or just frozen sections of the table body.
      */
-    renderBody: (
+    bodyRenderer: (
         quadrantType: QuadrantType,
         showFrozenRowsOnly?: boolean,
         showFrozenColumnsOnly?: boolean,
@@ -152,7 +152,7 @@ export interface ITableQuadrantStackProps extends IProps {
     /**
      * A callback that renders either all of or just the frozen section of the column header.
      */
-    renderColumnHeader?: (
+    columnHeaderCellRenderer?: (
         refHandler: (ref: HTMLElement) => void,
         resizeHandler: (verticalGuides: number[]) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
@@ -162,12 +162,12 @@ export interface ITableQuadrantStackProps extends IProps {
     /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
      */
-    renderMenu?: (refHandler: (ref: HTMLElement) => void) => JSX.Element;
+    menuRenderer?: (refHandler: (ref: HTMLElement) => void) => JSX.Element;
 
     /**
      * A callback that renders either all of or just the frozen section of the row header.
      */
-    renderRowHeader?: (
+    rowHeaderCellRenderer?: (
         refHandler: (ref: HTMLElement) => void,
         resizeHandler: (verticalGuides: number[]) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
@@ -208,14 +208,14 @@ export interface ITableQuadrantStackProps extends IProps {
      * properly.
      *
      * This value defaults to `undefined` so that, by default, it won't override
-     * the `useInteractionBar` values that you might have provided directly to
+     * the `enableColumnInteractionBar` values that you might have provided directly to
      * each `<ColumnHeaderCell>`.
      *
      * REQUIRES QUADRANT RESYNC
      *
      * @default undefined
      */
-    useInteractionBar?: boolean;
+    enableColumnInteractionBar?: boolean;
 }
 
 // when there are no column headers, the header and menu element will
@@ -234,31 +234,31 @@ const QUADRANT_MIN_SIZE = 1;
 // a list of props that trigger layout changes. when these props change,
 // quadrant views need to be explicitly resynchronized.
 const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
-    "isRowHeaderShown",
+    "enableRowHeader",
     "loadingOptions",
     "numFrozenColumns",
     "numFrozenRows",
     "numColumns",
     "numRows",
-    "useInteractionBar",
+    "enableColumnInteractionBar",
 ];
 
 export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackProps, {}> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantStackProps> = {
+        enableColumnInteractionBar: undefined,
+        enableRowHeader: true,
         isHorizontalScrollDisabled: false,
-        isRowHeaderShown: true,
         isVerticalScrollDisabled: false,
         throttleScrolling: true,
-        useInteractionBar: undefined,
         viewSyncDelay: DEFAULT_VIEW_SYNC_DELAY,
     };
 
     // Instance variables
     // ==================
 
-    private quadrantRefs: { [qType: number]: IQuadrantRefs } = {
+    private quadrantRefs: Record<QuadrantType, IQuadrantRefs> = {
         [QuadrantType.MAIN]: {},
         [QuadrantType.TOP]: {},
         [QuadrantType.LEFT]: {},
@@ -345,7 +345,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     }
 
     public render() {
-        const { grid, isRowHeaderShown, renderBody, throttleScrolling } = this.props;
+        const { grid, enableRowHeader, bodyRenderer, throttleScrolling } = this.props;
 
         // use the more generic "scroll" event for the main quadrant to capture
         // *both* scrollbar interactions and trackpad/mousewheel gestures.
@@ -355,10 +355,10 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const onWheel = throttleScrolling ? this.throttledHandleWheel : this.handleWheel;
 
         const baseProps = {
+            bodyRenderer,
+            enableRowHeader,
             grid,
-            isRowHeaderShown,
             onWheel,
-            renderBody,
         };
 
         const shouldRenderLeftQuadrants = this.shouldRenderLeftQuadrants();
@@ -367,9 +367,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 {...baseProps}
                 quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
                 quadrantType={QuadrantType.LEFT}
-                renderColumnHeader={this.renderLeftQuadrantColumnHeader}
-                renderMenu={this.renderLeftQuadrantMenu}
-                renderRowHeader={this.renderLeftQuadrantRowHeader}
+                columnHeaderCellRenderer={this.renderLeftQuadrantColumnHeader}
+                menuRenderer={this.renderLeftQuadrantMenu}
+                rowHeaderCellRenderer={this.renderLeftQuadrantRowHeader}
                 scrollContainerRef={this.quadrantRefHandlers[QuadrantType.LEFT].scrollContainer}
             />
         ) : (
@@ -380,9 +380,9 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                 {...baseProps}
                 quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].quadrant}
                 quadrantType={QuadrantType.TOP_LEFT}
-                renderColumnHeader={this.renderTopLeftQuadrantColumnHeader}
-                renderMenu={this.renderTopLeftQuadrantMenu}
-                renderRowHeader={this.renderTopLeftQuadrantRowHeader}
+                columnHeaderCellRenderer={this.renderTopLeftQuadrantColumnHeader}
+                menuRenderer={this.renderTopLeftQuadrantMenu}
+                rowHeaderCellRenderer={this.renderTopLeftQuadrantRowHeader}
                 scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].scrollContainer}
             />
         ) : (
@@ -397,18 +397,18 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
                     onScroll={onMainQuadrantScroll}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.MAIN].quadrant}
                     quadrantType={QuadrantType.MAIN}
-                    renderColumnHeader={this.renderMainQuadrantColumnHeader}
-                    renderMenu={this.renderMainQuadrantMenu}
-                    renderRowHeader={this.renderMainQuadrantRowHeader}
+                    columnHeaderCellRenderer={this.renderMainQuadrantColumnHeader}
+                    menuRenderer={this.renderMainQuadrantMenu}
+                    rowHeaderCellRenderer={this.renderMainQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.MAIN].scrollContainer}
                 />
                 <TableQuadrant
                     {...baseProps}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP].quadrant}
                     quadrantType={QuadrantType.TOP}
-                    renderColumnHeader={this.renderTopQuadrantColumnHeader}
-                    renderMenu={this.renderTopQuadrantMenu}
-                    renderRowHeader={this.renderTopQuadrantRowHeader}
+                    columnHeaderCellRenderer={this.renderTopQuadrantColumnHeader}
+                    menuRenderer={this.renderTopQuadrantMenu}
+                    rowHeaderCellRenderer={this.renderTopQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP].scrollContainer}
                 />
                 {maybeLeftQuadrant}
@@ -434,19 +434,19 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // Menu
 
     private renderMainQuadrantMenu = () => {
-        return CoreUtils.safeInvoke(this.props.renderMenu, this.quadrantRefHandlers[QuadrantType.MAIN].menu);
+        return CoreUtils.safeInvoke(this.props.menuRenderer, this.quadrantRefHandlers[QuadrantType.MAIN].menu);
     };
 
     private renderTopQuadrantMenu = () => {
-        return CoreUtils.safeInvoke(this.props.renderMenu, this.quadrantRefHandlers[QuadrantType.TOP].menu);
+        return CoreUtils.safeInvoke(this.props.menuRenderer, this.quadrantRefHandlers[QuadrantType.TOP].menu);
     };
 
     private renderLeftQuadrantMenu = () => {
-        return CoreUtils.safeInvoke(this.props.renderMenu, this.quadrantRefHandlers[QuadrantType.LEFT].menu);
+        return CoreUtils.safeInvoke(this.props.menuRenderer, this.quadrantRefHandlers[QuadrantType.LEFT].menu);
     };
 
     private renderTopLeftQuadrantMenu = () => {
-        return CoreUtils.safeInvoke(this.props.renderMenu, this.quadrantRefHandlers[QuadrantType.TOP_LEFT].menu);
+        return CoreUtils.safeInvoke(this.props.menuRenderer, this.quadrantRefHandlers[QuadrantType.TOP_LEFT].menu);
     };
 
     // Column header
@@ -456,7 +456,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const resizeHandler = this.handleColumnResizeGuideMain;
         const reorderingHandler = this.handleColumnsReordering;
         return CoreUtils.safeInvoke(
-            this.props.renderColumnHeader,
+            this.props.columnHeaderCellRenderer,
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -469,7 +469,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const resizeHandler = this.handleColumnResizeGuideTop;
         const reorderingHandler = this.handleColumnsReordering;
         return CoreUtils.safeInvoke(
-            this.props.renderColumnHeader,
+            this.props.columnHeaderCellRenderer,
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -482,7 +482,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const resizeHandler = this.handleColumnResizeGuideLeft;
         const reorderingHandler = this.handleColumnsReordering;
         return CoreUtils.safeInvoke(
-            this.props.renderColumnHeader,
+            this.props.columnHeaderCellRenderer,
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -495,7 +495,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const resizeHandler = this.handleColumnResizeGuideTopLeft;
         const reorderingHandler = this.handleColumnsReordering;
         return CoreUtils.safeInvoke(
-            this.props.renderColumnHeader,
+            this.props.columnHeaderCellRenderer,
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -510,7 +510,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const resizeHandler = this.handleRowResizeGuideMain;
         const reorderingHandler = this.handleRowsReordering;
         return CoreUtils.safeInvoke(
-            this.props.renderRowHeader,
+            this.props.rowHeaderCellRenderer,
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -523,7 +523,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const resizeHandler = this.handleRowResizeGuideTop;
         const reorderingHandler = this.handleRowsReordering;
         return CoreUtils.safeInvoke(
-            this.props.renderRowHeader,
+            this.props.rowHeaderCellRenderer,
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -536,7 +536,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const resizeHandler = this.handleRowResizeGuideLeft;
         const reorderingHandler = this.handleRowsReordering;
         return CoreUtils.safeInvoke(
-            this.props.renderRowHeader,
+            this.props.rowHeaderCellRenderer,
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -549,7 +549,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
         const resizeHandler = this.handleRowResizeGuideTopLeft;
         const reorderingHandler = this.handleRowsReordering;
         return CoreUtils.safeInvoke(
-            this.props.renderRowHeader,
+            this.props.rowHeaderCellRenderer,
             refHandler,
             resizeHandler,
             reorderingHandler,
@@ -944,8 +944,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     }
 
     private shouldRenderLeftQuadrants(props: ITableQuadrantStackProps = this.props) {
-        const { isRowHeaderShown, numFrozenColumns } = props;
-        return isRowHeaderShown || (numFrozenColumns != null && numFrozenColumns > 0);
+        const { enableRowHeader, numFrozenColumns } = props;
+        return enableRowHeader || (numFrozenColumns != null && numFrozenColumns > 0);
     }
 
     // Resizing

@@ -16,7 +16,7 @@ import {
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import { BaseExample, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
 
 export interface ICollapsibleListExampleState {
     collapseFrom?: CollapseFrom;
@@ -34,7 +34,7 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
         visibleItemCount: 3,
     };
 
-    private handleChangeCollapse = handleNumberChange(collapseFrom => this.setState({ collapseFrom }));
+    private handleChangeCollapse = handleStringChange((collapseFrom: CollapseFrom) => this.setState({ collapseFrom }));
 
     protected renderExample() {
         return (
@@ -42,7 +42,7 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
                 {...this.state}
                 className={Classes.BREADCRUMBS}
                 dropdownTarget={<span className={Classes.BREADCRUMBS_COLLAPSED} />}
-                renderVisibleItem={this.renderBreadcrumb}
+                visibleItemRenderer={this.renderBreadcrumb}
             >
                 <MenuItem iconName="folder-close" text="All files" href="#" />
                 <MenuItem iconName="folder-close" text="Users" href="#" />
