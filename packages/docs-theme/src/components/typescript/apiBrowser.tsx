@@ -39,14 +39,16 @@ export class ApiBrowser extends React.PureComponent<IApiBrowserProps, IApiBrowse
             .map(name => <ApiLink className={classNames(Classes.MENU_ITEM, "docs-code")} key={name} name={name} />);
         return (
             <div className="docs-api-browser">
-                <div className="docs-api-list">
-                    <InputGroup
-                        leftIconName="search"
-                        placeholder="Filter..."
-                        value={query}
-                        onChange={this.handleQueryChange}
-                    />
-                    {filteredLinks}
+                <div className="docs-api-sidebar">
+                    <div className="docs-api-search">
+                        <InputGroup
+                            leftIconName="search"
+                            placeholder="Filter..."
+                            value={query}
+                            onChange={this.handleQueryChange}
+                        />
+                    </div>
+                    <div className="docs-api-list">{filteredLinks}</div>
                 </div>
                 <div className="docs-api-content">
                     <TypescriptExample tag="typescript" value={section} />

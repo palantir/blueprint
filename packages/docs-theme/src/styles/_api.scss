@@ -12,19 +12,28 @@
 .docs-api-browser {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
 }
 
-.docs-api-list {
+.docs-api-sidebar {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   border-right: 1px solid $pt-divider-black;
-  width: $pt-grid-size * 20;
+  width: $pt-grid-size * 24;
   overflow: auto;
-  padding: $pt-grid-size / 2;
 
   > * {
     flex-shrink: 0;
+  }
+
+  .docs-api-search {
+    box-shadow: 0 1px 0 $pt-divider-black;
+    padding: $pt-grid-size;
+  }
+
+  .docs-api-list {
+    padding: $pt-grid-size;
   }
 }
 
@@ -35,6 +44,10 @@
 
   .docs-modifiers {
     margin: $pt-grid-size * 2;
+  }
+
+  .docs-interface-header {
+    padding-top: 0;
   }
 }
 
