@@ -55,11 +55,15 @@ export interface IOverlayableProps {
     transitionDuration?: number;
 
     /**
-     * Whether the overlay should be rendered inline or into a new element on `document.body`.
-     * This prop essentially determines which element is covered by the backdrop: if `true`,
-     * then only its parent is covered; otherwise, the entire application is covered.
-     * Set this prop to `true` when this component is used inside an `Overlay` (such as
-     * `Dialog` or `Popover`) to ensure that this component is rendered above its parent.
+     * Whether the overlay should be wrapped in a `Portal`, which renders its contents in a new
+     * element attached to `document.body`.
+     *
+     * This prop essentially determines which element is covered by the backdrop: if `false`,
+     * then only its parent is covered; otherwise, the entire page is covered (because the parent
+     * of the `Portal` is the `<body>` itself).
+     *
+     * Set this prop to `false` on nested overlays (such as `Dialog` or `Popover`) to ensure that they
+     * are rendered above their parents.
      * @default true
      */
     usePortal?: boolean;
