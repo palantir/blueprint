@@ -64,6 +64,11 @@ Styleguide pt-menu
     color: $pt-icon-color;
   }
 
+  > .pt-icon:first-child {
+    margin-right: $menu-item-padding;
+    color: $pt-icon-color;
+  }
+
   .pt-menu-item-label {
     color: $pt-text-color-muted;
   }
@@ -160,7 +165,8 @@ Styleguide pt-menu.pt-menu-header
     @include menu-item-intent($pt-dark-intent-text-colors);
 
     &::before,
-    &::after {
+    &::after,
+    > .pt-icon:first-child {
       color: $pt-dark-icon-color;
     }
 

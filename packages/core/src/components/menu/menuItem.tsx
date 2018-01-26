@@ -12,6 +12,7 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
+import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Menu } from "./menu";
 
@@ -114,7 +115,6 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !disabled && !hasSubmenu,
             },
-            Classes.iconClass(this.props.iconName),
             this.props.className,
         );
 
@@ -131,6 +131,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
                 tabIndex={disabled ? undefined : 0}
                 target={this.props.target}
             >
+                <Icon iconName={this.props.iconName} />
                 {labelElement}
                 {this.props.text}
             </a>
