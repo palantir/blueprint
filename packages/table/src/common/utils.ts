@@ -191,7 +191,7 @@ export const Utils = {
      */
     measureElementTextContent(element: Element): TextMetrics {
         const context = document.createElement("canvas").getContext("2d");
-        const style = getComputedStyle(element);
+        const style = getComputedStyle(element, null);
         context.font = CSS_FONT_PROPERTIES.map(prop => style.getPropertyValue(prop)).join(" ");
         return measureTextContentWithExclusions(context, element);
     },
