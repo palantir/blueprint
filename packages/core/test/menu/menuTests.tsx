@@ -106,7 +106,7 @@ describe("MenuItem", () => {
         assert.isTrue(handleClose.notCalled);
     });
 
-    it("popover can be controlled with popoverProps", () => {
+    it("popoverProps (except content) are forwarded to Popover", () => {
         // Ensures that popover props are passed to Popover component, except content property
         const popoverProps: Partial<IPopoverProps> = {
             content: "CUSTOM_CONTENT",
@@ -119,7 +119,6 @@ describe("MenuItem", () => {
                 <MenuItem text="two" />
             </MenuItem>,
         );
-        assert.strictEqual(wrapper.find(Popover).prop("usePortal"), popoverProps.usePortal);
         assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
         assert.notStrictEqual(
             wrapper
