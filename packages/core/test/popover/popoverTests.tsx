@@ -24,10 +24,9 @@ import { Portal } from "../../src/index";
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper;
-    let onInteractionSpy: sinon.SinonSpy;
+    const onInteractionSpy = sinon.spy();
 
     beforeEach(() => {
-        onInteractionSpy = sinon.spy();
         testsContainerElement = document.createElement("div");
         document.body.appendChild(testsContainerElement);
     });
@@ -39,6 +38,7 @@ describe("<Popover>", () => {
             wrapper = undefined;
         }
         testsContainerElement.remove();
+        onInteractionSpy.resetHistory();
     });
 
     describe("validation:", () => {

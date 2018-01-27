@@ -371,8 +371,8 @@ describe("<Table>", () => {
         const onSelection = sinon.spy();
 
         afterEach(() => {
-            onFocusedCell.reset();
-            onSelection.reset();
+            onFocusedCell.resetHistory();
+            onSelection.resetHistory();
         });
 
         it("Selects all and moves focus cell to (0, 0) on click of upper-left corner", () => {
@@ -545,7 +545,7 @@ describe("<Table>", () => {
         let consoleWarn: sinon.SinonSpy;
 
         before(() => (consoleWarn = sinon.stub(console, "warn")));
-        afterEach(() => consoleWarn.reset());
+        afterEach(() => consoleWarn.resetHistory());
         after(() => consoleWarn.restore());
 
         it("prints a warning and clamps out-of-bounds numFrozenColumns if > number of columns", () => {
@@ -815,9 +815,9 @@ describe("<Table>", () => {
         const onSelection = sinon.spy();
 
         afterEach(() => {
-            onColumnsReordered.reset();
-            onRowsReordered.reset();
-            onSelection.reset();
+            onColumnsReordered.resetHistory();
+            onRowsReordered.resetHistory();
+            onSelection.resetHistory();
         });
 
         it("Shows preview guide and invokes callback when selected columns reordered", () => {
@@ -1566,19 +1566,10 @@ describe("<Table>", () => {
             });
 
             describe("warnings", () => {
-                let consoleWarn: sinon.SinonSpy;
-
-                before(() => {
-                    consoleWarn = sinon.spy(console, "warn");
-                });
-
-                afterEach(() => {
-                    consoleWarn.reset();
-                });
-
-                after(() => {
-                    consoleWarn.restore();
-                });
+                let consoleWarn: sinon.SinonStub;
+                before(() => (consoleWarn = sinon.stub(console, "warn")));
+                afterEach(() => consoleWarn.resetHistory());
+                after(() => consoleWarn.restore());
 
                 it("should print a warning when numFrozenRows > numRows", () => {
                     const table = mount(<Table numRows={1} numFrozenRows={2} />);
@@ -1824,7 +1815,7 @@ describe("<Table>", () => {
             pressKeyWithShiftKey(component, Keys.ARROW_RIGHT);
             expect(onSelection.calledOnce).to.be.true;
             expect(onSelection.firstCall.args).to.deep.equal([expectedSelectedRegions]);
-            onSelection.reset();
+            onSelection.resetHistory();
 
             // pretend the selection change persisted
             component.setProps({ selectedRegions: expectedSelectedRegions });

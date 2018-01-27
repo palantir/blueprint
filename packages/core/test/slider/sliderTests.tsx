@@ -197,17 +197,12 @@ describe("<Slider>", () => {
     });
 
     describe("vertical orientation", () => {
-        let changeSpy: sinon.SinonSpy;
-        let releaseSpy: sinon.SinonSpy;
-
-        before(() => {
-            changeSpy = sinon.spy();
-            releaseSpy = sinon.spy();
-        });
+        const changeSpy = sinon.spy();
+        const releaseSpy = sinon.spy();
 
         afterEach(() => {
-            changeSpy.reset();
-            releaseSpy.reset();
+            changeSpy.resetHistory();
+            releaseSpy.resetHistory();
         });
 
         it("moving mouse calls onChange with nearest value", () => {

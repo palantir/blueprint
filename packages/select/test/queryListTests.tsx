@@ -25,9 +25,9 @@ describe("<QueryList>", () => {
     };
 
     beforeEach(() => {
-        testProps.onActiveItemChange.reset();
-        testProps.onItemSelect.reset();
-        testProps.renderer.reset();
+        testProps.onActiveItemChange.resetHistory();
+        testProps.onItemSelect.resetHistory();
+        testProps.renderer.resetHistory();
     });
 
     describe("filtering", () => {
