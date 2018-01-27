@@ -75,6 +75,7 @@ describe("MenuItem", () => {
         const submenu = findSubmenu(wrapper);
         assert.lengthOf(submenu.props.children, 2);
         assert.isTrue(warnSpy.alwaysCalledWith(MENU_WARN_CHILDREN_SUBMENU_MUTEX));
+        warnSpy.restore();
     });
 
     it("Clicking MenuItem triggers onClick prop", () => {
