@@ -90,7 +90,9 @@ Styleguide pt-button
   // icon-only button
   .pt-icon:first-child:last-child {
     // center icon horizontally. this works for large buttons too.
-    margin: 0 (-($pt-button-height - $pt-icon-size-standard) / 2);
+    $icon-margin-offset: -($pt-button-height - $pt-icon-size-standard) / 2;
+    margin-right: $icon-margin-offset;
+    margin-left: $icon-margin-offset;
   }
 
   /*
