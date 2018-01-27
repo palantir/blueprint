@@ -13,6 +13,7 @@ import { spy } from "sinon";
 
 import {
     Classes,
+    Icon,
     IMenuItemProps,
     IMenuProps,
     Menu,
@@ -25,8 +26,8 @@ import {
 describe("MenuItem", () => {
     it("React renders MenuItem", () => {
         const wrapper = shallow(<MenuItem iconName="graph" text="Graph" />);
-        assert.lengthOf(wrapper.find(".pt-icon-graph"), 1);
-        assert.strictEqual(wrapper.text(), "Graph");
+        assert.lengthOf(wrapper.find(Icon), 1);
+        assert.match(wrapper.text(), /Graph$/);
     });
 
     it("children appear in submenu", () => {

@@ -82,7 +82,7 @@ describe("<Dialog>", () => {
                     dialog body
                 </Dialog>,
             );
-            assert.strictEqual(dialog.find(`.${Classes.DIALOG_HEADER}`).text(), "Hello!");
+            assert.match(dialog.find(`.${Classes.DIALOG_HEADER}`).text(), /^Hello!/);
         });
 
         it(`renders close button if isCloseButtonShown={true}`, () => {

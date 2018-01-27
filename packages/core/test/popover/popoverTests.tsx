@@ -16,7 +16,6 @@ import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import { Position } from "../../src/common/position";
-import * as Utils from "../../src/common/utils";
 import { Overlay } from "../../src/components/overlay/overlay";
 import { IPopoverProps, IPopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
@@ -505,15 +504,12 @@ describe("<Popover>", () => {
                 .assertIsOpen(false);
         });
 
-        it("HOVER_TARGET_ONLY works properly", () => {
+        it("HOVER_TARGET_ONLY works properly", done => {
             renderPopover({ inline: false, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
                 .simulateTarget("mouseenter")
                 .assertIsOpen()
                 .simulateTarget("mouseleave")
-                .then(popover => {
-                    // Popover defers popover closing, so need to defer this check
-                    popover.assertIsOpen(false);
-                });
+                .then(popover => popover.assertIsOpen(false), done);
         });
 
         it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", () => {
@@ -685,7 +681,7 @@ describe("<Popover>", () => {
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
-        then(next: (wrap: IPopoverWrapper) => void, done?: MochaDone): void;
+        then(next: (wrap: IPopoverWrapper) => void, done: MochaDone): void;
     }
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
@@ -718,9 +714,13 @@ describe("<Popover>", () => {
             return wrapper;
         };
         wrapper.then = (next, done) => {
+            wrapper.update();
             setTimeout(() => {
+                if (wrapper == null) {
+                    assert.fail("undefined wrapper");
+                }
                 next(wrapper);
-                Utils.safeInvoke(done);
+                done();
             });
         };
         return wrapper;
