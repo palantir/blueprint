@@ -26,17 +26,13 @@ describe("<Popover>", () => {
     let wrapper: IPopoverWrapper;
     let onInteractionSpy: sinon.SinonSpy;
 
-    before(() => {
-        onInteractionSpy = sinon.spy();
-    });
-
     beforeEach(() => {
+        onInteractionSpy = sinon.spy();
         testsContainerElement = document.createElement("div");
         document.body.appendChild(testsContainerElement);
     });
 
     afterEach(() => {
-        onInteractionSpy.reset();
         if (wrapper !== undefined) {
             // clean up wrapper to remove Portal element from DOM
             wrapper.detach();
@@ -714,11 +710,11 @@ describe("<Popover>", () => {
             return wrapper;
         };
         wrapper.then = (next, done) => {
-            wrapper.update();
             setTimeout(() => {
                 if (wrapper == null) {
                     assert.fail("undefined wrapper");
                 }
+                wrapper.update();
                 next(wrapper);
                 done();
             });
