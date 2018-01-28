@@ -7,47 +7,26 @@
   width: auto;
   height: 80vh;
   padding: 0;
-}
-
-.docs-api-browser {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-}
-
-.docs-api-sidebar {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  border-right: 1px solid $pt-divider-black;
-  width: $pt-grid-size * 24;
-  overflow: auto;
-
-  > * {
-    flex-shrink: 0;
-  }
-
-  .docs-api-search {
-    box-shadow: 0 1px 0 $pt-divider-black;
-    padding: $pt-grid-size;
-  }
-
-  .docs-api-list {
-    padding: $pt-grid-size;
-  }
-}
-
-.docs-api-content {
-  flex: 1 1 auto;
-  width: $content-width;
-  overflow: auto;
 
   .docs-modifiers {
-    margin: $pt-grid-size * 2;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    width: $content-width;
+
+    > * {
+      padding: $pt-grid-size ($pt-grid-size * 2);
+    }
   }
 
   .docs-interface-header {
-    padding-top: 0;
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  .docs-interface-table {
+    overflow: auto;
+    padding-bottom: $pt-grid-size * 2;
   }
 }
 

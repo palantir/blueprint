@@ -12,12 +12,11 @@ import { Dialog, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Util
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
-import { ITagRendererMap } from "../tags";
+import { ITagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Page } from "./page";
-import { ApiBrowser } from "./typescript/apiBrowser";
 import { ApiLink } from "./typescript/apiLink";
 
 export interface IDocumentationProps extends IProps {
@@ -121,7 +120,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     }
 
     public render() {
-        const { activePageId, activeSectionId } = this.state;
+        const { activeApiMember, activePageId, activeSectionId, isApiBrowserOpen } = this.state;
         const { nav, pages } = this.props.docs;
         const examplesOnly = location.search === "?examples";
         return (
@@ -145,12 +144,8 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                     <article className="docs-content" ref={this.refHandlers.content} role="main">
                         <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
                     </article>
-                    <Dialog
-                        className="docs-api-dialog"
-                        isOpen={this.state.isApiBrowserOpen}
-                        onClose={this.handleApiBrowserClose}
-                    >
-                        <ApiBrowser section={this.state.activeApiMember} />
+                    <Dialog className="docs-api-dialog" isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
+                        <TypescriptExample tag="typescript" value={activeApiMember} />
                     </Dialog>
                 </div>
             </div>
