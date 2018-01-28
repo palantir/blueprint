@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
+import { Icon, Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 import { Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
 import { ITsDocBase } from "documentalist/dist/client";
@@ -85,7 +85,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         return (
             <Popover content={menu} position={Position.BOTTOM} key="_versions">
                 <button className="docs-version-selector pt-text-muted">
-                    v{currentRelease} <span className="pt-icon-standard pt-icon-caret-down" />
+                    v{currentRelease} <Icon iconName="caret-down" />
                 </button>
             </Popover>
         );
@@ -99,7 +99,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     // run non-React code on the newly rendered sections.
     private handleComponentUpdate = () => {
         // indeterminate checkbox styles must be applied via JavaScript.
-        document.queryAll(".pt-checkbox input[indeterminate]").forEach((el: HTMLInputElement) => {
+        Array.from(document.querySelectorAll(".pt-checkbox input[indeterminate]")).forEach((el: HTMLInputElement) => {
             el.indeterminate = true;
         });
     };

@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Icon } from "@blueprintjs/core";
 import { IHeadingTag } from "documentalist/dist/client";
 import * as React from "react";
 
@@ -14,7 +15,7 @@ export const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>
         { className: "docs-title" },
         <a className="docs-anchor" data-route={route} key="anchor" />,
         <a className="docs-anchor-link" href={"#" + route} key="link">
-            <span className="pt-icon-standard pt-icon-link" />
+            <Icon iconName="link" />
         </a>,
         value,
     );
