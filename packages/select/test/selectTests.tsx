@@ -48,8 +48,7 @@ describe("<Select>", () => {
 
     it("disabled=true disables Popover", () => {
         const wrapper = select({ disabled: true });
-        wrapper.find("table").simulate("click");
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.strictEqual(wrapper.find(Popover).prop("disabled"), true);
     });
 
     it("itemRenderer is called for each child", () => {
