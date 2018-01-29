@@ -51,7 +51,6 @@ horizontally aligned along the left edge, center, or right edge of its container
     enable `autoFocus` for a `Toaster` via a prop, if desired.
 </div>
 
-@interface IToaster
 
 @interface IToasterProps
 
@@ -65,11 +64,16 @@ has a collection of methods to show and hide toasts in its given container.
 Toaster.create(props?: IToasterProps, container = document.body): IToaster
 ```
 
+
 The `Toaster` will be rendered into a new element appended to the given `container`. The `container` determines which element toasts are positioned relative to; the default value of `<body>` allows them to use the entire viewport.
 
 Note that the return type is `IToaster`, which is a minimal interface that exposes only the instance
 methods detailed below. It can be thought of as `Toaster` minus the `React.Component` methods,
 because the `Toaster` should not be treated as a normal React component.
+
+@interface IToaster
+
+@### Example
 
 Your application can contain several `Toaster` instances and easily share them across the codebase as modules.
 
@@ -89,6 +93,7 @@ export const AppToaster = Toaster.create({
 #### `application.ts`
 ```tsx
 import { Button } from "@blueprintjs/core";
+import * as React from "react";
 import { AppToaster } from "./toaster";
 
 export class App extends React.PureComponent {
@@ -106,16 +111,19 @@ export class App extends React.PureComponent {
 
 @## React component usage
 
-Render the `<Toaster>` component like any other element. Then, either access the instance methods by supplying
-a `ref` handler (see example below), or supply rendered `<Toast>` elements as `children` of the `<Toaster>`.
-Note that these two usages can be mixed, but `children` will always appear _after_ toasts created with `toaster.show()`.
-
-We recommend using the [`Toaster.create` static method](#core/components/toast.static-usage) documented above, rather than accessing the `Toaster` instance methods directly in React through a `ref` handler.
+Render the `<Toaster>` component like any other element and supply `<Toast>` elements as `children`. You can
+optionally attach a `ref` handler to access the instance methods, but we strongly recommend using the
+[`Toaster.create` static method](#core/components/toast.static-usage) documented above instead. Note that these
+`children` and `ref` usages can be mixed, but `children` will always appear _after_ toasts created with
+`toaster.show()`.
 
 ```tsx
-import { Button, Position, Toaster } from "@blueprintjs/core";
+import { Button, Position, Toast, Toaster } from "@blueprintjs/core";
+import * as React from "react";
 
 class MyComponent extends React.PureComponent {
+    public state = { toasts: [ /* IToastProps[] */ ] }
+
     private toaster: Toaster;
     private refHandlers = {
         toaster: (ref: Toaster) => this.toaster = ref,
@@ -125,7 +133,10 @@ class MyComponent extends React.PureComponent {
         return (
             <div>
                 <Button onClick={this.addToast} text="Procure toast" />
-                <Toaster position={Position.TOP_RIGHT} ref={this.refHandlers.toaster} />
+                <Toaster position={Position.TOP_RIGHT} ref={this.refHandlers.toaster}>
+                    {/* "Toasted!" will appear here after clicking button. */}
+                    {this.state.toasts.map(toast => <Toast {...toast} />)}
+                </Toaster>
             </div>
         )
     }
