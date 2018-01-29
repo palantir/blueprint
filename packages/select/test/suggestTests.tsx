@@ -245,7 +245,7 @@ describe("Suggest", () => {
         const popoverWillOpen = sinon.spy();
 
         afterEach(() => {
-            popoverWillOpen.reset();
+            popoverWillOpen.resetHistory();
         });
 
         it("popover can be controlled with popoverProps", () => {

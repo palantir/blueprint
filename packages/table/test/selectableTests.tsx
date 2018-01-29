@@ -39,14 +39,14 @@ describe("DragSelectable", () => {
     afterEach(() => {
         harness.unmount();
 
-        onSelection.reset();
-        onFocusedCell.reset();
+        onSelection.resetHistory();
+        onFocusedCell.resetHistory();
 
         locateClick.returns(undefined);
         locateDrag.returns(undefined);
 
-        locateClick.reset();
-        locateDrag.reset();
+        locateClick.resetHistory();
+        locateDrag.resetHistory();
     });
 
     after(() => {

@@ -104,10 +104,10 @@ describe("Resizable", () => {
         expect(onDoubleClick.called).to.be.false;
         expect(resizable.find(".resizable-div").bounds().width).to.equal(110);
 
-        onDoubleClick.reset();
-        onLayoutLock.reset();
-        onResizeEnd.reset();
-        onSizeChanged.reset();
+        onDoubleClick.resetHistory();
+        onLayoutLock.resetHistory();
+        onResizeEnd.resetHistory();
+        onSizeChanged.resetHistory();
 
         // double click the resize handle
         target
