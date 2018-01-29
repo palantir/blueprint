@@ -35,15 +35,17 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
             <div className="docs-modifiers">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
-                <table className="pt-html-table">
-                    <thead>
-                        <tr>
-                            <th>{title}</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>{propRows}</tbody>
-                </table>
+                <div className="docs-interface-table">
+                    <table className="pt-html-table">
+                        <thead>
+                            <tr>
+                                <th>{title}</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>{propRows}</tbody>
+                    </table>
+                </div>
             </div>
         );
     }

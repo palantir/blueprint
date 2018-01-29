@@ -30,15 +30,17 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
             <div className="docs-modifiers">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
-                <table className="pt-html-table">
-                    <thead>
-                        <tr>
-                            <th>Members</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>{data.members.map(this.renderPropRow)}</tbody>
-                </table>
+                <div className="docs-interface-table">
+                    <table className="pt-html-table">
+                        <thead>
+                            <tr>
+                                <th>Members</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>{data.members.map(this.renderPropRow)}</tbody>
+                    </table>
+                </div>
             </div>
         );
     }
