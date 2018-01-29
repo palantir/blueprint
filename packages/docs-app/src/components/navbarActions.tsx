@@ -33,7 +33,7 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
         return (
             <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
                 <AnchorButton href="https://github.com/palantir/blueprint" target="_blank" text="GitHub" />
-                <Popover content={this.renderReleasesMenu()} position={Position.BOTTOM_RIGHT}>
+                <Popover content={this.renderReleasesMenu()} position={Position.BOTTOM_RIGHT} usePortal={false}>
                     <AnchorButton rightIconName="caret-down" text="Releases" />
                 </Popover>
                 <AnchorButton

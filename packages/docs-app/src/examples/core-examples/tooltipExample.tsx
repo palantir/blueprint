@@ -67,6 +67,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.PRIMARY"
                         intent={Intent.PRIMARY}
                         position={Position.LEFT}
+                        usePortal={false}
                     >
                         Available
                     </Tooltip>{" "}
@@ -75,6 +76,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.SUCCESS"
                         intent={Intent.SUCCESS}
                         position={Position.TOP}
+                        usePortal={false}
                     >
                         in the full
                     </Tooltip>{" "}
@@ -83,6 +85,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.WARNING"
                         intent={Intent.WARNING}
                         position={Position.BOTTOM}
+                        usePortal={false}
                     >
                         range of
                     </Tooltip>{" "}
@@ -91,6 +94,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         content="Intent.DANGER"
                         intent={Intent.DANGER}
                         position={Position.RIGHT}
+                        usePortal={false}
                     >
                         visual intents!
                     </Tooltip>
@@ -101,7 +105,11 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                     position={Position.RIGHT}
                     popoverClassName="pt-popover-content-sizing"
                 >
-                    <Tooltip content={<span>This button also has a popover!</span>} position={Position.RIGHT}>
+                    <Tooltip
+                        content={<span>This button also has a popover!</span>}
+                        position={Position.RIGHT}
+                        usePortal={false}
+                    >
                         <Button intent={Intent.SUCCESS} text="Hover and click me" />
                     </Tooltip>
                 </Popover>

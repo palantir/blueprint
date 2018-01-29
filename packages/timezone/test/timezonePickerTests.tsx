@@ -215,6 +215,7 @@ describe("<TimezonePicker>", () => {
         const popoverProps: IPopoverProps = {
             isOpen: true,
             position: Position.RIGHT,
+            usePortal: false,
         };
         const timezonePicker = shallow(<TimezonePicker popoverProps={popoverProps} />);
         const popover = findPopover(timezonePicker);
@@ -254,6 +255,7 @@ describe("<TimezonePicker>", () => {
     ): Partial<IPopoverProps> {
         const popoverProps: Partial<IPopoverProps> = {
             isOpen: true,
+            usePortal: false,
             ...overrides,
         };
 

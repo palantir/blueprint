@@ -93,7 +93,7 @@ describe("<Popover>", () => {
         it("warns if backdrop enabled when rendering inline", () => {
             const warnSpy = sinon.stub(console, "warn");
             shallow(
-                <Popover hasBackdrop={true}>
+                <Popover hasBackdrop={true} usePortal={false}>
                     {"target"}
                     {"content"}
                 </Popover>,
@@ -682,7 +682,7 @@ describe("<Popover>", () => {
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
         wrapper = mount(
-            <Popover {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
+            <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>
                 <p>Text {content}</p>
             </Popover>,

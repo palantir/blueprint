@@ -287,9 +287,15 @@ The backdrop element has the same opacity-fade transition as the `Dialog` backdr
 
 @### Portal rendering
 
-By default, popover contents are rendered in the normal document flow as a sibling of the target. This works well for most layouts, because popovers by default will appear above everything else on the page without needing to manually adjust z-indices, and Popper.js will keep them nicely positioned.
+By default, popover contents are rendered in a [`Portal`](#core/components/portal) appended to `document.body`. This
+allows the the popover contents to "escape" the application DOM tree to avoid incompatible styles on ancestor elements.
+(Incompatible styles typically include hidden `overflow` or complex `position` logic.) It also ensures that the popover
+will appear above all other content, as its container element appears after the application container in the DOM.
 
-However, there are cases where it's preferable for the popover contents to "escape" the application DOM tree to avoid incompatible styles on ancestor elements. (Incompatible styles typically include hidden `overflow` or complex `position` logic.) In these cases, simply set `usePortal={true}` to wrap the popover contents in a [`Portal`](#core/components/portal) that renders its contents into a DOM element appended to `document.body`.
+Disable the `usePortal` prop to render popover contents in the normal document flow as a sibling of the target.
+This behavior can be desirable to inherit CSS styles from surrounding elements, and can result in smoother performance
+when scrolling. Not using a `Portal` works well for most layouts, because popovers style themselves to appear above
+everything else on the page without needing to manually adjust z-indices, and Popper.js will keep them nicely positioned.
 
 @reactExample PopoverInlineExample
 

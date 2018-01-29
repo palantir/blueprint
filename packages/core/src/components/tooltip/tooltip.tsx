@@ -117,8 +117,8 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Whether the tooltip is rendered inside a `Portal` so it can escape the usual DOM flow.
-     * If false, it is rendered as a sibling of the target element.
-     * @default false
+     * If `false`, it is rendered as a sibling of the target element.
+     * @default true
      */
     usePortal?: boolean;
 }

@@ -186,12 +186,13 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * Whether the popover should be rendered inside a `Portal` attached to `document.body`.
-     * In most cases, Popovers will position themselves correctly without this prop, so it is disabled by default.
+     * Rendering content inside a `Portal` allows the popover content to escape the physical bounds of its
+     * parent while still being positioned correctly relative to its target.
      *
-     * Enabling this prop allows the popover content to escape the physical bounds of its parent
-     * while still being positioned correctly relative to its target. Using a `Portal` becomes
-     * necessary if any ancestor of the target hides overflow or uses very complex positioning.
-     * @default false
+     * Using a `Portal` is necessary if any ancestor of the target hides overflow or uses very complex positioning.
+     * Not using a `Portal` can result in smoother performance when scrolling and allows the popover content to inherit
+     * CSS styles from surrounding elements.
+     * @default true
      */
     usePortal?: boolean;
 }
@@ -220,7 +221,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         position: "auto",
         rootElementTag: "span",
         transitionDuration: 300,
-        usePortal: false,
+        usePortal: true,
     };
 
     /**

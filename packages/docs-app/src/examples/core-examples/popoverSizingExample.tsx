@@ -16,7 +16,7 @@ export class PopoverSizingExample extends BaseExample<{}> {
     protected renderExample() {
         return (
             <div>
-                <Popover content={<FileMenu />} position={Position.BOTTOM_LEFT}>
+                <Popover content={<FileMenu />} position={Position.BOTTOM_LEFT} usePortal={false}>
                     <Button>Open...</Button>
                 </Popover>
             </div>
