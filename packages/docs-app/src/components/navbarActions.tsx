@@ -33,7 +33,12 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
         return (
             <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
                 <AnchorButton href="https://github.com/palantir/blueprint" target="_blank" text="GitHub" />
-                <Popover inline={true} content={this.renderReleasesMenu()} position={Position.BOTTOM_RIGHT}>
+                <Popover
+                    inline={true}
+                    className="docs-releases-menu"
+                    content={this.renderReleasesMenu()}
+                    position={Position.BOTTOM_RIGHT}
+                >
                     <AnchorButton rightIconName="caret-down" text="Releases" />
                 </Popover>
                 <AnchorButton
@@ -79,7 +84,7 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
         const libs = releases.filter(({ name }) => COMPONENT_PACKAGES.indexOf(name) >= 0).map(renderItem);
         const tooling = releases.filter(({ name }) => COMPONENT_PACKAGES.indexOf(name) === -1).map(renderItem);
         return (
-            <Menu className="docs-releases-menu">
+            <Menu>
                 <MenuItem
                     href="https://github.com/palantir/blueprint/releases"
                     iconName="book"
@@ -88,8 +93,8 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
                 />
                 <MenuDivider title="Components" />
                 {libs}
-                <MenuDivider title="Tooling" />
-                {tooling}
+                <MenuDivider />
+                <MenuItem text="Build tooling">{tooling}</MenuItem>
             </Menu>
         );
     }
