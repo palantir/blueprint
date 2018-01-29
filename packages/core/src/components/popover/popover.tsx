@@ -192,7 +192,7 @@ export interface IPopoverState {
 }
 
 export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
-    public static displayName = "Blueprint.Popover";
+    public static displayName = "Blueprint2.Popover";
 
     public static defaultProps: IPopoverProps = {
         defaultIsOpen: false,

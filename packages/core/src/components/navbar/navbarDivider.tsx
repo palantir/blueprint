@@ -18,7 +18,7 @@ export interface INavbarDividerProps extends React.HTMLProps<HTMLDivElement>, IP
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class NavbarDivider extends React.PureComponent<INavbarDividerProps, {}> {
-    public static displayName = "Blueprint.NavbarDivider";
+    public static displayName = "Blueprint2.NavbarDivider";
 
     public render() {
         const { className, ...htmlProps } = this.props;

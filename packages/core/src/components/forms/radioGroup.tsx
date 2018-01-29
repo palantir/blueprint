@@ -57,7 +57,7 @@ function nextName() {
 }
 
 export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
-    public static displayName = "Blueprint.RadioGroup";
+    public static displayName = "Blueprint2.RadioGroup";
 
     // a unique name for this group, which can be overridden by `name` prop.
     private autoGroupName = nextName();

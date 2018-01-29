@@ -129,7 +129,7 @@ enum IncrementDirection {
 }
 
 export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
-    public static displayName = "Blueprint.NumericInput";
+    public static displayName = "Blueprint2.NumericInput";
 
     public static VALUE_EMPTY = "";
     public static VALUE_ZERO = "0";

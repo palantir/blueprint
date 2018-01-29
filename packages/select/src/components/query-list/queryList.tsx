@@ -139,7 +139,7 @@ export interface IQueryListState<T> {
 }
 
 export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
-    public static displayName = "Blueprint.QueryList";
+    public static displayName = "Blueprint2.QueryList";
 
     public static ofType<T>() {
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;

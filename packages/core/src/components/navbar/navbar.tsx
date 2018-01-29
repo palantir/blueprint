@@ -23,7 +23,7 @@ export interface INavbarProps extends React.HTMLProps<HTMLDivElement>, IProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class Navbar extends React.PureComponent<INavbarProps, {}> {
-    public static displayName = "Blueprint.Navbar";
+    public static displayName = "Blueprint2.Navbar";
 
     public static Divider = NavbarDivider;
     public static Group = NavbarGroup;
