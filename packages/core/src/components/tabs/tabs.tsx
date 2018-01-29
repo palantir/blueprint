@@ -96,7 +96,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         vertical: false,
     };
 
-    public static displayName = "Blueprint.Tabs";
+    public static displayName = "Blueprint2.Tabs";
 
     private tablistElement: HTMLDivElement;
     private refHandlers = {

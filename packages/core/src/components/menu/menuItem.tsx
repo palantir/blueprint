@@ -83,7 +83,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
         text: "",
         useSmartPositioning: true,
     };
-    public static displayName = "Blueprint.MenuItem";
+    public static displayName = "Blueprint2.MenuItem";
 
     public static contextTypes = REACT_CONTEXT_TYPES;
     public static childContextTypes = REACT_CONTEXT_TYPES;
