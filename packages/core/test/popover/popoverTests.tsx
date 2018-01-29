@@ -16,7 +16,6 @@ import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import { Position } from "../../src/common/position";
-import * as Utils from "../../src/common/utils";
 import { Overlay } from "../../src/components/overlay/overlay";
 import { IPopoverProps, IPopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
@@ -25,11 +24,7 @@ import { Portal } from "../../src/index";
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper;
-    let onInteractionSpy: sinon.SinonSpy;
-
-    before(() => {
-        onInteractionSpy = sinon.spy();
-    });
+    const onInteractionSpy = sinon.spy();
 
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
@@ -37,13 +32,13 @@ describe("<Popover>", () => {
     });
 
     afterEach(() => {
-        onInteractionSpy.reset();
         if (wrapper !== undefined) {
             // clean up wrapper to remove Portal element from DOM
             wrapper.detach();
             wrapper = undefined;
         }
         testsContainerElement.remove();
+        onInteractionSpy.resetHistory();
     });
 
     describe("validation:", () => {
@@ -505,15 +500,12 @@ describe("<Popover>", () => {
                 .assertIsOpen(false);
         });
 
-        it("HOVER_TARGET_ONLY works properly", () => {
+        it("HOVER_TARGET_ONLY works properly", done => {
             renderPopover({ inline: false, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
                 .simulateTarget("mouseenter")
                 .assertIsOpen()
                 .simulateTarget("mouseleave")
-                .then(popover => {
-                    // Popover defers popover closing, so need to defer this check
-                    popover.assertIsOpen(false);
-                });
+                .then(popover => popover.assertIsOpen(false), done);
         });
 
         it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", () => {
@@ -685,7 +677,7 @@ describe("<Popover>", () => {
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
-        then(next: (wrap: IPopoverWrapper) => void, done?: MochaDone): void;
+        then(next: (wrap: IPopoverWrapper) => void, done: MochaDone): void;
     }
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
@@ -719,8 +711,9 @@ describe("<Popover>", () => {
         };
         wrapper.then = (next, done) => {
             setTimeout(() => {
+                wrapper.update();
                 next(wrapper);
-                Utils.safeInvoke(done);
+                done();
             });
         };
         return wrapper;

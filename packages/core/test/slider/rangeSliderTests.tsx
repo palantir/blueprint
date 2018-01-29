@@ -204,7 +204,7 @@ describe("<RangeSlider>", () => {
         slider.find(`.${Classes.SLIDER}`).simulate("mousedown", { clientX: tickSize * NEXT_LOW_VALUE });
         assert.equal(changeSpy.callCount, 1, "lower handle invokes onChange");
         assert.deepEqual(changeSpy.firstCall.args[0], [NEXT_LOW_VALUE, VALUE], "lower handle moves");
-        changeSpy.reset();
+        changeSpy.resetHistory();
 
         slider.find(`.${Classes.SLIDER}`).simulate("mousedown", { clientX: tickSize * NEXT_HIGH_VALUE });
         assert.equal(changeSpy.callCount, 1, "higher handle invokes onChange");
@@ -212,17 +212,12 @@ describe("<RangeSlider>", () => {
     });
 
     describe("vertical orientation", () => {
-        let changeSpy: sinon.SinonSpy;
-        let releaseSpy: sinon.SinonSpy;
-
-        before(() => {
-            changeSpy = sinon.spy();
-            releaseSpy = sinon.spy();
-        });
+        const changeSpy = sinon.spy();
+        const releaseSpy = sinon.spy();
 
         afterEach(() => {
-            changeSpy.reset();
-            releaseSpy.reset();
+            changeSpy.resetHistory();
+            releaseSpy.resetHistory();
         });
 
         it("moving mouse on bottom handle updates first value in range", () => {

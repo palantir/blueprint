@@ -210,7 +210,7 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("click");
             expect(onButtonClickSpy.calledOnce).to.be.true;
             expect(onButtonClickSpy.firstCall.args).to.deep.equal([1, "1"]);
-            onButtonClickSpy.reset();
+            onButtonClickSpy.resetHistory();
 
             // decrementing from 1 now
             decrementButton.simulate("click");

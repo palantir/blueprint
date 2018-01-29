@@ -9,8 +9,9 @@ import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
-import { spy } from "sinon";
+import { spy, stub } from "sinon";
 
+import { MENU_WARN_CHILDREN_SUBMENU_MUTEX } from "../../src/common/errors";
 import {
     Classes,
     IMenuItemProps,
@@ -64,6 +65,7 @@ describe("MenuItem", () => {
     });
 
     it("renders children if given children and submenu", () => {
+        const warnSpy = stub(console, "warn");
         const wrapper = shallow(
             <MenuItem iconName="style" text="Style" submenu={[{ text: "foo" }]}>
                 <MenuItem text="one" />
@@ -72,6 +74,8 @@ describe("MenuItem", () => {
         );
         const submenu = findSubmenu(wrapper);
         assert.lengthOf(submenu.props.children, 2);
+        assert.isTrue(warnSpy.alwaysCalledWith(MENU_WARN_CHILDREN_SUBMENU_MUTEX));
+        warnSpy.restore();
     });
 
     it("Clicking MenuItem triggers onClick prop", () => {
