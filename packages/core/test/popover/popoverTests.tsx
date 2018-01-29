@@ -500,7 +500,7 @@ describe("<Popover>", () => {
                 .assertIsOpen(false);
         });
 
-        it("HOVER_TARGET_ONLY works properly", done) => {
+        it("HOVER_TARGET_ONLY works properly", done => {
             renderPopover({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY, usePortal: true })
                 .simulateTarget("mouseenter")
                 .assertIsOpen()
