@@ -164,7 +164,7 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
                 enforceFocus={false}
                 hasBackdrop={false}
                 inline={this.props.inline}
-                isOpen={this.state.toasts.length > 0}
+                isOpen={this.state.toasts.length > 0 || this.props.children != null}
                 onClose={this.handleClose}
                 transitionDuration={350}
                 transitionName="pt-toast"

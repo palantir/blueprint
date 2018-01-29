@@ -36,6 +36,16 @@ describe("<Overlay>", () => {
         assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 1);
     });
 
+    it("supports non-element children", () => {
+        assert.doesNotThrow(() =>
+            shallow(
+                <Overlay inline={true} isOpen={true}>
+                    {null} {undefined}
+                </Overlay>,
+            ),
+        );
+    });
+
     it("hasBackdrop=false does not render backdrop", () => {
         const overlay = shallow(
             <Overlay hasBackdrop={false} inline={true} isOpen={true}>

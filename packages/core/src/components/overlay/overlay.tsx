@@ -156,8 +156,11 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
 
         const { children, className, inline, isOpen, transitionDuration, transitionName } = this.props;
 
-        const childrenWithTransitions = React.Children.map(children, (child: React.ReactElement<any>) => {
-            // add a special class to each child that will automatically set the appropriate
+        const childrenWithTransitions = React.Children.map(children, (child?: React.ReactChild) => {
+            if (child == null || typeof child !== "object") {
+                return child;
+            }
+            // add a special class to each child element that will automatically set the appropriate
             // CSS position mode under the hood. also, make the container focusable so we can
             // trap focus inside it (via `enforceFocus`).
             const decoratedChild = React.cloneElement(child, {
