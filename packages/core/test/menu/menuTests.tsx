@@ -160,7 +160,7 @@ describe("MenuItem", () => {
                 </React.Fragment>,
             );
             hoverOverTarget(0, () => {
-                assert.isNotNull(childContainer.query(`.${Classes.ALIGN_LEFT}`));
+                assert.isNotNull(childContainer.querySelector(`.${Classes.ALIGN_LEFT}`));
                 done();
             });
         });
@@ -175,8 +175,8 @@ describe("MenuItem", () => {
                 </React.Fragment>,
             );
             hoverOverTarget(0, () => {
-                assert.isNotNull(childContainer.query(`.${Classes.OVERLAY_OPEN}`));
-                assert.isNull(childContainer.query(`.${Classes.ALIGN_LEFT}`));
+                assert.isNotNull(childContainer.querySelector(`.${Classes.OVERLAY_OPEN}`));
+                assert.isNull(childContainer.querySelector(`.${Classes.ALIGN_LEFT}`));
                 done();
             });
         });
@@ -243,7 +243,7 @@ describe("MenuItem", () => {
             ];
             menuItem = mountMenuItem({ iconName: "align-left", text: "Alignment", submenu: items });
             hoverOverTarget(0, () => {
-                assert.isNotNull(childContainer.query(`.${Classes.ALIGN_LEFT}`));
+                assert.isNotNull(childContainer.querySelector(`.${Classes.ALIGN_LEFT}`));
                 done();
             });
         });
@@ -287,7 +287,7 @@ describe("MenuItem", () => {
         }
 
         function assertClassNameCount(className: string, count: number) {
-            assert.strictEqual(childContainer.queryAll(`.${className}`).length, count, `${count}x .${className}`);
+            assert.lengthOf(childContainer.querySelectorAll(`.${className}`), count, `${count}x .${className}`);
         }
 
         function mountMenuItem(props?: IMenuItemProps, childItems?: React.ReactNode) {

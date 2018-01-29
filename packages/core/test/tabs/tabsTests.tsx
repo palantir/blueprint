@@ -162,7 +162,7 @@ describe("<Tabs>", () => {
         );
 
         const tabList = wrapper.find(TAB_LIST);
-        const tabElements = testsContainerElement.queryAll(TAB);
+        const tabElements = testsContainerElement.querySelectorAll(TAB);
         (tabElements[0] as HTMLElement).focus();
 
         tabList.simulate("keydown", { which: Keys.ARROW_RIGHT });
@@ -184,7 +184,7 @@ describe("<Tabs>", () => {
             { attachTo: testsContainerElement },
         );
         const tabList = wrapper.find(TAB_LIST);
-        const tabElements = testsContainerElement.queryAll(TAB);
+        const tabElements = testsContainerElement.querySelectorAll(TAB);
 
         // must target different elements each time as onChange is only called when id changes
         tabList.simulate("keypress", { target: tabElements[1], which: Keys.ENTER });
@@ -355,7 +355,7 @@ describe("<Tabs>", () => {
         const style = wrapper.state().indicatorWrapperStyle;
         assert.isDefined(style, "Tabs should have a indicatorWrapperStyle prop set");
         const node = ReactDOM.findDOMNode(wrapper.instance());
-        const expected = (node.query(`${TAB}[data-tab-id='${selectedTabId}']`) as HTMLLIElement).offsetLeft;
+        const expected = (node.querySelector(`${TAB}[data-tab-id='${selectedTabId}']`) as HTMLLIElement).offsetLeft;
         assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
     }
 
