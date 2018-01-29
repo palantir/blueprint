@@ -32,10 +32,11 @@ uses [`Overlay`](#core/components/overlay) to manage children and transitions. I
 aligned along the top or bottom edge of its container (new toasts will slide in from that edge) and
 horizontally aligned along the left edge, center, or right edge of its container.
 
-`Toaster` can be used in one of two ways:
+There are three ways to use the `Toaster` component:
 
 1. `Toaster.create(props)` static method returns a new `IToaster` instance. Use the instance method `toaster.show()` to manipulate this instance. __(recommended)__
-1. Render a `<Toaster>` element and either use the `ref` prop to access its instance methods, or pass rendered `<Toast>`s as `children`.
+1. `<Toaster><Toast />...</Toaster>`: Render a `<Toaster>` element with React `children`.
+1. `<Toaster ref={ref => ref.show({ ...toast })} />`: Render a `<Toaster>` element and use the `ref` prop to access its instance methods.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     <h5>Working with multiple toasters</h5>
@@ -113,9 +114,9 @@ export class App extends React.PureComponent {
 
 Render the `<Toaster>` component like any other element and supply `<Toast>` elements as `children`. You can
 optionally attach a `ref` handler to access the instance methods, but we strongly recommend using the
-[`Toaster.create` static method](#core/components/toast.static-usage) documented above instead. Note that these
-`children` and `ref` usages can be mixed, but `children` will always appear _after_ toasts created with
-`toaster.show()`.
+[`Toaster.create` static method](#core/components/toast.static-usage) documented above instead. Note that
+`children` and `ref` can be used together, but `children` will always appear _after_ toasts created with
+`ref.show()`.
 
 ```tsx
 import { Button, Position, Toast, Toaster } from "@blueprintjs/core";
