@@ -10,7 +10,6 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
-    Icon,
     Menu,
     MenuDivider,
     MenuItem,
@@ -92,10 +91,10 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
                     target="_blank"
                     text="Release notes"
                 />
-                <MenuDivider title="Component packages" />
+                <MenuDivider title="Components" />
                 {libs}
                 <MenuDivider />
-                <MenuItem text="Infrastructure packages">{tooling}</MenuItem>
+                <MenuItem text="Build tooling">{tooling}</MenuItem>
             </Menu>
         );
     }
