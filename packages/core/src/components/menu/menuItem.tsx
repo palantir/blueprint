@@ -15,6 +15,7 @@ import { IActionProps, ILinkProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { IMenuItemContext, MenuItemContextTypes } from "./context";
+import { IMenuProps, Menu } from "./menu";
 
 export interface IMenuItemProps extends IActionProps, ILinkProps {
     // override from IActionProps to make it required
@@ -116,9 +117,15 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
         // getSubmenuPopperModifiers will not be defined if `MenuItem` used outside a `Menu`.
         const popoverModifiers = safeInvoke(this.context.getSubmenuPopperModifiers);
 
-        // NOTE: use .pt-menu directly because using Menu would start a new context tree and
-        // we'd have to pass through the submenu props. this is just simpler.
-        const submenuContent = <ul className={Classes.MENU}>{children}</ul>;
+        // Must pass parent `Menu` context props down to nested `Menu`
+        const menuProps: IMenuProps =
+            popoverModifiers == null
+                ? {}
+                : {
+                      submenuBoundaryElement: popoverModifiers.flip.boundariesElement,
+                      submenuBoundaryPadding: popoverModifiers.flip.padding,
+                  };
+        const submenuContent = <Menu {...menuProps}>{children}</Menu>;
 
         return (
             <Popover
