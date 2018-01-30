@@ -17,6 +17,14 @@ import { Classes, IOverlayProps, Overlay, Portal } from "../../src/index";
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
 
 describe("<Overlay>", () => {
+    /**
+     * Assign mounted wrappers to this variable to automatically clean them up after the test.
+     *
+     * **Always assign the result of `mount(<Overlay>)` to avoid leaving dangling Overlays,** which
+     * can interfere with other tests through the Overlay stack.
+     *
+     * Shallow renders do not need to be cleaned up in the same way.
+     */
     let wrapper: ReactWrapper<IOverlayProps, any>;
 
     afterEach(() => {
@@ -117,7 +125,7 @@ describe("<Overlay>", () => {
         it("invoked on document mousedown when hasBackdrop=false", () => {
             const onClose = spy();
             // mounting cuz we need document events + lifecycle
-            mount(
+            wrapper = mount(
                 <Overlay hasBackdrop={false} inline={true} isOpen={true} onClose={onClose}>
                     {createOverlayContents()}
                 </Overlay>,
@@ -129,7 +137,7 @@ describe("<Overlay>", () => {
 
         it("not invoked on document mousedown when hasBackdrop=false and canOutsideClickClose=false", () => {
             const onClose = spy();
-            mount(
+            wrapper = mount(
                 <Overlay canOutsideClickClose={false} hasBackdrop={false} inline={true} isOpen={true} onClose={onClose}>
                     {createOverlayContents()}
                 </Overlay>,
@@ -141,7 +149,7 @@ describe("<Overlay>", () => {
 
         it("not invoked on click of a nested overlay", () => {
             const onClose = spy();
-            mount(
+            wrapper = mount(
                 <Overlay isOpen={true} onClose={onClose}>
                     <div>
                         {createOverlayContents()}
@@ -150,19 +158,19 @@ describe("<Overlay>", () => {
                         </Overlay>
                     </div>
                 </Overlay>,
-            )
-                .find("#inner-element")
-                .simulate("mousedown");
+            );
+            wrapper.find("#inner-element").simulate("mousedown");
             assert.isTrue(onClose.notCalled);
         });
 
         it("invoked on escape key", () => {
             const onClose = spy();
-            mount(
+            wrapper = mount(
                 <Overlay inline={true} isOpen={true} onClose={onClose}>
                     {createOverlayContents()}
                 </Overlay>,
-            ).simulate("keydown", { which: Keys.ESCAPE });
+            );
+            wrapper.simulate("keydown", { which: Keys.ESCAPE });
             assert.isTrue(onClose.calledOnce);
         });
 
