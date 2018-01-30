@@ -129,7 +129,7 @@ describe("<Overlay>", () => {
             assert.isTrue(onClose.notCalled);
         });
 
-        it("not invoked on click of inner overlay", () => {
+        it("not invoked on click of a nested overlay", () => {
             const onClose = spy();
             mount(
                 <Overlay isOpen={true} onClose={onClose}>
