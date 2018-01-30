@@ -8,7 +8,7 @@ import { Classes } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import { default as ReactDayPicker } from "react-day-picker";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
@@ -82,7 +82,7 @@ describe("<DateRangePicker>", () => {
         it("doesn't show outside days if enableOutsideDays=false", () => {
             const defaultValue = [new Date(2017, Months.SEPTEMBER, 1, 12), null] as DateRange;
             const { leftView, rightView } = wrap(
-                <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ enableOutsideDays: false }} />,
+                <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ showOutsideDays: false }} />,
             );
             const leftDays = leftView.find("Day");
             const rightDays = rightView.find("Day");
