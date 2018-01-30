@@ -139,6 +139,23 @@ describe("<Overlay>", () => {
             assert.isTrue(onClose.notCalled);
         });
 
+        it("not invoked on click of a nested overlay", () => {
+            const onClose = spy();
+            mount(
+                <Overlay isOpen={true} onClose={onClose}>
+                    <div>
+                        {createOverlayContents()}
+                        <Overlay isOpen={true}>
+                            <div id="inner-element">{createOverlayContents()}</div>
+                        </Overlay>
+                    </div>
+                </Overlay>,
+            )
+                .find("#inner-element")
+                .simulate("mousedown");
+            assert.isTrue(onClose.notCalled);
+        });
+
         it("invoked on escape key", () => {
             const onClose = spy();
             mount(
