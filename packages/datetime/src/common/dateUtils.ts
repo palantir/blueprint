@@ -197,9 +197,11 @@ export function dateToString(date: Date, dateFormat: DateFormat, locale = "en") 
 }
 
 /**
- * wrapper around date-fn's parse function
- * adds support for dates of format YYYY-M-DD, YYYY-MM-D, YYYY-M-D
- * date-fn's parse does not support single digit month or day formats
+ * A wrapper around date-fns parse() that can parse date strings of various formats:
+ * - Year can be "YY" or "YYYY".
+ * - Month can be "M" or "MM".
+ * - Date can be "D" or "DD".
+ * Examples: "YYYY-MM-DD", "YYYY-M-DD", "YY-MM-D", "YY-M-D"
  */
 export function stringToDate(date: string | number | Date) {
     if (typeof date === "string") {
