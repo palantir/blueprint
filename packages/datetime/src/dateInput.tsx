@@ -338,7 +338,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     }
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-        const valueString = this.getDateString(this.state.value);
+        const valueString = dateToString(this.state.value, this.props.format, this.props.locale);
         this.setState({ isInputFocused: true, isOpen: true, valueString });
         this.safeInvokeInputProp("onFocus", e);
     };
