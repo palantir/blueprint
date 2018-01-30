@@ -63,11 +63,11 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
     };
 
     public render() {
-        const { children, disabled, label, submenu } = this.props;
-        const hasSubmenu = children != null || submenu != null;
-        const liClasses = classNames({
-            [Classes.MENU_SUBMENU]: hasSubmenu,
-        });
+        const { disabled, label } = this.props;
+        const submenuChildren = this.renderSubmenuChildren();
+        const hasSubmenu = submenuChildren != null;
+
+        const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         const anchorClasses = classNames(
             Classes.MENU_ITEM,
             Classes.intentClass(this.props.intent),
@@ -80,12 +80,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
             this.props.className,
         );
 
-        let labelElement: JSX.Element;
-        if (label != null) {
-            labelElement = <span className="pt-menu-item-label">{label}</span>;
-        }
-
-        const content = (
+        const target = (
             <a
                 className={anchorClasses}
                 href={disabled ? undefined : this.props.href}
@@ -93,14 +88,14 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 tabIndex={disabled ? undefined : 0}
                 target={this.props.target}
             >
-                {labelElement}
+                {label && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
                 {this.props.text}
             </a>
         );
 
         return (
             <li className={liClasses} ref={this.refHandlers.li}>
-                {hasSubmenu ? this.renderPopover(content) : content}
+                {this.maybeRenderPopover(target, submenuChildren)}
             </li>
         );
     }
@@ -111,15 +106,19 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
         }
     }
 
-    private renderPopover(content: JSX.Element) {
+    private maybeRenderPopover(target: JSX.Element, children?: React.ReactNode) {
         const { disabled, popoverProps } = this.props;
+        if (children == null) {
+            return target;
+        }
+
         const popoverClasses = classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName);
         // getSubmenuPopperModifiers will not be defined if `MenuItem` used outside a `Menu`.
         const popoverModifiers = safeInvoke(this.context.getSubmenuPopperModifiers);
 
         // NOTE: use .pt-menu directly because using Menu would start a new context tree and
         // we'd have to pass through the submenu props. this is just simpler.
-        const submenuContent = <ul className={Classes.MENU}>{this.renderChildren()}</ul>;
+        const submenuContent = <ul className={Classes.MENU}>{children}</ul>;
 
         return (
             <Popover
@@ -135,12 +134,12 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 popoverClassName={popoverClasses}
                 popoverRef={this.refHandlers.popover}
             >
-                {content}
+                {target}
             </Popover>
         );
     }
 
-    private renderChildren(): React.ReactNode {
+    private renderSubmenuChildren(): React.ReactNode {
         const { children, submenu } = this.props;
         if (children != null) {
             return children;
