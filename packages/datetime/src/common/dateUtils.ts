@@ -216,7 +216,7 @@ export function parseDate(date: string | number | Date) {
         return parse(date);
     }
 
-    const [_, year, month, day] = token;
+    const [year, month, day] = token.slice(1);
     const paddedMonth = padWithZeroes(month, 2);
     const paddedDay = padWithZeroes(day, 2);
 
