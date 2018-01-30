@@ -186,8 +186,8 @@ export function getLocale(localeString: string): any {
     }
 }
 
-export function dateToString(date: Date, dateFormat: DateFormat, locale = "en") {
-    if (!date) {
+export function dateToString(date: Date, dateFormat: DateFormat, locale: string = "en") {
+    if (date != null) {
         return "";
     } else if (typeof dateFormat === "string") {
         return format(date, dateFormat, { locale: getLocale(locale) });
@@ -197,13 +197,13 @@ export function dateToString(date: Date, dateFormat: DateFormat, locale = "en") 
 }
 
 /**
- * A wrapper around date-fns parse() that can parse date strings of various formats:
+ * A wrapper around date-fns parse() that adds feature to be able parse date strings of various formats :
  * - Year can be "YY" or "YYYY".
  * - Month can be "M" or "MM".
  * - Date can be "D" or "DD".
  * Examples: "YYYY-MM-DD", "YYYY-M-DD", "YY-MM-D", "YY-M-D"
  */
-export function stringToDate(date: string | number | Date) {
+export function parseDate(date: string | number | Date) {
     if (typeof date === "string") {
         const parseToken = /^(\d{4}|\d{2})-?(\d{1,2})-?(\d{1,2})$/;
         const token = parseToken.exec(date.toString());

@@ -251,52 +251,52 @@ describe("dateUtils", () => {
         });
     });
 
-    describe("stringToDate", () => {
+    describe("parseDate", () => {
         it("handles null input without breaking", () => {
-            assert.doesNotThrow(() => DateUtils.stringToDate(null));
+            assert.doesNotThrow(() => DateUtils.parseDate(null));
         });
 
         it("handles empty input without breaking", () => {
-            assert.doesNotThrow(() => DateUtils.stringToDate(""));
+            assert.doesNotThrow(() => DateUtils.parseDate(""));
         });
 
         it("handles 'YYYY-MM-DD'", () => {
-            const date = DateUtils.stringToDate("2015-02-15");
+            const date = DateUtils.parseDate("2015-02-15");
             expect(toHyphenatedDateString(date)).to.equal("2015-02-15");
         });
 
         it("handles improperly formatted 'YYYY-M-DD'", () => {
-            const date = DateUtils.stringToDate("2015-2-15");
+            const date = DateUtils.parseDate("2015-2-15");
             expect(toHyphenatedDateString(date)).to.equal("2015-02-15");
         });
 
         it("handles 'YYYY-MM-D'", () => {
-            const date = DateUtils.stringToDate("2015-10-5");
+            const date = DateUtils.parseDate("2015-10-5");
             expect(toHyphenatedDateString(date)).to.equal("2015-10-05");
         });
 
         it("handles improperly formatted  'YYYY-M-D'", () => {
-            const date = DateUtils.stringToDate("2015-2-5");
+            const date = DateUtils.parseDate("2015-2-5");
             expect(toHyphenatedDateString(date)).to.equal("2015-02-05");
         });
 
         it("handles 'MM/DD/YYYY'", () => {
-            const date = DateUtils.stringToDate("12/15/2015");
+            const date = DateUtils.parseDate("12/15/2015");
             expect(toHyphenatedDateString(date)).to.equal("2015-12-15");
         });
 
         it("handles improperly formatted  'M/DD/YYYY'", () => {
-            const date = DateUtils.stringToDate("2/15/2015");
+            const date = DateUtils.parseDate("2/15/2015");
             expect(toHyphenatedDateString(date)).to.equal("2015-02-15");
         });
 
         it("handles improperly formatted  'MM/D/YYYY'", () => {
-            const date = DateUtils.stringToDate("12/5/2015");
+            const date = DateUtils.parseDate("12/5/2015");
             expect(toHyphenatedDateString(date)).to.equal("2015-12-05");
         });
 
         it("handles improperly formatted  'M/D/YYYY'", () => {
-            const date = DateUtils.stringToDate("2/5/2015");
+            const date = DateUtils.parseDate("2/5/2015");
             expect(toHyphenatedDateString(date)).to.equal("2015-02-05");
         });
     });

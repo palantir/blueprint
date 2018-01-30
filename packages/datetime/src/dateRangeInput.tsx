@@ -22,7 +22,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { DateRange, DateRangeBoundary, dateToString, stringToDate } from "./common/dateUtils";
+import { DateRange, DateRangeBoundary, dateToString, parseDate } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { DateFormat, IDateFormatter } from "./dateFormatter";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
@@ -585,13 +585,13 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
                 wasLastFocusChangeDueToHover: false,
             });
         } else if (wasStartFieldFocused && isEnterPressed) {
-            const nextStartValue = stringToDate(this.state.startInputString);
+            const nextStartValue = parseDate(this.state.startInputString);
             const nextStartDate = nextStartValue;
             const nextEndDate = selectedEnd == null ? undefined : selectedEnd;
             this.handleDateRangePickerChange([nextStartDate, nextEndDate] as DateRange, true);
         } else if (wasEndFieldFocused && isEnterPressed) {
             const nextStartDate = selectedStart == null ? undefined : selectedStart;
-            const nextEndValue = stringToDate(this.state.endInputString);
+            const nextEndValue = parseDate(this.state.endInputString);
             const nextEndDate = nextEndValue;
             this.handleDateRangePickerChange([nextStartDate, nextEndDate] as DateRange, true);
         } else {
@@ -635,7 +635,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     private handleInputBlur = (_e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
 
-        const maybeNextValue = stringToDate(values.inputString);
+        const maybeNextValue = parseDate(values.inputString);
         const isValueControlled = this.isControlled();
 
         let nextState: IDateRangeInputState = {
@@ -674,7 +674,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         const inputString = (e.target as HTMLInputElement).value;
 
         const { keys } = this.getStateKeysAndValuesForBoundary(boundary);
-        const maybeNextValue = stringToDate(inputString);
+        const maybeNextValue = parseDate(inputString);
         const isValueControlled = this.isControlled();
 
         let nextState: IDateRangeInputState = { shouldSelectAfterUpdate: false };
@@ -942,7 +942,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         const values = this.getStateKeysAndValuesForBoundary(boundary).values;
         const { isInputFocused, hoverString, inputString, selectedValue } = values;
 
-        const boundaryValue = isInputFocused ? stringToDate(inputString) : selectedValue;
+        const boundaryValue = isInputFocused ? parseDate(inputString) : selectedValue;
 
         if (hoverString != null) {
             // don't show an error state while we're hovering over a valid date.
