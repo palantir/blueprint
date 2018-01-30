@@ -6,7 +6,7 @@
 
 /* tslint:disable:no-submodule-imports */
 import * as addMonths from "date-fns/add_months";
-import * as subMonths from "date-fns/sub_months";
+import * as subtractMonths from "date-fns/sub_months";
 /* tslint:enable:no-submodule-imports */
 
 export class MonthAndYear {
@@ -41,7 +41,7 @@ export class MonthAndYear {
     }
 
     public getPreviousMonth(): MonthAndYear {
-        const previousMonthDate = subMonths(this.date, 1);
+        const previousMonthDate = subtractMonths(this.date, 1);
         return new MonthAndYear(previousMonthDate.getMonth(), previousMonthDate.getFullYear());
     }
 
