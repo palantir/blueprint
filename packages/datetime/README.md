@@ -8,7 +8,7 @@ This package contains a collection of React components for working with dates an
 
 Two third-party libraries are used in this package to ease the burden of time management:
 
-- [date-fns](https://date-fns.org) is provides a toolset for manipulating dates in JavaScript.
+- [date-fns](https://date-fns.org) provides a toolset for manipulating dates in JavaScript.
   We use it for formatting dates as strings.
 - [react-day-picker](http://react-day-picker.js.org/) is a solid React calendaring library.
   We use it internally for the calendar and expose some parts of its API (particularly modifiers).
