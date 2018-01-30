@@ -24,7 +24,7 @@ const LOCALE: { [index: string]: any } = {
 };
 /* tslint:enable:no-submodule-imports */
 import { DateFormat } from "../dateFormatter";
-import { padWithZeroes } from './utils';
+import { padWithZeroes } from "./utils";
 
 export type SupportedLocaleString = "de" | "en" | "es" | "fr" | "it" | "ko" | "ru" | "uk" | "zh_cn";
 export type DateRange = [Date | undefined, Date | undefined];
@@ -206,7 +206,7 @@ export function dateToString(date: Date, dateFormat: DateFormat, locale: Support
  * Examples: "YYYY-MM-DD", "YYYY-M-DD", "YY-MM-D", "YY-M-D"
  */
 export function parseDate(date: string | number | Date) {
-    if (typeof date !== "string"){
+    if (typeof date !== "string") {
         return parse(date);
     }
 

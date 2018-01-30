@@ -5,8 +5,8 @@
  */
 
 import { LocaleUtils } from "react-day-picker";
-import { Months } from "./common/months";
 import { SupportedLocaleString } from "./common/dateUtils";
+import { Months } from "./common/months";
 
 // DatePicker supports a simpler set of modifiers (for now).
 // also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.
