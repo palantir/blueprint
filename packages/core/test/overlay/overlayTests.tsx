@@ -12,7 +12,7 @@ import { spy } from "sinon";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import * as Keys from "../../src/common/keys";
-import { Classes, IOverlayProps, Overlay, Portal } from "../../src/index";
+import { Classes, IOverlayProps, Overlay, Portal, Utils } from "../../src/index";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
 
@@ -200,21 +200,26 @@ describe("<Overlay>", () => {
         document.documentElement.appendChild(testsContainerElement);
 
         // HACKHACK: https://github.com/palantir/blueprint/issues/1951
-        it.skip("brings focus to overlay if autoFocus=true", done => {
+        it("brings focus to overlay if autoFocus=true", done => {
             wrapper = mount(
                 <Overlay autoFocus={true} inline={false} isOpen={true}>
                     <input type="text" />
                 </Overlay>,
                 { attachTo: testsContainerElement },
             );
+            // wrapper.setProps({ isOpen: true });
+            wrapper.update();
             assertFocus(".pt-overlay-backdrop", done);
         });
 
         it("does not bring focus to overlay if autoFocus=false", done => {
             wrapper = mount(
-                <Overlay autoFocus={false} inline={false} isOpen={true}>
-                    <input type="text" />
-                </Overlay>,
+                <div>
+                    <button>something outside overlay for browser to focus on</button>
+                    <Overlay autoFocus={false} inline={false} isOpen={true}>
+                        <input type="text" />
+                    </Overlay>
+                </div>,
                 { attachTo: testsContainerElement },
             );
             assertFocus("body", done);
@@ -222,7 +227,7 @@ describe("<Overlay>", () => {
 
         // React implements autoFocus itself so our `[autofocus]` logic never fires.
         // This test always fails and I can't figure out why, so disabling as we're not even testing our own logic.
-        it.skip("autoFocus element inside overlay gets the focus", done => {
+        it("autoFocus element inside overlay gets the focus", done => {
             wrapper = mount(
                 <Overlay inline={false} isOpen={true}>
                     <input autoFocus={true} type="text" />
@@ -234,29 +239,22 @@ describe("<Overlay>", () => {
 
         it("returns focus to overlay if enforceFocus=true", done => {
             let buttonRef: HTMLElement;
-            const focusBtnAndAssert = () => {
-                buttonRef.focus();
-                // nested setTimeouts delay execution until the next frame, not
-                // just to the end of the current frame. necessary to wait for
-                // focus to change.
-                setTimeout(() => {
-                    setTimeout(() => {
-                        wrapper.update();
-                        assert.notStrictEqual(buttonRef, document.activeElement);
-                        done();
-                    });
-                });
-            };
-
+            let inputRef: HTMLElement;
             wrapper = mount(
                 <div>
                     <button ref={ref => (buttonRef = ref)} />
                     <Overlay enforceFocus={true} inline={false} isOpen={true}>
-                        <input ref={ref => ref && focusBtnAndAssert()} />
+                        <input autoFocus={true} ref={ref => (inputRef = ref)} />
                     </Overlay>
                 </div>,
                 { attachTo: testsContainerElement },
             );
+            assert.strictEqual(document.activeElement, inputRef);
+            buttonRef.focus();
+            assertFocus(() => {
+                assert.notStrictEqual(document.activeElement, buttonRef);
+                assert.isTrue(document.activeElement.classList.contains(Classes.OVERLAY_BACKDROP), "focus on backdrop");
+            }, done);
         });
 
         it("returns focus to overlay after clicking the backdrop if enforceFocus=true", done => {
@@ -341,17 +339,20 @@ describe("<Overlay>", () => {
             assertFocus("button", done);
         });
 
-        function assertFocus(selector: string, done: MochaDone) {
-            wrapper.update();
-            // the behavior being tested relies on requestAnimationFrame. to
-            // avoid flakiness, use nested setTimeouts to delay execution until
-            // the next frame, not just to the end of the current frame.
+        function assertFocus(selector: string | (() => void), done: MochaDone) {
+            // the behavior being tested relies on requestAnimationFrame. to avoid flakiness,
+            // use nested setTimeouts to delay execution until the *next* frame.
             setTimeout(() => {
                 setTimeout(() => {
-                    assert.strictEqual(document.querySelector(selector), document.activeElement);
+                    wrapper.update();
+                    if (Utils.isFunction(selector)) {
+                        selector();
+                    } else {
+                        assert.strictEqual(document.querySelector(selector), document.activeElement);
+                    }
                     done();
-                });
-            });
+                }, 1);
+            }, 1);
         }
     });
 
