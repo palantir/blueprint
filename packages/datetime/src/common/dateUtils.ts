@@ -24,6 +24,7 @@ const LOCALE: { [index: string]: any } = {
 };
 /* tslint:enable:no-submodule-imports */
 import { DateFormat } from "../dateFormatter";
+import { padWithZeroes } from './utils';
 
 export type DateRange = [Date | undefined, Date | undefined];
 
@@ -187,7 +188,7 @@ export function getLocale(localeString: string): any {
 }
 
 export function dateToString(date: Date, dateFormat: DateFormat, locale: string = "en") {
-    if (date != null) {
+    if (date == null) {
         return "";
     } else if (typeof dateFormat === "string") {
         return format(date, dateFormat, { locale: getLocale(locale) });
@@ -204,17 +205,19 @@ export function dateToString(date: Date, dateFormat: DateFormat, locale: string 
  * Examples: "YYYY-MM-DD", "YYYY-M-DD", "YY-MM-D", "YY-M-D"
  */
 export function parseDate(date: string | number | Date) {
-    if (typeof date === "string") {
-        const parseToken = /^(\d{4}|\d{2})-?(\d{1,2})-?(\d{1,2})$/;
-        const token = parseToken.exec(date.toString());
-        if (token) {
-            const year = token[1];
-            const month = ("0" + token[2]).slice(-2);
-            const day = ("0" + token[3]).slice(-2);
-
-            return parse(`${year}-${month}-${day}`);
-        }
+    if (typeof date !== "string"){
         return parse(date);
     }
-    return parse(date);
+
+    const parseToken = /^(\d{4}|\d{2})-?(\d{1,2})-?(\d{1,2})$/;
+    const token = parseToken.exec(date.toString());
+    if (token == null) {
+        return parse(date);
+    }
+
+    const [_, year, month, day] = token;
+    const paddedMonth = padWithZeroes(month, 2);
+    const paddedDay = padWithZeroes(day, 2);
+
+    return parse(`${year}-${paddedMonth}-${paddedDay}`);
 }
