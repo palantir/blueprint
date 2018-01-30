@@ -136,13 +136,13 @@ describe("<Overlay>", () => {
                     <div>
                         {createOverlayContents()}
                         <Overlay isOpen={true}>
-                            <div id="inner-element">
-                                {createOverlayContents()}
-                            </div>
+                            <div id="inner-element">{createOverlayContents()}</div>
                         </Overlay>
                     </div>
                 </Overlay>,
-            ).find("#inner-element").simulate("mousedown");
+            )
+                .find("#inner-element")
+                .simulate("mousedown");
             assert.isTrue(onClose.notCalled);
         });
 
