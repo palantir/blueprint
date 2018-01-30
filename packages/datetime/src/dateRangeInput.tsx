@@ -836,7 +836,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     };
 
     private getFormattedDateString = (date: Date, formatOverride?: DateFormat) => {
-        if (!date) {
+        if (date == null) {
             return "";
         } else if (!isValid(date)) {
             return this.props.invalidDateMessage;
@@ -947,7 +947,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         if (hoverString != null) {
             // don't show an error state while we're hovering over a valid date.
             return false;
-        } else if (boundaryValue || boundaryValue == null) {
+        } else if (boundaryValue == null) {
             return false;
         } else if (!isValid(boundaryValue)) {
             return true;
@@ -961,7 +961,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     };
 
     private isDateValidAndInRange(value: Date) {
-        return value && isValid(value) && this.isDateInRange(value);
+        return value != null && isValid(value) && this.isDateInRange(value);
     }
 
     private isDateInRange(value: Date) {

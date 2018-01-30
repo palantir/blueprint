@@ -175,7 +175,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     public constructor(props?: IDateInputProps, context?: any) {
         super(props, context);
 
-        const defaultValue = this.props.defaultValue ? this.props.defaultValue : null;
+        const defaultValue = props.defaultValue ? props.defaultValue : null;
 
         this.state = {
             isInputFocused: false,
@@ -264,7 +264,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     }
 
     private getDateString(value: Date) {
-        if (value === null) {
+        if (value == null) {
             return "";
         }
         if (isValid(value)) {
@@ -373,7 +373,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         if (
             valueString.length > 0 &&
             valueString !== this.getDateString(this.state.value) &&
-            (!isValid(value) || !this.isDateInRange(value))
+            !this.isDateValidAndInRange(value)
         ) {
             if (this.props.value === undefined) {
                 this.setState({ isInputFocused: false, value, valueString: null });
