@@ -81,27 +81,32 @@ Use `MenuDivider` to separate menu sections. Optionally, add a title to the divi
 
 To add a submenu to a `Menu`, simply nest `MenuItem`s within another `MenuItem`.
 The submenu opens to the right of its parent by default, but will adjust and flip to the left if
-there is not enough room to the right.
+there is not enough room to the right. `Menu` provides two `submenu` props to adjust this flipping behavior:
+you can customize the boundary element and the padding within that boundary element.
 
 ```jsx
-<MenuItem text="Submenu">
-    <MenuItem text="Child one" />
-    <MenuItem text="Child two" />
-    <MenuItem text="Child three" />
-</MenuItem>
+<Menu>
+    <MenuItem text="Submenu">
+        <MenuItem text="Child one" />
+        <MenuItem text="Child two" />
+        <MenuItem text="Child three" />
+    </MenuItem>
+</Menu>
 ```
 
 Alternatively, you can pass an array of `IMenuItemProps` to the `submenu` prop:
 
 ```jsx
-React.createElement(MenuItem, {
-    submenu: [
-        { text: "Child one" },
-        { text: "Child two" },
-        { text: "Child three" },
-    ],
-    text: "parent",
-});
+React.createElement(Menu, {},
+    React.createElement(MenuItem, {
+        submenu: [
+            { text: "Child one" },
+            { text: "Child two" },
+            { text: "Child three" },
+        ],
+        text: "parent",
+    }),
+);
 ```
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
