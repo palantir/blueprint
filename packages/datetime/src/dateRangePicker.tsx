@@ -7,7 +7,9 @@
 import { AbstractPureComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import { default as ReactDayPicker } from "react-day-picker";
+import { DayModifiers } from "react-day-picker/types/common";
+import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/props";
 
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -65,7 +67,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `numberOfMonths`, `fromMonth` (use
      * `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerProps?: DayPickerProps;
 
     /**
      * Initial `DateRange` the calendar will display as selected.
@@ -225,8 +227,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         const { leftView, rightView } = this.state;
         const disabledDays = this.getDisabledDaysModifier();
 
-        const dayPickerBaseProps: ReactDayPicker.Props = {
-            enableOutsideDays: true,
+        const dayPickerBaseProps: DayPickerProps = {
+            showOutsideDays: true,
             locale,
             localeUtils,
             modifiers,
@@ -363,7 +365,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         return <Menu className={DateClasses.DATERANGEPICKER_SHORTCUTS}>{shortcutElements}</Menu>;
     }
 
-    private renderSingleCaption = (captionProps: ReactDayPicker.CaptionElementProps) => (
+    private renderSingleCaption = (captionProps: CaptionElementProps) => (
         <DatePickerCaption
             {...captionProps}
             maxDate={this.props.maxDate}
@@ -374,7 +376,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         />
     );
 
-    private renderLeftCaption = (captionProps: ReactDayPicker.CaptionElementProps) => (
+    private renderLeftCaption = (captionProps: CaptionElementProps) => (
         <DatePickerCaption
             {...captionProps}
             maxDate={DateUtils.getDatePreviousMonth(this.props.maxDate)}
@@ -385,7 +387,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         />
     );
 
-    private renderRightCaption = (captionProps: ReactDayPicker.CaptionElementProps) => (
+    private renderRightCaption = (captionProps: CaptionElementProps) => (
         <DatePickerCaption
             {...captionProps}
             maxDate={this.props.maxDate}
@@ -398,7 +400,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
 
     private handleDayMouseEnter = (
         day: Date,
-        modifiers: ReactDayPicker.DayModifiers,
+        modifiers: DayModifiers,
         e: React.MouseEvent<HTMLDivElement>,
     ) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayMouseEnter, day, modifiers, e);
@@ -418,7 +420,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
 
     private handleDayMouseLeave = (
         day: Date,
-        modifiers: ReactDayPicker.DayModifiers,
+        modifiers: DayModifiers,
         e: React.MouseEvent<HTMLDivElement>,
     ) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayMouseLeave, day, modifiers, e);
@@ -431,7 +433,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
 
     private handleDayClick = (
         day: Date,
-        modifiers: ReactDayPicker.DayModifiers,
+        modifiers: DayModifiers,
         e: React.MouseEvent<HTMLDivElement>,
     ) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
