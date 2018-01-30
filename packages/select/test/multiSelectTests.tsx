@@ -4,24 +4,23 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, MenuItem, Tag } from "@blueprintjs/core";
+import { MenuItem, Tag } from "@blueprintjs/core";
 import { assert } from "chai";
-import * as classNames from "classnames";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
-import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/data";
-import { IMultiSelectProps, ISelectItemRendererProps, MultiSelect } from "../src/index";
+import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { IMultiSelectProps, MultiSelect } from "../src/index";
 
 describe("<MultiSelect>", () => {
-    const FilmMultiSelect = MultiSelect.ofType<Film>();
+    const FilmMultiSelect = MultiSelect.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { inline: true, isOpen: true },
         query: "",
-        selectedItems: [] as Film[],
+        selectedItems: [] as IFilm[],
         tagRenderer: renderTag,
     };
     let handlers: {
@@ -70,7 +69,7 @@ describe("<MultiSelect>", () => {
         assert.doesNotThrow(() => multiselect({ selectedItems: undefined }));
     });
 
-    function multiselect(props: Partial<IMultiSelectProps<Film>> = {}, query?: string) {
+    function multiselect(props: Partial<IMultiSelectProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(
             <FilmMultiSelect {...defaultProps} {...handlers} {...props}>
                 <table />
@@ -83,28 +82,10 @@ describe("<MultiSelect>", () => {
     }
 });
 
-function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
-    const classes = classNames({
-        [Classes.ACTIVE]: isActive,
-        [Classes.INTENT_PRIMARY]: isActive,
-    });
-
-    return (
-        <MenuItem
-            className={classes}
-            key={film.rank}
-            label={film.year.toString()}
-            onClick={handleClick}
-            text={`${film.rank}. ${film.title}`}
-            shouldDismissPopover={false}
-        />
-    );
-}
-
-function renderTag(film: Film) {
+function renderTag(film: IFilm) {
     return film.title;
 }
 
-function filterByYear(query: string, film: Film) {
+function filterByYear(query: string, film: IFilm) {
     return query === "" || film.year.toString() === query;
 }

@@ -4,18 +4,17 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, InputGroup, Popover2 } from "@blueprintjs/core";
+import { InputGroup, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
-import * as classNames from "classnames";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Film, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/data";
-import { ISelectItemRendererProps, ISelectProps, Select } from "../src/index";
+import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { ISelectProps, Select } from "../src/index";
 
 describe("<Select>", () => {
-    const FilmSelect = Select.ofType<Film>();
+    const FilmSelect = Select.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { inline: true, isOpen: true },
@@ -38,25 +37,25 @@ describe("<Select>", () => {
     it("renders a Popover around children that contains InputGroup and items", () => {
         const wrapper = select();
         assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
-        assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover");
+        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
     it("filterable=false hides InputGroup", () => {
         const wrapper = select({ filterable: false });
         assert.lengthOf(wrapper.find(InputGroup), 0, "should not render InputGroup");
-        assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover");
+        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
     it("disabled=true disables Popover", () => {
         const wrapper = select({ disabled: true, popoverProps: { inline: true } });
         wrapper.find("table").simulate("click");
-        assert.strictEqual(wrapper.find(Popover2).prop("isOpen"), false);
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
     });
 
-    it("itemRenderer is called for each filtered child", () => {
+    it("itemRenderer is called for each child", () => {
         select({}, "1999");
-        // each item rendered before setting query, then 4 items filtered rendered twice (TODO: why)
-        assert.equal(handlers.itemRenderer.callCount, 108);
+        // each item is rendered three times :(
+        assert.equal(handlers.itemRenderer.callCount, TOP_100_FILMS.length * 3);
     });
 
     it("renders noResults when given empty list", () => {
@@ -113,15 +112,15 @@ describe("<Select>", () => {
         // Select defines its own popoverWillOpen so this ensures that the passthrough happens
         const popoverWillOpen = sinon.spy();
         const modifiers = {}; // our own instance
-        const wrapper = select({ popoverProps: { isOpen: undefined, popoverWillOpen, modifiers } });
+        const wrapper = select({ popoverProps: { popoverWillOpen, modifiers } });
         wrapper.find("table").simulate("click");
-        assert.strictEqual(wrapper.find(Popover2).prop("modifiers"), modifiers);
+        assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(popoverWillOpen.calledOnce);
     });
 
     it("returns focus to focusable target after popover closed");
 
-    function select(props: Partial<ISelectProps<Film>> = {}, query?: string) {
+    function select(props: Partial<ISelectProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(
             <FilmSelect {...defaultProps} {...handlers} {...props}>
                 <table />
@@ -134,18 +133,6 @@ describe("<Select>", () => {
     }
 });
 
-function renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
-    const classes = classNames({
-        [Classes.ACTIVE]: isActive,
-        [Classes.INTENT_PRIMARY]: isActive,
-    });
-    return (
-        <a className={classes} key={film.rank} onClick={handleClick}>
-            {film.rank}. {film.title}
-        </a>
-    );
-}
-
-function filterByYear(query: string, film: Film) {
+function filterByYear(query: string, film: IFilm) {
     return query === "" || film.year.toString() === query;
 }

@@ -11,7 +11,6 @@ export * from "./constructor";
 export * from "./intent";
 export * from "./position";
 export * from "./props";
-export * from "./tetherUtils";
 
 import * as classes from "./classes";
 import * as keys from "./keys";

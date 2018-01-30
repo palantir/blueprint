@@ -22,20 +22,12 @@ import {
 
 import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
-import { ISelectItemRendererProps } from "../select/select";
 
 export interface IOmnibarProps<T> extends IListItemsProps<T> {
     /**
      * React child to render when query is empty.
      */
     initialContent?: React.ReactChild;
-
-    /**
-     * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
-     * this item is active (selected by keyboard arrows) and an `onClick` event handler that
-     * should be attached to the returned element.
-     */
-    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
 
     /** React child to render when filtering items returns zero results. */
     noResults?: React.ReactChild;
@@ -80,7 +72,7 @@ export interface IOmnibarState<T> extends IOverlayableProps, IBackdropProps {
 }
 
 export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
-    public static displayName = "Blueprint.Omnibar";
+    public static displayName = "Blueprint2.Omnibar";
 
     public static ofType<T>() {
         return (Omnibar as any) as new () => Omnibar<T>;
@@ -98,7 +90,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { initialContent, isOpen, itemRenderer, inputProps, noResults, overlayProps, ...restProps } = this.props;
+        const { initialContent, isOpen, inputProps, noResults, overlayProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -125,7 +117,6 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
-        const { ref, ...htmlInputProps } = inputProps;
         const { handleKeyDown, handleKeyUp } = listProps;
         const handlers = isOpen && !this.isQueryEmpty() ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
 
@@ -144,7 +135,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                         leftIconName="search"
                         placeholder="Search..."
                         value={listProps.query}
-                        {...htmlInputProps}
+                        {...inputProps}
                         onChange={this.handleQueryChange}
                     />
                     {this.maybeRenderMenu(listProps)}
@@ -153,19 +144,9 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
         );
     };
 
-    private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
-        const { itemRenderer, noResults } = this.props;
-        if (filteredItems.length === 0) {
-            return noResults;
-        }
-        return filteredItems.map((item, index) =>
-            itemRenderer({
-                handleClick: e => handleItemSelect(item, e),
-                index,
-                isActive: item === activeItem,
-                item,
-            }),
-        );
+    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
+        const renderedItems = items.map(renderItem).filter(item => item != null);
+        return renderedItems.length > 0 ? renderedItems : this.props.noResults;
     }
 
     private maybeRenderMenu(listProps: IQueryListRendererProps<T>) {

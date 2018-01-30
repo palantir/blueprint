@@ -10,7 +10,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import * as Keys from "../../src/common/keys";
-import { Classes, Dialog } from "../../src/index";
+import { Classes, Dialog, Icon } from "../../src/index";
 
 describe("<Dialog>", () => {
     it("renders its content correctly", () => {
@@ -119,7 +119,7 @@ describe("<Dialog>", () => {
     function createDialogContents(): JSX.Element[] {
         return [
             <div className={Classes.DIALOG_HEADER} key={0}>
-                <span className="pt-icon-large pt-icon-inbox" />
+                <Icon iconName="inbox" iconSize={Icon.SIZE_LARGE} />
                 <h4>Dialog header</h4>
             </div>,
             <div className={Classes.DIALOG_BODY} key={1}>

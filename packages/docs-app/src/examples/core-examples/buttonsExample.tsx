@@ -8,7 +8,8 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { AnchorButton, Button, Classes, Intent, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonsExampleState {
@@ -36,7 +37,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
     private handleLoadingChange = handleBooleanChange(loading => this.setState({ loading }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
-    private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
 
     private wiggleTimeoutId: number;
 

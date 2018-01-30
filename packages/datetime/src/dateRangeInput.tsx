@@ -235,7 +235,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         startInputProps: {},
     };
 
-    public static displayName = "Blueprint.DateRangeInput";
+    public static displayName = "Blueprint2.DateRangeInput";
 
     private startInputRef: HTMLInputElement;
     private endInputRef: HTMLInputElement;
@@ -359,24 +359,18 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     private renderInputGroup = (boundary: DateRangeBoundary) => {
         const inputProps = this.getInputProps(boundary);
 
-        // don't include `ref` in the returned HTML props, because passing it to the InputGroup
-        // leads to TS typing errors.
-        const { ref, ...htmlProps } = inputProps;
-
         const handleInputEvent =
             boundary === DateRangeBoundary.START ? this.handleStartInputEvent : this.handleEndInputEvent;
 
         const classes = classNames(
-            {
-                [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary),
-            },
+            { [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary) },
             inputProps.className,
         );
 
         return (
             <InputGroup
                 autoComplete="off"
-                {...htmlProps}
+                {...inputProps}
                 className={classes}
                 disabled={this.props.disabled}
                 inputRef={this.getInputRef(boundary)}

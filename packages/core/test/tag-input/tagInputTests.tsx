@@ -40,15 +40,29 @@ describe("<TagInput>", () => {
 
     it("leftIconName renders an icon as first child", () => {
         const wrapper = mount(<TagInput leftIconName="add" values={VALUES} />);
-        assert.isTrue(wrapper.childAt(0).hasClass(Classes.ICON_STANDARD), "standard icon");
+
+        // use a helper since Enzyme 3 (1) includes React wrappers in .childAt()
+        // calls, making them convoluted, and (2) does not preserve referential
+        // identity, meaning we have to re-query elements to detect changes.
+        const assertLeftIconHasClass = (className: string, errorMessage: string) => {
+            const hasClass = wrapper
+                .childAt(0) // TagInput's root <div> element
+                .childAt(0) // left-icon React wrapper
+                .childAt(0) // left-icon <div> element
+                .hasClass(className);
+            assert.isTrue(hasClass, errorMessage);
+        };
+
+        assertLeftIconHasClass(Classes.ICON_STANDARD, "standard icon");
         wrapper.setProps({ className: Classes.LARGE });
-        assert.isTrue(wrapper.childAt(0).hasClass(Classes.ICON_LARGE), "large icon");
+        assertLeftIconHasClass(Classes.ICON_LARGE, "large icon");
     });
 
     it("rightElement appears as last child", () => {
         const wrapper = mount(<TagInput rightElement={<Button />} values={VALUES} />);
         assert.isTrue(
             wrapper
+                .childAt(0) // TagInput's root <div> element
                 .children()
                 .last()
                 .is(Button),
@@ -362,7 +376,11 @@ describe("<TagInput>", () => {
     it("is non-interactive when disabled", () => {
         const wrapper = mount(<TagInput values={VALUES} disabled={true} />);
 
-        assert.isTrue(wrapper.hasClass(Classes.DISABLED), `.${Classes.DISABLED} should be applied to .pt-tag-input`);
+        assert.isTrue(
+            // the wrapper is a React element; the first child is rendered <div>.
+            wrapper.childAt(0).hasClass(Classes.DISABLED),
+            `.${Classes.DISABLED} should be applied to .pt-tag-input`,
+        );
         assert.isTrue(
             wrapper
                 .find(".pt-input-ghost")
@@ -401,7 +419,7 @@ describe("<TagInput>", () => {
         });
 
         it("prop changes are reflected in state", () => {
-            const wrapper = mount(<TagInput values={VALUES} />);
+            const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: "a" });
             expect(wrapper.state().inputValue).to.equal("a");
             wrapper.setProps({ inputValue: "b" });

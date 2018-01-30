@@ -7,9 +7,10 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import { spy } from "sinon";
+import { Target } from "react-popper";
+import { spy, stub } from "sinon";
 
-import { Classes, ITooltipProps, Overlay, Popover, SVGTooltip, Tooltip } from "../../src/index";
+import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src/index";
 
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 
@@ -23,7 +24,7 @@ describe("<Tooltip>", () => {
             const tooltip = renderTooltip();
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
 
-            tooltip.find(Popover).simulate("mouseenter");
+            tooltip.find(Target).simulate("mouseenter");
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
         });
 
@@ -31,7 +32,7 @@ describe("<Tooltip>", () => {
             const tooltip = renderTooltip();
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
 
-            tooltip.find(Popover).simulate("focus");
+            tooltip.find(Target).simulate("focus");
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
         });
 
@@ -49,19 +50,19 @@ describe("<Tooltip>", () => {
                 isOpen: true,
                 tooltipClassName: "foo",
             });
-            assert.lengthOf(tooltip.find(`.${Classes.TOOLTIP}.foo`), 1);
-            assert.lengthOf(tooltip.find(`.${Classes.POPOVER_TARGET}.bar`), 1);
+            assert.lengthOf(tooltip.find(`.${Classes.TOOLTIP}.foo`).hostNodes(), 1, "tooltip");
+            assert.lengthOf(tooltip.find(`.${Classes.POPOVER_WRAPPER}.bar`).hostNodes(), 1, "popover wrapper");
         });
 
         it("empty content disables Popover and warns", () => {
-            const warnSpy = spy(console, "warn");
+            const warnSpy = stub(console, "warn");
             const tooltip = renderTooltip({ isOpen: true });
 
             function assertDisabledPopover(content?: string) {
                 tooltip.setProps({ content });
                 assert.isFalse(tooltip.find(Overlay).prop("isOpen"), `"${content}"`);
                 assert.isTrue(warnSpy.calledOnce, "spy not called once");
-                warnSpy.reset();
+                warnSpy.resetHistory();
             }
 
             assertDisabledPopover("");
@@ -70,8 +71,8 @@ describe("<Tooltip>", () => {
             warnSpy.restore();
         });
 
-        it("setting isDisabled=true prevents opening tooltip", () => {
-            const tooltip = renderTooltip({ isDisabled: true });
+        it("setting disabled=true prevents opening tooltip", () => {
+            const tooltip = renderTooltip({ disabled: true });
             tooltip.find(Popover).simulate("mouseenter");
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
         });
@@ -89,7 +90,7 @@ describe("<Tooltip>", () => {
         });
 
         it("empty content disables Popover and warns", () => {
-            const warnSpy = spy(console, "warn");
+            const warnSpy = stub(console, "warn");
             const tooltip = renderTooltip({ content: "", isOpen: true });
             assert.isFalse(tooltip.find(Overlay).prop("isOpen"));
             assert.isTrue(warnSpy.calledOnce);
@@ -100,31 +101,17 @@ describe("<Tooltip>", () => {
             it("is invoked with `true` when closed tooltip target is hovered", () => {
                 const handleInteraction = spy();
                 renderTooltip({ isOpen: false, onInteraction: handleInteraction })
-                    .find(Popover)
+                    .find(Target)
                     .simulate("mouseenter");
-                assert.isTrue(handleInteraction.calledOnce);
-                assert.isTrue(handleInteraction.calledWith(true));
+                assert.isTrue(handleInteraction.calledOnce, "called once");
+                assert.isTrue(handleInteraction.calledWith(true), "call args");
             });
         });
     });
 
     it("rootElementTag prop renders the right elements", () => {
-        const tooltip = renderTooltip({ isOpen: true, rootElementTag: "g" });
-        assert.lengthOf(tooltip.find(`g.${Classes.POPOVER_TARGET}`), 1);
-    });
-
-    it("SVGTooltip sets rootElementTag correctly", () => {
-        const TEST_CLASS_NAME = "svg-popover-target";
-        const svgTooltip = mount(
-            <SVGTooltip content={<p>Lorem ipsum</p>} isOpen={true}>
-                <g className={TEST_CLASS_NAME}>Target</g>
-            </SVGTooltip>,
-        );
-
-        assert.lengthOf(svgTooltip.find("span"), 0);
-        assert.lengthOf(svgTooltip.find(`.${TEST_CLASS_NAME}`), 1);
-
-        svgTooltip.unmount();
+        const tooltip = renderTooltip({ isOpen: true, rootElementTag: "section" });
+        assert.lengthOf(tooltip.find(`section.${Classes.POPOVER_WRAPPER}`), 1);
     });
 
     function renderTooltip(props?: Partial<ITooltipProps>) {

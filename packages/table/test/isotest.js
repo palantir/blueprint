@@ -3,15 +3,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// @ts-check
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
-const Table = require("../dist");
-
-const draggableElement = React.createElement("button");
-const customChildren = {
-    DragSelectable: draggableElement,
-    Draggable: draggableElement,
-};
+const Table = require("../lib/cjs");
 
 const customProps = {
     ResizeHandle: {
@@ -20,10 +15,18 @@ const customProps = {
     },
 };
 
+const skipList = [
+    // Pass-through renders
+    "DragSelectable",
+    "Draggable",
+]
+
+
 describe("Table isomorphic rendering", () => {
     generateIsomorphicTests(
         Table,
         customProps,
-        customChildren
+        {},
+        skipList
     );
 });

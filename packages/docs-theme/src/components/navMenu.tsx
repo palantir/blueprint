@@ -46,7 +46,7 @@ export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.React
         </li>
     );
 };
-NavMenuItem.displayName = "Docs.NavMenuItem";
+NavMenuItem.displayName = "Docs2.NavMenuItem";
 
 export const NavMenu: React.SFC<INavMenuProps> = props => {
     const menu = props.items.map(section => {
@@ -70,7 +70,7 @@ export const NavMenu: React.SFC<INavMenuProps> = props => {
     const classes = classNames("docs-nav-menu", "pt-list-unstyled", props.className);
     return <ul className={classes}>{menu}</ul>;
 };
-NavMenu.displayName = "Docs.NavMenu";
+NavMenu.displayName = "Docs2.NavMenu";
 
 function isParentOfRoute(parent: string, route: string) {
     return route.indexOf(parent + "/") === 0 || route.indexOf(parent + ".") === 0;

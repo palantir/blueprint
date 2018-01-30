@@ -5,13 +5,15 @@
  */
 
 import * as classNames from "classnames";
-import { IMarkdownPluginData, isPageNode } from "documentalist/dist/client";
+import { isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
 import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
 
+import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
-import { TagRenderer } from "../tags";
+import { ITagRendererMap } from "../tags";
+import { renderBlock } from "./block";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Page } from "./page";
@@ -24,9 +26,9 @@ export interface IDocumentationProps extends IProps {
 
     /**
      * All the docs data from Documentalist.
-     * Must include at least  `{ nav, pages }` from the MarkdownPlugin.
+     * This theme requires the Markdown plugin, and optionally supports Typescript and KSS data.
      */
-    docs: IMarkdownPluginData;
+    docs: IDocsData;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -35,8 +37,15 @@ export interface IDocumentationProps extends IProps {
      */
     onComponentUpdate?: (pageId: string) => void;
 
+    /**
+     * Callback invoked to render "View source" links in Typescript interfaces.
+     * The `href` of the link will be `entry.sourceUrl`.
+     * @default "View source"
+     */
+    renderViewSourceLinkText?: (entry: ITsDocBase) => React.ReactNode;
+
     /** Tag renderer functions. Unknown tags will log console errors. */
-    tagRenderers: { [tag: string]: TagRenderer };
+    tagRenderers: ITagRendererMap;
 
     /**
      * Elements to render on the left side of the navbar, typically logo and title.
@@ -59,6 +68,8 @@ export interface IDocumentationState {
 
 @HotkeysTarget
 export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
+    public static childContextTypes = DocumentationContextTypes;
+
     public static defaultProps = {
         navbarLeft: "Documentation",
     };
@@ -86,6 +97,20 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             const { reference } = isPageNode(node) ? node : parents[0];
             this.routeToPage[node.route] = reference;
         });
+    }
+
+    public getChildContext(): IDocumentationContext {
+        const { docs, renderViewSourceLinkText } = this.props;
+        return {
+            getDocsData: () => docs,
+            renderBlock: block => renderBlock(block, this.props.tagRenderers),
+            renderType: hasTypescriptData(docs)
+                ? type => linkify(type, docs.typescript, name => <u key={name}>{name}</u>)
+                : type => type,
+            renderViewSourceLinkText: Utils.isFunction(renderViewSourceLinkText)
+                ? renderViewSourceLinkText
+                : () => "View source",
+        };
     }
 
     public render() {
@@ -198,7 +223,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navMenuElement = this.navElement.query(`a[href="#${activeSectionId}"]`).closest(".docs-menu-item-page");
+        const navMenuElement = this.navElement
+            .querySelector(`a[href="#${activeSectionId}"]`)
+            .closest(".docs-menu-item-page");
         const innerBounds = navMenuElement.getBoundingClientRect();
         const outerBounds = this.navElement.getBoundingClientRect();
         if (innerBounds.top < outerBounds.top || innerBounds.bottom > outerBounds.bottom) {
@@ -225,23 +252,23 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     }
 }
 
-/** Shorthand for element.query() + cast to HTMLElement */
+/** Shorthand for element.querySelector() + cast to HTMLElement */
 function queryHTMLElement(parent: Element, selector: string) {
-    return parent.query(selector) as HTMLElement;
+    return parent.querySelector(selector) as HTMLElement;
 }
 
 /**
  * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
  */
 function getScrolledReference(offset: number, container: HTMLElement, scrollParent = document.scrollingElement) {
-    const headings = container.queryAll(".docs-title");
+    const headings = Array.from(container.querySelectorAll(".docs-title"));
     while (headings.length > 0) {
         // iterating in reverse order (popping from end / bottom of page)
         // so the first element below the threshold is the one we want.
         const element = headings.pop() as HTMLElement;
         if (element.offsetTop < scrollParent.scrollTop + offset) {
             // relying on DOM structure to get reference
-            return element.query("[data-route]").getAttribute("data-route");
+            return element.querySelector("[data-route]").getAttribute("data-route");
         }
     }
     return undefined;

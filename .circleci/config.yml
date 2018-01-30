@@ -21,7 +21,7 @@ jobs:
           paths:
             - yarn.lock
 
-  compile-libs:
+  compile:
     docker:
       - image: circleci/node:8
     steps:
@@ -37,6 +37,7 @@ jobs:
           root: '.'
           paths:
             - packages/*/dist
+            - packages/*/lib
             - packages/*/src/generated
 
   lint:
@@ -52,7 +53,7 @@ jobs:
             - v7-dependency-cache-
       - run: yarn lint
 
-  dist-libs:
+  dist:
     docker:
       - image: circleci/node:8
     steps:
@@ -62,33 +63,13 @@ jobs:
       - restore_cache:
           key: v7-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:libs
-      - persist_to_workspace:
-          root: '.'
-          paths:
-            - packages/core/dist
-            - packages/datetime/dist
-            - packages/docs-theme/dist
-            - packages/labs/dist
-            - packages/select/dist
-            - packages/table/dist
-            - packages/timezone/dist
-
-  dist-apps:
-    docker:
-      - image: circleci/node:8
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:apps
+      # we don't need to run dist:docs here until we start publishing GitHub Pages from CI
       - persist_to_workspace:
           root: '.'
           paths:
-            - packages/docs-app/dist
-            - packages/landing-app/dist
-            - packages/table-dev-app/dist
+            - packages/*/dist
+            - packages/*/lib
 
   test:
     docker:
@@ -147,22 +128,20 @@ workflows:
   compile_lint_test_dist_deploy:
     jobs:
       - install-dependencies
-      - compile-libs:
+      - compile:
           requires: [install-dependencies]
       - lint:
           requires: [install-dependencies]
-      - dist-libs:
-          requires: [compile-libs]
-      - dist-apps:
-          requires: [compile-libs]
+      - dist:
+          requires: [compile]
       - test:
-          requires: [compile-libs]
+          requires: [compile]
       - deploy-preview:
-          requires: [dist-apps]
+          requires: [dist]
       - deploy-npm:
-          requires: [deploy-preview]
+          requires: [dist]
           filters:
             branches:
               only:
-                - master
+                - develop
                 - /^release\/.*/

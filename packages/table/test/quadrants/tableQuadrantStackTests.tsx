@@ -554,7 +554,7 @@ describe("TableQuadrantStack", () => {
 
         afterEach(() => {
             ReactDOM.unmountComponentAtNode(container);
-            onScroll.reset();
+            onScroll.resetHistory();
         });
 
         describe("onScroll", () => {
@@ -675,7 +675,9 @@ describe("TableQuadrantStack", () => {
 
         function findQuadrantScrollContainer(element: HTMLElement, quadrantType: QuadrantType) {
             const quadrantClass = getQuadrantCssClass(quadrantType);
-            return element.query(`.${quadrantClass} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`) as HTMLElement;
+            return element.querySelector(
+                `.${quadrantClass} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`,
+            ) as HTMLElement;
         }
 
         function getQuadrantCssClass(quadrantType: QuadrantType) {

@@ -86,7 +86,7 @@ This API is ideal for non-React-based apps or for programmatically triggered men
 ```ts
 import { ContextMenu, Menu, MenuItem } from "@blueprintjs/core";
 
-const rightClickMe = document.query("#right-click-me") as HTMLElement;
+const rightClickMe = document.querySelector("#right-click-me") as HTMLElement;
 rightClickMe.oncontextmenu = (e: MouseEvent) => {
     // prevent the browser's native context menu
     e.preventDefault();
