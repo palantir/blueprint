@@ -12,7 +12,9 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
+import { safeInvoke } from "../../common/utils";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
+import { IMenuItemContext, MenuItemContextTypes } from "./context";
 
 export interface IMenuItemProps extends IActionProps, ILinkProps {
     // override from IActionProps to make it required
@@ -49,6 +51,9 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
         text: "",
     };
     public static displayName = "Blueprint2.MenuItem";
+
+    public static contextTypes = MenuItemContextTypes;
+    public context: IMenuItemContext;
 
     private liElement: HTMLElement;
     private popoverElement: HTMLElement;
@@ -109,6 +114,8 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
     private renderPopover(content: JSX.Element) {
         const { disabled, popoverProps } = this.props;
         const popoverClasses = classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName);
+        // getSubmenuPopperModifiers will not be defined if `MenuItem` used outside a `Menu`.
+        const popoverModifiers = safeInvoke(this.context.getSubmenuPopperModifiers);
 
         // NOTE: use .pt-menu directly because using Menu would start a new context tree and
         // we'd have to pass through the submenu props. this is just simpler.
@@ -124,6 +131,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 {...popoverProps}
                 content={submenuContent}
                 minimal={true}
+                modifiers={popoverModifiers}
                 popoverClassName={popoverClasses}
                 popoverRef={this.refHandlers.popover}
             >

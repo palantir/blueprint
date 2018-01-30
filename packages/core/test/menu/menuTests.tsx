@@ -158,6 +158,21 @@ describe("Menu", () => {
         assert.isTrue(menu.hasClass(Classes.MENU));
         assert.lengthOf(menu.find(MenuItem), 1);
     });
+
+    it("boundary props are exposed to children via context method", () => {
+        const modifiers = { boundariesElement: "window" as "window", padding: 100 };
+        const menu = mount(
+            <Menu submenuBoundaryElement={modifiers.boundariesElement} submenuBoundaryPadding={modifiers.padding}>
+                <MenuItem text="parent">
+                    <MenuItem text="submenu 1" />
+                    <MenuItem text="submenu 2" />
+                </MenuItem>
+            </Menu>,
+        );
+        const { flip, preventOverflow } = menu.find(Popover).prop("modifiers");
+        assert.deepEqual(flip, modifiers);
+        assert.deepEqual(preventOverflow, modifiers);
+    });
 });
 
 function findSubmenu(wrapper: ShallowWrapper<any, any>) {
