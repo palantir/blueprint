@@ -81,8 +81,12 @@ Use `MenuDivider` to separate menu sections. Optionally, add a title to the divi
 
 To add a submenu to a `Menu`, simply nest `MenuItem`s within another `MenuItem`.
 The submenu opens to the right of its parent by default, but will adjust and flip to the left if
-there is not enough room to the right. `Menu` provides two `submenu` props to adjust this flipping behavior:
-you can customize the boundary element and the padding within that boundary element.
+there is not enough room to the right.
+
+`Menu` provides two `submenu` props to adjust this flipping behavior: you can customize the boundary element
+and the padding within that boundary element. Note that a `MenuItem` _must be inside_ a `Menu` element
+for these props to affect the submenus. On standalone `MenuItem`s (without a parent `Menu`, an anti-pattern) you can
+use `popoverProps.modifiers` directly to achieve the same result.
 
 ```jsx
 <Menu>
