@@ -26,6 +26,7 @@ const LOCALE: { [index: string]: any } = {
 import { DateFormat } from "../dateFormatter";
 import { padWithZeroes } from './utils';
 
+export type SupportedLocaleString = "de" | "en" | "es" | "fr" | "it" | "ko" | "ru" | "uk" | "zh_cn";
 export type DateRange = [Date | undefined, Date | undefined];
 
 export enum DateRangeBoundary {
@@ -177,7 +178,7 @@ export function getDateOnlyWithTime(date: Date): Date {
     return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
 }
 
-export function getLocale(localeString: string): any {
+export function getLocale(localeString: SupportedLocaleString): any {
     if (!localeString) {
         return undefined;
     } else if (LOCALE.hasOwnProperty(localeString)) {
@@ -187,7 +188,7 @@ export function getLocale(localeString: string): any {
     }
 }
 
-export function dateToString(date: Date, dateFormat: DateFormat, locale: string = "en") {
+export function dateToString(date: Date, dateFormat: DateFormat, locale: SupportedLocaleString = "en") {
     if (date == null) {
         return "";
     } else if (typeof dateFormat === "string") {
