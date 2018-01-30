@@ -152,7 +152,7 @@ describe("<DateRangePicker>", () => {
                 formatDay: () => "b",
             };
             const blueprintProps: IDateRangePickerProps = {
-                locale: "blueprint",
+                locale: "en",
                 localeUtils: blueprintLocaleUtils,
                 modifiers: blueprintModifiers,
             };
@@ -165,7 +165,7 @@ describe("<DateRangePicker>", () => {
                 formatDay: () => "d",
             };
             const dayPickerProps: IDateRangePickerProps = {
-                locale: "dayPicker",
+                locale: "en",
                 localeUtils: dayPickerLocaleUtils,
                 modifiers: dayPickerModifiers,
             };
