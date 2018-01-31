@@ -102,6 +102,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 interactionKind={PopoverInteractionKind.HOVER}
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
                 position={Position.RIGHT_TOP}
+                inline={true}
                 {...popoverProps}
                 content={<Menu>{children}</Menu>}
                 minimal={true}
@@ -128,6 +129,9 @@ export function renderMenuItem(props: IMenuItemProps, key: string | number) {
 }
 
 const SUBMENU_POPOVER_MODIFIERS: Popper.Modifiers = {
-    flip: { boundariesElement: "viewport", padding: 5 },
-    preventOverflow: { boundariesElement: "viewport", padding: 5 },
+    // 20px padding - scrollbar width + a bit
+    flip: { boundariesElement: "viewport", padding: 20 },
+    // shift popover up 5px so MenuItems align
+    offset: { offset: -5 },
+    preventOverflow: { boundariesElement: "viewport", padding: 20 },
 };
