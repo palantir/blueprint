@@ -12,6 +12,7 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
+import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Menu } from "./menu";
 
@@ -103,9 +104,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
     public render() {
         const { children, disabled, label, submenu, popoverProps } = this.props;
         const hasSubmenu = children != null || submenu != null;
-        const liClasses = classNames({
-            [Classes.MENU_SUBMENU]: hasSubmenu,
-        });
+        const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
         const anchorClasses = classNames(
             Classes.MENU_ITEM,
             Classes.intentClass(this.props.intent),
@@ -114,14 +113,8 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !disabled && !hasSubmenu,
             },
-            Classes.iconClass(this.props.iconName),
             this.props.className,
         );
-
-        let labelElement: JSX.Element;
-        if (label != null) {
-            labelElement = <span className="pt-menu-item-label">{label}</span>;
-        }
 
         let content = (
             <a
@@ -131,8 +124,10 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemSta
                 tabIndex={disabled ? undefined : 0}
                 target={this.props.target}
             >
-                <span className="pt-menu-item-text">{this.props.text}</span>
-                {labelElement}
+                <Icon iconName={this.props.iconName} />
+                <span className={Classes.MENU_ITEM_TEXT}>{this.props.text}</span>
+                {label && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
+                {hasSubmenu && <Icon iconName="caret-right" />}
             </a>
         );
 
