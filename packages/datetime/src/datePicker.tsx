@@ -228,11 +228,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         );
     }
 
-    private handleDayClick = (
-        day: Date,
-        modifiers: DayModifiers,
-        e: React.MouseEvent<HTMLDivElement>,
-    ) => {
+    private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
 
         let newValue = day;

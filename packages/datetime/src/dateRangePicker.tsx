@@ -228,7 +228,6 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         const disabledDays = this.getDisabledDaysModifier();
 
         const dayPickerBaseProps: DayPickerProps = {
-            showOutsideDays: true,
             locale,
             localeUtils,
             modifiers,
@@ -238,6 +237,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             onDayMouseEnter: this.handleDayMouseEnter,
             onDayMouseLeave: this.handleDayMouseLeave,
             selectedDays: this.state.value,
+            showOutsideDays: true,
         };
 
         if (contiguousCalendarMonths || isShowingOneMonth) {
@@ -398,11 +398,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         />
     );
 
-    private handleDayMouseEnter = (
-        day: Date,
-        modifiers: DayModifiers,
-        e: React.MouseEvent<HTMLDivElement>,
-    ) => {
+    private handleDayMouseEnter = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayMouseEnter, day, modifiers, e);
 
         if (modifiers.disabled) {
@@ -418,11 +414,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         Utils.safeInvoke(this.props.onHoverChange, dateRange, day, boundary);
     };
 
-    private handleDayMouseLeave = (
-        day: Date,
-        modifiers: DayModifiers,
-        e: React.MouseEvent<HTMLDivElement>,
-    ) => {
+    private handleDayMouseLeave = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayMouseLeave, day, modifiers, e);
         if (modifiers.disabled) {
             return;
@@ -431,11 +423,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         Utils.safeInvoke(this.props.onHoverChange, undefined, day, undefined);
     };
 
-    private handleDayClick = (
-        day: Date,
-        modifiers: DayModifiers,
-        e: React.MouseEvent<HTMLDivElement>,
-    ) => {
+    private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
 
         if (modifiers.disabled) {
