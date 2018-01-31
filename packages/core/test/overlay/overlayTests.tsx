@@ -344,9 +344,7 @@ describe("<Overlay>", () => {
         });
 
         function assertFocus(selector: string | (() => void), done: MochaDone) {
-            // the behavior being tested relies on requestAnimationFrame.
-            // to avoid flakiness, use nested setTimeouts to delay execution until the *next* frame.
-            // setTimeout(() => {
+            // the behavior being tested relies on requestAnimationFrame. use setTimeout to delay till after rAF.
             setTimeout(() => {
                 wrapper.update();
                 if (Utils.isFunction(selector)) {
@@ -355,8 +353,7 @@ describe("<Overlay>", () => {
                     assert.strictEqual(document.querySelector(selector), document.activeElement);
                 }
                 done();
-            }, 100);
-            // }, 1);
+            });
         }
     });
 
