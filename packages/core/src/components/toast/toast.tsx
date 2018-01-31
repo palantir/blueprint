@@ -50,7 +50,7 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
         timeout: 5000,
     };
 
-    public static displayName = "Blueprint.Toast";
+    public static displayName = "Blueprint2.Toast";
 
     public render(): JSX.Element {
         const { className, iconName, intent, message } = this.props;

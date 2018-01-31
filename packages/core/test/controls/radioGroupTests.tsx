@@ -7,8 +7,9 @@
 import { assert } from "chai";
 import { EnzymePropSelector, mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import { spy } from "sinon";
+import { spy, stub } from "sinon";
 
+import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../src/common/errors";
 import { IOptionProps, Radio, RadioGroup } from "../../src/index";
 
 describe("<RadioGroup>", () => {
@@ -61,13 +62,16 @@ describe("<RadioGroup>", () => {
         assert.isTrue(findInput(group, { value: "c" }).prop("disabled"), "radio c not disabled");
     });
 
-    it("uses options if given both options and children", () => {
+    it("uses options if given both options and children (with conosle warning)", () => {
+        const warnSpy = stub(console, "warn");
         const group = mount(
             <RadioGroup onChange={emptyHandler} options={[]}>
                 <Radio value="one" />
             </RadioGroup>,
         );
         assert.lengthOf(group.find(Radio), 0);
+        assert.isTrue(warnSpy.alwaysCalledWith(RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX));
+        warnSpy.restore();
     });
 
     it("renders non-Radio children too", () => {

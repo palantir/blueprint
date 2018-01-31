@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Checkbox, Classes } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 
 export class CheckboxExample extends BaseExample<{}> {
     protected renderExample() {

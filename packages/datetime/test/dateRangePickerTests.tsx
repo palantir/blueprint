@@ -446,8 +446,8 @@ describe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ initialMonth, contiguousCalendarMonths });
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.MAY);
-            const prevBtn = document.queryAll(".DayPicker-NavButton--prev");
-            const nextBtn = document.queryAll(".DayPicker-NavButton--next");
+            const prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
+            const nextBtn = document.querySelectorAll(".DayPicker-NavButton--next");
 
             TestUtils.Simulate.click(prevBtn[0]);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.APRIL);
@@ -461,8 +461,8 @@ describe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ initialMonth, contiguousCalendarMonths });
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JUNE);
-            const prevBtn = document.queryAll(".DayPicker-NavButton--prev");
-            const nextBtn = document.queryAll(".DayPicker-NavButton--next");
+            const prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
+            const nextBtn = document.querySelectorAll(".DayPicker-NavButton--next");
 
             TestUtils.Simulate.click(nextBtn[1]);
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JULY);
@@ -525,7 +525,7 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             renderDateRangePicker({ initialMonth, contiguousCalendarMonths });
-            const nextBtn = document.queryAll(".DayPicker-NavButton--next");
+            const nextBtn = document.querySelectorAll(".DayPicker-NavButton--next");
 
             TestUtils.Simulate.click(nextBtn[0]);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.JUNE);
@@ -537,7 +537,7 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             renderDateRangePicker({ initialMonth, contiguousCalendarMonths });
-            const prevBtn = document.queryAll(".DayPicker-NavButton--prev");
+            const prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
 
             TestUtils.Simulate.click(prevBtn[1]);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.APRIL);
@@ -642,12 +642,12 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.FEBRUARY, 5);
             renderDateRangePicker({ initialMonth, minDate });
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.FEBRUARY);
-            let prevBtn = document.queryAll(".DayPicker-NavButton--prev");
+            let prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
             assert.lengthOf(prevBtn, 1);
 
             TestUtils.Simulate.click(prevBtn[0]);
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.JANUARY);
-            prevBtn = document.queryAll(".DayPicker-NavButton--prev");
+            prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
             assert.lengthOf(prevBtn, 0);
         });
 
@@ -927,6 +927,17 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
             assert.isTrue(isSameDay(aWeekAgo, onDateRangePickerChangeSpy.args[0][0][0]));
             assert.isTrue(isSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
+        });
+
+        it("shortcuts fire onChange with correct values when single day range enabled", () => {
+            renderDateRangePicker({ allowSingleDayRange: true });
+            clickFirstShortcut();
+
+            const today = new Date();
+
+            assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
+            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][0]));
+            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
         });
 
         it("custom shortcuts select the correct values", () => {
@@ -1271,7 +1282,7 @@ describe("<DateRangePicker>", () => {
     }
 
     function getShortcut(index: number) {
-        return document.queryAll(`.${DateClasses.DATERANGEPICKER_SHORTCUTS} .${Classes.MENU_ITEM}`)[index];
+        return document.querySelectorAll(`.${DateClasses.DATERANGEPICKER_SHORTCUTS} .${Classes.MENU_ITEM}`)[index];
     }
 
     function isShortcutDisabled(index: number) {
@@ -1283,11 +1294,11 @@ describe("<DateRangePicker>", () => {
     }
 
     function getDayElement(dayNumber = 1, fromLeftMonth = true) {
-        const month = document.queryAll(".DayPicker-Month")[fromLeftMonth ? 0 : 1];
-        const days = month.queryAll(`.${DateClasses.DATEPICKER_DAY}`);
-        return days.filter(d => {
-            return d.textContent === dayNumber.toString() && !d.classList.contains(DateClasses.DATEPICKER_DAY_OUTSIDE);
-        })[0];
+        const month = document.querySelectorAll(".DayPicker-Month")[fromLeftMonth ? 0 : 1];
+        const days = Array.from(month.querySelectorAll(`.${DateClasses.DATEPICKER_DAY}`));
+        return days.filter(
+            d => d.textContent === dayNumber.toString() && !d.classList.contains(DateClasses.DATEPICKER_DAY_OUTSIDE),
+        )[0];
     }
 
     function getMonthSelect(fromLeftView: boolean = true) {
@@ -1296,13 +1307,15 @@ describe("<DateRangePicker>", () => {
     }
 
     function getOptionsText(selectElementClass: string): string[] {
-        return document
-            .queryAll(`.DayPicker-Month:last-child .${selectElementClass} option`)
-            .map(e => (e as HTMLElement).innerText);
+        return Array.from(document.querySelectorAll(`.DayPicker-Month:last-child .${selectElementClass} option`)).map(
+            (e: HTMLElement) => e.innerText,
+        );
     }
 
     function getSelectedDayElements() {
-        return document.queryAll(`.${DateClasses.DATEPICKER_DAY_SELECTED}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
+        return document.querySelectorAll(
+            `.${DateClasses.DATEPICKER_DAY_SELECTED}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`,
+        );
     }
 
     /**
@@ -1310,7 +1323,7 @@ describe("<DateRangePicker>", () => {
      */
     function getSelectedRangeDayElements() {
         const selectedRange = DateClasses.DATERANGEPICKER_DAY_SELECTED_RANGE;
-        return document.queryAll(`.${selectedRange}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
+        return document.querySelectorAll(`.${selectedRange}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
     }
 
     /**
@@ -1318,15 +1331,15 @@ describe("<DateRangePicker>", () => {
      */
     function getHoveredRangeDayElements() {
         const selectedRange = DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE;
-        return document.queryAll(`.${selectedRange}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
+        return document.querySelectorAll(`.${selectedRange}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
     }
 
     function getHoveredRangeStartDayElement() {
-        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-start`);
+        return document.querySelector(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-start`);
     }
 
     function getHoveredRangeEndDayElement() {
-        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-end`);
+        return document.querySelector(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-end`);
     }
 
     function getYearSelect(fromLeftView: boolean = true) {

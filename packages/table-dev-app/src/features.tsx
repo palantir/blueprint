@@ -418,13 +418,15 @@ class AdjustableColumnsTable extends React.Component<{}, {}> {
 
 ReactDOM.render(<AdjustableColumnsTable />, document.getElementById("table-cols"));
 
+const intentRows: Intent[] = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.WARNING, Intent.DANGER];
+
 ReactDOM.render(
     getTableComponent(
         3,
         7,
         {
             cellRenderer(rowIndex: number, columnIndex: number) {
-                return <Cell intent={rowIndex as Intent}>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
+                return <Cell intent={intentRows[rowIndex]}>{Utils.toBase26Alpha(columnIndex) + (rowIndex + 1)}</Cell>;
             },
         },
         {

@@ -30,8 +30,8 @@ export type SupportedLocaleString = "de" | "en" | "es" | "fr" | "it" | "ko" | "r
 export type DateRange = [Date | undefined, Date | undefined];
 
 export enum DateRangeBoundary {
-    START,
-    END,
+    START = "start",
+    END = "end",
 }
 
 export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {

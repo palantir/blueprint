@@ -170,7 +170,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         timePickerProps: {},
     };
 
-    public static displayName = "Blueprint.DateInput";
+    public static displayName = "Blueprint2.DateInput";
 
     public constructor(props?: IDateInputProps, context?: any) {
         super(props, context);
@@ -205,8 +205,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             );
         // assign default empty object here to prevent mutation
         const { inputProps = {}, popoverProps = {}, format } = this.props;
-        // exclude ref (comes from HTMLInputProps typings, not InputGroup)
-        const { ref, ...htmlInputProps } = inputProps;
 
         const inputClasses = classNames(
             {
@@ -214,7 +212,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             },
             inputProps.className,
         );
-        const popoverClassName = classNames(popoverProps.className, this.props.className);
 
         const placeholder = typeof format === "string" ? format : format.placeholder;
 
@@ -225,7 +222,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                 position={this.props.popoverPosition}
                 {...popoverProps}
                 autoFocus={false}
-                className={popoverClassName}
+                className={classNames(popoverProps.className, this.props.className)}
                 content={popoverContent}
                 enforceFocus={false}
                 onClose={this.handleClosePopover}
@@ -235,7 +232,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                     autoComplete="off"
                     placeholder={placeholder}
                     rightElement={this.props.rightElement}
-                    {...htmlInputProps}
+                    {...inputProps}
                     className={inputClasses}
                     disabled={this.props.disabled}
                     type="text"
@@ -344,6 +341,10 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     };
 
     private handleInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        // stop propagation to the Popover's internal handleTargetClick handler;
+        // otherwise, the popover will flicker closed as soon as it opens.
+        e.stopPropagation();
+
         this.safeInvokeInputProp("onClick", e);
     };
 

@@ -36,7 +36,7 @@ describe("TableQuadrant", () => {
     });
 
     afterEach(() => {
-        bodyRenderer.reset();
+        bodyRenderer.resetHistory();
     });
 
     describe("Event callbacks", () => {
@@ -55,7 +55,7 @@ describe("TableQuadrant", () => {
         });
 
         it("prints a console warning if onScroll is provided when quadrantType != MAIN", () => {
-            const consoleWarn = sinon.spy(console, "warn");
+            const consoleWarn = sinon.stub(console, "warn");
             mountTableQuadrant({ onScroll: sinon.spy(), quadrantType: QuadrantType.LEFT });
             expect(consoleWarn.calledOnce);
             expect(consoleWarn.firstCall.args[0]).to.equal(Errors.QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED);

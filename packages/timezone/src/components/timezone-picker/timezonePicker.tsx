@@ -14,12 +14,12 @@ import {
     HTMLInputProps,
     IButtonProps,
     IInputGroupProps,
-    IPopover2Props,
+    IPopoverProps,
     IProps,
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
-import { ISelectItemRendererProps, Select } from "@blueprintjs/select";
+import { ItemRenderer, Select } from "@blueprintjs/select";
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
@@ -88,8 +88,8 @@ export interface ITimezonePickerProps extends IProps {
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
-    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopover2Props> & object;
+    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<IPopoverProps> & object;
 }
 
 export interface ITimezonePickerState {
@@ -101,7 +101,7 @@ export interface ITimezonePickerState {
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
 export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
-    public static displayName = "Blueprint.TimezonePicker";
+    public static displayName = "Blueprint2.TimezonePicker";
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
         disabled: false,
@@ -133,7 +133,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
             placeholder: "Search for timezones...",
             ...inputProps,
         };
-        const finalPopoverProps: Partial<IPopover2Props> & object = {
+        const finalPopoverProps: Partial<IPopoverProps> & object = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
         };
@@ -214,11 +214,10 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         return filterWithQueryCandidates(items, query, item => getTimezoneQueryCandidates(item.timezone, date));
     };
 
-    private renderItem = (itemProps: ISelectItemRendererProps<ITimezoneItem>) => {
-        const { item, isActive, handleClick } = itemProps;
+    private renderItem: ItemRenderer<ITimezoneItem> = (item, { handleClick, modifiers }) => {
         const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
-            [CoreClasses.ACTIVE]: isActive,
-            [CoreClasses.INTENT_PRIMARY]: isActive,
+            [CoreClasses.ACTIVE]: modifiers.active,
+            [CoreClasses.INTENT_PRIMARY]: modifiers.active,
         });
 
         return (

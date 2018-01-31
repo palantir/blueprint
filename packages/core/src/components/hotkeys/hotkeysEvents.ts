@@ -15,8 +15,8 @@ import { hideHotkeysDialogAfterDelay, isHotkeysDialogShowing, showHotkeysDialog 
 const SHOW_DIALOG_KEY = "?";
 
 export enum HotkeyScope {
-    LOCAL,
-    GLOBAL,
+    LOCAL = "local",
+    GLOBAL = "global",
 }
 
 export interface IHotkeyAction {

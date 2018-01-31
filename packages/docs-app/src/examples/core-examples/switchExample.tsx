@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Classes, Switch } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 
 export class SwitchExample extends BaseExample<{}> {
     protected renderExample() {

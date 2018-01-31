@@ -6,8 +6,8 @@
 
 import * as React from "react";
 
-import { Classes, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
-import { BaseExample, IBaseExampleProps } from "@blueprintjs/docs";
+import { Classes, Icon, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
+import { BaseExample, IBaseExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITreeExampleState {
     nodes: ITreeNode[];
@@ -18,7 +18,7 @@ export class TreeExample extends BaseExample<ITreeExampleState> {
         super(props);
         const tooltipLabel = (
             <Tooltip content="An eye!">
-                <span className="pt-icon-standard pt-icon-eye-open" />
+                <Icon iconName="eye-open" />
             </Tooltip>
         );
         const longLabel = "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.";

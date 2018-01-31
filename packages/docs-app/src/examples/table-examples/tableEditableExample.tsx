@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Intent } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 import { Column, ColumnHeaderCell, EditableCell, EditableName, Table } from "@blueprintjs/table";
 
 export interface ITableEditableExampleState {

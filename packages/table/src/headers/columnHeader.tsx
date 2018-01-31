@@ -82,22 +82,22 @@ export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
                 getDragCoordinate={this.getDragCoordinate}
                 getIndexClass={Classes.columnIndexClass}
                 getMouseCoordinate={this.getMouseCoordinate}
+                ghostCellRenderer={this.renderGhostCell}
                 handleResizeDoubleClick={this.handleResizeDoubleClick}
                 handleResizeEnd={this.handleResizeEnd}
                 handleSizeChanged={this.handleSizeChanged}
                 headerCellIsReorderablePropName={"enableColumnReordering"}
                 headerCellIsSelectedPropName={"isColumnSelected"}
+                headerCellRenderer={renderHeaderCell}
                 indexEnd={indexEnd}
                 indexStart={indexStart}
                 isCellSelected={this.isCellSelected}
                 isGhostIndex={this.isGhostIndex}
                 maxSize={maxSize}
                 minSize={minSize}
-                renderGhostCell={this.renderGhostCell}
-                renderHeaderCell={renderHeaderCell}
                 resizeOrientation={Orientation.VERTICAL}
-                toRegion={this.toRegion}
                 selectedRegions={[]}
+                toRegion={this.toRegion}
                 wrapCells={this.wrapCells}
                 {...spreadableProps}
             />
