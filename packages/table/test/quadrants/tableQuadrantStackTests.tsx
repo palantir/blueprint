@@ -554,7 +554,7 @@ describe("TableQuadrantStack", () => {
 
         afterEach(() => {
             ReactDOM.unmountComponentAtNode(container);
-            onScroll.reset();
+            onScroll.resetHistory();
         });
 
         describe("onScroll", () => {

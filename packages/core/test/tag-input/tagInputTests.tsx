@@ -420,7 +420,7 @@ describe("<TagInput>", () => {
         });
 
         it("prop changes are reflected in state", () => {
-            const wrapper = mount(<TagInput values={VALUES} />);
+            const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: "a" });
             expect(wrapper.state().inputValue).to.equal("a");
             wrapper.setProps({ inputValue: "b" });

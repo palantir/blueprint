@@ -124,7 +124,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 }
 
 export class Tooltip extends React.PureComponent<ITooltipProps, {}> {
-    public static displayName = "Blueprint.Tooltip";
+    public static displayName = "Blueprint2.Tooltip";
 
     public static defaultProps: Partial<ITooltipProps> = {
         defaultIsOpen: false,

@@ -43,4 +43,4 @@ export const PopoverArrow: React.SFC<{ angle: number }> = ({ angle }) => (
         </svg>
     </Arrow>
 );
-PopoverArrow.displayName = "Blueprint.PopoverArrow";
+PopoverArrow.displayName = "Blueprint2.PopoverArrow";

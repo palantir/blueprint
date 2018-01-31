@@ -58,7 +58,7 @@ export interface ICollapsibleListProps extends IProps {
 }
 
 export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> {
-    public static displayName = "Blueprint.CollapsibleList";
+    public static displayName = "Blueprint2.CollapsibleList";
 
     public static defaultProps: ICollapsibleListProps = {
         collapseFrom: CollapseFrom.START,

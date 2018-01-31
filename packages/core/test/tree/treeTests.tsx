@@ -69,11 +69,18 @@ describe("<Tree>", () => {
                 hasCaret: true,
                 id: 1,
                 isExpanded: false,
-                label: "",
+                label: "c0",
             },
-            { id: 0, className: "c1", hasCaret: true, isExpanded: true, label: "" },
-            { id: 2, className: "c2", hasCaret: true, isExpanded: false, label: "" },
-            { id: 3, className: "c3", hasCaret: true, isExpanded: true, label: "", childNodes: [{ id: 5, label: "" }] },
+            { id: 0, className: "c1", hasCaret: true, isExpanded: true, label: "c1" },
+            { id: 2, className: "c2", hasCaret: true, isExpanded: false, label: "c2" },
+            {
+                childNodes: [{ id: 5, label: "c4" }],
+                className: "c3",
+                hasCaret: true,
+                id: 3,
+                isExpanded: true,
+                label: "c3",
+            },
         ];
 
         const tree = renderTree({ contents });

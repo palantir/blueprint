@@ -112,7 +112,7 @@ describe("<Select>", () => {
         // Select defines its own popoverWillOpen so this ensures that the passthrough happens
         const popoverWillOpen = sinon.spy();
         const modifiers = {}; // our own instance
-        const wrapper = select({ popoverProps: { isOpen: undefined, popoverWillOpen, modifiers } });
+        const wrapper = select({ popoverProps: { popoverWillOpen, modifiers } });
         wrapper.find("table").simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(popoverWillOpen.calledOnce);

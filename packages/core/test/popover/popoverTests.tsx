@@ -39,6 +39,7 @@ describe("<Popover>", () => {
             wrapper = undefined;
         }
         testsContainerElement.remove();
+        onInteractionSpy.resetHistory();
     });
 
     describe("validation:", () => {

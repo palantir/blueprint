@@ -36,6 +36,16 @@ describe("<Overlay>", () => {
         assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 1);
     });
 
+    it("supports non-element children", () => {
+        assert.doesNotThrow(() =>
+            shallow(
+                <Overlay inline={true} isOpen={true}>
+                    {null} {undefined}
+                </Overlay>,
+            ),
+        );
+    });
+
     it("hasBackdrop=false does not render backdrop", () => {
         const overlay = shallow(
             <Overlay hasBackdrop={false} inline={true} isOpen={true}>
@@ -126,6 +136,23 @@ describe("<Overlay>", () => {
             );
 
             dispatchMouseEvent(document.documentElement, "mousedown");
+            assert.isTrue(onClose.notCalled);
+        });
+
+        it("not invoked on click of a nested overlay", () => {
+            const onClose = spy();
+            mount(
+                <Overlay isOpen={true} onClose={onClose}>
+                    <div>
+                        {createOverlayContents()}
+                        <Overlay isOpen={true}>
+                            <div id="inner-element">{createOverlayContents()}</div>
+                        </Overlay>
+                    </div>
+                </Overlay>,
+            )
+                .find("#inner-element")
+                .simulate("mousedown");
             assert.isTrue(onClose.notCalled);
         });
 

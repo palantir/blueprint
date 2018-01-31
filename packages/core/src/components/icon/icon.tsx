@@ -36,7 +36,7 @@ export interface IIconProps extends IIntentProps, IProps {
 }
 
 export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<SVGElement>> {
-    public static displayName = "Blueprint.Icon";
+    public static displayName = "Blueprint2.Icon";
 
     public static readonly SIZE_STANDARD = 16;
     public static readonly SIZE_LARGE = 20;
