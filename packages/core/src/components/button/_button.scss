@@ -117,7 +117,7 @@ Styleguide pt-button
     margin-right: $button-icon-spacing;
     color: $pt-icon-color;
 
-    &.pt-align-right {
+    &:last-child {
       margin-right: 0;
       margin-left: $button-icon-spacing;
     }
@@ -191,7 +191,7 @@ Styleguide pt-button
     #{$icon-classes} {
       margin-right: $button-icon-spacing-large;
 
-      &.pt-align-right {
+      &:last-child {
         margin-right: 0;
         margin-left: $button-icon-spacing-large;
       }

@@ -150,8 +150,8 @@ as they abstract away the tedious parts of implementing a menu.
 
 - Make menu items non-interactive with the class `pt-disabled`.
 
-- Wrap menu item text in a `<span>` element for proper alignment. (Note that React automatically
-does this.)
+- Optionally, wrap menu item text in a `span.pt-menu-item-text` element for automatic truncation in an ellipsis.
+(Note that React automatically does this.)
 
 - Add a right-aligned label to a menu item by adding a `span.pt-menu-item-label` inside the
 `.pt-menu-item`, after the content. Add an icon to the label by adding icon classes to the label

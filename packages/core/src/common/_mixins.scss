@@ -103,6 +103,29 @@ $pt-dark-intent-text-colors: (
   @include force-hardware-acceleration();
 }
 
+// Make this element into a `flex` container. Pass `$inline: true` to use `inline-flex` instead.
+@mixin pt-flex-parent($direction: row, $inline: false) {
+  @if $inline == true {
+    display: inline-flex;
+  } @else {
+    display: flex;
+  }
+  flex-direction: $direction;
+  align-items: center;
+}
+
+// Prevent this flex child from growing or shrinking.
+@mixin pt-flex-child {
+  flex: 0 0 auto;
+}
+
+// Grow or shrink this flex child as necessary to fill available space.
+@mixin pt-flex-child-fill {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
 @function border-shadow($alpha, $color: $black, $size: 1px) {
   @return 0 0 0 $size rgba($color, $alpha);
 }

@@ -24,7 +24,11 @@ Markup:
   </li>
   <li class="pt-menu-divider"></li>
   <li>
-    <a class="pt-menu-item pt-icon-trash pt-intent-danger" tabindex="0">Delete</a>
+    <a class="pt-menu-item pt-icon-trash pt-intent-danger" tabindex="0">
+      <!-- wrap content in `.pt-menu-item-text` to fill available space
+        and truncate in ellipsis if too long -->
+      <span class="pt-menu-item-text">Delete</span>
+    </a>
   </li>
 </ul>
 
@@ -52,16 +56,27 @@ Styleguide pt-menu
   @include menu-item();
   @include menu-item-intent();
 
+  // CSS icon support
   &::before {
-    // support pt-icon-* classes directly on this element
     @include pt-icon();
-    float: left;
+    @include pt-icon-colors();
     margin-right: $menu-item-padding;
   }
 
-  &::before,
-  &::after {
-    color: $pt-icon-color;
+  .pt-icon-standard,
+  .pt-icon-large {
+    @include pt-icon-colors();
+    margin-right: $menu-item-padding;
+
+    &:last-child {
+      margin-right: 0;
+      margin-left: $menu-item-padding;
+    }
+  }
+
+  .pt-menu-item-text {
+    @include overflow-ellipsis();
+    @include pt-flex-child-fill();
   }
 
   .pt-menu-item-label {
@@ -87,7 +102,8 @@ Styleguide pt-menu
     color: $pt-text-color-disabled !important;
 
     &::before,
-    &::after,
+    .pt-icon-standard,
+    .pt-icon-large,
     .pt-menu-item-label {
       color: $pt-icon-color-disabled !important;
     }
@@ -100,6 +116,15 @@ Styleguide pt-menu
     &::before {
       @include pt-icon($pt-icon-size-large);
       margin-right: $menu-item-padding-large;
+    }
+
+    .pt-icon-standard,
+    .pt-icon-large {
+      margin-right: $menu-item-padding-large;
+
+      &:last-child {
+        margin-left: $menu-item-padding-large;
+      }
     }
   }
 }
@@ -116,6 +141,7 @@ button.pt-menu-item {
   background: none;
   width: 100%;
   text-align: left;
+  font-family: inherit;
 }
 
 .pt-menu-item-label {
@@ -169,8 +195,7 @@ Styleguide pt-menu.pt-menu-header
     }
 
     &:hover {
-      &::before,
-      &::after {
+      &::before {
         color: $white;
       }
     }
