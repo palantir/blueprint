@@ -4,25 +4,24 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
 import * as React from "react";
 
 import {
     Button,
-    Classes,
     Hotkey,
     Hotkeys,
     HotkeysTarget,
+    KeyCombo,
     MenuItem,
     Position,
     Switch,
     Toaster,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
-import { ISelectItemRendererProps, Omnibar } from "@blueprintjs/select";
-import { Film, TOP_100_FILMS } from "./data";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Omnibar } from "@blueprintjs/select";
+import { filmSelectProps, IFilm } from "./films";
 
-const FilmOmnibar = Omnibar.ofType<Film>();
+const FilmOmnibar = Omnibar.ofType<IFilm>();
 
 export interface IOmnibarExampleState {
     isOpen: boolean;
@@ -61,10 +60,8 @@ export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
         return (
             <div>
                 <FilmOmnibar
+                    {...filmSelectProps}
                     {...this.state}
-                    items={TOP_100_FILMS}
-                    itemPredicate={this.filterFilm}
-                    itemRenderer={this.renderFilm}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleItemSelect}
                     onClose={this.handleClose}
@@ -74,13 +71,7 @@ export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
                 <span>
                     <Button text="Click to show Omnibar" onClick={this.handleClick} />
                     {" or press "}
-                    <span className="pt-key-combo">
-                        <kbd className="pt-key pt-modifier-key">
-                            <span className="pt-icon-standard pt-icon-key-command" />
-                            cmd
-                        </kbd>
-                        <kbd className="pt-key">K</kbd>
-                    </span>
+                    <KeyCombo combo="meta + k" />
                 </span>
             </div>
         );
@@ -99,31 +90,11 @@ export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
         ];
     }
 
-    private renderFilm({ handleClick, isActive, item: film }: ISelectItemRendererProps<Film>) {
-        const classes = classNames({
-            [Classes.ACTIVE]: isActive,
-            [Classes.INTENT_PRIMARY]: isActive,
-        });
-        return (
-            <MenuItem
-                className={classes}
-                label={film.year.toString()}
-                key={film.rank}
-                onClick={handleClick}
-                text={`${film.rank}. ${film.title}`}
-            />
-        );
-    }
-
-    private filterFilm(query: string, film: Film, index: number) {
-        return `${index + 1}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
-    }
-
     private handleClick = (_event: React.MouseEvent<HTMLElement>) => {
         this.setState({ isOpen: true });
     };
 
-    private handleItemSelect = (film: Film) => {
+    private handleItemSelect = (film: IFilm) => {
         this.setState({ isOpen: false });
 
         this.toaster.show({

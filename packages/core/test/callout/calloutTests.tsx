@@ -13,7 +13,7 @@ import { Callout, Classes, Intent } from "../../src/index";
 describe("<Callout>", () => {
     it("supports className", () => {
         const wrapper = shallow(<Callout className="foo" />);
-        assert.isTrue(wrapper.find("h5").isEmpty(), "expected no h5");
+        assert.isFalse(wrapper.find("h5").exists(), "expected no h5");
         assert.isTrue(wrapper.hasClass(Classes.CALLOUT));
         assert.isTrue(wrapper.hasClass("foo"));
     });

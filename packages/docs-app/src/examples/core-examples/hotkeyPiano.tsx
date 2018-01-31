@@ -10,7 +10,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 
 class Oscillator {
     public oscillator: OscillatorNode;

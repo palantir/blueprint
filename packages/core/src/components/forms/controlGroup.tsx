@@ -24,7 +24,7 @@ export interface IControlGroupProps extends React.AllHTMLAttributes<HTMLDivEleme
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class ControlGroup extends React.PureComponent<IControlGroupProps, {}> {
-    public static displayName = "Blueprint.ControlGroup";
+    public static displayName = "Blueprint2.ControlGroup";
 
     public render() {
         const { children, className, fill, vertical, ...htmlProps } = this.props;
@@ -45,5 +45,3 @@ export class ControlGroup extends React.PureComponent<IControlGroupProps, {}> {
         );
     }
 }
-
-export const ControlGroupFactory = React.createFactory(ControlGroup);

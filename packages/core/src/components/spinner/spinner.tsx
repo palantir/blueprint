@@ -29,7 +29,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
 }
 
 export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
-    public static displayName = "Blueprint.Spinner";
+    public static displayName = "Blueprint2.Spinner";
 
     public render() {
         const { className, intent, value } = this.props;
@@ -75,5 +75,3 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
         );
     }
 }
-
-export const SpinnerFactory = React.createFactory(Spinner);

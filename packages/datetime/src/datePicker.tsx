@@ -77,7 +77,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         showActionsBar: false,
     };
 
-    public static displayName = "Blueprint.DatePicker";
+    public static displayName = "Blueprint2.DatePicker";
 
     private ignoreNextMonthChange = false;
 
@@ -374,5 +374,3 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         Utils.safeInvoke(this.props.onChange, value, true);
     };
 }
-
-export const DatePickerFactory = React.createFactory(DatePicker);

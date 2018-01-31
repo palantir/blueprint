@@ -5,7 +5,7 @@
  */
 
 /**
- * Measure width of a string displayed with styles provided by `className`.
+ * Measure width in pixels of a string displayed with styles provided by `className`.
  * Should only be used if measuring can't be done with existing DOM elements.
  */
 export function measureTextWidth(text: string, className = "", containerElement = document.body) {
@@ -17,7 +17,7 @@ export function measureTextWidth(text: string, className = "", containerElement 
     const spanWidth = span.offsetWidth;
     span.remove();
 
-    return spanWidth + "px";
+    return spanWidth;
 }
 
 export function padWithZeroes(str: string, minLength: number) {

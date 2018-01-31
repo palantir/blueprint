@@ -68,36 +68,28 @@ describe("<NumericInput>", () => {
     });
 
     describe("Button position", () => {
+        const BUTTON_GROUP_SELECTOR = `.${Classes.BUTTON_GROUP}`;
+
         it("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
             const component = mount(<NumericInput buttonPosition={Position.RIGHT} />);
-            const inputGroup = component.find(InputGroup);
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            const buttonGroup = component.children().childAt(1);
+            expect(buttonGroup.is(BUTTON_GROUP_SELECTOR)).to.be.true;
         });
 
         it("renders the buttons on the left when buttonPosition == Position.LEFT", () => {
             const component = mount(<NumericInput buttonPosition={Position.LEFT} />);
-            const inputGroup = component.find(InputGroup);
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            const buttonGroup = component.children().childAt(0);
+            expect(buttonGroup.is(BUTTON_GROUP_SELECTOR)).to.be.true;
         });
 
         it('does not render the buttons when buttonPosition == "none"', () => {
-            const component = mount(<NumericInput buttonPosition={"none"} />);
-
-            const inputGroup = component.find(InputGroup);
-            const numChildren = component.children().length;
-
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
-            expect(numChildren).to.equal(1);
+            const component = mount(<NumericInput buttonPosition="none" />);
+            expect(component.find(BUTTON_GROUP_SELECTOR).exists()).to.be.false;
         });
 
         it("does not render the buttons when buttonPosition is null", () => {
             const component = mount(<NumericInput buttonPosition={null} />);
-
-            const inputGroup = component.find(InputGroup);
-            const numChildren = component.children().length;
-
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
-            expect(numChildren).to.equal(1);
+            expect(component.find(BUTTON_GROUP_SELECTOR).exists()).to.be.false;
         });
 
         it(`renders the children in a ${Classes.CONTROL_GROUP} when buttons are visible`, () => {
@@ -210,7 +202,7 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("click");
             expect(onButtonClickSpy.calledOnce).to.be.true;
             expect(onButtonClickSpy.firstCall.args).to.deep.equal([1, "1"]);
-            onButtonClickSpy.reset();
+            onButtonClickSpy.resetHistory();
 
             // decrementing from 1 now
             decrementButton.simulate("click");
@@ -227,7 +219,7 @@ describe("<NumericInput>", () => {
                 const attachTo = document.createElement("div");
                 mount(<NumericInput value="12345678" />, { attachTo });
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 input.focus();
 
                 expect(input.selectionStart).to.equal(input.selectionEnd);
@@ -240,7 +232,7 @@ describe("<NumericInput>", () => {
 
                 component.find("input").simulate("focus");
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 expect(input.selectionStart).to.equal(0);
                 expect(input.selectionEnd).to.equal(VALUE.length);
             });
@@ -256,7 +248,7 @@ describe("<NumericInput>", () => {
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
@@ -268,7 +260,7 @@ describe("<NumericInput>", () => {
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 expect(input.selectionStart).to.equal(0);
                 expect(input.selectionEnd).to.equal(VALUE.length);
             });

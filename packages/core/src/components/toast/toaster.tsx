@@ -10,7 +10,7 @@ import * as ReactDOM from "react-dom";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import { TOASTER_WARN_INLINE, TOASTER_WARN_LEFT_RIGHT } from "../../common/errors";
+import { TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
@@ -19,16 +19,22 @@ import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
 
 export type IToastOptions = IToastProps & { key?: string };
+export type ToasterPosition =
+    | Position.TOP
+    | Position.TOP_LEFT
+    | Position.TOP_RIGHT
+    | Position.BOTTOM
+    | Position.BOTTOM_LEFT
+    | Position.BOTTOM_RIGHT;
 
+/** Instance methods available on a `<Toaster>` component instance. */
 export interface IToaster {
-    /** Show a new toast to the user. Returns the unique key of the new toast. */
-    show(props: IToastProps): string;
-
     /**
-     * Updates the toast with the given key to use the new props.
-     * Updating a key that does not exist is effectively a no-op.
+     * Shows a new toast to the user, or updates an existing toast corresponding to the provided key (optional).
+     *
+     * Returns the unique key of the toast.
      */
-    update(key: string, props: IToastProps): void;
+    show(props: IToastProps, key?: string): string;
 
     /** Dismiss the given toast instantly. */
     dismiss(key: string): void;
@@ -40,6 +46,10 @@ export interface IToaster {
     getToasts(): IToastOptions[];
 }
 
+/**
+ * Props supported by the `<Toaster>` component.
+ * These props can be passed as an argument to the static `Toaster.create(props?, container?)` method.
+ */
 export interface IToasterProps extends IProps {
     /**
      * Whether a toast should acquire application focus when it first opens.
@@ -66,11 +76,13 @@ export interface IToasterProps extends IProps {
     inline?: boolean;
 
     /**
-     * Position of `Toaster` within its container. Note that `LEFT` and `RIGHT` are disallowed
-     * because Toaster only supports the top and bottom edges.
+     * Position of `Toaster` within its container.
+     *
+     * Note that only `TOP` and `BOTTOM` are supported because Toaster only
+     * supports the top and bottom edge positioning.
      * @default Position.TOP
      */
-    position?: Position;
+    position?: ToasterPosition;
 }
 
 export interface IToasterState {
@@ -105,19 +117,18 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
     // auto-incrementing identifier for un-keyed toasts
     private toastId = 0;
 
-    public show(props: IToastProps) {
-        const options = this.createToastOptions(props);
-        this.setState(prevState => ({
-            toasts: [options, ...prevState.toasts],
-        }));
-        return options.key;
-    }
-
-    public update(key: string, props: IToastProps) {
+    public show(props: IToastProps, key?: string) {
         const options = this.createToastOptions(props, key);
-        this.setState(prevState => ({
-            toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
-        }));
+        if (key === undefined || this.isNewToastKey(key)) {
+            this.setState(prevState => ({
+                toasts: [options, ...prevState.toasts],
+            }));
+        } else {
+            this.setState(prevState => ({
+                toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
+            }));
+        }
+        return options.key;
     }
 
     public dismiss(key: string, timeoutExpired = false) {
@@ -153,20 +164,19 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
                 enforceFocus={false}
                 hasBackdrop={false}
                 inline={this.props.inline}
-                isOpen={this.state.toasts.length > 0}
+                isOpen={this.state.toasts.length > 0 || this.props.children != null}
                 onClose={this.handleClose}
                 transitionDuration={350}
                 transitionName="pt-toast"
             >
                 {this.state.toasts.map(this.renderToast, this)}
+                {this.props.children}
             </Overlay>
         );
     }
 
-    protected validateProps(props: IToasterProps) {
-        if (props.position === Position.LEFT || props.position === Position.RIGHT) {
-            console.warn(TOASTER_WARN_LEFT_RIGHT);
-        }
+    private isNewToastKey(key: string) {
+        return this.state.toasts.every(toast => toast.key !== key);
     }
 
     private renderToast(toast: IToastOptions) {
@@ -179,7 +189,7 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
     }
 
     private getPositionClasses() {
-        const positions = Position[this.props.position].split("_");
+        const positions = this.props.position.split("-");
         // NOTE that there is no -center class because that's the default style
         return positions.map(p => `${Classes.TOAST_CONTAINER}-${p.toLowerCase()}`);
     }

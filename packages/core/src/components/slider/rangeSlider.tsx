@@ -46,7 +46,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         vertical: false,
     };
 
-    public static displayName = "Blueprint.RangeSlider";
+    public static displayName = "Blueprint2.RangeSlider";
     public className = classNames(Classes.SLIDER, Classes.RANGE_SLIDER);
 
     private handles: Handle[] = [];
@@ -161,5 +161,3 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         }
     };
 }
-
-export const RangeSliderFactory = React.createFactory(RangeSlider);

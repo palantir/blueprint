@@ -46,7 +46,7 @@ export interface IInputGroupState {
 }
 
 export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroupProps, IInputGroupState> {
-    public static displayName = "Blueprint.InputGroup";
+    public static displayName = "Blueprint2.InputGroup";
 
     public state: IInputGroupState = {
         rightElementWidth: 30,
@@ -116,5 +116,3 @@ export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroup
         }
     }
 }
-
-export const InputGroupFactory = React.createFactory(InputGroup);

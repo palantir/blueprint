@@ -4,14 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "es6-shim";
-
-import * as Enzyme from "enzyme";
-import * as Adapter from "enzyme-adapter-react-16";
-
-Enzyme.configure({ adapter: new Adapter() });
-
-import "../src";
+import "@blueprintjs/test-commons/bootstrap";
 
 import "./batcherTests.tsx";
 import "./cellTests.tsx";
@@ -34,7 +27,6 @@ import "./rectTests.ts";
 import "./regionsTests.ts";
 import "./reorderableTests.tsx";
 import "./resizableTests.tsx";
-import "./roundSizeTests.tsx";
 import "./selectableTests.tsx";
 import "./selectionTests.tsx";
 import "./tableBodyTests.tsx";

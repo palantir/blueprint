@@ -96,14 +96,20 @@ describe("Loading Options", () => {
                 // only testing the first column of body cells because the second and third
                 // columns are meant to test column related loading combinations
                 const quadrantSelector = `.${Classes.TABLE_QUADRANT_MAIN}`;
-                const cells = tableHarness.element.queryAll(
-                    `${quadrantSelector} .${Classes.TABLE_CELL}.${Classes.columnCellIndexClass(0)}`,
+                const cells = Array.from(
+                    tableHarness.element.querySelectorAll(
+                        `${quadrantSelector} .${Classes.TABLE_CELL}.${Classes.columnCellIndexClass(0)}`,
+                    ),
                 );
-                const columnHeaders = tableHarness.element.queryAll(
-                    `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
+                const columnHeaders = Array.from(
+                    tableHarness.element.querySelectorAll(
+                        `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
+                    ),
                 );
-                const rowHeaders = tableHarness.element.queryAll(
-                    `${quadrantSelector} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`,
+                const rowHeaders = Array.from(
+                    tableHarness.element.querySelectorAll(
+                        `${quadrantSelector} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`,
+                    ),
                 );
                 testLoadingOptionOverrides(
                     columnHeaders,
@@ -181,7 +187,7 @@ function testLoadingOptionOverrides(
             columnLoadingOptions != null
         ) {
             // cast is safe because cellType is guaranteed to not be TableLoadingOption.ROW_HEADERS
-            const loading = columnLoadingOptions.indexOf(cellType as ColumnLoadingOption) >= 0;
+            const loading = columnLoadingOptions.indexOf((cellType as any) as ColumnLoadingOption) >= 0;
             expectCellLoading(cell, cellType, loading);
         } else if (tableLoadingOptions != null) {
             expectCellLoading(cell, cellType, tableLoadingOptions.indexOf(cellType) >= 0);

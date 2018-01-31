@@ -52,4 +52,28 @@ This component is a simple wrapper around the CSS API, and supports the full ran
 
 @reactExample ButtonGroupExample
 
+@### Usage with Popovers
+
+`Button`s inside a `ButtonGroup` can optionally be wrapped with a [`Popover`](#core/components/popover). The following example demonstrates this composition:
+
+```tsx
+<ButtonGroup className={Classes.ALIGN_LEFT}>
+    <Popover content={...}>
+        <Button iconName="document" rightIconName="caret-down" text="File" />
+    </Popover>
+    <Popover content={...}>
+        <Button iconName="edit" rightIconName="caret-down" text="Edit" />
+    </Popover>
+    <Popover content={...}>
+        <Button iconName="eye-open" rightIconName="caret-down" text="View" />
+    </Popover>
+</ButtonGroup>
+```
+
+@reactExample ButtonGroupPopoverExample
+
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    In vertical button groups, button content will be centered by default. You can align button content to the left or right using `pt-align-left` and `pt-align-right`, respectively.
+</div>
+
 @interface IButtonGroupProps

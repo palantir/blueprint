@@ -22,7 +22,7 @@ export interface ITabTitleProps extends ITabProps {
 }
 
 export class TabTitle extends React.PureComponent<ITabTitleProps, {}> {
-    public static displayName = "Blueprint.TabTitle";
+    public static displayName = "Blueprint2.TabTitle";
 
     public render() {
         const { disabled, id, parentId, selected } = this.props;
