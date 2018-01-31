@@ -359,9 +359,6 @@ describe("TableQuadrantStack", () => {
     });
 
     describe("Size syncing", () => {
-        // phantom loses two pixels somehow when measuring the row-header width. :/
-        const PHANTOM_WIDTH_CORRECTION = -2;
-
         describe("if numFrozenRows == 0 && numFrozenColumns == 0", () => {
             // HACKHACK: https://github.com/palantir/blueprint/issues/1794
             it.skip("syncs initial quadrant sizes properly", () => {
@@ -440,7 +437,7 @@ describe("TableQuadrantStack", () => {
                 numFrozenRows === 0
                     ? COLUMN_HEADER_HEIGHT + EXPECTED_HEADER_BORDER_WIDTH
                     : COLUMN_HEADER_HEIGHT + numFrozenRows * ROW_HEIGHT;
-            assertNonMainQuadrantSizesCorrect(container, expectedWidth + PHANTOM_WIDTH_CORRECTION, expectedHeight);
+            assertNonMainQuadrantSizesCorrect(container, expectedWidth, expectedHeight);
         }
 
         function assertQuadrantSizesCorrectIfRowHeadersHidden(numFrozenRows: number, numFrozenColumns: number) {

@@ -35,6 +35,7 @@ describe("<Popover>", () => {
     afterEach(() => {
         if (wrapper !== undefined) {
             // clean up wrapper to remove Portal element from DOM
+            wrapper.unmount();
             wrapper.detach();
             wrapper = undefined;
         }
@@ -509,7 +510,7 @@ describe("<Popover>", () => {
                 .then(popover => popover.assertIsOpen(false), done);
         });
 
-        it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", () => {
+        it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", done => {
             wrapper = renderPopover({
                 inline: true,
                 interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY,
@@ -517,15 +518,12 @@ describe("<Popover>", () => {
             });
 
             wrapper.simulateTarget("mouseenter").assertIsOpen();
-
             wrapper.findClass(Classes.POPOVER).simulate("mouseenter");
-            setTimeout(() => {
-                // Popover defers popover closing, so need to defer this check
-                wrapper.assertIsOpen(false);
-            });
+            // Popover defers popover closing, so need to defer this check
+            wrapper.then(() => wrapper.assertIsOpen(false), done);
         });
 
-        it("inline HOVER works properly", () => {
+        it("inline HOVER works properly", done => {
             wrapper = renderPopover({ inline: true, interactionKind: PopoverInteractionKind.HOVER });
 
             wrapper.simulateTarget("mouseenter").assertIsOpen();
@@ -534,10 +532,8 @@ describe("<Popover>", () => {
             wrapper.assertIsOpen();
 
             wrapper.findClass(Classes.POPOVER).simulate("mouseleave");
-            setTimeout(() => {
-                // Popover defers popover closing, so need to defer this check
-                wrapper.assertIsOpen(false);
-            });
+            // Popover defers popover closing, so need to defer this check
+            wrapper.then(() => wrapper.assertIsOpen(false), done);
         });
 
         it("clicking .pt-popover-dismiss closes popover when inline=false", () => {
@@ -678,7 +674,7 @@ describe("<Popover>", () => {
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
-        then(next: (wrap: IPopoverWrapper) => void, done: MochaDone): void;
+        then(next: (wrap: IPopoverWrapper) => void, done: MochaDone): this;
     }
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
@@ -719,6 +715,7 @@ describe("<Popover>", () => {
                 next(wrapper);
                 done();
             });
+            return wrapper;
         };
         return wrapper;
     }
