@@ -24,10 +24,9 @@ import { Portal } from "../../src/index";
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper;
-    let onInteractionSpy: sinon.SinonSpy;
+    const onInteractionSpy = sinon.spy();
 
     beforeEach(() => {
-        onInteractionSpy = sinon.spy();
         testsContainerElement = document.createElement("div");
         document.body.appendChild(testsContainerElement);
     });
@@ -708,9 +707,6 @@ describe("<Popover>", () => {
         };
         wrapper.then = (next, done) => {
             setTimeout(() => {
-                if (wrapper == null) {
-                    assert.fail("undefined wrapper");
-                }
                 wrapper.update();
                 next(wrapper);
                 done();

@@ -19,9 +19,6 @@ describe("<Icon>", () => {
     it("iconSize=20 renders large size", () =>
         assertIconSize(<Icon iconName="vertical-distribution" iconSize={Icon.SIZE_LARGE} />, Icon.SIZE_LARGE));
 
-    // it("iconSize=inherit renders auto-size", () =>
-    //     assertIconClass(<Icon iconName="vertical-distribution" iconSize="inherit" />, Classes.ICON));
-
     it("renders intent class", () =>
         assertIconClass(<Icon iconName="add" intent={Intent.DANGER} />, Classes.INTENT_DANGER));
 
