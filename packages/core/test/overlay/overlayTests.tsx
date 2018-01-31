@@ -221,7 +221,10 @@ describe("<Overlay>", () => {
                     <input type="text" />
                 </Overlay>,
             );
-            assertFocus(".pt-overlay-backdrop", done);
+            assertFocus(() => {
+                const backdrops = Array.from(document.querySelectorAll(".pt-overlay-backdrop"));
+                assert.include(backdrops, document.activeElement);
+            }, done);
         });
 
         it("does not bring focus to overlay if autoFocus=false", done => {
@@ -273,7 +276,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             wrapper.find(BACKDROP_SELECTOR).simulate("mousedown");
-            assertFocus(`.${Classes.OVERLAY_CONTENT}`, done);
+            assertFocus(`h1.${Classes.OVERLAY_CONTENT}`, done);
         });
 
         it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
@@ -345,18 +348,16 @@ describe("<Overlay>", () => {
 
         function assertFocus(selector: string | (() => void), done: MochaDone) {
             // the behavior being tested relies on requestAnimationFrame.
-            // use nested setTimeouts to delay till end of next frame.
+            // setTimeout for a few frames later to let things settle (to reduce flakes).
             setTimeout(() => {
-                setTimeout(() => {
-                    wrapper.update();
-                    if (Utils.isFunction(selector)) {
-                        selector();
-                    } else {
-                        assert.strictEqual(document.querySelector(selector), document.activeElement);
-                    }
-                    done();
-                });
-            });
+                wrapper.update();
+                if (Utils.isFunction(selector)) {
+                    selector();
+                } else {
+                    assert.strictEqual(document.querySelector(selector), document.activeElement);
+                }
+                done();
+            }, 40);
         }
     });
 

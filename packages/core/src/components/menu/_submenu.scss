@@ -41,12 +41,10 @@
     }
   }
 
-  // minor adjustments to popover position so top submenu item lines up with submenu trigger item
+  // horizontal padding leaves some space from parent menu item, and extends mouse zone
   .pt-popover {
-    position: absolute;
-    top: -$half-grid-size;
     box-shadow: none;
-    padding-left: $half-grid-size;
+    padding: 0 $half-grid-size;
 
     &.pt-align-left {
       right: 0;
