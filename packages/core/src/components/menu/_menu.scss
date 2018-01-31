@@ -14,22 +14,19 @@ Menus
 Markup:
 <ul class="pt-menu {{.modifier}} pt-elevation-1">
   <li>
-    <a class="pt-menu-item pt-icon-people" tabindex="0">
-      <span class="pt-menu-item-text">Share...</span>
-    </a>
+    <a class="pt-menu-item pt-icon-people" tabindex="0">Share...</a>
   </li>
   <li>
-    <a class="pt-menu-item pt-icon-circle-arrow-right" tabindex="0">
-      <span class="pt-menu-item-text">Move...</span></a>
+    <a class="pt-menu-item pt-icon-circle-arrow-right" tabindex="0">Move...</a>
   </li>
   <li>
-    <a class="pt-menu-item pt-icon-edit" tabindex="0">
-      <span class="pt-menu-item-text">Rename</span>
-    </a>
+    <a class="pt-menu-item pt-icon-edit" tabindex="0">Rename</a>
   </li>
   <li class="pt-menu-divider"></li>
   <li>
     <a class="pt-menu-item pt-icon-trash pt-intent-danger" tabindex="0">
+      <!-- wrap content in `.pt-menu-item-text` to fill available space
+        and truncate in ellipsis if too long -->
       <span class="pt-menu-item-text">Delete</span>
     </a>
   </li>
@@ -59,19 +56,26 @@ Styleguide pt-menu
   @include menu-item();
   @include menu-item-intent();
 
+  // CSS icon support
   &::before {
-    // support pt-icon-* classes directly on this element
     @include pt-icon();
-    float: left;
+    @include pt-icon-colors();
     margin-right: $menu-item-padding;
   }
 
-  &::before,
-  &::after {
-    color: $pt-icon-color;
+  .pt-icon-standard,
+  .pt-icon-large {
+    @include pt-icon-colors();
+    margin-right: $menu-item-padding;
+
+    &:last-child {
+      margin-right: 0;
+      margin-left: $menu-item-padding;
+    }
   }
 
   .pt-menu-item-text {
+    @include overflow-ellipsis();
     @include pt-flex-child-fill();
   }
 
@@ -98,7 +102,8 @@ Styleguide pt-menu
     color: $pt-text-color-disabled !important;
 
     &::before,
-    &::after,
+    .pt-icon-standard,
+    .pt-icon-large,
     .pt-menu-item-label {
       color: $pt-icon-color-disabled !important;
     }
@@ -111,6 +116,15 @@ Styleguide pt-menu
     &::before {
       @include pt-icon($pt-icon-size-large);
       margin-right: $menu-item-padding-large;
+    }
+
+    .pt-icon-standard,
+    .pt-icon-large {
+      margin-right: $menu-item-padding-large;
+
+      &:last-child {
+        margin-left: $menu-item-padding-large;
+      }
     }
   }
 }
@@ -127,6 +141,7 @@ button.pt-menu-item {
   background: none;
   width: 100%;
   text-align: left;
+  font-family: inherit;
 }
 
 .pt-menu-item-label {
@@ -140,24 +155,13 @@ Menu headers
 Markup:
 <ul class="pt-menu pt-elevation-1">
   <li class="pt-menu-header"><h6>Layouts</h6></li>
-  <li><button type="button" class="pt-menu-item pt-icon-layout-auto">
-    <span class="pt-menu-item-text">Auto</span>
-  </li>
-  <li><button type="button" class="pt-menu-item pt-icon-layout-circle">
-    <span class="pt-menu-item-text">Circle</span>
-  </li>
-  <li><button type="button" class="pt-menu-item pt-icon-layout-grid">
-    <span class="pt-menu-item-text">Grid</span>
-  </li>
+  <li><button type="button" class="pt-menu-item pt-icon-layout-auto">Auto</button></li>
+  <li><button type="button" class="pt-menu-item pt-icon-layout-circle">Circle</button></li>
+  <li><button type="button" class="pt-menu-item pt-icon-layout-grid">Grid</button></li>
   <li class="pt-menu-header"><h6>Views</h6></li>
-  <li><button type="button" class="pt-menu-item pt-icon-history">
-    <span class="pt-menu-item-text">History</span></li>
-  <li><button type="button" class="pt-menu-item pt-icon-star">
-    <span class="pt-menu-item-text">Favorites</span>
-  </li>
-  <li><button type="button" class="pt-menu-item pt-icon-envelope">
-    <span class="pt-menu-item-text">Messages</span>
-  </li>
+  <li><button type="button" class="pt-menu-item pt-icon-history">History</button></li>
+  <li><button type="button" class="pt-menu-item pt-icon-star">Favorites</button></li>
+  <li><button type="button" class="pt-menu-item pt-icon-envelope">Messages</button></li>
 </ul>
 
 Styleguide pt-menu.pt-menu-header
@@ -191,8 +195,7 @@ Styleguide pt-menu.pt-menu-header
     }
 
     &:hover {
-      &::before,
-      &::after {
+      &::before {
         color: $white;
       }
     }
