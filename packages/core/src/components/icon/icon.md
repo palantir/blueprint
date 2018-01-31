@@ -43,8 +43,8 @@ The component also accepts all valid HTML props for a `<span>` element.
 ```tsx
 // string literals are supported through IconName union type
 <Icon iconName="cross" />
-<Icon iconName="pt-icon-globe" width="inherit" />
-<Icon iconName="graph" width={20} intent={Intent.PRIMARY} />
+<Icon iconName="pt-icon-globe" iconSize={20} />
+<Icon iconName="graph" iconSize={40} intent={Intent.PRIMARY} />
 
 // can also use IconClasses string enum and Icon.SIZE_* constants
 import { IconClasses } from "@blueprintjs/core";

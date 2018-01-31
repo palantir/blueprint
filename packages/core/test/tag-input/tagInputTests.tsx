@@ -54,9 +54,6 @@ describe("<TagInput>", () => {
         };
 
         assertLeftIconHasClass(Classes.ICON, "icon");
-        // TODO: large prop
-        // wrapper.setProps({ className: Classes.LARGE });
-        // assertLeftIconHasClass(Classes.ICON_LARGE, "large icon");
     });
 
     it("rightElement appears as last child", () => {
