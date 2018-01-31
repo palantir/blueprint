@@ -59,7 +59,7 @@ describe("<Overlay>", () => {
     });
 
     it("renders Portal after first opened", () => {
-        wrapper = mount(<Overlay isOpen={false}>{createOverlayContents()}</Overlay>);
+        mountWrapper(<Overlay isOpen={false}>{createOverlayContents()}</Overlay>);
         assert.lengthOf(wrapper.find(Portal), 0, "unexpected Portal");
         wrapper.setProps({ isOpen: true });
         assert.lengthOf(wrapper.find(Portal), 1, "expected Portal");
@@ -382,49 +382,49 @@ describe("<Overlay>", () => {
         });
 
         it("disables document scrolling by default", done => {
-            wrapper = mountWrapper(renderSimpleOverlay(undefined, undefined));
+            wrapper = mountWrapper(renderBackdropOverlay());
             assertBodyScrollingDisabled(true, done);
         });
 
-        it("disables document scrolling if inline=false and hasBackdrop=true", done => {
-            wrapper = mountWrapper(renderSimpleOverlay(false, true));
+        it("disables document scrolling if hasBackdrop=true and usePortal=true", done => {
+            wrapper = mountWrapper(renderBackdropOverlay(true, true));
             assertBodyScrollingDisabled(true, done);
         });
 
-        it("does not disable document scrolling if inline=false and hasBackdrop=false", done => {
-            wrapper = mountWrapper(renderSimpleOverlay(false, false));
+        it("does not disable document scrolling if hasBackdrop=true and usePortal=false", done => {
+            wrapper = mountWrapper(renderBackdropOverlay(true, false));
             assertBodyScrollingDisabled(false, done);
         });
 
-        it("does not disable document scrolling if inline=true and hasBackdrop=true", done => {
-            wrapper = mountWrapper(renderSimpleOverlay(true, true));
+        it("does not disable document scrolling if hasBackdrop=false and usePortal=true", done => {
+            wrapper = mountWrapper(renderBackdropOverlay(false, true));
             assertBodyScrollingDisabled(false, done);
         });
 
-        it("does not disable document scrolling if inline=true and hasBackdrop=false", done => {
-            wrapper = mountWrapper(renderSimpleOverlay(true, false));
+        it("does not disable document scrolling if hasBackdrop=false and usePortal=false", done => {
+            wrapper = mountWrapper(renderBackdropOverlay(false, false));
             assertBodyScrollingDisabled(false, done);
         });
 
         it("keeps scrolling disabled if hasBackdrop=true overlay exists following unmount", done => {
-            const backdropOverlay = mount(renderSimpleOverlay(false, true));
-            wrapper = mountWrapper(renderSimpleOverlay(false, true));
+            const backdropOverlay = mount(renderBackdropOverlay(true));
+            wrapper = mountWrapper(renderBackdropOverlay(true));
             backdropOverlay.unmount();
 
             assertBodyScrollingDisabled(true, done);
         });
 
         it("doesn't keep scrolling disabled if no hasBackdrop=true overlay exists following unmount", done => {
-            const backdropOverlay = mount(renderSimpleOverlay(false, true));
-            wrapper = mountWrapper(renderSimpleOverlay(false, false));
+            const backdropOverlay = mount(renderBackdropOverlay(true));
+            wrapper = mountWrapper(renderBackdropOverlay(false));
             backdropOverlay.unmount();
 
             assertBodyScrollingDisabled(false, done);
         });
 
-        function renderSimpleOverlay(inline: boolean, hasBackdrop: boolean) {
+        function renderBackdropOverlay(hasBackdrop?: boolean, usePortal?: boolean) {
             return (
-                <Overlay hasBackdrop={hasBackdrop} isOpen={true} usePortal={!inline}>
+                <Overlay hasBackdrop={hasBackdrop} isOpen={true} usePortal={usePortal}>
                     <div>Some overlay content</div>
                 </Overlay>
             );
