@@ -173,7 +173,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         timePickerProps: {},
     };
 
-    public static displayName = "Blueprint.DateInput";
+    public static displayName = "Blueprint2.DateInput";
 
     public constructor(props?: IDateInputProps, context?: any) {
         super(props, context);

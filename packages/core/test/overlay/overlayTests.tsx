@@ -12,11 +12,19 @@ import { spy } from "sinon";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import * as Keys from "../../src/common/keys";
-import { Classes, IOverlayProps, Overlay, Portal } from "../../src/index";
+import { Classes, IOverlayProps, Overlay, Portal, Utils } from "../../src/index";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
 
 describe("<Overlay>", () => {
+    /**
+     * Assign mounted wrappers to this variable to automatically clean them up after the test.
+     *
+     * **Always assign the result of `mount(<Overlay>)` to avoid leaving dangling Overlays,** which
+     * can interfere with other tests through the Overlay stack.
+     *
+     * Shallow renders do not need to be cleaned up in the same way.
+     */
     let wrapper: ReactWrapper<IOverlayProps, any>;
 
     afterEach(() => {
@@ -41,6 +49,16 @@ describe("<Overlay>", () => {
         assert.lengthOf(wrapper.find(Portal), 0, "unexpected Portal");
         wrapper.setProps({ isOpen: true });
         assert.lengthOf(wrapper.find(Portal), 1, "expected Portal");
+    });
+
+    it("supports non-element children", () => {
+        assert.doesNotThrow(() =>
+            shallow(
+                <Overlay isOpen={true} usePortal={false}>
+                    {null} {undefined}
+                </Overlay>,
+            ),
+        );
     });
 
     it("hasBackdrop=false does not render backdrop", () => {
@@ -107,7 +125,7 @@ describe("<Overlay>", () => {
         it("invoked on document mousedown when hasBackdrop=false", () => {
             const onClose = spy();
             // mounting cuz we need document events + lifecycle
-            mount(
+            wrapper = mount(
                 <Overlay hasBackdrop={false} isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
                 </Overlay>,
@@ -119,7 +137,7 @@ describe("<Overlay>", () => {
 
         it("not invoked on document mousedown when hasBackdrop=false and canOutsideClickClose=false", () => {
             const onClose = spy();
-            mount(
+            wrapper = mount(
                 <Overlay
                     canOutsideClickClose={false}
                     hasBackdrop={false}
@@ -135,13 +153,30 @@ describe("<Overlay>", () => {
             assert.isTrue(onClose.notCalled);
         });
 
+        it("not invoked on click of a nested overlay", () => {
+            const onClose = spy();
+            wrapper = mount(
+                <Overlay isOpen={true} onClose={onClose}>
+                    <div>
+                        {createOverlayContents()}
+                        <Overlay isOpen={true}>
+                            <div id="inner-element">{createOverlayContents()}</div>
+                        </Overlay>
+                    </div>
+                </Overlay>,
+            );
+            wrapper.find("#inner-element").simulate("mousedown");
+            assert.isTrue(onClose.notCalled);
+        });
+
         it("invoked on escape key", () => {
             const onClose = spy();
-            mount(
+            wrapper = mount(
                 <Overlay isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
                 </Overlay>,
-            ).simulate("keydown", { which: Keys.ESCAPE });
+            );
+            wrapper.simulate("keydown", { which: Keys.ESCAPE });
             assert.isTrue(onClose.calledOnce);
         });
 
@@ -170,8 +205,7 @@ describe("<Overlay>", () => {
         const testsContainerElement = document.createElement("div");
         document.documentElement.appendChild(testsContainerElement);
 
-        // HACKHACK: https://github.com/palantir/blueprint/issues/1951
-        it.skip("brings focus to overlay if autoFocus=true", done => {
+        it("brings focus to overlay if autoFocus=true", done => {
             wrapper = mount(
                 <Overlay autoFocus={true} isOpen={true} usePortal={true}>
                     <input type="text" />
@@ -183,17 +217,20 @@ describe("<Overlay>", () => {
 
         it("does not bring focus to overlay if autoFocus=false", done => {
             wrapper = mount(
-                <Overlay autoFocus={false} isOpen={true} usePortal={true}>
-                    <input type="text" />
-                </Overlay>,
+                <div>
+                    <button>something outside overlay for browser to focus on</button>
+                    <Overlay autoFocus={false} isOpen={true} usePortal={true}>
+                        <input type="text" />
+                    </Overlay>
+                </div>,
                 { attachTo: testsContainerElement },
             );
             assertFocus("body", done);
         });
 
         // React implements autoFocus itself so our `[autofocus]` logic never fires.
-        // This test always fails and I can't figure out why, so disabling as we're not even testing our own logic.
-        it.skip("autoFocus element inside overlay gets the focus", done => {
+        // Still, worth testing we can control where the focus goes.
+        it("autoFocus element inside overlay gets the focus", done => {
             wrapper = mount(
                 <Overlay isOpen={true} usePortal={true}>
                     <input autoFocus={true} type="text" />
@@ -205,29 +242,22 @@ describe("<Overlay>", () => {
 
         it("returns focus to overlay if enforceFocus=true", done => {
             let buttonRef: HTMLElement;
-            const focusBtnAndAssert = () => {
-                buttonRef.focus();
-                // nested setTimeouts delay execution until the next frame, not
-                // just to the end of the current frame. necessary to wait for
-                // focus to change.
-                setTimeout(() => {
-                    setTimeout(() => {
-                        wrapper.update();
-                        assert.notStrictEqual(buttonRef, document.activeElement);
-                        done();
-                    });
-                });
-            };
-
+            let inputRef: HTMLElement;
             wrapper = mount(
                 <div>
                     <button ref={ref => (buttonRef = ref)} />
                     <Overlay enforceFocus={true} isOpen={true} usePortal={true}>
-                        <input ref={ref => ref && focusBtnAndAssert()} />
+                        <input autoFocus={true} ref={ref => (inputRef = ref)} />
                     </Overlay>
                 </div>,
                 { attachTo: testsContainerElement },
             );
+            assert.strictEqual(document.activeElement, inputRef);
+            buttonRef.focus();
+            assertFocus(() => {
+                assert.notStrictEqual(document.activeElement, buttonRef);
+                assert.isTrue(document.activeElement.classList.contains(Classes.OVERLAY_BACKDROP), "focus on backdrop");
+            }, done);
         });
 
         it("returns focus to overlay after clicking the backdrop if enforceFocus=true", done => {
@@ -312,17 +342,20 @@ describe("<Overlay>", () => {
             assertFocus("button", done);
         });
 
-        function assertFocus(selector: string, done: MochaDone) {
-            wrapper.update();
-            // the behavior being tested relies on requestAnimationFrame. to
-            // avoid flakiness, use nested setTimeouts to delay execution until
-            // the next frame, not just to the end of the current frame.
+        function assertFocus(selector: string | (() => void), done: MochaDone) {
+            // the behavior being tested relies on requestAnimationFrame.
+            // to avoid flakiness, use nested setTimeouts to delay execution until the *next* frame.
             setTimeout(() => {
                 setTimeout(() => {
-                    assert.strictEqual(document.querySelector(selector), document.activeElement);
+                    wrapper.update();
+                    if (Utils.isFunction(selector)) {
+                        selector();
+                    } else {
+                        assert.strictEqual(document.querySelector(selector), document.activeElement);
+                    }
                     done();
-                });
-            });
+                }, 1);
+            }, 1);
         }
     });
 

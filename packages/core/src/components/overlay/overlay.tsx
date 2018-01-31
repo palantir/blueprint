@@ -122,7 +122,7 @@ export interface IOverlayState {
 }
 
 export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
-    public static displayName = "Blueprint.Overlay";
+    public static displayName = "Blueprint2.Overlay";
 
     public static defaultProps: IOverlayProps = {
         autoFocus: true,
@@ -142,7 +142,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
     private static getLastOpened = () => Overlay.openStack[Overlay.openStack.length - 1];
 
     // an HTMLElement that contains the backdrop and any children, to query for focus target
-    private containerElement: HTMLElement;
+    public containerElement: HTMLElement;
     private refHandlers = {
         container: (ref: HTMLDivElement) => (this.containerElement = ref),
     };
@@ -160,8 +160,11 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
 
         const { children, className, usePortal, isOpen, transitionDuration, transitionName } = this.props;
 
-        const childrenWithTransitions = React.Children.map(children, (child: React.ReactElement<any>) => {
-            // add a special class to each child that will automatically set the appropriate
+        const childrenWithTransitions = React.Children.map(children, (child?: React.ReactChild) => {
+            if (child == null || typeof child !== "object") {
+                return child;
+            }
+            // add a special class to each child element that will automatically set the appropriate
             // CSS position mode under the hood. also, make the container focusable so we can
             // trap focus inside it (via `enforceFocus`).
             const decoratedChild = React.cloneElement(child, {
@@ -350,10 +353,17 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
     };
 
     private handleDocumentClick = (e: MouseEvent) => {
-        const { isOpen, onClose } = this.props;
+        const { canOutsideClickClose, isOpen, onClose } = this.props;
         const eventTarget = e.target as HTMLElement;
-        const isClickInOverlay = this.containerElement != null && this.containerElement.contains(eventTarget);
-        if (isOpen && this.props.canOutsideClickClose && !isClickInOverlay) {
+
+        const { openStack } = Overlay;
+        const stackIndex = openStack.indexOf(this);
+
+        const isClickInThisOverlayOrDescendant = openStack
+            .slice(stackIndex)
+            .some(({ containerElement }) => containerElement && containerElement.contains(eventTarget));
+
+        if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
             // casting to any because this is a native event
             safeInvoke(onClose, e as any);
         }

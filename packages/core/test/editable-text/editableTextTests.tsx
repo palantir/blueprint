@@ -181,8 +181,7 @@ describe("<EditableText>", () => {
             assert.strictEqual(wrapper.state("value"), "hello");
         });
 
-        // TODO: does not work in Phantom, only in Chrome (input.selectionStart is also equal to 8)
-        xit("the full input box is highlighted when selectAllOnFocus is true", () => {
+        it("the full input box is highlighted when selectAllOnFocus is true", () => {
             const attachTo = document.createElement("div");
             mount(<EditableText isEditing={true} selectAllOnFocus={true} value="alphabet" />, { attachTo });
             const input = attachTo.querySelector("input") as HTMLInputElement;
@@ -248,9 +247,6 @@ describe("<EditableText>", () => {
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
             const textarea = ReactDOM.findDOMNode(wrapper.instance()).querySelector("textarea") as HTMLTextAreaElement;
-            // pass "" as second argument since Phantom does not update cursor properly after a simulated value change
-            // Chrome: "control" => "control\n"
-            // Phantom: "control" => "\ncontrol"
             simulateHelper(wrapper, "", { ctrlKey: true, target: textarea, which: Keys.ENTER });
             assert.strictEqual(textarea.value, "\n");
             simulateHelper(wrapper, "", { metaKey: true, target: textarea, which: Keys.ENTER });

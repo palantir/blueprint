@@ -53,6 +53,9 @@ export const Utils = {
      * is the return value. Similar to _.times
      */
     times<T>(n: number, callback: (i: number) => T): T[] {
+        if (n < 0) {
+            throw new Error("[Blueprint] times() cannot be called with negative numbers.");
+        }
         const result: T[] = Array(n);
         for (let index = 0; index < n; index++) {
             result[index] = callback(index);

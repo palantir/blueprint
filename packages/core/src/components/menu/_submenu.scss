@@ -11,6 +11,9 @@
 
     > .pt-popover-target {
       display: inherit;
+      // override very specific selector for popovers in button groups
+      // stylelint-disable-next-line declaration-no-important
+      float: none !important;
 
       > .pt-menu-item {
         padding-right: $pt-icon-size-standard + $pt-grid-size;

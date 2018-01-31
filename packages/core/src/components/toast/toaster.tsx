@@ -27,6 +27,7 @@ export type ToasterPosition =
     | Position.BOTTOM_LEFT
     | Position.BOTTOM_RIGHT;
 
+/** Instance methods available on a `<Toaster>` component instance. */
 export interface IToaster {
     /**
      * Shows a new toast to the user, or updates an existing toast corresponding to the provided key (optional).
@@ -45,6 +46,10 @@ export interface IToaster {
     getToasts(): IToastOptions[];
 }
 
+/**
+ * Props supported by the `<Toaster>` component.
+ * These props can be passed as an argument to the static `Toaster.create(props?, container?)` method.
+ */
 export interface IToasterProps extends IProps {
     /**
      * Whether a toast should acquire application focus when it first opens.
@@ -158,13 +163,14 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
                 className={classes}
                 enforceFocus={false}
                 hasBackdrop={false}
-                usePortal={this.props.usePortal}
-                isOpen={this.state.toasts.length > 0}
+                isOpen={this.state.toasts.length > 0 || this.props.children != null}
                 onClose={this.handleClose}
                 transitionDuration={350}
                 transitionName="pt-toast"
+                usePortal={this.props.usePortal}
             >
                 {this.state.toasts.map(this.renderToast, this)}
+                {this.props.children}
             </Overlay>
         );
     }

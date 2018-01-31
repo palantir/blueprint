@@ -429,10 +429,8 @@ describe("<TagInput>", () => {
         });
 
         it("Updating inputValue updates input element", () => {
-            const wrapper = mount(<TagInput values={VALUES} />);
-            wrapper.setProps({
-                inputValue: NEW_VALUE,
-            });
+            const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
+            wrapper.setProps({ inputValue: NEW_VALUE });
             expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
         });
     });
