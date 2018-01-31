@@ -103,10 +103,7 @@ $pt-dark-intent-text-colors: (
   @include force-hardware-acceleration();
 }
 
-// A collection of mixins that utilize the CSS Flexbox model to standardize
-// the layout and composition of Blueprint components.
-
-// pt-flex-parent styles
+// Make this element into a `flex` container. Pass `$inline: true` to use `inline-flex` instead.
 @mixin pt-flex-parent($direction: row, $inline: false) {
   @if $inline == true {
     display: inline-flex;
@@ -115,13 +112,14 @@ $pt-dark-intent-text-colors: (
   }
   flex-direction: $direction;
   align-items: center;
-  justify-content: center;
 }
 
+// Prevent this flex child from growing or shrinking.
 @mixin pt-flex-child {
   flex: 0 0 auto;
 }
 
+// Grow or shrink this flex child as necessary to fill available space.
 @mixin pt-flex-child-fill {
   flex: 1 1 auto;
   min-width: 0;
