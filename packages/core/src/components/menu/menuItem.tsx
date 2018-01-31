@@ -25,12 +25,11 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      */
     label?: string | JSX.Element;
 
-    /** Props to spread to `Popover`. The following props cannot be changed: `content`, `minimal`, `modifiers`. */
+    /** Props to spread to `Popover`. Note that `content` and `minimal` cannot be changed. */
     popoverProps?: Partial<IPopoverProps>;
 
     /**
-     * Whether an enabled, non-submenu item should automatically close the
-     * popover it is nested within when clicked.
+     * Whether an enabled item without a submenu should automatically close its parent popover when clicked.
      * @default true
      */
     shouldDismissPopover?: boolean;
