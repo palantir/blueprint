@@ -406,8 +406,10 @@ describe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ contiguousCalendarMonths, maxDate, minDate });
             assert.lengthOf(document.getElementsByClassName("DayPicker"), 1);
-            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--prev"), 0);
-            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--next"), 0);
+            // react-day-picker still renders the navigation but with a interaction disabled class
+            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--prev"), 1);
+            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--next"), 1);
+            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--interactionDisabled"), 2);
         });
 
         it("left calendar is bound between minDate and (maxDate - 1 month)", () => {
