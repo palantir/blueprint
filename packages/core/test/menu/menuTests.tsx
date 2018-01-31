@@ -111,7 +111,6 @@ describe("MenuItem", () => {
         // Ensures that popover props are passed to Popover component, except content property
         const popoverProps = {
             content: "CUSTOM_CONTENT",
-            inline: false,
             interactionKind: PopoverInteractionKind.CLICK,
             popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
         };
@@ -121,7 +120,6 @@ describe("MenuItem", () => {
                 <MenuItem text="two" />
             </MenuItem>,
         );
-        assert.strictEqual(wrapper.find(Popover).prop("inline"), popoverProps.inline);
         assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
         assert.notStrictEqual(
             wrapper
