@@ -64,7 +64,7 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
             path.join(dirname, packageManifest.style),
             path.join(dirname, "test/index.ts"),
         ],
-        frameworks: ["mocha", "chai", "phantomjs-shim", "sinon"],
+        frameworks: ["mocha", "chai", "sinon"],
         mime: {
             "text/x-typescript": ["ts", "tsx"],
         },
