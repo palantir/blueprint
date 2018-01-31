@@ -12,7 +12,6 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Menu } from "./menu";
 
@@ -52,13 +51,6 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
     };
     public static displayName = "Blueprint2.MenuItem";
 
-    private liElement: HTMLElement;
-    private popoverElement: HTMLElement;
-    private refHandlers = {
-        li: (ref: HTMLElement) => (this.liElement = ref),
-        popover: (ref: HTMLDivElement) => (this.popoverElement = ref),
-    };
-
     public render() {
         const { disabled, label } = this.props;
         const submenuChildren = this.renderSubmenuChildren();
@@ -90,11 +82,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
             </a>
         );
 
-        return (
-            <li className={liClasses} ref={this.refHandlers.li}>
-                {this.maybeRenderPopover(target, submenuChildren)}
-            </li>
-        );
+        return <li className={liClasses}>{this.maybeRenderPopover(target, submenuChildren)}</li>;
     }
 
     protected validateProps(props: IMenuItemProps & { children?: React.ReactNode }) {
@@ -105,14 +93,9 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
 
     private maybeRenderPopover(target: JSX.Element, children?: React.ReactNode) {
         const { disabled, popoverProps } = this.props;
-        if (children == null) {
-            return target;
-        }
-
-        const popoverClasses = classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName);
-        const submenuContent = <Menu>{children}</Menu>;
-
-        return (
+        return children == null ? (
+            target
+        ) : (
             <Popover
                 disabled={disabled}
                 enforceFocus={false}
@@ -121,13 +104,11 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
                 position={Position.RIGHT_TOP}
                 {...popoverProps}
-                content={submenuContent}
+                content={<Menu>{children}</Menu>}
                 minimal={true}
-                popoverClassName={popoverClasses}
-                popoverRef={this.refHandlers.popover}
-            >
-                {target}
-            </Popover>
+                popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName)}
+                target={target}
+            />
         );
     }
 
