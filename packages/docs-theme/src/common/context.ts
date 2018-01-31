@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Utils } from "@blueprintjs/core";
 import {
     IBlock,
     IKssPluginData,
@@ -11,7 +12,6 @@ import {
     ITsDocBase,
     ITypescriptPluginData,
 } from "documentalist/dist/client";
-import { func } from "prop-types";
 
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
 export type IDocsData = IMarkdownPluginData & (ITypescriptPluginData | {}) & (IKssPluginData | {});
@@ -62,8 +62,16 @@ export interface IDocumentationContext {
  * ```
  */
 export const DocumentationContextTypes: React.ValidationMap<IDocumentationContext> = {
-    getDocsData: func.isRequired,
-    renderBlock: func.isRequired,
-    renderType: func.isRequired,
-    renderViewSourceLinkText: func.isRequired,
+    getDocsData: assertFunctionProp,
+    renderBlock: assertFunctionProp,
+    renderType: assertFunctionProp,
+    renderViewSourceLinkText: assertFunctionProp,
 };
+
+// simple alternative to prop-types dependency
+function assertFunctionProp<T>(obj: T, key: keyof T) {
+    if (obj[key] != null && Utils.isFunction(obj[key])) {
+        return undefined;
+    }
+    return new Error(`[Blueprint] Documentation context ${key} must be function.`);
+}
