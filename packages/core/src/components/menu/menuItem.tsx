@@ -14,8 +14,7 @@ import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
-import { IMenuItemContext, MenuItemContextTypes } from "./context";
-import { IMenuProps, Menu } from "./menu";
+import { Menu } from "./menu";
 
 export interface IMenuItemProps extends IActionProps, ILinkProps {
     // override from IActionProps to make it required
@@ -53,14 +52,11 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
     };
     public static displayName = "Blueprint2.MenuItem";
 
-    public static contextTypes = MenuItemContextTypes;
-    public context: IMenuItemContext;
-
     private liElement: HTMLElement;
     private popoverElement: HTMLElement;
     private refHandlers = {
         li: (ref: HTMLElement) => (this.liElement = ref),
-        popover: (ref: HTMLElement) => (this.popoverElement = ref),
+        popover: (ref: HTMLDivElement) => (this.popoverElement = ref),
     };
 
     public render() {
@@ -114,18 +110,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
         }
 
         const popoverClasses = classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName);
-        // getSubmenuPopperModifiers will not be defined if `MenuItem` used outside a `Menu`.
-        const popoverModifiers = safeInvoke(this.context.getSubmenuPopperModifiers);
-
-        // Must pass parent `Menu` context props down to nested `Menu`
-        const menuProps: IMenuProps =
-            popoverModifiers == null
-                ? {}
-                : {
-                      submenuBoundaryElement: popoverModifiers.flip.boundariesElement,
-                      submenuBoundaryPadding: popoverModifiers.flip.padding,
-                  };
-        const submenuContent = <Menu {...menuProps}>{children}</Menu>;
+        const submenuContent = <Menu>{children}</Menu>;
 
         return (
             <Popover
@@ -133,11 +118,11 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 enforceFocus={false}
                 hoverCloseDelay={0}
                 interactionKind={PopoverInteractionKind.HOVER}
+                modifiers={SUBMENU_POPOVER_MODIFIERS}
                 position={Position.RIGHT_TOP}
                 {...popoverProps}
                 content={submenuContent}
                 minimal={true}
-                modifiers={popoverModifiers}
                 popoverClassName={popoverClasses}
                 popoverRef={this.refHandlers.popover}
             >
@@ -161,3 +146,8 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
 export function renderMenuItem(props: IMenuItemProps, key: string | number) {
     return <MenuItem key={key} {...props} />;
 }
+
+const SUBMENU_POPOVER_MODIFIERS: Popper.Modifiers = {
+    flip: { boundariesElement: "viewport", padding: 5 },
+    preventOverflow: { boundariesElement: "viewport", padding: 5 },
+};
