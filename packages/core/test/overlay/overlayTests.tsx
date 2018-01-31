@@ -344,15 +344,18 @@ describe("<Overlay>", () => {
         });
 
         function assertFocus(selector: string | (() => void), done: MochaDone) {
-            // the behavior being tested relies on requestAnimationFrame. use setTimeout to delay till after rAF.
+            // the behavior being tested relies on requestAnimationFrame.
+            // use nested setTimeouts to delay till end of next frame.
             setTimeout(() => {
-                wrapper.update();
-                if (Utils.isFunction(selector)) {
-                    selector();
-                } else {
-                    assert.strictEqual(document.querySelector(selector), document.activeElement);
-                }
-                done();
+                setTimeout(() => {
+                    wrapper.update();
+                    if (Utils.isFunction(selector)) {
+                        selector();
+                    } else {
+                        assert.strictEqual(document.querySelector(selector), document.activeElement);
+                    }
+                    done();
+                });
             });
         }
     });
