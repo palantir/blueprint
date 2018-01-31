@@ -701,7 +701,7 @@ describe("<Table>", () => {
         it("resizes frozen column on double-click when corresponding MAIN-quadrant column not in view", () => {
             const CONTAINER_WIDTH = 500;
             const CONTAINER_HEIGHT = 500;
-            const EXPECTED_COLUMN_WIDTH_WITH_LOCAL_KARMA = 216;
+            const EXPECTED_COLUMN_WIDTH_WITH_LOCAL_KARMA = 212;
             const EXPECTED_ROW_HEADER_WIDTH = 30;
             const FROZEN_COLUMN_INDEX = 0;
 
