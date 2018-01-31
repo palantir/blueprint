@@ -936,8 +936,8 @@ describe("<DateRangePicker>", () => {
             const today = new Date();
 
             assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
-            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][0]));
-            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
+            assert.isTrue(isSameDay(today, onDateRangePickerChangeSpy.args[0][0][0]));
+            assert.isTrue(isSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
         });
 
         it("custom shortcuts select the correct values", () => {
