@@ -22,7 +22,7 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
     return {
         basePath: dirname,
         browserNoActivityTimeout: 100000,
-        browsers: ["PhantomJS"],
+        browsers: ["ChromeHeadless"],
         client: {
             useIframe: false,
         },
