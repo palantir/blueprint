@@ -231,13 +231,13 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             locale,
             localeUtils,
             modifiers,
+            showOutsideDays: true,
             ...dayPickerProps,
             disabledDays,
             onDayClick: this.handleDayClick,
             onDayMouseEnter: this.handleDayMouseEnter,
             onDayMouseLeave: this.handleDayMouseLeave,
             selectedDays: this.state.value,
-            showOutsideDays: true,
         };
 
         if (contiguousCalendarMonths || isShowingOneMonth) {
@@ -245,6 +245,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                 [DateClasses.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
                 [DateClasses.DATERANGEPICKER_SINGLE_MONTH]: isShowingOneMonth,
             });
+
             // use the left DayPicker when we only need one
             return (
                 <div className={classes}>

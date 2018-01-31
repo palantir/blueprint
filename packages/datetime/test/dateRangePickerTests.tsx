@@ -79,7 +79,7 @@ describe("<DateRangePicker>", () => {
             assertDatesEqual(new Date(firstDay.prop("day")), firstDayInView);
         });
 
-        it("doesn't show outside days if enableOutsideDays=false", () => {
+        it("doesn't show outside days if showOutsideDays=false", () => {
             const defaultValue = [new Date(2017, Months.SEPTEMBER, 1, 12), null] as DateRange;
             const { leftView, rightView } = wrap(
                 <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ showOutsideDays: false }} />,
