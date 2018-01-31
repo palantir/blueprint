@@ -225,8 +225,7 @@ describe("<NumericInput>", () => {
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
-            // this works in Chrome but not Phantom. disabling to not fail builds.
-            it.skip("if true, selects all text on focus", () => {
+            it("if true, selects all text on focus", () => {
                 const attachTo = document.createElement("div");
                 const component = mount(<NumericInput value={VALUE} selectAllOnFocus={true} />, { attachTo });
 
@@ -252,8 +251,7 @@ describe("<NumericInput>", () => {
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
-            // this works in Chrome but not Phantom. disabling to not fail builds.
-            it.skip("if true, selects all text on increment", () => {
+            it("if true, selects all text on increment", () => {
                 const attachTo = document.createElement("div");
                 const component = mount(<NumericInput value={VALUE} selectAllOnIncrement={true} />, { attachTo });
 

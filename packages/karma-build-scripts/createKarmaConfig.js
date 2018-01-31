@@ -36,9 +36,6 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
                 },
             },
             includeAllSources: true,
-            phantomjsLauncher: {
-                exitOnResourceError: true,
-            },
             reporters: [
                 { type: "html", dir: "coverage" },
                 { type: "lcov" },
