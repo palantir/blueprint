@@ -206,7 +206,6 @@ describe("<Overlay>", () => {
                 </Overlay>,
                 { attachTo: testsContainerElement },
             );
-            wrapper.update();
             assertFocus(".pt-overlay-backdrop", done);
         });
 
@@ -224,7 +223,7 @@ describe("<Overlay>", () => {
         });
 
         // React implements autoFocus itself so our `[autofocus]` logic never fires.
-        // This test always fails and I can't figure out why, so disabling as we're not even testing our own logic.
+        // Still, worth testing we can control where the focus goes.
         it("autoFocus element inside overlay gets the focus", done => {
             wrapper = mount(
                 <Overlay inline={false} isOpen={true}>
@@ -338,8 +337,8 @@ describe("<Overlay>", () => {
         });
 
         function assertFocus(selector: string | (() => void), done: MochaDone) {
-            // the behavior being tested relies on requestAnimationFrame. to avoid flakiness,
-            // use nested setTimeouts to delay execution until the *next* frame.
+            // the behavior being tested relies on requestAnimationFrame.
+            // to avoid flakiness, use nested setTimeouts to delay execution until the *next* frame.
             setTimeout(() => {
                 setTimeout(() => {
                     wrapper.update();
