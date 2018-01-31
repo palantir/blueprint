@@ -641,12 +641,17 @@ describe("<DateRangePicker>", () => {
             renderDateRangePicker({ initialMonth, minDate });
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.FEBRUARY);
             let prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
+            let disabledBtn = document.querySelectorAll(".DayPicker-NavButton--interactionDisabled");
             assert.lengthOf(prevBtn, 1);
+            assert.lengthOf(disabledBtn, 0);
 
             TestUtils.Simulate.click(prevBtn[0]);
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.JANUARY);
+            // the element is still rendered, but hidden via a class
             prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
-            assert.lengthOf(prevBtn, 0);
+            disabledBtn = document.querySelectorAll(".DayPicker-NavButton--interactionDisabled");
+            assert.lengthOf(prevBtn, 1);
+            assert.lengthOf(disabledBtn, 1);
         });
 
         it("disables shortcuts that begin earlier than minDate", () => {
