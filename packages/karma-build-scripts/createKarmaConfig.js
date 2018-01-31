@@ -22,7 +22,7 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
     return {
         basePath: dirname,
         browserNoActivityTimeout: 100000,
-        browsers: ["PhantomJS"],
+        browsers: ["ChromeHeadless"],
         client: {
             useIframe: false,
         },
@@ -36,9 +36,6 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
                 },
             },
             includeAllSources: true,
-            phantomjsLauncher: {
-                exitOnResourceError: true,
-            },
             reporters: [
                 { type: "html", dir: "coverage" },
                 { type: "lcov" },
@@ -64,7 +61,7 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
             path.join(dirname, packageManifest.style),
             path.join(dirname, "test/index.ts"),
         ],
-        frameworks: ["mocha", "chai", "phantomjs-shim", "sinon"],
+        frameworks: ["mocha", "chai", "sinon"],
         mime: {
             "text/x-typescript": ["ts", "tsx"],
         },

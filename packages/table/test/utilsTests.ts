@@ -83,6 +83,10 @@ describe("Utils", () => {
             expect(arr).to.deep.equal([]);
         });
 
+        it("throws error for negative numbers", () => {
+            expect(() => Utils.times(-5, () => "test")).to.throw();
+        });
+
         it("returns array of correct length", () => {
             const arr = Utils.times(4, () => "test");
             expect(arr).to.deep.equal(["test", "test", "test", "test"]);
