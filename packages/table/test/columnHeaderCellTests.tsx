@@ -130,7 +130,7 @@ describe("<ColumnHeaderCell>", () => {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
             table.find(`.${Classes.TABLE_TH_MENU} .${CoreClasses.POPOVER_TARGET}`).mouse("click");
             ElementHarness.document()
-                .find(".pt-icon-export")
+                .find('[data-icon="export"]')
                 .mouse("click");
             expect(menuClickSpy.called).to.be.true;
         }

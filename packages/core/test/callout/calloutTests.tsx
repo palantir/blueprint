@@ -8,7 +8,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Callout, Classes, Intent } from "../../src/index";
+import { Callout, Classes, Icon, Intent } from "../../src/index";
 
 describe("<Callout>", () => {
     it("supports className", () => {
@@ -20,7 +20,7 @@ describe("<Callout>", () => {
 
     it("supports icon", () => {
         const wrapper = shallow(<Callout iconName="graph" />);
-        assert.isTrue(wrapper.hasClass(Classes.iconClass("graph")));
+        assert.isTrue(wrapper.find(Icon).exists());
     });
 
     it("supports intent", () => {
