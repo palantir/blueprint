@@ -162,7 +162,7 @@ $dark-selectable-header-menu-selected-hover-background:
     height: $interaction-bar-height;
     text-align: center;
 
-    .pt-icon-standard {
+    .pt-icon {
       $icon-margin: ($interaction-bar-height - $pt-icon-size-standard) / 2;
 
       margin: $icon-margin;
@@ -171,7 +171,7 @@ $dark-selectable-header-menu-selected-hover-background:
     }
   }
 
-  .pt-icon-standard {
+  .pt-icon {
     $icon-offset: ($column-header-min-height - $pt-icon-size-standard) / 2;
 
     margin-top: $icon-offset;
@@ -210,7 +210,7 @@ $dark-selectable-header-menu-selected-hover-background:
     }
   }
 
-  &:hover .pt-icon-standard {
+  &:hover .pt-icon {
     box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity * 2);
     color: $pt-icon-color-hover;
 
@@ -220,7 +220,7 @@ $dark-selectable-header-menu-selected-hover-background:
     }
   }
 
-  &.pt-popover-open .pt-icon-standard {
+  &.pt-popover-open .pt-icon {
     box-shadow: none;
     background-color: $pt-icon-color-selected;
     color: $white;
