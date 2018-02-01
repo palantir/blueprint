@@ -21,6 +21,7 @@ import {
     MenuItem,
     Popover,
     PopoverInteractionKind,
+    Button,
 } from "../../src/index";
 
 describe("MenuItem", () => {
@@ -99,7 +100,7 @@ describe("MenuItem", () => {
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
         const wrapper = mount(
             <Popover content={menu} isOpen={true} onInteraction={handleClose}>
-                <button className="pt-button" type="button" />
+                <Button />
             </Popover>,
         );
         wrapper

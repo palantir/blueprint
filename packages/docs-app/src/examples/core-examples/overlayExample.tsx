@@ -49,9 +49,7 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
 
         return (
             <div className="docs-dialog-example">
-                <button className="pt-button" onClick={this.handleOpen} ref={this.refHandlers.button}>
-                    Show overlay
-                </button>
+                <Button elementRef={this.refHandlers.button} onClick={this.handleOpen} text="Show overlay" />
                 <Overlay onClose={this.handleClose} className={Classes.OVERLAY_SCROLL_CONTAINER} {...this.state}>
                     <div className={classes}>
                         <h3>I'm an Overlay!</h3>
