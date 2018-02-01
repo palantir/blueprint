@@ -20,9 +20,9 @@ export interface IIconProps extends IIntentProps, IProps {
 
     /**
      * Name of the icon (with or without `"pt-icon-"` prefix).
-     * If `undefined`, this component will render nothing.
+     * If omitted or `undefined`, this component will render nothing.
      */
-    iconName: LegacyIconName | undefined;
+    iconName?: LegacyIconName;
 
     /**
      * Size of the icon, in pixels.
@@ -48,11 +48,18 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
             return null;
         }
         // choose which pixel grid is most appropriate for given icon size
-        const pixelGridSize = iconSize <= Icon.SIZE_STANDARD ? Icon.SIZE_STANDARD : Icon.SIZE_LARGE;
-        const classes = classNames(Classes.ICON, Classes.iconClass(iconName), Classes.intentClass(intent), className);
+        const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
+        const classes = classNames(Classes.ICON, Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
         return (
-            <svg {...svgProps} className={classes} width={iconSize} height={iconSize} viewBox={viewBox}>
+            <svg
+                {...svgProps}
+                className={classes}
+                data-icon={iconName}
+                width={iconSize}
+                height={iconSize}
+                viewBox={viewBox}
+            >
                 <title>{iconName}</title>
                 {this.renderSvgPaths(pixelGridSize)}
             </svg>
