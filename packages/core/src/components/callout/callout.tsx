@@ -50,10 +50,15 @@ export class Callout extends React.PureComponent<ICalloutProps & React.HTMLAttri
 
     private getIconName(): IconName | undefined {
         const { iconName, intent } = this.props;
-        // `iconName === null` overrides intent icon
+        // 1. no icon
+        if (iconName === null) {
+            return undefined;
+        }
+        // 2. defined iconName prop
         if (iconName !== undefined) {
             return iconName;
         }
+        // 3. default intent icon
         switch (intent) {
             case Intent.DANGER:
                 return "error";
