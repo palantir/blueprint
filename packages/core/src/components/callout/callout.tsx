@@ -15,9 +15,11 @@ import { IconName } from "../icon/icon";
 export interface ICalloutProps extends IIntentProps, IProps {
     /**
      * Name of icon to render on left-hand side.
-     * If this prop is omitted, the `intent` prop will determine a default icon.
+     *
+     * If this prop is omitted or `undefined`, the `intent` prop will determine a default icon.
+     * If this prop is explicitly `null`, no icon will be displayed (regardless of `intent`).
      */
-    iconName?: IconName;
+    iconName?: IconName | null;
 
     /**
      * String content of optional title element.
@@ -46,9 +48,10 @@ export class Callout extends React.PureComponent<ICalloutProps & React.HTMLAttri
         );
     }
 
-    private getIconName(): IconName {
+    private getIconName(): IconName | undefined {
         const { iconName, intent } = this.props;
-        if (iconName != null || intent === Intent.NONE) {
+        // `iconName === null` overrides intent icon
+        if (iconName !== undefined) {
             return iconName;
         }
         switch (intent) {
@@ -60,6 +63,8 @@ export class Callout extends React.PureComponent<ICalloutProps & React.HTMLAttri
                 return "warning-sign";
             case Intent.SUCCESS:
                 return "tick";
+            default:
+                return undefined;
         }
     }
 }

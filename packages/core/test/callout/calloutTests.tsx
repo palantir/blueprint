@@ -28,6 +28,16 @@ describe("<Callout>", () => {
         assert.isTrue(wrapper.hasClass(Classes.INTENT_DANGER));
     });
 
+    it("intent renders default icon", () => {
+        const wrapper = shallow(<Callout intent={Intent.PRIMARY} />);
+        assert.isTrue(wrapper.find(Icon).exists());
+    });
+
+    it("iconName=null removes intent icon", () => {
+        const wrapper = shallow(<Callout iconName={null} intent={Intent.PRIMARY} />);
+        assert.isFalse(wrapper.find(Icon).exists());
+    });
+
     it("renders optional title element", () => {
         const title = "I am the title";
         const wrapper = shallow(<Callout title={title} />);
