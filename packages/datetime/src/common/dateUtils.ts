@@ -199,24 +199,26 @@ export function dateToString(date: Date, dateFormat: DateFormat, locale: Support
 }
 
 /**
- * A wrapper around date-fns parse() that adds feature to be able parse date strings of various formats :
+ * A wrapper around date-fns parse() that adds feature to be able parse date strings of following formats :
  * - Year can be "YY" or "YYYY".
- * - Month can be "M" or "MM".
- * - Date can be "D" or "DD".
- * Examples: "YYYY-MM-DD", "YYYY-M-DD", "YY-MM-D", "YY-M-D"
+ * - Month can be "M" or "MM", must be "MM" when without hyphens.
+ * - Date can be "D" or "DD", must be "DD" when without hyphens.
+ * Examples: "YYYY-MM-DD", "YYYY-M-DD", "YY-MM-D", "YY-M-D", "YYYYMMDD", "YYMMDD"
  */
 export function parseDate(date: string | number | Date) {
     if (typeof date !== "string") {
         return parse(date);
     }
 
-    const parseToken = /^(\d{4}|\d{2})-?(\d{1,2})-?(\d{1,2})$/;
+    const parseToken = /^(\d{4}|\d{2})(-\d{1,2}|\d{2})(-\d{1,2}|\d{2})$/;
     const token = parseToken.exec(date.toString());
     if (token == null) {
         return parse(date);
     }
 
-    const [year, month, day] = token.slice(1);
+    var [year, month, day] = token.slice(1);
+    month = month.replace("-", "");
+    day = day.replace("-", "");
     const paddedMonth = padWithZeroes(month, 2);
     const paddedDay = padWithZeroes(day, 2);
 
