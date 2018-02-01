@@ -76,6 +76,12 @@ $input-button-height-large: $pt-button-height !default;
     margin: ($pt-input-height - $input-button-height) / 2;
     padding-top: 0;
     padding-bottom: 0;
+
+    .pt-icon {
+      $small-icon-margin: ($input-button-height - $pt-icon-size-standard) / 2;
+      margin-top: $small-icon-margin;
+      margin-bottom: $small-icon-margin;
+    }
   }
 
   .pt-icon {
