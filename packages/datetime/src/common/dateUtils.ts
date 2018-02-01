@@ -210,15 +210,18 @@ export function parseDate(date: string | number | Date) {
         return parse(date);
     }
 
-    const parseToken = /^(\d{4}|\d{2})(-\d{1,2}|\d{2})(-\d{1,2}|\d{2})$/;
-    const token = parseToken.exec(date.toString());
+    const parseTokenWithHyphens = /^(\d{4}|\d{2})-(\d{1,2})-(\d{1,2})$/;
+    let token = parseTokenWithHyphens.exec(date.toString());
+    if (token == null) {
+        const parseTokenWithoutHyphens = /^(\d{4}|\d{2})(\d{2})(\d{2})$/;
+        token = parseTokenWithoutHyphens.exec(date.toString());
+    }
+
     if (token == null) {
         return parse(date);
     }
 
-    var [year, month, day] = token.slice(1);
-    month = month.replace("-", "");
-    day = day.replace("-", "");
+    const [year, month, day] = token.slice(1);
     const paddedMonth = padWithZeroes(month, 2);
     const paddedDay = padWithZeroes(day, 2);
 
