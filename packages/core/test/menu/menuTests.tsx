@@ -14,6 +14,7 @@ import {
     Classes,
     IMenuItemProps,
     IMenuProps,
+    IPopoverProps,
     Menu,
     MenuDivider,
     MenuItem,
@@ -96,7 +97,7 @@ describe("MenuItem", () => {
         const handleClose = spy();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
         const wrapper = mount(
-            <Popover content={menu} isOpen={true} inline={true} onInteraction={handleClose}>
+            <Popover content={menu} isOpen={true} onInteraction={handleClose}>
                 <button className="pt-button" type="button" />
             </Popover>,
         );
@@ -107,9 +108,9 @@ describe("MenuItem", () => {
         assert.isTrue(handleClose.notCalled);
     });
 
-    it("popover can be controlled with popoverProps", () => {
+    it("popoverProps (except content) are forwarded to Popover", () => {
         // Ensures that popover props are passed to Popover component, except content property
-        const popoverProps = {
+        const popoverProps: Partial<IPopoverProps> = {
             content: "CUSTOM_CONTENT",
             interactionKind: PopoverInteractionKind.CLICK,
             popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",

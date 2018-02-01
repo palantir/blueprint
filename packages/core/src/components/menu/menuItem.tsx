@@ -102,7 +102,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 interactionKind={PopoverInteractionKind.HOVER}
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
                 position={Position.RIGHT_TOP}
-                inline={true}
+                usePortal={false}
                 {...popoverProps}
                 content={<Menu>{children}</Menu>}
                 minimal={true}

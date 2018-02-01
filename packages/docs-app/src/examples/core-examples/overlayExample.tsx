@@ -17,8 +17,8 @@ export interface IOverlayExampleState {
     canOutsideClickClose: boolean;
     enforceFocus: boolean;
     hasBackdrop: boolean;
-    inline: boolean;
     isOpen: boolean;
+    usePortal: boolean;
 }
 
 export class OverlayExample extends BaseExample<IOverlayExampleState> {
@@ -28,8 +28,8 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
         canOutsideClickClose: true,
         enforceFocus: true,
         hasBackdrop: true,
-        inline: false,
         isOpen: false,
+        usePortal: true,
     };
 
     private button: HTMLButtonElement;
@@ -41,7 +41,7 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
     private handleBackdropChange = handleBooleanChange(hasBackdrop => this.setState({ hasBackdrop }));
     private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
-    private handleInlineChange = handleBooleanChange(inline => this.setState({ inline }));
+    private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     protected renderExample() {
@@ -80,7 +80,7 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
     }
 
     protected renderOptions() {
-        const { hasBackdrop, inline } = this.state;
+        const { hasBackdrop, usePortal } = this.state;
         return [
             [
                 <Switch
@@ -95,7 +95,9 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
                     label="Enforce focus"
                     onChange={this.handleEnforceFocusChange}
                 />,
-                <Switch checked={inline} key="inline" label="Render inline" onChange={this.handleInlineChange} />,
+                <Switch checked={usePortal} key="portal" onChange={this.handleUsePortalChange}>
+                    Use <code>Portal</code>
+                </Switch>,
             ],
             [
                 <Switch

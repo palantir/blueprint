@@ -22,7 +22,7 @@ There are two ways to render dialogs:
 
 - injected into a newly created element attached to `document.body` using `<Portal>`.
   This is the default behavior.
-- in-place in the DOM tree. Set `inline={true}` to enable this behavior.
+- in-place in the DOM tree. Set `usePortal={false}` to enable this behavior.
 
 `Dialog` is a stateless React component. The children you provide to this component
 are rendered as contents inside the `.pt-dialog` element.

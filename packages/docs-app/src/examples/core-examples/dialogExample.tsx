@@ -39,7 +39,7 @@ export class DialogExample extends OverlayExample {
                     <div className={Classes.DIALOG_FOOTER}>
                         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
                             <Button>Secondary</Button>
-                            <Tooltip content="This button is hooked up to close the dialog." inline={true}>
+                            <Tooltip content="This button is hooked up to close the dialog.">
                                 <Button className="pt-intent-primary" onClick={this.handleClose}>
                                     Primary
                                 </Button>

@@ -62,13 +62,13 @@ export interface IPopoverExampleState {
     exampleIndex?: number;
     hasBackdrop?: boolean;
     inheritDarkTheme?: boolean;
-    inline?: boolean;
     interactionKind?: PopoverInteractionKind;
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperJS.Modifiers;
     position?: Position | "auto";
     sliderValue?: number;
+    usePortal?: boolean;
 }
 
 export class PopoverExample extends BaseExample<IPopoverExampleState> {
@@ -77,7 +77,6 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         exampleIndex: 0,
         hasBackdrop: false,
         inheritDarkTheme: true,
-        inline: false,
         interactionKind: PopoverInteractionKind.CLICK,
         isOpen: false,
         minimal: false,
@@ -89,6 +88,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         },
         position: "auto",
         sliderValue: 5,
+        usePortal: true,
     };
 
     protected className = "docs-popover-example";
@@ -112,19 +112,14 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
     );
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
-    private toggleInline = handleBooleanChange(inline => {
-        if (inline) {
-            this.setState({
-                hasBackdrop: false,
-                inheritDarkTheme: false,
-                inline,
-            });
-        } else {
-            this.setState({ inline });
-        }
-    });
     private toggleIsOpen = handleBooleanChange(isOpen => this.setState({ isOpen }));
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
+    private toggleUsePortal = handleBooleanChange(usePortal => {
+        if (usePortal) {
+            this.setState({ hasBackdrop: false, inheritDarkTheme: false });
+        }
+        this.setState({ usePortal });
+    });
 
     protected renderExample() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
@@ -180,7 +175,9 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                         </select>
                     </div>
                 </label>,
-                <Switch checked={this.state.inline} label="Inline" key="inline" onChange={this.toggleInline} />,
+                <Switch checked={this.state.usePortal} key="portal" onChange={this.toggleUsePortal}>
+                    Use <code>Portal</code>
+                </Switch>,
                 <Switch
                     checked={this.state.minimal}
                     label="Minimal appearance"

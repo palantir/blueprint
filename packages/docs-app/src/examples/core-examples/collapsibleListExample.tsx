@@ -24,8 +24,8 @@ export interface ICollapsibleListExampleState {
 }
 
 const COLLAPSE_FROM_RADIOS = [
-    { className: Classes.INLINE, label: "Start", value: CollapseFrom.START.toString() },
-    { className: Classes.INLINE, label: "End", value: CollapseFrom.END.toString() },
+    { label: "Start", value: CollapseFrom.START.toString() },
+    { label: "End", value: CollapseFrom.END.toString() },
 ];
 
 export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleState> {
@@ -72,6 +72,7 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
                 <RadioGroup
                     key="collapseFrom"
                     name="collapseFrom"
+                    inline={true}
                     label="Collapse from"
                     onChange={this.handleChangeCollapse}
                     options={COLLAPSE_FROM_RADIOS}
