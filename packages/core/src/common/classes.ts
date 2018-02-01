@@ -44,6 +44,7 @@ export const BUTTON = "pt-button";
 export const BUTTON_GROUP = "pt-button-group";
 
 export const CALLOUT = "pt-callout";
+export const CALLOUT_ICON = "pt-callout-icon";
 
 export const CARD = "pt-card";
 
