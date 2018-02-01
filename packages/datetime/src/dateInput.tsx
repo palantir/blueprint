@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import { DayPickerProps } from "react-day-picker/types/props";
 
 import {
     AbstractPureComponent,
@@ -60,7 +60,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
      * `initialMonth`), `toMonth` (use `maxDate`).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerProps?: DayPickerProps;
 
     /**
      * Whether the date input is non-interactive.
