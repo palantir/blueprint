@@ -6,10 +6,10 @@
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     <h5>SVG icons in 2.0</h5>
-    Blueprint 2.0 introduced SVG icon support throughout the ecosystem, and moved icon resources to a separate
-    __@blueprintjs/icons__ package. The `Icon` component now renders SVG paths and the icon classes are no longer
-    used by any Blueprint React component. Icon font support has been preserved but should be considered legacy,
-    and we plan to remove the icon fonts in a future major version.
+    Blueprint 2.0 introduced SVG icon support and moved icon resources to a separate __@blueprintjs/icons__ package.
+    The `Icon` component now renders SVG paths and the icon classes are no longer used by any Blueprint React component.
+    Icon font support has been preserved but should be considered a legacy feature that will be removed in a
+    future major version.
 </div>
 
 This section describes two ways of using the UI icon font: via CSS or via React component.
@@ -30,7 +30,7 @@ you'll never forget a sizing class and clarifies the expected width and height o
 The component also accepts all valid HTML props for an `<svg>` element.
 
 Data files in the __@blueprintjs/icons__ package provide SVG path information for Blueprint's 300+ icons
-for 16px and 20px grids. The `iconName` prop dictates which SVG is rendered, and `iconSize` determines
+for 16px and 20px grids. The `iconName` prop dictates which SVG is rendered and `iconSize` determines
 which pixel grid is used: `iconSize >= 20` will use the 20px grid and smaller icons will use the 16px grid.
 
 ```tsx
@@ -53,7 +53,7 @@ import { IconClasses } from "@blueprintjs/core";
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
     <h5>Icon fonts are legacy in 2.0</h5>
-    Blueprint's icon fonts should be considered legacy, and we plan to remove them in a future major version.
+    Blueprint's icon fonts should be considered a legacy feature and will be removed in a future major version.
     The SVGs rendered by the React component do not suffer from the blurriness of icon fonts, and browser
     support is equivalent.
 </div>
