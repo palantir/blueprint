@@ -88,7 +88,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         },
         position: "auto",
         sliderValue: 5,
-        usePortal: false,
+        usePortal: true,
     };
 
     protected className = "docs-popover-example";
