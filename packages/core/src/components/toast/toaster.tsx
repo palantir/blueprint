@@ -94,7 +94,7 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
         autoFocus: false,
         canEscapeKeyClear: true,
         position: Position.TOP,
-        usePortal: false,
+        usePortal: true,
     };
 
     /**
