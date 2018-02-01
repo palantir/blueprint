@@ -64,9 +64,12 @@ Styleguide pt-menu
     color: $pt-icon-color;
   }
 
-  > .pt-icon:first-child {
-    margin-right: $menu-item-padding;
+  .pt-icon {
     color: $pt-icon-color;
+
+    &:first-child {
+      margin-right: $menu-item-padding;
+    }
   }
 
   .pt-menu-item-label {
@@ -93,6 +96,7 @@ Styleguide pt-menu
 
     &::before,
     &::after,
+    .pt-icon,
     .pt-menu-item-label {
       color: $pt-icon-color-disabled !important;
     }
@@ -167,7 +171,7 @@ Styleguide pt-menu.pt-menu-header
 
     &::before,
     &::after,
-    > .pt-icon:first-child {
+    .pt-icon {
       color: $pt-dark-icon-color;
     }
 
@@ -194,6 +198,7 @@ Styleguide pt-menu.pt-menu-header
 
       &::before,
       &::after,
+      .pt-icon,
       .pt-menu-item-label {
         color: $pt-dark-icon-color-disabled !important;
       }

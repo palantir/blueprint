@@ -55,5 +55,13 @@
     > .pt-popover-content {
       box-shadow: $pt-popover-box-shadow;
     }
+
+    .pt-dark & {
+      box-shadow: none;
+
+      > .pt-popover-content {
+        box-shadow: $pt-dark-popover-box-shadow;
+      }
+    }
   }
 }
