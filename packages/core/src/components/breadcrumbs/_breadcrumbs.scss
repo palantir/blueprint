@@ -23,7 +23,7 @@ Styleguide pt-breadcrumbs
 $breadcrumb-line-height: $pt-icon-size-large - 1px !default;
 
 .pt-breadcrumbs {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
   // unstyled inline list reset
