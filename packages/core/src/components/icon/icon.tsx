@@ -43,10 +43,12 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
     public static readonly SIZE_LARGE = 20;
 
     public render() {
-        const { className, iconName, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
-        if (iconName == null) {
+        if (this.props.iconName == null) {
             return null;
         }
+        const { className, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
+        const iconName = this.props.iconName.replace("pt-icon-", "") as IconName;
+
         // choose which pixel grid is most appropriate for given icon size
         const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
         const classes = classNames(Classes.ICON, Classes.intentClass(intent), className);
@@ -61,17 +63,17 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
                 viewBox={viewBox}
             >
                 <title>{iconName}</title>
-                {this.renderSvgPaths(pixelGridSize)}
+                {this.renderSvgPaths(pixelGridSize, iconName)}
             </svg>
         );
     }
 
-    private renderSvgPaths(pathsSize: number) {
-        const svgPaths = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
-        const paths = svgPaths[this.props.iconName.replace("pt-icon-", "") as IconName];
-        if (paths == null) {
+    private renderSvgPaths(pathsSize: number, iconName: IconName) {
+        const svgPathsRecord = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
+        const pathStrings = svgPathsRecord[iconName];
+        if (pathStrings == null) {
             return null;
         }
-        return paths.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
+        return pathStrings.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
     }
 }
