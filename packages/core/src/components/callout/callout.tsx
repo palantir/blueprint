@@ -32,15 +32,14 @@ export class Callout extends React.PureComponent<ICalloutProps & React.HTMLAttri
     public render() {
         const { className, children, iconName: _nospread, intent, title, ...htmlProps } = this.props;
         const iconName = this.getIconName();
-        const classes = classNames(
-            Classes.CALLOUT,
-            Classes.intentClass(intent),
-            { [Classes.CALLOUT_ICON]: iconName != null },
-            className,
-        );
+        const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className);
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon className={Classes.CALLOUT_ICON} iconName={iconName} iconSize={Icon.SIZE_LARGE} />}
+                {iconName && (
+                    <span className={Classes.CALLOUT_ICON}>
+                        <Icon iconName={iconName} iconSize={Icon.SIZE_LARGE} />
+                    </span>
+                )}
                 {title && <h5>{title}</h5>}
                 {children}
             </div>
