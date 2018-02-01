@@ -91,25 +91,25 @@ const INITIAL_STATE: ITreeNode[] = [
             },
             {
                 id: 3,
-                iconName: "pt-icon-tag",
+                iconName: "tag",
                 label: "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.",
             },
             {
                 id: 4,
                 hasCaret: true,
-                iconName: "pt-icon-folder-close",
+                iconName: "folder-close",
                 label: <Tooltip content="foo">Folder 2</Tooltip>,
                 childNodes: [
                     { id: 5, label: "No-Icon Item" },
-                    { id: 6, iconName: "pt-icon-tag", label: "Item 1" },
+                    { id: 6, iconName: "tag", label: "Item 1" },
                     {
                         id: 7,
                         hasCaret: true,
-                        iconName: "pt-icon-folder-close",
+                        iconName: "folder-close",
                         label: "Folder 3",
                         childNodes: [
                             { id: 8, iconName: "document", label: "Item 0" },
-                            { id: 9, iconName: "pt-icon-tag", label: "Item 1" },
+                            { id: 9, iconName: "tag", label: "Item 1" },
                         ],
                     },
                 ],

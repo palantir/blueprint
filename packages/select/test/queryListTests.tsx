@@ -61,6 +61,13 @@ describe("<QueryList>", () => {
             assert.isFalse(predicate.called, "item predicate should not be invoked");
         });
 
+        it("omitting both predicate props is supported", () => {
+            shallow(<FilmQueryList {...testProps} query="1980" />);
+            const { items, renderItem } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
+            const filteredItems = items.map(renderItem).filter(x => x != null);
+            assert.lengthOf(filteredItems, items.length, "returns all films");
+        });
+
         it("ensure onActiveItemChange is not called with undefined and empty list", () => {
             const myItem = { title: "Toy Story 3", year: 2010, rank: 1 };
             const filmQueryList = mount(<FilmQueryList {...testProps} items={[myItem]} activeItem={myItem} query="" />);

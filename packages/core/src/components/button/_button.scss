@@ -87,6 +87,14 @@ Styleguide pt-button
     color: $pt-icon-color;
   }
 
+  // icon-only button
+  .pt-icon:first-child:last-child {
+    // center icon horizontally. this works for large buttons too.
+    $icon-margin-offset: -($pt-button-height - $pt-icon-size-standard) / 2;
+    margin-right: $icon-margin-offset;
+    margin-left: $icon-margin-offset;
+  }
+
   /*
   Advanced icon usage
 

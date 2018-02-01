@@ -15,7 +15,7 @@
     "copy-landing-app": "cp -rf packages/landing-app/dist/* docs/.",
     "deploy": "gh-pages -d docs -b master",
     "dev:all": "lerna run dev --parallel --scope '!@blueprintjs/{landing-app,table-dev-app}'",
-    "dev:core": "lerna run dev --parallel --scope '@blueprintjs/{core,docs-app}'",
+    "dev:core": "lerna run dev --parallel --scope '@blueprintjs/{core,icons,docs-app}'",
     "dev:docs": "lerna run dev --parallel --scope '@blueprintjs/{docs-app,docs-theme}'",
     "dev:datetime": "lerna run dev --parallel --scope '@blueprintjs/{core,datetime,docs-app}'",
     "dev:labs": "lerna run dev --parallel --scope '@blueprintjs/{core,labs,select,docs-app}'",

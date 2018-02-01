@@ -5,5 +5,6 @@
  */
 
 export { IconClasses } from "./generated/iconClasses";
-export { IconName } from "./generated/iconName";
+export { IconName, LegacyIconName } from "./generated/iconName";
 export { IconContents } from "./generated/iconStrings";
+export { IconSvgPaths16, IconSvgPaths20 } from "./generated/iconSvgPaths";

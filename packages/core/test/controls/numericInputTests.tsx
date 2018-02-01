@@ -15,6 +15,7 @@ import {
     Button,
     Classes,
     HTMLInputProps,
+    Icon,
     InputGroup,
     INumericInputProps,
     Keys,
@@ -860,14 +861,10 @@ describe("<NumericInput>", () => {
         });
 
         it("shows a left icon if provided", () => {
-            const component = mount(<NumericInput leftIconName={"variable"} />);
-
-            const icon = component
-                .find(InputGroup)
-                .children()
-                .childAt(0) // Icon
-                .childAt(0); // span
-            expect(icon.hasClass("pt-icon-variable")).to.be.true;
+            const leftIcon = mount(<NumericInput leftIconName="variable" />)
+                .find(Icon)
+                .first();
+            expect(leftIcon.text()).to.equal("variable");
         });
 
         it("shows placeholder text if provided", () => {

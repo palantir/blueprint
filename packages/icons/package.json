@@ -14,7 +14,7 @@
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
     "compile:css": "sass-compile ./src",
-    "clean": "rm -rf dist/* && rm -rf lib/*",
+    "clean": "rm -rf dist/* && rm -rf lib/* && rm -rf src/generated/*",
     "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
     "dist": "npm-run-all -s 'dist:*'",
     "dist:bundle": "NODE_ENV=production webpack",

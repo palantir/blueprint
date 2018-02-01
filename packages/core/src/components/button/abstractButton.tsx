@@ -74,7 +74,6 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
                 [Classes.DISABLED]: disabled,
                 [Classes.LOADING]: this.props.loading,
             },
-            Classes.iconClass(this.props.iconName),
             Classes.intentClass(this.props.intent),
             this.props.className,
         );
@@ -114,7 +113,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
     };
 
     protected renderChildren(): React.ReactNode {
-        const { loading, rightIconName, text } = this.props;
+        const { iconName, loading, rightIconName, text } = this.props;
 
         const children = React.Children.map(this.props.children, (child, index) => {
             if (child === "") {
@@ -127,12 +126,15 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
             return child;
         });
 
-        return [
-            loading ? <Spinner className="pt-small pt-button-spinner" key="spinner" /> : undefined,
-            text != null ? <span key="text">{text}</span> : undefined,
-            ...children,
-            <Icon className={Classes.ALIGN_RIGHT} iconName={rightIconName} key="icon" />,
-        ];
+        return (
+            <>
+                <Icon iconName={iconName} />
+                {loading && <Spinner className="pt-small pt-button-spinner" />}
+                {text != null && <span>{text}</span>}
+                {children}
+                <Icon className={Classes.ALIGN_RIGHT} iconName={rightIconName} />
+            </>
+        );
     }
 }
 

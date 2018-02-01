@@ -100,6 +100,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
   min-height: $pt-icon-size-large + $dialog-padding;
   padding-left: $dialog-padding;
 
+  > .pt-icon,
   .pt-icon-large {
     flex: 0 0 auto;
     margin-right: $dialog-padding / 2;
@@ -143,6 +144,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
 
   cursor: pointer;
   padding: $pt-grid-size;
+  padding-right: $dialog-padding;
 }
 
 .pt-dialog-body {
