@@ -307,9 +307,9 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         // guarantees only some props are overridable.
         return (
             <Popover
-                inline={true}
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
+                usePortal={false}
                 {...this.props.popoverProps}
                 autoFocus={false}
                 className={popoverClassName}

@@ -285,15 +285,17 @@ The backdrop element has the same opacity-fade transition as the `Dialog` backdr
     must be handled by your application code or simply avoided if possible.
 </div>
 
-@### Inline rendering
+@### Portal rendering
 
-By default, popover contents are rendered in a newly created [`Portal`](#core/components/portal) appended to `document.body`. This works well for most layouts, because popovers by default will appear above everything else on the page without needing to manually adjust z-indices.
+By default, popover contents are rendered in a [`Portal`](#core/components/portal) appended to `document.body`. This
+allows the the popover contents to "escape" the application DOM tree to avoid incompatible styles on ancestor elements.
+(Incompatible styles typically include hidden `overflow` or complex `position` logic.) It also ensures that the popover
+will appear above all other content, as its container element appears after the application container in the DOM.
 
-However, there are cases where it's preferable to render the popover contents inline in the DOM.
-
-For example, consider a scrolling table where cells have tooltips attached to them. As row items go out of view, cell tooltips should slide out of the viewport as well. This is best accomplished with inline popovers.
-
-Setting `inline={true}` will enable inline rendering.
+Disable the `usePortal` prop to render popover contents in the normal document flow as a sibling of the target.
+This behavior can be desirable to inherit CSS styles from surrounding elements, and can result in smoother performance
+when scrolling. Not using a `Portal` works well for most layouts, because popovers style themselves to appear above
+everything else on the page without needing to manually adjust z-indices, and Popper.js will keep them nicely positioned.
 
 @reactExample PopoverInlineExample
 
@@ -373,7 +375,7 @@ import { mount } from "enzyme";
 import { Target } from "react-popper";
 
 wrapper = mount(
-    <Popover inline={true} interactionKind={PopoverInteractionKind.HOVER}>
+    <Popover usePortal={false} interactionKind={PopoverInteractionKind.HOVER}>
         <div>Target</div>
         <div>Content</div>
     </Popover>

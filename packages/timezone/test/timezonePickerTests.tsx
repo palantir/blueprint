@@ -213,9 +213,9 @@ describe("<TimezonePicker>", () => {
 
     it("popover can be controlled with popover props", () => {
         const popoverProps: IPopoverProps = {
-            inline: true,
             isOpen: true,
             position: Position.RIGHT,
+            usePortal: false,
         };
         const timezonePicker = shallow(<TimezonePicker popoverProps={popoverProps} />);
         const popover = findPopover(timezonePicker);
@@ -254,8 +254,8 @@ describe("<TimezonePicker>", () => {
         keysToUnset: Array<keyof IPopoverProps> = [],
     ): Partial<IPopoverProps> {
         const popoverProps: Partial<IPopoverProps> = {
-            inline: true,
             isOpen: true,
+            usePortal: false,
             ...overrides,
         };
 

@@ -15,7 +15,7 @@ import { Classes, Dialog, Icon } from "../../src/index";
 describe("<Dialog>", () => {
     it("renders its content correctly", () => {
         const dialog = mount(
-            <Dialog inline={true} isOpen={true}>
+            <Dialog isOpen={true} usePortal={false}>
                 {createDialogContents()}
             </Dialog>,
         );
@@ -34,7 +34,7 @@ describe("<Dialog>", () => {
     it("attempts to close when .pt-overlay-backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
-            <Dialog inline={true} isOpen={true} onClose={onClose}>
+            <Dialog isOpen={true} onClose={onClose} usePortal={false}>
                 {createDialogContents()}
             </Dialog>,
         );
@@ -45,7 +45,7 @@ describe("<Dialog>", () => {
     it("attempts to close when .pt-dialog-container element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
-            <Dialog inline={true} isOpen={true} onClose={onClose}>
+            <Dialog isOpen={true} onClose={onClose} usePortal={false}>
                 {createDialogContents()}
             </Dialog>,
         );
@@ -56,7 +56,7 @@ describe("<Dialog>", () => {
     it("doesn't close when canOutsideClickClose=false and .pt-overlay-backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
-            <Dialog canOutsideClickClose={false} inline={true} isOpen={true} onClose={onClose}>
+            <Dialog canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                 {createDialogContents()}
             </Dialog>,
         );
@@ -67,7 +67,7 @@ describe("<Dialog>", () => {
     it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
         const onClose = spy();
         const dialog = mount(
-            <Dialog canEscapeKeyClose={false} inline={true} isOpen={true} onClose={onClose}>
+            <Dialog canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                 {createDialogContents()}
             </Dialog>,
         );
@@ -78,7 +78,7 @@ describe("<Dialog>", () => {
     describe("header", () => {
         it(`renders .${Classes.DIALOG_HEADER} if title prop is given`, () => {
             const dialog = mount(
-                <Dialog inline={true} isOpen={true} title="Hello!">
+                <Dialog isOpen={true} title="Hello!" usePortal={false}>
                     dialog body
                 </Dialog>,
             );
@@ -87,7 +87,7 @@ describe("<Dialog>", () => {
 
         it(`renders close button if isCloseButtonShown={true}`, () => {
             const dialog = mount(
-                <Dialog inline={true} isCloseButtonShown={true} isOpen={true} title="Hello!">
+                <Dialog isCloseButtonShown={true} isOpen={true} title="Hello!" usePortal={false}>
                     dialog body
                 </Dialog>,
             );
@@ -100,7 +100,7 @@ describe("<Dialog>", () => {
         it("clicking close button triggers onClose", () => {
             const onClose = spy();
             const dialog = mount(
-                <Dialog inline={true} isCloseButtonShown={true} isOpen={true} onClose={onClose} title="Hello!">
+                <Dialog isCloseButtonShown={true} isOpen={true} onClose={onClose} title="Hello!" usePortal={false}>
                     dialog body
                 </Dialog>,
             );
@@ -110,7 +110,7 @@ describe("<Dialog>", () => {
     });
 
     it("only adds its className in one location", () => {
-        const dialog = mount(<Dialog className="foo" inline={true} isOpen={true} title="title" />);
+        const dialog = mount(<Dialog className="foo" isOpen={true} title="title" usePortal={false} />);
         assert.lengthOf(dialog.find(".foo").hostNodes(), 1);
     });
 

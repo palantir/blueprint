@@ -37,7 +37,7 @@ export class MenuExample extends BaseExample<{}> {
                         <MenuItem iconName="italic" text="Italic" />
                         <MenuItem iconName="underline" text="Underline" />
                     </MenuItem>
-                    <MenuItem iconName="asterisk" text="Miscellaneous" submenuViewportMargin={{ left: 240 }}>
+                    <MenuItem iconName="asterisk" text="Miscellaneous">
                         <MenuItem iconName="badge" text="Badge" />
                         <MenuItem iconName="book" text="Book" />
                         <MenuItem iconName="more" text="More">
