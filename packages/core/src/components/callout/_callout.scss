@@ -28,15 +28,24 @@ Styleguide pt-callout
   background-color: rgba($gray3, 0.15);
   padding: $pt-grid-size ($pt-grid-size * 1.2) ($pt-grid-size * 0.9);
 
+  // apply class as modifier to adjust padding...
+  &.pt-callout-icon,
   &[class*="pt-icon-"] {
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
+    // ...and apply class to Icon for position
+    .pt-callout-icon,
     &::before {
-      @include pt-icon($pt-icon-size-large);
       position: absolute;
       top: $pt-grid-size;
       left: $pt-grid-size;
+      margin: 0;
       color: $pt-icon-color;
+    }
+
+    // CSS API support
+    &::before {
+      @include pt-icon($pt-icon-size-large);
     }
   }
 
@@ -59,6 +68,7 @@ Styleguide pt-callout
       background-color: rgba($color, 0.15);
 
       &[class*="pt-icon-"]::before,
+      .pt-callout-icon,
       h5 {
         color: map-get($pt-intent-text-colors, $intent);
       }
@@ -67,6 +77,7 @@ Styleguide pt-callout
         background-color: rgba($color, 0.25);
 
         &[class*="pt-icon-"]::before,
+        .pt-callout-icon,
         h5 {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }
