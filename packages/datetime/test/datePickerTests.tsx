@@ -7,7 +7,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import { default as ReactDayPicker } from "react-day-picker";
+import ReactDayPicker from "react-day-picker";
 import * as sinon from "sinon";
 
 import { Button } from "@blueprintjs/core";

@@ -8,7 +8,7 @@ import { Classes } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import { default as ReactDayPicker } from "react-day-picker";
+import ReactDayPicker from "react-day-picker";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
@@ -407,8 +407,6 @@ describe("<DateRangePicker>", () => {
             renderDateRangePicker({ contiguousCalendarMonths, maxDate, minDate });
             assert.lengthOf(document.getElementsByClassName("DayPicker"), 1);
             // react-day-picker still renders the navigation but with a interaction disabled class
-            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--prev"), 1);
-            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--next"), 1);
             assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--interactionDisabled"), 2);
         });
 
@@ -640,18 +638,11 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.FEBRUARY, 5);
             renderDateRangePicker({ initialMonth, minDate });
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.FEBRUARY);
-            let prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
-            let disabledBtn = document.querySelectorAll(".DayPicker-NavButton--interactionDisabled");
-            assert.lengthOf(prevBtn, 1);
-            assert.lengthOf(disabledBtn, 0);
+            assert.lengthOf(document.querySelectorAll(".DayPicker-NavButton--interactionDisabled"), 0);
 
-            TestUtils.Simulate.click(prevBtn[0]);
+            TestUtils.Simulate.click(document.querySelectorAll(".DayPicker-NavButton--prev")[0]);
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.JANUARY);
-            // the element is still rendered, but hidden via a class
-            prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
-            disabledBtn = document.querySelectorAll(".DayPicker-NavButton--interactionDisabled");
-            assert.lengthOf(prevBtn, 1);
-            assert.lengthOf(disabledBtn, 1);
+            assert.lengthOf(document.querySelectorAll(".DayPicker-NavButton--interactionDisabled"), 1);
         });
 
         it("disables shortcuts that begin earlier than minDate", () => {
