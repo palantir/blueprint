@@ -70,10 +70,11 @@ export interface INumericInputProps extends IIntentProps, IProps {
     placeholder?: string;
 
     /**
-     * The increment between successive values when `shift` is held.
+     * The increment between successive values when <kbd class="pt-key">shift</kbd> is held.
+     * Pass explicit `null` value to disable this interaction.
      * @default 10
      */
-    majorStepSize?: number;
+    majorStepSize?: number | null;
 
     /** The maximum value of the input. */
     max?: number;
@@ -82,10 +83,11 @@ export interface INumericInputProps extends IIntentProps, IProps {
     min?: number;
 
     /**
-     * The increment between successive values when `alt` is held.
+     * The increment between successive values when <kbd class="pt-key">alt</kbd> is held.
+     * Pass explicit `null` value to disable this interaction.
      * @default 0.1
      */
-    minorStepSize?: number;
+    minorStepSize?: number | null;
 
     /**
      * Whether the entire text field should be selected on focus.
