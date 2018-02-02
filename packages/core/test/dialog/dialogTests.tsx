@@ -10,7 +10,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import * as Keys from "../../src/common/keys";
-import { Classes, Dialog, Icon } from "../../src/index";
+import { Button, Classes, Dialog, Icon } from "../../src/index";
 
 describe("<Dialog>", () => {
     it("renders its content correctly", () => {
@@ -131,12 +131,8 @@ describe("<Dialog>", () => {
             </div>,
             <div className={Classes.DIALOG_FOOTER} key={2}>
                 <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                    <button type="button" className="pt-button">
-                        Secondary
-                    </button>
-                    <button className="pt-button pt-intent-primary" type="submit">
-                        Primary
-                    </button>
+                    <Button text="Secondary" />
+                    <Button className={Classes.INTENT_PRIMARY} type="submit" text="Primary" />
                 </div>
             </div>,
         ];
