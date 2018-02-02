@@ -69,10 +69,10 @@ export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNamePro
     isColumnSelected?: boolean;
 
     /**
-     * The icon name for the header's menu button.
+     * The icon name or element for the header's menu button.
      * @default "chevron-down"
      */
-    menuIconName?: IconName;
+    menuIcon?: IconName | JSX.Element;
 }
 
 export interface IColumnHeaderCellState {
@@ -87,7 +87,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
     public static defaultProps: IColumnHeaderCellProps = {
         enableColumnInteractionBar: false,
         isActive: false,
-        menuIconName: "chevron-down",
+        menuIcon: "chevron-down",
     };
 
     /**
@@ -115,7 +115,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
             // from IColumnHeaderCellProps
             enableColumnReordering,
             isColumnSelected,
-            menuIconName,
+            menuIcon,
 
             // from IColumnNameProps
             name,
@@ -199,7 +199,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
     }
 
     private maybeRenderDropdownMenu() {
-        const { index, menu, menuIconName, menuRenderer } = this.props;
+        const { index, menu, menuIcon, menuRenderer } = this.props;
 
         if (menuRenderer == null && menu == null) {
             return undefined;
@@ -223,7 +223,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
                     popoverDidOpen={this.handlePopoverDidOpen}
                     popoverWillClose={this.handlePopoverWillClose}
                 >
-                    <Icon iconName={menuIconName} />
+                    <Icon icon={menuIcon} />
                 </Popover>
             </div>
         );

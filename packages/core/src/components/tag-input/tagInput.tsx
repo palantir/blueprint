@@ -36,8 +36,8 @@ export interface ITagInputProps extends IProps {
     /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;
 
-    /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
-    leftIconName?: IconName;
+    /** Name of a Blueprint UI icon (or an icon element) to render on the left side of the input. */
+    leftIcon?: IconName | JSX.Element;
 
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.
@@ -182,7 +182,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     }
 
     public render() {
-        const { className, inputProps, leftIconName, placeholder, values } = this.props;
+        const { className, inputProps, leftIcon, placeholder, values } = this.props;
 
         const classes = classNames(
             Classes.INPUT,
@@ -203,7 +203,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
             <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>
                 <Icon
                     className={Classes.TAG_INPUT_ICON}
-                    iconName={leftIconName}
+                    icon={leftIcon}
                     iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD}
                 />
                 {values.map(this.maybeRenderTag)}

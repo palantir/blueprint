@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSvgPaths16, IconSvgPaths20, LegacyIconName } from "@blueprintjs/icons";
+import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
 
 export { IconName };
@@ -22,7 +22,7 @@ export interface IIconProps extends IIntentProps, IProps {
      * Name of the icon (with or without `"pt-icon-"` prefix).
      * If omitted or `undefined`, this component will render nothing.
      */
-    iconName?: LegacyIconName;
+    icon?: IconName | JSX.Element;
 
     /**
      * Size of the icon, in pixels.
@@ -43,11 +43,10 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
     public static readonly SIZE_LARGE = 20;
 
     public render() {
-        if (this.props.iconName == null) {
-            return null;
+        const { className, icon, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
+        if (icon == null || typeof icon !== "string") {
+            return icon;
         }
-        const { className, iconName, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
-        const normalizedIconName = iconName.replace("pt-icon-", "") as IconName;
 
         // choose which pixel grid is most appropriate for given icon size
         const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
@@ -57,13 +56,13 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
             <svg
                 {...svgProps}
                 className={classes}
-                data-icon={normalizedIconName}
+                data-icon={icon}
                 width={iconSize}
                 height={iconSize}
                 viewBox={viewBox}
             >
-                <title>{normalizedIconName}</title>
-                {this.renderSvgPaths(pixelGridSize, normalizedIconName)}
+                <title>{icon}</title>
+                {this.renderSvgPaths(pixelGridSize, icon)}
             </svg>
         );
     }

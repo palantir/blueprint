@@ -36,8 +36,8 @@ export interface IActionProps extends IIntentProps, IProps {
     /** Whether this action is non-interactive. */
     disabled?: boolean;
 
-    /** Name of the icon (the part after `pt-icon-`) to add to the button. */
-    iconName?: IconName;
+    /** Name of a Blueprint UI icon (or an icon element) to render before the text. */
+    icon?: IconName | JSX.Element;
 
     /** Click event handler. */
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;

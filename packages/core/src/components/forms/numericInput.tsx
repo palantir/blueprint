@@ -61,10 +61,9 @@ export interface INumericInputProps extends IIntentProps, IProps {
     large?: boolean;
 
     /**
-     * Name of the icon (the part after `pt-icon-`) to render
-     * on the left side of input.
+     * Name of a Blueprint UI icon (or an icon element) to render on the left side of input.
      */
-    leftIconName?: IconName;
+    leftIcon?: IconName | JSX.Element;
 
     /** The placeholder text in the absence of any value. */
     placeholder?: string;
@@ -236,7 +235,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
-                leftIconName={this.props.leftIconName}
+                leftIcon={this.props.leftIcon}
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
                 onChange={this.handleInputChange}
@@ -333,7 +332,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         return (
             <Button
                 disabled={this.props.disabled || this.props.readOnly}
-                iconName={iconName}
+                icon={iconName}
                 intent={this.props.intent}
                 key={key}
                 onBlur={this.handleButtonBlur}
