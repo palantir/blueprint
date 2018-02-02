@@ -10,5 +10,3 @@ reference: labs
 </div>
 
 There are currently no components in labs.
-
-@page timezone-picker

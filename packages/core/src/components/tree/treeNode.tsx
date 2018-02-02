@@ -76,11 +76,10 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
         const { children, className, hasCaret, icon, isExpanded, isSelected, label } = this.props;
 
         const showCaret = hasCaret == null ? React.Children.count(children) > 0 : hasCaret;
-        const caretClass = showCaret ? Classes.TREE_NODE_CARET : Classes.TREE_NODE_CARET_NONE;
         const caretStateClass = isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED;
-        const caretClasses = classNames(caretClass, Classes.ICON_STANDARD, {
-            [caretStateClass]: showCaret,
-        });
+        const caretClasses = showCaret
+            ? classNames(Classes.TREE_NODE_CARET, caretStateClass)
+            : Classes.TREE_NODE_CARET_NONE;
 
         const classes = classNames(
             Classes.TREE_NODE,
@@ -102,7 +101,9 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
                     onDoubleClick={this.handleDoubleClick}
                     ref={this.handleContentRef}
                 >
-                    <span className={caretClasses} onClick={showCaret ? this.handleCaretClick : null} />
+                    <span className={caretClasses} onClick={showCaret ? this.handleCaretClick : undefined}>
+                        {showCaret && <Icon icon="caret-right" />}
+                    </span>
                     <Icon className={Classes.TREE_NODE_ICON} icon={icon} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
                     {this.maybeRenderSecondaryLabel()}
@@ -120,7 +121,7 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
         }
     }
 
-    private handleCaretClick = (e: React.MouseEvent<HTMLSpanElement>) => {
+    private handleCaretClick = (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
         const { isExpanded, onCollapse, onExpand } = this.props;
         safeInvoke(isExpanded ? onCollapse : onExpand, this, e);
