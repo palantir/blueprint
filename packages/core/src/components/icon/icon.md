@@ -36,12 +36,8 @@ which pixel grid is used: `iconSize >= 20` will use the 20px grid and smaller ic
 ```tsx
 // string literals are supported through IconName union type
 <Icon iconName="cross" />
-<Icon iconName="pt-icon-globe" iconSize={20} />
-<Icon iconName="graph" iconSize={40} intent={Intent.PRIMARY} />
-
-// can also use IconClasses string enum and Icon.SIZE_* constants
-import { IconClasses } from "@blueprintjs/core";
-<Icon iconName={IconClasses.ALIGN_LEFT} iconSize={Icon.SIZE_LARGE} />
+<Icon iconName="globe" iconSize={20} />
+<Icon iconName="graph" iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} />
 
 // can pass all valid HTML props
 <Icon iconName="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys}>
