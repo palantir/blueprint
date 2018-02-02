@@ -24,7 +24,11 @@ describe("<Icon>", () => {
 
     it("renders icon name", () => assertIcon(<Icon icon="calendar" />, "calendar"));
 
-    it("supports prefixed icon name", () => assertIcon(<Icon icon={IconClasses.AIRPLANE} />, "airplane"));
+    it("prefixed icon renders nothing", () => {
+        // @ts-ignore invalid icon
+        const icon = shallow(<Icon icon={IconClasses.AIRPLANE} />);
+        assert.isTrue(icon.isEmptyRender());
+    });
 
     it("passes through icon element unchanged", () => {
         // this is supported to simplify usage of this component in other Blueprint components

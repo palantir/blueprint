@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSvgPaths16, IconSvgPaths20, LegacyIconName } from "@blueprintjs/icons";
+import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
 
 export { IconName };
@@ -33,7 +33,7 @@ export interface IIconProps extends IIntentProps, IProps {
      *   This type is supported to simplify usage of this component in other Blueprint components.
      *   As a consumer, you should never use `<Icon icon={<element />}` directly; simply render `<element />` instead.
      */
-    icon: LegacyIconName | JSX.Element | false | null | undefined;
+    icon: IconName | JSX.Element | false | null | undefined;
 
     /**
      * Size of the icon, in pixels.
@@ -60,23 +60,27 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
         } else if (typeof icon !== "string") {
             return icon;
         }
-        const normalizedIcon = icon.replace("pt-icon-", "") as IconName;
 
         // choose which pixel grid is most appropriate for given icon size
         const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
+        const paths = this.renderSvgPaths(pixelGridSize, icon);
+        if (paths == null) {
+            return null;
+        }
+
         const classes = classNames(Classes.ICON, Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
         return (
             <svg
                 {...svgProps}
                 className={classes}
-                data-icon={normalizedIcon}
+                data-icon={icon}
                 width={iconSize}
                 height={iconSize}
                 viewBox={viewBox}
             >
-                <title>{normalizedIcon}</title>
-                {this.renderSvgPaths(pixelGridSize, normalizedIcon)}
+                <title>{icon}</title>
+                {paths}
             </svg>
         );
     }
