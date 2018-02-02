@@ -6,3 +6,14 @@
 
 export * from "./common";
 export * from "./components";
+
+// re-exports for 0.15.x provided as a migration path. these will be removed in 0.16.x
+import { Popover, Tooltip } from "@blueprintjs/core";
+export const Popover2 = Popover;
+export const Tooltip2 = Tooltip;
+
+import { Omnibar } from "@blueprintjs/select";
+export const Omnibox = Omnibar;
+export * from "@blueprintjs/select";
+
+export * from "@blueprintjs/timezone";
