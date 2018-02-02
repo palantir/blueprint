@@ -17,10 +17,8 @@ import {
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
-import { IColumnInteractionBarContextTypes } from "../../lib/esm/common/context";
 import * as Classes from "../common/classes";
 import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "../common/context";
-import * as Errors from "../common/errors";
 import { LoadableContent } from "../common/loadableContent";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
@@ -137,15 +135,6 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
         );
     }
 
-    protected validateProps(nextProps: IColumnHeaderCellProps) {
-        if (nextProps.menu != null) {
-            // throw this warning from the publicly exported, higher-order *HeaderCell components
-            // rather than HeaderCell, so consumers know exactly which components are receiving the
-            // offending prop
-            console.warn(Errors.COLUMN_HEADER_CELL_MENU_DEPRECATED);
-        }
-    }
-
     private renderName() {
         const { index, loading, name, nameRenderer, reorderHandle } = this.props;
 
@@ -191,9 +180,9 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
     }
 
     private maybeRenderDropdownMenu() {
-        const { index, menu, menuIconName, menuRenderer } = this.props;
+        const { index, menuIconName, menuRenderer } = this.props;
 
-        if (menuRenderer == null && menu == null) {
+        if (!CoreUtils.isFunction(menuRenderer)) {
             return undefined;
         }
 
@@ -201,14 +190,11 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
         });
 
-        // prefer menuRenderer if it's defined
-        const content = CoreUtils.isFunction(menuRenderer) ? menuRenderer(index) : menu;
-
         return (
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
                 <Popover
-                    content={content}
+                    content={menuRenderer(index)}
                     position={Position.BOTTOM}
                     className={Classes.TABLE_TH_MENU}
                     modifiers={{ preventOverflow: { boundariesElement: "window" } }}
