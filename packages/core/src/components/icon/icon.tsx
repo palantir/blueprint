@@ -47,23 +47,27 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
             return null;
         }
         const { className, iconName, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
-        const normalizedIconName = iconName.replace("pt-icon-", "") as IconName;
 
         // choose which pixel grid is most appropriate for given icon size
         const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
+        const paths = this.renderSvgPaths(pixelGridSize, iconName);
+        if (paths == null) {
+            return null;
+        }
+
         const classes = classNames(Classes.ICON, Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
         return (
             <svg
                 {...svgProps}
                 className={classes}
-                data-icon={normalizedIconName}
+                data-icon={iconName}
                 width={iconSize}
                 height={iconSize}
                 viewBox={viewBox}
             >
-                <title>{normalizedIconName}</title>
-                {this.renderSvgPaths(pixelGridSize, normalizedIconName)}
+                <title>{iconName}</title>
+                {paths}
             </svg>
         );
     }

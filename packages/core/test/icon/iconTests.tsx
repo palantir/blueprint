@@ -8,7 +8,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
+import { IconClasses, IconName } from "@blueprintjs/icons";
 
 import { Classes, Icon, IIconProps, Intent } from "../../src/index";
 
@@ -24,8 +24,11 @@ describe("<Icon>", () => {
 
     it("renders iconName class", () => assertIcon(<Icon iconName="calendar" />, "calendar"));
 
-    // uncomment for compiler error
-    // it("does not support prefixed iconName", () => assertIcon(<Icon iconName="pt-icon-airplane" />, "airplane"));
+    it("prefixed iconName renders nothing", () => {
+        // @ts-ignore invalid iconName
+        const icon = shallow(<Icon iconName={IconClasses.AIRPLANE} />);
+        assert.isTrue(icon.isEmptyRender());
+    });
 
     it("iconName=undefined renders nothing", () => {
         const icon = shallow(<Icon iconName={undefined} />);
