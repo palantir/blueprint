@@ -36,9 +36,9 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
         const style: React.CSSProperties = { flexGrow: this.state.fill ? 1 : undefined };
         return (
             <ButtonGroup style={style} {...this.state}>
-                <Button iconName="database">Queries</Button>
-                <Button iconName="function">Functions</Button>
-                <AnchorButton rightIconName="caret-down">Options</AnchorButton>
+                <Button icon="database">Queries</Button>
+                <Button icon="function">Functions</Button>
+                <AnchorButton rightIcon="caret-down">Options</AnchorButton>
             </ButtonGroup>
         );
     }

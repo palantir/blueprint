@@ -75,7 +75,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 tabIndex={disabled ? undefined : 0}
                 target={this.props.target}
             >
-                <Icon iconName={this.props.iconName} />
+                <Icon icon={this.props.icon} />
                 {label && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
                 {this.props.text}
             </a>

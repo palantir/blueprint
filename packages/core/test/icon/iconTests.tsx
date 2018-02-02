@@ -8,26 +8,27 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { IconClasses, IconName } from "@blueprintjs/icons";
+import { IconName } from "@blueprintjs/icons";
 
 import { Classes, Icon, IIconProps, Intent } from "../../src/index";
 
 describe("<Icon>", () => {
     it("iconSize=16 renders standard size", () =>
-        assertIconSize(<Icon iconName="graph" iconSize={Icon.SIZE_STANDARD} />, Icon.SIZE_STANDARD));
+        assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_STANDARD} />, Icon.SIZE_STANDARD));
 
     it("iconSize=20 renders large size", () =>
-        assertIconSize(<Icon iconName="graph" iconSize={Icon.SIZE_LARGE} />, Icon.SIZE_LARGE));
+        assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_LARGE} />, Icon.SIZE_LARGE));
 
     it("renders intent class", () =>
-        assert.isTrue(shallow(<Icon iconName="add" intent={Intent.DANGER} />).hasClass(Classes.INTENT_DANGER)));
+        assert.isTrue(shallow(<Icon icon="add" intent={Intent.DANGER} />).hasClass(Classes.INTENT_DANGER)));
 
-    it("renders iconName class", () => assertIcon(<Icon iconName="calendar" />, "calendar"));
+    it("renders iconName class", () => assertIcon(<Icon icon="calendar" />, "calendar"));
 
-    it("supports prefixed iconName", () => assertIcon(<Icon iconName={IconClasses.AIRPLANE} />, "airplane"));
+    // uncomment for compiler error
+    // it("does not support prefixed iconName", () => assertIcon(<Icon icon={IconClasses.AIRPLANE} />, "airplane"));
 
-    it("iconName=undefined renders nothing", () => {
-        const icon = shallow(<Icon iconName={undefined} />);
+    it("icon=undefined renders nothing", () => {
+        const icon = shallow(<Icon icon={undefined} />);
         assert.isTrue(icon.isEmptyRender());
     });
 

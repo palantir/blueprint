@@ -44,12 +44,12 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
                 dropdownTarget={<span className={Classes.BREADCRUMBS_COLLAPSED} />}
                 visibleItemRenderer={this.renderBreadcrumb}
             >
-                <MenuItem iconName="folder-close" text="All files" href="#" />
-                <MenuItem iconName="folder-close" text="Users" href="#" />
-                <MenuItem iconName="folder-close" text="Jane Person" href="#" />
-                <MenuItem iconName="folder-close" text="My documents" href="#" />
-                <MenuItem iconName="folder-close" text="Classy dayjob" href="#" />
-                <MenuItem iconName="document" text="How to crush it" />
+                <MenuItem icon="folder-close" text="All files" href="#" />
+                <MenuItem icon="folder-close" text="Users" href="#" />
+                <MenuItem icon="folder-close" text="Jane Person" href="#" />
+                <MenuItem icon="folder-close" text="My documents" href="#" />
+                <MenuItem icon="folder-close" text="Classy dayjob" href="#" />
+                <MenuItem icon="document" text="How to crush it" />
             </CollapsibleList>
         );
     }

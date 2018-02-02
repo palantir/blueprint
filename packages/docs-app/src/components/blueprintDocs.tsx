@@ -85,7 +85,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         return (
             <Popover content={menu} position={Position.BOTTOM} key="_versions">
                 <button className="docs-version-selector pt-text-muted">
-                    v{currentRelease} <Icon iconName="caret-down" />
+                    v{currentRelease} <Icon icon="caret-down" />
                 </button>
             </Popover>
         );

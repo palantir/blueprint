@@ -13,14 +13,14 @@ export class DropdownMenuExample extends BaseExample<{}> {
     protected renderExample() {
         const compassMenu = (
             <Menu>
-                <MenuItem iconName="graph" text="Graph" />
-                <MenuItem iconName="map" text="Map" />
-                <MenuItem iconName="th" text="Table" shouldDismissPopover={false} />
-                <MenuItem iconName="zoom-to-fit" text="Nucleus" disabled={true} />
+                <MenuItem icon="graph" text="Graph" />
+                <MenuItem icon="map" text="Map" />
+                <MenuItem icon="th" text="Table" shouldDismissPopover={false} />
+                <MenuItem icon="zoom-to-fit" text="Nucleus" disabled={true} />
                 <MenuDivider />
-                <MenuItem iconName="cog" text="Settings...">
-                    <MenuItem iconName="add" text="Add new application" disabled={true} />
-                    <MenuItem iconName="remove" text="Remove application" />
+                <MenuItem icon="cog" text="Settings...">
+                    <MenuItem icon="add" text="Add new application" disabled={true} />
+                    <MenuItem icon="remove" text="Remove application" />
                 </MenuItem>
             </Menu>
         );

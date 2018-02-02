@@ -61,7 +61,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                         className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
                         disabled={this.state.disabled}
                         active={this.state.active}
-                        iconName="refresh"
+                        icon="refresh"
                         intent={this.state.intent}
                         loading={this.state.loading}
                         onClick={this.beginWiggling}
@@ -77,10 +77,10 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                         disabled={this.state.disabled}
                         active={this.state.active}
                         href="./#core/components/button.javascript-api"
-                        iconName="duplicate"
+                        icon="duplicate"
                         intent={this.state.intent}
                         loading={this.state.loading}
-                        rightIconName="share"
+                        rightIcon="share"
                         target="_blank"
                         text="Duplicate this page"
                     />

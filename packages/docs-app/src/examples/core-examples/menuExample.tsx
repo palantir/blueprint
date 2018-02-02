@@ -14,41 +14,41 @@ export class MenuExample extends BaseExample<{}> {
         return (
             <div>
                 <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
-                    <MenuItem iconName="new-text-box" text="New text box" />
-                    <MenuItem iconName="new-object" text="New object" />
-                    <MenuItem iconName="new-link" text="New link" />
+                    <MenuItem icon="new-text-box" text="New text box" />
+                    <MenuItem icon="new-object" text="New object" />
+                    <MenuItem icon="new-link" text="New link" />
                     <MenuDivider />
-                    <MenuItem iconName="cog" label={<Icon iconName="share" />} text="Settings..." />
+                    <MenuItem icon="cog" label={<Icon icon="share" />} text="Settings..." />
                 </Menu>
                 <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
                     <MenuDivider title="Edit" />
-                    <MenuItem iconName="cut" text="Cut" label="⌘X" />
-                    <MenuItem iconName="duplicate" text="Copy" label="⌘C" />
-                    <MenuItem iconName="clipboard" text="Paste" label="⌘V" disabled={true} />
+                    <MenuItem icon="cut" text="Cut" label="⌘X" />
+                    <MenuItem icon="duplicate" text="Copy" label="⌘C" />
+                    <MenuItem icon="clipboard" text="Paste" label="⌘V" disabled={true} />
                     <MenuDivider title="Text" />
-                    <MenuItem disabled={true} iconName="align-left" text="Alignment">
-                        <MenuItem iconName="align-left" text="Left" />
-                        <MenuItem iconName="align-center" text="Center" />
-                        <MenuItem iconName="align-right" text="Right" />
-                        <MenuItem iconName="align-justify" text="Justify" />
+                    <MenuItem disabled={true} icon="align-left" text="Alignment">
+                        <MenuItem icon="align-left" text="Left" />
+                        <MenuItem icon="align-center" text="Center" />
+                        <MenuItem icon="align-right" text="Right" />
+                        <MenuItem icon="align-justify" text="Justify" />
                     </MenuItem>
-                    <MenuItem iconName="style" text="Style">
-                        <MenuItem iconName="bold" text="Bold" />
-                        <MenuItem iconName="italic" text="Italic" />
-                        <MenuItem iconName="underline" text="Underline" />
+                    <MenuItem icon="style" text="Style">
+                        <MenuItem icon="bold" text="Bold" />
+                        <MenuItem icon="italic" text="Italic" />
+                        <MenuItem icon="underline" text="Underline" />
                     </MenuItem>
-                    <MenuItem iconName="asterisk" text="Miscellaneous">
-                        <MenuItem iconName="badge" text="Badge" />
-                        <MenuItem iconName="book" text="Book" />
-                        <MenuItem iconName="more" text="More">
-                            <MenuItem iconName="briefcase" text="Briefcase" />
-                            <MenuItem iconName="calculator" text="Calculator" />
-                            <MenuItem iconName="dollar" text="Dollar" />
-                            <MenuItem iconName="dot" text="Shapes">
-                                <MenuItem iconName="full-circle" text="Full circle" />
-                                <MenuItem iconName="heart" text="Heart" />
-                                <MenuItem iconName="ring" text="Ring" />
-                                <MenuItem iconName="square" text="Square" />
+                    <MenuItem icon="asterisk" text="Miscellaneous">
+                        <MenuItem icon="badge" text="Badge" />
+                        <MenuItem icon="book" text="Book" />
+                        <MenuItem icon="more" text="More">
+                            <MenuItem icon="briefcase" text="Briefcase" />
+                            <MenuItem icon="calculator" text="Calculator" />
+                            <MenuItem icon="dollar" text="Dollar" />
+                            <MenuItem icon="dot" text="Shapes">
+                                <MenuItem icon="full-circle" text="Full circle" />
+                                <MenuItem icon="heart" text="Heart" />
+                                <MenuItem icon="ring" text="Ring" />
+                                <MenuItem icon="square" text="Square" />
                             </MenuItem>
                         </MenuItem>
                     </MenuItem>

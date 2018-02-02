@@ -78,7 +78,7 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
         const position = vertical ? Position.RIGHT_TOP : Position.BOTTOM_LEFT;
         return (
             <Popover content={<FileMenu />} position={position}>
-                <Button intent={intent} rightIconName={rightIconName} iconName={iconName} text={text} />
+                <Button intent={intent} rightIcon={rightIconName} icon={iconName} text={text} />
             </Popover>
         );
     }

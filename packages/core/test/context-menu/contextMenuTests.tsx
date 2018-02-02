@@ -14,9 +14,9 @@ import { spy } from "sinon";
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuItem } from "../../src/index";
 
 const MENU_ITEMS = [
-    <MenuItem key="left" iconName="align-left" text="Align Left" />,
-    <MenuItem key="center" iconName="align-center" text="Align Center" />,
-    <MenuItem key="right" iconName="align-right" text="Align Right" />,
+    <MenuItem key="left" icon="align-left" text="Align Left" />,
+    <MenuItem key="center" icon="align-center" text="Align Center" />,
+    <MenuItem key="right" icon="align-right" text="Align Right" />,
 ];
 const MENU = <Menu>{MENU_ITEMS}</Menu>;
 

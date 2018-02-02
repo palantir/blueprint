@@ -37,7 +37,7 @@ describe("<Alert>", () => {
 
     it("renders the icon correctly", () => {
         const wrapper = shallow(
-            <Alert iconName="warning-sign" isOpen={true} confirmButtonText="Delete" onConfirm={NOOP}>
+            <Alert icon="warning-sign" isOpen={true} confirmButtonText="Delete" onConfirm={NOOP}>
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
@@ -54,7 +54,7 @@ describe("<Alert>", () => {
             onConfirm = spy();
             wrapper = shallow(
                 <Alert
-                    iconName="warning-sign"
+                    icon="warning-sign"
                     intent={Intent.PRIMARY}
                     isOpen={true}
                     confirmButtonText="Delete"
@@ -89,7 +89,7 @@ describe("<Alert>", () => {
             onCancel = spy();
             wrapper = shallow(
                 <Alert
-                    iconName="warning-sign"
+                    icon="warning-sign"
                     intent={Intent.PRIMARY}
                     isOpen={true}
                     cancelButtonText="Cancel"

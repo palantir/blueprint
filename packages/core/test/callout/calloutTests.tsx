@@ -19,7 +19,7 @@ describe("<Callout>", () => {
     });
 
     it("supports icon", () => {
-        const wrapper = shallow(<Callout iconName="graph" />);
+        const wrapper = shallow(<Callout icon="graph" />);
         assert.isTrue(wrapper.find(Icon).exists());
     });
 
@@ -33,8 +33,8 @@ describe("<Callout>", () => {
         assert.isTrue(wrapper.find(Icon).exists());
     });
 
-    it("iconName=null removes intent icon", () => {
-        const wrapper = shallow(<Callout iconName={null} intent={Intent.PRIMARY} />);
+    it("icon=null removes intent icon", () => {
+        const wrapper = shallow(<Callout icon={null} intent={Intent.PRIMARY} />);
         assert.isFalse(wrapper.find(Icon).exists());
     });
 

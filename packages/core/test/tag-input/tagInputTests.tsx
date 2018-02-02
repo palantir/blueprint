@@ -39,7 +39,7 @@ describe("<TagInput>", () => {
     });
 
     it("leftIconName renders an icon as first child", () => {
-        const wrapper = mount(<TagInput leftIconName="add" values={VALUES} />);
+        const wrapper = mount(<TagInput leftIcon="add" values={VALUES} />);
 
         // use a helper since Enzyme 3 (1) includes React wrappers in .childAt()
         // calls, making them convoluted, and (2) does not preserve referential
