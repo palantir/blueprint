@@ -8,7 +8,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
+import { IconClasses, IconName } from "@blueprintjs/icons";
 
 import { Classes, Icon, IIconProps, Intent } from "../../src/index";
 
@@ -22,10 +22,19 @@ describe("<Icon>", () => {
     it("renders intent class", () =>
         assert.isTrue(shallow(<Icon icon="add" intent={Intent.DANGER} />).hasClass(Classes.INTENT_DANGER)));
 
-    it("renders iconName class", () => assertIcon(<Icon icon="calendar" />, "calendar"));
+    it("renders icon name", () => assertIcon(<Icon icon="calendar" />, "calendar"));
 
-    // uncomment for compiler error
-    // it("does not support prefixed iconName", () => assertIcon(<Icon icon={IconClasses.AIRPLANE} />, "airplane"));
+    it("supports prefixed icon name", () => assertIcon(<Icon icon={IconClasses.AIRPLANE} />, "airplane"));
+
+    it("passes through icon element unchanged", () => {
+        const onClick = () => true;
+        assert.strictEqual(
+            shallow(<Icon icon={<article onClick={onClick} />} />)
+                .find("article")
+                .prop("onClick"),
+            onClick,
+        );
+    });
 
     it("icon=undefined renders nothing", () => {
         const icon = shallow(<Icon icon={undefined} />);
