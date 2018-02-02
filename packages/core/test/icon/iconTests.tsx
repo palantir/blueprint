@@ -24,7 +24,11 @@ describe("<Icon>", () => {
 
     it("renders iconName class", () => assertIcon(<Icon iconName="calendar" />, "calendar"));
 
-    it("supports prefixed iconName", () => assertIcon(<Icon iconName={IconClasses.AIRPLANE} />, "airplane"));
+    it("prefixed iconName renders nothing", () => {
+        // @ts-ignore invalid iconName
+        const icon = shallow(<Icon iconName={IconClasses.AIRPLANE} />);
+        assert.isTrue(icon.isEmptyRender());
+    });
 
     it("iconName=undefined renders nothing", () => {
         const icon = shallow(<Icon iconName={undefined} />);
