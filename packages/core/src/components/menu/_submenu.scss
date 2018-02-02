@@ -14,24 +14,6 @@
       // override very specific selector for popovers in button groups
       // stylelint-disable-next-line declaration-no-important
       float: none !important;
-
-      > .pt-menu-item {
-        padding-right: $pt-icon-size-standard + $pt-grid-size;
-
-        &::after {
-          @include pt-icon();
-          position: absolute;
-          right: $half-grid-size;
-          content: $pt-icon-caret-right;
-
-          // need several layers of selectors to make sure we're targeting only
-          // the top level of menu items in the current submenu.
-          // stylelint-disable-next-line
-          .pt-large & {
-            line-height: $pt-icon-size-large;
-          }
-        }
-      }
     }
 
     > .pt-popover-open > .pt-menu-item {

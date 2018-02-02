@@ -78,6 +78,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 <Icon iconName={this.props.iconName} />
                 <span className={Classes.FILL}>{this.props.text}</span>
                 {label && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
+                {hasSubmenu && <Icon iconName="caret-right" />}
             </a>
         );
 
