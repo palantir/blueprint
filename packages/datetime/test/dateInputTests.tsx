@@ -122,7 +122,7 @@ describe("<DateInput>", () => {
         const wrapper = mount(
             <DateInput
                 disabled={false}
-                inputProps={{ disabled: true, inputRef, leftIconName: "star", onFocus, required: true, value: "fail" }}
+                inputProps={{ disabled: true, inputRef, leftIcon: "star", onFocus, required: true, value: "fail" }}
             />,
         );
         wrapper.find("input").simulate("focus");
@@ -130,7 +130,7 @@ describe("<DateInput>", () => {
         const input = wrapper.find(InputGroup);
         assert.isFalse(input.prop("disabled"), "disabled comes from DateInput props");
         assert.notStrictEqual(input.prop("value"), "fail", "value cannot be changed");
-        assert.strictEqual(input.prop("leftIconName"), "star");
+        assert.strictEqual(input.prop("leftIcon"), "star");
         assert.isTrue(input.prop("required"));
         assert.isTrue(inputRef.calledOnce, "inputRef not invoked");
         assert.isTrue(onFocus.calledOnce, "onFocus not invoked");

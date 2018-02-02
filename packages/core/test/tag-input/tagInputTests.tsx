@@ -38,7 +38,7 @@ describe("<TagInput>", () => {
         assert.lengthOf(wrapper.find("em"), 1);
     });
 
-    it("leftIconName renders an icon as first child", () => {
+    it("leftIcon renders an icon as first child", () => {
         const wrapper = mount(<TagInput leftIcon="add" values={VALUES} />);
 
         // use a helper since Enzyme 3 (1) includes React wrappers in .childAt()
