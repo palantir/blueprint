@@ -26,6 +26,13 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      */
     label?: string | JSX.Element;
 
+    /**
+     * Whether the text should be allowed to wrap to multiple lines.
+     * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
+     * @default false
+     */
+    multiline?: boolean;
+
     /** Props to spread to `Popover`. Note that `content` and `minimal` cannot be changed. */
     popoverProps?: Partial<IPopoverProps>;
 
@@ -45,6 +52,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
 export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
     public static defaultProps: IMenuItemProps = {
         disabled: false,
+        multiline: false,
         popoverProps: {},
         shouldDismissPopover: true,
         text: "",
@@ -66,6 +74,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
             },
             this.props.className,
         );
+        const textClasses = classNames(Classes.FILL, { [Classes.TEXT_OVERFLOW_ELLIPSIS]: !this.props.multiline });
 
         const target = (
             <a
@@ -76,7 +85,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 target={this.props.target}
             >
                 <Icon iconName={this.props.iconName} />
-                <span className={Classes.FILL}>{this.props.text}</span>
+                <span className={textClasses}>{this.props.text}</span>
                 {label && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
                 {hasSubmenu && <Icon iconName="caret-right" />}
             </a>
