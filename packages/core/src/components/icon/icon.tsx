@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSvgPaths16, IconSvgPaths20, LegacyIconName } from "@blueprintjs/icons";
+import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
 
 export { IconName };
@@ -22,7 +22,7 @@ export interface IIconProps extends IIntentProps, IProps {
      * Name of the icon (with or without `"pt-icon-"` prefix).
      * If omitted or `undefined`, this component will render nothing.
      */
-    iconName?: LegacyIconName;
+    iconName?: IconName;
 
     /**
      * Size of the icon, in pixels.
