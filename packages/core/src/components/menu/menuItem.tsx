@@ -76,8 +76,8 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 target={this.props.target}
             >
                 <Icon iconName={this.props.iconName} />
+                <span className={Classes.FILL}>{this.props.text}</span>
                 {label && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
-                {this.props.text}
             </a>
         );
 

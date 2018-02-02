@@ -55,7 +55,6 @@ Styleguide pt-menu
   &::before {
     // support pt-icon-* classes directly on this element
     @include pt-icon();
-    float: left;
     margin-right: $menu-item-padding;
   }
 
@@ -66,10 +65,6 @@ Styleguide pt-menu
 
   .pt-icon {
     color: $pt-icon-color;
-
-    &:first-child {
-      margin-right: $menu-item-padding;
-    }
   }
 
   .pt-menu-item-label {
@@ -126,11 +121,6 @@ button.pt-menu-item {
   width: 100%;
   text-align: left;
   font-family: inherit;
-}
-
-.pt-menu-item-label {
-  float: right;
-  margin-left: $menu-item-padding;
 }
 
 /*
