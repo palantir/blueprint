@@ -8,7 +8,6 @@ import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as Cor
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IColumnInteractionBarContextTypes } from "../lib/esm/common/context";
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
