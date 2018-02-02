@@ -27,13 +27,12 @@ describe("<Icon>", () => {
     it("supports prefixed icon name", () => assertIcon(<Icon icon={IconClasses.AIRPLANE} />, "airplane"));
 
     it("passes through icon element unchanged", () => {
+        // this is supported to simplify usage of this component in other Blueprint components
+        // which accept `icon?: IconName | JSX.Element`.
         const onClick = () => true;
-        assert.strictEqual(
-            shallow(<Icon icon={<article onClick={onClick} />} />)
-                .find("article")
-                .prop("onClick"),
-            onClick,
-        );
+        const icon = shallow(<Icon icon={<article onClick={onClick} />} />);
+        assert.isTrue(icon.is("article"));
+        assert.strictEqual(icon.find("article").prop("onClick"), onClick);
     });
 
     it("icon=undefined renders nothing", () => {

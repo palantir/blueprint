@@ -23,11 +23,15 @@ export interface IIconProps extends IIntentProps, IProps {
 
     /**
      * Name of a Blueprint UI icon, or an icon element, to render.
+     * This prop is required because it determines the content of the component, but it can
+     * be explicitly set to falsy values to render nothing.
      *
-     * - If given a string (`IconName` is a TypeScript union of all defined icon names),
-     * that icon will be rendered as an `<svg>` with `<path>` tags.
+     * - If `null` or `undefined` or `false`, this component will render nothing.
+     * - If given an `IconName` (a string literal union of all icon names),
+     *   that icon will be rendered as an `<svg>` with `<path>` tags.
      * - If given a `JSX.Element`, that element will be rendered and _all other props on this component are ignored._
-     * - If omitted or falsy, this component will render nothing.
+     *   This type is supported to simplify usage of this component in other Blueprint components.
+     *   As a consumer, you should never use `<Icon icon={<element />}` directly; simply render `<element />` instead.
      */
     icon: LegacyIconName | JSX.Element | false | null | undefined;
 
