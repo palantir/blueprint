@@ -300,8 +300,8 @@ describe("scrollUtils", () => {
             containerElement = undefined;
         });
 
-        // make the content size much bigger or much smaller than the container
-        // to ensure Phantom shows/hides scrollbars correctly.
+        // NOTE: these tests will fail locally on OS X if you have your scrollbars set to "When scrolling"
+        // in System Preferences > General
 
         it("measures correctly when neither scrollbar is showing", () => {
             const element = mountElementsWithContentSize(PARENT_WIDTH / 2, PARENT_HEIGHT / 2);

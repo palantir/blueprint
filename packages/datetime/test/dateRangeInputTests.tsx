@@ -83,14 +83,14 @@ describe("<DateRangeInput>", () => {
         expect(component.find(InputGroup).length).to.equal(2);
     });
 
-    it("passes custom classNames to popover target", () => {
+    it("passes custom classNames to popover wrapper", () => {
         const CLASS_1 = "foo";
         const CLASS_2 = "bar";
 
         const wrapper = mount(<DateRangeInput className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
         wrapper.setState({ isOpen: true });
 
-        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`);
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
         expect(popoverTarget.hasClass(CLASS_1)).to.be.true;
         expect(popoverTarget.hasClass(CLASS_2)).to.be.true;
     });
@@ -295,8 +295,7 @@ describe("<DateRangeInput>", () => {
             expect(startInputNode.selectionStart).to.equal(startInputNode.selectionEnd);
         });
 
-        // selectionStart/End works in Chrome but not Phantom. disabling to not fail builds.
-        it.skip("if true, selects all text on focus", () => {
+        it("if true, selects all text on focus", () => {
             const attachTo = document.createElement("div");
             const { root } = wrap(
                 <DateRangeInput defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,

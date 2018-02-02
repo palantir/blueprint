@@ -3,7 +3,7 @@
 
 @import "font-face";
 
-$icon-font-path: "../resources/icons" !default;
+$icon-font-path: "../../resources/icons" !default;
 $icon-font-formats: eot woff ttf !default;
 
 @include font-face("Icons16", "#{$icon-font-path}/icons-16", $file-formats: $icon-font-formats);

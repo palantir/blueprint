@@ -6,63 +6,15 @@
 
 import * as React from "react";
 
-import { Classes, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
-import { BaseExample, IBaseExampleProps } from "@blueprintjs/docs";
+import { Classes, Icon, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
+import { BaseExample } from "@blueprintjs/docs-theme";
 
 export interface ITreeExampleState {
     nodes: ITreeNode[];
 }
 
 export class TreeExample extends BaseExample<ITreeExampleState> {
-    public constructor(props: IBaseExampleProps) {
-        super(props);
-        const tooltipLabel = (
-            <Tooltip content="An eye!">
-                <span className="pt-icon-standard pt-icon-eye-open" />
-            </Tooltip>
-        );
-        const longLabel = "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.";
-        /* tslint:disable:object-literal-sort-keys so childNodes can come last */
-        this.state = ({
-            nodes: [
-                {
-                    hasCaret: true,
-                    iconName: "folder-close",
-                    label: "Folder 0",
-                },
-                {
-                    iconName: "folder-close",
-                    isExpanded: true,
-                    label: <Tooltip content="I'm a folder <3">Folder 1</Tooltip>,
-                    childNodes: [
-                        { iconName: "document", label: "Item 0", secondaryLabel: tooltipLabel },
-                        { iconName: "pt-icon-tag", label: longLabel },
-                        {
-                            hasCaret: true,
-                            iconName: "pt-icon-folder-close",
-                            label: <Tooltip content="foo">Folder 2</Tooltip>,
-                            childNodes: [
-                                { label: "No-Icon Item" },
-                                { iconName: "pt-icon-tag", label: "Item 1" },
-                                {
-                                    hasCaret: true,
-                                    iconName: "pt-icon-folder-close",
-                                    label: "Folder 3",
-                                    childNodes: [
-                                        { iconName: "document", label: "Item 0" },
-                                        { iconName: "pt-icon-tag", label: "Item 1" },
-                                    ],
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ],
-        } as any) as ITreeExampleState;
-        /* tslint:enable:object-literal-sort-keys */
-        let i = 0;
-        this.forEachNode(this.state.nodes, n => (n.id = i++));
-    }
+    public state: ITreeExampleState = { nodes: INITIAL_STATE };
 
     // override @PureRender because nodes are not a primitive type and therefore aren't included in
     // shallow prop comparison
@@ -112,3 +64,57 @@ export class TreeExample extends BaseExample<ITreeExampleState> {
         }
     }
 }
+
+/* tslint:disable:object-literal-sort-keys so childNodes can come last */
+const INITIAL_STATE: ITreeNode[] = [
+    {
+        id: 0,
+        hasCaret: true,
+        iconName: "folder-close",
+        label: "Folder 0",
+    },
+    {
+        id: 1,
+        iconName: "folder-close",
+        isExpanded: true,
+        label: <Tooltip content="I'm a folder <3">Folder 1</Tooltip>,
+        childNodes: [
+            {
+                id: 2,
+                iconName: "document",
+                label: "Item 0",
+                secondaryLabel: (
+                    <Tooltip content="An eye!">
+                        <Icon iconName="eye-open" />
+                    </Tooltip>
+                ),
+            },
+            {
+                id: 3,
+                iconName: "tag",
+                label: "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.",
+            },
+            {
+                id: 4,
+                hasCaret: true,
+                iconName: "folder-close",
+                label: <Tooltip content="foo">Folder 2</Tooltip>,
+                childNodes: [
+                    { id: 5, label: "No-Icon Item" },
+                    { id: 6, iconName: "tag", label: "Item 1" },
+                    {
+                        id: 7,
+                        hasCaret: true,
+                        iconName: "folder-close",
+                        label: "Folder 3",
+                        childNodes: [
+                            { id: 8, iconName: "document", label: "Item 0" },
+                            { id: 9, iconName: "tag", label: "Item 1" },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+];
+/* tslint:enable:object-literal-sort-keys */

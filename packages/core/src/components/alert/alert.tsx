@@ -62,14 +62,14 @@ export class Alert extends AbstractPureComponent<IAlertProps, {}> {
         onConfirm: null,
     };
 
-    public static displayName = "Blueprint.Alert";
+    public static displayName = "Blueprint2.Alert";
 
     public render() {
         const { children, className, iconName, intent, isOpen, confirmButtonText, onConfirm, style } = this.props;
         return (
             <Dialog className={classNames(Classes.ALERT, className)} isOpen={isOpen} style={style}>
                 <div className={Classes.ALERT_BODY}>
-                    <Icon iconName={iconName} iconSize="inherit" intent={Intent.DANGER} />
+                    <Icon iconName={iconName} iconSize={40} intent={intent} />
                     <div className={Classes.ALERT_CONTENTS}>{children}</div>
                 </div>
                 <div className={Classes.ALERT_FOOTER}>

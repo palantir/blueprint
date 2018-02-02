@@ -5,6 +5,12 @@
         "experimentalDecorators": true,
         "importHelpers": true,
         "jsx": "react",
+        "lib": [
+          "dom",
+          "dom.iterable",
+          "es5",
+          "es2015.iterable"
+        ],
         "module": "es2015",
         "moduleResolution": "node",
         "noFallthroughCasesInSwitch": true,

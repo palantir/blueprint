@@ -4,8 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes as CoreClasses, Utils as CoreUtils } from "@blueprintjs/core";
-import { IconClasses } from "@blueprintjs/icons";
+import { Icon, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -191,12 +190,12 @@ export interface IInternalHeaderProps extends IHeaderProps {
     /**
      * A callback that renders a ghost cell for the provided index.
      */
-    renderGhostCell: (index: number, extremaClasses: string[]) => JSX.Element;
+    ghostCellRenderer: (index: number, extremaClasses: string[]) => JSX.Element;
 
     /**
      * A callback that renders a regular header cell at the provided index.
      */
-    renderHeaderCell: (index: number) => JSX.Element;
+    headerCellRenderer: (index: number) => JSX.Element;
 
     /**
      * Converts a range to a region. This should be Regions.column for column headers and
@@ -286,14 +285,14 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
     private renderNewCell = (index: number) => {
         const extremaClasses = this.props.getCellExtremaClasses(index, this.props.indexEnd);
-        const renderer = this.props.isGhostIndex(index) ? this.props.renderGhostCell : this.renderCell;
+        const renderer = this.props.isGhostIndex(index) ? this.props.ghostCellRenderer : this.renderCell;
         return renderer(index, extremaClasses);
     };
 
     private renderCell = (index: number, extremaClasses: string[]) => {
         const { getIndexClass, selectedRegions } = this.props;
 
-        const cell = this.props.renderHeaderCell(index);
+        const cell = this.props.headerCellRenderer(index);
 
         const isLoading = cell.props.loading != null ? cell.props.loading : this.props.loading;
         const isSelected = this.props.isCellSelected(index);
@@ -370,7 +369,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                   index,
                   <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
                       <div className={Classes.TABLE_REORDER_HANDLE}>
-                          <span className={classNames(CoreClasses.ICON_STANDARD, IconClasses.DRAG_HANDLE_VERTICAL)} />
+                          <Icon iconName="drag-handle-vertical" />
                       </div>
                   </div>,
                   false,

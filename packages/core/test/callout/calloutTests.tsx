@@ -8,24 +8,34 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Callout, Classes, Intent } from "../../src/index";
+import { Callout, Classes, Icon, Intent } from "../../src/index";
 
 describe("<Callout>", () => {
     it("supports className", () => {
         const wrapper = shallow(<Callout className="foo" />);
-        assert.isTrue(wrapper.find("h5").isEmpty(), "expected no h5");
+        assert.isFalse(wrapper.find("h5").exists(), "expected no h5");
         assert.isTrue(wrapper.hasClass(Classes.CALLOUT));
         assert.isTrue(wrapper.hasClass("foo"));
     });
 
     it("supports icon", () => {
         const wrapper = shallow(<Callout iconName="graph" />);
-        assert.isTrue(wrapper.hasClass(Classes.iconClass("graph")));
+        assert.isTrue(wrapper.find(Icon).exists());
     });
 
     it("supports intent", () => {
         const wrapper = shallow(<Callout intent={Intent.DANGER} />);
         assert.isTrue(wrapper.hasClass(Classes.INTENT_DANGER));
+    });
+
+    it("intent renders default icon", () => {
+        const wrapper = shallow(<Callout intent={Intent.PRIMARY} />);
+        assert.isTrue(wrapper.find(Icon).exists());
+    });
+
+    it("iconName=null removes intent icon", () => {
+        const wrapper = shallow(<Callout iconName={null} intent={Intent.PRIMARY} />);
+        assert.isFalse(wrapper.find(Icon).exists());
     });
 
     it("renders optional title element", () => {

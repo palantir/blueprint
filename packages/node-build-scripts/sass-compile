@@ -10,6 +10,6 @@ ROOT_NM=../../node_modules
 
 $ROOT_NM/.bin/node-sass-chokidar \
   --importer $ROOT_NM/node-sass-package-importer/dist/cli.js \
-  --output dist/ \
+  --output lib/css/ \
   --source-map true \
   $@

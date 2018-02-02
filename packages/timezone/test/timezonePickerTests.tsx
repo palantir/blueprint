@@ -16,10 +16,10 @@ import {
     IInputGroupProps,
     IInputGroupState,
     InputGroup,
-    IPopover2Props,
+    IPopoverProps,
     IPopoverState,
     MenuItem,
-    Popover2,
+    Popover,
     Position,
 } from "@blueprintjs/core";
 import { IQueryListProps, IQueryListState, ISelectProps, ISelectState, QueryList, Select } from "@blueprintjs/select";
@@ -34,14 +34,14 @@ import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, Time
 type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezonePickerState>;
 type SelectShallowWrapper = ShallowWrapper<ISelectProps<ITimezoneItem>, ISelectState<ITimezoneItem>>;
 type QueryListShallowWrapper = ShallowWrapper<IQueryListProps<ITimezoneItem>, IQueryListState<ITimezoneItem>>;
-type PopoverShallowWrapper = ShallowWrapper<IPopover2Props, IPopoverState>;
+type PopoverShallowWrapper = ShallowWrapper<IPopoverProps, IPopoverState>;
 type InputGroupShallowWrapper = ShallowWrapper<IInputGroupProps, IInputGroupState>;
 
 describe("<TimezonePicker>", () => {
     it("clicking on button target opens popover", () => {
         const timezonePicker = mount(<TimezonePicker popoverProps={getPopoverProps({}, ["isOpen"])} />);
         timezonePicker.find(Button).simulate("click");
-        assert.isTrue(timezonePicker.find(Popover2).prop("isOpen"));
+        assert.isTrue(timezonePicker.find(Popover).prop("isOpen"));
     });
 
     it("if disabled=true, clicking on button target does not open popover", () => {
@@ -49,7 +49,7 @@ describe("<TimezonePicker>", () => {
             <TimezonePicker disabled={true} popoverProps={getPopoverProps({ isOpen: false })} />,
         );
         timezonePicker.find(Button).simulate("click");
-        assert.isFalse(timezonePicker.find(Popover2).prop("isOpen"));
+        assert.isFalse(timezonePicker.find(Popover).prop("isOpen"));
     });
 
     it("if placeholder is non-empty, the filter placeholder text is changed", () => {
@@ -212,15 +212,15 @@ describe("<TimezonePicker>", () => {
     });
 
     it("popover can be controlled with popover props", () => {
-        const popoverProps: IPopover2Props = {
-            inline: true,
+        const popoverProps: IPopoverProps = {
             isOpen: true,
             position: Position.RIGHT,
+            usePortal: false,
         };
         const timezonePicker = shallow(<TimezonePicker popoverProps={popoverProps} />);
         const popover = findPopover(timezonePicker);
         for (const key of Object.keys(popoverProps)) {
-            assert.deepEqual(popover.prop(key), popoverProps[key as keyof IPopover2Props]);
+            assert.deepEqual(popover.prop(key), popoverProps[key as keyof IPopoverProps]);
         }
     });
 
@@ -250,12 +250,12 @@ describe("<TimezonePicker>", () => {
     });
 
     function getPopoverProps(
-        overrides: Partial<IPopover2Props> = {},
-        keysToUnset: Array<keyof IPopover2Props> = [],
-    ): Partial<IPopover2Props> {
-        const popoverProps: Partial<IPopover2Props> = {
-            inline: true,
+        overrides: Partial<IPopoverProps> = {},
+        keysToUnset: Array<keyof IPopoverProps> = [],
+    ): Partial<IPopoverProps> {
+        const popoverProps: Partial<IPopoverProps> = {
             isOpen: true,
+            usePortal: false,
             ...overrides,
         };
 
@@ -279,7 +279,7 @@ describe("<TimezonePicker>", () => {
     function findPopover(timezonePicker: TimezonePickerShallowWrapper): PopoverShallowWrapper {
         return findQueryList(timezonePicker)
             .shallow()
-            .find(Popover2);
+            .find(Popover);
     }
 
     function findInputGroup(timezonePicker: TimezonePickerShallowWrapper): InputGroupShallowWrapper {

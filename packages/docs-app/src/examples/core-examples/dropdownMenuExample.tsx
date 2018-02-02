@@ -6,8 +6,8 @@
 
 import * as React from "react";
 
-import { Menu, MenuDivider, MenuItem, Popover, Position } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { Button, Menu, MenuDivider, MenuItem, Popover, Position } from "@blueprintjs/core";
+import { BaseExample } from "@blueprintjs/docs-theme";
 
 export class DropdownMenuExample extends BaseExample<{}> {
     protected renderExample() {
@@ -26,9 +26,7 @@ export class DropdownMenuExample extends BaseExample<{}> {
         );
         return (
             <Popover content={compassMenu} position={Position.RIGHT_BOTTOM}>
-                <button className="pt-button pt-icon-share" type="button">
-                    Open in...
-                </button>
+                <Button iconName="share" text="Open in..." />
             </Popover>
         );
     }

@@ -24,14 +24,14 @@ describe("<DateInput>", () => {
         assert.doesNotThrow(() => mount(<DateInput value={"1988-08-07 11:01:12" as any} />));
     });
 
-    it("passes custom classNames to popover target", () => {
+    it("passes custom classNames to popover wrapper", () => {
         const CLASS_1 = "foo";
         const CLASS_2 = "bar";
 
         const wrapper = mount(<DateInput className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
         wrapper.setState({ isOpen: true });
 
-        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`);
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
         assert.isTrue(popoverTarget.hasClass(CLASS_1));
         assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
@@ -143,9 +143,9 @@ describe("<DateInput>", () => {
                 popoverProps={{
                     autoFocus: true,
                     content: "fail",
-                    inline: true,
                     popoverWillOpen,
                     position: Position.TOP,
+                    usePortal: false,
                 }}
             />,
         );
@@ -154,8 +154,8 @@ describe("<DateInput>", () => {
         const popover = wrapper.find(Popover);
         assert.strictEqual(popover.prop("autoFocus"), false, "autoFocus cannot be changed");
         assert.notStrictEqual(popover.prop("content"), "fail", "content cannot be changed");
-        assert.strictEqual(popover.prop("inline"), true);
         assert.strictEqual(popover.prop("position"), Position.TOP);
+        assert.strictEqual(popover.prop("usePortal"), false);
         assert.isTrue(popoverWillOpen.calledOnce);
     });
 

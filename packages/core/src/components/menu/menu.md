@@ -84,24 +84,28 @@ The submenu opens to the right of its parent by default, but will adjust and fli
 there is not enough room to the right.
 
 ```jsx
-<MenuItem text="Submenu">
-    <MenuItem text="Child one" />
-    <MenuItem text="Child two" />
-    <MenuItem text="Child three" />
-</MenuItem>
+<Menu>
+    <MenuItem text="Submenu">
+        <MenuItem text="Child one" />
+        <MenuItem text="Child two" />
+        <MenuItem text="Child three" />
+    </MenuItem>
+</Menu>
 ```
 
 Alternatively, you can pass an array of `IMenuItemProps` to the `submenu` prop:
 
 ```jsx
-React.createElement(MenuItem, {
-    submenu: [
-        { text: "Child one" },
-        { text: "Child two" },
-        { text: "Child three" },
-    ],
-    text: "parent",
-});
+React.createElement(Menu, {},
+    React.createElement(MenuItem, {
+        submenu: [
+            { text: "Child one" },
+            { text: "Child two" },
+            { text: "Child three" },
+        ],
+        text: "parent",
+    }),
+);
 ```
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">

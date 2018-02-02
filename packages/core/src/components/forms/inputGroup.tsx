@@ -46,7 +46,7 @@ export interface IInputGroupState {
 }
 
 export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroupProps, IInputGroupState> {
-    public static displayName = "Blueprint.InputGroup";
+    public static displayName = "Blueprint2.InputGroup";
 
     public state: IInputGroupState = {
         rightElementWidth: 30,
@@ -71,7 +71,7 @@ export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroup
 
         return (
             <div className={classes}>
-                <Icon iconName={leftIconName} iconSize="inherit" />
+                <Icon iconName={leftIconName} />
                 <input
                     type="text"
                     {...removeNonHTMLProps(this.props)}

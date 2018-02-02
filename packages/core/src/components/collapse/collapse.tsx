@@ -49,11 +49,11 @@ export interface ICollapseState {
 }
 
 export enum AnimationStates {
-    CLOSED,
-    OPENING,
-    OPEN,
-    CLOSING_START,
-    CLOSING_END,
+    CLOSED = "closed",
+    OPENING = "opening",
+    OPEN = "open",
+    CLOSING_START = "closing-start",
+    CLOSING_END = "closing-end",
 }
 
 /*
@@ -84,7 +84,7 @@ export enum AnimationStates {
  * These are all animated.
  */
 export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseState> {
-    public static displayName = "Blueprint.Collapse";
+    public static displayName = "Blueprint2.Collapse";
 
     public static defaultProps: ICollapseProps = {
         component: "div",

@@ -258,7 +258,7 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // Instance variables
     // ==================
 
-    private quadrantRefs: { [qType: number]: IQuadrantRefs } = {
+    private quadrantRefs: Record<QuadrantType, IQuadrantRefs> = {
         [QuadrantType.MAIN]: {},
         [QuadrantType.TOP]: {},
         [QuadrantType.LEFT]: {},

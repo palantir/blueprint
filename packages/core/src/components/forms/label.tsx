@@ -26,7 +26,7 @@ export interface ILabelProps extends React.AllHTMLAttributes<HTMLLabelElement>, 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class Label extends React.PureComponent<ILabelProps, {}> {
-    public static displayName = "Blueprint.Label";
+    public static displayName = "Blueprint2.Label";
 
     public render() {
         const { children, className, disabled, helperText, text, ...htmlProps } = this.props;

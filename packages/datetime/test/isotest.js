@@ -5,7 +5,7 @@
 
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
-const DateTime = require("../dist");
+const DateTime = require("../lib/cjs");
 
 describe("DateTime isomorphic rendering", () => {
     generateIsomorphicTests(
