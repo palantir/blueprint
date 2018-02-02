@@ -26,7 +26,7 @@ export class DropdownMenuExample extends BaseExample<{}> {
         );
         return (
             <Popover content={compassMenu} position={Position.RIGHT_BOTTOM}>
-                <Button iconName="share" text="Open in..." />
+                <Button icon="share" text="Open in..." />
             </Popover>
         );
     }
