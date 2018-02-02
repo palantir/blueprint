@@ -13,16 +13,23 @@ import { Classes, IIntentProps, IProps } from "../../common";
 export { IconName };
 
 export interface IIconProps extends IIntentProps, IProps {
+    /** This component does not support custom children. Use the `icon` prop. */
+    children?: never;
+
     /**
      * Color of icon. Equivalent to setting CSS `fill` property.
      */
     color?: string;
 
     /**
-     * Name of the icon (with or without `"pt-icon-"` prefix).
-     * If omitted or `undefined`, this component will render nothing.
+     * Name of a Blueprint UI icon, or an icon element, to render.
+     *
+     * - If given a string (`IconName` is a TypeScript union of all defined icon names),
+     * that icon will be rendered as an `<svg>` with `<path>` tags.
+     * - If given a `JSX.Element`, that element will be rendered and _all other props on this component are ignored._
+     * - If omitted or falsy, this component will render nothing.
      */
-    icon?: IconName | JSX.Element;
+    icon: IconName | JSX.Element | false | null | undefined;
 
     /**
      * Size of the icon, in pixels.
@@ -44,7 +51,9 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
 
     public render() {
         const { className, icon, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
-        if (icon == null || typeof icon !== "string") {
+        if (icon == null) {
+            return null;
+        } else if (typeof icon !== "string") {
             return icon;
         }
 
