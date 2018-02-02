@@ -8,11 +8,13 @@ import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as Cor
 import * as classNames from "classnames";
 import * as React from "react";
 
+import { IColumnInteractionBarContextTypes } from "../lib/esm/common/context";
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
+import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "./common/context";
 import { Direction } from "./common/direction";
 import * as Errors from "./common/errors";
 import { Grid, ICellMapper, IColumnIndices, IRowIndices } from "./common/grid";
@@ -102,12 +104,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `true`, adds an interaction bar on top of all column header cells, and
      * moves interaction triggers into it.
-     *
-     * This value defaults to `undefined` so that, by default, it won't override
-     * the `enableColumnInteractionBar` values that you might have provided directly to
-     * each `<ColumnHeaderCell>`.
-     *
-     * @default undefined
+     * @default false
      */
     enableColumnInteractionBar?: boolean;
 
@@ -425,6 +422,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         selectionModes: SelectionModes.ALL,
     };
 
+    public static childContextTypes: React.ValidationMap<
+        IColumnInteractionBarContextTypes
+    > = columnInteractionBarContextTypes;
+
     // these default values for `resizeRowsByApproximateHeight` have been
     // fine-tuned to work well with default Table font styles.
     private static resizeRowsByApproximateHeightDefaults: Record<
@@ -651,6 +652,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     // React lifecycle
     // ===============
+
+    public getChildContext(): IColumnInteractionBarContextTypes {
+        return {
+            enableColumnInteractionBar: this.props.enableColumnInteractionBar,
+        };
+    }
 
     public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
         const propKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
@@ -1264,45 +1271,21 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
-
-        // TODO: `columnHeaderCellRenderer` is really an unclear name. should rename
-        // to `renderColumnHeaderCell` in the future.
-        // (see: https://github.com/palantir/blueprint/issues/1625)
-        const {
-            id,
-            loadingOptions,
-            cellRenderer,
-            columnHeaderCellRenderer: renderColumnHeaderCell,
-            ...spreadableProps
-        } = props;
+        const { id, loadingOptions, cellRenderer, columnHeaderCellRenderer, ...spreadableProps } = props;
 
         const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
 
-        // <Table>'s enableColumnInteractionBar defaults to undefined. this means we
-        // won't override the cell's enableColumnInteractionBar value unless the consumer
-        // explicitly provided an override value to the <Table>.
-        const tableUseInteractionBar = this.props.enableColumnInteractionBar;
-
-        if (renderColumnHeaderCell != null) {
-            const columnHeaderCell = renderColumnHeaderCell(columnIndex);
+        if (columnHeaderCellRenderer != null) {
+            const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
             const columnHeaderCellLoading = columnHeaderCell.props.loading;
 
-            // print a deprecation warning here if needed. we can't do this in
-            // ColumnHeaderCell, because we wouldn't be able to tell if
-            // enableColumnInteractionBar was injected by Table or provided by the user.
-            if (columnHeaderCell.props.enableColumnInteractionBar && !CoreUtils.isNodeEnv("production")) {
-                console.warn(Errors.COLUMN_HEADER_CELL_USE_INTERACTION_BAR_DEPRECATED);
-            }
-
             const columnHeaderCellProps: IColumnHeaderCellProps = {
-                enableColumnInteractionBar: tableUseInteractionBar,
                 loading: columnHeaderCellLoading != null ? columnHeaderCellLoading : columnLoading,
             };
             return React.cloneElement(columnHeaderCell, columnHeaderCellProps);
         }
 
         const baseProps: IColumnHeaderCellProps = {
-            enableColumnInteractionBar: tableUseInteractionBar,
             index: columnIndex,
             loading: columnLoading,
             ...spreadableProps,
@@ -1441,7 +1424,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             columnHeaderCellRenderer,
             name,
             nameRenderer,
-            enableColumnInteractionBar,
             ...restColumnProps
         } = this.getColumnProps(columnIndex);
 

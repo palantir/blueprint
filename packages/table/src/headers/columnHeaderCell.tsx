@@ -17,25 +17,14 @@ import {
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
+import { IColumnInteractionBarContextTypes } from "../../lib/esm/common/context";
 import * as Classes from "../common/classes";
+import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "../common/context";
 import * as Errors from "../common/errors";
 import { LoadableContent } from "../common/loadableContent";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
 export interface IColumnNameProps {
-    /**
-     * If `true`, adds an interaction bar on top of the column header cell and
-     * moves the menu and selection interactions to it.
-     *
-     * This allows you to override the rendering of column name without worry of
-     * clobbering the menu or other interactions.
-     *
-     * @default false
-     * @deprecated since blueprintjs/table v1.27.0; pass this prop to `Table`
-     * instead.
-     */
-    enableColumnInteractionBar?: boolean;
-
     /**
      * The name displayed in the header of the column.
      */
@@ -49,7 +38,7 @@ export interface IColumnNameProps {
      * `EditableName` component for editing column names.
      *
      * If you define this callback, we recommend you also set
-     * `enableColumnInteractionBar` to `true`, to avoid issues with menus or selection.
+     * `<Table enableColumnInteractionBar={true}>` to avoid issues with menus or selection.
      *
      * The callback will also receive the column index if an `index` was originally
      * provided via props.
@@ -85,10 +74,13 @@ export function HorizontalCellDivider(): JSX.Element {
 
 export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellProps, IColumnHeaderCellState> {
     public static defaultProps: IColumnHeaderCellProps = {
-        enableColumnInteractionBar: false,
         isActive: false,
         menuIconName: "chevron-down",
     };
+
+    public static contextTypes: React.ValidationMap<
+        IColumnInteractionBarContextTypes
+    > = columnInteractionBarContextTypes;
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that
@@ -106,6 +98,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
         );
     }
 
+    public context: IColumnInteractionBarContextTypes;
     public state = {
         isActive: false,
     };
@@ -120,14 +113,13 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
             // from IColumnNameProps
             name,
             nameRenderer,
-            enableColumnInteractionBar,
 
             // from IHeaderProps
             ...spreadableProps
         } = this.props;
 
         const classes = classNames(spreadableProps.className, Classes.TABLE_COLUMN_HEADER_CELL, {
-            [Classes.TABLE_HAS_INTERACTION_BAR]: enableColumnInteractionBar,
+            [Classes.TABLE_HAS_INTERACTION_BAR]: this.context.enableColumnInteractionBar,
             [Classes.TABLE_HAS_REORDER_HANDLE]: this.props.reorderHandle != null,
         });
 
@@ -155,7 +147,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
     }
 
     private renderName() {
-        const { index, loading, name, nameRenderer, reorderHandle, enableColumnInteractionBar } = this.props;
+        const { index, loading, name, nameRenderer, reorderHandle } = this.props;
 
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
@@ -168,7 +160,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
             </LoadableContent>
         );
 
-        if (enableColumnInteractionBar) {
+        if (this.context.enableColumnInteractionBar) {
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
                     <div className={Classes.TABLE_INTERACTION_BAR}>
