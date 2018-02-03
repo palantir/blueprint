@@ -30,13 +30,18 @@
 // $direction: row | column
 // $margin: margin[-right|-bottom] value
 @mixin pt-flex-margin($direction, $margin) {
+  $margin-prop: if($direction == row, margin-right, margin-bottom);
+
   // CSS API support
   &::before,
-  > :not(:last-child) {
-    @if $direction == row {
-      margin-right: $margin;
-    } @else {
-      margin-bottom: $margin;
-    }
+  // space after all children
+  > * {
+    #{$margin-prop}: $margin;
+  }
+
+  // remove space after last child
+  &:empty::before,
+  > :last-child {
+    #{$margin-prop}: 0;
   }
 }
