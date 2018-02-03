@@ -38,7 +38,14 @@ Styleguide pt-button
   }
 
   &.pt-fill {
+    display: flex;
     width: 100%;
+  }
+
+  // default is `text-align: left` so we only need `right` case.
+  &.pt-align-right,
+  .pt-align-right & {
+    text-align: right;
   }
 
   &:not([class*="pt-intent-"]) {
@@ -212,5 +219,16 @@ a.pt-button {
 
   &.pt-disabled {
     color: $button-color-disabled;
+  }
+}
+
+.pt-button-text {
+  // default: don't grow to fill but allow shrinking as necessary
+  flex: 0 1 auto;
+
+  // when alignment is set, grow to fill and inherit `text-align` set on `.pt-button`
+  .pt-align-left &,
+  .pt-align-right & {
+    flex: 1 1 auto;
   }
 }

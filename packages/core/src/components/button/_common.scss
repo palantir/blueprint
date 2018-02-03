@@ -6,9 +6,9 @@
 @import "../progress/common";
 
 $button-border-width: 1px !default;
-$button-padding: 0 $pt-grid-size !default;
-$button-padding-small: 0 ($pt-grid-size * 0.7) !default;
-$button-padding-large: 0 ($pt-grid-size * 1.5) !default;
+$button-padding: ($pt-grid-size / 2) $pt-grid-size !default;
+$button-padding-small: ($pt-grid-size / 2) ($pt-grid-size * 0.7) !default;
+$button-padding-large: ($pt-grid-size / 2) ($pt-grid-size * 1.5) !default;
 $button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
 $button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
 
@@ -102,6 +102,7 @@ $button-intents: (
   border-radius: $pt-border-radius;
   cursor: pointer;
   padding: $button-padding;
+  text-align: left;
   font-family: inherit;
   font-size: $pt-font-size;
 }
@@ -109,8 +110,6 @@ $button-intents: (
 @mixin pt-button-height($height) {
   min-width: $height;
   min-height: $height;
-  // for text centering
-  line-height: $height;
 }
 
 @mixin pt-button() {
