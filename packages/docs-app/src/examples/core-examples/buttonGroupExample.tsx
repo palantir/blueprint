@@ -8,8 +8,10 @@ import * as React from "react";
 
 import { AnchorButton, Button, ButtonGroup, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { AlignmentSelect } from "./common/alignmentSelect";
 
 export interface IButtonGroupExampleState {
+    align: "left" | "center" | "right";
     fill: boolean;
     iconOnly: boolean;
     minimal: boolean;
@@ -19,6 +21,7 @@ export interface IButtonGroupExampleState {
 
 export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
     public state: IButtonGroupExampleState = {
+        align: "center",
         fill: false,
         iconOnly: false,
         large: false,
@@ -37,12 +40,14 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
         // have the container take up the full-width if `fill` is true;
         // otherwise, disable full-width styles to keep a vertical button group
         // from taking up the full width.
-        const style: React.CSSProperties = { flexGrow: this.state.fill ? 1 : undefined };
+        const style: React.CSSProperties = { minWidth: 200, flexGrow: this.state.fill ? 1 : undefined };
         return (
             <ButtonGroup style={style} {...bgProps}>
                 <Button iconName="database">{!iconOnly && "Queries"}</Button>
                 <Button iconName="function">{!iconOnly && "Functions"}</Button>
-                <AnchorButton rightIconName="caret-down">{!iconOnly && "Options"}</AnchorButton>
+                <AnchorButton iconName="cog" rightIconName="caret-down">
+                    {!iconOnly && "Options"}
+                </AnchorButton>
             </ButtonGroup>
         );
     }
@@ -70,7 +75,10 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
                     label="Icons only"
                     onChange={this.handleIconOnlyChange}
                 />,
+                <AlignmentSelect align={this.state.align} onChange={this.handleAlignChange} />,
             ],
         ];
     }
+
+    private handleAlignChange = (align: IButtonGroupExampleState["align"]) => this.setState({ align });
 }
