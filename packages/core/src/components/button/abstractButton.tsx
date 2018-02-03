@@ -22,6 +22,14 @@ export interface IButtonProps extends IActionProps {
      */
     active?: boolean;
 
+    /**
+     * Text alignment within button. By default, icons and text will be centered within the button.
+     * Passing this prop will cause the text container to fill the button and align the text within that
+     * to the appropriate side. `icon` and `rightIcon` will be pushed to either side.
+     * @default "center"
+     */
+    align?: "left" | "center" | "right";
+
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement) => any;
 
@@ -71,6 +79,8 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
             Classes.BUTTON,
             {
                 [Classes.ACTIVE]: this.state.isActive || this.props.active,
+                [Classes.ALIGN_LEFT]: this.props.align === "left",
+                [Classes.ALIGN_RIGHT]: this.props.align === "right",
                 [Classes.DISABLED]: disabled,
                 [Classes.LOADING]: this.props.loading,
             },
@@ -119,7 +129,7 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
                 {loading && <Spinner className="pt-small pt-button-spinner" />}
                 <Icon iconName={iconName} />
                 {(text || children) && (
-                    <span className={Classes.FILL}>
+                    <span className="pt-button-text">
                         {text}
                         {children}
                     </span>
