@@ -22,6 +22,7 @@ import {
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { DropdownRenderer } from "./dropdownRenderer";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -45,6 +46,11 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
 
     /** React child to render when filtering items returns zero results. */
     noResults?: React.ReactChild;
+
+    /**
+     * Custom renderer for the contents of the dropdown.
+     */
+    dropdownRenderer?: DropdownRenderer<T>;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
@@ -185,19 +191,32 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
-                    <Menu ulRef={listProps.itemsParentRef}>{this.renderItems(listProps)}</Menu>
+                    {this.renderDropdown(listProps)}
                 </div>
             </Popover>
         );
     };
 
-    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
-        const { initialContent, noResults } = this.props;
-        if (initialContent != null && this.isQueryEmpty()) {
-            return initialContent;
+    private renderDropdown(listProps: IQueryListRendererProps<T>) {
+        const { dropdownRenderer, initialContent, noResults } = this.props;
+        const { items, itemsParentRef, renderItem } = listProps;
+        const maybeInitialContent = initialContent != null && this.isQueryEmpty() ? initialContent : null;
+        if (dropdownRenderer !== undefined) {
+            return dropdownRenderer({
+                initialContent: maybeInitialContent,
+                items,
+                itemsParentRef,
+                noResults,
+                renderItem,
+            });
+        } else {
+            const renderedItems = items.map(renderItem).filter(item => item != null);
+            return (
+                <Menu ulRef={itemsParentRef}>
+                    {maybeInitialContent || (renderedItems.length > 0 ? renderedItems : noResults)}
+                </Menu>
+            );
         }
-        const renderedItems = items.map(renderItem).filter(item => item != null);
-        return renderedItems.length > 0 ? renderedItems : noResults;
     }
 
     private maybeRenderInputClearButton() {

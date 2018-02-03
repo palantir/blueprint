@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { InputGroup, Popover } from "@blueprintjs/core";
+import { InputGroup, Menu, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -118,6 +118,45 @@ describe("<Select>", () => {
     });
 
     it("returns focus to focusable target after popover closed");
+
+    describe("dropdownRenderer", () => {
+        it("overrides default dropdown rendering", () => {
+            const customClass = "custom";
+            const wrapper = select({
+                dropdownRenderer: () => <ul className={customClass} />,
+            });
+            assert.lengthOf(wrapper.find(Menu), 0, "should not find Menu");
+            assert.lengthOf(wrapper.find(`ul.${customClass}`), 1, "should find custom class");
+            assert.equal(handlers.itemRenderer.callCount, 0, "itemRenderer should not be called");
+        });
+
+        it("renderItem calls itemRenderer", () => {
+            select({
+                dropdownRenderer: props => <ul>{props.items.map(props.renderItem)}</ul>,
+            });
+            assert.equal(handlers.itemRenderer.callCount, TOP_100_FILMS.length);
+        });
+
+        it("initialContent is only rendered if query is empty", () => {
+            const selectProps: Partial<ISelectProps<IFilm>> = {
+                dropdownRenderer: props => <ul>{props.initialContent}</ul>,
+                initialContent: <address />,
+            };
+            // Non-empty query:
+            assert.lengthOf(select(selectProps, "1999").find("address"), 0, "should not find initialContent");
+            // Empty query:
+            assert.lengthOf(select(selectProps, "").find("address"), 1, "should find initialContent");
+        });
+
+        it("noResults prop from Select is passed on to dropdownRenderer", () => {
+            const noResults = <address />;
+            const wrapper = select({
+                dropdownRenderer: props => <ul>{props.noResults}</ul>,
+                noResults,
+            });
+            assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
+        });
+    });
 
     function select(props: Partial<ISelectProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(
