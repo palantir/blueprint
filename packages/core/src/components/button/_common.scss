@@ -433,6 +433,7 @@ $button-intents: (
 
 @mixin pt-button-large() {
   @include pt-button-height($pt-button-height-large);
+  @include pt-flex-margin(row, $button-icon-spacing-large);
   padding: $button-padding-large;
   font-size: $pt-font-size-large;
 }

@@ -127,6 +127,10 @@ Styleguide pt-button
 
   #{$icon-classes} {
     color: $pt-icon-color;
+
+    &.pt-align-right {
+      margin-left: $button-icon-spacing;
+    }
   }
 
   // button with SVG icon only (no text or children)
