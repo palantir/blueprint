@@ -94,12 +94,14 @@ $button-intents: (
 ) !default;
 
 @mixin pt-button-base() {
-  display: inline-block;
+  @include pt-flex-container(row, $button-icon-spacing, $inline: inline);
+  align-items: center;
+  justify-content: center;
+
   border: none;
   border-radius: $pt-border-radius;
   cursor: pointer;
   padding: $button-padding;
-  vertical-align: middle;
   font-family: inherit;
   font-size: $pt-font-size;
 }
