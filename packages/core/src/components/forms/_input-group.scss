@@ -74,17 +74,14 @@ $input-button-height-large: $pt-button-height !default;
   .pt-button {
     @include pt-button-height($input-button-height);
     margin: ($pt-input-height - $input-button-height) / 2;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: $button-padding-small;
 
-    .pt-icon {
-      $small-icon-margin: ($input-button-height - $pt-icon-size-standard) / 2;
-      margin-top: $small-icon-margin;
-      margin-bottom: $small-icon-margin;
-    }
+    // icons CSS API support
+    &:empty { padding: 0; }
   }
 
-  .pt-icon {
+  // direct descendant to exclude icons in buttons
+  > .pt-icon {
     @include pt-icon($pt-icon-size-standard);
 
     // bump icon up so it sits above input
@@ -146,10 +143,9 @@ $input-button-height-large: $pt-button-height !default;
     .pt-button {
       @include pt-button-height($input-button-height-large);
       margin: ($pt-input-height-large - $input-button-height-large) / 2;
-      line-height: 0;
     }
 
-    .pt-icon {
+    > .pt-icon {
       margin: ($pt-input-height-large - $pt-icon-size-standard) / 2;
     }
 
@@ -194,7 +190,7 @@ $input-button-height-large: $pt-button-height !default;
         @include pt-input-intent($color);
       }
 
-      .pt-icon {
+      > .pt-icon {
         color: map-get($pt-intent-text-colors, $intent);
 
         .pt-dark & {

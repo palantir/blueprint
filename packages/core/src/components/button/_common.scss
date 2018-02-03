@@ -7,7 +7,7 @@
 
 $button-border-width: 1px !default;
 $button-padding: ($pt-grid-size / 2) $pt-grid-size !default;
-$button-padding-small: ($pt-grid-size / 2) ($pt-grid-size * 0.7) !default;
+$button-padding-small: 0 ($pt-grid-size * 0.7) !default;
 $button-padding-large: ($pt-grid-size / 2) ($pt-grid-size * 1.5) !default;
 $button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
 $button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
