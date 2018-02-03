@@ -79,7 +79,17 @@ export class MultiSelect<T> extends React.Component<IMultiSelectProps<T>, IMulti
     private input: HTMLInputElement;
     private queryList: QueryList<T>;
     private refHandlers = {
-        input: (ref: HTMLInputElement) => (this.input = ref),
+        input: (ref: HTMLInputElement) => {
+            this.input = ref;
+
+            const { tagInputProps = {} } = this.props;
+            const inputProps: HTMLInputProps = tagInputProps.inputProps || {};
+            // can't use safeInvoke cuz inputProps.ref can be `string | function`
+            const refHandler = inputProps.ref;
+            if (Utils.isFunction(refHandler)) {
+                refHandler(ref);
+            }
+        },
         queryList: (ref: QueryList<T>) => (this.queryList = ref),
     };
 
