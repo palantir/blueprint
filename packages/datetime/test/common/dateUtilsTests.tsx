@@ -299,5 +299,10 @@ describe("dateUtils", () => {
             const date = DateUtils.parseDate("2/5/2015");
             expect(toHyphenatedDateString(date)).to.equal("2015-02-05");
         });
+
+        it("handles 'YYYYMMDD'", () => {
+            const date = DateUtils.parseDate("20150205");
+            expect(toHyphenatedDateString(date)).to.equal("2015-02-05");
+        });
     });
 });
