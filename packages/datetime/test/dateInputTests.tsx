@@ -303,6 +303,27 @@ describe("<DateInput>", () => {
             assertDateEquals(onError.args[0][0], "2015-02-01");
         });
 
+        it("Displays the original out of range value, on focus after entering out of range date", () => {
+            const rangeMessage = "RANGE ERROR";
+            const onError = sinon.spy();
+            const wrapper = mount(
+                <DateInput
+                    defaultValue={new Date(2015, Months.MAY, 1)}
+                    minDate={new Date(2015, Months.MARCH, 1)}
+                    onError={onError}
+                    outOfRangeMessage={rangeMessage}
+                />,
+            );
+            wrapper
+                .find("input")
+                .simulate("change", { target: {value: "2015-02-01"}})
+                .simulate("blur")
+                .simulate("focus")
+
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), "2015-02-01");
+            assert.isTrue(onError.calledOnce);
+        });
+
         it("Typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
             const invalidDateMessage = "INVALID DATE";
             const onError = sinon.spy();
