@@ -19,7 +19,7 @@ export class MenuExample extends BaseExample<{}> {
                     <MenuItem iconName="new-object" text="New object" />
                     <MenuItem iconName="new-link" text="New link" />
                     <MenuDivider />
-                    <MenuItem iconName="cog" label={<Icon iconName="share" />} text="Settings..." />
+                    <MenuItem iconName="cog" labelElement={<Icon iconName="share" />} text="Settings..." />
                 </Menu>
                 <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
                     <MenuDivider title="Edit" />

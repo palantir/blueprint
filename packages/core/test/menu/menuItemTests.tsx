@@ -23,11 +23,19 @@ import {
     Text,
 } from "../../src/index";
 
-describe.only("MenuItem", () => {
+describe("MenuItem", () => {
     it("React renders MenuItem", () => {
         const wrapper = shallow(<MenuItem iconName="graph" text="Graph" />);
         assert.isTrue(wrapper.find(Icon).exists());
         assert.strictEqual(findText(wrapper).text(), "Graph");
+    });
+
+    it("supports HTML props", () => {
+        const func = () => false;
+        const item = shallow(<MenuItem text="text" onClick={func} onKeyDown={func} onMouseMove={func} />).find("a");
+        assert.strictEqual(item.prop("onClick"), func);
+        assert.strictEqual(item.prop("onKeyDown"), func);
+        assert.strictEqual(item.prop("onMouseMove"), func);
     });
 
     it("children appear in submenu", () => {
@@ -62,6 +70,15 @@ describe.only("MenuItem", () => {
             </MenuItem>,
         );
         assert.isTrue(wrapper.find(Popover).prop("disabled"));
+    });
+
+    it("disabled MenuItem blocks mouse listeners", () => {
+        const mouseSpy = spy();
+        mount(<MenuItem disabled={true} text="disabled" onClick={mouseSpy} onMouseEnter={mouseSpy} />)
+            .simulate("click")
+            .simulate("mouseenter")
+            .simulate("click");
+        assert.strictEqual(mouseSpy.callCount, 0);
     });
 
     it("renders children if given children and submenu", () => {
@@ -144,6 +161,15 @@ describe.only("MenuItem", () => {
         assertOverflow(true);
         wrapper.setProps({ multiline: true });
         assertOverflow(false);
+    });
+
+    it("label and labelElement are rendered in .pt-menu-item-label", () => {
+        const wrapper = shallow(
+            <MenuItem text="text" label="label text" labelElement={<article>label element</article>} />,
+        );
+        const label = wrapper.find(`.${Classes.MENU_ITEM_LABEL}`);
+        assert.match(label.text(), /^label text/);
+        assert.strictEqual(label.find("article").text(), "label element");
     });
 });
 
