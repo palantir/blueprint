@@ -12,6 +12,7 @@ import { IProps } from "../../common/props";
 export interface INavbarGroupProps extends React.HTMLProps<HTMLDivElement>, IProps {
     /**
      * The side of the navbar on which the group should appear.
+     * The `Alignment` enum provides constants for these values.
      * @default "left"
      */
     align?: "left" | "right";

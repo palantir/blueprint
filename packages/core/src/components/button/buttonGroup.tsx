@@ -15,6 +15,8 @@ export interface IButtonGroupProps extends IProps, React.HTMLProps<HTMLDivElemen
      * `align="left"` will left-align button text and push `rightIcon` to right side.
      * `align="right"` right-aligns text and pushes `icon` to left side.
      * This prop only has an effect if buttons are wider than their default widths.
+     *
+     * The `Alignment` enum provides constants for allowed values.
      */
     alignText?: "left" | "center" | "right";
 
