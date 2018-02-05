@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
-import { IItemModifiers, ItemRenderer } from "./itemRenderer";
+import { IItemModifiers, ItemRenderer } from "../../common/itemRenderer";
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
