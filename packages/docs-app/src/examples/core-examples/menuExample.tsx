@@ -10,6 +10,7 @@ import { Classes, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 
 export class MenuExample extends BaseExample<{}> {
+    public className = "docs-menu-example";
     protected renderExample() {
         return (
             <div>
@@ -39,8 +40,8 @@ export class MenuExample extends BaseExample<{}> {
                     </MenuItem>
                     <MenuItem iconName="asterisk" text="Miscellaneous">
                         <MenuItem iconName="badge" text="Badge" />
-                        <MenuItem iconName="book" text="Book" />
-                        <MenuItem iconName="more" text="More">
+                        <MenuItem iconName="book" text="Long items will truncate when they reach max-width" />
+                        <MenuItem iconName="more" text="Look in here for even more items">
                             <MenuItem iconName="briefcase" text="Briefcase" />
                             <MenuItem iconName="calculator" text="Calculator" />
                             <MenuItem iconName="dollar" text="Dollar" />
