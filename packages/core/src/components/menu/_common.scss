@@ -29,6 +29,10 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   color: inherit;
   user-select: none;
 
+  > .pt-fill {
+    word-break: break-word;
+  }
+
   &#{$hover-selector} {
     background-color: $menu-item-color-hover;
     cursor: pointer;

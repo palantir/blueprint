@@ -60,6 +60,7 @@ Styleguide pt-menu
 
   &::before,
   .pt-icon {
+    align-self: flex-start;
     color: $pt-icon-color;
   }
 
