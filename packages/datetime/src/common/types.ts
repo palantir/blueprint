@@ -1,8 +1,15 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- *
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
+
+export type SupportedLocaleString = "de" | "en" | "es" | "fr" | "it" | "ko" | "ru" | "uk" | "zh_cn";
+export type DateRange = [Date | undefined, Date | undefined];
+
+export enum DateRangeBoundary {
+    START = "start",
+    END = "end",
+}
 
 /**
  * Enumeration of calendar months.

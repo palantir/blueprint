@@ -78,7 +78,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
 
         const match = /docs\/v([0-9]+)/.exec(location.href);
         // default to latest release if we can't find a major version in the URL
-        const currentRelease = match == null ? versions[0].version : match[1];
+        const currentRelease = match == null ? versions[versions.length - 1].version : match[1];
         const releaseItems = versions.map((rel, i) => <MenuItem key={i} href={rel.url} text={rel.version} />);
         const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
 

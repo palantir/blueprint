@@ -53,7 +53,7 @@ export const POPOVER_WARN_DOUBLE_CONTENT =
 export const POPOVER_WARN_DOUBLE_TARGET =
     ns + ` <Popover> with children ignores target prop; use either prop or children.`;
 export const POPOVER_WARN_EMPTY_CONTENT = ns + ` Disabling <Popover> with empty/whitespace content...`;
-export const POPOVER_WARN_HAS_BACKDROP_INLINE = ns + ` <Popover inline={true}> ignores hasBackdrop`;
+export const POPOVER_WARN_HAS_BACKDROP_INLINE = ns + ` <Popover usePortal={false}> ignores hasBackdrop`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
 
 export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;

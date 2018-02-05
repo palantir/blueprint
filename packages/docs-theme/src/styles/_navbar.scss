@@ -15,15 +15,16 @@ All the components that live *inside* the navbar.
   padding-left: 0;
 
   .pt-navbar-group {
-    padding-left: $content-padding;
+    padding-left: $pt-grid-size;
 
-    &:first-child {
-      width: $sidebar-width;
+    &-left {
+      // allow extra space for long version strings
+      width: $sidebar-width + ($pt-grid-size * 2);
       padding-left: 0;
     }
 
     // last child fills remaining space and right-aligns children
-    &:last-child {
+    &-right {
       flex: 1 1 auto;
       justify-content: flex-end;
     }

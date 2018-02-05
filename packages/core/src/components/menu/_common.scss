@@ -63,6 +63,10 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
     &.pt-intent-#{$intent} {
       color: $color;
 
+      .pt-icon {
+        color: inherit;
+      }
+
       &::before,
       &::after,
       .pt-menu-item-label {

@@ -5,14 +5,10 @@
  */
 
 import * as classNames from "classnames";
-
-/* tslint:disable:no-submodule-imports */
 import * as isValid from "date-fns/is_valid";
 import * as isWithinRange from "date-fns/is_within_range";
-/* tslint:enable:no-submodule-imports */
-
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import { DayPickerProps } from "react-day-picker/types/props";
 
 import {
     AbstractPureComponent,
@@ -23,12 +19,10 @@ import {
     IProps,
     Keys,
     Popover,
-    Position,
     Utils,
 } from "@blueprintjs/core";
 
 import { dateToString, parseDate } from "./common/dateUtils";
-import { DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
 import { IDateFormatter } from "./dateFormatter";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
@@ -57,7 +51,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
      * `initialMonth`), `toMonth` (use `maxDate`).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerProps?: DayPickerProps;
 
     /**
      * Whether the date input is non-interactive.
@@ -110,13 +104,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     outOfRangeMessage?: string;
 
     /**
-     * The position the date popover should appear in relative to the input box.
-     * @default Position.BOTTOM
-     * @deprecated since v1.15.0, use `popoverProps.position`
-     */
-    popoverPosition?: Position;
-
-    /**
      * Props to pass to the `Popover`.
      * Note that `content`, `autoFocus`, and `enforceFocus` cannot be changed.
      */
@@ -165,7 +152,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         outOfRangeMessage: "Out of range",
-        popoverPosition: Position.BOTTOM,
         reverseMonthAndYearMenus: false,
         timePickerProps: {},
     };
@@ -217,9 +203,8 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
         return (
             <Popover
-                inline={true}
                 isOpen={this.state.isOpen && !this.props.disabled}
-                position={this.props.popoverPosition}
+                usePortal={false}
                 {...popoverProps}
                 autoFocus={false}
                 className={classNames(popoverProps.className, this.props.className)}
@@ -251,12 +236,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         super.componentWillReceiveProps(nextProps);
         if (nextProps.value !== this.props.value) {
             this.setState({ value: nextProps.value });
-        }
-    }
-
-    public validateProps(props: IDateInputProps) {
-        if (props.popoverPosition !== DateInput.defaultProps.popoverPosition) {
-            console.warn(DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION);
         }
     }
 

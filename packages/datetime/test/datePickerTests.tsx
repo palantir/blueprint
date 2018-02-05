@@ -7,7 +7,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import { LocaleUtils } from "react-day-picker";
+import ReactDayPicker from "react-day-picker";
 import * as sinon from "sinon";
 
 import { Button } from "@blueprintjs/core";
@@ -15,8 +15,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
-import { Months } from "../src/common/months";
-import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps } from "../src/index";
+import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps, Months } from "../src/index";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 
 describe("<DatePicker>", () => {
@@ -49,7 +48,7 @@ describe("<DatePicker>", () => {
         it("doesn't show outside days if enableOutsideDays=false", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1, 12);
             const wrapper = mount(
-                <DatePicker defaultValue={defaultValue} dayPickerProps={{ enableOutsideDays: false }} />,
+                <DatePicker defaultValue={defaultValue} dayPickerProps={{ showOutsideDays: false }} />,
             );
             const days = wrapper.find("Day");
 
@@ -101,7 +100,7 @@ describe("<DatePicker>", () => {
                 blueprint: () => true,
             };
             const blueprintLocaleUtils = {
-                ...LocaleUtils,
+                ...ReactDayPicker.LocaleUtils,
                 formatDay: () => "b",
             };
             const blueprintProps: IDatePickerProps = {
@@ -114,7 +113,7 @@ describe("<DatePicker>", () => {
                 dayPicker: () => true,
             };
             const dayPickerLocaleUtils = {
-                ...LocaleUtils,
+                ...ReactDayPicker.LocaleUtils,
                 formatDay: () => "d",
             };
             const dayPickerProps: IDatePickerProps = {

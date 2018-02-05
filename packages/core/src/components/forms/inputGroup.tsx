@@ -71,7 +71,7 @@ export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroup
 
         return (
             <div className={classes}>
-                <Icon iconName={leftIconName} iconSize="inherit" />
+                <Icon iconName={leftIconName} />
                 <input
                     type="text"
                     {...removeNonHTMLProps(this.props)}

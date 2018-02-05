@@ -5,8 +5,11 @@
  */
 
 import * as classNames from "classnames";
+import * as differenceInDays from "date-fns/difference_in_days";
+import * as isValid from "date-fns/is_valid";
+import * as isWithinRange from "date-fns/is_within_range";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import { DayPickerProps } from "react-day-picker/types/props";
 
 import {
     AbstractPureComponent,
@@ -22,17 +25,12 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { DateRange, DateRangeBoundary, dateToString, parseDate } from "./common/dateUtils";
+import { dateToString, parseDate } from "./common/dateUtils";
 import * as Errors from "./common/errors";
+import { DateRange, DateRangeBoundary } from "./common/types";
 import { DateFormat, IDateFormatter } from "./dateFormatter";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
-
-/* tslint:disable:no-submodule-imports */
-import * as differenceInDays from "date-fns/difference_in_days";
-import * as isValid from "date-fns/is_valid";
-import * as isWithinRange from "date-fns/is_within_range";
-/* tslint:enable:no-submodule-imports */
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**
@@ -64,7 +62,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `numberOfMonths`, `fromMonth` (use
      * `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerProps?: DayPickerProps;
 
     /**
      * The default date range to be used in the component when uncontrolled.
@@ -300,9 +298,9 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         // guarantees only some props are overridable.
         return (
             <Popover
-                inline={true}
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
+                usePortal={false}
                 {...this.props.popoverProps}
                 autoFocus={false}
                 className={popoverClassName}

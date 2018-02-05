@@ -20,8 +20,14 @@ import {
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
+import {
+    Classes as DateClasses,
+    DateRange,
+    DateRangeBoundary,
+    DateRangeInput,
+    DateRangePicker,
+    Months,
+} from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any, {}>;

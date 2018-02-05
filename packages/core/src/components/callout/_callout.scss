@@ -59,6 +59,7 @@ Styleguide pt-callout
       background-color: rgba($color, 0.15);
 
       &[class*="pt-icon-"]::before,
+      .pt-callout-icon,
       h5 {
         color: map-get($pt-intent-text-colors, $intent);
       }
@@ -67,6 +68,7 @@ Styleguide pt-callout
         background-color: rgba($color, 0.25);
 
         &[class*="pt-icon-"]::before,
+        .pt-callout-icon,
         h5 {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }
@@ -77,4 +79,13 @@ Styleguide pt-callout
   .pt-running-text & {
     margin: ($pt-grid-size * 2) 0;
   }
+}
+
+// callout icon fills vertical space at left side, pushing title and content over.
+// note that CSS API `.pt-callout.pt-icon-[name]` is still supported.
+.pt-callout-icon {
+  float: left;
+  margin-right: $pt-grid-size;
+  height: 100%;
+  color: $pt-icon-color;
 }

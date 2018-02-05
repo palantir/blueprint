@@ -53,9 +53,7 @@ describe("<TagInput>", () => {
             assert.isTrue(hasClass, errorMessage);
         };
 
-        assertLeftIconHasClass(Classes.ICON_STANDARD, "standard icon");
-        wrapper.setProps({ className: Classes.LARGE });
-        assertLeftIconHasClass(Classes.ICON_LARGE, "large icon");
+        assertLeftIconHasClass(Classes.ICON, "icon");
     });
 
     it("rightElement appears as last child", () => {

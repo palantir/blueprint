@@ -9,7 +9,6 @@ import * as React from "react";
 import { AbstractPureComponent, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import * as Errors from "../common/errors";
 import { LoadableContent } from "../common/loadableContent";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
@@ -51,14 +50,5 @@ export class RowHeaderCell extends AbstractPureComponent<IRowHeaderCellProps, {}
                 {spreadableProps.loading ? undefined : spreadableProps.resizeHandle}
             </HeaderCell>
         );
-    }
-
-    protected validateProps(nextProps: IRowHeaderCellProps) {
-        if (nextProps.menu != null) {
-            // throw this warning from the publicly exported, higher-order *HeaderCell components
-            // rather than HeaderCell, so consumers know exactly which components are receiving the
-            // offending prop
-            console.warn(Errors.ROW_HEADER_CELL_MENU_DEPRECATED);
-        }
     }
 }

@@ -135,13 +135,13 @@ describe("<Tree>", () => {
     it("icons are rendered correctly if present", () => {
         const contents = createDefaultContents();
         contents[1].iconName = "document";
-        contents[2].iconName = "pt-icon-document";
+        contents[2].iconName = "document";
 
         const tree = renderTree({ contents });
-        const iconSelector = `span.${Classes.TREE_NODE_ICON}.pt-icon-document`;
-        assert.lengthOf(tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT} span.${Classes.TREE_NODE_ICON}`), 0, "c0");
-        assert.lengthOf(tree.find(`.c1 > .${Classes.TREE_NODE_CONTENT} ${iconSelector}`), 1, "c1");
-        assert.lengthOf(tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT} ${iconSelector}`), 1, "c2");
+        const iconSelector = `.${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_ICON}`;
+        assert.lengthOf(tree.find(`.c0 > ${iconSelector}`).hostNodes(), 0, "c0");
+        assert.lengthOf(tree.find(`.c1 > ${iconSelector}`).hostNodes(), 1, "c1");
+        assert.lengthOf(tree.find(`.c2 > ${iconSelector}`).hostNodes(), 1, "c2");
     });
 
     it("isExpanded controls node expansion", () => {

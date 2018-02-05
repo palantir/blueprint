@@ -4,9 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { LocaleUtils } from "react-day-picker";
-import { SupportedLocaleString } from "./common/dateUtils";
-import { Months } from "./common/months";
+import { LocaleUtils } from "react-day-picker/types/utils";
+import { Months, SupportedLocaleString } from "./common/types";
 
 // DatePicker supports a simpler set of modifiers (for now).
 // also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.

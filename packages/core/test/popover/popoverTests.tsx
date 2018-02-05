@@ -94,7 +94,7 @@ describe("<Popover>", () => {
         it("warns if backdrop enabled when rendering inline", () => {
             const warnSpy = sinon.stub(console, "warn");
             shallow(
-                <Popover hasBackdrop={true} inline={true}>
+                <Popover hasBackdrop={true} usePortal={false}>
                     {"target"}
                     {"content"}
                 </Popover>,
@@ -145,14 +145,14 @@ describe("<Popover>", () => {
         assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
     });
 
-    it("does not render Portal when inline=true", () => {
-        wrapper = renderPopover({ inline: true, isOpen: true });
-        assert.lengthOf(wrapper.find(Portal).find(`.${Classes.POPOVER}`), 0);
+    it("renders Portal when usePortal=true", () => {
+        wrapper = renderPopover({ isOpen: true, usePortal: true });
+        assert.lengthOf(wrapper.find(Portal).find(`.${Classes.POPOVER}`), 1);
     });
 
-    it("renders Portal when inline=false", () => {
-        wrapper = renderPopover({ inline: false, isOpen: true });
-        assert.lengthOf(wrapper.find(Portal).find(`.${Classes.POPOVER}`), 1);
+    it("does not render Portal when usePortal=false", () => {
+        wrapper = renderPopover({ isOpen: true, usePortal: false });
+        assert.lengthOf(wrapper.find(Portal).find(`.${Classes.POPOVER}`), 0);
     });
 
     it("empty content disables it and warns", () => {
@@ -212,34 +212,34 @@ describe("<Popover>", () => {
 
     it("inherits .pt-dark from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
-        const { popover } = renderPopover({ inline: false, isOpen: true, inheritDarkTheme: true });
+        const { popover } = renderPopover({ isOpen: true, inheritDarkTheme: true, usePortal: true });
         assert.isTrue(popover.matches(`.${Classes.DARK}`));
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
     it("inheritDarkTheme=false disables inheriting .pt-dark from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
-        const { popover } = renderPopover({ inheritDarkTheme: false, inline: false, isOpen: true });
+        const { popover } = renderPopover({ inheritDarkTheme: false, isOpen: true, usePortal: true });
         assert.isFalse(popover.matches(`.${Classes.DARK}`));
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
     it("allows user to apply dark theme explicitly", () => {
         const { popover } = renderPopover({
-            inline: true,
             isOpen: true,
             popoverClassName: Classes.DARK,
+            usePortal: false,
         });
         assert.isNotNull(popover.matches(`.${Classes.DARK}`));
     });
 
     it("hasBackdrop=false does not render backdrop element", () => {
-        const { popover } = renderPopover({ inline: false, hasBackdrop: false, isOpen: true });
+        const { popover } = renderPopover({ hasBackdrop: false, isOpen: true, usePortal: true });
         assert.lengthOf(popover.parentElement.getElementsByClassName(Classes.POPOVER_BACKDROP), 0);
     });
 
     it("hasBackdrop=true renders backdrop element", () => {
-        const { popover } = renderPopover({ inline: false, hasBackdrop: true, isOpen: true });
+        const { popover } = renderPopover({ hasBackdrop: true, isOpen: true, usePortal: true });
         const expectedBackdrop = popover.parentElement.previousElementSibling;
         assert.isTrue(expectedBackdrop.matches(`.${Classes.POPOVER_BACKDROP}`));
     });
@@ -290,8 +290,8 @@ describe("<Popover>", () => {
             it("popover remains open after target focus if autoFocus={true}", () => {
                 wrapper = renderPopover({
                     autoFocus: true,
-                    inline: false,
                     interactionKind: PopoverInteractionKind.HOVER,
+                    usePortal: true,
                 });
                 const targetElement = wrapper.findClass(Classes.POPOVER_TARGET);
                 targetElement.simulate("focus");
@@ -340,9 +340,9 @@ describe("<Popover>", () => {
             openOnTargetFocus?: boolean,
         ) {
             wrapper = renderPopover({
-                inline: false,
                 interactionKind,
                 openOnTargetFocus,
+                usePortal: true,
             });
             const targetElement = wrapper.findClass(Classes.POPOVER_TARGET);
             targetElement.simulate("focus");
@@ -354,7 +354,7 @@ describe("<Popover>", () => {
             shouldTabIndexExist: boolean,
             openOnTargetFocus?: boolean,
         ) {
-            wrapper = renderPopover({ inline: false, interactionKind, openOnTargetFocus });
+            wrapper = renderPopover({ interactionKind, openOnTargetFocus, usePortal: true });
             const targetElement = wrapper
                 .findClass(Classes.POPOVER_TARGET)
                 .childAt(0)
@@ -452,9 +452,9 @@ describe("<Popover>", () => {
                 renderPopover({
                     backdropProps: { className: "test-hook" },
                     hasBackdrop: true,
-                    inline: false,
                     isOpen: true,
                     onInteraction,
+                    usePortal: true,
                 });
                 dispatchMouseEvent(document.getElementsByClassName("test-hook")[0], "mousedown");
                 assert.isTrue(onInteraction.calledOnce, "A");
@@ -462,10 +462,7 @@ describe("<Popover>", () => {
             });
 
             it("is invoked with `false` when clicking .pt-popover-dismiss", () => {
-                renderPopover(
-                    { isOpen: true, onInteraction },
-                    <button className="pt-button pt-popover-dismiss">Dismiss</button>,
-                )
+                renderPopover({ isOpen: true, onInteraction }, <button className="pt-popover-dismiss">Dismiss</button>)
                     .findClass(Classes.POPOVER_DISMISS)
                     .simulate("click");
                 assert.isTrue(onInteraction.calledOnce);
@@ -502,7 +499,7 @@ describe("<Popover>", () => {
         });
 
         it("HOVER_TARGET_ONLY works properly", done => {
-            renderPopover({ inline: false, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
+            renderPopover({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY, usePortal: true })
                 .simulateTarget("mouseenter")
                 .assertIsOpen()
                 .simulateTarget("mouseleave")
@@ -511,9 +508,9 @@ describe("<Popover>", () => {
 
         it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", done => {
             wrapper = renderPopover({
-                inline: true,
                 interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY,
                 openOnTargetFocus: false,
+                usePortal: false,
             });
 
             wrapper.simulateTarget("mouseenter").assertIsOpen();
@@ -523,7 +520,7 @@ describe("<Popover>", () => {
         });
 
         it("inline HOVER works properly", done => {
-            wrapper = renderPopover({ inline: true, interactionKind: PopoverInteractionKind.HOVER });
+            wrapper = renderPopover({ interactionKind: PopoverInteractionKind.HOVER, usePortal: false });
 
             wrapper.simulateTarget("mouseenter").assertIsOpen();
 
@@ -535,13 +532,13 @@ describe("<Popover>", () => {
             wrapper.then(() => wrapper.assertIsOpen(false), done);
         });
 
-        it("clicking .pt-popover-dismiss closes popover when inline=false", () => {
+        it("clicking .pt-popover-dismiss closes popover when usePortal=true", () => {
             wrapper = renderPopover(
                 {
-                    inline: false,
                     interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
+                    usePortal: true,
                 },
-                <button className="pt-button pt-popover-dismiss">Dismiss</button>,
+                <button className="pt-popover-dismiss">Dismiss</button>,
             );
 
             wrapper.simulateTarget("click").assertIsOpen();
@@ -550,13 +547,13 @@ describe("<Popover>", () => {
             wrapper.update().assertIsOpen(false);
         });
 
-        it("clicking .pt-popover-dismiss closes popover when inline=true", () => {
+        it("clicking .pt-popover-dismiss closes popover when usePortal=false", () => {
             wrapper = renderPopover(
                 {
-                    inline: true,
                     interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
+                    usePortal: false,
                 },
-                <button className="pt-button pt-popover-dismiss">Dismiss</button>,
+                <button className="pt-popover-dismiss">Dismiss</button>,
             );
 
             wrapper.simulateTarget("click").assertIsOpen();
@@ -565,8 +562,8 @@ describe("<Popover>", () => {
             wrapper.assertIsOpen(false);
         });
 
-        it("pressing Escape closes popover when canEscapeKeyClose=true and inline=true", () => {
-            renderPopover({ canEscapeKeyClose: true, inline: true })
+        it("pressing Escape closes popover when canEscapeKeyClose=true and usePortal=false", () => {
+            renderPopover({ canEscapeKeyClose: true, usePortal: false })
                 .simulateTarget("click")
                 .assertIsOpen()
                 .sendEscapeKey()
@@ -602,8 +599,8 @@ describe("<Popover>", () => {
         let root: ReactWrapper<any, any>;
         beforeEach(() => {
             root = mount(
-                <Popover content="popover" hoverOpenDelay={0} hoverCloseDelay={0} inline={true}>
-                    <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} inline={true}>
+                <Popover content="popover" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
+                    <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
                         <button>Target</button>
                     </Tooltip>
                 </Popover>,
@@ -678,7 +675,7 @@ describe("<Popover>", () => {
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
         wrapper = mount(
-            <Popover inline={true} {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
+            <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>
                 <p>Text {content}</p>
             </Popover>,

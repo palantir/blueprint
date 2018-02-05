@@ -4,8 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes as CoreClasses, Utils as CoreUtils } from "@blueprintjs/core";
-import { IconClasses } from "@blueprintjs/icons";
+import { Icon, Utils as CoreUtils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -370,7 +369,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                   index,
                   <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
                       <div className={Classes.TABLE_REORDER_HANDLE}>
-                          <span className={classNames(CoreClasses.ICON_STANDARD, IconClasses.DRAG_HANDLE_VERTICAL)} />
+                          <Icon iconName="drag-handle-vertical" />
                       </div>
                   </div>,
                   false,

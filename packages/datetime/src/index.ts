@@ -7,13 +7,14 @@
 import * as classes from "./common/classes";
 
 // re-exporting these symbols to preserve compatility
-import { DayModifiers as IDatePickerDayModifiers, LocaleUtils as IDatePickerLocaleUtils } from "react-day-picker";
+import { DayModifiers as IDatePickerDayModifiers } from "react-day-picker/types/common";
+import { LocaleUtils as IDatePickerLocaleUtils } from "react-day-picker/types/utils";
+
 export { IDatePickerLocaleUtils, IDatePickerDayModifiers };
 
 export const Classes = classes;
 
-export { DateRange, DateRangeBoundary } from "./common/dateUtils";
-export { Months } from "./common/months";
+export { DateRange, DateRangeBoundary, Months } from "./common/types";
 export { DateFormat, IDateFormatter } from "./dateFormatter";
 export { DateInput, IDateInputProps } from "./dateInput";
 export { DatePicker, IDatePickerProps } from "./datePicker";

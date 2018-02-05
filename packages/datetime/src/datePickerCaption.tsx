@@ -6,12 +6,12 @@
 
 import { Icon, Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import { CaptionElementProps } from "react-day-picker/types/props";
 
 import * as Classes from "./common/classes";
 import * as Utils from "./common/utils";
 
-export interface IDatePickerCaptionProps extends ReactDayPicker.CaptionElementProps {
+export interface IDatePickerCaptionProps extends CaptionElementProps {
     maxDate: Date;
     minDate: Date;
     onMonthChange?: (month: number) => void;

@@ -1,12 +1,10 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
-/* tslint:disable:no-submodule-imports */
+
 import * as isSameDay from "date-fns/is_same_day";
-/* tslint:enable:no-submodule-imports */
-import { DateRange, DateRangeBoundary } from "./common/dateUtils";
+import { DateRange, DateRangeBoundary } from "./common/types";
 
 export interface IDateRangeSelectionState {
     /**

@@ -33,7 +33,8 @@ $dark-numeric-input-button-height-large: ($pt-button-height-large / 2) - 1px;
       border-radius: 0 0 $pt-border-radius 0;
     }
 
-    &[class*="pt-icon-"]::before {
+    &[class*="pt-icon-"]::before,
+    .pt-icon {
       // these styles are super unintuitive, but they basically are present to
       // ensure that the focus outlines around the buttons will be perfect
       // rectangles. delete any one of these styles, and the focus outlines will
@@ -43,6 +44,10 @@ $dark-numeric-input-button-height-large: ($pt-button-height-large / 2) - 1px;
       height: $pt-button-height / 2 - 1;
       overflow: hidden;
       line-height: $pt-button-height / 2 - 1;
+    }
+
+    .pt-icon {
+      margin: 0 -3px;
     }
   }
 

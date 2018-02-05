@@ -293,7 +293,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private renderItem = (item: T, index?: number) => {
-        const { activeItem, itemListPredicate, itemPredicate, query } = this.props;
+        const { activeItem, itemListPredicate, itemPredicate = () => true, query } = this.props;
         const matchesPredicate = Utils.isFunction(itemListPredicate)
             ? this.state.filteredItems.indexOf(item) >= 0
             : itemPredicate(query, item, index);

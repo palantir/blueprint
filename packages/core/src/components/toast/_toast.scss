@@ -71,9 +71,9 @@ $toast-margin: $pt-grid-size * 2 !default;
     padding-left: 0;
   }
 
-  > .pt-icon-standard {
-    padding: ($toast-height - $pt-icon-size-standard) / 2;
-    padding-right: 0;
+  > .pt-icon {
+    margin: ($toast-height - $pt-icon-size-standard) / 2;
+    margin-right: 0;
     color: $pt-icon-color;
   }
 
@@ -82,7 +82,7 @@ $toast-margin: $pt-grid-size * 2 !default;
     box-shadow: $pt-dark-elevation-shadow-3;
     background-color: $dark-gray5;
 
-    > .pt-icon-standard {
+    > .pt-icon {
       color: $pt-dark-icon-color;
     }
   }
@@ -96,7 +96,7 @@ $toast-margin: $pt-grid-size * 2 !default;
       }
     }
 
-    > .pt-icon-standard {
+    > .pt-icon {
       color: $white;
     }
   }
@@ -106,6 +106,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   &[class*="pt-intent-"] .pt-button {
     &,
     &::before,
+    .pt-icon,
     &:active {
       color: rgba($white, 0.7) !important;
     }
