@@ -22,6 +22,14 @@ export interface IButtonProps extends IActionProps {
      */
     active?: boolean;
 
+    /**
+     * Text alignment within button. By default, icons and text will be centered within the button.
+     * Passing this prop will cause the text container to fill the button and align the text within that
+     * to the appropriate side. `icon` and `rightIcon` will be pushed to either side.
+     * @default "center"
+     */
+    alignText?: "left" | "center" | "right";
+
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement) => any;
 
@@ -65,14 +73,17 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const disabled = this.props.disabled || this.props.loading;
+        const { alignText, loading } = this.props;
+        const disabled = this.props.disabled || loading;
 
         const className = classNames(
             Classes.BUTTON,
             {
                 [Classes.ACTIVE]: this.state.isActive || this.props.active,
+                [Classes.ALIGN_LEFT]: alignText === "left",
+                [Classes.ALIGN_RIGHT]: alignText === "right",
                 [Classes.DISABLED]: disabled,
-                [Classes.LOADING]: this.props.loading,
+                [Classes.LOADING]: loading,
             },
             Classes.intentClass(this.props.intent),
             this.props.className,
@@ -113,26 +124,18 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
     };
 
     protected renderChildren(): React.ReactNode {
-        const { iconName, loading, rightIconName, text } = this.props;
-
-        const children = React.Children.map(this.props.children, (child, index) => {
-            if (child === "") {
-                // render as undefined to avoid extra space after icon
-                return undefined;
-            } else if (typeof child === "string") {
-                // must wrap string children in spans so loading prop can hide them
-                return <span key={`text-${index}`}>{child}</span>;
-            }
-            return child;
-        });
-
+        const { children, iconName, loading, rightIconName, text } = this.props;
         return (
             <>
+                {loading && <Spinner className={classNames(Classes.SMALL, Classes.BUTTON_SPINNER)} />}
                 <Icon iconName={iconName} />
-                {loading && <Spinner className="pt-small pt-button-spinner" />}
-                {text != null && <span>{text}</span>}
-                {children}
-                <Icon className={Classes.ALIGN_RIGHT} iconName={rightIconName} />
+                {(text || children) && (
+                    <span className={Classes.BUTTON_TEXT}>
+                        {text}
+                        {children}
+                    </span>
+                )}
+                <Icon iconName={rightIconName} />
             </>
         );
     }

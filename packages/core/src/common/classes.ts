@@ -42,6 +42,8 @@ export const BREADCRUMBS_COLLAPSED = "pt-breadcrumbs-collapsed";
 
 export const BUTTON = "pt-button";
 export const BUTTON_GROUP = "pt-button-group";
+export const BUTTON_SPINNER = "pt-button-spinner";
+export const BUTTON_TEXT = "pt-button-text";
 
 export const CALLOUT = "pt-callout";
 export const CALLOUT_ICON = "pt-callout-icon";
