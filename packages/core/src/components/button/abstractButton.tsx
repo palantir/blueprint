@@ -28,7 +28,7 @@ export interface IButtonProps extends IActionProps {
      * to the appropriate side. `icon` and `rightIcon` will be pushed to either side.
      * @default "center"
      */
-    align?: "left" | "center" | "right";
+    alignText?: "left" | "center" | "right";
 
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement) => any;
@@ -73,16 +73,17 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const disabled = this.props.disabled || this.props.loading;
+        const { alignText, loading } = this.props;
+        const disabled = this.props.disabled || loading;
 
         const className = classNames(
             Classes.BUTTON,
             {
                 [Classes.ACTIVE]: this.state.isActive || this.props.active,
-                [Classes.ALIGN_LEFT]: this.props.align === "left",
-                [Classes.ALIGN_RIGHT]: this.props.align === "right",
+                [Classes.ALIGN_LEFT]: alignText === "left",
+                [Classes.ALIGN_RIGHT]: alignText === "right",
                 [Classes.DISABLED]: disabled,
-                [Classes.LOADING]: this.props.loading,
+                [Classes.LOADING]: loading,
             },
             Classes.intentClass(this.props.intent),
             this.props.className,
@@ -126,10 +127,10 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
         const { children, iconName, loading, rightIconName, text } = this.props;
         return (
             <>
-                {loading && <Spinner className="pt-small pt-button-spinner" />}
+                {loading && <Spinner className={classNames(Classes.SMALL, Classes.BUTTON_SPINNER)} />}
                 <Icon iconName={iconName} />
                 {(text || children) && (
-                    <span className="pt-button-text">
+                    <span className={Classes.BUTTON_TEXT}>
                         {text}
                         {children}
                     </span>

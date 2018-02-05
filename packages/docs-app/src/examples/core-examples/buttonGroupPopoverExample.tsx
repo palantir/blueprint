@@ -13,7 +13,7 @@ import { FileMenu } from "./common/fileMenu";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonGroupPopoverExampleState {
-    align: "left" | "center" | "right";
+    alignText: "left" | "center" | "right";
     intent: Intent;
     large: boolean;
     minimal: boolean;
@@ -22,7 +22,7 @@ export interface IButtonGroupPopoverExampleState {
 
 export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverExampleState> {
     public state: IButtonGroupPopoverExampleState = {
-        align: "center",
+        alignText: "center",
         intent: Intent.NONE,
         large: false,
         minimal: false,
@@ -49,7 +49,7 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
     }
 
     protected renderOptions() {
-        const { align } = this.state;
+        const { alignText } = this.state;
         return [
             [
                 <Switch key="large" checked={this.state.large} onChange={this.handleLargeChange} label="Large" />,
@@ -68,7 +68,7 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
             ],
             [
                 <IntentSelect key="intent" intent={this.state.intent} onChange={this.handleIntentChange} />,
-                <AlignmentSelect align={align} onChange={this.handleAlignChange} />,
+                <AlignmentSelect align={alignText} onChange={this.handleAlignChange} />,
             ],
         ];
     }
@@ -84,5 +84,6 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
         );
     }
 
-    private handleAlignChange = (align: IButtonGroupPopoverExampleState["align"]) => this.setState({ align });
+    private handleAlignChange = (alignText: IButtonGroupPopoverExampleState["alignText"]) =>
+        this.setState({ alignText });
 }

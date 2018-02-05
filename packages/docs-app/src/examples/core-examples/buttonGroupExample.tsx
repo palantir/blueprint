@@ -11,7 +11,7 @@ import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export interface IButtonGroupExampleState {
-    align: "left" | "center" | "right";
+    alignText: "left" | "center" | "right";
     fill: boolean;
     iconOnly: boolean;
     minimal: boolean;
@@ -21,7 +21,7 @@ export interface IButtonGroupExampleState {
 
 export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
     public state: IButtonGroupExampleState = {
-        align: "center",
+        alignText: "center",
         fill: false,
         iconOnly: false,
         large: false,
@@ -75,10 +75,10 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
                     label="Icons only"
                     onChange={this.handleIconOnlyChange}
                 />,
-                <AlignmentSelect align={this.state.align} onChange={this.handleAlignChange} />,
+                <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />,
             ],
         ];
     }
 
-    private handleAlignChange = (align: IButtonGroupExampleState["align"]) => this.setState({ align });
+    private handleAlignChange = (alignText: IButtonGroupExampleState["alignText"]) => this.setState({ alignText });
 }

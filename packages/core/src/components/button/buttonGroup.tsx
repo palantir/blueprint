@@ -16,7 +16,7 @@ export interface IButtonGroupProps extends IProps, React.HTMLProps<HTMLDivElemen
      * `align="right"` right-aligns text and pushes `icon` to left side.
      * This prop only has an effect if buttons are wider than their default widths.
      */
-    align?: "left" | "center" | "right";
+    alignText?: "left" | "center" | "right";
 
     /**
      * Whether the button group should take up the full width of its container.
@@ -49,12 +49,12 @@ export class ButtonGroup extends React.PureComponent<IButtonGroupProps, {}> {
     public static displayName = "Blueprint2.ButtonGroup";
 
     public render() {
-        const { align, className, fill, minimal, large, vertical, ...htmlProps } = this.props;
+        const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = this.props;
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
-                [Classes.ALIGN_LEFT]: align === "left",
-                [Classes.ALIGN_RIGHT]: align === "right",
+                [Classes.ALIGN_LEFT]: alignText === "left",
+                [Classes.ALIGN_RIGHT]: alignText === "right",
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.MINIMAL]: minimal,
