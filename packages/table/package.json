@@ -7,6 +7,7 @@
   "typings": "dist/esm/index.d.ts",
   "style": "dist/table.css",
   "unpkg": "dist/table.bundle.js",
+  "sideEffects": false,
   "scripts": {
     "compile": "npm-run-all -p 'compile:*'",
     "compile:esm": "tsc -p ./src",
