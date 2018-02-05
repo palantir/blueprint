@@ -211,7 +211,7 @@ export function parseDate(date: string | number | Date) {
     }
 
     const parseToken = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
-    let token = parseToken.exec(date.toString());
+    const token = parseToken.exec(date.toString());
     if (token == null) {
         return parse(date);
     }

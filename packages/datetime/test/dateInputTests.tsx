@@ -316,9 +316,9 @@ describe("<DateInput>", () => {
             );
             wrapper
                 .find("input")
-                .simulate("change", { target: {value: "2015-02-01"}})
+                .simulate("change", { target: { value: "2015-02-01" } })
                 .simulate("blur")
-                .simulate("focus")
+                .simulate("focus");
 
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), "2015-02-01");
             assert.isTrue(onError.calledOnce);
