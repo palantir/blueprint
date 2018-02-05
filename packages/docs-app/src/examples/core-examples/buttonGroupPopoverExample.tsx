@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Button, ButtonGroup, IconName, Intent, Popover, Position, Switch } from "@blueprintjs/core";
+import { AlignmentType, Button, ButtonGroup, IconName, Intent, Popover, Position, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
@@ -13,7 +13,7 @@ import { FileMenu } from "./common/fileMenu";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonGroupPopoverExampleState {
-    alignText: "left" | "center" | "right";
+    alignText: AlignmentType;
     intent: Intent;
     large: boolean;
     minimal: boolean;
@@ -84,6 +84,5 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
         );
     }
 
-    private handleAlignChange = (alignText: IButtonGroupPopoverExampleState["alignText"]) =>
-        this.setState({ alignText });
+    private handleAlignChange = (alignText: AlignmentType) => this.setState({ alignText });
 }

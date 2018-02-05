@@ -28,14 +28,7 @@ export class NavbarGroup extends React.PureComponent<INavbarGroupProps, {}> {
 
     public render() {
         const { align, children, className: propsClassName, ...htmlProps } = this.props;
-        const className = classNames(
-            Classes.NAVBAR_GROUP,
-            {
-                [Classes.ALIGN_LEFT]: align === "left",
-                [Classes.ALIGN_RIGHT]: align === "right",
-            },
-            propsClassName,
-        );
+        const className = classNames(Classes.NAVBAR_GROUP, Classes.alignmentClass(align), propsClassName);
         return (
             <div className={className} {...htmlProps}>
                 {children}

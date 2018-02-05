@@ -80,11 +80,10 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
             Classes.BUTTON,
             {
                 [Classes.ACTIVE]: this.state.isActive || this.props.active,
-                [Classes.ALIGN_LEFT]: alignText === "left",
-                [Classes.ALIGN_RIGHT]: alignText === "right",
                 [Classes.DISABLED]: disabled,
                 [Classes.LOADING]: loading,
             },
+            Classes.alignmentClass(alignText),
             Classes.intentClass(this.props.intent),
             this.props.className,
         );

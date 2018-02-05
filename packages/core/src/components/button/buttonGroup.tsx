@@ -53,13 +53,12 @@ export class ButtonGroup extends React.PureComponent<IButtonGroupProps, {}> {
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
-                [Classes.ALIGN_LEFT]: alignText === "left",
-                [Classes.ALIGN_RIGHT]: alignText === "right",
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.MINIMAL]: minimal,
                 [Classes.VERTICAL]: vertical,
             },
+            Classes.alignmentClass(alignText),
             className,
         );
         return (
