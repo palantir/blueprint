@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-/* tslint:disable:no-submodule-imports */
 import * as format from "date-fns/format";
 import * as isSameDay from "date-fns/is_same_day";
 import * as parse from "date-fns/parse";
@@ -22,17 +21,9 @@ const LOCALE: { [index: string]: any } = {
     uk: require("date-fns/locale/en"),
     zh_cn: require("date-fns/locale/zh_cn"),
 };
-/* tslint:enable:no-submodule-imports */
 import { DateFormat } from "../dateFormatter";
+import { DateRange, SupportedLocaleString } from "./types";
 import { padWithZeroes } from "./utils";
-
-export type SupportedLocaleString = "de" | "en" | "es" | "fr" | "it" | "ko" | "ru" | "uk" | "zh_cn";
-export type DateRange = [Date | undefined, Date | undefined];
-
-export enum DateRangeBoundary {
-    START = "start",
-    END = "end",
-}
 
 export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
     if (dateRange1 == null && dateRange2 == null) {

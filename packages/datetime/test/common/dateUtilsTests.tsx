@@ -6,9 +6,8 @@
 
 import { assert, expect } from "chai";
 
-import { DateRange } from "../../src/";
+import { DateRange, Months } from "../../src/";
 import * as DateUtils from "../../src/common/dateUtils";
-import { Months } from "../../src/common/months";
 import { assertTimeIs, createTimeObject, toHyphenatedDateString } from "./dateTestUtils";
 
 describe("dateUtils", () => {

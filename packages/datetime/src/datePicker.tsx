@@ -6,6 +6,7 @@
 
 import { AbstractPureComponent, Button, IProps, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
+import * as isSameDay from "date-fns/is_same_day";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import { DayModifiers } from "react-day-picker/types/common";
@@ -14,10 +15,6 @@ import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/prop
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
-
-/* tslint:disable:no-submodule-imports */
-import * as isSameDay from "date-fns/is_same_day";
-/* tslint:enable:no-submodule-imports */
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 

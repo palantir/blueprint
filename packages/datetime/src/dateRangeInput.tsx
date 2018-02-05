@@ -5,6 +5,9 @@
  */
 
 import * as classNames from "classnames";
+import * as differenceInDays from "date-fns/difference_in_days";
+import * as isValid from "date-fns/is_valid";
+import * as isWithinRange from "date-fns/is_within_range";
 import * as React from "react";
 import { DayPickerProps } from "react-day-picker/types/props";
 
@@ -22,17 +25,12 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { DateRange, DateRangeBoundary, dateToString, parseDate } from "./common/dateUtils";
+import { dateToString, parseDate } from "./common/dateUtils";
 import * as Errors from "./common/errors";
+import { DateRange, DateRangeBoundary } from "./common/types";
 import { DateFormat, IDateFormatter } from "./dateFormatter";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
-
-/* tslint:disable:no-submodule-imports */
-import * as differenceInDays from "date-fns/difference_in_days";
-import * as isValid from "date-fns/is_valid";
-import * as isWithinRange from "date-fns/is_within_range";
-/* tslint:enable:no-submodule-imports */
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     /**

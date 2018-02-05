@@ -21,7 +21,6 @@ import * as isSameDay from "date-fns/is_same_day";
 
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
-import { Months } from "../src/common/months";
 import { IDateRangePickerState, IDateRangeShortcut } from "../src/dateRangePicker";
 import {
     Classes as DateClasses,
@@ -29,6 +28,7 @@ import {
     DateRangePicker,
     IDatePickerModifiers,
     IDateRangePickerProps,
+    Months,
 } from "../src/index";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 

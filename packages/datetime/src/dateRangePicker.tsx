@@ -6,6 +6,10 @@
 
 import { AbstractPureComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
+import * as addMonths from "date-fns/add_months";
+import * as isSameDay from "date-fns/is_same_day";
+import * as isSameMonth from "date-fns/is_same_month";
+import * as subMonths from "date-fns/sub_months";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import { DayModifiers } from "react-day-picker/types/common";
@@ -13,18 +17,9 @@ import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/prop
 
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
-import DateRange = DateUtils.DateRange;
-import DateRangeBoundary = DateUtils.DateRangeBoundary;
-
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
-
-/* tslint:disable:no-submodule-imports */
-import * as addMonths from "date-fns/add_months";
-import * as isSameDay from "date-fns/is_same_day";
-import * as isSameMonth from "date-fns/is_same_month";
-import * as subMonths from "date-fns/sub_months";
-/* tslint:enable:no-submodule-imports */
+import { DateRange, DateRangeBoundary } from "./common/types";
 import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
