@@ -21,6 +21,8 @@ export interface ClassDictionary {
 export interface ClassArray extends Array<ClassValue> {}
 // tslint:enable
 
+const CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT = "bp-table-text-no-measure";
+
 /**
  * Since Firefox doesn't provide a computed "font" property, we manually
  * construct it using the ordered properties that can be specifed in CSS.
@@ -42,7 +44,7 @@ export const Utils = {
      * element's original className and any other classes passed in with variadic
      * arguments matching the `classNames` api.
      */
-    assignClasses<P extends IProps>(elem: React.ReactElement<P>, ...extendedClasses: ClassValue[]) {
+    assignClasses<P extends IProps>(elem: React.ReactElement<P>, ...extendedClasses: ClassValue[]): React.ReactNode {
         const classes = classNames(elem.props.className, ...extendedClasses);
         const props: IProps = { className: classes };
         return React.cloneElement(elem, props);
@@ -70,8 +72,8 @@ export const Utils = {
      * Example input:  [10, 20, 50]
      *         output: [10, 30, 80]
      */
-    accumulate(numbers: number[]) {
-        const result: number[] = [];
+    accumulate(numbers: number[]): number[] {
+        const result = [];
         let sum = 0;
         for (const num of numbers) {
             sum += num;
@@ -87,7 +89,7 @@ export const Utils = {
      * Note that this isn't technically mathematically equivalent to base 26 since
      * there is no zero element.
      */
-    toBase26Alpha(num: number) {
+    toBase26Alpha(num: number): string {
         let str = "";
         while (true) {
             const letter = num % 26;
@@ -104,7 +106,7 @@ export const Utils = {
      * Returns traditional spreadsheet-style cell names
      * e.g. (A1, B2, ..., Z44, AA1) with rows 1-indexed.
      */
-    toBase26CellName(rowIndex: number, columnIndex: number) {
+    toBase26CellName(rowIndex: number, columnIndex: number): string {
         return `${Utils.toBase26Alpha(columnIndex)}${rowIndex + 1}`;
     },
 
@@ -187,17 +189,14 @@ export const Utils = {
 
     /**
      * Measures the bounds of supplied element's textContent.
-     *
      * We use the computed font from the supplied element and a non-DOM canvas
      * context to measure the text.
-     *
-     * Returns a `TextMetrics` object.
      */
-    measureElementTextContent(element: Element) {
+    measureElementTextContent(element: Element): TextMetrics {
         const context = document.createElement("canvas").getContext("2d");
         const style = getComputedStyle(element, null);
         context.font = CSS_FONT_PROPERTIES.map(prop => style.getPropertyValue(prop)).join(" ");
-        return context.measureText(element.textContent);
+        return measureTextContentWithExclusions(context, element);
     },
 
     /**
@@ -207,7 +206,7 @@ export const Utils = {
      *
      * Assumes max >= min.
      */
-    clamp(value: number, min?: number, max?: number) {
+    clamp(value: number, min?: number, max?: number): number {
         if (min != null && value < min) {
             value = min;
         }
@@ -248,7 +247,7 @@ export const Utils = {
      *
      * The return value will then be 2, the left-most index of the columns in the new ordering.
      */
-    guideIndexToReorderedIndex(oldIndex: number, newIndex: number, length: number) {
+    guideIndexToReorderedIndex(oldIndex: number, newIndex: number, length: number): number {
         if (newIndex < oldIndex) {
             return newIndex;
         } else if (oldIndex <= newIndex && newIndex < oldIndex + length) {
@@ -271,7 +270,7 @@ export const Utils = {
      * The return value will then be 5, the index on whose left boundary the guide should appear in
      * the original ordering.
      */
-    reorderedIndexToGuideIndex(oldIndex: number, newIndex: number, length: number) {
+    reorderedIndexToGuideIndex(oldIndex: number, newIndex: number, length: number): number {
         return newIndex <= oldIndex ? newIndex : newIndex + length;
     },
 
@@ -282,7 +281,7 @@ export const Utils = {
      * For example, given the array [A,B,C,D,E,F], reordering the 3 contiguous elements starting at
      * index 1 (B, C, and D) to start at index 2 would yield [A,E,B,C,D,F].
      */
-    reorderArray(array: any[], from: number, to: number, length = 1) {
+    reorderArray<T>(array: T[], from: number, to: number, length = 1): T[] {
         if (length === 0 || length === array.length || from === to) {
             // return an unchanged copy
             return array.slice();
@@ -336,7 +335,7 @@ export const Utils = {
     /**
      * Returns true if the mouse event was triggered by the left mouse button.
      */
-    isLeftClick(event: MouseEvent) {
+    isLeftClick(event: MouseEvent): boolean {
         return event.button === 0;
     },
 
@@ -347,7 +346,7 @@ export const Utils = {
         approxLineHeight: number,
         horizontalPadding: number,
         numBufferLines: number,
-    ) {
+    ): number {
         const numCharsInCell = cellText == null ? 0 : cellText.length;
 
         const actualCellWidth = columnWidth;
@@ -359,3 +358,29 @@ export const Utils = {
         return approxCellHeight;
     },
 };
+
+/**
+ * Wrapper around Canvas measureText which applies some extra logic to optionally
+ * exclude an element's text from the computation.
+ */
+function measureTextContentWithExclusions(context: CanvasRenderingContext2D, element: Element): TextMetrics {
+    // We only expect one or zero excluded elements in this subtree
+    // We don't have a need for more than one, so we avoid that complexity altogether.
+    const elementToExclude = element.querySelector(`.${CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT}`);
+    let removedElementParent: Element | undefined;
+    let removedElementNextSibling: Node | undefined;
+
+    if (elementToExclude != null) {
+        removedElementParent = elementToExclude.parentElement;
+        removedElementNextSibling = elementToExclude.nextSibling;
+        removedElementParent.removeChild(elementToExclude);
+    }
+
+    const metrics = context.measureText(element.textContent);
+
+    if (elementToExclude != null) {
+        removedElementParent.insertBefore(elementToExclude, removedElementNextSibling);
+    }
+
+    return metrics;
+}
