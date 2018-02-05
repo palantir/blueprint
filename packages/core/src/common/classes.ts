@@ -200,7 +200,6 @@ export const ICON_LARGE = "pt-icon-large";
 
 /** Return CSS class for alignment. */
 export function alignmentClass(alignment: AlignmentType) {
-    /* istanbul ignore next */
     switch (alignment) {
         case Alignment.LEFT:
             return ALIGN_LEFT;
