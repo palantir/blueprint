@@ -7,6 +7,7 @@
   "typings": "dist/esm/index.d.ts",
   "style": "dist/blueprint.css",
   "unpkg": "dist/core.bundle.js",
+  "sideEffects": false,
   "scripts": {
     "compile": "npm-run-all -s compile:pre -p 'compile:*'",
     "compile:pre": "generate-icons-source",
