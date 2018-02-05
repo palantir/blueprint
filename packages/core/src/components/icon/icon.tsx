@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSvgPaths16, IconSvgPaths20, LegacyIconName } from "@blueprintjs/icons";
+import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
 
 export { IconName };
@@ -22,7 +22,7 @@ export interface IIconProps extends IIntentProps, IProps {
      * Name of the icon (with or without `"pt-icon-"` prefix).
      * If omitted or `undefined`, this component will render nothing.
      */
-    iconName?: LegacyIconName;
+    iconName?: IconName;
 
     /**
      * Size of the icon, in pixels.
@@ -47,23 +47,27 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
             return null;
         }
         const { className, iconName, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
-        const normalizedIconName = iconName.replace("pt-icon-", "") as IconName;
 
         // choose which pixel grid is most appropriate for given icon size
         const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
+        const paths = this.renderSvgPaths(pixelGridSize, iconName);
+        if (paths == null) {
+            return null;
+        }
+
         const classes = classNames(Classes.ICON, Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
         return (
             <svg
                 {...svgProps}
                 className={classes}
-                data-icon={normalizedIconName}
+                data-icon={iconName}
                 width={iconSize}
                 height={iconSize}
                 viewBox={viewBox}
             >
-                <title>{normalizedIconName}</title>
-                {this.renderSvgPaths(pixelGridSize, normalizedIconName)}
+                <title>{iconName}</title>
+                {paths}
             </svg>
         );
     }
