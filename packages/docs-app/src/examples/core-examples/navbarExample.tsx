@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Navbar, NavbarDivider, NavbarGroup, NavbarHeading, Switch } from "@blueprintjs/core";
+import { Button, Navbar, NavbarDivider, NavbarGroup, NavbarHeading, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface INavbarExampleState {
@@ -26,8 +26,8 @@ export class NavbarExample extends BaseExample<INavbarExampleState> {
                 <NavbarGroup align={this.state.alignRight ? "right" : "left"}>
                     <NavbarHeading>Blueprint</NavbarHeading>
                     <NavbarDivider />
-                    <button className="pt-button pt-minimal pt-icon-home">Home</button>
-                    <button className="pt-button pt-minimal pt-icon-document">Files</button>
+                    <Button className="pt-minimal" iconName="home" text="Home" />
+                    <Button className="pt-minimal" iconName="document" text="Files" />
                 </NavbarGroup>
             </Navbar>
         );

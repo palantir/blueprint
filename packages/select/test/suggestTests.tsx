@@ -17,7 +17,7 @@ describe("Suggest", () => {
     const FilmSuggest = Suggest.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
-        popoverProps: { inline: true, isOpen: true },
+        popoverProps: { isOpen: true, usePortal: false },
         query: "",
     };
     let handlers: {

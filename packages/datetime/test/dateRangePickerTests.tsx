@@ -8,7 +8,7 @@ import { Classes } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import ReactDayPicker from "react-day-picker";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
@@ -83,10 +83,10 @@ describe("<DateRangePicker>", () => {
             assertDatesEqual(new Date(firstDay.prop("day")), firstDayInView);
         });
 
-        it("doesn't show outside days if enableOutsideDays=false", () => {
+        it("doesn't show outside days if showOutsideDays=false", () => {
             const defaultValue = [new Date(2017, Months.SEPTEMBER, 1, 12), null] as DateRange;
             const { leftView, rightView } = wrap(
-                <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ enableOutsideDays: false }} />,
+                <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ showOutsideDays: false }} />,
             );
             const leftDays = leftView.find("Day");
             const rightDays = rightView.find("Day");
@@ -410,8 +410,8 @@ describe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ contiguousCalendarMonths, maxDate, minDate });
             assert.lengthOf(document.getElementsByClassName("DayPicker"), 1);
-            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--prev"), 0);
-            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--next"), 0);
+            // react-day-picker still renders the navigation but with a interaction disabled class
+            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--interactionDisabled"), 2);
         });
 
         it("left calendar is bound between minDate and (maxDate - 1 month)", () => {
@@ -642,13 +642,11 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.FEBRUARY, 5);
             renderDateRangePicker({ initialMonth, minDate });
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.FEBRUARY);
-            let prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
-            assert.lengthOf(prevBtn, 1);
+            assert.lengthOf(document.querySelectorAll(".DayPicker-NavButton--interactionDisabled"), 0);
 
-            TestUtils.Simulate.click(prevBtn[0]);
+            TestUtils.Simulate.click(document.querySelectorAll(".DayPicker-NavButton--prev")[0]);
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.JANUARY);
-            prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
-            assert.lengthOf(prevBtn, 0);
+            assert.lengthOf(document.querySelectorAll(".DayPicker-NavButton--interactionDisabled"), 1);
         });
 
         it("disables shortcuts that begin earlier than minDate", () => {

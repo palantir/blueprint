@@ -15,7 +15,6 @@ import * as Classes from "./common/classes";
 import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
-import { Utils } from "./common/utils";
 
 export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProps {
     /**
@@ -92,7 +91,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
 
     public shouldComponentUpdate(nextProps?: ITableBodyCellsProps) {
         return (
-            !Utils.shallowCompareKeys(nextProps, this.props, { exclude: SHALLOW_COMPARE_BLACKLIST }) ||
+            !CoreUtils.shallowCompareKeys(nextProps, this.props, { exclude: SHALLOW_COMPARE_BLACKLIST }) ||
             // "viewportRect" is not a plain object, so we can't just deep
             // compare; we need custom logic.
             this.didViewportRectChange(nextProps.viewportRect, this.props.viewportRect)
@@ -101,7 +100,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
 
     public componentWillUpdate(nextProps?: ITableBodyCellsProps) {
         const resetKeysBlacklist = { exclude: BATCHER_RESET_PROP_KEYS_BLACKLIST };
-        const shouldResetBatcher = !Utils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
+        const shouldResetBatcher = !CoreUtils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
         if (shouldResetBatcher) {
             this.batcher.reset();
         }

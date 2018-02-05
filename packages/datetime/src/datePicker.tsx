@@ -7,7 +7,9 @@
 import { AbstractPureComponent, Button, IProps, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import ReactDayPicker from "react-day-picker";
+import { DayModifiers } from "react-day-picker/types/common";
+import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/props";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -34,7 +36,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
      * `initialMonth`), `toMonth` (use `maxDate`).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerProps?: DayPickerProps;
 
     /**
      * Initial day the calendar will display as selected.
@@ -135,7 +137,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
                 <ReactDayPicker
-                    enableOutsideDays={true}
+                    showOutsideDays={true}
                     locale={locale}
                     localeUtils={localeUtils}
                     modifiers={modifiers}
@@ -201,7 +203,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         return Array.isArray(disabledDays) ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
 
-    private renderCaption = (props: ReactDayPicker.CaptionElementProps) => (
+    private renderCaption = (props: CaptionElementProps) => (
         <DatePickerCaption
             {...props}
             maxDate={this.props.maxDate}
@@ -229,11 +231,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         );
     }
 
-    private handleDayClick = (
-        day: Date,
-        modifiers: ReactDayPicker.DayModifiers,
-        e: React.MouseEvent<HTMLDivElement>,
-    ) => {
+    private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
 
         let newValue = day;
