@@ -14,6 +14,7 @@ import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
+import { Text } from "../text/text";
 import { Menu } from "./menu";
 
 export interface IMenuItemProps extends IActionProps, ILinkProps {
@@ -74,7 +75,6 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
             },
             this.props.className,
         );
-        const textClasses = classNames(Classes.FILL, { [Classes.TEXT_OVERFLOW_ELLIPSIS]: !this.props.multiline });
 
         const target = (
             <a
@@ -85,7 +85,9 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 target={this.props.target}
             >
                 <Icon iconName={this.props.iconName} />
-                <span className={textClasses}>{this.props.text}</span>
+                <Text className={Classes.FILL} ellipsize={!this.props.multiline}>
+                    {this.props.text}
+                </Text>
                 {label && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
                 {hasSubmenu && <Icon iconName="caret-right" />}
             </a>

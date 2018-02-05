@@ -5,7 +5,7 @@
  */
 
 import { assert } from "chai";
-import { mount, shallow, ShallowWrapper } from "enzyme";
+import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { spy, stub } from "sinon";
 
@@ -22,13 +22,14 @@ import {
     MenuItem,
     Popover,
     PopoverInteractionKind,
+    Text,
 } from "../../src/index";
 
 describe("MenuItem", () => {
     it("React renders MenuItem", () => {
         const wrapper = shallow(<MenuItem iconName="graph" text="Graph" />);
-        assert.lengthOf(wrapper.find(Icon), 1);
-        assert.match(wrapper.text(), /Graph$/);
+        assert.isTrue(wrapper.find(Icon).exists());
+        assert.strictEqual(findText(wrapper).text(), "Graph");
     });
 
     it("children appear in submenu", () => {
@@ -133,6 +134,19 @@ describe("MenuItem", () => {
         );
         assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
     });
+
+    it("multiline prop determines if long content is ellipsized", () => {
+        const wrapper = mount(
+            <MenuItem multiline={false} text="multiline prop determines if long content is ellipsized." />,
+        );
+        function assertOverflow(expected: boolean) {
+            assert.strictEqual(findText(wrapper).hasClass(Classes.TEXT_OVERFLOW_ELLIPSIS), expected);
+        }
+
+        assertOverflow(true);
+        wrapper.setProps({ multiline: true });
+        assertOverflow(false);
+    });
 });
 
 describe("MenuDivider", () => {
@@ -165,4 +179,8 @@ function findSubmenu(wrapper: ShallowWrapper<any, any>) {
     return wrapper.find(Popover).prop("content") as React.ReactElement<
         IMenuProps & { children: Array<React.ReactElement<IMenuItemProps>> }
     >;
+}
+
+function findText(wrapper: ShallowWrapper | ReactWrapper) {
+    return wrapper.find(Text).children();
 }
