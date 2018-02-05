@@ -20,7 +20,7 @@ import { Menu } from "./menu";
 export interface IMenuItemProps extends IActionProps, ILinkProps {
     // override from IActionProps to make it required
     /** Item text, required for usability. */
-    text: string;
+    text: React.ReactNode;
 
     /**
      * Right-aligned label content, useful for displaying hotkeys.
