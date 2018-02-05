@@ -5,4 +5,5 @@
  */
 
 export * from "./common/classes";
+export * from "./common/predicate";
 export * from "./components";

@@ -20,6 +20,8 @@ export interface IListItemsProps<T> extends IProps {
      * (Supports filter algorithms that operate on the entire set, rather than individual items.)
      *
      * If defined with `itemPredicate`, this prop takes priority and the other will be ignored.
+     *
+     * An alias type `ItemListPredicate<T>` is provided to simplify the process of authoring predicates.
      */
     itemListPredicate?: (query: string, items: T[]) => T[];
 
@@ -29,6 +31,8 @@ export interface IListItemsProps<T> extends IProps {
      * queries, use `itemListPredicate` to operate once on the entire array.
      *
      * If defined with `itemListPredicate`, this prop will be ignored.
+     *
+     * An alias type `ItemPredicate<T>` is provided to simplify the process of authoring predicates.
      */
     itemPredicate?: (query: string, item: T, index: number) => boolean;
 

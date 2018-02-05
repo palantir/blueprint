@@ -5,7 +5,7 @@
  */
 
 import { Classes, MenuItem } from "@blueprintjs/core";
-import { ItemRenderer } from "@blueprintjs/select";
+import { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
 import * as classNames from "classnames";
 import * as React from "react";
 
@@ -141,9 +141,9 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers }
     );
 };
 
-export function filterFilm(query: string, film: IFilm) {
+export const filterFilm: ItemPredicate<IFilm> = (query, film) => {
     return `${film.rank}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
-}
+};
 
 export const filmSelectProps = {
     itemPredicate: filterFilm,
