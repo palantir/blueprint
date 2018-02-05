@@ -4,12 +4,12 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Button, ButtonGroup } from "@blueprintjs/core";
+import { Alignment, AlignmentType, Button, ButtonGroup } from "@blueprintjs/core";
 import * as React from "react";
 
 export interface IAlignSelectProps {
-    align: "left" | "right" | "center" | undefined;
-    onChange: (align: IAlignSelectProps["align"]) => void;
+    align: AlignmentType | undefined;
+    onChange: (align: AlignmentType) => void;
 }
 
 export class AlignmentSelect extends React.PureComponent<IAlignSelectProps> {
@@ -19,19 +19,19 @@ export class AlignmentSelect extends React.PureComponent<IAlignSelectProps> {
             <div>
                 Button alignment
                 <ButtonGroup fill={true} style={{ marginTop: 5 }}>
-                    <Button active={align === "left"} text="Left" onClick={this.handleAlignLeft} />
+                    <Button active={align === Alignment.LEFT} text="Left" onClick={this.handleAlignLeft} />
                     <Button
-                        active={align == null || align === "center"}
+                        active={align == null || align === Alignment.CENTER}
                         text="Center"
                         onClick={this.handleAlignCenter}
                     />
-                    <Button active={align === "right"} text="Right" onClick={this.handleAlignRight} />
+                    <Button active={align === Alignment.RIGHT} text="Right" onClick={this.handleAlignRight} />
                 </ButtonGroup>
             </div>
         );
     }
 
-    private handleAlignLeft = () => this.props.onChange("left");
-    private handleAlignCenter = () => this.props.onChange("center");
-    private handleAlignRight = () => this.props.onChange("right");
+    private handleAlignLeft = () => this.props.onChange(Alignment.LEFT);
+    private handleAlignCenter = () => this.props.onChange(Alignment.CENTER);
+    private handleAlignRight = () => this.props.onChange(Alignment.RIGHT);
 }
