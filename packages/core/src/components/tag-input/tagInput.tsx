@@ -206,19 +206,22 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
                     iconName={leftIconName}
                     iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD}
                 />
-                {values.map(this.maybeRenderTag)}
-                <input
-                    value={this.state.inputValue}
-                    {...inputProps}
-                    onFocus={this.handleInputFocus}
-                    onChange={this.handleInputChange}
-                    onKeyDown={this.handleInputKeyDown}
-                    onKeyUp={this.handleInputKeyUp}
-                    placeholder={resolvedPlaceholder}
-                    ref={this.refHandlers.input}
-                    className={classNames(Classes.INPUT_GHOST, inputProps.className)}
-                    disabled={this.props.disabled}
-                />
+                <div className={Classes.TAG_INPUT_VALUES}>
+                    {values.map(this.maybeRenderTag)}
+                    {this.props.children}
+                    <input
+                        value={this.state.inputValue}
+                        {...inputProps}
+                        onFocus={this.handleInputFocus}
+                        onChange={this.handleInputChange}
+                        onKeyDown={this.handleInputKeyDown}
+                        onKeyUp={this.handleInputKeyUp}
+                        placeholder={resolvedPlaceholder}
+                        ref={this.refHandlers.input}
+                        className={classNames(Classes.INPUT_GHOST, inputProps.className)}
+                        disabled={this.props.disabled}
+                    />
+                </div>
                 {this.props.rightElement}
             </div>
         );

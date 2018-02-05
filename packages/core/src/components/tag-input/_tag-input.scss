@@ -7,27 +7,41 @@
 
 $ti-padding: ($pt-input-height - $tag-height) / 2;
 $ti-padding-right: ($pt-input-height - $pt-button-height-small) / 2;
-$ti-large-padding-right: ($pt-input-height-large - $pt-button-height-small) / 2;
+$ti-padding-right-large: ($pt-input-height-large - $pt-button-height-small) / 2;
 
 $ti-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
-$ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
+$ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
 
 .pt-tag-input {
-  display: flex;
-  flex-wrap: wrap;
+  @include pt-flex-container(row, $ti-icon-padding, $fill: ".pt-tag-input-values");
   align-items: center;
   cursor: text;
   height: auto;
-  padding: $ti-padding $ti-padding-right 0 0;
+  min-height: $pt-input-height;
+  padding-right: $ti-padding-right;
+  padding-left: $ti-padding;
 
   .pt-tag-input-icon {
-    // stylelint-disable-next-line max-line-length
-    margin: 0 ($ti-icon-padding - $ti-padding) $ti-padding $ti-icon-padding;
+    align-self: flex-start;
+    // margins to center icon in one-line input
+    margin-top: $ti-icon-padding;
+    margin-left: $ti-icon-padding - $ti-padding;
     color: $pt-icon-color;
   }
 
+  .pt-tag-input-values {
+    @include pt-flex-container(row, $ti-padding);
+    flex-wrap: wrap;
+    align-items: center;
+    align-self: stretch;
+    margin-top: $ti-padding;
+
+    > * {
+      margin-bottom: $ti-padding;
+    }
+  }
+
   .pt-tag {
-    margin: 0 0 $ti-padding $ti-padding;
     // NOTE: in order to wrap long words, you must set explicit width on TagInput,
     // or use .pt-fill CSS class modifier.
     overflow-wrap: break-word;
@@ -36,38 +50,24 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
   .pt-input-ghost {
     // input fills remaining line
     flex: 1 1 auto;
-    margin-bottom: $ti-padding;
     // essentially a min-width, cuz flex allows it to grow or shrink:
-    width: $pt-grid-size * 10;
-    line-height: $tag-height;
-
-    // match padding of other input elements iff no tags are selected
-    &:not(:first-child) {
-      padding: 0 ($input-padding-horizontal - $ti-padding);
-    }
+    width: $pt-grid-size * 8;
 
     &:disabled,
     &.pt-disabled {
       cursor: not-allowed;
     }
-
-    ~ * {
-      // shift right element up (to ignore top padding) so flex box will center it correctly
-      margin-top: -$ti-padding;
-    }
   }
 
   &.pt-large {
+    @include pt-flex-margin(row, $ti-icon-padding-large);
     height: auto;
-    padding-right: $ti-large-padding-right;
+    min-height: $pt-input-height-large;
+    padding-right: $ti-padding-right-large;
 
     .pt-tag-input-icon {
-      // stylelint-disable-next-line max-line-length
-      margin: 0 ($ti-icon-padding-large - $ti-padding) $ti-padding $ti-icon-padding-large;
-    }
-
-    .pt-input-ghost {
-      line-height: $tag-height-large;
+      margin-top: $ti-icon-padding-large;
+      margin-left: $ti-icon-padding-large - $ti-padding;
     }
   }
 
@@ -104,7 +104,7 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-standard) / 2;
   border: none;
   box-shadow: none;
   background: none;
-  padding: 0 $input-padding-horizontal;
+  padding: 0;
 
   &:focus {
     // remove focus state too
