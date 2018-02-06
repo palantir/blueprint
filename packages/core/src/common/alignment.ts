@@ -5,9 +5,8 @@
 */
 
 /** Alignment along the horizontal axis. */
-export type Alignment = "center" | "left" | "right";
-export const Alignment = {
-    CENTER: "center" as "center",
-    LEFT: "left" as "left",
-    RIGHT: "right" as "right",
-};
+export enum Alignment {
+    CENTER = "center",
+    LEFT = "left",
+    RIGHT = "right",
+}

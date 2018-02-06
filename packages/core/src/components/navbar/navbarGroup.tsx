@@ -6,6 +6,7 @@
 
 import * as classNames from "classnames";
 import * as React from "react";
+import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
@@ -13,9 +14,9 @@ export interface INavbarGroupProps extends React.HTMLProps<HTMLDivElement>, IPro
     /**
      * The side of the navbar on which the group should appear.
      * The `Alignment` enum provides constants for these values.
-     * @default "left"
+     * @default Alignment.LEFT
      */
-    align?: "left" | "right";
+    align?: Alignment;
 }
 
 // this component is simple enough that tests would be purely tautological.
@@ -24,7 +25,7 @@ export class NavbarGroup extends React.PureComponent<INavbarGroupProps, {}> {
     public static displayName = "Blueprint2.NavbarGroup";
 
     public static defaultProps: INavbarGroupProps = {
-        align: "left",
+        align: Alignment.LEFT,
     };
 
     public render() {
