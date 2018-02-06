@@ -8,6 +8,7 @@ import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
 import { IItemModifiers, ItemRenderer } from "../../common/itemRenderer";
+import { ItemListPredicate, ItemPredicate } from "../../common/predicate";
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
@@ -20,10 +21,8 @@ export interface IListItemsProps<T> extends IProps {
      * (Supports filter algorithms that operate on the entire set, rather than individual items.)
      *
      * If defined with `itemPredicate`, this prop takes priority and the other will be ignored.
-     *
-     * An alias type `ItemListPredicate<T>` is provided to simplify the process of authoring predicates.
      */
-    itemListPredicate?: (query: string, items: T[]) => T[];
+    itemListPredicate?: ItemListPredicate<T>;
 
     /**
      * Customize querying of individual items. Return `true` to keep the item, `false` to hide.
@@ -31,10 +30,8 @@ export interface IListItemsProps<T> extends IProps {
      * queries, use `itemListPredicate` to operate once on the entire array.
      *
      * If defined with `itemListPredicate`, this prop will be ignored.
-     *
-     * An alias type `ItemPredicate<T>` is provided to simplify the process of authoring predicates.
      */
-    itemPredicate?: (query: string, item: T, index: number) => boolean;
+    itemPredicate?: ItemPredicate<T>;
 
     /**
      * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
