@@ -215,11 +215,10 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             // dom elements for the updated month is not available when
             // onMonthChange is called. setTimeout is necessary to wait
             // for the updated month to be rendered
-            onMonthChange: (month: Date) =>
-                setTimeout(() => {
-                    Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, month);
-                    this.registerPopoverBlurHandler();
-                }, 0),
+            onMonthChange: (month: Date) => {
+                Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, month);
+                this.setTimeout(this.registerPopoverBlurHandler);
+            },
         };
 
         const popoverContent =
@@ -479,8 +478,11 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         this.safeInvokeInputProp("onKeyDown", e);
     };
 
+    // blur DOM event listener (not React event)
+    private handlePopoverBlur = () => this.handleClosePopover();
+
     private registerPopoverBlurHandler = () => {
-        if (this.contentRef) {
+        if (this.contentRef != null) {
             // Popover contents are well structured, but the selector will need
             // to be updated if more focusable components are added in the future
             const tabbableElements = this.contentRef.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
@@ -490,7 +492,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 if (this.lastPopoverElement !== lastPopoverElement) {
                     this.unregisterPopoverBlurHandler();
                     this.lastPopoverElement = lastPopoverElement;
-                    this.lastPopoverElement.addEventListener("blur", (this.handleClosePopover as any) as EventListener);
+                    this.lastPopoverElement.addEventListener("blur", this.handlePopoverBlur);
                 }
             }
         }
@@ -498,7 +500,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private unregisterPopoverBlurHandler = () => {
         if (this.lastPopoverElement) {
-            this.lastPopoverElement.removeEventListener("blur", (this.handleClosePopover as any) as EventListener);
+            this.lastPopoverElement.removeEventListener("blur", this.handlePopoverBlur);
         }
     };
 
