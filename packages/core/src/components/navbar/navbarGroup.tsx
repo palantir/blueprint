@@ -12,6 +12,7 @@ import { IProps } from "../../common/props";
 export interface INavbarGroupProps extends React.HTMLProps<HTMLDivElement>, IProps {
     /**
      * The side of the navbar on which the group should appear.
+     * The `Alignment` enum provides constants for these values.
      * @default "left"
      */
     align?: "left" | "right";
@@ -27,17 +28,10 @@ export class NavbarGroup extends React.PureComponent<INavbarGroupProps, {}> {
     };
 
     public render() {
-        const { align, children, className: propsClassName, ...htmlProps } = this.props;
-        const className = classNames(
-            Classes.NAVBAR_GROUP,
-            {
-                [Classes.ALIGN_LEFT]: align === "left",
-                [Classes.ALIGN_RIGHT]: align === "right",
-            },
-            propsClassName,
-        );
+        const { align, children, className, ...htmlProps } = this.props;
+        const classes = classNames(Classes.NAVBAR_GROUP, Classes.alignmentClass(align), className);
         return (
-            <div className={className} {...htmlProps}>
+            <div className={classes} {...htmlProps}>
                 {children}
             </div>
         );
