@@ -43,6 +43,9 @@ Supply a predicate to automatically query items based on the `InputGroup` value.
 
 Omitting both `itemPredicate` and `itemListPredicate` props will cause the component to always render all `items`. It will not hide the `InputGroup`; use the `filterable` prop for that. In this case, you can implement your own filtering and simply change the `items` prop.
 
+The __@blueprintjs/select__ package exports `ItemPredicate<T>` and `ItemListPredicate<T>` type aliases to simplify the process of implementing these functions.
+See the code sample in [Item Renderer API](#select/select-component.item-renderer-api) below for usage.
+
 @### Non-ideal states
 
 If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list. You also have the option to provide `initialContent`, which will render in place of the item list if the query is empty.
@@ -76,8 +79,13 @@ or face React's console wrath!
 
 ```tsx
 import { Classes, MenuItem } from "@blueprintjs/core";
-import { ItemRenderer, Select } from "@blueprintjs/select";
+import { ItemRenderer, ItemPredicate, Select } from "@blueprintjs/select";
+
 const FilmSelect = Select.ofType<Film>();
+
+const filterFilm: ItemPredicate<IFilm> = (query, film) => {
+    return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
+};
 
 const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
     if (!modifiers.filtered) {
@@ -94,7 +102,7 @@ const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
     );
 };
 
-<FilmSelect itemRenderer={renderFilm} items={...} onItemSelect={...} />
+<FilmSelect itemPredicate={filterFilm} itemRenderer={renderFilm} items={...} onItemSelect={...} />
 ```
 
 @interface IItemRendererProps
