@@ -63,6 +63,31 @@ describe("<DateInput>", () => {
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
+    it("Popover closes when ESC key pressed", () => {
+        const wrapper = mount(<DateInput openOnFocus={true} />);
+        const input = wrapper.find("input");
+        input.simulate("focus");
+        const popover = wrapper.find(Popover);
+        assert.isTrue(popover.prop("isOpen"));
+        input.simulate("keydown", { which: Keys.ESCAPE });
+        assert.isFalse(popover.prop("isOpen"));
+    });
+
+    it("Popover closes when last tabbable component is blurred", () => {
+        const wrapper = mount(<DateInput openOnFocus={true} />);
+        const input = wrapper.find("input");
+        input.simulate("focus");
+        const popover = wrapper.find(Popover);
+        assert.isTrue(popover.prop("isOpen"));
+        input.simulate("blur");
+        const lastTabbable = popover
+            .find(".DayPicker-Day--outside")
+            .last()
+            .getDOMNode() as HTMLElement;
+        lastTabbable.dispatchEvent(new Event("blur"));
+        assert.isFalse(popover.prop("isOpen"));
+    });
+
     it("setting timePrecision renders a TimePicker", () => {
         const wrapper = mount(<DateInput timePrecision={TimePickerPrecision.SECOND} />).setState({ isOpen: true });
         // assert TimePicker appears
