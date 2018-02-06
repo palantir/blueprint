@@ -109,7 +109,7 @@ export interface ITagInputProps extends IProps {
 
     /**
      * Element to render on right side of input.
-     * For best results, use a small minimal button, tag, or spinner.
+     * For best results, use a minimal button, tag, or spinner.
      */
     rightElement?: JSX.Element;
 

@@ -6,25 +6,23 @@
 @import "../tag/common";
 
 $ti-padding: ($pt-input-height - $tag-height) / 2;
-$ti-padding-right: ($pt-input-height - $pt-button-height-small) / 2;
-$ti-padding-right-large: ($pt-input-height-large - $pt-button-height-small) / 2;
 
 $ti-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
 $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
 
 .pt-tag-input {
-  @include pt-flex-container(row, $ti-icon-padding, $fill: ".pt-tag-input-values");
-  align-items: center;
+  @include pt-flex-container(row, $fill: ".pt-tag-input-values");
+  align-items: flex-start;
   cursor: text;
   height: auto;
   min-height: $pt-input-height;
-  padding-right: $ti-padding-right;
+  padding-right: 0;
   padding-left: $ti-padding;
 
   .pt-tag-input-icon {
-    align-self: flex-start;
     // margins to center icon in one-line input
     margin-top: $ti-icon-padding;
+    margin-right: $ti-icon-padding;
     margin-left: $ti-icon-padding - $ti-padding;
     color: $pt-icon-color;
   }
@@ -33,8 +31,10 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
     @include pt-flex-container(row, $ti-padding);
     flex-wrap: wrap;
     align-items: center;
+    // fill vertical height
     align-self: stretch;
     margin-top: $ti-padding;
+    margin-right: $ti-icon-padding;
 
     > * {
       margin-bottom: $ti-padding;
@@ -59,15 +59,26 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
     }
   }
 
+  .pt-button {
+    @include pt-button-height($pt-button-height-small);
+    margin: ($pt-input-height - $pt-button-height-small) / 2;
+    margin-left: 0;
+  }
+
   &.pt-large {
     @include pt-flex-margin(row, $ti-icon-padding-large);
     height: auto;
     min-height: $pt-input-height-large;
-    padding-right: $ti-padding-right-large;
 
     .pt-tag-input-icon {
       margin-top: $ti-icon-padding-large;
       margin-left: $ti-icon-padding-large - $ti-padding;
+    }
+
+    .pt-button {
+      @include pt-button-height($pt-button-height);
+      margin: ($pt-input-height-large - $pt-button-height) / 2;
+      margin-left: 0;
     }
   }
 
