@@ -447,6 +447,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             // the page. tabbing forward should *not* close the popover, because
             // focus will be moving into the popover itself.
             this.setState({ isOpen: false });
+        } else if (e.which === Keys.ESCAPE) {
+            this.setState({ isOpen: false });
+            this.inputRef.blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };
