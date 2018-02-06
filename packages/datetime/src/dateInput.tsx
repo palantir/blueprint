@@ -8,7 +8,6 @@ import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
-import * as ReactDOM from "react-dom";
 
 import {
     AbstractComponent,
@@ -185,6 +184,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     public static displayName = "Blueprint.DateInput";
 
     private inputRef: HTMLElement = null;
+    private contentRef: HTMLElement = null;
     private lastPopoverElement: HTMLElement = null;
 
     public constructor(props?: IDateInputProps, context?: any) {
@@ -201,8 +201,8 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     }
 
     public componentWillUnmount() {
-        this.unregisterPopoverBlurHandler();
         super.componentWillUnmount();
+        this.unregisterPopoverBlurHandler();
     }
 
     public render() {
@@ -212,7 +212,13 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         const dateValue = this.isMomentValidAndInRange(value) ? fromMomentToDate(value) : null;
         const dayPickerProps = {
             ...this.props.dayPickerProps,
-            onMonthChange: () => setTimeout(this.registerPopoverBlurHandler, 0),
+            // dom elements for the updated month is not available when
+            // onMonthChange is called. setTimeout is necessary to wait
+            // for the updated month to be rendered
+            onMonthChange: (month: Date) => setTimeout(() => {
+                Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, month);
+                this.registerPopoverBlurHandler();
+            }, 0),
         };
 
         const popoverContent =
@@ -232,6 +238,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                     timePickerProps={{ ...this.props.timePickerProps, precision: this.props.timePrecision }}
                 />
             );
+        const wrappedPopoverContent = <div ref={this.setContentRef}>{popoverContent}</div>;
         // assign default empty object here to prevent mutation
         const { inputProps = {}, popoverProps = {}, format } = this.props;
         // exclude ref (comes from HTMLInputProps typings, not InputGroup)
@@ -255,7 +262,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 {...popoverProps}
                 autoFocus={false}
                 className={popoverClassName}
-                content={popoverContent}
+                content={wrappedPopoverContent}
                 enforceFocus={false}
                 onClose={this.handleClosePopover}
                 popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
@@ -472,33 +479,34 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     };
 
     private registerPopoverBlurHandler = () => {
-        const node = ReactDOM.findDOMNode(this);
-        const tabbableElements = node.querySelectorAll("[tabindex]:not([tabindex='-1'])");
+        // Popover contents are well structured, but the selector will need
+        // to be updated if more focusable components are added in the future
+        const tabbableElements = this.contentRef.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
         const numOfElements = tabbableElements.length;
-        if (numOfElements) {
+        if (numOfElements > 0) {
             const lastPopoverElement = tabbableElements[numOfElements - 1] as HTMLElement;
             if (this.lastPopoverElement !== lastPopoverElement) {
                 this.unregisterPopoverBlurHandler();
                 this.lastPopoverElement = lastPopoverElement;
-                this.lastPopoverElement.addEventListener("blur", this.handlePopoverBlur);
+                this.lastPopoverElement.addEventListener("blur", (this.handleClosePopover as any) as EventListener);
             }
         }
     };
 
     private unregisterPopoverBlurHandler = () => {
         if (this.lastPopoverElement) {
-            this.lastPopoverElement.removeEventListener("blur", this.handlePopoverBlur);
+            this.lastPopoverElement.removeEventListener("blur", (this.handleClosePopover as any) as EventListener);
         }
-    };
-
-    private handlePopoverBlur = () => {
-        this.handleClosePopover();
     };
 
     private setInputRef = (el: HTMLElement) => {
         this.inputRef = el;
         const { inputProps = {} } = this.props;
         Utils.safeInvoke(inputProps.inputRef, el);
+    };
+
+    private setContentRef = (el: HTMLElement) => {
+        this.contentRef = el;
     };
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
