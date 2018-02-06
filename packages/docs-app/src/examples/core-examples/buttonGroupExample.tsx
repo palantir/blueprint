@@ -43,9 +43,9 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
         const style: React.CSSProperties = { minWidth: 200, flexGrow: this.state.fill ? 1 : undefined };
         return (
             <ButtonGroup style={style} {...bgProps}>
-                <Button iconName="database">{!iconOnly && "Queries"}</Button>
-                <Button iconName="function">{!iconOnly && "Functions"}</Button>
-                <AnchorButton iconName="cog" rightIconName="caret-down">
+                <Button icon="database">{!iconOnly && "Queries"}</Button>
+                <Button icon="function">{!iconOnly && "Functions"}</Button>
+                <AnchorButton icon="cog" rightIcon="caret-down">
                     {!iconOnly && "Options"}
                 </AnchorButton>
             </ButtonGroup>

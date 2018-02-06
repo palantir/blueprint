@@ -64,7 +64,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     <br />
                     <Button
                         className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
-                        iconName="refresh"
+                        icon="refresh"
                         onClick={this.beginWiggling}
                         {...buttonProps}
                     >
@@ -78,8 +78,8 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     <AnchorButton
                         className={classes}
                         href="./#core/components/button.javascript-api"
-                        iconName="duplicate"
-                        rightIconName="share"
+                        icon="duplicate"
+                        rightIcon="share"
                         target="_blank"
                         text={iconOnly ? undefined : "Duplicate this page"}
                         {...buttonProps}

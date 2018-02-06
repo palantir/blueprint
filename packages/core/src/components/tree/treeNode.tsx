@@ -8,20 +8,16 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
+import { IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
 
-export interface ITreeNode {
+export interface ITreeNode extends IProps {
     /**
      * Child tree nodes of this node.
      */
     childNodes?: ITreeNode[];
-
-    /**
-     * A space-delimited string of class names to apply to the node.
-     */
-    className?: string;
 
     /**
      * Whether the caret to expand/collapse a node should be shown.
@@ -30,9 +26,9 @@ export interface ITreeNode {
     hasCaret?: boolean;
 
     /**
-     * The name of a Blueprint icon to display next to the node's label.
+     * The name of a Blueprint icon (or an icon element) to render next to the node's label.
      */
-    iconName?: IconName;
+    icon?: IconName | JSX.Element;
 
     /**
      * A unique identifier for the node.
@@ -77,7 +73,7 @@ export interface ITreeNodeProps extends ITreeNode {
 
 export class TreeNode extends React.Component<ITreeNodeProps, {}> {
     public render() {
-        const { children, className, hasCaret, iconName, isExpanded, isSelected, label } = this.props;
+        const { children, className, hasCaret, icon, isExpanded, isSelected, label } = this.props;
 
         const showCaret = hasCaret == null ? React.Children.count(children) > 0 : hasCaret;
         const caretStateClass = isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED;
@@ -106,9 +102,9 @@ export class TreeNode extends React.Component<ITreeNodeProps, {}> {
                     ref={this.handleContentRef}
                 >
                     <span className={caretClasses} onClick={showCaret ? this.handleCaretClick : undefined}>
-                        {showCaret && <Icon iconName="caret-right" />}
+                        {showCaret && <Icon icon="caret-right" />}
                     </span>
-                    <Icon className={Classes.TREE_NODE_ICON} iconName={iconName} />
+                    <Icon className={Classes.TREE_NODE_ICON} icon={icon} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
                     {this.maybeRenderSecondaryLabel()}
                 </div>

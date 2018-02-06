@@ -26,8 +26,8 @@ export class NavbarExample extends BaseExample<INavbarExampleState> {
                 <NavbarGroup align={this.state.alignRight ? "right" : "left"}>
                     <NavbarHeading>Blueprint</NavbarHeading>
                     <NavbarDivider />
-                    <Button className="pt-minimal" iconName="home" text="Home" />
-                    <Button className="pt-minimal" iconName="document" text="Files" />
+                    <Button className="pt-minimal" icon="home" text="Home" />
+                    <Button className="pt-minimal" icon="document" text="Files" />
                 </NavbarGroup>
             </Navbar>
         );

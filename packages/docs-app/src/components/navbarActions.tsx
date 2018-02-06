@@ -39,12 +39,12 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
                     position={Position.BOTTOM_RIGHT}
                     usePortal={false}
                 >
-                    <AnchorButton rightIconName="caret-down" text="Releases" />
+                    <AnchorButton rightIcon="caret-down" text="Releases" />
                 </Popover>
                 <AnchorButton
                     className="docs-dark-switch"
                     onClick={this.handleDarkSwitchChange}
-                    iconName={this.props.useDarkTheme ? "flash" : "moon"}
+                    icon={this.props.useDarkTheme ? "flash" : "moon"}
                 />
             </div>
         );
@@ -87,7 +87,7 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
             <Menu>
                 <MenuItem
                     href="https://github.com/palantir/blueprint/releases"
-                    iconName="book"
+                    icon="book"
                     target="_blank"
                     text="Release notes"
                 />

@@ -40,9 +40,9 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
                 >
                     <Button
                         className={Classes.TEXT_OVERFLOW_ELLIPSIS}
-                        iconName={iconName}
+                        icon={iconName}
                         text={iconName || NONE}
-                        rightIconName="caret-down"
+                        rightIcon="caret-down"
                     />
                 </TypedSelect>
             </label>
@@ -57,7 +57,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
             [Classes.ACTIVE]: modifiers.active,
             [Classes.INTENT_PRIMARY]: modifiers.active,
         });
-        return <MenuItem className={classes} iconName={icon} key={icon} onClick={handleClick} text={icon} />;
+        return <MenuItem className={classes} icon={icon} key={icon} onClick={handleClick} text={icon} />;
     };
 
     private filterIconName = (query: string, iconName: IconName | typeof NONE) => {

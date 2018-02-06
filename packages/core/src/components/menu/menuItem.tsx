@@ -84,12 +84,12 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 tabIndex={disabled ? undefined : 0}
                 target={this.props.target}
             >
-                <Icon iconName={this.props.iconName} />
+                <Icon icon={this.props.icon} />
                 <Text className={Classes.FILL} ellipsize={!this.props.multiline}>
                     {this.props.text}
                 </Text>
                 {label && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
-                {hasSubmenu && <Icon iconName="caret-right" />}
+                {hasSubmenu && <Icon icon="caret-right" />}
             </a>
         );
 

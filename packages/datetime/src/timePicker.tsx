@@ -184,7 +184,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         const onClick = () => (isDirectionUp ? this.incrementTime : this.decrementTime)(timeUnit);
         return (
             <span className={classes} onClick={onClick}>
-                <Icon iconName={isDirectionUp ? "chevron-up" : "chevron-down"} />
+                <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} />
             </span>
         );
     }

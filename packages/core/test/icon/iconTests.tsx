@@ -14,24 +14,33 @@ import { Classes, Icon, IIconProps, Intent } from "../../src/index";
 
 describe("<Icon>", () => {
     it("iconSize=16 renders standard size", () =>
-        assertIconSize(<Icon iconName="graph" iconSize={Icon.SIZE_STANDARD} />, Icon.SIZE_STANDARD));
+        assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_STANDARD} />, Icon.SIZE_STANDARD));
 
     it("iconSize=20 renders large size", () =>
-        assertIconSize(<Icon iconName="graph" iconSize={Icon.SIZE_LARGE} />, Icon.SIZE_LARGE));
+        assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_LARGE} />, Icon.SIZE_LARGE));
 
     it("renders intent class", () =>
-        assert.isTrue(shallow(<Icon iconName="add" intent={Intent.DANGER} />).hasClass(Classes.INTENT_DANGER)));
+        assert.isTrue(shallow(<Icon icon="add" intent={Intent.DANGER} />).hasClass(Classes.INTENT_DANGER)));
 
-    it("renders iconName class", () => assertIcon(<Icon iconName="calendar" />, "calendar"));
+    it("renders icon name", () => assertIcon(<Icon icon="calendar" />, "calendar"));
 
-    it("prefixed iconName renders nothing", () => {
-        // @ts-ignore invalid iconName
-        const icon = shallow(<Icon iconName={IconClasses.AIRPLANE} />);
+    it("prefixed icon renders nothing", () => {
+        // @ts-ignore invalid icon
+        const icon = shallow(<Icon icon={IconClasses.AIRPLANE} />);
         assert.isTrue(icon.isEmptyRender());
     });
 
-    it("iconName=undefined renders nothing", () => {
-        const icon = shallow(<Icon iconName={undefined} />);
+    it("passes through icon element unchanged", () => {
+        // this is supported to simplify usage of this component in other Blueprint components
+        // which accept `icon?: IconName | JSX.Element`.
+        const onClick = () => true;
+        const icon = shallow(<Icon icon={<article onClick={onClick} />} />);
+        assert.isTrue(icon.is("article"));
+        assert.strictEqual(icon.find("article").prop("onClick"), onClick);
+    });
+
+    it("icon=undefined renders nothing", () => {
+        const icon = shallow(<Icon icon={undefined} />);
         assert.isTrue(icon.isEmptyRender());
     });
 

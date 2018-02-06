@@ -369,7 +369,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                   index,
                   <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
                       <div className={Classes.TABLE_REORDER_HANDLE}>
-                          <Icon iconName="drag-handle-vertical" />
+                          <Icon icon="drag-handle-vertical" />
                       </div>
                   </div>,
                   false,

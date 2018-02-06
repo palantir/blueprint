@@ -128,6 +128,7 @@ $icons-per-row: 5;
   .docs-icon-name,
   .docs-icon-class-name,
   .docs-clipboard-message {
+    display: block;
     transform: translateY(0);
     opacity: 0;
     line-height: 1;

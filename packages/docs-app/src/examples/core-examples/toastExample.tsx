@@ -49,14 +49,14 @@ export class ToastExample extends BaseExample<IToasterProps> {
             action: {
                 onClick: () =>
                     this.addToast({
-                        iconName: "ban-circle",
+                        icon: "ban-circle",
                         intent: Intent.DANGER,
                         message: "You cannot undo the past.",
                     }),
                 text: "Undo",
             },
             button: "Move files",
-            iconName: "tick",
+            icon: "tick",
             intent: Intent.SUCCESS,
             message: "Moved 6 files.",
         },
@@ -66,7 +66,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
                 text: "Retry",
             },
             button: "Delete root",
-            iconName: "warning-sign",
+            icon: "warning-sign",
             intent: Intent.DANGER,
             message:
                 "You do not have permissions to perform this action. \
@@ -78,7 +78,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
                 text: "Adieu",
             },
             button: "Log out",
-            iconName: "hand",
+            icon: "hand",
             intent: Intent.WARNING,
             message: "Goodbye, old friend.",
         },
@@ -143,7 +143,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
     private renderProgress(amount: number): IToastProps {
         return {
             className: this.props.themeName,
-            iconName: "cloud-upload",
+            icon: "cloud-upload",
             message: (
                 <ProgressBar
                     className={classNames("docs-toast-progress", { "pt-no-stripes": amount >= 100 })}

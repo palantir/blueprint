@@ -25,10 +25,10 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
         const { iconName, displayName, tags } = this.props;
         return (
             <ClickToCopy className="docs-icon" data-tags={tags} value={iconName}>
-                <Icon iconName={iconName} iconSize={Icon.SIZE_LARGE} />
+                <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />
                 <span className="docs-icon-detail">
                     <div className="docs-icon-name">{displayName}</div>
-                    <div className="docs-icon-class-name pt-monospace-text">{iconName}</div>
+                    <strong className="docs-icon-class-name pt-monospace-text">{iconName}</strong>
                     <div className="docs-clipboard-message pt-text-muted" data-hover-message="Click to copy" />
                 </span>
             </ClickToCopy>
@@ -41,13 +41,13 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
             <Menu>
                 <MenuItem
                     className="docs-icon-16"
-                    iconName={iconName}
+                    icon={iconName}
                     text="Download 16px SVG"
                     onClick={this.handleClick16}
                 />
                 <MenuItem
                     className="docs-icon-20"
-                    iconName={iconName}
+                    icon={iconName}
                     text="Download 20px SVG"
                     onClick={this.handleClick20}
                 />

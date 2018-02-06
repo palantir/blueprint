@@ -861,7 +861,7 @@ describe("<NumericInput>", () => {
         });
 
         it("shows a left icon if provided", () => {
-            const leftIcon = mount(<NumericInput leftIconName="variable" />)
+            const leftIcon = mount(<NumericInput leftIcon="variable" />)
                 .find(Icon)
                 .first();
             expect(leftIcon.text()).to.equal("variable");

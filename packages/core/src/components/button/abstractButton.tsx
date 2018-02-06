@@ -36,15 +36,15 @@ export interface IButtonProps extends IActionProps {
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement) => any;
 
-    /** Name of the icon (the part after `pt-icon-`) to add to the button. */
-    rightIconName?: IconName;
-
     /**
      * If set to `true`, the button will display a centered loading spinner instead of its contents.
      * The width of the button is not affected by the value of this prop.
      * @default false
      */
     loading?: boolean;
+
+    /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
+    rightIcon?: IconName | JSX.Element;
 
     /**
      * HTML `type` attribute of button. Common values are `"button"` and `"submit"`.
@@ -126,18 +126,18 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
     };
 
     protected renderChildren(): React.ReactNode {
-        const { children, iconName, loading, rightIconName, text } = this.props;
+        const { children, icon, loading, rightIcon, text } = this.props;
         return (
             <>
                 {loading && <Spinner className={classNames(Classes.SMALL, Classes.BUTTON_SPINNER)} />}
-                <Icon iconName={iconName} />
+                <Icon icon={icon} />
                 {(text || children) && (
                     <span className={Classes.BUTTON_TEXT}>
                         {text}
                         {children}
                     </span>
                 )}
-                <Icon iconName={rightIconName} />
+                <Icon icon={rightIcon} />
             </>
         );
     }

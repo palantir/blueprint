@@ -60,7 +60,7 @@ export class SelectExample extends BaseExample<ISelectExampleState> {
                 onItemSelect={this.handleValueChange}
                 popoverProps={{ minimal }}
             >
-                <Button rightIconName="caret-down" text={film ? film.title : "(No selection)"} disabled={disabled} />
+                <Button rightIcon="caret-down" text={film ? film.title : "(No selection)"} disabled={disabled} />
             </FilmSelect>
         );
     }

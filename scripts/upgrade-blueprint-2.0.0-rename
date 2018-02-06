@@ -197,6 +197,7 @@ renameProp renderVisibleItem visibleItemRenderer
 renameProp renderLabel labelRenderer
 renameProp isDisabled disabled
 renameProp isModal hasBackdrop
+renameProp iconName icon
 renameString FileUpload FileInput
 renameString fileUpload fileInput
 renameString "pt-file-upload(?!-)" pt-file-input # only rename full classname, not partial classname like pt-file-upload-input

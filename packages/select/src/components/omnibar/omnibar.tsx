@@ -132,7 +132,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                     <InputGroup
                         autoFocus={true}
                         className={CoreClasses.LARGE}
-                        leftIconName="search"
+                        leftIcon="search"
                         placeholder="Search..."
                         value={listProps.query}
                         {...inputProps}

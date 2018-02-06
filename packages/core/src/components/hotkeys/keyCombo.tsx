@@ -43,7 +43,7 @@ export class KeyCombo extends React.Component<IKeyComboProps, {}> {
             if (icon != null) {
                 components.push(
                     <kbd className="pt-key pt-modifier-key" key={`key-${i}`}>
-                        <Icon iconName={icon} /> {key}
+                        <Icon icon={icon} /> {key}
                     </kbd>,
                 );
             } else {

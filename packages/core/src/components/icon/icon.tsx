@@ -13,16 +13,27 @@ import { Classes, IIntentProps, IProps } from "../../common";
 export { IconName };
 
 export interface IIconProps extends IIntentProps, IProps {
+    /** This component does not support custom children. Use the `icon` prop. */
+    children?: never;
+
     /**
      * Color of icon. Equivalent to setting CSS `fill` property.
      */
     color?: string;
 
     /**
-     * Name of the icon (with or without `"pt-icon-"` prefix).
-     * If omitted or `undefined`, this component will render nothing.
+     * Name of a Blueprint UI icon, or an icon element, to render.
+     * This prop is required because it determines the content of the component, but it can
+     * be explicitly set to falsy values to render nothing.
+     *
+     * - If `null` or `undefined` or `false`, this component will render nothing.
+     * - If given an `IconName` (a string literal union of all icon names),
+     *   that icon will be rendered as an `<svg>` with `<path>` tags.
+     * - If given a `JSX.Element`, that element will be rendered and _all other props on this component are ignored._
+     *   This type is supported to simplify usage of this component in other Blueprint components.
+     *   As a consumer, you should never use `<Icon icon={<element />}` directly; simply render `<element />` instead.
      */
-    iconName?: IconName;
+    icon: IconName | JSX.Element | false | null | undefined;
 
     /**
      * Size of the icon, in pixels.
@@ -43,14 +54,16 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
     public static readonly SIZE_LARGE = 20;
 
     public render() {
-        if (this.props.iconName == null) {
+        const { className, icon, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
+        if (icon == null) {
             return null;
+        } else if (typeof icon !== "string") {
+            return icon;
         }
-        const { className, iconName, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
 
         // choose which pixel grid is most appropriate for given icon size
         const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
-        const paths = this.renderSvgPaths(pixelGridSize, iconName);
+        const paths = this.renderSvgPaths(pixelGridSize, icon);
         if (paths == null) {
             return null;
         }
@@ -61,12 +74,12 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
             <svg
                 {...svgProps}
                 className={classes}
-                data-icon={iconName}
+                data-icon={icon}
                 width={iconSize}
                 height={iconSize}
                 viewBox={viewBox}
             >
-                <title>{iconName}</title>
+                <title>{icon}</title>
                 {paths}
             </svg>
         );
