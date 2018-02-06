@@ -7,9 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
@@ -24,7 +22,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
 
     /**
      * Children of this component will be rendered in a __submenu__ that appears when hovering or
-     * clicking on this menu item. You can instead pass an array of props objects to the `submenu` prop.
+     * clicking on this menu item.
      *
      * Use `text` prop for the content of the menu item itself.
      */
@@ -64,15 +62,9 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * @default true
      */
     shouldDismissPopover?: boolean;
-
-    /**
-     * Array of props objects for submenu items.
-     * An alternative to providing `MenuItem` components as `children`.
-     */
-    submenu?: IMenuItemProps[];
 }
 
-export class MenuItem extends AbstractPureComponent<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
+export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: IMenuItemProps = {
         disabled: false,
         multiline: false,
@@ -93,12 +85,10 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps & React.Ancho
             multiline,
             popoverProps,
             shouldDismissPopover,
-            submenu,
             text,
             ...htmlProps
         } = this.props;
-        const submenuChildren = this.renderSubmenuChildren(children, submenu);
-        const hasSubmenu = submenuChildren != null;
+        const hasSubmenu = children != null;
 
         const anchorClasses = classNames(
             Classes.MENU_ITEM,
@@ -123,13 +113,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps & React.Ancho
         );
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
-        return <li className={liClasses}>{this.maybeRenderPopover(target, submenuChildren)}</li>;
-    }
-
-    protected validateProps(props: IMenuItemProps & { children?: React.ReactNode }) {
-        if (props.children != null && props.submenu != null) {
-            console.warn(Errors.MENU_WARN_CHILDREN_SUBMENU_MUTEX);
-        }
+        return <li className={liClasses}>{this.maybeRenderPopover(target, children)}</li>;
     }
 
     private maybeRenderLabel(labelElement?: React.ReactNode) {
@@ -167,23 +151,6 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps & React.Ancho
             />
         );
     }
-
-    private renderSubmenuChildren(
-        children: React.ReactNode | undefined,
-        submenu: IMenuItemProps[] | undefined,
-    ): React.ReactNode {
-        if (children != null) {
-            return children;
-        } else if (submenu != null) {
-            return submenu.map(renderMenuItem);
-        } else {
-            return null;
-        }
-    }
-}
-
-export function renderMenuItem(props: IMenuItemProps, key: string | number) {
-    return <MenuItem key={key} {...props} />;
 }
 
 const SUBMENU_POPOVER_MODIFIERS: Popper.Modifiers = {

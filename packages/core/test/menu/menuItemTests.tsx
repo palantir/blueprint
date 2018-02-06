@@ -7,9 +7,8 @@
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
-import { spy, stub } from "sinon";
+import { spy } from "sinon";
 
-import { MENU_WARN_CHILDREN_SUBMENU_MUTEX } from "../../src/common/errors";
 import {
     Button,
     Classes,
@@ -50,17 +49,6 @@ describe("MenuItem", () => {
         assert.lengthOf(submenu.props.children, 3);
     });
 
-    it("submenu props appear as MenuItems in submenu", () => {
-        const items: IMenuItemProps[] = [
-            { iconName: "align-left", text: "Align Left" },
-            { iconName: "align-center", text: "Align Center" },
-            { iconName: "align-right", text: "Align Right" },
-        ];
-        const wrapper = shallow(<MenuItem iconName="align-left" text="Alignment" submenu={items} />);
-        const submenu = findSubmenu(wrapper);
-        assert.lengthOf(submenu.props.children, items.length);
-    });
-
     it("disabled MenuItem will not show its submenu", () => {
         const wrapper = shallow(
             <MenuItem disabled={true} iconName="style" text="Style">
@@ -79,20 +67,6 @@ describe("MenuItem", () => {
             .simulate("mouseenter")
             .simulate("click");
         assert.strictEqual(mouseSpy.callCount, 0);
-    });
-
-    it("renders children if given children and submenu", () => {
-        const warnSpy = stub(console, "warn");
-        const wrapper = shallow(
-            <MenuItem iconName="style" text="Style" submenu={[{ text: "foo" }]}>
-                <MenuItem text="one" />
-                <MenuItem text="two" />
-            </MenuItem>,
-        );
-        const submenu = findSubmenu(wrapper);
-        assert.lengthOf(submenu.props.children, 2);
-        assert.isTrue(warnSpy.alwaysCalledWith(MENU_WARN_CHILDREN_SUBMENU_MUTEX));
-        warnSpy.restore();
     });
 
     it("Clicking MenuItem triggers onClick prop", () => {
