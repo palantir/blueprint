@@ -8,6 +8,7 @@ import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
 import * as ReactDayPicker from "react-day-picker";
+import * as ReactDOM from "react-dom";
 
 import {
     AbstractComponent,
@@ -184,6 +185,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     public static displayName = "Blueprint.DateInput";
 
     private inputRef: HTMLElement = null;
+    private lastPopoverElement: HTMLElement = null;
 
     public constructor(props?: IDateInputProps, context?: any) {
         super(props, context);
@@ -198,15 +200,29 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         };
     }
 
+    public componentWillUnmount() {
+        this.unregisterPopoverBlurHandler();
+        super.componentWillUnmount();
+    }
+
     public render() {
         const { value, valueString } = this.state;
         const dateString = this.state.isInputFocused ? valueString : this.getDateString(value);
         const date = this.state.isInputFocused ? this.createMoment(valueString) : value;
         const dateValue = this.isMomentValidAndInRange(value) ? fromMomentToDate(value) : null;
+        const dayPickerProps = {
+            ...this.props.dayPickerProps,
+            onMonthChange: () => setTimeout(this.registerPopoverBlurHandler, 0),
+        };
 
         const popoverContent =
             this.props.timePrecision === undefined ? (
-                <DatePicker {...this.props} onChange={this.handleDateChange} value={dateValue} />
+                <DatePicker
+                    {...this.props}
+                    dayPickerProps={dayPickerProps}
+                    onChange={this.handleDateChange}
+                    value={dateValue}
+                />
             ) : (
                 <DateTimePicker
                     canClearSelection={this.props.canClearSelection}
@@ -307,7 +323,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         return isMomentInRange(value, this.props.minDate, this.props.maxDate);
     }
 
-    private handleClosePopover = (e: React.SyntheticEvent<HTMLElement>) => {
+    private handleClosePopover = (e?: React.SyntheticEvent<HTMLElement>) => {
         const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.onClose, e);
         this.setState({ isOpen: false });
@@ -434,6 +450,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 this.setState({ isInputFocused: false });
             }
         }
+        this.registerPopoverBlurHandler();
         this.safeInvokeInputProp("onBlur", e);
     };
 
@@ -452,6 +469,30 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             this.inputRef.blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
+    };
+
+    private registerPopoverBlurHandler = () => {
+        const node = ReactDOM.findDOMNode(this);
+        const tabbableElements = node.querySelectorAll("[tabindex]:not([tabindex='-1'])");
+        const numOfElements = tabbableElements.length;
+        if (numOfElements) {
+            const lastPopoverElement = tabbableElements[numOfElements - 1] as HTMLElement;
+            if (this.lastPopoverElement !== lastPopoverElement) {
+                this.unregisterPopoverBlurHandler();
+                this.lastPopoverElement = lastPopoverElement;
+                this.lastPopoverElement.addEventListener("blur", this.handlePopoverBlur);
+            }
+        }
+    };
+
+    private unregisterPopoverBlurHandler = () => {
+        if (this.lastPopoverElement) {
+            this.lastPopoverElement.removeEventListener("blur", this.handlePopoverBlur);
+        }
+    };
+
+    private handlePopoverBlur = () => {
+        this.handleClosePopover();
     };
 
     private setInputRef = (el: HTMLElement) => {
