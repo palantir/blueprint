@@ -80,7 +80,7 @@ async function writeLinesToFile(filename, ...lines) {
 }
 
 /**
- * Removes `pt-icon-` prefix from icon className.
+ * Adds `pt-icon-` prefix to iconName.
  * @param {IconMetadata} icon
  */
 function toLongName(icon) {
@@ -88,8 +88,8 @@ function toLongName(icon) {
 }
 
 /**
- * Converts icon className to uppercase constant name.
- * Example: `"pt-icon-time"` &rArr; `"TIME"`
+ * Converts iconName to uppercase constant name.
+ * Example: `"align-left"` &rArr; `"ALIGN_LEFT"`
  * @param {IconMetadata} icon
  */
 function toEnumName(icon) {
@@ -97,6 +97,7 @@ function toEnumName(icon) {
 }
 
 /**
+ * Exports a named constant for each icon. Name is `ICON_NAME`. Value is result of `valueGetter`.
  * @param {(icon: IconMetadata) => string} valueGetter
  */
 function exportIconConsts(valueGetter) {
