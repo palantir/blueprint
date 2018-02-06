@@ -20,7 +20,7 @@ import { Menu } from "./menu";
 export interface IMenuItemProps extends IActionProps, ILinkProps {
     // override from IActionProps to make it required
     /** Item text, required for usability. */
-    text: string;
+    text: React.ReactNode;
 
     /**
      * Children of this component will be rendered in a __submenu__ that appears when hovering or
@@ -87,7 +87,7 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps & React.Ancho
             className,
             children,
             disabled,
-            iconName,
+            icon,
             intent,
             labelElement,
             multiline,
@@ -113,12 +113,12 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps & React.Ancho
 
         const target = (
             <a {...htmlProps} {...(disabled ? DISABLED_PROPS : {})} className={anchorClasses}>
-                <Icon iconName={iconName} />
+                <Icon icon={icon} />
                 <Text className={Classes.FILL} ellipsize={!multiline}>
                     {text}
                 </Text>
                 {this.maybeRenderLabel(labelElement)}
-                {hasSubmenu && <Icon iconName="caret-right" />}
+                {hasSubmenu && <Icon icon="caret-right" />}
             </a>
         );
 

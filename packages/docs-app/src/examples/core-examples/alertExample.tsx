@@ -40,7 +40,7 @@ export class AlertExample extends BaseExample<{}> {
                 <Button onClick={this.handleOpen} text="Open file deletion alert" />
                 <Alert
                     className={this.props.themeName}
-                    iconName="trash"
+                    icon="trash"
                     intent={Intent.PRIMARY}
                     isOpen={this.state.isOpen}
                     confirmButtonText="Move to Trash"

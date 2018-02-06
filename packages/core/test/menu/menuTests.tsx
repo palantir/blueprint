@@ -28,7 +28,7 @@ describe("Menu", () => {
     it("React renders Menu with children", () => {
         const menu = shallow(
             <Menu>
-                <MenuItem iconName="graph" text="Graph" />
+                <MenuItem icon="graph" text="Graph" />
             </Menu>,
         );
         assert.isTrue(menu.hasClass(Classes.MENU));

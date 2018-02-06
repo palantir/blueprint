@@ -6,17 +6,19 @@
 
 import * as classNames from "classnames";
 import * as React from "react";
+import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 export interface IButtonGroupProps extends IProps, React.HTMLProps<HTMLDivElement> {
     /**
      * Text alignment of button contents.
-     * `align="left"` will left-align button text and push `rightIcon` to right side.
-     * `align="right"` right-aligns text and pushes `icon` to left side.
      * This prop only has an effect if buttons are wider than their default widths.
+     *
+     * `align={Alignment.LEFT}` will left-align button text and push `rightIcon` to right side.
+     * `align={Alignment.RIGHT}` right-aligns text and pushes `icon` to left side.
      */
-    alignText?: "left" | "center" | "right";
+    alignText?: Alignment;
 
     /**
      * Whether the button group should take up the full width of its container.
@@ -53,13 +55,12 @@ export class ButtonGroup extends React.PureComponent<IButtonGroupProps, {}> {
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
-                [Classes.ALIGN_LEFT]: alignText === "left",
-                [Classes.ALIGN_RIGHT]: alignText === "right",
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.MINIMAL]: minimal,
                 [Classes.VERTICAL]: vertical,
             },
+            Classes.alignmentClass(alignText),
             className,
         );
         return (

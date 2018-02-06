@@ -13,13 +13,13 @@ export interface IFileMenuProps {
 
 export const FileMenu: React.SFC<IFileMenuProps> = props => (
     <Menu>
-        <MenuItem text="New" iconName="document" {...props} />
-        <MenuItem text="Open" iconName="folder-shared" {...props} />
-        <MenuItem text="Close" iconName="add-to-folder" {...props} />
+        <MenuItem text="New" icon="document" {...props} />
+        <MenuItem text="Open" icon="folder-shared" {...props} />
+        <MenuItem text="Close" icon="add-to-folder" {...props} />
         <MenuDivider />
-        <MenuItem text="Save" iconName="floppy-disk" {...props} />
-        <MenuItem text="Save as..." iconName="floppy-disk" {...props} />
+        <MenuItem text="Save" icon="floppy-disk" {...props} />
+        <MenuItem text="Save as..." icon="floppy-disk" {...props} />
         <MenuDivider />
-        <MenuItem text="Exit" iconName="cross" {...props} />
+        <MenuItem text="Exit" icon="cross" {...props} />
     </Menu>
 );

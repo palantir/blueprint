@@ -15,41 +15,43 @@ export class MenuExample extends BaseExample<{}> {
         return (
             <div>
                 <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
-                    <MenuItem iconName="new-text-box" text="New text box" />
-                    <MenuItem iconName="new-object" text="New object" />
-                    <MenuItem iconName="new-link" text="New link" />
+                    <MenuItem icon={<PalantirLogo />} text="Custom SVG icon" />
                     <MenuDivider />
-                    <MenuItem iconName="cog" labelElement={<Icon iconName="share" />} text="Settings..." />
+                    <MenuItem icon="new-text-box" text="New text box" />
+                    <MenuItem icon="new-object" text="New object" />
+                    <MenuItem icon="new-link" text="New link" />
+                    <MenuDivider />
+                    <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." />
                 </Menu>
                 <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
                     <MenuDivider title="Edit" />
-                    <MenuItem iconName="cut" text="Cut" label="⌘X" />
-                    <MenuItem iconName="duplicate" text="Copy" label="⌘C" />
-                    <MenuItem iconName="clipboard" text="Paste" label="⌘V" disabled={true} />
+                    <MenuItem icon="cut" text="Cut" label="⌘X" />
+                    <MenuItem icon="duplicate" text="Copy" label="⌘C" />
+                    <MenuItem icon="clipboard" text="Paste" label="⌘V" disabled={true} />
                     <MenuDivider title="Text" />
-                    <MenuItem disabled={true} iconName="align-left" text="Alignment">
-                        <MenuItem iconName="align-left" text="Left" />
-                        <MenuItem iconName="align-center" text="Center" />
-                        <MenuItem iconName="align-right" text="Right" />
-                        <MenuItem iconName="align-justify" text="Justify" />
+                    <MenuItem disabled={true} icon="align-left" text="Alignment">
+                        <MenuItem icon="align-left" text="Left" />
+                        <MenuItem icon="align-center" text="Center" />
+                        <MenuItem icon="align-right" text="Right" />
+                        <MenuItem icon="align-justify" text="Justify" />
                     </MenuItem>
-                    <MenuItem iconName="style" text="Style">
-                        <MenuItem iconName="bold" text="Bold" />
-                        <MenuItem iconName="italic" text="Italic" />
-                        <MenuItem iconName="underline" text="Underline" />
+                    <MenuItem icon="style" text="Style">
+                        <MenuItem icon="bold" text="Bold" />
+                        <MenuItem icon="italic" text="Italic" />
+                        <MenuItem icon="underline" text="Underline" />
                     </MenuItem>
-                    <MenuItem iconName="asterisk" text="Miscellaneous">
-                        <MenuItem iconName="badge" text="Badge" />
-                        <MenuItem iconName="book" text="Long items will truncate when they reach max-width" />
-                        <MenuItem iconName="more" text="Look in here for even more items">
-                            <MenuItem iconName="briefcase" text="Briefcase" />
-                            <MenuItem iconName="calculator" text="Calculator" />
-                            <MenuItem iconName="dollar" text="Dollar" />
-                            <MenuItem iconName="dot" text="Shapes">
-                                <MenuItem iconName="full-circle" text="Full circle" />
-                                <MenuItem iconName="heart" text="Heart" />
-                                <MenuItem iconName="ring" text="Ring" />
-                                <MenuItem iconName="square" text="Square" />
+                    <MenuItem icon="asterisk" text="Miscellaneous">
+                        <MenuItem icon="badge" text="Badge" />
+                        <MenuItem icon="book" text="Long items will truncate when they reach max-width" />
+                        <MenuItem icon="more" text="Look in here for even more items">
+                            <MenuItem icon="briefcase" text="Briefcase" />
+                            <MenuItem icon="calculator" text="Calculator" />
+                            <MenuItem icon="dollar" text="Dollar" />
+                            <MenuItem icon="dot" text="Shapes">
+                                <MenuItem icon="full-circle" text="Full circle" />
+                                <MenuItem icon="heart" text="Heart" />
+                                <MenuItem icon="ring" text="Ring" />
+                                <MenuItem icon="square" text="Square" />
                             </MenuItem>
                         </MenuItem>
                     </MenuItem>
@@ -58,3 +60,12 @@ export class MenuExample extends BaseExample<{}> {
         );
     }
 }
+
+const PalantirLogo: React.SFC = () => (
+    <svg className={Classes.ICON} width="16" height="16" viewBox="0 0 18 23" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M16.718 16.653L9 20.013l-7.718-3.36L0 19.133 9 23l9-3.868-1.282-2.48zM9 14.738c-3.297 0-5.97-2.696-5.97-6.02C3.03 5.39 5.703 2.695 9 2.695c3.297 0 5.97 2.696 5.97 6.02 0 3.326-2.673 6.022-5.97 6.022zM9 0C4.23 0 .366 3.9.366 8.708c0 4.81 3.865 8.71 8.634 8.71 4.77 0 8.635-3.9 8.635-8.71C17.635 3.898 13.77 0 9 0z"
+            fillRule="evenodd"
+        />
+    </svg>
+);

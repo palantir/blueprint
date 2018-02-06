@@ -227,7 +227,7 @@ describe("<TimezonePicker>", () => {
     it("input can be controlled with input props", () => {
         const inputProps: IInputGroupProps = {
             disabled: true,
-            leftIconName: "airplane",
+            leftIcon: "airplane",
             placeholder: "test placeholder",
         };
         const timezonePicker = shallow(<TimezonePicker inputProps={inputProps} />);
@@ -240,7 +240,7 @@ describe("<TimezonePicker>", () => {
     it("button can be controlled with button props", () => {
         const buttonProps: IButtonProps = {
             disabled: true,
-            rightIconName: "airplane",
+            rightIcon: "airplane",
         };
         const timezonePicker = shallow(<TimezonePicker buttonProps={buttonProps} />);
         const button = timezonePicker.find(Button);

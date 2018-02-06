@@ -6,12 +6,12 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, ButtonGroup, Switch } from "@blueprintjs/core";
+import { Alignment, AnchorButton, Button, ButtonGroup, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export interface IButtonGroupExampleState {
-    alignText: "left" | "center" | "right";
+    alignText: Alignment;
     fill: boolean;
     iconOnly: boolean;
     minimal: boolean;
@@ -21,7 +21,7 @@ export interface IButtonGroupExampleState {
 
 export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
     public state: IButtonGroupExampleState = {
-        alignText: "center",
+        alignText: Alignment.CENTER,
         fill: false,
         iconOnly: false,
         large: false,
@@ -43,9 +43,9 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
         const style: React.CSSProperties = { minWidth: 200, flexGrow: this.state.fill ? 1 : undefined };
         return (
             <ButtonGroup style={style} {...bgProps}>
-                <Button iconName="database">{!iconOnly && "Queries"}</Button>
-                <Button iconName="function">{!iconOnly && "Functions"}</Button>
-                <AnchorButton iconName="cog" rightIconName="caret-down">
+                <Button icon="database">{!iconOnly && "Queries"}</Button>
+                <Button icon="function">{!iconOnly && "Functions"}</Button>
+                <AnchorButton icon="cog" rightIcon="caret-down">
                     {!iconOnly && "Options"}
                 </AnchorButton>
             </ButtonGroup>
@@ -80,5 +80,5 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
         ];
     }
 
-    private handleAlignChange = (alignText: IButtonGroupExampleState["alignText"]) => this.setState({ alignText });
+    private handleAlignChange = (alignText: Alignment) => this.setState({ alignText });
 }

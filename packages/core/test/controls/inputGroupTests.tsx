@@ -13,13 +13,13 @@ import { Icon, InputGroup } from "../../src/index";
 
 describe("<InputGroup>", () => {
     it("renders left icon before input", () => {
-        const input = mount(<InputGroup leftIconName="star" />).children();
+        const input = mount(<InputGroup leftIcon="star" />).children();
         assert.isTrue(input.childAt(0).is(Icon));
         assert.isTrue(input.childAt(1).hasClass("pt-input"));
     });
 
     it("supports custom style", () => {
-        const input = mount(<InputGroup leftIconName="star" style={{ background: "yellow" }} />);
+        const input = mount(<InputGroup leftIcon="star" style={{ background: "yellow" }} />);
         const inputElement = input
             .find("input")
             .first()

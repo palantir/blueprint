@@ -12,13 +12,13 @@ import { IconName } from "@blueprintjs/icons";
 import { IconSelect } from "./common/iconSelect";
 
 export interface IIconExampleState {
-    iconName: IconName;
+    icon: IconName;
     iconSize: number;
 }
 
 export class IconExample extends BaseExample<IIconExampleState> {
     public state: IIconExampleState = {
-        iconName: "calendar",
+        icon: "calendar",
         iconSize: Icon.SIZE_STANDARD,
     };
 
@@ -31,9 +31,9 @@ export class IconExample extends BaseExample<IIconExampleState> {
     }
 
     protected renderOptions() {
-        const { iconName, iconSize } = this.state;
+        const { icon, iconSize } = this.state;
         return [
-            [<IconSelect key="icon-name" iconName={iconName} onChange={this.handleIconNameChange} />],
+            [<IconSelect key="icon-name" iconName={icon} onChange={this.handleIconNameChange} />],
             [
                 <label className={Classes.LABEL} key="icon-size-label">
                     Icon size
@@ -53,7 +53,7 @@ export class IconExample extends BaseExample<IIconExampleState> {
 
     private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
 
-    private handleIconNameChange = (iconName: IconName) => this.setState({ iconName });
+    private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 }
 
 const MAX_ICON_SIZE = 100;

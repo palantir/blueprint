@@ -51,7 +51,7 @@ export interface IFileInputProps extends React.AllHTMLAttributes<HTMLLabelElemen
      * The text to display.
      * @default "Choose file..."
      */
-    text?: string;
+    text?: React.ReactNode;
 }
 
 // TODO: write tests (ignoring for now to get a build passing quickly)

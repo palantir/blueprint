@@ -14,8 +14,8 @@
 
 This section describes two ways of using the UI icon font: via CSS or via React component.
 
-Many Blueprint components provide an `iconName` prop, which supports both the
-full name `pt-icon-projects` and the short name `projects`.
+Many Blueprint components provide an `icon` prop which accepts an icon name (such as `"history"`) or
+a JSX element to use as the icon.
 
 @reactExample IconExample
 
@@ -24,27 +24,25 @@ full name `pt-icon-projects` and the short name `projects`.
 The `Icon` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
-Use the `<Icon>` component to easily render __SVG icons__ in React. The `iconName` prop is typed
+Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon` prop is typed
 such that editors can offer autocomplete for known icon names. The optional `iconSize` prop ensures
 you'll never forget a sizing class and clarifies the expected width and height of the icon element.
 The component also accepts all valid HTML props for an `<svg>` element.
 
 Data files in the __@blueprintjs/icons__ package provide SVG path information for Blueprint's 300+ icons
-for 16px and 20px grids. The `iconName` prop dictates which SVG is rendered and `iconSize` determines
+for 16px and 20px grids. The `icon` prop dictates which SVG is rendered and `iconSize` determines
 which pixel grid is used: `iconSize >= 20` will use the 20px grid and smaller icons will use the 16px grid.
 
 ```tsx
 // string literals are supported through IconName union type
-<Icon iconName="cross" />
-<Icon iconName="pt-icon-globe" iconSize={20} />
-<Icon iconName="graph" iconSize={40} intent={Intent.PRIMARY} />
+<Icon icon="cross" />
+<Icon icon="globe" iconSize={20} />
 
-// can also use IconClasses string enum and Icon.SIZE_* constants
-import { IconClasses } from "@blueprintjs/core";
-<Icon iconName={IconClasses.ALIGN_LEFT} iconSize={Icon.SIZE_LARGE} />
+// constants are provided for name and size
+<Icon icon={IconNames.GRAPH} iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} />
 
 // can pass all valid HTML props
-<Icon iconName="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys}>
+<Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys}>
 ```
 
 @interface IIconProps
@@ -75,7 +73,7 @@ Icon classes also support the four `.pt-intent-*` modifiers to color the image.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
     <h5>Non-standard sizes</h5>
-    Generally, icons should only be used at either 16px or 20px. However, if a non-standard size is
+    Generally, font icons should only be used at either 16px or 20px. However, if a non-standard size is
     necessary, set a `font-size` that is whole multiple of 16 or 20 with the relevant size class.
     You can instead use the class `pt-icon` to make the icon inherit its size from surrounding text.
 </div>

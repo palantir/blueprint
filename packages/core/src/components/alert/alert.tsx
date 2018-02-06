@@ -25,8 +25,8 @@ export interface IAlertProps extends IProps {
      */
     confirmButtonText?: string;
 
-    /** Name of the icon (the part after `pt-icon-`) to add next to the alert message */
-    iconName?: IconName;
+    /** Name of a Blueprint UI icon (or an icon element) to display on the left side. */
+    icon?: IconName | JSX.Element;
 
     /**
      * The intent to be applied to the confirm (right-most) button.
@@ -65,11 +65,11 @@ export class Alert extends AbstractPureComponent<IAlertProps, {}> {
     public static displayName = "Blueprint2.Alert";
 
     public render() {
-        const { children, className, iconName, intent, isOpen, confirmButtonText, onConfirm, style } = this.props;
+        const { children, className, icon, intent, isOpen, confirmButtonText, onConfirm, style } = this.props;
         return (
             <Dialog className={classNames(Classes.ALERT, className)} isOpen={isOpen} style={style}>
                 <div className={Classes.ALERT_BODY}>
-                    <Icon iconName={iconName} iconSize={40} intent={intent} />
+                    <Icon icon={icon} iconSize={40} intent={intent} />
                     <div className={Classes.ALERT_CONTENTS}>{children}</div>
                 </div>
                 <div className={Classes.ALERT_FOOTER}>

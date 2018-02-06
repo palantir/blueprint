@@ -109,9 +109,9 @@ describe("<ColumnHeaderCell>", () => {
         function getMenuComponent(menuClickSpy: sinon.SinonSpy) {
             return (
                 <Menu>
-                    <MenuItem iconName="export" onClick={menuClickSpy} text="Teleport" />
-                    <MenuItem iconName="sort-alphabetical-desc" onClick={menuClickSpy} text="Down with ZA!" />
-                    <MenuItem iconName="curved-range-chart" onClick={menuClickSpy} text="Psi" />
+                    <MenuItem icon="export" onClick={menuClickSpy} text="Teleport" />
+                    <MenuItem icon="sort-alphabetical-desc" onClick={menuClickSpy} text="Down with ZA!" />
+                    <MenuItem icon="curved-range-chart" onClick={menuClickSpy} text="Psi" />
                 </Menu>
             );
         }

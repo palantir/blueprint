@@ -70,46 +70,46 @@ const INITIAL_STATE: ITreeNode[] = [
     {
         id: 0,
         hasCaret: true,
-        iconName: "folder-close",
+        icon: "folder-close",
         label: "Folder 0",
     },
     {
         id: 1,
-        iconName: "folder-close",
+        icon: "folder-close",
         isExpanded: true,
         label: <Tooltip content="I'm a folder <3">Folder 1</Tooltip>,
         childNodes: [
             {
                 id: 2,
-                iconName: "document",
+                icon: "document",
                 label: "Item 0",
                 secondaryLabel: (
                     <Tooltip content="An eye!">
-                        <Icon iconName="eye-open" />
+                        <Icon icon="eye-open" />
                     </Tooltip>
                 ),
             },
             {
                 id: 3,
-                iconName: "tag",
+                icon: "tag",
                 label: "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.",
             },
             {
                 id: 4,
                 hasCaret: true,
-                iconName: "folder-close",
+                icon: "folder-close",
                 label: <Tooltip content="foo">Folder 2</Tooltip>,
                 childNodes: [
                     { id: 5, label: "No-Icon Item" },
-                    { id: 6, iconName: "tag", label: "Item 1" },
+                    { id: 6, icon: "tag", label: "Item 1" },
                     {
                         id: 7,
                         hasCaret: true,
-                        iconName: "folder-close",
+                        icon: "folder-close",
                         label: "Folder 3",
                         childNodes: [
-                            { id: 8, iconName: "document", label: "Item 0" },
-                            { id: 9, iconName: "tag", label: "Item 1" },
+                            { id: 8, icon: "document", label: "Item 0" },
+                            { id: 9, icon: "tag", label: "Item 1" },
                         ],
                     },
                 ],
