@@ -34,6 +34,8 @@ for 16px and 20px grids. The `icon` prop dictates which SVG is rendered and `ico
 which pixel grid is used: `iconSize >= 20` will use the 20px grid and smaller icons will use the 16px grid.
 
 ```tsx
+import { Icon, IconNames, Intent } from "@blueprintjs/core";
+
 // string literals are supported through IconName union type
 <Icon icon="cross" />
 <Icon icon="globe" iconSize={20} />
@@ -42,7 +44,16 @@ which pixel grid is used: `iconSize >= 20` will use the 20px grid and smaller ic
 <Icon icon={IconNames.GRAPH} iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} />
 
 // can pass all valid HTML props
-<Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys}>
+<Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
+```
+
+```html
+<Icon icon="globe" iconSize={30} />
+<!-- renders the following HTML markup: -->
+<svg class="pt-icon" data-icon="globe" width="30" height="30" viewBox="0 0 20 20">
+    <title>globe</title>
+    <path ... />
+</svg>
 ```
 
 @interface IIconProps
