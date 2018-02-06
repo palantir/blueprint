@@ -57,7 +57,7 @@ them supports the full range of HTML props.
     <NavbarGroup>
         <NavbarHeading>Blueprint</NavbarHeading>
     </NavbarGroup>
-    <NavbarGroup align="right">
+    <NavbarGroup align={Alignment.RIGHT}>
         <Button className="pt-minimal" iconName="home">Home</Button>
         <Button className="pt-minimal" iconName="document">Files</Button>
         <NavbarDivider />

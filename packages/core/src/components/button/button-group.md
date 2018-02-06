@@ -29,7 +29,7 @@ You can adjust the specific size of a button with the `flex-basis` CSS property.
 Add the class `pt-vertical` to create a vertical button group. The buttons in a vertical
 group all have the same size as the widest button in the group.
 
-Add the modifier class `pt-align-left` (or `align="left"` in the React component) to
+Add the modifier class `pt-align-left` (or `align={Alignment.LEFT}` in the React component) to
 left-align button text and icon and right-align `rightIcon`.
 
 You can also combine vertical groups with the `pt-fill` and `pt-minimal` class modifiers.
