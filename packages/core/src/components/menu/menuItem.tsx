@@ -24,7 +24,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
 
     /**
      * Children of this component will be rendered in a __submenu__ that appears when hovering or
-     * clicking on this menu item. You can instead pass an array of props objects to the `submenu` prop
+     * clicking on this menu item. You can instead pass an array of props objects to the `submenu` prop.
      *
      * Use `text` prop for the content of the menu item itself.
      */
@@ -32,7 +32,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
 
     /**
      * Whether this menu item is non-interactive. Enabling this prop will ignore `href`, `tabIndex`,
-     * and mouse event handlers (in particular click, down, enter, leave)
+     * and mouse event handlers (in particular click, down, enter, leave).
      */
     disabled?: boolean;
 
