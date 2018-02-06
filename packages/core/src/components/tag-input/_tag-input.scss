@@ -52,6 +52,7 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
     flex: 1 1 auto;
     // essentially a min-width, cuz flex allows it to grow or shrink:
     width: $pt-grid-size * 8;
+    line-height: $tag-height;
 
     &:disabled,
     &.pt-disabled {
@@ -59,10 +60,14 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
     }
   }
 
-  .pt-button {
-    @include pt-button-height($pt-button-height-small);
+  .pt-button,
+  .pt-spinner {
     margin: ($pt-input-height - $pt-button-height-small) / 2;
     margin-left: 0;
+  }
+
+  .pt-button {
+    @include pt-button-height-small();
   }
 
   &.pt-large {
@@ -75,9 +80,18 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
       margin-left: $ti-icon-padding-large - $ti-padding;
     }
 
+    .pt-input-ghost {
+      line-height: $tag-height-large;
+    }
+
     .pt-button {
-      @include pt-button-height($pt-button-height);
+      @include pt-button-height-default();
       margin: ($pt-input-height-large - $pt-button-height) / 2;
+      margin-left: 0;
+    }
+
+    .pt-spinner {
+      margin: ($pt-input-height-large - $pt-button-height-small) / 2;
       margin-left: 0;
     }
   }
