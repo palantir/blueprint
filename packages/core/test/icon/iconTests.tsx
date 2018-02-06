@@ -8,7 +8,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { IconClasses, IconName } from "@blueprintjs/icons";
+import { IconName } from "@blueprintjs/icons";
 
 import { Classes, Icon, IIconProps, Intent } from "../../src/index";
 
@@ -26,7 +26,7 @@ describe("<Icon>", () => {
 
     it("prefixed icon renders nothing", () => {
         // @ts-ignore invalid icon
-        const icon = shallow(<Icon icon={IconClasses.AIRPLANE} />);
+        const icon = shallow(<Icon icon={Classes.iconClass("airplane")} />);
         assert.isTrue(icon.isEmptyRender());
     });
 
