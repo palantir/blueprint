@@ -14,8 +14,8 @@ const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }]
 
 /**
  * @typedef {Object} IconMetadata
- * @property {string} name - icon name for display
- * @property {string} className - CSS class name
+ * @property {string} displayName - "Icon name" for display
+ * @property {string} iconName - `icon-name` for IconName and CSS class
  * @property {string} tags - comma separated list of tags describing this icon
  * @property {string} group - group to which this icon belongs
  * @property {string} content - unicode character for icon glyph in font
@@ -23,7 +23,7 @@ const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }]
 
 /** @type {IconMetadata[]} */
 const ICONS_METADATA = require(path.resolve(process.cwd(), "./resources/icons/icons.json")).sort((a, b) =>
-    a.className.localeCompare(b.className),
+    a.iconName.localeCompare(b.iconName),
 );
 const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
 
@@ -36,21 +36,21 @@ writeLinesToFile(
     "_icon-map.scss",
     '@import "icon-variables";',
     "$icons: (",
-    ...ICONS_METADATA.map(icon => `  "${toShortName(icon)}": $${icon.className},`),
+    ...ICONS_METADATA.map(icon => `  "${icon.iconName}": $${toLongName(icon)},`),
     ");",
 );
 
 // simple variable definitions
-writeLinesToFile("_icon-variables.scss", ...ICONS_METADATA.map(icon => `$${icon.className}: "${icon.content}";`));
+writeLinesToFile("_icon-variables.scss", ...ICONS_METADATA.map(icon => `$${toLongName(icon)}: "${icon.content}";`));
 
 // map ENUM_NAME to pt-icon-class-name
-writeLinesToFile("iconClasses.ts", ...exportIconConsts(icon => icon.className));
+writeLinesToFile("iconClasses.ts", ...exportIconConsts(toLongName));
 
 // map ENUM_NAME to unicode character
 writeLinesToFile("iconContents.ts", ...exportIconConsts(icon => icon.content.replace("\\", "\\u")));
 
 // map ENUM_NAME to icon-name
-writeLinesToFile("iconNames.ts", ...exportIconConsts(toShortName));
+writeLinesToFile("iconNames.ts", ...exportIconConsts(icon => icon.iconName));
 
 (async () => {
     // SVG path strings. IIFE to unwrap async.
@@ -79,23 +79,25 @@ async function writeLinesToFile(filename, ...lines) {
     fs.writeFileSync(outputPath, contents);
 }
 
-/** Removes `pt-icon-` prefix from icon className. */
-function toShortName(icon) {
-    return icon.className.replace("pt-icon-", "");
+/**
+ * Adds `pt-icon-` prefix to iconName.
+ * @param {IconMetadata} icon
+ */
+function toLongName(icon) {
+    return `pt-icon-${icon.iconName}`;
 }
 
 /**
- * Converts icon className to uppercase constant name.
- * Example: `"pt-icon-time"` &rArr; `"TIME"`
+ * Converts iconName to uppercase constant name.
+ * Example: `"align-left"` &rArr; `"ALIGN_LEFT"`
  * @param {IconMetadata} icon
  */
 function toEnumName(icon) {
-    return toShortName(icon)
-        .replace(/-/g, "_")
-        .toUpperCase();
+    return icon.iconName.replace(/-/g, "_").toUpperCase();
 }
 
 /**
+ * Exports a named constant for each icon. Name is `ICON_NAME`. Value is result of `valueGetter`.
  * @param {(icon: IconMetadata) => string} valueGetter
  */
 function exportIconConsts(valueGetter) {
@@ -111,13 +113,13 @@ function exportIconConsts(valueGetter) {
 async function buildPathsObject(objectName, size) {
     return Promise.all(
         ICONS_METADATA.map(async icon => {
-            const filepath = path.resolve(__dirname, `../../resources/icons/${size}px/${icon.className}.svg`);
+            const filepath = path.resolve(__dirname, `../../resources/icons/${size}px/${icon.iconName}.svg`);
             const svg = fs.readFileSync(filepath, "utf-8");
             const pathStrings = await svgo
                 .optimize(svg, { path: filepath })
                 .then(({ data }) => data.match(/ d="[^"]+"/g) || [])
                 .then(paths => paths.map(s => s.slice(3)));
-            return `    "${icon.className.replace("pt-icon-", "")}": [${pathStrings.join(",\n")}],`;
+            return `    "${icon.iconName}": [${pathStrings.join(",\n")}],`;
         }),
     );
 }
