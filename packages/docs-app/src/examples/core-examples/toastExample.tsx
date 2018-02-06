@@ -35,14 +35,14 @@ export class ToastExample extends BaseExample<IToasterProps> {
             action: {
                 href: "https://www.google.com/search?q=toast&source=lnms&tbm=isch",
                 target: "_blank",
-                text: "Yum",
+                text: <strong>Yum.</strong>,
             },
             button: "Procure toast",
             intent: Intent.PRIMARY,
             message: (
-                <span>
+                <>
                     One toast created. <em>Toasty.</em>
-                </span>
+                </>
             ),
         },
         {

@@ -106,16 +106,6 @@ describe("<ColumnHeaderCell>", () => {
             );
         });
 
-        it("Table's enableColumnInteractionBar prop value overrides the one passed to ColumnHeaderCell", () => {
-            const consoleWarn = sinon.stub(console, "warn");
-            const columnHeaderCellRenderer = () => <ColumnHeaderCell enableColumnInteractionBar={true} />;
-            const columnProps = { columnHeaderCellRenderer };
-            const tableProps = { enableColumnInteractionBar: false };
-            const table = harness.mount(createTableOfSize(5, 1, columnProps, tableProps));
-            expect(table.find(`.${Classes.TABLE_INTERACTION_BAR}`, 0).element).to.equal(undefined);
-            consoleWarn.restore();
-        });
-
         function getMenuComponent(menuClickSpy: sinon.SinonSpy) {
             return (
                 <Menu>
@@ -136,23 +126,25 @@ describe("<ColumnHeaderCell>", () => {
         }
     });
 
-    describe("Reorder handle", () => {
+    // TODO: re-enable these tests when we switch to enzyme's testing harness instead of our own,
+    // so that we can supply a react context with enableColumnInteractionBar: true
+    // see https://github.com/palantir/blueprint/issues/2076
+    describe.skip("Reorder handle", () => {
         const REORDER_HANDLE_CLASS = Classes.TABLE_REORDER_HANDLE_TARGET;
 
         it("shows reorder handle in interaction bar if reordering and interaction bar are enabled", () => {
-            const element = mount({ enableColumnInteractionBar: true, enableColumnReordering: true });
+            const element = mount({ enableColumnReordering: true });
             expect(element.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
 
         it("shows reorder handle next to column name if reordering enabled but interaction bar disabled", () => {
-            const element = mount({ enableColumnInteractionBar: false, enableColumnReordering: true });
+            const element = mount({ enableColumnReordering: true });
             expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
 
         function mount(props: Partial<IColumnHeaderCellProps> & object) {
             const element = harness.mount(
                 <ColumnHeaderCell
-                    enableColumnInteractionBar={props.enableColumnInteractionBar}
                     enableColumnReordering={props.enableColumnReordering}
                     reorderHandle={<div className={REORDER_HANDLE_CLASS} />}
                 />,

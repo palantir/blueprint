@@ -14,17 +14,25 @@ import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
+import { Text } from "../text/text";
 import { Menu } from "./menu";
 
 export interface IMenuItemProps extends IActionProps, ILinkProps {
     // override from IActionProps to make it required
     /** Item text, required for usability. */
-    text: string;
+    text: React.ReactNode;
 
     /**
      * Right-aligned label content, useful for displaying hotkeys.
      */
     label?: string | JSX.Element;
+
+    /**
+     * Whether the text should be allowed to wrap to multiple lines.
+     * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
+     * @default false
+     */
+    multiline?: boolean;
 
     /** Props to spread to `Popover`. Note that `content` and `minimal` cannot be changed. */
     popoverProps?: Partial<IPopoverProps>;
@@ -45,6 +53,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
 export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
     public static defaultProps: IMenuItemProps = {
         disabled: false,
+        multiline: false,
         popoverProps: {},
         shouldDismissPopover: true,
         text: "",
@@ -76,8 +85,11 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
                 target={this.props.target}
             >
                 <Icon icon={this.props.icon} />
+                <Text className={Classes.FILL} ellipsize={!this.props.multiline}>
+                    {this.props.text}
+                </Text>
                 {label && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
-                {this.props.text}
+                {hasSubmenu && <Icon icon="caret-right" />}
             </a>
         );
 

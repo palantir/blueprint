@@ -13,19 +13,22 @@ import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprint
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonsExampleState {
-    active?: boolean;
-    disabled?: boolean;
-    intent?: Intent;
-    loading?: boolean;
-    large?: boolean;
-    minimal?: boolean;
-    wiggling?: boolean;
+    active: boolean;
+    disabled: boolean;
+    iconOnly: boolean;
+    intent: Intent;
+    loading: boolean;
+    large: boolean;
+    minimal: boolean;
+    wiggling: boolean;
 }
 
 export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     public state: IButtonsExampleState = {
         active: false,
         disabled: false,
+        iconOnly: false,
+        intent: Intent.NONE,
         large: false,
         loading: false,
         minimal: false,
@@ -34,6 +37,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
 
     private handleActiveChange = handleBooleanChange(active => this.setState({ active }));
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+    private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
     private handleLoadingChange = handleBooleanChange(loading => this.setState({ loading }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
@@ -46,9 +50,10 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     }
 
     protected renderExample() {
+        const { large, minimal, iconOnly, wiggling, ...buttonProps } = this.state;
         const classes = classNames({
-            [Classes.LARGE]: this.state.large,
-            [Classes.MINIMAL]: this.state.minimal,
+            [Classes.LARGE]: large,
+            [Classes.MINIMAL]: minimal,
         });
 
         return (
@@ -59,14 +64,12 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     <br />
                     <Button
                         className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
-                        disabled={this.state.disabled}
-                        active={this.state.active}
                         icon="refresh"
-                        intent={this.state.intent}
-                        loading={this.state.loading}
                         onClick={this.beginWiggling}
-                        text="Click to wiggle"
-                    />
+                        {...buttonProps}
+                    >
+                        {!iconOnly && "Click to wiggle"}
+                    </Button>
                 </div>
                 <div className="docs-react-example-column">
                     <code>AnchorButton</code>
@@ -74,15 +77,12 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     <br />
                     <AnchorButton
                         className={classes}
-                        disabled={this.state.disabled}
-                        active={this.state.active}
                         href="./#core/components/button.javascript-api"
                         icon="duplicate"
-                        intent={this.state.intent}
-                        loading={this.state.loading}
                         rightIcon="share"
                         target="_blank"
-                        text="Duplicate this page"
+                        text={iconOnly ? undefined : "Duplicate this page"}
+                        {...buttonProps}
                     />
                 </div>
             </div>
@@ -116,7 +116,15 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     onChange={this.handleMinimalChange}
                 />,
             ],
-            [<IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />],
+            [
+                <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />,
+                <Switch
+                    checked={this.state.iconOnly}
+                    key="icon"
+                    label="Icons only"
+                    onChange={this.handleIconOnlyChange}
+                />,
+            ],
         ];
     }
 
