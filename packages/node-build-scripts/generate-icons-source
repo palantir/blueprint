@@ -112,7 +112,7 @@ function exportIconConsts(valueGetter) {
 async function buildPathsObject(objectName, size) {
     return Promise.all(
         ICONS_METADATA.map(async icon => {
-            const filepath = path.resolve(__dirname, `../../resources/icons/${size}px/${toLongName(icon)}.svg`);
+            const filepath = path.resolve(__dirname, `../../resources/icons/${size}px/${icon.iconName}.svg`);
             const svg = fs.readFileSync(filepath, "utf-8");
             const pathStrings = await svgo
                 .optimize(svg, { path: filepath })
