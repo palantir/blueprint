@@ -105,7 +105,7 @@ describe("<CollapsibleList>", () => {
             renderCollapsibleList(7, { visibleItemRenderer, visibleItemCount: 3 });
             visibleItemRenderer.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
-                const absoluteIndex = +props.text.slice(5); // "Item #"
+                const absoluteIndex = +props.text.toString().slice(5); // "Item #"
                 assert.equal(absoluteIndex, arg[1]);
             });
         });
@@ -115,7 +115,7 @@ describe("<CollapsibleList>", () => {
             renderCollapsibleList(6, { collapseFrom: CollapseFrom.END, visibleItemRenderer, visibleItemCount: 3 });
             visibleItemRenderer.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
-                const absoluteIndex = +props.text.slice(5); // "Item #"
+                const absoluteIndex = +props.text.toString().slice(5); // "Item #"
                 assert.equal(absoluteIndex, arg[1]);
             });
         });
