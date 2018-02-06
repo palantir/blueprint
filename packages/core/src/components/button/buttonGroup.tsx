@@ -6,6 +6,7 @@
 
 import * as classNames from "classnames";
 import * as React from "react";
+import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
@@ -16,9 +17,9 @@ export interface IButtonGroupProps extends IProps, React.HTMLProps<HTMLDivElemen
      * `align="right"` right-aligns text and pushes `icon` to left side.
      * This prop only has an effect if buttons are wider than their default widths.
      *
-     * The `Alignment` enum provides constants for allowed values.
+     * The `Alignment` enum provides constants for allowed values, but string literals are also accepted.
      */
-    alignText?: "left" | "center" | "right";
+    alignText?: Alignment;
 
     /**
      * Whether the button group should take up the full width of its container.

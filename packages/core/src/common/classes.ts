@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Alignment, AlignmentType } from "./alignment";
+import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
 // modifiers
@@ -199,7 +199,7 @@ export const ICON_STANDARD = "pt-icon-standard";
 export const ICON_LARGE = "pt-icon-large";
 
 /** Return CSS class for alignment. */
-export function alignmentClass(alignment: AlignmentType) {
+export function alignmentClass(alignment: Alignment) {
     switch (alignment) {
         case Alignment.LEFT:
             return ALIGN_LEFT;

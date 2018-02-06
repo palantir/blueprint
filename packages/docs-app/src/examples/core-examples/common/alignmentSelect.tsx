@@ -4,12 +4,12 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Alignment, AlignmentType, Button, ButtonGroup } from "@blueprintjs/core";
+import { Alignment, Button, ButtonGroup } from "@blueprintjs/core";
 import * as React from "react";
 
 export interface IAlignSelectProps {
-    align: AlignmentType | undefined;
-    onChange: (align: AlignmentType) => void;
+    align: Alignment | undefined;
+    onChange: (align: Alignment) => void;
 }
 
 export class AlignmentSelect extends React.PureComponent<IAlignSelectProps> {

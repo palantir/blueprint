@@ -6,12 +6,12 @@
 
 import * as React from "react";
 
-import { AlignmentType, AnchorButton, Button, ButtonGroup, Switch } from "@blueprintjs/core";
+import { Alignment, AnchorButton, Button, ButtonGroup, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export interface IButtonGroupExampleState {
-    alignText: AlignmentType;
+    alignText: Alignment;
     fill: boolean;
     iconOnly: boolean;
     minimal: boolean;
@@ -21,7 +21,7 @@ export interface IButtonGroupExampleState {
 
 export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
     public state: IButtonGroupExampleState = {
-        alignText: "center",
+        alignText: Alignment.CENTER,
         fill: false,
         iconOnly: false,
         large: false,
@@ -80,5 +80,5 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
         ];
     }
 
-    private handleAlignChange = (alignText: AlignmentType) => this.setState({ alignText });
+    private handleAlignChange = (alignText: Alignment) => this.setState({ alignText });
 }

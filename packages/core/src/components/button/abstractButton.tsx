@@ -7,6 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
+import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IActionProps } from "../../common/props";
@@ -27,10 +28,10 @@ export interface IButtonProps extends IActionProps {
      * Passing this prop will cause the text container to fill the button and align the text within that
      * to the appropriate side. `icon` and `rightIcon` will be pushed to either side.
      *
-     * The `Alignment` enum provides constants for allowed values.
+     * The `Alignment` enum provides constants for allowed values, but string literals are also accepted.
      * @default "center"
      */
-    alignText?: "left" | "center" | "right";
+    alignText?: Alignment;
 
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement) => any;
