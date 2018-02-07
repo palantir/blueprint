@@ -280,10 +280,9 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
 function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.scrollingElement) {
     requestAnimationFrame(() => {
         const headingAnchor = queryHTMLElement(container, `a[data-route="${reference}"]`);
-        if (headingAnchor == null || headingAnchor.parentElement == null) {
-            return;
+        if (headingAnchor != null && headingAnchor.parentElement != null) {
+            const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
+            scrollParent.scrollTop = scrollOffset;
         }
-        const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
-        scrollParent.scrollTop = scrollOffset;
     });
 }
