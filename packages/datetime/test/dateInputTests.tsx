@@ -74,18 +74,34 @@ describe("<DateInput>", () => {
     });
 
     it("Popover closes when last tabbable component is blurred", () => {
-        const wrapper = mount(<DateInput openOnFocus={true} />);
+        const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
+        const wrapper = mount(<DateInput openOnFocus={true} defaultValue={defaultValue} />);
         const input = wrapper.find("input");
         input.simulate("focus");
         const popover = wrapper.find(Popover);
         assert.isTrue(popover.prop("isOpen"));
         input.simulate("blur");
-        const lastTabbable = popover
-            .find(".DayPicker-Day--outside")
-            .last()
-            .getDOMNode() as HTMLElement;
-        lastTabbable.dispatchEvent(new Event("blur"));
+        // We need to use classname selector since enzyme doesn't
+        // support tabindex selector
+        const tabbables = popover.find(".DayPicker-Day--outside");
+        const lastTabbable = tabbables.last().getDOMNode() as HTMLElement;
+        lastTabbable.dispatchEvent(createFocusEvent("blur"));
         assert.isFalse(popover.prop("isOpen"));
+    });
+
+    it("Popover should not close if focus moves to previous date", () => {
+        const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
+        const wrapper = mount(<DateInput openOnFocus={true} defaultValue={defaultValue} />);
+        wrapper
+            .find("input")
+            .simulate("focus")
+            .simulate("blur");
+        const tabbables = wrapper.find(".DayPicker-Day--outside");
+        const lastTabbable = tabbables.last().getDOMNode() as HTMLElement;
+        const relatedTarget = tabbables.at(tabbables.length - 1).getDOMNode();
+        const event = createFocusEvent("blur", relatedTarget);
+        lastTabbable.dispatchEvent(event);
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("setting timePrecision renders a TimePicker", () => {
@@ -489,5 +505,12 @@ describe("<DateInput>", () => {
             getSelectedDays: () => wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`),
             root: wrapper,
         };
+    }
+
+    // PhantomJS fails when creating FocusEvent, so creating an Event, and attaching releatedTarget works
+    function createFocusEvent(eventType: string, relatedTarget: EventTarget = null) {
+        const event = new Event(eventType) as any;
+        event.relatedTarget = relatedTarget;
+        return event;
     }
 });
