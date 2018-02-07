@@ -73,13 +73,13 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
         ];
     }
 
-    private renderButton(text: string, iconName: IconName) {
+    private renderButton(text: string, icon: IconName) {
         const { intent, vertical } = this.state;
         const rightIconName: IconName = vertical ? "caret-right" : "caret-down";
         const position = vertical ? Position.RIGHT_TOP : Position.BOTTOM_LEFT;
         return (
             <Popover content={<FileMenu />} position={position}>
-                <Button intent={intent} rightIcon={rightIconName} icon={iconName} text={text} />
+                <Button intent={intent} rightIcon={rightIconName} icon={icon} text={text} />
             </Popover>
         );
     }

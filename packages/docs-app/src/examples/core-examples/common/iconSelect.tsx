@@ -11,8 +11,8 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 export interface IIconSelectProps {
-    iconName?: IconName;
-    onChange: (iconName?: IconName) => void;
+    icon?: IconName;
+    onChange: (icon?: IconName) => void;
 }
 
 const NONE = "(none)";
@@ -24,7 +24,7 @@ const TypedSelect = Select.ofType<IconType>();
 
 export class IconSelect extends React.PureComponent<IIconSelectProps> {
     public render() {
-        const { iconName } = this.props;
+        const { icon } = this.props;
         return (
             <label className={Classes.LABEL}>
                 Icon name
@@ -38,8 +38,8 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
                 >
                     <Button
                         className={Classes.TEXT_OVERFLOW_ELLIPSIS}
-                        icon={iconName}
-                        text={iconName || NONE}
+                        icon={icon}
+                        text={icon || NONE}
                         rightIcon="caret-down"
                     />
                 </TypedSelect>
@@ -58,14 +58,14 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
         return <MenuItem className={classes} icon={icon} key={icon} onClick={handleClick} text={icon} />;
     };
 
-    private filterIconName = (query: string, iconName: IconName | typeof NONE) => {
-        if (iconName === NONE) {
+    private filterIconName = (query: string, icon: IconName | typeof NONE) => {
+        if (icon === NONE) {
             return true;
         }
         if (query === "") {
-            return iconName === this.props.iconName;
+            return icon === this.props.icon;
         }
-        return iconName.toLowerCase().indexOf(query.toLowerCase()) >= 0;
+        return icon.toLowerCase().indexOf(query.toLowerCase()) >= 0;
     };
 
     private handleIconChange = (icon: IconType) => this.props.onChange(icon === NONE ? undefined : icon);
