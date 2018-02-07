@@ -99,30 +99,15 @@ Styleguide pt-button-group
   &:not(.pt-minimal) {
     > .pt-popover-wrapper:not(:first-child) .pt-popover-target .pt-button,
     > .pt-button:not(:first-child) {
-      border-radius: 0 $pt-border-radius $pt-border-radius 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
 
     > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
     > .pt-button:not(:last-child) {
       margin-right: -$button-border-width;
-      border-radius: $pt-border-radius 0 0 $pt-border-radius;
-    }
-
-    &.pt-vertical {
-      > .pt-popover-wrapper:first-child .pt-popover-target .pt-button,
-      > .pt-button:first-child {
-        border-radius: $pt-border-radius $pt-border-radius 0 0;
-      }
-
-      > .pt-popover-wrapper:last-child .pt-popover-target .pt-button,
-      > .pt-button:last-child {
-        border-radius: 0 0 $pt-border-radius $pt-border-radius;
-      }
-
-      > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
-      > .pt-button:not(:last-child) {
-        margin-bottom: -$button-border-width;
-      }
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
     }
   }
 
@@ -198,6 +183,23 @@ Styleguide pt-button-group
       // needed to ensure buttons take up the full width when wrapped in a Popover:
       width: 100%;
     }
+
+    &:not(.pt-minimal) {
+      > .pt-popover-wrapper:first-child .pt-popover-target .pt-button,
+      > .pt-button:first-child {
+        border-radius: $pt-border-radius $pt-border-radius 0 0;
+      }
+
+      > .pt-popover-wrapper:last-child .pt-popover-target .pt-button,
+      > .pt-button:last-child {
+        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+      }
+
+      > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
+      > .pt-button:not(:last-child) {
+        margin-bottom: -$button-border-width;
+      }
+    }
   }
 
   &.pt-align-left .pt-button {
@@ -207,13 +209,14 @@ Styleguide pt-button-group
   .pt-dark & {
     // support wrapping buttons in a Blueprint.Tooltip, which adds a wrapper element
     // in dark theme, we adjust the spacing between buttons for best visual results
-
-    // deeply nested selector necessary to target the appropriate popover
-    // wrapper, yet ensure we only style buttons within the target.
-    // stylelint-disable-next-line selector-max-compound-selectors
-    > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
-    > .pt-button:not(:last-child) {
-      margin-right: $button-border-width;
+    &:not(.pt-minimal) {
+      // deeply nested selector necessary to target the appropriate popover
+      // wrapper, yet ensure we only style buttons within the target.
+      // stylelint-disable-next-line selector-max-compound-selectors
+      > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
+      > .pt-button:not(:last-child) {
+        margin-right: $button-border-width;
+      }
     }
 
     &.pt-vertical {
