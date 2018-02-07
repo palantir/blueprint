@@ -7,7 +7,11 @@
 import { AbstractComponent, Button, IProps, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import ReactDayPicker, {
+    CaptionElementProps as ReactDayPickerCaptionElementProps,
+    DayModifiers as ReactDayPickerDayModifiers,
+    Props as ReactDayPickerProps,
+} from "react-day-picker";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -31,7 +35,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
      * `initialMonth`), `toMonth` (use `maxDate`).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerProps?: ReactDayPickerProps;
 
     /**
      * Initial day the calendar will display as selected.
@@ -198,7 +202,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         return Array.isArray(disabledDays) ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
 
-    private renderCaption = (props: ReactDayPicker.CaptionElementProps) => (
+    private renderCaption = (props: ReactDayPickerCaptionElementProps) => (
         <DatePickerCaption
             {...props}
             maxDate={this.props.maxDate}
@@ -228,7 +232,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
 
     private handleDayClick = (
         day: Date,
-        modifiers: ReactDayPicker.DayModifiers,
+        modifiers: ReactDayPickerDayModifiers,
         e: React.MouseEvent<HTMLDivElement>,
     ) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
