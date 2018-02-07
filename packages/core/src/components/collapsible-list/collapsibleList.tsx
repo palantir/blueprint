@@ -118,7 +118,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
             return [[], []];
         }
         const childrenArray = React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
-            if (isElementType(child, MenuItem)) {
+            if (!isElementType(child, MenuItem)) {
                 throw new Error(Errors.COLLAPSIBLE_LIST_INVALID_CHILD);
             }
             return React.cloneElement(child, { key: `visible-${index}` });
