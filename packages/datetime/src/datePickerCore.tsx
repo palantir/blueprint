@@ -9,6 +9,10 @@ import { Months } from "./common/months";
 
 // DatePicker supports a simpler set of modifiers (for now).
 // also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.
+/**
+ * Collection of functions that determine which modifier classes get applied to which days.
+ * See the [**react-day-picker** documentation](http://react-day-picker.js.org/Modifiers.html) to learn more.
+ */
 export interface IDatePickerModifiers {
     [name: string]: (date: Date) => boolean;
 }
