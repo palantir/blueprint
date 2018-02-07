@@ -33,7 +33,7 @@ export class IconExample extends BaseExample<IIconExampleState> {
     protected renderOptions() {
         const { icon, iconSize } = this.state;
         return [
-            [<IconSelect key="icon-name" iconName={icon} onChange={this.handleIconNameChange} />],
+            [<IconSelect key="icon-name" icon={icon} onChange={this.handleIconNameChange} />],
             [
                 <label className={Classes.LABEL} key="icon-size-label">
                     Icon size
