@@ -17,6 +17,6 @@ export function createDefaultRenderers(): Record<string, React.ComponentType<ITa
         heading: tags.Heading,
         interface: tags.TypescriptExample,
         page: () => null,
-        // TODO: @see
+        see: tags.SeeTag,
     };
 }

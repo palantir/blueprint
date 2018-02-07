@@ -83,7 +83,7 @@ To add a submenu to a `Menu`, simply nest `MenuItem`s within another `MenuItem`.
 The submenu opens to the right of its parent by default, but will adjust and flip to the left if
 there is not enough room to the right.
 
-```jsx
+```tsx
 <Menu>
     <MenuItem text="Submenu">
         <MenuItem text="Child one" />
@@ -104,7 +104,7 @@ there is not enough room to the right.
 The `Menu` component by itself simply renders a menu list. To make a dropdown menu, use a `Menu`
 element as the `content` property of a `Popover`:
 
-```jsx
+```tsx
 <Popover content={<Menu>...</Menu>} position={Position.RIGHT_TOP}>
     <Button iconName="share" text="Open in..." />
 </Popover>

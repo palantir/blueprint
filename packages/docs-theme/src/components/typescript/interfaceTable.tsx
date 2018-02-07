@@ -6,7 +6,7 @@
 
 import { Classes, Intent, Tag } from "@blueprintjs/core";
 import * as classNames from "classnames";
-import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty } from "documentalist/dist/client";
+import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty, ITsSignature } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ApiHeader } from "./apiHeader";
@@ -35,15 +35,20 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
             <div className="docs-modifiers">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
-                <table className="pt-html-table">
-                    <thead>
-                        <tr>
-                            <th>{title}</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>{propRows}</tbody>
-                </table>
+                <div className="docs-interface-table">
+                    <table className="pt-html-table">
+                        <thead>
+                            <tr>
+                                <th>{title}</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {propRows}
+                            {this.renderIndexSignature(data.indexSignature)}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         );
     }
@@ -83,6 +88,27 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
             </tr>
         );
     };
+
+    private renderIndexSignature(entry?: ITsSignature) {
+        if (entry == null) {
+            return null;
+        }
+        const { renderBlock, renderType } = this.context;
+        // HACKHACK: Documentalist's indexSignature support isn't _great_, but it's certainly _good enough_
+        // entry.type looks like "{ [name: string]: (date: Date) => boolean }"
+        const [signature, returnType] = entry.type.slice(2, -2).split("]: ");
+        return (
+            <tr key={name}>
+                <td className="docs-prop-name">
+                    <code>{renderType(signature)}]</code>
+                </td>
+                <td className="docs-prop-details">
+                    <code className="docs-prop-type">{renderType(returnType)}</code>
+                    <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>
+                </td>
+            </tr>
+        );
+    }
 
     private renderTags(entry: ITsProperty | ITsMethod) {
         const { renderType } = this.context;
