@@ -24,7 +24,7 @@ import {
 
 describe("MenuItem", () => {
     it("React renders MenuItem", () => {
-        const wrapper = shallow(<MenuItem iconName="graph" text="Graph" />);
+        const wrapper = shallow(<MenuItem icon="graph" text="Graph" />);
         assert.isTrue(wrapper.find(Icon).exists());
         assert.strictEqual(findText(wrapper).text(), "Graph");
     });
@@ -39,10 +39,10 @@ describe("MenuItem", () => {
 
     it("children appear in submenu", () => {
         const wrapper = shallow(
-            <MenuItem iconName="style" text="Style">
-                <MenuItem iconName="bold" text="Bold" />
-                <MenuItem iconName="italic" text="Italic" />
-                <MenuItem iconName="underline" text="Underline" />
+            <MenuItem icon="style" text="Style">
+                <MenuItem icon="bold" text="Bold" />
+                <MenuItem icon="italic" text="Italic" />
+                <MenuItem icon="underline" text="Underline" />
             </MenuItem>,
         );
         const submenu = findSubmenu(wrapper);
@@ -51,10 +51,10 @@ describe("MenuItem", () => {
 
     it("disabled MenuItem will not show its submenu", () => {
         const wrapper = shallow(
-            <MenuItem disabled={true} iconName="style" text="Style">
-                <MenuItem iconName="bold" text="Bold" />
-                <MenuItem iconName="italic" text="Italic" />
-                <MenuItem iconName="underline" text="Underline" />
+            <MenuItem disabled={true} icon="style" text="Style">
+                <MenuItem icon="bold" text="Bold" />
+                <MenuItem icon="italic" text="Italic" />
+                <MenuItem icon="underline" text="Underline" />
             </MenuItem>,
         );
         assert.isTrue(wrapper.find(Popover).prop("disabled"));
@@ -108,7 +108,7 @@ describe("MenuItem", () => {
             popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
         };
         const wrapper = shallow(
-            <MenuItem iconName="style" text="Style" popoverProps={popoverProps}>
+            <MenuItem icon="style" text="Style" popoverProps={popoverProps}>
                 <MenuItem text="one" />
                 <MenuItem text="two" />
             </MenuItem>,
