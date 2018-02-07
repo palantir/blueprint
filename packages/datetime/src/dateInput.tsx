@@ -185,7 +185,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
 
     private inputRef: HTMLElement = null;
     private contentRef: HTMLElement = null;
-    private lastPopoverElement: HTMLElement = null;
+    private lastElementInPopover: HTMLElement = null;
 
     public constructor(props?: IDateInputProps, context?: any) {
         super(props, context);
@@ -479,7 +479,12 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     };
 
     // blur DOM event listener (not React event)
-    private handlePopoverBlur = () => this.handleClosePopover();
+    private handlePopoverBlur = (e: KeyboardEvent) => {
+        if (e.which === Keys.TAB && !e.shiftKey) {
+            e.target.dispatchEvent(new FocusEvent("blur"));
+            this.handleClosePopover();
+        }
+    };
 
     private registerPopoverBlurHandler = () => {
         if (this.contentRef != null) {
@@ -488,19 +493,22 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             const tabbableElements = this.contentRef.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
             const numOfElements = tabbableElements.length;
             if (numOfElements > 0) {
-                const lastPopoverElement = tabbableElements[numOfElements - 1] as HTMLElement;
-                if (this.lastPopoverElement !== lastPopoverElement) {
+                // Keep track of the last focusable element in popover and add
+                // a blur handler, so that popover closes when the user
+                // moves to the next element
+                const lastElement = tabbableElements[numOfElements - 1] as HTMLElement;
+                if (this.lastElementInPopover !== lastElement) {
                     this.unregisterPopoverBlurHandler();
-                    this.lastPopoverElement = lastPopoverElement;
-                    this.lastPopoverElement.addEventListener("blur", this.handlePopoverBlur);
+                    this.lastElementInPopover = lastElement;
+                    this.lastElementInPopover.addEventListener("keydown", this.handlePopoverBlur);
                 }
             }
         }
     };
 
     private unregisterPopoverBlurHandler = () => {
-        if (this.lastPopoverElement) {
-            this.lastPopoverElement.removeEventListener("blur", this.handlePopoverBlur);
+        if (this.lastElementInPopover != null) {
+            this.lastElementInPopover.removeEventListener("keydown", this.handlePopoverBlur);
         }
     };
 
