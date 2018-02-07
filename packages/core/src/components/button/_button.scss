@@ -200,12 +200,12 @@ Styleguide pt-button
 
   &.pt-large,
   .pt-large & {
-    @include pt-button-large();
+    @include pt-button-height-large();
   }
 
   &.pt-small,
   .pt-small & {
-    @include pt-button-small();
+    @include pt-button-height-small();
   }
 }
 

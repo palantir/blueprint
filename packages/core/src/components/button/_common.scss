@@ -112,6 +112,23 @@ $button-intents: (
   min-height: $height;
 }
 
+@mixin pt-button-height-large() {
+  @include pt-button-height($pt-button-height-large);
+  @include pt-flex-margin(row, $button-icon-spacing-large);
+  padding: $button-padding-large;
+  font-size: $pt-font-size-large;
+}
+
+@mixin pt-button-height-default() {
+  @include pt-button-height($pt-button-height);
+  padding: $button-padding;
+}
+
+@mixin pt-button-height-small() {
+  @include pt-button-height($pt-button-height-small);
+  padding: $button-padding-small;
+}
+
 @mixin pt-button() {
   box-shadow: $button-box-shadow;
   background-color: $button-background-color;
@@ -431,14 +448,3 @@ $button-intents: (
   }
 }
 
-@mixin pt-button-large() {
-  @include pt-button-height($pt-button-height-large);
-  @include pt-flex-margin(row, $button-icon-spacing-large);
-  padding: $button-padding-large;
-  font-size: $pt-font-size-large;
-}
-
-@mixin pt-button-small() {
-  @include pt-button-height($pt-button-height-small);
-  padding: $button-padding-small;
-}

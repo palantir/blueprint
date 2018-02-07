@@ -109,7 +109,8 @@ export interface ITagInputProps extends IProps {
 
     /**
      * Element to render on right side of input.
-     * For best results, use a small minimal button, tag, or spinner.
+     * For best results, use a small spinner or minimal button (button height will adjust if `TagInput` use `.pt-large`).
+     * Other elements will likely require custom styles for correct positioning.
      */
     rightElement?: JSX.Element;
 
@@ -206,19 +207,22 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
                     icon={leftIcon}
                     iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD}
                 />
-                {values.map(this.maybeRenderTag)}
-                <input
-                    value={this.state.inputValue}
-                    {...inputProps}
-                    onFocus={this.handleInputFocus}
-                    onChange={this.handleInputChange}
-                    onKeyDown={this.handleInputKeyDown}
-                    onKeyUp={this.handleInputKeyUp}
-                    placeholder={resolvedPlaceholder}
-                    ref={this.refHandlers.input}
-                    className={classNames(Classes.INPUT_GHOST, inputProps.className)}
-                    disabled={this.props.disabled}
-                />
+                <div className={Classes.TAG_INPUT_VALUES}>
+                    {values.map(this.maybeRenderTag)}
+                    {this.props.children}
+                    <input
+                        value={this.state.inputValue}
+                        {...inputProps}
+                        onFocus={this.handleInputFocus}
+                        onChange={this.handleInputChange}
+                        onKeyDown={this.handleInputKeyDown}
+                        onKeyUp={this.handleInputKeyUp}
+                        placeholder={resolvedPlaceholder}
+                        ref={this.refHandlers.input}
+                        className={classNames(Classes.INPUT_GHOST, inputProps.className)}
+                        disabled={this.props.disabled}
+                    />
+                </div>
                 {this.props.rightElement}
             </div>
         );
