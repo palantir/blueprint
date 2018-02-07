@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/table-dev-app",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-rc.1",
   "description": "Dev application for @blueprintjs/table",
   "private": true,
   "scripts": {
@@ -16,8 +16,8 @@
     "verify": "npm-run-all -p dist lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^2.0.0-beta.1",
-    "@blueprintjs/table": "^2.0.0-beta.1",
+    "@blueprintjs/core": "^2.0.0-rc.1",
+    "@blueprintjs/table": "^2.0.0-rc.1",
     "classnames": "^2.2.5",
     "dom4": "^2.0.1",
     "normalize.css": "^7.0.0",
@@ -26,7 +26,7 @@
     "react-transition-group": "^2.2.1"
   },
   "devDependencies": {
-    "@blueprintjs/webpack-build-scripts": "^0.4.0",
+    "@blueprintjs/webpack-build-scripts": "^0.5.0",
     "npm-run-all": "^4.1.2",
     "stylelint": "^8.4.0",
     "tslint": "^5.9.0",
