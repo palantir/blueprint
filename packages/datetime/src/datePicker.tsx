@@ -128,10 +128,11 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
             showActionsBar,
         } = this.props;
         const { displayMonth, displayYear } = this.state;
+        const ReactDayPickerComponent = ReactDayPicker.default;
 
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
-                <ReactDayPicker
+                <ReactDayPickerComponent
                     enableOutsideDays={true}
                     locale={locale}
                     localeUtils={localeUtils}
