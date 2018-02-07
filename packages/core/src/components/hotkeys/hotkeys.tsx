@@ -9,6 +9,7 @@ import * as React from "react";
 import * as classNames from "classnames";
 import { AbstractPureComponent, IProps } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
+import { isElementType } from "../../common/utils";
 import { Hotkey, IHotkeyProps } from "./hotkey";
 
 export { Hotkey, IHotkeyProps } from "./hotkey";
@@ -70,8 +71,8 @@ export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
     }
 
     protected validateProps(props: IHotkeysProps & { children: React.ReactNode }) {
-        React.Children.forEach(props.children, child => {
-            if (!Hotkey.isInstance(child)) {
+        React.Children.forEach(props.children, (child: JSX.Element) => {
+            if (!isElementType(child, Hotkey)) {
                 throw new Error(HOTKEYS_HOTKEY_CHILDREN);
             }
         });

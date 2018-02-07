@@ -11,6 +11,7 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
+import { isElementType } from "../../common/utils";
 import { Menu } from "../menu/menu";
 import { IMenuItemProps, MenuItem } from "../menu/menuItem";
 import { IPopoverProps, Popover } from "../popover/popover";
@@ -117,7 +118,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
             return [[], []];
         }
         const childrenArray = React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
-            if (child.type !== MenuItem) {
+            if (isElementType(child, MenuItem)) {
                 throw new Error(Errors.COLLAPSIBLE_LIST_INVALID_CHILD);
             }
             return React.cloneElement(child, { key: `visible-${index}` });

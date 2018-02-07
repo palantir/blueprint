@@ -4,6 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import * as React from "react";
+
 import { CLAMP_MIN_MAX } from "./errors";
 
 export * from "./utils/compareUtils";
@@ -31,6 +33,10 @@ export interface INamed {
 
 export function getDisplayName(ComponentClass: React.ComponentClass | INamed) {
     return (ComponentClass as React.ComponentClass).displayName || (ComponentClass as INamed).name || "Unknown";
+}
+
+export function isElementType(element: JSX.Element, ComponentClass: React.ComponentClass) {
+    return element.type === React.createElement(ComponentClass).type;
 }
 
 /**

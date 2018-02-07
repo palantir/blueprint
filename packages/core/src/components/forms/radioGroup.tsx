@@ -10,6 +10,7 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IOptionProps, IProps } from "../../common/props";
+import { isElementType } from "../../common/utils";
 import { Radio } from "./controls";
 
 export interface IRadioGroupProps extends IProps {
@@ -108,5 +109,5 @@ export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
 }
 
 function isRadio(child: any): child is JSX.Element {
-    return child != null && (child as JSX.Element).type === Radio;
+    return child != null && isElementType(child as JSX.Element, Radio);
 }
