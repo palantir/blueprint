@@ -278,10 +278,12 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
  * Scroll the scrollParent such that the reference heading appears at the top of the viewport.
  */
 function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.scrollingElement) {
-    const headingAnchor = queryHTMLElement(container, `a[data-route="${reference}"]`);
-    if (headingAnchor == null || headingAnchor.parentElement == null) {
-        return;
-    }
-    const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
-    scrollParent.scrollTop = scrollOffset;
+    requestAnimationFrame(() => {
+        const headingAnchor = queryHTMLElement(container, `a[data-route="${reference}"]`);
+        if (headingAnchor == null || headingAnchor.parentElement == null) {
+            return;
+        }
+        const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
+        scrollParent.scrollTop = scrollOffset;
+    });
 }
