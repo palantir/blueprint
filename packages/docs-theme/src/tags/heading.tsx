@@ -15,8 +15,8 @@ export const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>
         { className: "docs-title" },
         <a className="docs-anchor" data-route={route} key="anchor" />,
         <a className="docs-anchor-link" href={"#" + route} key="link">
-            <Icon iconName="link" />
+            <Icon icon="link" />
         </a>,
         value,
     );
-Heading.displayName = "Docs.Heading";
+Heading.displayName = "Docs2.Heading";

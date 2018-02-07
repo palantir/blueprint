@@ -7,7 +7,8 @@
 import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
-import { IItemModifiers, ItemRenderer } from "./itemRenderer";
+import { IItemModifiers, ItemRenderer } from "../../common/itemRenderer";
+import { ItemListPredicate, ItemPredicate } from "../../common/predicate";
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
@@ -21,7 +22,7 @@ export interface IListItemsProps<T> extends IProps {
      *
      * If defined with `itemPredicate`, this prop takes priority and the other will be ignored.
      */
-    itemListPredicate?: (query: string, items: T[]) => T[];
+    itemListPredicate?: ItemListPredicate<T>;
 
     /**
      * Customize querying of individual items. Return `true` to keep the item, `false` to hide.
@@ -30,7 +31,7 @@ export interface IListItemsProps<T> extends IProps {
      *
      * If defined with `itemListPredicate`, this prop will be ignored.
      */
-    itemPredicate?: (query: string, item: T, index: number) => boolean;
+    itemPredicate?: ItemPredicate<T>;
 
     /**
      * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
@@ -139,7 +140,7 @@ export interface IQueryListState<T> {
 }
 
 export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
-    public static displayName = "Blueprint.QueryList";
+    public static displayName = "Blueprint2.QueryList";
 
     public static ofType<T>() {
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
@@ -293,7 +294,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private renderItem = (item: T, index?: number) => {
-        const { activeItem, itemListPredicate, itemPredicate, query } = this.props;
+        const { activeItem, itemListPredicate, itemPredicate = () => true, query } = this.props;
         const matchesPredicate = Utils.isFunction(itemListPredicate)
             ? this.state.filteredItems.indexOf(item) >= 0
             : itemPredicate(query, item, index);

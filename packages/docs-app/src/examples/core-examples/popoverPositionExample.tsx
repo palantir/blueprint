@@ -105,7 +105,7 @@ export class PopoverPositionExample extends BaseExample<{}> {
         );
 
         return (
-            <Popover content={content} inline={true} position={position}>
+            <Popover content={content} position={position} usePortal={false}>
                 <Button className={BUTTON_CLASS}>{buttonLabel}</Button>
             </Popover>
         );

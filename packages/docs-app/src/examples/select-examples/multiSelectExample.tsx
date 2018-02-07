@@ -133,7 +133,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         return (
             <MenuItem
                 className={classes}
-                iconName={this.isFilmSelected(film) ? "tick" : "blank"}
+                icon={this.isFilmSelected(film) ? "tick" : "blank"}
                 key={film.rank}
                 label={film.year.toString()}
                 onClick={handleClick}

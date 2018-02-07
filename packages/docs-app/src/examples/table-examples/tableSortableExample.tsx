@@ -59,8 +59,8 @@ class TextSortableColumn extends AbstractSortableColumn {
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
             <Menu>
-                <MenuItem iconName="sort-asc" onClick={sortAsc} text="Sort Asc" />
-                <MenuItem iconName="sort-desc" onClick={sortDesc} text="Sort Desc" />
+                <MenuItem icon="sort-asc" onClick={sortAsc} text="Sort Asc" />
+                <MenuItem icon="sort-desc" onClick={sortDesc} text="Sort Desc" />
             </Menu>
         );
     }
@@ -86,8 +86,8 @@ class RankSortableColumn extends AbstractSortableColumn {
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
             <Menu>
-                <MenuItem iconName="sort-asc" onClick={sortAsc} text="Sort Rank Asc" />
-                <MenuItem iconName="sort-desc" onClick={sortDesc} text="Sort Rank Desc" />
+                <MenuItem icon="sort-asc" onClick={sortAsc} text="Sort Rank Asc" />
+                <MenuItem icon="sort-desc" onClick={sortDesc} text="Sort Rank Desc" />
             </Menu>
         );
     }
@@ -114,32 +114,32 @@ class RecordSortableColumn extends AbstractSortableColumn {
         return (
             <Menu>
                 <MenuItem
-                    iconName="sort-asc"
+                    icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, false))}
                     text="Sort Wins Asc"
                 />
                 <MenuItem
-                    iconName="sort-desc"
+                    icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, true))}
                     text="Sort Wins Desc"
                 />
                 <MenuItem
-                    iconName="sort-asc"
+                    icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, false))}
                     text="Sort Losses Asc"
                 />
                 <MenuItem
-                    iconName="sort-desc"
+                    icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, true))}
                     text="Sort Losses Desc"
                 />
                 <MenuItem
-                    iconName="sort-asc"
+                    icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, false))}
                     text="Sort Ties Asc"
                 />
                 <MenuItem
-                    iconName="sort-desc"
+                    icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, true))}
                     text="Sort Ties Desc"
                 />

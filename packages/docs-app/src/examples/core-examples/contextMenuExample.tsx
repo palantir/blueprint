@@ -29,10 +29,10 @@ class GraphNode extends React.PureComponent<{}, { isContextMenuOpen: boolean }> 
         // invoke static API, getting coordinates from mouse event
         ContextMenu.show(
             <Menu>
-                <MenuItem iconName="search-around" text="Search around..." />
-                <MenuItem iconName="search" text="Object viewer" />
-                <MenuItem iconName="graph-remove" text="Remove" />
-                <MenuItem iconName="group-objects" text="Group" />
+                <MenuItem icon="search-around" text="Search around..." />
+                <MenuItem icon="search" text="Object viewer" />
+                <MenuItem icon="graph-remove" text="Remove" />
+                <MenuItem icon="group-objects" text="Group" />
                 <MenuDivider />
                 <MenuItem disabled={true} text="Clicked on node" />
             </Menu>,
@@ -54,16 +54,16 @@ export class ContextMenuExample extends BaseExample<{}> {
     public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
         return (
             <Menu>
-                <MenuItem iconName="select" text="Select all" />
-                <MenuItem iconName="insert" text="Insert...">
-                    <MenuItem iconName="new-object" text="Object" />
-                    <MenuItem iconName="new-text-box" text="Text box" />
-                    <MenuItem iconName="star" text="Astral body" />
+                <MenuItem icon="select" text="Select all" />
+                <MenuItem icon="insert" text="Insert...">
+                    <MenuItem icon="new-object" text="Object" />
+                    <MenuItem icon="new-text-box" text="Text box" />
+                    <MenuItem icon="star" text="Astral body" />
                 </MenuItem>
-                <MenuItem iconName="layout" text="Layout...">
-                    <MenuItem iconName="layout-auto" text="Auto" />
-                    <MenuItem iconName="layout-circle" text="Circle" />
-                    <MenuItem iconName="layout-grid" text="Grid" />
+                <MenuItem icon="layout" text="Layout...">
+                    <MenuItem icon="layout-auto" text="Auto" />
+                    <MenuItem icon="layout-circle" text="Circle" />
+                    <MenuItem icon="layout-grid" text="Grid" />
                 </MenuItem>
                 <MenuDivider />
                 <MenuItem disabled={true} text={`Clicked at (${e.clientX}, ${e.clientY})`} />

@@ -4,23 +4,25 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Button, ButtonGroup, Classes, IconName, Intent, Popover, Position, Switch } from "@blueprintjs/core";
+import { Alignment, Button, ButtonGroup, IconName, Intent, Popover, Position, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
-import * as classNames from "classnames";
 import * as React from "react";
 
+import { AlignmentSelect } from "./common/alignmentSelect";
 import { FileMenu } from "./common/fileMenu";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonGroupPopoverExampleState {
-    intent?: Intent;
-    large?: boolean;
-    minimal?: boolean;
-    vertical?: boolean;
+    alignText: Alignment;
+    intent: Intent;
+    large: boolean;
+    minimal: boolean;
+    vertical: boolean;
 }
 
 export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverExampleState> {
     public state: IButtonGroupPopoverExampleState = {
+        alignText: Alignment.CENTER,
         intent: Intent.NONE,
         large: false,
         minimal: false,
@@ -35,15 +37,10 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 
     protected renderExample() {
-        const { large, minimal, vertical } = this.state;
+        const { intent, ...bgProps } = this.state;
 
         return (
-            <ButtonGroup
-                large={large}
-                minimal={minimal}
-                vertical={vertical}
-                className={classNames({ [Classes.ALIGN_LEFT]: vertical })}
-            >
+            <ButtonGroup {...bgProps} style={{ minWidth: 120 }}>
                 {this.renderButton("File", "document")}
                 {this.renderButton("Edit", "edit")}
                 {this.renderButton("View", "eye-open")}
@@ -52,9 +49,9 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
     }
 
     protected renderOptions() {
+        const { alignText } = this.state;
         return [
             [
-                <IntentSelect key="intent" intent={this.state.intent} onChange={this.handleIntentChange} />,
                 <Switch key="large" checked={this.state.large} onChange={this.handleLargeChange} label="Large" />,
                 <Switch
                     key="minimal"
@@ -69,6 +66,10 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
                     label="Vertical"
                 />,
             ],
+            [
+                <IntentSelect key="intent" intent={this.state.intent} onChange={this.handleIntentChange} />,
+                <AlignmentSelect align={alignText} onChange={this.handleAlignChange} />,
+            ],
         ];
     }
 
@@ -78,8 +79,10 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
         const position = vertical ? Position.RIGHT_TOP : Position.BOTTOM_LEFT;
         return (
             <Popover content={<FileMenu />} position={position}>
-                <Button intent={intent} rightIconName={rightIconName} iconName={iconName} text={text} />
+                <Button intent={intent} rightIcon={rightIconName} icon={iconName} text={text} />
             </Popover>
         );
     }
+
+    private handleAlignChange = (alignText: Alignment) => this.setState({ alignText });
 }

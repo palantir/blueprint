@@ -101,7 +101,7 @@ export interface ITimezonePickerState {
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
 export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
-    public static displayName = "Blueprint.TimezonePicker";
+    public static displayName = "Blueprint2.TimezonePicker";
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
         disabled: false,
@@ -196,12 +196,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         const displayValue = finalValue ? formatTimezone(finalValue, date, valueDisplayFormat) : undefined;
 
         return (
-            <Button
-                rightIconName="caret-down"
-                disabled={disabled}
-                text={displayValue || placeholder}
-                {...buttonProps}
-            />
+            <Button rightIcon="caret-down" disabled={disabled} text={displayValue || placeholder} {...buttonProps} />
         );
     }
 
@@ -224,7 +219,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
             <MenuItem
                 key={item.key}
                 className={classes}
-                iconName={item.iconName}
+                icon={item.iconName}
                 text={item.text}
                 label={item.label}
                 onClick={handleClick}

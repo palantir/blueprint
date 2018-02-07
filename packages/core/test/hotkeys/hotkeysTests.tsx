@@ -137,7 +137,7 @@ describe("Hotkeys", () => {
         });
 
         // this works only on keydown, so don't put it in the test suite
-        it('triggers non-inline hotkey dialog with "?"', done => {
+        it('triggers hotkey dialog with "?"', done => {
             const TEST_TIMEOUT_DURATION = 30;
 
             comp = mount(<TestComponent />, { attachTo });

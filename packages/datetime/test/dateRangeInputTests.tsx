@@ -295,8 +295,7 @@ describe("<DateRangeInput>", () => {
             expect(startInputNode.selectionStart).to.equal(startInputNode.selectionEnd);
         });
 
-        // selectionStart/End works in Chrome but not Phantom. disabling to not fail builds.
-        it.skip("if true, selects all text on focus", () => {
+        it("if true, selects all text on focus", () => {
             const attachTo = document.createElement("div");
             const { root } = wrap(
                 <DateRangeInput defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,

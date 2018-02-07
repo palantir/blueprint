@@ -31,23 +31,13 @@ export interface IOverlayableProps {
      * Whether the overlay should prevent focus from leaving itself. That is, if the user attempts
      * to focus an element outside the overlay and this prop is enabled, then the overlay will
      * immediately bring focus back to itself. If you are nesting overlay components, either disable
-     * this prop on the "outermost" overlays or mark the nested ones `inline={true}`.
+     * this prop on the "outermost" overlays or mark the nested ones `usePortal={false}`.
      * @default true
      */
     enforceFocus?: boolean;
 
     /**
-     * Whether the overlay should be rendered inline or into a new element on `document.body`.
-     * This prop essentially determines which element is covered by the backdrop: if `true`,
-     * then only its parent is covered; otherwise, the entire application is covered.
-     * Set this prop to `true` when this component is used inside an `Overlay` (such as
-     * `Dialog` or `Popover`) to ensure that this component is rendered above its parent.
-     * @default false
-     */
-    inline?: boolean;
-
-    /**
-     * If `true` and not `inline`, the `Portal` containing the children is created and attached
+     * If `true` and `usePortal={true}`, the `Portal` containing the children is created and attached
      * to the DOM when the overlay is opened for the first time; otherwise this happens when the
      * component mounts. Lazy mounting provides noticeable performance improvements if you have lots
      * of overlays at once, such as on each row of a table.
@@ -63,6 +53,20 @@ export interface IOverlayableProps {
      * @default 100
      */
     transitionDuration?: number;
+
+    /**
+     * Whether the overlay should be wrapped in a `Portal`, which renders its contents in a new
+     * element attached to `document.body`.
+     *
+     * This prop essentially determines which element is covered by the backdrop: if `false`,
+     * then only its parent is covered; otherwise, the entire page is covered (because the parent
+     * of the `Portal` is the `<body>` itself).
+     *
+     * Set this prop to `false` on nested overlays (such as `Dialog` or `Popover`) to ensure that they
+     * are rendered above their parents.
+     * @default true
+     */
+    usePortal?: boolean;
 
     /**
      * A callback that is invoked when user interaction causes the overlay to close, such as
@@ -118,7 +122,7 @@ export interface IOverlayState {
 }
 
 export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
-    public static displayName = "Blueprint.Overlay";
+    public static displayName = "Blueprint2.Overlay";
 
     public static defaultProps: IOverlayProps = {
         autoFocus: true,
@@ -127,18 +131,18 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         canOutsideClickClose: true,
         enforceFocus: true,
         hasBackdrop: true,
-        inline: false,
         isOpen: false,
         lazy: true,
         transitionDuration: 300,
         transitionName: "pt-overlay",
+        usePortal: true,
     };
 
     private static openStack: Overlay[] = [];
     private static getLastOpened = () => Overlay.openStack[Overlay.openStack.length - 1];
 
     // an HTMLElement that contains the backdrop and any children, to query for focus target
-    private containerElement: HTMLElement;
+    public containerElement: HTMLElement;
     private refHandlers = {
         container: (ref: HTMLDivElement) => (this.containerElement = ref),
     };
@@ -154,10 +158,13 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             return null;
         }
 
-        const { children, className, inline, isOpen, transitionDuration, transitionName } = this.props;
+        const { children, className, usePortal, isOpen, transitionDuration, transitionName } = this.props;
 
-        const childrenWithTransitions = React.Children.map(children, (child: React.ReactElement<any>) => {
-            // add a special class to each child that will automatically set the appropriate
+        const childrenWithTransitions = React.Children.map(children, (child?: React.ReactChild) => {
+            if (child == null || typeof child !== "object") {
+                return child;
+            }
+            // add a special class to each child element that will automatically set the appropriate
             // CSS position mode under the hood. also, make the container focusable so we can
             // trap focus inside it (via `enforceFocus`).
             const decoratedChild = React.cloneElement(child, {
@@ -182,7 +189,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             Classes.OVERLAY,
             {
                 [Classes.OVERLAY_OPEN]: isOpen,
-                [Classes.OVERLAY_INLINE]: inline,
+                [Classes.OVERLAY_INLINE]: !usePortal,
             },
             className,
         );
@@ -192,13 +199,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             onKeyDown: this.handleKeyDown,
         };
 
-        if (inline) {
-            return (
-                <span {...elementProps} ref={this.refHandlers.container}>
-                    {transitionGroup}
-                </span>
-            );
-        } else {
+        if (usePortal) {
             return (
                 <Portal
                     {...elementProps}
@@ -207,6 +208,12 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
                 >
                     {transitionGroup}
                 </Portal>
+            );
+        } else {
+            return (
+                <span {...elementProps} ref={this.refHandlers.container}>
+                    {transitionGroup}
+                </span>
             );
         }
     }
@@ -301,7 +308,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
                 }
             }
 
-            if (openStack.filter(o => !o.props.inline && o.props.hasBackdrop).length === 0) {
+            if (openStack.filter(o => o.props.usePortal && o.props.hasBackdrop).length === 0) {
                 document.body.classList.remove(Classes.OVERLAY_OPEN);
             }
         }
@@ -325,7 +332,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             document.addEventListener("mousedown", this.handleDocumentClick);
         }
 
-        if (this.props.inline) {
+        if (!this.props.usePortal) {
             safeInvoke(this.props.didOpen);
         } else if (this.props.hasBackdrop) {
             // add a class to the body to prevent scrolling of content below the overlay
@@ -346,10 +353,17 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
     };
 
     private handleDocumentClick = (e: MouseEvent) => {
-        const { isOpen, onClose } = this.props;
+        const { canOutsideClickClose, isOpen, onClose } = this.props;
         const eventTarget = e.target as HTMLElement;
-        const isClickInOverlay = this.containerElement != null && this.containerElement.contains(eventTarget);
-        if (isOpen && this.props.canOutsideClickClose && !isClickInOverlay) {
+
+        const { openStack } = Overlay;
+        const stackIndex = openStack.indexOf(this);
+
+        const isClickInThisOverlayOrDescendant = openStack
+            .slice(stackIndex)
+            .some(({ containerElement }) => containerElement && containerElement.contains(eventTarget));
+
+        if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
             // casting to any because this is a native event
             safeInvoke(onClose, e as any);
         }

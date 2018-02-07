@@ -15,7 +15,7 @@ export interface ITypeAliasTableProps {
 
 export class TypeAliasTable extends React.PureComponent<ITypeAliasTableProps> {
     public static contextTypes = DocumentationContextTypes;
-    public static displayName = "Docs.TypeAliasTable";
+    public static displayName = "Docs2.TypeAliasTable";
 
     public context: IDocumentationContext;
 

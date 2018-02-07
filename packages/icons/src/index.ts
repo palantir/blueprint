@@ -4,6 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-export { IconClasses } from "./generated/iconClasses";
-export { IconName } from "./generated/iconName";
-export { IconContents } from "./generated/iconStrings";
+import * as IconContents from "./generated/iconContents";
+import * as IconNames from "./generated/iconNames";
+
+export { IconContents, IconNames };
+export { IconSvgPaths16, IconSvgPaths20 } from "./generated/iconSvgPaths";
+export { IconName } from "./iconName";

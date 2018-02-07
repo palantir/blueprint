@@ -17,7 +17,7 @@ describe("<Select>", () => {
     const FilmSelect = Select.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
-        popoverProps: { inline: true, isOpen: true },
+        popoverProps: { isOpen: true, usePortal: false },
         query: "",
     };
     let handlers: {
@@ -47,9 +47,8 @@ describe("<Select>", () => {
     });
 
     it("disabled=true disables Popover", () => {
-        const wrapper = select({ disabled: true, popoverProps: { inline: true } });
-        wrapper.find("table").simulate("click");
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        const wrapper = select({ disabled: true });
+        assert.strictEqual(wrapper.find(Popover).prop("disabled"), true);
     });
 
     it("itemRenderer is called for each child", () => {
@@ -112,7 +111,7 @@ describe("<Select>", () => {
         // Select defines its own popoverWillOpen so this ensures that the passthrough happens
         const popoverWillOpen = sinon.spy();
         const modifiers = {}; // our own instance
-        const wrapper = select({ popoverProps: { isOpen: undefined, popoverWillOpen, modifiers } });
+        const wrapper = select({ popoverProps: { popoverWillOpen, modifiers } });
         wrapper.find("table").simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(popoverWillOpen.calledOnce);

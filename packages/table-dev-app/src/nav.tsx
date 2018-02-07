@@ -5,7 +5,7 @@
 
 import * as React from "react";
 
-import { Switch } from "@blueprintjs/core";
+import { Alignment, AnchorButton, Classes, Navbar, Switch } from "@blueprintjs/core";
 
 export interface INavProps {
     selected?: string;
@@ -19,21 +19,17 @@ export class Nav extends React.Component<INavProps, {}> {
         };
 
         return (
-            <nav className="pt-navbar pt-dark pt-fixed-top">
-                <div className="pt-navbar-group pt-align-left">
-                    <div className="pt-navbar-heading">Blueprint Table</div>
-                </div>
-                <div className="pt-navbar-group pt-align-right">
-                    <a href="index.html" className="pt-button pt-minimal">
-                        Home
-                    </a>
-                    <a href="features.html" className="pt-button pt-minimal">
-                        Features (Legacy)
-                    </a>
-                    <span className="pt-navbar-divider" />
+            <Navbar className="pt-dark pt-fixed-top">
+                <Navbar.Group align={Alignment.LEFT}>
+                    <Navbar.Heading>Blueprint Table</Navbar.Heading>
+                </Navbar.Group>
+                <Navbar.Group align={Alignment.RIGHT}>
+                    <AnchorButton className={Classes.MINIMAL} href="index.html" text="Home" />
+                    <AnchorButton className={Classes.MINIMAL} href="features.html" text="Features (Legacy)" />
+                    <Navbar.Divider />
                     <Switch style={darkThemeToggleStyles} label="Dark theme" onChange={this.handleToggleDarkTheme} />
-                </div>
-            </nav>
+                </Navbar.Group>
+            </Navbar>
         );
     }
 

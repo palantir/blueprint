@@ -29,7 +29,7 @@
     "copy-webpack-plugin": "^4.2.0",
     "npm-run-all": "^4.1.2",
     "raw-loader": "^0.5.1",
-    "svgo": "^0.7.2",
+    "svgo": "^1.0.3",
     "tslint": "^5.9.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.1"

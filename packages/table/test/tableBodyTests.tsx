@@ -112,9 +112,9 @@ describe("TableBody", () => {
         const bodyContextMenuRenderer = sinon.stub().returns(<div />);
 
         afterEach(() => {
-            onFocusedCell.reset();
-            onSelection.reset();
-            bodyContextMenuRenderer.reset();
+            onFocusedCell.resetHistory();
+            onSelection.resetHistory();
+            bodyContextMenuRenderer.resetHistory();
         });
 
         describe("on right-click", () => {

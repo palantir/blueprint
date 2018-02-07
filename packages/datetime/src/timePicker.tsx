@@ -107,7 +107,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         showArrowButtons: false,
     };
 
-    public static displayName = "Blueprint.TimePicker";
+    public static displayName = "Blueprint2.TimePicker";
 
     public constructor(props?: ITimePickerProps, context?: any) {
         super(props, context);
@@ -184,7 +184,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         const onClick = () => (isDirectionUp ? this.incrementTime : this.decrementTime)(timeUnit);
         return (
             <span className={classes} onClick={onClick}>
-                <Icon iconName={isDirectionUp ? "chevron-up" : "chevron-down"} />
+                <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} />
             </span>
         );
     }

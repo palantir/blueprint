@@ -15,6 +15,7 @@ import {
     Button,
     Classes,
     HTMLInputProps,
+    Icon,
     InputGroup,
     INumericInputProps,
     Keys,
@@ -68,36 +69,28 @@ describe("<NumericInput>", () => {
     });
 
     describe("Button position", () => {
+        const BUTTON_GROUP_SELECTOR = `.${Classes.BUTTON_GROUP}`;
+
         it("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
             const component = mount(<NumericInput buttonPosition={Position.RIGHT} />);
-            const inputGroup = component.find(InputGroup);
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            const buttonGroup = component.children().childAt(1);
+            expect(buttonGroup.is(BUTTON_GROUP_SELECTOR)).to.be.true;
         });
 
         it("renders the buttons on the left when buttonPosition == Position.LEFT", () => {
             const component = mount(<NumericInput buttonPosition={Position.LEFT} />);
-            const inputGroup = component.find(InputGroup);
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            const buttonGroup = component.children().childAt(0);
+            expect(buttonGroup.is(BUTTON_GROUP_SELECTOR)).to.be.true;
         });
 
         it('does not render the buttons when buttonPosition == "none"', () => {
-            const component = mount(<NumericInput buttonPosition={"none"} />);
-
-            const inputGroup = component.find(InputGroup);
-            const numChildren = component.children().length;
-
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
-            expect(numChildren).to.equal(1);
+            const component = mount(<NumericInput buttonPosition="none" />);
+            expect(component.find(BUTTON_GROUP_SELECTOR).exists()).to.be.false;
         });
 
         it("does not render the buttons when buttonPosition is null", () => {
             const component = mount(<NumericInput buttonPosition={null} />);
-
-            const inputGroup = component.find(InputGroup);
-            const numChildren = component.children().length;
-
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
-            expect(numChildren).to.equal(1);
+            expect(component.find(BUTTON_GROUP_SELECTOR).exists()).to.be.false;
         });
 
         it(`renders the children in a ${Classes.CONTROL_GROUP} when buttons are visible`, () => {
@@ -210,7 +203,7 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("click");
             expect(onButtonClickSpy.calledOnce).to.be.true;
             expect(onButtonClickSpy.firstCall.args).to.deep.equal([1, "1"]);
-            onButtonClickSpy.reset();
+            onButtonClickSpy.resetHistory();
 
             // decrementing from 1 now
             decrementButton.simulate("click");
@@ -233,8 +226,7 @@ describe("<NumericInput>", () => {
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
-            // this works in Chrome but not Phantom. disabling to not fail builds.
-            it.skip("if true, selects all text on focus", () => {
+            it("if true, selects all text on focus", () => {
                 const attachTo = document.createElement("div");
                 const component = mount(<NumericInput value={VALUE} selectAllOnFocus={true} />, { attachTo });
 
@@ -260,8 +252,7 @@ describe("<NumericInput>", () => {
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
-            // this works in Chrome but not Phantom. disabling to not fail builds.
-            it.skip("if true, selects all text on increment", () => {
+            it("if true, selects all text on increment", () => {
                 const attachTo = document.createElement("div");
                 const component = mount(<NumericInput value={VALUE} selectAllOnIncrement={true} />, { attachTo });
 
@@ -870,14 +861,10 @@ describe("<NumericInput>", () => {
         });
 
         it("shows a left icon if provided", () => {
-            const component = mount(<NumericInput leftIconName={"variable"} />);
-
-            const icon = component
-                .find(InputGroup)
-                .children()
-                .childAt(0) // Icon
-                .childAt(0); // span
-            expect(icon.hasClass("pt-icon-variable")).to.be.true;
+            const leftIcon = mount(<NumericInput leftIcon="variable" />)
+                .find(Icon)
+                .first();
+            expect(leftIcon.text()).to.equal("variable");
         });
 
         it("shows placeholder text if provided", () => {

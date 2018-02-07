@@ -12,6 +12,7 @@
   display: flex;
 
   .pt-icon {
+    margin-top: 0;
     margin-right: $pt-grid-size * 2;
     font-size: $pt-icon-size-large * 2;
   }

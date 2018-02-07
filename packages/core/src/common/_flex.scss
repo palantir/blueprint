@@ -1,0 +1,47 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+// this element becomes a flex container in the given direction.
+// supply `$margin` to put space between each child.
+// supply `$inline: inline` to use `display: flex-inline`.
+// customize `flex: 1 1` child selector with $fill.
+@mixin pt-flex-container($direction: row, $margin: none, $inline: none, $fill: ".pt-fill") {
+  @if $inline == inline or $inline == true {
+    display: inline-flex;
+  } @else {
+    display: flex;
+  }
+  flex-direction: $direction;
+
+  > * {
+    flex: 0 0 auto;
+  }
+
+  > #{$fill} {
+    flex: 1 1 auto;
+  }
+
+  @if $margin != none {
+    @include pt-flex-margin($direction, $margin);
+  }
+}
+
+// applies margin along axis of direction between every direct child, with no margins on either end.
+// $direction: row | column
+// $margin: margin[-right|-bottom] value
+@mixin pt-flex-margin($direction, $margin) {
+  $margin-prop: if($direction == row, margin-right, margin-bottom);
+
+  // CSS API support
+  &::before,
+  // space after all children
+  > * {
+    #{$margin-prop}: $margin;
+  }
+
+  // remove space after last child
+  &:empty::before,
+  > :last-child {
+    #{$margin-prop}: 0;
+  }
+}

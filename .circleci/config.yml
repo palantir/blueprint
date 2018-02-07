@@ -73,7 +73,9 @@ jobs:
 
   test:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:8-browsers
+        environment:
+            CHROME_BIN: "/usr/bin/google-chrome"
     parallelism: 7
     steps:
       - checkout

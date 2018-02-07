@@ -11,7 +11,7 @@ import { ModifierTable } from "../components/modifierTable";
 
 export class CssExample extends React.PureComponent<ITag> {
     public static contextTypes = DocumentationContextTypes;
-    public static displayName = "Docs.CssExample";
+    public static displayName = "Docs2.CssExample";
 
     public context: IDocumentationContext;
 

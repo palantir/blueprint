@@ -21,7 +21,7 @@ export interface IInterfaceTableProps {
 
 export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
     public static contextTypes = DocumentationContextTypes;
-    public static displayName = "Docs.InterfaceTable";
+    public static displayName = "Docs2.InterfaceTable";
 
     public context: IDocumentationContext;
 

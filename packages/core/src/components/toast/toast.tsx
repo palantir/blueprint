@@ -23,8 +23,8 @@ export interface IToastProps extends IProps, IIntentProps {
      */
     action?: IActionProps & ILinkProps;
 
-    /** Name of the icon (the part after `pt-icon-`) to appear before the message. */
-    iconName?: IconName;
+    /** Name of a Blueprint UI icon (or an icon element) to render before the message. */
+    icon?: IconName | JSX.Element;
 
     /** Message to display in the body of the toast. */
     message: string | JSX.Element;
@@ -50,10 +50,10 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
         timeout: 5000,
     };
 
-    public static displayName = "Blueprint.Toast";
+    public static displayName = "Blueprint2.Toast";
 
     public render(): JSX.Element {
-        const { className, iconName, intent, message } = this.props;
+        const { className, icon, intent, message } = this.props;
         return (
             <div
                 className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
@@ -63,11 +63,11 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
                 onMouseLeave={this.startTimeout}
                 tabIndex={0}
             >
-                <Icon iconName={iconName} />
+                <Icon icon={icon} />
                 <span className={Classes.TOAST_MESSAGE}>{message}</span>
                 <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
                     {this.maybeRenderActionButton()}
-                    <Button iconName="cross" onClick={this.handleCloseClick} />
+                    <Button icon="cross" onClick={this.handleCloseClick} />
                 </div>
             </div>
         );

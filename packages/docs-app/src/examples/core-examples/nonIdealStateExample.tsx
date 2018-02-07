@@ -21,7 +21,7 @@ export class NonIdealStateExample extends BaseExample<{}> {
                 visual="search"
                 title="No search results"
                 description={description}
-                action={<InputGroup className="pt-round" leftIconName="search" placeholder="Search..." />}
+                action={<InputGroup className="pt-round" leftIcon="search" placeholder="Search..." />}
             />
         );
     }

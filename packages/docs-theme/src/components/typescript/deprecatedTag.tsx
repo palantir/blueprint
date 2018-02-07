@@ -21,7 +21,7 @@ export const DeprecatedTag: React.SFC<{ isDeprecated: boolean | string | undefin
     }
     return null;
 };
-DeprecatedTag.displayName = "Docs.DeprecatedTag";
+DeprecatedTag.displayName = "Docs2.DeprecatedTag";
 
 /**
  * Minimal markdown renderer that supports only backtick `code` elements and triple-backtick `pre` elements.

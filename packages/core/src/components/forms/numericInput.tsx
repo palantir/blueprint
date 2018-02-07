@@ -61,19 +61,19 @@ export interface INumericInputProps extends IIntentProps, IProps {
     large?: boolean;
 
     /**
-     * Name of the icon (the part after `pt-icon-`) to render
-     * on the left side of input.
+     * Name of a Blueprint UI icon (or an icon element) to render on the left side of input.
      */
-    leftIconName?: IconName;
+    leftIcon?: IconName | JSX.Element;
 
     /** The placeholder text in the absence of any value. */
     placeholder?: string;
 
     /**
-     * The increment between successive values when `shift` is held.
+     * The increment between successive values when <kbd class="pt-key">shift</kbd> is held.
+     * Pass explicit `null` value to disable this interaction.
      * @default 10
      */
-    majorStepSize?: number;
+    majorStepSize?: number | null;
 
     /** The maximum value of the input. */
     max?: number;
@@ -82,10 +82,11 @@ export interface INumericInputProps extends IIntentProps, IProps {
     min?: number;
 
     /**
-     * The increment between successive values when `alt` is held.
+     * The increment between successive values when <kbd class="pt-key">alt</kbd> is held.
+     * Pass explicit `null` value to disable this interaction.
      * @default 0.1
      */
-    minorStepSize?: number;
+    minorStepSize?: number | null;
 
     /**
      * Whether the entire text field should be selected on focus.
@@ -129,7 +130,7 @@ enum IncrementDirection {
 }
 
 export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
-    public static displayName = "Blueprint.NumericInput";
+    public static displayName = "Blueprint2.NumericInput";
 
     public static VALUE_EMPTY = "";
     public static VALUE_ZERO = "0";
@@ -236,7 +237,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
-                leftIconName={this.props.leftIconName}
+                leftIcon={this.props.leftIcon}
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
                 onChange={this.handleInputChange}
@@ -333,7 +334,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         return (
             <Button
                 disabled={this.props.disabled || this.props.readOnly}
-                iconName={iconName}
+                icon={iconName}
                 intent={this.props.intent}
                 key={key}
                 onBlur={this.handleButtonBlur}

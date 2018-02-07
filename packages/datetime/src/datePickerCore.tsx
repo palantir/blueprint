@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { LocaleUtils } from "react-day-picker";
+import { LocaleUtils } from "react-day-picker/types/utils";
 import { Months } from "./common/months";
 
 // DatePicker supports a simpler set of modifiers (for now).

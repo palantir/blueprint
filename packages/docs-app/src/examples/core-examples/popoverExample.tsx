@@ -62,13 +62,13 @@ export interface IPopoverExampleState {
     exampleIndex?: number;
     hasBackdrop?: boolean;
     inheritDarkTheme?: boolean;
-    inline?: boolean;
     interactionKind?: PopoverInteractionKind;
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperJS.Modifiers;
     position?: Position | "auto";
     sliderValue?: number;
+    usePortal?: boolean;
 }
 
 export class PopoverExample extends BaseExample<IPopoverExampleState> {
@@ -77,7 +77,6 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         exampleIndex: 0,
         hasBackdrop: false,
         inheritDarkTheme: true,
-        inline: false,
         interactionKind: PopoverInteractionKind.CLICK,
         isOpen: false,
         minimal: false,
@@ -89,6 +88,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         },
         position: "auto",
         sliderValue: 5,
+        usePortal: true,
     };
 
     protected className = "docs-popover-example";
@@ -112,19 +112,14 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
     );
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
-    private toggleInline = handleBooleanChange(inline => {
-        if (inline) {
-            this.setState({
-                hasBackdrop: false,
-                inheritDarkTheme: false,
-                inline,
-            });
-        } else {
-            this.setState({ inline });
-        }
-    });
     private toggleIsOpen = handleBooleanChange(isOpen => this.setState({ isOpen }));
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
+    private toggleUsePortal = handleBooleanChange(usePortal => {
+        if (usePortal) {
+            this.setState({ hasBackdrop: false, inheritDarkTheme: false });
+        }
+        this.setState({ usePortal });
+    });
 
     protected renderExample() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
@@ -180,7 +175,9 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                         </select>
                     </div>
                 </label>,
-                <Switch checked={this.state.inline} label="Inline" key="inline" onChange={this.toggleInline} />,
+                <Switch checked={this.state.usePortal} key="portal" onChange={this.toggleUsePortal}>
+                    Use <code>Portal</code>
+                </Switch>,
                 <Switch
                     checked={this.state.minimal}
                     label="Minimal appearance"
@@ -245,7 +242,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                 </Switch>,
                 <p key="docs-link">
                     <a href={POPPER_DOCS} target="_blank">
-                        Popper.js docs <Icon iconName="share" />
+                        Popper.js docs <Icon icon="share" />
                     </a>
                 </p>,
             ],
@@ -271,20 +268,20 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
             <Slider min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
             <Menu>
                 <MenuDivider title="Edit" />
-                <MenuItem iconName="cut" text="Cut" label="⌘X" />
-                <MenuItem iconName="duplicate" text="Copy" label="⌘C" />
-                <MenuItem iconName="clipboard" text="Paste" label="⌘V" disabled={true} />
+                <MenuItem icon="cut" text="Cut" label="⌘X" />
+                <MenuItem icon="duplicate" text="Copy" label="⌘C" />
+                <MenuItem icon="clipboard" text="Paste" label="⌘V" disabled={true} />
                 <MenuDivider title="Text" />
-                <MenuItem iconName="align-left" text="Alignment">
-                    <MenuItem iconName="align-left" text="Left" />
-                    <MenuItem iconName="align-center" text="Center" />
-                    <MenuItem iconName="align-right" text="Right" />
-                    <MenuItem iconName="align-justify" text="Justify" />
+                <MenuItem icon="align-left" text="Alignment">
+                    <MenuItem icon="align-left" text="Left" />
+                    <MenuItem icon="align-center" text="Center" />
+                    <MenuItem icon="align-right" text="Right" />
+                    <MenuItem icon="align-justify" text="Justify" />
                 </MenuItem>
-                <MenuItem iconName="style" text="Style">
-                    <MenuItem iconName="bold" text="Bold" />
-                    <MenuItem iconName="italic" text="Italic" />
-                    <MenuItem iconName="underline" text="Underline" />
+                <MenuItem icon="style" text="Style">
+                    <MenuItem icon="bold" text="Bold" />
+                    <MenuItem icon="italic" text="Italic" />
+                    <MenuItem icon="underline" text="Underline" />
                 </MenuItem>
             </Menu>,
             <PopoverExample {...this.props} />,

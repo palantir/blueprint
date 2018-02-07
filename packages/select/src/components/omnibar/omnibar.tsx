@@ -72,7 +72,7 @@ export interface IOmnibarState<T> extends IOverlayableProps, IBackdropProps {
 }
 
 export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
-    public static displayName = "Blueprint.Omnibar";
+    public static displayName = "Blueprint2.Omnibar";
 
     public static ofType<T>() {
         return (Omnibar as any) as new () => Omnibar<T>;
@@ -132,7 +132,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                     <InputGroup
                         autoFocus={true}
                         className={CoreClasses.LARGE}
-                        leftIconName="search"
+                        leftIcon="search"
                         placeholder="Search..."
                         value={listProps.query}
                         {...inputProps}

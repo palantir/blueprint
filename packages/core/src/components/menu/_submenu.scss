@@ -11,24 +11,9 @@
 
     > .pt-popover-target {
       display: inherit;
-
-      > .pt-menu-item {
-        padding-right: $pt-icon-size-standard + $pt-grid-size;
-
-        &::after {
-          @include pt-icon();
-          position: absolute;
-          right: $half-grid-size;
-          content: $pt-icon-caret-right;
-
-          // need several layers of selectors to make sure we're targeting only
-          // the top level of menu items in the current submenu.
-          // stylelint-disable-next-line
-          .pt-large & {
-            line-height: $pt-icon-size-large;
-          }
-        }
-      }
+      // override very specific selector for popovers in button groups
+      // stylelint-disable-next-line declaration-no-important
+      float: none !important;
     }
 
     > .pt-popover-open > .pt-menu-item {
@@ -38,12 +23,10 @@
     }
   }
 
-  // minor adjustments to popover position so top submenu item lines up with submenu trigger item
+  // horizontal padding leaves some space from parent menu item, and extends mouse zone
   .pt-popover {
-    position: absolute;
-    top: -$half-grid-size;
     box-shadow: none;
-    padding-left: $half-grid-size;
+    padding: 0 $half-grid-size;
 
     &.pt-align-left {
       right: 0;
@@ -53,6 +36,14 @@
 
     > .pt-popover-content {
       box-shadow: $pt-popover-box-shadow;
+    }
+
+    .pt-dark & {
+      box-shadow: none;
+
+      > .pt-popover-content {
+        box-shadow: $pt-dark-popover-box-shadow;
+      }
     }
   }
 }

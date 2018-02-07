@@ -127,11 +127,11 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             <div className={classNames("docs-root", { "docs-examples-only": examplesOnly }, this.props.className)}>
                 <div className="docs-app">
                     <div className="pt-navbar docs-navbar docs-flex-row">
-                        <div className="pt-navbar-group">{this.props.navbarLeft}</div>
+                        <div className="pt-navbar-group pt-navbar-group-left">{this.props.navbarLeft}</div>
                         <div className="pt-navbar-group">
                             <Navigator items={nav} onNavigate={this.handleNavigation} />
                         </div>
-                        <div className="pt-navbar-group">{this.props.navbarRight}</div>
+                        <div className="pt-navbar-group pt-navbar-group-right">{this.props.navbarRight}</div>
                     </div>
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu

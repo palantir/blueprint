@@ -21,15 +21,6 @@ export class AlertExample extends BaseExample<{}> {
     };
 
     private toaster: IToaster;
-    private message: JSX.Element = (
-        <div>
-            <strong>filename</strong> was moved to Trash
-        </div>
-    );
-
-    public componentWillMount() {
-        this.toaster = Toaster.create();
-    }
 
     protected renderExample() {
         return (
@@ -49,6 +40,7 @@ export class AlertExample extends BaseExample<{}> {
                 <Button onClick={this.handleOpen} text="Open file deletion alert" />
                 <Alert
                     className={this.props.themeName}
+                    icon="trash"
                     intent={Intent.PRIMARY}
                     isOpen={this.state.isOpen}
                     confirmButtonText="Move to Trash"
@@ -61,6 +53,7 @@ export class AlertExample extends BaseExample<{}> {
                         but it will become private to you.
                     </p>
                 </Alert>
+                <Toaster ref={ref => (this.toaster = ref)} />
             </div>
         );
     }
@@ -70,10 +63,13 @@ export class AlertExample extends BaseExample<{}> {
     private handleOpen = () => this.setState({ isOpen: true });
     private handleMoveClose = () => {
         this.setState({ isOpen: false });
-        this.toaster.show({
-            className: this.props.themeName,
-            message: this.message,
-        });
+        this.toaster.show({ className: this.props.themeName, message: TOAST_MESSAGE });
     };
     private handleClose = () => this.setState({ isOpen: false });
 }
+
+const TOAST_MESSAGE = (
+    <div>
+        <strong>filename</strong> was moved to Trash
+    </div>
+);
