@@ -43,9 +43,6 @@ writeLinesToFile(
 // simple variable definitions
 writeLinesToFile("_icon-variables.scss", ...ICONS_METADATA.map(icon => `$${toLongName(icon)}: "${icon.content}";`));
 
-// map ENUM_NAME to pt-icon-class-name
-writeLinesToFile("iconClasses.ts", ...exportIconConsts(toLongName));
-
 // map ENUM_NAME to unicode character
 writeLinesToFile("iconContents.ts", ...exportIconConsts(icon => icon.content.replace("\\", "\\u")));
 

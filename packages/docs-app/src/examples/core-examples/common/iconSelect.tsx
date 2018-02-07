@@ -5,7 +5,7 @@
  */
 
 import { Button, Classes, MenuItem } from "@blueprintjs/core";
-import { IconClasses, IconName } from "@blueprintjs/icons";
+import { IconName, IconNames } from "@blueprintjs/icons";
 import { ItemRenderer, Select } from "@blueprintjs/select";
 import * as classNames from "classnames";
 import * as React from "react";
@@ -17,9 +17,7 @@ export interface IIconSelectProps {
 
 const NONE = "(none)";
 type IconType = IconName | typeof NONE;
-const ICON_NAMES = Object.keys(IconClasses).map<IconType>(
-    (name: keyof typeof IconClasses) => IconClasses[name].replace("pt-icon-", "") as IconName,
-);
+const ICON_NAMES = Object.keys(IconNames).map<IconType>((name: keyof typeof IconNames) => IconNames[name]);
 ICON_NAMES.push(NONE);
 
 const TypedSelect = Select.ofType<IconType>();
