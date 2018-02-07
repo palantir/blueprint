@@ -7,9 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
@@ -23,9 +21,31 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     text: React.ReactNode;
 
     /**
+     * Children of this component will be rendered in a __submenu__ that appears when hovering or
+     * clicking on this menu item.
+     *
+     * Use `text` prop for the content of the menu item itself.
+     */
+    children?: React.ReactNode;
+
+    /**
+     * Whether this menu item is non-interactive. Enabling this prop will ignore `href`, `tabIndex`,
+     * and mouse event handlers (in particular click, down, enter, leave).
+     */
+    disabled?: boolean;
+
+    /**
+     * Right-aligned label text content, useful for displaying hotkeys.
+     *
+     * This prop actually supports JSX elements, but TypeScript will throw an error because
+     * `HTMLAttributes` only allows strings. Use `labelElement` to supply a JSX element in TypeScript.
+     */
+    label?: string;
+
+    /**
      * Right-aligned label content, useful for displaying hotkeys.
      */
-    label?: string | JSX.Element;
+    labelElement?: React.ReactNode;
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -42,15 +62,9 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * @default true
      */
     shouldDismissPopover?: boolean;
-
-    /**
-     * Array of props objects for submenu items.
-     * An alternative to providing `MenuItem` components as `children`.
-     */
-    submenu?: IMenuItemProps[];
 }
 
-export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
+export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: IMenuItemProps = {
         disabled: false,
         multiline: false,
@@ -61,53 +75,66 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
     public static displayName = "Blueprint2.MenuItem";
 
     public render() {
-        const { disabled, label } = this.props;
-        const submenuChildren = this.renderSubmenuChildren();
-        const hasSubmenu = submenuChildren != null;
+        const {
+            className,
+            children,
+            disabled,
+            icon,
+            intent,
+            labelElement,
+            multiline,
+            popoverProps,
+            shouldDismissPopover,
+            text,
+            ...htmlProps
+        } = this.props;
+        const hasSubmenu = children != null;
 
         const anchorClasses = classNames(
             Classes.MENU_ITEM,
-            Classes.intentClass(this.props.intent),
+            Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: disabled,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
-                [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !disabled && !hasSubmenu,
+                [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
             },
-            this.props.className,
+            className,
         );
 
         const target = (
-            <a
-                className={anchorClasses}
-                href={disabled ? undefined : this.props.href}
-                onClick={disabled ? undefined : this.props.onClick}
-                tabIndex={disabled ? undefined : 0}
-                target={this.props.target}
-            >
-                <Icon icon={this.props.icon} />
-                <Text className={Classes.FILL} ellipsize={!this.props.multiline}>
-                    {this.props.text}
+            <a {...htmlProps} {...(disabled ? DISABLED_PROPS : {})} className={anchorClasses}>
+                <Icon icon={icon} />
+                <Text className={Classes.FILL} ellipsize={!multiline}>
+                    {text}
                 </Text>
-                {label && <span className={Classes.MENU_ITEM_LABEL}>{label}</span>}
+                {this.maybeRenderLabel(labelElement)}
                 {hasSubmenu && <Icon icon="caret-right" />}
             </a>
         );
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
-        return <li className={liClasses}>{this.maybeRenderPopover(target, submenuChildren)}</li>;
+        return <li className={liClasses}>{this.maybeRenderPopover(target, children)}</li>;
     }
 
-    protected validateProps(props: IMenuItemProps & { children?: React.ReactNode }) {
-        if (props.children != null && props.submenu != null) {
-            console.warn(Errors.MENU_WARN_CHILDREN_SUBMENU_MUTEX);
+    private maybeRenderLabel(labelElement?: React.ReactNode) {
+        const { label } = this.props;
+        if (label == null && labelElement == null) {
+            return null;
         }
+        return (
+            <span className={Classes.MENU_ITEM_LABEL}>
+                {label}
+                {labelElement}
+            </span>
+        );
     }
 
     private maybeRenderPopover(target: JSX.Element, children?: React.ReactNode) {
+        if (children == null) {
+            return target;
+        }
         const { disabled, popoverProps } = this.props;
-        return children == null ? (
-            target
-        ) : (
+        return (
             <Popover
                 disabled={disabled}
                 enforceFocus={false}
@@ -124,21 +151,6 @@ export class MenuItem extends AbstractPureComponent<IMenuItemProps> {
             />
         );
     }
-
-    private renderSubmenuChildren(): React.ReactNode {
-        const { children, submenu } = this.props;
-        if (children != null) {
-            return children;
-        } else if (submenu != null) {
-            return submenu.map(renderMenuItem);
-        } else {
-            return null;
-        }
-    }
-}
-
-export function renderMenuItem(props: IMenuItemProps, key: string | number) {
-    return <MenuItem key={key} {...props} />;
 }
 
 const SUBMENU_POPOVER_MODIFIERS: Popper.Modifiers = {
@@ -147,4 +159,14 @@ const SUBMENU_POPOVER_MODIFIERS: Popper.Modifiers = {
     // shift popover up 5px so MenuItems align
     offset: { offset: -5 },
     preventOverflow: { boundariesElement: "viewport", padding: 20 },
+};
+
+// props to ignore when disabled
+const DISABLED_PROPS: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
+    href: undefined,
+    onClick: undefined,
+    onMouseDown: undefined,
+    onMouseEnter: undefined,
+    onMouseLeave: undefined,
+    tabIndex: -1,
 };

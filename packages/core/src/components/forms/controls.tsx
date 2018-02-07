@@ -40,7 +40,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
      * Text label for the control.
      *
      * This prop actually supports JSX elements, but TypeScript will throw an error because
-     * `HTMLProps` only allows strings. Use `labelElement` to supply a JSX element in TypeScript.
+     * `HTMLAttributes` only allows strings. Use `labelElement` to supply a JSX element in TypeScript.
      */
     label?: string;
 

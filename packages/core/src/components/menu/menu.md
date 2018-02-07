@@ -66,8 +66,8 @@ A `MenuItem` is a single interactive item in a `Menu`.
 This component renders an `a.pt-menu-item`. Make the `MenuItem` a link by providing the `href`,
 `target`, and `onClick` props as necessary.
 
-Create submenus by nesting `MenuItem`s inside each other as `children`, or by providing a `submenu`
-prop with an array of `MenuItem`s.
+Create submenus by nesting `MenuItem`s inside each other as `children`. Use the `text` prop
+for `MenuItem` content.
 
 @interface IMenuItemProps
 
@@ -91,21 +91,6 @@ there is not enough room to the right.
         <MenuItem text="Child three" />
     </MenuItem>
 </Menu>
-```
-
-Alternatively, you can pass an array of `IMenuItemProps` to the `submenu` prop:
-
-```jsx
-React.createElement(Menu, {},
-    React.createElement(MenuItem, {
-        submenu: [
-            { text: "Child one" },
-            { text: "Child two" },
-            { text: "Child three" },
-        ],
-        text: "parent",
-    }),
-);
 ```
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
