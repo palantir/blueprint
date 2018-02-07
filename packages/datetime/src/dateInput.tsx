@@ -478,7 +478,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         this.safeInvokeInputProp("onKeyDown", e);
     };
 
-    // blur DOM event listener (not React event)
+    // keyboard DOM event listener (not React event)
     private handlePopoverBlur = (e: KeyboardEvent) => {
         if (e.which === Keys.TAB && !e.shiftKey) {
             e.target.dispatchEvent(new FocusEvent("blur"));
@@ -494,8 +494,9 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             const numOfElements = tabbableElements.length;
             if (numOfElements > 0) {
                 // Keep track of the last focusable element in popover and add
-                // a blur handler, so that popover closes when the user
-                // moves to the next element
+                // a keydown handler, so that:
+                // * popover closes when the user tabs to the next element
+                // * or focus moves to previous element if shift+tab
                 const lastElement = tabbableElements[numOfElements - 1] as HTMLElement;
                 if (this.lastElementInPopover !== lastElement) {
                     this.unregisterPopoverBlurHandler();
