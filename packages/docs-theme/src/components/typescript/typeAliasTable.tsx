@@ -25,8 +25,10 @@ export class TypeAliasTable extends React.PureComponent<ITypeAliasTableProps> {
         return (
             <div className="docs-modifiers">
                 <ApiHeader {...data} />
-                <p className="docs-code">= {renderType(data.type)}</p>
-                {renderBlock(data.documentation)}
+                <div className="docs-interface-table">
+                    {renderBlock(data.documentation)}
+                    <p className="docs-code">= {renderType(data.type)}</p>
+                </div>
             </div>
         );
     }
