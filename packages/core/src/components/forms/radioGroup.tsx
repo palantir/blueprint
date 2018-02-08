@@ -11,7 +11,7 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IOptionProps, IProps } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
-import { Radio, IRadioProps } from "./controls";
+import { IRadioProps, Radio } from "./controls";
 
 export interface IRadioGroupProps extends IProps {
     /**

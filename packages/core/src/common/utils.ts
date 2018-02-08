@@ -37,7 +37,7 @@ export function getDisplayName(ComponentClass: React.ComponentClass | INamed) {
 
 export function isElementOfType<P = {}>(
     element: any,
-    ComponentClass: React.ComponentClass<P>
+    ComponentClass: React.ComponentClass<P>,
 ): element is React.ReactElement<P> {
     return element != null && element.type === React.createElement(ComponentClass).type;
 }

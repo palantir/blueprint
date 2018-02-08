@@ -5,7 +5,7 @@
  */
 
 import { Children, ReactElement, ReactNode } from "react";
-import { safeInvoke, isElementOfType } from "../../common/utils";
+import { isElementOfType, safeInvoke } from "../../common/utils";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "./hotkeyParser";

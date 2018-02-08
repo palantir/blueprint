@@ -208,7 +208,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
     /** Filters children to only `<Tab>`s */
     private getTabChildren(props: ITabsProps & { children?: React.ReactNode } = this.props) {
-        return React.Children.toArray(props.children).filter((child) => {
+        return React.Children.toArray(props.children).filter(child => {
             return Utils.isElementOfType(child, Tab);
         }) as TabElement[];
     }
