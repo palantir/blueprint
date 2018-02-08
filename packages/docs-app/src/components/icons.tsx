@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { smartSearch } from "@blueprintjs/docs";
+import { smartSearch } from "@blueprintjs/docs-theme";
 
 import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
 
@@ -29,7 +29,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
         iconFilter: isIconFiltered,
         iconRenderer: renderIcon,
         // tslint:disable-next-line:no-submodule-imports
-        icons: require("@blueprintjs/core/resources/icons/icons.json"),
+        icons: require("@blueprintjs/icons/resources/icons/icons.json"),
     };
 
     public state: IIconsState = {
@@ -48,9 +48,6 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
             groups[icon.group].push(icon);
             return groups;
         }, {});
-        for (const group of Object.keys(this.iconGroups)) {
-            this.iconGroups[group].sort((a, b) => a.name.localeCompare(b.name));
-        }
     }
 
     public render() {
@@ -108,7 +105,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
 }
 
 function isIconFiltered(query: string, icon: IIcon) {
-    return smartSearch(query, icon.name, icon.className, icon.tags, icon.group);
+    return smartSearch(query, icon.displayName, icon.iconName, icon.tags, icon.group);
 }
 
 function renderIcon(icon: IIcon, index: number) {

@@ -4,6 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import * as React from "react";
+
 import { CLAMP_MIN_MAX } from "./errors";
 
 export * from "./utils/compareUtils";
@@ -23,30 +25,49 @@ export function isFunction(value: any): value is Function {
 }
 
 /**
- * Safely invoke the function with the given arguments, if it is indeed a
- * function, and return its value.
+ * Represents anything that has a `name` property such as Functions.
  */
-export function safeInvoke<R>(func: (() => R) | undefined): R;
-export function safeInvoke<A, R>(func: ((arg1: A) => R) | undefined, arg1: A): R;
-export function safeInvoke<A, B, R>(func: ((arg1: A, arg2: B) => R) | undefined, arg1: A, arg2: B): R;
+export interface INamed {
+    name?: string;
+}
+
+export function getDisplayName(ComponentClass: React.ComponentClass | INamed) {
+    return (ComponentClass as React.ComponentClass).displayName || (ComponentClass as INamed).name || "Unknown";
+}
+
+export function isElementOfType<P = {}>(
+    element: any,
+    ComponentClass: React.ComponentClass<P>,
+): element is React.ReactElement<P> {
+    return element != null && element.type === React.createElement(ComponentClass).type;
+}
+
+/**
+ * Safely invoke the function with the given arguments, if it is indeed a
+ * function, and return its value. Otherwise, return undefined.
+ */
+export function safeInvoke<R>(func: (() => R) | undefined): R | undefined;
+export function safeInvoke<A, R>(func: ((arg1: A) => R) | undefined, arg1: A): R | undefined;
+export function safeInvoke<A, B, R>(func: ((arg1: A, arg2: B) => R) | undefined, arg1: A, arg2: B): R | undefined;
 export function safeInvoke<A, B, C, R>(
     func: ((arg1: A, arg2: B, arg3: C) => R) | undefined,
     arg1: A,
     arg2: B,
     arg3: C,
-): R;
+): R | undefined;
 export function safeInvoke<A, B, C, D, R>(
     func: ((arg1: A, arg2: B, arg3: C, arg4: D) => R) | undefined,
     arg1: A,
     arg2: B,
     arg3: C,
     arg4: D,
-): R;
+): R | undefined;
 // tslint:disable-next-line:ban-types
 export function safeInvoke(func: Function | undefined, ...args: any[]) {
     if (isFunction(func)) {
         return func(...args);
     }
+    return undefined;
 }
 
 /**

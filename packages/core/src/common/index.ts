@@ -5,11 +5,13 @@
  */
 
 export * from "./abstractComponent";
+export * from "./abstractPureComponent";
+export * from "./alignment";
 export * from "./colors";
+export * from "./constructor";
 export * from "./intent";
 export * from "./position";
 export * from "./props";
-export * from "./tetherUtils";
 
 import * as classes from "./classes";
 import * as keys from "./keys";
@@ -19,7 +21,3 @@ export const Classes = classes;
 export const Keys = keys;
 export const Utils = utils;
 // NOTE: Errors is not exported in public API
-
-export { IconClasses } from "../generated/iconClasses";
-export { IconName } from "../generated/iconName";
-export { IconContents } from "../generated/iconStrings";

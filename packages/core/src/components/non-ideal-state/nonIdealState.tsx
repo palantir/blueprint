@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -34,8 +33,7 @@ export interface INonIdealStateProps extends IProps {
     visual?: IconName | JSX.Element;
 }
 
-@PureRender
-export class NonIdealState extends React.Component<INonIdealStateProps, {}> {
+export class NonIdealState extends React.PureComponent<INonIdealStateProps, {}> {
     public render() {
         return (
             <div className={classNames(Classes.NON_IDEAL_STATE, this.props.className)}>
@@ -78,7 +76,7 @@ export class NonIdealState extends React.Component<INonIdealStateProps, {}> {
         } else if (typeof visual === "string") {
             return (
                 <div className={classNames(Classes.NON_IDEAL_STATE_VISUAL, Classes.NON_IDEAL_STATE_ICON)}>
-                    <Icon iconName={visual} iconSize="inherit" />
+                    <Icon icon={visual} iconSize={Icon.SIZE_LARGE * 3} />
                 </div>
             );
         } else {
@@ -86,5 +84,3 @@ export class NonIdealState extends React.Component<INonIdealStateProps, {}> {
         }
     }
 }
-
-export const NonIdealStateFactory = React.createFactory(NonIdealState);

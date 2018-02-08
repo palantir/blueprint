@@ -18,6 +18,8 @@ import {
     Popover,
     Position,
 } from "@blueprintjs/core";
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -26,12 +28,16 @@ type WrappedComponentRoot = ReactWrapper<any, {}>;
 type WrappedComponentInput = ReactWrapper<React.InputHTMLAttributes<HTMLInputElement>, any>;
 type WrappedComponentDayElement = ReactWrapper<React.HTMLAttributes<HTMLDivElement>, any>;
 
-type OutOfRangeTestFunction = (input: WrappedComponentInput, inputString: string, boundary?: DateRangeBoundary) => void;
+type OutOfRangeTestFunction = (
+    inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
+    inputString: string,
+    boundary?: DateRangeBoundary,
+) => void;
 
 type InvalidDateTestFunction = (
-    input: WrappedComponentInput,
+    inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
     boundary: DateRangeBoundary,
-    otherInput: WrappedComponentInput,
+    otherInputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
 ) => void;
 
 describe("<DateRangeInput>", () => {
@@ -77,14 +83,14 @@ describe("<DateRangeInput>", () => {
         expect(component.find(InputGroup).length).to.equal(2);
     });
 
-    it("passes custom classNames to popover target", () => {
+    it("passes custom classNames to popover wrapper", () => {
         const CLASS_1 = "foo";
         const CLASS_2 = "bar";
 
         const wrapper = mount(<DateRangeInput className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
         wrapper.setState({ isOpen: true });
 
-        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`);
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
         expect(popoverTarget.hasClass(CLASS_1)).to.be.true;
         expect(popoverTarget.hasClass(CLASS_2)).to.be.true;
     });
@@ -103,7 +109,7 @@ describe("<DateRangeInput>", () => {
     });
 
     it("throws error if value === null", () => {
-        expect(() => mount(<DateRangeInput value={null} />)).to.throw;
+        expectPropValidationError(DateRangeInput, { value: null });
     });
 
     describe("startInputProps and endInputProps", () => {
@@ -124,12 +130,12 @@ describe("<DateRangeInput>", () => {
             mountFn: (inputGroupProps: HTMLInputProps & IInputGroupProps) => any,
         ) {
             it("allows custom placeholder text", () => {
-                const { root } = mountFn({ placeholder: "Hello" });
+                const root = mountFn({ placeholder: "Hello" });
                 expect(getInputPlaceholderText(inputGetterFn(root))).to.equal("Hello");
             });
 
             it("supports custom style", () => {
-                const { root } = mountFn({ style: { background: "yellow" } });
+                const root = mountFn({ style: { background: "yellow" } });
                 const inputElement = inputGetterFn(root).getDOMNode() as HTMLElement;
                 expect(inputElement.style.background).to.equal("yellow");
             });
@@ -289,8 +295,7 @@ describe("<DateRangeInput>", () => {
             expect(startInputNode.selectionStart).to.equal(startInputNode.selectionEnd);
         });
 
-        // selectionStart/End works in Chrome but not Phantom. disabling to not fail builds.
-        it.skip("if true, selects all text on focus", () => {
+        it("if true, selects all text on focus", () => {
             const attachTo = document.createElement("div");
             const { root } = wrap(
                 <DateRangeInput defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
@@ -406,24 +411,25 @@ describe("<DateRangeInput>", () => {
             const { root } = wrap(<DateRangeInput {...{ startInputProps, endInputProps }} />);
             root.setState({ isOpen: true });
 
-            const startInput = getStartInput(root);
-            startInput.simulate("focus");
-            startInput.simulate("change", { target: { value: START_STR } });
-            startInput.simulate("keydown", { which: Keys.ENTER });
+            // Don't save the input elements into variables; they can become
+            // stale across React updates.
+
+            getStartInput(root).simulate("focus");
+            getStartInput(root).simulate("change", { target: { value: START_STR } });
+            getStartInput(root).simulate("keydown", { which: Keys.ENTER });
             expect(startInputProps.onKeyDown.calledOnce, "startInputProps.onKeyDown called once");
             expect(isStartInputFocused(root), "start input still focused").to.be.false;
 
             expect(root.state("isOpen"), "popover still open").to.be.true;
 
-            const endInput = getEndInput(root);
-            endInput.simulate("focus");
-            endInput.simulate("change", { target: { value: END_STR } });
-            endInput.simulate("keydown", { which: Keys.ENTER });
+            getEndInput(root).simulate("focus");
+            getEndInput(root).simulate("change", { target: { value: END_STR } });
+            getEndInput(root).simulate("keydown", { which: Keys.ENTER });
             expect(endInputProps.onKeyDown.calledOnce, "endInputProps.onKeyDown called once");
             expect(isEndInputFocused(root), "end input still focused").to.be.true;
 
-            expect(startInput.prop("value")).to.equal(START_STR);
-            expect(endInput.prop("value")).to.equal(END_STR);
+            expect(getStartInput(root).prop("value"), "startInput value is correct").to.equal(START_STR);
+            expect(getEndInput(root).prop("value"), "endInput value is correct").to.equal(END_STR);
 
             expect(root.state("isOpen"), "popover closed at end").to.be.false;
         });
@@ -516,64 +522,64 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("shows the error message on blur", () => {
-                runTestForEachScenario((input, inputString) => {
-                    changeInputText(input, inputString);
-                    input.simulate("blur");
-                    assertInputTextEquals(input, OUT_OF_RANGE_MESSAGE);
+                runTestForEachScenario((inputGetterFn, inputString) => {
+                    changeInputText(inputGetterFn(root), inputString);
+                    inputGetterFn(root).simulate("blur");
+                    assertInputTextEquals(inputGetterFn(root), OUT_OF_RANGE_MESSAGE);
                 });
             });
 
             describe("shows the offending date in the field on focus", () => {
-                runTestForEachScenario((input, inputString) => {
-                    changeInputText(input, inputString);
-                    input.simulate("blur");
-                    input.simulate("focus");
-                    assertInputTextEquals(input, inputString);
+                runTestForEachScenario((inputGetterFn, inputString) => {
+                    changeInputText(inputGetterFn(root), inputString);
+                    inputGetterFn(root).simulate("blur");
+                    inputGetterFn(root).simulate("focus");
+                    assertInputTextEquals(inputGetterFn(root), inputString);
                 });
             });
 
             describe("calls onError with invalid date on blur", () => {
-                runTestForEachScenario((input, inputString, boundary) => {
+                runTestForEachScenario((inputGetterFn, inputString, boundary) => {
                     const expectedRange =
                         boundary === DateRangeBoundary.START ? [inputString, null] : [null, inputString];
-                    input.simulate("focus");
-                    changeInputText(input, inputString);
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), inputString);
                     expect(onError.called).to.be.false;
-                    input.simulate("blur");
+                    inputGetterFn(root).simulate("blur");
                     expect(onError.calledOnce).to.be.true;
                     assertDateRangesEqual(onError.getCall(0).args[0], expectedRange);
                 });
             });
 
             describe("does NOT call onChange before OR after blur", () => {
-                runTestForEachScenario((input, inputString) => {
-                    input.simulate("focus");
-                    changeInputText(input, inputString);
+                runTestForEachScenario((inputGetterFn, inputString) => {
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), inputString);
                     expect(onChange.called).to.be.false;
-                    input.simulate("blur");
+                    inputGetterFn(root).simulate("blur");
                     expect(onChange.called).to.be.false;
                 });
             });
 
             describe("removes error message if input is changed to an in-range date again", () => {
-                runTestForEachScenario((input, inputString) => {
-                    changeInputText(input, inputString);
-                    input.simulate("blur");
+                runTestForEachScenario((inputGetterFn, inputString) => {
+                    changeInputText(inputGetterFn(root), inputString);
+                    inputGetterFn(root).simulate("blur");
 
                     const IN_RANGE_DATE_STR = START_STR;
-                    input.simulate("focus");
-                    changeInputText(input, IN_RANGE_DATE_STR);
-                    input.simulate("blur");
-                    assertInputTextEquals(input, IN_RANGE_DATE_STR);
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), IN_RANGE_DATE_STR);
+                    inputGetterFn(root).simulate("blur");
+                    assertInputTextEquals(inputGetterFn(root), IN_RANGE_DATE_STR);
                 });
             });
 
             function runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
                 const { START, END } = DateRangeBoundary; // deconstruct to keep line lengths under threshold
-                it("if start < minDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_START_STR, START));
-                it("if start > maxDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_END_STR, START));
-                it("if end < minDate", () => runTestFn(getEndInput(root), OUT_OF_RANGE_START_STR, END));
-                it("if end > maxDate", () => runTestFn(getEndInput(root), OUT_OF_RANGE_END_STR, END));
+                it("if start < minDate", () => runTestFn(getStartInput, OUT_OF_RANGE_START_STR, START));
+                it("if start > maxDate", () => runTestFn(getStartInput, OUT_OF_RANGE_END_STR, START));
+                it("if end < minDate", () => runTestFn(getEndInput, OUT_OF_RANGE_START_STR, END));
+                it("if end > maxDate", () => runTestFn(getEndInput, OUT_OF_RANGE_END_STR, END));
             }
         });
 
@@ -599,30 +605,30 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("shows the error message on blur", () => {
-                runTestForEachScenario(input => {
-                    input.simulate("focus");
-                    changeInputText(input, INVALID_STR);
-                    input.simulate("blur");
-                    assertInputTextEquals(input, INVALID_MESSAGE);
+                runTestForEachScenario(inputGetterFn => {
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), INVALID_STR);
+                    inputGetterFn(root).simulate("blur");
+                    assertInputTextEquals(inputGetterFn(root), INVALID_MESSAGE);
                 });
             });
 
             describe("keeps showing the error message on next focus", () => {
-                runTestForEachScenario(input => {
-                    input.simulate("focus");
-                    changeInputText(input, INVALID_STR);
-                    input.simulate("blur");
-                    input.simulate("focus");
-                    assertInputTextEquals(input, INVALID_MESSAGE);
+                runTestForEachScenario(inputGetterFn => {
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), INVALID_STR);
+                    inputGetterFn(root).simulate("blur");
+                    inputGetterFn(root).simulate("focus");
+                    assertInputTextEquals(inputGetterFn(root), INVALID_MESSAGE);
                 });
             });
 
             describe("calls onError on blur with Date(undefined) in place of the invalid date", () => {
-                runTestForEachScenario((input, boundary) => {
-                    input.simulate("focus");
-                    changeInputText(input, INVALID_STR);
+                runTestForEachScenario((inputGetterFn, boundary) => {
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), INVALID_STR);
                     expect(onError.called).to.be.false;
-                    input.simulate("blur");
+                    inputGetterFn(root).simulate("blur");
                     expect(onError.calledOnce).to.be.true;
 
                     const dateRange = onError.getCall(0).args[0];
@@ -632,42 +638,42 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("does NOT call onChange before OR after blur", () => {
-                runTestForEachScenario(input => {
-                    input.simulate("focus");
-                    changeInputText(input, INVALID_STR);
+                runTestForEachScenario(inputGetterFn => {
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), INVALID_STR);
                     expect(onChange.called).to.be.false;
-                    input.simulate("blur");
+                    inputGetterFn(root).simulate("blur");
                     expect(onChange.called).to.be.false;
                 });
             });
 
             describe("removes error message if input is changed to an in-range date again", () => {
-                runTestForEachScenario(input => {
-                    input.simulate("focus");
-                    changeInputText(input, INVALID_STR);
-                    input.simulate("blur");
+                runTestForEachScenario(inputGetterFn => {
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), INVALID_STR);
+                    inputGetterFn(root).simulate("blur");
 
                     // just use START_STR for this test, because it will be
                     // valid in either field.
                     const VALID_STR = START_STR;
-                    input.simulate("focus");
-                    changeInputText(input, VALID_STR);
-                    input.simulate("blur");
-                    assertInputTextEquals(input, VALID_STR);
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), VALID_STR);
+                    inputGetterFn(root).simulate("blur");
+                    assertInputTextEquals(inputGetterFn(root), VALID_STR);
                 });
             });
 
             // tslint:disable-next-line:max-line-length
             describe("calls onChange if last-edited boundary is in range and the other boundary is out of range", () => {
-                runTestForEachScenario((input, boundary, otherInput) => {
-                    otherInput.simulate("focus");
-                    changeInputText(otherInput, INVALID_STR);
-                    otherInput.simulate("blur");
+                runTestForEachScenario((inputGetterFn, boundary, otherInputGetterFn) => {
+                    otherInputGetterFn(root).simulate("focus");
+                    changeInputText(otherInputGetterFn(root), INVALID_STR);
+                    otherInputGetterFn(root).simulate("blur");
                     expect(onChange.called).to.be.false;
 
                     const VALID_STR = START_STR;
-                    input.simulate("focus");
-                    changeInputText(input, VALID_STR);
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), VALID_STR);
                     expect(onChange.calledOnce).to.be.true; // because latest date is valid
 
                     const actualRange = onChange.getCall(0).args[0];
@@ -681,8 +687,8 @@ describe("<DateRangeInput>", () => {
             });
 
             function runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
-                it("in start field", () => runTestFn(getStartInput(root), DateRangeBoundary.START, getEndInput(root)));
-                it("in end field", () => runTestFn(getEndInput(root), DateRangeBoundary.END, getStartInput(root)));
+                it("in start field", () => runTestFn(getStartInput, DateRangeBoundary.START, getEndInput));
+                it("in end field", () => runTestFn(getEndInput, DateRangeBoundary.END, getStartInput));
             }
         });
 
@@ -692,8 +698,6 @@ describe("<DateRangeInput>", () => {
             let onChange: sinon.SinonSpy;
             let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
-            let startInput: WrappedComponentInput;
-            let endInput: WrappedComponentInput;
 
             beforeEach(() => {
                 onChange = sinon.spy();
@@ -708,93 +712,90 @@ describe("<DateRangeInput>", () => {
                     />,
                 );
                 root = result.root;
-
-                startInput = getStartInput(root);
-                endInput = getEndInput(root);
             });
 
             describe("in the start field", () => {
                 it("shows an error message in the end field right away", () => {
-                    startInput.simulate("focus");
-                    changeInputText(startInput, OVERLAPPING_START_STR);
-                    assertInputTextEquals(endInput, OVERLAPPING_DATES_MESSAGE);
+                    getStartInput(root).simulate("focus");
+                    changeInputText(getStartInput(root), OVERLAPPING_START_STR);
+                    assertInputTextEquals(getEndInput(root), OVERLAPPING_DATES_MESSAGE);
                 });
 
                 it("shows the offending date in the end field on focus in the end field", () => {
-                    startInput.simulate("focus");
-                    changeInputText(startInput, OVERLAPPING_START_STR);
-                    startInput.simulate("blur");
-                    endInput.simulate("focus");
-                    assertInputTextEquals(endInput, END_STR);
+                    getStartInput(root).simulate("focus");
+                    changeInputText(getStartInput(root), OVERLAPPING_START_STR);
+                    getStartInput(root).simulate("blur");
+                    getEndInput(root).simulate("focus");
+                    assertInputTextEquals(getEndInput(root), END_STR);
                 });
 
                 it("calls onError with [<overlappingDate>, <endDate] on blur", () => {
-                    startInput.simulate("focus");
-                    changeInputText(startInput, OVERLAPPING_START_STR);
+                    getStartInput(root).simulate("focus");
+                    changeInputText(getStartInput(root), OVERLAPPING_START_STR);
                     expect(onError.called).to.be.false;
-                    startInput.simulate("blur");
+                    getStartInput(root).simulate("blur");
                     expect(onError.calledOnce).to.be.true;
                     assertDateRangesEqual(onError.getCall(0).args[0], [OVERLAPPING_START_STR, END_STR]);
                 });
 
                 it("does NOT call onChange before OR after blur", () => {
-                    startInput.simulate("focus");
-                    changeInputText(startInput, OVERLAPPING_START_STR);
+                    getStartInput(root).simulate("focus");
+                    changeInputText(getStartInput(root), OVERLAPPING_START_STR);
                     expect(onChange.called).to.be.false;
-                    startInput.simulate("blur");
+                    getStartInput(root).simulate("blur");
                     expect(onChange.called).to.be.false;
                 });
 
                 it("removes error message if input is changed to an in-range date again", () => {
-                    startInput.simulate("focus");
-                    changeInputText(startInput, OVERLAPPING_START_STR);
-                    changeInputText(startInput, START_STR);
-                    assertInputTextEquals(endInput, END_STR);
+                    getStartInput(root).simulate("focus");
+                    changeInputText(getStartInput(root), OVERLAPPING_START_STR);
+                    changeInputText(getStartInput(root), START_STR);
+                    assertInputTextEquals(getEndInput(root), END_STR);
                 });
             });
 
             describe("in the end field", () => {
                 it("shows an error message in the end field on blur", () => {
-                    endInput.simulate("focus");
-                    changeInputText(endInput, OVERLAPPING_END_STR);
-                    assertInputTextEquals(endInput, OVERLAPPING_END_STR);
-                    endInput.simulate("blur");
-                    assertInputTextEquals(endInput, OVERLAPPING_DATES_MESSAGE);
+                    getEndInput(root).simulate("focus");
+                    changeInputText(getEndInput(root), OVERLAPPING_END_STR);
+                    assertInputTextEquals(getEndInput(root), OVERLAPPING_END_STR);
+                    getEndInput(root).simulate("blur");
+                    assertInputTextEquals(getEndInput(root), OVERLAPPING_DATES_MESSAGE);
                 });
 
                 it("shows the offending date in the end field on re-focus", () => {
-                    endInput.simulate("focus");
-                    changeInputText(endInput, OVERLAPPING_END_STR);
-                    endInput.simulate("blur");
-                    endInput.simulate("focus");
-                    assertInputTextEquals(endInput, OVERLAPPING_END_STR);
+                    getEndInput(root).simulate("focus");
+                    changeInputText(getEndInput(root), OVERLAPPING_END_STR);
+                    getEndInput(root).simulate("blur");
+                    getEndInput(root).simulate("focus");
+                    assertInputTextEquals(getEndInput(root), OVERLAPPING_END_STR);
                 });
 
                 it("calls onError with [<startDate>, <overlappingDate>] on blur", () => {
-                    endInput.simulate("focus");
-                    changeInputText(endInput, OVERLAPPING_END_STR);
+                    getEndInput(root).simulate("focus");
+                    changeInputText(getEndInput(root), OVERLAPPING_END_STR);
                     expect(onError.called).to.be.false;
-                    endInput.simulate("blur");
+                    getEndInput(root).simulate("blur");
                     expect(onError.calledOnce).to.be.true;
                     assertDateRangesEqual(onError.getCall(0).args[0], [START_STR, OVERLAPPING_END_STR]);
                 });
 
                 it("does NOT call onChange before OR after blur", () => {
-                    endInput.simulate("focus");
-                    changeInputText(endInput, OVERLAPPING_END_STR);
+                    getEndInput(root).simulate("focus");
+                    changeInputText(getEndInput(root), OVERLAPPING_END_STR);
                     expect(onChange.called).to.be.false;
-                    endInput.simulate("blur");
+                    getEndInput(root).simulate("blur");
                     expect(onChange.called).to.be.false;
                 });
 
                 it("removes error message if input is changed to an in-range date again", () => {
-                    endInput.simulate("focus");
-                    changeInputText(endInput, OVERLAPPING_END_STR);
-                    endInput.simulate("blur");
-                    endInput.simulate("focus");
-                    changeInputText(endInput, END_STR);
-                    endInput.simulate("blur");
-                    assertInputTextEquals(endInput, END_STR);
+                    getEndInput(root).simulate("focus");
+                    changeInputText(getEndInput(root), OVERLAPPING_END_STR);
+                    getEndInput(root).simulate("blur");
+                    getEndInput(root).simulate("focus");
+                    changeInputText(getEndInput(root), END_STR);
+                    getEndInput(root).simulate("blur");
+                    assertInputTextEquals(getEndInput(root), END_STR);
                 });
             });
         });
@@ -835,41 +836,33 @@ describe("<DateRangeInput>", () => {
             }
 
             let root: WrappedComponentRoot;
-            let rootInstance: DateRangeInput;
-            let startInput: WrappedComponentInput;
-            let endInput: WrappedComponentInput;
             let getDayElement: (dayNumber?: number, fromLeftMonth?: boolean) => WrappedComponentDayElement;
-            let dayElement: WrappedComponentDayElement;
 
             before(() => {
+                // reuse the same mounted component for every test to speed
+                // things up (mounting is costly).
                 const result = wrap(
                     <DateRangeInput closeOnSelection={false} defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]} />,
                 );
 
                 root = result.root;
-                rootInstance = root.instance() as DateRangeInput;
                 getDayElement = result.getDayElement;
-                startInput = getStartInput(root);
-                endInput = getEndInput(root);
             });
 
             beforeEach(() => {
+                // need to set wasLastFocusChangeDueToHover=false to fully reset state between tests.
+                root.setState({ isOpen: true, wasLastFocusChangeDueToHover: false });
                 // clear the inputs to start from a fresh state, but do so
                 // *after* opening the popover so that the calendar doesn't
                 // move away from the view we expect for these tests.
-                root.setState({ isOpen: true });
-                changeInputText(startInput, "");
-                changeInputText(endInput, "");
-            });
-
-            afterEach(() => {
-                rootInstance.reset();
+                changeInputText(getStartInput(root), "");
+                changeInputText(getEndInput(root), "");
             });
 
             function setSelectedRangeForHoverTest(selectedDateConfigs: IHoverTextDateConfig[]) {
                 const [startConfig, endConfig] = selectedDateConfigs;
-                changeInputText(startInput, startConfig == null ? "" : startConfig.str);
-                changeInputText(endInput, endConfig == null ? "" : endConfig.str);
+                changeInputText(getStartInput(root), startConfig == null ? "" : startConfig.str);
+                changeInputText(getEndInput(root), endConfig == null ? "" : endConfig.str);
             }
 
             describe("when selected date range is [null, null]", () => {
@@ -878,13 +871,12 @@ describe("<DateRangeInput>", () => {
 
                 beforeEach(() => {
                     setSelectedRangeForHoverTest(SELECTED_RANGE);
-                    dayElement = getDayElement(HOVER_TEST_DATE_CONFIG.day);
                 });
 
                 describe("if start field is focused", () => {
                     beforeEach(() => {
-                        startInput.simulate("focus");
-                        dayElement.simulate("mouseenter");
+                        getStartInput(root).simulate("focus");
+                        getDayElement(HOVER_TEST_DATE_CONFIG.day).simulate("mouseenter");
                     });
 
                     it("shows [<hoveredDate>, null] in input fields", () => {
@@ -897,7 +889,7 @@ describe("<DateRangeInput>", () => {
 
                     describe("on click", () => {
                         beforeEach(() => {
-                            dayElement.simulate("click");
+                            getDayElement(HOVER_TEST_DATE_CONFIG.day).simulate("click");
                         });
 
                         it("sets selection to [<hoveredDate>, null]", () => {
@@ -911,7 +903,7 @@ describe("<DateRangeInput>", () => {
 
                     describe("if mouse moves to no longer be over a calendar day", () => {
                         beforeEach(() => {
-                            dayElement.simulate("mouseleave");
+                            getDayElement(HOVER_TEST_DATE_CONFIG.day).simulate("mouseleave");
                         });
 
                         it("shows [null, null] in input fields", () => {
@@ -926,8 +918,8 @@ describe("<DateRangeInput>", () => {
 
                 describe("if end field is focused", () => {
                     beforeEach(() => {
-                        endInput.simulate("focus");
-                        dayElement.simulate("mouseenter");
+                        getEndInput(root).simulate("focus");
+                        getDayElement(HOVER_TEST_DATE_CONFIG.day).simulate("mouseenter");
                     });
 
                     it("shows [null, <hoveredDate>] in input fields", () => {
@@ -939,13 +931,13 @@ describe("<DateRangeInput>", () => {
                     });
 
                     it("sets selection to [null, <hoveredDate>] on click", () => {
-                        dayElement.simulate("click");
+                        getDayElement(HOVER_TEST_DATE_CONFIG.day).simulate("click");
                         assertInputTextsEqual(root, "", HOVER_TEST_DATE_CONFIG.str);
                     });
 
                     describe("on click", () => {
                         beforeEach(() => {
-                            dayElement.simulate("click");
+                            getDayElement(HOVER_TEST_DATE_CONFIG.day).simulate("click");
                         });
 
                         it("sets selection to [null, <hoveredDate>]", () => {
@@ -959,7 +951,7 @@ describe("<DateRangeInput>", () => {
 
                     describe("if mouse moves to no longer be over a calendar day", () => {
                         beforeEach(() => {
-                            dayElement.simulate("mouseleave");
+                            getDayElement(HOVER_TEST_DATE_CONFIG.day).simulate("mouseleave");
                         });
 
                         it("shows [null, null] in input fields", () => {
@@ -982,15 +974,14 @@ describe("<DateRangeInput>", () => {
 
                 describe("if start field is focused", () => {
                     beforeEach(() => {
-                        startInput.simulate("focus");
+                        getStartInput(root).simulate("focus");
                     });
 
                     describe("if <startDate> < <hoveredDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<hoveredDate>, null] in input fields", () => {
@@ -1003,7 +994,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<hoveredDate>, null]", () => {
@@ -1017,7 +1008,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, null] in input fields", () => {
@@ -1034,8 +1025,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<hoveredDate>, null] in input fields", () => {
@@ -1048,7 +1038,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<hoveredDate>, null]", () => {
@@ -1062,7 +1052,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, null] in input fields", () => {
@@ -1079,8 +1069,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [null, null] in input fields", () => {
@@ -1093,7 +1082,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [null, null]", () => {
@@ -1107,7 +1096,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, null] in input fields", () => {
@@ -1123,15 +1112,14 @@ describe("<DateRangeInput>", () => {
 
                 describe("if end field is focused", () => {
                     beforeEach(() => {
-                        endInput.simulate("focus");
+                        getEndInput(root).simulate("focus");
                     });
 
                     describe("if <startDate> < <hoveredDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<startDate>, <hoveredDate>] in input fields", () => {
@@ -1144,7 +1132,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<startDate>, <hoveredDate>]", () => {
@@ -1158,7 +1146,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, null] in input fields", () => {
@@ -1175,8 +1163,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<hoveredDate>, <startDate>] in input fields", () => {
@@ -1189,7 +1176,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<hoveredDate>, <startDate>]", () => {
@@ -1203,7 +1190,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, null] in input fields", () => {
@@ -1220,8 +1207,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [null, null] in input fields", () => {
@@ -1234,7 +1220,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [null, null] on click", () => {
@@ -1248,7 +1234,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, null] in input fields", () => {
@@ -1272,15 +1258,14 @@ describe("<DateRangeInput>", () => {
 
                 describe("if start field is focused", () => {
                     beforeEach(() => {
-                        startInput.simulate("focus");
+                        getStartInput(root).simulate("focus");
                     });
 
                     describe("if <hoveredDate> < <endDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<hoveredDate>, <endDate>] in input fields", () => {
@@ -1293,7 +1278,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<hoveredDate>, <endDate>]", () => {
@@ -1307,7 +1292,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [null, <endDate>] in input fields", () => {
@@ -1324,8 +1309,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<endDate>, <hoveredDate>] in input fields", () => {
@@ -1338,7 +1322,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<endDate>, <hoveredDate>] on click", () => {
@@ -1352,7 +1336,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [null, <endDate>] in input fields", () => {
@@ -1369,8 +1353,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [null, null] in input fields", () => {
@@ -1383,7 +1366,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [null, null] on click", () => {
@@ -1397,7 +1380,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [null, <endDate>] in input fields", () => {
@@ -1413,15 +1396,14 @@ describe("<DateRangeInput>", () => {
 
                 describe("if end field is focused", () => {
                     beforeEach(() => {
-                        endInput.simulate("focus");
+                        getEndInput(root).simulate("focus");
                     });
 
                     describe("if <hoveredDate> < <endDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [null, <hoveredDate>] in input fields", () => {
@@ -1434,7 +1416,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [null, <hoveredDate>]", () => {
@@ -1448,7 +1430,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [null, <endDate>] in input fields", () => {
@@ -1465,8 +1447,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [null, <hoveredDate>] in input fields", () => {
@@ -1479,7 +1460,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [null, <hoveredDate>] on click", () => {
@@ -1493,7 +1474,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [null, <endDate>] in input fields", () => {
@@ -1510,8 +1491,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [null, null] in input fields", () => {
@@ -1524,7 +1504,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [null, null] on click", () => {
@@ -1538,7 +1518,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [null, <endDate>] in input fields", () => {
@@ -1562,15 +1542,14 @@ describe("<DateRangeInput>", () => {
 
                 describe("if start field is focused", () => {
                     beforeEach(() => {
-                        startInput.simulate("focus");
+                        getStartInput(root).simulate("focus");
                     });
 
                     describe("if <hoveredDate> < <startDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<hoveredDate>, <endDate>] in input fields", () => {
@@ -1583,7 +1562,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<hoveredDate>, <endDate>]", () => {
@@ -1597,7 +1576,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, <endDate>] in input fields", () => {
@@ -1614,8 +1593,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<hoveredDate>, <endDate>] in input fields", () => {
@@ -1628,7 +1606,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<hoveredDate>, <endDate>]", () => {
@@ -1642,7 +1620,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, <endDate>] in input fields", () => {
@@ -1659,8 +1637,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<hoveredDate>, null] in input fields", () => {
@@ -1673,7 +1650,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<hoveredDate>, null]", () => {
@@ -1687,7 +1664,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, <endDate>] in input fields", () => {
@@ -1704,8 +1681,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [null, <endDate>] in input fields", () => {
@@ -1718,7 +1694,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [null, <endDate>]", () => {
@@ -1732,7 +1708,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, <endDate>] in input fields", () => {
@@ -1749,8 +1725,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<startDate>, null] in input fields", () => {
@@ -1763,7 +1738,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<startDate>, null]", () => {
@@ -1777,7 +1752,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, <endDate>] in input fields", () => {
@@ -1793,15 +1768,14 @@ describe("<DateRangeInput>", () => {
 
                 describe("if end field is focused", () => {
                     beforeEach(() => {
-                        endInput.simulate("focus");
+                        getEndInput(root).simulate("focus");
                     });
 
                     describe("if <hoveredDate> < <startDate>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [null, <hoveredDate>] in input fields", () => {
@@ -1814,7 +1788,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [null, <hoveredDate>]", () => {
@@ -1828,7 +1802,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, <endDate>] in input fields", () => {
@@ -1845,8 +1819,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_3;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<startDate>, <hoveredDate>] in input fields", () => {
@@ -1859,7 +1832,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<startDate>, <hoveredDate>]", () => {
@@ -1873,7 +1846,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, <endDate>] in input fields", () => {
@@ -1890,8 +1863,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_5;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<startDate>, <hoveredDate>] in input fields", () => {
@@ -1904,7 +1876,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<startDate>, <hoveredDate>]", () => {
@@ -1918,7 +1890,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, <endDate>] in input fields", () => {
@@ -1935,8 +1907,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_2;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [null, <endDate>] in input fields", () => {
@@ -1949,7 +1920,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [null, <endDate>]", () => {
@@ -1963,7 +1934,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, <endDate>] in input fields", () => {
@@ -1980,8 +1951,7 @@ describe("<DateRangeInput>", () => {
                         const DATE_CONFIG = HOVER_TEST_DATE_CONFIG_4;
 
                         beforeEach(() => {
-                            dayElement = getDayElement(DATE_CONFIG.day);
-                            dayElement.simulate("mouseenter");
+                            getDayElement(DATE_CONFIG.day).simulate("mouseenter");
                         });
 
                         it("shows [<startDate>, null] in input fields", () => {
@@ -1994,7 +1964,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("on click", () => {
                             beforeEach(() => {
-                                dayElement.simulate("click");
+                                getDayElement(DATE_CONFIG.day).simulate("click");
                             });
 
                             it("sets selection to [<startDate>, null]", () => {
@@ -2008,7 +1978,7 @@ describe("<DateRangeInput>", () => {
 
                         describe("if mouse moves to no longer be over a calendar day", () => {
                             beforeEach(() => {
-                                dayElement.simulate("mouseleave");
+                                getDayElement(DATE_CONFIG.day).simulate("mouseleave");
                             });
 
                             it("shows [<startDate>, <endDate>] in input fields", () => {
@@ -2199,34 +2169,34 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("calls onError with invalid date on blur", () => {
-                runTestForEachScenario((input, inputString, boundary) => {
+                runTestForEachScenario((inputGetterFn, inputString, boundary) => {
                     const expectedRange =
                         boundary === DateRangeBoundary.START ? [inputString, null] : [null, inputString];
-                    input.simulate("focus");
-                    changeInputText(input, inputString);
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), inputString);
                     expect(onError.called).to.be.false;
-                    input.simulate("blur");
+                    inputGetterFn(root).simulate("blur");
                     expect(onError.calledOnce).to.be.true;
                     assertDateRangesEqual(onError.getCall(0).args[0], expectedRange);
                 });
             });
 
             describe("does NOT call onChange before OR after blur", () => {
-                runTestForEachScenario((input, inputString) => {
-                    input.simulate("focus");
-                    changeInputText(input, inputString);
+                runTestForEachScenario((inputGetterFn, inputString) => {
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), inputString);
                     expect(onChange.called).to.be.false;
-                    input.simulate("blur");
+                    inputGetterFn(root).simulate("blur");
                     expect(onChange.called).to.be.false;
                 });
             });
 
             function runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
                 const { START, END } = DateRangeBoundary;
-                it("if start < minDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_START_STR, START));
-                it("if start > maxDate", () => runTestFn(getStartInput(root), OUT_OF_RANGE_END_STR, START));
-                it("if end < minDate", () => runTestFn(getEndInput(root), OUT_OF_RANGE_START_STR, END));
-                it("if end > maxDate", () => runTestFn(getEndInput(root), OUT_OF_RANGE_END_STR, END));
+                it("if start < minDate", () => runTestFn(getStartInput, OUT_OF_RANGE_START_STR, START));
+                it("if start > maxDate", () => runTestFn(getStartInput, OUT_OF_RANGE_END_STR, START));
+                it("if end < minDate", () => runTestFn(getEndInput, OUT_OF_RANGE_START_STR, END));
+                it("if end > maxDate", () => runTestFn(getEndInput, OUT_OF_RANGE_END_STR, END));
             }
         });
 
@@ -2250,11 +2220,11 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("calls onError on blur with Date(undefined) in place of the invalid date", () => {
-                runTestForEachScenario((input, boundary) => {
-                    input.simulate("focus");
-                    changeInputText(input, INVALID_STR);
+                runTestForEachScenario((inputGetterFn, boundary) => {
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), INVALID_STR);
                     expect(onError.called).to.be.false;
-                    input.simulate("blur");
+                    inputGetterFn(root).simulate("blur");
                     expect(onError.calledOnce).to.be.true;
 
                     const dateRange = onError.getCall(0).args[0];
@@ -2264,18 +2234,18 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("does NOT call onChange before OR after blur", () => {
-                runTestForEachScenario(input => {
-                    input.simulate("focus");
-                    changeInputText(input, INVALID_STR);
+                runTestForEachScenario(inputGetterFn => {
+                    inputGetterFn(root).simulate("focus");
+                    changeInputText(inputGetterFn(root), INVALID_STR);
                     expect(onChange.called).to.be.false;
-                    input.simulate("blur");
+                    inputGetterFn(root).simulate("blur");
                     expect(onChange.called).to.be.false;
                 });
             });
 
             function runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
-                it("in start field", () => runTestFn(getStartInput(root), DateRangeBoundary.START, getEndInput(root)));
-                it("in end field", () => runTestFn(getEndInput(root), DateRangeBoundary.END, getStartInput(root)));
+                it("in start field", () => runTestFn(getStartInput, DateRangeBoundary.START, getEndInput));
+                it("in end field", () => runTestFn(getEndInput, DateRangeBoundary.END, getStartInput));
             }
         });
 

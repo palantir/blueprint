@@ -12,6 +12,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { SinonSpy, spy } from "sinon";
 
+import { dispatchTestKeyboardEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
 import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 import {
@@ -25,26 +27,29 @@ import {
     IKeyCombo,
     parseKeyCombo,
 } from "../../src/index";
-import { dispatchTestKeyboardEvent } from "../common/utils";
 
 describe("Hotkeys", () => {
     it("throws error if given non-Hotkey child", () => {
-        expect(() =>
-            mount(
-                <Hotkeys>
-                    <div />
-                </Hotkeys>,
-            ),
-        ).to.throw(HOTKEYS_HOTKEY_CHILDREN, "element");
-        expect(() => mount(<Hotkeys>string contents</Hotkeys>)).to.throw(HOTKEYS_HOTKEY_CHILDREN, "string");
-        expect(() =>
-            mount(
-                <Hotkeys>
-                    {undefined}
-                    {null}
-                </Hotkeys>,
-            ),
-        ).to.throw(HOTKEYS_HOTKEY_CHILDREN, "undefined");
+        expectPropValidationError(Hotkeys, { children: <div /> }, HOTKEYS_HOTKEY_CHILDREN, "element");
+        expectPropValidationError(Hotkeys, { children: "string contents" }, HOTKEYS_HOTKEY_CHILDREN, "string");
+        expectPropValidationError(Hotkeys, { children: [undefined, null] }, HOTKEYS_HOTKEY_CHILDREN, "undefined");
+    });
+
+    it("Decorator does not mutate the original class", () => {
+        class TestComponent extends React.Component<{}, {}> {
+            public render() {
+                return <div />;
+            }
+
+            public renderHotkeys() {
+                return <Hotkeys />;
+            }
+        }
+
+        const TargettedTestComponent = HotkeysTarget(TestComponent);
+
+        // it's not the same Component
+        expect(TargettedTestComponent).to.not.equal(TestComponent);
     });
 
     describe("Local/Global @HotkeysTarget", () => {
@@ -132,7 +137,7 @@ describe("Hotkeys", () => {
         });
 
         // this works only on keydown, so don't put it in the test suite
-        it('triggers non-inline hotkey dialog with "?"', done => {
+        it('triggers hotkey dialog with "?"', done => {
             const TEST_TIMEOUT_DURATION = 30;
 
             comp = mount(<TestComponent />, { attachTo });

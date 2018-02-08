@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -21,9 +20,8 @@ export interface IProgressBarProps extends IProps, IIntentProps {
     value?: number;
 }
 
-@PureRender
-export class ProgressBar extends React.Component<IProgressBarProps, {}> {
-    public static displayName = "Blueprint.ProgressBar";
+export class ProgressBar extends React.PureComponent<IProgressBarProps, {}> {
+    public static displayName = "Blueprint2.ProgressBar";
 
     public render() {
         const { className, intent, value } = this.props;
@@ -38,5 +36,3 @@ export class ProgressBar extends React.Component<IProgressBarProps, {}> {
         );
     }
 }
-
-export const ProgressBarFactory = React.createFactory(ProgressBar);

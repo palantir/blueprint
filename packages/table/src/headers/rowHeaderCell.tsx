@@ -6,10 +6,9 @@
 
 import * as React from "react";
 
-import { AbstractComponent, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import * as Errors from "../common/errors";
 import { LoadableContent } from "../common/loadableContent";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
@@ -17,7 +16,7 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     /**
      * Specifies if the row is reorderable.
      */
-    isRowReorderable?: boolean;
+    enableRowReordering?: boolean;
 
     /**
      * Specifies whether the full row is part of a selection.
@@ -25,11 +24,11 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     isRowSelected?: boolean;
 }
 
-export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
+export class RowHeaderCell extends AbstractPureComponent<IRowHeaderCellProps, {}> {
     public render() {
         const {
             // from IRowHeaderCellProps
-            isRowReorderable,
+            enableRowReordering,
             isRowSelected,
 
             // from IHeaderProps
@@ -38,7 +37,7 @@ export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
 
         return (
             <HeaderCell
-                isReorderable={this.props.isRowReorderable}
+                isReorderable={this.props.enableRowReordering}
                 isSelected={this.props.isRowSelected}
                 {...spreadableProps}
             >
@@ -51,14 +50,5 @@ export class RowHeaderCell extends AbstractComponent<IRowHeaderCellProps, {}> {
                 {spreadableProps.loading ? undefined : spreadableProps.resizeHandle}
             </HeaderCell>
         );
-    }
-
-    protected validateProps(nextProps: IRowHeaderCellProps) {
-        if (nextProps.menu != null) {
-            // throw this warning from the publicly exported, higher-order *HeaderCell components
-            // rather than HeaderCell, so consumers know exactly which components are receiving the
-            // offending prop
-            console.warn(Errors.ROW_HEADER_CELL_MENU_DEPRECATED);
-        }
     }
 }

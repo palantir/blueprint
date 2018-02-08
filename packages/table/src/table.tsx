@@ -13,6 +13,7 @@ import { Column, IColumnProps } from "./column";
 import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
+import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "./common/context";
 import { Direction } from "./common/direction";
 import * as Errors from "./common/errors";
 import { Grid, ICellMapper, IColumnIndices, IRowIndices } from "./common/grid";
@@ -77,14 +78,6 @@ interface IResizeRowsByApproximateHeightResolvedOptions {
 
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
-     * If `false`, only a single region of a single column/row/cell may be
-     * selected at one time. Using `ctrl` or `meta` key will have no effect,
-     * and a mouse drag will select the current column/row/cell only.
-     * @default true
-     */
-    allowMultipleSelection?: boolean;
-
-    /**
      * The children of a `Table` component, which must be React elements
      * that use `IColumnProps`.
      */
@@ -99,24 +92,78 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     columnWidths?: Array<number | null | undefined>;
 
     /**
+     * An optional callback for displaying a context menu when right-clicking
+     * on the table body. The callback is supplied with an array of
+     * `IRegion`s. If the mouse click was on a selection, the array will
+     * contain all selected regions. Otherwise it will have one `IRegion` that
+     * represents the clicked cell.
+     */
+    bodyContextMenuRenderer?: IContextMenuRenderer;
+
+    /**
+     * If `true`, adds an interaction bar on top of all column header cells, and
+     * moves interaction triggers into it.
+     * @default false
+     */
+    enableColumnInteractionBar?: boolean;
+
+    /**
+     * If `false`, disables reordering of columns.
+     * @default false
+     */
+    enableColumnReordering?: boolean;
+
+    /**
+     * If `false`, disables resizing of columns.
+     * @default true
+     */
+    enableColumnResizing?: boolean;
+
+    /**
      * If `true`, there will be a single "focused" cell at all times,
      * which can be used to interact with the table as though it is a
      * spreadsheet. When false, no such cell will exist.
      * @default false
      */
-    enableFocus?: boolean;
+    enableFocusedCell?: boolean;
 
     /**
      * If `true`, empty space in the table container will be filled with empty
      * cells instead of a blank background.
      * @default false
      */
-    fillBodyWithGhostCells?: boolean;
+    enableGhostCells?: boolean;
+
+    /**
+     * If `false`, only a single region of a single column/row/cell may be
+     * selected at one time. Using `ctrl` or `meta` key will have no effect,
+     * and a mouse drag will select the current column/row/cell only.
+     * @default true
+     */
+    enableMultipleSelection?: boolean;
+
+    /**
+     * If `false`, hides the row headers and settings menu.
+     * @default true
+     */
+    enableRowHeader?: boolean;
+
+    /**
+     * If `false`, disables reordering of rows.
+     * @default false
+     */
+    enableRowReordering?: boolean;
+
+    /**
+     * If `false`, disables resizing of rows.
+     * @default false
+     */
+    enableRowResizing?: boolean;
 
     /**
      * If defined, will set the focused cell state. This changes
      * the focused cell to controlled mode, meaning you are in charge of
-     * setting the focus in response to events in the `onFocus` callback.
+     * setting the focus in response to events in the `onFocusedCell` callback.
      */
     focusedCell?: IFocusedCellCoordinates;
 
@@ -128,36 +175,6 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * copying. If not defined, keyboard copying via `mod+c` will be disabled.
      */
     getCellClipboardData?: (row: number, col: number) => any;
-
-    /**
-     * If `false`, disables reordering of columns.
-     * @default false
-     */
-    isColumnReorderable?: boolean;
-
-    /**
-     * If `false`, disables resizing of columns.
-     * @default true
-     */
-    isColumnResizable?: boolean;
-
-    /**
-     * If `false`, hides the row headers and settings menu.
-     * @default true
-     */
-    isRowHeaderShown?: boolean;
-
-    /**
-     * If `false`, disables reordering of rows.
-     * @default false
-     */
-    isRowReorderable?: boolean;
-
-    /**
-     * If `false`, disables resizing of rows.
-     * @default false
-     */
-    isRowResizable?: boolean;
 
     /**
      * A list of `TableLoadingOption`. Set this prop to specify whether to
@@ -217,7 +234,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * A callback called when the focus is changed in the table.
      */
-    onFocus?: (focusedCell: IFocusedCellCoordinates) => void;
+    onFocusedCell?: (focusedCell: IFocusedCellCoordinates) => void;
 
     /**
      * If resizing is enabled, this callback will be invoked when the user
@@ -242,15 +259,6 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     onVisibleCellsChange?: (rowIndices: IRowIndices, columnIndices: IColumnIndices) => void;
 
     /**
-     * An optional callback for displaying a context menu when right-clicking
-     * on the table body. The callback is supplied with an array of
-     * `IRegion`s. If the mouse click was on a selection, the array will
-     * contain all selected regions. Otherwise it will have one `IRegion` that
-     * represents the clicked cell.
-     */
-    renderBodyContextMenu?: IContextMenuRenderer;
-
-    /**
      * Dictates how cells should be rendered. Supported modes are:
      * - `RenderMode.BATCH`: renders cells in batches to improve performance
      * - `RenderMode.BATCH_ON_UPDATE`: renders cells synchronously on mount and
@@ -263,7 +271,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * Render each row's header cell.
      */
-    renderRowHeader?: IRowHeaderRenderer;
+    rowHeaderCellRenderer?: IRowHeaderRenderer;
 
     /**
      * A sparse number array with a length equal to the number of rows. Any
@@ -324,18 +332,6 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * marked with their own `className` for custom styling.
      */
     styledRegionGroups?: IStyledRegionGroup[];
-
-    /**
-     * If `true`, adds an interaction bar on top of all column header cells, and
-     * moves interaction triggers into it.
-     *
-     * This value defaults to `undefined` so that, by default, it won't override
-     * the `useInteractionBar` values that you might have provided directly to
-     * each `<ColumnHeaderCell>`.
-     *
-     * @default undefined
-     */
-    useInteractionBar?: boolean;
 }
 
 export interface ITableState {
@@ -408,12 +404,12 @@ export interface ITableState {
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
     public static defaultProps: ITableProps = {
-        allowMultipleSelection: true,
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
-        enableFocus: false,
-        fillBodyWithGhostCells: false,
-        isRowHeaderShown: true,
+        enableFocusedCell: false,
+        enableGhostCells: false,
+        enableMultipleSelection: true,
+        enableRowHeader: true,
         loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
@@ -421,9 +417,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         numFrozenRows: 0,
         numRows: 0,
         renderMode: RenderMode.BATCH_ON_UPDATE,
-        renderRowHeader: renderDefaultRowHeader,
+        rowHeaderCellRenderer: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
     };
+
+    public static childContextTypes: React.ValidationMap<
+        IColumnInteractionBarContextTypes
+    > = columnInteractionBarContextTypes;
 
     // these default values for `resizeRowsByApproximateHeight` have been
     // fine-tuned to work well with default Table font styles.
@@ -510,7 +510,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         const selectedRegions = props.selectedRegions == null ? ([] as IRegion[]) : props.selectedRegions;
         const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-            props.enableFocus,
+            props.enableFocusedCell,
             props.focusedCell,
             undefined,
             selectedRegions,
@@ -652,6 +652,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // React lifecycle
     // ===============
 
+    public getChildContext(): IColumnInteractionBarContextTypes {
+        return {
+            enableColumnInteractionBar: this.props.enableColumnInteractionBar,
+        };
+    }
+
     public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
         const propKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
         const stateKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST };
@@ -665,6 +671,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
+        // calls validateProps
         super.componentWillReceiveProps(nextProps);
 
         const {
@@ -672,7 +679,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             columnWidths,
             defaultColumnWidth,
             defaultRowHeight,
-            enableFocus,
+            enableFocusedCell,
             focusedCell,
             numRows,
             rowHeights,
@@ -717,7 +724,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         const newFocusedCell = FocusedCellUtils.getInitialFocusedCell(
-            enableFocus,
+            enableFocusedCell,
             focusedCell,
             this.state.focusedCell,
             newSelectedRegions,
@@ -737,7 +744,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public render() {
-        const { children, className, isRowHeaderShown, loadingOptions, numRows, useInteractionBar } = this.props;
+        const {
+            children,
+            className,
+            enableRowHeader,
+            loadingOptions,
+            numRows,
+            enableColumnInteractionBar,
+        } = this.props;
         const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
         this.validateGrid();
 
@@ -757,14 +771,17 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             <div className={classes} ref={this.refHandlers.rootTable} onScroll={this.handleRootScroll}>
                 <TableQuadrantStack
                     bodyRef={this.refHandlers.cellContainer}
+                    bodyRenderer={this.renderBody}
+                    columnHeaderCellRenderer={this.renderColumnHeader}
                     columnHeaderRef={this.refHandlers.columnHeader}
+                    enableColumnInteractionBar={enableColumnInteractionBar}
+                    enableRowHeader={enableRowHeader}
                     grid={this.grid}
                     handleColumnResizeGuide={this.handleColumnResizeGuide}
                     handleColumnsReordering={this.handleColumnsReordering}
                     handleRowResizeGuide={this.handleRowResizeGuide}
                     handleRowsReordering={this.handleRowsReordering}
                     isHorizontalScrollDisabled={this.shouldDisableHorizontalScroll()}
-                    isRowHeaderShown={isRowHeaderShown}
                     isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
                     loadingOptions={loadingOptions}
                     numColumns={React.Children.count(children)}
@@ -774,15 +791,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     onScroll={this.handleBodyScroll}
                     quadrantRef={this.refHandlers.mainQuadrant}
                     ref={this.refHandlers.quadrantStack}
-                    renderBody={this.renderBody}
-                    renderColumnHeader={this.renderColumnHeader}
-                    renderMenu={this.renderMenu}
-                    renderRowHeader={this.renderRowHeader}
+                    menuRenderer={this.renderMenu}
+                    rowHeaderCellRenderer={this.renderRowHeader}
                     rowHeaderRef={this.refHandlers.rowHeader}
                     scrollContainerRef={this.refHandlers.scrollContainer}
-                    useInteractionBar={useInteractionBar}
                 />
-                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, "bp-table-reordering-cursor-overlay")} />
+                <div className={classNames(Classes.TABLE_OVERLAY_LAYER, Classes.TABLE_OVERLAY_REORDERING_CURSOR)} />
                 <GuideLayer
                     className={Classes.TABLE_RESIZE_GUIDES}
                     verticalGuides={verticalGuides}
@@ -910,10 +924,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private maybeRenderSelectionResizeHotkeys() {
-        const { allowMultipleSelection, selectionModes } = this.props;
+        const { enableMultipleSelection, selectionModes } = this.props;
         const isSomeSelectionModeEnabled = selectionModes.length > 0;
 
-        if (allowMultipleSelection && isSomeSelectionModeEnabled) {
+        if (enableMultipleSelection && isSomeSelectionModeEnabled) {
             return [
                 <Hotkey
                     key="resize-selection-up"
@@ -950,8 +964,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private maybeRenderFocusHotkeys() {
-        const { enableFocus } = this.props;
-        if (enableFocus != null) {
+        const { enableFocusedCell } = this.props;
+        if (enableFocusedCell != null) {
             return [
                 <Hotkey
                     key="move left"
@@ -1162,27 +1176,26 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     };
 
     private shouldDisableVerticalScroll() {
-        const { fillBodyWithGhostCells } = this.props;
+        const { enableGhostCells } = this.props;
         const { viewportRect } = this.state;
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
 
         const isViewportUnscrolledVertically = viewportRect != null && viewportRect.top === 0;
         const areRowHeadersLoading = this.hasLoadingOption(this.props.loadingOptions, TableLoadingOption.ROW_HEADERS);
-        const areGhostRowsVisible = fillBodyWithGhostCells && this.grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
+        const areGhostRowsVisible = enableGhostCells && this.grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
 
         return areGhostRowsVisible && (isViewportUnscrolledVertically || areRowHeadersLoading);
     }
 
     private shouldDisableHorizontalScroll() {
-        const { fillBodyWithGhostCells } = this.props;
+        const { enableGhostCells } = this.props;
         const { viewportRect } = this.state;
 
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
 
         const isViewportUnscrolledHorizontally = viewportRect != null && viewportRect.left === 0;
-        const areGhostColumnsVisible =
-            fillBodyWithGhostCells && this.grid.isGhostIndex(0, columnIndices.columnIndexEnd);
+        const areGhostColumnsVisible = enableGhostCells && this.grid.isGhostIndex(0, columnIndices.columnIndexEnd);
         const areColumnHeadersLoading = this.hasLoadingOption(
             this.props.loadingOptions,
             TableLoadingOption.COLUMN_HEADERS,
@@ -1257,39 +1270,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
-
-        // TODO: `renderColumnHeader` is really an unclear name. should rename
-        // to `renderColumnHeaderCell` in the future.
-        // (see: https://github.com/palantir/blueprint/issues/1625)
-        const {
-            id,
-            loadingOptions,
-            renderCell,
-            renderColumnHeader: renderColumnHeaderCell,
-            ...spreadableProps
-        } = props;
+        const { id, loadingOptions, cellRenderer, columnHeaderCellRenderer, ...spreadableProps } = props;
 
         const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
 
-        // <Table>'s useInteractionBar defaults to undefined. this means we
-        // won't override the cell's useInteractionBar value unless the consumer
-        // explicitly provided an override value to the <Table>.
-        const tableUseInteractionBar = this.props.useInteractionBar;
-
-        if (renderColumnHeaderCell != null) {
-            const columnHeaderCell = renderColumnHeaderCell(columnIndex);
+        if (columnHeaderCellRenderer != null) {
+            const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
             const columnHeaderCellLoading = columnHeaderCell.props.loading;
-
-            // print a deprecation warning here if needed. we can't do this in
-            // ColumnHeaderCell, because we wouldn't be able to tell if
-            // useInteractionBar was injected by Table or provided by the user.
-            if (columnHeaderCell.props.useInteractionBar && !CoreUtils.isNodeEnv("production")) {
-                console.warn(Errors.COLUMN_HEADER_CELL_USE_INTERACTION_BAR_DEPRECATED);
-            }
 
             const columnHeaderCellProps: IColumnHeaderCellProps = {
                 loading: columnHeaderCellLoading != null ? columnHeaderCellLoading : columnLoading,
-                useInteractionBar: tableUseInteractionBar,
             };
             return React.cloneElement(columnHeaderCell, columnHeaderCellProps);
         }
@@ -1297,7 +1287,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const baseProps: IColumnHeaderCellProps = {
             index: columnIndex,
             loading: columnLoading,
-            useInteractionBar: tableUseInteractionBar,
             ...spreadableProps,
         };
 
@@ -1316,10 +1305,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     ) => {
         const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
-            allowMultipleSelection,
-            fillBodyWithGhostCells,
-            isColumnReorderable,
-            isColumnResizable,
+            enableMultipleSelection,
+            enableGhostCells,
+            enableColumnReordering,
+            enableColumnResizing,
             loadingOptions,
             maxColumnWidth,
             minColumnWidth,
@@ -1330,26 +1319,26 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_COLUMNS),
         });
 
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
         const columnIndexStart = showFrozenColumnsOnly ? 0 : columnIndices.columnIndexStart;
         const columnIndexEnd = showFrozenColumnsOnly ? this.getMaxFrozenColumnIndex() : columnIndices.columnIndexEnd;
 
         return (
             <div className={classes}>
                 <ColumnHeader
-                    allowMultipleSelection={allowMultipleSelection}
+                    enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
                     focusedCell={focusedCell}
                     grid={this.grid}
-                    isReorderable={isColumnReorderable}
-                    isResizable={isColumnResizable}
+                    isReorderable={enableColumnReordering}
+                    isResizable={enableColumnResizing}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={this.locator}
                     maxColumnWidth={maxColumnWidth}
                     measurableElementRef={refHandler}
                     minColumnWidth={minColumnWidth}
                     onColumnWidthChanged={this.handleColumnWidthChanged}
-                    onFocus={this.handleFocus}
+                    onFocusedCell={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onReordered={this.handleColumnsReordered}
                     onReordering={reorderingHandler}
@@ -1376,14 +1365,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     ) => {
         const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
-            allowMultipleSelection,
-            fillBodyWithGhostCells,
-            isRowReorderable,
-            isRowResizable,
+            enableMultipleSelection,
+            enableGhostCells,
+            enableRowReordering,
+            enableRowResizing,
             loadingOptions,
             maxRowHeight,
             minRowHeight,
-            renderRowHeader,
+            rowHeaderCellRenderer,
             selectedRegionTransform,
         } = this.props;
 
@@ -1391,30 +1380,30 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             [Classes.TABLE_SELECTION_ENABLED]: this.isSelectionModeEnabled(RegionCardinality.FULL_ROWS),
         });
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? this.getMaxFrozenRowIndex() : rowIndices.rowIndexEnd;
 
         return (
             <div className={classes} ref={refHandler}>
                 <RowHeader
-                    allowMultipleSelection={allowMultipleSelection}
+                    enableMultipleSelection={enableMultipleSelection}
                     focusedCell={focusedCell}
                     grid={this.grid}
                     locator={this.locator}
-                    isReorderable={isRowReorderable}
-                    isResizable={isRowResizable}
+                    isReorderable={enableRowReordering}
+                    isResizable={enableRowResizing}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}
                     minRowHeight={minRowHeight}
-                    onFocus={this.handleFocus}
+                    onFocusedCell={this.handleFocus}
                     onLayoutLock={this.handleLayoutLock}
                     onResizeGuide={resizeHandler}
                     onReordered={this.handleRowsReordered}
                     onReordering={reorderingHandler}
                     onRowHeightChanged={this.handleRowHeightChanged}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_ROWS)}
-                    renderRowHeader={renderRowHeader}
+                    rowHeaderCellRenderer={rowHeaderCellRenderer}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
                     rowIndexStart={rowIndexStart}
@@ -1430,15 +1419,14 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const {
             id,
             loadingOptions,
-            renderCell,
-            renderColumnHeader,
+            cellRenderer,
+            columnHeaderCellRenderer,
             name,
-            renderName,
-            useInteractionBar,
+            nameRenderer,
             ...restColumnProps
         } = this.getColumnProps(columnIndex);
 
-        const cell = renderCell(rowIndex, columnIndex);
+        const cell = cellRenderer(rowIndex, columnIndex);
         const { loading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS) } = cell.props;
 
         const cellProps: ICellProps = {
@@ -1462,15 +1450,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             viewportRect,
         } = this.state;
         const {
-            allowMultipleSelection,
-            fillBodyWithGhostCells,
+            enableMultipleSelection,
+            enableGhostCells,
             loadingOptions,
-            renderBodyContextMenu,
+            bodyContextMenuRenderer,
             selectedRegionTransform,
         } = this.props;
 
-        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, fillBodyWithGhostCells);
-        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, fillBodyWithGhostCells);
+        const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
+        const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
 
         // start beyond the frozen area if rendering unrelated quadrants, so we
         // don't render duplicate cells underneath the frozen ones.
@@ -1489,16 +1477,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         return (
             <div>
                 <TableBody
-                    allowMultipleSelection={allowMultipleSelection}
+                    enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedCell={focusedCell}
                     grid={this.grid}
                     loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                     locator={this.locator}
                     onCompleteRender={onCompleteRender}
-                    onFocus={this.handleFocus}
+                    onFocusedCell={this.handleFocus}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
-                    renderBodyContextMenu={renderBodyContextMenu}
+                    bodyContextMenuRenderer={bodyContextMenuRenderer}
                     renderMode={this.getNormalizedRenderMode()}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
@@ -2016,7 +2004,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
-        if (!this.props.enableFocus) {
+        if (!this.props.enableFocusedCell) {
             // don't set focus state if focus is not allowed
             return;
         }
@@ -2026,7 +2014,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.setState({ focusedCell });
         }
 
-        CoreUtils.safeInvoke(this.props.onFocus, focusedCell);
+        CoreUtils.safeInvoke(this.props.onFocusedCell, focusedCell);
     };
 
     private handleSelection = (selectedRegions: IRegion[]) => {

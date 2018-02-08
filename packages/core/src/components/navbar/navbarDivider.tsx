@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
@@ -18,9 +17,8 @@ export interface INavbarDividerProps extends React.HTMLProps<HTMLDivElement>, IP
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@PureRender
-export class NavbarDivider extends React.Component<INavbarDividerProps, {}> {
-    public static displayName = "Blueprint.NavbarDivider";
+export class NavbarDivider extends React.PureComponent<INavbarDividerProps, {}> {
+    public static displayName = "Blueprint2.NavbarDivider";
 
     public render() {
         const { className, ...htmlProps } = this.props;

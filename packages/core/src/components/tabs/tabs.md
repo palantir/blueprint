@@ -1,14 +1,8 @@
 @# Tabs
 
-<div class="pt-callout pt-intent-danger pt-icon-error">
-  <h5>The `Tabs` JavaScript API is deprecated since v1.11.0</h5>
-  The following `Tabs` React components been deprecated in v1.11.0 favor of the [simpler and more flexible
-  `Tabs2` API](#core/components/tabs2). `Tabs2` will replace `Tabs` in version 2.0. The CSS API has not been changed.
-</div>
-
 @## CSS API
 
-In addition to the [JavaScript API](#core/components/tabs2.javascript-api), Blueprint also offers tab styles with the
+In addition to the [JavaScript API](#core/components/tabs.javascript-api), Blueprint also offers tab styles with the
 class `pt-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and
 `aria-hidden`) if you choose to implement tabs with CSS.
 
@@ -18,106 +12,55 @@ JavaScript component does this by default).
 
 @css pt-tabs
 
-@## Deprecated JavaScript API
+@## JavaScript API
 
-<div class="pt-callout pt-intent-danger pt-icon-error">
-    These components are deprecated since v1.11.0. Please use the [`Tabs2` API](#core/components/tabs2) instead.
-</div>
-
-The `Tabs`, `TabList`, `Tab`, and `TabPanel` components are available in the __@blueprintjs/core__
+The `Tabs` and `Tab` components are available in the __@blueprintjs/core__
 package. Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
-Four components are necessary to render tabs: `Tabs`, `TabList`, `Tab`, and `TabPanel`.
+Tab selection is managed by `id`, much like the HTML `<select>` element respects `<option value>`. This is more reliable than using a numeric index (it's also deterministic), and
+does not require translating between numbers and tab names. It does, however, require that
+every `Tab` have a locally unique `id` prop.
 
-For performance reasons, only the currently active `TabPanel` is rendered into the DOM. When the
-user switches tabs, data stored in the DOM is lost. This is not an issue in React applications
-because of how the library manages the virtual DOM for you.
-
-@### Sample usage
+Arbitrary elements are supported in the tab list, and order is respected. Yes, you can even
+insert things _between_ `Tab`s.
 
 ```tsx
-<Tabs>
-    <TabList>
-        <Tab>First tab</Tab>
-        <Tab>Second tab</Tab>
-        <Tab>Third tab</Tab>
-        <Tab isDisabled={true}>Fourth tab</Tab>
-    </TabList>
-    <TabPanel>
-        First panel
-    </TabPanel>
-    <TabPanel>
-        Second panel
-    </TabPanel>
-    <TabPanel>
-        Third panel
-    </TabPanel>
-    <TabPanel>
-        Fourth panel
-    </TabPanel>
+import { Tab, Tabs } from "@blueprintjs/core";
+
+<Tabs id="TabsExample" onChange={this.handleTabChange} selectedTabId="rx">
+    <Tab id="ng" title="Angular" panel={<AngularPanel />} />
+    <Tab id="mb" title="Ember" panel={<EmberPanel />} />
+    <Tab id="rx" title="React" panel={<ReactPanel />} />
+    <Tab id="bb" disabled title="Backbone" panel={<BackbonePanel />} />
+    <Tabs.Expander />
+    <input className="pt-input" type="text" placeholder="Search..." />
 </Tabs>
 ```
 
-Every component accepts a `className` prop that can be used to set additional classes on the
-component's root element. You can get larger tabs by using the `pt-large` class on `TabList`.
-
-You can use the `Tabs` API in controlled or uncontrolled mode. The props you supply will differ
-between these approaches.
-
 @reactExample TabsExample
 
-@### Tabs props
+@### Tabs
 
-<div class="pt-callout pt-intent-danger pt-icon-error">
-    This component is deprecated since v1.11.0. Please use the [`Tabs2` API](#core/components/tabs2) instead.
-</div>
+`Tabs` is the top-level component responsible for rendering the tab list and coordinating selection.
+It can be used in controlled mode by providing `selectedTabId` and `onChange` props, or in
+uncontrolled mode by optionally providing `defaultSelectedTabId` and `onChange`.
+
+Children of the `Tabs` are rendered in order in the tab list, which is a flex container.
+`Tab` children are managed by the component; clicking one will change selection. Arbitrary other
+children are simply rendered in order; interactions are your responsibility.
+
+Insert a `<Tabs.Expander />` between any two children to right-align all subsequent children (or bottom-align when `vertical`).
 
 @interface ITabsProps
 
-@### Tab props
+@### Tab
 
-<div class="pt-callout pt-intent-danger pt-icon-error">
-    This component is deprecated since v1.11.0. Please use the [`Tabs2` API](#core/components/tabs2) instead.
-</div>
+`Tab` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
+parent `Tabs` wrapper. Tab title text can be set either via `title` prop or via React children
+(for more complex content).
+
+The associated tab `panel` will be visible when the `Tab` is active. Omitting `panel` is perfectly
+safe and allows you to control exactly where the panel appears in the DOM (by rendering it yourself
+as needed).
 
 @interface ITabProps
-
-@### Usage with React Router
-
-Often, you'll want to link tab navigation to overall app navigation, including updating the URL.
-[react-router](https://github.com/reactjs/react-router) is a commonly-used library for React
-applications. Here's how you might configure tabs to work with it:
-
-```tsx
-import { render } from "react-dom";
-import { Router, Route } from "react-router";
-import { Tabs, TabList, Tab, TabPanel } from "@blueprintjs/core";
-
-const App = () => { ... };
-
-// keys are necessary in JSX.Element lists to keep React happy
-const contents = [
-    <TabList key={0}>
-        <Tab>Home</Tab>
-        <Tab>Projects</Tab>
-    </TabList>,
-    <TabPanel key={1}>
-        home things
-    </TabPanel>,
-    <TabPanel key={2}>
-        projects things
-    </TabPanel>,
-];
-
-// using SFCs from TS 1.8, but easy to do without them
-export const Home = () => <Tabs selectedTabIndex={0}>{contents}</Tabs>;
-export const Projects = () => <Tabs selectedTabIndex={1}>{contents}</Tabs>;
-
-render(
-    <Router path="/" component={App}>
-        <Route path="home" component={Home}/>
-        <Route path="projects" component={Projects}/>
-    </Router>,
-    document.querySelector("#app")
-);
-```

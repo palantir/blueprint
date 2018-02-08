@@ -1,8 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~bourbon/app/assets/stylesheets/bourbon";
-@import "../../common/icons";
+@import "~@blueprintjs/icons/src/icons";
 @import "../../common/mixins";
 @import "../../common/react-transition";
 @import "../../common/variables";
@@ -101,7 +100,8 @@ $dialog-padding: $pt-grid-size * 2 !default;
   min-height: $pt-icon-size-large + $dialog-padding;
   padding-left: $dialog-padding;
 
-  .pt-icon-large {
+  .pt-icon-large,
+  .pt-icon {
     flex: 0 0 auto;
     margin-right: $dialog-padding / 2;
     color: $pt-icon-color;
@@ -122,7 +122,8 @@ $dialog-padding: $pt-grid-size * 2 !default;
     box-shadow: 0 1px 0 $pt-dark-divider-black;
     background: $dark-gray4;
 
-    .pt-icon-large {
+    .pt-icon-large,
+    .pt-icon {
       color: $pt-dark-icon-color;
     }
 
@@ -144,6 +145,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
 
   cursor: pointer;
   padding: $pt-grid-size;
+  padding-right: $dialog-padding;
 }
 
 .pt-dialog-body {

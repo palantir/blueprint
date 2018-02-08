@@ -1,6 +1,5 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
@@ -9,11 +8,14 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import * as Errors from "../../src/common/errors";
 import {
     Button,
     Classes,
     HTMLInputProps,
+    Icon,
     InputGroup,
     INumericInputProps,
     Keys,
@@ -24,10 +26,10 @@ import {
 describe("<NumericInput>", () => {
     describe("Defaults", () => {
         it("renders the buttons on the right by default", () => {
-            const component = mount(<NumericInput />);
+            const component = mount(<NumericInput />).children();
             const leftGroup = component.childAt(0);
             const rightGroup = component.childAt(1);
-            expect(leftGroup.type()).to.equal(InputGroup);
+            expect(leftGroup.is(InputGroup)).to.be.true;
             expect(rightGroup.key()).to.equal("button-group");
         });
 
@@ -67,36 +69,28 @@ describe("<NumericInput>", () => {
     });
 
     describe("Button position", () => {
+        const BUTTON_GROUP_SELECTOR = `.${Classes.BUTTON_GROUP}`;
+
         it("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
             const component = mount(<NumericInput buttonPosition={Position.RIGHT} />);
-            const inputGroup = component.find(InputGroup);
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            const buttonGroup = component.children().childAt(1);
+            expect(buttonGroup.is(BUTTON_GROUP_SELECTOR)).to.be.true;
         });
 
         it("renders the buttons on the left when buttonPosition == Position.LEFT", () => {
             const component = mount(<NumericInput buttonPosition={Position.LEFT} />);
-            const inputGroup = component.find(InputGroup);
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
+            const buttonGroup = component.children().childAt(0);
+            expect(buttonGroup.is(BUTTON_GROUP_SELECTOR)).to.be.true;
         });
 
         it('does not render the buttons when buttonPosition == "none"', () => {
-            const component = mount(<NumericInput buttonPosition={"none"} />);
-
-            const inputGroup = component.find(InputGroup);
-            const numChildren = component.children().length;
-
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
-            expect(numChildren).to.equal(1);
+            const component = mount(<NumericInput buttonPosition="none" />);
+            expect(component.find(BUTTON_GROUP_SELECTOR).exists()).to.be.false;
         });
 
         it("does not render the buttons when buttonPosition is null", () => {
             const component = mount(<NumericInput buttonPosition={null} />);
-
-            const inputGroup = component.find(InputGroup);
-            const numChildren = component.children().length;
-
-            expect(inputGroup.name()).to.equal("Blueprint.InputGroup");
-            expect(numChildren).to.equal(1);
+            expect(component.find(BUTTON_GROUP_SELECTOR).exists()).to.be.false;
         });
 
         it(`renders the children in a ${Classes.CONTROL_GROUP} when buttons are visible`, () => {
@@ -209,7 +203,7 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("click");
             expect(onButtonClickSpy.calledOnce).to.be.true;
             expect(onButtonClickSpy.firstCall.args).to.deep.equal([1, "1"]);
-            onButtonClickSpy.reset();
+            onButtonClickSpy.resetHistory();
 
             // decrementing from 1 now
             decrementButton.simulate("click");
@@ -226,20 +220,19 @@ describe("<NumericInput>", () => {
                 const attachTo = document.createElement("div");
                 mount(<NumericInput value="12345678" />, { attachTo });
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 input.focus();
 
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
-            // this works in Chrome but not Phantom. disabling to not fail builds.
-            it.skip("if true, selects all text on focus", () => {
+            it("if true, selects all text on focus", () => {
                 const attachTo = document.createElement("div");
                 const component = mount(<NumericInput value={VALUE} selectAllOnFocus={true} />, { attachTo });
 
                 component.find("input").simulate("focus");
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 expect(input.selectionStart).to.equal(0);
                 expect(input.selectionEnd).to.equal(VALUE.length);
             });
@@ -255,19 +248,18 @@ describe("<NumericInput>", () => {
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
-            // this works in Chrome but not Phantom. disabling to not fail builds.
-            it.skip("if true, selects all text on increment", () => {
+            it("if true, selects all text on increment", () => {
                 const attachTo = document.createElement("div");
                 const component = mount(<NumericInput value={VALUE} selectAllOnIncrement={true} />, { attachTo });
 
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.query("input") as HTMLInputElement;
+                const input = attachTo.querySelector("input") as HTMLInputElement;
                 expect(input.selectionStart).to.equal(0);
                 expect(input.selectionEnd).to.equal(VALUE.length);
             });
@@ -777,54 +769,43 @@ describe("<NumericInput>", () => {
         });
     });
 
+    // Note: we don't call mount() here since React 16 throws before we can even validate the errors thrown
+    // in component constructors
     describe("Validation", () => {
         it("throws an error if min >= max", () => {
-            const fn = () => {
-                mount(<NumericInput min={2} max={1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MIN_MAX);
+            expectPropValidationError(NumericInput, { min: 2, max: 1 }, Errors.NUMERIC_INPUT_MIN_MAX);
         });
 
         it("throws an error if stepSize is null", () => {
-            const fn = () => {
-                mount(<NumericInput stepSize={null} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
+            expectPropValidationError(NumericInput, { stepSize: null }, Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
         });
 
         it("throws an error if stepSize <= 0", () => {
-            const fn = () => {
-                mount(<NumericInput stepSize={-1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
+            expectPropValidationError(NumericInput, { stepSize: -1 }, Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         });
 
         it("throws an error if minorStepSize <= 0", () => {
-            const fn = () => {
-                mount(<NumericInput minorStepSize={-0.1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
+            expectPropValidationError(
+                NumericInput,
+                { minorStepSize: -0.1 },
+                Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE,
+            );
         });
 
         it("throws an error if majorStepSize <= 0", () => {
-            const fn = () => {
-                mount(<NumericInput majorStepSize={-0.1} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
+            expectPropValidationError(
+                NumericInput,
+                { majorStepSize: -0.1 },
+                Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE,
+            );
         });
 
         it("throws an error if majorStepSize <= stepSize", () => {
-            const fn = () => {
-                mount(<NumericInput majorStepSize={0.5} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
+            expectPropValidationError(NumericInput, { majorStepSize: 0.5 }, Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         });
 
         it("throws an error if stepSize <= minorStepSize", () => {
-            const fn = () => {
-                mount(<NumericInput minorStepSize={2} />);
-            };
-            expect(fn).to.throw(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
+            expectPropValidationError(NumericInput, { minorStepSize: 2 }, Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         });
 
         it("clears the field if the value is invalid when incrementing", () => {
@@ -880,12 +861,10 @@ describe("<NumericInput>", () => {
         });
 
         it("shows a left icon if provided", () => {
-            const component = mount(<NumericInput leftIconName={"variable"} />);
-
-            const inputGroup = component.find(InputGroup);
-            const icon = inputGroup.childAt(0);
-
-            expect(icon.hasClass("pt-icon-variable")).to.be.true;
+            const leftIcon = mount(<NumericInput leftIcon="variable" />)
+                .find(Icon)
+                .first();
+            expect(leftIcon.text()).to.equal("variable");
         });
 
         it("shows placeholder text if provided", () => {
@@ -900,42 +879,40 @@ describe("<NumericInput>", () => {
         it("changes max precision of displayed value to that of the smallest step size defined", () => {
             const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
             const incrementButton = component.find(Button).first();
-            const input = component.find("input");
 
             incrementButton.simulate("click");
-            expect(input.prop("value")).to.equal("0.1");
+            expect(component.find("input").prop("value")).to.equal("0.1");
 
             incrementButton.simulate("click", { altKey: true });
-            expect(input.prop("value")).to.equal("0.101");
+            expect(component.find("input").prop("value")).to.equal("0.101");
 
             incrementButton.simulate("click", { shiftKey: true });
-            expect(input.prop("value")).to.equal("1.101");
+            expect(component.find("input").prop("value")).to.equal("1.101");
 
             // one significant digit too many
             component.setState({ value: "1.0001" });
             incrementButton.simulate("click", { altKey: true });
-            expect(input.prop("value")).to.equal("1.001");
+            expect(component.find("input").prop("value")).to.equal("1.001");
         });
 
         it("changes max precision appropriately when the [*]stepSize props change", () => {
             const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
             const incrementButton = component.find(Button).first();
-            const input = component.find("input");
 
             // excess digits should truncate to max precision
             component.setState({ value: "0.0001" });
             incrementButton.simulate("click", { altKey: true });
-            expect(input.prop("value")).to.equal("0.001");
+            expect(component.find("input").prop("value")).to.equal("0.001");
 
             // now try a smaller step size, and expect no truncation
             component.setProps({ minorStepSize: 0.0001, value: "0.0001" });
             incrementButton.simulate("click", { altKey: true });
-            expect(input.prop("value")).to.equal("0.0002");
+            expect(component.find("input").prop("value")).to.equal("0.0002");
 
             // now try a larger step size, and expect more truncation than before
             component.setProps({ minorStepSize: 0.1, value: "0.0001" });
             incrementButton.simulate("click", { altKey: true });
-            expect(input.prop("value")).to.equal("0.1");
+            expect(component.find("input").prop("value")).to.equal("0.1");
         });
     });
 

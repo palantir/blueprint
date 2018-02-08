@@ -9,10 +9,10 @@ right-aligned group. These groups can contain multiple elements, which are laid 
 
 Use the following classes to construct a navbar:
 
-- `nav.pt-navbar` &ndash; The parent element. Use a `<nav>` element for accessibility.
-- `.pt-navbar-group.pt-align-(left|right)` &ndash; Left- or right-aligned group.
-- `.pt-navbar-heading` &ndash; Larger text for your application title.
-- `.pt-navbar-divider` &ndash; Thin vertical line that can be placed between groups of elements.
+* `nav.pt-navbar` &ndash; The parent element. Use a `<nav>` element for accessibility.
+* `.pt-navbar-group.pt-align-(left|right)` &ndash; Left- or right-aligned group.
+* `.pt-navbar-heading` &ndash; Larger text for your application title.
+* `.pt-navbar-divider` &ndash; Thin vertical line that can be placed between groups of elements.
 
 @css pt-navbar
 
@@ -43,7 +43,7 @@ horizontally center it.
 
 @## JavaScript API
 
-The `Navbar` component is available in the __@blueprintjs/core__ package. The
+The `Navbar` component is available in the **@blueprintjs/core** package. The
 package also includes three small helper components: `NavbarGroup`,
 `NavbarHeading`, and `NavbarDivider`. These can be referenced by their aliases
 as well: `Navbar.Group`, `Navbar.Heading`, and `Navbar.Divider`, respectively.
@@ -54,16 +54,11 @@ them supports the full range of HTML props.
 
 ```tsx
 <Navbar>
-    <NavbarGroup>
+    <NavbarGroup align={Alignment.LEFT}>
         <NavbarHeading>Blueprint</NavbarHeading>
-    </NavbarGroup>
-    <NavbarGroup align="right">
-        <Button className="pt-minimal" iconName="home">Home</Button>
-        <Button className="pt-minimal" iconName="document">Files</Button>
         <NavbarDivider />
-        <Button className="pt-minimal" iconName="user"></Button>
-        <Button className="pt-minimal" iconName="notifications"></Button>
-        <Button className="pt-minimal" iconName="cog"></Button>
+        <Button className="pt-minimal" icon="home" text="Home" />
+        <Button className="pt-minimal" icon="document" text="Files" />
     </NavbarGroup>
 </Navbar>
 ```

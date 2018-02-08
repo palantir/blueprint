@@ -7,13 +7,13 @@ Buttons trigger actions when clicked.
 Use the `pt-button` class to access button styles. You should implement buttons using the
 `<button>` or `<a>` tags rather than `<div>` for the purposes of HTML accessibility and semantics.
 
-- Make sure to include `type="button"` on `<button>` tags (use `type="submit"` when used in a
-`<form>`) and `role="button"` on `<a>` tags for accessibility.
-- Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
-focusable by default.
-- For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
-user from focusing them by pressing <kbd class="pt-key">tab</kbd> on the keyboard.
-- Note that `<a>` tags do not respond to the `:disabled` attribute; use `.pt-disabled` instead.
+* Make sure to include `type="button"` on `<button>` tags (use `type="submit"` when used in a
+  `<form>`) and `role="button"` on `<a>` tags for accessibility.
+* Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
+  focusable by default.
+* For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
+  user from focusing them by pressing <kbd class="pt-key">tab</kbd> on the keyboard.
+* Note that `<a>` tags do not respond to the `:disabled` attribute; use `.pt-disabled` instead.
 
 @css pt-button
 
@@ -44,7 +44,7 @@ except for `.pt-fill` (due to lack of visual affordances).
 
 @## JavaScript API
 
-The `Button` and `AnchorButton` components are available in the __@blueprintjs/core__ package.
+The `Button` and `AnchorButton` components are available in the **@blueprintjs/core** package.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 Button components render buttons with Blueprint classes and attributes.
@@ -78,7 +78,7 @@ for an `<AnchorButton>`, you'll overide the default value.
 @### Button
 
 ```jsx
-<Button iconName="refresh" />
+<Button icon="refresh" />
 // renders:
 <button class="pt-button pt-icon-refresh" type="button"></button>
 ```

@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -23,8 +22,11 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     /** Ref handler that receives HTML `<input>` element backing this component. */
     inputRef?: (ref: HTMLInputElement) => any;
 
-    /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
-    leftIconName?: IconName;
+    /**
+     * Name of a Blueprint UI icon (or an icon element) to render on the left side of the input group,
+     * before the user's cursor.
+     */
+    leftIcon?: IconName | JSX.Element;
 
     /** Placeholder text in the absence of any value. */
     placeholder?: string;
@@ -46,9 +48,8 @@ export interface IInputGroupState {
     rightElementWidth?: number;
 }
 
-@PureRender
-export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProps, IInputGroupState> {
-    public static displayName = "Blueprint.InputGroup";
+export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroupProps, IInputGroupState> {
+    public static displayName = "Blueprint2.InputGroup";
 
     public state: IInputGroupState = {
         rightElementWidth: 30,
@@ -60,7 +61,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
     };
 
     public render() {
-        const { className, intent, leftIconName } = this.props;
+        const { className, intent, leftIcon } = this.props;
         const classes = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
@@ -73,7 +74,7 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
 
         return (
             <div className={classes}>
-                <Icon iconName={leftIconName} iconSize="inherit" />
+                <Icon icon={leftIcon} />
                 <input
                     type="text"
                     {...removeNonHTMLProps(this.props)}
@@ -118,5 +119,3 @@ export class InputGroup extends React.Component<HTMLInputProps & IInputGroupProp
         }
     }
 }
-
-export const InputGroupFactory = React.createFactory(InputGroup);

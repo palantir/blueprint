@@ -6,11 +6,12 @@
 
 import * as React from "react";
 
-import { AbstractComponent } from "../../common/abstractComponent";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IOptionProps, IProps } from "../../common/props";
-import { Radio } from "./controls";
+import { isElementOfType } from "../../common/utils";
+import { IRadioProps, Radio } from "./controls";
 
 export interface IRadioGroupProps extends IProps {
     /**
@@ -56,8 +57,8 @@ function nextName() {
     return `${RadioGroup.displayName}-${counter++}`;
 }
 
-export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
-    public static displayName = "Blueprint.RadioGroup";
+export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
+    public static displayName = "Blueprint2.RadioGroup";
 
     // a unique name for this group, which can be overridden by `name` prop.
     private autoGroupName = nextName();
@@ -80,8 +81,8 @@ export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
 
     private renderChildren() {
         return React.Children.map(this.props.children, child => {
-            if (isRadio(child)) {
-                return React.cloneElement(child, this.getRadioProps(child.props));
+            if (isElementOfType(child, Radio)) {
+                return React.cloneElement(child, this.getRadioProps(child.props as IOptionProps));
             } else {
                 return child;
             }
@@ -94,7 +95,7 @@ export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
         ));
     }
 
-    private getRadioProps(optionProps: IOptionProps) {
+    private getRadioProps(optionProps: IOptionProps): IRadioProps {
         const { name } = this.props;
         const { value, disabled } = optionProps;
         return {
@@ -105,8 +106,4 @@ export class RadioGroup extends AbstractComponent<IRadioGroupProps, {}> {
             onChange: this.props.onChange,
         };
     }
-}
-
-function isRadio(child: any): child is JSX.Element {
-    return child != null && (child as JSX.Element).type === Radio;
 }

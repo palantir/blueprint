@@ -35,7 +35,7 @@ describe("Toaster", () => {
             message: "Hello world",
         });
         assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-        assert.isNotNull(document.query(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`));
+        assert.isNotNull(document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`));
     });
 
     it("multiple show()s renders them all", () => {
@@ -45,10 +45,10 @@ describe("Toaster", () => {
         assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
     });
 
-    it("update() updates existing toast", () => {
+    it("show() updates existing toast", () => {
         const key = toaster.show({ message: "one" });
         assert.deepEqual(toaster.getToasts()[0].message, "one");
-        toaster.update(key, { message: "two" });
+        toaster.show({ message: "two" }, key);
         assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
         assert.deepEqual(toaster.getToasts()[0].message, "two");
     });
@@ -77,7 +77,8 @@ describe("Toaster", () => {
             message: "message",
             timeout: 0,
         });
-        const action = document.queryAll(`.${Classes.TOAST} .${Classes.BUTTON}`)[0] as HTMLElement;
+        // action is first descendant button
+        const action = document.querySelector(`.${Classes.TOAST} .${Classes.BUTTON}`) as HTMLElement;
         action.click();
         assert.isTrue(onClick.calledOnce, "expected onClick to be called once");
     });
@@ -89,7 +90,8 @@ describe("Toaster", () => {
             onDismiss: handleDismiss,
             timeout: 0,
         });
-        const dismiss = document.queryAll(`.${Classes.TOAST} .${Classes.BUTTON}`)[0] as HTMLElement;
+        // without action, dismiss is first descendant button
+        const dismiss = document.querySelector(`.${Classes.TOAST} .${Classes.BUTTON}`) as HTMLElement;
         dismiss.click();
         assert.isTrue(handleDismiss.calledOnce);
     });
@@ -119,9 +121,7 @@ describe("Toaster", () => {
         assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
     });
 
-    // this test was flaky, but we should reenable eventually.
-    // see: https://github.com/palantir/blueprint/issues/1680
-    describe.skip("with autoFocus set to true", () => {
+    describe("with autoFocus set to true", () => {
         before(() => {
             testsContainerElement = document.createElement("div");
             document.documentElement.appendChild(testsContainerElement);
@@ -130,10 +130,11 @@ describe("Toaster", () => {
 
         it("focuses on newly created toast", done => {
             toaster.show({ message: "focus on me" });
+            // small explicit timeout reduces flakiness of these tests
             setTimeout(() => {
                 assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);
                 done();
-            });
+            }, 10);
         });
     });
 });

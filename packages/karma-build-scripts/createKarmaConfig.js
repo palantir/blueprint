@@ -4,7 +4,8 @@
 
 const path = require("path");
 const webpack = require("webpack");
-const webpackConfig = require("./webpack.karma.config");
+const coreManifest = require("../core/package.json");
+const webpackBuildScripts = require("@blueprintjs/webpack-build-scripts");
 
 const COVERAGE_PERCENT = 80;
 const COVERAGE_PERCENT_HIGH = 90;
@@ -16,10 +17,12 @@ const KARMA_SERVER_PORT = 9876;
  * @param coverageOverrides { [glob: string]: object }
  */
 module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverageOverrides }) {
+    const packageManifest = require(`${dirname}/package.json`);
+
     return {
         basePath: dirname,
         browserNoActivityTimeout: 100000,
-        browsers: ["PhantomJS"],
+        browsers: ["ChromeHeadless"],
         client: {
             useIframe: false,
         },
@@ -33,9 +36,6 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
                 },
             },
             includeAllSources: true,
-            phantomjsLauncher: {
-                exitOnResourceError: true,
-            },
             reporters: [
                 { type: "html", dir: "coverage" },
                 { type: "lcov" },
@@ -57,10 +57,11 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
                 pattern: path.join(dirname, "resources/**/*"),
                 watched: false,
             },
-            path.join(dirname, "dist/**/*.css"),
+            path.join(dirname, `../core/${coreManifest.style}`),
+            path.join(dirname, packageManifest.style),
             path.join(dirname, "test/index.ts"),
         ],
-        frameworks: ["mocha", "chai", "phantomjs-shim", "sinon"],
+        frameworks: ["mocha", "chai", "sinon"],
         mime: {
             "text/x-typescript": ["ts", "tsx"],
         },
@@ -71,7 +72,13 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
         },
         reporters: ["mocha", "coverage"],
         singleRun: true,
-        webpack: webpackConfig,
+        webpack: Object.assign({}, webpackBuildScripts.karmaConfig, {
+            entry: {
+                testIndex: [
+                    path.resolve(dirname, "test/index.ts"),
+                ],
+            },
+        }),
         webpackMiddleware: {
             noInfo: true,
             stats: {

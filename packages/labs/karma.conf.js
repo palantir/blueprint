@@ -4,6 +4,8 @@
 
 const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
 const path = require("path");
+const coreManifest = require("../core/package.json");
+const packageManifest = require("./package.json");
 
 module.exports = function (config) {
     const baseConfig = createKarmaConfig({
@@ -11,12 +13,9 @@ module.exports = function (config) {
     });
     config.set(baseConfig);
     config.set({
+        // test task should pass; we intentionally have no tests
+        failOnEmptyTestSuite: false,
         // disable coverage reporter
         reporters: ["mocha"],
-        webpack: Object.assign({}, baseConfig.webpack, {
-            entry: {
-                core: path.resolve(__dirname, "test/index.ts"),
-            },
-        }),
-    })
+    });
 };

@@ -33,19 +33,19 @@ export interface IRowHeaderProps extends IHeaderProps, IRowHeights, IRowIndices 
     /**
      * Renders the cell for each row header
      */
-    renderRowHeader?: IRowHeaderRenderer;
+    rowHeaderCellRenderer?: IRowHeaderRenderer;
 }
 
 export class RowHeader extends React.Component<IRowHeaderProps, {}> {
     public static defaultProps = {
-        renderRowHeader: renderDefaultRowHeader,
+        rowHeaderCellRenderer: renderDefaultRowHeader,
     };
 
     public render() {
         const {
             // from IRowHeaderProps
             onRowHeightChanged,
-            renderRowHeader: renderHeaderCell,
+            rowHeaderCellRenderer: renderHeaderCell,
 
             // from IRowHeights
             minRowHeight: minSize,
@@ -70,18 +70,18 @@ export class RowHeader extends React.Component<IRowHeaderProps, {}> {
                 getDragCoordinate={this.getDragCoordinate}
                 getIndexClass={Classes.rowIndexClass}
                 getMouseCoordinate={this.getMouseCoordinate}
+                ghostCellRenderer={this.renderGhostCell}
                 handleResizeEnd={this.handleResizeEnd}
                 handleSizeChanged={this.handleSizeChanged}
-                headerCellIsReorderablePropName={"isRowReorderable"}
+                headerCellIsReorderablePropName={"enableRowReordering"}
                 headerCellIsSelectedPropName={"isRowSelected"}
+                headerCellRenderer={renderHeaderCell}
                 indexEnd={indexEnd}
                 indexStart={indexStart}
                 isCellSelected={this.isCellSelected}
                 isGhostIndex={this.isGhostIndex}
                 maxSize={maxSize}
                 minSize={minSize}
-                renderGhostCell={this.renderGhostCell}
-                renderHeaderCell={renderHeaderCell}
                 resizeOrientation={Orientation.HORIZONTAL}
                 selectedRegions={[]}
                 toRegion={this.toRegion}

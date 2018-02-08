@@ -9,17 +9,17 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { InputGroup } from "../../src/index";
+import { Icon, InputGroup } from "../../src/index";
 
 describe("<InputGroup>", () => {
     it("renders left icon before input", () => {
-        const input = mount(<InputGroup leftIconName="star" />);
-        assert.isTrue(input.childAt(0).hasClass("pt-icon-star"));
+        const input = mount(<InputGroup leftIcon="star" />).children();
+        assert.isTrue(input.childAt(0).is(Icon));
         assert.isTrue(input.childAt(1).hasClass("pt-input"));
     });
 
     it("supports custom style", () => {
-        const input = mount(<InputGroup leftIconName="star" style={{ background: "yellow" }} />);
+        const input = mount(<InputGroup leftIcon="star" style={{ background: "yellow" }} />);
         const inputElement = input
             .find("input")
             .first()
@@ -28,7 +28,9 @@ describe("<InputGroup>", () => {
     });
 
     it("renders right element inside .pt-input-action after input", () => {
-        const action = mount(<InputGroup rightElement={<address />} />).childAt(2);
+        const action = mount(<InputGroup rightElement={<address />} />)
+            .children()
+            .childAt(2);
         assert.isTrue(action.hasClass("pt-input-action"));
         assert.lengthOf(action.find("address"), 1);
     });

@@ -16,7 +16,7 @@ export interface IMenuProps extends IProps {
 }
 
 export class Menu extends React.Component<IMenuProps, {}> {
-    public static displayName = "Blueprint.Menu";
+    public static displayName = "Blueprint2.Menu";
 
     public render() {
         return (
@@ -26,5 +26,3 @@ export class Menu extends React.Component<IMenuProps, {}> {
         );
     }
 }
-
-export const MenuFactory = React.createFactory(Menu);

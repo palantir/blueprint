@@ -4,23 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
-import * as classNames from "classnames";
-import * as React from "react";
-
-/**
- * Re-declare matching types from the classnames library;
- */
-export type ClassValue = string | number | ClassDictionary | ClassArray;
-
-// tslint:disable interface-name no-empty-interface
-export interface ClassDictionary {
-    [id: string]: boolean;
-}
-
-export interface ClassArray extends Array<ClassValue> {}
-// tslint:enable
-
 const CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT = "bp-table-text-no-measure";
 
 /**
@@ -40,21 +23,13 @@ export interface IKeyBlacklist<T> {
 
 export const Utils = {
     /**
-     * Returns a clone of the ReactElement with a className that includes the
-     * element's original className and any other classes passed in with variadic
-     * arguments matching the `classNames` api.
-     */
-    assignClasses<P extends IProps>(elem: React.ReactElement<P>, ...extendedClasses: ClassValue[]): React.ReactNode {
-        const classes = classNames(elem.props.className, ...extendedClasses);
-        const props: IProps = { className: classes };
-        return React.cloneElement(elem, props);
-    },
-
-    /**
      * Invokes the callback `n` times, collecting the results in an array, which
      * is the return value. Similar to _.times
      */
     times<T>(n: number, callback: (i: number) => T): T[] {
+        if (n < 0) {
+            throw new Error("[Blueprint] times() cannot be called with negative numbers.");
+        }
         const result: T[] = Array(n);
         for (let index = 0; index < n; index++) {
             result[index] = callback(index);
@@ -334,58 +309,6 @@ export const Utils = {
      */
     isLeftClick(event: MouseEvent): boolean {
         return event.button === 0;
-    },
-
-    // these functions used to live here but now live in core. since these Utils
-    // are in the public API, we provide facades here - complete with function
-    // descriptions - so as to make the refactor invisible externally.
-
-    /**
-     * Returns true if the arrays are equal. Elements will be shallowly compared
-     * by default, or they will be compared using the custom `compare` function
-     * if one is provided.
-     * @deprecated since @blueprintjs/table 1.26.0; import this function from
-     * core Utils instead.
-     */
-    arraysEqual: CoreUtils.arraysEqual,
-
-    /**
-     * Deep comparison between objects. If `keys` is provided, just that subset
-     * of keys will be compared; otherwise, all keys will be compared.
-     * @deprecated since @blueprintjs/table 1.26.0; import this function from
-     * core Utils instead.
-     */
-    deepCompareKeys: CoreUtils.deepCompareKeys,
-
-    /**
-     * Returns a descriptive object for each key whose values are deeply unequal
-     * between two provided objects. Useful for debugging shouldComponentUpdate.
-     * @deprecated since @blueprintjs/table 1.26.0; import this function from
-     * core Utils instead.
-     */
-    getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
-        return CoreUtils.getDeepUnequalKeyValues(objA, objB, keys);
-    },
-
-    /**
-     * Returns a descriptive object for each key whose values are shallowly
-     * unequal between two provided objects. Useful for debugging
-     * shouldComponentUpdate.
-     * @deprecated since @blueprintjs/table 1.26.0; import this function from
-     * core Utils instead.
-     */
-    getShallowUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-        return CoreUtils.getShallowUnequalKeyValues(objA, objB, keys);
-    },
-
-    /**
-     * Shallow comparison between objects. If `keys` is provided, just that
-     * subset of keys will be compared; otherwise, all keys will be compared.
-     * @deprecated since @blueprintjs/table 1.26.0; import this function from
-     * core Utils instead.
-     */
-    shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-        return CoreUtils.shallowCompareKeys(objA, objB, keys);
     },
 
     getApproxCellHeight(

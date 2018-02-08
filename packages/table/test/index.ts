@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "../src";
+import "@blueprintjs/test-commons/bootstrap";
 
 import "./batcherTests.tsx";
 import "./cellTests.tsx";
@@ -27,7 +27,6 @@ import "./rectTests.ts";
 import "./regionsTests.ts";
 import "./reorderableTests.tsx";
 import "./resizableTests.tsx";
-import "./roundSizeTests.tsx";
 import "./selectableTests.tsx";
 import "./selectionTests.tsx";
 import "./tableBodyTests.tsx";

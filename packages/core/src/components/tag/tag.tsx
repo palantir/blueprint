@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import { Utils } from "../../common";
@@ -28,9 +27,8 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
 }
 
-@PureRender
-export class Tag extends React.Component<ITagProps, {}> {
-    public static displayName = "Blueprint.Tag";
+export class Tag extends React.PureComponent<ITagProps, {}> {
+    public static displayName = "Blueprint2.Tag";
 
     public render() {
         const { active, className, intent, onRemove } = this.props;
@@ -61,5 +59,3 @@ export class Tag extends React.Component<ITagProps, {}> {
         Utils.safeInvoke(this.props.onRemove, e, this.props);
     };
 }
-
-export const TagFactory = React.createFactory(Tag);

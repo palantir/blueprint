@@ -24,14 +24,14 @@ describe("<DateInput>", () => {
         assert.doesNotThrow(() => mount(<DateInput value={"1988-08-07 11:01:12" as any} />));
     });
 
-    it("passes custom classNames to popover target", () => {
+    it("passes custom classNames to popover wrapper", () => {
         const CLASS_1 = "foo";
         const CLASS_2 = "bar";
 
         const wrapper = mount(<DateInput className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
         wrapper.setState({ isOpen: true });
 
-        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`);
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
         assert.isTrue(popoverTarget.hasClass(CLASS_1));
         assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
@@ -46,15 +46,9 @@ describe("<DateInput>", () => {
     });
 
     it("Popover opens on input focus", () => {
-        const wrapper = mount(<DateInput openOnFocus={true} />);
+        const wrapper = mount(<DateInput />);
         wrapper.find("input").simulate("focus");
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
-    });
-
-    it("Popover does not open on input focus if openOnFocus=false", () => {
-        const wrapper = mount(<DateInput openOnFocus={false} />);
-        wrapper.find("input").simulate("focus");
-        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("Popover doesn't open if disabled=true", () => {
@@ -128,7 +122,7 @@ describe("<DateInput>", () => {
         const wrapper = mount(
             <DateInput
                 disabled={false}
-                inputProps={{ disabled: true, inputRef, leftIconName: "star", onFocus, required: true, value: "fail" }}
+                inputProps={{ disabled: true, inputRef, leftIcon: "star", onFocus, required: true, value: "fail" }}
             />,
         );
         wrapper.find("input").simulate("focus");
@@ -136,7 +130,7 @@ describe("<DateInput>", () => {
         const input = wrapper.find(InputGroup);
         assert.isFalse(input.prop("disabled"), "disabled comes from DateInput props");
         assert.notStrictEqual(input.prop("value"), "fail", "value cannot be changed");
-        assert.strictEqual(input.prop("leftIconName"), "star");
+        assert.strictEqual(input.prop("leftIcon"), "star");
         assert.isTrue(input.prop("required"));
         assert.isTrue(inputRef.calledOnce, "inputRef not invoked");
         assert.isTrue(onFocus.calledOnce, "onFocus not invoked");
@@ -149,9 +143,9 @@ describe("<DateInput>", () => {
                 popoverProps={{
                     autoFocus: true,
                     content: "fail",
-                    inline: true,
                     popoverWillOpen,
                     position: Position.TOP,
+                    usePortal: false,
                 }}
             />,
         );
@@ -160,8 +154,8 @@ describe("<DateInput>", () => {
         const popover = wrapper.find(Popover);
         assert.strictEqual(popover.prop("autoFocus"), false, "autoFocus cannot be changed");
         assert.notStrictEqual(popover.prop("content"), "fail", "content cannot be changed");
-        assert.strictEqual(popover.prop("inline"), true);
         assert.strictEqual(popover.prop("position"), Position.TOP);
+        assert.strictEqual(popover.prop("usePortal"), false);
         assert.isTrue(popoverWillOpen.calledOnce);
     });
 

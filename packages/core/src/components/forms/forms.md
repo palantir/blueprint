@@ -18,6 +18,6 @@ provides, you'll overide the default value.
 @page input
 @page input-group
 @page control-group
-@page select
-@page file-upload
+@page select-forms
+@page file-input
 @page numeric-input

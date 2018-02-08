@@ -5,13 +5,14 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { EnzymePropSelector, mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import { spy } from "sinon";
+import { spy, stub } from "sinon";
 
+import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../src/common/errors";
 import { IOptionProps, Radio, RadioGroup } from "../../src/index";
 
-describe("RadioGroup", () => {
+describe("<RadioGroup>", () => {
     const emptyHandler = () => {
         return;
     };
@@ -33,7 +34,7 @@ describe("RadioGroup", () => {
                 <Radio value="two" label="Two" />
             </RadioGroup>,
         );
-        assert.isTrue(group.find({ checked: true }).is({ value: "two" }));
+        assert.isTrue(findInput(group, { checked: true }).is({ value: "two" }));
     });
 
     it("invokes onChange handler when a radio is clicked", () => {
@@ -44,9 +45,9 @@ describe("RadioGroup", () => {
                 <Radio value="two" label="Two" />
             </RadioGroup>,
         );
-        group.find({ value: "one" }).simulate("change");
-        group.find({ value: "two" }).simulate("change");
-        assert.isTrue(changeSpy.calledTwice);
+        findInput(group, { value: "one" }).simulate("change");
+        findInput(group, { value: "two" }).simulate("change");
+        assert.equal(changeSpy.callCount, 2);
     });
 
     it("renders options as radio buttons", () => {
@@ -57,17 +58,20 @@ describe("RadioGroup", () => {
         ];
         const group = mount(<RadioGroup onChange={emptyHandler} options={OPTIONS} selectedValue="b" />);
         assert.lengthOf(group.find(Radio), 3);
-        assert.isTrue(group.find({ checked: true }).is({ value: "b" }), "radio b not checked");
-        assert.isTrue(group.find({ value: "c" }).prop("disabled"), "radio c not disabled");
+        assert.isTrue(findInput(group, { checked: true }).is({ value: "b" }), "radio b not checked");
+        assert.isTrue(findInput(group, { value: "c" }).prop("disabled"), "radio c not disabled");
     });
 
-    it("uses options if given both options and children", () => {
+    it("uses options if given both options and children (with conosle warning)", () => {
+        const warnSpy = stub(console, "warn");
         const group = mount(
             <RadioGroup onChange={emptyHandler} options={[]}>
                 <Radio value="one" />
             </RadioGroup>,
         );
         assert.lengthOf(group.find(Radio), 0);
+        assert.isTrue(warnSpy.alwaysCalledWith(RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX));
+        warnSpy.restore();
     });
 
     it("renders non-Radio children too", () => {
@@ -81,4 +85,8 @@ describe("RadioGroup", () => {
         assert.lengthOf(group.find("address"), 1);
         assert.lengthOf(group.find(Radio), 2);
     });
+
+    function findInput(wrapper: ReactWrapper<any, any>, props: EnzymePropSelector) {
+        return wrapper.find("input").filter(props);
+    }
 });

@@ -5,12 +5,11 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface ILabelProps extends React.AllHTMLAttributes<HTMLDivElement>, IProps {
+export interface ILabelProps extends React.AllHTMLAttributes<HTMLLabelElement>, IProps {
     /**
      * Whether the label is non-interactive.
      * Be sure to explicitly disable any child controls as well.
@@ -26,9 +25,8 @@ export interface ILabelProps extends React.AllHTMLAttributes<HTMLDivElement>, IP
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@PureRender
-export class Label extends React.Component<ILabelProps, {}> {
-    public static displayName = "Blueprint.Label";
+export class Label extends React.PureComponent<ILabelProps, {}> {
+    public static displayName = "Blueprint2.Label";
 
     public render() {
         const { children, className, disabled, helperText, text, ...htmlProps } = this.props;
@@ -42,13 +40,11 @@ export class Label extends React.Component<ILabelProps, {}> {
         );
 
         return (
-            <div {...htmlProps} className={rootClasses}>
+            <label {...htmlProps} className={rootClasses}>
                 {text}
                 <span className={classNames(Classes.TEXT_MUTED)}>{helperText}</span>
                 {children}
-            </div>
+            </label>
         );
     }
 }
-
-export const LabelFactory = React.createFactory(Label);

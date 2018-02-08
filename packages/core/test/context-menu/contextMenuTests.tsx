@@ -4,6 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// tslint:disable max-classes-per-file
+
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -12,15 +14,32 @@ import { spy } from "sinon";
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuItem } from "../../src/index";
 
 const MENU_ITEMS = [
-    <MenuItem key="left" iconName="align-left" text="Align Left" />,
-    <MenuItem key="center" iconName="align-center" text="Align Center" />,
-    <MenuItem key="right" iconName="align-right" text="Align Right" />,
+    <MenuItem key="left" icon="align-left" text="Align Left" />,
+    <MenuItem key="center" icon="align-center" text="Align Center" />,
+    <MenuItem key="right" icon="align-right" text="Align Right" />,
 ];
 const MENU = <Menu>{MENU_ITEMS}</Menu>;
 
 describe("ContextMenu", () => {
     before(() => assert.isNull(getPopover()));
     afterEach(() => ContextMenu.hide());
+
+    it("Decorator does not mutate the original class", () => {
+        class TestComponent extends React.Component<{}, {}> {
+            public render() {
+                return <div />;
+            }
+
+            public renderContextMenu() {
+                return MENU;
+            }
+        }
+
+        const TargettedTestComponent = ContextMenuTarget(TestComponent);
+
+        // it's not the same Component
+        assert.notStrictEqual(TargettedTestComponent, TestComponent);
+    });
 
     it("React renders ContextMenu", () => {
         ContextMenu.show(MENU, { left: 0, top: 0 });
@@ -76,16 +95,16 @@ describe("ContextMenu", () => {
 });
 
 function getPopover() {
-    return document.query(`.${Classes.POPOVER}.${Classes.MINIMAL}`);
+    return document.querySelector(`.${Classes.POPOVER}.${Classes.MINIMAL}`);
 }
 
 function assertContextMenuWasRendered(expectedLength = MENU_ITEMS.length) {
-    const menu = document.query(`.${Classes.CONTEXT_MENU}`);
+    const menu = document.querySelector(`.${Classes.CONTEXT_MENU}`);
     assert.isNotNull(menu);
     // popover is rendered in a Portal
     const popover = getPopover();
     assert.isNotNull(popover);
-    const menuItems = popover.queryAll(`.${Classes.MENU_ITEM}`);
+    const menuItems = popover.querySelectorAll(`.${Classes.MENU_ITEM}`);
     assert.lengthOf(menuItems, expectedLength);
 }
 

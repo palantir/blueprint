@@ -7,7 +7,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent, NumericInput, Position, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -85,7 +85,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
 
     private handleMaxValueChange = handleNumberChange(maxValueIndex => this.setState({ maxValueIndex }));
     private handleMinValueChange = handleNumberChange(minValueIndex => this.setState({ minValueIndex }));
-    private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
 
     private handleButtonPositionChange = handleNumberChange(buttonPositionIndex => {
         this.setState({ buttonPositionIndex });
@@ -160,7 +160,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                 max={MAX_VALUES[this.state.maxValueIndex].value}
                 disabled={this.state.showDisabled}
                 readOnly={this.state.showReadOnly}
-                leftIconName={this.state.showLeftIcon ? "dollar" : null}
+                leftIcon={this.state.showLeftIcon ? "dollar" : null}
                 placeholder="Enter a number..."
                 selectAllOnFocus={this.state.selectAllOnFocus}
                 selectAllOnIncrement={this.state.selectAllOnIncrement}

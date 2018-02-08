@@ -4,10 +4,12 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractComponent, Button, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, IProps, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import ReactDayPicker from "react-day-picker";
+import { DayModifiers } from "react-day-picker/types/common";
+import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/props";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -31,7 +33,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
      * `initialMonth`), `toMonth` (use `maxDate`).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerProps?: DayPickerProps;
 
     /**
      * Initial day the calendar will display as selected.
@@ -67,7 +69,7 @@ export interface IDatePickerState {
     value?: Date;
 }
 
-export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerState> {
+export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePickerState> {
     public static defaultProps: IDatePickerProps = {
         canClearSelection: true,
         dayPickerProps: {},
@@ -77,7 +79,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         showActionsBar: false,
     };
 
-    public static displayName = "Blueprint.DatePicker";
+    public static displayName = "Blueprint2.DatePicker";
 
     private ignoreNextMonthChange = false;
 
@@ -132,7 +134,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
                 <ReactDayPicker
-                    enableOutsideDays={true}
+                    showOutsideDays={true}
                     locale={locale}
                     localeUtils={localeUtils}
                     modifiers={modifiers}
@@ -198,7 +200,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         return Array.isArray(disabledDays) ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
 
-    private renderCaption = (props: ReactDayPicker.CaptionElementProps) => (
+    private renderCaption = (props: CaptionElementProps) => (
         <DatePickerCaption
             {...props}
             maxDate={this.props.maxDate}
@@ -226,11 +228,7 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         );
     }
 
-    private handleDayClick = (
-        day: Date,
-        modifiers: ReactDayPicker.DayModifiers,
-        e: React.MouseEvent<HTMLDivElement>,
-    ) => {
+    private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
 
         let newValue = day;
@@ -374,5 +372,3 @@ export class DatePicker extends AbstractComponent<IDatePickerProps, IDatePickerS
         Utils.safeInvoke(this.props.onChange, value, true);
     };
 }
-
-export const DatePickerFactory = React.createFactory(DatePicker);

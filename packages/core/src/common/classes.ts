@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
 // modifiers
@@ -42,8 +43,11 @@ export const BREADCRUMBS_COLLAPSED = "pt-breadcrumbs-collapsed";
 
 export const BUTTON = "pt-button";
 export const BUTTON_GROUP = "pt-button-group";
+export const BUTTON_SPINNER = "pt-button-spinner";
+export const BUTTON_TEXT = "pt-button-text";
 
 export const CALLOUT = "pt-callout";
+export const CALLOUT_ICON = "pt-callout-icon";
 
 export const CARD = "pt-card";
 
@@ -74,13 +78,20 @@ export const ELEVATION_2 = "pt-elevation-2";
 export const ELEVATION_3 = "pt-elevation-3";
 export const ELEVATION_4 = "pt-elevation-4";
 
+export const HTML_TABLE = "pt-html-table";
+export const HTML_TABLE_STRIPED = "pt-html-table-striped";
+export const HTML_TABLE_BORDERED = "pt-html-table-bordered";
+
 export const INPUT = "pt-input";
 export const INPUT_GROUP = "pt-input-group";
+
 export const CHECKBOX = "pt-checkbox";
 export const RADIO = "pt-radio";
 export const SWITCH = "pt-switch";
-export const FILE_UPLOAD = "pt-file-upload";
+export const FILE_INPUT = "pt-file-input";
 export const FILE_UPLOAD_INPUT = "pt-file-upload-input";
+
+export const INPUT_GHOST = "pt-input-ghost";
 
 export const INTENT_PRIMARY = "pt-intent-primary";
 export const INTENT_SUCCESS = "pt-intent-success";
@@ -128,6 +139,7 @@ export const POPOVER_DISMISS = "pt-popover-dismiss";
 export const POPOVER_DISMISS_OVERRIDE = "pt-popover-dismiss-override";
 export const POPOVER_OPEN = "pt-popover-open";
 export const POPOVER_TARGET = "pt-popover-target";
+export const POPOVER_WRAPPER = "pt-popover-wrapper";
 export const TRANSITION_CONTAINER = "pt-transition-container";
 
 export const PROGRESS_BAR = "pt-progress-bar";
@@ -154,14 +166,13 @@ export const TAB_LIST = "pt-tab-list";
 export const TAB_PANEL = "pt-tab-panel";
 export const TABS = "pt-tabs";
 
-export const TABLE = "pt-table";
-export const TABLE_CONDENSED = "pt-condensed";
-export const TABLE_STRIPED = "pt-striped";
-export const TABLE_BORDERED = "pt-bordered";
-
 export const TAG = "pt-tag";
 export const TAG_REMOVABLE = "pt-tag-removable";
 export const TAG_REMOVE = "pt-tag-remove";
+
+export const TAG_INPUT = "pt-tag-input";
+export const TAG_INPUT_ICON = "pt-tag-input-icon";
+export const TAG_INPUT_VALUES = "pt-tag-input-values";
 
 export const TOAST = "pt-toast";
 export const TOAST_CONTAINER = "pt-toast-container";
@@ -188,6 +199,18 @@ export const ICON = "pt-icon";
 export const ICON_STANDARD = "pt-icon-standard";
 export const ICON_LARGE = "pt-icon-large";
 
+/** Return CSS class for alignment. */
+export function alignmentClass(alignment: Alignment) {
+    switch (alignment) {
+        case Alignment.LEFT:
+            return ALIGN_LEFT;
+        case Alignment.RIGHT:
+            return ALIGN_RIGHT;
+        default:
+            return undefined;
+    }
+}
+
 /** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
 export function iconClass(iconName?: string) {
     if (iconName == null) {
@@ -196,9 +219,10 @@ export function iconClass(iconName?: string) {
     return iconName.indexOf("pt-icon-") === 0 ? iconName : `pt-icon-${iconName}`;
 }
 
+/** Return CSS class for intent. */
 export function intentClass(intent = Intent.NONE) {
-    if (intent === Intent.NONE || Intent[intent] == null) {
+    if (intent == null || intent === Intent.NONE) {
         return undefined;
     }
-    return `pt-intent-${Intent[intent].toLowerCase()}`;
+    return `pt-intent-${intent.toLowerCase()}`;
 }

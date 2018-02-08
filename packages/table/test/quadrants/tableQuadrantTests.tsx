@@ -29,14 +29,14 @@ describe("TableQuadrant", () => {
     const COLUMN_WIDTHS = Array(NUM_COLUMNS).fill(COLUMN_WIDTH);
 
     let grid: Grid;
-    const renderBody = sinon.spy();
+    const bodyRenderer = sinon.spy();
 
     beforeEach(() => {
         grid = new Grid(ROW_HEIGHTS, COLUMN_WIDTHS);
     });
 
     afterEach(() => {
-        renderBody.reset();
+        bodyRenderer.resetHistory();
     });
 
     describe("Event callbacks", () => {
@@ -55,7 +55,7 @@ describe("TableQuadrant", () => {
         });
 
         it("prints a console warning if onScroll is provided when quadrantType != MAIN", () => {
-            const consoleWarn = sinon.spy(console, "warn");
+            const consoleWarn = sinon.stub(console, "warn");
             mountTableQuadrant({ onScroll: sinon.spy(), quadrantType: QuadrantType.LEFT });
             expect(consoleWarn.calledOnce);
             expect(consoleWarn.firstCall.args[0]).to.equal(Errors.QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED);
@@ -100,9 +100,9 @@ describe("TableQuadrant", () => {
 
     /**
      * <TableQuadrant> knows which portions of the body should be rendered based on the quadrantType,
-     * and it passes those opinions to the renderBody() callback via flags.
+     * and it passes those opinions to the bodyRenderer() callback via flags.
      */
-    describe("renderBody", () => {
+    describe("bodyRenderer", () => {
         it("invokes with proper params for QuarantType.MAIN", () => {
             runTest(QuadrantType.MAIN, [QuadrantType.MAIN, false, false]);
         });
@@ -125,8 +125,8 @@ describe("TableQuadrant", () => {
 
         function runTest(quadrantType: QuadrantType, expectedArgs: any[]) {
             mountTableQuadrant({ quadrantType });
-            expect(renderBody.calledOnce).to.be.true;
-            expect(renderBody.firstCall.args).to.deep.equal(expectedArgs);
+            expect(bodyRenderer.calledOnce).to.be.true;
+            expect(bodyRenderer.firstCall.args).to.deep.equal(expectedArgs);
         }
     });
 
@@ -134,22 +134,22 @@ describe("TableQuadrant", () => {
         describe("Menu", () => {
             const MENU_CLASS = "foo";
 
-            it("renders menu if renderMenu provided", () => {
-                const renderMenu = sinon.stub().returns(<div className={MENU_CLASS} />);
-                const component = mountTableQuadrant({ renderMenu });
-                expect(renderMenu.called).to.be.true;
+            it("renders menu if menuRenderer provided", () => {
+                const menuRenderer = sinon.stub().returns(<div className={MENU_CLASS} />);
+                const component = mountTableQuadrant({ menuRenderer });
+                expect(menuRenderer.called).to.be.true;
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${MENU_CLASS}`).length).to.equal(1);
             });
 
-            it("does not render menu if renderMenu not provided", () => {
+            it("does not render menu if menuRenderer not provided", () => {
                 const component = mountTableQuadrant();
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
             });
 
-            it("does not render menu if isRowHeaderShown=false", () => {
-                const renderMenu = sinon.stub().returns(<div className={MENU_CLASS} />);
-                const component = mountTableQuadrant({ isRowHeaderShown: false, renderMenu });
-                expect(renderMenu.called).to.be.false;
+            it("does not render menu if enableRowHeader=false", () => {
+                const menuRenderer = sinon.stub().returns(<div className={MENU_CLASS} />);
+                const component = mountTableQuadrant({ enableRowHeader: false, menuRenderer });
+                expect(menuRenderer.called).to.be.false;
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
             });
         });
@@ -157,23 +157,23 @@ describe("TableQuadrant", () => {
         describe("Row header", () => {
             const ROW_HEADER_CLASS = "foo";
 
-            it("renders row header if renderRowHeader provided", () => {
-                const renderRowHeader = sinon.stub().returns(<div className={ROW_HEADER_CLASS} />);
-                const component = mountTableQuadrant({ renderRowHeader });
-                expect(renderRowHeader.called).to.be.true;
+            it("renders row header if rowHeaderCellRenderer provided", () => {
+                const rowHeaderCellRenderer = sinon.stub().returns(<div className={ROW_HEADER_CLASS} />);
+                const component = mountTableQuadrant({ rowHeaderCellRenderer });
+                expect(rowHeaderCellRenderer.called).to.be.true;
                 expect(component.find(`.${Classes.TABLE_BOTTOM_CONTAINER} > .${ROW_HEADER_CLASS}`).length).to.equal(1);
             });
 
-            it("does not render row header if renderRowHeader not provided", () => {
+            it("does not render row header if rowHeaderCellRenderer not provided", () => {
                 const component = mountTableQuadrant();
                 // just the body should exist
                 expect(component.find(`.${Classes.TABLE_BOTTOM_CONTAINER}`).children().length).to.equal(1);
             });
 
-            it("does not render row header if isRowHeaderShown=false", () => {
-                const renderRowHeader = sinon.stub().returns(<div className={ROW_HEADER_CLASS} />);
-                const component = mountTableQuadrant({ isRowHeaderShown: false, renderRowHeader });
-                expect(renderRowHeader.called).to.be.false;
+            it("does not render row header if enableRowHeader=false", () => {
+                const rowHeaderCellRenderer = sinon.stub().returns(<div className={ROW_HEADER_CLASS} />);
+                const component = mountTableQuadrant({ enableRowHeader: false, rowHeaderCellRenderer });
+                expect(rowHeaderCellRenderer.called).to.be.false;
                 expect(component.find(`.${Classes.TABLE_BOTTOM_CONTAINER}`).children().length).to.equal(1);
             });
         });
@@ -181,22 +181,22 @@ describe("TableQuadrant", () => {
         describe("Column header", () => {
             const COLUMN_HEADER_CLASS = "foo";
 
-            it("renders column header if renderColumnHeader provided", () => {
-                const renderColumnHeader = sinon.stub().returns(<div className={COLUMN_HEADER_CLASS} />);
-                const component = mountTableQuadrant({ renderColumnHeader });
-                expect(renderColumnHeader.called).to.be.true;
+            it("renders column header if columnHeaderCellRenderer provided", () => {
+                const columnHeaderCellRenderer = sinon.stub().returns(<div className={COLUMN_HEADER_CLASS} />);
+                const component = mountTableQuadrant({ columnHeaderCellRenderer });
+                expect(columnHeaderCellRenderer.called).to.be.true;
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${COLUMN_HEADER_CLASS}`).length).to.equal(1);
             });
 
-            it("does not render column header if renderColumnHeader not provided", () => {
+            it("does not render column header if columnHeaderCellRenderer not provided", () => {
                 const component = mountTableQuadrant();
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
             });
 
-            it("still renders column header if isRowHeaderShown=false", () => {
-                const renderColumnHeader = sinon.stub().returns(<div className={COLUMN_HEADER_CLASS} />);
-                const component = mountTableQuadrant({ isRowHeaderShown: false, renderColumnHeader });
-                expect(renderColumnHeader.called).to.be.true;
+            it("still renders column header if enableRowHeader=false", () => {
+                const columnHeaderCellRenderer = sinon.stub().returns(<div className={COLUMN_HEADER_CLASS} />);
+                const component = mountTableQuadrant({ enableRowHeader: false, columnHeaderCellRenderer });
+                expect(columnHeaderCellRenderer.called).to.be.true;
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${COLUMN_HEADER_CLASS}`).length).to.equal(1);
             });
         });
@@ -244,6 +244,6 @@ describe("TableQuadrant", () => {
     }
 
     function mountTableQuadrant(props: Partial<ITableQuadrantProps> & object = {}) {
-        return mount(<TableQuadrant grid={grid} renderBody={renderBody} {...props} />);
+        return mount(<TableQuadrant grid={grid} bodyRenderer={bodyRenderer} {...props} />);
     }
 });

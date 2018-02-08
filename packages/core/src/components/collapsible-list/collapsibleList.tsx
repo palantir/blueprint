@@ -11,6 +11,7 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
+import { isElementOfType } from "../../common/utils";
 import { Menu } from "../menu/menu";
 import { IMenuItemProps, MenuItem } from "../menu/menuItem";
 import { IPopoverProps, Popover } from "../popover/popover";
@@ -18,8 +19,8 @@ import { IPopoverProps, Popover } from "../popover/popover";
 type CollapsibleItem = React.ReactElement<IMenuItemProps>;
 
 export enum CollapseFrom {
-    START,
-    END,
+    START = "start",
+    END = "end",
 }
 
 export interface ICollapsibleListProps extends IProps {
@@ -37,7 +38,7 @@ export interface ICollapsibleListProps extends IProps {
      * Callback invoked to render each visible item. The item will be wrapped in an `li` with
      * the optional `visibleItemClassName` prop.
      */
-    renderVisibleItem: (props: IMenuItemProps, index: number) => JSX.Element;
+    visibleItemRenderer: (props: IMenuItemProps, index: number) => JSX.Element;
 
     /**
      * Which direction the items should collapse from: start or end of the children.
@@ -58,13 +59,13 @@ export interface ICollapsibleListProps extends IProps {
 }
 
 export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> {
-    public static displayName = "Blueprint.CollapsibleList";
+    public static displayName = "Blueprint2.CollapsibleList";
 
     public static defaultProps: ICollapsibleListProps = {
         collapseFrom: CollapseFrom.START,
         dropdownTarget: null,
-        renderVisibleItem: null,
         visibleItemCount: 3,
+        visibleItemRenderer: null,
     };
 
     public render() {
@@ -76,7 +77,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
             const absoluteIndex = collapseFrom === CollapseFrom.START ? childrenLength - 1 - index : index;
             return (
                 <li className={this.props.visibleItemClassName} key={absoluteIndex}>
-                    {this.props.renderVisibleItem(child.props, absoluteIndex)}
+                    {this.props.visibleItemRenderer(child.props, absoluteIndex)}
                 </li>
             );
         });
@@ -117,10 +118,10 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
             return [[], []];
         }
         const childrenArray = React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
-            if (child.type !== MenuItem) {
+            if (!isElementOfType(child, MenuItem)) {
                 throw new Error(Errors.COLLAPSIBLE_LIST_INVALID_CHILD);
             }
-            return React.cloneElement(child, { key: `visible-${index}` });
+            return React.cloneElement(child as JSX.Element, { key: `visible-${index}` });
         });
         if (this.props.collapseFrom === CollapseFrom.START) {
             // reverse START list so we can always slice visible items from the front of the list
@@ -130,5 +131,3 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
         return [childrenArray.slice(0, visibleItemCount), childrenArray.slice(visibleItemCount)];
     }
 }
-
-export const CollapsibleListFactory = React.createFactory(CollapsibleList);

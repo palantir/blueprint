@@ -204,15 +204,6 @@ export const parseKeyCombo = (combo: string): IKeyCombo => {
 };
 
 /**
- * PhantomJS's webkit totally messes up keyboard events, so we have do this
- * fancy little dance with the event data to determine which key was pressed
- * for unit tests.
- */
-const normalizeKeyCode = (e: KeyboardEvent) => {
-    return e.which === 0 && e.key != null ? e.key.charCodeAt(0) : e.which;
-};
-
-/**
  * Converts a keyboard event into a valid combo prop string
  */
 export const getKeyComboString = (e: KeyboardEvent): string => {
@@ -232,7 +223,7 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
         keys.push("meta");
     }
 
-    const which = normalizeKeyCode(e);
+    const { which } = e;
     if (Modifiers[which] != null) {
         // no action key
     } else if (KeyCodes[which] != null) {
@@ -253,7 +244,7 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
  */
 export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
     let key = null as string;
-    const which = normalizeKeyCode(e);
+    const { which } = e;
     if (Modifiers[which] != null) {
         // keep key null
     } else if (KeyCodes[which] != null) {

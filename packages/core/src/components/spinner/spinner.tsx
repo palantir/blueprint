@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -29,9 +28,8 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     value?: number;
 }
 
-@PureRender
-export class Spinner extends React.Component<ISpinnerProps, {}> {
-    public static displayName = "Blueprint.Spinner";
+export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
+    public static displayName = "Blueprint2.Spinner";
 
     public render() {
         const { className, intent, value } = this.props;
@@ -77,5 +75,3 @@ export class Spinner extends React.Component<ISpinnerProps, {}> {
         );
     }
 }
-
-export const SpinnerFactory = React.createFactory(Spinner);

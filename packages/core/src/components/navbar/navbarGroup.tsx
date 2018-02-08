@@ -5,41 +5,34 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
+import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 export interface INavbarGroupProps extends React.HTMLProps<HTMLDivElement>, IProps {
     /**
      * The side of the navbar on which the group should appear.
-     * @default "left"
+     * The `Alignment` enum provides constants for these values.
+     * @default Alignment.LEFT
      */
-    align?: "left" | "right";
+    align?: Alignment;
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@PureRender
-export class NavbarGroup extends React.Component<INavbarGroupProps, {}> {
-    public static displayName = "Blueprint.NavbarGroup";
+export class NavbarGroup extends React.PureComponent<INavbarGroupProps, {}> {
+    public static displayName = "Blueprint2.NavbarGroup";
 
     public static defaultProps: INavbarGroupProps = {
-        align: "left",
+        align: Alignment.LEFT,
     };
 
     public render() {
-        const { align, children, className: propsClassName, ...htmlProps } = this.props;
-        const className = classNames(
-            Classes.NAVBAR_GROUP,
-            {
-                [Classes.ALIGN_LEFT]: align === "left",
-                [Classes.ALIGN_RIGHT]: align === "right",
-            },
-            propsClassName,
-        );
+        const { align, children, className, ...htmlProps } = this.props;
+        const classes = classNames(Classes.NAVBAR_GROUP, Classes.alignmentClass(align), className);
         return (
-            <div className={className} {...htmlProps}>
+            <div className={classes} {...htmlProps}>
                 {children}
             </div>
         );

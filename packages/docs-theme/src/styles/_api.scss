@@ -1,0 +1,36 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "variables";
+
+.docs-api-dialog {
+  width: auto;
+  height: 80vh;
+  padding: 0;
+
+  .docs-modifiers {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    width: $content-width;
+
+    > * {
+      padding: $pt-grid-size ($pt-grid-size * 2);
+    }
+  }
+
+  .docs-interface-header {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  .docs-interface-table {
+    overflow: auto;
+    padding-bottom: $pt-grid-size * 2;
+  }
+}
+
+.docs-code {
+  font-family: $pt-font-family-monospace;
+  font-weight: 600;
+}

@@ -2,6 +2,7 @@
 // Licensed under the terms of the LICENSE file distributed with this project.
 
 @import "colors";
+@import "flex";
 
 $pt-intent-colors: (
   "primary": $pt-intent-primary,
@@ -23,6 +24,14 @@ $pt-dark-intent-text-colors: (
   "warning": $orange5,
   "danger" : $red5,
 ) !default;
+
+@mixin position-all($position, $value) {
+  position: $position;
+  top: $value;
+  right: $value;
+  bottom: $value;
+  left: $value;
+}
 
 @mixin base-typography() {
   text-transform: none;
@@ -55,7 +64,6 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin overflow-ellipsis() {
-  // NOTE: not to be confused with Bourbon ellipsis() which sets `display: inline-block` :(
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -104,4 +112,14 @@ $pt-dark-intent-text-colors: (
 // default line-height is that of base typography, 18px assuming 14px font-size.
 @function centered-text($height, $line-height: floor($pt-font-size * $pt-line-height)) {
   @return floor(($height - $line-height) / 2);
+}
+
+// Removes the unit from a Sass numeric value (if present): `strip-unit(12px) => 12`
+// @see https://css-tricks.com/snippets/sass/strip-unit-function/
+@function strip-unit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
 }

@@ -5,7 +5,6 @@
  */
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
 import { Utils } from "../common/utils";
@@ -42,7 +41,7 @@ export interface IReorderableProps {
      * When the user reorders something, this callback is called with the new
      * focus cell for the newly selected set of regions.
      */
-    onFocus: (focusedCell: IFocusedCellCoordinates) => void;
+    onFocusedCell: (focusedCell: IFocusedCellCoordinates) => void;
 
     /**
      * An array containing the table's selection Regions.
@@ -78,8 +77,7 @@ export interface IDragReorderable extends IReorderableProps {
     toRegion: (index1: number, index2?: number) => IRegion;
 }
 
-@PureRender
-export class DragReorderable extends React.Component<IDragReorderable, {}> {
+export class DragReorderable extends React.PureComponent<IDragReorderable, {}> {
     public static defaultProps: Partial<IDragReorderable> = {
         selectedRegions: [],
     };
@@ -191,7 +189,7 @@ export class DragReorderable extends React.Component<IDragReorderable, {}> {
             this.props.onSelection(nextSelectedRegions);
 
             // move the focused cell into the newly selected region
-            this.props.onFocus({
+            this.props.onFocusedCell({
                 ...Regions.getFocusCellCoordinatesFromRegion(region),
                 focusSelectionIndex: 0,
             });

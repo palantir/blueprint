@@ -4,8 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "es6-shim";
-
 import { expect } from "chai";
 import * as sinon from "sinon";
 
@@ -36,8 +34,10 @@ describe("Selection", () => {
 
     it("Selects a single column on click", () => {
         const onSelection = sinon.spy();
-        const onFocus = sinon.spy();
-        const table = harness.mount(createTableOfSize(3, 7, {}, { enableFocus: true, onSelection, onFocus }));
+        const onFocusedCell = sinon.spy();
+        const table = harness.mount(
+            createTableOfSize(3, 7, {}, { enableFocusedCell: true, onSelection, onFocusedCell }),
+        );
 
         table
             .find(COLUMN_TH_SELECTOR)
@@ -46,8 +46,8 @@ describe("Selection", () => {
 
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
-        expect(onFocus.called).to.equal(true);
-        expect(onFocus.lastCall.args).to.deep.equal([{ col: 0, row: 0, focusSelectionIndex: 0 }]);
+        expect(onFocusedCell.called).to.equal(true);
+        expect(onFocusedCell.lastCall.args).to.deep.equal([{ col: 0, row: 0, focusSelectionIndex: 0 }]);
     });
 
     // TODO: Fix
@@ -87,7 +87,7 @@ describe("Selection", () => {
             .mouse("mouseup");
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
-        onSelection.reset();
+        onSelection.resetHistory();
 
         table
             .find(`.${Classes.rowCellIndexClass(1)}.${Classes.columnCellIndexClass(1)}`)
@@ -107,7 +107,7 @@ describe("Selection", () => {
             .find(COLUMN_TH_SELECTOR)
             .mouse("mousedown")
             .mouse("mouseup");
-        onSelection.reset();
+        onSelection.resetHistory();
 
         // select a row
         table
@@ -116,7 +116,7 @@ describe("Selection", () => {
             .mouse("mouseup");
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.row(0)]]);
-        onSelection.reset();
+        onSelection.resetHistory();
 
         // deselects on cmd+click
         table
@@ -126,7 +126,7 @@ describe("Selection", () => {
         expect(onSelection.called).to.equal(true, "cmd+click to deselect");
         expect(onSelection.lastCall.args.length).to.equal(1);
         expect(onSelection.lastCall.args).to.deep.equal([[]]);
-        onSelection.reset();
+        onSelection.resetHistory();
     });
 
     it("Column selection works when enabled", () => {
@@ -141,7 +141,7 @@ describe("Selection", () => {
         expect(onSelection.called).to.equal(true, "first select");
         expect(onSelection.lastCall.args.length).to.equal(1);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
-        onSelection.reset();
+        onSelection.resetHistory();
 
         // deselects on cmd+click
         table
@@ -151,7 +151,7 @@ describe("Selection", () => {
         expect(onSelection.called).to.equal(true, "cmd+click to deselect");
         expect(onSelection.lastCall.args.length).to.equal(1);
         expect(onSelection.lastCall.args).to.deep.equal([[]]);
-        onSelection.reset();
+        onSelection.resetHistory();
 
         // re-select
         table
@@ -159,7 +159,7 @@ describe("Selection", () => {
             .mouse("mousedown")
             .mouse("mouseup");
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]], "second select");
-        onSelection.reset();
+        onSelection.resetHistory();
 
         // clears even with meta key
         const isMetaKeyDown = true;
@@ -240,7 +240,7 @@ describe("Selection", () => {
         expect(onSelection.called).to.equal(true, "first select called");
         expect(onSelection.lastCall.args.length).to.equal(1);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
-        onSelection.reset();
+        onSelection.resetHistory();
 
         const isMetaKeyDown = true;
         table

@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table, TableLoadingOption } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
@@ -88,7 +88,9 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
         const columns: JSX.Element[] = [];
 
         Object.keys(bigSpaceRocks[0]).forEach((columnName, index) => {
-            columns.push(<Column key={index} name={this.formatColumnName(columnName)} renderCell={this.renderCell} />);
+            columns.push(
+                <Column key={index} name={this.formatColumnName(columnName)} cellRenderer={this.renderCell} />,
+            );
         });
 
         return columns;

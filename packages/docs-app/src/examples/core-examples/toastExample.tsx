@@ -17,8 +17,9 @@ import {
     ProgressBar,
     Switch,
     Toaster,
+    ToasterPosition,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 type IToastDemo = IToastProps & { button: string };
 
@@ -34,28 +35,28 @@ export class ToastExample extends BaseExample<IToasterProps> {
             action: {
                 href: "https://www.google.com/search?q=toast&source=lnms&tbm=isch",
                 target: "_blank",
-                text: "Yum",
+                text: <strong>Yum.</strong>,
             },
             button: "Procure toast",
             intent: Intent.PRIMARY,
             message: (
-                <span>
+                <>
                     One toast created. <em>Toasty.</em>
-                </span>
+                </>
             ),
         },
         {
             action: {
                 onClick: () =>
                     this.addToast({
-                        iconName: "ban-circle",
+                        icon: "ban-circle",
                         intent: Intent.DANGER,
                         message: "You cannot undo the past.",
                     }),
                 text: "Undo",
             },
             button: "Move files",
-            iconName: "tick",
+            icon: "tick",
             intent: Intent.SUCCESS,
             message: "Moved 6 files.",
         },
@@ -65,7 +66,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
                 text: "Retry",
             },
             button: "Delete root",
-            iconName: "warning-sign",
+            icon: "warning-sign",
             intent: Intent.DANGER,
             message:
                 "You do not have permissions to perform this action. \
@@ -77,7 +78,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
                 text: "Adieu",
             },
             button: "Log out",
-            iconName: "hand",
+            icon: "hand",
             intent: Intent.WARNING,
             message: "Goodbye, old friend.",
         },
@@ -88,7 +89,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
         toaster: (ref: Toaster) => (this.toaster = ref),
     };
 
-    private handlePositionChange = handleNumberChange(position => this.setState({ position }));
+    private handlePositionChange = handleStringChange((position: ToasterPosition) => this.setState({ position }));
     private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClear => this.setState({ canEscapeKeyClear }));
 
@@ -142,7 +143,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
     private renderProgress(amount: number): IToastProps {
         return {
             className: this.props.themeName,
-            iconName: "cloud-upload",
+            icon: "cloud-upload",
             message: (
                 <ProgressBar
                     className={classNames("docs-toast-progress", { "pt-no-stripes": amount >= 100 })}
@@ -168,7 +169,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
                 clearInterval(interval);
             } else {
                 progress += 10 + Math.random() * 20;
-                this.toaster.update(key, this.renderProgress(progress));
+                this.toaster.show(this.renderProgress(progress), key);
             }
         }, 1000);
     };

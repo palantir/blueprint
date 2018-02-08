@@ -45,15 +45,15 @@ import { LocalStore } from "./localStore";
 import { SlowLayoutStack } from "./slowLayoutStack";
 
 export enum FocusStyle {
-    TAB,
-    TAB_OR_CLICK,
+    TAB = "tab",
+    TAB_OR_CLICK = "tab-or-click",
 }
 
 export enum CellContent {
-    EMPTY,
-    CELL_NAMES,
-    LONG_TEXT,
-    LARGE_JSON,
+    EMPTY = "empty",
+    CELL_NAMES = "cell-names",
+    LONG_TEXT = "long-text",
+    LARGE_JSON = "large-json",
 }
 
 type IMutableStateUpdateCallback = (
@@ -106,7 +106,7 @@ const LONG_TEXT_WORD_SPLIT_REGEXP = /.{1,5}/g;
 const LARGE_JSON_PROP_COUNT = 3;
 const LARGE_JSON_OBJECT_DEPTH = 2;
 
-const CELL_CONTENT_GENERATORS = {
+const CELL_CONTENT_GENERATORS: { [name: string]: (ri: number, ci: number) => string | object } = {
     [CellContent.CELL_NAMES]: Utils.toBase26CellName,
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
@@ -115,7 +115,7 @@ const CELL_CONTENT_GENERATORS = {
             .match(LONG_TEXT_WORD_SPLIT_REGEXP)
             .join(" ");
     },
-    [CellContent.LARGE_JSON]: (_ri: number, _ci: number) => {
+    [CellContent.LARGE_JSON]: () => {
         return getRandomObject(LARGE_JSON_PROP_COUNT, LARGE_JSON_OBJECT_DEPTH);
     },
 };
@@ -347,35 +347,35 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderTable() {
         return (
             <Table
-                allowMultipleSelection={this.state.enableMultiSelection}
-                enableFocus={this.state.showFocusCell}
-                fillBodyWithGhostCells={this.state.showGhostCells}
+                bodyContextMenuRenderer={this.renderBodyContextMenu}
+                enableColumnInteractionBar={this.state.showTableInteractionBar}
+                enableColumnReordering={this.state.enableColumnReordering}
+                enableColumnResizing={this.state.enableColumnResizing}
+                enableFocusedCell={this.state.showFocusCell}
+                enableGhostCells={this.state.showGhostCells}
+                enableMultipleSelection={this.state.enableMultiSelection}
+                enableRowHeader={this.state.showRowHeaders}
+                enableRowReordering={this.state.enableRowReordering}
+                enableRowResizing={this.state.enableRowResizing}
                 getCellClipboardData={this.getCellValue}
-                isColumnResizable={this.state.enableColumnResizing}
-                isColumnReorderable={this.state.enableColumnReordering}
-                isRowHeaderShown={this.state.showRowHeaders}
-                isRowReorderable={this.state.enableRowReordering}
-                isRowResizable={this.state.enableRowResizing}
                 loadingOptions={this.getEnabledLoadingOptions()}
                 numFrozenColumns={this.state.numFrozenCols}
                 numFrozenRows={this.state.numFrozenRows}
                 numRows={this.state.numRows}
-                onSelection={this.onSelection}
-                onCompleteRender={this.onCompleteRender}
                 onColumnsReordered={this.onColumnsReordered}
                 onColumnWidthChanged={this.onColumnWidthChanged}
+                onCompleteRender={this.onCompleteRender}
                 onCopy={this.onCopy}
-                onFocus={this.onFocus}
-                onVisibleCellsChange={this.onVisibleCellsChange}
+                onFocusedCell={this.onFocus}
                 onRowHeightChanged={this.onRowHeightChanged}
                 onRowsReordered={this.onRowsReordered}
+                onSelection={this.onSelection}
+                onVisibleCellsChange={this.onVisibleCellsChange}
                 ref={this.refHandlers.table}
-                renderBodyContextMenu={this.renderBodyContextMenu}
                 renderMode={this.state.renderMode}
-                renderRowHeader={this.renderRowHeader}
+                rowHeaderCellRenderer={this.renderRowHeader}
                 selectionModes={this.getEnabledSelectionModes()}
                 styledRegionGroups={this.getStyledRegionGroups()}
-                useInteractionBar={this.state.showTableInteractionBar}
             >
                 {this.renderColumns()}
             </Table>
@@ -387,8 +387,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             return (
                 <Column
                     key={this.store.getColumnKey(columnIndex)}
-                    renderColumnHeader={this.renderColumnHeaderCell}
-                    renderCell={this.renderCell}
+                    columnHeaderCellRenderer={this.renderColumnHeaderCell}
+                    cellRenderer={this.renderCell}
                 />
             );
         });
@@ -399,8 +399,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             <ColumnHeaderCell
                 index={columnIndex}
                 name={this.store.getColumnName(columnIndex)}
-                renderMenu={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
-                renderName={this.getColumnNameRenderer()}
+                menuRenderer={this.state.showColumnMenus ? this.renderColumnMenu : undefined}
+                nameRenderer={this.getColumnNameRenderer()}
             />
         );
     };
@@ -438,7 +438,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         const menu = (
             <Menu>
                 <MenuItem
-                    iconName="insert"
+                    icon="insert"
                     onClick={() => {
                         this.store.addColumnBefore(columnIndex);
                         this.setState({ numCols: this.state.numCols + 1 });
@@ -446,7 +446,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     text="Insert column before"
                 />
                 <MenuItem
-                    iconName="insert"
+                    icon="insert"
                     onClick={() => {
                         this.store.addColumnAfter(columnIndex);
                         this.setState({ numCols: this.state.numCols + 1 });
@@ -454,7 +454,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     text="Insert column after"
                 />
                 <MenuItem
-                    iconName="remove"
+                    icon="remove"
                     onClick={() => {
                         this.store.removeColumn(columnIndex);
                         this.setState({ numCols: this.state.numCols - 1 });
@@ -468,14 +468,14 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private renderRowHeader = (rowIndex: number) => {
-        return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} renderMenu={this.renderRowMenu} />;
+        return <RowHeaderCell index={rowIndex} name={`${rowIndex + 1}`} menuRenderer={this.renderRowMenu} />;
     };
 
     private renderRowMenu = (rowIndex: number) => {
         return (
             <Menu>
                 <MenuItem
-                    iconName="insert"
+                    icon="insert"
                     onClick={() => {
                         this.store.addRowBefore(rowIndex);
                         this.setState({ numRows: this.state.numRows + 1 });
@@ -483,7 +483,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     text="Insert row before"
                 />
                 <MenuItem
-                    iconName="insert"
+                    icon="insert"
                     onClick={() => {
                         this.store.addRowAfter(rowIndex);
                         this.setState({ numRows: this.state.numRows + 1 });
@@ -491,7 +491,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     text="Insert row after"
                 />
                 <MenuItem
-                    iconName="remove"
+                    icon="remove"
                     onClick={() => {
                         this.store.removeRow(rowIndex);
                         this.setState({ numRows: this.state.numRows - 1 });
@@ -672,7 +672,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Isolate layout boundary", "enableLayoutBoundary")}
 
                 <h4>Settings</h4>
-                {this.renderButton("Reset all", { iconName: "undo", onClick: this.handleDefaultsButtonClick })}
+                {this.renderButton("Reset all", { icon: "undo", onClick: this.handleDefaultsButtonClick })}
             </div>
         );
     }
@@ -928,7 +928,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     };
 
     private onFocus = (focusedCell: IFocusedCellCoordinates) => {
-        this.maybeLogCallback("[onFocus] focusedCell =", focusedCell);
+        this.maybeLogCallback("[onFocusedCell] focusedCell =", focusedCell);
     };
 
     private onCopy = (success: boolean) => {
@@ -1060,10 +1060,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private renderBodyContextMenu = () => {
         const menu = (
             <Menu>
-                <MenuItem iconName="search-around" text="Item 1" />
-                <MenuItem iconName="search" text="Item 2" />
-                <MenuItem iconName="graph-remove" text="Item 3" />
-                <MenuItem iconName="group-objects" text="Item 4" />
+                <MenuItem icon="search-around" text="Item 1" />
+                <MenuItem icon="search" text="Item 2" />
+                <MenuItem icon="graph-remove" text="Item 3" />
+                <MenuItem icon="group-objects" text="Item 4" />
                 <MenuDivider />
                 <MenuItem disabled={true} text="Disabled item" />
             </Menu>

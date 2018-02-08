@@ -27,15 +27,15 @@ class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTest
         }
     };
 
-    private static renderCell = (rowIndex: number) => {
+    private static cellRenderer = (rowIndex: number) => {
         return <Cell loading={TableLoadingOptionsTester.isCellLoading(rowIndex)}>some cell text</Cell>;
     };
 
-    private static renderColumnHeader = (columnIndex: number) => {
+    private static columnHeaderCellRenderer = (columnIndex: number) => {
         return <ColumnHeaderCell loading={TableLoadingOptionsTester.isCellLoading(columnIndex)} name="column header" />;
     };
 
-    private static renderRowHeader = (rowIndex: number) => {
+    private static rowHeaderCellRenderer = (rowIndex: number) => {
         return <RowHeaderCell loading={TableLoadingOptionsTester.isCellLoading(rowIndex)} name="row header" />;
     };
 
@@ -45,20 +45,20 @@ class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTest
             <Table
                 loadingOptions={tableLoadingOptions}
                 numRows={3}
-                renderRowHeader={TableLoadingOptionsTester.renderRowHeader}
+                rowHeaderCellRenderer={TableLoadingOptionsTester.rowHeaderCellRenderer}
             >
                 <Column
                     loadingOptions={columnLoadingOptions}
-                    renderCell={TableLoadingOptionsTester.renderCell}
-                    renderColumnHeader={TableLoadingOptionsTester.renderColumnHeader}
+                    cellRenderer={TableLoadingOptionsTester.cellRenderer}
+                    columnHeaderCellRenderer={TableLoadingOptionsTester.columnHeaderCellRenderer}
                 />
                 <Column
                     loadingOptions={columnLoadingOptions}
-                    renderColumnHeader={TableLoadingOptionsTester.renderColumnHeader}
+                    columnHeaderCellRenderer={TableLoadingOptionsTester.columnHeaderCellRenderer}
                 />
                 <Column
                     loadingOptions={columnLoadingOptions}
-                    renderColumnHeader={TableLoadingOptionsTester.renderColumnHeader}
+                    columnHeaderCellRenderer={TableLoadingOptionsTester.columnHeaderCellRenderer}
                 />
             </Table>
         );
@@ -96,14 +96,20 @@ describe("Loading Options", () => {
                 // only testing the first column of body cells because the second and third
                 // columns are meant to test column related loading combinations
                 const quadrantSelector = `.${Classes.TABLE_QUADRANT_MAIN}`;
-                const cells = tableHarness.element.queryAll(
-                    `${quadrantSelector} .${Classes.TABLE_CELL}.${Classes.columnCellIndexClass(0)}`,
+                const cells = Array.from(
+                    tableHarness.element.querySelectorAll(
+                        `${quadrantSelector} .${Classes.TABLE_CELL}.${Classes.columnCellIndexClass(0)}`,
+                    ),
                 );
-                const columnHeaders = tableHarness.element.queryAll(
-                    `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
+                const columnHeaders = Array.from(
+                    tableHarness.element.querySelectorAll(
+                        `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
+                    ),
                 );
-                const rowHeaders = tableHarness.element.queryAll(
-                    `${quadrantSelector} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`,
+                const rowHeaders = Array.from(
+                    tableHarness.element.querySelectorAll(
+                        `${quadrantSelector} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`,
+                    ),
                 );
                 testLoadingOptionOverrides(
                     columnHeaders,
@@ -181,7 +187,7 @@ function testLoadingOptionOverrides(
             columnLoadingOptions != null
         ) {
             // cast is safe because cellType is guaranteed to not be TableLoadingOption.ROW_HEADERS
-            const loading = columnLoadingOptions.indexOf(cellType as ColumnLoadingOption) >= 0;
+            const loading = columnLoadingOptions.indexOf((cellType as any) as ColumnLoadingOption) >= 0;
             expectCellLoading(cell, cellType, loading);
         } else if (tableLoadingOptions != null) {
             expectCellLoading(cell, cellType, tableLoadingOptions.indexOf(cellType) >= 0);

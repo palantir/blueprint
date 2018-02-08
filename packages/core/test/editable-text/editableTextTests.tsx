@@ -47,7 +47,7 @@ describe("<EditableText>", () => {
 
         it("calls onChange when input is changed", () => {
             const changeSpy = spy();
-            const wrapper = shallow(
+            const wrapper = mount(
                 <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." value="alphabet" />,
             );
             wrapper
@@ -61,7 +61,7 @@ describe("<EditableText>", () => {
 
         it("calls onChange when escape key pressed and value is unconfirmed", () => {
             const changeSpy = spy();
-            const input = shallow(
+            const input = mount(
                 <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />,
             ).find("input");
 
@@ -80,7 +80,7 @@ describe("<EditableText>", () => {
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
 
-            const component = shallow(
+            const component = mount(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
             component
@@ -101,7 +101,7 @@ describe("<EditableText>", () => {
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
 
-            const component = shallow(
+            const component = mount(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
             component
@@ -122,7 +122,7 @@ describe("<EditableText>", () => {
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
 
-            const component = shallow(
+            const component = mount(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
             component
@@ -138,14 +138,14 @@ describe("<EditableText>", () => {
 
         it("calls onEdit when entering edit mode", () => {
             const editSpy = spy();
-            shallow(<EditableText onEdit={editSpy} />)
+            mount(<EditableText onEdit={editSpy} />)
                 .find("div")
                 .simulate("focus");
             assert.isTrue(editSpy.calledOnce, "onEdit called once");
         });
 
         it("stops editing when disabled", () => {
-            const wrapper = shallow(<EditableText isEditing={true} disabled={true} />);
+            const wrapper = mount(<EditableText isEditing={true} disabled={true} />);
             assert.isFalse(wrapper.state("isEditing"));
         });
 
@@ -153,7 +153,7 @@ describe("<EditableText>", () => {
             // mount into a DOM element so we can get the input to inspect its HTML props
             const attachTo = document.createElement("div");
             mount(<EditableText isEditing={true} value="alphabet" />, { attachTo });
-            const input = attachTo.query("input") as HTMLInputElement;
+            const input = attachTo.querySelector("input") as HTMLInputElement;
             assert.strictEqual(input.selectionStart, 8);
             assert.strictEqual(input.selectionEnd, 8);
         });
@@ -161,7 +161,7 @@ describe("<EditableText>", () => {
         it("controlled mode can only change value via props", () => {
             let expected = "alphabet";
             const wrapper = mount(<EditableText isEditing={true} value={expected} />);
-            const inputElement = ReactDOM.findDOMNode(wrapper.instance()).query("input") as HTMLInputElement;
+            const inputElement = ReactDOM.findDOMNode(wrapper.instance()).querySelector("input") as HTMLInputElement;
 
             const input = wrapper.find("input");
             input.simulate("change", { target: { value: "hello" } });
@@ -181,11 +181,10 @@ describe("<EditableText>", () => {
             assert.strictEqual(wrapper.state("value"), "hello");
         });
 
-        // TODO: does not work in Phantom, only in Chrome (input.selectionStart is also equal to 8)
-        xit("the full input box is highlighted when selectAllOnFocus is true", () => {
+        it("the full input box is highlighted when selectAllOnFocus is true", () => {
             const attachTo = document.createElement("div");
             mount(<EditableText isEditing={true} selectAllOnFocus={true} value="alphabet" />, { attachTo });
-            const input = attachTo.query("input") as HTMLInputElement;
+            const input = attachTo.querySelector("input") as HTMLInputElement;
             assert.strictEqual(input.selectionStart, 0);
             assert.strictEqual(input.selectionEnd, 8);
         });
@@ -193,12 +192,12 @@ describe("<EditableText>", () => {
 
     describe("multiline", () => {
         it("renders a <textarea> when editing", () => {
-            assert.lengthOf(shallow(<EditableText isEditing={true} multiline={true} />).find("textarea"), 1);
+            assert.lengthOf(mount(<EditableText isEditing={true} multiline={true} />).find("textarea"), 1);
         });
 
         it("does not call onConfirm when enter key is pressed", () => {
             const confirmSpy = spy();
-            shallow(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />)
+            mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />)
                 .find("textarea")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("keydown", { which: Keys.ENTER });
@@ -247,10 +246,7 @@ describe("<EditableText>", () => {
             const wrapper = mount(
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
-            const textarea = ReactDOM.findDOMNode(wrapper.instance()).query("textarea") as HTMLTextAreaElement;
-            // pass "" as second argument since Phantom does not update cursor properly after a simulated value change
-            // Chrome: "control" => "control\n"
-            // Phantom: "control" => "\ncontrol"
+            const textarea = ReactDOM.findDOMNode(wrapper.instance()).querySelector("textarea") as HTMLTextAreaElement;
             simulateHelper(wrapper, "", { ctrlKey: true, target: textarea, which: Keys.ENTER });
             assert.strictEqual(textarea.value, "\n");
             simulateHelper(wrapper, "", { metaKey: true, target: textarea, which: Keys.ENTER });

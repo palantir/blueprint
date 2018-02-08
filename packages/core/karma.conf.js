@@ -10,18 +10,13 @@ module.exports = function (config) {
     const baseConfig = createKarmaConfig({
         dirname: __dirname,
         coverageExcludes: [
+            // not worth full coverage
             "src/accessibility/*",
+            "src/common/abstractComponent*",
         ],
     });
     config.set(baseConfig);
     config.set({
-        webpack: Object.assign({}, baseConfig.webpack, {
-            entry: {
-                core: [
-                    path.resolve(__dirname, "test/index.ts"),
-                    path.resolve(__dirname, "src/blueprint.scss"),
-                ],
-            },
-        }),
-    })
+        // overrides here
+    });
 };

@@ -1,7 +1,6 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~bourbon/app/assets/stylesheets/bourbon";
 @import "../../common/variables";
 
 /*
@@ -34,7 +33,9 @@ Styleguide pt-callout
 
     &::before {
       @include pt-icon($pt-icon-size-large);
-      @include position(absolute, $pt-grid-size null null $pt-grid-size);
+      position: absolute;
+      top: $pt-grid-size;
+      left: $pt-grid-size;
       color: $pt-icon-color;
     }
   }
@@ -58,6 +59,7 @@ Styleguide pt-callout
       background-color: rgba($color, 0.15);
 
       &[class*="pt-icon-"]::before,
+      .pt-callout-icon,
       h5 {
         color: map-get($pt-intent-text-colors, $intent);
       }
@@ -66,6 +68,7 @@ Styleguide pt-callout
         background-color: rgba($color, 0.25);
 
         &[class*="pt-icon-"]::before,
+        .pt-callout-icon,
         h5 {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }
@@ -76,4 +79,13 @@ Styleguide pt-callout
   .pt-running-text & {
     margin: ($pt-grid-size * 2) 0;
   }
+}
+
+// callout icon fills vertical space at left side, pushing title and content over.
+// note that CSS API `.pt-callout.pt-icon-[name]` is still supported.
+.pt-callout-icon {
+  float: left;
+  margin-right: $pt-grid-size;
+  height: 100%;
+  color: $pt-icon-color;
 }

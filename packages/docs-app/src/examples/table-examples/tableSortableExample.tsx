@@ -9,7 +9,7 @@
 import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs";
+import { BaseExample } from "@blueprintjs/docs-theme";
 import {
     Cell,
     Column,
@@ -35,11 +35,18 @@ abstract class AbstractSortableColumn implements ISortableColumn {
     constructor(protected name: string, protected index: number) {}
 
     public getColumn(getCellData: ICellLookup, sortColumn: ISortCallback) {
-        const renderCell = (rowIndex: number, columnIndex: number) => <Cell>{getCellData(rowIndex, columnIndex)}</Cell>;
-        const renderMenu = this.renderMenu.bind(this, sortColumn);
-        const renderColumnHeader = () => <ColumnHeaderCell name={this.name} renderMenu={renderMenu} />;
+        const cellRenderer = (rowIndex: number, columnIndex: number) => (
+            <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
+        );
+        const menuRenderer = this.renderMenu.bind(this, sortColumn);
+        const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} menuRenderer={menuRenderer} />;
         return (
-            <Column key={this.index} name={this.name} renderCell={renderCell} renderColumnHeader={renderColumnHeader} />
+            <Column
+                cellRenderer={cellRenderer}
+                columnHeaderCellRenderer={columnHeaderCellRenderer}
+                key={this.index}
+                name={this.name}
+            />
         );
     }
 
@@ -52,8 +59,8 @@ class TextSortableColumn extends AbstractSortableColumn {
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
             <Menu>
-                <MenuItem iconName="sort-asc" onClick={sortAsc} text="Sort Asc" />
-                <MenuItem iconName="sort-desc" onClick={sortDesc} text="Sort Desc" />
+                <MenuItem icon="sort-asc" onClick={sortAsc} text="Sort Asc" />
+                <MenuItem icon="sort-desc" onClick={sortDesc} text="Sort Desc" />
             </Menu>
         );
     }
@@ -79,8 +86,8 @@ class RankSortableColumn extends AbstractSortableColumn {
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
             <Menu>
-                <MenuItem iconName="sort-asc" onClick={sortAsc} text="Sort Rank Asc" />
-                <MenuItem iconName="sort-desc" onClick={sortDesc} text="Sort Rank Desc" />
+                <MenuItem icon="sort-asc" onClick={sortAsc} text="Sort Rank Asc" />
+                <MenuItem icon="sort-desc" onClick={sortDesc} text="Sort Rank Desc" />
             </Menu>
         );
     }
@@ -107,32 +114,32 @@ class RecordSortableColumn extends AbstractSortableColumn {
         return (
             <Menu>
                 <MenuItem
-                    iconName="sort-asc"
+                    icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, false))}
                     text="Sort Wins Asc"
                 />
                 <MenuItem
-                    iconName="sort-desc"
+                    icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, true))}
                     text="Sort Wins Desc"
                 />
                 <MenuItem
-                    iconName="sort-asc"
+                    icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, false))}
                     text="Sort Losses Asc"
                 />
                 <MenuItem
-                    iconName="sort-desc"
+                    icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, true))}
                     text="Sort Losses Desc"
                 />
                 <MenuItem
-                    iconName="sort-asc"
+                    icon="sort-asc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, false))}
                     text="Sort Ties Asc"
                 />
                 <MenuItem
-                    iconName="sort-desc"
+                    icon="sort-desc"
                     onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, true))}
                     text="Sort Ties Desc"
                 />
@@ -191,8 +198,8 @@ export class TableSortableExample extends BaseExample<{}> {
         const columns = this.state.columns.map(col => col.getColumn(this.getCellData, this.sortColumn));
         return (
             <Table
+                bodyContextMenuRenderer={this.renderBodyContextMenu}
                 numRows={numRows}
-                renderBodyContextMenu={this.renderBodyContextMenu}
                 selectionModes={SelectionModes.COLUMNS_AND_CELLS}
             >
                 {columns}

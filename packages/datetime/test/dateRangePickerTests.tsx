@@ -6,17 +6,19 @@
 
 import { Classes } from "@blueprintjs/core";
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import ReactDayPicker from "react-day-picker";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
-import { IDateRangeShortcut } from "../src/dateRangePicker";
+import { IDateRangePickerState, IDateRangeShortcut } from "../src/dateRangePicker";
 import {
     Classes as DateClasses,
     DateRange,
@@ -77,10 +79,10 @@ describe("<DateRangePicker>", () => {
             assertDatesEqual(new Date(firstDay.prop("day")), firstDayInView);
         });
 
-        it("doesn't show outside days if enableOutsideDays=false", () => {
+        it("doesn't show outside days if showOutsideDays=false", () => {
             const defaultValue = [new Date(2017, Months.SEPTEMBER, 1, 12), null] as DateRange;
             const { leftView, rightView } = wrap(
-                <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ enableOutsideDays: false }} />,
+                <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ showOutsideDays: false }} />,
             );
             const leftDays = leftView.find("Day");
             const rightDays = rightView.find("Day");
@@ -404,8 +406,8 @@ describe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ contiguousCalendarMonths, maxDate, minDate });
             assert.lengthOf(document.getElementsByClassName("DayPicker"), 1);
-            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--prev"), 0);
-            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--next"), 0);
+            // react-day-picker still renders the navigation but with a interaction disabled class
+            assert.lengthOf(document.getElementsByClassName("DayPicker-NavButton--interactionDisabled"), 2);
         });
 
         it("left calendar is bound between minDate and (maxDate - 1 month)", () => {
@@ -440,8 +442,8 @@ describe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ initialMonth, contiguousCalendarMonths });
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.MAY);
-            const prevBtn = document.queryAll(".DayPicker-NavButton--prev");
-            const nextBtn = document.queryAll(".DayPicker-NavButton--next");
+            const prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
+            const nextBtn = document.querySelectorAll(".DayPicker-NavButton--next");
 
             TestUtils.Simulate.click(prevBtn[0]);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.APRIL);
@@ -455,8 +457,8 @@ describe("<DateRangePicker>", () => {
 
             renderDateRangePicker({ initialMonth, contiguousCalendarMonths });
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JUNE);
-            const prevBtn = document.queryAll(".DayPicker-NavButton--prev");
-            const nextBtn = document.queryAll(".DayPicker-NavButton--next");
+            const prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
+            const nextBtn = document.querySelectorAll(".DayPicker-NavButton--next");
 
             TestUtils.Simulate.click(nextBtn[1]);
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JULY);
@@ -519,7 +521,7 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             renderDateRangePicker({ initialMonth, contiguousCalendarMonths });
-            const nextBtn = document.queryAll(".DayPicker-NavButton--next");
+            const nextBtn = document.querySelectorAll(".DayPicker-NavButton--next");
 
             TestUtils.Simulate.click(nextBtn[0]);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.JUNE);
@@ -531,7 +533,7 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             renderDateRangePicker({ initialMonth, contiguousCalendarMonths });
-            const prevBtn = document.queryAll(".DayPicker-NavButton--prev");
+            const prevBtn = document.querySelectorAll(".DayPicker-NavButton--prev");
 
             TestUtils.Simulate.click(prevBtn[1]);
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.APRIL);
@@ -555,9 +557,7 @@ describe("<DateRangePicker>", () => {
         it("maxDate must be later than minDate", () => {
             const minDate = new Date(2000, Months.JANUARY, 10);
             const maxDate = new Date(2000, Months.JANUARY, 8);
-            assert.throws(() => {
-                renderDateRangePicker({ minDate, maxDate });
-            }, Errors.DATERANGEPICKER_MAX_DATE_INVALID);
+            expectPropValidationError(DateRangePicker, { minDate, maxDate }, Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         });
 
         it("only days outside bounds have disabled class", () => {
@@ -574,18 +574,22 @@ describe("<DateRangePicker>", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const defaultValue = [new Date(2015, Months.JANUARY, 12), null] as DateRange;
-            assert.throws(() => {
-                renderDateRangePicker({ defaultValue, minDate, maxDate });
-            }, Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID);
+            expectPropValidationError(
+                DateRangePicker,
+                { defaultValue, minDate, maxDate },
+                Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID,
+            );
         });
 
         it("an error is thrown if initialMonth is outside month bounds", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const initialMonth = new Date(2015, Months.FEBRUARY, 12);
-            assert.throws(() => {
-                renderDateRangePicker({ initialMonth, minDate, maxDate });
-            }, Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
+            expectPropValidationError(
+                DateRangePicker,
+                { initialMonth, minDate, maxDate },
+                Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID,
+            );
         });
 
         it("an error is not thrown if initialMonth is outside day bounds but inside month bounds", () => {
@@ -601,9 +605,11 @@ describe("<DateRangePicker>", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const value = [new Date(2015, Months.JANUARY, 12), null] as DateRange;
-            assert.throws(() => {
-                renderDateRangePicker({ value, minDate, maxDate });
-            }, Errors.DATERANGEPICKER_VALUE_INVALID);
+            expectPropValidationError(
+                DateRangePicker,
+                { value, minDate, maxDate },
+                Errors.DATERANGEPICKER_VALUE_INVALID,
+            );
         });
 
         it("onChange not fired when a day outside of bounds is clicked", () => {
@@ -632,13 +638,11 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.FEBRUARY, 5);
             renderDateRangePicker({ initialMonth, minDate });
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.FEBRUARY);
-            let prevBtn = document.queryAll(".DayPicker-NavButton--prev");
-            assert.lengthOf(prevBtn, 1);
+            assert.lengthOf(document.querySelectorAll(".DayPicker-NavButton--interactionDisabled"), 0);
 
-            TestUtils.Simulate.click(prevBtn[0]);
+            TestUtils.Simulate.click(document.querySelectorAll(".DayPicker-NavButton--prev")[0]);
             assert.strictEqual(dateRangePicker.state.leftView.getMonth(), Months.JANUARY);
-            prevBtn = document.queryAll(".DayPicker-NavButton--prev");
-            assert.lengthOf(prevBtn, 0);
+            assert.lengthOf(document.querySelectorAll(".DayPicker-NavButton--interactionDisabled"), 1);
         });
 
         it("disables shortcuts that begin earlier than minDate", () => {
@@ -1221,30 +1225,42 @@ describe("<DateRangePicker>", () => {
 
     function wrap(datepicker: JSX.Element) {
         const wrapper = mount(datepicker);
-        const dayPickers = wrapper.find(ReactDayPicker).find("Month");
-        const leftDayPicker = dayPickers.at(0);
-        const rightDayPicker = dayPickers.length > 1 ? dayPickers.at(1) : dayPickers.at(0);
+        // Don't cache the left/right day pickers into variables in this scope,
+        // because as of Enzyme 3.0 they can get stale if the views change.
         return {
             getDayLeftView: (dayNumber = 1) => {
-                return leftDayPicker
+                return getLeftDayPicker(wrapper)
                     .find(`.${DateClasses.DATEPICKER_DAY}`)
                     .filterWhere(
                         day => day.text() === "" + dayNumber && !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE),
                     );
             },
             getDayRightView: (dayNumber = 1) => {
-                return rightDayPicker
+                return getRightDayPicker(wrapper)
                     .find(`.${DateClasses.DATEPICKER_DAY}`)
                     .filterWhere(
                         day => day.text() === "" + dayNumber && !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE),
                     );
             },
             leftDayPickerNavbar: wrapper.find("Navbar").at(0),
-            leftView: leftDayPicker,
+            leftView: getLeftDayPicker(wrapper),
             rightDayPickerNavbar: wrapper.find("Navbar").at(1) || wrapper.find("Navbar").at(0),
-            rightView: rightDayPicker,
+            rightView: getRightDayPicker(wrapper),
             root: wrapper,
         };
+    }
+
+    function getLeftDayPicker(wrapper: ReactWrapper<IDateRangePickerProps, IDateRangePickerState>) {
+        return getDayPickers(wrapper).at(0);
+    }
+
+    function getRightDayPicker(wrapper: ReactWrapper<IDateRangePickerProps, IDateRangePickerState>) {
+        const dayPickers = getDayPickers(wrapper);
+        return dayPickers.length > 1 ? dayPickers.at(1) : dayPickers.at(0);
+    }
+
+    function getDayPickers(wrapper: ReactWrapper<IDateRangePickerProps, IDateRangePickerState>) {
+        return wrapper.find(ReactDayPicker).find("Month");
     }
 
     function clickDay(dayNumber = 1, fromLeftMonth = true) {
@@ -1260,7 +1276,7 @@ describe("<DateRangePicker>", () => {
     }
 
     function getShortcut(index: number) {
-        return document.queryAll(`.${DateClasses.DATERANGEPICKER_SHORTCUTS} .${Classes.MENU_ITEM}`)[index];
+        return document.querySelectorAll(`.${DateClasses.DATERANGEPICKER_SHORTCUTS} .${Classes.MENU_ITEM}`)[index];
     }
 
     function isShortcutDisabled(index: number) {
@@ -1272,11 +1288,11 @@ describe("<DateRangePicker>", () => {
     }
 
     function getDayElement(dayNumber = 1, fromLeftMonth = true) {
-        const month = document.queryAll(".DayPicker-Month")[fromLeftMonth ? 0 : 1];
-        const days = month.queryAll(`.${DateClasses.DATEPICKER_DAY}`);
-        return days.filter(d => {
-            return d.textContent === dayNumber.toString() && !d.classList.contains(DateClasses.DATEPICKER_DAY_OUTSIDE);
-        })[0];
+        const month = document.querySelectorAll(".DayPicker-Month")[fromLeftMonth ? 0 : 1];
+        const days = Array.from(month.querySelectorAll(`.${DateClasses.DATEPICKER_DAY}`));
+        return days.filter(
+            d => d.textContent === dayNumber.toString() && !d.classList.contains(DateClasses.DATEPICKER_DAY_OUTSIDE),
+        )[0];
     }
 
     function getMonthSelect(fromLeftView: boolean = true) {
@@ -1285,13 +1301,15 @@ describe("<DateRangePicker>", () => {
     }
 
     function getOptionsText(selectElementClass: string): string[] {
-        return document
-            .queryAll(`.DayPicker-Month:last-child .${selectElementClass} option`)
-            .map(e => (e as HTMLElement).innerText);
+        return Array.from(document.querySelectorAll(`.DayPicker-Month:last-child .${selectElementClass} option`)).map(
+            (e: HTMLElement) => e.innerText,
+        );
     }
 
     function getSelectedDayElements() {
-        return document.queryAll(`.${DateClasses.DATEPICKER_DAY_SELECTED}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
+        return document.querySelectorAll(
+            `.${DateClasses.DATEPICKER_DAY_SELECTED}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`,
+        );
     }
 
     /**
@@ -1299,7 +1317,7 @@ describe("<DateRangePicker>", () => {
      */
     function getSelectedRangeDayElements() {
         const selectedRange = DateClasses.DATERANGEPICKER_DAY_SELECTED_RANGE;
-        return document.queryAll(`.${selectedRange}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
+        return document.querySelectorAll(`.${selectedRange}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
     }
 
     /**
@@ -1307,15 +1325,15 @@ describe("<DateRangePicker>", () => {
      */
     function getHoveredRangeDayElements() {
         const selectedRange = DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE;
-        return document.queryAll(`.${selectedRange}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
+        return document.querySelectorAll(`.${selectedRange}:not(.${DateClasses.DATEPICKER_DAY_OUTSIDE})`);
     }
 
     function getHoveredRangeStartDayElement() {
-        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-start`);
+        return document.querySelector(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-start`);
     }
 
     function getHoveredRangeEndDayElement() {
-        return document.query(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-end`);
+        return document.querySelector(`.${DateClasses.DATERANGEPICKER_DAY_HOVERED_RANGE}-end`);
     }
 
     function getYearSelect(fromLeftView: boolean = true) {

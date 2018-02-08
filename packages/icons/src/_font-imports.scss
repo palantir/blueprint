@@ -1,0 +1,10 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "font-face";
+
+$icon-font-path: "../../resources/icons" !default;
+$icon-font-formats: eot woff ttf !default;
+
+@include font-face("Icons16", "#{$icon-font-path}/icons-16", $file-formats: $icon-font-formats);
+@include font-face("Icons20", "#{$icon-font-path}/icons-20", $file-formats: $icon-font-formats);

@@ -4,9 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
-import { Documentation, IDocumentationProps } from "@blueprintjs/docs";
+import { Icon, Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
+import { Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
+import { ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
 import { NavbarActions } from "./navbarActions";
 
@@ -48,9 +49,10 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             />
         );
         return (
-            <div>
-                <a className="docs-banner" target="_blank" href="http://blueprintjs.com/docs/v2/">
-                    A new major version of Blueprint is under development. Click here to go to the v2 docs!
+            <>
+                <a className="docs-banner" target="_blank" href="http://blueprintjs.com/docs/v1/">
+                    This documentation is for Blueprint v2, which is currently under development. Click here to go to
+                    the v1 docs.
                 </a>
                 <Documentation
                     {...this.props}
@@ -58,8 +60,9 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                     navbarLeft={navbarLeft}
                     navbarRight={navbarRight}
                     onComponentUpdate={this.handleComponentUpdate}
+                    renderViewSourceLinkText={this.renderViewSourceLinkText}
                 />
-            </div>
+            </>
         );
     }
 
@@ -75,24 +78,28 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
 
         const match = /docs\/v([0-9]+)/.exec(location.href);
         // default to latest release if we can't find a major version in the URL
-        const currentRelease = match == null ? versions[0].version : match[1];
+        const currentRelease = match == null ? versions[versions.length - 1].version : match[1];
         const releaseItems = versions.map((rel, i) => <MenuItem key={i} href={rel.url} text={rel.version} />);
         const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
 
         return (
             <Popover content={menu} position={Position.BOTTOM} key="_versions">
                 <button className="docs-version-selector pt-text-muted">
-                    v{currentRelease} <span className="pt-icon-standard pt-icon-caret-down" />
+                    v{currentRelease} <Icon icon="caret-down" />
                 </button>
             </Popover>
         );
+    }
+
+    private renderViewSourceLinkText(entry: ITsDocBase) {
+        return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
     }
 
     // This function is called whenever the documentation page changes and should be used to
     // run non-React code on the newly rendered sections.
     private handleComponentUpdate = () => {
         // indeterminate checkbox styles must be applied via JavaScript.
-        document.queryAll(".pt-checkbox input[indeterminate]").forEach((el: HTMLInputElement) => {
+        Array.from(document.querySelectorAll(".pt-checkbox input[indeterminate]")).forEach((el: HTMLInputElement) => {
             el.indeterminate = true;
         });
     };

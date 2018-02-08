@@ -6,10 +6,14 @@
 
 import * as React from "react";
 
-import { IconName } from "../generated/iconName";
+import { IconName } from "@blueprintjs/icons";
 import { Intent } from "./intent";
 
-export type HTMLInputProps = React.HTMLProps<HTMLInputElement>;
+/**
+ * Alias for all valid HTML props for `<input>` element.
+ * Does not include React's `ref` or `key`.
+ */
+export type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 /**
  * A shared base interface for all Blueprint component props.
@@ -32,14 +36,14 @@ export interface IActionProps extends IIntentProps, IProps {
     /** Whether this action is non-interactive. */
     disabled?: boolean;
 
-    /** Name of the icon (the part after `pt-icon-`) to add to the button. */
-    iconName?: IconName;
+    /** Name of a Blueprint UI icon (or an icon element) to render before the text. */
+    icon?: IconName | JSX.Element;
 
     /** Click event handler. */
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;
 
-    /** Action text. */
-    text?: string;
+    /** Action text. Can be any single React renderable. */
+    text?: React.ReactNode;
 }
 
 /** Interface for a link, with support for customizing target window. */
@@ -83,17 +87,17 @@ const INVALID_PROPS = [
     "active",
     "containerRef",
     "elementRef",
-    "iconName",
+    "icon",
     "inputRef",
     "intent",
     "inline",
     "loading",
-    "leftIconName",
+    "leftIcon",
     "onChildrenMount",
     "onRemove",
     "popoverProps",
     "rightElement",
-    "rightIconName",
+    "rightIcon",
     "text",
 ];
 

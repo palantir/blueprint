@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent, Classes, Intent, IProps } from "../../common";
+import { AbstractPureComponent, Classes, Intent, IProps } from "../../common";
 import { ALERT_WARN_CANCEL_PROPS } from "../../common/errors";
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
@@ -25,8 +25,8 @@ export interface IAlertProps extends IProps {
      */
     confirmButtonText?: string;
 
-    /** Name of the icon (the part after `pt-icon-`) to add next to the alert message */
-    iconName?: IconName;
+    /** Name of a Blueprint UI icon (or an icon element) to display on the left side. */
+    icon?: IconName | JSX.Element;
 
     /**
      * The intent to be applied to the confirm (right-most) button.
@@ -55,21 +55,21 @@ export interface IAlertProps extends IProps {
     onConfirm(e: React.MouseEvent<HTMLButtonElement>): void;
 }
 
-export class Alert extends AbstractComponent<IAlertProps, {}> {
+export class Alert extends AbstractPureComponent<IAlertProps, {}> {
     public static defaultProps: IAlertProps = {
         confirmButtonText: "OK",
         isOpen: false,
         onConfirm: null,
     };
 
-    public static displayName = "Blueprint.Alert";
+    public static displayName = "Blueprint2.Alert";
 
     public render() {
-        const { children, className, iconName, intent, isOpen, confirmButtonText, onConfirm, style } = this.props;
+        const { children, className, icon, intent, isOpen, confirmButtonText, onConfirm, style } = this.props;
         return (
             <Dialog className={classNames(Classes.ALERT, className)} isOpen={isOpen} style={style}>
                 <div className={Classes.ALERT_BODY}>
-                    <Icon iconName={iconName} iconSize="inherit" intent={Intent.DANGER} />
+                    <Icon icon={icon} iconSize={40} intent={intent} />
                     <div className={Classes.ALERT_CONTENTS}>{children}</div>
                 </div>
                 <div className={Classes.ALERT_FOOTER}>

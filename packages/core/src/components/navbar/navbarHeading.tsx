@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
@@ -18,9 +17,8 @@ export interface INavbarHeadingProps extends React.HTMLProps<HTMLDivElement>, IP
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@PureRender
-export class NavbarHeading extends React.Component<React.HTMLProps<HTMLDivElement>, {}> {
-    public static displayName = "Blueprint.NavbarHeading";
+export class NavbarHeading extends React.PureComponent<React.HTMLProps<HTMLDivElement>, {}> {
+    public static displayName = "Blueprint2.NavbarHeading";
 
     public render() {
         const { children, className, ...htmlProps } = this.props;

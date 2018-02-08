@@ -5,7 +5,6 @@
  */
 
 import * as classNames from "classnames";
-import * as PureRender from "pure-render-decorator";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
@@ -54,9 +53,8 @@ const ELEVATION_CLASSES = [
     Classes.ELEVATION_4,
 ];
 
-@PureRender
-export class Card extends React.Component<ICardProps, {}> {
-    public static displayName = "Blueprint.Card";
+export class Card extends React.PureComponent<ICardProps, {}> {
+    public static displayName = "Blueprint2.Card";
     public static defaultProps: ICardProps = {
         elevation: Elevation.ZERO,
         interactive: false,

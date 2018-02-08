@@ -4,11 +4,11 @@
 @import "../common/variables";
 @import "./common";
 
-.bp-table-cell {
+.pt-table-cell {
   @include cell();
   @include cell-cursors();
 
-  &.bp-table-truncated-cell {
+  &.pt-table-truncated-cell {
     overflow: hidden;
   }
 
@@ -28,35 +28,35 @@
   }
 }
 
-.bp-table-cell-interactive {
+.pt-table-cell-interactive {
   z-index: $interactive-cell-z-index;
 }
 
-.bp-table-striped {
-  .bp-table-cell-ledger-even {
+.pt-table-striped {
+  .pt-table-cell-ledger-even {
     background-color: $cell-background-color;
   }
 
-  .bp-table-cell-ledger-odd {
+  .pt-table-cell-ledger-odd {
     background-color: mix($table-background-color, $cell-background-color, 50%);
   }
 
   .pt-dark & {
-    .bp-table-cell-ledger-even {
+    .pt-table-cell-ledger-even {
       background-color: $dark-cell-background-color;
     }
 
-    .bp-table-cell-ledger-odd {
+    .pt-table-cell-ledger-odd {
       background-color: mix($dark-table-background-color, $dark-cell-background-color, 50%);
     }
   }
 }
 
-.bp-table-editable-name input {
+.pt-table-editable-name input {
   height: $cell-height; // fixed height for IE11
 }
 
-.bp-table-editable-text {
+.pt-table-editable-text {
   position: absolute;
   top: 0;
   right: 0;

@@ -22,27 +22,27 @@ $reorder-handle-width: 22px !default;
 }
 
 @mixin reorderable-header() {
-  &.bp-table-header-reorderable {
+  &.pt-table-header-reorderable {
     @include grabbable();
 
-    .bp-table-interaction-bar {
+    .pt-table-interaction-bar {
       @include grabbable();
     }
   }
 }
 
-.bp-table-selection-enabled {
-  &.bp-table-column-headers .bp-table-header {
+.pt-table-selection-enabled {
+  &.pt-table-column-headers .pt-table-header {
     @include reorderable-header();
     cursor: $select-column-cursor;
   }
 
-  &.bp-table-row-headers .bp-table-header {
+  &.pt-table-row-headers .pt-table-header {
     @include reorderable-header();
     cursor: $select-row-cursor;
   }
 
-  &.bp-table-menu {
+  &.pt-table-menu {
     cursor: $select-table-cursor;
   }
 
@@ -52,18 +52,18 @@ $reorder-handle-width: 22px !default;
   }
 }
 
-.bp-table-column-header-cell.bp-table-has-reorder-handle:not(.bp-table-has-interaction-bar) {
-  .bp-table-column-name-text {
+.pt-table-column-header-cell.pt-table-has-reorder-handle:not(.pt-table-has-interaction-bar) {
+  .pt-table-column-name-text {
     padding-left: $reorder-handle-width;
   }
 
   // keep the editable cell input flush with the cell's left border
-  .bp-table-editable-name::before {
+  .pt-table-editable-name::before {
     left: -$reorder-handle-width;
   }
 }
 
-.bp-table-reorder-handle-target {
+.pt-table-reorder-handle-target {
   @include grabbable();
   display: flex;
   align-items: center;
@@ -82,11 +82,23 @@ $reorder-handle-width: 22px !default;
   &:active {
     color: $pt-intent-primary;
   }
+
+  .pt-dark & {
+    color: $pt-dark-text-color-disabled;
+
+    &:hover {
+      color: $pt-dark-icon-color-hover;
+    }
+
+    &:active {
+      color: $pt-intent-primary;
+    }
+  }
 }
 
 // The wide, transparent, clickable target that contains the
 // thin resize handle bar
-.bp-table-resize-handle-target {
+.pt-table-resize-handle-target {
   position: absolute;
   opacity: 0;
   // Move the handle target above the following cell
@@ -96,11 +108,11 @@ $reorder-handle-width: 22px !default;
   user-select: none;
 
   &:hover,
-  &.bp-table-dragging {
+  &.pt-table-dragging {
     opacity: 1;
   }
 
-  &.bp-table-resize-vertical {
+  &.pt-table-resize-vertical {
     top: 0;
     right: 0;
     bottom: -$cell-border-width;
@@ -108,7 +120,7 @@ $reorder-handle-width: 22px !default;
     width: $resize-handle-target-width;
   }
 
-  &.bp-table-resize-horizontal {
+  &.pt-table-resize-horizontal {
     right: -$cell-border-width;
     bottom: 0;
     left: 0;
@@ -117,46 +129,46 @@ $reorder-handle-width: 22px !default;
   }
 }
 
-.bp-table-resize-handle {
+.pt-table-resize-handle {
   position: absolute;
   z-index: $pt-z-index-overlay;
   background-color: $resize-handle-color;
 
-  &.bp-table-dragging {
+  &.pt-table-dragging {
     background-color: $resize-handle-dragging-color;
   }
 }
 
-.bp-table-resize-vertical .bp-table-resize-handle {
+.pt-table-resize-vertical .pt-table-resize-handle {
   top: 0;
   bottom: 0;
   left: $resize-handle-padding;
   width: $resize-handle-width;
 }
 
-.bp-table-resize-horizontal .bp-table-resize-handle {
+.pt-table-resize-horizontal .pt-table-resize-handle {
   top: $resize-handle-padding;
   right: 0;
   left: 0;
   height: $resize-handle-width;
 }
 
-.bp-table-resize-guides .bp-table-horizontal-guide {
+.pt-table-resize-guides .pt-table-horizontal-guide {
   margin-top: $resize-handle-position-correction;
   background-color: $resize-handle-dragging-color;
   height: $resize-handle-width;
 
-  &.bp-table-horizontal-guide-flush-top {
+  &.pt-table-horizontal-guide-flush-top {
     margin-top: 0;
   }
 }
 
-.bp-table-resize-guides .bp-table-vertical-guide {
+.pt-table-resize-guides .pt-table-vertical-guide {
   margin-left: $resize-handle-position-correction;
   background-color: $resize-handle-dragging-color;
   width: $resize-handle-width;
 
-  &.bp-table-vertical-guide-flush-left {
+  &.pt-table-vertical-guide-flush-left {
     margin-left: 0;
   }
 }

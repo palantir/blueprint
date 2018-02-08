@@ -5,7 +5,7 @@
  */
 
 import { Classes, Icon, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as moment from "moment";
 import * as React from "react";
 
@@ -96,7 +96,7 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                 />
                 <div>
                     <Moment date={start} />
-                    <Icon iconName="arrow-right" iconSize={20} />
+                    <Icon icon="arrow-right" iconSize={20} />
                     <Moment date={end} />
                 </div>
             </div>

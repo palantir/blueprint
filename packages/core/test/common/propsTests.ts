@@ -19,7 +19,7 @@ describe("Props", () => {
                 cat: true,
                 containerRef: true,
                 elementRef: true,
-                iconName: true,
+                icon: true,
                 intent: true,
                 text: true,
             };
@@ -38,7 +38,7 @@ describe("Props", () => {
                 cat: true,
                 containerRef: true,
                 elementRef: true,
-                iconName: true,
+                icon: true,
                 intent: true,
                 text: true,
             });

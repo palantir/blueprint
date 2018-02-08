@@ -127,7 +127,7 @@ module.exports = {
                     : [ require.resolve("style-loader"), ...scssLoaders ],
             },
             {
-                test: /\.(eot|ttf|woff|woff2|svg|png)$/,
+                test: /\.(eot|ttf|woff|woff2|svg|png|gif|jpe?g)$/,
                 loader: require.resolve("file-loader"),
             },
         ],

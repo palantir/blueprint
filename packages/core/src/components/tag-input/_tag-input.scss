@@ -1,0 +1,139 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "../../common/variables";
+@import "../forms/common";
+@import "../tag/common";
+
+$ti-padding: ($pt-input-height - $tag-height) / 2;
+
+$ti-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
+$ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
+
+.pt-tag-input {
+  @include pt-flex-container(row, $fill: ".pt-tag-input-values");
+  align-items: flex-start;
+  cursor: text;
+  height: auto;
+  min-height: $pt-input-height;
+  padding-right: 0;
+  padding-left: $ti-padding;
+
+  .pt-tag-input-icon {
+    // margins to center icon in one-line input
+    margin-top: $ti-icon-padding;
+    margin-right: $ti-icon-padding;
+    margin-left: $ti-icon-padding - $ti-padding;
+    color: $pt-icon-color;
+  }
+
+  .pt-tag-input-values {
+    @include pt-flex-container(row, $ti-padding);
+    flex-wrap: wrap;
+    align-items: center;
+    // fill vertical height
+    align-self: stretch;
+    margin-top: $ti-padding;
+    margin-right: $ti-icon-padding;
+
+    > * {
+      margin-bottom: $ti-padding;
+    }
+  }
+
+  .pt-tag {
+    // NOTE: in order to wrap long words, you must set explicit width on TagInput,
+    // or use .pt-fill CSS class modifier.
+    overflow-wrap: break-word;
+  }
+
+  .pt-input-ghost {
+    // input fills remaining line
+    flex: 1 1 auto;
+    // essentially a min-width, cuz flex allows it to grow or shrink:
+    width: $pt-grid-size * 8;
+    line-height: $tag-height;
+
+    &:disabled,
+    &.pt-disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  .pt-button,
+  .pt-spinner {
+    margin: ($pt-input-height - $pt-button-height-small) / 2;
+    margin-left: 0;
+  }
+
+  .pt-button {
+    @include pt-button-height-small();
+  }
+
+  &.pt-large {
+    @include pt-flex-margin(row, $ti-icon-padding-large);
+    height: auto;
+    min-height: $pt-input-height-large;
+
+    .pt-tag-input-icon {
+      margin-top: $ti-icon-padding-large;
+      margin-left: $ti-icon-padding-large - $ti-padding;
+    }
+
+    .pt-input-ghost {
+      line-height: $tag-height-large;
+    }
+
+    .pt-button {
+      @include pt-button-height-default();
+      margin: ($pt-input-height-large - $pt-button-height) / 2;
+      margin-left: 0;
+    }
+
+    .pt-spinner {
+      margin: ($pt-input-height-large - $pt-button-height-small) / 2;
+      margin-left: 0;
+    }
+  }
+
+  &.pt-active {
+    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+    background-color: $input-background-color;
+  }
+
+  .pt-dark &,
+  &.pt-dark {
+    .pt-tag-input-icon {
+      color: $pt-dark-icon-color;
+    }
+
+    .pt-input-ghost {
+      @include pt-dark-input-placeholder();
+
+      color: $dark-input-color;
+    }
+
+    &.pt-active {
+      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
+                  $pt-dark-input-box-shadow;
+      background-color: $dark-input-background-color;
+    }
+  }
+}
+
+// TODO: this is probably a useful modifier that we should pull into core, and use in EditableText
+.pt-input-ghost {
+  @include pt-input-placeholder();
+
+  // reset browser input styles (we're using an input solely because you can type in it)
+  border: none;
+  box-shadow: none;
+  background: none;
+  padding: 0;
+
+  &:focus {
+    // remove focus state too
+    // stylelint-disable-next-line declaration-no-important
+    outline: none !important;
+  }
+}

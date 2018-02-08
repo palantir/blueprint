@@ -33,13 +33,6 @@ export interface IHeaderCellProps extends IProps {
     loading?: boolean;
 
     /**
-     * An element, like a `<Menu>`, this is displayed by right-clicking
-     * anywhere in the header.
-     * @deprecated since v1.17.0; use `renderMenu` instead
-     */
-    menu?: JSX.Element;
-
-    /**
      * The name displayed in the header of the row/column.
      */
     name?: string;
@@ -49,7 +42,7 @@ export interface IHeaderCellProps extends IProps {
      * anywhere in the header. The callback will receive the cell index if it was provided via
      * props.
      */
-    renderMenu?: (index?: number) => JSX.Element;
+    menuRenderer?: (index?: number) => JSX.Element;
 
     /**
      * A `ReorderHandle` React component that allows users to drag-reorder the column header.
@@ -70,7 +63,7 @@ export interface IHeaderCellProps extends IProps {
 export interface IInternalHeaderCellProps extends IHeaderCellProps {
     /**
      * Specifies if the cell is reorderable.
-     * @deprecated since 1.21.0; pass `isReorderable` to `ColumnHeader` or `RowHeader` instead
+     * @internal users should pass `isReorderable` to `ColumnHeader` or `RowHeader` instead
      */
     isReorderable?: boolean;
 
@@ -98,16 +91,13 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
     }
 
     public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
-        const { renderMenu } = this.props;
+        const { menuRenderer } = this.props;
 
-        if (CoreUtils.isFunction(renderMenu)) {
+        if (CoreUtils.isFunction(menuRenderer)) {
             // the preferred way (a consistent function instance that won't cause as many re-renders)
-            return renderMenu(this.props.index);
+            return menuRenderer(this.props.index);
         } else {
-            // the deprecated way (leads to lots of unnecessary re-renders because of menu-item
-            // callbacks needing access to the index of the right-clicked cell, which demands that
-            // new callback functions and JSX elements be recreated on each render of the parent)
-            return this.props.menu;
+            return undefined;
         }
     }
 
