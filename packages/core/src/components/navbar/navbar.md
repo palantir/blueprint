@@ -54,20 +54,11 @@ them supports the full range of HTML props.
 
 ```tsx
 <Navbar>
-    <NavbarGroup>
+    <NavbarGroup align={Alignment.LEFT}>
         <NavbarHeading>Blueprint</NavbarHeading>
-    </NavbarGroup>
-    <NavbarGroup align={Alignment.RIGHT}>
-        <Button className="pt-minimal" icon="home">
-            Home
-        </Button>
-        <Button className="pt-minimal" icon="document">
-            Files
-        </Button>
         <NavbarDivider />
-        <Button className="pt-minimal" icon="user" />
-        <Button className="pt-minimal" icon="notifications" />
-        <Button className="pt-minimal" icon="cog" />
+        <Button className="pt-minimal" icon="home" text="Home" />
+        <Button className="pt-minimal" icon="document" text="Files" />
     </NavbarGroup>
 </Navbar>
 ```
