@@ -16,7 +16,7 @@ may also use the provided styles by themselves, without using the component.
 
 @## JavaScript API
 
-The `Tree` component is available in the __@blueprintjs/core__ package.
+The `Tree` component is available in the **@blueprintjs/core** package.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 `Tree` is a stateless component. Its contents are dictated by the `contents` prop, which is an array
@@ -35,17 +35,16 @@ example, `[2, 0]` represents the first child (`0`) of the third top-level node (
 
 <div class="docs-interface-name">Tree</div>
 
-- `getNodeContentElement(nodeId: string | number): HTMLElement | undefined` &ndash;
-   Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
-   This element does not contain the children of the node, only its label and controls.
-   If the node is not currently mounted, `undefined` is returned.
+* `getNodeContentElement(nodeId: string | number): HTMLElement | undefined` &ndash;
+  Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
+  This element does not contain the children of the node, only its label and controls.
+  If the node is not currently mounted, `undefined` is returned.
 
 @### Tree node interface
 
 `ITreeNode` objects determine the contents, appearance, and state of each node in the tree.
 
-For example, `iconName` controls the icon displayed for the node, and `isExpanded` determines
+For example, `icon` controls the icon displayed for the node, and `isExpanded` determines
 whether the node's children are shown.
 
 @interface ITreeNodeProps
-

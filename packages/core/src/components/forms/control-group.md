@@ -42,13 +42,13 @@ will all have the same width as the widest control.
 
 @## JavaScript API
 
-The `ControlGroup` component is available in the __@blueprintjs/core__ package. Make sure to review [general usage docs for JS components](#blueprint.usage).
+The `ControlGroup` component is available in the **@blueprintjs/core** package. Make sure to review [general usage docs for JS components](#blueprint.usage).
 
 This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
 
 ```tsx
 <ControlGroup fill={true} vertical={false}>
-    <Button iconName="filter">Filter</Button>
+    <Button icon="filter">Filter</Button>
     <InputGroup placeholder="Find filters..." />
 </ControlGroup>
 ```
