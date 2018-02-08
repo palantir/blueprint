@@ -183,6 +183,7 @@ renameProp useInteractionBar enableColumnInteractionBar
 renamePartialClass bp-table- pt-table-
 renameProp "(?<!_)TABLE_STRIPED" HTML_TABLE_STRIPED
 renameProp "(?<!_)TABLE_BORDERED" HTML_TABLE_BORDERED
+renameString Classes.TABLE Classes.HTML_TABLE
 renameString "pt-striped(?!-)" pt-html-table-striped
 renameString "pt-bordered(?!-)" pt-html-table-bordered
 renameString "pt-table(?!-)" pt-html-table
@@ -197,6 +198,8 @@ renameProp renderVisibleItem visibleItemRenderer
 renameProp renderLabel labelRenderer
 renameProp isDisabled disabled
 renameProp isModal hasBackdrop
+renameProp leftIconName leftIcon
+renameProp rightIconName rightIcon
 renameProp iconName icon
 renameString "icon=\{IconClasses" "icon={IconNames" # prop usage (previous line renames icon prop)
 renameString IconClasses "Classes.iconClass(IconNames"  # assuming user wanted class name
@@ -206,4 +209,15 @@ renameString "pt-file-upload(?!-)" pt-file-input # only rename full classname, n
 renameString FILE_UPLOAD FILE_INPUT
 renameString pt-condensed pt-small
 renameString TABLE_CONDENSED SMALL
+renameString Popover2 Popover
+renameString Tooltip2 Tooltip
+renameString Tabs2 Tabs
+renameString Omnibox Omnibar
 warnProp inline usePortal
+
+echo "
+
+Removed props"
+warn submenuViewportMargins REMOVED
+warn useSmartPositioning REMOVED
+warn popoverPosition REMOVED
