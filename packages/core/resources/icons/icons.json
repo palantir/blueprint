@@ -3032,7 +3032,7 @@
   },
   {
     "displayName": "Strikethrough",
-    "iconName": "strikethrough",
+    "className": "pt-icon-strikethrough",
     "tags": "typography, text, font-style, line, removed",
     "group": "editor",
     "content": "\\e7a6"
