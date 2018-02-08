@@ -24,6 +24,9 @@ export interface IControlProps extends IProps, HTMLInputProps {
     /** Whether the control is checked. */
     checked?: boolean;
 
+    /** JSX label for the control. */
+    children?: React.ReactNode;
+
     /** Whether the control is initially checked (uncontrolled mode). */
     defaultChecked?: boolean;
 
@@ -39,8 +42,8 @@ export interface IControlProps extends IProps, HTMLInputProps {
     /**
      * Text label for the control.
      *
-     * This prop actually supports JSX elements, but TypeScript will throw an error because
-     * `HTMLAttributes` only allows strings. Use `labelElement` to supply a JSX element in TypeScript.
+     * Use `children` or `labelElement` to supply JSX content. This prop actually supports JSX elements,
+     * but TypeScript will throw an error because `HTMLAttributes` only allows strings.
      */
     label?: string;
 
