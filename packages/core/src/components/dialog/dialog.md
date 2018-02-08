@@ -39,12 +39,21 @@ class DialogExample extends React.Component<{}, IDialogExampleState> {
         return (
             <div>
                 <Button onClick={this.toggleDialog} text="Show dialog" />
-                <Dialog icon="inbox" isOpen={this.state.isOpen} onClose={this.toggleDialog} title="Dialog header">
+                <Dialog
+                    icon="inbox"
+                    isOpen={this.state.isOpen}
+                    onClose={this.toggleDialog}
+                    title="Dialog header"
+                >
                     <div className="pt-dialog-body">Some content</div>
                     <div className="pt-dialog-footer">
                         <div className="pt-dialog-footer-actions">
                             <Button text="Secondary" />
-                            <Button intent={Intent.PRIMARY} onClick={this.toggleDialog} text="Primary" />
+                            <Button
+                                intent={Intent.PRIMARY}
+                                onClick={this.toggleDialog}
+                                text="Primary"
+                            />
                         </div>
                     </div>
                 </Dialog>
