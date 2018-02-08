@@ -5,20 +5,20 @@
  */
 
 import { Classes, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
-import { DateRangeInput } from "@blueprintjs/datetime";
+import { DateRangeInput, IDateFormatter } from "@blueprintjs/datetime";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 
 export interface IDateRangeInputExampleState {
-    allowSingleDayRange?: boolean;
-    closeOnSelection?: boolean;
-    contiguousCalendarMonths?: boolean;
-    disabled?: boolean;
-    formatKey: string;
-    reverseMonthAndYearMenus?: boolean;
-    selectAllOnFocus?: boolean;
+    allowSingleDayRange: boolean;
+    closeOnSelection: boolean;
+    contiguousCalendarMonths: boolean;
+    disabled: boolean;
+    format: IDateFormatter;
+    reverseMonthAndYearMenus: boolean;
+    selectAllOnFocus: boolean;
 }
 
 export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
@@ -27,7 +27,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         closeOnSelection: false,
         contiguousCalendarMonths: true,
         disabled: false,
-        formatKey: Object.keys(FORMATS)[0],
+        format: FORMATS[0],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
     };
@@ -36,7 +36,6 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         this.setState({ contiguousCalendarMonths: contiguous });
     });
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
-    private toggleFormatKey = handleStringChange(formatKey => this.setState({ formatKey }));
     private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
         this.setState({ reverseMonthAndYearMenus }),
     );
@@ -45,13 +44,11 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
 
     protected renderExample() {
-        const { formatKey, ...spreadableState } = this.state;
-        return <DateRangeInput format={FORMATS[formatKey]} {...spreadableState} />;
+        return <DateRangeInput {...this.state} />;
     }
 
     protected renderOptions() {
         return [
-            [<FormatSelect key="Format" onChange={this.toggleFormatKey} selectedValue={this.state.formatKey} />],
             [
                 <label className={Classes.LABEL} key="modifierslabel">
                     Modifiers
@@ -88,6 +85,9 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
                     onChange={this.toggleReverseMonthAndYearMenus}
                 />,
             ],
+            [<FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />],
         ];
     }
+
+    private handleFormatChange = (format: IDateFormatter) => this.setState({ format });
 }

@@ -5,79 +5,52 @@
  */
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
-import { DateFormat } from "@blueprintjs/datetime";
+import { IDateFormatter } from "@blueprintjs/datetime";
+import { handleNumberChange } from "@blueprintjs/docs-theme";
 import * as moment from "moment";
 import * as React from "react";
 
 export interface IFormatSelectProps {
-    /**
-     * The format-string option to display as selected.
-     */
-    selectedValue: string;
+    /** Selected formatter. */
+    format: IDateFormatter;
 
-    /**
-     * The callback to fire when the selected value changes.
-     */
-    onChange: (event: React.FormEvent<HTMLElement>) => void;
+    /** The callback to fire when a new formatter is chosen. */
+    onChange: (formatter: IDateFormatter) => void;
 }
 
-function keyBy<T>(array: T[], func: (t: T) => string): { [key: string]: T } {
-    const result: { [key: string]: T } = {};
-    array.forEach(val => (result[func(val)] = val));
-    return result;
+export class FormatSelect extends React.PureComponent<IFormatSelectProps> {
+    private handleChange = handleNumberChange(index => this.props.onChange(FORMATS[index]));
+
+    public render() {
+        const value = FORMATS.indexOf(this.props.format);
+        return (
+            <RadioGroup label="Date format" onChange={this.handleChange} selectedValue={value}>
+                {FORMATS.map((format, index) => <Radio key={index} label={format.placeholder} value={index} />)}
+            </RadioGroup>
+        );
+    }
 }
 
-function asString(format: DateFormat) {
-    return typeof format === "string" ? format : format.placeholder || "unnamed";
+export const FORMATS: IDateFormatter[] = [
+    {
+        dateToString: date => (date == null ? "" : date.toLocaleDateString()),
+        placeholder: "JS Date",
+        stringToDate: str => new Date(Date.parse(str)),
+    },
+    momentFormatter("MM/DD/YYYY"),
+    momentFormatter("YYYY-MM-DD"),
+    momentFormatter("YYYY-MM-DD HH:mm:ss"),
+    {
+        dateToString: date => moment(date).fromNow(),
+        placeholder: "from now (moment)",
+        stringToDate: str => moment(str).toDate(),
+    },
+];
+
+function momentFormatter(format: string): IDateFormatter {
+    return {
+        dateToString: date => moment(date).format(format),
+        placeholder: `${format} (moment)`,
+        stringToDate: str => moment(str, format).toDate(),
+    };
 }
-
-export const FORMATS = keyBy(
-    [
-        "MM/DD/YYYY",
-        "YYYY-MM-DD",
-        "YYYY-MM-DD HH:mm:ss",
-        {
-            dateToString(date: Date) {
-                const durationMillis = new Date().getTime() - date.getTime();
-                const days = Math.floor(moment.duration(durationMillis).asDays());
-                return Math.abs(days) + (days >= 0 ? " days ago" : " days from now");
-            },
-            stringToDate(str: string) {
-                const parts = str.split(/\s+/);
-                if (parts.length < 3) {
-                    return undefined;
-                }
-                if (parts[1].toLowerCase() !== "days") {
-                    return undefined;
-                }
-                const numDays = +parts[0];
-                if (isNaN(numDays)) {
-                    return undefined;
-                }
-
-                if (parts[2].toLowerCase() === "ago") {
-                    return moment()
-                        .subtract(numDays, "days")
-                        .toDate();
-                } else if (
-                    parts.length === 4 &&
-                    parts[2].toLowerCase() === "from" &&
-                    parts[3].toLowerCase() === "now"
-                ) {
-                    return moment()
-                        .add(numDays, "days")
-                        .toDate();
-                }
-                return undefined;
-            },
-            placeholder: "custom",
-        },
-    ],
-    asString,
-);
-
-export const FormatSelect: React.SFC<IFormatSelectProps> = props => (
-    <RadioGroup label="Date format" onChange={props.onChange} selectedValue={props.selectedValue}>
-        {Object.keys(FORMATS).map(value => <Radio key={value} label={value} value={value} />)}
-    </RadioGroup>
-);
