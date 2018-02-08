@@ -15,14 +15,14 @@ Dialogs present content overlaid over other parts of the UI.
 
 @## JavaScript API
 
-The `Dialog` component is available in the __@blueprintjs/core__ package.
+The `Dialog` component is available in the **@blueprintjs/core** package.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 There are two ways to render dialogs:
 
-- injected into a newly created element attached to `document.body` using `<Portal>`.
+* injected into a newly created element attached to `document.body` using `<Portal>`.
   This is the default behavior.
-- in-place in the DOM tree. Set `usePortal={false}` to enable this behavior.
+* in-place in the DOM tree. Set `usePortal={false}` to enable this behavior.
 
 `Dialog` is a stateless React component. The children you provide to this component
 are rendered as contents inside the `.pt-dialog` element.
@@ -40,14 +40,12 @@ class DialogExample extends React.Component<{}, IDialogExampleState> {
             <div>
                 <Button onClick={this.toggleDialog} text="Show dialog" />
                 <Dialog
-                    iconName="inbox"
+                    icon="inbox"
                     isOpen={this.state.isOpen}
                     onClose={this.toggleDialog}
                     title="Dialog header"
                 >
-                    <div className="pt-dialog-body">
-                        Some content
-                    </div>
+                    <div className="pt-dialog-body">Some content</div>
                     <div className="pt-dialog-footer">
                         <div className="pt-dialog-footer-actions">
                             <Button text="Secondary" />

@@ -145,7 +145,11 @@ $dialog-padding: $pt-grid-size * 2 !default;
 
   cursor: pointer;
   padding: $pt-grid-size;
-  padding-right: $dialog-padding;
+
+  .pt-icon-large,
+  .pt-icon {
+    margin: 0;
+  }
 }
 
 .pt-dialog-body {

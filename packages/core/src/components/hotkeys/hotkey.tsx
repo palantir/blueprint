@@ -82,10 +82,6 @@ export class Hotkey extends AbstractPureComponent<IHotkeyProps, {}> {
         stopPropagation: false,
     };
 
-    public static isInstance(element: any): element is React.ReactElement<IHotkeyProps> {
-        return element != null && (element as JSX.Element).type === Hotkey;
-    }
-
     public render() {
         const { label, className, ...spreadableProps } = this.props;
 

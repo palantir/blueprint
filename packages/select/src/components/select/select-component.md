@@ -29,13 +29,13 @@ ReactDOM.render(
         onItemSelect={...}
     >
         {/* children become the popover target; render value here */}
-        <Button text={Films.items[0].title} rightIconName="double-caret-vertical" />
+        <Button text={Films.items[0].title} rightIcon="double-caret-vertical" />
     </FilmSelect>,
     document.querySelector("#root")
 );
 ```
 
-In TypeScript, `Select<T>` is a *generic component* so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type (speak your language) so you can easily define handlers without transformation steps, but most props are required as a result. The static `Select.ofType<T>()` method is available to streamline this process. (Note that this has no effect on JavaScript usage: the `Select` export is a perfectly valid React component class.)
+In TypeScript, `Select<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type (speak your language) so you can easily define handlers without transformation steps, but most props are required as a result. The static `Select.ofType<T>()` method is available to streamline this process. (Note that this has no effect on JavaScript usage: the `Select` export is a perfectly valid React component class.)
 
 @## Querying
 
@@ -43,7 +43,7 @@ Supply a predicate to automatically query items based on the `InputGroup` value.
 
 Omitting both `itemPredicate` and `itemListPredicate` props will cause the component to always render all `items`. It will not hide the `InputGroup`; use the `filterable` prop for that. In this case, you can implement your own filtering and simply change the `items` prop.
 
-The __@blueprintjs/select__ package exports `ItemPredicate<T>` and `ItemListPredicate<T>` type aliases to simplify the process of implementing these functions.
+The **@blueprintjs/select** package exports `ItemPredicate<T>` and `ItemListPredicate<T>` type aliases to simplify the process of implementing these functions.
 See the code sample in [Item Renderer API](#select/select-component.item-renderer-api) below for usage.
 
 @### Non-ideal states

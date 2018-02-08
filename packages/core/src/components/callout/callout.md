@@ -17,7 +17,7 @@ heading, use the `<h5>` element.
 
 @## JavaScript API
 
-The `Callout` component is available in the __@blueprintjs/core__ package.
+The `Callout` component is available in the **@blueprintjs/core** package.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 The component is a simple wrapper around the CSS API that provides props for modifiers and the optional title
@@ -25,8 +25,8 @@ element. Any additional HTML props will be spread to the rendered `<div>` elemen
 useful features:
 
 1. Providing an `intent` will set use a default icon per intent, which can be overridden by supplying
-your own `iconName`.
-1. The React component renders an SVG `Icon` element for the `iconName` prop, instead of the `.pt-icon-*`
-CSS class.
+   your own `icon`.
+1. The React component renders an SVG `Icon` element for the `icon` prop, instead of the `.pt-icon-*`
+   CSS class.
 
 @interface ICalloutProps

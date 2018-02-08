@@ -4,14 +4,14 @@ Menus display lists of interactive items.
 
 @## JavaScript API
 
-The `Menu`, `MenuItem`, and `MenuDivider` components are available in the __@blueprintjs/core__
+The `Menu`, `MenuItem`, and `MenuDivider` components are available in the **@blueprintjs/core**
 package. Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 The `Menu` API includes three stateless React components:
 
-- [`Menu`](#core/components/menu.menu)
-- [`MenuItem`](#core/components/menu.menu-item)
-- [`MenuDivider`](#core/components/menu.menu-divider)
+* [`Menu`](#core/components/menu.menu)
+* [`MenuItem`](#core/components/menu.menu-item)
+* [`MenuDivider`](#core/components/menu.menu-divider)
 
 @### Sample usage
 
@@ -22,23 +22,11 @@ class MenuExample extends React.Component<{}, {}> {
     public render() {
         return (
             <Menu>
-                <MenuItem
-                    iconName="new-text-box"
-                    onClick={this.handleClick}
-                    text="New text box"
-                />
-                <MenuItem
-                    iconName="new-object"
-                    onClick={this.handleClick}
-                    text="New object"
-                />
-                <MenuItem
-                    iconName="new-link"
-                    onClick={this.handleClick}
-                    text="New link"
-                />
+                <MenuItem icon="new-text-box" onClick={this.handleClick} text="New text box" />
+                <MenuItem icon="new-object" onClick={this.handleClick} text="New object" />
+                <MenuItem icon="new-link" onClick={this.handleClick} text="New link" />
                 <MenuDivider />
-                <MenuItem text="Settings..." iconName="cog" />
+                <MenuItem text="Settings..." icon="cog" />
             </Menu>
         );
     }
@@ -106,7 +94,7 @@ element as the `content` property of a `Popover`:
 
 ```tsx
 <Popover content={<Menu>...</Menu>} position={Position.RIGHT_TOP}>
-    <Button iconName="share" text="Open in..." />
+    <Button icon="share" text="Open in..." />
 </Popover>
 ```
 
@@ -127,29 +115,29 @@ Menus can be constructed manually using the HTML markup and `pt-menu-*` classes 
 should use the menu [React components](#core/components/menu.javscript-api) instead wherever possible,
 as they abstract away the tedious parts of implementing a menu.
 
-- Begin with a `ul.pt-menu`. Each `li` child denotes a single entry in the menu.
+* Begin with a `ul.pt-menu`. Each `li` child denotes a single entry in the menu.
 
-- Put a `.pt-menu-item` element inside an `li` to create a clickable entry. Use either `<button>` or
-`<a>` tags for menu items to denote interactivity.
+* Put a `.pt-menu-item` element inside an `li` to create a clickable entry. Use either `<button>` or
+  `<a>` tags for menu items to denote interactivity.
 
-- Add icons to menu items the same way you would to buttons: simply add the appropriate
-`pt-icon-<name>` class*.
+* Add icons to menu items the same way you would to buttons: simply add the appropriate
+  `pt-icon-<name>` class\*.
 
-- Make menu items active with the class `pt-active` (along with `pt-intent-*` if suitable).
+* Make menu items active with the class `pt-active` (along with `pt-intent-*` if suitable).
 
-- Make menu items non-interactive with the class `pt-disabled`.
+* Make menu items non-interactive with the class `pt-disabled`.
 
-- Wrap menu item text in a `<span>` element for proper alignment. (Note that React automatically
-does this.)
+* Wrap menu item text in a `<span>` element for proper alignment. (Note that React automatically
+  does this.)
 
-- Add a right-aligned label to a menu item by adding a `span.pt-menu-item-label` inside the
-`.pt-menu-item`, after the content. Add an icon to the label by adding icon classes to the label
-element (`pt-icon-standard` size is recommended).
+* Add a right-aligned label to a menu item by adding a `span.pt-menu-item-label` inside the
+  `.pt-menu-item`, after the content. Add an icon to the label by adding icon classes to the label
+  element (`pt-icon-standard` size is recommended).
 
-- Add a divider between items with `li.pt-menu-divider`.
+* Add a divider between items with `li.pt-menu-divider`.
 
-- If you want the popover to close when the user clicks a menu item, add the class
-`pt-popover-dismiss` to any relevant menu items.
+* If you want the popover to close when the user clicks a menu item, add the class
+  `pt-popover-dismiss` to any relevant menu items.
 
 <small>\* You do not need to add a `pt-icon-<sizing>` class to menu items—icon sizing is
 defined as part of `.pt-menu-item`.</small>
