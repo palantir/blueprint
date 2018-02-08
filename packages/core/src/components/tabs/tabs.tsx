@@ -114,7 +114,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
         const tabTitles = React.Children.map(
             this.props.children,
-            child => (isTab(child) ? this.renderTabTitle(child) : child),
+            child => (Utils.isElementOfType(child, Tab) ? this.renderTabTitle(child as TabElement) : child),
         );
 
         const tabPanels = this.getTabChildren()
@@ -208,7 +208,9 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
     /** Filters children to only `<Tab>`s */
     private getTabChildren(props: ITabsProps & { children?: React.ReactNode } = this.props) {
-        return React.Children.toArray(props.children).filter(isTab) as TabElement[];
+        return React.Children.toArray(props.children).filter((child) => {
+            return Utils.isElementOfType(child, Tab);
+        }) as TabElement[];
     }
 
     /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
@@ -313,8 +315,4 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
 function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
     return codes.indexOf(e.which) >= 0;
-}
-
-function isTab(child: React.ReactChild): child is TabElement {
-    return child != null && Utils.isElementType(child as JSX.Element, Tab);
 }

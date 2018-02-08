@@ -8,7 +8,6 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, IProps } from "../../common";
-import { isElementType } from "../../common/utils";
 import { KeyCombo } from "./keyCombo";
 
 export interface IHotkeyProps extends IProps {
@@ -82,10 +81,6 @@ export class Hotkey extends AbstractPureComponent<IHotkeyProps, {}> {
         preventDefault: false,
         stopPropagation: false,
     };
-
-    public static isInstance(element: any): element is React.ReactElement<IHotkeyProps> {
-        return element != null && isElementType(element as JSX.Element, Hotkey);
-    }
 
     public render() {
         const { label, className, ...spreadableProps } = this.props;

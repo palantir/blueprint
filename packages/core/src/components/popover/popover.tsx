@@ -291,7 +291,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                 [Classes.ACTIVE]: isOpen && !isHoverInteractionKind,
             }),
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            disabled: isOpen && Utils.isElementType(children.target, Tooltip) ? true : children.target.props.disabled,
+            disabled: isOpen && Utils.isElementOfType(children.target, Tooltip) ? true : children.target.props.disabled,
             tabIndex: targetTabIndex,
         });
 

@@ -35,8 +35,11 @@ export function getDisplayName(ComponentClass: React.ComponentClass | INamed) {
     return (ComponentClass as React.ComponentClass).displayName || (ComponentClass as INamed).name || "Unknown";
 }
 
-export function isElementType(element: JSX.Element, ComponentClass: React.ComponentClass) {
-    return element.type === React.createElement(ComponentClass).type;
+export function isElementOfType<P = {}>(
+    element: any,
+    ComponentClass: React.ComponentClass<P>
+): element is React.ReactElement<P> {
+    return element != null && element.type === React.createElement(ComponentClass).type;
 }
 
 /**

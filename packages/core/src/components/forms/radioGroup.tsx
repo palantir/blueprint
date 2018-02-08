@@ -10,8 +10,8 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IOptionProps, IProps } from "../../common/props";
-import { isElementType } from "../../common/utils";
-import { Radio } from "./controls";
+import { isElementOfType } from "../../common/utils";
+import { Radio, IRadioProps } from "./controls";
 
 export interface IRadioGroupProps extends IProps {
     /**
@@ -81,8 +81,8 @@ export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
 
     private renderChildren() {
         return React.Children.map(this.props.children, child => {
-            if (isRadio(child)) {
-                return React.cloneElement(child, this.getRadioProps(child.props));
+            if (isElementOfType(child, Radio)) {
+                return React.cloneElement(child, this.getRadioProps(child.props as IOptionProps));
             } else {
                 return child;
             }
@@ -95,7 +95,7 @@ export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
         ));
     }
 
-    private getRadioProps(optionProps: IOptionProps) {
+    private getRadioProps(optionProps: IOptionProps): IRadioProps {
         const { name } = this.props;
         const { value, disabled } = optionProps;
         return {
@@ -106,8 +106,4 @@ export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
             onChange: this.props.onChange,
         };
     }
-}
-
-function isRadio(child: any): child is JSX.Element {
-    return child != null && isElementType(child as JSX.Element, Radio);
 }

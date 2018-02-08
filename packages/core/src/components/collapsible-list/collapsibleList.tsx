@@ -11,7 +11,7 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
-import { isElementType } from "../../common/utils";
+import { isElementOfType } from "../../common/utils";
 import { Menu } from "../menu/menu";
 import { IMenuItemProps, MenuItem } from "../menu/menuItem";
 import { IPopoverProps, Popover } from "../popover/popover";
@@ -118,10 +118,10 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> 
             return [[], []];
         }
         const childrenArray = React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
-            if (!isElementType(child, MenuItem)) {
+            if (!isElementOfType(child, MenuItem)) {
                 throw new Error(Errors.COLLAPSIBLE_LIST_INVALID_CHILD);
             }
-            return React.cloneElement(child, { key: `visible-${index}` });
+            return React.cloneElement(child as JSX.Element, { key: `visible-${index}` });
         });
         if (this.props.collapseFrom === CollapseFrom.START) {
             // reverse START list so we can always slice visible items from the front of the list
