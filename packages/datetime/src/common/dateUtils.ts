@@ -4,27 +4,26 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as moment from "moment";
+import * as format from "date-fns/format";
+import * as isSameDay from "date-fns/is_same_day";
+import * as parse from "date-fns/parse";
+
+// Import a subset of locales to reduce the bundle size of consuming apps
+// Following locales have been selected according to their popularity
+const LOCALE: { [index: string]: any } = {
+    de: require("date-fns/locale/de"),
+    en: require("date-fns/locale/en"),
+    es: require("date-fns/locale/es"),
+    fr: require("date-fns/locale/fr"),
+    it: require("date-fns/locale/it"),
+    ko: require("date-fns/locale/ko"),
+    ru: require("date-fns/locale/ru"),
+    uk: require("date-fns/locale/en"),
+    zh_cn: require("date-fns/locale/zh_cn"),
+};
 import { DateFormat } from "../dateFormatter";
-import { Months } from "./months";
-
-export type DateRange = [Date | undefined, Date | undefined];
-export type MomentDateRange = [moment.Moment, moment.Moment];
-
-export enum DateRangeBoundary {
-    START = "start",
-    END = "end",
-}
-
-export function areEqual(date1: Date, date2: Date) {
-    if (date1 == null && date2 == null) {
-        return true;
-    } else if (date1 == null || date2 == null) {
-        return false;
-    } else {
-        return date1.getTime() === date2.getTime();
-    }
-}
+import { DateRange, SupportedLocaleString } from "./types";
+import { padWithZeroes } from "./utils";
 
 export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
     if (dateRange1 == null && dateRange2 == null) {
@@ -34,29 +33,10 @@ export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
     } else {
         const [start1, end1] = dateRange1;
         const [start2, end2] = dateRange2;
-        const areStartsEqual = (start1 == null && start2 == null) || areSameDay(start1, start2);
-        const areEndsEqual = (end1 == null && end2 == null) || areSameDay(end1, end2);
+        const areStartsEqual = (start1 == null && start2 == null) || isSameDay(start1, start2);
+        const areEndsEqual = (end1 == null && end2 == null) || isSameDay(end1, end2);
         return areStartsEqual && areEndsEqual;
     }
-}
-
-export function areSameDay(date1: Date, date2: Date) {
-    return (
-        date1 != null &&
-        date2 != null &&
-        date1.getDate() === date2.getDate() &&
-        date1.getMonth() === date2.getMonth() &&
-        date1.getFullYear() === date2.getFullYear()
-    );
-}
-
-export function areSameMonth(date1: Date, date2: Date) {
-    return (
-        date1 != null &&
-        date2 != null &&
-        date1.getMonth() === date2.getMonth() &&
-        date1.getFullYear() === date2.getFullYear()
-    );
 }
 
 export function areSameTime(date1: Date, date2: Date) {
@@ -87,7 +67,7 @@ export function isDayInRange(date: Date, dateRange: DateRange, exclusive = false
     start.setHours(0, 0, 0, 0);
     end.setHours(0, 0, 0, 0);
 
-    return start <= day && day <= end && (!exclusive || (!areSameDay(start, day) && !areSameDay(day, end)));
+    return start <= day && day <= end && (!exclusive || (!isSameDay(start, day) && !isSameDay(day, end)));
 }
 
 export function isDayRangeInRange(innerRange: DateRange, outerRange: DateRange) {
@@ -189,123 +169,46 @@ export function getDateOnlyWithTime(date: Date): Date {
     return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
 }
 
-export function isMomentNull(momentDate: moment.Moment) {
-    return momentDate.parsingFlags().nullInput;
+export function getLocale(localeString: SupportedLocaleString): any {
+    if (!localeString) {
+        return undefined;
+    } else if (LOCALE.hasOwnProperty(localeString)) {
+        return LOCALE[localeString];
+    } else {
+        return LOCALE.en;
+    }
 }
 
-export function isMomentValidAndInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
-    return momentDate.isValid() && isMomentInRange(momentDate, minDate, maxDate);
-}
-
-export function isMomentInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
-    return momentDate.isBetween(minDate, maxDate, "day", "[]");
-}
-
-/**
- * Translate a Date object into a moment, adjusting the local timezone into the moment one.
- * This is a no-op unless moment-timezone's setDefault has been called.
- */
-export function fromDateToMoment(date: Date) {
+export function dateToString(date: Date, dateFormat: DateFormat, locale: SupportedLocaleString = "en") {
     if (date == null) {
-        // moment(undefined) is equivalent to moment(), which returns the current date and time when
-        // invoked. thus, we need to explicitly return moment(null).
-        return moment(null);
-    } else if (typeof date === "string") {
-        return moment(date);
+        return "";
+    } else if (typeof dateFormat === "string") {
+        return format(date, dateFormat, { locale: getLocale(locale) });
     } else {
-        return moment([
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            date.getHours(),
-            date.getMinutes(),
-            date.getSeconds(),
-            date.getMilliseconds(),
-        ]);
+        return dateFormat.dateToString(date);
     }
 }
 
 /**
- * Translate a moment into a Date object, adjusting the moment timezone into the local one.
- * This is a no-op unless moment-timezone's setDefault has been called.
+ * A wrapper around date-fns parse() that adds feature to be able parse date strings of following formats :
+ * - Year can be "YYYY".
+ * - Month can be "M" or "MM", must be "MM" when without hyphens.
+ * - Date can be "D" or "DD", must be "DD" when without hyphens.
+ * Examples: "YYYY-MM-DD", "YYYY-M-DD", "YYYY-MM-D", "YYYY-M-D", "YYYYMMDD"
  */
-export function fromMomentToDate(momentDate: moment.Moment) {
-    if (momentDate == null) {
-        return undefined;
-    } else {
-        return new Date(
-            momentDate.year(),
-            momentDate.month(),
-            momentDate.date(),
-            momentDate.hours(),
-            momentDate.minutes(),
-            momentDate.seconds(),
-            momentDate.milliseconds(),
-        );
+export function parseDate(date: string | number | Date) {
+    if (typeof date !== "string") {
+        return parse(date);
     }
-}
 
-/**
- * Translate a DateRange into a MomentDateRange, adjusting the local timezone
- * into the moment one (a no-op unless moment-timezone's setDefault has been
- * called).
- */
-export function fromDateRangeToMomentDateRange(dateRange: DateRange) {
-    if (dateRange == null) {
-        return undefined;
+    const parseToken = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
+    const token = parseToken.exec(date.toString());
+    if (token == null) {
+        return parse(date);
     }
-    return [fromDateToMoment(dateRange[0]), fromDateToMoment(dateRange[1])] as MomentDateRange;
-}
 
-/**
- * Translate a MomentDateRange into a DateRange, adjusting the moment timezone
- * into the local one. This is a no-op unless moment-timezone's setDefault has
- * been called.
- */
-export function fromMomentDateRangeToDateRange(momentDateRange: MomentDateRange) {
-    if (momentDateRange == null) {
-        return undefined;
-    }
-    return [fromMomentToDate(momentDateRange[0]), fromMomentToDate(momentDateRange[1])] as DateRange;
-}
-
-export function getDatePreviousMonth(date: Date): Date {
-    if (date.getMonth() === Months.JANUARY) {
-        return new Date(date.getFullYear() - 1, Months.DECEMBER);
-    } else {
-        return new Date(date.getFullYear(), date.getMonth() - 1);
-    }
-}
-
-export function getDateNextMonth(date: Date): Date {
-    if (date.getMonth() === Months.DECEMBER) {
-        return new Date(date.getFullYear() + 1, Months.JANUARY);
-    } else {
-        return new Date(date.getFullYear(), date.getMonth() + 1);
-    }
-}
-
-/**
- * Returns a date string in the provided format localized to the provided locale.
- */
-export function toLocalizedDateString(momentDate: moment.Moment, format: string, locale: string | undefined) {
-    const adjustedMomentDate = locale != null ? momentDate.locale(locale) : momentDate;
-    return adjustedMomentDate.format(format);
-}
-
-export function momentToString(momentDate: moment.Moment, format: DateFormat, locale: string | undefined) {
-    if (typeof format === "string") {
-        return toLocalizedDateString(momentDate, format, locale);
-    } else {
-        return format.dateToString(momentDate.toDate());
-    }
-}
-
-export function stringToMoment(dateString: string, format: DateFormat, locale: string | undefined) {
-    if (typeof format === "string") {
-        return moment(dateString, format, locale);
-    } else {
-        const date = format.stringToDate(dateString);
-        return date === undefined ? moment.invalid() : moment(date);
-    }
+    const [year, month, day] = token.slice(1);
+    const paddedMonth = padWithZeroes(month, 2);
+    const paddedDay = padWithZeroes(day, 2);
+    return parse(`${year}-${paddedMonth}-${paddedDay}`);
 }

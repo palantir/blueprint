@@ -1,10 +1,10 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { areSameDay, DateRange, DateRangeBoundary } from "./common/dateUtils";
+import * as isSameDay from "date-fns/is_same_day";
+import { DateRange, DateRangeBoundary } from "./common/types";
 
 export interface IDateRangeSelectionState {
     /**
@@ -55,11 +55,11 @@ export class DateRangeSelectionStrategy {
             nextBoundary = boundary;
             nextDateRange = this.createRangeForBoundary(boundary, day, null);
         } else if (boundaryDate != null && otherBoundaryDate == null) {
-            const nextBoundaryDate = areSameDay(boundaryDate, day) ? null : day;
+            const nextBoundaryDate = isSameDay(boundaryDate, day) ? null : day;
             nextBoundary = boundary;
             nextDateRange = this.createRangeForBoundary(boundary, nextBoundaryDate, null);
         } else if (boundaryDate == null && otherBoundaryDate != null) {
-            if (areSameDay(day, otherBoundaryDate)) {
+            if (isSameDay(day, otherBoundaryDate)) {
                 let nextDate: Date;
                 if (allowSingleDayRange) {
                     nextBoundary = boundary;
@@ -78,12 +78,12 @@ export class DateRangeSelectionStrategy {
             }
         } else {
             // both boundaryDate and otherBoundaryDate are already defined
-            if (areSameDay(boundaryDate, day)) {
-                const isSingleDayRangeSelected = areSameDay(boundaryDate, otherBoundaryDate);
+            if (isSameDay(boundaryDate, day)) {
+                const isSingleDayRangeSelected = isSameDay(boundaryDate, otherBoundaryDate);
                 const nextOtherBoundaryDate = isSingleDayRangeSelected ? null : otherBoundaryDate;
                 nextBoundary = boundary;
                 nextDateRange = this.createRangeForBoundary(boundary, null, nextOtherBoundaryDate);
-            } else if (areSameDay(day, otherBoundaryDate)) {
+            } else if (isSameDay(day, otherBoundaryDate)) {
                 const [nextBoundaryDate, nextOtherBoundaryDate] = allowSingleDayRange
                     ? [otherBoundaryDate, otherBoundaryDate]
                     : [boundaryDate, null];
@@ -118,8 +118,8 @@ export class DateRangeSelectionStrategy {
         } else if (start == null && end != null) {
             nextDateRange = this.createRange(day, end, allowSingleDayRange);
         } else {
-            const isStart = areSameDay(start, day);
-            const isEnd = areSameDay(end, day);
+            const isStart = isSameDay(start, day);
+            const isEnd = isSameDay(end, day);
             if (isStart && isEnd) {
                 nextDateRange = [null, null];
             } else if (isStart) {
@@ -160,7 +160,7 @@ export class DateRangeSelectionStrategy {
 
     private static createRange(a: Date, b: Date, allowSingleDayRange: boolean): DateRange {
         // clicking the same date again will clear it
-        if (!allowSingleDayRange && areSameDay(a, b)) {
+        if (!allowSingleDayRange && isSameDay(a, b)) {
             return [null, null];
         }
         return a < b ? [a, b] : [b, a];

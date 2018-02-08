@@ -31,6 +31,11 @@ module.exports = {
             ],
         },
         "jsx-key": false,
+        "import-blacklist": {
+            options: [
+                "date-fns",
+            ],
+        },
         "linebreak-style": {
             options: ["LF"],
         },
@@ -46,14 +51,14 @@ module.exports = {
         },
         "no-submodule-imports": {
             options: [
-                "core-js",
-                "documentalist",
-                "lodash",
-                "react-dom",
+                "core-js/fn",
+                "date-fns",
+                "documentalist/dist/client",
+                "react-dom/test-utils",
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",
-                "react-day-picker/types"
-            ]
+                "react-day-picker/types",
+            ],
         },
         "no-unnecessary-callback-wrapper": true,
         "no-unnecessary-initializer": true,
@@ -64,20 +69,20 @@ module.exports = {
             options: {
                 "printWidth": 120,
                 "tabWidth": 4,
-                "trailingComma": "all"
-            }
+                "trailingComma": "all",
+            },
         },
         "variable-name": {
             options: [
                 "ban-keywords",
                 "check-format",
                 "allow-leading-underscore",
-                "allow-pascal-case"
-            ]
+                "allow-pascal-case",
+            ],
         }
     },
     jsRules: {
         "object-literal-sort-keys": false,
         "trailing-comma": false,
-    }
+    },
 };

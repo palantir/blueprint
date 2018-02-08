@@ -6,6 +6,10 @@
 
 import { AbstractPureComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
+import * as addMonths from "date-fns/add_months";
+import * as isSameDay from "date-fns/is_same_day";
+import * as isSameMonth from "date-fns/is_same_month";
+import * as subMonths from "date-fns/sub_months";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import { DayModifiers } from "react-day-picker/types/common";
@@ -13,12 +17,9 @@ import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/prop
 
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
-import DateRange = DateUtils.DateRange;
-import DateRangeBoundary = DateUtils.DateRangeBoundary;
-
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
-
+import { DateRange, DateRangeBoundary } from "./common/types";
 import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
@@ -137,8 +138,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             const { value } = this.state;
             return value[0] != null && value[1] != null && DateUtils.isDayInRange(day, value, true);
         },
-        [`${SELECTED_RANGE_MODIFIER}-start`]: day => DateUtils.areSameDay(this.state.value[0], day),
-        [`${SELECTED_RANGE_MODIFIER}-end`]: day => DateUtils.areSameDay(this.state.value[1], day),
+        [`${SELECTED_RANGE_MODIFIER}-start`]: day => isSameDay(this.state.value[0], day),
+        [`${SELECTED_RANGE_MODIFIER}-end`]: day => isSameDay(this.state.value[1], day),
 
         [HOVERED_RANGE_MODIFIER]: (day: Date) => {
             const { hoverValue, value } = this.state;
@@ -156,14 +157,14 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             if (hoverValue == null || hoverValue[0] == null) {
                 return false;
             }
-            return DateUtils.areSameDay(hoverValue[0], day);
+            return isSameDay(hoverValue[0], day);
         },
         [`${HOVERED_RANGE_MODIFIER}-end`]: (day: Date) => {
             const { hoverValue } = this.state;
             if (hoverValue == null || hoverValue[1] == null) {
                 return false;
             }
-            return DateUtils.areSameDay(hoverValue[1], day);
+            return isSameDay(hoverValue[1], day);
         },
     };
 
@@ -194,8 +195,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         // allowable range, the react-day-picker library will show
         // the max month on the left and the *min* month on the right.
         // subtracting one avoids that weird, wraparound state (#289).
-        const initialMonthEqualsMinMonth = DateUtils.areSameMonth(initialMonth, props.minDate);
-        const initalMonthEqualsMaxMonth = DateUtils.areSameMonth(initialMonth, props.maxDate);
+        const initialMonthEqualsMinMonth = isSameMonth(initialMonth, props.minDate);
+        const initalMonthEqualsMaxMonth = isSameMonth(initialMonth, props.maxDate);
         if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
             initialMonth.setMonth(initialMonth.getMonth() - 1);
         }
@@ -222,7 +223,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             maxDate,
             minDate,
         } = this.props;
-        const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
+        const isShowingOneMonth = isSameMonth(this.props.minDate, this.props.maxDate);
 
         const { leftView, rightView } = this.state;
         const disabledDays = this.getDisabledDaysModifier();
@@ -273,13 +274,13 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                         fromMonth={minDate}
                         month={leftView.getFullDate()}
                         onMonthChange={this.handleLeftMonthChange}
-                        toMonth={DateUtils.getDatePreviousMonth(maxDate)}
+                        toMonth={subMonths(maxDate, 1)}
                     />
                     <ReactDayPicker
                         {...dayPickerBaseProps}
                         canChangeMonth={true}
                         captionElement={this.renderRightCaption}
-                        fromMonth={DateUtils.getDateNextMonth(minDate)}
+                        fromMonth={addMonths(minDate, 1)}
                         month={rightView.getFullDate()}
                         onMonthChange={this.handleRightMonthChange}
                         toMonth={maxDate}
@@ -315,7 +316,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             throw new Error(Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
         }
 
-        if (maxDate != null && minDate != null && maxDate < minDate && !DateUtils.areSameDay(maxDate, minDate)) {
+        if (maxDate != null && minDate != null && maxDate < minDate && !isSameDay(maxDate, minDate)) {
             throw new Error(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         }
 
@@ -380,7 +381,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     private renderLeftCaption = (captionProps: CaptionElementProps) => (
         <DatePickerCaption
             {...captionProps}
-            maxDate={DateUtils.getDatePreviousMonth(this.props.maxDate)}
+            maxDate={subMonths(this.props.maxDate, 1)}
             minDate={this.props.minDate}
             onMonthChange={this.handleLeftMonthSelectChange}
             onYearChange={this.handleLeftYearSelectChange}
@@ -392,7 +393,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         <DatePickerCaption
             {...captionProps}
             maxDate={this.props.maxDate}
-            minDate={DateUtils.getDateNextMonth(this.props.minDate)}
+            minDate={addMonths(this.props.minDate, 1)}
             onMonthChange={this.handleRightMonthSelectChange}
             onYearChange={this.handleRightYearSelectChange}
             reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
@@ -513,7 +514,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         let leftView = new MonthAndYear(this.state.leftView.getMonth(), leftDisplayYear);
         Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, leftView.getFullDate());
         const { minDate, maxDate } = this.props;
-        const adjustedMaxDate = DateUtils.getDatePreviousMonth(maxDate);
+        const adjustedMaxDate = subMonths(maxDate, 1);
 
         const minMonthAndYear = new MonthAndYear(minDate.getMonth(), minDate.getFullYear());
         const maxMonthAndYear = new MonthAndYear(adjustedMaxDate.getMonth(), adjustedMaxDate.getFullYear());
@@ -536,7 +537,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         let rightView = new MonthAndYear(this.state.rightView.getMonth(), rightDisplayYear);
         Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, rightView.getFullDate());
         const { minDate, maxDate } = this.props;
-        const adjustedMinDate = DateUtils.getDateNextMonth(minDate);
+        const adjustedMinDate = addMonths(minDate, 1);
 
         const minMonthAndYear = new MonthAndYear(adjustedMinDate.getMonth(), adjustedMinDate.getFullYear());
         const maxMonthAndYear = new MonthAndYear(maxDate.getMonth(), maxDate.getFullYear());
@@ -621,7 +622,7 @@ function getStateChange(
             // If the selected month isn't in either of the displayed months, then
             //   - set the left DayPicker to be the selected month
             //   - set the right DayPicker to +1
-            if (DateUtils.areSameMonth(nextValueStart, nextValueEnd)) {
+            if (isSameMonth(nextValueStart, nextValueEnd)) {
                 const potentialLeftEqualsNextValueStart = leftView.isSame(nextValueStartMonthAndYear);
                 const potentialRightEqualsNextValueStart = rightView.isSame(nextValueStartMonthAndYear);
 

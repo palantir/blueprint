@@ -15,9 +15,12 @@ import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
+/* tslint:disable:no-submodule-imports */
+import * as isSameDay from "date-fns/is_same_day";
+/* tslint:enable:no-submodule-imports */
+
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
-import { Months } from "../src/common/months";
 import { IDateRangePickerState, IDateRangeShortcut } from "../src/dateRangePicker";
 import {
     Classes as DateClasses,
@@ -25,6 +28,7 @@ import {
     DateRangePicker,
     IDatePickerModifiers,
     IDateRangePickerProps,
+    Months,
 } from "../src/index";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 
@@ -148,7 +152,7 @@ describe("<DateRangePicker>", () => {
                 formatDay: () => "b",
             };
             const blueprintProps: IDateRangePickerProps = {
-                locale: "blueprint",
+                locale: "en",
                 localeUtils: blueprintLocaleUtils,
                 modifiers: blueprintModifiers,
             };
@@ -161,7 +165,7 @@ describe("<DateRangePicker>", () => {
                 formatDay: () => "d",
             };
             const dayPickerProps: IDateRangePickerProps = {
-                locale: "dayPicker",
+                locale: "en",
                 localeUtils: dayPickerLocaleUtils,
                 modifiers: dayPickerModifiers,
             };
@@ -919,8 +923,8 @@ describe("<DateRangePicker>", () => {
             aWeekAgo.setDate(today.getDate() - 6);
 
             assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
-            assert.isTrue(DateUtils.areSameDay(aWeekAgo, onDateRangePickerChangeSpy.args[0][0][0]));
-            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
+            assert.isTrue(isSameDay(aWeekAgo, onDateRangePickerChangeSpy.args[0][0][0]));
+            assert.isTrue(isSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
         });
 
         it("shortcuts fire onChange with correct values when single day range enabled", () => {
@@ -930,8 +934,8 @@ describe("<DateRangePicker>", () => {
             const today = new Date();
 
             assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
-            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][0]));
-            assert.isTrue(DateUtils.areSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
+            assert.isTrue(isSameDay(today, onDateRangePickerChangeSpy.args[0][0][0]));
+            assert.isTrue(isSameDay(today, onDateRangePickerChangeSpy.args[0][0][1]));
         });
 
         it("custom shortcuts select the correct values", () => {
@@ -943,8 +947,8 @@ describe("<DateRangePicker>", () => {
 
             clickFirstShortcut();
             assert.isTrue(onDateRangePickerChangeSpy.calledOnce);
-            assert.isTrue(DateUtils.areSameDay(dateRange[0], onDateRangePickerChangeSpy.args[0][0][0]));
-            assert.isTrue(DateUtils.areSameDay(dateRange[1], onDateRangePickerChangeSpy.args[0][0][1]));
+            assert.isTrue(isSameDay(dateRange[0], onDateRangePickerChangeSpy.args[0][0][0]));
+            assert.isTrue(isSameDay(dateRange[1], onDateRangePickerChangeSpy.args[0][0][1]));
         });
 
         it("custom shortcuts set the displayed months correctly when start month changes", () => {
@@ -1026,7 +1030,7 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(onDateRangePickerHoverChangeSpy.notCalled);
             clickDay(1);
             assert.isTrue(onDateRangePickerHoverChangeSpy.calledOnce);
-            assert.isTrue(DateUtils.areSameDay(dateRange[0], onDateRangePickerHoverChangeSpy.args[0][0][0]));
+            assert.isTrue(isSameDay(dateRange[0], onDateRangePickerHoverChangeSpy.args[0][0][0]));
             assert.isNull(onDateRangePickerHoverChangeSpy.args[0][0][1]);
         });
 
@@ -1037,8 +1041,8 @@ describe("<DateRangePicker>", () => {
             clickDay(1);
             mouseEnterDay(5);
             assert.isTrue(onDateRangePickerHoverChangeSpy.calledTwice);
-            assert.isTrue(DateUtils.areSameDay(dateRange[0], onDateRangePickerHoverChangeSpy.args[1][0][0]));
-            assert.isTrue(DateUtils.areSameDay(dateRange[1], onDateRangePickerHoverChangeSpy.args[1][0][1]));
+            assert.isTrue(isSameDay(dateRange[0], onDateRangePickerHoverChangeSpy.args[1][0][0]));
+            assert.isTrue(isSameDay(dateRange[1], onDateRangePickerHoverChangeSpy.args[1][0][1]));
         });
 
         it("onHoverChange fired with `undefined` on mouseleave within a day", () => {
@@ -1142,8 +1146,8 @@ describe("<DateRangePicker>", () => {
             const today = new Date();
             const aWeekAgo = DateUtils.clone(today);
             aWeekAgo.setDate(today.getDate() - 6);
-            assert.isTrue(DateUtils.areSameDay(aWeekAgo, dateRangePicker.state.value[0]));
-            assert.isTrue(DateUtils.areSameDay(today, dateRangePicker.state.value[1]));
+            assert.isTrue(isSameDay(aWeekAgo, dateRangePicker.state.value[0]));
+            assert.isTrue(isSameDay(today, dateRangePicker.state.value[1]));
         });
 
         it("custom shortcuts select the correct values", () => {

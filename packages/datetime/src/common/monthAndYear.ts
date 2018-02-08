@@ -4,7 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { getDateNextMonth, getDatePreviousMonth } from "./dateUtils";
+/* tslint:disable:no-submodule-imports */
+import * as addMonths from "date-fns/add_months";
+import * as subtractMonths from "date-fns/sub_months";
+/* tslint:enable:no-submodule-imports */
 
 export class MonthAndYear {
     public static fromDate(date: Date) {
@@ -38,12 +41,12 @@ export class MonthAndYear {
     }
 
     public getPreviousMonth(): MonthAndYear {
-        const previousMonthDate = getDatePreviousMonth(this.date);
+        const previousMonthDate = subtractMonths(this.date, 1);
         return new MonthAndYear(previousMonthDate.getMonth(), previousMonthDate.getFullYear());
     }
 
     public getNextMonth(): MonthAndYear {
-        const nextMonthDate = getDateNextMonth(this.date);
+        const nextMonthDate = addMonths(this.date, 1);
         return new MonthAndYear(nextMonthDate.getMonth(), nextMonthDate.getFullYear());
     }
 

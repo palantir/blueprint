@@ -15,8 +15,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
-import { Months } from "../src/common/months";
-import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps } from "../src/index";
+import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps, Months } from "../src/index";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 
 describe("<DatePicker>", () => {
@@ -105,7 +104,7 @@ describe("<DatePicker>", () => {
                 formatDay: () => "b",
             };
             const blueprintProps: IDatePickerProps = {
-                locale: "blueprint",
+                locale: "en",
                 localeUtils: blueprintLocaleUtils,
                 modifiers: blueprintModifiers,
             };
@@ -118,7 +117,7 @@ describe("<DatePicker>", () => {
                 formatDay: () => "d",
             };
             const dayPickerProps: IDatePickerProps = {
-                locale: "dayPicker",
+                locale: "en",
                 localeUtils: dayPickerLocaleUtils,
                 modifiers: dayPickerModifiers,
             };

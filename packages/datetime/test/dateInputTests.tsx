@@ -10,8 +10,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Keys, Popover, Position } from "@blueprintjs/core";
-import { Months } from "../src/common/months";
-import { Classes, DateInput, TimePicker, TimePickerPrecision } from "../src/index";
+import { Classes, DateInput, Months, TimePicker, TimePickerPrecision } from "../src/index";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 describe("<DateInput>", () => {
@@ -20,7 +19,7 @@ describe("<DateInput>", () => {
     });
 
     it("handles string inputs without crashing", () => {
-        // strings are not permitted in the interface, but are handled correctly by moment.
+        // strings are not permitted in the interface, but are handled correctly by date-fns.
         assert.doesNotThrow(() => mount(<DateInput value={"1988-08-07 11:01:12" as any} />));
     });
 
@@ -303,6 +302,27 @@ describe("<DateInput>", () => {
             assertDateEquals(onError.args[0][0], "2015-02-01");
         });
 
+        it("Displays the original out of range value, on focus after entering out of range date", () => {
+            const rangeMessage = "RANGE ERROR";
+            const onError = sinon.spy();
+            const wrapper = mount(
+                <DateInput
+                    defaultValue={new Date(2015, Months.MAY, 1)}
+                    minDate={new Date(2015, Months.MARCH, 1)}
+                    onError={onError}
+                    outOfRangeMessage={rangeMessage}
+                />,
+            );
+            wrapper
+                .find("input")
+                .simulate("change", { target: { value: "2015-02-01" } })
+                .simulate("blur")
+                .simulate("focus");
+
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), "2015-02-01");
+            assert.isTrue(onError.calledOnce);
+        });
+
         it("Typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
             const invalidDateMessage = "INVALID DATE";
             const onError = sinon.spy();
@@ -348,9 +368,9 @@ describe("<DateInput>", () => {
     describe("when controlled", () => {
         const DATE = new Date(2016, Months.APRIL, 4);
         const DATE_STR = "2016-04-04";
-        const DATE2 = new Date(2015, Months.FEBRUARY, 1);
-        const DATE2_STR = "2015-02-01";
-        const DATE2_DE_STR = "01.02.2015";
+        const DATE2 = new Date(2015, Months.MAY, 1);
+        const DATE2_STR = "2015-05-01";
+        const DATE2_DE_STR = "01-Mai-2015";
 
         it("Pressing Enter saves the inputted date and closes the popover", () => {
             const onKeyDown = sinon.spy();
@@ -416,7 +436,7 @@ describe("<DateInput>", () => {
         });
 
         it("Formats locale-specific format strings properly", () => {
-            const wrapper = mount(<DateInput locale="de" format="L" value={DATE2} />);
+            const wrapper = mount(<DateInput locale="de" format="DD-MMM-YYYY" value={DATE2} />);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_DE_STR);
         });
 

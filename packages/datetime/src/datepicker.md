@@ -8,10 +8,8 @@ Use the `onChange` prop to listen for changes to the selected day.
 You can control the selected day by setting the `value` prop, or use the component in uncontrolled
 mode and specify an initial day by setting `defaultValue`.
 
-`DatePicker` uses [Moment.js](http://momentjs.com/) to handle localization. You can use `locale` and
-the `localeUtils` functions to specify a locale. See
-[this file](https://github.com/gpbl/react-day-picker/blob/master/src/addons/MomentLocaleUtils.js)
-for an example of defining `localeUtils` functions using Moment.js.
+`DatePicker` uses [date-fns](https://date-fns.org/) and [react-day-picker](http://react-day-picker.js.org/) to handle localization. You can use `locale` and the `localeUtils` functions to specify a locale. See [this API](http://react-day-picker.js.org/api/LocaleUtils)
+for an example of defining `localeUtils` functions using react-day-picker.
 
 `DatePicker` is built on top of the [**react-day-picker**](https://github.com/gpbl/react-day-picker) library.
 
