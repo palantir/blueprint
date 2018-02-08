@@ -51,8 +51,8 @@ The `main` module exports all symbols from all modules so you don't have to impo
     * `Array.fill`
     * `Array.from`
 
-We recommend polyfilling these features using [es6-shim](https://github.com/paulmillr/es6-shim) or
-[core-js](https://github.com/zloirock/core-js).
+    We recommend polyfilling these features using [es6-shim](https://github.com/paulmillr/es6-shim) or
+    [core-js](https://github.com/zloirock/core-js).
 
 1. After installation, you'll be able to import the React components in your application:
 
