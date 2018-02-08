@@ -278,6 +278,8 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
  * Scroll the scrollParent such that the reference heading appears at the top of the viewport.
  */
 function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.scrollingElement) {
+    // without rAF, on initial load this would scroll to the bottom because the CSS had not been applied.
+    // with rAF, CSS is applied before updating scroll positions so all elements are in their correct places.
     requestAnimationFrame(() => {
         const headingAnchor = queryHTMLElement(container, `a[data-route="${reference}"]`);
         if (headingAnchor != null && headingAnchor.parentElement != null) {
