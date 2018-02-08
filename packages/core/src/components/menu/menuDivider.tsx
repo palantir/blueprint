@@ -11,23 +11,26 @@ import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 export interface IMenuDividerProps extends IProps {
-    /** Optional header title. */
-    title?: string;
+    /** Optional header title. Can also be passed as `children`. */
+    title?: React.ReactNode;
 }
 
 export class MenuDivider extends React.Component<IMenuDividerProps, {}> {
     public static displayName = "Blueprint2.MenuDivider";
 
     public render() {
-        const { className, title } = this.props;
-        if (title == null) {
+        const { children, className, title } = this.props;
+        if (children == null && title == null) {
             // simple divider
             return <li className={classNames(Classes.MENU_DIVIDER, className)} />;
         } else {
             // section header with title
             return (
                 <li className={classNames(Classes.MENU_HEADER, className)}>
-                    <h6>{title}</h6>
+                    <h6>
+                        {title}
+                        {children}
+                    </h6>
                 </li>
             );
         }
