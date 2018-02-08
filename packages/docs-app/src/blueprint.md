@@ -140,12 +140,9 @@ These bundles _do not include_ external dependencies; your application will need
 
 @### DOM4
 
-Blueprint relies on a handful of DOM Level 4 API methods: `el.query`, `el.queryAll`, and
-`el.closest()`. `@blueprintjs/core` depends on a [polyfill library called `dom4`][dom4] to ensure
-these methods are available. This module is conditionally loaded if Blueprint is used in a browser
-environment.
-
-[dom4]: https://webreflection.github.io/dom4/
+Blueprint relies on a handful of DOM Level 4 API methods: `el.closest()` and `el.contains()`.
+`@blueprintjs/core` depends on a [polyfill library called `dom4`](https://webreflection.github.io/dom4/) to ensure
+these methods are available. This module is conditionally loaded if Blueprint is used in a browser environment.
 
 @### TypeScript
 
@@ -161,12 +158,11 @@ npm install --save @types/react @types/react-dom @types/react-transition-group
 npm install --save @types/moment
 ```
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-  For more information, see the TypeScript Handbook for
-  [guidance on consuming declaration files][handbook].
-</div>
+Blueprint's declaration files require **TypeScript 2.3+** for default generic parameter arguments: `<P = {}>`.
 
-[handbook]: https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+  For more information, see [Understanding TypeScript](#blueprint.understanding-typescript) below.
+</div>
 
 @### Vanilla JS APIs
 
@@ -204,7 +200,7 @@ ReactDOM.unmountComponentAtNode(myContainerElement);
 Check out the [React API docs](https://facebook.github.io/react/docs/react-api.html) for more details.
 
 
-You'll need to install React `v16.x` alongside Blueprint.
+You'll need to install **React 16.2+** alongside Blueprint.
 
 ```sh
 npm install --save @blueprintjs/core react react-dom react-transition-group
@@ -220,8 +216,8 @@ Don't forget to include the main CSS stylesheet too!
 Blueprint is written in [TypeScript](https://www.typescriptlang.org/), a statically typed superset
 of JavaScript that compiles to plain JavaScript. All the code samples throughout this site and
 all interactive examples are also written in TypeScript. TypeScript code looks exactly like ES2015+
-code with the addition of type signatures, which typically appear after colons and are colored
-gold in our syntax theme.
+code with the addition of type signatures, which typically appear after colons and are _italicized_
+in our syntax theme.
 
 ```ts
 // variables
@@ -241,13 +237,20 @@ interface IOption {
   label: string;
   value: string;
 }
-const option: IOption = { label: "Name", value: "gilad" };
+const option: IOption = { label: "Name", value: "Gilad" };
 ```
 
-**You do not need to use TypeScript to consume Blueprint** (but major "props" if you do). Familiarity
-with the syntax is suggested so you can follow our examples
-([the handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html) has good documentation
-for getting started). Simply ignoring the type annotations in your head will produce valid ES2015 code.
+**You do not need to use TypeScript to consume Blueprint** (but major "props" if you do).
+Simply ignoring the type annotations (any italics in code blocks) will produce valid ES2015 code.
+Familiarity with the syntax is suggested so you can follow our examples source code.
+
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+  For more information, see the TypeScript Handbook for [basic types][basic-types]
+  and [consuming declaration files][decl-files].
+</div>
+
+[basic-types]: https://www.typescriptlang.org/docs/handbook/basic-types.html
+[decl-files]: https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html
 
 @## Development & contributions
 
