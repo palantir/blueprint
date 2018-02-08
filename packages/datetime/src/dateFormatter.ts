@@ -22,9 +22,7 @@ export interface IDateFormatter {
 
     /**
      * Function to deserialize a string to a date.
-     * Can return `undefined` to signal that the string is invalid.
+     * Can return `null` to signal that the string is invalid.
      */
-    stringToDate(str: string): Date | undefined;
+    stringToDate(str: string): Date | null;
 }
-
-export type DateFormat = string | IDateFormatter;

@@ -93,12 +93,10 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
     endInputProps?: HTMLInputProps & IInputGroupProps;
 
     /**
-     * The format of each date in the date range. See options
-     * here: http://momentjs.com/docs/#/displaying/format/
-     * Alternatively, pass an `IDateFormatter` for custom date rendering.
-     * @default "YYYY-MM-DD"
+     * An object that provides methods to format a `Date` to a string and to parse a string into a `Date`.
+     * This is used for rendering `value` in the input, and for parsing user input back to a `Date`.
      */
-    format?: string | IDateFormatter;
+    format: IDateFormatter;
 
     /**
      * The error message to display when the selected date is invalid.
@@ -216,14 +214,13 @@ interface IStateKeysAndValuesObject {
 }
 
 export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, IDateRangeInputState> {
-    public static defaultProps: IDateRangeInputProps = {
+    public static defaultProps: Partial<IDateRangeInputProps> = {
         allowSingleDayRange: false,
         closeOnSelection: true,
         contiguousCalendarMonths: true,
         dayPickerProps: {},
         disabled: false,
         endInputProps: {},
-        format: "YYYY-MM-DD",
         invalidDateMessage: "Invalid date",
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),

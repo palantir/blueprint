@@ -72,11 +72,10 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     defaultValue?: Date;
 
     /**
-     * The format of the date. See http://momentjs.com/docs/#/displaying/format/.
-     * Alternatively, pass an `IDateFormatter` for custom date rendering.
-     * @default "YYYY-MM-DD"
+     * An object that provides methods to format a `Date` to a string and to parse a string into a `Date`.
+     * This is used for rendering `value` in the input, and for parsing user input back to a `Date`.
      */
-    format?: string | IDateFormatter;
+    format: IDateFormatter;
 
     /**
      * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).
@@ -150,11 +149,10 @@ export interface IDateInputState {
 }
 
 export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
-    public static defaultProps: IDateInputProps = {
+    public static defaultProps: Partial<IDateInputProps> = {
         closeOnSelection: true,
         dayPickerProps: {},
         disabled: false,
-        format: "YYYY-MM-DD",
         invalidDateMessage: "Invalid date",
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
