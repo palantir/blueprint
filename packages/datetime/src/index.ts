@@ -16,9 +16,10 @@ export const Classes = classes;
 
 export { DateRange, DateRangeBoundary } from "./common/dateUtils";
 export { Months } from "./common/months";
+export { IDateFormatProps } from "./dateFormat";
 export { DateInput, IDateInputProps } from "./dateInput";
 export { DatePicker, IDatePickerProps } from "./datePicker";
-export { IDateFormatProps, IDatePickerModifiers } from "./datePickerCore";
+export { IDatePickerModifiers } from "./datePickerCore";
 export { DateTimePicker, IDateTimePickerProps } from "./dateTimePicker";
 export { DateRangeInput } from "./dateRangeInput";
 export { DateRangePicker, IDateRangePickerProps, IDateRangeShortcut } from "./dateRangePicker";

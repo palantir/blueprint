@@ -17,32 +17,6 @@ export interface IDatePickerModifiers {
     [name: string]: (date: Date) => boolean;
 }
 
-export interface IDateFormatProps {
-    /**
-     * Date format string, passed to `formatDate` and `parseDate`.
-     */
-    format?: string;
-
-    /**
-     * Placeholder text to display in empty input fields.
-     * Recommended practice is to indicate the expected date format.
-     */
-    placeholder?: string;
-
-    /**
-     * Function to serialize a JavaScript `Date` to a string.
-     * The special value `null` indicates the absence of a date.
-     */
-    formatDate(date: Date | null, format?: string, locale?: string): string;
-
-    /**
-     * Function to deserialize a string to a JavaScript `Date` object.
-     * Return `false` if the string is an invalid date.
-     * Return `null` to represent the absence of a date.
-     */
-    parseDate(str: string, format?: string, locale?: string): Date | false | null;
-}
-
 export interface IDatePickerBaseProps {
     /**
      * The initial month the calendar displays.

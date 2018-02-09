@@ -15,6 +15,7 @@ import {
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
+    Intent,
     IPopoverProps,
     IProps,
     Keys,
@@ -23,9 +24,10 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { DateRange, DateRangeBoundary, isDayInRange } from "./common/dateUtils";
+import { DateRange, DateRangeBoundary, isDateValid, isDayInRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
-import { getDefaultMaxDate, getDefaultMinDate, IDateFormatProps, IDatePickerBaseProps } from "./datePickerCore";
+import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
+import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
@@ -80,12 +82,6 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     endInputProps?: HTMLInputProps & IInputGroupProps;
 
     /**
-     * The error message to display when the selected date is invalid.
-     * @default "Invalid date"
-     */
-    invalidDateMessage?: string;
-
-    /**
      * Called when the user selects a day.
      * If no days are selected, it will pass `[null, null]`.
      * If a start date is selected but not an end date, it will pass `[selectedDate, null]`.
@@ -101,12 +97,6 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * boundary of the date range (`onChange` is not called in this case).
      */
     onError?: (errorRange: DateRange) => void;
-
-    /**
-     * The error message to display when the date selected is out of range.
-     * @default "Out of range"
-     */
-    outOfRangeMessage?: string;
 
     /**
      * The error message to display when the selected dates overlap.
@@ -590,7 +580,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
     private handleInputFocus = (_e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
-        const inputString = this.getFormattedDateString(values.selectedValue);
+        const inputString = getFormattedDateString(values.selectedValue, this.props);
 
         // change the boundary only if the user explicitly focused in the field.
         // focus changes from hovering don't count; they're just temporary.
@@ -622,7 +612,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
             if (isValueControlled) {
                 nextState = {
                     ...nextState,
-                    [keys.inputString]: this.getFormattedDateString(values.controlledValue),
+                    [keys.inputString]: getFormattedDateString(values.controlledValue, this.props),
                 };
             } else {
                 nextState = {
@@ -713,7 +703,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         } else if (defaultValue != null) {
             return defaultValue;
         } else {
-            return [undefined, undefined];
+            return [null, null];
         }
     };
 
@@ -772,12 +762,10 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
             return inputString == null ? "" : inputString;
         } else if (selectedValue == null) {
             return "";
-        } else if (!this.isDateValidAndInRange(selectedValue)) {
-            return this.props.outOfRangeMessage;
         } else if (this.doesEndBoundaryOverlapStartBoundary(selectedValue, boundary)) {
             return this.props.overlappingDatesMessage;
         } else {
-            return this.getFormattedDateString(selectedValue);
+            return getFormattedDateString(selectedValue, this.props);
         }
     };
 
@@ -806,16 +794,6 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
     private getInputRef = (boundary: DateRangeBoundary) => {
         return boundary === DateRangeBoundary.START ? this.refHandlers.startInputRef : this.refHandlers.endInputRef;
-    };
-
-    private getFormattedDateString = (date: Date | null) => {
-        if (date == null) {
-            return this.props.invalidDateMessage;
-        } else if (this.isDateValidAndInRange(date)) {
-            return this.formatDate(date);
-        } else {
-            return this.props.outOfRangeMessage;
-        }
     };
 
     private getStateKeysAndValuesForBoundary = (boundary: DateRangeBoundary): IStateKeysAndValuesObject => {
@@ -919,7 +897,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     };
 
     private isDateValidAndInRange = (date: Date | false | null): date is Date => {
-        return date instanceof Date && isDayInRange(date, [this.props.minDate, this.props.maxDate]);
+        return isDateValid(date) && isDayInRange(date, [this.props.minDate, this.props.maxDate]);
     };
 
     private isNextDateRangeValid(nextDate: Date | false | null, boundary: DateRangeBoundary): nextDate is Date {
@@ -933,7 +911,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         const defaultDate = DateRangeInput.defaultProps[propName];
         // default values are applied only if a prop is strictly `undefined`
         // See: https://facebook.github.io/react/docs/react-component.html#defaultprops
-        return this.getFormattedDateString(date === undefined ? defaultDate : date);
+        return getFormattedDateString(date === undefined ? defaultDate : date, this.props);
     }
 
     private parseDate(dateString: string): Date | null {

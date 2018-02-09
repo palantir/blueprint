@@ -13,6 +13,10 @@ export enum DateRangeBoundary {
     END = "end",
 }
 
+export function isDateValid(date: Date | false | null): date is Date {
+    return date instanceof Date && !isNaN(date.valueOf());
+}
+
 export function areEqual(date1: Date, date2: Date) {
     if (date1 == null && date2 == null) {
         return true;

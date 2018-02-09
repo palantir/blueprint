@@ -21,9 +21,10 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { isDayInRange } from "./common/dateUtils";
+import { isDateValid, isDayInRange } from "./common/dateUtils";
+import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
-import { getDefaultMaxDate, getDefaultMinDate, IDateFormatProps, IDatePickerBaseProps } from "./datePickerCore";
+import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateTimePicker } from "./dateTimePicker";
 import { ITimePickerProps, TimePickerPrecision } from "./timePicker";
 
@@ -70,12 +71,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     inputProps?: HTMLInputProps & IInputGroupProps;
 
     /**
-     * The error message to display when the date selected is invalid.
-     * @default "Invalid date"
-     */
-    invalidDateMessage?: string;
-
-    /**
      * Called when the user selects a new valid date through the `DatePicker` or by typing
      * in the input.
      */
@@ -87,12 +82,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
      * the out of range date will be returned (`onChange` is not called in this case).
      */
     onError?: (errorDate: Date) => void;
-
-    /**
-     * The error message to display when the date selected is out of range.
-     * @default "Out of range"
-     */
-    outOfRangeMessage?: string;
 
     /**
      * Props to pass to the `Popover`.
@@ -157,8 +146,8 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     public render() {
         const { value, valueString } = this.state;
-        const dateString = this.state.isInputFocused ? valueString : this.getDateString(value);
-        const dateValue = this.isDateValid(value) ? value : null;
+        const dateString = this.state.isInputFocused ? valueString : getFormattedDateString(value, this.props);
+        const dateValue = isDateValid(value) ? value : null;
 
         const popoverContent =
             this.props.timePrecision === undefined ? (
@@ -174,7 +163,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             );
         // assign default empty object here to prevent mutation
         const { inputProps = {}, popoverProps = {} } = this.props;
-        const isErrorState = value != null && (!this.isDateValid(value) || !this.isDateInRange(value));
+        const isErrorState = value != null && (!isDateValid(value) || !this.isDateInRange(value));
 
         return (
             <Popover
@@ -214,22 +203,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         }
     }
 
-    private getDateString = (value: Date | false | null) => {
-        if (value == null) {
-            return "";
-        } else if (!this.isDateValid(value)) {
-            return this.props.invalidDateMessage;
-        } else if (this.isDateInRange(value)) {
-            return this.formatDate(value);
-        } else {
-            return this.props.outOfRangeMessage;
-        }
-    };
-
-    private isDateValid(date: Date | false | null): date is Date {
-        return date instanceof Date && !isNaN(date.valueOf());
-    }
-
     private isDateInRange(value: Date) {
         return isDayInRange(value, [this.props.minDate, this.props.maxDate]);
     }
@@ -263,7 +236,8 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         const isInputFocused = didSubmitWithEnter ? true : false;
 
         if (this.props.value === undefined) {
-            this.setState({ isInputFocused, isOpen, value: newDate, valueString: this.getDateString(newDate) });
+            const valueString = getFormattedDateString(newDate, this.props);
+            this.setState({ isInputFocused, isOpen, value: newDate, valueString });
         } else {
             this.setState({ isInputFocused, isOpen });
         }
@@ -306,7 +280,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         const valueString = (e.target as HTMLInputElement).value;
         const value = this.parseDate(valueString);
 
-        if (this.isDateValid(value) && this.isDateInRange(value)) {
+        if (isDateValid(value) && this.isDateInRange(value)) {
             if (this.props.value === undefined) {
                 this.setState({ value, valueString });
             } else {
@@ -327,8 +301,8 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         const date = this.parseDate(valueString);
         if (
             valueString.length > 0 &&
-            valueString !== this.getDateString(this.state.value) &&
-            (!this.isDateValid(date) || !this.isDateInRange(date))
+            valueString !== getFormattedDateString(this.state.value, this.props) &&
+            (!isDateValid(date) || !this.isDateInRange(date))
         ) {
             if (this.props.value === undefined) {
                 this.setState({ isInputFocused: false, value: date, valueString: null });
@@ -382,7 +356,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     }
 
     private formatDate(date: Date): string {
-        if (!this.isDateValid(date) || !this.isDateInRange(date)) {
+        if (!isDateValid(date) || !this.isDateInRange(date)) {
             return "";
         }
         const { format, locale, formatDate } = this.props;
