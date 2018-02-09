@@ -21,8 +21,8 @@ import {
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Months } from "../src/common/months";
-import { IDateFormatter } from "../src/dateFormatter";
 import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
+import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any, {}>;
@@ -41,13 +41,7 @@ type InvalidDateTestFunction = (
     otherInputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
 ) => void;
 
-const format: IDateFormatter = {
-    dateToString: date => date.toLocaleString(),
-    placeholder: "enter date",
-    stringToDate: str => new Date(Date.parse(str)),
-};
-
-describe("<DateRangeInput format={format}>", () => {
+describe("<DateRangeInput {...DATE_FORMAT}>", () => {
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
     const START_STR = DateTestUtils.toHyphenatedDateString(START_DATE);
@@ -86,7 +80,7 @@ describe("<DateRangeInput format={format}>", () => {
     const UNDEFINED_DATE_STR = "<UNDEFINED DATE>";
 
     it("renders with two InputGroup children", () => {
-        const component = mount(<DateRangeInput format={format} />);
+        const component = mount(<DateRangeInput {...DATE_FORMAT} />);
         expect(component.find(InputGroup).length).to.equal(2);
     });
 
@@ -95,7 +89,7 @@ describe("<DateRangeInput format={format}>", () => {
         const CLASS_2 = "bar";
 
         const wrapper = mount(
-            <DateRangeInput className={CLASS_1} format={format} popoverProps={{ className: CLASS_2 }} />,
+            <DateRangeInput {...DATE_FORMAT} className={CLASS_1} popoverProps={{ className: CLASS_2 }} />,
         );
         wrapper.setState({ isOpen: true });
 
@@ -105,7 +99,7 @@ describe("<DateRangeInput format={format}>", () => {
     });
 
     it("inner DateRangePicker receives all supported props", () => {
-        const component = mount(<DateRangeInput format={format} locale="uk" contiguousCalendarMonths={false} />);
+        const component = mount(<DateRangeInput {...DATE_FORMAT} locale="uk" contiguousCalendarMonths={false} />);
         component.setState({ isOpen: true });
         const picker = component.find(DateRangePicker);
         expect(picker.prop("locale")).to.equal("uk");
@@ -113,24 +107,24 @@ describe("<DateRangeInput format={format}>", () => {
     });
 
     it("shows empty fields when no date range is selected", () => {
-        const { root } = wrap(<DateRangeInput format={format} />);
+        const { root } = wrap(<DateRangeInput {...DATE_FORMAT} />);
         assertInputTextsEqual(root, "", "");
     });
 
     it("throws error if value === null", () => {
-        expectPropValidationError(DateRangeInput, { format, value: null });
+        expectPropValidationError(DateRangeInput, { ...DATE_FORMAT, value: null });
     });
 
     describe("startInputProps and endInputProps", () => {
         describe("startInputProps", () => {
             runTestSuite(getStartInput, inputGroupProps => {
-                return mount(<DateRangeInput format={format} startInputProps={inputGroupProps} />);
+                return mount(<DateRangeInput {...DATE_FORMAT} startInputProps={inputGroupProps} />);
             });
         });
 
         describe("endInputProps", () => {
             runTestSuite(getEndInput, inputGroupProps => {
-                return mount(<DateRangeInput format={format} endInputProps={inputGroupProps} />);
+                return mount(<DateRangeInput {...DATE_FORMAT} endInputProps={inputGroupProps} />);
             });
         });
 
@@ -176,7 +170,7 @@ describe("<DateRangeInput format={format}>", () => {
             // arbitrarily choose the out-of-range tests' min/max dates for this test
             const MIN_DATE = new Date(2017, Months.JANUARY, 1);
             const MAX_DATE = new Date(2017, Months.JANUARY, 31);
-            const { root } = wrap(<DateRangeInput format={format} minDate={MIN_DATE} maxDate={MAX_DATE} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} minDate={MIN_DATE} maxDate={MAX_DATE} />);
 
             const startInput = getStartInput(root);
             const endInput = getEndInput(root);
@@ -198,7 +192,7 @@ describe("<DateRangeInput format={format}>", () => {
             const MAX_DATE_1 = new Date(2017, Months.JANUARY, 31);
             const MIN_DATE_2 = new Date(2017, Months.JANUARY, 2);
             const MAX_DATE_2 = new Date(2017, Months.FEBRUARY, 1);
-            const { root } = wrap(<DateRangeInput format={format} minDate={MIN_DATE_1} maxDate={MAX_DATE_1} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} minDate={MIN_DATE_1} maxDate={MAX_DATE_1} />);
 
             const startInput = getStartInput(root);
             const endInput = getEndInput(root);
@@ -218,7 +212,7 @@ describe("<DateRangeInput format={format}>", () => {
         it("updates placeholder text properly when format changes", () => {
             const MIN_DATE = new Date(2017, Months.JANUARY, 1);
             const MAX_DATE = new Date(2017, Months.JANUARY, 31);
-            const { root } = wrap(<DateRangeInput format={format} minDate={MIN_DATE} maxDate={MAX_DATE} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} minDate={MIN_DATE} maxDate={MAX_DATE} />);
 
             const startInput = getStartInput(root);
             const endInput = getEndInput(root);
@@ -234,7 +228,7 @@ describe("<DateRangeInput format={format}>", () => {
     });
 
     it("inputs disable and popover doesn't open if disabled=true", () => {
-        const { root } = wrap(<DateRangeInput format={format} disabled={true} />);
+        const { root } = wrap(<DateRangeInput {...DATE_FORMAT} disabled={true} />);
         const startInput = getStartInput(root);
         startInput.simulate("click");
         expect(root.find(Popover).prop("isOpen")).to.be.false;
@@ -244,7 +238,7 @@ describe("<DateRangeInput format={format}>", () => {
 
     describe("closeOnSelection", () => {
         it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
-            const { root, getDayElement } = wrap(<DateRangeInput format={format} closeOnSelection={false} />);
+            const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} closeOnSelection={false} />);
             root.setState({ isOpen: true });
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
@@ -252,7 +246,7 @@ describe("<DateRangeInput format={format}>", () => {
         });
 
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
-            const { root, getDayElement } = wrap(<DateRangeInput format={format} />);
+            const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} />);
             root.setState({ isOpen: true });
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
@@ -261,20 +255,20 @@ describe("<DateRangeInput format={format}>", () => {
     });
 
     it("accepts contiguousCalendarMonths prop and passes it to the date range picker", () => {
-        const { root } = wrap(<DateRangeInput format={format} contiguousCalendarMonths={false} />);
+        const { root } = wrap(<DateRangeInput {...DATE_FORMAT} contiguousCalendarMonths={false} />);
         root.setState({ isOpen: true });
         expect(root.find(DateRangePicker).prop("contiguousCalendarMonths")).to.be.false;
     });
 
     it("accepts shortcuts prop and passes it to the date range picker", () => {
-        const { root } = wrap(<DateRangeInput format={format} shortcuts={false} />);
+        const { root } = wrap(<DateRangeInput {...DATE_FORMAT} shortcuts={false} />);
         root.setState({ isOpen: true });
         expect(root.find(DateRangePicker).prop("shortcuts")).to.be.false;
     });
 
     it("pressing Shift+Tab in the start field blurs the start field and closes the popover", () => {
         const startInputProps = { onKeyDown: sinon.spy() };
-        const { root } = wrap(<DateRangeInput format={format} {...{ startInputProps }} />);
+        const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ startInputProps }} />);
         const startInput = getStartInput(root);
         startInput.simulate("keydown", { which: Keys.TAB, shiftKey: true });
         expect(root.state("isStartInputFocused"), "start input blurred").to.be.false;
@@ -284,7 +278,7 @@ describe("<DateRangeInput format={format}>", () => {
 
     it("pressing Tab in the end field blurs the end field and closes the popover", () => {
         const endInputProps = { onKeyDown: sinon.spy() };
-        const { root } = wrap(<DateRangeInput format={format} {...{ endInputProps }} />);
+        const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ endInputProps }} />);
         const endInput = getEndInput(root);
         endInput.simulate("keydown", { which: Keys.TAB });
         expect(root.state("isEndInputFocused"), "end input blurred").to.be.false;
@@ -295,7 +289,7 @@ describe("<DateRangeInput format={format}>", () => {
     describe("selectAllOnFocus", () => {
         it("if false (the default), does not select any text on focus", () => {
             const attachTo = document.createElement("div");
-            const { root } = wrap(<DateRangeInput format={format} defaultValue={[START_DATE, null]} />, attachTo);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={[START_DATE, null]} />, attachTo);
 
             const startInput = getStartInput(root);
             startInput.simulate("focus");
@@ -307,7 +301,7 @@ describe("<DateRangeInput format={format}>", () => {
         it("if true, selects all text on focus", () => {
             const attachTo = document.createElement("div");
             const { root } = wrap(
-                <DateRangeInput format={format} defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
+                <DateRangeInput {...DATE_FORMAT} defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
                 attachTo,
             );
 
@@ -322,7 +316,7 @@ describe("<DateRangeInput format={format}>", () => {
         it.skip("if true, selects all text on day mouseenter in calendar", () => {
             const attachTo = document.createElement("div");
             const { root, getDayElement } = wrap(
-                <DateRangeInput format={format} defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
+                <DateRangeInput {...DATE_FORMAT} defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
                 attachTo,
             );
 
@@ -339,7 +333,7 @@ describe("<DateRangeInput format={format}>", () => {
     describe("allowSingleDayRange", () => {
         it("allows start and end to be the same day when clicking", () => {
             const { root, getDayElement } = wrap(
-                <DateRangeInput format={format} allowSingleDayRange={true} defaultValue={[START_DATE, END_DATE]} />,
+                <DateRangeInput {...DATE_FORMAT} allowSingleDayRange={true} defaultValue={[START_DATE, END_DATE]} />,
             );
             getEndInput(root).simulate("focus");
             getDayElement(END_DAY).simulate("click");
@@ -349,7 +343,7 @@ describe("<DateRangeInput format={format}>", () => {
 
         it("allows start and end to be the same day when typing", () => {
             const { root } = wrap(
-                <DateRangeInput format={format} allowSingleDayRange={true} defaultValue={[START_DATE, END_DATE]} />,
+                <DateRangeInput {...DATE_FORMAT} allowSingleDayRange={true} defaultValue={[START_DATE, END_DATE]} />,
             );
             changeEndInputText(root, "");
             changeEndInputText(root, START_STR);
@@ -365,7 +359,7 @@ describe("<DateRangeInput format={format}>", () => {
                 popoverWillOpen: sinon.spy(),
                 position: Position.TOP_LEFT,
             };
-            const { root } = wrap(<DateRangeInput format={format} popoverProps={popoverProps} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />);
 
             expect(root.find(Popover).prop("position")).to.equal(Position.TOP_LEFT);
 
@@ -385,7 +379,7 @@ describe("<DateRangeInput format={format}>", () => {
                 content: CUSTOM_CONTENT,
                 enforceFocus: true,
             };
-            const { root } = wrap(<DateRangeInput format={format} popoverProps={popoverProps} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />);
 
             // this test assumes the following values will be the defaults internally
             const popover = root.find(Popover);
@@ -397,29 +391,29 @@ describe("<DateRangeInput format={format}>", () => {
 
     describe("when uncontrolled", () => {
         it("Shows empty fields when defaultValue is [null, null]", () => {
-            const { root } = wrap(<DateRangeInput format={format} defaultValue={[null, null]} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={[null, null]} />);
             assertInputTextsEqual(root, "", "");
         });
 
         it("Shows empty start field and formatted date in end field when defaultValue is [null, <date>]", () => {
-            const { root } = wrap(<DateRangeInput format={format} defaultValue={[null, END_DATE]} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={[null, END_DATE]} />);
             assertInputTextsEqual(root, "", END_STR);
         });
 
         it("Shows empty end field and formatted date in start field when defaultValue is [<date>, null]", () => {
-            const { root } = wrap(<DateRangeInput format={format} defaultValue={[START_DATE, null]} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={[START_DATE, null]} />);
             assertInputTextsEqual(root, START_STR, "");
         });
 
         it("Shows formatted dates in both fields when defaultValue is [<date1>, <date2>]", () => {
-            const { root } = wrap(<DateRangeInput format={format} defaultValue={[START_DATE, END_DATE]} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={[START_DATE, END_DATE]} />);
             assertInputTextsEqual(root, START_STR, END_STR);
         });
 
         it("Pressing Enter saves the inputted date and closes the popover", () => {
             const startInputProps = { onKeyDown: sinon.spy() };
             const endInputProps = { onKeyDown: sinon.spy() };
-            const { root } = wrap(<DateRangeInput format={format} {...{ startInputProps, endInputProps }} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ startInputProps, endInputProps }} />);
             root.setState({ isOpen: true });
 
             // Don't save the input elements into variables; they can become
@@ -451,7 +445,7 @@ describe("<DateRangeInput format={format}>", () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(
                 <DateRangeInput
-                    format={format}
+                    {...DATE_FORMAT}
                     closeOnSelection={false}
                     defaultValue={defaultValue}
                     onChange={onChange}
@@ -481,7 +475,7 @@ describe("<DateRangeInput format={format}>", () => {
         it(`Typing a valid start or end date invokes onChange with the new date range and updates the
             input fields`, () => {
             const onChange = sinon.spy();
-            const { root } = wrap(<DateRangeInput format={format} onChange={onChange} defaultValue={DATE_RANGE} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} onChange={onChange} defaultValue={DATE_RANGE} />);
 
             changeStartInputText(root, START_STR_2);
             expect(onChange.callCount).to.equal(1);
@@ -497,7 +491,7 @@ describe("<DateRangeInput format={format}>", () => {
         it(`Typing in a field while hovering over a date shows the typed date, not the hovered date`, () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(
-                <DateRangeInput format={format} onChange={onChange} defaultValue={DATE_RANGE} />,
+                <DateRangeInput {...DATE_FORMAT} onChange={onChange} defaultValue={DATE_RANGE} />,
             );
 
             getStartInput(root).simulate("focus");
@@ -523,7 +517,7 @@ describe("<DateRangeInput format={format}>", () => {
                 // use defaultValue to specify the calendar months in view
                 const result = wrap(
                     <DateRangeInput
-                        format={format}
+                        {...DATE_FORMAT}
                         defaultValue={DATE_RANGE}
                         minDate={OUT_OF_RANGE_TEST_MIN}
                         maxDate={OUT_OF_RANGE_TEST_MAX}
@@ -613,7 +607,7 @@ describe("<DateRangeInput format={format}>", () => {
 
                 const result = wrap(
                     <DateRangeInput
-                        format={format}
+                        {...DATE_FORMAT}
                         defaultValue={DATE_RANGE}
                         invalidDateMessage={INVALID_MESSAGE}
                         onError={onError}
@@ -729,7 +723,7 @@ describe("<DateRangeInput format={format}>", () => {
 
                 const result = wrap(
                     <DateRangeInput
-                        format={format}
+                        {...DATE_FORMAT}
                         defaultValue={DATE_RANGE}
                         overlappingDatesMessage={OVERLAPPING_DATES_MESSAGE}
                         onChange={onChange}
@@ -868,7 +862,7 @@ describe("<DateRangeInput format={format}>", () => {
                 // things up (mounting is costly).
                 const result = wrap(
                     <DateRangeInput
-                        format={format}
+                        {...DATE_FORMAT}
                         closeOnSelection={false}
                         defaultValue={[HOVER_TEST_DATE_2, HOVER_TEST_DATE_4]}
                     />,
@@ -2028,7 +2022,7 @@ describe("<DateRangeInput format={format}>", () => {
             const defaultValue = [START_DATE, null] as DateRange;
 
             const { root, getDayElement } = wrap(
-                <DateRangeInput format={format} defaultValue={defaultValue} onChange={onChange} />,
+                <DateRangeInput {...DATE_FORMAT} defaultValue={defaultValue} onChange={onChange} />,
             );
 
             getStartInput(root).simulate("focus");
@@ -2040,7 +2034,7 @@ describe("<DateRangeInput format={format}>", () => {
 
         it("Clearing only the start input (e.g.) invokes onChange with [null, <endDate>]", () => {
             const onChange = sinon.spy();
-            const { root } = wrap(<DateRangeInput format={format} onChange={onChange} defaultValue={DATE_RANGE} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} onChange={onChange} defaultValue={DATE_RANGE} />);
 
             const startInput = getStartInput(root);
             startInput.simulate("focus");
@@ -2053,7 +2047,7 @@ describe("<DateRangeInput format={format}>", () => {
         it("Clearing the dates in both inputs invokes onChange with [null, null] and leaves the inputs empty", () => {
             const onChange = sinon.spy();
             const { root } = wrap(
-                <DateRangeInput format={format} onChange={onChange} defaultValue={[START_DATE, null]} />,
+                <DateRangeInput {...DATE_FORMAT} onChange={onChange} defaultValue={[START_DATE, null]} />,
             );
             getStartInput(root).simulate("focus");
             changeStartInputText(root, "");
@@ -2065,37 +2059,37 @@ describe("<DateRangeInput format={format}>", () => {
 
     describe("when controlled", () => {
         it("Setting value causes defaultValue to be ignored", () => {
-            const { root } = wrap(<DateRangeInput format={format} defaultValue={DATE_RANGE_2} value={DATE_RANGE} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={DATE_RANGE_2} value={DATE_RANGE} />);
             assertInputTextsEqual(root, START_STR, END_STR);
         });
 
         it("Setting value to [undefined, undefined] shows empty fields", () => {
-            const { root } = wrap(<DateRangeInput format={format} value={[undefined, undefined]} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={[undefined, undefined]} />);
             assertInputTextsEqual(root, "", "");
         });
 
         it("Setting value to [null, null] shows empty fields", () => {
-            const { root } = wrap(<DateRangeInput format={format} value={[null, null]} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={[null, null]} />);
             assertInputTextsEqual(root, "", "");
         });
 
         it("Shows empty start field and formatted date in end field when value is [null, <date>]", () => {
-            const { root } = wrap(<DateRangeInput format={format} value={[null, END_DATE]} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={[null, END_DATE]} />);
             assertInputTextsEqual(root, "", END_STR);
         });
 
         it("Shows empty end field and formatted date in start field when value is [<date>, null]", () => {
-            const { root } = wrap(<DateRangeInput format={format} value={[START_DATE, null]} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={[START_DATE, null]} />);
             assertInputTextsEqual(root, START_STR, "");
         });
 
         it("Shows formatted dates in both fields when value is [<date1>, <date2>]", () => {
-            const { root } = wrap(<DateRangeInput format={format} value={[START_DATE, END_DATE]} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={[START_DATE, END_DATE]} />);
             assertInputTextsEqual(root, START_STR, END_STR);
         });
 
         it("Updating value changes the text accordingly in both fields", () => {
-            const { root } = wrap(<DateRangeInput format={format} value={DATE_RANGE} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={DATE_RANGE} />);
             root.setState({ isOpen: true });
             root.setProps({ value: DATE_RANGE_2 });
             assertInputTextsEqual(root, START_STR_2, END_STR_2);
@@ -2104,7 +2098,7 @@ describe("<DateRangeInput format={format}>", () => {
         it("Pressing Enter saves the inputted date and closes the popover", () => {
             const onChange = sinon.spy();
             const { root } = wrap(
-                <DateRangeInput format={format} onChange={onChange} value={[undefined, undefined]} />,
+                <DateRangeInput {...DATE_FORMAT} onChange={onChange} value={[undefined, undefined]} />,
             );
             root.setState({ isOpen: true });
 
@@ -2133,7 +2127,7 @@ describe("<DateRangeInput format={format}>", () => {
         it("Clicking a date invokes onChange with the new date range and updates the input field text", () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(
-                <DateRangeInput format={format} value={DATE_RANGE} onChange={onChange} />,
+                <DateRangeInput {...DATE_FORMAT} value={DATE_RANGE} onChange={onChange} />,
             );
             getStartInput(root).simulate("focus"); // to open popover
             getDayElement(START_DAY).simulate("click");
@@ -2144,7 +2138,7 @@ describe("<DateRangeInput format={format}>", () => {
 
         it("Typing a valid start or end date invokes onChange with the new date range but doesn't change UI", () => {
             const onChange = sinon.spy();
-            const { root } = wrap(<DateRangeInput format={format} onChange={onChange} value={DATE_RANGE} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} onChange={onChange} value={DATE_RANGE} />);
 
             changeStartInputText(root, START_STR_2);
             expect(onChange.callCount).to.equal(1);
@@ -2163,7 +2157,7 @@ describe("<DateRangeInput format={format}>", () => {
 
             const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
             const { root, getDayElement } = wrap(
-                <DateRangeInput format={format} onChange={onChange} value={[null, null]} />,
+                <DateRangeInput {...DATE_FORMAT} onChange={onChange} value={[null, null]} />,
             );
             controlledRoot = root;
 
@@ -2177,7 +2171,7 @@ describe("<DateRangeInput format={format}>", () => {
 
             const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
             const { root, getDayElement } = wrap(
-                <DateRangeInput format={format} onChange={onChange} value={[null, null]} />,
+                <DateRangeInput {...DATE_FORMAT} onChange={onChange} value={[null, null]} />,
             );
             controlledRoot = root;
 
@@ -2198,7 +2192,7 @@ describe("<DateRangeInput format={format}>", () => {
 
                 const result = wrap(
                     <DateRangeInput
-                        format={format}
+                        {...DATE_FORMAT}
                         minDate={OUT_OF_RANGE_TEST_MIN}
                         maxDate={OUT_OF_RANGE_TEST_MAX}
                         onChange={onChange}
@@ -2253,7 +2247,7 @@ describe("<DateRangeInput format={format}>", () => {
 
                 const result = wrap(
                     <DateRangeInput
-                        format={format}
+                        {...DATE_FORMAT}
                         invalidDateMessage={INVALID_MESSAGE}
                         onError={onError}
                         value={DATE_RANGE}
@@ -2309,7 +2303,7 @@ describe("<DateRangeInput format={format}>", () => {
 
                 const result = wrap(
                     <DateRangeInput
-                        format={format}
+                        {...DATE_FORMAT}
                         overlappingDatesMessage={OVERLAPPING_DATES_MESSAGE}
                         onChange={onChange}
                         onError={onError}
@@ -2365,7 +2359,7 @@ describe("<DateRangeInput format={format}>", () => {
             const onChange = sinon.spy();
             const value = [START_DATE, null] as DateRange;
 
-            const { root, getDayElement } = wrap(<DateRangeInput format={format} value={value} onChange={onChange} />);
+            const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} value={value} onChange={onChange} />);
 
             // popover opens on focus
             getStartInput(root).simulate("focus");
@@ -2379,7 +2373,7 @@ describe("<DateRangeInput format={format}>", () => {
             selected dates, and repopulates the controlled values in the inputs on blur`, () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(
-                <DateRangeInput format={format} onChange={onChange} value={DATE_RANGE} />,
+                <DateRangeInput {...DATE_FORMAT} onChange={onChange} value={DATE_RANGE} />,
             );
 
             const startInput = getStartInput(root);
@@ -2402,7 +2396,7 @@ describe("<DateRangeInput format={format}>", () => {
             repopulates the controlled values in the inputs on blur`, () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(
-                <DateRangeInput format={format} onChange={onChange} value={[START_DATE, null]} />,
+                <DateRangeInput {...DATE_FORMAT} onChange={onChange} value={[START_DATE, null]} />,
             );
 
             const startInput = getStartInput(root);
@@ -2420,7 +2414,7 @@ describe("<DateRangeInput format={format}>", () => {
         });
 
         it("Formats locale-specific format strings properly", () => {
-            const { root } = wrap(<DateRangeInput format={format} locale="de" value={DATE_RANGE_2} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} locale="de" value={DATE_RANGE_2} />);
             assertInputTextsEqual(root, START_DE_STR_2, END_DE_STR_2);
         });
     });
