@@ -575,7 +575,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
     private handleInputFocus = (_e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
-        const inputString = getFormattedDateString(values.selectedValue, this.props);
+        const inputString = getFormattedDateString(values.selectedValue, this.props, true);
 
         // change the boundary only if the user explicitly focused in the field.
         // focus changes from hovering don't count; they're just temporary.

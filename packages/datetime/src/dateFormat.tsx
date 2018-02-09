@@ -51,12 +51,16 @@ export interface IDateFormatProps {
     parseDate(str: string, format?: string, locale?: string): Date | false | null;
 }
 
-export function getFormattedDateString(date: Date | false | null, props: IDateFormatProps & IDatePickerBaseProps) {
+export function getFormattedDateString(
+    date: Date | false | null,
+    props: IDateFormatProps & IDatePickerBaseProps,
+    ignoreRange = false,
+) {
     if (date == null) {
         return "";
     } else if (!isDateValid(date)) {
         return props.invalidDateMessage;
-    } else if (isDayInRange(date, [props.minDate, props.maxDate])) {
+    } else if (ignoreRange || isDayInRange(date, [props.minDate, props.maxDate])) {
         return props.formatDate(date, props.format, props.locale);
     } else {
         return props.outOfRangeMessage;

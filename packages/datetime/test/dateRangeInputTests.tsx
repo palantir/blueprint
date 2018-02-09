@@ -41,7 +41,7 @@ type InvalidDateTestFunction = (
     otherInputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
 ) => void;
 
-describe.only("<DateRangeInput>", () => {
+describe("<DateRangeInput>", () => {
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
     const START_STR = DateTestUtils.toDateString(START_DATE);
