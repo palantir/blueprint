@@ -4,16 +4,17 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Switch } from "@blueprintjs/core";
+import { Switch, Tag } from "@blueprintjs/core";
+import { DateInput, IDateFormatProps, TimePickerPrecision } from "@blueprintjs/datetime";
 import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
-import { DateInput, IDateFormatProps, TimePickerPrecision } from "@blueprintjs/datetime";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDateInputExampleState {
     closeOnSelection: boolean;
+    date: Date | null;
     disabled: boolean;
     format: IDateFormatProps;
     reverseMonthAndYearMenus: boolean;
@@ -23,6 +24,7 @@ export interface IDateInputExampleState {
 export class DateInputExample extends BaseExample<IDateInputExampleState> {
     public state: IDateInputExampleState = {
         closeOnSelection: true,
+        date: null,
         disabled: false,
         format: FORMATS[0],
         reverseMonthAndYearMenus: false,
@@ -41,16 +43,20 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     );
 
     protected renderExample() {
-        const { format, ...spreadProps } = this.state;
+        const { date, format, ...spreadProps } = this.state;
         return (
-            <DateInput
-                {...spreadProps}
-                {...format}
-                defaultValue={new Date()}
-                className="foofoofoo"
-                popoverProps={{ popoverClassName: "barbarbar" }}
-                inputProps={{ className: "bazbazbaz" }}
-            />
+            <div>
+                <DateInput
+                    {...spreadProps}
+                    {...format}
+                    defaultValue={new Date()}
+                    className="foofoofoo"
+                    onChange={this.handleDateChange}
+                    popoverProps={{ popoverClassName: "barbarbar" }}
+                    inputProps={{ className: "bazbazbaz" }}
+                />{" "}
+                {date && <Tag>{date.toLocaleString()}</Tag>}
+            </div>
         );
     }
 
@@ -82,5 +88,6 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
         ];
     }
 
+    private handleDateChange = (date: Date | null) => this.setState({ date });
     private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });
 }
