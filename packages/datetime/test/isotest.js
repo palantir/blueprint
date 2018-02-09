@@ -8,9 +8,18 @@ const React = require("react");
 const DateTime = require("../lib/cjs");
 
 describe("DateTime isomorphic rendering", () => {
+    const format = {
+        dateToString: date => date.toLocaleString(),
+        placeholder: "enter date",
+        stringToDate: str => new Date(Date.parse(str)),
+    };
+
     generateIsomorphicTests(
         DateTime,
-        {},
+        {
+            "DateInput": { format },
+            "DateRangeInput": { format },
+        },
         {}
     );
 });
