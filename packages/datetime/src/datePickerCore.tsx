@@ -24,7 +24,8 @@ export interface IDatePickerBaseProps {
     initialMonth?: Date;
 
     /**
-     * The locale that gets passed to `parseDate`, `formatDate`, and the functions in `localeUtils`.
+     * The locale name, which is passed to the functions in `localeUtils`
+     * (and `formatDate` and `parseDate` if supported).
      */
     locale?: string;
 

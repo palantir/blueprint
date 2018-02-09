@@ -472,6 +472,50 @@ describe("<DateInput>", () => {
         });
     });
 
+    describe("date formatting", () => {
+        const formatDate = sinon.stub().returns("custom date");
+        const parseDate = sinon.stub().returns(new Date());
+        const locale = "LOCALE";
+        const props: IDateInputProps = { formatDate, locale, parseDate };
+
+        beforeEach(() => {
+            formatDate.resetHistory();
+            parseDate.resetHistory();
+        });
+
+        it("formatDate called on render with locale prop", () => {
+            const value = new Date();
+            mount(<DateInput {...props} value={value} />);
+            assert.isTrue(formatDate.calledWith(value, locale));
+        });
+
+        it("formatDate result becomes input value", () => {
+            const wrapper = mount(<DateInput {...props} value={new Date()} />);
+            assert.strictEqual(wrapper.find("input").prop("value"), "custom date");
+        });
+
+        it("parseDate called on change with locale prop", () => {
+            const value = "new date";
+            const wrapper = mount(<DateInput {...props} />);
+            wrapper.find("input").simulate("change", { target: { value } });
+            assert.isTrue(parseDate.calledWith(value, locale));
+        });
+
+        it("parseDate result is stored in state", () => {
+            const value = "new date";
+            const wrapper = mount(<DateInput {...props} />);
+            wrapper.find("input").simulate("change", { target: { value } });
+            assert.strictEqual(wrapper.state("value"), parseDate());
+        });
+
+        it("parseDate returns false renders invalid date", () => {
+            const invalidParse = sinon.stub().returns(false);
+            const wrapper = mount(<DateInput {...props} parseDate={invalidParse} />);
+            wrapper.find("input").simulate("change", { target: { value: "invalid" } });
+            assert.strictEqual(wrapper.find("input").prop("value"), "");
+        });
+    });
+
     /* Assert Date equals YYYY-MM-DD string. */
     function assertDateEquals(actual: Date, expected: Date) {
         return DATE_FORMAT.formatDate(actual) === DATE_FORMAT.formatDate(expected);

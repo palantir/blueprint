@@ -40,24 +40,12 @@ export const FORMATS: IDateFormatProps[] = [
     momentFormatter("MM/DD/YYYY"),
     momentFormatter("YYYY-MM-DD"),
     momentFormatter("YYYY-MM-DD HH:mm:ss"),
-    {
-        formatDate: date => moment(date).fromNow(),
-        parseDate: str => moment(str).toDate(),
-        placeholder: "from now (moment)",
-    },
 ];
 
 function momentFormatter(format: string): IDateFormatProps {
     return {
-        format,
-        formatDate: (date, fmt, locale) =>
-            moment(date)
-                .locale(locale)
-                .format(fmt),
-        parseDate: (str, fmt, locale) =>
-            moment(str, fmt)
-                .locale(locale)
-                .toDate(),
+        formatDate: date => moment(date).format(format),
+        parseDate: str => moment(str, format).toDate(),
         placeholder: `${format} (moment)`,
     };
 }

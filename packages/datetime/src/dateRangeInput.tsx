@@ -303,14 +303,12 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
             nextState = { ...nextState, selectedStart, selectedEnd };
         }
 
-        // we use Moment to format date strings, but min/max dates come in as vanilla JS Dates.
-        // cache the formatted date strings to avoid creating new Moment instances on each render.
-        const didFormatChange = nextProps.format !== this.props.format;
-        if (didFormatChange || nextProps.minDate !== this.props.minDate) {
+        // cache the formatted date strings to avoid computing on each render.
+        if (nextProps.minDate !== this.props.minDate) {
             const formattedMinDateString = this.getFormattedMinMaxDateString(nextProps, "minDate");
             nextState = { ...nextState, formattedMinDateString };
         }
-        if (didFormatChange || nextProps.maxDate !== this.props.maxDate) {
+        if (nextProps.maxDate !== this.props.maxDate) {
             const formattedMaxDateString = this.getFormattedMinMaxDateString(nextProps, "maxDate");
             nextState = { ...nextState, formattedMaxDateString };
         }
@@ -907,8 +905,8 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         if (dateString === this.props.outOfRangeMessage || dateString === this.props.invalidDateMessage) {
             return null;
         }
-        const { format, locale, parseDate } = this.props;
-        const newDate = parseDate(dateString, format, locale);
+        const { locale, parseDate } = this.props;
+        const newDate = parseDate(dateString, locale);
         return newDate === false ? new Date(undefined) : newDate;
     }
 
@@ -916,7 +914,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         if (!this.isDateValidAndInRange(date)) {
             return "";
         }
-        const { format, locale, formatDate } = this.props;
-        return formatDate(date, format, locale);
+        const { locale, formatDate } = this.props;
+        return formatDate(date, locale);
     }
 }

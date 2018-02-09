@@ -9,17 +9,14 @@ import { IDatePickerBaseProps } from "./datePickerCore";
 
 export interface IDateFormatProps {
     /**
-     * Date format string, passed to `formatDate` and `parseDate`.
-     */
-    format?: string;
-
-    /**
      * The error message to display when the date selected is invalid.
      * @default "Invalid date"
      */
     invalidDateMessage?: string;
 
-    /** Date format locale, passed to `formatDate` and `parseDate`. */
+    /**
+     * The locale name, which is passed to `formatDate`, `parseDate` and the functions in `localeUtils`.
+     */
     locale?: string;
 
     /**
@@ -37,18 +34,18 @@ export interface IDateFormatProps {
     /**
      * Function to render a JavaScript `Date` to a string.
      * The special value `null` indicates the absence of a date.
-     * `format` and `locale` come directly from props on this component;
-     * if the prop is defined, then the parameter will be too.
+     * Optional `locale` argument comes directly from the prop on this component:
+     * if the prop is defined, then the argument will be too.
      */
-    formatDate(date: Date | null, format?: string, locale?: string): string;
+    formatDate(date: Date | null, locale?: string): string;
 
     /**
      * Function to deserialize user input text to a JavaScript `Date` object.
      * Return `false` if the string is an invalid date.
      * Return `null` to represent the absence of a date.
-     * `format` and `locale` come directly from props on this component.
+     * Optional `locale` argument comes directly from the prop on this component.
      */
-    parseDate(str: string, format?: string, locale?: string): Date | false | null;
+    parseDate(str: string, locale?: string): Date | false | null;
 }
 
 export function getFormattedDateString(
@@ -61,7 +58,7 @@ export function getFormattedDateString(
     } else if (!isDateValid(date)) {
         return props.invalidDateMessage;
     } else if (ignoreRange || isDayInRange(date, [props.minDate, props.maxDate])) {
-        return props.formatDate(date, props.format, props.locale);
+        return props.formatDate(date, props.locale);
     } else {
         return props.outOfRangeMessage;
     }

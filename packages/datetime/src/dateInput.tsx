@@ -349,8 +349,8 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         if (dateString === this.props.outOfRangeMessage || dateString === this.props.invalidDateMessage) {
             return null;
         }
-        const { format, locale, parseDate } = this.props;
-        const newDate = parseDate(dateString, format, locale);
+        const { locale, parseDate } = this.props;
+        const newDate = parseDate(dateString, locale);
         return newDate === false ? new Date(undefined) : newDate;
     }
 
@@ -358,7 +358,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         if (!isDateValid(date) || !this.isDateInRange(date)) {
             return "";
         }
-        const { format, locale, formatDate } = this.props;
-        return formatDate(date, format, locale);
+        const { locale, formatDate } = this.props;
+        return formatDate(date, locale);
     }
 }
