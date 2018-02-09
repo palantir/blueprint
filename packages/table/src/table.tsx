@@ -710,6 +710,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
+        if (
+            !CoreUtils.arraysEqual(newColumnWidths, this.state.columnWidths) ||
+            !CoreUtils.arraysEqual(newRowHeights, this.state.rowHeights)
+        ) {
+            this.didUpdateColumnOrRowSizes = true;
+        }
+
         let newSelectedRegions = selectedRegions;
         if (selectedRegions == null) {
             // if we're in uncontrolled mode, filter out all selected regions that don't
@@ -729,13 +736,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             this.state.focusedCell,
             newSelectedRegions,
         );
-
-        if (
-            !CoreUtils.arraysEqual(newColumnWidths, this.state.columnWidths) ||
-            !CoreUtils.arraysEqual(newRowHeights, this.state.rowHeights)
-        ) {
-            this.didUpdateColumnOrRowSizes = true;
-        }
 
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
