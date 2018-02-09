@@ -918,11 +918,11 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         }
     };
 
-    private isDateValidAndInRange = (date: Date | null) => {
-        return date != null && isDayInRange(date, [this.props.minDate, this.props.maxDate]);
+    private isDateValidAndInRange = (date: Date | false | null): date is Date => {
+        return date instanceof Date && isDayInRange(date, [this.props.minDate, this.props.maxDate]);
     };
 
-    private isNextDateRangeValid(nextDate: Date, boundary: DateRangeBoundary) {
+    private isNextDateRangeValid(nextDate: Date | false | null, boundary: DateRangeBoundary): nextDate is Date {
         return this.isDateValidAndInRange(nextDate) && !this.doBoundaryDatesOverlap(nextDate, boundary);
     }
 
@@ -936,12 +936,19 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         return this.getFormattedDateString(date === undefined ? defaultDate : date);
     }
 
-    private parseDate(dateString: string): Date | false | null {
+    private parseDate(dateString: string): Date | null {
+        if (dateString === this.props.outOfRangeMessage || dateString === this.props.invalidDateMessage) {
+            return null;
+        }
         const { format, locale, parseDate } = this.props;
-        return parseDate(dateString, format, locale);
+        const newDate = parseDate(dateString, format, locale);
+        return newDate === false ? new Date(undefined) : newDate;
     }
 
     private formatDate(date: Date): string {
+        if (!this.isDateValidAndInRange(date)) {
+            return "";
+        }
         const { format, locale, formatDate } = this.props;
         return formatDate(date, format, locale);
     }
