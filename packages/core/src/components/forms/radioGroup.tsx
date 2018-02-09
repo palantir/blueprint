@@ -49,7 +49,7 @@ export interface IRadioGroupProps extends IProps {
     options?: IOptionProps[];
 
     /** Value of the selected radio. The child with this value will be `:checked`. */
-    selectedValue?: string;
+    selectedValue?: string | number;
 }
 
 let counter = 0;
