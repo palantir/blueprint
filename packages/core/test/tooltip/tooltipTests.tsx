@@ -8,7 +8,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import { Target } from "react-popper";
-import { spy } from "sinon";
+import { spy, stub } from "sinon";
 
 import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src/index";
 
@@ -55,14 +55,14 @@ describe("<Tooltip>", () => {
         });
 
         it("empty content disables Popover and warns", () => {
-            const warnSpy = spy(console, "warn");
+            const warnSpy = stub(console, "warn");
             const tooltip = renderTooltip({ isOpen: true });
 
             function assertDisabledPopover(content?: string) {
                 tooltip.setProps({ content });
                 assert.isFalse(tooltip.find(Overlay).prop("isOpen"), `"${content}"`);
                 assert.isTrue(warnSpy.calledOnce, "spy not called once");
-                warnSpy.reset();
+                warnSpy.resetHistory();
             }
 
             assertDisabledPopover("");
@@ -90,7 +90,7 @@ describe("<Tooltip>", () => {
         });
 
         it("empty content disables Popover and warns", () => {
-            const warnSpy = spy(console, "warn");
+            const warnSpy = stub(console, "warn");
             const tooltip = renderTooltip({ content: "", isOpen: true });
             assert.isFalse(tooltip.find(Overlay).prop("isOpen"));
             assert.isTrue(warnSpy.calledOnce);
@@ -116,7 +116,7 @@ describe("<Tooltip>", () => {
 
     function renderTooltip(props?: Partial<ITooltipProps>) {
         return mount(
-            <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} inline={true}>
+            <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} usePortal={false}>
                 <button>Target</button>
             </Tooltip>,
         );

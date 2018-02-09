@@ -14,9 +14,9 @@ import { spy } from "sinon";
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuItem } from "../../src/index";
 
 const MENU_ITEMS = [
-    <MenuItem key="left" iconName="align-left" text="Align Left" />,
-    <MenuItem key="center" iconName="align-center" text="Align Center" />,
-    <MenuItem key="right" iconName="align-right" text="Align Right" />,
+    <MenuItem key="left" icon="align-left" text="Align Left" />,
+    <MenuItem key="center" icon="align-center" text="Align Center" />,
+    <MenuItem key="right" icon="align-right" text="Align Right" />,
 ];
 const MENU = <Menu>{MENU_ITEMS}</Menu>;
 
@@ -95,16 +95,16 @@ describe("ContextMenu", () => {
 });
 
 function getPopover() {
-    return document.query(`.${Classes.POPOVER}.${Classes.MINIMAL}`);
+    return document.querySelector(`.${Classes.POPOVER}.${Classes.MINIMAL}`);
 }
 
 function assertContextMenuWasRendered(expectedLength = MENU_ITEMS.length) {
-    const menu = document.query(`.${Classes.CONTEXT_MENU}`);
+    const menu = document.querySelector(`.${Classes.CONTEXT_MENU}`);
     assert.isNotNull(menu);
     // popover is rendered in a Portal
     const popover = getPopover();
     assert.isNotNull(popover);
-    const menuItems = popover.queryAll(`.${Classes.MENU_ITEM}`);
+    const menuItems = popover.querySelectorAll(`.${Classes.MENU_ITEM}`);
     assert.lengthOf(menuItems, expectedLength);
 }
 

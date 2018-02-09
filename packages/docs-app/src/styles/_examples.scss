@@ -340,6 +340,16 @@
   }
 }
 
+.docs-icon-example {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.docs-menu-example .pt-menu {
+  max-width: 280px;
+}
+
 .docs-wiggle {
   animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
 }

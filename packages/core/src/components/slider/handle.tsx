@@ -38,7 +38,7 @@ export interface IHandleState {
 const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
 export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
-    public static displayName = "Blueprint.SliderHandle";
+    public static displayName = "Blueprint2.SliderHandle";
 
     public state = {
         isMoving: false,

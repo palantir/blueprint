@@ -65,7 +65,8 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     hoverOpenDelay?: number;
 
     /**
-     * Whether a non-inline popover should automatically inherit the dark theme from its parent.
+     * Whether a popover should automatically inherit the dark theme from its parent.
+     * Note that this prop is ignored if `usePortal={false}`, as the Popover will inherit dark theme via CSS.
      * @default true
      */
     inheritDarkTheme?: boolean;
@@ -153,7 +154,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * Space-delimited string of class names applied to the
-     * portal that holds the popover if `inline = false`.
+     * portal that holds the popover if `usePortal={true}`.
      */
     portalClassName?: string;
 
@@ -182,6 +183,18 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * Space-delimited string of class names applied to the target.
      */
     targetClassName?: string;
+
+    /**
+     * Whether the popover should be rendered inside a `Portal` attached to `document.body`.
+     * Rendering content inside a `Portal` allows the popover content to escape the physical bounds of its
+     * parent while still being positioned correctly relative to its target.
+     *
+     * Using a `Portal` is necessary if any ancestor of the target hides overflow or uses very complex positioning.
+     * Not using a `Portal` can result in smoother performance when scrolling and allows the popover content to inherit
+     * CSS styles from surrounding elements.
+     * @default true
+     */
+    usePortal?: boolean;
 }
 
 export interface IPopoverState {
@@ -192,7 +205,7 @@ export interface IPopoverState {
 }
 
 export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
-    public static displayName = "Blueprint.Popover";
+    public static displayName = "Blueprint2.Popover";
 
     public static defaultProps: IPopoverProps = {
         defaultIsOpen: false,
@@ -201,7 +214,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
         inheritDarkTheme: true,
-        inline: false,
         interactionKind: PopoverInteractionKind.CLICK,
         minimal: false,
         modifiers: {},
@@ -209,11 +221,12 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         position: "auto",
         rootElementTag: "span",
         transitionDuration: 300,
+        usePortal: true,
     };
 
     /**
      * DOM element that contains the popover.
-     * When `inline={false}`, this element will be portaled outside the usual DOM flow,
+     * When `usePortal={true}`, this element will be portaled outside the usual DOM flow,
      * so this reference can be very useful for testing.
      */
     public popoverElement: HTMLElement;
@@ -278,7 +291,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                 [Classes.ACTIVE]: isOpen && !isHoverInteractionKind,
             }),
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            disabled: isOpen && children.target.type === Tooltip ? true : children.target.props.disabled,
+            disabled: isOpen && Utils.isElementOfType(children.target, Tooltip) ? true : children.target.props.disabled,
             tabIndex: targetTabIndex,
         });
 
@@ -304,7 +317,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                     didOpen={this.handleContentMount}
                     enforceFocus={this.props.enforceFocus}
                     hasBackdrop={hasBackdrop}
-                    inline={this.props.inline}
+                    usePortal={this.props.usePortal}
                     isOpen={isOpen && !isContentEmpty}
                     onClose={this.handleOverlayClose}
                     transitionDuration={this.props.transitionDuration}
@@ -357,7 +370,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
         }
-        if (props.hasBackdrop && props.inline) {
+        if (props.hasBackdrop && !props.usePortal) {
             console.warn(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE);
         }
         if (props.hasBackdrop && props.interactionKind !== PopoverInteractionKind.CLICK) {
@@ -383,14 +396,14 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     private updateDarkParent() {
-        if (!this.props.inline && this.state.isOpen) {
+        if (this.props.usePortal && this.state.isOpen) {
             const hasDarkParent = this.targetElement != null && this.targetElement.closest(`.${Classes.DARK}`) != null;
             this.setState({ hasDarkParent });
         }
     }
 
     private renderPopper(content: JSX.Element) {
-        const { inline, interactionKind, modifiers } = this.props;
+        const { usePortal, interactionKind, modifiers } = this.props;
 
         const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
             // always check popover clicks for dismiss class
@@ -398,7 +411,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         };
         if (
             interactionKind === PopoverInteractionKind.HOVER ||
-            (inline && interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY)
+            (!usePortal && interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY)
         ) {
             popoverHandlers.onMouseEnter = this.handleMouseEnter;
             popoverHandlers.onMouseLeave = this.handleMouseLeave;
@@ -503,7 +516,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
         // trigger the mouse leave event, as hovering over the popover shouldn't count.
         if (
-            this.props.inline &&
+            !this.props.usePortal &&
             this.isElementInPopover(e.target as Element) &&
             this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY &&
             !this.props.openOnTargetFocus

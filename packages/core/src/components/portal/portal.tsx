@@ -50,7 +50,7 @@ const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
 export class Portal extends React.Component<IPortalProps, IPortalState> {
-    public static displayName = "Blueprint.Portal";
+    public static displayName = "Blueprint2.Portal";
     public static contextTypes = REACT_CONTEXT_TYPES;
 
     public context: IPortalContext;

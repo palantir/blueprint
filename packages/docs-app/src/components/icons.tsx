@@ -48,9 +48,6 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
             groups[icon.group].push(icon);
             return groups;
         }, {});
-        for (const group of Object.keys(this.iconGroups)) {
-            this.iconGroups[group].sort((a, b) => a.name.localeCompare(b.name));
-        }
     }
 
     public render() {
@@ -108,7 +105,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
 }
 
 function isIconFiltered(query: string, icon: IIcon) {
-    return smartSearch(query, icon.name, icon.className, icon.tags, icon.group);
+    return smartSearch(query, icon.displayName, icon.iconName, icon.tags, icon.group);
 }
 
 function renderIcon(icon: IIcon, index: number) {

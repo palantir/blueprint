@@ -48,17 +48,10 @@ export interface ITooltipProps extends IProps, IIntentProps {
     hoverOpenDelay?: number;
 
     /**
-     * Whether a non-inline tooltip should automatically inherit the dark theme from its parent.
+     * Whether a tooltip that uses a `Portal` should automatically inherit the dark theme from its parent.
      * @default true
      */
     inheritDarkTheme?: boolean;
-
-    /**
-     * Whether the tooltip is rendered inline (as a sibling of the target element).
-     * If false, it is attached to a new element appended to `<body>`.
-     * @default false
-     */
-    inline?: boolean;
 
     /**
      * Whether the popover is visible. Passing this prop puts the popover in
@@ -88,7 +81,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
     /**
      * Space-delimited string of class names applied to the
-     * portal which holds the tooltip if `inline` is set to `false`.
+     * portal which holds the tooltip if `usePortal={true}`.
      */
     portalClassName?: string;
 
@@ -121,10 +114,17 @@ export interface ITooltipProps extends IProps, IIntentProps {
      * @default 100
      */
     transitionDuration?: number;
+
+    /**
+     * Whether the tooltip is rendered inside a `Portal` so it can escape the usual DOM flow.
+     * If `false`, it is rendered as a sibling of the target element.
+     * @default true
+     */
+    usePortal?: boolean;
 }
 
 export class Tooltip extends React.PureComponent<ITooltipProps, {}> {
-    public static displayName = "Blueprint.Tooltip";
+    public static displayName = "Blueprint2.Tooltip";
 
     public static defaultProps: Partial<ITooltipProps> = {
         defaultIsOpen: false,

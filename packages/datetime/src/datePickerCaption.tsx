@@ -4,15 +4,14 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Utils as BlueprintUtils } from "@blueprintjs/core";
-import * as classNames from "classnames";
+import { Icon, Utils as BlueprintUtils } from "@blueprintjs/core";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import { CaptionElementProps } from "react-day-picker/types/props";
 
 import * as Classes from "./common/classes";
 import * as Utils from "./common/utils";
 
-export interface IDatePickerCaptionProps extends ReactDayPicker.CaptionElementProps {
+export interface IDatePickerCaptionProps extends CaptionElementProps {
     maxDate: Date;
     minDate: Date;
     onMonthChange?: (month: number) => void;
@@ -20,13 +19,21 @@ export interface IDatePickerCaptionProps extends ReactDayPicker.CaptionElementPr
     reverseMonthAndYearMenus?: boolean;
 }
 
-export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, {}> {
+export interface IDatePickerCaptionState {
+    monthWidth: number;
+    yearWidth: number;
+}
+
+export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionProps, IDatePickerCaptionState> {
+    public state: IDatePickerCaptionState = {
+        monthWidth: 0,
+        yearWidth: 0,
+    };
+
     private displayedMonthText: string;
     private displayedYearText: string;
 
     private containerElement: HTMLElement;
-    private monthArrowElement: HTMLElement;
-    private yearArrowElement: HTMLElement;
 
     public render() {
         const { date, locale, localeUtils, minDate, maxDate } = this.props;
@@ -72,8 +79,6 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
         this.displayedMonthText = months[displayMonth];
         this.displayedYearText = displayYear.toString();
 
-        const caretClasses = classNames("pt-icon-standard", "pt-icon-caret-down", Classes.DATEPICKER_CAPTION_CARET);
-
         const monthSelect = (
             <div className={Classes.DATEPICKER_CAPTION_SELECT} key="month">
                 <select
@@ -83,7 +88,11 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
                 >
                     {monthOptionElements}
                 </select>
-                <span className={caretClasses} ref={this.monthArrowRefHandler} />
+                <Icon
+                    className={Classes.DATEPICKER_CAPTION_CARET}
+                    icon="caret-down"
+                    style={{ left: this.state.monthWidth }}
+                />
             </div>
         );
         const yearSelect = (
@@ -95,7 +104,11 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
                 >
                     {yearOptionElements}
                 </select>
-                <span className={caretClasses} ref={this.yearArrowRefHandler} />
+                <Icon
+                    className={Classes.DATEPICKER_CAPTION_CARET}
+                    icon="caret-down"
+                    style={{ left: this.state.yearWidth }}
+                />
             </div>
         );
 
@@ -119,18 +132,14 @@ export class DatePickerCaption extends React.Component<IDatePickerCaptionProps, 
     }
 
     private containerRefHandler = (r: HTMLElement) => (this.containerElement = r);
-    private monthArrowRefHandler = (r: HTMLElement) => (this.monthArrowElement = r);
-    private yearArrowRefHandler = (r: HTMLElement) => (this.yearArrowElement = r);
 
     private positionArrows() {
         // pass our container element to the measureTextWidth utility to ensure
         // that we're measuring the width of text as sized within this component.
         const textClass = "pt-datepicker-caption-measure";
         const monthWidth = Utils.measureTextWidth(this.displayedMonthText, textClass, this.containerElement);
-        this.monthArrowElement.setAttribute("style", `left:${monthWidth}`);
-
         const yearWidth = Utils.measureTextWidth(this.displayedYearText, textClass, this.containerElement);
-        this.yearArrowElement.setAttribute("style", `left:${yearWidth}`);
+        this.setState({ monthWidth, yearWidth });
     }
 
     private handleMonthSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {

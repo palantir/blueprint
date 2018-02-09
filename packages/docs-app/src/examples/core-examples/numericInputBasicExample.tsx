@@ -160,7 +160,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                 max={MAX_VALUES[this.state.maxValueIndex].value}
                 disabled={this.state.showDisabled}
                 readOnly={this.state.showReadOnly}
-                leftIconName={this.state.showLeftIcon ? "dollar" : null}
+                leftIcon={this.state.showLeftIcon ? "dollar" : null}
                 placeholder="Enter a number..."
                 selectAllOnFocus={this.state.selectAllOnFocus}
                 selectAllOnIncrement={this.state.selectAllOnIncrement}

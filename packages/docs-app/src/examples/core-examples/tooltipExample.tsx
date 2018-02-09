@@ -23,18 +23,16 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                 orci.
             </span>
         );
+        const jsxContent = (
+            <em>
+                This tooltip contains an <strong>em</strong> tag.
+            </em>
+        );
         return (
             <div className="docs-tooltip2-example">
                 <div>
-                    Inline text can have&nbsp;
-                    <Tooltip
-                        className="pt-tooltip-indicator"
-                        content={
-                            <em>
-                                This tooltip contains an <strong>em</strong> tag.
-                            </em>
-                        }
-                    >
+                    Inline text can have{" "}
+                    <Tooltip className="pt-tooltip-indicator" content={jsxContent}>
                         a tooltip.
                     </Tooltip>
                 </div>
@@ -42,13 +40,13 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                     <Tooltip content={lotsOfText}>Or, hover anywhere over this whole line.</Tooltip>
                 </div>
                 <div>
-                    This line's tooltip&nbsp;
+                    This line's tooltip{" "}
                     <Tooltip className="pt-tooltip-indicator" content={<span>disabled</span>} disabled={true}>
                         is disabled.
                     </Tooltip>
                 </div>
                 <div>
-                    This line's tooltip&nbsp;
+                    This line's tooltip{" "}
                     <Tooltip
                         className="pt-tooltip-indicator"
                         content={<span>BRRAAAIINS</span>}
@@ -67,36 +65,36 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                     <Tooltip
                         className="pt-tooltip-indicator"
                         content="Intent.PRIMARY"
-                        inline={true}
                         intent={Intent.PRIMARY}
                         position={Position.LEFT}
+                        usePortal={false}
                     >
                         Available
-                    </Tooltip>&nbsp;
+                    </Tooltip>{" "}
                     <Tooltip
                         className="pt-tooltip-indicator"
                         content="Intent.SUCCESS"
-                        inline={true}
                         intent={Intent.SUCCESS}
                         position={Position.TOP}
+                        usePortal={false}
                     >
                         in the full
-                    </Tooltip>&nbsp;
+                    </Tooltip>{" "}
                     <Tooltip
                         className="pt-tooltip-indicator"
                         content="Intent.WARNING"
-                        inline={true}
                         intent={Intent.WARNING}
                         position={Position.BOTTOM}
+                        usePortal={false}
                     >
                         range of
-                    </Tooltip>&nbsp;
+                    </Tooltip>{" "}
                     <Tooltip
                         className="pt-tooltip-indicator"
                         content="Intent.DANGER"
-                        inline={true}
                         intent={Intent.DANGER}
                         position={Position.RIGHT}
+                        usePortal={false}
                     >
                         visual intents!
                     </Tooltip>
@@ -110,7 +108,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                     <Tooltip
                         content={<span>This button also has a popover!</span>}
                         position={Position.RIGHT}
-                        inline={true}
+                        usePortal={false}
                     >
                         <Button intent={Intent.SUCCESS} text="Hover and click me" />
                     </Tooltip>

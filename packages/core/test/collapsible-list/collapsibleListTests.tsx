@@ -78,7 +78,7 @@ describe("<CollapsibleList>", () => {
 
     it("hides some items when visibleItemCount < number of children", () => {
         const list = renderCollapsibleList(5, {
-            dropdownProps: { inline: true, isOpen: true },
+            dropdownProps: { isOpen: true, usePortal: false },
             visibleItemCount: 2,
         });
         assertListItems(list, 2, 3);
@@ -105,7 +105,7 @@ describe("<CollapsibleList>", () => {
             renderCollapsibleList(7, { visibleItemRenderer, visibleItemCount: 3 });
             visibleItemRenderer.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
-                const absoluteIndex = +props.text.slice(5); // "Item #"
+                const absoluteIndex = +props.text.toString().slice(5); // "Item #"
                 assert.equal(absoluteIndex, arg[1]);
             });
         });
@@ -115,7 +115,7 @@ describe("<CollapsibleList>", () => {
             renderCollapsibleList(6, { collapseFrom: CollapseFrom.END, visibleItemRenderer, visibleItemCount: 3 });
             visibleItemRenderer.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
-                const absoluteIndex = +props.text.slice(5); // "Item #"
+                const absoluteIndex = +props.text.toString().slice(5); // "Item #"
                 assert.equal(absoluteIndex, arg[1]);
             });
         });

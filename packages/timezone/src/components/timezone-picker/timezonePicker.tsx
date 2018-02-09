@@ -19,7 +19,7 @@ import {
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
-import { ISelectItemRendererProps, Select } from "@blueprintjs/select";
+import { ItemRenderer, Select } from "@blueprintjs/select";
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
@@ -101,7 +101,7 @@ export interface ITimezonePickerState {
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
 export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
-    public static displayName = "Blueprint.TimezonePicker";
+    public static displayName = "Blueprint2.TimezonePicker";
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
         disabled: false,
@@ -196,12 +196,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         const displayValue = finalValue ? formatTimezone(finalValue, date, valueDisplayFormat) : undefined;
 
         return (
-            <Button
-                rightIconName="caret-down"
-                disabled={disabled}
-                text={displayValue || placeholder}
-                {...buttonProps}
-            />
+            <Button rightIcon="caret-down" disabled={disabled} text={displayValue || placeholder} {...buttonProps} />
         );
     }
 
@@ -214,18 +209,17 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         return filterWithQueryCandidates(items, query, item => getTimezoneQueryCandidates(item.timezone, date));
     };
 
-    private renderItem = (itemProps: ISelectItemRendererProps<ITimezoneItem>) => {
-        const { item, isActive, handleClick } = itemProps;
+    private renderItem: ItemRenderer<ITimezoneItem> = (item, { handleClick, modifiers }) => {
         const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
-            [CoreClasses.ACTIVE]: isActive,
-            [CoreClasses.INTENT_PRIMARY]: isActive,
+            [CoreClasses.ACTIVE]: modifiers.active,
+            [CoreClasses.INTENT_PRIMARY]: modifiers.active,
         });
 
         return (
             <MenuItem
                 key={item.key}
                 className={classes}
-                iconName={item.iconName}
+                icon={item.iconName}
                 text={item.text}
                 label={item.label}
                 onClick={handleClick}

@@ -7,7 +7,7 @@
 import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import { DayPickerProps } from "react-day-picker/types/props";
 
 import {
     AbstractPureComponent,
@@ -71,7 +71,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `numberOfMonths`, `fromMonth` (use
      * `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerProps?: DayPickerProps;
 
     /**
      * The default date range to be used in the component when uncontrolled.
@@ -235,7 +235,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         startInputProps: {},
     };
 
-    public static displayName = "Blueprint.DateRangeInput";
+    public static displayName = "Blueprint2.DateRangeInput";
 
     private startInputRef: HTMLInputElement;
     private endInputRef: HTMLInputElement;
@@ -307,9 +307,9 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         // guarantees only some props are overridable.
         return (
             <Popover
-                inline={true}
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
+                usePortal={false}
                 {...this.props.popoverProps}
                 autoFocus={false}
                 className={popoverClassName}
@@ -359,24 +359,18 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     private renderInputGroup = (boundary: DateRangeBoundary) => {
         const inputProps = this.getInputProps(boundary);
 
-        // don't include `ref` in the returned HTML props, because passing it to the InputGroup
-        // leads to TS typing errors.
-        const { ref, ...htmlProps } = inputProps;
-
         const handleInputEvent =
             boundary === DateRangeBoundary.START ? this.handleStartInputEvent : this.handleEndInputEvent;
 
         const classes = classNames(
-            {
-                [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary),
-            },
+            { [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary) },
             inputProps.className,
         );
 
         return (
             <InputGroup
                 autoComplete="off"
-                {...htmlProps}
+                {...inputProps}
                 className={classes}
                 disabled={this.props.disabled}
                 inputRef={this.getInputRef(boundary)}

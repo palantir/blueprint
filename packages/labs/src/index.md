@@ -11,4 +11,4 @@ reference: labs
 
 There are currently no components in labs.
 
-@page timezone-picker
+`@blueprintjs/labs@0.15.x` re-exports components from `@blueprintjs/core`, `@blueprintjs/select`, and `@blueprintjs/timezone` which were previously available in this package. __These exports are provided as migration convenience only and will be removed in the next minor version__.

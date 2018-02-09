@@ -86,6 +86,11 @@ $dark-syntax-token-colors: (
   background: $syntax-background-color;
   color: $syntax-text-color;
 
+  // italicize all type information
+  .meta.type {
+    font-style: italic;
+  }
+
   .pt-dark & {
     @include syntax($dark-syntax-token-colors);
     background: $dark-syntax-background-color;

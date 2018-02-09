@@ -7,272 +7,166 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
+import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
+import { Text } from "../text/text";
 import { Menu } from "./menu";
 
 export interface IMenuItemProps extends IActionProps, ILinkProps {
     // override from IActionProps to make it required
     /** Item text, required for usability. */
-    text: string;
+    text: React.ReactNode;
+
+    /**
+     * Children of this component will be rendered in a __submenu__ that appears when hovering or
+     * clicking on this menu item.
+     *
+     * Use `text` prop for the content of the menu item itself.
+     */
+    children?: React.ReactNode;
+
+    /**
+     * Whether this menu item is non-interactive. Enabling this prop will ignore `href`, `tabIndex`,
+     * and mouse event handlers (in particular click, down, enter, leave).
+     */
+    disabled?: boolean;
+
+    /**
+     * Right-aligned label text content, useful for displaying hotkeys.
+     *
+     * This prop actually supports JSX elements, but TypeScript will throw an error because
+     * `HTMLAttributes` only allows strings. Use `labelElement` to supply a JSX element in TypeScript.
+     */
+    label?: string;
 
     /**
      * Right-aligned label content, useful for displaying hotkeys.
      */
-    label?: string | JSX.Element;
-
-    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps> & object;
+    labelElement?: React.ReactNode;
 
     /**
-     * Whether an enabled, non-submenu item should automatically close the
-     * popover it is nested within when clicked.
+     * Whether the text should be allowed to wrap to multiple lines.
+     * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
+     * @default false
+     */
+    multiline?: boolean;
+
+    /** Props to spread to `Popover`. Note that `content` and `minimal` cannot be changed. */
+    popoverProps?: Partial<IPopoverProps>;
+
+    /**
+     * Whether an enabled item without a submenu should automatically close its parent popover when clicked.
      * @default true
      */
     shouldDismissPopover?: boolean;
-
-    /**
-     * Array of props objects for submenu items.
-     * An alternative to providing `MenuItem` components as `children`.
-     */
-    submenu?: IMenuItemProps[];
-
-    /**
-     * Width of `margin` from left or right edge of viewport. Submenus will
-     * flip to the other side if they come within this distance of that edge.
-     * This has no effect if omitted or if `useSmartPositioning` is set to `false`.
-     * Note that these values are not CSS properties; they are used in
-     * internal math to determine when to flip sides.
-     */
-    submenuViewportMargin?: { left?: number; right?: number };
-
-    /**
-     * Whether a submenu popover will try to reposition itself
-     * if there isn't room for it in its current position.
-     * The popover opens right by default, but will try to flip
-     * left if not enough space.
-     * @default true
-     */
-    useSmartPositioning?: boolean;
 }
 
-export interface IMenuItemState {
-    /** Whether a submenu is opened to the left */
-    alignLeft?: boolean;
-}
-
-const REACT_CONTEXT_TYPES: React.ValidationMap<IMenuItemState> = {
-    alignLeft: (obj: IMenuItemState, key: keyof IMenuItemState) => {
-        if (obj[key] != null && typeof obj[key] !== "boolean") {
-            return new Error("[Blueprint] MenuItem context alignLeft must be boolean");
-        }
-        return undefined;
-    },
-};
-
-export class MenuItem extends AbstractPureComponent<IMenuItemProps, IMenuItemState> {
+export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: IMenuItemProps = {
         disabled: false,
+        multiline: false,
         popoverProps: {},
         shouldDismissPopover: true,
-        submenuViewportMargin: {},
         text: "",
-        useSmartPositioning: true,
     };
-    public static displayName = "Blueprint.MenuItem";
-
-    public static contextTypes = REACT_CONTEXT_TYPES;
-    public static childContextTypes = REACT_CONTEXT_TYPES;
-    public context: IMenuItemState;
-
-    public state: IMenuItemState = {
-        alignLeft: false,
-    };
-
-    private liElement: HTMLElement;
-    private popoverElement: HTMLElement;
-    private refHandlers = {
-        li: (ref: HTMLElement) => (this.liElement = ref),
-        popover: (ref: HTMLElement) => (this.popoverElement = ref),
-    };
+    public static displayName = "Blueprint2.MenuItem";
 
     public render() {
-        const { children, disabled, label, submenu, popoverProps } = this.props;
-        const hasSubmenu = children != null || submenu != null;
-        const liClasses = classNames({
-            [Classes.MENU_SUBMENU]: hasSubmenu,
-        });
+        const {
+            className,
+            children,
+            disabled,
+            icon,
+            intent,
+            labelElement,
+            multiline,
+            popoverProps,
+            shouldDismissPopover,
+            text,
+            ...htmlProps
+        } = this.props;
+        const hasSubmenu = children != null;
+
         const anchorClasses = classNames(
             Classes.MENU_ITEM,
-            Classes.intentClass(this.props.intent),
+            Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: disabled,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
-                [Classes.POPOVER_DISMISS]: this.props.shouldDismissPopover && !disabled && !hasSubmenu,
+                [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
             },
-            Classes.iconClass(this.props.iconName),
-            this.props.className,
+            className,
         );
 
-        let labelElement: JSX.Element;
-        if (label != null) {
-            labelElement = <span className="pt-menu-item-label">{label}</span>;
-        }
-
-        let content = (
-            <a
-                className={anchorClasses}
-                href={disabled ? undefined : this.props.href}
-                onClick={disabled ? undefined : this.props.onClick}
-                tabIndex={disabled ? undefined : 0}
-                target={this.props.target}
-            >
-                {labelElement}
-                {this.props.text}
+        const target = (
+            <a {...htmlProps} {...(disabled ? DISABLED_PROPS : {})} className={anchorClasses}>
+                <Icon icon={icon} />
+                <Text className={Classes.FILL} ellipsize={!multiline}>
+                    {text}
+                </Text>
+                {this.maybeRenderLabel(labelElement)}
+                {hasSubmenu && <Icon icon="caret-right" />}
             </a>
         );
 
-        if (hasSubmenu) {
-            const submenuContent = <Menu>{this.renderChildren()}</Menu>;
-            const popoverClasses = classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName, {
-                // apply this class to make the popover anchor to the *left*
-                // side of the menu (setting Position.LEFT_TOP alone would still
-                // anchor the popover to the right edge of the target).
-                [Classes.ALIGN_LEFT]: this.state.alignLeft,
-            });
+        const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
+        return <li className={liClasses}>{this.maybeRenderPopover(target, children)}</li>;
+    }
 
-            content = (
-                <Popover
-                    disabled={disabled}
-                    enforceFocus={false}
-                    hoverCloseDelay={0}
-                    inline={true}
-                    interactionKind={PopoverInteractionKind.HOVER}
-                    position={this.state.alignLeft ? Position.LEFT_TOP : Position.RIGHT_TOP}
-                    {...popoverProps}
-                    content={submenuContent}
-                    minimal={true}
-                    popoverClassName={popoverClasses}
-                    popoverDidOpen={this.handlePopoverDidOpen}
-                    popoverRef={this.refHandlers.popover}
-                >
-                    {content}
-                </Popover>
-            );
+    private maybeRenderLabel(labelElement?: React.ReactNode) {
+        const { label } = this.props;
+        if (label == null && labelElement == null) {
+            return null;
         }
-
         return (
-            <li className={liClasses} ref={this.refHandlers.li}>
-                {content}
-            </li>
+            <span className={Classes.MENU_ITEM_LABEL}>
+                {label}
+                {labelElement}
+            </span>
         );
     }
 
-    public getChildContext() {
-        return { alignLeft: this.state.alignLeft };
+    private maybeRenderPopover(target: JSX.Element, children?: React.ReactNode) {
+        if (children == null) {
+            return target;
+        }
+        const { disabled, popoverProps } = this.props;
+        return (
+            <Popover
+                disabled={disabled}
+                enforceFocus={false}
+                hoverCloseDelay={0}
+                interactionKind={PopoverInteractionKind.HOVER}
+                modifiers={SUBMENU_POPOVER_MODIFIERS}
+                position={Position.RIGHT_TOP}
+                usePortal={false}
+                {...popoverProps}
+                content={<Menu>{children}</Menu>}
+                minimal={true}
+                popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName)}
+                target={target}
+            />
+        );
     }
-
-    protected validateProps(props: IMenuItemProps & { children?: React.ReactNode }) {
-        if (props.children != null && props.submenu != null) {
-            console.warn(Errors.MENU_WARN_CHILDREN_SUBMENU_MUTEX);
-        }
-    }
-
-    private handlePopoverDidOpen = () => {
-        if (this.props.useSmartPositioning) {
-            // Popper.js renders the popover in the DOM before relocating its
-            // position on the next tick. We need to rAF to wait for that to happen.
-            requestAnimationFrame(() => this.maybeAlignSubmenuLeft());
-        }
-    };
-
-    private maybeAlignSubmenuLeft() {
-        if (this.popoverElement == null) {
-            return;
-        }
-
-        const submenuRect = this.popoverElement.getBoundingClientRect();
-        const parentWidth = this.liElement.parentElement.getBoundingClientRect().width;
-        const adjustmentWidth = submenuRect.width + parentWidth;
-
-        // this ensures that the left and right measurements represent a submenu opened to the right
-        let submenuLeft = submenuRect.left;
-        let submenuRight = submenuRect.right;
-        if (this.state.alignLeft) {
-            submenuLeft += adjustmentWidth;
-            submenuRight += adjustmentWidth;
-        }
-
-        const { left = 0 } = this.props.submenuViewportMargin;
-        let { right = 0 } = this.props.submenuViewportMargin;
-        if (
-            typeof document !== "undefined" &&
-            typeof document.documentElement !== "undefined" &&
-            Number(document.documentElement.clientWidth)
-        ) {
-            // we're in a browser context and the clientWidth is available,
-            // use it to set calculate 'right'
-            right = document.documentElement.clientWidth - right;
-        }
-        // uses context to prioritize the previous positioning
-        let alignLeft = this.context.alignLeft || false;
-        if (alignLeft) {
-            if (submenuLeft - adjustmentWidth <= left) {
-                alignLeft = false;
-            }
-        } else {
-            if (submenuRight >= right) {
-                alignLeft = true;
-            }
-        }
-
-        this.setState({ alignLeft });
-    }
-
-    private renderChildren = () => {
-        const { children, submenu } = this.props;
-
-        if (children != null) {
-            const childProps = this.cascadeProps();
-            if (Object.keys(childProps).length === 0) {
-                return children;
-            } else {
-                return React.Children.map(children, (child: JSX.Element) => {
-                    return React.cloneElement(child, childProps);
-                });
-            }
-        } else if (submenu != null) {
-            return submenu.map(this.cascadeProps).map(renderMenuItem);
-        } else {
-            return undefined;
-        }
-    };
-
-    /**
-     * Evalutes this.props and cascades prop values into new props when:
-     * - submenuViewportMargin is defined, but is undefined for the supplied input.
-     * - useSmartPositioning is false, but is undefined for the supplied input.
-     * @param {IMenuItemProps} newProps If supplied, object will be modified, otherwise, defaults to an empty object.
-     * @returns An object to be used as child props.
-     */
-    private cascadeProps = (newProps: IMenuItemProps = ({} as any) as IMenuItemProps) => {
-        const { submenuViewportMargin, useSmartPositioning } = this.props;
-
-        if (submenuViewportMargin != null && newProps.submenuViewportMargin == null) {
-            newProps.submenuViewportMargin = submenuViewportMargin;
-        }
-        if (useSmartPositioning === false && newProps.useSmartPositioning == null) {
-            newProps.useSmartPositioning = useSmartPositioning;
-        }
-
-        return newProps;
-    };
 }
 
-export function renderMenuItem(props: IMenuItemProps, key: string | number) {
-    return <MenuItem key={key} {...props} />;
-}
+const SUBMENU_POPOVER_MODIFIERS: Popper.Modifiers = {
+    // 20px padding - scrollbar width + a bit
+    flip: { boundariesElement: "viewport", padding: 20 },
+    // shift popover up 5px so MenuItems align
+    offset: { offset: -5 },
+    preventOverflow: { boundariesElement: "viewport", padding: 20 },
+};
+
+// props to ignore when disabled
+const DISABLED_PROPS: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
+    href: undefined,
+    onClick: undefined,
+    onMouseDown: undefined,
+    onMouseEnter: undefined,
+    onMouseLeave: undefined,
+    tabIndex: -1,
+};

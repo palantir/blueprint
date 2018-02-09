@@ -15,8 +15,13 @@ $navigator-min-width: $pt-grid-size * 22;
     overflow: auto;
   }
 
-  .pt-menu-item:not(.pt-active) {
-    background: inherit;
+  .pt-menu-item {
+    flex-direction: column;
+    align-items: flex-start;
+
+    &:not(.pt-active) {
+      background: inherit;
+    }
   }
 }
 

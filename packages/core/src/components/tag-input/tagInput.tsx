@@ -24,14 +24,20 @@ export interface ITagInputProps extends IProps {
      */
     disabled?: boolean;
 
-    /** React props to pass to the `<input>` element. */
+    /**
+     * React props to pass to the `<input>` element.
+     * Note that `ref` and `key` are not supported here; use `inputRef` below.
+     */
     inputProps?: HTMLInputProps;
+
+    /** Ref handler for the `<input>` element. */
+    inputRef?: (input: HTMLInputElement) => void;
 
     /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;
 
-    /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
-    leftIconName?: IconName;
+    /** Name of a Blueprint UI icon (or an icon element) to render on the left side of the input. */
+    leftIcon?: IconName | JSX.Element;
 
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.
@@ -103,7 +109,8 @@ export interface ITagInputProps extends IProps {
 
     /**
      * Element to render on right side of input.
-     * For best results, use a small minimal button, tag, or spinner.
+     * For best results, use a small spinner or minimal button (button height will adjust if `TagInput` use `.pt-large`).
+     * Other elements will likely require custom styles for correct positioning.
      */
     rightElement?: JSX.Element;
 
@@ -145,7 +152,7 @@ export interface ITagInputState {
 const NONE = -1;
 
 export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState> {
-    public static displayName = "Blueprint.TagInput";
+    public static displayName = "Blueprint2.TagInput";
 
     public static defaultProps: Partial<ITagInputProps> & object = {
         inputProps: {},
@@ -163,11 +170,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     private refHandlers = {
         input: (ref: HTMLInputElement) => {
             this.inputElement = ref;
-            // can't use safeInvoke cuz inputProps.ref can be `string | function`
-            const refHandler = this.props.inputProps.ref;
-            if (Utils.isFunction(refHandler)) {
-                refHandler(ref);
-            }
+            Utils.safeInvoke(this.props.inputRef, ref);
         },
     };
 
@@ -180,7 +183,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     }
 
     public render() {
-        const { className, inputProps, leftIconName, placeholder, values } = this.props;
+        const { className, inputProps, leftIcon, placeholder, values } = this.props;
 
         const classes = classNames(
             Classes.INPUT,
@@ -199,20 +202,27 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
 
         return (
             <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>
-                <Icon className={Classes.TAG_INPUT_ICON} iconName={leftIconName} iconSize={isLarge ? 20 : 16} />
-                {values.map(this.maybeRenderTag)}
-                <input
-                    value={this.state.inputValue}
-                    {...inputProps}
-                    onFocus={this.handleInputFocus}
-                    onChange={this.handleInputChange}
-                    onKeyDown={this.handleInputKeyDown}
-                    onKeyUp={this.handleInputKeyUp}
-                    placeholder={resolvedPlaceholder}
-                    ref={this.refHandlers.input}
-                    className={classNames(Classes.INPUT_GHOST, inputProps.className)}
-                    disabled={this.props.disabled}
+                <Icon
+                    className={Classes.TAG_INPUT_ICON}
+                    icon={leftIcon}
+                    iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD}
                 />
+                <div className={Classes.TAG_INPUT_VALUES}>
+                    {values.map(this.maybeRenderTag)}
+                    {this.props.children}
+                    <input
+                        value={this.state.inputValue}
+                        {...inputProps}
+                        onFocus={this.handleInputFocus}
+                        onChange={this.handleInputChange}
+                        onKeyDown={this.handleInputKeyDown}
+                        onKeyUp={this.handleInputKeyUp}
+                        placeholder={resolvedPlaceholder}
+                        ref={this.refHandlers.input}
+                        className={classNames(Classes.INPUT_GHOST, inputProps.className)}
+                        disabled={this.props.disabled}
+                    />
+                </div>
                 {this.props.rightElement}
             </div>
         );

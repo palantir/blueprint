@@ -69,11 +69,18 @@ describe("<Tree>", () => {
                 hasCaret: true,
                 id: 1,
                 isExpanded: false,
-                label: "",
+                label: "c0",
             },
-            { id: 0, className: "c1", hasCaret: true, isExpanded: true, label: "" },
-            { id: 2, className: "c2", hasCaret: true, isExpanded: false, label: "" },
-            { id: 3, className: "c3", hasCaret: true, isExpanded: true, label: "", childNodes: [{ id: 5, label: "" }] },
+            { id: 0, className: "c1", hasCaret: true, isExpanded: true, label: "c1" },
+            { id: 2, className: "c2", hasCaret: true, isExpanded: false, label: "c2" },
+            {
+                childNodes: [{ id: 5, label: "c4" }],
+                className: "c3",
+                hasCaret: true,
+                id: 3,
+                isExpanded: true,
+                label: "c3",
+            },
         ];
 
         const tree = renderTree({ contents });
@@ -127,14 +134,14 @@ describe("<Tree>", () => {
 
     it("icons are rendered correctly if present", () => {
         const contents = createDefaultContents();
-        contents[1].iconName = "document";
-        contents[2].iconName = "pt-icon-document";
+        contents[1].icon = "document";
+        contents[2].icon = "document";
 
         const tree = renderTree({ contents });
-        const iconSelector = `span.${Classes.TREE_NODE_ICON}.pt-icon-document`;
-        assert.lengthOf(tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT} span.${Classes.TREE_NODE_ICON}`), 0, "c0");
-        assert.lengthOf(tree.find(`.c1 > .${Classes.TREE_NODE_CONTENT} ${iconSelector}`), 1, "c1");
-        assert.lengthOf(tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT} ${iconSelector}`), 1, "c2");
+        const iconSelector = `.${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_ICON}`;
+        assert.lengthOf(tree.find(`.c0 > ${iconSelector}`).hostNodes(), 0, "c0");
+        assert.lengthOf(tree.find(`.c1 > ${iconSelector}`).hostNodes(), 1, "c1");
+        assert.lengthOf(tree.find(`.c2 > ${iconSelector}`).hostNodes(), 1, "c2");
     });
 
     it("isExpanded controls node expansion", () => {
@@ -184,7 +191,7 @@ describe("<Tree>", () => {
 
         assert.strictEqual(
             tree.getNodeContentElement(5),
-            ReactDOM.findDOMNode(tree).query(`.c5 > .${Classes.TREE_NODE_CONTENT}`),
+            ReactDOM.findDOMNode(tree).querySelector(`.c5 > .${Classes.TREE_NODE_CONTENT}`),
         );
         assert.isUndefined(tree.getNodeContentElement(100));
 

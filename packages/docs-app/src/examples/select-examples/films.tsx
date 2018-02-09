@@ -4,8 +4,22 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Classes, MenuItem } from "@blueprintjs/core";
+import { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
+import * as classNames from "classnames";
+import * as React from "react";
+
+export interface IFilm {
+    /** Title of film. */
+    title: string;
+    /** Release year. */
+    year: number;
+    /** IMDb ranking. */
+    rank: number;
+}
+
 /** Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top */
-export const TOP_100_FILMS = [
+export const TOP_100_FILMS: IFilm[] = [
     { title: "The Shawshank Redemption", year: 1994 },
     { title: "The Godfather", year: 1972 },
     { title: "The Godfather: Part II", year: 1974 },
@@ -108,4 +122,31 @@ export const TOP_100_FILMS = [
     { title: "Monty Python and the Holy Grail", year: 1975 },
 ].map((m, index) => ({ ...m, rank: index + 1 }));
 
-export type Film = typeof TOP_100_FILMS[0];
+export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers }) => {
+    if (!modifiers.matchesPredicate) {
+        return null;
+    }
+    const classes = classNames({
+        [Classes.ACTIVE]: modifiers.active,
+        [Classes.INTENT_PRIMARY]: modifiers.active,
+    });
+    return (
+        <MenuItem
+            className={classes}
+            label={film.year.toString()}
+            key={film.rank}
+            onClick={handleClick}
+            text={`${film.rank}. ${film.title}`}
+        />
+    );
+};
+
+export const filterFilm: ItemPredicate<IFilm> = (query, film) => {
+    return `${film.rank}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
+};
+
+export const filmSelectProps = {
+    itemPredicate: filterFilm,
+    itemRenderer: renderFilm,
+    items: TOP_100_FILMS,
+};

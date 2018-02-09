@@ -3,6 +3,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// tslint:disable-next-line:no-submodule-imports
+import "@blueprintjs/test-commons/polyfill";
 import "dom4";
 
 import * as React from "react";
@@ -29,12 +31,12 @@ const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);
 const reactExample = new ReactExampleTagRenderer(reactExamples);
 
 const tagRenderers = {
-    ...createDefaultRenderers(docs),
+    ...createDefaultRenderers(),
     reactDocs: reactDocs.render,
     reactExample: reactExample.render,
 };
 
 ReactDOM.render(
     <BlueprintDocs {...{ docs, tagRenderers, releases, versions }} defaultPageId="blueprint" />,
-    document.query("#blueprint-documentation"),
+    document.querySelector("#blueprint-documentation"),
 );

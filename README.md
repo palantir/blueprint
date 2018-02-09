@@ -17,7 +17,7 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 ## :construction: 2.0 in development :construction:
 
-The `develop` branch of this repository is currently being used for development of the next major version of Blueprint. See the [2.0.0 milestone](https://github.com/palantir/blueprint/milestone/23) to track progress.
+The `develop` branch of this repository is currently being used for development of the next major version of Blueprint. See [What's New in Blueprint 2.0](https://github.com/palantir/blueprint/wiki/What's-New-in-Blueprint-2.0) for a list of changes. Track progress with the [2.0.0 milestone](https://github.com/palantir/blueprint/milestone/23).
 
 To make a contribution that you wish to have released in a 1.x version of any `@blueprintjs` package, please submit a PR to the `release/1.x` branch.
 
@@ -100,7 +100,7 @@ Each library has its own dev script which you can run to watch changes to that p
 
 Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).
 
-If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app` or the docs theme in `packages/docs-theme`), you'll need to run `yarn compile` from `packages/docs-data` to see changes reflected in the application.
+If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app` or the docs theme in `packages/docs-theme`), you'll need to run `yarn compile` from `packages/docs-data` to see changes reflected in the application. For simplicity, an alias script `yarn docs-data` exists in the root to minimize directory hopping.
 
 ### Updating icons
 

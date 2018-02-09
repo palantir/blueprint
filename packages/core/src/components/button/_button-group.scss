@@ -35,8 +35,7 @@ Markup:
 </div>
 
 .pt-large - Use large buttons
-.pt-minimal - Use minimal buttons. Note that these minimal buttons will not automatically
-              truncate text in an ellipsis because of the divider line added in CSS.
+.pt-minimal - Use minimal buttons
 
 Styleguide pt-button-group
 */
@@ -115,37 +114,6 @@ Styleguide pt-button-group
   &.pt-minimal {
     .pt-button {
       @include pt-button-minimal();
-      margin-right: $pt-grid-size + $minimal-button-divider-width;
-      // always round the borders on minimal buttons
-      // stylelint-disable-next-line declaration-no-important
-      border-radius: $pt-border-radius !important;
-      // so the ::after divider is visible outside bounds of button
-      // however, this prevents ellipsizing of button text :(
-      overflow: visible;
-
-      &:focus {
-        // ensure outline is always a rectangle, instead of contouring to bounding box
-        outline-style: solid;
-      }
-
-      &::after {
-        @include pt-button-minimal-divider();
-        display: inline-block;
-        position: absolute;
-        top: 10%;
-        bottom: 10%;
-        left: 100%;
-        content: "";
-      }
-    }
-
-    > .pt-popover-wrapper:last-child .pt-popover-target .pt-button,
-    > .pt-button:last-child {
-      margin-right: 0;
-
-      &::after {
-        display: none;
-      }
     }
   }
 
@@ -216,37 +184,20 @@ Styleguide pt-button-group
       width: 100%;
     }
 
-    > .pt-popover-wrapper:first-child .pt-popover-target .pt-button,
-    > .pt-button:first-child {
-      border-radius: $pt-border-radius $pt-border-radius 0 0;
-    }
-
-    > .pt-popover-wrapper:last-child .pt-popover-target .pt-button,
-    > .pt-button:last-child {
-      border-radius: 0 0 $pt-border-radius $pt-border-radius;
-    }
-
-    > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
-    > .pt-button:not(:last-child) {
-      margin-bottom: -$button-border-width;
-    }
-
-    &.pt-minimal {
-      // apply the margin and divider to the .pt-popover-wrapper so that the
-      // popover arrow remains centered on the button.
-      > .pt-popover-wrapper:not(:last-child),
-      > .pt-button:not(:last-child) {
-        margin-bottom: $pt-grid-size + $minimal-button-divider-width;
+    &:not(.pt-minimal) {
+      > .pt-popover-wrapper:first-child .pt-popover-target .pt-button,
+      > .pt-button:first-child {
+        border-radius: $pt-border-radius $pt-border-radius 0 0;
       }
 
-      > .pt-popover-wrapper .pt-popover-target .pt-button::after,
-      > .pt-button::after {
-        top: 100%;
-        right: 0;
-        bottom: auto;
-        left: 0;
-        width: auto;
-        height: $minimal-button-divider-width;
+      > .pt-popover-wrapper:last-child .pt-popover-target .pt-button,
+      > .pt-button:last-child {
+        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+      }
+
+      > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
+      > .pt-button:not(:last-child) {
+        margin-bottom: -$button-border-width;
       }
     }
   }
