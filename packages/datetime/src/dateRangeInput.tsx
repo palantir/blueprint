@@ -330,17 +330,12 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         const handleInputEvent =
             boundary === DateRangeBoundary.START ? this.handleStartInputEvent : this.handleEndInputEvent;
 
-        const classes = classNames(
-            { [Classes.INTENT_DANGER]: this.isInputInErrorState(boundary) },
-            inputProps.className,
-        );
-
         return (
             <InputGroup
                 autoComplete="off"
                 {...inputProps}
-                className={classes}
                 disabled={this.props.disabled}
+                intent={this.isInputInErrorState(boundary) ? Intent.DANGER : inputProps.intent}
                 inputRef={this.getInputRef(boundary)}
                 onBlur={handleInputEvent}
                 onChange={handleInputEvent}
@@ -854,10 +849,10 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
         if (boundary === DateRangeBoundary.START) {
             const isAfter = DayPicker.DateUtils.isDayAfter(date, otherBoundaryDate);
-            return isAfter && (allowSingleDayRange || DayPicker.DateUtils.isSameDay(date, otherBoundaryDate));
+            return isAfter || (!allowSingleDayRange && DayPicker.DateUtils.isSameDay(date, otherBoundaryDate));
         } else {
             const isBefore = DayPicker.DateUtils.isDayBefore(date, otherBoundaryDate);
-            return isBefore && (allowSingleDayRange || DayPicker.DateUtils.isSameDay(date, otherBoundaryDate));
+            return isBefore || (!allowSingleDayRange && DayPicker.DateUtils.isSameDay(date, otherBoundaryDate));
         }
     };
 
@@ -870,30 +865,24 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         return boundary === DateRangeBoundary.START ? false : this.doBoundaryDatesOverlap(boundaryDate, boundary);
     };
 
-    private isControlled = () => {
-        return this.props.value !== undefined;
-    };
+    private isControlled = () => this.props.value !== undefined;
 
-    private isInputEmpty = (inputString: string) => {
-        return inputString == null || inputString.length === 0;
-    };
+    private isInputEmpty = (inputString: string) => inputString == null || inputString.length === 0;
 
     private isInputInErrorState = (boundary: DateRangeBoundary) => {
         const values = this.getStateKeysAndValuesForBoundary(boundary).values;
         const { isInputFocused, hoverString, inputString, selectedValue } = values;
-
-        const boundaryValue = isInputFocused ? this.parseDate(inputString) : selectedValue;
-
-        if (hoverString != null) {
+        if (hoverString != null || this.isInputEmpty(inputString)) {
             // don't show an error state while we're hovering over a valid date.
             return false;
-        } else if (!this.isDateValidAndInRange(boundaryValue)) {
-            return true;
-        } else if (this.doesEndBoundaryOverlapStartBoundary(boundaryValue, boundary)) {
-            return true;
-        } else {
-            return false;
         }
+
+        const boundaryValue = isInputFocused ? this.parseDate(inputString) : selectedValue;
+        return (
+            boundaryValue != null &&
+            (!this.isDateValidAndInRange(boundaryValue) ||
+                this.doesEndBoundaryOverlapStartBoundary(boundaryValue, boundary))
+        );
     };
 
     private isDateValidAndInRange = (date: Date | false | null): date is Date => {
