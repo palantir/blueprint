@@ -252,7 +252,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         if (this.props.timePrecision == null) {
             return false;
         }
-        // TODO: getTime()?
         return (
             (prevDate == null) !== (nextDate == null) ||
             nextDate.getHours() !== prevDate.getHours() ||
