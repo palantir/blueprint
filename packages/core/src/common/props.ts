@@ -79,7 +79,7 @@ export interface IOptionProps extends IProps {
     label: string;
 
     /** Value of this option. */
-    value: string;
+    value: string | number;
 }
 
 /** A collection of curated prop keys used across our Components which are not valid HTMLElement props. */
