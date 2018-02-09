@@ -22,13 +22,12 @@ import {
 } from "@blueprintjs/core";
 
 import { isDayInRange } from "./common/dateUtils";
-import { IDateFormatter } from "./dateFormatter";
 import { DatePicker } from "./datePicker";
-import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { getDefaultMaxDate, getDefaultMinDate, IDateFormatProps, IDatePickerBaseProps } from "./datePickerCore";
 import { DateTimePicker } from "./dateTimePicker";
 import { ITimePickerProps, TimePickerPrecision } from "./timePicker";
 
-export interface IDateInputProps extends IDatePickerBaseProps, IProps {
+export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * Passed to `DatePicker` component.
@@ -62,12 +61,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * The default date to be used in the component when uncontrolled.
      */
     defaultValue?: Date;
-
-    /**
-     * An object that provides methods to format a `Date` to a string and to parse a string into a `Date`.
-     * This is used for rendering `value` in the input, and for parsing user input back to a `Date`.
-     */
-    format: IDateFormatter;
 
     /**
      * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).
@@ -293,7 +286,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     }
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-        const valueString = this.state.value == null ? "" : this.dateToString(this.state.value);
+        const valueString = this.state.value == null ? "" : this.formatDate(this.state.value);
         this.setState({ isInputFocused: true, isOpen: true, valueString });
         this.safeInvokeInputProp("onFocus", e);
     };
@@ -308,7 +301,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const valueString = (e.target as HTMLInputElement).value;
-        const value = this.stringToDate(valueString);
+        const value = this.parseDate(valueString);
 
         if (this.isDateValidAndInRange(value)) {
             if (this.props.value === undefined) {
@@ -328,7 +321,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         const { valueString } = this.state;
-        const value = this.stringToDate(valueString);
+        const date = this.parseDate(valueString);
         if (
             valueString.length > 0 &&
             valueString !== this.getDateString(this.state.value) &&
@@ -359,7 +352,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.which === Keys.ENTER) {
-            const nextDate = this.stringToDate(this.state.valueString);
+            const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);
         } else if (e.which === Keys.TAB && e.shiftKey) {
             // close the popover if focus will move to the previous element on
@@ -376,11 +369,20 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         Utils.safeInvoke(inputProps[name], e);
     }
 
-    private stringToDate(dateString: string): Date | null {
-        return this.props.format.stringToDate(dateString);
+    private parseDate(dateString: string): Date | null {
+        if (dateString === this.props.outOfRangeMessage || dateString === this.props.invalidDateMessage) {
+            return null;
+        }
+        const { format, locale, parseDate } = this.props;
+        const newDate = parseDate(dateString, format, locale);
+        return newDate === false ? new Date(undefined) : newDate;
     }
 
-    private dateToString(date: Date): string {
-        return this.props.format.dateToString(date);
+    private formatDate(date: Date): string {
+        if (!this.isDateValid(date) || !this.isDateInRange(date)) {
+            return "";
+        }
+        const { format, locale, formatDate } = this.props;
+        return formatDate(date, format, locale);
     }
 }

@@ -8,7 +8,7 @@ import { Classes, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
-import { DateRangeInput, IDateFormatter } from "@blueprintjs/datetime";
+import { DateRangeInput, IDateFormatProps } from "@blueprintjs/datetime";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 
 export interface IDateRangeInputExampleState {
@@ -16,7 +16,7 @@ export interface IDateRangeInputExampleState {
     closeOnSelection: boolean;
     contiguousCalendarMonths: boolean;
     disabled: boolean;
-    format: IDateFormatter;
+    format: IDateFormatProps;
     reverseMonthAndYearMenus: boolean;
     selectAllOnFocus: boolean;
 }
@@ -44,7 +44,8 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
 
     protected renderExample() {
-        return <DateRangeInput {...this.state} />;
+        const { format, ...spreadProps } = this.state;
+        return <DateRangeInput {...spreadProps} {...format} />;
     }
 
     protected renderOptions() {
@@ -89,5 +90,5 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         ];
     }
 
-    private handleFormatChange = (format: IDateFormatter) => this.setState({ format });
+    private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });
 }

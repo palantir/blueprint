@@ -5,17 +5,17 @@
  */
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
-import { IDateFormatter } from "@blueprintjs/datetime";
+import { IDateFormatProps } from "@blueprintjs/datetime";
 import { handleNumberChange } from "@blueprintjs/docs-theme";
 import * as moment from "moment";
 import * as React from "react";
 
 export interface IFormatSelectProps {
     /** Selected formatter. */
-    format: IDateFormatter;
+    format: IDateFormatProps;
 
     /** The callback to fire when a new formatter is chosen. */
-    onChange: (formatter: IDateFormatter) => void;
+    onChange: (format: IDateFormatProps) => void;
 }
 
 export class FormatSelect extends React.PureComponent<IFormatSelectProps> {
@@ -31,26 +31,33 @@ export class FormatSelect extends React.PureComponent<IFormatSelectProps> {
     }
 }
 
-export const FORMATS: IDateFormatter[] = [
+export const FORMATS: IDateFormatProps[] = [
     {
-        dateToString: date => (date == null ? "" : date.toLocaleDateString()),
+        formatDate: date => (date == null ? "" : date.toLocaleDateString()),
+        parseDate: str => new Date(Date.parse(str)),
         placeholder: "JS Date",
-        stringToDate: str => new Date(Date.parse(str)),
     },
     momentFormatter("MM/DD/YYYY"),
     momentFormatter("YYYY-MM-DD"),
     momentFormatter("YYYY-MM-DD HH:mm:ss"),
     {
-        dateToString: date => moment(date).fromNow(),
+        formatDate: date => moment(date).fromNow(),
+        parseDate: str => moment(str).toDate(),
         placeholder: "from now (moment)",
-        stringToDate: str => moment(str).toDate(),
     },
 ];
 
-function momentFormatter(format: string): IDateFormatter {
+function momentFormatter(format: string): IDateFormatProps {
     return {
-        dateToString: date => moment(date).format(format),
+        format,
+        formatDate: (date, fmt, locale) =>
+            moment(date)
+                .locale(locale)
+                .format(fmt),
+        parseDate: (str, fmt, locale) =>
+            moment(str, fmt)
+                .locale(locale)
+                .toDate(),
         placeholder: `${format} (moment)`,
-        stringToDate: str => moment(str, format).toDate(),
     };
 }

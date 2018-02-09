@@ -8,14 +8,14 @@ import { Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
-import { DateInput, IDateFormatter, TimePickerPrecision } from "@blueprintjs/datetime";
+import { DateInput, IDateFormatProps, TimePickerPrecision } from "@blueprintjs/datetime";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDateInputExampleState {
     closeOnSelection: boolean;
     disabled: boolean;
-    format: IDateFormatter;
+    format: IDateFormatProps;
     reverseMonthAndYearMenus: boolean;
     timePrecision: TimePickerPrecision | undefined;
 }
@@ -41,9 +41,11 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     );
 
     protected renderExample() {
+        const { format, ...spreadProps } = this.state;
         return (
             <DateInput
-                {...this.state}
+                {...spreadProps}
+                {...format}
                 defaultValue={new Date()}
                 className="foofoofoo"
                 popoverProps={{ popoverClassName: "barbarbar" }}
@@ -80,5 +82,5 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
         ];
     }
 
-    private handleFormatChange = (format: IDateFormatter) => this.setState({ format });
+    private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });
 }

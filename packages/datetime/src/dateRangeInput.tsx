@@ -25,11 +25,10 @@ import {
 
 import { DateRange, DateRangeBoundary, isDayInRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
-import { IDateFormatter } from "./dateFormatter";
-import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { getDefaultMaxDate, getDefaultMinDate, IDateFormatProps, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
 
-export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
+export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
@@ -79,12 +78,6 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IProps {
      * `ref` is not supported; use `inputRef` instead.
      */
     endInputProps?: HTMLInputProps & IInputGroupProps;
-
-    /**
-     * An object that provides methods to format a `Date` to a string and to parse a string into a `Date`.
-     * This is used for rendering `value` in the input, and for parsing user input back to a `Date`.
-     */
-    format: IDateFormatter;
 
     /**
      * The error message to display when the selected date is invalid.
@@ -422,12 +415,12 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
         const baseStateChange = {
             endHoverString,
-            endInputString: this.dateToString(selectedEnd),
+            endInputString: this.formatDate(selectedEnd),
             isEndInputFocused,
             isOpen,
             isStartInputFocused,
             startHoverString,
-            startInputString: this.dateToString(selectedStart),
+            startInputString: this.formatDate(selectedStart),
             wasLastFocusChangeDueToHover: false,
         };
 
@@ -469,12 +462,12 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
                 hoveredBoundary != null ? hoveredBoundary === DateRangeBoundary.END : this.state.isEndInputFocused;
 
             this.setState({
-                endHoverString: this.dateToString(hoveredEnd),
+                endHoverString: this.formatDate(hoveredEnd),
                 isEndInputFocused,
                 isStartInputFocused,
                 lastFocusedField: isStartInputFocused ? DateRangeBoundary.START : DateRangeBoundary.END,
                 shouldSelectAfterUpdate: this.props.selectAllOnFocus,
-                startHoverString: this.dateToString(hoveredStart),
+                startHoverString: this.formatDate(hoveredStart),
                 wasLastFocusChangeDueToHover: true,
             });
         }
@@ -571,10 +564,10 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
                 wasLastFocusChangeDueToHover: false,
             });
         } else if (wasStartFieldFocused && isEnterPressed) {
-            const nextStartDate = this.stringToDate(this.state.startInputString);
+            const nextStartDate = this.parseDate(this.state.startInputString);
             this.handleDateRangePickerChange([nextStartDate, selectedEnd], true);
         } else if (wasEndFieldFocused && isEnterPressed) {
-            const nextEndDate = this.stringToDate(this.state.endInputString);
+            const nextEndDate = this.parseDate(this.state.endInputString);
             this.handleDateRangePickerChange([selectedStart, nextEndDate] as DateRange, true);
         } else {
             // let the default keystroke happen without side effects
@@ -617,7 +610,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     private handleInputBlur = (_e: React.FormEvent<HTMLInputElement>, boundary: DateRangeBoundary) => {
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
 
-        const maybeNextDate = this.stringToDate(values.inputString);
+        const maybeNextDate = this.parseDate(values.inputString);
         const isValueControlled = this.isControlled();
 
         let nextState: IDateRangeInputState = {
@@ -656,7 +649,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         const inputString = (e.target as HTMLInputElement).value;
 
         const { keys } = this.getStateKeysAndValuesForBoundary(boundary);
-        const maybeNextDate = this.stringToDate(inputString);
+        const maybeNextDate = this.parseDate(inputString);
         const isValueControlled = this.isControlled();
 
         let nextState: IDateRangeInputState = { shouldSelectAfterUpdate: false };
@@ -819,7 +812,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         if (date == null) {
             return this.props.invalidDateMessage;
         } else if (this.isDateValidAndInRange(date)) {
-            return this.dateToString(date);
+            return this.formatDate(date);
         } else {
             return this.props.outOfRangeMessage;
         }
@@ -911,7 +904,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         const values = this.getStateKeysAndValuesForBoundary(boundary).values;
         const { isInputFocused, hoverString, inputString, selectedValue } = values;
 
-        const boundaryValue = isInputFocused ? this.stringToDate(inputString) : selectedValue;
+        const boundaryValue = isInputFocused ? this.parseDate(inputString) : selectedValue;
 
         if (hoverString != null) {
             // don't show an error state while we're hovering over a valid date.
@@ -943,11 +936,13 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         return this.getFormattedDateString(date === undefined ? defaultDate : date);
     }
 
-    private dateToString(date: Date): string {
-        return this.props.format.dateToString(date);
+    private parseDate(dateString: string): Date | false | null {
+        const { format, locale, parseDate } = this.props;
+        return parseDate(dateString, format, locale);
     }
 
-    private stringToDate(dateString: string): Date | null {
-        return this.props.format.stringToDate(dateString);
+    private formatDate(date: Date): string {
+        const { format, locale, formatDate } = this.props;
+        return formatDate(date, format, locale);
     }
 }
