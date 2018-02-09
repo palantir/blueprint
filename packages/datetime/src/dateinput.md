@@ -22,6 +22,8 @@ Use this component in forms where the user must enter a date.
 A simple implementation using built-in browser methods could look like this:
 
 ```tsx
+import { DateInput, IDateFormatProps } from "@blueprintjs/datetime";
+
 const jsDateFormatter: IDateFormatProps = {
     // note that the native implementation of Date functions differs between browsers
     formatDate: date => date.toLocaleDateString(),
@@ -35,6 +37,9 @@ const jsDateFormatter: IDateFormatProps = {
 An implementation using `moment.js` could look like this:
 
 ```tsx
+import { DateInput, IDateFormatProps } from "@blueprintjs/datetime";
+import * as moment from "moment";
+
 function getMomentFormatter(format: string): IDateFormatProps {
     // note that locale argument comes from locale prop and may be undefined
     return {
