@@ -9,8 +9,8 @@ const ns = "[Blueprint]";
 export const CLAMP_MIN_MAX = ns + ` clamp: max cannot be less than min`;
 
 export const ALERT_WARN_CANCEL_PROPS = ns + ` <Alert> cancelButtonText and onCancel should be set together.`;
-export const ALERT_WARN_CANCEL_ESCAPE_KEY = ns + ` <Alert> canEscapeKeyCancel enabled without onCancel handler.`;
-export const ALERT_WARN_CANCEL_OUTSIDE_CLICK = ns + ` <Alert> canOutsideClickCancel enbaled without onCancel handler.`;
+export const ALERT_WARN_CANCEL_ESCAPE_KEY = ns + ` <Alert> canEscapeKeyCancel enabled without onCancel or onClose handler.`;
+export const ALERT_WARN_CANCEL_OUTSIDE_CLICK = ns + ` <Alert> canOutsideClickCancel enbaled without onCancel or onClose handler.`;
 
 export const COLLAPSIBLE_LIST_INVALID_CHILD = ns + ` <CollapsibleList> children must be <MenuItem>s`;
 
