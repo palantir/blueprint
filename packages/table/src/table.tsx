@@ -730,6 +730,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             newSelectedRegions,
         );
 
+        if (
+            !CoreUtils.arraysEqual(newColumnWidths, this.state.columnWidths) ||
+            !CoreUtils.arraysEqual(newRowHeights, this.state.rowHeights)
+        ) {
+            this.didUpdateColumnOrRowSizes = true;
+        }
+
         this.childrenArray = newChildArray;
         this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
         this.invalidateGrid();
