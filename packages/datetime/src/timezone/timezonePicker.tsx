@@ -30,6 +30,12 @@ export interface ITimezonePickerProps extends IProps {
     timezones: ITimezoneItem[];
 
     /**
+     * Timezone list displayed when the query is empty.
+     * If this prop is omitted, the first `maxResults` entries in `timezones` will be shown.
+     */
+    initialTimezones?: ITimezoneItem[];
+
+    /**
      * The currently selected timezone, e.g. "Pacific/Honolulu".
      * If this prop is provided, the component acts in a controlled manner.
      * https://en.wikipedia.org/wiki/Tz_database#Names_of_time_zones
@@ -46,6 +52,12 @@ export interface ITimezonePickerProps extends IProps {
      * @default false
      */
     disabled?: boolean;
+
+    /**
+     * Maximum number of results to display in the menu.
+     * @default 12
+     */
+    maxResults?: number;
 
     /**
      * Text to show when no timezone has been selected and there is no default.
@@ -76,6 +88,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps> 
     public static defaultProps: Partial<ITimezonePickerProps> = {
         disabled: false,
         inputProps: {},
+        maxResults: 12,
         placeholder: "Select timezone...",
         popoverProps: {},
     };
@@ -142,15 +155,16 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps> 
     };
 
     private filterItems: ItemListPredicate<ITimezoneItem> = (query, items) => {
+        const { maxResults, timezones, initialTimezones = timezones.slice(0, maxResults) } = this.props;
         if (query === "") {
-            return items;
+            return initialTimezones;
         }
 
         const candidates = items.map((item, itemIndex) => ({
-            key: itemIndex,
+            index: itemIndex,
             value: [item.timezone, item.displayName, item.label].join(" "),
         }));
-        return filter(candidates, query, { key: "value" }).map(({ key }) => items[key]);
+        return filter(candidates, query, { key: "value", maxResults }).map(({ index }) => items[index]);
     };
 
     private handleItemSelect = (timezone: ITimezoneItem) => Utils.safeInvoke(this.props.onChange, timezone.timezone);
