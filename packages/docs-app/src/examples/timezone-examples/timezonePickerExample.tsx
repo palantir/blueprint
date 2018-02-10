@@ -6,24 +6,23 @@
 
 import * as React from "react";
 
-import { Radio, RadioGroup, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
-import { TimezoneDisplayFormat, TimezonePicker } from "@blueprintjs/timezone";
+import { Switch } from "@blueprintjs/core";
+import { TimezonePicker } from "@blueprintjs/datetime";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { getTimezoneItems } from "./momentTimezones";
+
+const TIMEZONES = getTimezoneItems(new Date());
 
 export interface ITimezonePickerExampleState {
-    date?: Date;
-    disabled?: boolean;
-    showLocalTimezone?: boolean;
-    targetDisplayFormat?: TimezoneDisplayFormat;
-    timezone?: string;
+    disabled: boolean;
+    showLocalTimezone: boolean;
+    timezone: string;
 }
 
 export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleState> {
     public state: ITimezonePickerExampleState = {
-        date: new Date(),
         disabled: false,
         showLocalTimezone: true,
-        targetDisplayFormat: TimezoneDisplayFormat.OFFSET,
         timezone: "",
     };
 
@@ -31,21 +30,16 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
     private handleShowLocalTimezoneChange = handleBooleanChange(showLocalTimezone =>
         this.setState({ showLocalTimezone }),
     );
-    private handleFormatChange = handleStringChange((targetDisplayFormat: TimezoneDisplayFormat) =>
-        this.setState({ targetDisplayFormat }),
-    );
 
     protected renderExample() {
-        const { date, timezone, targetDisplayFormat, disabled, showLocalTimezone } = this.state;
+        const { timezone, disabled } = this.state;
 
         return (
             <TimezonePicker
-                date={date}
-                value={timezone}
-                onChange={this.handleTimezoneChange}
-                valueDisplayFormat={targetDisplayFormat}
-                showLocalTimezone={showLocalTimezone}
                 disabled={disabled}
+                onChange={this.handleTimezoneChange}
+                timezones={TIMEZONES}
+                value={timezone}
             />
         );
     }
@@ -66,24 +60,7 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                     onChange={this.handleDisabledChange}
                 />,
             ],
-            [this.renderDisplayFormatOption()],
         ];
-    }
-
-    private renderDisplayFormatOption() {
-        return (
-            <RadioGroup
-                key="display-format"
-                label="Display format"
-                onChange={this.handleFormatChange}
-                selectedValue={this.state.targetDisplayFormat}
-            >
-                <Radio label="Abbreviation" value={TimezoneDisplayFormat.ABBREVIATION} />
-                <Radio label="Name" value={TimezoneDisplayFormat.NAME} />
-                <Radio label="Offset" value={TimezoneDisplayFormat.OFFSET} />
-                <Radio label="Composite" value={TimezoneDisplayFormat.COMPOSITE} />
-            </RadioGroup>
-        );
     }
 
     private handleTimezoneChange = (timezone: string) => {
