@@ -22,6 +22,8 @@ The __@blueprintjs/datetime__ NPM package provides several components for intera
 - [`DateRangeInput`](#datetime/daterangeinput), which composes two text inputs with a `DateRangePicker` in
   a `Popover`, for use in forms.
 
+- [`TimezonePicker`](#datetime/timezonepicker), which allows the user to select from a list of timezones.
+
 They are available in the __@blueprintjs/datetime__ package on
 [NPM](https://www.npmjs.com/package/@blueprintjs/datetime).
 
@@ -37,3 +39,4 @@ npm install --save @blueprintjs/datetime
 @page datetimepicker
 @page dateinput
 @page daterangeinput
+@page timezonepicker
