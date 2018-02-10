@@ -26,10 +26,13 @@ export class CardExample extends BaseExample<ICardExampleState> {
         return (
             <Card {...this.state}>
                 <h5>
-                    <a href="#">Announcement</a>
+                    <a href="#">Analytical applications</a>
                 </h5>
-                <p>The next major version of Blueprint is now available. Visit the documentation to learn more.</p>
-                <Button text="View changelog" className={Classes.BUTTON} />
+                <p>
+                    User interfaces that enable people to interact smoothly with data, ask better questions, and make
+                    better decisions.
+                </p>
+                <Button text="Explore products" className={Classes.BUTTON} />
             </Card>
         );
     }
