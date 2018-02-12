@@ -35,3 +35,6 @@ export const TIMEPICKER_INPUT_ROW = "pt-timepicker-input-row";
 export const TIMEPICKER_MILLISECOND = "pt-timepicker-millisecond";
 export const TIMEPICKER_MINUTE = "pt-timepicker-minute";
 export const TIMEPICKER_SECOND = "pt-timepicker-second";
+
+export const TIMEZONE_PICKER = "pt-timezone-picker";
+export const TIMEZONE_PICKER_POPOVER = `${TIMEZONE_PICKER}-popover`;

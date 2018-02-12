@@ -4,27 +4,16 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IconName } from "@blueprintjs/core";
+import { ITimezoneItem } from "@blueprintjs/datetime";
 import * as moment from "moment-timezone";
 import { getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
-import { getLocalTimezone } from "./timezoneUtils";
 
-/** Timezone-specific QueryList item */
-export interface ITimezoneItem {
-    /** Key to be used as the rendered react key. */
-    key: string;
-
-    /** Text for the timezone. */
-    text: string;
-
-    /** Label for the timezone. */
-    label: string;
-
-    /** Optional icon for the timezone. */
-    iconName?: IconName;
-
-    /** The actual timezone. */
-    timezone: string;
+/**
+ * Get the user's local timezone.
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions
+ */
+export function getLocalTimezone() {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
 /**
@@ -32,7 +21,7 @@ export interface ITimezoneItem {
  * @param date the date to use when determining timezone offsets
  */
 export function getTimezoneItems(date: Date): ITimezoneItem[] {
-    return moment.tz.names().map(timezone => toTimezoneItem(timezone, date));
+    return moment.tz.names().map(timezone => toTimezoneItem(timezone, date.getTime()));
 }
 
 /**
@@ -52,22 +41,17 @@ export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolea
  * Get the timezone item for the user's local timezone.
  * @param date the date to use when determining timezone offsets
  */
-export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
+function getLocalTimezoneItem(date: Date): ITimezoneItem {
     const timezone = getLocalTimezone();
-    if (timezone !== undefined) {
-        const timestamp = date.getTime();
-        const zonedDate = moment.tz(timestamp, timezone);
-        const offsetAsString = zonedDate.format("Z");
-        return {
-            iconName: "locate",
-            key: `${timezone}-local`,
-            label: offsetAsString,
-            text: "Current timezone",
-            timezone,
-        };
-    } else {
-        return undefined;
-    }
+    const timestamp = date.getTime();
+    const zonedDate = moment.tz(timestamp, timezone);
+    const offsetAsString = zonedDate.format("Z");
+    return {
+        displayName: "Current timezone",
+        iconName: "locate",
+        label: offsetAsString,
+        timezone,
+    };
 }
 
 /**
@@ -84,14 +68,14 @@ function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
         timezoneToMetadata[timezone] = getTimezoneMetadata(timezone, date);
     }
 
-    // Order by offset ascending, population descending, timezone name ascending
+    // Order by offset ascending, population descending, timezone name ascending.
     timezones.sort((timezone1, timezone2) => {
         const { offset: offset1, population: population1 } = timezoneToMetadata[timezone1];
         const { offset: offset2, population: population2 } = timezoneToMetadata[timezone2];
         if (offset1 === offset2) {
             if (population1 === population2) {
                 // Fall back to sorting alphabetically
-                return timezone1 < timezone2 ? -1 : 1;
+                return timezone1 < timezone2 ? 1 : 1;
             }
             // Descending order of population
             return population2 - population1;
@@ -103,22 +87,31 @@ function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
     // Choose the most populous locations for each offset
     const initialTimezones: ITimezoneItem[] = [];
     let prevOffset: number;
+    const timestamp = date.getTime();
     for (const timezone of timezones) {
         const curOffset = timezoneToMetadata[timezone].offset;
         if (prevOffset === undefined || prevOffset !== curOffset) {
-            initialTimezones.push(toTimezoneItem(timezone, date));
+            initialTimezones.push(toTimezoneItem(timezone, timestamp));
             prevOffset = curOffset;
         }
     }
     return initialTimezones;
 }
 
-function toTimezoneItem(timezone: string, date: Date): ITimezoneItem {
-    const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
+function toTimezoneItem(timezone: string, timestamp: number): ITimezoneItem {
+    const time = moment.tz(timestamp, timezone);
+    const abbr = maybeAbbr(time.zoneAbbr());
+    const offset = time.format("Z");
+
     return {
-        key: timezone,
-        label: offsetAsString,
-        text: timezone + (abbreviation ? ` (${abbreviation})` : ""),
+        label: `${abbr} ${offset}`,
         timezone,
     };
+}
+
+function maybeAbbr(abbr: string) {
+    if (abbr.length > 0 && abbr[0] !== "-" && abbr[0] !== "+") {
+        return abbr;
+    }
+    return "";
 }

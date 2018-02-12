@@ -1,4 +1,4 @@
-@# TimezonePicker
+@# Timezone picker
 
 `TimezonePicker` allows the user to select from a list of timezones.
 
@@ -22,7 +22,7 @@ using the most populous location for each offset.
 Moment Timezone uses a similar heuristic for
 [guessing](http://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/) the user's timezone.
 
-[Moment Timezone](http://momentjs.com/timezone/) is used internally for the list of available timezones and 
+[Moment Timezone](http://momentjs.com/timezone/) is used internally for the list of available timezones and
 timezone metadata.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">

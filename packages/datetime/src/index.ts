@@ -24,3 +24,4 @@ export { DateTimePicker, IDateTimePickerProps } from "./dateTimePicker";
 export { DateRangeInput } from "./dateRangeInput";
 export { DateRangePicker, IDateRangePickerProps, IDateRangeShortcut } from "./dateRangePicker";
 export { ITimePickerProps, TimePicker, TimePickerPrecision } from "./timePicker";
+export { ITimezoneItem, ITimezonePickerProps, TimezonePicker } from "./timezone/timezonePicker";
