@@ -31,8 +31,7 @@ export interface ITimezonePickerProps extends IProps {
 
     /**
      * The currently selected timezone, e.g. "Pacific/Honolulu".
-     * If this prop is provided, the component acts in a controlled manner.
-     * https://en.wikipedia.org/wiki/Tz_database#Names_of_time_zones
+     * @see https://www.iana.org/time-zones
      */
     value: string;
 
@@ -57,8 +56,11 @@ export interface ITimezonePickerProps extends IProps {
     initialTimezones?: ITimezoneItem[];
 
     /**
-     * Customize the filtering algorithm. If this prop is defined then `initialTimezones` is ignored, but
-     * you can easily re-implement this in your predicate by checking `if (query === "")`.
+     * Customize the filtering algorithm. The default implementation keeps items that contain
+     * the query string exactly (case insensitive).
+     *
+     * Note that `initialTimezones` and `maxResults` take precedence over a custom predicate
+     * if the query is empty or too many results are returned, respectively.
      */
     itemListPredicate?: ItemListPredicate<ITimezoneItem>;
 
@@ -168,12 +170,19 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps> 
     };
 
     private filterItems: ItemListPredicate<ITimezoneItem> = (query, items) => {
-        const { maxResults, timezones, initialTimezones = timezones.slice(0, maxResults) } = this.props;
-        if (query === "") {
-            return initialTimezones;
-        }
-        return items.filter(item => item.timezone.toLowerCase().indexOf(query.toLowerCase()) >= 0);
+        const {
+            maxResults,
+            timezones,
+            itemListPredicate = defaultListPredicate,
+            initialTimezones = timezones.slice(0, maxResults),
+        } = this.props;
+        const results = query === "" ? initialTimezones : itemListPredicate(query, items);
+        return results.slice(0, maxResults);
     };
 
     private handleItemSelect = (timezone: ITimezoneItem) => Utils.safeInvoke(this.props.onChange, timezone.timezone);
 }
+
+// filter on lowercase `timezone`
+const defaultListPredicate: ItemListPredicate<ITimezoneItem> = (query, items) =>
+    items.filter(item => item.timezone.toLowerCase().indexOf(query.toLowerCase()) >= 0);

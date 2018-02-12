@@ -68,13 +68,20 @@ function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
         timezoneToMetadata[timezone] = getTimezoneMetadata(timezone, date);
     }
 
+    // Order by offset ascending, population descending, timezone name ascending.
     timezones.sort((timezone1, timezone2) => {
         const { offset: offset1, population: population1 } = timezoneToMetadata[timezone1];
         const { offset: offset2, population: population2 } = timezoneToMetadata[timezone2];
-        // Order by offset ascending, population descending, timezone name ascending.
-        return offset1 === offset2
-            ? population1 === population2 ? (timezone1 < timezone2 ? -1 : 1) : population2 - population1
-            : offset1 - offset2;
+        if (offset1 === offset2) {
+            if (population1 === population2) {
+                // Fall back to sorting alphabetically
+                return timezone1 < timezone2 ? 1 : 1;
+            }
+            // Descending order of population
+            return population2 - population1;
+        }
+        // Ascending order of offset
+        return offset1 - offset2;
     });
 
     // Choose the most populous locations for each offset

@@ -25,6 +25,6 @@ export interface ITimezoneItem {
     /** React key to use for the rendered element. Defaults to `timezone` property. */
     key?: string;
 
-    /** Label for the timezone. */
+    /** Label for the timezone which will appear on the right side of the menu item. */
     label?: string;
 }
