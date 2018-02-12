@@ -20,20 +20,14 @@ import {
     Utils,
 } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
-import { filter } from "fuzzaldrin-plus";
 import * as Classes from "../common/classes";
 import { ITimezoneItem } from "./timezoneItem";
 
 export { ITimezoneItem };
 
 export interface ITimezonePickerProps extends IProps {
+    /** List of timezones, with optional properties for customizing appearance. */
     timezones: ITimezoneItem[];
-
-    /**
-     * Timezone list displayed when the query is empty.
-     * If this prop is omitted, the first `maxResults` entries in `timezones` will be shown.
-     */
-    initialTimezones?: ITimezoneItem[];
 
     /**
      * The currently selected timezone, e.g. "Pacific/Honolulu".
@@ -47,11 +41,26 @@ export interface ITimezonePickerProps extends IProps {
      */
     onChange: (timezone: string) => void;
 
+    /** Customize the button content. If omitted, `value` prop will be rendered. */
+    children?: React.ReactNode;
+
     /**
      * Whether this component is non-interactive.
      * @default false
      */
     disabled?: boolean;
+
+    /**
+     * Timezone list displayed when the query is empty.
+     * If this prop is omitted, the first `maxResults` entries in `timezones` will be shown.
+     */
+    initialTimezones?: ITimezoneItem[];
+
+    /**
+     * Customize the filtering algorithm. If this prop is defined then `initialTimezones` is ignored, but
+     * you can easily re-implement this in your predicate by checking `if (query === "")`.
+     */
+    itemListPredicate?: ItemListPredicate<ITimezoneItem>;
 
     /**
      * Maximum number of results to display in the menu.
@@ -94,8 +103,12 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps> 
     };
 
     public render() {
-        const { className, disabled, inputProps, placeholder, popoverProps } = this.props;
+        const { className, disabled, itemListPredicate = this.filterItems, inputProps, popoverProps } = this.props;
 
+        const finalInputProps = {
+            placeholder: "Search timezones...",
+            ...inputProps,
+        };
         const finalPopoverProps: Partial<IPopoverProps> = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
@@ -105,14 +118,14 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps> 
             <TypedSelect
                 className={classNames(Classes.TIMEZONE_PICKER, className)}
                 items={this.props.timezones}
-                itemListPredicate={this.filterItems}
+                itemListPredicate={itemListPredicate}
                 itemRenderer={this.renderItem}
                 noResults={<MenuItem disabled={true} text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
                 resetOnSelect={true}
                 resetOnClose={true}
                 popoverProps={finalPopoverProps}
-                inputProps={{ placeholder, ...inputProps }}
+                inputProps={finalInputProps}
                 disabled={disabled}
             >
                 {this.renderButton()}
@@ -124,7 +137,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps> 
         const { disabled, placeholder, value, children = value, buttonProps = {} } = this.props;
         return (
             <Button rightIcon="caret-down" disabled={disabled} {...buttonProps}>
-                {value ? children : placeholder}
+                {value ? children : <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>}
             </Button>
         );
     }
@@ -159,12 +172,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps> 
         if (query === "") {
             return initialTimezones;
         }
-
-        const candidates = items.map((item, itemIndex) => ({
-            index: itemIndex,
-            value: [item.timezone, item.displayName, item.label].join(" "),
-        }));
-        return filter(candidates, query, { key: "value", maxResults }).map(({ index }) => items[index]);
+        return items.filter(item => item.timezone.toLowerCase().indexOf(query.toLowerCase()) >= 0);
     };
 
     private handleItemSelect = (timezone: ITimezoneItem) => Utils.safeInvoke(this.props.onChange, timezone.timezone);
