@@ -21,7 +21,7 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
     public state: ITimezonePickerExampleState = {
         disabled: false,
         showLocalTimezone: true,
-        targetDisplayFormat: TimezoneDisplayFormat.OFFSET,
+        targetDisplayFormat: TimezoneDisplayFormat.COMPOSITE,
         timezone: "",
     };
 
@@ -76,9 +76,9 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                 selectedValue={this.state.targetDisplayFormat}
             >
                 <Radio label="Abbreviation" value={TimezoneDisplayFormat.ABBREVIATION} />
+                <Radio label="Composite" value={TimezoneDisplayFormat.COMPOSITE} />
                 <Radio label="Name" value={TimezoneDisplayFormat.NAME} />
                 <Radio label="Offset" value={TimezoneDisplayFormat.OFFSET} />
-                <Radio label="Composite" value={TimezoneDisplayFormat.COMPOSITE} />
             </RadioGroup>
         );
     }
