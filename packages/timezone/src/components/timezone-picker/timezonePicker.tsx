@@ -23,7 +23,7 @@ import { ItemPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
-import { getTimezoneQueryCandidates } from "./timezoneUtils";
+import { getTimezoneQueryCandidate } from "./timezoneUtils";
 
 export { TimezoneDisplayFormat };
 
@@ -140,7 +140,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
             <TypedSelect
                 className={classNames(Classes.TIMEZONE_PICKER, className)}
                 items={query ? this.timezoneItems : this.initialTimezoneItems}
-                itemPredicate={this.filterItems}
+                itemPredicate={this.filterItem}
                 itemRenderer={this.renderItem}
                 noResults={<MenuItem disabled={true} text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
@@ -177,13 +177,8 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} />;
     }
 
-    private filterItems: ItemPredicate<ITimezoneItem> = (query, item) => {
-        return (
-            getTimezoneQueryCandidates(item.timezone, this.props.date)
-                .join("||")
-                .toLowerCase()
-                .indexOf(query.toLowerCase()) >= 0
-        );
+    private filterItem: ItemPredicate<ITimezoneItem> = (query, item) => {
+        return getTimezoneQueryCandidate(item.timezone, this.props.date).indexOf(query.toLowerCase()) >= 0;
     };
 
     private renderItem: ItemRenderer<ITimezoneItem> = (item, { handleClick, modifiers }) => {

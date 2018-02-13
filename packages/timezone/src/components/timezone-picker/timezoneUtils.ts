@@ -20,12 +20,15 @@ export function getLocalTimezone(): string | undefined {
 }
 
 /**
- * Get a list of strings that represent the given timezone for querying purposes.
+ * Return a queryable string that represents the given timezone, for querying purposes.
  * @param timezone the timezone to get the query candidates for
  * @param date the date to use when determining timezone offsets
- * @returns a list of queryable strings
  */
-export function getTimezoneQueryCandidates(timezone: string, date: Date): string[] {
+export function getTimezoneQueryCandidate(timezone: string, date: Date): string {
     const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
-    return [timezone, abbreviation, offsetAsString].filter(candidate => candidate !== undefined);
+    return [timezone, abbreviation, offsetAsString]
+        .filter(candidate => candidate !== undefined)
+        .join(" ")
+        .toLowerCase()
+        .replace(/[_/]/g, " ");
 }
