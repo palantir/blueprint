@@ -169,8 +169,12 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
 
     private renderButton() {
         const { buttonProps = {}, date, disabled, placeholder, value, valueDisplayFormat } = this.props;
-        const displayValue = value != null ? formatTimezone(value, date, valueDisplayFormat) : placeholder;
-        return <Button rightIcon="caret-down" disabled={disabled} text={displayValue} {...buttonProps} />;
+        const buttonContent = value ? (
+            formatTimezone(value, date, valueDisplayFormat)
+        ) : (
+            <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
+        );
+        return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} />;
     }
 
     private filterItems: ItemPredicate<ITimezoneItem> = (query, item) => {
