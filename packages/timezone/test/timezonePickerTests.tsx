@@ -61,10 +61,17 @@ describe("<TimezonePicker>", () => {
         assert.isFalse(timezonePicker.find(Popover).prop("isOpen"));
     });
 
-    it("shows initial items when the query is empty", () => {
+    it("if query is empty, shows initial items", () => {
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} />);
         const items = findSelect(timezonePicker).prop("items");
         assert.deepEqual(items, getInitialTimezoneItems(new Date(), true));
+    });
+
+    it("if query is not empty, shows all items", () => {
+        const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} />);
+        timezonePicker.setState({ query: "not empty" });
+        const items = timezonePicker.find(Select).prop("items");
+        assert.lengthOf(items, getTimezoneItems(new Date()).length);
     });
 
     it("if inputProps.value is non-empty, all items are shown", () => {
@@ -105,9 +112,8 @@ describe("<TimezonePicker>", () => {
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} date={date} showLocalTimezone={false} />);
         const items = findSelect(timezonePicker).prop("items");
         assert.isTrue(items.length > 0);
-        const firstItem = items[0];
         const expectedFirstItem = getInitialTimezoneItems(date, false)[0];
-        assert.deepEqual(firstItem, expectedFirstItem);
+        assert.deepEqual(items[0], expectedFirstItem);
     });
 
     it("if inputProps.value is non-empty, the local timezone is not shown in the item list", () => {
