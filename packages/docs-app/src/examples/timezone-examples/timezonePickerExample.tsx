@@ -11,16 +11,14 @@ import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprint
 import { TimezoneDisplayFormat, TimezonePicker } from "@blueprintjs/timezone";
 
 export interface ITimezonePickerExampleState {
-    date?: Date;
-    disabled?: boolean;
-    showLocalTimezone?: boolean;
-    targetDisplayFormat?: TimezoneDisplayFormat;
-    timezone?: string;
+    disabled: boolean;
+    showLocalTimezone: boolean;
+    targetDisplayFormat: TimezoneDisplayFormat;
+    timezone: string;
 }
 
 export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleState> {
     public state: ITimezonePickerExampleState = {
-        date: new Date(),
         disabled: false,
         showLocalTimezone: true,
         targetDisplayFormat: TimezoneDisplayFormat.OFFSET,
@@ -36,11 +34,10 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
     );
 
     protected renderExample() {
-        const { date, timezone, targetDisplayFormat, disabled, showLocalTimezone } = this.state;
+        const { timezone, targetDisplayFormat, disabled, showLocalTimezone } = this.state;
 
         return (
             <TimezonePicker
-                date={date}
                 value={timezone}
                 onChange={this.handleTimezoneChange}
                 valueDisplayFormat={targetDisplayFormat}
