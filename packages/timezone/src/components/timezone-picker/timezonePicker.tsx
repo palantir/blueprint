@@ -40,6 +40,12 @@ export interface ITimezonePickerProps extends IProps {
     onChange: (timezone: string) => void;
 
     /**
+     * This component does not support children.
+     * Use `value`, `valueDisplayFormat` and `buttonProps` to customize the button child.
+     */
+    children?: never;
+
+    /**
      * The date to use when formatting timezone offsets.
      * An offset date is necessary to account for DST, but typically the default value of `now` will be sufficient.
      * @default now
@@ -163,12 +169,8 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
 
     private renderButton() {
         const { buttonProps = {}, date, disabled, placeholder, value, valueDisplayFormat } = this.props;
-
-        const displayValue = value ? formatTimezone(value, date, valueDisplayFormat) : undefined;
-
-        return (
-            <Button rightIcon="caret-down" disabled={disabled} text={displayValue || placeholder} {...buttonProps} />
-        );
+        const displayValue = value != null ? formatTimezone(value, date, valueDisplayFormat) : placeholder;
+        return <Button rightIcon="caret-down" disabled={disabled} text={displayValue} {...buttonProps} />;
     }
 
     private filterItems: ItemPredicate<ITimezoneItem> = (query, item) => {

@@ -9,21 +9,17 @@ import { getTimezoneMetadata } from "./timezoneMetadata";
 
 export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name" | "composite";
 export const TimezoneDisplayFormat = {
-    /** Abbreviation format i.e. "HST" */
+    /** Abbreviation format: `"HST"` */
     ABBREVIATION: "abbreviation" as "abbreviation",
-    /** Composite format i.e. "Pacific/Honolulu (HST) -10:00" */
+    /** Composite format: `"Pacific/Honolulu (HST) -10:00"` */
     COMPOSITE: "composite" as "composite",
-    /** Name format i.e. "Pacific/Honolulu" */
+    /** Name format: `"Pacific/Honolulu"` */
     NAME: "name" as "name",
-    /** Offset format i.e. "-10:00" */
+    /** Offset format: `"-10:00"` */
     OFFSET: "offset" as "offset",
 };
 
-export function formatTimezone(
-    timezone: string | undefined,
-    date: Date,
-    displayFormat: TimezoneDisplayFormat,
-): string | undefined {
+export function formatTimezone(timezone: string, date: Date, displayFormat: TimezoneDisplayFormat): string | undefined {
     if (!timezone || !moment.tz.zone(timezone)) {
         return undefined;
     }
