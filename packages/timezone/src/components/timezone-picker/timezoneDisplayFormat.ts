@@ -35,12 +35,5 @@ export function formatTimezone(timezone: string, date: Date, displayFormat: Time
             return offsetAsString;
         case TimezoneDisplayFormat.COMPOSITE:
             return `${timezone}${abbreviation ? ` (${abbreviation})` : ""} ${offsetAsString}`;
-        default:
-            assertNever(displayFormat);
-            return undefined;
     }
-}
-
-function assertNever(x: never): never {
-    throw new Error("Unexpected value: " + x);
 }
