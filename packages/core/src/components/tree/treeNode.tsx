@@ -13,7 +13,7 @@ import { safeInvoke } from "../../common/utils";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
 
-export interface ITreeNode <T = {}> extends IProps {
+export interface ITreeNode<T = {}> extends IProps {
     /**
      * Child tree nodes of this node.
      */
@@ -63,7 +63,7 @@ export interface ITreeNode <T = {}> extends IProps {
     nodeData?: T;
 }
 
-export interface ITreeNodeProps <T = {}> extends ITreeNode<T> {
+export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
     children?: React.ReactNode;
     contentRef?: (node: TreeNode, element: HTMLDivElement | null) => void;
     depth: number;
@@ -76,7 +76,7 @@ export interface ITreeNodeProps <T = {}> extends ITreeNode<T> {
     path: number[];
 }
 
-export class TreeNode <T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
+export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
     public render() {
         const { children, className, hasCaret, icon, isExpanded, isSelected, label } = this.props;
 
