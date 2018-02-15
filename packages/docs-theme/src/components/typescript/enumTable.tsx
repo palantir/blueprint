@@ -27,7 +27,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
         const { data } = this.props;
         const { renderBlock } = this.context;
         return (
-            <div className="docs-modifiers">
+            <div className="docs-modifiers pt-running-text-small">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
                 <div className="docs-interface-table">
