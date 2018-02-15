@@ -20,7 +20,7 @@ export interface ICalloutProps extends IIntentProps, IProps {
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply pass
-     * `<h5>JSX title content<h5>` as first `children` element instead of using this prop.
+     * `<h5 className="pt-callout-title">JSX title content<h5>` as first `children` element instead of using this prop.
      */
     title?: string;
 }
@@ -35,9 +35,11 @@ export class Callout extends React.Component<ICalloutProps & React.HTMLAttribute
             Classes.iconClass(iconName),
             className,
         );
+        const maybeTitle = title === undefined ? undefined : <h5 className={Classes.CALLOUT_TITLE}>{title}</h5>;
+
         return (
             <div className={classes} {...htmlProps}>
-                {title && <h5>{title}</h5>}
+                {maybeTitle}
                 {children}
             </div>
         );

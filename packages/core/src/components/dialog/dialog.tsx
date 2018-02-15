@@ -113,7 +113,7 @@ export class Dialog extends AbstractComponent<IDialogProps, {}> {
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon iconName={iconName} iconSize={20} />
-                <h5>{title}</h5>
+                <h5 className={Classes.DIALOG_HEADER_TITLE}>{title}</h5>
                 {this.maybeRenderCloseButton()}
             </div>
         );
