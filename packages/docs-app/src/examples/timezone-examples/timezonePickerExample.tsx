@@ -11,19 +11,17 @@ import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprint
 import { TimezoneDisplayFormat, TimezonePicker } from "@blueprintjs/timezone";
 
 export interface ITimezonePickerExampleState {
-    date?: Date;
-    disabled?: boolean;
-    showLocalTimezone?: boolean;
-    targetDisplayFormat?: TimezoneDisplayFormat;
-    timezone?: string;
+    disabled: boolean;
+    showLocalTimezone: boolean;
+    targetDisplayFormat: TimezoneDisplayFormat;
+    timezone: string;
 }
 
 export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleState> {
     public state: ITimezonePickerExampleState = {
-        date: new Date(),
         disabled: false,
         showLocalTimezone: true,
-        targetDisplayFormat: TimezoneDisplayFormat.OFFSET,
+        targetDisplayFormat: TimezoneDisplayFormat.COMPOSITE,
         timezone: "",
     };
 
@@ -36,11 +34,10 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
     );
 
     protected renderExample() {
-        const { date, timezone, targetDisplayFormat, disabled, showLocalTimezone } = this.state;
+        const { timezone, targetDisplayFormat, disabled, showLocalTimezone } = this.state;
 
         return (
             <TimezonePicker
-                date={date}
                 value={timezone}
                 onChange={this.handleTimezoneChange}
                 valueDisplayFormat={targetDisplayFormat}
@@ -79,9 +76,9 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
                 selectedValue={this.state.targetDisplayFormat}
             >
                 <Radio label="Abbreviation" value={TimezoneDisplayFormat.ABBREVIATION} />
+                <Radio label="Composite" value={TimezoneDisplayFormat.COMPOSITE} />
                 <Radio label="Name" value={TimezoneDisplayFormat.NAME} />
                 <Radio label="Offset" value={TimezoneDisplayFormat.OFFSET} />
-                <Radio label="Composite" value={TimezoneDisplayFormat.COMPOSITE} />
             </RadioGroup>
         );
     }

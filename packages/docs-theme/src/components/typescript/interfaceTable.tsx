@@ -32,7 +32,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
             .sort((a, b) => a.name.localeCompare(b.name))
             .map(this.renderPropRow);
         return (
-            <div className="docs-modifiers">
+            <div className="docs-modifiers pt-running-text-small">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
                 <div className="docs-interface-table">
