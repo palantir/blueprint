@@ -31,7 +31,11 @@ export interface ITimezoneItem {
  * @param date the date to use when determining timezone offsets
  */
 export function getTimezoneItems(date: Date): ITimezoneItem[] {
-    return moment.tz.names().map(timezone => toTimezoneItem(getTimezoneMetadata(timezone, date)));
+    return moment.tz
+        .names()
+        .map(timezone => getTimezoneMetadata(timezone, date))
+        .sort((a, b) => a.offset - b.offset)
+        .map(toTimezoneItem);
 }
 
 /**
