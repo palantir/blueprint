@@ -7,7 +7,6 @@
 import { IconName } from "@blueprintjs/core";
 import * as moment from "moment-timezone";
 import { getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
-import { getLocalTimezone } from "./timezoneUtils";
 
 /** Timezone-specific QueryList item */
 export interface ITimezoneItem {
@@ -53,7 +52,7 @@ export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolea
  * @param date the date to use when determining timezone offsets
  */
 export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
-    const timezone = getLocalTimezone();
+    const timezone = moment.tz.guess();
     if (timezone !== undefined) {
         const timestamp = date.getTime();
         const zonedDate = moment.tz(timestamp, timezone);

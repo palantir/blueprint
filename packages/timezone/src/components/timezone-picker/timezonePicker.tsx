@@ -19,11 +19,10 @@ import {
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
-import { ItemPredicate, ItemRenderer, Select } from "@blueprintjs/select";
+import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
-import { getTimezoneQueryCandidate } from "./timezoneUtils";
 
 export { TimezoneDisplayFormat };
 
@@ -140,7 +139,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
             <TypedSelect
                 className={classNames(Classes.TIMEZONE_PICKER, className)}
                 items={query ? this.timezoneItems : this.initialTimezoneItems}
-                itemPredicate={this.filterItem}
+                itemListPredicate={this.filterItems}
                 itemRenderer={this.renderItem}
                 noResults={<MenuItem disabled={true} text="No matching timezones." />}
                 onItemSelect={this.handleItemSelect}
@@ -177,8 +176,11 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} />;
     }
 
-    private filterItem: ItemPredicate<ITimezoneItem> = (query, item) => {
-        return getTimezoneQueryCandidate(item.timezone, this.props.date).indexOf(query.toLowerCase()) >= 0;
+    private filterItems: ItemListPredicate<ITimezoneItem> = (query, items) => {
+        // using list predicate so only one RegExp instance is needed
+        // escape bad regex characters, let spaces act as any separator
+        const expr = new RegExp(query.replace(/([[()+*?])/g, "\\$1").replace(" ", "[ _/\\(\\)]+"), "i");
+        return items.filter(item => expr.test(item.text + item.label));
     };
 
     private renderItem: ItemRenderer<ITimezoneItem> = (item, { handleClick, modifiers }) => {
