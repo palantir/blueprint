@@ -3,7 +3,7 @@
 Labels enhance the usability of your forms.
 
 <div class="pt-callout pt-intent-success pt-icon-comparison">
-    <h5>Simple labels vs. form groups</h5>
+    <h4>Simple labels vs. form groups</h4>
     <p>Blueprint provides two ways of connecting label text to control fields, depending on the complexity of the control.</p>
     <p>Simple labels are a basic way to connect a label with a single control.</p>
     <p>Form groups support more complex control layouts but require more markup to maintain consistent visuals.</p>

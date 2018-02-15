@@ -12,7 +12,7 @@ vice versa. You do not need to apply sizing classes to the children&mdash;they i
 the parent input.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>Icons only</h5>
+    <h4>Icons only</h4>
     <p>You cannot use buttons with text in the CSS API for input groups. The padding for text inputs
     in CSS cannot accomodate buttons whose width varies due to text content. You should use icons on
     buttons instead.</p>

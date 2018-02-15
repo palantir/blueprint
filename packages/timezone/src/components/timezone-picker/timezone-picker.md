@@ -22,11 +22,11 @@ using the most populous location for each offset.
 Moment Timezone uses a similar heuristic for
 [guessing](http://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/) the user's timezone.
 
-[Moment Timezone](http://momentjs.com/timezone/) is used internally for the list of available timezones and 
+[Moment Timezone](http://momentjs.com/timezone/) is used internally for the list of available timezones and
 timezone metadata.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>Local timezone detection</h5>
+    <h4>Local timezone detection</h4>
     We detect the local timezone when the `showLocalTimezone` prop is used.
     We cannot guarantee that we'll get the correct local timezone in all browsers.
     In supported browsers, the [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.
