@@ -1,7 +1,7 @@
 {
-	// See http://go.microsoft.com/fwlink/?LinkId=827846
-	// for the documentation about the extensions.json format
-	"recommendations": [
+  // See http://go.microsoft.com/fwlink/?LinkId=827846
+  // for the documentation about the extensions.json format
+  "recommendations": [
     // for a beautiful editing experience:
     "giladgray.theme-blueprint",
     // for consistent editor settings:
@@ -10,5 +10,5 @@
     "eg2.tslint",
     // for sass source files:
     "shinnn.stylelint",
-	]
+  ]
 }
