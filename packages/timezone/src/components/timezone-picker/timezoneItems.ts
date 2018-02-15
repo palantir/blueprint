@@ -7,7 +7,6 @@
 import { IconName } from "@blueprintjs/core";
 import * as moment from "moment-timezone";
 import { getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
-import { getLocalTimezone } from "./timezoneUtils";
 
 /** Timezone-specific QueryList item */
 export interface ITimezoneItem {
@@ -32,7 +31,11 @@ export interface ITimezoneItem {
  * @param date the date to use when determining timezone offsets
  */
 export function getTimezoneItems(date: Date): ITimezoneItem[] {
-    return moment.tz.names().map(timezone => toTimezoneItem(timezone, date));
+    return moment.tz
+        .names()
+        .map(timezone => getTimezoneMetadata(timezone, date))
+        .sort((a, b) => a.offset - b.offset)
+        .map(toTimezoneItem);
 }
 
 /**
@@ -53,7 +56,7 @@ export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolea
  * @param date the date to use when determining timezone offsets
  */
 export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
-    const timezone = getLocalTimezone();
+    const timezone = moment.tz.guess();
     if (timezone !== undefined) {
         const timestamp = date.getTime();
         const zonedDate = moment.tz(timestamp, timezone);
@@ -79,42 +82,32 @@ function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
     // Filter out noisy timezones. See https://github.com/moment/moment-timezone/issues/227
     const timezones = moment.tz.names().filter(timezone => /\//.test(timezone) && !/Etc\//.test(timezone));
 
-    const timezoneToMetadata: { [timezone: string]: ITimezoneMetadata } = {};
-    for (const timezone of timezones) {
-        timezoneToMetadata[timezone] = getTimezoneMetadata(timezone, date);
-    }
+    const timezoneToMetadata = timezones.reduce<{ [timezone: string]: ITimezoneMetadata }>((store, zone) => {
+        store[zone] = getTimezoneMetadata(zone, date);
+        return store;
+    }, {});
 
-    // Order by offset ascending, population descending, timezone name ascending
-    timezones.sort((timezone1, timezone2) => {
-        const { offset: offset1, population: population1 } = timezoneToMetadata[timezone1];
-        const { offset: offset2, population: population2 } = timezoneToMetadata[timezone2];
-        if (offset1 === offset2) {
-            if (population1 === population2) {
-                // Fall back to sorting alphabetically
-                return timezone1 < timezone2 ? -1 : 1;
-            }
-            // Descending order of population
-            return population2 - population1;
+    // reduce timezones array to maximum population per offset, for each unique offset.
+    const maxPopPerOffset = timezones.reduce<{ [offset: string]: string }>((maxPop, zone) => {
+        const data = timezoneToMetadata[zone];
+        const currentMax = maxPop[data.offsetAsString];
+        if (currentMax == null || data.population > timezoneToMetadata[currentMax].population) {
+            maxPop[data.offsetAsString] = zone;
         }
-        // Ascending order of offset
-        return offset1 - offset2;
-    });
-
-    // Choose the most populous locations for each offset
-    const initialTimezones: ITimezoneItem[] = [];
-    let prevOffset: number;
-    for (const timezone of timezones) {
-        const curOffset = timezoneToMetadata[timezone].offset;
-        if (prevOffset === undefined || prevOffset !== curOffset) {
-            initialTimezones.push(toTimezoneItem(timezone, date));
-            prevOffset = curOffset;
-        }
-    }
-    return initialTimezones;
+        return maxPop;
+    }, {});
+    return (
+        Object.keys(maxPopPerOffset)
+            // get metadata object
+            .map(k => timezoneToMetadata[maxPopPerOffset[k]])
+            // sort by offset
+            .sort((tz1, tz2) => tz1.offset - tz2.offset)
+            // convert to renderable item
+            .map(toTimezoneItem)
+    );
 }
 
-function toTimezoneItem(timezone: string, date: Date): ITimezoneItem {
-    const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
+function toTimezoneItem({ abbreviation, offsetAsString, timezone }: ITimezoneMetadata): ITimezoneItem {
     return {
         key: timezone,
         label: offsetAsString,
