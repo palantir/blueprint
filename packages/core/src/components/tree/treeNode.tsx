@@ -58,8 +58,8 @@ export interface ITreeNode<T = {}> extends IProps {
     secondaryLabel?: string | JSX.Element;
 
     /**
-     * An optional custom user object to associate with the node. 
-     * This property can then be used in the `onClick`, `onContextMenu` and `onDoubleClick` 
+     * An optional custom user object to associate with the node.
+     * This property can then be used in the `onClick`, `onContextMenu` and `onDoubleClick`
      * event handlers for doing custom logic per node.
      */
     nodeData?: T;
