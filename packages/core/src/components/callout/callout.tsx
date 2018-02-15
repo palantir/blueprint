@@ -35,9 +35,7 @@ export class Callout extends React.Component<ICalloutProps & React.HTMLAttribute
             Classes.iconClass(iconName),
             className,
         );
-        const maybeTitle = title === undefined ? undefined : (
-            <h5 className={Classes.CALLOUT_TITLE}>{title}</h5>
-        );
+        const maybeTitle = title === undefined ? undefined : <h5 className={Classes.CALLOUT_TITLE}>{title}</h5>;
 
         return (
             <div className={classes} {...htmlProps}>
