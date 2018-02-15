@@ -80,19 +80,16 @@ All the components that live *inside* the navbar.
   overflow: auto;
 }
 
-.pt-button.docs-dark-switch {
-  &::before {
-    // override all icon colors
-    // stylelint-disable-next-line declaration-no-important
-    color: inherit !important;
+// long selector necessary to override blueprint styles
+.pt-button-group.pt-minimal .pt-button.docs-dark-switch {
+  @include pt-button-minimal-intent($indigo3, $indigo3, $indigo4);
+  color: $pt-icon-color;
+
+  .pt-icon {
+    color: inherit;
   }
 
-  &.pt-icon-moon {
-    @include pt-button-minimal-intent($indigo3, $indigo3, $indigo4);
-    color: $pt-icon-color;
-  }
-
-  .pt-dark &.pt-icon-flash {
+  .pt-dark & {
     @include pt-button-minimal-intent($gold4, $gold4, $gold5);
     color: $pt-dark-icon-color;
   }
