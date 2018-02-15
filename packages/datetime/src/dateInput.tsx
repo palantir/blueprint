@@ -184,6 +184,8 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
     public static displayName = "Blueprint.DateInput";
 
     private inputRef: HTMLElement = null;
+    private contentRef: HTMLElement = null;
+    private lastElementInPopover: HTMLElement = null;
 
     public constructor(props?: IDateInputProps, context?: any) {
         super(props, context);
@@ -198,15 +200,35 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         };
     }
 
+    public componentWillUnmount() {
+        super.componentWillUnmount();
+        this.unregisterPopoverBlurHandler();
+    }
+
     public render() {
         const { value, valueString } = this.state;
         const dateString = this.state.isInputFocused ? valueString : this.getDateString(value);
         const date = this.state.isInputFocused ? this.createMoment(valueString) : value;
         const dateValue = this.isMomentValidAndInRange(value) ? fromMomentToDate(value) : null;
+        const dayPickerProps = {
+            ...this.props.dayPickerProps,
+            // dom elements for the updated month is not available when
+            // onMonthChange is called. setTimeout is necessary to wait
+            // for the updated month to be rendered
+            onMonthChange: (month: Date) => {
+                Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, month);
+                this.setTimeout(this.registerPopoverBlurHandler);
+            },
+        };
 
         const popoverContent =
             this.props.timePrecision === undefined ? (
-                <DatePicker {...this.props} onChange={this.handleDateChange} value={dateValue} />
+                <DatePicker
+                    {...this.props}
+                    dayPickerProps={dayPickerProps}
+                    onChange={this.handleDateChange}
+                    value={dateValue}
+                />
             ) : (
                 <DateTimePicker
                     canClearSelection={this.props.canClearSelection}
@@ -216,6 +238,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                     timePickerProps={{ ...this.props.timePickerProps, precision: this.props.timePrecision }}
                 />
             );
+        const wrappedPopoverContent = <div ref={this.setContentRef}>{popoverContent}</div>;
         // assign default empty object here to prevent mutation
         const { inputProps = {}, popoverProps = {}, format } = this.props;
         // exclude ref (comes from HTMLInputProps typings, not InputGroup)
@@ -239,7 +262,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 {...popoverProps}
                 autoFocus={false}
                 className={popoverClassName}
-                content={popoverContent}
+                content={wrappedPopoverContent}
                 enforceFocus={false}
                 onClose={this.handleClosePopover}
                 popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
@@ -307,7 +330,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
         return isMomentInRange(value, this.props.minDate, this.props.maxDate);
     }
 
-    private handleClosePopover = (e: React.SyntheticEvent<HTMLElement>) => {
+    private handleClosePopover = (e?: React.SyntheticEvent<HTMLElement>) => {
         const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.onClose, e);
         this.setState({ isOpen: false });
@@ -434,6 +457,7 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
                 this.setState({ isInputFocused: false });
             }
         }
+        this.registerPopoverBlurHandler();
         this.safeInvokeInputProp("onBlur", e);
     };
 
@@ -447,14 +471,56 @@ export class DateInput extends AbstractComponent<IDateInputProps, IDateInputStat
             // the page. tabbing forward should *not* close the popover, because
             // focus will be moving into the popover itself.
             this.setState({ isOpen: false });
+        } else if (e.which === Keys.ESCAPE) {
+            this.setState({ isOpen: false });
+            this.inputRef.blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
+    };
+
+    // focus DOM event listener (not React event)
+    private handlePopoverBlur = (e: FocusEvent) => {
+        const relatedTarget = e.relatedTarget as HTMLElement;
+        if (relatedTarget == null || !this.contentRef.contains(relatedTarget)) {
+            this.handleClosePopover();
+        }
+    };
+
+    private registerPopoverBlurHandler = () => {
+        if (this.contentRef != null) {
+            // Popover contents are well structured, but the selector will need
+            // to be updated if more focusable components are added in the future
+            const tabbableElements = this.contentRef.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
+            const numOfElements = tabbableElements.length;
+            if (numOfElements > 0) {
+                // Keep track of the last focusable element in popover and add
+                // a blur handler, so that when:
+                // * user tabs to the next element, popover closes
+                // * focus moves to element within popover, popover stays open
+                const lastElement = tabbableElements[numOfElements - 1] as HTMLElement;
+                if (this.lastElementInPopover !== lastElement) {
+                    this.unregisterPopoverBlurHandler();
+                    this.lastElementInPopover = lastElement;
+                    this.lastElementInPopover.addEventListener("blur", this.handlePopoverBlur);
+                }
+            }
+        }
+    };
+
+    private unregisterPopoverBlurHandler = () => {
+        if (this.lastElementInPopover != null) {
+            this.lastElementInPopover.removeEventListener("blur", this.handlePopoverBlur);
+        }
     };
 
     private setInputRef = (el: HTMLElement) => {
         this.inputRef = el;
         const { inputProps = {} } = this.props;
         Utils.safeInvoke(inputProps.inputRef, el);
+    };
+
+    private setContentRef = (el: HTMLElement) => {
+        this.contentRef = el;
     };
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
