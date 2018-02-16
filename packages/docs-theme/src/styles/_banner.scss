@@ -2,6 +2,7 @@
 // Licensed under the terms of the LICENSE file distributed with this project.
 
 @import "~@blueprintjs/core/src/common/variables";
+@import "~@blueprintjs/core/src/components/button/common";
 
 $banner-height: $pt-grid-size * 4;
 
@@ -14,29 +15,32 @@ $banner-height: $pt-grid-size * 4;
 
   z-index: $pt-z-index-overlay - 1;
   box-shadow: inset 0 -1px 0 $pt-divider-black;
-  background: $blue3;
   height: $banner-height;
   text-align: center;
   line-height: $banner-height;
-  color: $white;
+  // stylelint-disable declaration-no-important
+  color: $white !important;
 
-  &:hover {
-    background-color: $blue2;
-    text-decoration: none;
-    color: $white;
+  @each $intent, $colors in $button-intents {
+    &.pt-intent-#{$intent} {
+      background: nth($colors, 1);
+
+      &:hover {
+        background: nth($colors, 2);
+      }
+
+      &:active {
+        background: nth($colors, 3);
+      }
+    }
   }
 
-  &:active {
-    background-color: $blue1;
+  &:hover {
+    text-decoration: none;
   }
 
   .pt-dark & {
     box-shadow: 0 1px 0 $pt-divider-black;
-    color: $white;
-
-    &:hover {
-      color: $white;
-    }
   }
 }
 
@@ -46,14 +50,10 @@ $banner-height: $pt-grid-size * 4;
   margin-top: -$pt-navbar-height - $content-padding - $banner-height;
 }
 
-.docs-app {
-  padding-top: $pt-navbar-height + $banner-height;
-}
+.docs-banner + .docs-root {
+  padding-top: $banner-height;
 
-.docs-navbar {
-  top: $banner-height;
-}
-
-.docs-nav {
-  top: $pt-navbar-height + $banner-height;
+  .docs-nav {
+    top: $banner-height;
+  }
 }
