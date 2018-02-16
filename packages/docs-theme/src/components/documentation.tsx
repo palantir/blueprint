@@ -14,7 +14,7 @@ import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentation
 import { eachLayoutNode } from "../common/utils";
 import { ITagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
-import { Navigator } from "./navigator";
+import { Navigator, NavigatorTrigger } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Page } from "./page";
 import { ApiLink } from "./typescript/apiLink";
@@ -60,6 +60,7 @@ export interface IDocumentationState {
     activePageId: string;
     activeSectionId: string;
     isApiBrowserOpen: boolean;
+    isNavigatorOpen: boolean;
 }
 
 @HotkeysTarget
@@ -83,6 +84,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             activePageId: props.defaultPageId,
             activeSectionId: props.defaultPageId,
             isApiBrowserOpen: false,
+            isNavigatorOpen: false,
         };
 
         // build up static map of all references to their page, for navigation / routing
@@ -117,7 +119,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                 <div className="docs-app">
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <div className="docs-nav-title">{this.props.title}</div>
-                        <Navigator items={nav} onNavigate={this.handleNavigation} />
+                        <NavigatorTrigger onClick={this.handleOpenNavigator} />
                         <NavMenu
                             items={nav}
                             activePageId={activePageId}
@@ -131,6 +133,12 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                     <Dialog className="docs-api-dialog" isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
                         <TypescriptExample tag="typescript" value={activeApiMember} />
                     </Dialog>
+                    <Navigator
+                        isOpen={this.state.isNavigatorOpen}
+                        items={nav}
+                        onClose={this.handleCloseNavigator}
+                        onNavigate={this.handleNavigation}
+                    />
                 </div>
             </div>
         );
@@ -139,6 +147,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public renderHotkeys() {
         return (
             <Hotkeys>
+                <Hotkey global={true} combo="shift+s" label="Open navigator" onKeyDown={this.handleOpenNavigator} />
                 <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection} />
                 <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection} />
             </Hotkeys>
@@ -191,11 +200,14 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         this.updateHash();
     };
 
+    private handleCloseNavigator = () => this.setState({ isNavigatorOpen: false });
+    private handleOpenNavigator = () => this.setState({ isNavigatorOpen: true });
+
     private handleNavigation = (activeSectionId: string) => {
         // only update state if this section reference is valid
         const activePageId = this.routeToPage[activeSectionId];
         if (activeSectionId !== undefined && activePageId !== undefined) {
-            this.setState({ activePageId, activeSectionId });
+            this.setState({ activePageId, activeSectionId, isNavigatorOpen: false });
             this.scrollToActiveSection();
         }
     };

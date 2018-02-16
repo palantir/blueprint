@@ -55,7 +55,7 @@ $dark-package-colors: (
   > .docs-package-#{$package-name} {
     .docs-menu-item-icon {
       background-color: rgba($item-background-color, 0.2);
-      background-image: url(./assets/nav/#{$package-name}.svg);
+      background-image: url("./assets/nav/#{$package-name}.svg");
     }
 
     ~ .docs-nav-menu .pt-menu-item.pt-active {
@@ -72,7 +72,7 @@ $dark-package-colors: (
 
       .docs-menu-item-icon {
         background-color: rgba($item-background-color, 0.8);
-        background-image: url(./assets/nav/#{$package-name}-active.svg);
+        background-image: url("./assets/nav/#{$package-name}-active.svg");
       }
 
       &:active .docs-menu-item-icon {
