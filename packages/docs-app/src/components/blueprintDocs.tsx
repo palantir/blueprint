@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Icon, Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
+import { Icon, Menu, MenuItem, NavbarHeading, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 import { Banner, Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
 import { ITsDocBase } from "documentalist/dist/client";
@@ -34,13 +34,15 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     public state = { themeName: getTheme() };
 
     public render() {
-        const navbarLeft = [
-            <a className="docs-logo" href="/" key="_logo" />,
-            <div className="pt-navbar-heading docs-heading" key="_title">
-                Blueprint
-            </div>,
-            this.renderVersionsMenu(),
-        ];
+        const navbarLeft = (
+            <>
+                <a className="docs-logo" href="/" />
+                <div>
+                    <NavbarHeading className="docs-heading">Blueprint</NavbarHeading>
+                    {this.renderVersionsMenu()}
+                </div>
+            </>
+        );
         const navbarRight = (
             <NavbarActions
                 onToggleDark={this.handleToggleDark}
