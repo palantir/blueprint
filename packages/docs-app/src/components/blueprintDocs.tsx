@@ -34,21 +34,19 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     public state = { themeName: getTheme() };
 
     public render() {
-        const navbarLeft = (
+        const title = (
             <>
                 <a className="docs-logo" href="/" />
                 <div>
                     <NavbarHeading className="docs-heading">Blueprint</NavbarHeading>
                     {this.renderVersionsMenu()}
                 </div>
+                <NavbarActions
+                    onToggleDark={this.handleToggleDark}
+                    releases={this.props.releases}
+                    useDarkTheme={this.state.themeName === DARK_THEME}
+                />
             </>
-        );
-        const navbarRight = (
-            <NavbarActions
-                onToggleDark={this.handleToggleDark}
-                releases={this.props.releases}
-                useDarkTheme={this.state.themeName === DARK_THEME}
-            />
         );
         return (
             <>
@@ -59,10 +57,9 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 <Documentation
                     {...this.props}
                     className={this.state.themeName}
-                    navbarLeft={navbarLeft}
-                    navbarRight={navbarRight}
                     onComponentUpdate={this.handleComponentUpdate}
                     renderViewSourceLinkText={this.renderViewSourceLinkText}
+                    title={title}
                 />
             </>
         );

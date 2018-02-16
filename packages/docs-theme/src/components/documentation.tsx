@@ -49,17 +49,10 @@ export interface IDocumentationProps extends IProps {
     tagRenderers: ITagRendererMap;
 
     /**
-     * Elements to render on the left side of the navbar, typically logo and title.
-     * All elements will be wrapped in a single `.pt-navbar-group`.
-     * @default "Documentation"
+     * Elements to render on the top of the navbar above the search box.
+     * This typically contains logo, title and navigation links.
      */
-    navbarLeft?: React.ReactNode;
-
-    /**
-     * Element to render on the right side of the navbar, typically links and actions.
-     * All elements will be wrapped in a single `.pt-navbar-group`.
-     */
-    navbarRight?: React.ReactNode;
+    title: React.ReactNode;
 }
 
 export interface IDocumentationState {
@@ -72,10 +65,6 @@ export interface IDocumentationState {
 @HotkeysTarget
 export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
     public static childContextTypes = DocumentationContextTypes;
-
-    public static defaultProps = {
-        navbarLeft: "Documentation",
-    };
 
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
@@ -127,9 +116,8 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             <div className={classNames("docs-root", { "docs-examples-only": examplesOnly }, this.props.className)}>
                 <div className="docs-app">
                     <div className="docs-nav" ref={this.refHandlers.nav}>
-                        <div className="pt-navbar-group">{this.props.navbarLeft}</div>
+                        <div className="docs-nav-title">{this.props.title}</div>
                         <Navigator items={nav} onNavigate={this.handleNavigation} />
-                        {this.props.navbarRight}
                         <NavMenu
                             items={nav}
                             activePageId={activePageId}
