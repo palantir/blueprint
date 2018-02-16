@@ -6,7 +6,7 @@
 
 import { Icon, Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
-import { Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
+import { Banner, Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
 import { ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
 import { NavbarActions } from "./navbarActions";
@@ -50,10 +50,10 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         );
         return (
             <>
-                <a className="docs-banner" target="_blank" href="http://blueprintjs.com/docs/v1/">
+                <Banner href="http://blueprintjs.com/docs/v1/">
                     This documentation is for Blueprint v2, which is currently under development. Click here to go to
                     the v1 docs.
-                </a>
+                </Banner>
                 <Documentation
                     {...this.props}
                     className={this.state.themeName}
