@@ -4,8 +4,6 @@
 @import "variables";
 @import "../../../core/src/components/forms/common";
 
-$nav-item-height: $pt-grid-size * 3;
-$nav-item-line-height: 16px;
 $nav-item-padding: $pt-grid-size;
 $nav-item-indent: $pt-grid-size * 2;
 $nav-item-icon-size: $pt-grid-size * 2.4;
@@ -73,11 +71,6 @@ Page layout elements
   overflow: auto;
   padding: $sidebar-padding 0;
 
-  .pt-navbar-group {
-    margin-bottom: $pt-grid-size;
-    height: auto;
-  }
-
   .docs-navigator {
     margin-bottom: $pt-grid-size * 2;
     width: 100%;
@@ -87,6 +80,12 @@ Page layout elements
   .pt-button-group {
     margin-bottom: $pt-grid-size * 2;
   }
+}
+
+.docs-nav-title {
+  @include pt-flex-container(row);
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 /*

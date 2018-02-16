@@ -37,6 +37,7 @@ All the components that live *inside* the navbar.
 }
 
 .docs-logo {
+  display: block;
   margin: $pt-grid-size;
   background-repeat: no-repeat;
   background-size: 100% auto;
