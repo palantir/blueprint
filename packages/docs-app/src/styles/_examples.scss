@@ -6,9 +6,13 @@
 
 // Specific Example Customizations
 
-.docs-react-example {
+.docs-example-wrapper {
   .pt-slider:not(:last-child) {
     margin-bottom: $options-margin;
+  }
+
+  .pt-callout {
+    margin: 0;
   }
 }
 
@@ -185,18 +189,14 @@
   margin-bottom: 0;
 }
 
-.pt-popover .docs-popover-example {
-  padding: $pt-grid-size;
-}
-
-.docs-popover2-example {
+.docs-popover-example {
   .docs-react-example {
     width: 100%;
     height: 350px;
     overflow: scroll;
   }
 
-  .docs-popover2-example-scroll {
+  .docs-popover-example-scroll {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -211,10 +211,147 @@
   }
 }
 
-.docs-tooltip2-example {
+.docs-popover-position-example {
+  .docs-popover-position-example-instructions {
+    display: inline-block;
+    max-width: 25 * $pt-grid-size;
+    color: $gray3;
+    font-style: italic;
+  }
+
+  .docs-popover-position-example-button {
+    font-family: $pt-font-family-monospace;
+  }
+
+  .docs-popover-position-example-table {
+    margin: 0 auto;
+  }
+
+  .docs-popover-position-example-cell-right,
+  .docs-popover-position-example-cell-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .docs-popover-position-example-cell-center {
+    text-align: center;
+  }
+
+  .docs-popover-position-example-cell-left {
+    align-items: flex-end;
+  }
+
+  .pt-popover-wrapper {
+    // Add a bit of space between borders of consecutive buttons.
+    margin: $pt-grid-size / 2;
+  }
+
+  .pt-popover-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // big enough to make the shifting arrow position noticeable
+    width: 20 * $pt-grid-size;
+    height: 7 * $pt-grid-size;
+    padding: $pt-grid-size * 2;
+    text-align: center;
+    // increase line height to leave room between stacked <code> blocks.
+    line-height: $pt-line-height * 1.1;
+    white-space: nowrap;
+
+    code {
+      font-weight: 600;
+    }
+  }
+}
+
+.docs-popover-minimal-example {
+  .pt-button:first-child {
+    margin-right: $pt-grid-size;
+  }
+}
+
+.docs-popover-interaction-kind-example {
+  .pt-button {
+    margin-right: $pt-grid-size;
+    font-family: $pt-font-family-monospace;
+  }
+}
+
+.docs-popover-sizing-example {
+  .pt-popover-content {
+    max-height: $pt-grid-size * 15;
+    overflow-y: auto;
+  }
+}
+
+.docs-popover-inline-example {
+  .docs-popover-inline-example-content {
+    display: flex;
+    flex: 1 1 auto;
+  }
+
+  .docs-popover-inline-example-scroll-container {
+    flex: 1 1 auto;
+    border: 1px solid $pt-divider-black;
+    border-radius: $pt-border-radius;
+    box-shadow: inset 0 1px 1px rgba($black, 0.05);
+    background: $light-gray4;
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    .pt-dark & {
+      border-color: $pt-dark-divider-black;
+      background: $dark-gray2;
+    }
+
+    &:first-child {
+      margin-right: $pt-grid-size;
+    }
+
+    &:last-child {
+      margin-left: $pt-grid-size;
+    }
+  }
+
+  .docs-popover-inline-example-scroll-content {
+    // can't compute this height easily using SCSS variables. instead of using
+    // JS to measure, just hardcode it since we have full control of all the
+    // example code.
+    $assumed-height-of-target-plus-popover: $pt-grid-size * 8.5;
+    $vertical-padding: $pt-grid-size * 2;
+
+    display: flex;
+    justify-content: center;
+    // wide enough to allow scrolling, but wide enough to let the popover target
+    // fully leave the viewport.
+    width: 200%;
+    height: $assumed-height-of-target-plus-popover + (2 * $vertical-padding);
+    padding-top: $vertical-padding;
+  }
+}
+
+.docs-popover-inline-example-popover {
+  .pt-popover-content {
+    padding: $pt-grid-size;
+    white-space: nowrap;
+  }
+}
+
+.docs-tooltip-example {
   > div {
     margin-bottom: $pt-grid-size;
   }
+}
+
+.docs-icon-example {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.docs-menu-example .pt-menu {
+  max-width: 280px;
 }
 
 .docs-wiggle {

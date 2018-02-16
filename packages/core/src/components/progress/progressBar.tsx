@@ -21,7 +21,7 @@ export interface IProgressBarProps extends IProps, IIntentProps {
 }
 
 export class ProgressBar extends React.PureComponent<IProgressBarProps, {}> {
-    public static displayName = "Blueprint.ProgressBar";
+    public static displayName = "Blueprint2.ProgressBar";
 
     public render() {
         const { className, intent, value } = this.props;
@@ -36,5 +36,3 @@ export class ProgressBar extends React.PureComponent<IProgressBarProps, {}> {
         );
     }
 }
-
-export const ProgressBarFactory = React.createFactory(ProgressBar);

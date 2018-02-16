@@ -24,11 +24,20 @@ export interface ITagInputProps extends IProps {
      */
     disabled?: boolean;
 
-    /** React props to pass to the `<input>` element */
+    /**
+     * React props to pass to the `<input>` element.
+     * Note that `ref` and `key` are not supported here; use `inputRef` below.
+     */
     inputProps?: HTMLInputProps;
 
-    /** Name of the icon (the part after `pt-icon-`) to render on left side of input. */
-    leftIconName?: IconName;
+    /** Ref handler for the `<input>` element. */
+    inputRef?: (input: HTMLInputElement) => void;
+
+    /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
+    inputValue?: string;
+
+    /** Name of a Blueprint UI icon (or an icon element) to render on the left side of the input. */
+    leftIcon?: IconName | JSX.Element;
 
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.
@@ -63,6 +72,12 @@ export interface ITagInputProps extends IProps {
     onChange?: (values: React.ReactNode[]) => boolean | void;
 
     /**
+     * Callback invoked when the value of `<input>` element is changed.
+     * This is shorthand for `inputProps={{ onChange }}`.
+     */
+    onInputChange?: React.FormEventHandler<HTMLInputElement>;
+
+    /**
      * Callback invoked when the user depresses a keyboard key.
      * Receives the event and the index of the active tag (or `undefined` if
      * focused in the input).
@@ -94,7 +109,8 @@ export interface ITagInputProps extends IProps {
 
     /**
      * Element to render on right side of input.
-     * For best results, use a small minimal button, tag, or spinner.
+     * For best results, use a small spinner or minimal button (button height will adjust if `TagInput` use `.pt-large`).
+     * Other elements will likely require custom styles for correct positioning.
      */
     rightElement?: JSX.Element;
 
@@ -136,7 +152,7 @@ export interface ITagInputState {
 const NONE = -1;
 
 export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState> {
-    public static displayName = "Blueprint.TagInput";
+    public static displayName = "Blueprint2.TagInput";
 
     public static defaultProps: Partial<ITagInputProps> & object = {
         inputProps: {},
@@ -146,7 +162,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
 
     public state: ITagInputState = {
         activeIndex: NONE,
-        inputValue: "",
+        inputValue: this.props.inputValue,
         isInputFocused: false,
     };
 
@@ -154,16 +170,20 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     private refHandlers = {
         input: (ref: HTMLInputElement) => {
             this.inputElement = ref;
-            // can't use safeInvoke cuz inputProps.ref can be `string | function`
-            const refHandler = this.props.inputProps.ref;
-            if (Utils.isFunction(refHandler)) {
-                refHandler(ref);
-            }
+            Utils.safeInvoke(this.props.inputRef, ref);
         },
     };
 
+    public componentWillReceiveProps(nextProps: HTMLInputProps & ITagInputProps) {
+        super.componentWillReceiveProps(nextProps);
+
+        if (nextProps.inputValue !== this.props.inputValue) {
+            this.setState({ inputValue: nextProps.inputValue });
+        }
+    }
+
     public render() {
-        const { className, inputProps, leftIconName, placeholder, values } = this.props;
+        const { className, inputProps, leftIcon, placeholder, values } = this.props;
 
         const classes = classNames(
             Classes.INPUT,
@@ -181,27 +201,28 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         const resolvedPlaceholder = placeholder == null || isSomeValueDefined ? inputProps.placeholder : placeholder;
 
         return (
-            <div
-                className={classes}
-                onBlur={this.handleContainerBlur}
-                onClick={this.handleContainerClick}
-                onKeyDown={this.handleContainerKeyDown}
-                onKeyUp={this.handleContainerKeyUp}
-            >
-                <Icon className={Classes.TAG_INPUT_ICON} iconName={leftIconName} iconSize={isLarge ? 20 : 16} />
-                {values.map(this.maybeRenderTag)}
-                <input
-                    value={this.state.inputValue}
-                    {...inputProps}
-                    onFocus={this.handleInputFocus}
-                    onChange={this.handleInputChange}
-                    onKeyDown={this.handleInputKeyDown}
-                    onKeyUp={this.handleInputKeyUp}
-                    placeholder={resolvedPlaceholder}
-                    ref={this.refHandlers.input}
-                    className={classNames(Classes.INPUT_GHOST, inputProps.className)}
-                    disabled={this.props.disabled}
+            <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>
+                <Icon
+                    className={Classes.TAG_INPUT_ICON}
+                    icon={leftIcon}
+                    iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD}
                 />
+                <div className={Classes.TAG_INPUT_VALUES}>
+                    {values.map(this.maybeRenderTag)}
+                    {this.props.children}
+                    <input
+                        value={this.state.inputValue}
+                        {...inputProps}
+                        onFocus={this.handleInputFocus}
+                        onChange={this.handleInputChange}
+                        onKeyDown={this.handleInputKeyDown}
+                        onKeyUp={this.handleInputKeyUp}
+                        placeholder={resolvedPlaceholder}
+                        ref={this.refHandlers.input}
+                        className={classNames(Classes.INPUT_GHOST, inputProps.className)}
+                        disabled={this.props.disabled}
+                    />
+                </div>
                 {this.props.rightElement}
             </div>
         );
@@ -279,19 +300,6 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         });
     };
 
-    private handleContainerKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        // preventDefault may have been called from the input's keydown handler.
-        if (!event.isDefaultPrevented()) {
-            Utils.safeInvoke(this.props.onKeyDown, event, this.state.activeIndex);
-        }
-    };
-
-    private handleContainerKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        if (!event.isDefaultPrevented()) {
-            Utils.safeInvoke(this.props.onKeyUp, event, this.state.activeIndex);
-        }
-    };
-
     private handleInputFocus = (event: React.FocusEvent<HTMLElement>) => {
         this.setState({ isInputFocused: true });
         Utils.safeInvoke(this.props.inputProps.onFocus, event);
@@ -299,11 +307,16 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
 
     private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ activeIndex: NONE, inputValue: event.currentTarget.value });
+        Utils.safeInvoke(this.props.onInputChange, event);
         Utils.safeInvoke(this.props.inputProps.onChange, event);
     };
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const { selectionEnd, value } = event.currentTarget;
+        const { activeIndex } = this.state;
+
+        let activeIndexToEmit = activeIndex;
+
         if (event.which === Keys.ENTER && value.length > 0) {
             const { onAdd, onChange, values } = this.props;
             // enter key on non-empty string invokes onAdd
@@ -321,29 +334,22 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.
             if (event.which === Keys.ARROW_LEFT || event.which === Keys.ARROW_RIGHT) {
-                const nextIndex = this.getNextActiveIndex(event.which === Keys.ARROW_RIGHT ? 1 : -1);
-                if (nextIndex !== this.state.activeIndex) {
-                    event.preventDefault();
-                    this.setState({ activeIndex: nextIndex });
+                const nextActiveIndex = this.getNextActiveIndex(event.which === Keys.ARROW_RIGHT ? 1 : -1);
+                if (nextActiveIndex !== activeIndex) {
+                    event.stopPropagation();
+                    activeIndexToEmit = nextActiveIndex;
+                    this.setState({ activeIndex: nextActiveIndex });
                 }
             } else if (event.which === Keys.BACKSPACE) {
                 this.handleBackspaceToRemove(event);
             }
         }
 
-        // preventDefault to tell the wrapping container that we've already
-        // invoked onKeyDown at this level (with an `undefined` index).
-        event.preventDefault();
-        Utils.safeInvoke(this.props.onKeyDown, event, undefined);
-        Utils.safeInvoke(this.props.inputProps.onKeyDown, event);
+        this.invokeKeyPressCallback("onKeyDown", event, activeIndexToEmit);
     };
 
     private handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        // again, prevent onKeyUp from being reinvoked when the event bubbles up
-        // to the container.
-        event.preventDefault();
-        Utils.safeInvoke(this.props.inputProps.onKeyUp, event);
-        Utils.safeInvoke(this.props.onKeyUp, event, undefined);
+        this.invokeKeyPressCallback("onKeyUp", event, this.state.activeIndex);
     };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {
@@ -358,7 +364,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         this.setState({ activeIndex: this.getNextActiveIndex(-1) });
         // delete item if there was a previous valid selection (ignore first backspace to focus last item)
         if (this.isValidIndex(previousActiveIndex)) {
-            event.preventDefault();
+            event.stopPropagation();
             this.removeIndexFromValues(previousActiveIndex);
         }
     }
@@ -370,6 +376,15 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         if (Utils.isFunction(onChange)) {
             onChange(values.filter((_, i) => i !== index));
         }
+    }
+
+    private invokeKeyPressCallback(
+        propCallbackName: "onKeyDown" | "onKeyUp",
+        event: React.KeyboardEvent<HTMLInputElement>,
+        activeIndex: number,
+    ) {
+        Utils.safeInvoke(this.props[propCallbackName], event, activeIndex === NONE ? undefined : activeIndex);
+        Utils.safeInvoke(this.props.inputProps[propCallbackName], event);
     }
 
     /** Returns whether the given index represents a valid item in `this.props.values`. */

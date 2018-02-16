@@ -20,10 +20,10 @@ import { Locator } from "../../locator";
 const CONTENT_DIV_WIDTH_DELTA = 25;
 
 export enum TruncatedPopoverMode {
-    ALWAYS,
-    NEVER,
-    WHEN_TRUNCATED,
-    WHEN_TRUNCATED_APPROX,
+    ALWAYS = "always",
+    NEVER = "never",
+    WHEN_TRUNCATED = "when-truncated",
+    WHEN_TRUNCATED_APPROX = "when-truncated-approx",
 }
 
 export interface ITrucatedFormateMeasureByApproximateOptions {
@@ -202,24 +202,16 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
                 preformatted ? Classes.TABLE_POPOVER_WHITESPACE_PRE : Classes.TABLE_POPOVER_WHITESPACE_NORMAL,
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
-            const constraints = [
-                {
-                    attachment: "together",
-                    to: "window",
-                },
-            ];
-
             return (
                 <Popover
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
-                    tetherOptions={{ constraints }}
+                    modifiers={{ preventOverflow: { boundariesElement: "window" } }}
                     content={popoverContent}
                     position={Position.BOTTOM}
                     isOpen={true}
                     onClose={this.handlePopoverClose}
-                    useSmartArrowPositioning={true}
                 >
-                    <Icon iconName="more" />
+                    <Icon icon="more" />
                 </Popover>
             );
         } else {
@@ -227,7 +219,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
             // `<Popover>` changes, this must be updated.
             return (
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
-                    <Icon iconName="more" />
+                    <Icon icon="more" />
                 </span>
             );
         }

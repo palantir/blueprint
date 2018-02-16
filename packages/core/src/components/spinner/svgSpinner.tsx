@@ -8,10 +8,9 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-// import * to avoid "cannot be named" error on factory
-import * as spinner from "./spinner";
+import { Spinner } from "./spinner";
 
-export class SVGSpinner extends spinner.Spinner {
+export class SVGSpinner extends Spinner {
     protected renderContainer(classes: string, content: JSX.Element) {
         return (
             <g className={classNames(Classes.SVG_SPINNER, classes)}>
@@ -20,5 +19,3 @@ export class SVGSpinner extends spinner.Spinner {
         );
     }
 }
-
-export const SVGSpinnerFactory = React.createFactory(SVGSpinner);

@@ -97,5 +97,3 @@ export class Slider extends CoreSlider<ISliderProps> {
         this.handle = ref;
     };
 }
-
-export const SliderFactory = React.createFactory(Slider);

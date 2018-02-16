@@ -46,14 +46,9 @@ Styleguide pt-control-group
 .pt-control-group {
   // create a new stacking context to isolate all the z-indices
   @include new-render-layer();
-  display: flex;
-  align-items: flex-start;
-
-  // apply these properties to all direct children, too many permutations to enumerate
-  // stylelint-disable selector-no-universal
-  > * {
-    flex: 0 0 auto;
-  }
+  @include pt-flex-container(row);
+  // each child is full height
+  align-items: stretch;
 
   // similarly to button groups, elements in control groups are stacked in a
   // very particular order for best visual results. in each level of selector
@@ -251,7 +246,6 @@ Styleguide pt-control-group
 
     > * {
       margin-top: -$button-border-width;
-      width: 100%;
     }
 
     > :first-child {

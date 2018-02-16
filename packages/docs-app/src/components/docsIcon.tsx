@@ -11,24 +11,24 @@ import { ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/
 import { ClickToCopy } from "./clickToCopy";
 
 export interface IDocsIconProps {
+    displayName: string;
     group: string;
-    name: string;
+    iconName: IconName;
     tags: string;
-    className: IconName;
 }
 
-const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/master/resources/icons";
+const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/develop/resources/icons";
 
 @ContextMenuTarget
 export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
     public render() {
-        const { className, name, tags } = this.props;
+        const { iconName, displayName, tags } = this.props;
         return (
-            <ClickToCopy className="docs-icon" data-tags={tags} value={className}>
-                <Icon iconName={className} iconSize={Icon.SIZE_LARGE} />
+            <ClickToCopy className="docs-icon" data-tags={tags} value={iconName}>
+                <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />
                 <span className="docs-icon-detail">
-                    <div className="docs-icon-name">{name}</div>
-                    <div className="docs-icon-class-name pt-monospace-text">{className}</div>
+                    <div className="docs-icon-name">{displayName}</div>
+                    <strong className="docs-icon-class-name pt-monospace-text">{iconName}</strong>
                     <div className="docs-clipboard-message pt-text-muted" data-hover-message="Click to copy" />
                 </span>
             </ClickToCopy>
@@ -36,18 +36,18 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
     }
 
     public renderContextMenu() {
-        const { className } = this.props;
+        const { iconName } = this.props;
         return (
             <Menu>
                 <MenuItem
                     className="docs-icon-16"
-                    iconName={className}
+                    icon={iconName}
                     text="Download 16px SVG"
                     onClick={this.handleClick16}
                 />
                 <MenuItem
                     className="docs-icon-20"
-                    iconName={className}
+                    icon={iconName}
                     text="Download 20px SVG"
                     onClick={this.handleClick20}
                 />
@@ -55,7 +55,7 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
         );
     }
 
-    private handleClick16 = () => window.open(`${GITHUB_PATH}/16px/${this.props.className}.svg`);
+    private handleClick16 = () => window.open(`${GITHUB_PATH}/16px/${this.props.iconName}.svg`);
 
-    private handleClick20 = () => window.open(`${GITHUB_PATH}/20px/${this.props.className}.svg`);
+    private handleClick20 = () => window.open(`${GITHUB_PATH}/20px/${this.props.iconName}.svg`);
 }

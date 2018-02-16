@@ -51,13 +51,13 @@ export interface IFileInputProps extends React.AllHTMLAttributes<HTMLLabelElemen
      * The text to display.
      * @default "Choose file..."
      */
-    text?: string;
+    text?: React.ReactNode;
 }
 
 // TODO: write tests (ignoring for now to get a build passing quickly)
 /* istanbul ignore next */
 export class FileInput extends React.Component<IFileInputProps, {}> {
-    public static displayName = "Blueprint.FileInput";
+    public static displayName = "Blueprint2.FileInput";
 
     public static defaultProps: IFileInputProps = {
         inputProps: {},
@@ -65,7 +65,7 @@ export class FileInput extends React.Component<IFileInputProps, {}> {
     };
 
     public render() {
-        const { className, fill, disabled, inputProps, large, text, ...htmlProps } = this.props;
+        const { className, fill, disabled, inputProps, onInputChange, large, text, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
             Classes.FILE_INPUT,
@@ -90,5 +90,3 @@ export class FileInput extends React.Component<IFileInputProps, {}> {
         Utils.safeInvoke(this.props.inputProps.onChange, e);
     };
 }
-
-export const FileInputFactory = React.createFactory(FileInput);

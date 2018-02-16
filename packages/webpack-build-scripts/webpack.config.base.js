@@ -100,7 +100,7 @@ module.exports = {
         index: path.resolve(__dirname, "src/index.html"),
         inline: true,
         stats: "errors-only",
-        open: true,
+        open: false,
         overlay: {
             warnings: true,
             errors: true,

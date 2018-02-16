@@ -7,6 +7,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 
+import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IActionProps } from "../../common/props";
@@ -22,11 +23,16 @@ export interface IButtonProps extends IActionProps {
      */
     active?: boolean;
 
+    /**
+     * Text alignment within button. By default, icons and text will be centered within the button.
+     * Passing this prop will cause the text container to fill the button and align the text within that
+     * to the appropriate side. `icon` and `rightIcon` will be pushed to either side.
+     * @default Alignment.CENTER
+     */
+    alignText?: Alignment;
+
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement) => any;
-
-    /** Name of the icon (the part after `pt-icon-`) to add to the button. */
-    rightIconName?: IconName;
 
     /**
      * If set to `true`, the button will display a centered loading spinner instead of its contents.
@@ -34,6 +40,9 @@ export interface IButtonProps extends IActionProps {
      * @default false
      */
     loading?: boolean;
+
+    /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
+    rightIcon?: IconName | JSX.Element;
 
     /**
      * HTML `type` attribute of button. Common values are `"button"` and `"submit"`.
@@ -65,16 +74,17 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const disabled = this.props.disabled || this.props.loading;
+        const { alignText, loading } = this.props;
+        const disabled = this.props.disabled || loading;
 
         const className = classNames(
             Classes.BUTTON,
             {
                 [Classes.ACTIVE]: this.state.isActive || this.props.active,
                 [Classes.DISABLED]: disabled,
-                [Classes.LOADING]: this.props.loading,
+                [Classes.LOADING]: loading,
             },
-            Classes.iconClass(this.props.iconName),
+            Classes.alignmentClass(alignText),
             Classes.intentClass(this.props.intent),
             this.props.className,
         );
@@ -114,25 +124,20 @@ export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<
     };
 
     protected renderChildren(): React.ReactNode {
-        const { loading, rightIconName, text } = this.props;
-
-        const children = React.Children.map(this.props.children, (child, index) => {
-            if (child === "") {
-                // render as undefined to avoid extra space after icon
-                return undefined;
-            } else if (typeof child === "string") {
-                // must wrap string children in spans so loading prop can hide them
-                return <span key={`text-${index}`}>{child}</span>;
-            }
-            return child;
-        });
-
-        return [
-            loading ? <Spinner className="pt-small pt-button-spinner" key="spinner" /> : undefined,
-            text != null ? <span key="text">{text}</span> : undefined,
-            ...children,
-            <Icon className={Classes.ALIGN_RIGHT} iconName={rightIconName} key="icon" />,
-        ];
+        const { children, icon, loading, rightIcon, text } = this.props;
+        return (
+            <>
+                {loading && <Spinner className={classNames(Classes.SMALL, Classes.BUTTON_SPINNER)} />}
+                <Icon icon={icon} />
+                {(text || children) && (
+                    <span className={Classes.BUTTON_TEXT}>
+                        {text}
+                        {children}
+                    </span>
+                )}
+                <Icon icon={rightIcon} />
+            </>
+        );
     }
 }
 

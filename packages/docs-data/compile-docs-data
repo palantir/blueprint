@@ -4,6 +4,7 @@
  * @fileoverview Generates data for packages/docs-app
  */
 
+// @ts-check
 const { execSync, spawn } = require("child_process");
 const dm = require("documentalist");
 const fs = require("fs");
@@ -50,17 +51,25 @@ function generateDocumentalistData() {
     })
         .use(".md", new dm.MarkdownPlugin({ navPage: NAV_PAGE_NAME }))
         .use(
-            /\.d\.ts$/,
+            /\.tsx?$/,
             new dm.TypescriptPlugin({
-                excludeNames: [/Factory$/, /^I.+State$/],
-                excludePaths: ["node_modules/"],
-                includeDefinitionFiles: true,
+                excludeNames: [/I.+State$/],
+                excludePaths: ["node_modules/", "-app/", "test-commons/"],
+                tsconfigPath: path.resolve(__dirname, "../../config/tsconfig.base.json"),
             }),
         )
         .use(".scss", new dm.KssPlugin())
-        .documentGlobs("../*/src/**/*", "../*/dist/index.d.ts")
-        .then(docs => JSON.stringify(docs, null, 2))
+        .documentGlobs("../*/src/**/*.{scss,md}", "../*/src/index.{ts,tsx}")
+        .then(docs => JSON.stringify(docs, transformDocumentalistData, 2))
         .then(content => fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_DATA_FILENAME), content));
+}
+
+function transformDocumentalistData(key, value) {
+    // remove all class declarations as they're currently unused and only increase bundle size
+    if (value != null && value.kind !== "class") {
+        return value;
+    }
+    return undefined;
 }
 
 /**
@@ -73,6 +82,7 @@ function generateReleasesData() {
         .filter(source => fs.lstatSync(source).isDirectory());
 
     const releases = packageDirectories
+        .filter(packagePath => fs.existsSync(path.resolve(packagePath, "package.json")))
         .map(packagePath => require(path.resolve(packagePath, "package.json")))
         // only include non-private projects
         .filter(project => !project.private)
@@ -96,11 +106,9 @@ function generateVersionsData() {
         /** @type {Map<string, string>} */
         const majorVersionMap = stdout
             .split("\n")
-            // turn release-* tags into version numbers
-            .filter(val => /release-[1-9]\d*\.\d+\.\d+.*/.test(val))
-            .map(val => val.slice(8))
-            // inject current version (unreleased package bump)
-            .concat(require(path.resolve(process.cwd(), "package.json")).version)
+            // turn @blueprintjs/core@* tags into version numbers
+            .filter(val => /\@blueprintjs\/core\@[1-9]\d*\.\d+\.\d+.*/.test(val))
+            .map(val => val.slice("@blueprintjs/core@".length))
             .reduce((map, version) => {
                 const major = semver.major(version);
                 if (!map.has(major) || semver.gt(version, map.get(major))) {
@@ -113,6 +121,16 @@ function generateVersionsData() {
 
         console.info("[docs-data] Major versions found:", majorVersions.join(", "));
 
-        fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_VERSIONS_FIELENAME), JSON.stringify(majorVersions, null, 2));
+        fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_VERSIONS_FIELENAME), JSON.stringify(strMapToObj(majorVersionMap), null, 2));
     });
+}
+
+function strMapToObj(strMap) {
+    let obj = Object.create(null);
+    for (let [k,v] of strMap) {
+        // We don’t escape the key '__proto__'
+        // which can cause problems on older engines
+        obj[k] = v;
+    }
+    return obj;
 }

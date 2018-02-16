@@ -4,11 +4,15 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { LocaleUtils } from "react-day-picker";
+import { LocaleUtils } from "react-day-picker/types/utils";
 import { Months } from "./common/months";
 
 // DatePicker supports a simpler set of modifiers (for now).
 // also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.
+/**
+ * Collection of functions that determine which modifier classes get applied to which days.
+ * See the [**react-day-picker** documentation](http://react-day-picker.js.org/Modifiers.html) to learn more.
+ */
 export interface IDatePickerModifiers {
     [name: string]: (date: Date) => boolean;
 }
@@ -20,7 +24,8 @@ export interface IDatePickerBaseProps {
     initialMonth?: Date;
 
     /**
-     * The locale that gets passed to the functions in `localeUtils`.
+     * The locale name, which is passed to the functions in `localeUtils`
+     * (and `formatDate` and `parseDate` if supported).
      */
     locale?: string;
 

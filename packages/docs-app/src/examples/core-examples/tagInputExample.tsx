@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Button, Classes, Intent, ITagProps, Switch, TagInput } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
@@ -58,9 +58,9 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
 
         const clearButton = (
             <Button
-                className={classNames(Classes.MINIMAL, Classes.SMALL)}
+                className={Classes.MINIMAL}
                 disabled={disabled}
-                iconName={values.length > 1 ? "cross" : "refresh"}
+                icon={values.length > 1 ? "cross" : "refresh"}
                 onClick={this.handleClear}
             />
         );
@@ -78,7 +78,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                 className={classes}
                 disabled={disabled}
                 rightElement={clearButton}
-                leftIconName="user"
+                leftIcon="user"
                 onChange={this.handleChange}
                 placeholder="Separate values with commas..."
                 tagProps={getTagProps}

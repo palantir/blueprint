@@ -25,10 +25,6 @@ $modifier-key-padding: 3px 8px 3px 6px !default;
 
   &.pt-modifier-key {
     padding: $modifier-key-padding;
-
-    .pt-icon-standard {
-      margin-right: $pt-grid-size / 2;
-    }
   }
 
   .pt-dark & {

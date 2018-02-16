@@ -4,19 +4,19 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IBaseExampleProps, IExampleMap } from "@blueprintjs/docs";
+import { IBaseExampleProps, IExampleMap } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 // tslint:disable no-submodule-imports
 import * as CoreExamples from "../examples/core-examples";
 import * as DateExamples from "../examples/datetime-examples";
-import * as LabsExamples from "../examples/labs-examples";
 import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
+import * as TimezoneExamples from "../examples/timezone-examples";
 
 import { getTheme } from "../components/blueprintDocs";
 
-const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/master/packages/docs-app/src/examples";
+const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
 
 export const reactExamples: IExampleMap = {};
 
@@ -36,6 +36,6 @@ function addPackageExamples(
 
 addPackageExamples("core", CoreExamples as any);
 addPackageExamples("datetime", DateExamples as any);
-addPackageExamples("labs", LabsExamples as any);
 addPackageExamples("select", SelectExamples as any);
 addPackageExamples("table", TableExamples as any);
+addPackageExamples("timezone", TimezoneExamples as any);

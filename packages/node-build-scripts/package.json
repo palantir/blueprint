@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/node-build-scripts",
-  "version": "0.3.1",
+  "version": "0.5.0",
   "description": "Node.js build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
@@ -15,7 +15,8 @@
     "node-sass": "^4.7.2",
     "node-sass-chokidar": "^0.0.3",
     "node-sass-package-importer": "^3.0.4",
-    "strip-css-comments": "^3.0.0"
+    "strip-css-comments": "^3.0.0",
+    "svgo": "^1.0.3"
   },
   "repository": {
     "type": "git",

@@ -4,16 +4,16 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { assert } from "chai";
+import { assert, expect } from "chai";
 import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
 import { Button, Classes, Intent, ITagInputProps, Keys, Tag, TagInput } from "../../src/index";
 
-describe("<TagInput>", () => {
-    const VALUES = ["one", "two", "three"];
+const VALUES = ["one", "two", "three"];
 
+describe("<TagInput>", () => {
     it("passes inputProps to input element", () => {
         const onBlur = sinon.spy();
         const input = shallow(<TagInput values={VALUES} inputProps={{ autoFocus: true, onBlur }} />).find("input");
@@ -38,17 +38,29 @@ describe("<TagInput>", () => {
         assert.lengthOf(wrapper.find("em"), 1);
     });
 
-    it("leftIconName renders an icon as first child", () => {
-        const wrapper = mount(<TagInput leftIconName="add" values={VALUES} />);
-        assert.isTrue(wrapper.childAt(0).hasClass(Classes.ICON_STANDARD), "standard icon");
-        wrapper.setProps({ className: Classes.LARGE });
-        assert.isTrue(wrapper.childAt(0).hasClass(Classes.ICON_LARGE), "large icon");
+    it("leftIcon renders an icon as first child", () => {
+        const wrapper = mount(<TagInput leftIcon="add" values={VALUES} />);
+
+        // use a helper since Enzyme 3 (1) includes React wrappers in .childAt()
+        // calls, making them convoluted, and (2) does not preserve referential
+        // identity, meaning we have to re-query elements to detect changes.
+        const assertLeftIconHasClass = (className: string, errorMessage: string) => {
+            const hasClass = wrapper
+                .childAt(0) // TagInput's root <div> element
+                .childAt(0) // left-icon React wrapper
+                .childAt(0) // left-icon <div> element
+                .hasClass(className);
+            assert.isTrue(hasClass, errorMessage);
+        };
+
+        assertLeftIconHasClass(Classes.ICON, "icon");
     });
 
     it("rightElement appears as last child", () => {
         const wrapper = mount(<TagInput rightElement={<Button />} values={VALUES} />);
         assert.isTrue(
             wrapper
+                .childAt(0) // TagInput's root <div> element
                 .children()
                 .last()
                 .is(Button),
@@ -270,63 +282,22 @@ describe("<TagInput>", () => {
     });
 
     describe("onKeyDown", () => {
-        it("pressing a key down when focused on the container, invokes with the active tag index", () => {
-            const onKeyDown = sinon.spy();
-            const wrapper = mount(<TagInput values={VALUES} onKeyDown={onKeyDown} />);
-
-            wrapper.simulate("keydown", { which: Keys.ARROW_LEFT });
-
-            assert.strictEqual(onKeyDown.callCount, 1, "container callback called");
-            assert.strictEqual(onKeyDown.firstCall.args[0].which, Keys.ARROW_LEFT, "first arg is the event");
-            assert.strictEqual(onKeyDown.firstCall.args[1], -1, "second arg (active index) is -1");
+        it("emits the active tag index on key down", () => {
+            runKeyPressTest("onKeyDown", 1, 1);
         });
 
-        it("pressing a key down when focused on the input, invokes with the active tag index", () => {
-            const onKeyDown = sinon.spy();
-            const inputProps = { onKeyDown: sinon.spy() };
-            const wrapper = mount(<TagInput values={VALUES} onKeyDown={onKeyDown} inputProps={inputProps} />);
-            wrapper
-                .find("input")
-                .simulate("focus")
-                .simulate("keydown", { which: Keys.ARROW_LEFT });
-
-            assert.strictEqual(onKeyDown.callCount, 1, "container callback called once");
-            assert.strictEqual(onKeyDown.firstCall.args[0].which, Keys.ARROW_LEFT, "first arg is the event");
-            assert.strictEqual(onKeyDown.firstCall.args[1], undefined, "second arg (active index) is -1");
-
-            // invokes inputProps.onKeyDown as well
-            assert.strictEqual(inputProps.onKeyDown.callCount, 1, "inputProps.onKeyDown called once");
+        it("emits undefined on key down if active index == NONE (-1)", () => {
+            runKeyPressTest("onKeyDown", -1, undefined);
         });
     });
 
     describe("onKeyUp", () => {
-        it("pressing a key down when focused on the container, invokes with the active tag index", () => {
-            const onKeyUp = sinon.spy();
-            const wrapper = mount(<TagInput values={VALUES} onKeyUp={onKeyUp} />);
-
-            wrapper.simulate("keyup", { which: Keys.ARROW_LEFT });
-
-            assert.strictEqual(onKeyUp.callCount, 1, "container callback called");
-            assert.strictEqual(onKeyUp.firstCall.args[0].which, Keys.ARROW_LEFT, "first arg is the event");
-            assert.strictEqual(onKeyUp.firstCall.args[1], -1, "second arg (active index) is -1");
+        it("emits the active tag index on key down", () => {
+            runKeyPressTest("onKeyUp", 1, 1);
         });
 
-        it("pressing a key down when focused on the input, invokes with the active tag index", () => {
-            const onKeyUp = sinon.spy();
-            const inputProps = { onKeyUp: sinon.spy() };
-            const wrapper = mount(<TagInput values={VALUES} onKeyUp={onKeyUp} inputProps={inputProps} />);
-
-            wrapper
-                .find("input")
-                .simulate("focus")
-                .simulate("keyup", { which: Keys.ARROW_LEFT });
-
-            assert.strictEqual(onKeyUp.callCount, 1, "container callback called once");
-            assert.strictEqual(onKeyUp.firstCall.args[0].which, Keys.ARROW_LEFT, "first arg is the event");
-            assert.strictEqual(onKeyUp.firstCall.args[1], undefined, "second arg is undefined");
-
-            // invokes inputProps.onKeyUp as well
-            assert.isTrue(inputProps.onKeyUp.calledOnce, "inputProps.onKeyUp called");
+        it("emits undefined on key down if active index == NONE (-1)", () => {
+            runKeyPressTest("onKeyUp", -1, undefined);
         });
     });
 
@@ -403,7 +374,11 @@ describe("<TagInput>", () => {
     it("is non-interactive when disabled", () => {
         const wrapper = mount(<TagInput values={VALUES} disabled={true} />);
 
-        assert.isTrue(wrapper.hasClass(Classes.DISABLED), `.${Classes.DISABLED} should be applied to .pt-tag-input`);
+        assert.isTrue(
+            // the wrapper is a React element; the first child is rendered <div>.
+            wrapper.childAt(0).hasClass(Classes.DISABLED),
+            `.${Classes.DISABLED} should be applied to .pt-tag-input`,
+        );
         assert.isTrue(
             wrapper
                 .find(".pt-input-ghost")
@@ -413,6 +388,48 @@ describe("<TagInput>", () => {
         );
         wrapper.find(Tag).forEach(tag => {
             assert.isFalse(tag.hasClass("pt-tag-removeable"), ".pt-tag should not have .pt-tag-removable applied");
+        });
+    });
+
+    describe("onInputChange", () => {
+        it("is not invoked on enter when input is empty", () => {
+            const onInputChange = sinon.stub();
+            const wrapper = shallow(<TagInput onInputChange={onInputChange} values={VALUES} />);
+            pressEnterInInput(wrapper, "");
+            assert.isTrue(onInputChange.notCalled);
+        });
+
+        it("is invoked when input text changes", () => {
+            const changeSpy: any = sinon.spy();
+            const wrapper = shallow(<TagInput onInputChange={changeSpy} values={VALUES} />);
+            wrapper.find("input").simulate("change", { currentTarget: { value: "hello" } });
+            assert.isTrue(changeSpy.calledOnce, "onChange called");
+            assert.equal("hello", changeSpy.args[0][0].currentTarget.value);
+        });
+    });
+
+    describe("inputValue", () => {
+        const NEW_VALUE = "new item";
+        it("passes initial inputValue to input element", () => {
+            const input = shallow(<TagInput values={VALUES} inputValue={NEW_VALUE} />).find("input");
+            expect(input.prop("value")).to.equal(NEW_VALUE);
+            expect(input.prop("value")).to.equal(NEW_VALUE);
+        });
+
+        it("prop changes are reflected in state", () => {
+            const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
+            wrapper.setProps({ inputValue: "a" });
+            expect(wrapper.state().inputValue).to.equal("a");
+            wrapper.setProps({ inputValue: "b" });
+            expect(wrapper.state().inputValue).to.equal("b");
+            wrapper.setProps({ inputValue: "c" });
+            expect(wrapper.state().inputValue).to.equal("c");
+        });
+
+        it("Updating inputValue updates input element", () => {
+            const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
+            wrapper.setProps({ inputValue: NEW_VALUE });
+            expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
         });
     });
 
@@ -431,3 +448,23 @@ describe("<TagInput>", () => {
         };
     }
 });
+
+function runKeyPressTest(callbackName: "onKeyDown" | "onKeyUp", startIndex: number, expectedIndex: number | undefined) {
+    const callbackSpy = sinon.spy();
+    const inputProps = { [callbackName]: sinon.spy() };
+    const wrapper = mount(<TagInput values={VALUES} inputProps={inputProps} {...{ [callbackName]: callbackSpy }} />);
+
+    wrapper.setState({ activeIndex: startIndex });
+
+    const eventName = callbackName === "onKeyDown" ? "keydown" : "keyup";
+    wrapper
+        .find("input")
+        .simulate("focus")
+        .simulate(eventName, { which: Keys.ENTER });
+
+    assert.strictEqual(callbackSpy.callCount, 1, "container callback call count");
+    assert.strictEqual(callbackSpy.firstCall.args[0].which, Keys.ENTER, "first arg (event)");
+    assert.strictEqual(callbackSpy.firstCall.args[1], expectedIndex, "second arg (active index)");
+    // invokes inputProps.callbackSpy as well
+    assert.strictEqual(inputProps[callbackName].callCount, 1, "inputProps.onKeyDown call count");
+}

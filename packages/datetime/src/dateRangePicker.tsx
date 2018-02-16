@@ -7,7 +7,9 @@
 import { AbstractPureComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
 import * as classNames from "classnames";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import ReactDayPicker from "react-day-picker";
+import { DayModifiers } from "react-day-picker/types/common";
+import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/props";
 
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -65,7 +67,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `numberOfMonths`, `fromMonth` (use
      * `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerProps?: DayPickerProps;
 
     /**
      * Initial `DateRange` the calendar will display as selected.
@@ -123,7 +125,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         shortcuts: true,
     };
 
-    public static displayName = "Blueprint.DateRangePicker";
+    public static displayName = "Blueprint2.DateRangePicker";
 
     private get isControlled() {
         return this.props.value != null;
@@ -225,11 +227,11 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         const { leftView, rightView } = this.state;
         const disabledDays = this.getDisabledDaysModifier();
 
-        const dayPickerBaseProps: ReactDayPicker.Props = {
-            enableOutsideDays: true,
+        const dayPickerBaseProps: DayPickerProps = {
             locale,
             localeUtils,
             modifiers,
+            showOutsideDays: true,
             ...dayPickerProps,
             disabledDays,
             onDayClick: this.handleDayClick,
@@ -243,6 +245,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                 [DateClasses.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
                 [DateClasses.DATERANGEPICKER_SINGLE_MONTH]: isShowingOneMonth,
             });
+
             // use the left DayPicker when we only need one
             return (
                 <div className={classes}>
@@ -343,7 +346,11 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             return undefined;
         }
 
-        const shortcuts = typeof propsShortcuts === "boolean" ? createDefaultShortcuts() : propsShortcuts;
+        const shortcuts =
+            typeof propsShortcuts === "boolean"
+                ? createDefaultShortcuts(this.props.allowSingleDayRange)
+                : propsShortcuts;
+
         const shortcutElements = shortcuts.map((s, i) => {
             return (
                 <MenuItem
@@ -359,7 +366,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         return <Menu className={DateClasses.DATERANGEPICKER_SHORTCUTS}>{shortcutElements}</Menu>;
     }
 
-    private renderSingleCaption = (captionProps: ReactDayPicker.CaptionElementProps) => (
+    private renderSingleCaption = (captionProps: CaptionElementProps) => (
         <DatePickerCaption
             {...captionProps}
             maxDate={this.props.maxDate}
@@ -370,7 +377,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         />
     );
 
-    private renderLeftCaption = (captionProps: ReactDayPicker.CaptionElementProps) => (
+    private renderLeftCaption = (captionProps: CaptionElementProps) => (
         <DatePickerCaption
             {...captionProps}
             maxDate={DateUtils.getDatePreviousMonth(this.props.maxDate)}
@@ -381,7 +388,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         />
     );
 
-    private renderRightCaption = (captionProps: ReactDayPicker.CaptionElementProps) => (
+    private renderRightCaption = (captionProps: CaptionElementProps) => (
         <DatePickerCaption
             {...captionProps}
             maxDate={this.props.maxDate}
@@ -392,11 +399,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         />
     );
 
-    private handleDayMouseEnter = (
-        day: Date,
-        modifiers: ReactDayPicker.DayModifiers,
-        e: React.MouseEvent<HTMLDivElement>,
-    ) => {
+    private handleDayMouseEnter = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayMouseEnter, day, modifiers, e);
 
         if (modifiers.disabled) {
@@ -412,11 +415,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         Utils.safeInvoke(this.props.onHoverChange, dateRange, day, boundary);
     };
 
-    private handleDayMouseLeave = (
-        day: Date,
-        modifiers: ReactDayPicker.DayModifiers,
-        e: React.MouseEvent<HTMLDivElement>,
-    ) => {
+    private handleDayMouseLeave = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayMouseLeave, day, modifiers, e);
         if (modifiers.disabled) {
             return;
@@ -425,11 +424,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         Utils.safeInvoke(this.props.onHoverChange, undefined, day, undefined);
     };
 
-    private handleDayClick = (
-        day: Date,
-        modifiers: ReactDayPicker.DayModifiers,
-        e: React.MouseEvent<HTMLDivElement>,
-    ) => {
+    private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
 
         if (modifiers.disabled) {
@@ -664,7 +659,7 @@ function createShortcut(label: string, dateRange: DateRange): IDateRangeShortcut
     return { dateRange, label };
 }
 
-function createDefaultShortcuts() {
+function createDefaultShortcuts(allowSingleDayRange: boolean) {
     const today = new Date();
     const makeDate = (action: (d: Date) => void) => {
         const returnVal = DateUtils.clone(today);
@@ -673,6 +668,7 @@ function createDefaultShortcuts() {
         return returnVal;
     };
 
+    const yesterday = makeDate(d => d.setDate(d.getDate() - 2));
     const oneWeekAgo = makeDate(d => d.setDate(d.getDate() - 7));
     const oneMonthAgo = makeDate(d => d.setMonth(d.getMonth() - 1));
     const threeMonthsAgo = makeDate(d => d.setMonth(d.getMonth() - 3));
@@ -680,7 +676,12 @@ function createDefaultShortcuts() {
     const oneYearAgo = makeDate(d => d.setFullYear(d.getFullYear() - 1));
     const twoYearsAgo = makeDate(d => d.setFullYear(d.getFullYear() - 2));
 
+    const singleDayShortcuts = allowSingleDayRange
+        ? [createShortcut("Today", [today, today]), createShortcut("Yesterday", [yesterday, yesterday])]
+        : [];
+
     return [
+        ...singleDayShortcuts,
         createShortcut("Past week", [oneWeekAgo, today]),
         createShortcut("Past month", [oneMonthAgo, today]),
         createShortcut("Past 3 months", [threeMonthsAgo, today]),
@@ -689,5 +690,3 @@ function createDefaultShortcuts() {
         createShortcut("Past 2 years", [twoYearsAgo, today]),
     ];
 }
-
-export const DateRangePickerFactory = React.createFactory(DateRangePicker);

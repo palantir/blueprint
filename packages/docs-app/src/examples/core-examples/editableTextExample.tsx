@@ -8,7 +8,8 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, EditableText, Intent, NumericInput, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+
 import { IntentSelect } from "./common/intentSelect";
 
 const INPUT_ID = "EditableTextExample-max-length";
@@ -28,7 +29,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
         selectAllOnFocus: false,
     };
 
-    private handleIntentChange = handleNumberChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
     private toggleSelectAll = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
     private toggleSwap = handleBooleanChange(confirmOnEnterKey => this.setState({ confirmOnEnterKey }));
 

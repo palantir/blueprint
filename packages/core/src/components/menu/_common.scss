@@ -20,17 +20,23 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
 @mixin menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
-  @include overflow-ellipsis();
-  display: block;
+  @include pt-flex-container(row, $menu-item-padding);
+  align-items: center;
   border-radius: $menu-item-border-radius;
   padding: $menu-item-padding;
+  text-decoration: none;
   line-height: $pt-icon-size-standard;
   color: inherit;
   user-select: none;
 
+  > .pt-fill {
+    word-break: break-word;
+  }
+
   &#{$hover-selector} {
     background-color: $menu-item-color-hover;
     cursor: pointer;
+    text-decoration: none;
   }
 
   &#{$disabled-selector} {
@@ -62,6 +68,10 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   @each $intent, $color in $text-colors {
     &.pt-intent-#{$intent} {
       color: $color;
+
+      .pt-icon {
+        color: inherit;
+      }
 
       &::before,
       &::after,

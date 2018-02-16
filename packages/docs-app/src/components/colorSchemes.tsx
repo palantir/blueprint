@@ -9,7 +9,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Keys, RadioGroup } from "@blueprintjs/core";
-import { createKeyEventHandler, handleNumberChange } from "@blueprintjs/docs";
+import { createKeyEventHandler, handleNumberChange } from "@blueprintjs/docs-theme";
 import { ColorBar } from "./colorPalettes";
 
 const MIN_STEPS = 3;
@@ -131,11 +131,7 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
         }
 
         const OPTIONS = this.props.schemes.map((scheme, index) => {
-            return {
-                className: Classes.INLINE,
-                label: scheme.label,
-                value: index.toString(),
-            };
+            return { label: scheme.label, value: index.toString() };
         });
 
         return (
@@ -143,6 +139,7 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
                 key="activeSchema"
                 name="activeSchema"
                 className="docs-color-scheme-radios"
+                inline={true}
                 label="Select a color scheme"
                 options={OPTIONS}
                 onChange={this.handleSchemaChange}

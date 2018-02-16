@@ -48,8 +48,8 @@ describe("Controls:", () => {
             });
 
             it("supports JSX children", () => {
-                const control = mountControl({}, <span className="pt-icon-standard" key="icon" />, "Label Text");
-                assert.lengthOf(control.find(".pt-icon-standard"), 1);
+                const control = mountControl({}, <span className="jsx-child" key="jsx" />, "Label Text");
+                assert.lengthOf(control.find(".jsx-child"), 1);
                 assert.equal(control.text(), "Label Text");
             });
 

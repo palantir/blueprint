@@ -92,6 +92,13 @@ $tab-indicator-width: 3px !default;
   color: $pt-text-color;
   font-size: $pt-font-size;
 
+  // support for links in tab titles #363
+  a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
   .pt-tab-indicator-wrapper ~ & {
     // the bottom border is only for static markup, therefore
     // we never want a bottom border if there's a tab indicator

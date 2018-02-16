@@ -29,7 +29,8 @@ You can adjust the specific size of a button with the `flex-basis` CSS property.
 Add the class `pt-vertical` to create a vertical button group. The buttons in a vertical
 group all have the same size as the widest button in the group.
 
-Add the modifier class `pt-align-left` to left-align all button text and icons.
+Add the modifier class `pt-align-left` (or `align={Alignment.LEFT}` in the React component) to
+left-align button text and icon and right-align `rightIcon`.
 
 You can also combine vertical groups with the `pt-fill` and `pt-minimal` class modifiers.
 
@@ -37,19 +38,44 @@ You can also combine vertical groups with the `pt-fill` and `pt-minimal` class m
 
 @## JavaScript API
 
-The `ButtonGroup` component is available in the __@blueprintjs/core__ package.
+The `ButtonGroup` component is available in the **@blueprintjs/core** package.
 Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
-This component is a simple wrapper around the CSS API, and supports the full range of HTML props.
+This component is a simple wrapper around the CSS API.
+It exposes shorthand props for CSS modifier classes and supports the full range of HTML props.
 
 ```tsx
 <ButtonGroup minimal={true} large={false} onMouseEnter={...}>
-    <Button iconName="database">Queries</Button>
-    <Button iconName="function">Functions</Button>
-    <AnchorButton rightIconName="caret-down">Options</AnchorButton>
+    <Button icon="database">Queries</Button>
+    <Button icon="function">Functions</Button>
+    <AnchorButton rightIcon="caret-down">Options</AnchorButton>
 </ButtonGroup>
 ```
 
 @reactExample ButtonGroupExample
+
+@### Usage with Popovers
+
+`Button`s inside a `ButtonGroup` can optionally be wrapped with a [`Popover`](#core/components/popover). The following example demonstrates this composition:
+
+```tsx
+<ButtonGroup className={Classes.ALIGN_LEFT}>
+    <Popover content={...}>
+        <Button icon="document" rightIcon="caret-down" text="File" />
+    </Popover>
+    <Popover content={...}>
+        <Button icon="edit" rightIcon="caret-down" text="Edit" />
+    </Popover>
+    <Popover content={...}>
+        <Button icon="eye-open" rightIcon="caret-down" text="View" />
+    </Popover>
+</ButtonGroup>
+```
+
+@reactExample ButtonGroupPopoverExample
+
+<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+    In vertical button groups, button content will be centered by default. You can align button content to the left or right using `pt-align-left` and `pt-align-right`, respectively.
+</div>
 
 @interface IButtonGroupProps

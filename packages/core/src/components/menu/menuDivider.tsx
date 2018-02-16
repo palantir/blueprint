@@ -11,12 +11,15 @@ import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 export interface IMenuDividerProps extends IProps {
+    /** This component does not support children. */
+    children?: never;
+
     /** Optional header title. */
-    title?: string;
+    title?: React.ReactNode;
 }
 
 export class MenuDivider extends React.Component<IMenuDividerProps, {}> {
-    public static displayName = "Blueprint.MenuDivider";
+    public static displayName = "Blueprint2.MenuDivider";
 
     public render() {
         const { className, title } = this.props;
@@ -33,5 +36,3 @@ export class MenuDivider extends React.Component<IMenuDividerProps, {}> {
         }
     }
 }
-
-export const MenuDividerFactory = React.createFactory(MenuDivider);

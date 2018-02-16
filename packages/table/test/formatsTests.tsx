@@ -32,7 +32,7 @@ describe("Formats", () => {
                     <TruncatedFormat>{str}</TruncatedFormat>
                 </div>,
             );
-            const textElement = comp.element.query(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
             expect(textElement.scrollWidth).to.be.greaterThan(textElement.clientWidth);
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
@@ -66,7 +66,7 @@ describe("Formats", () => {
                     <TruncatedFormat detectTruncation={true}>{str}</TruncatedFormat>
                 </div>,
             );
-            const textElement = comp.element.query(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
             expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });
@@ -104,7 +104,7 @@ describe("Formats", () => {
                     </TruncatedFormat>
                 </div>,
             );
-            const textElement = comp.element.query(`.${Classes.TABLE_TRUNCATED_VALUE}`);
+            const textElement = comp.element.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`);
             expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
             expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
         });

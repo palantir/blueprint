@@ -23,20 +23,20 @@ Styleguide pt-breadcrumbs
 $breadcrumb-line-height: $pt-icon-size-large - 1px !default;
 
 .pt-breadcrumbs {
-  // ensure that the childrens' floats do not leak outside
-  display: inline-block;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   // unstyled inline list reset
   margin: 0;
   cursor: default;
+  height: $pt-input-height;
   padding: 0;
   list-style: none;
-  vertical-align: top;
-  line-height: $pt-input-height;
 
-  // descendant selector because nothig should come between ul and li
+  // descendant selector because nothing should come between ul and li
   > li {
-    // hide whitespace between items from HTML
-    float: left;
+    display: flex;
+    align-items: center;
 
     &::after {
       @include pt-icon();

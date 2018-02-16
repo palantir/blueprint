@@ -14,6 +14,12 @@ export type TabId = string | number;
 
 export interface ITabProps extends IProps {
     /**
+     * Content of tab title, rendered in a list above the active panel.
+     * Can also be set via the `title` prop.
+     */
+    children?: React.ReactNode;
+
+    /**
      * Whether the tab is disabled.
      * @default false
      */
@@ -35,7 +41,7 @@ export interface ITabProps extends IProps {
      * Content of tab title element, rendered in a list above the active panel.
      * Can also be set via React `children`.
      */
-    title?: string | JSX.Element;
+    title?: React.ReactNode;
 }
 
 export class Tab extends React.PureComponent<ITabProps, {}> {
@@ -44,7 +50,7 @@ export class Tab extends React.PureComponent<ITabProps, {}> {
         id: undefined,
     };
 
-    public static displayName = "Blueprint.Tab";
+    public static displayName = "Blueprint2.Tab";
 
     // this component is never rendered directly; see Tabs#renderTabPanel()
     /* istanbul ignore next */
@@ -57,5 +63,3 @@ export class Tab extends React.PureComponent<ITabProps, {}> {
         );
     }
 }
-
-export const TabFactory = React.createFactory(Tab);

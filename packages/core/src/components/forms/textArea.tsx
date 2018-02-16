@@ -24,7 +24,7 @@ export interface ITextAreaProps extends React.AllHTMLAttributes<HTMLTextAreaElem
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class TextArea extends React.PureComponent<ITextAreaProps, {}> {
-    public static displayName = "Blueprint.TextArea";
+    public static displayName = "Blueprint2.TextArea";
 
     public render() {
         const { className, fill, intent, large, ...htmlProps } = this.props;
@@ -42,5 +42,3 @@ export class TextArea extends React.PureComponent<ITextAreaProps, {}> {
         return <textarea {...htmlProps} className={rootClasses} />;
     }
 }
-
-export const TextAreaFactory = React.createFactory(TextArea);

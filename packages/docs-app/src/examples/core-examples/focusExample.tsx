@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Button, FocusStyleManager, InputGroup, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface IFocusExampleState {
     isFocusActive?: boolean;
@@ -30,7 +30,7 @@ export class FocusExample extends BaseExample<IFocusExampleState> {
     protected renderExample() {
         return (
             <div>
-                <InputGroup leftIconName="star" placeholder="Test me for focus" />
+                <InputGroup leftIcon="star" placeholder="Test me for focus" />
                 <br />
                 <Button className="pt-fill" text="Test me for focus" />
             </div>

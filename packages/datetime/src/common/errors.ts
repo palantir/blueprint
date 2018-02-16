@@ -26,9 +26,6 @@ export const DATERANGEPICKER_VALUE_INVALID = DATEPICKER_VALUE_INVALID.replace("D
 export const DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID =
     "<DateRangePicker> preferredBoundaryToModify must be a valid DateRangeBoundary if defined.";
 
-export const DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION =
-    ns + ` DEPRECATION: <DateInput> popoverPosition is deprecated. Use popoverProps.position.`;
-
 export const DATERANGEINPUT_NULL_VALUE =
     ns +
     ` <DateRangeInput> value cannot be null. Pass undefined to clear the value and operate in` +

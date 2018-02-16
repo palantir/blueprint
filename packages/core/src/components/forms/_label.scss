@@ -32,7 +32,8 @@ label.pt-label {
   margin: 0 0 ($pt-grid-size * 1.5);
 
   .pt-input,
-  .pt-select {
+  .pt-select,
+  .pt-popover-wrapper {
     display: block;
     margin-top: $pt-grid-size / 2;
     text-transform: none;
@@ -49,7 +50,8 @@ label.pt-label {
 
     .pt-input,
     .pt-input-group,
-    .pt-select {
+    .pt-select,
+    .pt-popover-wrapper {
       display: inline-block;
       margin: 0 0 0 ($pt-grid-size / 2);
       vertical-align: top;
@@ -62,6 +64,10 @@ label.pt-label {
     &.pt-large {
       line-height: $pt-input-height-large;
     }
+  }
+
+  &:not(.pt-inline) .pt-popover-target {
+    display: block;
   }
 
   /*

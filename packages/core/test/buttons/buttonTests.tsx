@@ -10,7 +10,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import * as Keys from "../../src/common/keys";
-import { AnchorButton, Button, Classes, IButtonProps, Spinner } from "../../src/index";
+import { AnchorButton, Button, Classes, IButtonProps, Icon, Spinner } from "../../src/index";
 
 describe("Buttons:", () => {
     buttonTestSuite(Button, "button");
@@ -26,9 +26,10 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.isTrue(wrapper.hasClass("foo"));
         });
 
-        it('iconName="style" gets icon class', () => {
-            const wrapper = button({ iconName: "style" });
-            assert.isTrue(wrapper.hasClass(Classes.iconClass("style")));
+        it('icon="style" renders Icon as first child', () => {
+            const wrapper = button({ icon: "style" });
+            const firstChild = wrapper.children().childAt(0);
+            assert.isTrue(firstChild.is(Icon));
         });
 
         it("renders the button text prop", () => {

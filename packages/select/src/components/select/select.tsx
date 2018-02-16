@@ -13,10 +13,10 @@ import {
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
-    IPopover2Props,
+    IPopoverProps,
     Keys,
     Menu,
-    Popover2,
+    Popover,
     Position,
     Utils,
 } from "@blueprintjs/core";
@@ -37,13 +37,6 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     initialContent?: React.ReactChild;
 
     /**
-     * Custom renderer for an item in the dropdown list. Receives a boolean indicating whether
-     * this item is active (selected by keyboard arrows) and an `onClick` event handler that
-     * should be attached to the returned element.
-     */
-    itemRenderer: (itemProps: ISelectItemRendererProps<T>) => JSX.Element;
-
-    /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's children, if appropriate.
      * @default false
@@ -60,8 +53,8 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
-    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopover2Props> & object;
+    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<IPopoverProps> & object;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected
@@ -85,26 +78,6 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     onQueryChange?: (query: string) => void;
 }
 
-export interface ISelectItemRendererProps<T> {
-    /**
-     * Click handler that should be attached to item's `onClick` event.
-     * Will invoke `Select` `onItemSelect` prop with this `item`.
-     */
-    handleClick: React.MouseEventHandler<HTMLElement>;
-
-    /** Index of item in array of filtered items (_not_ the absolute position of item in full array). */
-    index: number;
-
-    /** The item being rendered */
-    item: T;
-
-    /**
-     * Whether the item is active according to keyboard navigation.
-     * An active item should have a distinct visual appearance.
-     */
-    isActive: boolean;
-}
-
 export interface ISelectState<T> {
     activeItem?: T;
     isOpen?: boolean;
@@ -112,7 +85,7 @@ export interface ISelectState<T> {
 }
 
 export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState<T>> {
-    public static displayName = "Blueprint.Select";
+    public static displayName = "Blueprint2.Select";
 
     public static ofType<T>() {
         return Select as new () => Select<T>;
@@ -143,15 +116,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const {
-            filterable,
-            initialContent,
-            itemRenderer,
-            inputProps,
-            noResults,
-            popoverProps,
-            ...restProps
-        } = this.props;
+        const { filterable, initialContent, inputProps, noResults, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -183,15 +148,14 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
-        const { ref, ...htmlInputProps } = inputProps;
         const input = (
             <InputGroup
                 autoFocus={true}
-                leftIconName="search"
+                leftIcon="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
                 value={listProps.query}
-                {...htmlInputProps}
+                {...inputProps}
                 inputRef={this.refHandlers.input}
                 onChange={this.handleQueryChange}
             />
@@ -199,7 +163,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
         const { handleKeyDown, handleKeyUp } = listProps;
         return (
-            <Popover2
+            <Popover
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
@@ -223,31 +187,22 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                     {filterable ? input : undefined}
                     <Menu ulRef={listProps.itemsParentRef}>{this.renderItems(listProps)}</Menu>
                 </div>
-            </Popover2>
+            </Popover>
         );
     };
 
-    private renderItems({ activeItem, filteredItems, handleItemSelect }: IQueryListRendererProps<T>) {
-        const { initialContent, itemRenderer, noResults } = this.props;
+    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
+        const { initialContent, noResults } = this.props;
         if (initialContent != null && this.isQueryEmpty()) {
             return initialContent;
         }
-        if (filteredItems.length === 0) {
-            return noResults;
-        }
-        return filteredItems.map((item, index) =>
-            itemRenderer({
-                handleClick: e => handleItemSelect(item, e),
-                index,
-                isActive: item === activeItem,
-                item,
-            }),
-        );
+        const renderedItems = items.map(renderItem).filter(item => item != null);
+        return renderedItems.length > 0 ? renderedItems : noResults;
     }
 
     private maybeRenderInputClearButton() {
         return !this.isQueryEmpty() ? (
-            <Button className={CoreClasses.MINIMAL} iconName="cross" onClick={this.resetQuery} />
+            <Button className={CoreClasses.MINIMAL} icon="cross" onClick={this.resetQuery} />
         ) : (
             undefined
         );

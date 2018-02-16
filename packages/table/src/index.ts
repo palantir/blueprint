@@ -4,8 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "es6-shim";
-
 export { Cell, ICellProps, ICellRenderer } from "./cell/cell";
 
 export { EditableCell, IEditableCellProps } from "./cell/editableCell";

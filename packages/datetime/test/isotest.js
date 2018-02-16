@@ -5,12 +5,21 @@
 
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
-const DateTime = require("../dist");
+const DateTime = require("../lib/cjs");
 
 describe("DateTime isomorphic rendering", () => {
+    const formatProps = {
+        formatDate: date => date.toLocaleString(),
+        parseDate: str => new Date(Date.parse(str)),
+        placeholder: "enter date",
+    };
+
     generateIsomorphicTests(
         DateTime,
-        {},
+        {
+            "DateInput": formatProps,
+            "DateRangeInput": formatProps,
+        },
         {}
     );
 });

@@ -82,6 +82,18 @@ $reorder-handle-width: 22px !default;
   &:active {
     color: $pt-intent-primary;
   }
+
+  .pt-dark & {
+    color: $pt-dark-text-color-disabled;
+
+    &:hover {
+      color: $pt-dark-icon-color-hover;
+    }
+
+    &:active {
+      color: $pt-intent-primary;
+    }
+  }
 }
 
 // The wide, transparent, clickable target that contains the
