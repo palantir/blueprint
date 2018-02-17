@@ -167,8 +167,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                     {shouldRenderMilliseconds && this.renderDivider(".")}
                     {shouldRenderMilliseconds &&
                         this.renderInput(Classes.TIMEPICKER_MILLISECOND, TimeUnit.MS, this.state.millisecondText)}
-                    {this.maybeRenderMeridiem()}
                 </div>
+                {this.maybeRenderAmPm()}
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
                     {this.maybeRenderArrowButton(false, hourUnit)}
                     {this.maybeRenderArrowButton(false, TimeUnit.MINUTE)}
@@ -232,24 +232,39 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         );
     }
 
-    private maybeRenderMeridiem() {
+    private maybeRenderAmPm() {
         if (this.props.hourFormat !== TimePickerHourFormat.HOUR_12) {
             return null;
         }
 
-        const onClick = () => {
-            let hour = this.state.value.getHours();
-            hour = DateUtils.convertHourMeridiem(hour, this.state.isPm);
+        const onChange = (amPm: string) => {
+            const isPm = amPm === "pm";
+            if (isPm === this.state.isPm)
+                return;
 
-            this.setState({isPm: !this.state.isPm}, () => {
+            let hour = this.state.value.getHours();
+            hour = DateUtils.convertHourMeridiem(hour, isPm);
+
+            this.setState({isPm: isPm}, () => {
                 this.updateTime(hour, TimeUnit.HOUR_24);
             });
         };
 
         return (
-            <span onClick={onClick}>
-                {this.state.isPm ? "PM" : "AM"}
-            </span>
+            <div className={classNames(CoreClasses.SELECT, Classes.TIMEPICKER_AMPM_SELECT)}>
+                <select
+                    value={this.state.isPm ? "pm" : "am"}
+                    onChange={handleStringChange(onChange)}
+                    disabled={this.props.disabled}
+                >
+                    <option key={0} value={"am"}>
+                        AM
+                    </option>
+                    <option key={1} value={"pm"}>
+                        PM
+                    </option>
+                </select>
+            </div>
         );
     }
 
@@ -426,4 +441,9 @@ function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>, actions: IKeyE
             actions[key]();
         }
     }
+}
+
+/** Event handler that exposes the target element's value as a string. */
+function handleStringChange(handler: (value: string) => void) {
+    return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
 }
