@@ -29,8 +29,8 @@ export enum TimePickerPrecision {
 }
 
 export enum TimePickerHourFormat {
-    HOUR_24 = TimeUnit.HOUR_24,
-    HOUR_12 = TimeUnit.HOUR_12,
+    HOUR_24 = "24hour",
+    HOUR_12 = "12hour",
 }
 
 export interface ITimePickerProps extends IProps {
@@ -70,6 +70,12 @@ export interface ITimePickerProps extends IProps {
     showArrowButtons?: boolean;
 
     /**
+     * How to format hours - either 24 hours or 12 hours with AM/PM.
+     * @default TimePickerHourFormat.HOUR_24
+     */
+    hourFormat?: TimePickerHourFormat;
+
+    /**
      * The latest time the user can select. The year, month, and day parts of the `Date` object are ignored.
      * While the `maxTime` will be later than the `minTime` in the basic case,
      * it is also allowed to be earlier than the `minTime`.
@@ -86,8 +92,6 @@ export interface ITimePickerProps extends IProps {
      * If the `maxTime` and `minTime` are equal, then the valid time range is constrained to only that one value.
      */
     minTime?: Date;
-
-    hourFormat?: TimePickerHourFormat;
 
     /**
      * The currently set time.
@@ -121,13 +125,19 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     public constructor(props?: ITimePickerProps, context?: any) {
         super(props, context);
 
+        let value = props.minTime;
+        let hourFormat = TimePickerHourFormat.HOUR_24;
+
         if (props.value != null) {
-            this.state = this.getFullStateFromValue(props.value);
+            value = props.value;
         } else if (props.defaultValue != null) {
-            this.state = this.getFullStateFromValue(props.defaultValue);
-        } else {
-            this.state = this.getFullStateFromValue(props.minTime);
+            value = props.defaultValue;
         }
+        if (props.hourFormat != null) {
+            hourFormat = props.hourFormat;
+        }
+
+        this.state = this.getFullStateFromValue(value, hourFormat);
     }
 
     public render() {
@@ -174,15 +184,19 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         const didMinTimeChange = nextProps.minTime !== this.props.minTime;
         const didMaxTimeChange = nextProps.maxTime !== this.props.maxTime;
         const didBoundsChange = didMinTimeChange || didMaxTimeChange;
+        const didHourFormatChange = nextProps.hourFormat !== this.props.hourFormat;
 
-        if (didBoundsChange) {
-            const timeInRange = DateUtils.getTimeInRange(this.state.value, nextProps.minTime, nextProps.maxTime);
-            this.setState(this.getFullStateFromValue(timeInRange));
-        }
+        let value = this.state.value;
+        let hourFormat = this.props.hourFormat || TimePicker.defaultProps.hourFormat;
 
-        if (nextProps.value != null && !DateUtils.areSameTime(nextProps.value, this.props.value)) {
-            this.setState(this.getFullStateFromValue(nextProps.value));
-        }
+        if (didBoundsChange)
+            value = DateUtils.getTimeInRange(this.state.value, nextProps.minTime, nextProps.maxTime);
+        if (nextProps.value != null && !DateUtils.areSameTime(nextProps.value, this.props.value))
+            value = nextProps.value;
+        if (didHourFormatChange)
+            hourFormat = nextProps.hourFormat;
+
+        this.setState(this.getFullStateFromValue(value, hourFormat));
     }
 
     // begin method definitions: rendering
@@ -308,9 +322,9 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     /**
      * Generates a full ITimePickerState object with all text fields set to formatted strings based on value
      */
-    private getFullStateFromValue(value: Date): ITimePickerState {
+    private getFullStateFromValue(value: Date, hourFormat: TimePickerHourFormat): ITimePickerState {
         const timeInRange = DateUtils.getTimeInRange(value, this.props.minTime, this.props.maxTime);
-        const hourUnit = this.props.hourFormat === TimePickerHourFormat.HOUR_12 ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
+        const hourUnit = hourFormat === TimePickerHourFormat.HOUR_12 ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
         /* tslint:disable:object-literal-sort-keys */
         return {
             hourText: formatTime(timeInRange.getHours(), hourUnit),
@@ -318,7 +332,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
             secondText: formatTime(timeInRange.getSeconds(), TimeUnit.SECOND),
             millisecondText: formatTime(timeInRange.getMilliseconds(), TimeUnit.MS),
             value: timeInRange,
-            isPm: (this.state && this.state.isPm) || false,
+            isPm: DateUtils.getIsPmFrom24Hour(timeInRange.getHours()),
         };
         /* tslint:enable:object-literal-sort-keys */
     }
@@ -341,11 +355,11 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
             if (DateUtils.isTimeInRange(newValue, this.props.minTime, this.props.maxTime)) {
                 this.updateState({ value: newValue });
             } else if (!DateUtils.areSameTime(this.state.value, this.props.minTime)) {
-                this.updateState(this.getFullStateFromValue(newValue));
+                this.updateState(this.getFullStateFromValue(newValue, this.props.hourFormat));
             }
         } else {
             // reset to last known good state
-            this.updateState(this.getFullStateFromValue(this.state.value));
+            this.updateState(this.getFullStateFromValue(this.state.value, this.props.hourFormat));
         }
     }
 
@@ -356,14 +370,14 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         if (this.props.value == null) {
             // component is uncontrolled
             if (hasNewValue) {
-                newState = this.getFullStateFromValue(newState.value);
+                newState = this.getFullStateFromValue(newState.value, this.props.hourFormat);
             }
             this.setState(newState);
         } else {
             // component is controlled, and there's a new value
             // so set inputs' text based off of _old_ value and later fire onChange with new value
             if (hasNewValue) {
-                this.setState(this.getFullStateFromValue(this.state.value));
+                this.setState(this.getFullStateFromValue(this.state.value, this.props.hourFormat));
             } else {
                 // no new value, this means only text has changed (from user typing)
                 // we want inputs to change, so update state with new text for the inputs

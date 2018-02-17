@@ -218,6 +218,10 @@ export function convertHourMeridiem(hour: number, toAm: boolean): number {
     return hour;
 }
 
+export function getIsPmFrom24Hour(hour: number): boolean {
+    return hour >= 12;
+}
+
 export function get12HourFrom24Hour(hour: number): number {
     hour = hour % 12;
     if (hour === 0) hour = 12;
