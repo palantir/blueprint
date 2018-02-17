@@ -9,7 +9,7 @@ import { BaseExample, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
 
-import { TimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
+import { TimePicker, TimePickerPrecision, TimePickerHourFormat } from "@blueprintjs/datetime";
 // tslint:disable-next-line:no-submodule-imports
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
 
@@ -20,6 +20,7 @@ export interface ITimePickerExampleState {
     disabled?: boolean;
     minTime?: Date;
     maxTime?: Date;
+    hourFormat?: TimePickerHourFormat;
 }
 
 enum MinimumHours {
@@ -40,6 +41,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
+        hourFormat: TimePickerHourFormat.HOUR_24,
     };
 
     private handlePrecisionChange = handleNumberChange(precision => this.setState({ precision }));
@@ -65,6 +67,12 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                     onChange={this.toggleShowArrowButtons}
                 />,
                 <Switch checked={this.state.disabled} label="Disabled" key="disabled" onChange={this.toggleDisabled} />,
+                <Switch
+                    checked={this.state.hourFormat === TimePickerHourFormat.HOUR_12}
+                    label="Use AM/PM"
+                    key="ampm"
+                    onChange={this.toggleUseAmPm}
+                />,
             ],
             [
                 <label key={0} className={Classes.LABEL}>
@@ -113,6 +121,14 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
 
     private toggleDisabled = () => {
         this.setState({ disabled: !this.state.disabled });
+    };
+
+    private toggleUseAmPm = () => {
+        let newHourFormat = (this.state.hourFormat === TimePickerHourFormat.HOUR_24) ?
+            TimePickerHourFormat.HOUR_12 :
+            TimePickerHourFormat.HOUR_24;
+
+        this.setState({ hourFormat: newHourFormat });
     };
 
     private changeMinHour = (hour: MinimumHours) => {
