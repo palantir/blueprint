@@ -205,3 +205,31 @@ export function getDateNextMonth(date: Date): Date {
         return new Date(date.getFullYear(), date.getMonth() + 1);
     }
 }
+
+export function convertHourMeridiem(hour: number, toAm: boolean): number {
+    if (toAm && hour == 12) {
+        hour = 0;
+    }
+    else {
+        hour += 12;
+        if (hour == 24)
+            hour = 0;
+    }
+    return hour;
+}
+
+export function get12HourFrom24Hour(hour: number): number {
+    hour = hour % 12;
+    if (hour === 0) hour = 12;
+    return hour;
+}
+
+export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
+    if (isPm) {
+        hour = hour + 12;
+        if (hour === 24) hour = 12;
+    }
+    else if (hour === 12)
+        hour = 0;
+    return hour;
+}
