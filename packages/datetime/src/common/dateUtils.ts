@@ -206,11 +206,11 @@ export function getDateNextMonth(date: Date): Date {
     }
 }
 
-export function convertHourMeridiem(hour: number, toAm: boolean): number {
+export function convert12HourMeridiem(hour: number, toAm: boolean): number {
     if (toAm && hour == 12) {
         hour = 0;
     }
-    else {
+    else if (!toAm) {
         hour += 12;
         if (hour == 24)
             hour = 0;
