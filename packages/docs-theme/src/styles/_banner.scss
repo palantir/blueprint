@@ -44,16 +44,21 @@ $banner-height: $pt-grid-size * 4;
   }
 }
 
-// shift entire page down by $banner-height pixels
-
-.docs-anchor {
-  margin-top: -$pt-navbar-height - $content-padding - $banner-height;
-}
-
+// shift entire page down by $banner-height pixels, when banner is present
 .docs-banner + .docs-root {
-  padding-top: $banner-height;
+  .docs-anchor {
+    margin-top: -$pt-navbar-height - $content-padding - $banner-height;
+  }
+
+  .docs-app {
+    padding-top: $pt-navbar-height + $banner-height;
+  }
+
+  .docs-navbar {
+    top: $banner-height;
+  }
 
   .docs-nav {
-    top: $banner-height;
+    top: $pt-navbar-height + $banner-height;
   }
 }
