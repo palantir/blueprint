@@ -9,7 +9,7 @@ import { BaseExample, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
 
-import { TimePicker, TimePickerPrecision, TimePickerHourFormat } from "@blueprintjs/datetime";
+import { TimePicker, TimePickerHourFormat, TimePickerPrecision } from "@blueprintjs/datetime";
 // tslint:disable-next-line:no-submodule-imports
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
 
@@ -38,10 +38,10 @@ enum MaximumHours {
 export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     public state = {
         disabled: false,
+        hourFormat: TimePickerHourFormat.HOUR_24,
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
-        hourFormat: TimePickerHourFormat.HOUR_24,
     };
 
     private handlePrecisionChange = handleNumberChange(precision => this.setState({ precision }));
@@ -124,9 +124,10 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     };
 
     private toggleUseAmPm = () => {
-        let newHourFormat = (this.state.hourFormat === TimePickerHourFormat.HOUR_24) ?
-            TimePickerHourFormat.HOUR_12 :
-            TimePickerHourFormat.HOUR_24;
+        const newHourFormat =
+            this.state.hourFormat === TimePickerHourFormat.HOUR_24
+                ? TimePickerHourFormat.HOUR_12
+                : TimePickerHourFormat.HOUR_24;
 
         this.setState({ hourFormat: newHourFormat });
     };

@@ -209,11 +209,11 @@ export function getDateNextMonth(date: Date): Date {
 export function convert12HourMeridiem(hour: number, toAm: boolean): number {
     if (toAm && hour == 12) {
         hour = 0;
-    }
-    else if (!toAm) {
+    } else if (!toAm) {
         hour += 12;
-        if (hour == 24)
+        if (hour == 24) {
             hour = 0;
+        }
     }
     return hour;
 }
@@ -224,16 +224,20 @@ export function getIsPmFrom24Hour(hour: number): boolean {
 
 export function get12HourFrom24Hour(hour: number): number {
     hour = hour % 12;
-    if (hour === 0) hour = 12;
+    if (hour === 0) {
+        hour = 12;
+    }
     return hour;
 }
 
 export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
     if (isPm) {
         hour = hour + 12;
-        if (hour === 24) hour = 12;
-    }
-    else if (hour === 12)
+        if (hour === 24) {
+            hour = 12;
+        }
+    } else if (hour === 12) {
         hour = 0;
+    }
     return hour;
 }

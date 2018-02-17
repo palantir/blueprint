@@ -112,12 +112,12 @@ export interface ITimePickerState {
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
     public static defaultProps: ITimePickerProps = {
         disabled: false,
+        hourFormat: TimePickerHourFormat.HOUR_24,
         maxTime: getDefaultMaxTime(),
         minTime: getDefaultMinTime(),
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
-        hourFormat: TimePickerHourFormat.HOUR_24,
     };
 
     public static displayName = "Blueprint2.TimePicker";
@@ -189,12 +189,15 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         let value = this.state.value;
         let hourFormat = this.props.hourFormat || TimePicker.defaultProps.hourFormat;
 
-        if (didBoundsChange)
+        if (didBoundsChange) {
             value = DateUtils.getTimeInRange(this.state.value, nextProps.minTime, nextProps.maxTime);
-        if (nextProps.value != null && !DateUtils.areSameTime(nextProps.value, this.props.value))
+        }
+        if (nextProps.value != null && !DateUtils.areSameTime(nextProps.value, this.props.value)) {
             value = nextProps.value;
-        if (didHourFormatChange)
+        }
+        if (didHourFormatChange) {
             hourFormat = nextProps.hourFormat;
+        }
 
         this.setState(this.getFullStateFromValue(value, hourFormat));
     }
@@ -239,13 +242,13 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
         const onChange = (amPm: string) => {
             const changeToAm = amPm === "am";
-            if (changeToAm !== this.state.isPm)
+            if (changeToAm !== this.state.isPm) {
                 return;
-
+            }
             let hour = DateUtils.get12HourFrom24Hour(this.state.value.getHours());
             hour = DateUtils.convert12HourMeridiem(hour, changeToAm);
 
-            this.setState({isPm: !changeToAm}, () => {
+            this.setState({ isPm: !changeToAm }, () => {
                 this.updateTime(hour, TimeUnit.HOUR_24);
             });
         };
