@@ -123,6 +123,8 @@ export interface IDateInputState {
 }
 
 export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
+    public static displayName = "Blueprint2.DateInput";
+
     public static defaultProps: Partial<IDateInputProps> = {
         closeOnSelection: true,
         dayPickerProps: {},
@@ -135,7 +137,12 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         timePickerProps: {},
     };
 
-    public static displayName = "Blueprint2.DateInput";
+    public state: IDateInputState = {
+        isInputFocused: false,
+        isOpen: false,
+        value: this.props.value !== undefined ? this.props.value : this.props.defaultValue,
+        valueString: null,
+    };
 
     private inputEl: HTMLElement = null;
     private popoverContentEl: HTMLElement = null;
@@ -144,13 +151,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         popoverContent: (el: HTMLElement) => {
             this.popoverContentEl = el;
         },
-    };
-
-    public state: IDateInputState = {
-        isInputFocused: false,
-        isOpen: false,
-        value: this.props.value !== undefined ? this.props.value : this.props.defaultValue,
-        valueString: null,
     };
 
     public componentWillUnmount() {
