@@ -79,7 +79,6 @@ export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
 }
 
 export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
-
     public static ofType<T>() {
         return TreeNode as new () => TreeNode<T>;
     }

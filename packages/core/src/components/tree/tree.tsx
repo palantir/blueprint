@@ -49,15 +49,9 @@ export interface ITreeProps<T = {}> extends IProps {
 }
 
 export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
-
-    constructor(props?: ITreeProps<T>, context?: any) {
-        super(props, context);
-    }
-
     public static ofType<T>() {
         return Tree as new () => Tree<T>;
     }
-
 
     public static nodeFromPath(path: number[], treeNodes: ITreeNode[]): ITreeNode {
         if (path.length === 1) {
@@ -65,6 +59,10 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
         } else {
             return Tree.nodeFromPath(path.slice(1), treeNodes[path[0]].childNodes);
         }
+    }
+
+    constructor(props?: ITreeProps<T>, context?: any) {
+        super(props, context);
     }
 
     private nodeRefs: { [nodeId: string]: HTMLElement } = {};
