@@ -64,6 +64,7 @@ jobs:
           key: v7-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:libs
       - run: yarn dist:apps
+      - run: yarn dist:docs
       # we don't need to run dist:docs here until we start publishing GitHub Pages from CI
       - persist_to_workspace:
           root: '.'
