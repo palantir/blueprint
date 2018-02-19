@@ -18,7 +18,7 @@ export interface IPageProps {
 export const Page: React.SFC<IPageProps> = ({ tagRenderers, page }) => {
     const pageContents = renderBlock(page, tagRenderers);
     return (
-        <div className="docs-page" data-page-id={page.reference}>
+        <div className="docs-page pt-running-text" data-page-id={page.reference}>
             {pageContents}
         </div>
     );

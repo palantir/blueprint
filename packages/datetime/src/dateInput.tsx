@@ -123,6 +123,8 @@ export interface IDateInputState {
 }
 
 export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
+    public static displayName = "Blueprint2.DateInput";
+
     public static defaultProps: Partial<IDateInputProps> = {
         closeOnSelection: true,
         dayPickerProps: {},
@@ -135,8 +137,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         timePickerProps: {},
     };
 
-    public static displayName = "Blueprint2.DateInput";
-
     public state: IDateInputState = {
         isInputFocused: false,
         isOpen: false,
@@ -144,14 +144,46 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         valueString: null,
     };
 
+    private inputEl: HTMLInputElement = null;
+    private popoverContentEl: HTMLElement = null;
+    private lastElementInPopover: HTMLElement = null;
+    private refHandlers = {
+        input: (el: HTMLInputElement) => {
+            this.inputEl = el;
+        },
+        popoverContent: (el: HTMLElement) => {
+            this.popoverContentEl = el;
+        },
+    };
+
+    public componentWillUnmount() {
+        super.componentWillUnmount();
+        this.unregisterPopoverBlurHandler();
+    }
+
     public render() {
         const { value, valueString } = this.state;
         const dateString = this.state.isInputFocused ? valueString : getFormattedDateString(value, this.props);
         const dateValue = isDateValid(value) ? value : null;
+        const dayPickerProps = {
+            ...this.props.dayPickerProps,
+            // dom elements for the updated month is not available when
+            // onMonthChange is called. setTimeout is necessary to wait
+            // for the updated month to be rendered
+            onMonthChange: (month: Date) => {
+                Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, month);
+                this.setTimeout(this.registerPopoverBlurHandler);
+            },
+        };
 
         const popoverContent =
             this.props.timePrecision === undefined ? (
-                <DatePicker {...this.props} onChange={this.handleDateChange} value={dateValue} />
+                <DatePicker
+                    {...this.props}
+                    dayPickerProps={dayPickerProps}
+                    onChange={this.handleDateChange}
+                    value={dateValue}
+                />
             ) : (
                 <DateTimePicker
                     canClearSelection={this.props.canClearSelection}
@@ -161,8 +193,10 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                     timePickerProps={{ ...this.props.timePickerProps, precision: this.props.timePrecision }}
                 />
             );
+        const wrappedPopoverContent = <div ref={this.refHandlers.popoverContent}>{popoverContent}</div>;
         // assign default empty object here to prevent mutation
-        const { inputProps = {}, popoverProps = {} } = this.props;
+        const { popoverProps = {} } = this.props;
+        const inputProps = this.getInputPropsWithDefaults();
         const isErrorState = value != null && (!isDateValid(value) || !this.isDateInRange(value));
 
         return (
@@ -172,7 +206,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                 {...popoverProps}
                 autoFocus={false}
                 className={classNames(popoverProps.className, this.props.className)}
-                content={popoverContent}
+                content={wrappedPopoverContent}
                 enforceFocus={false}
                 onClose={this.handleClosePopover}
                 popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
@@ -184,12 +218,12 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                     rightElement={this.props.rightElement}
                     {...inputProps}
                     disabled={this.props.disabled}
-                    type="text"
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.handleInputKeyDown}
+                    type="text"
                     value={dateString}
                 />
             </Popover>
@@ -203,11 +237,29 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         }
     }
 
+    private getInputPropsWithDefaults() {
+        const { inputProps = {} } = this.props;
+        if (Utils.isFunction(inputProps.inputRef)) {
+            return {
+                ...inputProps,
+                inputRef: (el: HTMLInputElement) => {
+                    this.refHandlers.input(el);
+                    inputProps.inputRef(el);
+                },
+            };
+        } else {
+            return {
+                ...inputProps,
+                inputRef: this.refHandlers.input,
+            };
+        }
+    }
+
     private isDateInRange(value: Date) {
         return isDayInRange(value, [this.props.minDate, this.props.maxDate]);
     }
 
-    private handleClosePopover = (e: React.SyntheticEvent<HTMLElement>) => {
+    private handleClosePopover = (e?: React.SyntheticEvent<HTMLElement>) => {
         const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.onClose, e);
         this.setState({ isOpen: false });
@@ -323,6 +375,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                 this.setState({ isInputFocused: false });
             }
         }
+        this.registerPopoverBlurHandler();
         this.safeInvokeInputProp("onBlur", e);
     };
 
@@ -335,8 +388,46 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             // the page. tabbing forward should *not* close the popover, because
             // focus will be moving into the popover itself.
             this.setState({ isOpen: false });
+        } else if (e.which === Keys.ESCAPE) {
+            this.setState({ isOpen: false });
+            this.inputEl.blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
+    };
+
+    // focus DOM event listener (not React event)
+    private handlePopoverBlur = (e: FocusEvent) => {
+        const relatedTarget = e.relatedTarget as HTMLElement;
+        if (relatedTarget == null || !this.popoverContentEl.contains(relatedTarget)) {
+            this.handleClosePopover();
+        }
+    };
+
+    private registerPopoverBlurHandler = () => {
+        if (this.popoverContentEl != null) {
+            // Popover contents are well structured, but the selector will need
+            // to be updated if more focusable components are added in the future
+            const tabbableElements = this.popoverContentEl.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
+            const numOfElements = tabbableElements.length;
+            if (numOfElements > 0) {
+                // Keep track of the last focusable element in popover and add
+                // a blur handler, so that when:
+                // * user tabs to the next element, popover closes
+                // * focus moves to element within popover, popover stays open
+                const lastElement = tabbableElements[numOfElements - 1] as HTMLElement;
+                if (this.lastElementInPopover !== lastElement) {
+                    this.unregisterPopoverBlurHandler();
+                    this.lastElementInPopover = lastElement;
+                    this.lastElementInPopover.addEventListener("blur", this.handlePopoverBlur);
+                }
+            }
+        }
+    };
+
+    private unregisterPopoverBlurHandler = () => {
+        if (this.lastElementInPopover != null) {
+            this.lastElementInPopover.removeEventListener("blur", this.handlePopoverBlur);
+        }
     };
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
