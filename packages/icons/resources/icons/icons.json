@@ -3031,8 +3031,8 @@
     "content": "\\e7a5"
   },
   {
-    "name": "Strikethrough",
-    "className": "pt-icon-strikethrough",
+    "displayName": "Strikethrough",
+    "iconName": "strikethrough",
     "tags": "typography, text, font-style, line, removed",
     "group": "editor",
     "content": "\\e7a6"
