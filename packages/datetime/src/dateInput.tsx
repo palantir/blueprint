@@ -195,7 +195,8 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             );
         const wrappedPopoverContent = <div ref={this.refHandlers.popoverContent}>{popoverContent}</div>;
         // assign default empty object here to prevent mutation
-        const { inputProps = {}, popoverProps = {} } = this.props;
+        const { popoverProps = {} } = this.props;
+        const inputProps = this.getInputPropsWithDefaults();
         const isErrorState = value != null && (!isDateValid(value) || !this.isDateInRange(value));
 
         return (
@@ -217,7 +218,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                     rightElement={this.props.rightElement}
                     {...inputProps}
                     disabled={this.props.disabled}
-                    inputRef={this.refHandlers.input}
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
@@ -234,6 +234,24 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         super.componentWillReceiveProps(nextProps);
         if (nextProps.value !== this.props.value) {
             this.setState({ value: nextProps.value });
+        }
+    }
+
+    private getInputPropsWithDefaults() {
+        const { inputProps = {} } = this.props;
+        if (Utils.isFunction(inputProps.inputRef)) {
+            return {
+                ...inputProps,
+                inputRef: (el: HTMLInputElement) => {
+                    this.refHandlers.input(el);
+                    inputProps.inputRef(el);
+                },
+            };
+        } else {
+            return {
+                ...inputProps,
+                inputRef: this.refHandlers.input,
+            };
         }
     }
 
