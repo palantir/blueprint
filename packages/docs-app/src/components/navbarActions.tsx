@@ -6,7 +6,7 @@
 
 import {
     AnchorButton,
-    Classes,
+    ButtonGroup,
     Hotkey,
     Hotkeys,
     HotkeysTarget,
@@ -18,7 +18,6 @@ import {
 } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 
-import * as classNames from "classnames";
 import * as React from "react";
 
 export interface INavbarActionsProps {
@@ -31,7 +30,7 @@ export interface INavbarActionsProps {
 export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> {
     public render() {
         return (
-            <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
+            <ButtonGroup minimal={true}>
                 <AnchorButton href="https://github.com/palantir/blueprint" target="_blank" text="GitHub" />
                 <Popover
                     content={this.renderReleasesMenu()}
@@ -46,7 +45,7 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
                     onClick={this.handleDarkSwitchChange}
                     icon={this.props.useDarkTheme ? "flash" : "moon"}
                 />
-            </div>
+            </ButtonGroup>
         );
     }
 

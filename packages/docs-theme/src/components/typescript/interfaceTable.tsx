@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty, ITsSignature } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
@@ -35,20 +36,10 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
             <div className="docs-modifiers pt-running-text-small">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
-                <div className="docs-interface-table">
-                    <table className="pt-html-table">
-                        <thead>
-                            <tr>
-                                <th>{title}</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {propRows}
-                            {this.renderIndexSignature(data.indexSignature)}
-                        </tbody>
-                    </table>
-                </div>
+                <ModifierTable title={title}>
+                    {propRows}
+                    {this.renderIndexSignature(data.indexSignature)}
+                </ModifierTable>
             </div>
         );
     }
