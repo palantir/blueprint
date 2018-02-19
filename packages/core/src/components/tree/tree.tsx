@@ -18,7 +18,7 @@ export interface ITreeProps<T = {}> extends IProps {
     /**
      * The data specifying the contents and appearance of the tree.
      */
-    contents: ITreeNode<T>[];
+    contents: Array<ITreeNode<T>>;
 
     /**
      * Invoked when a node is clicked anywhere other than the caret for expanding/collapsing the node.
