@@ -61,11 +61,11 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
         }
     }
 
+    private nodeRefs: { [nodeId: string]: HTMLElement } = {};
+
     constructor(props?: ITreeProps<T>, context?: any) {
         super(props, context);
     }
-
-    private nodeRefs: { [nodeId: string]: HTMLElement } = {};
 
     public render() {
         return (
