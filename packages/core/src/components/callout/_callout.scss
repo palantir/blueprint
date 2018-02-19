@@ -8,7 +8,7 @@ Callout
 
 Markup:
 <div class="pt-callout {{.modifier}}">
-  <h5>Callout Heading</h5>
+  <h5 class="pt-callout-title">Callout Heading</h5>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
 </div>
 
@@ -40,7 +40,8 @@ Styleguide pt-callout
     }
   }
 
-  h5 {
+  h5,
+  .pt-callout-title {
     margin-top: 0;
     margin-bottom: $pt-grid-size / 2;
     line-height: $pt-icon-size-large;
@@ -60,6 +61,7 @@ Styleguide pt-callout
 
       &[class*="pt-icon-"]::before,
       .pt-callout-icon,
+      .pt-callout-title,
       h5 {
         color: map-get($pt-intent-text-colors, $intent);
       }
@@ -69,6 +71,7 @@ Styleguide pt-callout
 
         &[class*="pt-icon-"]::before,
         .pt-callout-icon,
+        .pt-callout-title,
         h5 {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }
