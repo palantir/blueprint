@@ -49,30 +49,28 @@ export interface ITreeProps<T = {}> extends IProps {
 }
 
 export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
+    public static ofType<T>() {
+        return Tree as new () => Tree<T>;
+    }
+
+    public static nodeFromPath(path: number[], treeNodes: ITreeNode[]): ITreeNode {
+        if (path.length === 1) {
+            return treeNodes[ path[ 0 ] ];
+        } else {
+            return Tree.nodeFromPath(path.slice(1), treeNodes[ path[ 0 ] ].childNodes);
+        }
+    }
 
     constructor(props?: ITreeProps<T>, context?: any) {
         super(props, context);
     }
 
-    public static ofType<T>() {
-        return Tree as new () => Tree<T>;
-    }
-
-
-    public static nodeFromPath(path: number[], treeNodes: ITreeNode[]): ITreeNode {
-        if (path.length === 1) {
-            return treeNodes[path[0]];
-        } else {
-            return Tree.nodeFromPath(path.slice(1), treeNodes[path[0]].childNodes);
-        }
-    }
-
-    private nodeRefs: { [nodeId: string]: HTMLElement } = {};
+    private nodeRefs: { [ nodeId: string ]: HTMLElement } = {};
 
     public render() {
         return (
-            <div className={classNames(Classes.TREE, this.props.className)}>
-                {this.renderNodes(this.props.contents, [], Classes.TREE_ROOT)}
+            <div className={ classNames(Classes.TREE, this.props.className) }>
+                { this.renderNodes(this.props.contents, [], Classes.TREE_ROOT) }
             </div>
         );
     }
@@ -83,7 +81,7 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
      * If the node is not currently mounted, `undefined` is returned.
      */
     public getNodeContentElement(nodeId: string | number): HTMLElement | undefined {
-        return this.nodeRefs[nodeId];
+        return this.nodeRefs[ nodeId ];
     }
 
     private renderNodes(treeNodes: ITreeNode[], currentPath?: number[], className?: string): JSX.Element {
@@ -95,23 +93,23 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
             const elementPath = currentPath.concat(i);
             return (
                 <TreeNode
-                    {...node}
-                    key={node.id}
-                    contentRef={this.handleContentRef}
-                    depth={elementPath.length - 1}
-                    onClick={this.handleNodeClick}
-                    onContextMenu={this.handleNodeContextMenu}
-                    onCollapse={this.handleNodeCollapse}
-                    onDoubleClick={this.handleNodeDoubleClick}
-                    onExpand={this.handleNodeExpand}
-                    path={elementPath}
+                    { ...node }
+                    key={ node.id }
+                    contentRef={ this.handleContentRef }
+                    depth={ elementPath.length - 1 }
+                    onClick={ this.handleNodeClick }
+                    onContextMenu={ this.handleNodeContextMenu }
+                    onCollapse={ this.handleNodeCollapse }
+                    onDoubleClick={ this.handleNodeDoubleClick }
+                    onExpand={ this.handleNodeExpand }
+                    path={ elementPath }
                 >
-                    {this.renderNodes(node.childNodes, elementPath)}
+                    { this.renderNodes(node.childNodes, elementPath) }
                 </TreeNode>
             );
         });
 
-        return <ul className={classNames(Classes.TREE_NODE_LIST, className)}>{nodeItems}</ul>;
+        return <ul className={ classNames(Classes.TREE_NODE_LIST, className) }>{ nodeItems }</ul>;
     }
 
     private handleNodeCollapse = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
@@ -124,10 +122,10 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
 
     private handleContentRef = (node: TreeNode, element: HTMLElement | null) => {
         if (element != null) {
-            this.nodeRefs[node.props.id] = element;
+            this.nodeRefs[ node.props.id ] = element;
         } else {
             // don't want our object to get bloated with old keys
-            delete this.nodeRefs[node.props.id];
+            delete this.nodeRefs[ node.props.id ];
         }
     };
 

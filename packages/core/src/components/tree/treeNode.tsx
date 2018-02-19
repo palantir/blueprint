@@ -79,7 +79,6 @@ export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
 }
 
 export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
-
     public static ofType<T>() {
         return TreeNode as new () => TreeNode<T>;
     }
@@ -100,8 +99,8 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
         const classes = classNames(
             Classes.TREE_NODE,
             {
-                [Classes.TREE_NODE_SELECTED]: isSelected,
-                [Classes.TREE_NODE_EXPANDED]: isExpanded,
+                [ Classes.TREE_NODE_SELECTED ]: isSelected,
+                [ Classes.TREE_NODE_EXPANDED ]: isExpanded,
             },
             className,
         );
@@ -109,29 +108,29 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
         const contentClasses = classNames(Classes.TREE_NODE_CONTENT, `pt-tree-node-content-${this.props.depth}`);
 
         return (
-            <li className={classes}>
+            <li className={ classes }>
                 <div
-                    className={contentClasses}
-                    onClick={this.handleClick}
-                    onContextMenu={this.handleContextMenu}
-                    onDoubleClick={this.handleDoubleClick}
-                    ref={this.handleContentRef}
+                    className={ contentClasses }
+                    onClick={ this.handleClick }
+                    onContextMenu={ this.handleContextMenu }
+                    onDoubleClick={ this.handleDoubleClick }
+                    ref={ this.handleContentRef }
                 >
-                    <span className={caretClasses} onClick={showCaret ? this.handleCaretClick : undefined}>
-                        {showCaret && <Icon icon="caret-right" />}
+                    <span className={ caretClasses } onClick={ showCaret ? this.handleCaretClick : undefined }>
+                        { showCaret && <Icon icon="caret-right" /> }
                     </span>
-                    <Icon className={Classes.TREE_NODE_ICON} icon={icon} />
-                    <span className={Classes.TREE_NODE_LABEL}>{label}</span>
-                    {this.maybeRenderSecondaryLabel()}
+                    <Icon className={ Classes.TREE_NODE_ICON } icon={ icon } />
+                    <span className={ Classes.TREE_NODE_LABEL }>{ label }</span>
+                    { this.maybeRenderSecondaryLabel() }
                 </div>
-                <Collapse isOpen={isExpanded}>{children}</Collapse>
+                <Collapse isOpen={ isExpanded }>{ children }</Collapse>
             </li>
         );
     }
 
     private maybeRenderSecondaryLabel() {
         if (this.props.secondaryLabel != null) {
-            return <span className={Classes.TREE_NODE_SECONDARY_LABEL}>{this.props.secondaryLabel}</span>;
+            return <span className={ Classes.TREE_NODE_SECONDARY_LABEL }>{ this.props.secondaryLabel }</span>;
         } else {
             return undefined;
         }
