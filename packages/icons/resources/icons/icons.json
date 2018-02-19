@@ -3029,5 +3029,12 @@
     "tags": "circles, combine, connect, add, part, slice",
     "group": "action",
     "content": "\\e7a5"
+  },
+  {
+    "name": "Strikethrough",
+    "className": "pt-icon-strikethrough",
+    "tags": "typography, text, font-style, line, removed",
+    "group": "editor",
+    "content": "\\e7a6"
   }
 ]
