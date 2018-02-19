@@ -144,10 +144,13 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         valueString: null,
     };
 
-    private inputEl: HTMLElement = null;
+    private inputEl: HTMLInputElement = null;
     private popoverContentEl: HTMLElement = null;
     private lastElementInPopover: HTMLElement = null;
     private refHandlers = {
+        input: (el: HTMLInputElement) => {
+            this.inputEl = el;
+        },
         popoverContent: (el: HTMLElement) => {
             this.popoverContentEl = el;
         },
@@ -214,12 +217,13 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                     rightElement={this.props.rightElement}
                     {...inputProps}
                     disabled={this.props.disabled}
-                    type="text"
+                    inputRef={this.refHandlers.input}
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.handleInputKeyDown}
+                    type="text"
                     value={dateString}
                 />
             </Popover>
