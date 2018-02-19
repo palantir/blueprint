@@ -106,7 +106,7 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
                 >
                     {this.renderNodes(node.childNodes, elementPath)}
                 </TreeNode>
-            );
+                 );
         });
 
         return <ul className={classNames(Classes.TREE_NODE_LIST, className)}>{nodeItems}</ul>;
