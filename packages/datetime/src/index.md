@@ -25,7 +25,7 @@ The __@blueprintjs/datetime__ NPM package provides several components for intera
 They are available in the __@blueprintjs/datetime__ package on
 [NPM](https://www.npmjs.com/package/@blueprintjs/datetime).
 
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 ```sh
 npm install --save @blueprintjs/datetime

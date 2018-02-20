@@ -45,7 +45,7 @@ except for `.pt-fill` (due to lack of visual affordances).
 @## JavaScript API
 
 The `Button` and `AnchorButton` components are available in the **@blueprintjs/core** package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 Button components render buttons with Blueprint classes and attributes.
 See the [Buttons CSS docs](#core/components/button.css-api) for styling options.

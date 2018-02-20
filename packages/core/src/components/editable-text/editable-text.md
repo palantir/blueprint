@@ -23,7 +23,7 @@ You should not use `EditableText` when a static always-editable `<input>` or
 @## JavaScript API
 
 The `EditableText` component is available in the __@blueprintjs/core__ package. Make sure to review
-the [general usage docs for JS components](#blueprint.usage).
+the [getting started docs for installation info](#blueprint/getting-started).
 
 `EditableText` can be used like an [`input`
 element](https://facebook.github.io/react/docs/forms.html) and supports controlled or uncontrolled

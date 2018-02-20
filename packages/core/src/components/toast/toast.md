@@ -11,7 +11,7 @@ have more than one toast onscreen at a time.
 @## JavaScript API
 
 The `Toast` and `Toaster` components are available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 @### Toast
 

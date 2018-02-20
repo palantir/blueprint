@@ -18,7 +18,7 @@ heading, use the `<h4>` element with a `.pt-callout-title` class.
 @## JavaScript API
 
 The `Callout` component is available in the **@blueprintjs/core** package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 The component is a simple wrapper around the CSS API that provides props for modifiers and the optional title
 element. Any additional HTML props will be spread to the rendered `<div>` element. It provides two additional

@@ -16,7 +16,7 @@ Dialogs present content overlaid over other parts of the UI.
 @## JavaScript API
 
 The `Dialog` component is available in the **@blueprintjs/core** package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 There are two ways to render dialogs:
 
