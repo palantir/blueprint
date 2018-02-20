@@ -3,7 +3,7 @@
 Tag inputs render [`Tag`](#core/components/tag)s inside an input, followed by an actual text input. The container is merely styled to look like a Blueprint input; the actual editable element appears after the last tag. Clicking anywhere on the container will focus the text input for seamless interaction.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>Disabling a tag input</h5>
+    <h4>Disabling a tag input</h4>
     <p>Disabling this component requires setting the `disabled` prop to `true` and separately disabling the component's `rightElement` as appropriate (because `TagInput` accepts any `JSX.Element` as its `rightElement`).</p>
     <p>In the example below, when you slide the `Disabled` toggle switch on, the result becomes `<TagInput ... disabled={true} rightElement={<Button ... disabled={true} />} />`</p>
 </div>
@@ -21,7 +21,7 @@ Tag inputs render [`Tag`](#core/components/tag)s inside an input, followed by an
 The `<input>` element can be controlled directly via the `inputValue` and `onInputChange` props. Additional properties (such as custom event handlers) can be applied to the input via `inputProps`.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>Handling long words</h5>
+    <h4>Handling long words</h4>
     Set an explicit `width` on `.pt-tag-input` to cause long words to wrap onto multiple lines. Either supply a specific pixel value, or use `<TagInput className="pt-fill">` to fill its container's width (try this in the example above).
 </div>
 

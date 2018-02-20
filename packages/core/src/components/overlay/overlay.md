@@ -29,7 +29,7 @@ The `onClose` callback prop is invoked when user interaction causes the overlay 
 but your application is responsible for updating the state that actually closes the overlay.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>A note about overlay content positioning</h5>
+    <h4>A note about overlay content positioning</h4>
     When rendered inline, content will automatically be set to `position: absolute` to respect
     document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
 </div>
