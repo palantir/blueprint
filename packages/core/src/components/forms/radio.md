@@ -16,7 +16,7 @@ element.
 @## JavaScript API
 
 The `Radio` and `RadioGroup` components are available in the __@blueprintjs/core__ package. Make
-sure to review the [general usage docs for JS components](#blueprint.usage).
+sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 Typically, radio buttons are used in a group to choose one option from several, similar to how a
 `<select>` tag contains several `<option>` tags. As such, you can use the `RadioGroup` component

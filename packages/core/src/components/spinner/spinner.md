@@ -13,7 +13,7 @@ Spinners created via markup use same modifier classes as the
 @## JavaScript API
 
 The `Spinner` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 A `Spinner` is a simple stateless component that renders HTML/SVG markup.
 It supports a `value` prop between 0 and 1 that determines how much of the track is filled by the

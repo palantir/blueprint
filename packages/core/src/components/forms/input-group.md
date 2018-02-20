@@ -26,7 +26,7 @@ the parent input.
 @## JavaScript API
 
 The `InputGroup` component is available in the __@blueprintjs/core__ package. Make sure to review
-the [general usage docs for JS components](#blueprint.usage).
+the [getting started docs for installation info](#blueprint/getting-started).
 
 The `InputGroup` React component encapsulates the `.pt-input-group`
 [CSS API](#core/components/forms/input-group.css-api): it supports one non-interactive icon on the

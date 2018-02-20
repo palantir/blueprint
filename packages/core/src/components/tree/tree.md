@@ -17,7 +17,7 @@ may also use the provided styles by themselves, without using the component.
 @## JavaScript API
 
 The `Tree` component is available in the **@blueprintjs/core** package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 `Tree` is a stateless component. Its contents are dictated by the `contents` prop, which is an array
 of `ITreeNode`s (see [below](#components/tree.tree-node-interface)). The tree is multi-rooted if `contents`

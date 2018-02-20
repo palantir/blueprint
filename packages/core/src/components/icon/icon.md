@@ -22,7 +22,7 @@ a JSX element to use as the icon.
 @## JavaScript API
 
 The `Icon` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon` prop is typed
 such that editors can offer autocomplete for known icon names. The optional `iconSize` prop ensures

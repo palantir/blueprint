@@ -14,7 +14,7 @@ You can create context menus in either of the following ways:
 @## JavaScript API: decorator
 
 The `ContextMenuTarget` decorator is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 The `@ContextMenuTarget` [class decorator][ts-decorator] can be applied to any `React.Component`
 class that meets the following requirements:
@@ -66,7 +66,7 @@ class RightClickMe extends React.Component<{}, {}> {
 @## JavaScript API: imperative
 
 The `ContextMenu` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 The imperative API provides a single static `ContextMenu` object, enforcing the principle that only
 one context menu can be open at a time.

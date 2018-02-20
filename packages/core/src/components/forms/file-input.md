@@ -15,7 +15,7 @@ Wrap that all in a `label` with class `pt-file-input`.
 
 @## JavaScript API
 
-The `FileInput` component is available in the __@blueprintjs/core__ package. Make sure to review the [general usage docs for JS components](#blueprint.usage).
+The `FileInput` component is available in the __@blueprintjs/core__ package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
 

@@ -53,8 +53,7 @@ trigged, the field will be cleared.
 @## JavaScript API
 
 The `NumericInput` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS
-components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 @interface INumericInputProps
 

@@ -8,7 +8,7 @@ directly; this documentation is provided simply for reference.
 @## JavaScript API
 
 The `Portal` component is available in the __@blueprintjs/core__ package. Make sure to review the
-[general usage docs for JS components](#blueprint.usage).
+[getting started docs for installation info](#blueprint/getting-started).
 
 The `Portal` component functions like a declarative `appendChild()`, or jQuery's `$.fn.appendTo()`.
 The children of a `Portal` component are appended to the `<body>` element.

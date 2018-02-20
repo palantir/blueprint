@@ -15,7 +15,7 @@ JavaScript component does this by default).
 @## JavaScript API
 
 The `Tabs` and `Tab` components are available in the __@blueprintjs/core__
-package. Make sure to review the [general usage docs for JS components](#blueprint.usage).
+package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 Tab selection is managed by `id`, much like the HTML `<select>` element respects `<option value>`. This is more reliable than using a numeric index (it's also deterministic), and
 does not require translating between numbers and tab names. It does, however, require that

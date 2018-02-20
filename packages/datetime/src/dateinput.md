@@ -56,7 +56,7 @@ function getMomentFormatter(format: string): IDateFormatProps {
 @## JavaScript API
 
 The `DateInput` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 ```tsx
 import { DateInput } from "@blueprintjs/datetime";

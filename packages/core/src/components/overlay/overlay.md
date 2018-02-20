@@ -20,7 +20,7 @@ does not_ meet your needs.
 @## JavaScript API
 
 The `Overlay` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 `Overlay` is a controlled component that renders its children only when `isOpen={true}`. The
 optional backdrop element will be inserted before the children if `hasBackdrop={true}`.
