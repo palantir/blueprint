@@ -25,12 +25,14 @@ Users expect an interactive card to be a single clickable unit.
 @## JavaScript API
 
 Then `Card` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 This component is a simple wrapper around the CSS API.
 
-```
-<Card interactive={true} elevation={Card.ELEVATION_TWO}>
+```tsx
+import { Button, Card, Elevation } from "@blueprintjs/core";
+
+<Card interactive={true} elevation={Elevation.TWO}>
     <h5><a href="#">Card heading</a></h5>
     <p>Card content</p>
     <Button>Submit</Button>

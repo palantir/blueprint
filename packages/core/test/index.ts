@@ -26,6 +26,7 @@ import "./forms/fileInputTests";
 import "./forms/formGroupTests";
 import "./hotkeys/hotkeysTests";
 import "./icon/iconTests";
+import "./menu/menuItemTests";
 import "./menu/menuTests";
 import "./non-ideal-state/nonIdealStateTests";
 import "./overlay/overlayTests";

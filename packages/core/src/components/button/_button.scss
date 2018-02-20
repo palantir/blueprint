@@ -28,13 +28,24 @@ Styleguide pt-button
   @include pt-button-base();
   @include pt-button-height($pt-button-height);
 
+  &:empty {
+    padding: 0;
+  }
+
   &:disabled,
   &.pt-disabled {
     cursor: not-allowed;
   }
 
   &.pt-fill {
+    display: flex;
     width: 100%;
+  }
+
+  // default is `text-align: left` so we only need `right` case.
+  &.pt-align-right,
+  .pt-align-right & {
+    text-align: right;
   }
 
   &:not([class*="pt-intent-"]) {
@@ -81,19 +92,6 @@ Styleguide pt-button
 
   Styleguide pt-button.pt-icon
   */
-  &[class*="pt-icon-"]::before {
-    @include pt-icon();
-    margin-right: $button-icon-spacing;
-    color: $pt-icon-color;
-  }
-
-  // icon-only button
-  .pt-icon:first-child:last-child {
-    // center icon horizontally. this works for large buttons too.
-    $icon-margin-offset: -($pt-button-height - $pt-icon-size-standard) / 2;
-    margin-right: $icon-margin-offset;
-    margin-left: $icon-margin-offset;
-  }
 
   /*
   Advanced icon usage
@@ -120,15 +118,27 @@ Styleguide pt-button
 
   Styleguide pt-button.pt-icon-advanced
   */
+  &[class*="pt-icon-"] {
+    &::before {
+      @include pt-icon();
+      color: $pt-icon-color;
+    }
+  }
 
   #{$icon-classes} {
-    margin-right: $button-icon-spacing;
     color: $pt-icon-color;
 
     &.pt-align-right {
-      margin-right: 0;
       margin-left: $button-icon-spacing;
     }
+  }
+
+  // button with SVG icon only (no text or children)
+  .pt-icon:first-child:last-child,
+  // if loading, then it contains exactly [spinner, icon]
+  .pt-spinner + .pt-icon:last-child {
+    // center icon horizontally. this works for large buttons too.
+    margin: 0 (-($pt-button-height - $pt-icon-size-standard) / 2);
   }
 
   .pt-dark & {
@@ -190,34 +200,12 @@ Styleguide pt-button
 
   &.pt-large,
   .pt-large & {
-    @include pt-button-large();
-
-    &[class*="pt-icon-"]::before {
-      margin-right: $button-icon-spacing-large;
-    }
-
-    #{$icon-classes} {
-      margin-right: $button-icon-spacing-large;
-
-      &.pt-align-right {
-        margin-right: 0;
-        margin-left: $button-icon-spacing-large;
-      }
-    }
+    @include pt-button-height-large();
   }
 
   &.pt-small,
   .pt-small & {
-    @include pt-button-small();
-  }
-
-  // ensure icon button with no text is a perfect square
-  &[class*="pt-icon-"]:empty {
-    padding: 0;
-
-    &::before {
-      margin-right: 0;
-    }
+    @include pt-button-height-small();
   }
 }
 
@@ -235,5 +223,16 @@ a.pt-button {
 
   &.pt-disabled {
     color: $button-color-disabled;
+  }
+}
+
+.pt-button-text {
+  // default: don't grow to fill but allow shrinking as necessary
+  flex: 0 1 auto;
+
+  // when alignment is set, grow to fill and inherit `text-align` set on `.pt-button`
+  .pt-align-left &,
+  .pt-align-right & {
+    flex: 1 1 auto;
   }
 }

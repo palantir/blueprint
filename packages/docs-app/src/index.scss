@@ -17,7 +17,6 @@
 @import "~@blueprintjs/docs-theme/src/styles/variables";
 
 // then our own styles
-@import "styles/banner";
 @import "styles/colors";
 @import "styles/examples";
 @import "styles/icons";
@@ -29,5 +28,5 @@
 }
 
 .docs-releases-menu .pt-menu {
-  width: 320px;
+  min-width: 270px;
 }

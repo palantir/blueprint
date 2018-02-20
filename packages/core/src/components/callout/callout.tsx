@@ -14,49 +14,56 @@ import { IconName } from "../icon/icon";
 /** This component also supports the full range of HTML `<div>` props. */
 export interface ICalloutProps extends IIntentProps, IProps {
     /**
-     * Name of icon to render on left-hand side.
+     * Name of a Blueprint UI icon (or an icon element) to render on the left side.
      *
      * If this prop is omitted or `undefined`, the `intent` prop will determine a default icon.
      * If this prop is explicitly `null`, no icon will be displayed (regardless of `intent`).
      */
-    iconName?: IconName | null;
+    icon?: IconName | JSX.Element | null;
 
     /**
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply pass
-     * `<h5>JSX title content<h5>` as first `children` element instead of using this prop.
+     * `<h4 className="pt-callout-title">JSX title content<h4>` as first `children` element instead of using this prop.
      */
     title?: string;
 }
 
 export class Callout extends React.PureComponent<ICalloutProps & React.HTMLAttributes<HTMLDivElement>, {}> {
     public render() {
-        const { className, children, iconName: _nospread, intent, title, ...htmlProps } = this.props;
+        const { className, children, icon: _nospread, intent, title, ...htmlProps } = this.props;
         const iconName = this.getIconName();
         const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className);
+
+        const maybeIcon =
+            iconName === undefined ? (
+                undefined
+            ) : (
+                <span className={Classes.CALLOUT_ICON}>
+                    <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />
+                </span>
+            );
+        const maybeTitle = title === undefined ? undefined : <h4 className={Classes.CALLOUT_TITLE}>{title}</h4>;
+
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && (
-                    <span className={Classes.CALLOUT_ICON}>
-                        <Icon iconName={iconName} iconSize={Icon.SIZE_LARGE} />
-                    </span>
-                )}
-                {title && <h5>{title}</h5>}
+                {maybeIcon}
+                {maybeTitle}
                 {children}
             </div>
         );
     }
 
-    private getIconName(): IconName | undefined {
-        const { iconName, intent } = this.props;
+    private getIconName(): JSX.Element | IconName | undefined {
+        const { icon, intent } = this.props;
         // 1. no icon
-        if (iconName === null) {
+        if (icon === null) {
             return undefined;
         }
         // 2. defined iconName prop
-        if (iconName !== undefined) {
-            return iconName;
+        if (icon !== undefined) {
+            return icon;
         }
         // 3. default intent icon
         switch (intent) {

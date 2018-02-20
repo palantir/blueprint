@@ -8,6 +8,7 @@ import * as classNames from "classnames";
 import { ITsEnum, ITsEnumMember } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
@@ -27,18 +28,10 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
         const { data } = this.props;
         const { renderBlock } = this.context;
         return (
-            <div className="docs-modifiers">
+            <div className="docs-modifiers pt-running-text-small">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
-                <table className="pt-html-table">
-                    <thead>
-                        <tr>
-                            <th>Members</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>{data.members.map(this.renderPropRow)}</tbody>
-                </table>
+                <ModifierTable title="Members">{data.members.map(this.renderPropRow)}</ModifierTable>
             </div>
         );
     }

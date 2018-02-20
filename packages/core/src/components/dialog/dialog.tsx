@@ -29,10 +29,10 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     hasBackdrop?: boolean;
 
     /**
-     * Name of the icon (the part after `pt-icon-`) to appear in the dialog's header.
+     * Name of a Blueprint UI icon (or an icon element) to render in the dialog's header.
      * Note that the header will only be rendered if `title` is provided.
      */
-    iconName?: IconName;
+    icon?: IconName | JSX.Element;
 
     /**
      * Whether to show the close button in the dialog's header.
@@ -51,9 +51,8 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
      * Title of the dialog.
      * If provided, a `.pt-dialog-header` element will be rendered inside the dialog
      * before any children elements.
-     * In the next major version, this prop will be required.
      */
-    title?: string | JSX.Element;
+    title?: React.ReactNode;
 
     /**
      * Name of the transition for internal `CSSTransition`.
@@ -85,7 +84,7 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
 
     protected validateProps(props: IDialogProps) {
         if (props.title == null) {
-            if (props.iconName != null) {
+            if (props.icon != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_ICON);
             }
             if (props.isCloseButtonShown != null) {
@@ -100,7 +99,7 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         if (this.props.isCloseButtonShown !== false) {
             return (
                 <button aria-label="Close" className={Classes.DIALOG_CLOSE_BUTTON} onClick={this.props.onClose}>
-                    <Icon iconName="small-cross" iconSize={Icon.SIZE_LARGE} />
+                    <Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />
                 </button>
             );
         } else {
@@ -109,14 +108,14 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
     }
 
     private maybeRenderHeader() {
-        const { iconName, title } = this.props;
+        const { icon, title } = this.props;
         if (title == null) {
             return undefined;
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                <Icon iconName={iconName} iconSize={Icon.SIZE_LARGE} />
-                <h5>{title}</h5>
+                <Icon icon={icon} iconSize={Icon.SIZE_LARGE} />
+                <h4 className={Classes.DIALOG_HEADER_TITLE}>{title}</h4>
                 {this.maybeRenderCloseButton()}
             </div>
         );

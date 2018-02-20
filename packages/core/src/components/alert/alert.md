@@ -16,6 +16,6 @@ to show the type of the alert.
 @## JavaScript API
 
 The `Alert` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 @interface IAlertProps

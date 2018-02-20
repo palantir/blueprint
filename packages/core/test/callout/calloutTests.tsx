@@ -19,7 +19,7 @@ describe("<Callout>", () => {
     });
 
     it("supports icon", () => {
-        const wrapper = shallow(<Callout iconName="graph" />);
+        const wrapper = shallow(<Callout icon="graph" />);
         assert.isTrue(wrapper.find(Icon).exists());
     });
 
@@ -33,15 +33,15 @@ describe("<Callout>", () => {
         assert.isTrue(wrapper.find(Icon).exists());
     });
 
-    it("iconName=null removes intent icon", () => {
-        const wrapper = shallow(<Callout iconName={null} intent={Intent.PRIMARY} />);
+    it("icon=null removes intent icon", () => {
+        const wrapper = shallow(<Callout icon={null} intent={Intent.PRIMARY} />);
         assert.isFalse(wrapper.find(Icon).exists());
     });
 
     it("renders optional title element", () => {
         const title = "I am the title";
         const wrapper = shallow(<Callout title={title} />);
-        assert.strictEqual(wrapper.find("h5").text(), title);
+        assert.strictEqual(wrapper.find(`.${Classes.CALLOUT_TITLE}`).text(), title);
         // NOTE: JSX cannot be passed through `title` prop due to conflict with HTML props
         // shallow(<Callout title={<em>typings fail</em>} />);
     });

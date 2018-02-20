@@ -90,7 +90,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
                 </select>
                 <Icon
                     className={Classes.DATEPICKER_CAPTION_CARET}
-                    iconName="caret-down"
+                    icon="caret-down"
                     style={{ left: this.state.monthWidth }}
                 />
             </div>
@@ -106,7 +106,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
                 </select>
                 <Icon
                     className={Classes.DATEPICKER_CAPTION_CARET}
-                    iconName="caret-down"
+                    icon="caret-down"
                     style={{ left: this.state.yearWidth }}
                 />
             </div>

@@ -57,14 +57,10 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
 // tslint:disable:no-console jsx-no-lambda
 const renderTestMenu = () => (
     <Menu>
-        <MenuItem iconName="export" onClick={() => console.log("Beam me up!")} text="Teleport" />
-        <MenuItem
-            iconName="sort-alphabetical-desc"
-            onClick={() => console.log("ZA is the worst")}
-            text="Down with ZA!"
-        />
+        <MenuItem icon="export" onClick={() => console.log("Beam me up!")} text="Teleport" />
+        <MenuItem icon="sort-alphabetical-desc" onClick={() => console.log("ZA is the worst")} text="Down with ZA!" />
         <MenuDivider />
-        <MenuItem iconName="curved-range-chart" onClick={() => console.log("You clicked the trident!")} text="Psi" />
+        <MenuItem icon="curved-range-chart" onClick={() => console.log("You clicked the trident!")} text="Psi" />
     </Menu>
 );
 // tslint:enable:no-console jsx-no-lambda

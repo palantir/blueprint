@@ -15,4 +15,5 @@ export * from "./defaults";
 export * from "./heading";
 export * from "./reactDocs";
 export * from "./reactExample";
+export * from "./see";
 export * from "./typescript";

@@ -94,7 +94,7 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
                     autoComplete="off"
                     autoFocus={true}
                     inputRef={this.refHandlers.input}
-                    leftIconName="search"
+                    leftIcon="search"
                     onChange={this.handleQueryChange}
                     onKeyDown={this.handleKeyDown}
                     placeholder="Search..."

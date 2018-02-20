@@ -42,10 +42,7 @@ span.pt-icon {
 svg.pt-icon {
   // respect dimensions exactly
   flex: 0 0 auto;
-  // SVG and DOM elements don't align perfectly - this magic number seems to fix it.
-  // https://blog.prototypr.io/align-svg-icons-to-text-and-say-goodbye-to-font-icons-d44b3d7b26b4#6e0c
-  margin-top: -0.125em;
-  vertical-align: middle;
+  vertical-align: top;
   // inherit text color by default
   fill: currentColor;
 }

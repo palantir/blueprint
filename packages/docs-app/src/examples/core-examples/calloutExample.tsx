@@ -13,7 +13,7 @@ import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface ICalloutExampleState {
-    iconName?: IconName;
+    icon?: IconName;
     intent?: Intent;
     showHeader: boolean;
 }
@@ -32,20 +32,20 @@ export class CalloutExample extends BaseExample<ICalloutExampleState> {
     }
 
     protected renderOptions() {
-        const { iconName, intent, showHeader } = this.state;
+        const { icon, intent, showHeader } = this.state;
         return [
             [
                 <IntentSelect key="intent" intent={intent} onChange={this.handleIntentChange} />,
                 <Switch key="header" checked={showHeader} label="Show header" onChange={this.handleHeaderChange} />,
             ],
-            [<IconSelect key="icon-name" iconName={iconName} onChange={this.handleIconNameChange} />],
+            [<IconSelect key="icon-name" iconName={icon} onChange={this.handleIconNameChange} />],
         ];
     }
 
     // tslint:disable-next-line:member-ordering
     private handleHeaderChange = handleBooleanChange((showHeader: boolean) => this.setState({ showHeader }));
 
-    private handleIconNameChange = (iconName: IconName) => this.setState({ iconName });
+    private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 
     // tslint:disable-next-line:member-ordering
     private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));

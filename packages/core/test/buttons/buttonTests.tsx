@@ -26,8 +26,8 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.isTrue(wrapper.hasClass("foo"));
         });
 
-        it('iconName="style" renders Icon as first child', () => {
-            const wrapper = button({ iconName: "style" });
+        it('icon="style" renders Icon as first child', () => {
+            const wrapper = button({ icon: "style" });
             const firstChild = wrapper.children().childAt(0);
             assert.isTrue(firstChild.is(Icon));
         });

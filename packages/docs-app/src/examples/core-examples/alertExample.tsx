@@ -6,47 +6,57 @@
 
 import * as React from "react";
 
-import { Alert, Button, Intent, IToaster, Toaster } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Alert, Button, Intent, IToaster, Switch, Toaster } from "@blueprintjs/core";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface IAlertExampleState {
-    isOpen?: boolean;
-    isOpenError?: boolean;
+    canEscapeKeyCancel: boolean;
+    canOutsideClickCancel: boolean;
+    isOpen: boolean;
+    isOpenError: boolean;
 }
 
 export class AlertExample extends BaseExample<{}> {
     public state: IAlertExampleState = {
+        canEscapeKeyCancel: false,
+        canOutsideClickCancel: false,
         isOpen: false,
         isOpenError: false,
     };
 
     private toaster: IToaster;
 
+    private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyCancel => this.setState({ canEscapeKeyCancel }));
+    private handleOutsideClickChange = handleBooleanChange(click => this.setState({ canOutsideClickCancel: click }));
+
     protected renderExample() {
+        const { isOpen, isOpenError, ...switchProps } = this.state;
         return (
             <div>
-                <Button onClick={this.handleOpenError} text="Open file error alert" />
+                <Button onClick={this.handleErrorOpen} text="Open file error alert" />
                 <Alert
+                    {...switchProps}
                     className={this.props.themeName}
-                    isOpen={this.state.isOpenError}
                     confirmButtonText="Okay"
-                    onConfirm={this.handleCloseError}
+                    isOpen={isOpenError}
+                    onClose={this.handleErrorClose}
                 >
                     <p>
                         Couldn't create the file because the containing folder doesn't exist anymore. You will be
                         redirected to your user folder.
                     </p>
                 </Alert>
-                <Button onClick={this.handleOpen} text="Open file deletion alert" />
+                <Button onClick={this.handleMoveOpen} text="Open file deletion alert" />
                 <Alert
+                    {...switchProps}
                     className={this.props.themeName}
-                    iconName="trash"
-                    intent={Intent.PRIMARY}
-                    isOpen={this.state.isOpen}
-                    confirmButtonText="Move to Trash"
                     cancelButtonText="Cancel"
-                    onConfirm={this.handleMoveClose}
-                    onCancel={this.handleClose}
+                    confirmButtonText="Move to Trash"
+                    icon="trash"
+                    intent={Intent.PRIMARY}
+                    isOpen={isOpen}
+                    onCancel={this.handleMoveCancel}
+                    onConfirm={this.handleMoveConfirm}
                 >
                     <p>
                         Are you sure you want to move <b>filename</b> to Trash? You will be able to restore it later,
@@ -58,14 +68,34 @@ export class AlertExample extends BaseExample<{}> {
         );
     }
 
-    private handleOpenError = () => this.setState({ isOpenError: true });
-    private handleCloseError = () => this.setState({ isOpenError: false });
-    private handleOpen = () => this.setState({ isOpen: true });
-    private handleMoveClose = () => {
+    protected renderOptions() {
+        return [
+            [
+                <Switch
+                    checked={this.state.canEscapeKeyCancel}
+                    key="escape"
+                    label="Can escape key cancel"
+                    onChange={this.handleEscapeKeyChange}
+                />,
+                <Switch
+                    checked={this.state.canOutsideClickCancel}
+                    key="click"
+                    label="Can outside click cancel"
+                    onChange={this.handleOutsideClickChange}
+                />,
+            ],
+        ];
+    }
+
+    private handleErrorOpen = () => this.setState({ isOpenError: true });
+    private handleErrorClose = () => this.setState({ isOpenError: false });
+
+    private handleMoveOpen = () => this.setState({ isOpen: true });
+    private handleMoveConfirm = () => {
         this.setState({ isOpen: false });
         this.toaster.show({ className: this.props.themeName, message: TOAST_MESSAGE });
     };
-    private handleClose = () => this.setState({ isOpen: false });
+    private handleMoveCancel = () => this.setState({ isOpen: false });
 }
 
 const TOAST_MESSAGE = (

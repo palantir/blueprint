@@ -12,7 +12,7 @@ You should not use `EditableText` when a static always-editable `<input>` or
 `<textarea>` tag would suffice.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-    <h5>Centering the component</h5>
+    <h4 class="pt-callout-title">Centering the component</h4>
     **Do not center this component** using `text-align: center`, as it will cause an infinite loop
     in the browser ([more details](https://github.com/JedWatson/react-select/issues/540)). Instead,
     you should center the component via flexbox or with `position` and `transform: translateX(-50%)`.
@@ -23,7 +23,7 @@ You should not use `EditableText` when a static always-editable `<input>` or
 @## JavaScript API
 
 The `EditableText` component is available in the __@blueprintjs/core__ package. Make sure to review
-the [general usage docs for JS components](#blueprint.usage).
+the [getting started docs for installation info](#blueprint/getting-started).
 
 `EditableText` can be used like an [`input`
 element](https://facebook.github.io/react/docs/forms.html) and supports controlled or uncontrolled
@@ -56,7 +56,7 @@ _vertically_ instead, based on the number of lines of text. You can use the `min
 `maxLines` props to constrain the vertical size of the component.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>Multiline prop format</h5>
+    <h4 class="pt-callout-title">Multiline prop format</h4>
     You should declare `multiline` as a valueless boolean prop, as in the example above
     (`<EditableText multiline ...>`). This prevents you from changing the value after declaring it,
     which would provide a sub-optimal experience for users (multiline text does not always render

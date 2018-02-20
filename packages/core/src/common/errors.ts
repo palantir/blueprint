@@ -9,6 +9,10 @@ const ns = "[Blueprint]";
 export const CLAMP_MIN_MAX = ns + ` clamp: max cannot be less than min`;
 
 export const ALERT_WARN_CANCEL_PROPS = ns + ` <Alert> cancelButtonText and onCancel should be set together.`;
+export const ALERT_WARN_CANCEL_ESCAPE_KEY =
+    ns + ` <Alert> canEscapeKeyCancel enabled without onCancel or onClose handler.`;
+export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
+    ns + ` <Alert> canOutsideClickCancel enbaled without onCancel or onClose handler.`;
 
 export const COLLAPSIBLE_LIST_INVALID_CHILD = ns + ` <CollapsibleList> children must be <MenuItem>s`;
 
@@ -21,9 +25,6 @@ export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> ch
 export const HOTKEYS_WARN_DECORATOR_NO_METHOD = ns + ` @HotkeysTarget-decorated class should implement renderHotkeys.`;
 export const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
     ns + ` "@HotkeysTarget-decorated components must return a single JSX.Element or an empty render.`;
-
-export const MENU_WARN_CHILDREN_SUBMENU_MUTEX =
-    ns + ` <MenuItem> children and submenu props are mutually exclusive, with children taking priority.`;
 
 export const NUMERIC_INPUT_MIN_MAX =
     ns + ` <NumericInput> requires min to be strictly less than max if both are defined.`;

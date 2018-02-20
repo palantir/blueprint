@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
 // modifiers
@@ -27,7 +28,15 @@ export const ROUND = "pt-round";
 // text utilities
 export const TEXT_MUTED = "pt-text-muted";
 export const TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
+export const UI_TEXT = "pt-ui-text";
 export const UI_TEXT_LARGE = "pt-ui-text-large";
+export const RUNNING_TEXT = "pt-running-text";
+export const RUNNING_TEXT_SMALL = "pt-running-text-small";
+export const MONOSPACE_TEXT = "pt-monospace-text";
+
+// lists
+export const LIST = "pt-list";
+export const LIST_UNSTYLED = "pt-list-unstyled";
 
 // components
 export const ALERT = "pt-alert";
@@ -42,9 +51,12 @@ export const BREADCRUMBS_COLLAPSED = "pt-breadcrumbs-collapsed";
 
 export const BUTTON = "pt-button";
 export const BUTTON_GROUP = "pt-button-group";
+export const BUTTON_SPINNER = "pt-button-spinner";
+export const BUTTON_TEXT = "pt-button-text";
 
 export const CALLOUT = "pt-callout";
 export const CALLOUT_ICON = "pt-callout-icon";
+export const CALLOUT_TITLE = "pt-callout-title";
 
 export const CARD = "pt-card";
 
@@ -66,6 +78,7 @@ export const DIALOG_CLOSE_BUTTON = "pt-dialog-close-button";
 export const DIALOG_FOOTER = "pt-dialog-footer";
 export const DIALOG_FOOTER_ACTIONS = "pt-dialog-footer-actions";
 export const DIALOG_HEADER = "pt-dialog-header";
+export const DIALOG_HEADER_TITLE = "pt-dialog-header-title";
 
 export const EDITABLE_TEXT = "pt-editable-text";
 
@@ -168,7 +181,8 @@ export const TAG_REMOVABLE = "pt-tag-removable";
 export const TAG_REMOVE = "pt-tag-remove";
 
 export const TAG_INPUT = "pt-tag-input";
-export const TAG_INPUT_ICON = `${TAG_INPUT}-icon`;
+export const TAG_INPUT_ICON = "pt-tag-input-icon";
+export const TAG_INPUT_VALUES = "pt-tag-input-values";
 
 export const TOAST = "pt-toast";
 export const TOAST_CONTAINER = "pt-toast-container";
@@ -195,6 +209,18 @@ export const ICON = "pt-icon";
 export const ICON_STANDARD = "pt-icon-standard";
 export const ICON_LARGE = "pt-icon-large";
 
+/** Return CSS class for alignment. */
+export function alignmentClass(alignment: Alignment) {
+    switch (alignment) {
+        case Alignment.LEFT:
+            return ALIGN_LEFT;
+        case Alignment.RIGHT:
+            return ALIGN_RIGHT;
+        default:
+            return undefined;
+    }
+}
+
 /** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
 export function iconClass(iconName?: string) {
     if (iconName == null) {
@@ -203,6 +229,7 @@ export function iconClass(iconName?: string) {
     return iconName.indexOf("pt-icon-") === 0 ? iconName : `pt-icon-${iconName}`;
 }
 
+/** Return CSS class for intent. */
 export function intentClass(intent = Intent.NONE) {
     if (intent == null || intent === Intent.NONE) {
         return undefined;

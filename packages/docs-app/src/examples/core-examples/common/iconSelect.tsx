@@ -5,7 +5,7 @@
  */
 
 import { Button, Classes, MenuItem } from "@blueprintjs/core";
-import { IconClasses, IconName } from "@blueprintjs/icons";
+import { IconName, IconNames } from "@blueprintjs/icons";
 import { ItemRenderer, Select } from "@blueprintjs/select";
 import * as classNames from "classnames";
 import * as React from "react";
@@ -17,9 +17,7 @@ export interface IIconSelectProps {
 
 const NONE = "(none)";
 type IconType = IconName | typeof NONE;
-const ICON_NAMES = Object.keys(IconClasses).map<IconType>(
-    (name: keyof typeof IconClasses) => IconClasses[name].replace("pt-icon-", "") as IconName,
-);
+const ICON_NAMES = Object.keys(IconNames).map<IconType>((name: keyof typeof IconNames) => IconNames[name]);
 ICON_NAMES.push(NONE);
 
 const TypedSelect = Select.ofType<IconType>();
@@ -40,9 +38,9 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
                 >
                     <Button
                         className={Classes.TEXT_OVERFLOW_ELLIPSIS}
-                        iconName={iconName}
+                        icon={iconName}
                         text={iconName || NONE}
-                        rightIconName="caret-down"
+                        rightIcon="caret-down"
                     />
                 </TypedSelect>
             </label>
@@ -57,7 +55,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
             [Classes.ACTIVE]: modifiers.active,
             [Classes.INTENT_PRIMARY]: modifiers.active,
         });
-        return <MenuItem className={classes} iconName={icon} key={icon} onClick={handleClick} text={icon} />;
+        return <MenuItem className={classes} icon={icon} key={icon} onClick={handleClick} text={icon} />;
     };
 
     private filterIconName = (query: string, iconName: IconName | typeof NONE) => {

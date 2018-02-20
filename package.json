@@ -1,6 +1,6 @@
 {
   "name": "blueprintjs-monorepo",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-rc.2",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "workspaces": [
@@ -17,7 +17,7 @@
     "dev:all": "lerna run dev --parallel --scope '!@blueprintjs/{landing-app,table-dev-app}'",
     "dev:core": "lerna run dev --parallel --scope '@blueprintjs/{core,icons,docs-app}'",
     "dev:docs": "lerna run dev --parallel --scope '@blueprintjs/{docs-app,docs-theme}'",
-    "dev:datetime": "lerna run dev --parallel --scope '@blueprintjs/{core,datetime,docs-app}'",
+    "dev:datetime": "lerna run dev --parallel --scope '@blueprintjs/{core,datetime,timezone,docs-app}'",
     "dev:labs": "lerna run dev --parallel --scope '@blueprintjs/{core,labs,select,docs-app}'",
     "dev:landing": "lerna run dev --parallel --scope '@blueprintjs/{core,landing-app}'",
     "dev:select": "lerna run dev --parallel --scope '@blueprintjs/{core,select,docs-app}'",
@@ -40,6 +40,7 @@
     "@types/enzyme": "^3.1.6",
     "@types/enzyme-adapter-react-16": "^1.0.1",
     "@types/mocha": "^2.2.46",
+    "@types/prop-types": "^15.5.2",
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
     "@types/react-transition-group": "^2.0.6",

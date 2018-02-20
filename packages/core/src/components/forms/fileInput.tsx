@@ -51,7 +51,7 @@ export interface IFileInputProps extends React.AllHTMLAttributes<HTMLLabelElemen
      * The text to display.
      * @default "Choose file..."
      */
-    text?: string;
+    text?: React.ReactNode;
 }
 
 // TODO: write tests (ignoring for now to get a build passing quickly)
@@ -65,7 +65,7 @@ export class FileInput extends React.Component<IFileInputProps, {}> {
     };
 
     public render() {
-        const { className, fill, disabled, inputProps, large, text, ...htmlProps } = this.props;
+        const { className, fill, disabled, inputProps, onInputChange, large, text, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
             Classes.FILE_INPUT,

@@ -6,7 +6,7 @@
 
 import {
     AnchorButton,
-    Classes,
+    ButtonGroup,
     Hotkey,
     Hotkeys,
     HotkeysTarget,
@@ -18,7 +18,6 @@ import {
 } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 
-import * as classNames from "classnames";
 import * as React from "react";
 
 export interface INavbarActionsProps {
@@ -31,7 +30,7 @@ export interface INavbarActionsProps {
 export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> {
     public render() {
         return (
-            <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
+            <ButtonGroup minimal={true}>
                 <AnchorButton href="https://github.com/palantir/blueprint" target="_blank" text="GitHub" />
                 <Popover
                     content={this.renderReleasesMenu()}
@@ -39,14 +38,14 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
                     position={Position.BOTTOM_RIGHT}
                     usePortal={false}
                 >
-                    <AnchorButton rightIconName="caret-down" text="Releases" />
+                    <AnchorButton rightIcon="caret-down" text="Releases" />
                 </Popover>
                 <AnchorButton
                     className="docs-dark-switch"
                     onClick={this.handleDarkSwitchChange}
-                    iconName={this.props.useDarkTheme ? "flash" : "moon"}
+                    icon={this.props.useDarkTheme ? "flash" : "moon"}
                 />
-            </div>
+            </ButtonGroup>
         );
     }
 
@@ -87,7 +86,7 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
             <Menu>
                 <MenuItem
                     href="https://github.com/palantir/blueprint/releases"
-                    iconName="book"
+                    icon="book"
                     target="_blank"
                     text="Release notes"
                 />

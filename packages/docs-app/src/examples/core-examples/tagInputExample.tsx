@@ -58,9 +58,9 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
 
         const clearButton = (
             <Button
-                className={classNames(Classes.MINIMAL, Classes.SMALL)}
+                className={Classes.MINIMAL}
                 disabled={disabled}
-                iconName={values.length > 1 ? "cross" : "refresh"}
+                icon={values.length > 1 ? "cross" : "refresh"}
                 onClick={this.handleClear}
             />
         );
@@ -78,7 +78,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                 className={classes}
                 disabled={disabled}
                 rightElement={clearButton}
-                leftIconName="user"
+                leftIcon="user"
                 onChange={this.handleChange}
                 placeholder="Separate values with commas..."
                 tagProps={getTagProps}

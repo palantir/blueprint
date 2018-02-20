@@ -157,7 +157,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         const input = (
             <InputGroup
                 autoFocus={true}
-                leftIconName="search"
+                leftIcon="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
                 value={listProps.query}
@@ -221,7 +221,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     private maybeRenderInputClearButton() {
         return !this.isQueryEmpty() ? (
-            <Button className={CoreClasses.MINIMAL} iconName="cross" onClick={this.resetQuery} />
+            <Button className={CoreClasses.MINIMAL} icon="cross" onClick={this.resetQuery} />
         ) : (
             undefined
         );

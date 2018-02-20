@@ -8,15 +8,16 @@ import * as classNames from "classnames";
 import { isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
-import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
+import { Dialog, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
-import { ITagRendererMap } from "../tags";
+import { ITagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { Page } from "./page";
+import { ApiLink } from "./typescript/apiLink";
 
 export interface IDocumentationProps extends IProps {
     /**
@@ -62,8 +63,10 @@ export interface IDocumentationProps extends IProps {
 }
 
 export interface IDocumentationState {
+    activeApiMember: string;
     activePageId: string;
     activeSectionId: string;
+    isApiBrowserOpen: boolean;
 }
 
 @HotkeysTarget
@@ -87,8 +90,10 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public constructor(props: IDocumentationProps) {
         super(props);
         this.state = {
+            activeApiMember: "",
             activePageId: props.defaultPageId,
             activeSectionId: props.defaultPageId,
+            isApiBrowserOpen: false,
         };
 
         // build up static map of all references to their page, for navigation / routing
@@ -105,27 +110,28 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             getDocsData: () => docs,
             renderBlock: block => renderBlock(block, this.props.tagRenderers),
             renderType: hasTypescriptData(docs)
-                ? type => linkify(type, docs.typescript, name => <u key={name}>{name}</u>)
+                ? type => linkify(type, docs.typescript, name => <ApiLink key={name} name={name} />)
                 : type => type,
             renderViewSourceLinkText: Utils.isFunction(renderViewSourceLinkText)
                 ? renderViewSourceLinkText
                 : () => "View source",
+            showApiDocs: this.handleApiBrowserOpen,
         };
     }
 
     public render() {
-        const { activePageId, activeSectionId } = this.state;
+        const { activeApiMember, activePageId, activeSectionId, isApiBrowserOpen } = this.state;
         const { nav, pages } = this.props.docs;
         const examplesOnly = location.search === "?examples";
         return (
             <div className={classNames("docs-root", { "docs-examples-only": examplesOnly }, this.props.className)}>
                 <div className="docs-app">
                     <div className="pt-navbar docs-navbar docs-flex-row">
-                        <div className="pt-navbar-group">{this.props.navbarLeft}</div>
+                        <div className="pt-navbar-group pt-navbar-group-left">{this.props.navbarLeft}</div>
                         <div className="pt-navbar-group">
                             <Navigator items={nav} onNavigate={this.handleNavigation} />
                         </div>
-                        <div className="pt-navbar-group">{this.props.navbarRight}</div>
+                        <div className="pt-navbar-group pt-navbar-group-right">{this.props.navbarRight}</div>
                     </div>
                     <div className="docs-nav" ref={this.refHandlers.nav}>
                         <NavMenu
@@ -138,6 +144,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                     <article className="docs-content" ref={this.refHandlers.content} role="main">
                         <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
                     </article>
+                    <Dialog className="docs-api-dialog" isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
+                        <TypescriptExample tag="typescript" value={activeApiMember} />
+                    </Dialog>
                 </div>
             </div>
         );
@@ -250,6 +259,10 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         // updating hash triggers event listener which sets new state.
         location.hash = sections[newIndex];
     }
+
+    private handleApiBrowserOpen = (activeApiMember: string) =>
+        this.setState({ activeApiMember, isApiBrowserOpen: true });
+    private handleApiBrowserClose = () => this.setState({ isApiBrowserOpen: false });
 }
 
 /** Shorthand for element.querySelector() + cast to HTMLElement */
@@ -278,10 +291,13 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
  * Scroll the scrollParent such that the reference heading appears at the top of the viewport.
  */
 function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.scrollingElement) {
-    const headingAnchor = queryHTMLElement(container, `a[data-route="${reference}"]`);
-    if (headingAnchor == null || headingAnchor.parentElement == null) {
-        return;
-    }
-    const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
-    scrollParent.scrollTop = scrollOffset;
+    // without rAF, on initial load this would scroll to the bottom because the CSS had not been applied.
+    // with rAF, CSS is applied before updating scroll positions so all elements are in their correct places.
+    requestAnimationFrame(() => {
+        const headingAnchor = queryHTMLElement(container, `a[data-route="${reference}"]`);
+        if (headingAnchor != null && headingAnchor.parentElement != null) {
+            const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
+            scrollParent.scrollTop = scrollOffset;
+        }
+    });
 }

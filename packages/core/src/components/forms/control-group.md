@@ -8,7 +8,7 @@ Note that `.pt-control-group` does not cascade any modifiers to its children. Fo
 child must be marked individually as `.pt-large` for uniform large appearance.
 
 <div class="pt-callout pt-intent-success pt-icon-comparison">
-    <h5>Control group vs. input group</h5>
+    <h4 class="pt-callout-title">Control group vs. input group</h4>
     <p>Both components group multiple elements into a single unit, but their usage patterns are
     different.</p>
     <p>Think of `.pt-control-group` as a parent with multiple children, each of them a
@@ -42,13 +42,13 @@ will all have the same width as the widest control.
 
 @## JavaScript API
 
-The `ControlGroup` component is available in the __@blueprintjs/core__ package. Make sure to review [general usage docs for JS components](#blueprint.usage).
+The `ControlGroup` component is available in the **@blueprintjs/core** package. Make sure to review [getting started docs for installation info](#blueprint/getting-started).
 
 This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
 
 ```tsx
 <ControlGroup fill={true} vertical={false}>
-    <Button iconName="filter">Filter</Button>
+    <Button icon="filter">Filter</Button>
     <InputGroup placeholder="Find filters..." />
 </ControlGroup>
 ```

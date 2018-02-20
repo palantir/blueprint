@@ -8,7 +8,7 @@ directly; this documentation is provided simply for reference.
 @## JavaScript API
 
 The `Portal` component is available in the __@blueprintjs/core__ package. Make sure to review the
-[general usage docs for JS components](#blueprint.usage).
+[getting started docs for installation info](#blueprint/getting-started).
 
 The `Portal` component functions like a declarative `appendChild()`, or jQuery's `$.fn.appendTo()`.
 The children of a `Portal` component are appended to the `<body>` element.
@@ -17,7 +17,7 @@ The children of a `Portal` component are appended to the `<body>` element.
 application.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>A note about responsive layouts</h5>
+    <h4 class="pt-callout-title">A note about responsive layouts</h4>
     For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
     may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
     apply `position: absolute` to the `<body>` tag.

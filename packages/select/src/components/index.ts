@@ -5,7 +5,6 @@
  */
 
 export * from "./omnibar/omnibar";
-export * from "./query-list/itemRenderer";
 export * from "./query-list/queryList";
 export * from "./select/dropdownRenderer";
 export * from "./select/multiSelect";

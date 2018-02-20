@@ -5,7 +5,7 @@
 
 import * as React from "react";
 
-import { AnchorButton, Classes, Navbar, Switch } from "@blueprintjs/core";
+import { Alignment, AnchorButton, Classes, Navbar, Switch } from "@blueprintjs/core";
 
 export interface INavProps {
     selected?: string;
@@ -20,10 +20,10 @@ export class Nav extends React.Component<INavProps, {}> {
 
         return (
             <Navbar className="pt-dark pt-fixed-top">
-                <Navbar.Group align="left">
+                <Navbar.Group align={Alignment.LEFT}>
                     <Navbar.Heading>Blueprint Table</Navbar.Heading>
                 </Navbar.Group>
-                <Navbar.Group align="right">
+                <Navbar.Group align={Alignment.RIGHT}>
                     <AnchorButton className={Classes.MINIMAL} href="index.html" text="Home" />
                     <AnchorButton className={Classes.MINIMAL} href="features.html" text="Features (Legacy)" />
                     <Navbar.Divider />

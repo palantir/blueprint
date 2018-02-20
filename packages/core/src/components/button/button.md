@@ -7,13 +7,13 @@ Buttons trigger actions when clicked.
 Use the `pt-button` class to access button styles. You should implement buttons using the
 `<button>` or `<a>` tags rather than `<div>` for the purposes of HTML accessibility and semantics.
 
-- Make sure to include `type="button"` on `<button>` tags (use `type="submit"` when used in a
-`<form>`) and `role="button"` on `<a>` tags for accessibility.
-- Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
-focusable by default.
-- For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
-user from focusing them by pressing <kbd class="pt-key">tab</kbd> on the keyboard.
-- Note that `<a>` tags do not respond to the `:disabled` attribute; use `.pt-disabled` instead.
+* Make sure to include `type="button"` on `<button>` tags (use `type="submit"` when used in a
+  `<form>`) and `role="button"` on `<a>` tags for accessibility.
+* Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
+  focusable by default.
+* For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
+  user from focusing them by pressing <kbd class="pt-key">tab</kbd> on the keyboard.
+* Note that `<a>` tags do not respond to the `:disabled` attribute; use `.pt-disabled` instead.
 
 @css pt-button
 
@@ -44,8 +44,8 @@ except for `.pt-fill` (due to lack of visual affordances).
 
 @## JavaScript API
 
-The `Button` and `AnchorButton` components are available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+The `Button` and `AnchorButton` components are available in the **@blueprintjs/core** package.
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 Button components render buttons with Blueprint classes and attributes.
 See the [Buttons CSS docs](#core/components/button.css-api) for styling options.
@@ -56,7 +56,7 @@ Blueprint class name. If you specify other attributes that the component provide
 for an `<AnchorButton>`, you'll overide the default value.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-    <h5>Interactions with disabled buttons</h5>
+    <h4 class="pt-callout-title">Interactions with disabled buttons</h4>
     Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
     This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
     the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,
@@ -78,7 +78,7 @@ for an `<AnchorButton>`, you'll overide the default value.
 @### Button
 
 ```jsx
-<Button iconName="refresh" />
+<Button icon="refresh" />
 // renders:
 <button class="pt-button pt-icon-refresh" type="button"></button>
 ```

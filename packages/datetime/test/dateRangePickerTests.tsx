@@ -336,6 +336,21 @@ describe("<DateRangePicker>", () => {
             assert.equal(dateRangePicker.state.leftView.getMonth(), Months.APRIL);
         });
 
+        it("is (endDate - 1 month) if only endDate is set", () => {
+            const value = [null, new Date(2007, Months.APRIL, 4)] as DateRange;
+            renderDateRangePicker({ value });
+            assert.equal(dateRangePicker.state.leftView.getYear(), 2007);
+            assert.equal(dateRangePicker.state.leftView.getMonth(), Months.MARCH);
+        });
+
+        it("is endDate if only endDate is set and endDate === minDate month", () => {
+            const minDate = new Date(2007, Months.APRIL);
+            const value = [null, new Date(2007, Months.APRIL, 4)] as DateRange;
+            renderDateRangePicker({ minDate, value });
+            assert.equal(dateRangePicker.state.leftView.getYear(), 2007);
+            assert.equal(dateRangePicker.state.leftView.getMonth(), Months.APRIL);
+        });
+
         it("is today if only maxDate/minDate set and today is in date range", () => {
             const maxDate = new Date(2020, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
@@ -545,6 +560,13 @@ describe("<DateRangePicker>", () => {
             const endDate = new Date(2017, Months.JULY, 5);
             renderDateRangePicker({ contiguousCalendarMonths: false, value: [startDate, endDate] });
             assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JULY);
+        });
+
+        it("right calendar shows the month immediately after the left view if startDate === endDate month", () => {
+            const startDate = new Date(2017, Months.MAY, 5);
+            const endDate = new Date(2017, Months.MAY, 15);
+            renderDateRangePicker({ contiguousCalendarMonths: false, value: [startDate, endDate] });
+            assert.equal(dateRangePicker.state.rightView.getMonth(), Months.JUNE);
         });
     });
 

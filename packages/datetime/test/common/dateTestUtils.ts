@@ -7,16 +7,16 @@
 import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
 import * as Classes from "../../src/common/classes";
-import { padWithZeroes } from "../../src/common/utils";
 
 /**
- * Converts a date to a "YYYY-MM-DD" string without relying on moment.js.
+ * Converts a `Date` to a "D/M/YYYY" string.
+ * Do not use `YYYY-MM-DD` format in tests as JS Dates interpret that as UTC and the parsed Date can be a day before intended.
  */
-export function toHyphenatedDateString(date: Date) {
+export function toDateString(date: Date) {
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // 0-indexed => 1-indexed
     const day = date.getDate();
-    return [year.toString(), padWithZeroes(month.toString(), 2), padWithZeroes(day.toString(), 2)].join("-");
+    return [month, day, year].join("/");
 }
 
 /**
