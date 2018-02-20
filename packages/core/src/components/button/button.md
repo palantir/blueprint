@@ -56,7 +56,7 @@ Blueprint class name. If you specify other attributes that the component provide
 for an `<AnchorButton>`, you'll overide the default value.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-    <h4>Interactions with disabled buttons</h4>
+    <h4 class="pt-callout-title">Interactions with disabled buttons</h4>
     Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
     This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
     the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,

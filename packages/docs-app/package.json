@@ -19,7 +19,7 @@
   "dependencies": {
     "@blueprintjs/core": "^2.0.0-rc.2",
     "@blueprintjs/datetime": "^2.0.0-rc.2",
-    "@blueprintjs/docs-data": "^2.0.0-rc.1",
+    "@blueprintjs/docs-data": "^2.0.0-rc.2",
     "@blueprintjs/docs-theme": "^2.0.0-rc.2",
     "@blueprintjs/icons": "^2.0.0-rc.2",
     "@blueprintjs/labs": "^0.15.3",

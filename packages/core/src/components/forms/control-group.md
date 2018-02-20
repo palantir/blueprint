@@ -8,7 +8,7 @@ Note that `.pt-control-group` does not cascade any modifiers to its children. Fo
 child must be marked individually as `.pt-large` for uniform large appearance.
 
 <div class="pt-callout pt-intent-success pt-icon-comparison">
-    <h4>Control group vs. input group</h4>
+    <h4 class="pt-callout-title">Control group vs. input group</h4>
     <p>Both components group multiple elements into a single unit, but their usage patterns are
     different.</p>
     <p>Think of `.pt-control-group` as a parent with multiple children, each of them a

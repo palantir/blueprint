@@ -26,7 +26,7 @@ Moment Timezone uses a similar heuristic for
 timezone metadata.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h4>Local timezone detection</h4>
+    <h4 class="pt-callout-title">Local timezone detection</h4>
     We detect the local timezone when the `showLocalTimezone` prop is used.
     We cannot guarantee that we'll get the correct local timezone in all browsers.
     In supported browsers, the [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.

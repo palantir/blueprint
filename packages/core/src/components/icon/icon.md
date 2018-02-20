@@ -5,7 +5,7 @@
 </div>
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4>SVG icons in 2.0</h4>
+    <h4 class="pt-callout-title">SVG icons in 2.0</h4>
     Blueprint 2.0 introduced SVG icon support and moved icon resources to a separate __@blueprintjs/icons__ package.
     The `Icon` component now renders SVG paths and the icon classes are no longer used by any Blueprint React component.
     Icon font support has been preserved but should be considered a legacy feature that will be removed in a
@@ -61,7 +61,7 @@ import { Icon, IconNames, Intent } from "@blueprintjs/core";
 @## CSS API
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h4>Icon fonts are legacy in 2.0</h4>
+    <h4 class="pt-callout-title">Icon fonts are legacy in 2.0</h4>
     Blueprint's icon fonts should be considered a legacy feature and will be removed in a future major version.
     The SVGs rendered by the React component do not suffer from the blurriness of icon fonts, and browser
     support is equivalent.
@@ -83,7 +83,7 @@ Icon classes also support the four `.pt-intent-*` modifiers to color the image.
 ```
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4>Non-standard sizes</h4>
+    <h4 class="pt-callout-title">Non-standard sizes</h4>
     Generally, font icons should only be used at either 16px or 20px. However, if a non-standard size is
     necessary, set a `font-size` that is whole multiple of 16 or 20 with the relevant size class.
     You can instead use the class `pt-icon` to make the icon inherit its size from surrounding text.
