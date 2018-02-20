@@ -58,48 +58,54 @@ describe("<DateInput>", () => {
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
-    // HACKHACK: skiped test, see https://github.com/palantir/blueprint/issues/2155
-    it.skip("Popover closes when ESC key pressed", () => {
+    it("Popover closes when ESC key pressed", () => {
         const wrapper = mount(<DateInput {...DATE_FORMAT} />);
-        const input = wrapper.find("input");
-        input.simulate("focus");
-        const popover = wrapper.find(Popover);
-        assert.isTrue(popover.prop("isOpen"));
-        input.simulate("keydown", { which: Keys.ESCAPE });
-        assert.isFalse(popover.prop("isOpen"));
+        wrapper.setState({ isOpen: true });
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        wrapper.find("input").simulate("keydown", { which: Keys.ESCAPE });
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
-    // HACKHACK: skiped test, see https://github.com/palantir/blueprint/issues/2155
-    it.skip("Popover closes when last tabbable component is blurred", () => {
+    it("Popover closes when first day of the month is blurred", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
-        wrapper.setState({ isOpen: true });
         wrapper
             .find("input")
             .simulate("focus")
             .simulate("blur");
-        const popover = wrapper.find(Popover);
-        // We need to use classname selector since enzyme doesn't
-        // support tabindex selector
-        const tabbables = popover.find(".DayPicker-Day--outside");
-        const lastTabbable = tabbables.last().getDOMNode() as HTMLElement;
-        lastTabbable.dispatchEvent(createFocusEvent("blur"));
-        assert.isFalse(popover.prop("isOpen"));
+        // First day of month is the only .DayPicker-Day with tabIndex == 0
+        const tabbables = wrapper
+            .find(Popover)
+            .find(".DayPicker-Day")
+            .filter({ tabIndex: 0 });
+        const firstDay = tabbables.getDOMNode() as HTMLElement;
+        firstDay.dispatchEvent(createFocusEvent("blur"));
+        // manually updating wrapper is required with enzyme 3
+        // ref: https://github.com/airbnb/enzyme/blob/master/docs/guides/migration-from-2-to-3.md#for-mount-updates-are-sometimes-required-when-they-werent-before
+        wrapper.update();
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
-    it("Popover should not close if focus moves to previous date", () => {
+    it("Popover should not close if focus moves to previous day", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
-        wrapper.setState({ isOpen: true });
         wrapper
             .find("input")
             .simulate("focus")
             .simulate("blur");
-        const tabbables = wrapper.find(".DayPicker-Day--outside");
-        const lastTabbable = tabbables.last().getDOMNode() as HTMLElement;
-        const relatedTarget = tabbables.at(tabbables.length - 1).getDOMNode();
+        const tabbables = wrapper
+            .find(Popover)
+            .find(".DayPicker-Day")
+            .filter({ tabIndex: 0 });
+        const firstDay = tabbables.getDOMNode() as HTMLElement;
+        const lastDayOfPrevMonth = wrapper
+            .find(Popover)
+            .find(".DayPicker-Body > .DayPicker-Week .DayPicker-Day--outside")
+            .last();
+        const relatedTarget = lastDayOfPrevMonth.getDOMNode();
         const event = createFocusEvent("blur", relatedTarget);
-        lastTabbable.dispatchEvent(event);
+        firstDay.dispatchEvent(event);
+        wrapper.update();
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
