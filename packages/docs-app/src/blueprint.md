@@ -25,3 +25,4 @@ and our [development practices](https://github.com/palantir/blueprint/wiki/Devel
 
 @page getting-started
 @page reading-the-docs
+@page whats-new
