@@ -206,23 +206,27 @@ export function getDateNextMonth(date: Date): Date {
     }
 }
 
-export function convert12HourMeridiem(hour: number, toAm: boolean): number {
-    if (toAm && hour == 12) {
-        hour = 0;
-    } else if (!toAm) {
-        hour += 12;
-        if (hour == 24) {
-            hour = 0;
-        }
+export function convert24HourMeridiem(hour: number, toAm: boolean): number {
+    if (hour < 0 || hour > 23) {
+        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
     }
-    return hour;
+    if (toAm) {
+        return hour % 12;
+    }
+    return hour % 12 + 12;
 }
 
 export function getIsPmFrom24Hour(hour: number): boolean {
+    if (hour < 0 || hour > 23) {
+        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
+    }
     return hour >= 12;
 }
 
 export function get12HourFrom24Hour(hour: number): number {
+    if (hour < 0 || hour > 23) {
+        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
+    }
     hour = hour % 12;
     if (hour === 0) {
         hour = 12;
@@ -231,6 +235,9 @@ export function get12HourFrom24Hour(hour: number): number {
 }
 
 export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
+    if (hour < 1 || hour > 12) {
+        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
+    }
     if (isPm) {
         hour = hour + 12;
         if (hour === 24) {
