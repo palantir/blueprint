@@ -2126,9 +2126,9 @@ dns-txt@^2.0.2:
   dependencies:
     buffer-indexof "^1.0.0"
 
-documentalist@^1.0.0-beta.4:
-  version "1.0.0-beta.4"
-  resolved "https://registry.yarnpkg.com/documentalist/-/documentalist-1.0.0-beta.4.tgz#3b2204d7fc74b38daa2664667155ab105fb8d791"
+documentalist@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/documentalist/-/documentalist-1.0.0.tgz#920fdcc9a8b20e179b201912811e8f4f9ae72201"
   dependencies:
     "@types/kss" "^3.0.0"
     glob "^7.1.1"
