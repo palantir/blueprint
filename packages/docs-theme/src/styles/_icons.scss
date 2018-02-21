@@ -1,0 +1,19 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+// HACKHACK: copied from https://github.com/palantir/blueprint/blob/develop/packages/icons/src/_icons.scss when porting to 1.x
+@mixin pt-icon-colors() {
+  color: $pt-icon-color;
+
+  &:hover {
+    color: $pt-icon-color-hover;
+  }
+
+  .pt-dark & {
+    color: $pt-dark-icon-color;
+
+    &:hover {
+      color: $pt-dark-icon-color-hover;
+    }
+  }
+}

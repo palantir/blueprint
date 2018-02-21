@@ -18,7 +18,7 @@ import {
     Switch,
     Toaster,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
 
 type IToastDemo = IToastProps & { button: string };
 

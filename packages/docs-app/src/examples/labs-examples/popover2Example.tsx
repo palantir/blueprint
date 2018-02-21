@@ -21,7 +21,7 @@ import {
     Slider,
     Switch,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs-theme";
 import { Popover2 } from "@blueprintjs/labs";
 
 const INTERACTION_KINDS = [

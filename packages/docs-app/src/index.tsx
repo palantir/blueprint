@@ -8,8 +8,8 @@ import "dom4";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { createDefaultRenderers, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs";
 import { docsData as docs, IPackageInfo, releasesData, versionsData } from "@blueprintjs/docs-data";
+import { createDefaultRenderers, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs-theme";
 
 import { BlueprintDocs } from "./components/blueprintDocs";
 import * as ReactDocs from "./tags/reactDocs";

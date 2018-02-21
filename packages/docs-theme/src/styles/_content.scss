@@ -1,0 +1,176 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "icons";
+@import "variables";
+
+$heading-margin: $pt-grid-size * 4;
+$link-icon-padding: $pt-grid-size;
+
+$class-modifier-color: $rose4;
+$attribute-modifier-color: $violet5;
+
+$example-padding: $content-padding;
+$example-background-color: $content-background-color;
+$dark-example-background-color: $dark-content-background-color;
+
+// title of a section
+.docs-title {
+  position: relative;
+  margin: $heading-margin 0 ($heading-margin / 2);
+
+  // first heading (the h1 at the top) needs smaller top margin to avoid extra scrolling
+  .depth-1 > & {
+    margin-top: $content-padding;
+  }
+}
+
+// this element inside the <h*> tag creates extra space above when it is targeted by the location hash
+// but it doesn't change the bounds of the element or interfere with interactions. (thanks React docs site!)
+// so the heading will appear _below_ the navbar (since the navbar covers the top 50px of window).
+.docs-anchor {
+  position: absolute;
+  margin-top: -$pt-navbar-height - $content-padding;
+}
+
+.docs-anchor-link {
+  @include pt-icon-colors();
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-100%, -50%);
+  opacity: 0;
+  padding: $link-icon-padding;
+  line-height: $pt-icon-size-standard;
+
+  .pt-icon-standard {
+    vertical-align: top;
+  }
+
+  &:focus,
+  .docs-title:hover & {
+    opacity: 1;
+  }
+}
+
+.view-example-source {
+  display: inline-block;
+  margin-bottom: $pt-grid-size * 2;
+}
+
+// modifiers table
+.docs-modifiers {
+  margin-top: $heading-margin;
+  margin-bottom: $heading-margin / 2;
+
+  th:first-child,
+  td:first-child {
+    padding-left: 0;
+  }
+
+  tr:first-child th {
+    padding-top: 0;
+  }
+
+  tr:last-child td {
+    padding-bottom: 0;
+  }
+}
+
+// full-bleed wrapper for example
+.docs-example-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  position: relative;
+  margin-top: $content-padding;
+
+  &:empty {
+    display: none;
+  }
+
+  .pt-dark & {
+    border-color: $pt-dark-divider-black;
+    background-color: $dark-example-background-color;
+  }
+}
+
+// example itself inside the wrapper
+.docs-example {
+  display: inline-block;
+  flex-basis: 100%;
+
+  margin-bottom: $example-padding;
+  width: 100%;
+  max-width: 100%;
+  vertical-align: top;
+
+  > code {
+    margin-bottom: $pt-grid-size;
+  }
+
+  &[data-modifier="default"]:last-child > code {
+    display: none;
+  }
+}
+
+// modifier labels
+.docs-modifiers code,
+.docs-example > code {
+  display: inline-block;
+  line-height: 1.4;
+  white-space: nowrap;
+
+  &:empty {
+    display: none;
+  }
+}
+
+// color the modifier label depending on modifier type
+[data-modifier="default"] > code {
+  color: $gray3;
+}
+
+[data-modifier^=":"] > code {
+  color: $attribute-modifier-color;
+}
+
+[data-modifier^="."] > code {
+  color: $class-modifier-color;
+}
+
+.docs-markup .editor {
+  margin: 0;
+}
+
+// additions to the syntax theme
+.editor {
+  overflow: auto;
+  color: inherit;
+
+  .line {
+    padding-right: $pt-grid-size * 2;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  .support.constant.handlebars {
+    // hide the {{ }} cuz who cares
+    display: none;
+
+    // color for {{:modifier}} to match modifier table
+    + span {
+      border-radius: $pt-border-radius;
+      background: rgba($attribute-modifier-color, 0.15);
+      padding: 0 3px;
+      color: $attribute-modifier-color;
+    }
+
+    // adjust colors for {{.modifier}}
+    + .variable {
+      background: rgba($class-modifier-color, 0.15);
+      color: $class-modifier-color;
+    }
+  }
+}
