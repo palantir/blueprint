@@ -7,8 +7,8 @@
     "packages/*"
   ],
   "scripts": {
-    "bundle-apps": "lerna run --parallel bundle",
-    "compile-libs": "lerna run compile",
+    "bundle": "lerna run --parallel bundle",
+    "compile": "lerna run compile",
     "clean": "lerna run --parallel clean",
     "clean-docs": "rm -rf docs/* && cp -rf docs-static/* docs/.",
     "copy-docs-app": "mkdir -p docs/docs/ && cp -rf packages/docs-app/dist/* docs/docs/.",
@@ -28,7 +28,7 @@
     "lint": "lerna run --parallel lint",
     "lint-fix": "lerna run --parallel lint-fix",
     "test": "lerna run --parallel test",
-    "verify": "npm-run-all -s compile-libs dist:libs dist:apps -p test lint",
+    "verify": "npm-run-all -s compile dist:libs dist:apps -p test lint",
     "serve": "http-server docs"
   },
   "dependencies": {
