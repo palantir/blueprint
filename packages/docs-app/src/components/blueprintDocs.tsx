@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
+import { Intent, Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 import { Banner, Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
 import { ITsDocBase } from "documentalist/dist/client";
@@ -50,7 +50,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         );
         return (
             <div>
-                <Banner href="http://blueprintjs.com/docs/v1/">
+                <Banner href="http://blueprintjs.com/docs/v2/" intent={Intent.SUCCESS}>
                     A new major version of Blueprint is under development. Click here to go to the v2 docs!
                 </Banner>
                 <Documentation
