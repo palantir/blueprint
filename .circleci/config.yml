@@ -35,7 +35,7 @@ jobs:
           keys:
             - v1-dependency-cache-{{ checksum "yarn.lock" }}
             - v1-dependency-cache-
-      - run: yarn compile-libs
+      - run: yarn compile
       - persist_to_workspace:
           root: '.'
           paths:
