@@ -6,9 +6,13 @@
 
 // Specific Example Customizations
 
-.docs-react-example {
+.docs-example-wrapper {
   .pt-slider:not(:last-child) {
     margin-bottom: $options-margin;
+  }
+
+  .pt-callout {
+    margin: 0;
   }
 }
 

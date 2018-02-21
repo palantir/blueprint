@@ -8,7 +8,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Switch, Tab2, Tabs2 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface ITabs2ExampleState {
     activeTabId?: string;

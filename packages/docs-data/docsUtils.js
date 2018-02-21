@@ -48,4 +48,3 @@ module.exports = {
 
     markedRenderer,
 };
-

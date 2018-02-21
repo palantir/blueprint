@@ -120,7 +120,7 @@ const CELL_CONTENT_GENERATORS = {
     },
 };
 
-// TODO: Pull these from @blueprintjs/docs
+// TODO: Pull these from @blueprintjs/docs-theme
 
 /** Event handler that exposes the target element's value as a boolean. */
 function handleBooleanChange(handler: (checked: boolean) => void) {

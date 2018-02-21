@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IBaseExampleProps, IExampleMap } from "@blueprintjs/docs";
+import { IBaseExampleProps, IExampleMap } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 // tslint:disable no-submodule-imports

@@ -46,9 +46,8 @@ module.exports = {
         },
         "no-submodule-imports": {
             options: [
-                "documentalist",
-                "lodash",
-                "react-dom",
+                "documentalist/dist/client",
+                "react-dom/test-utils",
                 "@blueprintjs/table/src"
             ]
         },
