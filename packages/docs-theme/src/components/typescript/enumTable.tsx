@@ -20,7 +20,7 @@ export interface IEnumTableProps {
 
 export class EnumTable extends React.PureComponent<IEnumTableProps> {
     public static contextTypes = DocumentationContextTypes;
-    public static displayName = "Docs2.EnumTable";
+    public static displayName = "Docs.EnumTable";
 
     public context: IDocumentationContext;
 
@@ -28,7 +28,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
         const { data } = this.props;
         const { renderBlock } = this.context;
         return (
-            <div className="docs-modifiers pt-running-text-small">
+            <div className="docs-modifiers">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
                 <ModifierTable title="Members">{data.members.map(this.renderPropRow)}</ModifierTable>

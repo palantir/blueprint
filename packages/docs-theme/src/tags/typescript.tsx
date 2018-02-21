@@ -37,4 +37,4 @@ export const TypescriptExample: React.SFC<ITag> = ({ value }, { getDocsData }: I
     }
 };
 TypescriptExample.contextTypes = DocumentationContextTypes;
-TypescriptExample.displayName = "Docs2.TypescriptExample";
+TypescriptExample.displayName = "Docs.TypescriptExample";

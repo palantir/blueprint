@@ -32,7 +32,7 @@ const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);
 const reactExample = new ReactExampleTagRenderer(reactExamples);
 
 const tagRenderers = {
-    ...createDefaultRenderers(docs),
+    ...createDefaultRenderers(),
     reactDocs: reactDocs.render,
     reactExample: reactExample.render,
 };

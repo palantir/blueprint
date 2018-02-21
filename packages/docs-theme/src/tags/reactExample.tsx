@@ -32,7 +32,7 @@ export const ReactExample: React.SFC<IExampleProps> = props => (
         </a>
     </div>
 );
-ReactExample.displayName = "Docs2.ReactExample";
+ReactExample.displayName = "Docs.ReactExample";
 
 export class ReactExampleTagRenderer {
     constructor(private examples: IExampleMap) {}

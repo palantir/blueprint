@@ -22,7 +22,7 @@ export interface IInterfaceTableProps {
 
 export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
     public static contextTypes = DocumentationContextTypes;
-    public static displayName = "Docs2.InterfaceTable";
+    public static displayName = "Docs.InterfaceTable";
 
     public context: IDocumentationContext;
 
@@ -33,7 +33,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
             .sort((a, b) => a.name.localeCompare(b.name))
             .map(this.renderPropRow);
         return (
-            <div className="docs-modifiers pt-running-text-small">
+            <div className="docs-modifiers">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
                 <ModifierTable title={title}>

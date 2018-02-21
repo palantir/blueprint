@@ -5,8 +5,9 @@
  */
 
 import { Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
-import { Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
 import { IPackageInfo } from "@blueprintjs/docs-data";
+import { Banner, Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
+import { ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
 import { NavbarActions } from "./navbarActions";
 
@@ -49,15 +50,16 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         );
         return (
             <div>
-                <a className="docs-banner" target="_blank" href="http://blueprintjs.com/docs/v2/">
+                <Banner href="http://blueprintjs.com/docs/v1/">
                     A new major version of Blueprint is under development. Click here to go to the v2 docs!
-                </a>
+                </Banner>
                 <Documentation
                     {...this.props}
                     className={this.state.themeName}
                     navbarLeft={navbarLeft}
                     navbarRight={navbarRight}
                     onComponentUpdate={this.handleComponentUpdate}
+                    renderViewSourceLinkText={renderViewSourceLinkText}
                 />
             </div>
         );
@@ -103,4 +105,8 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         setHotkeysDialogProps({ className: this.state.themeName });
         this.setState({ themeName });
     };
+}
+
+function renderViewSourceLinkText(entry: ITsDocBase) {
+    return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
 }

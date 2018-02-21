@@ -10,7 +10,7 @@ import { DocumentationContextTypes, IDocumentationContext } from "../../common/c
 
 export class ApiHeader extends React.PureComponent<ITsDocBase> {
     public static contextTypes = DocumentationContextTypes;
-    public static displayName = "Docs2.ApiHeader";
+    public static displayName = "Docs.ApiHeader";
 
     public context: IDocumentationContext;
 

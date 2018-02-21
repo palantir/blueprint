@@ -19,4 +19,4 @@ export const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>
         </a>,
         value,
     );
-Heading.displayName = "Docs2.Heading";
+Heading.displayName = "Docs.Heading";
