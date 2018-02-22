@@ -61,7 +61,7 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput />);
 
             const incrementButton = component.find(Button).first();
-            incrementButton.simulate("click");
+            incrementButton.simulate("mousedown");
 
             const value = component.state().value;
             expect(value).to.equal("1");
@@ -186,7 +186,7 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
             const incrementButton = component.find(Button).first();
-            incrementButton.simulate("click");
+            incrementButton.simulate("mousedown");
 
             expect(onValueChangeSpy.calledOnce).to.be.true;
             expect(onValueChangeSpy.firstCall.args).to.deep.equal([1, "1"]);
@@ -200,13 +200,13 @@ describe("<NumericInput>", () => {
             const decrementButton = component.find(Button).last();
 
             // incrementing from 0
-            incrementButton.simulate("click");
+            incrementButton.simulate("mousedown");
             expect(onButtonClickSpy.calledOnce).to.be.true;
             expect(onButtonClickSpy.firstCall.args).to.deep.equal([1, "1"]);
             onButtonClickSpy.resetHistory();
 
             // decrementing from 1 now
-            decrementButton.simulate("click");
+            decrementButton.simulate("mousedown");
             expect(onButtonClickSpy.calledOnce).to.be.true;
             expect(onButtonClickSpy.firstCall.args).to.deep.equal([0, "0"]);
         });
