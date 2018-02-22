@@ -5,7 +5,7 @@
   "types": "src/index.d.ts",
   "private": true,
   "scripts": {
-    "compile": "./compile-docs-data",
+    "compile": "node ./compile-docs-data",
     "test": "exit 0"
   },
   "dependencies": {
