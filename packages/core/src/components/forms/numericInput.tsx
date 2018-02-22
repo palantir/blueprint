@@ -167,11 +167,15 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
      */
     private static FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
 
+    private static CONTINUOUS_CHANGE_DELAY = 300;
+    private static CONTINUOUS_CHANGE_INTERVAL = 50;
+
     private inputElement: HTMLInputElement;
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
     private didPasteEventJustOccur = false;
     private shouldSelectAfterUpdate = false;
+    private delta = 0;
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
         super(props, context);
@@ -260,12 +264,16 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             const incrementButton = this.renderButton(
                 NumericInput.INCREMENT_KEY,
                 NumericInput.INCREMENT_ICON_NAME,
-                this.handleIncrementButtonClick,
+                this.handleIncrementButtonMouseDown,
+                this.handleIncrementButtonKeyDown,
+                this.handleIncrementButtonKeyUp,
             );
             const decrementButton = this.renderButton(
                 NumericInput.DECREMENT_KEY,
                 NumericInput.DECREMENT_ICON_NAME,
-                this.handleDecrementButtonClick,
+                this.handleDecrementButtonMouseDown,
+                this.handleDecrementButtonKeyDown,
+                this.handleDecrementButtonKeyUp,
             );
 
             const buttonGroup = (
@@ -324,13 +332,13 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     // Render Helpers
     // ==============
 
-    private renderButton(key: string, iconName: IconName, onClick: React.MouseEventHandler<HTMLElement>) {
-        // respond explicitly on key *up*, because onKeyDown triggers multiple
-        // times and doesn't always receive modifier-key flags, leading to an
-        // unintuitive/out-of-control incrementing experience.
-        const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-            this.handleButtonKeyUp(e, onClick);
-        };
+    private renderButton(
+        key: string,
+        iconName: IconName,
+        onMouseDown: React.MouseEventHandler<HTMLElement>,
+        onKeyDown: React.KeyboardEventHandler<HTMLElement>,
+        onKeyUp: React.KeyboardEventHandler<HTMLElement>,
+    ) {
         return (
             <Button
                 disabled={this.props.disabled || this.props.readOnly}
@@ -338,8 +346,9 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
                 intent={this.props.intent}
                 key={key}
                 onBlur={this.handleButtonBlur}
-                onClick={onClick}
+                onMouseDown={onMouseDown}
                 onFocus={this.handleButtonFocus}
+                onKeyDown={onKeyDown}
                 onKeyUp={onKeyUp}
             />
         );
@@ -353,15 +362,58 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     // ===================
 
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        const delta = this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
-        const nextValue = this.incrementValue(delta);
-        this.invokeValueCallback(nextValue, this.props.onButtonClick);
+        this.handleButtonClick(e, IncrementDirection.DOWN, false);
+    };
+
+    private handleDecrementButtonMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.handleButtonClick(e, IncrementDirection.DOWN, true);
+    };
+
+    private handleDecrementButtonKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.handleButtonKeyDown(e, IncrementDirection.DOWN);
+    };
+
+    private handleDecrementButtonKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.handleButtonKeyUp(e, IncrementDirection.DOWN, this.handleDecrementButtonClick);
     };
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        const delta = this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
+        this.handleButtonClick(e, IncrementDirection.UP, false);
+    };
+
+    private handleIncrementButtonMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.handleButtonClick(e, IncrementDirection.UP, true);
+    };
+
+    private handleIncrementButtonKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.handleButtonKeyDown(e, IncrementDirection.UP);
+    };
+
+    private handleIncrementButtonKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.handleButtonKeyUp(e, IncrementDirection.UP, this.handleIncrementButtonClick);
+    };
+
+    private handleButtonClick = (
+        e: React.MouseEvent<HTMLInputElement>,
+        direction: IncrementDirection,
+        continuous = false,
+    ) => {
+        const delta = (this.delta = this.getIncrementDelta(direction, e.shiftKey, e.altKey));
         const nextValue = this.incrementValue(delta);
         this.invokeValueCallback(nextValue, this.props.onButtonClick);
+        if (continuous) {
+            // The button's onMouseUp event handler doesn't fire if the user
+            // releases outside of the button, so we need to watch all the way
+            // from the top.
+            document.addEventListener("mouseup", this.handleMouseUp);
+            this.setTimeout(this.handleContinuousChange, NumericInput.CONTINUOUS_CHANGE_DELAY);
+        }
+    };
+
+    private handleMouseUp = () => {
+        this.delta = 0;
+        this.clearTimeouts();
+        document.removeEventListener("mouseup", this.handleMouseUp);
     };
 
     private handleButtonFocus = () => {
@@ -372,10 +424,19 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         this.setState({ isButtonGroupFocused: false });
     };
 
+    private handleButtonKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, direction: IncrementDirection) => {
+        this.delta = this.getIncrementDelta(direction, e.shiftKey, e.altKey);
+    };
+
     private handleButtonKeyUp = (
         e: React.KeyboardEvent<HTMLInputElement>,
+        direction: IncrementDirection,
         onClick: React.MouseEventHandler<HTMLInputElement>,
     ) => {
+        this.delta = this.getIncrementDelta(direction, e.shiftKey, e.altKey);
+        // respond explicitly on key *up*, because onKeyDown triggers multiple
+        // times and doesn't always receive modifier-key flags, leading to an
+        // unintuitive/out-of-control incrementing experience.
         if (e.keyCode === Keys.SPACE || e.keyCode === Keys.ENTER) {
             // prevent the page from scrolling (this is the default browser
             // behavior for shift + space or alt + space).
@@ -391,6 +452,12 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             };
             onClick(fakeClickEvent as React.MouseEvent<HTMLInputElement>);
         }
+    };
+
+    private handleContinuousChange = () => {
+        const nextValue = this.incrementValue(this.delta);
+        this.invokeValueCallback(nextValue, this.props.onButtonClick);
+        this.setTimeout(this.handleContinuousChange, NumericInput.CONTINUOUS_CHANGE_INTERVAL);
     };
 
     // Callbacks - Input
