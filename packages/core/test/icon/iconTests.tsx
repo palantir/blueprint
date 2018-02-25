@@ -44,6 +44,16 @@ describe("<Icon>", () => {
         assert.isTrue(icon.isEmptyRender());
     });
 
+    it("title sets content of <title> element", () => {
+        const icon = shallow(<Icon icon="airplane" title="bird" />);
+        assert.equal(icon.find("title").text(), "bird");
+    });
+
+    it("title defaults to icon name", () => {
+        const icon = shallow(<Icon icon="airplane" />);
+        assert.equal(icon.find("title").text(), "airplane");
+    });
+
     /** Asserts that rendered icon has given className. */
     function assertIcon(icon: React.ReactElement<IIconProps>, iconName: IconName) {
         assert.strictEqual(shallow(icon).text(), iconName);
