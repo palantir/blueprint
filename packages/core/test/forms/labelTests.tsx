@@ -19,7 +19,7 @@ describe("<Label>", () => {
         assert.strictEqual(wrapper.text(), "Username (blah blah)");
     });
 
-    it("does not have an extra space after text when helperText is not defined", () => {
+    it("does not put an extra space after text when helperText is not defined", () => {
         const wrapper = shallow(
             <Label text="Username">
                 <input autoFocus={true} className="pt-input" type="text" />
