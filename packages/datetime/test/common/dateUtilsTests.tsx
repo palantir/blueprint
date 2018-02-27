@@ -262,4 +262,78 @@ describe("dateUtils", () => {
             expect(() => DateUtils.convert24HourMeridiem(23, true)).to.not.throw();
         });
     });
+
+    describe("getIsPmFrom24Hour", () => {
+        it("returns true, if hour (in 24 range) is PM", () => {
+            const pmHours = [];
+            for (let i = 12; i <= 23; i++) {
+                pmHours.push(i);
+            }
+            for (const hour of pmHours) {
+                expect(DateUtils.getIsPmFrom24Hour(hour)).to.equal(true);
+            }
+        });
+
+        it("returns false, if hour (in 24 range) is AM", () => {
+            const amHours = [];
+            for (let i = 0; i <= 11; i++) {
+                amHours.push(i);
+            }
+            for (const hour of amHours) {
+                expect(DateUtils.getIsPmFrom24Hour(hour)).to.equal(false);
+            }
+        });
+
+        it("throws an error only for invalid hours", () => {
+            expect(() => DateUtils.getIsPmFrom24Hour(-1)).to.throw();
+            expect(() => DateUtils.getIsPmFrom24Hour(24)).to.throw();
+            expect(() => DateUtils.getIsPmFrom24Hour(0)).to.not.throw();
+            expect(() => DateUtils.getIsPmFrom24Hour(23)).to.not.throw();
+        });
+    });
+
+    describe("get12HourFrom24Hour", () => {
+        it("returns correct 12-hour format from 24-hour format", () => {
+            const hours12 = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+            for (let hour24 = 0; hour24 <= 23; hour24++) {
+                expect(DateUtils.get12HourFrom24Hour(hour24)).to.equal(hours12[hour24]);
+            }
+        });
+
+        it("throws an error only for invalid 24-hours", () => {
+            expect(() => DateUtils.get12HourFrom24Hour(-1)).to.throw();
+            expect(() => DateUtils.get12HourFrom24Hour(24)).to.throw();
+            expect(() => DateUtils.get12HourFrom24Hour(0)).to.not.throw();
+            expect(() => DateUtils.get12HourFrom24Hour(23)).to.not.throw();
+        });
+    });
+
+    describe("get24HourFrom12Hour", () => {
+        it("returns correct 24-hour format from 12-hour format, if isPm", () => {
+            const hours12 = [12];
+            for (let i = 1; i <= 11; i++) {
+                hours12.push(i);
+            }
+            for (let hour24 = 12; hour24 <= 23; hour24++) {
+                expect(DateUtils.get24HourFrom12Hour(hours12[hour24 - 12], true)).to.equal(hour24);
+            }
+        });
+
+        it("returns correct 24-hour format from 12-hour format, if not isPm", () => {
+            const hours12 = [12];
+            for (let i = 1; i <= 11; i++) {
+                hours12.push(i);
+            }
+            for (let hour24 = 0; hour24 <= 11; hour24++) {
+                expect(DateUtils.get24HourFrom12Hour(hours12[hour24], false)).to.equal(hour24);
+            }
+        });
+
+        it("throws an error only for invalid 12-hours", () => {
+            expect(() => DateUtils.get24HourFrom12Hour(0, true)).to.throw();
+            expect(() => DateUtils.get24HourFrom12Hour(13, true)).to.throw();
+            expect(() => DateUtils.get24HourFrom12Hour(1, true)).to.not.throw();
+            expect(() => DateUtils.get24HourFrom12Hour(12, true)).to.not.throw();
+        });
+    });
 });

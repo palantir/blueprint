@@ -236,7 +236,7 @@ export function get12HourFrom24Hour(hour: number): number {
 
 export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
     if (hour < 1 || hour > 12) {
-        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
+        throw new Error(`hour must be between [0,12] inclusive: got ${hour}`);
     }
     if (isPm) {
         hour = hour + 12;
