@@ -9,7 +9,7 @@ import { BaseExample, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
 
-import { TimePicker, TimePickerHourFormat, TimePickerPrecision } from "@blueprintjs/datetime";
+import { TimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
 // tslint:disable-next-line:no-submodule-imports
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
 
@@ -20,7 +20,7 @@ export interface ITimePickerExampleState {
     disabled?: boolean;
     minTime?: Date;
     maxTime?: Date;
-    hourFormat?: TimePickerHourFormat;
+    useAmPm?: boolean;
 }
 
 enum MinimumHours {
@@ -38,7 +38,7 @@ enum MaximumHours {
 export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     public state = {
         disabled: false,
-        hourFormat: TimePickerHourFormat.HOUR_24,
+        useAmPm: false,
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
@@ -68,7 +68,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                 />,
                 <Switch checked={this.state.disabled} label="Disabled" key="disabled" onChange={this.toggleDisabled} />,
                 <Switch
-                    checked={this.state.hourFormat === TimePickerHourFormat.HOUR_12}
+                    checked={this.state.useAmPm}
                     label="Use AM/PM"
                     key="ampm"
                     onChange={this.toggleUseAmPm}
@@ -124,12 +124,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     };
 
     private toggleUseAmPm = () => {
-        const newHourFormat =
-            this.state.hourFormat === TimePickerHourFormat.HOUR_24
-                ? TimePickerHourFormat.HOUR_12
-                : TimePickerHourFormat.HOUR_24;
-
-        this.setState({ hourFormat: newHourFormat });
+        this.setState({ useAmPm: !this.state.useAmPm });
     };
 
     private changeMinHour = (hour: MinimumHours) => {
