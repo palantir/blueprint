@@ -62,7 +62,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     position: absolute;
     top: -$datepicker-header-margin;
     cursor: pointer;
-    padding: ($pt-input-height - $pt-icon-size-standard) / 2;
+    padding: $datepicker-header-margin;
 
     &--prev {
       left: -$datepicker-header-margin;
@@ -157,6 +157,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   .pt-datepicker-caption {
     display: table-caption;
     border-bottom: 1px solid $pt-divider-black;
+    padding: 0 $pt-grid-size;
     text-align: center;
 
     select {
@@ -199,11 +200,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
   .pt-datepicker-caption-caret {
     position: absolute;
-    top: $pt-grid-size * 0.2;
-    // override library-imposed left offset
-    // stylelint-disable declaration-no-important
+    top: 3px;
     right: 0;
-    left: auto !important;
     color: $pt-text-color-muted;
     pointer-events: none;
   }
@@ -219,6 +217,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 }
 
 .pt-datepicker-caption-measure {
+  padding-left: $pt-grid-size;
   font-weight: 600;
 }
 
