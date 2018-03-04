@@ -5,7 +5,7 @@
  */
 
 import { Classes, Intent, Tag } from "@blueprintjs/core";
-import * as classNames from "classnames";
+import classNames from "classnames";
 import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty, ITsSignature } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";

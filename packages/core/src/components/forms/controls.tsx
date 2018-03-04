@@ -10,7 +10,7 @@
 // we need some empty interfaces to show up in docs
 // tslint:disable no-empty-interface
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
