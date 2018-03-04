@@ -7,7 +7,7 @@
 import { Classes, Intent, Switch, Tag } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 import classNames from "classnames";
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 
 import { DatePicker } from "@blueprintjs/datetime";
