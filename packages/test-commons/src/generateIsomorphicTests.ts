@@ -7,10 +7,10 @@
 // to use the `mocha` CLI and write an isotest.js file in every project
 
 import * as Enzyme from "enzyme";
-import * as Adapter from "enzyme-adapter-react-16";
+import React16Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
 
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({ adapter: new React16Adapter() });
 
 /**
  * Determines if the passed Component is a React Class or not

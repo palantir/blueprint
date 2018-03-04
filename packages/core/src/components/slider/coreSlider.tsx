@@ -140,7 +140,8 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
         if (labelRenderer === false) {
             return undefined;
         } else if (isFunction(labelRenderer)) {
-            return labelRenderer(value);
+            // TODO: TS 2.7 might have a type narrowing issue?
+            return (labelRenderer as (value: number) => React.ReactChild)(value);
         } else {
             return value.toFixed(this.state.labelPrecision);
         }
