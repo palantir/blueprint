@@ -29,7 +29,7 @@
     "classnames": "^2.2",
     "documentalist": "^1.1.0",
     "fuzzaldrin-plus": "^0.5.0",
-    "tslib": "^1.5.0"
+    "tslib": "^1.9.0"
   },
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.5.0",

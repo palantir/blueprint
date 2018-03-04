@@ -38,7 +38,7 @@
     "normalize.css": "^7.0.0",
     "popper.js": "^1.12.6",
     "react-popper": "~0.7.4",
-    "tslib": "^1.5.0"
+    "tslib": "^1.9.0"
   },
   "peerDependencies": {
     "react": "^16.0.0",
