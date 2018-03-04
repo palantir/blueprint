@@ -58,7 +58,7 @@
     "react-test-renderer": "^16.2.0",
     "react-transition-group": "^2.2.1",
     "tslint": "^5.9.0",
-    "typescript": "~2.6.2",
+    "typescript": "~2.7.2",
     "webpack": "^3.10.0"
   },
   "repository": {
