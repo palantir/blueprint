@@ -18,6 +18,9 @@ export interface IDocsIconProps {
 }
 
 const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/develop/resources/icons";
+function openIconFile(iconName: IconName, iconSize: 16 | 20) {
+    window.open(`${GITHUB_PATH}/${iconSize}px/${iconName}.svg`);
+}
 
 @ContextMenuTarget
 export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
@@ -26,11 +29,12 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
         return (
             <ClickToCopy className="docs-icon" data-tags={tags} value={iconName}>
                 <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />
-                <span className="docs-icon-detail">
-                    <div className="docs-icon-name">{displayName}</div>
-                    <strong className="docs-icon-class-name pt-monospace-text">{iconName}</strong>
-                    <div className="docs-clipboard-message pt-text-muted" data-hover-message="Click to copy" />
-                </span>
+                <div className="docs-icon-name">{displayName}</div>
+                <div className="docs-icon-detail">
+                    <p className="docs-code">{iconName}</p>
+                    <div className="pt-text-muted">Right-click to download</div>
+                    <div className="docs-clipboard-message pt-text-muted" data-hover-message="Click to copy name" />
+                </div>
             </ClickToCopy>
         );
     }
@@ -40,14 +44,12 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
         return (
             <Menu>
                 <MenuItem
-                    className="docs-icon-16"
-                    icon={iconName}
+                    icon={<Icon icon={iconName} iconSize={Icon.SIZE_STANDARD} />}
                     text="Download 16px SVG"
                     onClick={this.handleClick16}
                 />
                 <MenuItem
-                    className="docs-icon-20"
-                    icon={iconName}
+                    icon={<Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />}
                     text="Download 20px SVG"
                     onClick={this.handleClick20}
                 />
@@ -55,7 +57,6 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
         );
     }
 
-    private handleClick16 = () => window.open(`${GITHUB_PATH}/16px/${this.props.iconName}.svg`);
-
-    private handleClick20 = () => window.open(`${GITHUB_PATH}/20px/${this.props.iconName}.svg`);
+    private handleClick16 = () => openIconFile(this.props.iconName, 16);
+    private handleClick20 = () => openIconFile(this.props.iconName, 20);
 }
