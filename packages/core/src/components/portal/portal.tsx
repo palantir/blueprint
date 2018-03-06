@@ -71,7 +71,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         // update className prop on portal DOM element
         if (this.portalElement != null && prevProps.className !== this.props.className) {
             this.portalElement.classList.remove(prevProps.className);
-            this.portalElement.classList.add(this.props.className);
+            maybeAddClass(this.portalElement.classList, this.props.className);
         }
     }
 
@@ -83,10 +83,17 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
 
     private createElement() {
         const container = document.createElement("div");
-        container.classList.add(Classes.PORTAL, this.props.className);
-        if (this.context && this.context.blueprintPortalClassName != null) {
-            container.classList.add(this.context.blueprintPortalClassName);
+        container.classList.add(Classes.PORTAL);
+        maybeAddClass(container.classList, this.props.className);
+        if (this.context != null) {
+            maybeAddClass(container.classList, this.context.blueprintPortalClassName);
         }
         return container;
+    }
+}
+
+function maybeAddClass(classList: DOMTokenList, className?: string) {
+    if (className != null && className !== "") {
+        classList.add(className);
     }
 }
