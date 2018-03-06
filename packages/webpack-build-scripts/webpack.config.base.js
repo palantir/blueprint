@@ -13,6 +13,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const WebpackNotifierPlugin = require("webpack-notifier");
+const Visualizer = require("webpack-visualizer-plugin");
 
 const { getPackageName } = require("./utils");
 
@@ -27,6 +28,9 @@ const plugins = [
     // Used for async error reporting
     // Can remove after https://github.com/webpack/webpack/issues/3460 resolved
     new CheckerPlugin(),
+
+    // Generate visualization of bundle stats in dist/stats.html
+    new Visualizer(),
 
     // TODO: enable this
     // Zero tolereance for circular depenendencies
