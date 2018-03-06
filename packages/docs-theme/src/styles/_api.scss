@@ -13,20 +13,17 @@
     flex-direction: column;
     margin: 0;
     width: $content-width;
-
-    > * {
-      padding: $pt-grid-size ($pt-grid-size * 2);
-    }
   }
 
   .docs-interface-header {
     flex: 0 0 auto;
     margin: 0;
+    padding: $pt-grid-size ($pt-grid-size * 2);
   }
 
-  .docs-interface-table {
+  .docs-modifiers-table {
     overflow: auto;
-    padding-bottom: $pt-grid-size * 2;
+    padding: $pt-grid-size ($pt-grid-size * 2) ($pt-grid-size * 2);
   }
 }
 
