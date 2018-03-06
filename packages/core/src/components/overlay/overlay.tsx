@@ -161,25 +161,36 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
 
         const { children, className, usePortal, isOpen, transitionDuration, transitionName } = this.props;
 
-        const childrenWithTransitions = React.Children.map(children, (child?: React.ReactChild) => {
-            if (child == null || typeof child !== "object") {
-                return child;
-            }
-            // add a special class to each child element that will automatically set the appropriate
-            // CSS position mode under the hood. also, make the container focusable so we can
-            // trap focus inside it (via `enforceFocus`).
-            const decoratedChild = React.cloneElement(child, {
-                className: classNames(child.props.className, Classes.OVERLAY_CONTENT),
-                tabIndex: 0,
-            });
-            return (
-                <CSSTransition classNames={transitionName} timeout={transitionDuration}>
-                    {decoratedChild}
-                </CSSTransition>
-            );
-        });
+        // TransitionGroup types require single array of children; does not support nested arrays.
+        // So we must collapse backdrop and children into one array, and every item must be wrapped in a
+        // Transition element (no ReactText allowed).
+        const childrenWithTransitions = isOpen
+            ? React.Children.map(children, (child?: React.ReactChild) => {
+                  if (child == null) {
+                      return null;
+                  }
+                  // add a special class to each child element that will automatically set the appropriate
+                  // CSS position mode under the hood. also, make the container focusable so we can
+                  // trap focus inside it (via `enforceFocus`).
+                  const decoratedChild =
+                      typeof child !== "object" ? (
+                          <span className={Classes.OVERLAY_CONTENT}>{child}</span>
+                      ) : (
+                          React.cloneElement(child, {
+                              className: classNames(child.props.className, Classes.OVERLAY_CONTENT),
+                              tabIndex: 0,
+                          })
+                      );
+                  return (
+                      <CSSTransition classNames={transitionName} timeout={transitionDuration}>
+                          {decoratedChild}
+                      </CSSTransition>
+                  );
+              })
+            : [];
+        childrenWithTransitions.unshift(this.maybeRenderBackdrop());
 
-        const mergedClassName = classNames(
+        const containerClasses = classNames(
             Classes.OVERLAY,
             {
                 [Classes.OVERLAY_OPEN]: isOpen,
@@ -188,15 +199,15 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             className,
         );
 
-        const elementProps = {
-            className: mergedClassName,
-            onKeyDown: this.handleKeyDown,
-        };
-
         const transitionGroup = (
-            <TransitionGroup appear={true} {...elementProps} ref={this.refHandlers.container}>
-                {this.maybeRenderBackdrop()}
-                {isOpen ? childrenWithTransitions : null}
+            <TransitionGroup
+                appear={true}
+                className={containerClasses}
+                component="div"
+                onKeyDown={this.handleKeyDown}
+                ref={this.refHandlers.container}
+            >
+                {childrenWithTransitions}
             </TransitionGroup>
         );
         if (usePortal) {
