@@ -8,6 +8,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import { findDOMNode } from "react-dom";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
@@ -144,7 +145,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
     // an HTMLElement that contains the backdrop and any children, to query for focus target
     public containerElement: HTMLElement;
     private refHandlers = {
-        container: (ref: HTMLDivElement) => (this.containerElement = ref),
+        container: (ref: React.ReactInstance) => (this.containerElement = findDOMNode(ref) as HTMLElement),
     };
 
     public constructor(props?: IOverlayProps, context?: any) {
@@ -178,13 +179,6 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             );
         });
 
-        const transitionGroup = (
-            <TransitionGroup appear={true}>
-                {this.maybeRenderBackdrop()}
-                {isOpen ? childrenWithTransitions : null}
-            </TransitionGroup>
-        );
-
         const mergedClassName = classNames(
             Classes.OVERLAY,
             {
@@ -199,22 +193,16 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             onKeyDown: this.handleKeyDown,
         };
 
+        const transitionGroup = (
+            <TransitionGroup appear={true} {...elementProps} ref={this.refHandlers.container}>
+                {this.maybeRenderBackdrop()}
+                {isOpen ? childrenWithTransitions : null}
+            </TransitionGroup>
+        );
         if (usePortal) {
-            return (
-                <Portal
-                    {...elementProps}
-                    containerRef={this.refHandlers.container}
-                    onChildrenMount={this.handleContentMount}
-                >
-                    {transitionGroup}
-                </Portal>
-            );
+            return <Portal onChildrenMount={this.handleContentMount}>{transitionGroup}</Portal>;
         } else {
-            return (
-                <span {...elementProps} ref={this.refHandlers.container}>
-                    {transitionGroup}
-                </span>
-            );
+            return transitionGroup;
         }
     }
 
@@ -289,7 +277,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
                 </CSSTransition>
             );
         } else {
-            return undefined;
+            return null;
         }
     }
 
