@@ -62,7 +62,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     position: absolute;
     top: -$datepicker-header-margin;
     cursor: pointer;
-    padding: $datepicker-header-margin;
+    padding: $datepicker-header-margin + 1;
 
     &--prev {
       left: -$datepicker-header-margin;
@@ -168,7 +168,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       height: $pt-input-height;
       // increase the size of the click target, clearing the caret on the right.
       padding-right: $pt-icon-size-standard;
-      padding-left: $pt-grid-size;
+      padding-left: $pt-grid-size / 2;
       line-height: $pt-input-height;
       color: $pt-text-color;
       font-weight: 600;
@@ -196,11 +196,15 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   .pt-datepicker-caption-select {
     display: inline-block;
     position: relative;
+
+    &:first-child {
+      margin-right: $pt-grid-size;
+    }
   }
 
   .pt-datepicker-caption-caret {
     position: absolute;
-    top: 3px;
+    top: 2px;
     right: 0;
     color: $pt-text-color-muted;
     pointer-events: none;
@@ -217,7 +221,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 }
 
 .pt-datepicker-caption-measure {
-  padding-left: $pt-grid-size;
+  padding-left: $pt-grid-size / 2;
   font-weight: 600;
 }
 
