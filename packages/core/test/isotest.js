@@ -32,10 +32,6 @@ const customChildren = {
     Toaster: React.createElement(Core.Toast, { message: "Toast" }),
 };
 
-const skipList = [
-    "Portal", // doesn't render any DOM inline
-]
-
 describe("Core isomorphic rendering", () => {
-    generateIsomorphicTests(Core, customProps, customChildren, skipList);
+    generateIsomorphicTests(Core, customProps, customChildren);
 });
