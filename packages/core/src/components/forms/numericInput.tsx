@@ -405,7 +405,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     private handleMouseUp = () => {
         this.updateDelta(0);
-        this.stopContinousChange();
+        this.stopContinuousChange();
         document.removeEventListener("mouseup", this.handleMouseUp);
     };
 
@@ -457,7 +457,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         }, NumericInput.CONTINUOUS_CHANGE_DELAY);
     }
 
-    private stopContinousChange() {
+    private stopContinuousChange() {
         this.clearTimeouts();
         clearInterval(this.intervalId);
     }
