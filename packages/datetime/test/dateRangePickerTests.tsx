@@ -37,7 +37,7 @@ describe("<DateRangePicker>", () => {
     before(() => {
         // this is essentially what TestUtils.renderIntoDocument does
         testsContainerElement = document.createElement("div");
-        document.documentElement.appendChild(testsContainerElement);
+        document.body.appendChild(testsContainerElement);
     });
 
     afterEach(() => {
