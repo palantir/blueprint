@@ -66,7 +66,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     public static displayName = "Blueprint2.MultiSelect";
 
     public static ofType<T>() {
-        return (MultiSelect as any) as new () => MultiSelect<T>;
+        return MultiSelect as new (props: IMultiSelectProps<T>) => MultiSelect<T>;
     }
 
     public state: IMultiSelectState<T> = {
