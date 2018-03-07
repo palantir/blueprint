@@ -58,8 +58,8 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
 
 export interface IMultiSelectState<T> {
     activeItem?: T;
-    isOpen?: boolean;
-    query?: string;
+    isOpen: boolean;
+    query: string;
 }
 
 export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState<T>> {
@@ -162,17 +162,17 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
 
     private isQueryEmpty = () => this.state.query.length === 0;
 
-    private handleQueryChange = (e: React.FormEvent<HTMLInputElement>) => {
+    private handleQueryChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         const { tagInputProps = {}, openOnKeyDown } = this.props;
-        const query = e.currentTarget.value;
+        const query = evt.currentTarget.value;
         this.setState({ query, isOpen: !this.isQueryEmpty() || !openOnKeyDown });
 
         if (tagInputProps.inputProps != null) {
-            Utils.safeInvoke(tagInputProps.inputProps.onChange, e);
+            Utils.safeInvoke(tagInputProps.inputProps.onChange, evt);
         }
     };
 
-    private handleItemSelect = (item: T, e: React.SyntheticEvent<HTMLElement>) => {
+    private handleItemSelect = (item: T, evt?: React.SyntheticEvent<HTMLElement>) => {
         this.input.focus();
         // make sure the query is valid by checking if activeItem is defined
         if (this.state.activeItem != null) {
@@ -182,7 +182,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                     query: "",
                 });
             }
-            Utils.safeInvoke(this.props.onItemSelect, item, e);
+            Utils.safeInvoke(this.props.onItemSelect, item, evt);
         }
     };
 
@@ -221,9 +221,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         Utils.safeInvoke(popoverProps.popoverDidOpen);
     };
 
-    private handleActiveItemChange = (activeItem: T) => {
-        this.setState({ activeItem });
-    };
+    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
 
     private getTargetKeyDownHandler = (
         handleQueryListKeyDown: React.EventHandler<React.KeyboardEvent<HTMLElement>>,

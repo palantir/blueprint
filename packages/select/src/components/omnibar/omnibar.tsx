@@ -68,7 +68,7 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
 
 export interface IOmnibarState<T> extends IOverlayableProps, IBackdropProps {
     activeItem?: T;
-    query?: string;
+    query: string;
 }
 
 export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
@@ -168,9 +168,9 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
 
     private isQueryEmpty = () => this.state.query.length === 0;
 
-    private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
+    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
 
-    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
+    private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         if (!this.isQueryEmpty()) {
             Utils.safeInvoke(this.props.onItemSelect, item, event);
         }
