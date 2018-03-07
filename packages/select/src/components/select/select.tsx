@@ -88,7 +88,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     public static displayName = "Blueprint2.Select";
 
     public static ofType<T>() {
-        return Select as new () => Select<T>;
+        return Select as new (props: ISelectProps<T>) => Select<T>;
     }
 
     public state: ISelectState<T> = { isOpen: false, query: "" };
@@ -107,7 +107,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     };
     private previousFocusedElement: HTMLElement;
 
-    constructor(props?: ISelectProps<T>, context?: any) {
+    constructor(props: ISelectProps<T>, context?: any) {
         super(props, context);
 
         const query = props && props.inputProps && props.inputProps.value !== undefined ? props.inputProps.value : "";

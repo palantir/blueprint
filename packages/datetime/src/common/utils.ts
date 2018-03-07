@@ -9,6 +9,9 @@
  * Should only be used if measuring can't be done with existing DOM elements.
  */
 export function measureTextWidth(text: string, className = "", containerElement = document.body) {
+    if (containerElement == null) {
+        return 0;
+    }
     const span = document.createElement("span");
     span.classList.add(className);
     span.textContent = text;
