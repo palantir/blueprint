@@ -126,7 +126,7 @@ export interface IQueryListRendererProps<T> extends IProps {
      * A ref handler that should be applied to the HTML element that contains the rendererd items.
      * This is required for the `QueryList` to scroll the active item into view automatically.
      */
-    itemsParentRef: (ref: HTMLElement) => void;
+    itemsParentRef: (ref: HTMLElement | null) => void;
 
     /**
      * Controlled query string. Attach an `onChange` handler to the relevant
@@ -146,9 +146,9 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
     }
 
-    private itemsParentRef: HTMLElement;
+    private itemsParentRef: HTMLElement | null;
     private refHandlers = {
-        itemsParent: (ref: HTMLElement) => (this.itemsParentRef = ref),
+        itemsParent: (ref: HTMLElement | null) => (this.itemsParentRef = ref),
     };
 
     /**
@@ -244,7 +244,8 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private getItemsParentPadding() {
-        const { paddingTop, paddingBottom } = getComputedStyle(this.itemsParentRef);
+        // assert ref exists because it was checked before calling
+        const { paddingTop, paddingBottom } = getComputedStyle(this.itemsParentRef!);
         return {
             paddingBottom: pxToNumber(paddingBottom),
             paddingTop: pxToNumber(paddingTop),

@@ -83,9 +83,9 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
     };
 
     private TypedQueryList = QueryList.ofType<T>();
-    private queryList: QueryList<T>;
+    private queryList: QueryList<T> | null;
     private refHandlers = {
-        queryList: (ref: QueryList<T>) => (this.queryList = ref),
+        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
     public render() {
