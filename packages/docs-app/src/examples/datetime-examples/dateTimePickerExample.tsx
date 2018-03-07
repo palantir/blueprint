@@ -9,7 +9,7 @@ import { BaseExample } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 import { DateTimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
-import { Moment } from "./datePickerExample";
+import { MomentDate } from "./common/momentDate";
 
 export class DateTimePickerExample extends BaseExample<{ date: Date }> {
     public state = { date: null as Date };
@@ -24,7 +24,7 @@ export class DateTimePickerExample extends BaseExample<{ date: Date }> {
                     onChange={this.handleDateChange}
                 />
                 <div>
-                    <Moment date={this.state.date} format="LLLL" />
+                    <MomentDate date={this.state.date} format="LLLL" />
                 </div>
             </div>
         );

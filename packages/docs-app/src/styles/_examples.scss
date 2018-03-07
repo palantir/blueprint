@@ -354,6 +354,18 @@
   max-width: 280px;
 }
 
+.docs-date-range {
+  @include pt-flex-container(row, $pt-grid-size / 2);
+  align-items: center;
+  margin-top: $pt-grid-size;
+
+  // move inline when popover opens (for Date*Input)
+  &.pt-inline {
+    display: inline-flex;
+    margin: 0;
+  }
+}
+
 .docs-wiggle {
   animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
 }
