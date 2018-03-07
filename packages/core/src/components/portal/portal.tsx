@@ -24,7 +24,7 @@ export interface IPortalState {
 }
 
 export interface IPortalContext {
-    /** Additional CSS classes to add to all `Portal elements in this React context. */
+    /** Additional CSS classes to add to all `Portal` elements in this React context. */
     blueprintPortalClassName?: string;
 }
 
@@ -55,13 +55,15 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         // Only render `children` once this component has mounted in a browser environment, so they are
         // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
         // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-        return typeof document !== "undefined" && this.state.hasMounted
-            ? ReactDOM.createPortal(this.props.children, this.portalElement)
-            : null;
+        if (typeof document === "undefined" || !this.state.hasMounted) {
+            return null;
+        } else {
+            return ReactDOM.createPortal(this.props.children, this.portalElement);
+        }
     }
 
     public componentDidMount() {
-        this.portalElement = this.createElement();
+        this.portalElement = this.createContainerElement();
         document.body.appendChild(this.portalElement);
         safeInvoke(this.props.onChildrenMount);
         this.setState({ hasMounted: true });
@@ -81,7 +83,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         }
     }
 
-    private createElement() {
+    private createContainerElement() {
         const container = document.createElement("div");
         container.classList.add(Classes.PORTAL);
         maybeAddClass(container.classList, this.props.className);
