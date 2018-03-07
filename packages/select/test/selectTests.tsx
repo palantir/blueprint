@@ -119,11 +119,11 @@ describe("<Select>", () => {
 
     it("returns focus to focusable target after popover closed");
 
-    describe("dropdownRenderer", () => {
+    describe("menuRenderer", () => {
         it("overrides default dropdown rendering", () => {
             const customClass = "custom";
             const wrapper = select({
-                dropdownRenderer: () => <ul className={customClass} />,
+                menuRenderer: () => <ul className={customClass} />,
             });
             assert.lengthOf(wrapper.find(Menu), 0, "should not find Menu");
             assert.lengthOf(wrapper.find(`ul.${customClass}`), 1, "should find custom class");
@@ -132,15 +132,15 @@ describe("<Select>", () => {
 
         it("renderItem calls itemRenderer", () => {
             select({
-                dropdownRenderer: props => <ul>{props.items.map(props.renderItem)}</ul>,
+                menuRenderer: props => <ul>{props.items.map(props.renderItem)}</ul>,
             });
             assert.equal(handlers.itemRenderer.callCount, TOP_100_FILMS.length);
         });
 
         it("initialContent is only rendered if query is empty", () => {
             const selectProps: Partial<ISelectProps<IFilm>> = {
-                dropdownRenderer: props => <ul>{props.initialContent}</ul>,
                 initialContent: <address />,
+                menuRenderer: props => <ul>{props.initialContent}</ul>,
             };
             // Non-empty query:
             assert.lengthOf(select(selectProps, "1999").find("address"), 0, "should not find initialContent");
@@ -148,10 +148,10 @@ describe("<Select>", () => {
             assert.lengthOf(select(selectProps, "").find("address"), 1, "should find initialContent");
         });
 
-        it("noResults prop from Select is passed on to dropdownRenderer", () => {
+        it("noResults prop from Select is passed on to menuRenderer", () => {
             const noResults = <address />;
             const wrapper = select({
-                dropdownRenderer: props => <ul>{props.noResults}</ul>,
+                menuRenderer: props => <ul>{props.noResults}</ul>,
                 noResults,
             });
             assert.lengthOf(wrapper.find("address"), 1, "should find noResults");

@@ -21,8 +21,8 @@ import {
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
+import { MenuRenderer } from "../../common/menuRenderer";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
-import { DropdownRenderer } from "./dropdownRenderer";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -50,7 +50,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
      * Custom renderer for the contents of the dropdown.
      */
-    dropdownRenderer?: DropdownRenderer<T>;
+    menuRenderer?: MenuRenderer<T>;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
@@ -198,11 +198,11 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     };
 
     private renderDropdown(listProps: IQueryListRendererProps<T>) {
-        const { dropdownRenderer, initialContent, noResults } = this.props;
+        const { menuRenderer, initialContent, noResults } = this.props;
         const { items, itemsParentRef, renderItem } = listProps;
         const maybeInitialContent = initialContent != null && this.isQueryEmpty() ? initialContent : null;
-        if (dropdownRenderer !== undefined) {
-            return dropdownRenderer({
+        if (menuRenderer !== undefined) {
+            return menuRenderer({
                 initialContent: maybeInitialContent,
                 items,
                 itemsParentRef,

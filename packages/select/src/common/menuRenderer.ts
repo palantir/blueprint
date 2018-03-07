@@ -8,9 +8,9 @@ import * as React from "react";
 
 /**
  * An object describing how to render the contents of a dropdown.
- * A `dropdownRenderer` receives this object as its sole argument.
+ * A `menuRenderer` receives this object as its sole argument.
  */
-export interface IDropdownRendererProps<T> {
+export interface IMenuRendererProps<T> {
     /** Array of all items in the list. */
     items: T[];
 
@@ -35,4 +35,4 @@ export interface IDropdownRendererProps<T> {
 }
 
 /** Type alias for a function that renders the contents of a Dropdown. */
-export type DropdownRenderer<T> = (dropdownProps: IDropdownRendererProps<T>) => JSX.Element;
+export type MenuRenderer<T> = (dropdownProps: IMenuRendererProps<T>) => JSX.Element;
