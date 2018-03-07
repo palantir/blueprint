@@ -88,7 +88,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     public static displayName = "Blueprint2.Select";
 
     public static ofType<T>() {
-        return Select as new () => Select<T>;
+        return Select as new (props: ISelectProps<T>) => Select<T>;
     }
 
     private TypedQueryList = QueryList.ofType<T>();
@@ -105,7 +105,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         queryList: (ref: QueryList<T> | null) => (this.list = ref),
     };
 
-    constructor(props?: ISelectProps<T>, context?: any) {
+    constructor(props: ISelectProps<T>, context?: any) {
         super(props, context);
         const { inputProps = {} } = props;
         const query = inputProps.value == null ? "" : inputProps.value.toString();

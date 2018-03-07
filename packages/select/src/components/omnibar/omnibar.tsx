@@ -75,7 +75,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
     public static displayName = "Blueprint2.Omnibar";
 
     public static ofType<T>() {
-        return (Omnibar as any) as new () => Omnibar<T>;
+        return Omnibar as new (props: IOmnibarProps<T>) => Omnibar<T>;
     }
 
     public state: IOmnibarState<T> = {
