@@ -13,7 +13,7 @@ import { safeInvoke } from "../../common/utils";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
 
-export interface ITreeNode extends IProps {
+export interface ITreeNode<T = {}> extends IProps {
     /**
      * Child tree nodes of this node.
      */
@@ -56,9 +56,16 @@ export interface ITreeNode extends IProps {
      * A secondary label/component that is displayed at the right side of the node.
      */
     secondaryLabel?: string | JSX.Element;
+
+    /**
+     * An optional custom user object to associate with the node.
+     * This property can then be used in the `onClick`, `onContextMenu` and `onDoubleClick`
+     * event handlers for doing custom logic per node.
+     */
+    nodeData?: T;
 }
 
-export interface ITreeNodeProps extends ITreeNode {
+export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
     children?: React.ReactNode;
     contentRef?: (node: TreeNode, element: HTMLDivElement | null) => void;
     depth: number;
@@ -71,7 +78,15 @@ export interface ITreeNodeProps extends ITreeNode {
     path: number[];
 }
 
-export class TreeNode extends React.Component<ITreeNodeProps, {}> {
+export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
+    public static ofType<T>() {
+        return TreeNode as new () => TreeNode<T>;
+    }
+
+    constructor(props?: ITreeNodeProps<T>, context?: any) {
+        super(props, context);
+    }
+
     public render() {
         const { children, className, hasCaret, icon, isExpanded, isSelected, label } = this.props;
 

@@ -107,22 +107,15 @@ $dark-example-background-color: $dark-content-background-color;
   vertical-align: top;
 
   > code {
+    display: inline-block;
     margin-bottom: $pt-grid-size;
+
+    &:empty {
+      display: none;
+    }
   }
 
   &[data-modifier="default"]:last-child > code {
-    display: none;
-  }
-}
-
-// modifier labels
-.docs-modifiers code,
-.docs-example > code {
-  display: inline-block;
-  line-height: 1.4;
-  white-space: nowrap;
-
-  &:empty {
     display: none;
   }
 }

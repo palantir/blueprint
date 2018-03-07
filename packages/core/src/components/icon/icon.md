@@ -34,7 +34,8 @@ for 16px and 20px grids. The `icon` prop dictates which SVG is rendered and `ico
 which pixel grid is used: `iconSize >= 20` will use the 20px grid and smaller icons will use the 16px grid.
 
 ```tsx
-import { Icon, IconNames, Intent } from "@blueprintjs/core";
+import { Icon, Intent } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 
 // string literals are supported through IconName union type
 <Icon icon="cross" />

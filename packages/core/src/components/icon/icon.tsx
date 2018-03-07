@@ -45,6 +45,14 @@ export interface IIconProps extends IIntentProps, IProps {
 
     /** CSS style properties. */
     style?: React.CSSProperties;
+
+    /**
+     * Description string.
+     * Browsers usually render this as a tooltip on hover, whereas screen
+     * readers will use it for aural feedback.
+     * By default, this is set to the icon's name for accessibility.
+     */
+    title?: string | false | null;
 }
 
 export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<SVGElement>> {
@@ -54,7 +62,7 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
     public static readonly SIZE_LARGE = 20;
 
     public render() {
-        const { className, icon, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
+        const { className, icon, iconSize = Icon.SIZE_STANDARD, intent, title = icon, ...svgProps } = this.props;
         if (icon == null) {
             return null;
         } else if (typeof icon !== "string") {
@@ -79,7 +87,7 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
                 height={iconSize}
                 viewBox={viewBox}
             >
-                <title>{icon}</title>
+                {title ? <title>{title}</title> : null}
                 {paths}
             </svg>
         );

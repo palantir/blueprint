@@ -4,12 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Switch, Tag } from "@blueprintjs/core";
+import { Switch } from "@blueprintjs/core";
 import { DateInput, IDateFormatProps, TimePickerPrecision } from "@blueprintjs/datetime";
 import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
+import { MomentDate } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDateInputExampleState {
@@ -55,7 +56,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     popoverProps={{ popoverClassName: "barbarbar" }}
                     inputProps={{ className: "bazbazbaz" }}
                 />{" "}
-                {date && <Tag>{date.toLocaleString()}</Tag>}
+                <MomentDate date={date} />
             </div>
         );
     }
