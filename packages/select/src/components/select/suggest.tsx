@@ -62,6 +62,12 @@ export interface ISuggestState<T> {
 export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
     public static displayName = "Blueprint2.Suggest";
 
+    // Note: can't use <T> in static members, so this remains dynamically typed.
+    public static defaultProps = {
+        closeOnSelect: true,
+        openOnKeyDown: false,
+    };
+
     public static ofType<T>() {
         return Suggest as new (props: ISuggestProps<T>) => Suggest<T>;
     }
@@ -70,16 +76,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         isOpen: false,
         isTyping: false,
         query: "",
-    };
-
-    // not using defaultProps, because they're hard to type with generics (can't
-    // use <T> on static members). but we still want to keep default values in
-    // one, necessarily non-`static` place. note that Partial is necessary to
-    // avoid having to define all required props, and all of these values must
-    // be referenced manually in code.
-    private DEFAULT_PROPS = {
-        closeOnSelect: true,
-        openOnKeyDown: false,
     };
 
     private input: HTMLInputElement;
@@ -162,7 +158,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     };
 
     private handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-        const { openOnKeyDown = this.DEFAULT_PROPS.openOnKeyDown, inputProps = {} } = this.props;
+        const { openOnKeyDown, inputProps = {} } = this.props;
 
         this.selectText();
 
@@ -176,9 +172,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        const { closeOnSelect = this.DEFAULT_PROPS.closeOnSelect } = this.props;
         let nextOpenState: boolean;
-        if (!closeOnSelect) {
+        if (!this.props.closeOnSelect) {
             this.input.focus();
             this.selectText();
             nextOpenState = true;
@@ -251,7 +246,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         return (evt: React.KeyboardEvent<HTMLInputElement>) => {
             const { which } = evt;
             const { isTyping, selectedItem } = this.state;
-            const { inputProps = {}, openOnKeyDown = this.DEFAULT_PROPS.openOnKeyDown } = this.props;
+            const { inputProps = {}, openOnKeyDown } = this.props;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
                 this.input.blur();

@@ -173,7 +173,9 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     };
 
     private handleItemSelect = (item: T, evt?: React.SyntheticEvent<HTMLElement>) => {
-        this.input && this.input.focus();
+        if (this.input != null) {
+            this.input.focus();
+        }
         // make sure the query is valid by checking if activeItem is defined
         if (this.state.activeItem != null) {
             if (this.props.resetOnSelect && !this.isQueryEmpty()) {
@@ -233,7 +235,9 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             if (which === Keys.ESCAPE || which === Keys.TAB) {
                 // By default the escape key will not trigger a blur on the
                 // input element. It must be done explicitly.
-                this.input && this.input.blur();
+                if (this.input != null) {
+                    this.input.blur();
+                }
                 this.setState({
                     activeItem: resetOnSelect ? this.props.items[0] : this.state.activeItem,
                     isOpen: false,
