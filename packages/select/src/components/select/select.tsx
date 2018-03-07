@@ -191,13 +191,13 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
-                    {this.renderDropdown(listProps)}
+                    {this.renderMenu(listProps)}
                 </div>
             </Popover>
         );
     };
 
-    private renderDropdown(listProps: IQueryListRendererProps<T>) {
+    private renderMenu(listProps: IQueryListRendererProps<T>) {
         const { menuRenderer, initialContent, noResults } = this.props;
         const { items, itemsParentRef, renderItem } = listProps;
         const maybeInitialContent = initialContent != null && this.isQueryEmpty() ? initialContent : null;
