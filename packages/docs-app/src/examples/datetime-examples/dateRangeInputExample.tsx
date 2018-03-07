@@ -4,12 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Icon, Switch, Tag } from "@blueprintjs/core";
+import { Classes, IPopoverProps, Switch } from "@blueprintjs/core";
 import { DateRange, DateRangeInput, IDateFormatProps } from "@blueprintjs/datetime";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
+import { MomentDateRange } from "./common/momentDate";
 
 export interface IDateRangeInputExampleState {
     allowSingleDayRange: boolean;
@@ -20,6 +21,8 @@ export interface IDateRangeInputExampleState {
     range: DateRange;
     reverseMonthAndYearMenus: boolean;
     selectAllOnFocus: boolean;
+
+    isPopoverOpen: boolean;
 }
 
 export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
@@ -29,9 +32,15 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
         contiguousCalendarMonths: true,
         disabled: false,
         format: FORMATS[0],
+        isPopoverOpen: false,
         range: [null, null],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
+    };
+
+    private popoverProps: Partial<IPopoverProps> = {
+        popoverWillClose: () => this.setState({ isPopoverOpen: false }),
+        popoverWillOpen: () => this.setState({ isPopoverOpen: true }),
     };
 
     private toggleContiguous = handleBooleanChange(contiguous => {
@@ -46,13 +55,16 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
 
     protected renderExample() {
-        const { format, range: [start, end], ...spreadProps } = this.state;
+        const { format, range, ...spreadProps } = this.state;
         return (
             <div>
-                <DateRangeInput {...spreadProps} {...format} onChange={this.handleRangeChange} />{" "}
-                <Tag>{start == null ? "null" : start.toLocaleDateString()}</Tag>
-                <Icon icon="arrow-right" />
-                <Tag>{end == null ? "null" : end.toLocaleDateString()}</Tag>
+                <DateRangeInput
+                    {...spreadProps}
+                    {...format}
+                    onChange={this.handleRangeChange}
+                    popoverProps={this.popoverProps}
+                />{" "}
+                <MomentDateRange className={this.state.isPopoverOpen ? Classes.INLINE : ""} range={range} />
             </div>
         );
     }

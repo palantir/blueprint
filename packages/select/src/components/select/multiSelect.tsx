@@ -233,6 +233,9 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             const { resetOnSelect } = this.props;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
+                // By default the escape key will not trigger a blur on the
+                // input element. It must be done explicitly.
+                this.input.blur();
                 this.setState({
                     activeItem: resetOnSelect ? this.props.items[0] : this.state.activeItem,
                     isOpen: false,

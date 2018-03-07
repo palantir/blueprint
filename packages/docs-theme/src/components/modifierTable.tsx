@@ -12,7 +12,7 @@ export interface IModifierTableProps {
 
 export const ModifierTable: React.SFC<IModifierTableProps> = ({ children, title }) =>
     React.Children.count(children) > 0 ? (
-        <div className="docs-modifiers pt-running-text-small">
+        <div className="docs-modifiers-table">
             <table className="pt-html-table">
                 <thead>
                     <tr>
