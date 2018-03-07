@@ -18,7 +18,7 @@ export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
      * As this component renders its contents into a separate container, the result of the `ref`
      * prop is not backed by a DOM node. Hence this callback is necessary to get the real DOM node.
      */
-    containerRef?: (ref: HTMLDivElement) => void;
+    containerRef?: (ref: HTMLDivElement | null) => void;
 
     /**
      * Callback invoked when the children of this `Portal` have been added to the DOM.

@@ -31,12 +31,12 @@ export interface ITableQuadrantStackProps extends IProps {
     /**
      * A callback that receives a `ref` to the main quadrant's table-body element.
      */
-    bodyRef?: React.Ref<HTMLElement>;
+    bodyRef?: (ref: HTMLElement | null) => any;
 
     /**
      * A callback that receives a `ref` to the main quadrant's column-header container.
      */
-    columnHeaderRef?: (ref: HTMLElement) => void;
+    columnHeaderRef?: (ref: HTMLElement | null) => void;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -138,7 +138,7 @@ export interface ITableQuadrantStackProps extends IProps {
     /**
      * A callback that receives a `ref` to the main-quadrant element.
      */
-    quadrantRef?: (ref: HTMLElement) => void;
+    quadrantRef?: (ref: HTMLElement | null) => void;
 
     /**
      * A callback that renders either all of or just frozen sections of the table body.
@@ -177,12 +177,12 @@ export interface ITableQuadrantStackProps extends IProps {
     /**
      * A callback that receives a `ref` to the main quadrant's row-header container.
      */
-    rowHeaderRef?: (ref: HTMLElement) => void;
+    rowHeaderRef?: (ref: HTMLElement | null) => any;
 
     /**
      * A callback that receives a `ref` to the main quadrant's scroll-container element.
      */
-    scrollContainerRef?: (ref: HTMLElement) => void;
+    scrollContainerRef?: (ref: HTMLElement | null) => any;
 
     /**
      * Whether "scroll" and "wheel" events should be throttled using

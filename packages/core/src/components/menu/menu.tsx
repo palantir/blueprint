@@ -12,7 +12,7 @@ import { IProps } from "../../common/props";
 
 export interface IMenuProps extends IProps {
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
-    ulRef?: (ref: HTMLUListElement) => any;
+    ulRef?: (ref: HTMLUListElement | null) => any;
 }
 
 export class Menu extends React.Component<IMenuProps, {}> {
