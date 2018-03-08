@@ -416,7 +416,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                 : undefined;
             // Popover contents are well structured, but the selector will need
             // to be updated if more focusable components are added in the future
-            if (!lastTabbableElement) {
+            if (lastTabbableElement == null) {
                 const tabbableElements = this.popoverContentEl.querySelectorAll(
                     "input, [tabindex]:not([tabindex='-1'])",
                 );
