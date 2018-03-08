@@ -15,7 +15,7 @@ export interface ITypeAliasTableProps {
 
 export class TypeAliasTable extends React.PureComponent<ITypeAliasTableProps> {
     public static contextTypes = DocumentationContextTypes;
-    public static displayName = "Docs.TypeAliasTable";
+    public static displayName = "Docs2.TypeAliasTable";
 
     public context: IDocumentationContext;
 
@@ -23,10 +23,12 @@ export class TypeAliasTable extends React.PureComponent<ITypeAliasTableProps> {
         const { data } = this.props;
         const { renderBlock, renderType } = this.context;
         return (
-            <div className="docs-modifiers">
+            <div className="docs-modifiers pt-running-text-small">
                 <ApiHeader {...data} />
-                <p className="docs-code">= {renderType(data.type)}</p>
-                {renderBlock(data.documentation)}
+                <div className="docs-interface-table">
+                    {renderBlock(data.documentation)}
+                    <p className="docs-code">= {renderType(data.type)}</p>
+                </div>
             </div>
         );
     }

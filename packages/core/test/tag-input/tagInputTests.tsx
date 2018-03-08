@@ -38,8 +38,8 @@ describe("<TagInput>", () => {
         assert.lengthOf(wrapper.find("em"), 1);
     });
 
-    it("leftIconName renders an icon as first child", () => {
-        const wrapper = mount(<TagInput leftIconName="add" values={VALUES} />);
+    it("leftIcon renders an icon as first child", () => {
+        const wrapper = mount(<TagInput leftIcon="add" values={VALUES} />);
 
         // use a helper since Enzyme 3 (1) includes React wrappers in .childAt()
         // calls, making them convoluted, and (2) does not preserve referential
@@ -53,9 +53,7 @@ describe("<TagInput>", () => {
             assert.isTrue(hasClass, errorMessage);
         };
 
-        assertLeftIconHasClass(Classes.ICON_STANDARD, "standard icon");
-        wrapper.setProps({ className: Classes.LARGE });
-        assertLeftIconHasClass(Classes.ICON_LARGE, "large icon");
+        assertLeftIconHasClass(Classes.ICON, "icon");
     });
 
     it("rightElement appears as last child", () => {
@@ -455,7 +453,7 @@ describe("<TagInput>", () => {
         });
 
         it("prop changes are reflected in state", () => {
-            const wrapper = mount(<TagInput values={VALUES} />);
+            const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: "a" });
             expect(wrapper.state().inputValue).to.equal("a");
             wrapper.setProps({ inputValue: "b" });
@@ -465,10 +463,8 @@ describe("<TagInput>", () => {
         });
 
         it("Updating inputValue updates input element", () => {
-            const wrapper = mount(<TagInput values={VALUES} />);
-            wrapper.setProps({
-                inputValue: NEW_VALUE,
-            });
+            const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
+            wrapper.setProps({ inputValue: NEW_VALUE });
             expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
         });
     });

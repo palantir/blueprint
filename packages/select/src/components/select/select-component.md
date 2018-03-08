@@ -3,7 +3,7 @@
 Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover`](#labs/popover) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>Disabling a Select</h5>
+    <h4 class="pt-callout-title">Disabling a Select</h4>
     <p>Disabling the component requires setting the `disabled` prop to `true`
     and separately disabling the component's children as appropriate (because `Select` accepts arbitrary children).</p>
     <p>For example, `<Select ... disabled={true}><Button ... disabled={true} /></Select>`</p>
@@ -29,19 +29,22 @@ ReactDOM.render(
         onItemSelect={...}
     >
         {/* children become the popover target; render value here */}
-        <Button text={Films.items[0].title} rightIconName="double-caret-vertical" />
+        <Button text={Films.items[0].title} rightIcon="double-caret-vertical" />
     </FilmSelect>,
     document.querySelector("#root")
 );
 ```
 
-In TypeScript, `Select<T>` is a *generic component* so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type (speak your language) so you can easily define handlers without transformation steps, but most props are required as a result. The static `Select.ofType<T>()` method is available to streamline this process. (Note that this has no effect on JavaScript usage: the `Select` export is a perfectly valid React component class.)
+In TypeScript, `Select<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of one item in `items`. The props on this local type will now operate on your data type (speak your language) so you can easily define handlers without transformation steps, but most props are required as a result. The static `Select.ofType<T>()` method is available to streamline this process. (Note that this has no effect on JavaScript usage: the `Select` export is a perfectly valid React component class.)
 
 @## Querying
 
 Supply a predicate to automatically query items based on the `InputGroup` value. Use `itemPredicate` to filter each item individually; this is great for lightweight searches. Use `itemListPredicate` to query the entire array in one go, and even reorder it, such as with [fuzz-aldrin-plus](https://github.com/jeancroy/fuzz-aldrin-plus). The array of filtered items is cached internally by `QueryList` state and only recomputed when `query` or `items`-related props change.
 
 Omitting both `itemPredicate` and `itemListPredicate` props will cause the component to always render all `items`. It will not hide the `InputGroup`; use the `filterable` prop for that. In this case, you can implement your own filtering and simply change the `items` prop.
+
+The **@blueprintjs/select** package exports `ItemPredicate<T>` and `ItemListPredicate<T>` type aliases to simplify the process of implementing these functions.
+See the code sample in [Item Renderer API](#select/select-component.item-renderer-api) below for usage.
 
 @### Non-ideal states
 
@@ -76,8 +79,13 @@ or face React's console wrath!
 
 ```tsx
 import { Classes, MenuItem } from "@blueprintjs/core";
-import { ItemRenderer, Select } from "@blueprintjs/select";
+import { ItemRenderer, ItemPredicate, Select } from "@blueprintjs/select";
+
 const FilmSelect = Select.ofType<Film>();
+
+const filterFilm: ItemPredicate<IFilm> = (query, film) => {
+    return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
+};
 
 const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
     if (!modifiers.filtered) {
@@ -94,7 +102,7 @@ const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
     );
 };
 
-<FilmSelect itemRenderer={renderFilm} items={...} onItemSelect={...} />
+<FilmSelect itemPredicate={filterFilm} itemRenderer={renderFilm} items={...} onItemSelect={...} />
 ```
 
 @interface IItemRendererProps

@@ -33,13 +33,6 @@ export interface IHeaderCellProps extends IProps {
     loading?: boolean;
 
     /**
-     * An element, like a `<Menu>`, this is displayed by right-clicking
-     * anywhere in the header.
-     * @deprecated since v1.17.0; use `menuRenderer` instead
-     */
-    menu?: JSX.Element;
-
-    /**
      * The name displayed in the header of the row/column.
      */
     name?: string;
@@ -70,7 +63,7 @@ export interface IHeaderCellProps extends IProps {
 export interface IInternalHeaderCellProps extends IHeaderCellProps {
     /**
      * Specifies if the cell is reorderable.
-     * @deprecated since 1.21.0; pass `isReorderable` to `ColumnHeader` or `RowHeader` instead
+     * @internal users should pass `isReorderable` to `ColumnHeader` or `RowHeader` instead
      */
     isReorderable?: boolean;
 
@@ -104,10 +97,7 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
             // the preferred way (a consistent function instance that won't cause as many re-renders)
             return menuRenderer(this.props.index);
         } else {
-            // the deprecated way (leads to lots of unnecessary re-renders because of menu-item
-            // callbacks needing access to the index of the right-clicked cell, which demands that
-            // new callback functions and JSX elements be recreated on each render of the parent)
-            return this.props.menu;
+            return undefined;
         }
     }
 

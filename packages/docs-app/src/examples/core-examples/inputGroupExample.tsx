@@ -57,7 +57,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                     className={Classes.MINIMAL}
                     intent={Intent.WARNING}
                     disabled={disabled}
-                    iconName={showPassword ? "unlock" : "lock"}
+                    icon={showPassword ? "unlock" : "lock"}
                     onClick={this.handleLockClick}
                 />
             </Tooltip>
@@ -74,7 +74,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                 disabled={disabled}
                 position={Position.BOTTOM_RIGHT}
             >
-                <Button className={Classes.MINIMAL} disabled={disabled} rightIconName="caret-down">
+                <Button className={Classes.MINIMAL} disabled={disabled} rightIcon="caret-down">
                     can edit
                 </Button>
             </Popover>
@@ -90,7 +90,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                     <InputGroup
                         className={largeClassName}
                         disabled={disabled}
-                        leftIconName="filter"
+                        leftIcon="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
                         rightElement={maybeSpinner}
@@ -108,7 +108,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                     <InputGroup
                         className={largeClassName}
                         disabled={disabled}
-                        leftIconName="tag"
+                        leftIcon="tag"
                         onChange={this.handleTagChange}
                         placeholder="Find tags"
                         rightElement={resultsTag}

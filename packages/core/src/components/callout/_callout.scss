@@ -8,7 +8,7 @@ Callout
 
 Markup:
 <div class="pt-callout {{.modifier}}">
-  <h5>Callout Heading</h5>
+  <h4 class="pt-callout-title">Callout Heading</h4>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
 </div>
 
@@ -40,7 +40,7 @@ Styleguide pt-callout
     }
   }
 
-  h5 {
+  .pt-callout-title {
     margin-top: 0;
     margin-bottom: $pt-grid-size / 2;
     line-height: $pt-icon-size-large;
@@ -59,7 +59,8 @@ Styleguide pt-callout
       background-color: rgba($color, 0.15);
 
       &[class*="pt-icon-"]::before,
-      h5 {
+      .pt-callout-icon,
+      .pt-callout-title {
         color: map-get($pt-intent-text-colors, $intent);
       }
 
@@ -67,7 +68,8 @@ Styleguide pt-callout
         background-color: rgba($color, 0.25);
 
         &[class*="pt-icon-"]::before,
-        h5 {
+        .pt-callout-icon,
+        .pt-callout-title {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }
       }
@@ -77,4 +79,13 @@ Styleguide pt-callout
   .pt-running-text & {
     margin: ($pt-grid-size * 2) 0;
   }
+}
+
+// callout icon fills vertical space at left side, pushing title and content over.
+// note that CSS API `.pt-callout.pt-icon-[name]` is still supported.
+.pt-callout-icon {
+  float: left;
+  margin-right: $pt-grid-size;
+  height: 100%;
+  color: $pt-icon-color;
 }

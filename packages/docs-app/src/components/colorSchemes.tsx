@@ -131,11 +131,7 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
         }
 
         const OPTIONS = this.props.schemes.map((scheme, index) => {
-            return {
-                className: Classes.INLINE,
-                label: scheme.label,
-                value: index.toString(),
-            };
+            return { label: scheme.label, value: index.toString() };
         });
 
         return (
@@ -143,6 +139,7 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
                 key="activeSchema"
                 name="activeSchema"
                 className="docs-color-scheme-radios"
+                inline={true}
                 label="Select a color scheme"
                 options={OPTIONS}
                 onChange={this.handleSchemaChange}

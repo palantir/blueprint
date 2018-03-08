@@ -211,7 +211,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
                     isOpen={true}
                     onClose={this.handlePopoverClose}
                 >
-                    <Icon iconName="more" />
+                    <Icon icon="more" />
                 </Popover>
             );
         } else {
@@ -219,7 +219,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
             // `<Popover>` changes, this must be updated.
             return (
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
-                    <Icon iconName="more" />
+                    <Icon icon="more" />
                 </span>
             );
         }

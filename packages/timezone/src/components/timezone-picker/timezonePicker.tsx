@@ -19,39 +19,43 @@ import {
     MenuItem,
     Utils,
 } from "@blueprintjs/core";
-import { ItemRenderer, Select } from "@blueprintjs/select";
+import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 import * as Classes from "../../common/classes";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
-import { filterWithQueryCandidates, getTimezoneQueryCandidates } from "./timezoneUtils";
 
 export { TimezoneDisplayFormat };
 
 export interface ITimezonePickerProps extends IProps {
     /**
-     * The currently selected timezone, e.g. "Pacific/Honolulu".
-     * If this prop is provided, the component acts in a controlled manner.
-     * https://en.wikipedia.org/wiki/Tz_database#Names_of_time_zones
+     * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
+     * @see https://www.iana.org/time-zones
      */
-    value?: string;
+    value: string | undefined;
 
     /**
      * Callback invoked when the user selects a timezone.
      */
-    onChange?: (timezone: string) => void;
+    onChange: (timezone: string) => void;
 
     /**
-     * The date to use when determining timezone offsets.
-     * A timezone usually has more than one offset from UTC due to daylight saving time.
+     * This component does not support children.
+     * Use `value`, `valueDisplayFormat` and `buttonProps` to customize the button child.
+     */
+    children?: never;
+
+    /**
+     * The date to use when formatting timezone offsets.
+     * An offset date is necessary to account for DST, but typically the default value of `now` will be sufficient.
      * @default now
      */
     date?: Date;
 
     /**
-     * Initial timezone that will display as selected, when the component is uncontrolled.
-     * This should not be set if `value` is set.
+     * Whether this component is non-interactive.
+     * @default false
      */
-    defaultValue?: string;
+    disabled?: boolean;
 
     /**
      * Whether to show the local timezone at the top of the list of initial timezone suggestions.
@@ -66,13 +70,7 @@ export interface ITimezonePickerProps extends IProps {
     valueDisplayFormat?: TimezoneDisplayFormat;
 
     /**
-     * Whether this component is non-interactive.
-     * @default false
-     */
-    disabled?: boolean;
-
-    /**
-     * Text to show when no timezone has been selected and there is no default.
+     * Text to show when no timezone has been selected (`value === undefined`).
      * @default "Select timezone..."
      */
     placeholder?: string;
@@ -89,26 +87,26 @@ export interface ITimezonePickerProps extends IProps {
     inputProps?: IInputGroupProps & HTMLInputProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps> & object;
+    popoverProps?: Partial<IPopoverProps>;
 }
 
 export interface ITimezonePickerState {
-    date?: Date;
-    value?: string;
-    query?: string;
+    query: string;
 }
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
 export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
-    public static displayName = "Blueprint.TimezonePicker";
+    public static displayName = "Blueprint2.TimezonePicker";
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
+        date: new Date(),
         disabled: false,
         inputProps: {},
         placeholder: "Select timezone...",
         popoverProps: {},
         showLocalTimezone: true,
+        valueDisplayFormat: TimezoneDisplayFormat.OFFSET,
     };
 
     private timezoneItems: ITimezoneItem[];
@@ -117,9 +115,8 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
     constructor(props: ITimezonePickerProps, context?: any) {
         super(props, context);
 
-        const { value, date = new Date(), showLocalTimezone, inputProps = {} } = props;
-        const query = inputProps.value !== undefined ? inputProps.value : "";
-        this.state = { date, value, query };
+        const { date = new Date(), showLocalTimezone, inputProps = {} } = props;
+        this.state = { query: inputProps.value || "" };
 
         this.timezoneItems = getTimezoneItems(date);
         this.initialTimezoneItems = getInitialTimezoneItems(date, showLocalTimezone);
@@ -160,61 +157,37 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
 
     public componentWillReceiveProps(nextProps: ITimezonePickerProps) {
         const { date: nextDate = new Date(), inputProps: nextInputProps = {} } = nextProps;
-        const dateChanged = this.state.date.getTime() !== nextDate.getTime();
 
-        if (dateChanged) {
-            this.timezoneItems = getTimezoneItems(nextDate);
-        }
-        if (dateChanged || this.props.showLocalTimezone !== nextProps.showLocalTimezone) {
+        if (this.props.showLocalTimezone !== nextProps.showLocalTimezone) {
             this.initialTimezoneItems = getInitialTimezoneItems(nextDate, nextProps.showLocalTimezone);
         }
-
-        const nextState: ITimezonePickerState = {};
-        if (dateChanged) {
-            nextState.date = nextDate;
-        }
-        if (this.state.value !== nextProps.value) {
-            nextState.value = nextProps.value;
-        }
         if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
-            nextState.query = nextInputProps.value;
+            this.setState({ query: nextInputProps.value });
         }
-        this.setState(nextState);
     }
 
     private renderButton() {
-        const {
-            disabled,
-            valueDisplayFormat = TimezoneDisplayFormat.OFFSET,
-            defaultValue,
-            placeholder,
-            buttonProps = {},
-        } = this.props;
-        const { date, value } = this.state;
-
-        const finalValue = value ? value : defaultValue;
-        const displayValue = finalValue ? formatTimezone(finalValue, date, valueDisplayFormat) : undefined;
-
-        return (
-            <Button
-                rightIconName="caret-down"
-                disabled={disabled}
-                text={displayValue || placeholder}
-                {...buttonProps}
-            />
+        const { buttonProps = {}, date, disabled, placeholder, value, valueDisplayFormat } = this.props;
+        const buttonContent = value ? (
+            formatTimezone(value, date, valueDisplayFormat)
+        ) : (
+            <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
         );
+        return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} />;
     }
 
-    private filterItems = (query: string, items: ITimezoneItem[]): ITimezoneItem[] => {
-        if (query === "") {
-            return items;
-        }
-
-        const { date } = this.state;
-        return filterWithQueryCandidates(items, query, item => getTimezoneQueryCandidates(item.timezone, date));
+    private filterItems: ItemListPredicate<ITimezoneItem> = (query, items) => {
+        // using list predicate so only one RegExp instance is needed
+        // escape bad regex characters, let spaces act as any separator
+        const expr = new RegExp(query.replace(/([[()+*?])/g, "\\$1").replace(" ", "[ _/\\(\\)]+"), "i");
+        return items.filter(item => expr.test(item.text + item.label));
     };
 
     private renderItem: ItemRenderer<ITimezoneItem> = (item, { handleClick, modifiers }) => {
+        if (!modifiers.matchesPredicate) {
+            return null;
+        }
+
         const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
             [CoreClasses.ACTIVE]: modifiers.active,
             [CoreClasses.INTENT_PRIMARY]: modifiers.active,
@@ -224,7 +197,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
             <MenuItem
                 key={item.key}
                 className={classes}
-                iconName={item.iconName}
+                icon={item.iconName}
                 text={item.text}
                 label={item.label}
                 onClick={handleClick}
@@ -233,14 +206,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         );
     };
 
-    private handleItemSelect = (timezone: ITimezoneItem) => {
-        if (this.props.value === undefined) {
-            this.setState({ value: timezone.timezone });
-        }
-        Utils.safeInvoke(this.props.onChange, timezone.timezone);
-    };
+    private handleItemSelect = (timezone: ITimezoneItem) => Utils.safeInvoke(this.props.onChange, timezone.timezone);
 
-    private handleQueryChange = (query: string) => {
-        this.setState({ query });
-    };
+    private handleQueryChange = (query: string) => this.setState({ query });
 }

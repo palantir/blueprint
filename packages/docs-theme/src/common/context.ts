@@ -45,6 +45,9 @@ export interface IDocumentationContext {
 
     /** Render the text of a "View source" link. */
     renderViewSourceLinkText(entry: ITsDocBase): React.ReactNode;
+
+    /** Open the API browser to the given member name. */
+    showApiDocs(name: string): void;
 }
 
 /**
@@ -66,6 +69,7 @@ export const DocumentationContextTypes: React.ValidationMap<IDocumentationContex
     renderBlock: assertFunctionProp,
     renderType: assertFunctionProp,
     renderViewSourceLinkText: assertFunctionProp,
+    showApiDocs: assertFunctionProp,
 };
 
 // simple alternative to prop-types dependency

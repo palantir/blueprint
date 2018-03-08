@@ -5,40 +5,30 @@
  */
 
 import * as classNames from "classnames";
-import * as moment from "moment";
 import * as React from "react";
-import * as ReactDayPicker from "react-day-picker";
+import { DayPickerProps } from "react-day-picker/types/props";
 
 import {
     AbstractPureComponent,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
+    Intent,
     IPopoverProps,
     IProps,
     Keys,
     Popover,
-    Position,
     Utils,
 } from "@blueprintjs/core";
 
-import {
-    fromDateToMoment,
-    fromMomentToDate,
-    isMomentInRange,
-    isMomentNull,
-    isMomentValidAndInRange,
-    momentToString,
-    stringToMoment,
-} from "./common/dateUtils";
-import { DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION } from "./common/errors";
-import { IDateFormatter } from "./dateFormatter";
+import { isDateValid, isDayInRange } from "./common/dateUtils";
+import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateTimePicker } from "./dateTimePicker";
 import { ITimePickerProps, TimePickerPrecision } from "./timePicker";
 
-export interface IDateInputProps extends IDatePickerBaseProps, IProps {
+export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * Passed to `DatePicker` component.
@@ -60,7 +50,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
      * `initialMonth`), `toMonth` (use `maxDate`).
      */
-    dayPickerProps?: ReactDayPicker.Props;
+    dayPickerProps?: DayPickerProps;
 
     /**
      * Whether the date input is non-interactive.
@@ -74,24 +64,11 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
     defaultValue?: Date;
 
     /**
-     * The format of the date. See http://momentjs.com/docs/#/displaying/format/.
-     * Alternatively, pass an `IDateFormatter` for custom date rendering.
-     * @default "YYYY-MM-DD"
-     */
-    format?: string | IDateFormatter;
-
-    /**
      * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
      */
     inputProps?: HTMLInputProps & IInputGroupProps;
-
-    /**
-     * The error message to display when the date selected is invalid.
-     * @default "Invalid date"
-     */
-    invalidDateMessage?: string;
 
     /**
      * Called when the user selects a new valid date through the `DatePicker` or by typing
@@ -105,19 +82,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * the out of range date will be returned (`onChange` is not called in this case).
      */
     onError?: (errorDate: Date) => void;
-
-    /**
-     * The error message to display when the date selected is out of range.
-     * @default "Out of range"
-     */
-    outOfRangeMessage?: string;
-
-    /**
-     * The position the date popover should appear in relative to the input box.
-     * @default Position.BOTTOM
-     * @deprecated since v1.15.0, use `popoverProps.position`
-     */
-    popoverPosition?: Position;
 
     /**
      * Props to pass to the `Popover`.
@@ -135,7 +99,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
      */
-    value?: Date;
+    value?: Date | null;
 
     /**
      * Any props to be passed on to the `TimePicker`. `value`, `onChange`, and
@@ -152,98 +116,114 @@ export interface IDateInputProps extends IDatePickerBaseProps, IProps {
 }
 
 export interface IDateInputState {
-    value?: moment.Moment;
-    valueString?: string;
-    isInputFocused?: boolean;
-    isOpen?: boolean;
+    value: Date;
+    valueString: string;
+    isInputFocused: boolean;
+    isOpen: boolean;
 }
 
 export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
-    public static defaultProps: IDateInputProps = {
+    public static displayName = "Blueprint2.DateInput";
+
+    public static defaultProps: Partial<IDateInputProps> = {
         closeOnSelection: true,
         dayPickerProps: {},
         disabled: false,
-        format: "YYYY-MM-DD",
         invalidDateMessage: "Invalid date",
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         outOfRangeMessage: "Out of range",
-        popoverPosition: Position.BOTTOM,
         reverseMonthAndYearMenus: false,
         timePickerProps: {},
     };
 
-    public static displayName = "Blueprint.DateInput";
+    public state: IDateInputState = {
+        isInputFocused: false,
+        isOpen: false,
+        value: this.props.value !== undefined ? this.props.value : this.props.defaultValue,
+        valueString: null,
+    };
 
-    public constructor(props?: IDateInputProps, context?: any) {
-        super(props, context);
+    private inputEl: HTMLInputElement = null;
+    private popoverContentEl: HTMLElement = null;
+    private lastElementInPopover: HTMLElement = null;
+    private refHandlers = {
+        input: (el: HTMLInputElement) => {
+            this.inputEl = el;
+        },
+        popoverContent: (el: HTMLElement) => {
+            this.popoverContentEl = el;
+        },
+    };
 
-        const defaultValue = this.props.defaultValue ? fromDateToMoment(this.props.defaultValue) : moment(null);
-
-        this.state = {
-            isInputFocused: false,
-            isOpen: false,
-            value: this.props.value !== undefined ? fromDateToMoment(this.props.value) : defaultValue,
-            valueString: null,
-        };
+    public componentWillUnmount() {
+        super.componentWillUnmount();
+        this.unregisterPopoverBlurHandler();
     }
 
     public render() {
         const { value, valueString } = this.state;
-        const dateString = this.state.isInputFocused ? valueString : this.getDateString(value);
-        const date = this.state.isInputFocused ? this.createMoment(valueString) : value;
-        const dateValue = this.isMomentValidAndInRange(value) ? fromMomentToDate(value) : null;
+        const dateString = this.state.isInputFocused ? valueString : getFormattedDateString(value, this.props);
+        const dateValue = isDateValid(value) ? value : null;
+        const dayPickerProps = {
+            ...this.props.dayPickerProps,
+            // dom elements for the updated month is not available when
+            // onMonthChange is called. setTimeout is necessary to wait
+            // for the updated month to be rendered
+            onMonthChange: (month: Date) => {
+                Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, month);
+                this.setTimeout(this.registerPopoverBlurHandler);
+            },
+        };
 
         const popoverContent =
             this.props.timePrecision === undefined ? (
-                <DatePicker {...this.props} onChange={this.handleDateChange} value={dateValue} />
+                <DatePicker
+                    {...this.props}
+                    dayPickerProps={dayPickerProps}
+                    onChange={this.handleDateChange}
+                    value={dateValue}
+                />
             ) : (
                 <DateTimePicker
                     canClearSelection={this.props.canClearSelection}
                     onChange={this.handleDateChange}
-                    value={dateValue}
+                    value={value}
                     datePickerProps={this.props}
                     timePickerProps={{ ...this.props.timePickerProps, precision: this.props.timePrecision }}
                 />
             );
+        const wrappedPopoverContent = <div ref={this.refHandlers.popoverContent}>{popoverContent}</div>;
         // assign default empty object here to prevent mutation
-        const { inputProps = {}, popoverProps = {}, format } = this.props;
-
-        const inputClasses = classNames(
-            {
-                "pt-intent-danger": !(this.isMomentValidAndInRange(date) || isMomentNull(date) || dateString === ""),
-            },
-            inputProps.className,
-        );
-
-        const placeholder = typeof format === "string" ? format : format.placeholder;
+        const { popoverProps = {} } = this.props;
+        const inputProps = this.getInputPropsWithDefaults();
+        const isErrorState = value != null && (!isDateValid(value) || !this.isDateInRange(value));
 
         return (
             <Popover
-                inline={true}
                 isOpen={this.state.isOpen && !this.props.disabled}
-                position={this.props.popoverPosition}
+                usePortal={false}
                 {...popoverProps}
                 autoFocus={false}
                 className={classNames(popoverProps.className, this.props.className)}
-                content={popoverContent}
+                content={wrappedPopoverContent}
                 enforceFocus={false}
                 onClose={this.handleClosePopover}
                 popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
             >
                 <InputGroup
                     autoComplete="off"
-                    placeholder={placeholder}
+                    intent={isErrorState ? Intent.DANGER : Intent.NONE}
+                    placeholder={this.props.placeholder}
                     rightElement={this.props.rightElement}
                     {...inputProps}
-                    className={inputClasses}
                     disabled={this.props.disabled}
-                    type="text"
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.handleInputKeyDown}
+                    type="text"
                     value={dateString}
                 />
             </Popover>
@@ -253,61 +233,52 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     public componentWillReceiveProps(nextProps: IDateInputProps) {
         super.componentWillReceiveProps(nextProps);
         if (nextProps.value !== this.props.value) {
-            this.setState({ value: fromDateToMoment(nextProps.value) });
+            this.setState({ value: nextProps.value });
         }
     }
 
-    public validateProps(props: IDateInputProps) {
-        if (props.popoverPosition !== DateInput.defaultProps.popoverPosition) {
-            console.warn(DATEINPUT_WARN_DEPRECATED_POPOVER_POSITION);
+    private getInputPropsWithDefaults() {
+        const { inputProps = {} } = this.props;
+        if (Utils.isFunction(inputProps.inputRef)) {
+            return {
+                ...inputProps,
+                inputRef: (el: HTMLInputElement) => {
+                    this.refHandlers.input(el);
+                    inputProps.inputRef(el);
+                },
+            };
+        } else {
+            return {
+                ...inputProps,
+                inputRef: this.refHandlers.input,
+            };
         }
     }
 
-    private createMoment(valueString: string) {
-        // Locale here used for parsing, does not set the locale on the moment itself
-        return stringToMoment(valueString, this.props.format, this.props.locale);
+    private isDateInRange(value: Date) {
+        return isDayInRange(value, [this.props.minDate, this.props.maxDate]);
     }
 
-    private getDateString = (value: moment.Moment) => {
-        if (isMomentNull(value)) {
-            return "";
-        }
-        if (value.isValid()) {
-            if (this.isMomentInRange(value)) {
-                return momentToString(value, this.props.format, this.props.locale);
-            } else {
-                return this.props.outOfRangeMessage;
-            }
-        }
-        return this.props.invalidDateMessage;
-    };
-
-    private isMomentValidAndInRange(value: moment.Moment) {
-        return isMomentValidAndInRange(value, this.props.minDate, this.props.maxDate);
-    }
-
-    private isMomentInRange(value: moment.Moment) {
-        return isMomentInRange(value, this.props.minDate, this.props.maxDate);
-    }
-
-    private handleClosePopover = (e: React.SyntheticEvent<HTMLElement>) => {
+    private handleClosePopover = (e?: React.SyntheticEvent<HTMLElement>) => {
         const { popoverProps = {} } = this.props;
         Utils.safeInvoke(popoverProps.onClose, e);
         this.setState({ isOpen: false });
     };
 
-    private handleDateChange = (date: Date, hasUserManuallySelectedDate: boolean, didSubmitWithEnter = false) => {
-        const prevMomentDate = this.state.value;
-        const momentDate = fromDateToMoment(date);
+    private handleDateChange = (
+        newDate: Date | null,
+        hasUserManuallySelectedDate: boolean,
+        didSubmitWithEnter = false,
+    ) => {
+        const prevDate = this.state.value;
 
         // this change handler was triggered by a change in month, day, or (if
         // enabled) time. for UX purposes, we want to close the popover only if
         // the user explicitly clicked a day within the current month.
         const isOpen =
             !hasUserManuallySelectedDate ||
-            this.hasMonthChanged(prevMomentDate, momentDate) ||
-            this.hasTimeChanged(prevMomentDate, momentDate) ||
-            !this.props.closeOnSelection;
+            !this.props.closeOnSelection ||
+            (prevDate != null && (this.hasMonthChanged(prevDate, newDate) || this.hasTimeChanged(prevDate, newDate)));
 
         // if selecting a date via click or Tab, the input will already be
         // blurred by now, so sync isInputFocused to false. if selecting via
@@ -317,43 +288,33 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         const isInputFocused = didSubmitWithEnter ? true : false;
 
         if (this.props.value === undefined) {
-            this.setState({ isInputFocused, isOpen, value: momentDate, valueString: this.getDateString(momentDate) });
+            const valueString = getFormattedDateString(newDate, this.props);
+            this.setState({ isInputFocused, isOpen, value: newDate, valueString });
         } else {
             this.setState({ isInputFocused, isOpen });
         }
-        Utils.safeInvoke(this.props.onChange, date === null ? null : fromMomentToDate(momentDate));
+        Utils.safeInvoke(this.props.onChange, newDate);
     };
 
-    private shouldCheckForDateChanges(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
-        return nextMomentDate != null && !isMomentNull(prevMomentDate) && prevMomentDate.isValid();
+    private hasMonthChanged(prevDate: Date | null, nextDate: Date | null) {
+        return (prevDate == null) !== (nextDate == null) || nextDate.getMonth() !== prevDate.getMonth();
     }
 
-    private hasMonthChanged(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
+    private hasTimeChanged(prevDate: Date | null, nextDate: Date | null) {
+        if (this.props.timePrecision == null) {
+            return false;
+        }
         return (
-            this.shouldCheckForDateChanges(prevMomentDate, nextMomentDate) &&
-            nextMomentDate.month() !== prevMomentDate.month()
-        );
-    }
-
-    private hasTimeChanged(prevMomentDate: moment.Moment, nextMomentDate: moment.Moment) {
-        return (
-            this.shouldCheckForDateChanges(prevMomentDate, nextMomentDate) &&
-            this.props.timePrecision != null &&
-            (nextMomentDate.hours() !== prevMomentDate.hours() ||
-                nextMomentDate.minutes() !== prevMomentDate.minutes() ||
-                nextMomentDate.seconds() !== prevMomentDate.seconds() ||
-                nextMomentDate.milliseconds() !== prevMomentDate.milliseconds())
+            (prevDate == null) !== (nextDate == null) ||
+            nextDate.getHours() !== prevDate.getHours() ||
+            nextDate.getMinutes() !== prevDate.getMinutes() ||
+            nextDate.getSeconds() !== prevDate.getSeconds() ||
+            nextDate.getMilliseconds() !== prevDate.getMilliseconds()
         );
     }
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-        let valueString: string;
-        if (isMomentNull(this.state.value)) {
-            valueString = "";
-        } else {
-            valueString = momentToString(this.state.value, this.props.format, this.props.locale);
-        }
-
+        const valueString = this.state.value == null ? "" : this.formatDate(this.state.value);
         this.setState({ isInputFocused: true, isOpen: true, valueString });
         this.safeInvokeInputProp("onFocus", e);
     };
@@ -368,15 +329,15 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     private handleInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const valueString = (e.target as HTMLInputElement).value;
-        const value = this.createMoment(valueString);
+        const value = this.parseDate(valueString);
 
-        if (value.isValid() && this.isMomentInRange(value)) {
+        if (isDateValid(value) && this.isDateInRange(value)) {
             if (this.props.value === undefined) {
                 this.setState({ value, valueString });
             } else {
                 this.setState({ valueString });
             }
-            Utils.safeInvoke(this.props.onChange, fromMomentToDate(value));
+            Utils.safeInvoke(this.props.onChange, value);
         } else {
             if (valueString.length === 0) {
                 Utils.safeInvoke(this.props.onChange, null);
@@ -388,52 +349,118 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         const { valueString } = this.state;
-        const value = this.createMoment(valueString);
+        const date = this.parseDate(valueString);
         if (
             valueString.length > 0 &&
-            valueString !== this.getDateString(this.state.value) &&
-            (!value.isValid() || !this.isMomentInRange(value))
+            valueString !== getFormattedDateString(this.state.value, this.props) &&
+            (!isDateValid(date) || !this.isDateInRange(date))
         ) {
             if (this.props.value === undefined) {
-                this.setState({ isInputFocused: false, value, valueString: null });
+                this.setState({ isInputFocused: false, value: date, valueString: null });
             } else {
                 this.setState({ isInputFocused: false });
             }
 
-            if (!value.isValid()) {
+            if (isNaN(date.valueOf())) {
                 Utils.safeInvoke(this.props.onError, new Date(undefined));
-            } else if (!this.isMomentInRange(value)) {
-                Utils.safeInvoke(this.props.onError, fromMomentToDate(value));
+            } else if (!this.isDateInRange(date)) {
+                Utils.safeInvoke(this.props.onError, date);
             } else {
-                Utils.safeInvoke(this.props.onChange, fromMomentToDate(value));
+                Utils.safeInvoke(this.props.onChange, date);
             }
         } else {
             if (valueString.length === 0) {
-                this.setState({ isInputFocused: false, value: moment(null), valueString: null });
+                this.setState({ isInputFocused: false, value: null, valueString: null });
             } else {
                 this.setState({ isInputFocused: false });
             }
         }
+        this.registerPopoverBlurHandler();
         this.safeInvokeInputProp("onBlur", e);
     };
 
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.which === Keys.ENTER) {
-            const nextValue = this.createMoment(this.state.valueString);
-            const nextDate = fromMomentToDate(nextValue);
+            const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);
         } else if (e.which === Keys.TAB && e.shiftKey) {
             // close the popover if focus will move to the previous element on
             // the page. tabbing forward should *not* close the popover, because
             // focus will be moving into the popover itself.
             this.setState({ isOpen: false });
+        } else if (e.which === Keys.ESCAPE) {
+            this.setState({ isOpen: false });
+            this.inputEl.blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
+    };
+
+    // focus DOM event listener (not React event)
+    private handlePopoverBlur = (e: FocusEvent) => {
+        const relatedTarget = e.relatedTarget as HTMLElement;
+        if (relatedTarget == null || !this.popoverContentEl.contains(relatedTarget)) {
+            this.handleClosePopover();
+        } else if (relatedTarget != null) {
+            this.unregisterPopoverBlurHandler();
+            this.lastElementInPopover = relatedTarget;
+            this.lastElementInPopover.addEventListener("blur", this.handlePopoverBlur);
+        }
+    };
+
+    private registerPopoverBlurHandler = () => {
+        if (this.popoverContentEl != null) {
+            // If current activeElement exists inside popover content, a month
+            // change has triggered and this element should be lastTabbableElement
+            let lastTabbableElement = this.popoverContentEl.contains(document.activeElement)
+                ? document.activeElement
+                : undefined;
+            // Popover contents are well structured, but the selector will need
+            // to be updated if more focusable components are added in the future
+            if (lastTabbableElement == null) {
+                const tabbableElements = this.popoverContentEl.querySelectorAll(
+                    "input, [tabindex]:not([tabindex='-1'])",
+                );
+                const numOfElements = tabbableElements.length;
+                if (numOfElements > 0) {
+                    // Keep track of the last focusable element in popover and add
+                    // a blur handler, so that when:
+                    // * user tabs to the next element, popover closes
+                    // * focus moves to element within popover, popover stays open
+                    lastTabbableElement = tabbableElements[numOfElements - 1];
+                }
+            }
+            this.unregisterPopoverBlurHandler();
+            this.lastElementInPopover = lastTabbableElement as HTMLElement;
+            this.lastElementInPopover.addEventListener("blur", this.handlePopoverBlur);
+        }
+    };
+
+    private unregisterPopoverBlurHandler = () => {
+        if (this.lastElementInPopover != null) {
+            this.lastElementInPopover.removeEventListener("blur", this.handlePopoverBlur);
+        }
     };
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
     private safeInvokeInputProp(name: keyof HTMLInputProps, e: React.SyntheticEvent<HTMLElement>) {
         const { inputProps = {} } = this.props;
         Utils.safeInvoke(inputProps[name], e);
+    }
+
+    private parseDate(dateString: string): Date | null {
+        if (dateString === this.props.outOfRangeMessage || dateString === this.props.invalidDateMessage) {
+            return null;
+        }
+        const { locale, parseDate } = this.props;
+        const newDate = parseDate(dateString, locale);
+        return newDate === false ? new Date(undefined) : newDate;
+    }
+
+    private formatDate(date: Date): string {
+        if (!isDateValid(date) || !this.isDateInRange(date)) {
+            return "";
+        }
+        const { locale, formatDate } = this.props;
+        return formatDate(date, locale);
     }
 }

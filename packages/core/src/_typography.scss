@@ -60,13 +60,14 @@ Markup:
 Styleguide headings
 */
 
+// tag: (font-size, line-height)
 $headers: (
-  "h1": (40px, 0.8em),
-  "h2": (27px, 0.8em),
-  "h3": (24px, 0.8em),
-  "h4": (20px, 0.9em),
-  "h5": (17px, 0.9em),
-  "h6": (15px, 0.9em)
+  "h1": (36px, 40px),
+  "h2": (28px, 32px),
+  "h3": (22px, 25px),
+  "h4": (18px, 21px),
+  "h5": (16px, 19px),
+  "h6": (14px, 16px)
 );
 
 @each $header, $props in $headers {

@@ -14,7 +14,7 @@ The example below demonstrates some of the capabilities of our Popper.js-powered
 @## JavaScript API
 
 The `Popover` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 @interface IPopoverProps
 
@@ -64,7 +64,7 @@ Internally, the provided target is wrapped in a `span.pt-popover-target`. This i
 ```
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>Button targets</h5>
+    <h4 class="pt-callout-title">Button targets</h4>
     Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
     events, which interferes with the popover functioning. If you need to disable a button that
     triggers a popover, you should use [`AnchorButton`](#core/components/button.anchor-button) instead.
@@ -163,7 +163,7 @@ in your application logic whether you should care about a particular invocation 
 if the `nextOpenState` is not the same as the `Popover`'s current state).
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>Disabling controlled popovers</h5>
+    <h4 class="pt-callout-title">Disabling controlled popovers</h4>
     <p>If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
     The popover will re-open when `disabled` is set to `false.</p>
 </div>
@@ -235,7 +235,7 @@ The __@blueprintjs/core__ package exports the above values in the `PopoverIntera
 </div>
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>Conditionally styling popover targets</h5>
+    <h4 class="pt-callout-title">Conditionally styling popover targets</h4>
     When a popover is open, the target has a <code>.pt-popover-open</code> class applied to it.
     You can use this to style the target differently when the popover is open.
 </div>
@@ -279,21 +279,23 @@ a translucent background color, like the backdrop for the [`Dialog`](#core/compo
 The backdrop element has the same opacity-fade transition as the `Dialog` backdrop.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-    <h5>Dangerous edge case</h5>
+    <h4 class="pt-callout-title">Dangerous edge case</h4>
     Rendering a `<Popover isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break
     your application by covering the UI with an invisible non-interactive backdrop. This edge case
     must be handled by your application code or simply avoided if possible.
 </div>
 
-@### Inline rendering
+@### Portal rendering
 
-By default, popover contents are rendered in a newly created [`Portal`](#core/components/portal) appended to `document.body`. This works well for most layouts, because popovers by default will appear above everything else on the page without needing to manually adjust z-indices.
+By default, popover contents are rendered in a [`Portal`](#core/components/portal) appended to `document.body`. This
+allows the the popover contents to "escape" the application DOM tree to avoid incompatible styles on ancestor elements.
+(Incompatible styles typically include hidden `overflow` or complex `position` logic.) It also ensures that the popover
+will appear above all other content, as its container element appears after the application container in the DOM.
 
-However, there are cases where it's preferable to render the popover contents inline in the DOM.
-
-For example, consider a scrolling table where cells have tooltips attached to them. As row items go out of view, cell tooltips should slide out of the viewport as well. This is best accomplished with inline popovers.
-
-Setting `inline={true}` will enable inline rendering.
+Disable the `usePortal` prop to render popover contents in the normal document flow as a sibling of the target.
+This behavior can be desirable to inherit CSS styles from surrounding elements, and can result in smoother performance
+when scrolling. Not using a `Portal` works well for most layouts, because popovers style themselves to appear above
+everything else on the page without needing to manually adjust z-indices, and Popper.js will keep them nicely positioned.
 
 @reactExample PopoverInlineExample
 
@@ -373,7 +375,7 @@ import { mount } from "enzyme";
 import { Target } from "react-popper";
 
 wrapper = mount(
-    <Popover inline={true} interactionKind={PopoverInteractionKind.HOVER}>
+    <Popover usePortal={false} interactionKind={PopoverInteractionKind.HOVER}>
         <div>Target</div>
         <div>Content</div>
     </Popover>

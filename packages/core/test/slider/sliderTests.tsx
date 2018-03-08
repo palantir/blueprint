@@ -160,7 +160,9 @@ describe("<Slider>", () => {
         const slider = renderSlider(<Slider disabled={true} />);
         // spy on instance method instead of onChange because we can't supply nativeEvent
         const trackClickSpy = sinon.spy(slider.instance() as any, "handleTrackClick");
-        slider.find(trackSelector).simulate("mousedown", { target: testsContainerElement.query(trackSelector) });
+        slider
+            .find(trackSelector)
+            .simulate("mousedown", { target: testsContainerElement.querySelector(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackClick was called when disabled");
     });
 
@@ -169,7 +171,9 @@ describe("<Slider>", () => {
         const slider = renderSlider(<Slider disabled={true} />);
         // spy on instance method instead of onChange because we can't supply nativeEvent
         const trackClickSpy = sinon.spy(slider.instance() as any, "handleTrackTouch");
-        slider.find(trackSelector).simulate("touchstart", { target: testsContainerElement.query(trackSelector) });
+        slider
+            .find(trackSelector)
+            .simulate("touchstart", { target: testsContainerElement.querySelector(trackSelector) });
         assert.isTrue(trackClickSpy.notCalled, "handleTrackTouch was called when disabled");
     });
 
@@ -193,17 +197,12 @@ describe("<Slider>", () => {
     });
 
     describe("vertical orientation", () => {
-        let changeSpy: sinon.SinonSpy;
-        let releaseSpy: sinon.SinonSpy;
-
-        before(() => {
-            changeSpy = sinon.spy();
-            releaseSpy = sinon.spy();
-        });
+        const changeSpy = sinon.spy();
+        const releaseSpy = sinon.spy();
 
         afterEach(() => {
-            changeSpy.reset();
-            releaseSpy.reset();
+            changeSpy.resetHistory();
+            releaseSpy.resetHistory();
         });
 
         it("moving mouse calls onChange with nearest value", () => {

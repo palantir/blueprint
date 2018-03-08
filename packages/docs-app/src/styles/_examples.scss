@@ -6,9 +6,13 @@
 
 // Specific Example Customizations
 
-.docs-react-example {
+.docs-example-wrapper {
   .pt-slider:not(:last-child) {
     margin-bottom: $options-margin;
+  }
+
+  .pt-callout {
+    margin: 0;
   }
 }
 
@@ -337,6 +341,28 @@
 .docs-tooltip-example {
   > div {
     margin-bottom: $pt-grid-size;
+  }
+}
+
+.docs-icon-example {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.docs-menu-example .pt-menu {
+  max-width: 280px;
+}
+
+.docs-date-range {
+  @include pt-flex-container(row, $pt-grid-size / 2);
+  align-items: center;
+  margin-top: $pt-grid-size;
+
+  // move inline when popover opens (for Date*Input)
+  &.pt-inline {
+    display: inline-flex;
+    margin: 0;
   }
 }
 

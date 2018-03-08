@@ -8,7 +8,6 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { spy } from "sinon";
 import { Classes, IPortalProps, Portal } from "../../src";
 
 describe("<Portal>", () => {
@@ -31,7 +30,7 @@ describe("<Portal>", () => {
         assert.lengthOf(document.getElementsByClassName(CLASS_TO_TEST), 1);
     });
 
-    it("propagates class names", () => {
+    it("propagates className to portal element", () => {
         const CLASS_TO_TEST = "bp-test-klass";
         portal = mount(
             <Portal className={CLASS_TO_TEST}>
@@ -39,8 +38,19 @@ describe("<Portal>", () => {
             </Portal>,
         );
 
-        const portalChild = document.querySelector(`.${CLASS_TO_TEST}`);
-        assert.strictEqual(portalChild.parentElement.className, Classes.PORTAL);
+        const portalChild = document.querySelector(`.${Classes.PORTAL}.${CLASS_TO_TEST}`);
+        assert.exists(portalChild);
+    });
+
+    it("updates className on portal element", () => {
+        portal = mount(
+            <Portal className="class-one">
+                <p>test</p>
+            </Portal>,
+        );
+        assert.exists(portal.find(".class-one"));
+        portal.setProps({ className: "class-two" });
+        assert.exists(portal.find(".class-two"));
     });
 
     it("respects blueprintPortalClassName on context", () => {
@@ -54,15 +64,5 @@ describe("<Portal>", () => {
 
         const portalElement = document.querySelector(`.${CLASS_TO_TEST}`);
         assert.isTrue(portalElement.classList.contains(Classes.PORTAL));
-    });
-
-    it("mounts children after Portal has mounted (autoFocus)", () => {
-        const focusSpy = spy();
-        portal = mount(
-            <Portal>
-                <input autoFocus={true} onFocus={focusSpy} />
-            </Portal>,
-        );
-        assert.equal(focusSpy.callCount, 1);
     });
 });

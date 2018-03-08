@@ -24,6 +24,9 @@ export interface IControlProps extends IProps, HTMLInputProps {
     /** Whether the control is checked. */
     checked?: boolean;
 
+    /** JSX label for the control. */
+    children?: React.ReactNode;
+
     /** Whether the control is initially checked (uncontrolled mode). */
     defaultChecked?: boolean;
 
@@ -39,8 +42,8 @@ export interface IControlProps extends IProps, HTMLInputProps {
     /**
      * Text label for the control.
      *
-     * This prop actually supports JSX elements, but TypeScript will throw an error because
-     * `HTMLProps` only allows strings. Use `labelElement` to supply a JSX element in TypeScript.
+     * Use `children` or `labelElement` to supply JSX content. This prop actually supports JSX elements,
+     * but TypeScript will throw an error because `HTMLAttributes` only allows strings.
      */
     label?: string;
 
@@ -104,7 +107,7 @@ export interface ICheckboxProps extends IControlProps {
 }
 
 export class Checkbox extends Control<ICheckboxProps> {
-    public static displayName = "Blueprint.Checkbox";
+    public static displayName = "Blueprint2.Checkbox";
 
     // must maintain internal reference for `indeterminate` support
     private input: HTMLInputElement;
@@ -139,7 +142,7 @@ export class Checkbox extends Control<ICheckboxProps> {
 export interface ISwitchProps extends IControlProps {}
 
 export class Switch extends Control<ISwitchProps> {
-    public static displayName = "Blueprint.Switch";
+    public static displayName = "Blueprint2.Switch";
 
     public render() {
         return this.renderControl("checkbox", "pt-switch");
@@ -149,7 +152,7 @@ export class Switch extends Control<ISwitchProps> {
 export interface IRadioProps extends IControlProps {}
 
 export class Radio extends Control<IRadioProps> {
-    public static displayName = "Blueprint.Radio";
+    public static displayName = "Blueprint2.Radio";
 
     public render() {
         return this.renderControl("radio", "pt-radio");

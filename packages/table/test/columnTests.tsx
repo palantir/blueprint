@@ -10,7 +10,7 @@ import * as React from "react";
 import { Cell, Column, ColumnLoadingOption, Table } from "../src";
 import * as Classes from "../src/common/classes";
 import { CellType, expectCellLoading } from "./cellTestUtils";
-import { ReactHarness } from "./harness";
+import { ElementHarness, ReactHarness } from "./harness";
 
 describe("Column", () => {
     const harness = new ReactHarness();
@@ -70,7 +70,7 @@ describe("Column", () => {
             </Table>,
         );
 
-        const columnHeaders = table.element.queryAll(
+        const columnHeaders = table.element.querySelectorAll(
             `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
         );
 
@@ -78,26 +78,9 @@ describe("Column", () => {
         expectCellLoading(columnHeaders[1], CellType.COLUMN_HEADER);
         expectCellLoading(columnHeaders[2], CellType.COLUMN_HEADER, false);
 
-        const col0CellsSelector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(0)}.${
-            Classes.TABLE_CELL
-        }`;
-        const col0cells = table.element.queryAll(col0CellsSelector);
-        col0cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL));
-        expect(col0cells.length).to.equal(NUM_ROWS);
-
-        const col1CellsSelector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(1)}.${
-            Classes.TABLE_CELL
-        }`;
-        const col1cells = table.element.queryAll(col1CellsSelector);
-        col1cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL));
-        expect(col1cells.length).to.equal(NUM_ROWS);
-
-        const col2CellsSelector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(2)}.${
-            Classes.TABLE_CELL
-        }`;
-        const col2cells = table.element.queryAll(col2CellsSelector);
-        col2cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL, false));
-        expect(col2cells.length).to.equal(NUM_ROWS);
+        expectColumnCells(table, 0, true, NUM_ROWS);
+        expectColumnCells(table, 1, true, NUM_ROWS);
+        expectColumnCells(table, 2, false, NUM_ROWS);
     });
 
     it("passes custom class name to renderer", () => {
@@ -110,4 +93,18 @@ describe("Column", () => {
         const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
+
+    function expectColumnCells(
+        table: ElementHarness,
+        columnIndex: number,
+        isCellLoading: boolean,
+        expectedLength: number,
+    ) {
+        const cellsSelector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(columnIndex)}.${
+            Classes.TABLE_CELL
+        }`;
+        const cells = Array.from(table.element.querySelectorAll(cellsSelector));
+        cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL, isCellLoading));
+        expect(cells.length).to.equal(expectedLength);
+    }
 });

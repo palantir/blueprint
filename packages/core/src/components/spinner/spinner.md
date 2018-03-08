@@ -13,7 +13,7 @@ Spinners created via markup use same modifier classes as the
 @## JavaScript API
 
 The `Spinner` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 A `Spinner` is a simple stateless component that renders HTML/SVG markup.
 It supports a `value` prop between 0 and 1 that determines how much of the track is filled by the
@@ -25,7 +25,7 @@ Note that the CSS modifiers described in the [CSS API](#core/components/progress
 are supported via the `className` prop.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>IE11 compatibility note</h5>
+    <h4 class="pt-callout-title">IE11 compatibility note</h4>
     IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
     `value` will not smoothly transition as `value` changes. Indeterminate spinners still animate
     correctly because they rely on CSS animations, not transitions.
@@ -42,7 +42,7 @@ are supported via the `className` prop.
 Use the `SVGSpinner` component to render a spinner inside an SVG element.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>Sizing note</h5>
+    <h4 class="pt-callout-title">Sizing note</h4>
     Because of the way SVG elements are sized, you may need to manually scale the spinner inside your
     SVG to make it an appropriate size.
 </div>

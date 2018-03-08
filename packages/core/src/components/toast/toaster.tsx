@@ -27,6 +27,7 @@ export type ToasterPosition =
     | Position.BOTTOM_LEFT
     | Position.BOTTOM_RIGHT;
 
+/** Instance methods available on a `<Toaster>` component instance. */
 export interface IToaster {
     /**
      * Shows a new toast to the user, or updates an existing toast corresponding to the provided key (optional).
@@ -45,6 +46,10 @@ export interface IToaster {
     getToasts(): IToastOptions[];
 }
 
+/**
+ * Props supported by the `<Toaster>` component.
+ * These props can be passed as an argument to the static `Toaster.create(props?, container?)` method.
+ */
 export interface IToasterProps extends IProps {
     /**
      * Whether a toast should acquire application focus when it first opens.
@@ -61,14 +66,14 @@ export interface IToasterProps extends IProps {
     canEscapeKeyClear?: boolean;
 
     /**
-     * Whether the toaster should be rendered inline or into a new element on `document.body`.
-     * If `true`, then positioning will be relative to the parent element.
+     * Whether the toaster should be rendered into a new element attached to `document.body`.
+     * If `false`, then positioning will be relative to the parent element.
      *
      * This prop is ignored by `Toaster.create()` as that method always appends a new element
      * to the container.
-     * @default false
+     * @default true
      */
-    inline?: boolean;
+    usePortal?: boolean;
 
     /**
      * Position of `Toaster` within its container.
@@ -88,8 +93,8 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
     public static defaultProps: IToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
-        inline: false,
         position: Position.TOP,
+        usePortal: true,
     };
 
     /**
@@ -97,12 +102,12 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
      * The `Toaster` will be rendered into a new element appended to the given container.
      */
     public static create(props?: IToasterProps, container = document.body): IToaster {
-        if (props != null && props.inline != null && !isNodeEnv("production")) {
+        if (props != null && props.usePortal != null && !isNodeEnv("production")) {
             console.warn(TOASTER_WARN_INLINE);
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
-        return ReactDOM.render(<Toaster {...props} inline={true} />, containerElement) as Toaster;
+        return ReactDOM.render(<Toaster {...props} usePortal={false} />, containerElement) as Toaster;
     }
 
     public state = {
@@ -158,13 +163,14 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
                 className={classes}
                 enforceFocus={false}
                 hasBackdrop={false}
-                inline={this.props.inline}
-                isOpen={this.state.toasts.length > 0}
+                isOpen={this.state.toasts.length > 0 || this.props.children != null}
                 onClose={this.handleClose}
                 transitionDuration={350}
                 transitionName="pt-toast"
+                usePortal={this.props.usePortal}
             >
                 {this.state.toasts.map(this.renderToast, this)}
+                {this.props.children}
             </Overlay>
         );
     }

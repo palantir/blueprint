@@ -6,7 +6,7 @@
 
 import {
     AnchorButton,
-    Classes,
+    ButtonGroup,
     Hotkey,
     Hotkeys,
     HotkeysTarget,
@@ -18,7 +18,6 @@ import {
 } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 
-import * as classNames from "classnames";
 import * as React from "react";
 
 export interface INavbarActionsProps {
@@ -31,17 +30,22 @@ export interface INavbarActionsProps {
 export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> {
     public render() {
         return (
-            <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
+            <ButtonGroup minimal={true}>
                 <AnchorButton href="https://github.com/palantir/blueprint" target="_blank" text="GitHub" />
-                <Popover inline={true} content={this.renderReleasesMenu()} position={Position.BOTTOM_RIGHT}>
-                    <AnchorButton rightIconName="caret-down" text="Releases" />
+                <Popover
+                    content={this.renderReleasesMenu()}
+                    className="docs-releases-menu"
+                    position={Position.BOTTOM_RIGHT}
+                    usePortal={false}
+                >
+                    <AnchorButton rightIcon="caret-down" text="Releases" />
                 </Popover>
                 <AnchorButton
                     className="docs-dark-switch"
                     onClick={this.handleDarkSwitchChange}
-                    iconName={this.props.useDarkTheme ? "flash" : "moon"}
+                    icon={this.props.useDarkTheme ? "flash" : "moon"}
                 />
-            </div>
+            </ButtonGroup>
         );
     }
 
@@ -79,17 +83,17 @@ export class NavbarActions extends React.PureComponent<INavbarActionsProps, {}> 
         const libs = releases.filter(({ name }) => COMPONENT_PACKAGES.indexOf(name) >= 0).map(renderItem);
         const tooling = releases.filter(({ name }) => COMPONENT_PACKAGES.indexOf(name) === -1).map(renderItem);
         return (
-            <Menu className="docs-releases-menu">
+            <Menu>
                 <MenuItem
                     href="https://github.com/palantir/blueprint/releases"
-                    iconName="book"
+                    icon="book"
                     target="_blank"
                     text="Release notes"
                 />
                 <MenuDivider title="Components" />
                 {libs}
-                <MenuDivider title="Tooling" />
-                {tooling}
+                <MenuDivider />
+                <MenuItem text="Build tooling">{tooling}</MenuItem>
             </Menu>
         );
     }

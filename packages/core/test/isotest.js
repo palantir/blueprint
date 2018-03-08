@@ -14,11 +14,11 @@ const customProps = {
     Hotkey: { combo: "mod+s", global: true, label: "save" },
     Icon: { iconName: "pt-icon-build" },
     KeyCombo: { combo: "?" },
-    Overlay: { lazy: false, inline: true },
+    Overlay: { lazy: false, usePortal: false },
     SVGTooltip: tooltipContent,
     TagInput: { values: ["foo", "bar", "baz"] },
     Tooltip: tooltipContent,
-    Toaster: { inline: true },
+    Toaster: { usePortal: false },
 };
 
 const popoverTarget = React.createElement("button");
@@ -32,10 +32,6 @@ const customChildren = {
     Toaster: React.createElement(Core.Toast, { message: "Toast" }),
 };
 
-const skipList = [
-    "Portal", // doesn't render any DOM inline
-]
-
 describe("Core isomorphic rendering", () => {
-    generateIsomorphicTests(Core, customProps, customChildren, skipList);
+    generateIsomorphicTests(Core, customProps, customChildren);
 });

@@ -25,9 +25,9 @@ describe("<QueryList>", () => {
     };
 
     beforeEach(() => {
-        testProps.onActiveItemChange.reset();
-        testProps.onItemSelect.reset();
-        testProps.renderer.reset();
+        testProps.onActiveItemChange.resetHistory();
+        testProps.onItemSelect.resetHistory();
+        testProps.renderer.resetHistory();
     });
 
     describe("filtering", () => {
@@ -59,6 +59,13 @@ describe("<QueryList>", () => {
             );
             assert.isTrue(listPredicate.called, "listPredicate should be invoked");
             assert.isFalse(predicate.called, "item predicate should not be invoked");
+        });
+
+        it("omitting both predicate props is supported", () => {
+            shallow(<FilmQueryList {...testProps} query="1980" />);
+            const { items, renderItem } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
+            const filteredItems = items.map(renderItem).filter(x => x != null);
+            assert.lengthOf(filteredItems, items.length, "returns all films");
         });
 
         it("ensure onActiveItemChange is not called with undefined and empty list", () => {

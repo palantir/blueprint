@@ -153,7 +153,7 @@ describe("<EditableText>", () => {
             // mount into a DOM element so we can get the input to inspect its HTML props
             const attachTo = document.createElement("div");
             mount(<EditableText isEditing={true} value="alphabet" />, { attachTo });
-            const input = attachTo.query("input") as HTMLInputElement;
+            const input = attachTo.querySelector("input") as HTMLInputElement;
             assert.strictEqual(input.selectionStart, 8);
             assert.strictEqual(input.selectionEnd, 8);
         });
@@ -161,7 +161,7 @@ describe("<EditableText>", () => {
         it("controlled mode can only change value via props", () => {
             let expected = "alphabet";
             const wrapper = mount(<EditableText isEditing={true} value={expected} />);
-            const inputElement = ReactDOM.findDOMNode(wrapper.instance()).query("input") as HTMLInputElement;
+            const inputElement = ReactDOM.findDOMNode(wrapper.instance()).querySelector("input") as HTMLInputElement;
 
             const input = wrapper.find("input");
             input.simulate("change", { target: { value: "hello" } });
@@ -181,11 +181,10 @@ describe("<EditableText>", () => {
             assert.strictEqual(wrapper.state("value"), "hello");
         });
 
-        // TODO: does not work in Phantom, only in Chrome (input.selectionStart is also equal to 8)
-        xit("the full input box is highlighted when selectAllOnFocus is true", () => {
+        it("the full input box is highlighted when selectAllOnFocus is true", () => {
             const attachTo = document.createElement("div");
             mount(<EditableText isEditing={true} selectAllOnFocus={true} value="alphabet" />, { attachTo });
-            const input = attachTo.query("input") as HTMLInputElement;
+            const input = attachTo.querySelector("input") as HTMLInputElement;
             assert.strictEqual(input.selectionStart, 0);
             assert.strictEqual(input.selectionEnd, 8);
         });
@@ -247,10 +246,7 @@ describe("<EditableText>", () => {
             const wrapper = mount(
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
-            const textarea = ReactDOM.findDOMNode(wrapper.instance()).query("textarea") as HTMLTextAreaElement;
-            // pass "" as second argument since Phantom does not update cursor properly after a simulated value change
-            // Chrome: "control" => "control\n"
-            // Phantom: "control" => "\ncontrol"
+            const textarea = ReactDOM.findDOMNode(wrapper.instance()).querySelector("textarea") as HTMLTextAreaElement;
             simulateHelper(wrapper, "", { ctrlKey: true, target: textarea, which: Keys.ENTER });
             assert.strictEqual(textarea.value, "\n");
             simulateHelper(wrapper, "", { metaKey: true, target: textarea, which: Keys.ENTER });

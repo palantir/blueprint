@@ -6,9 +6,9 @@
 @import "../progress/common";
 
 $button-border-width: 1px !default;
-$button-padding: 0 $pt-grid-size !default;
+$button-padding: ($pt-grid-size / 2) $pt-grid-size !default;
 $button-padding-small: 0 ($pt-grid-size * 0.7) !default;
-$button-padding-large: 0 ($pt-grid-size * 1.5) !default;
+$button-padding-large: ($pt-grid-size / 2) ($pt-grid-size * 1.5) !default;
 $button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
 $button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
 
@@ -94,12 +94,15 @@ $button-intents: (
 ) !default;
 
 @mixin pt-button-base() {
-  display: inline-block;
+  @include pt-flex-container(row, $button-icon-spacing, $inline: inline);
+  align-items: center;
+  justify-content: center;
+
   border: none;
   border-radius: $pt-border-radius;
   cursor: pointer;
   padding: $button-padding;
-  vertical-align: middle;
+  text-align: left;
   font-family: inherit;
   font-size: $pt-font-size;
 }
@@ -107,8 +110,23 @@ $button-intents: (
 @mixin pt-button-height($height) {
   min-width: $height;
   min-height: $height;
-  // for text centering
-  line-height: $height;
+}
+
+@mixin pt-button-height-large() {
+  @include pt-button-height($pt-button-height-large);
+  @include pt-flex-margin(row, $button-icon-spacing-large);
+  padding: $button-padding-large;
+  font-size: $pt-font-size-large;
+}
+
+@mixin pt-button-height-default() {
+  @include pt-button-height($pt-button-height);
+  padding: $button-padding;
+}
+
+@mixin pt-button-height-small() {
+  @include pt-button-height($pt-button-height-small);
+  padding: $button-padding-small;
 }
 
 @mixin pt-button() {
@@ -430,13 +448,3 @@ $button-intents: (
   }
 }
 
-@mixin pt-button-large() {
-  @include pt-button-height($pt-button-height-large);
-  padding: $button-padding-large;
-  font-size: $pt-font-size-large;
-}
-
-@mixin pt-button-small() {
-  @include pt-button-height($pt-button-height-small);
-  padding: $button-padding-small;
-}

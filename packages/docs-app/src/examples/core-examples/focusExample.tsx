@@ -30,7 +30,7 @@ export class FocusExample extends BaseExample<IFocusExampleState> {
     protected renderExample() {
         return (
             <div>
-                <InputGroup leftIconName="star" placeholder="Test me for focus" />
+                <InputGroup leftIcon="star" placeholder="Test me for focus" />
                 <br />
                 <Button className="pt-fill" text="Test me for focus" />
             </div>

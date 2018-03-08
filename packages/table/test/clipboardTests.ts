@@ -8,12 +8,12 @@ import { expect } from "chai";
 import { Clipboard } from "../src/common/clipboard";
 
 describe("Clipboard", () => {
-    it("copies cells (disabled on phantom)", () => {
+    it("copies cells", () => {
         const success = Clipboard.copyCells([["A", "B", "C"], ["D", "E", "F"]]);
         expect(success).to.be.false;
     });
 
-    it("copies strings (disabled on phantom)", () => {
+    it("copies strings", () => {
         const success = Clipboard.copyString(`
             Hello,
             World!

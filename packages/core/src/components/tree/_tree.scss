@@ -80,24 +80,28 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 .pt-tree-node-caret-none {
   position: relative;
   min-width: $pt-grid-size * 3;
-  // override default icon styles, which appear first for some reason
+  // CSS API: override default icon styles, which appear first for some reason
   line-height: $tree-row-height !important; // stylelint-disable-line declaration-no-important
 }
 
 .pt-tree-node-caret {
   @include pt-icon-colors();
+  transform: rotate(0deg);
   cursor: pointer;
   text-align: center;
+  transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
 
-  &::before {
-    // lets us rotate with transform
-    display: inline-block;
-    content: $pt-icon-chevron-right;
-    transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
+  &.pt-tree-node-caret-open {
+    transform: rotate(90deg);
   }
 
-  &.pt-tree-node-caret-open::before {
-    transform: rotate(90deg);
+  // CSS API support
+  &.pt-icon-standard::before {
+    content: $pt-icon-caret-right;
+  }
+
+  .pt-icon {
+    margin: $tree-icon-spacing;
   }
 }
 

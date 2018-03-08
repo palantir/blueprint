@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Classes, Dialog, Tooltip } from "@blueprintjs/core";
+import { AnchorButton, Button, Classes, Dialog, Intent, Tooltip } from "@blueprintjs/core";
 import { OverlayExample } from "./overlayExample";
 
 export class DialogExample extends OverlayExample {
@@ -16,34 +16,51 @@ export class DialogExample extends OverlayExample {
                 <Button onClick={this.handleOpen}>Show dialog</Button>
                 <Dialog
                     className={this.props.themeName}
-                    iconName="inbox"
+                    icon="info-sign"
                     onClose={this.handleClose}
-                    title="Dialog header"
+                    title="Palantir Foundry"
                     {...this.state}
                 >
                     <div className={Classes.DIALOG_BODY}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sagittis odio neque, eget aliquam
-                        eros consectetur in. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-                        inceptos himenaeos. Nulla consequat justo in enim aliquam, eget convallis nibh gravida. Nunc
-                        quis consectetur enim. Curabitur tincidunt vestibulum pulvinar. Suspendisse vel libero justo. Ut
-                        feugiat pharetra commodo. Morbi ullamcorper enim nec dolor aliquam, eu maximus turpis elementum.
-                        Morbi tristique laoreet ipsum. Nulla sit amet nisl posuere, sollicitudin ex eget, faucibus
-                        neque. Cras malesuada nisl vel lectus vehicula fringilla. Fusce vel facilisis tellus. Integer
-                        porta mollis nibh, nec viverra magna cursus non. Nulla consectetur dui nec fringilla dignissim.
-                        Praesent in tempus odio. Donec sollicitudin sit amet eros eu sollicitudin. Etiam convallis ex
-                        felis, nec pharetra felis sagittis ut. Suspendisse aliquam purus sed sollicitudin aliquet. Duis
-                        sollicitudin risus sed orci elementum dignissim. Phasellus sed erat fermentum, laoreet mi
-                        posuere, mollis quam. Ut vestibulum dictum lorem, vel faucibus libero varius id. Donec iaculis
-                        efficitur nisl. Aliquam a lectus ac massa suscipit commodo.
+                        <p>
+                            <strong>
+                                Data integration is the seminal problem of the digital age. For over ten years, we’ve
+                                helped the world’s premier organizations rise to the challenge.
+                            </strong>
+                        </p>
+                        <p>
+                            Palantir Foundry radically reimagines the way enterprises interact with data by amplifying
+                            and extending the power of data integration. With Foundry, anyone can source, fuse, and
+                            transform data into any shape they desire. Business analysts become data engineers — and
+                            leaders in their organization’s data revolution.
+                        </p>
+                        <p>
+                            Foundry’s back end includes a suite of best-in-class data integration capabilities: data
+                            provenance, git-style versioning semantics, granular access controls, branching,
+                            transformation authoring, and more. But these powers are not limited to the back-end IT
+                            shop.
+                        </p>
+                        <p>
+                            In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
+                            integrations in their own right. Access controls, transformation logic, and data quality
+                            flow from original data source to intermediate analysis to presentation in real time. Every
+                            end product created in Foundry becomes a new data source that other users can build upon.
+                            And the enterprise data foundation goes where the business drives it.
+                        </p>
+                        <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
                     </div>
                     <div className={Classes.DIALOG_FOOTER}>
                         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                            <Button>Secondary</Button>
-                            <Tooltip content="This button is hooked up to close the dialog." inline={true}>
-                                <Button className="pt-intent-primary" onClick={this.handleClose}>
-                                    Primary
-                                </Button>
+                            <Tooltip content="This button is hooked up to close the dialog.">
+                                <Button onClick={this.handleClose}>Close</Button>
                             </Tooltip>
+                            <AnchorButton
+                                intent={Intent.PRIMARY}
+                                href="https://www.palantir.com/palantir-foundry/"
+                                target="_blank"
+                            >
+                                Visit the Foundry website
+                            </AnchorButton>
                         </div>
                     </div>
                 </Dialog>

@@ -12,71 +12,56 @@ import { IProps } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 
 export interface INonIdealStateProps extends IProps {
-    /**
-     * An action that's attached to the non-ideal state.
-     */
+    /** An action to resolve the non-ideal state which appears last (after `description`). */
     action?: JSX.Element;
 
-    /**
-     * A longer description of the non-ideal state.
-     */
-    description?: string | JSX.Element;
+    /** React children will appear immediately after `description` in the same container. */
+    children?: React.ReactNode;
 
-    /**
-     * The title of the non-ideal state.
-     */
-    title?: string;
+    /** A longer description of the non-ideal state. */
+    description?: React.ReactNode;
 
-    /**
-     * The name of a Blueprint icon to display or a JSX Element (such as `<Spinner/>`).
-     */
+    /** The title of the non-ideal state. */
+    title?: React.ReactNode;
+
+    /** The name of a Blueprint icon or a JSX Element (such as `<Spinner/>`) to render above the title. */
     visual?: IconName | JSX.Element;
 }
 
 export class NonIdealState extends React.PureComponent<INonIdealStateProps, {}> {
     public render() {
+        const { action, className, title } = this.props;
         return (
-            <div className={classNames(Classes.NON_IDEAL_STATE, this.props.className)}>
+            <div className={classNames(Classes.NON_IDEAL_STATE, className)}>
                 {this.maybeRenderVisual()}
-                {this.maybeRenderTitle()}
+                {title && <h4 className={Classes.NON_IDEAL_STATE_TITLE}>{title}</h4>}
                 {this.maybeRenderDescription()}
-                {this.maybeRenderAction()}
+                {action && <div className={Classes.NON_IDEAL_STATE_ACTION}>{action}</div>}
             </div>
         );
     }
 
-    private maybeRenderAction() {
-        if (this.props.action == null) {
-            return undefined;
-        }
-
-        return <div className={Classes.NON_IDEAL_STATE_ACTION}>{this.props.action}</div>;
-    }
-
     private maybeRenderDescription() {
-        if (this.props.description == null) {
-            return undefined;
+        const { children, description } = this.props;
+        if (children == null && description == null) {
+            return null;
         }
-
-        return <div className={Classes.NON_IDEAL_STATE_DESCRIPTION}>{this.props.description}</div>;
-    }
-
-    private maybeRenderTitle() {
-        if (this.props.title == null) {
-            return undefined;
-        }
-
-        return <h4 className={Classes.NON_IDEAL_STATE_TITLE}>{this.props.title}</h4>;
+        return (
+            <div className={Classes.NON_IDEAL_STATE_DESCRIPTION}>
+                {description}
+                {children}
+            </div>
+        );
     }
 
     private maybeRenderVisual() {
         const { visual } = this.props;
         if (visual == null) {
-            return undefined;
+            return null;
         } else if (typeof visual === "string") {
             return (
                 <div className={classNames(Classes.NON_IDEAL_STATE_VISUAL, Classes.NON_IDEAL_STATE_ICON)}>
-                    <Icon iconName={visual} iconSize="inherit" />
+                    <Icon icon={visual} iconSize={Icon.SIZE_LARGE * 3} />
                 </div>
             );
         } else {

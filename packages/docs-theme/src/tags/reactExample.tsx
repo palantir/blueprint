@@ -28,11 +28,11 @@ export const ReactExample: React.SFC<IExampleProps> = props => (
     <div className="docs-example-wrapper">
         {props.example.render({ id: props.name })}
         <a className="view-example-source" href={props.example.sourceUrl} target="_blank">
-            <Icon iconName="code" /> View source on GitHub
+            <Icon icon="code" /> View source on GitHub
         </a>
     </div>
 );
-ReactExample.displayName = "Docs.ReactExample";
+ReactExample.displayName = "Docs2.ReactExample";
 
 export class ReactExampleTagRenderer {
     constructor(private examples: IExampleMap) {}

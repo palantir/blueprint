@@ -25,7 +25,7 @@ See the example below.
 @## JavaScript API
 
 The `NonIdealState` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 A `NonIdealState` component's props determine the content displayed. The content should
 reflect the situation the user is in: no files found, an empty document, a 404 error, etc.

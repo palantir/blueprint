@@ -68,7 +68,9 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
         [Keys.ARROW_DOWN]: this.selectNext(),
         [Keys.ARROW_UP]: this.selectNext(-1),
         [Keys.ENTER]: () => {
-            const activeItem = findDOMNode(this).query(`.${Classes.MENU_ITEM}.${Classes.ACTIVE}`) as HTMLElement;
+            const activeItem = findDOMNode(this).querySelector(
+                `.${Classes.MENU_ITEM}.${Classes.ACTIVE}`,
+            ) as HTMLElement;
             if (activeItem != null) {
                 activeItem.click();
             }
@@ -83,16 +85,16 @@ export class Navigator extends React.PureComponent<INavigatorProps, INavigatorSt
                 className="docs-navigator"
                 content={this.renderPopover()}
                 onInteraction={this.handlePopoverInteraction}
-                inline={true}
                 isOpen={this.state.query.length > 0}
                 minimal={true}
                 position={Position.BOTTOM_LEFT}
+                usePortal={false}
             >
                 <InputGroup
                     autoComplete="off"
                     autoFocus={true}
                     inputRef={this.refHandlers.input}
-                    leftIconName="search"
+                    leftIcon="search"
                     onChange={this.handleQueryChange}
                     onKeyDown={this.handleKeyDown}
                     placeholder="Search..."

@@ -55,12 +55,12 @@ Styleguide pt-menu
   &::before {
     // support pt-icon-* classes directly on this element
     @include pt-icon();
-    float: left;
     margin-right: $menu-item-padding;
   }
 
   &::before,
-  &::after {
+  .pt-icon {
+    align-self: flex-start;
     color: $pt-icon-color;
   }
 
@@ -87,7 +87,7 @@ Styleguide pt-menu
     color: $pt-text-color-disabled !important;
 
     &::before,
-    &::after,
+    .pt-icon,
     .pt-menu-item-label {
       color: $pt-icon-color-disabled !important;
     }
@@ -104,23 +104,12 @@ Styleguide pt-menu
   }
 }
 
-a.pt-menu-item {
-  &,
-  &:hover {
-    text-decoration: none;
-  }
-}
-
 button.pt-menu-item {
   border: none;
   background: none;
   width: 100%;
   text-align: left;
-}
-
-.pt-menu-item-label {
-  float: right;
-  margin-left: $menu-item-padding;
+  font-family: inherit;
 }
 
 /*
@@ -160,19 +149,12 @@ Styleguide pt-menu.pt-menu-header
     @include menu-item-intent($pt-dark-intent-text-colors);
 
     &::before,
-    &::after {
+    .pt-icon {
       color: $pt-dark-icon-color;
     }
 
     .pt-menu-item-label {
       color: $pt-dark-text-color-muted;
-    }
-
-    &:hover {
-      &::before,
-      &::after {
-        color: $white;
-      }
     }
 
     &.pt-active,
@@ -186,7 +168,7 @@ Styleguide pt-menu.pt-menu-header
       color: $pt-dark-text-color-disabled !important;
 
       &::before,
-      &::after,
+      .pt-icon,
       .pt-menu-item-label {
         color: $pt-dark-icon-color-disabled !important;
       }

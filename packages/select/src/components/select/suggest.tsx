@@ -60,10 +60,10 @@ export interface ISuggestState<T> {
 }
 
 export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
-    public static displayName = "Blueprint.Suggest";
+    public static displayName = "Blueprint2.Suggest";
 
     public static ofType<T>() {
-        return (Suggest as any) as new () => Suggest<T>;
+        return Suggest as new (props: ISuggestProps<T>) => Suggest<T>;
     }
 
     public state: ISuggestState<T> = {

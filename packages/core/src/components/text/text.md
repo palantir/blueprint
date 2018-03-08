@@ -6,7 +6,7 @@ conditionally adding the title attribute and truncating with an ellipsis when co
 @## JavaScript API
 
 The `Text` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 `Text` accepts and renders arbitrary children. It is intended that these children render as text.
 

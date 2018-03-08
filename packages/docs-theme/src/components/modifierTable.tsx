@@ -6,29 +6,21 @@
 
 import * as React from "react";
 
-import { IKssModifier } from "documentalist/dist/client";
-
-function renderModifier(modifier: IKssModifier, index: number) {
-    return (
-        <tr key={index}>
-            <td data-modifier={modifier.name}>
-                <code>{modifier.name}</code>
-            </td>
-            <td dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
-        </tr>
-    );
+export interface IModifierTableProps {
+    title: string;
 }
 
-export const ModifierTable: React.SFC<{ modifiers: IKssModifier[] }> = ({ modifiers }) => (
-    <div className="docs-modifiers">
-        <table className="pt-html-table">
-            <thead>
-                <tr>
-                    <th>Modifier</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>{modifiers.map(renderModifier)}</tbody>
-        </table>
-    </div>
-);
+export const ModifierTable: React.SFC<IModifierTableProps> = ({ children, title }) =>
+    React.Children.count(children) > 0 ? (
+        <div className="docs-modifiers-table">
+            <table className="pt-html-table">
+                <thead>
+                    <tr>
+                        <th>{title}</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>{children}</tbody>
+            </table>
+        </div>
+    ) : null;

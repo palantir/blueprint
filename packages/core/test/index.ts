@@ -3,12 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import "es6-shim";
-
-import * as Enzyme from "enzyme";
-import * as Adapter from "enzyme-adapter-react-16";
-
-Enzyme.configure({ adapter: new Adapter() });
+import "@blueprintjs/test-commons/bootstrap";
 
 import "./alert/alertTests";
 import "./breadcrumbs/breadcrumbTests";
@@ -29,8 +24,10 @@ import "./dialog/dialogTests";
 import "./editable-text/editableTextTests";
 import "./forms/fileInputTests";
 import "./forms/formGroupTests";
+import "./forms/labelTests";
 import "./hotkeys/hotkeysTests";
 import "./icon/iconTests";
+import "./menu/menuItemTests";
 import "./menu/menuTests";
 import "./non-ideal-state/nonIdealStateTests";
 import "./overlay/overlayTests";

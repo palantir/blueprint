@@ -15,7 +15,7 @@ import { AbstractButton, IButtonProps } from "./abstractButton";
 export { IButtonProps };
 
 export class Button extends AbstractButton<HTMLButtonElement> {
-    public static displayName = "Blueprint.Button";
+    public static displayName = "Blueprint2.Button";
 
     public render() {
         return (
@@ -27,7 +27,7 @@ export class Button extends AbstractButton<HTMLButtonElement> {
 }
 
 export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
-    public static displayName = "Blueprint.AnchorButton";
+    public static displayName = "Blueprint2.AnchorButton";
 
     public render() {
         const { href, tabIndex = 0 } = this.props;

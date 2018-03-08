@@ -63,10 +63,10 @@ export interface IMultiSelectState<T> {
 }
 
 export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState<T>> {
-    public static displayName = "Blueprint.MultiSelect";
+    public static displayName = "Blueprint2.MultiSelect";
 
     public static ofType<T>() {
-        return (MultiSelect as any) as new () => MultiSelect<T>;
+        return MultiSelect as new (props: IMultiSelectProps<T>) => MultiSelect<T>;
     }
 
     public state: IMultiSelectState<T> = {
@@ -233,6 +233,9 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             const { resetOnSelect } = this.props;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
+                // By default the escape key will not trigger a blur on the
+                // input element. It must be done explicitly.
+                this.input.blur();
                 this.setState({
                     activeItem: resetOnSelect ? this.props.items[0] : this.state.activeItem,
                     isOpen: false,

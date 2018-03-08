@@ -15,7 +15,7 @@ Markup:
   <div class="pt-dialog">
     <div class="pt-dialog-header">
       <span class="pt-icon-large pt-icon-inbox"></span>
-      <h5>Dialog header</h5>
+      <h4 class="pt-dialog-header-title">Dialog header</h4>
       <button aria-label="Close" class="pt-dialog-close-button pt-icon-small-cross"></button>
     </div>
     <div class="pt-dialog-body">
@@ -100,13 +100,14 @@ $dialog-padding: $pt-grid-size * 2 !default;
   min-height: $pt-icon-size-large + $dialog-padding;
   padding-left: $dialog-padding;
 
-  .pt-icon-large {
+  .pt-icon-large,
+  .pt-icon {
     flex: 0 0 auto;
     margin-right: $dialog-padding / 2;
     color: $pt-icon-color;
   }
 
-  h5 {
+  .pt-dialog-header-title {
     @include overflow-ellipsis();
     flex: 1 1 auto;
     margin: 0;
@@ -121,11 +122,12 @@ $dialog-padding: $pt-grid-size * 2 !default;
     box-shadow: 0 1px 0 $pt-dark-divider-black;
     background: $dark-gray4;
 
-    .pt-icon-large {
+    .pt-icon-large,
+    .pt-icon {
       color: $pt-dark-icon-color;
     }
 
-    h5 {
+    .pt-dialog-header-title {
       color: $pt-dark-heading-color;
     }
   }
@@ -143,6 +145,11 @@ $dialog-padding: $pt-grid-size * 2 !default;
 
   cursor: pointer;
   padding: $pt-grid-size;
+
+  .pt-icon-large,
+  .pt-icon {
+    margin: 0;
+  }
 }
 
 .pt-dialog-body {
