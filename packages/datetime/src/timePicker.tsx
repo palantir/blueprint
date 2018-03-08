@@ -234,32 +234,15 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         if (!this.props.useAmPm) {
             return null;
         }
-
-        const onChange = (amPm: string) => {
-            const changeToAm = amPm === "am";
-            if (changeToAm !== this.state.isPm) {
-                return;
-            }
-            const hour = DateUtils.convert24HourMeridiem(this.state.value.getHours(), changeToAm);
-
-            this.setState({ isPm: !changeToAm }, () => {
-                this.updateTime(hour, TimeUnit.HOUR_24);
-            });
-        };
-
         return (
             <div className={classNames(CoreClasses.SELECT, Classes.TIMEPICKER_AMPM_SELECT)}>
                 <select
                     value={this.state.isPm ? "pm" : "am"}
-                    onChange={handleStringChange(onChange)}
+                    onChange={this.handleAmPmChange}
                     disabled={this.props.disabled}
                 >
-                    <option key={0} value={"am"}>
-                        AM
-                    </option>
-                    <option key={1} value={"pm"}>
-                        PM
-                    </option>
+                    <option value={"am"}>AM</option>
+                    <option value={"pm"}>PM</option>
                 </select>
             </div>
         );
@@ -327,6 +310,18 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         if (this.props.selectAllOnFocus) {
             e.currentTarget.select();
         }
+    };
+
+    private handleAmPmChange = (e: React.SyntheticEvent<HTMLSelectElement>) => {
+        const changeToAm = e.currentTarget.value === "am";
+        if (changeToAm !== this.state.isPm) {
+            return;
+        }
+        const hour = DateUtils.convert24HourMeridiem(this.state.value.getHours(), changeToAm);
+
+        this.setState({ isPm: !changeToAm }, () => {
+            this.updateTime(hour, TimeUnit.HOUR_24);
+        });
     };
 
     // begin method definitions: state modification
@@ -438,9 +433,4 @@ function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>, actions: IKeyE
             actions[key]();
         }
     }
-}
-
-/** Event handler that exposes the target element's value as a string. */
-function handleStringChange(handler: (value: string) => void) {
-    return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
 }
