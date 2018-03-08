@@ -402,12 +402,6 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         this.invokeValueCallback(nextValue, this.props.onButtonClick);
     };
 
-    private handleMouseUp = () => {
-        this.delta = 0;
-        this.stopContinuousChange();
-        document.removeEventListener("mouseup", this.handleMouseUp);
-    };
-
     private handleButtonFocus = () => {
         this.setState({ isButtonGroupFocused: true });
     };
@@ -446,7 +440,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         // The button's onMouseUp event handler doesn't fire if the user
         // releases outside of the button, so we need to watch all the way
         // from the top.
-        document.addEventListener("mouseup", this.handleMouseUp);
+        document.addEventListener("mouseup", this.stopContinuousChange);
 
         // Initial delay is slightly longer to prevent the user from
         // accidentally triggering the continuous increment/decrement.
@@ -455,10 +449,12 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         }, NumericInput.CONTINUOUS_CHANGE_DELAY);
     }
 
-    private stopContinuousChange() {
+    private stopContinuousChange = () => {
+        this.delta = 0;
         this.clearTimeouts();
         clearInterval(this.intervalId);
-    }
+        document.removeEventListener("mouseup", this.stopContinuousChange);
+    };
 
     private handleContinuousChange = () => {
         const nextValue = this.incrementValue(this.delta);
