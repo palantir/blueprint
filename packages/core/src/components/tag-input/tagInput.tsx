@@ -17,8 +17,8 @@ import { ITagProps, Tag } from "../tag/tag";
 
 export interface ITagInputProps extends IProps {
     /**
-     * If true, onAdd will be invoked when the input loses focus.
-     * By default, onAdd is only invoked on enter.
+     * If true, `onAdd` will be invoked when the input loses focus.
+     * Otherwise, `onAdd` is only invoked when `enter` is pressed.
      * @default false
      */
     addOnBlur?: boolean;

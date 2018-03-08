@@ -109,7 +109,7 @@ describe("<TagInput>", () => {
             assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
         });
 
-        it("is invoked on blur when addOnBlur is true", done => {
+        it("is invoked on blur when addOnBlur=true", done => {
             const onAdd = sinon.stub();
             const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} onAdd={onAdd} />);
             // simulate typing input text
@@ -123,7 +123,7 @@ describe("<TagInput>", () => {
             });
         });
 
-        it("is not invoked on blur when addOnBlur is true but inputValue is undefined", done => {
+        it("is not invoked on blur when addOnBlur=true but inputValue is empty", done => {
             const onAdd = sinon.stub();
             const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} onAdd={onAdd} />);
             wrapper.simulate("blur");
@@ -134,7 +134,7 @@ describe("<TagInput>", () => {
             });
         });
 
-        it("is not invoked on blur when addOnBlur is false", done => {
+        it("is not invoked on blur when addOnBlur=false", done => {
             const onAdd = sinon.stub();
             const wrapper = mount(<TagInput values={VALUES} inputProps={{ value: NEW_VALUE }} onAdd={onAdd} />);
             wrapper.simulate("blur");
