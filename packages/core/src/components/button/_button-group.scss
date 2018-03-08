@@ -114,6 +114,10 @@ Styleguide pt-button-group
   &.pt-minimal {
     .pt-button {
       @include pt-button-minimal();
+
+      &:not(:last-child) {
+        margin-right: 1px;
+      }
     }
   }
 
