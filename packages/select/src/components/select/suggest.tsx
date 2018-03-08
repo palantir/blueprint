@@ -78,17 +78,16 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         query: "",
     };
 
-    private input: HTMLInputElement;
     private TypedQueryList = QueryList.ofType<T>();
-    private queryList: QueryList<T>;
+    private input: HTMLInputElement | null;
+    private queryList: QueryList<T> | null;
     private refHandlers = {
-        input: (ref: HTMLInputElement) => {
+        input: (ref: HTMLInputElement | null) => {
             this.input = ref;
-
             const { inputProps = {} } = this.props;
             Utils.safeInvoke(inputProps.inputRef, ref);
         },
-        queryList: (ref: QueryList<T>) => (this.queryList = ref),
+        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
     public render() {
@@ -156,10 +155,12 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     }
 
     private selectText = () => {
-        if (this.input != null) {
-            // wait until the input is properly focused to select the text inside of it
-            requestAnimationFrame(() => this.input.setSelectionRange(0, this.input.value.length));
-        }
+        // wait until the input is properly focused to select the text inside of it
+        requestAnimationFrame(() => {
+            if (this.input != null) {
+                this.input.setSelectionRange(0, this.input.value.length);
+            }
+        });
     };
 
     private handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -179,11 +180,15 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         let nextOpenState: boolean;
         if (!this.props.closeOnSelect) {
-            this.input.focus();
+            if (this.input != null) {
+                this.input.focus();
+            }
             this.selectText();
             nextOpenState = true;
         } else {
-            this.input.blur();
+            if (this.input != null) {
+                this.input.blur();
+            }
             nextOpenState = false;
         }
 
@@ -254,7 +259,9 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             const { inputProps = {}, openOnKeyDown } = this.props;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
-                this.input.blur();
+                if (this.input != null) {
+                    this.input.blur();
+                }
                 this.setState({
                     isOpen: false,
                     selectedItem: isTyping ? undefined : selectedItem,
