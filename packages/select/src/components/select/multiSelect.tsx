@@ -78,7 +78,12 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     private input: HTMLInputElement;
     private queryList: QueryList<T>;
     private refHandlers = {
-        input: (ref: HTMLInputElement) => (this.input = ref),
+        input: (ref: HTMLInputElement) => {
+            this.input = ref;
+
+            const { tagInputProps = {} } = this.props;
+            Utils.safeInvoke(tagInputProps.inputRef, ref);
+        },
         queryList: (ref: QueryList<T>) => (this.queryList = ref),
     };
 

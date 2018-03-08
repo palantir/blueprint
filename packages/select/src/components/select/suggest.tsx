@@ -88,7 +88,12 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     private TypedQueryList = QueryList.ofType<T>();
     private queryList: QueryList<T>;
     private refHandlers = {
-        input: (ref: HTMLInputElement) => (this.input = ref),
+        input: (ref: HTMLInputElement) => {
+            this.input = ref;
+
+            const { inputProps = {} } = this.props;
+            Utils.safeInvoke(inputProps.inputRef, ref);
+        },
         queryList: (ref: QueryList<T>) => (this.queryList = ref),
     };
 
