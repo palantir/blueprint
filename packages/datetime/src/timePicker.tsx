@@ -121,18 +121,13 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         super(props, context);
 
         let value = props.minTime;
-        let useAmPm = TimePicker.defaultProps.useAmPm;
-
         if (props.value != null) {
             value = props.value;
         } else if (props.defaultValue != null) {
             value = props.defaultValue;
         }
-        if (props.useAmPm != null) {
-            useAmPm = props.useAmPm;
-        }
 
-        this.state = this.getFullStateFromValue(value, useAmPm);
+        this.state = this.getFullStateFromValue(value, props.useAmPm);
     }
 
     public render() {
@@ -182,7 +177,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         const didUseAmPmChange = nextProps.useAmPm !== this.props.useAmPm;
 
         let value = this.state.value;
-        let useAmPm = this.props.useAmPm || TimePicker.defaultProps.useAmPm;
+        let useAmPm = this.props.useAmPm;
 
         if (didBoundsChange) {
             value = DateUtils.getTimeInRange(this.state.value, nextProps.minTime, nextProps.maxTime);
