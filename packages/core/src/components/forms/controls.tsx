@@ -34,7 +34,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
     disabled?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: (ref: HTMLInputElement) => any;
+    inputRef?: (ref: HTMLInputElement | null) => any;
 
     /** Whether the control is inline. */
     inline?: boolean;
