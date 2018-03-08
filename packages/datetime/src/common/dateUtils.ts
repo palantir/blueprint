@@ -210,10 +210,7 @@ export function convert24HourMeridiem(hour: number, toAm: boolean): number {
     if (hour < 0 || hour > 23) {
         throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
     }
-    if (toAm) {
-        return hour % 12;
-    }
-    return hour % 12 + 12;
+    return toAm ? hour % 12 : hour % 12 + 12;
 }
 
 export function getIsPmFrom24Hour(hour: number): boolean {
@@ -227,24 +224,14 @@ export function get12HourFrom24Hour(hour: number): number {
     if (hour < 0 || hour > 23) {
         throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
     }
-    hour = hour % 12;
-    if (hour === 0) {
-        hour = 12;
-    }
-    return hour;
+    const newHour = hour % 12;
+    return newHour === 0 ? 12 : newHour;
 }
 
 export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
     if (hour < 1 || hour > 12) {
-        throw new Error(`hour must be between [0,12] inclusive: got ${hour}`);
+        throw new Error(`hour must be between [1,12] inclusive: got ${hour}`);
     }
-    if (isPm) {
-        hour = hour + 12;
-        if (hour === 24) {
-            hour = 12;
-        }
-    } else if (hour === 12) {
-        hour = 0;
-    }
-    return hour;
+    const newHour = hour === 12 ? 0 : hour;
+    return isPm ? newHour + 12 : newHour;
 }
