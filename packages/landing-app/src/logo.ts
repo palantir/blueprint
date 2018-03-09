@@ -629,44 +629,42 @@ export class Ticker implements ITickable {
 
 export class Animator {
     private tickables: ITickable[] = [];
-    private starttime: number = 0;
+    private startTime: number = 0;
+    private frameId: number | undefined;
 
     public constructor(private render: IRenderCallback) {}
 
-    public ticker(callback: IRenderCallback) {
-        const ticker = new Ticker(callback);
-        this.tickables.push(ticker);
-        return ticker;
+    public add<T extends ITickable>(tickable: T) {
+        this.tickables.push(tickable);
+        return tickable;
     }
 
-    public timeline() {
-        const timeline = new Timeline();
-        this.tickables.push(timeline);
-        return timeline;
-    }
-
-    public accumulator(target: number, callback?: IAnimatedCallback) {
-        const accumulator = new Accumulator(target, callback);
-        this.tickables.push(accumulator);
-        return accumulator;
+    public isRunning() {
+        return this.frameId !== undefined;
     }
 
     public start() {
-        this.starttime = new Date().valueOf();
-        requestAnimationFrame(this.tick);
+        this.startTime = new Date().valueOf();
+        this.nextFrame();
+    }
+
+    public stop() {
+        cancelAnimationFrame(this.frameId);
+        this.frameId = undefined;
     }
 
     private tick = (t: number) => {
-        const elapsed = new Date().valueOf() - this.starttime;
-        let again = false;
-        for (const tickable of this.tickables) {
-            again = tickable.tick(elapsed) || again;
-        }
+        const elapsed = new Date().valueOf() - this.startTime;
+        const again = this.tickables.reduce<boolean>((again, t) => t.tick(elapsed) || again, false);
         this.render();
         if (again) {
-            requestAnimationFrame(this.tick);
+            this.nextFrame();
         }
     };
+
+    private nextFrame() {
+        this.frameId = requestAnimationFrame(this.tick);
+}
 }
 
 /*-----------------------------------------------
@@ -998,13 +996,10 @@ export class SceneRenderer extends CanvasRenderer {
 export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElement) => {
     // scene geometry
     const overlays = (rect: Shape) => {
-        const shadow = { "hard-light": "rgba(0,0,0,0.1)", "soft-light": "black" } as ICompositeOverlays;
-        const shadow2 = { "soft-light": "rgba(0,0,0,0.3)" } as ICompositeOverlays;
-        const highlight = { "soft-light": "rgba(255, 255, 255, 0.5)" } as ICompositeOverlays;
-        rect.faces[0].overlays = shadow;
-        rect.faces[2].overlays = shadow;
-        rect.faces[3].overlays = highlight;
-        rect.faces[5].overlays = shadow2;
+        rect.faces[0].overlays = { "hard-light": "rgba(0,0,0,0.1)", "soft-light": "black" };
+        rect.faces[2].overlays = { "hard-light": "rgba(0,0,0,0.1)", "soft-light": "black" };
+        rect.faces[3].overlays = { "soft-light": "rgba(0,0,0,0.3)" };
+        rect.faces[5].overlays = { "soft-light": "rgba(255, 255, 255, 0.5)" };
         return rect;
     };
 
@@ -1100,11 +1095,10 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
 
     // entrance animation
     const slideDownAnimation = (offset: number, model: SceneModel) => {
-        animator
-            .timeline()
+        animator.add(new Timeline()
             .tween(0, (t: number) => model.restore().translate(0, -8, 0))
             .tween(offset + 100)
-            .tween(1000, T.EASE_OUT_EXP(2, T.INTERPOLATE(-8, 0, (t: number) => model.restore().translate(0, t, 0))));
+            .tween(1000, T.EASE_OUT_EXP(2, T.INTERPOLATE(-8, 0, (t: number) => model.restore().translate(0, t, 0)))));
     };
 
     slideDownAnimation(0, slideInGroups[0]);
@@ -1115,8 +1109,7 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     const sheenAnimation = (offset: number, model: SceneModel) => {
         const sheen = model.children[2];
 
-        animator
-            .timeline()
+        animator.add(new Timeline()
             .tween(offset)
             .tween(
                 500,
@@ -1142,10 +1135,9 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
                 for (const f of sheen.faces) {
                     f.lineDash = null;
                 }
-            });
+            }));
 
-        animator
-            .timeline()
+        animator.add(new Timeline()
             .tween(offset)
             .tween(500)
             .tween(
@@ -1162,7 +1154,7 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
                 for (const f of sheen.faces) {
                     f.lineDashOffset = null;
                 }
-            });
+            }));
     };
 
     const throttle = (wait: number, func: () => void) => {
@@ -1184,7 +1176,7 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     setTimeout(sheens, 1200);
 
     // Update model transformations once per tick
-    animator.ticker(() => {
+    animator.add(new Ticker(() => {
         let rotate = Quaternion.xyAlt(accumX.value, -accumY.value).toMatrix();
         rotate = M()
             .translate(1, 1, 1)
@@ -1216,17 +1208,17 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
             .restore()
             .translate(accumExploder[2].value, SHADOW_DEPTH, -accumExploder[2].value)
             .transform(rotate);
-    });
+    }));
 
-    const accumX = animator.accumulator(0);
-    const accumY = animator.accumulator(0);
+    const accumX = animator.add(new Accumulator(0));
+    const accumY = animator.add(new Accumulator(0));
     const accumExploder = [0, 1, 2].map(() => {
-        const accum = animator.accumulator(0);
+        const accum = animator.add(new Accumulator(0));
         accum.alpha = 0.2; // faster accumulator for explosion animation
         return accum;
     });
 
-    const explosionTimeline = animator.timeline();
+    const explosionTimeline = animator.add(new Timeline());
     const explodeBlocks = () => {
         explosionTimeline
             .reset()
@@ -1262,6 +1254,20 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
 
     canvas.addEventListener("mouseup", unexplodeBlocks);
     canvas.addEventListener("touchend", unexplodeBlocks);
+
+    /** bottom of the logo within the canvas element */
+    const LOGO_HEIGHT = 330;
+    document.addEventListener("scroll", (evt: UIEvent) => {
+        // pause logo animation when offscreen to avoid scrolling performance impact
+        const isCanvasVisible = document.scrollingElement.scrollTop < LOGO_HEIGHT;
+        if (isCanvasVisible && !animator.isRunning()) {
+            animator.start();
+            console.log("animation resumed")
+        } else if (!isCanvasVisible && animator.isRunning()) {
+            animator.stop();
+            console.log("animation paused")
+        }
+    })
 
     animator.start();
 };
