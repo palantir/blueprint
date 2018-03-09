@@ -629,9 +629,16 @@ export class Animator {
 
     public constructor(private render: IRenderCallback) {}
 
-    public add<Type extends ITickable>(tickable: Type) {
-        this.tickables.push(tickable);
-        return tickable;
+    public accumulator(target: number) {
+        return this.add(new Accumulator(target));
+    }
+
+    public ticker(callback: IRenderCallback) {
+        return this.add(new Ticker(callback));
+    }
+
+    public timeline() {
+        return this.add(new Timeline());
     }
 
     public isRunning() {
@@ -646,6 +653,11 @@ export class Animator {
     public stop() {
         cancelAnimationFrame(this.frameId);
         this.frameId = undefined;
+    }
+
+    private add<Type extends ITickable>(tickable: Type) {
+        this.tickables.push(tickable);
+        return tickable;
     }
 
     private tick = (t: number) => {
@@ -1073,15 +1085,11 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
 
     // entrance animation
     const slideDownAnimation = (offset: number, model: SceneModel) => {
-        animator.add(
-            new Timeline()
-                .tween(0, (t: number) => model.restore().translate(0, -8, 0))
-                .tween(offset + 100)
-                .tween(
-                    1000,
-                    T.EASE_OUT_EXP(2, T.INTERPOLATE(-8, 0, (t: number) => model.restore().translate(0, t, 0))),
-                ),
-        );
+        animator
+            .timeline()
+            .tween(0, (t: number) => model.restore().translate(0, -8, 0))
+            .tween(offset + 100)
+            .tween(1000, T.EASE_OUT_EXP(2, T.INTERPOLATE(-8, 0, (t: number) => model.restore().translate(0, t, 0))));
     };
 
     slideDownAnimation(0, slideInGroups[0]);
@@ -1095,26 +1103,22 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
         const interpolateLineDash = (t: number) =>
             sheen.setEachFace("lineDash", [t, t / 3, t / 5, 1000 * renderer.retinaScale]);
 
-        animator.add(
-            new Timeline()
-                .tween(offset)
-                .tween(500, T.EASE_IN(T.INTERPOLATE(0, 100 * renderer.retinaScale, interpolateLineDash)))
-                .tween(2000, T.EASE_OUT(T.INTERPOLATE(100 * renderer.retinaScale, 0, interpolateLineDash)))
-                .tween(0, t => sheen.setEachFace("lineDash", null)),
-        );
+        animator
+            .timeline()
+            .tween(offset)
+            .tween(500, T.EASE_IN(T.INTERPOLATE(0, 100 * renderer.retinaScale, interpolateLineDash)))
+            .tween(2000, T.EASE_OUT(T.INTERPOLATE(100 * renderer.retinaScale, 0, interpolateLineDash)))
+            .tween(0, t => sheen.setEachFace("lineDash", null));
 
-        animator.add(
-            new Timeline()
-                .tween(offset)
-                .tween(500)
-                .tween(
-                    2000,
-                    T.EASE_OUT(
-                        T.INTERPOLATE(0, -350 * renderer.retinaScale, t => sheen.setEachFace("lineDashOffset", t)),
-                    ),
-                )
-                .tween(0, t => sheen.setEachFace("lineDashOffset", null)),
-        );
+        animator
+            .timeline()
+            .tween(offset)
+            .tween(500)
+            .tween(
+                2000,
+                T.EASE_OUT(T.INTERPOLATE(0, -350 * renderer.retinaScale, t => sheen.setEachFace("lineDashOffset", t))),
+            )
+            .tween(0, t => sheen.setEachFace("lineDashOffset", null));
     };
 
     const throttle = (wait: number, func: () => void) => {
@@ -1136,51 +1140,48 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     window.setTimeout(sheens, 1200);
 
     // Update model transformations once per tick
-    animator.add(
-        new Ticker(() => {
-            let rotate = Quaternion.xyAlt(accumX.value, -accumY.value).toMatrix();
-            rotate = M()
-                .translate(1, 1, 1)
-                .multiply(rotate)
-                .multiply(M().translate(-1, -1, -1));
+    animator.ticker(() => {
+        const rotate = M()
+            .translate(1, 1, 1)
+            .multiply(Quaternion.xyAlt(accumX.value, -accumY.value).toMatrix())
+            .multiply(M().translate(-1, -1, -1));
 
-            explodeGroups[0]
-                .restore()
-                .translate(accumExploder[0].value, 0, 0)
-                .transform(rotate);
-            explodeGroups[1]
-                .restore()
-                .translate(0, 0, accumExploder[1].value)
-                .transform(rotate);
-            explodeGroups[2]
-                .restore()
-                .translate(accumExploder[2].value, -2 * accumExploder[2].value, -accumExploder[2].value)
-                .transform(rotate);
+        explodeGroups[0]
+            .restore()
+            .translate(accumExploder[0].value, 0, 0)
+            .transform(rotate);
+        explodeGroups[1]
+            .restore()
+            .translate(0, 0, accumExploder[1].value)
+            .transform(rotate);
+        explodeGroups[2]
+            .restore()
+            .translate(accumExploder[2].value, -2 * accumExploder[2].value, -accumExploder[2].value)
+            .transform(rotate);
 
-            shadowGroups[0]
-                .restore()
-                .translate(accumExploder[0].value, SHADOW_DEPTH, 0)
-                .transform(rotate);
-            shadowGroups[1]
-                .restore()
-                .translate(0, SHADOW_DEPTH, accumExploder[1].value)
-                .transform(rotate);
-            shadowGroups[2]
-                .restore()
-                .translate(accumExploder[2].value, SHADOW_DEPTH, -accumExploder[2].value)
-                .transform(rotate);
-        }),
-    );
+        shadowGroups[0]
+            .restore()
+            .translate(accumExploder[0].value, SHADOW_DEPTH, 0)
+            .transform(rotate);
+        shadowGroups[1]
+            .restore()
+            .translate(0, SHADOW_DEPTH, accumExploder[1].value)
+            .transform(rotate);
+        shadowGroups[2]
+            .restore()
+            .translate(accumExploder[2].value, SHADOW_DEPTH, -accumExploder[2].value)
+            .transform(rotate);
+    });
 
-    const accumX = animator.add(new Accumulator(0));
-    const accumY = animator.add(new Accumulator(0));
+    const accumX = animator.accumulator(0);
+    const accumY = animator.accumulator(0);
     const accumExploder = [0, 1, 2].map(() => {
-        const accum = animator.add(new Accumulator(0));
+        const accum = animator.accumulator(0);
         accum.alpha = 0.2; // faster accumulator for explosion animation
         return accum;
     });
 
-    const explosionTimeline = animator.add(new Timeline());
+    const explosionTimeline = animator.timeline();
     const explodeBlocks = () => {
         explosionTimeline
             .reset()
