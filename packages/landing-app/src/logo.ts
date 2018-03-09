@@ -995,18 +995,18 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
         return rect;
     };
 
-    const blocks = {
-        blockA: {
+    const blocks = [
+        {
             block: Shape.JOIN(overlays(Shape.RECT()).translate(0, 0, 0), overlays(Shape.RECT()).translate(0, 0, -1)),
             corner: Corner.CORNER().translate(0, -1, 0),
             outline: Shape.RECT(-1, -1, -2),
         },
-        blockB: {
+        {
             block: Shape.JOIN(overlays(Shape.RECT()).translate(-1, 0, 0), overlays(Shape.RECT()).translate(-1, -1, 0)),
             corner: Corner.CORNER().translate(-1, -2, 0),
             outline: Shape.RECT(-1, -2, -1).translate(-1, 0, 0),
         },
-        blockC: {
+        {
             block: Shape.JOIN(
                 overlays(Shape.RECT()).translate(0, -1, -1),
                 overlays(Shape.RECT()).translate(-1, -1, -1),
@@ -1014,25 +1014,15 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
             corner: Corner.CORNER().translate(0, -2, -1),
             outline: Shape.RECT(-2, -1, -1).translate(0, -1, -1),
         },
-    };
+    ];
 
     // explicitly define render order to prevent overlap artifacts
-    blocks.blockA.block.order([30, 25, 9, 26, 28, 30, 6, 10, 14, 5]);
-    blocks.blockB.block.order([21, 9, 17, 22, 8, 24, 7, 30, 23, 11]);
-    blocks.blockC.block.order([18, 15, 16, 20, 4, 2, 3, 4, 10, 1]);
-    blocks.blockA.outline.order([31, 4, 4, 17, 31, 4]);
-    blocks.blockB.outline.order([25, 6, 6, 31, 25, 6]);
-    blocks.blockC.outline.order([21, 0, 0, 21, 21, 0]);
-
-    // // swap overlays of blockA to match mocks
-    // let shadows = blocks.blockA.block.faces[2].overlays;
-    // blocks.blockA.block.faces[2].overlays = null;
-    // blocks.blockA.block.faces[7].overlays = null;
-    // blocks.blockA.block.faces[9].overlays = shadows;
-
-    // shadows = blocks.blockC.block.faces[0].overlays;
-    // blocks.blockC.block.faces[0].overlays = null;
-    // blocks.blockC.block.faces[1].overlays = shadows;
+    blocks[0].block.order([30, 25, 9, 26, 28, 30, 6, 10, 14, 5]);
+    blocks[1].block.order([21, 9, 17, 22, 8, 24, 7, 30, 23, 11]);
+    blocks[2].block.order([18, 15, 16, 20, 4, 2, 3, 4, 10, 1]);
+    blocks[0].outline.order([31, 4, 4, 17, 31, 4]);
+    blocks[1].outline.order([25, 6, 6, 31, 25, 6]);
+    blocks[2].outline.order([21, 0, 0, 21, 21, 0]);
 
     // add dropshadow for bottom faces of blocks
     const dropShadowFrom = (face: Face) => {
@@ -1056,24 +1046,20 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     const explodeGroups = slideInGroups.map(g => g.group());
     const blockGroups = explodeGroups.map(g => g.group());
 
-    blockGroups[0]
-        .add(blocks.blockA.corner)
-        .add(blocks.blockA.block.fill("rgba(0, 180, 111, 0.9)"))
-        .add(blocks.blockA.outline.stroke("rgba(255, 255, 255, 0.7)"));
+    function configureBlockGroup(index: number, fill: string) {
+        blockGroups[index]
+            .add(blocks[index].corner)
+            .add(blocks[index].block.fill(fill))
+            .add(blocks[index].outline.stroke("rgba(255, 255, 255, 0.7)"));
+    }
 
-    blockGroups[1]
-        .add(blocks.blockB.corner)
-        .add(blocks.blockB.block.fill("rgba(245, 86, 86, 0.9)"))
-        .add(blocks.blockB.outline.stroke("rgba(255, 255, 255, 0.7)"));
+    configureBlockGroup(0, "rgba(0, 180, 111, 0.9)");
+    configureBlockGroup(1, "rgba(245, 86, 86, 0.9)");
+    configureBlockGroup(2, "rgba(34, 148, 217, 0.9)");
 
-    blockGroups[2]
-        .add(blocks.blockC.corner)
-        .add(blocks.blockC.block.fill("rgba(34, 148, 217, 0.9)"))
-        .add(blocks.blockC.outline.stroke("rgba(255, 255, 255, 0.7)"));
-
-    shadowGroups[0].add(dropShadowFrom(blocks.blockA.outline.faces[2]));
-    shadowGroups[1].add(dropShadowFrom(blocks.blockB.outline.faces[2]));
-    shadowGroups[2].add(dropShadowFrom(blocks.blockC.outline.faces[2]));
+    shadowGroups[0].add(dropShadowFrom(blocks[0].outline.faces[2]));
+    shadowGroups[1].add(dropShadowFrom(blocks[1].outline.faces[2]));
+    shadowGroups[2].add(dropShadowFrom(blocks[2].outline.faces[2]));
 
     // renderer
     const renderer = new SceneRenderer(canvas.getContext("2d"), scene);
