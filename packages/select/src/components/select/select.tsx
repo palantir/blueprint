@@ -200,16 +200,15 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     private renderMenu(listProps: IQueryListRendererProps<T>) {
         const { menuRenderer, initialContent, noResults } = this.props;
         const { items, itemsParentRef, renderItem } = listProps;
-        const maybeInitialContent = initialContent != null && this.isQueryEmpty() ? initialContent : null;
         if (menuRenderer !== undefined) {
             return menuRenderer({
-                initialContent: maybeInitialContent,
                 items,
                 itemsParentRef,
-                noResults,
+                query: this.state.query,
                 renderItem,
             });
         } else {
+            const maybeInitialContent = initialContent != null && this.isQueryEmpty() ? initialContent : null;
             const renderedItems = items.map(renderItem).filter(item => item != null);
             return (
                 <Menu ulRef={itemsParentRef}>

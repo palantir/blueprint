@@ -4,8 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as React from "react";
-
 /**
  * An object describing how to render the contents of a dropdown.
  * A `menuRenderer` receives this object as its sole argument.
@@ -15,7 +13,12 @@ export interface IMenuRendererProps<T> {
     items: T[];
 
     /**
-     * A ref handler that should be attached to the dropdown's outermost HTML element.
+     * The current query string.
+     */
+    query: string;
+
+    /**
+     * A ref handler that should be attached to the menu's outermost HTML element.
      * This is required for the active item to scroll into view automatically.
      */
     itemsParentRef: (ref: HTMLElement) => void;
@@ -26,12 +29,6 @@ export interface IMenuRendererProps<T> {
      * to the owner component's `itemRenderer` prop.
      */
     renderItem: (item: T, index?: number) => JSX.Element | null;
-
-    /** React child to render when filtering items returns zero results. */
-    noResults?: React.ReactChild;
-
-    /** React child to render when query is empty. */
-    initialContent?: React.ReactChild;
 }
 
 /** Type alias for a function that renders the contents of a Dropdown. */

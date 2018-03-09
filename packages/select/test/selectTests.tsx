@@ -120,7 +120,7 @@ describe("<Select>", () => {
     it("returns focus to focusable target after popover closed");
 
     describe("menuRenderer", () => {
-        it("overrides default dropdown rendering", () => {
+        it("overrides default menu rendering", () => {
             const customClass = "custom";
             const wrapper = select({
                 menuRenderer: () => <ul className={customClass} />,
@@ -135,26 +135,6 @@ describe("<Select>", () => {
                 menuRenderer: props => <ul>{props.items.map(props.renderItem)}</ul>,
             });
             assert.equal(handlers.itemRenderer.callCount, TOP_100_FILMS.length);
-        });
-
-        it("initialContent is only rendered if query is empty", () => {
-            const selectProps: Partial<ISelectProps<IFilm>> = {
-                initialContent: <address />,
-                menuRenderer: props => <ul>{props.initialContent}</ul>,
-            };
-            // Non-empty query:
-            assert.lengthOf(select(selectProps, "1999").find("address"), 0, "should not find initialContent");
-            // Empty query:
-            assert.lengthOf(select(selectProps, "").find("address"), 1, "should find initialContent");
-        });
-
-        it("noResults prop from Select is passed on to menuRenderer", () => {
-            const noResults = <address />;
-            const wrapper = select({
-                menuRenderer: props => <ul>{props.noResults}</ul>,
-                noResults,
-            });
-            assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
         });
     });
 
