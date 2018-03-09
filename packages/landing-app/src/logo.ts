@@ -372,18 +372,23 @@ export class Shape extends Transformable<Shape> {
         super();
     }
 
-    public fill(color: string) {
+    public eachFace(callback: (f: Face) => void) {
         for (const f of this.faces) {
-            f.fill = color;
+            callback(f);
         }
         return this;
     }
 
+    public setEachFace<K extends keyof Face>(key: K, value: Face[K]) {
+        return this.eachFace(f => (f[key] = value));
+    }
+
+    public fill(color: string) {
+        return this.setEachFace("fill", color);
+    }
+
     public stroke(color: string) {
-        for (const f of this.faces) {
-            f.stroke = color;
-        }
-        return this;
+        return this.setEachFace("stroke", color);
     }
 
     public order(orders: number[]) {
@@ -393,10 +398,7 @@ export class Shape extends Transformable<Shape> {
     }
 
     public transform(m: Matrix): Shape {
-        for (const f of this.faces) {
-            f.transform(m);
-        }
-        return this;
+        return this.eachFace(f => f.transform(m));
     }
 }
 
@@ -447,7 +449,7 @@ export class SceneModel extends Transformable<SceneModel> {
             .matrix(shear);
     })();
 
-    public children = [];
+    public children: Array<Transformable<any>> = [];
     public xform = M();
 
     public constructor() {
@@ -469,7 +471,7 @@ export class SceneModel extends Transformable<SceneModel> {
         return this;
     }
 
-    public add(child: any) {
+    public add(child: Transformable<any>) {
         this.children.push(child);
         return this;
     }
@@ -826,15 +828,12 @@ class BackgroundRenderer extends CanvasRenderer {
 }
 
 export class SceneRenderer extends CanvasRenderer {
-    // private buffer: CanvasBuffer;
-
     public constructor(ctx: CanvasRenderingContext2D, private scene: SceneModel) {
         super(ctx);
     }
 
     public render() {
         this.resize();
-        // this.buffer.matchSize(this.ctx);
 
         this.ctx.clearRect(0, 0, this.width * this.retinaScale, this.height * this.retinaScale);
         this.renderLogo();
@@ -853,8 +852,8 @@ export class SceneRenderer extends CanvasRenderer {
             if (object instanceof Shape) {
                 const shape = object as Shape;
                 for (const face of shape.faces) {
-                    face.projected = face.points.map(p =>
-                        p
+                    face.projected = face.points.map(point =>
+                        point
                             .copy()
                             .transform(transform)
                             .round(),
@@ -1105,36 +1104,17 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
 
     // sheen animation
     const sheenAnimation = (offset: number, model: SceneModel) => {
-        const sheen = model.children[2];
+        const sheen = model.children[2] as Shape;
+
+        const interpolateLineDash = (t: number) =>
+            sheen.setEachFace("lineDash", [t, t / 3, t / 5, 1000 * renderer.retinaScale]);
 
         animator.add(
             new Timeline()
                 .tween(offset)
-                .tween(
-                    500,
-                    T.EASE_IN(
-                        T.INTERPOLATE(0, 100 * renderer.retinaScale, t => {
-                            for (const f of sheen.faces) {
-                                f.lineDash = [t, t / 3, t / 5, 1000 * renderer.retinaScale];
-                            }
-                        }),
-                    ),
-                )
-                .tween(
-                    2000,
-                    T.EASE_OUT(
-                        T.INTERPOLATE(100 * renderer.retinaScale, 0, t => {
-                            for (const f of sheen.faces) {
-                                f.lineDash = [t, t / 3, t / 5, 1000 * renderer.retinaScale];
-                            }
-                        }),
-                    ),
-                )
-                .tween(0, t => {
-                    for (const f of sheen.faces) {
-                        f.lineDash = null;
-                    }
-                }),
+                .tween(500, T.EASE_IN(T.INTERPOLATE(0, 100 * renderer.retinaScale, interpolateLineDash)))
+                .tween(2000, T.EASE_OUT(T.INTERPOLATE(100 * renderer.retinaScale, 0, interpolateLineDash)))
+                .tween(0, t => sheen.setEachFace("lineDash", null)),
         );
 
         animator.add(
@@ -1144,28 +1124,20 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
                 .tween(
                     2000,
                     T.EASE_OUT(
-                        T.INTERPOLATE(0, -350 * renderer.retinaScale, t => {
-                            for (const f of sheen.faces) {
-                                f.lineDashOffset = t;
-                            }
-                        }),
+                        T.INTERPOLATE(0, -350 * renderer.retinaScale, t => sheen.setEachFace("lineDashOffset", t)),
                     ),
                 )
-                .tween(0, t => {
-                    for (const f of sheen.faces) {
-                        f.lineDashOffset = null;
-                    }
-                }),
+                .tween(0, t => sheen.setEachFace("lineDashOffset", null)),
         );
     };
 
     const throttle = (wait: number, func: () => void) => {
-        let timeout = null;
-        const reset = () => (timeout = null);
+        let timeoutId: number | null = null;
+        const reset = () => (timeoutId = null);
         return () => {
-            if (timeout == null) {
+            if (timeoutId == null) {
                 func();
-                timeout = setTimeout(reset, wait);
+                timeoutId = window.setTimeout(reset, wait);
             }
         };
     };
@@ -1175,7 +1147,7 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
         sheenAnimation(300, blockGroups[1]);
         sheenAnimation(500, blockGroups[2]);
     });
-    setTimeout(sheens, 1200);
+    window.setTimeout(sheens, 1200);
 
     // Update model transformations once per tick
     animator.add(
