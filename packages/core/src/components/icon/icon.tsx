@@ -62,7 +62,7 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
     public static readonly SIZE_LARGE = 20;
 
     public render() {
-        const { className, icon, iconSize = Icon.SIZE_STANDARD, intent, title = icon, ...svgProps } = this.props;
+        const { className, color, icon, iconSize = Icon.SIZE_STANDARD, intent, title = icon, ...svgProps } = this.props;
         if (icon == null) {
             return null;
         } else if (typeof icon !== "string") {
@@ -78,10 +78,19 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
 
         const classes = classNames(Classes.ICON, Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
+
+        let style = svgProps.style || {};
+
+        // ".pt-icon" will overwrite "fill" in svg attribute, put "fill: color" into style to make it work.
+        if (color) {
+            style = { ...style, fill: color };
+        }
+
         return (
             <svg
                 {...svgProps}
                 className={classes}
+                style={style}
                 data-icon={icon}
                 width={iconSize}
                 height={iconSize}

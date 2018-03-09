@@ -24,6 +24,8 @@ describe("<Icon>", () => {
 
     it("renders icon name", () => assertIcon(<Icon icon="calendar" />, "calendar"));
 
+    it("renders icon color", () => assertIconColor(<Icon icon="add" color="red" />, "red"));
+
     it("prefixed icon renders nothing", () => {
         // @ts-ignore invalid icon
         const icon = shallow(<Icon icon={Classes.iconClass("airplane")} />);
@@ -64,5 +66,10 @@ describe("<Icon>", () => {
         const wrapper = shallow(icon);
         assert.strictEqual(wrapper.prop("width"), size);
         assert.strictEqual(wrapper.prop("height"), size);
+    }
+
+    /** Asserts that rendered icon has color equal to color. */
+    function assertIconColor(icon: React.ReactElement<IIconProps>, color: string) {
+        assert.deepEqual(shallow(icon).prop("style"), { fill: color });
     }
 });
