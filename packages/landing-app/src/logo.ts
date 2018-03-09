@@ -1,10 +1,10 @@
-/**
+/*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-// tslint:disable
+// tslint:disable:max-classes-per-file no-conditional-assignment
 
 const LOGO_Y_OFFSET = 250;
 const SHADOW_DEPTH = 0.3;
@@ -100,6 +100,7 @@ export class Matrix {
 
 const M = (m?: IMatrixTuple) => new Matrix(m);
 
+// tslint:disable-next-line:no-shadowed-variable - complains about <T>, unsure why
 export abstract class Transformable<T extends Transformable<any>> {
     public abstract transform(matrix: Matrix): T;
 
@@ -125,9 +126,6 @@ export abstract class Transformable<T extends Transformable<any>> {
 }
 
 export class Quaternion {
-    private static PIXELS_PER_RADIAN = 2000;
-    private static POOL = new Quaternion();
-
     public static xy(x: number, y: number) {
         const quatX = Quaternion.pointAngle(P(0, 1, 0), x / Quaternion.PIXELS_PER_RADIAN);
         const quatY = Quaternion.pointAngle(P(1, 0, 0), y / Quaternion.PIXELS_PER_RADIAN);
@@ -145,6 +143,9 @@ export class Quaternion {
         const w = Math.cos(theta / 2.0);
         return new Quaternion(scale * p.x, scale * p.y, scale * p.z, w);
     }
+
+    private static PIXELS_PER_RADIAN = 2000;
+    private static POOL = new Quaternion();
 
     public constructor(public x = 0, public y = 0, public z = 0, public w = 0) {}
 
@@ -166,19 +167,20 @@ export class Quaternion {
     }
 
     public toMatrix() {
-        const t = this;
+        // tslint:disable-next-line:no-this-assignment
+        const { w, x, y, z } = this;
         return M([
-            1 - 2 * (t.y * t.y + t.z * t.z),
-            2 * (t.x * t.y - t.w * t.z),
-            2 * (t.x * t.z + t.w * t.y),
+            1 - 2 * (y * y + z * z),
+            2 * (x * y - w * z),
+            2 * (x * z + w * y),
             0,
-            2 * (t.x * t.y + t.w * t.z),
-            1 - 2 * (t.x * t.x + t.z * t.z),
-            2 * (t.y * t.z - t.w * t.x),
+            2 * (x * y + w * z),
+            1 - 2 * (x * x + z * z),
+            2 * (y * z - w * x),
             0,
-            2 * (t.x * t.z - t.w * t.y),
-            2 * (t.y * t.z + t.w * t.x),
-            1 - 2 * (t.x * t.x + t.y * t.y),
+            2 * (x * z - w * y),
+            2 * (y * z + w * x),
+            1 - 2 * (x * x + y * y),
             0,
             0,
             0,
@@ -282,7 +284,7 @@ export class Face extends Transformable<Face> {
         ctx.beginPath();
         for (let i = 0; i < points.length; i++) {
             const p = points[i];
-            if (i == 0) {
+            if (i === 0) {
                 ctx.moveTo(p.x, p.y);
             } else {
                 ctx.lineTo(p.x, p.y);
@@ -326,26 +328,24 @@ export const F = (points: Point[]) => new Face(points);
 
 export class Shape extends Transformable<Shape> {
     public static JOIN(...shapes: Shape[]) {
-        const xorfaces: { [serialized: string]: Face } = {};
+        const xorFaces: { [serialized: string]: Face } = {};
         for (const shape of shapes) {
             for (const face of shape.faces) {
-                const consistent = face.points.slice();
-                consistent.sort((a, b) => a.x - b.x);
-                consistent.sort((a, b) => a.y - b.y);
-                consistent.sort((a, b) => a.z - b.z);
+                const consistent = face.points
+                    .slice()
+                    .sort((a, b) => a.x - b.x)
+                    .sort((a, b) => a.y - b.y)
+                    .sort((a, b) => a.z - b.z);
                 const key = JSON.stringify(consistent);
-                if (xorfaces[key] != null) {
-                    delete xorfaces[key];
+                if (xorFaces[key] != null) {
+                    delete xorFaces[key];
                 } else {
-                    xorfaces[key] = face;
+                    xorFaces[key] = face;
                 }
             }
         }
 
-        const faces = [] as Face[];
-        for (const key in xorfaces) {
-            faces.push(xorfaces[key]);
-        }
+        const faces = Object.keys(xorFaces).map(key => xorFaces[key]);
         return new Shape(faces);
     }
 
@@ -435,9 +435,7 @@ export class Corner extends Transformable<Corner> {
     }
 }
 
-export interface IRenderableVisitor {
-    (object: any, transform: Matrix): void;
-}
+export type IRenderableVisitor = (object: any, transform: Matrix) => void;
 
 export class SceneModel extends Transformable<SceneModel> {
     public static ISOMETRIC = (() => {
@@ -506,23 +504,17 @@ export const T = {
     EASE_IN: (callback: IAnimatedCallback) => {
         return t => callback(t * t * t * t * t);
     },
-    EASE_OUT: (callback: IAnimatedCallback) => {
-        return t => callback((t = t - 1) * t * t * t * t + 1);
+    EASE_IN_EXP: (e: number, callback: IAnimatedCallback) => {
+        return t => callback(t === 0 ? 0 : Math.pow(e, 10 * (t - 1)));
     },
     EASE_IN_OUT: (callback: IAnimatedCallback) => {
         return t => callback((t *= 2) < 1 ? 1 / 2 * t * t * t * t : -1 / 2 * ((t -= 2) * t * t * t - 2));
     },
-    EASE_IN_EXP: (e: number, callback: IAnimatedCallback) => {
-        return t => callback(t == 0 ? 0 : Math.pow(e, 10 * (t - 1)));
-    },
-    EASE_OUT_EXP: (e: number, callback: IAnimatedCallback) => {
-        return t => callback(t == 1 ? 1 : 1 - Math.pow(e, -10 * t));
-    },
     EASE_IN_OUT_EXP: (e, callback: IAnimatedCallback) => {
         return t => {
-            if (t == 0) {
+            if (t === 0) {
                 callback(0);
-            } else if (t == 1) {
+            } else if (t === 1) {
                 callback(1);
             } else if ((t *= 2) < 1) {
                 callback(1 / 2 * Math.pow(e, 10 * (t - 1)));
@@ -530,6 +522,12 @@ export const T = {
                 callback(1 / 2 * (-Math.pow(e, -10 * --t) + 2));
             }
         };
+    },
+    EASE_OUT: (callback: IAnimatedCallback) => {
+        return t => callback((t = t - 1) * t * t * t * t + 1);
+    },
+    EASE_OUT_EXP: (e: number, callback: IAnimatedCallback) => {
+        return t => callback(t === 1 ? 1 : 1 - Math.pow(e, -10 * t));
     },
     INTERPOLATE: (from: number, to: number, callback: IAnimatedCallback) => {
         return (t: number) => callback((to - from) * t + from);
@@ -540,19 +538,15 @@ export interface ITickable {
     tick: (t: number) => boolean;
 }
 
-export interface IAnimatedCallback {
-    (t: number): void;
-}
+export type IAnimatedCallback = (t: number) => void;
 
 export interface IKeyFrame {
     duration: number;
     callback?: IAnimatedCallback;
-    starttime?: number;
+    startTime?: number;
 }
 
-export interface IRenderCallback {
-    (): void;
-}
+export type IRenderCallback = () => void;
 
 export class Accumulator implements ITickable {
     public alpha = 0.08; // convergence ratio
@@ -572,9 +566,7 @@ export class Accumulator implements ITickable {
 }
 
 export class Timeline implements ITickable {
-    private queue = [] as IKeyFrame[];
-
-    public constructor() {}
+    private queue: IKeyFrame[] = [];
 
     public reset() {
         this.queue.length = 0;
@@ -587,23 +579,24 @@ export class Timeline implements ITickable {
     }
 
     public tween(duration: number, callback?: IAnimatedCallback) {
-        this.queue.push({ duration, callback } as IKeyFrame);
+        this.queue.push({ duration, callback });
         return this;
     }
 
     public tick(elapsed: number) {
-        if (this.queue.length == 0) {
+        if (this.queue.length === 0) {
             return false;
         }
 
         const anim = this.queue[0];
-        let { duration, callback, starttime } = anim;
+        const { duration, callback } = anim;
+        let { startTime } = anim;
 
-        if (starttime == null) {
-            anim.starttime = starttime = elapsed;
+        if (startTime == null) {
+            anim.startTime = startTime = elapsed;
         }
 
-        if (elapsed - starttime >= duration) {
+        if (elapsed - startTime >= duration) {
             if (callback != null) {
                 callback(1.0);
             }
@@ -611,7 +604,7 @@ export class Timeline implements ITickable {
             return this.queue.length > 0;
         } else {
             if (callback != null) {
-                callback((elapsed - starttime) / duration);
+                callback((elapsed - startTime) / duration);
             }
             return true;
         }
@@ -634,7 +627,7 @@ export class Animator {
 
     public constructor(private render: IRenderCallback) {}
 
-    public add<T extends ITickable>(tickable: T) {
+    public add<Type extends ITickable>(tickable: Type) {
         this.tickables.push(tickable);
         return tickable;
     }
@@ -655,7 +648,7 @@ export class Animator {
 
     private tick = (t: number) => {
         const elapsed = new Date().valueOf() - this.startTime;
-        const again = this.tickables.reduce<boolean>((again, t) => t.tick(elapsed) || again, false);
+        const again = this.tickables.reduce<boolean>((repeat, tickable) => tickable.tick(elapsed) || repeat, false);
         this.render();
         if (again) {
             this.nextFrame();
@@ -664,7 +657,7 @@ export class Animator {
 
     private nextFrame() {
         this.frameId = requestAnimationFrame(this.tick);
-}
+    }
 }
 
 /*-----------------------------------------------
@@ -766,7 +759,7 @@ class BackgroundRenderer extends CanvasRenderer {
         this.ctx.save();
         this.ctx.scale(this.retinaScale, this.retinaScale);
 
-        let grd = this.ctx.createRadialGradient(
+        const grd = this.ctx.createRadialGradient(
             this.width / 2,
             this.height / 2,
             0,
@@ -786,7 +779,7 @@ class BackgroundRenderer extends CanvasRenderer {
         this.ctx.save();
         this.ctx.scale(this.retinaScale, this.retinaScale);
 
-        let grd = this.ctx.createLinearGradient(0, 0, 0, this.height);
+        const grd = this.ctx.createLinearGradient(0, 0, 0, this.height);
         grd.addColorStop(0, "rgba(0,0,0,0.6)");
         grd.addColorStop(1, "rgba(0,0,0,0)");
         this.ctx.fillStyle = grd;
@@ -935,11 +928,11 @@ export class SceneRenderer extends CanvasRenderer {
 
         // composite overlays
         if (face.overlays != null) {
-            for (const operation in face.overlays) {
+            Object.keys(face.overlays).forEach(operation => {
                 this.ctx.globalCompositeOperation = operation;
                 this.ctx.fillStyle = face.overlays[operation];
                 this.ctx.fill();
-            }
+            });
             this.ctx.globalCompositeOperation = "source-over";
         }
 
@@ -1005,21 +998,21 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
 
     const blocks = {
         blockA: {
-            corner: Corner.CORNER().translate(0, -1, 0),
             block: Shape.JOIN(overlays(Shape.RECT()).translate(0, 0, 0), overlays(Shape.RECT()).translate(0, 0, -1)),
+            corner: Corner.CORNER().translate(0, -1, 0),
             outline: Shape.RECT(-1, -1, -2),
         },
         blockB: {
-            corner: Corner.CORNER().translate(-1, -2, 0),
             block: Shape.JOIN(overlays(Shape.RECT()).translate(-1, 0, 0), overlays(Shape.RECT()).translate(-1, -1, 0)),
+            corner: Corner.CORNER().translate(-1, -2, 0),
             outline: Shape.RECT(-1, -2, -1).translate(-1, 0, 0),
         },
         blockC: {
-            corner: Corner.CORNER().translate(0, -2, -1),
             block: Shape.JOIN(
                 overlays(Shape.RECT()).translate(0, -1, -1),
                 overlays(Shape.RECT()).translate(-1, -1, -1),
             ),
+            corner: Corner.CORNER().translate(0, -2, -1),
             outline: Shape.RECT(-2, -1, -1).translate(0, -1, -1),
         },
     };
@@ -1095,10 +1088,15 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
 
     // entrance animation
     const slideDownAnimation = (offset: number, model: SceneModel) => {
-        animator.add(new Timeline()
-            .tween(0, (t: number) => model.restore().translate(0, -8, 0))
-            .tween(offset + 100)
-            .tween(1000, T.EASE_OUT_EXP(2, T.INTERPOLATE(-8, 0, (t: number) => model.restore().translate(0, t, 0)))));
+        animator.add(
+            new Timeline()
+                .tween(0, (t: number) => model.restore().translate(0, -8, 0))
+                .tween(offset + 100)
+                .tween(
+                    1000,
+                    T.EASE_OUT_EXP(2, T.INTERPOLATE(-8, 0, (t: number) => model.restore().translate(0, t, 0))),
+                ),
+        );
     };
 
     slideDownAnimation(0, slideInGroups[0]);
@@ -1109,52 +1107,56 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     const sheenAnimation = (offset: number, model: SceneModel) => {
         const sheen = model.children[2];
 
-        animator.add(new Timeline()
-            .tween(offset)
-            .tween(
-                500,
-                T.EASE_IN(
-                    T.INTERPOLATE(0, 100 * renderer.retinaScale, t => {
-                        for (const f of sheen.faces) {
-                            f.lineDash = [t, t / 3, t / 5, 1000 * renderer.retinaScale];
-                        }
-                    }),
-                ),
-            )
-            .tween(
-                2000,
-                T.EASE_OUT(
-                    T.INTERPOLATE(100 * renderer.retinaScale, 0, t => {
-                        for (const f of sheen.faces) {
-                            f.lineDash = [t, t / 3, t / 5, 1000 * renderer.retinaScale];
-                        }
-                    }),
-                ),
-            )
-            .tween(0, t => {
-                for (const f of sheen.faces) {
-                    f.lineDash = null;
-                }
-            }));
+        animator.add(
+            new Timeline()
+                .tween(offset)
+                .tween(
+                    500,
+                    T.EASE_IN(
+                        T.INTERPOLATE(0, 100 * renderer.retinaScale, t => {
+                            for (const f of sheen.faces) {
+                                f.lineDash = [t, t / 3, t / 5, 1000 * renderer.retinaScale];
+                            }
+                        }),
+                    ),
+                )
+                .tween(
+                    2000,
+                    T.EASE_OUT(
+                        T.INTERPOLATE(100 * renderer.retinaScale, 0, t => {
+                            for (const f of sheen.faces) {
+                                f.lineDash = [t, t / 3, t / 5, 1000 * renderer.retinaScale];
+                            }
+                        }),
+                    ),
+                )
+                .tween(0, t => {
+                    for (const f of sheen.faces) {
+                        f.lineDash = null;
+                    }
+                }),
+        );
 
-        animator.add(new Timeline()
-            .tween(offset)
-            .tween(500)
-            .tween(
-                2000,
-                T.EASE_OUT(
-                    T.INTERPOLATE(0, -350 * renderer.retinaScale, t => {
-                        for (const f of sheen.faces) {
-                            f.lineDashOffset = t;
-                        }
-                    }),
-                ),
-            )
-            .tween(0, t => {
-                for (const f of sheen.faces) {
-                    f.lineDashOffset = null;
-                }
-            }));
+        animator.add(
+            new Timeline()
+                .tween(offset)
+                .tween(500)
+                .tween(
+                    2000,
+                    T.EASE_OUT(
+                        T.INTERPOLATE(0, -350 * renderer.retinaScale, t => {
+                            for (const f of sheen.faces) {
+                                f.lineDashOffset = t;
+                            }
+                        }),
+                    ),
+                )
+                .tween(0, t => {
+                    for (const f of sheen.faces) {
+                        f.lineDashOffset = null;
+                    }
+                }),
+        );
     };
 
     const throttle = (wait: number, func: () => void) => {
@@ -1176,39 +1178,41 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     setTimeout(sheens, 1200);
 
     // Update model transformations once per tick
-    animator.add(new Ticker(() => {
-        let rotate = Quaternion.xyAlt(accumX.value, -accumY.value).toMatrix();
-        rotate = M()
-            .translate(1, 1, 1)
-            .multiply(rotate)
-            .multiply(M().translate(-1, -1, -1));
+    animator.add(
+        new Ticker(() => {
+            let rotate = Quaternion.xyAlt(accumX.value, -accumY.value).toMatrix();
+            rotate = M()
+                .translate(1, 1, 1)
+                .multiply(rotate)
+                .multiply(M().translate(-1, -1, -1));
 
-        explodeGroups[0]
-            .restore()
-            .translate(accumExploder[0].value, 0, 0)
-            .transform(rotate);
-        explodeGroups[1]
-            .restore()
-            .translate(0, 0, accumExploder[1].value)
-            .transform(rotate);
-        explodeGroups[2]
-            .restore()
-            .translate(accumExploder[2].value, -2 * accumExploder[2].value, -accumExploder[2].value)
-            .transform(rotate);
+            explodeGroups[0]
+                .restore()
+                .translate(accumExploder[0].value, 0, 0)
+                .transform(rotate);
+            explodeGroups[1]
+                .restore()
+                .translate(0, 0, accumExploder[1].value)
+                .transform(rotate);
+            explodeGroups[2]
+                .restore()
+                .translate(accumExploder[2].value, -2 * accumExploder[2].value, -accumExploder[2].value)
+                .transform(rotate);
 
-        shadowGroups[0]
-            .restore()
-            .translate(accumExploder[0].value, SHADOW_DEPTH, 0)
-            .transform(rotate);
-        shadowGroups[1]
-            .restore()
-            .translate(0, SHADOW_DEPTH, accumExploder[1].value)
-            .transform(rotate);
-        shadowGroups[2]
-            .restore()
-            .translate(accumExploder[2].value, SHADOW_DEPTH, -accumExploder[2].value)
-            .transform(rotate);
-    }));
+            shadowGroups[0]
+                .restore()
+                .translate(accumExploder[0].value, SHADOW_DEPTH, 0)
+                .transform(rotate);
+            shadowGroups[1]
+                .restore()
+                .translate(0, SHADOW_DEPTH, accumExploder[1].value)
+                .transform(rotate);
+            shadowGroups[2]
+                .restore()
+                .translate(accumExploder[2].value, SHADOW_DEPTH, -accumExploder[2].value)
+                .transform(rotate);
+        }),
+    );
 
     const accumX = animator.add(new Accumulator(0));
     const accumY = animator.add(new Accumulator(0));
@@ -1262,12 +1266,10 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
         const isCanvasVisible = document.scrollingElement.scrollTop < LOGO_HEIGHT;
         if (isCanvasVisible && !animator.isRunning()) {
             animator.start();
-            console.log("animation resumed")
         } else if (!isCanvasVisible && animator.isRunning()) {
             animator.stop();
-            console.log("animation paused")
         }
-    })
+    });
 
     animator.start();
 };
