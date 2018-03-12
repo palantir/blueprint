@@ -65,7 +65,7 @@ export interface ITimePickerProps extends IProps {
     showArrowButtons?: boolean;
 
     /**
-     * Whether to choose from a 12 hour format with an AM/PM dropdown.
+     * Whether to use a 12 hour format with an AM/PM dropdown.
      * @default false
      */
     useAmPm?: boolean;
@@ -174,22 +174,16 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         const didMinTimeChange = nextProps.minTime !== this.props.minTime;
         const didMaxTimeChange = nextProps.maxTime !== this.props.maxTime;
         const didBoundsChange = didMinTimeChange || didMaxTimeChange;
-        const didUseAmPmChange = nextProps.useAmPm !== this.props.useAmPm;
 
         let value = this.state.value;
-        let useAmPm = this.props.useAmPm;
-
         if (didBoundsChange) {
             value = DateUtils.getTimeInRange(this.state.value, nextProps.minTime, nextProps.maxTime);
         }
         if (nextProps.value != null && !DateUtils.areSameTime(nextProps.value, this.props.value)) {
             value = nextProps.value;
         }
-        if (didUseAmPmChange) {
-            useAmPm = nextProps.useAmPm;
-        }
 
-        this.setState(this.getFullStateFromValue(value, useAmPm));
+        this.setState(this.getFullStateFromValue(value, nextProps.useAmPm));
     }
 
     // begin method definitions: rendering
@@ -236,8 +230,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                     onChange={this.handleAmPmChange}
                     disabled={this.props.disabled}
                 >
-                    <option value={"am"}>AM</option>
-                    <option value={"pm"}>PM</option>
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
                 </select>
             </div>
         );
