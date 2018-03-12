@@ -308,15 +308,11 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     };
 
     private handleAmPmChange = (e: React.SyntheticEvent<HTMLSelectElement>) => {
-        const changeToAm = e.currentTarget.value === "am";
-        if (changeToAm !== this.state.isPm) {
-            return;
+        const isNextPm = e.currentTarget.value === "pm";
+        if (isNextPm !== this.state.isPm) {
+            const hour = DateUtils.convert24HourMeridiem(this.state.value.getHours(), isNextPm);
+            this.setState({ isPm: isNextPm }, () => this.updateTime(hour, TimeUnit.HOUR_24));
         }
-        const hour = DateUtils.convert24HourMeridiem(this.state.value.getHours(), changeToAm);
-
-        this.setState({ isPm: !changeToAm }, () => {
-            this.updateTime(hour, TimeUnit.HOUR_24);
-        });
     };
 
     // begin method definitions: state modification

@@ -223,36 +223,32 @@ describe("dateUtils", () => {
     });
 
     describe("convert24HourMeridiem", () => {
-        it("returns given hour, if hour is AM and toAm", () => {
-            for (let hour = 0; hour <= 11; hour++) {
-                expect(DateUtils.convert24HourMeridiem(hour, true)).to.equal(hour);
-            }
+        it("returns given hour, if hour is PM and toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(12, true)).to.equal(12);
+            expect(DateUtils.convert24HourMeridiem(13, true)).to.equal(13);
+            expect(DateUtils.convert24HourMeridiem(22, true)).to.equal(22);
+            expect(DateUtils.convert24HourMeridiem(23, true)).to.equal(23);
         });
 
-        it("returns given hour in PM, if hour is AM and not toAm", () => {
-            const pmHours = [];
-            for (let i = 12; i <= 23; i++) {
-                pmHours.push(i);
-            }
-            for (let amHour = 0; amHour <= 11; amHour++) {
-                expect(DateUtils.convert24HourMeridiem(amHour, false)).to.equal(pmHours[amHour]);
-            }
+        it("returns given hour in AM, if hour is PM and not toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(12, false)).to.equal(0);
+            expect(DateUtils.convert24HourMeridiem(13, false)).to.equal(1);
+            expect(DateUtils.convert24HourMeridiem(22, false)).to.equal(10);
+            expect(DateUtils.convert24HourMeridiem(23, false)).to.equal(11);
         });
 
-        it("returns given hour, if hour is PM and not toAm", () => {
-            for (let hour = 12; hour <= 23; hour++) {
-                expect(DateUtils.convert24HourMeridiem(hour, false)).to.equal(hour);
-            }
+        it("returns given hour, if hour is AM and not toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(0, false)).to.equal(0);
+            expect(DateUtils.convert24HourMeridiem(1, false)).to.equal(1);
+            expect(DateUtils.convert24HourMeridiem(10, false)).to.equal(10);
+            expect(DateUtils.convert24HourMeridiem(11, false)).to.equal(11);
         });
 
-        it("returns given hour in AM, if hour is PM and toAm", () => {
-            const pmHours = [];
-            for (let i = 12; i <= 23; i++) {
-                pmHours.push(i);
-            }
-            for (let amHour = 0; amHour <= 11; amHour++) {
-                expect(DateUtils.convert24HourMeridiem(pmHours[amHour], true)).to.equal(amHour);
-            }
+        it("returns given hour in PM, if hour is AM and toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(0, true)).to.equal(12);
+            expect(DateUtils.convert24HourMeridiem(1, true)).to.equal(13);
+            expect(DateUtils.convert24HourMeridiem(10, true)).to.equal(22);
+            expect(DateUtils.convert24HourMeridiem(11, true)).to.equal(23);
         });
 
         it("throws an error only for invalid hours", () => {
