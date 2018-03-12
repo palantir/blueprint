@@ -86,7 +86,7 @@ export interface ICellProps extends IIntentProps, IProps {
     /**
      * A ref handle to capture the outer div of this cell. Used internally.
      */
-    cellRef?: (ref: HTMLElement) => void;
+    cellRef?: (ref: HTMLElement | null) => void;
 }
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;

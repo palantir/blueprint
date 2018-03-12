@@ -80,37 +80,35 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
 
 export interface ISelectState<T> {
     activeItem?: T;
-    isOpen?: boolean;
-    query?: string;
+    isOpen: boolean;
+    query: string;
 }
 
 export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState<T>> {
     public static displayName = "Blueprint2.Select";
 
     public static ofType<T>() {
-        return Select as new () => Select<T>;
+        return Select as new (props: ISelectProps<T>) => Select<T>;
     }
 
-    public state: ISelectState<T> = { isOpen: false, query: "" };
-
-    private input: HTMLInputElement;
     private TypedQueryList = QueryList.ofType<T>();
-    private list: QueryList<T>;
+    private input: HTMLInputElement | null;
+    private list: QueryList<T> | null;
+    private previousFocusedElement: HTMLElement | undefined;
     private refHandlers = {
-        input: (ref: HTMLInputElement) => {
+        input: (ref: HTMLInputElement | null) => {
             this.input = ref;
 
             const { inputProps = {} } = this.props;
             Utils.safeInvoke(inputProps.inputRef, ref);
         },
-        queryList: (ref: QueryList<T>) => (this.list = ref),
+        queryList: (ref: QueryList<T> | null) => (this.list = ref),
     };
-    private previousFocusedElement: HTMLElement;
 
-    constructor(props?: ISelectProps<T>, context?: any) {
+    constructor(props: ISelectProps<T>, context?: any) {
         super(props, context);
-
-        const query = props && props.inputProps && props.inputProps.value !== undefined ? props.inputProps.value : "";
+        const { inputProps = {} } = props;
+        const query = inputProps.value == null ? "" : inputProps.value.toString();
         this.state = { isOpen: false, query };
     }
 
@@ -134,7 +132,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     public componentWillReceiveProps(nextProps: ISelectProps<T>) {
         const { inputProps: nextInputProps = {} } = nextProps;
         if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
-            this.setState({ query: nextInputProps.value });
+            this.setState({ query: nextInputProps.value.toString() });
         }
     }
 
@@ -210,7 +208,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     private isQueryEmpty = () => this.state.query.length === 0;
 
-    private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
+    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
 
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
@@ -219,7 +217,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         }
     };
 
-    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
+    private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
         if (this.props.resetOnSelect) {
             this.resetQuery();

@@ -53,17 +53,23 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
 export interface ISuggestState<T> {
     activeItem?: T;
-    isOpen?: boolean;
-    isTyping?: boolean;
-    query?: string;
+    isOpen: boolean;
+    isTyping: boolean;
+    query: string;
     selectedItem?: T;
 }
 
 export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
     public static displayName = "Blueprint2.Suggest";
 
+    // Note: can't use <T> in static members, so this remains dynamically typed.
+    public static defaultProps = {
+        closeOnSelect: true,
+        openOnKeyDown: false,
+    };
+
     public static ofType<T>() {
-        return (Suggest as any) as new () => Suggest<T>;
+        return Suggest as new (props: ISuggestProps<T>) => Suggest<T>;
     }
 
     public state: ISuggestState<T> = {
@@ -72,24 +78,16 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         query: "",
     };
 
-    // not using defaultProps, because they're hard to type with generics (can't
-    // use <T> on static members). but we still want to keep default values in
-    // one, necessarily non-`static` place. note that Partial is necessary to
-    // avoid having to define all required props, and all of these values must
-    // be referenced manually in code.
-    private DEFAULT_PROPS: Partial<ISuggestProps<T>> = {
-        closeOnSelect: true,
-        inputProps: {},
-        openOnKeyDown: false,
-        popoverProps: {},
-    };
-
-    private input: HTMLInputElement;
     private TypedQueryList = QueryList.ofType<T>();
-    private queryList: QueryList<T>;
+    private input: HTMLInputElement | null;
+    private queryList: QueryList<T> | null;
     private refHandlers = {
-        input: (ref: HTMLInputElement) => (this.input = ref),
-        queryList: (ref: QueryList<T>) => (this.queryList = ref),
+        input: (ref: HTMLInputElement | null) => {
+            this.input = ref;
+            const { inputProps = {} } = this.props;
+            Utils.safeInvoke(inputProps.inputRef, ref);
+        },
+        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
     public render() {
@@ -116,11 +114,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const {
-            inputValueRenderer,
-            inputProps = this.DEFAULT_PROPS.inputProps,
-            popoverProps = this.DEFAULT_PROPS.popoverProps,
-        } = this.props;
+        const { inputValueRenderer, inputProps = {}, popoverProps = {} } = this.props;
         const { isTyping, selectedItem, query } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
         const inputValue: string = isTyping ? query : selectedItem ? inputValueRenderer(selectedItem) : "";
@@ -161,17 +155,16 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     }
 
     private selectText = () => {
-        if (this.input != null) {
-            // wait until the input is properly focused to select the text inside of it
-            requestAnimationFrame(() => this.input.setSelectionRange(0, this.input.value.length));
-        }
+        // wait until the input is properly focused to select the text inside of it
+        requestAnimationFrame(() => {
+            if (this.input != null) {
+                this.input.setSelectionRange(0, this.input.value.length);
+            }
+        });
     };
 
-    private handleInputFocus = (event: React.SyntheticEvent<HTMLInputElement>) => {
-        const {
-            openOnKeyDown = this.DEFAULT_PROPS.openOnKeyDown,
-            inputProps = this.DEFAULT_PROPS.inputProps,
-        } = this.props;
+    private handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        const { openOnKeyDown, inputProps = {} } = this.props;
 
         this.selectText();
 
@@ -182,17 +175,20 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         Utils.safeInvoke(inputProps.onFocus, event);
     };
 
-    private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
+    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
 
-    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
-        const { closeOnSelect = this.DEFAULT_PROPS.closeOnSelect } = this.props;
+    private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         let nextOpenState: boolean;
-        if (!closeOnSelect) {
-            this.input.focus();
+        if (!this.props.closeOnSelect) {
+            if (this.input != null) {
+                this.input.focus();
+            }
             this.selectText();
             nextOpenState = true;
         } else {
-            this.input.blur();
+            if (this.input != null) {
+                this.input.blur();
+            }
             nextOpenState = false;
         }
 
@@ -244,7 +240,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = this.DEFAULT_PROPS.inputProps } = this.props;
+        const { inputProps = {} } = this.props;
 
         this.setState({
             isTyping: true,
@@ -257,16 +253,15 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     private getTargetKeyDownHandler = (
         handleQueryListKeyDown: React.EventHandler<React.KeyboardEvent<HTMLElement>>,
     ) => {
-        return (e: React.KeyboardEvent<HTMLElement>) => {
-            const { which } = e;
+        return (evt: React.KeyboardEvent<HTMLInputElement>) => {
+            const { which } = evt;
             const { isTyping, selectedItem } = this.state;
-            const {
-                inputProps = this.DEFAULT_PROPS.inputProps,
-                openOnKeyDown = this.DEFAULT_PROPS.openOnKeyDown,
-            } = this.props;
+            const { inputProps = {}, openOnKeyDown } = this.props;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
-                this.input.blur();
+                if (this.input != null) {
+                    this.input.blur();
+                }
                 this.setState({
                     isOpen: false,
                     selectedItem: isTyping ? undefined : selectedItem,
@@ -281,20 +276,20 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             }
 
             if (this.state.isOpen) {
-                Utils.safeInvoke(handleQueryListKeyDown, e);
+                Utils.safeInvoke(handleQueryListKeyDown, evt);
             }
 
-            Utils.safeInvoke(inputProps.onKeyDown, e);
+            Utils.safeInvoke(inputProps.onKeyDown, evt);
         };
     };
 
     private getTargetKeyUpHandler = (handleQueryListKeyUp: React.EventHandler<React.KeyboardEvent<HTMLElement>>) => {
-        return (e: React.KeyboardEvent<HTMLElement>) => {
-            const { inputProps = this.DEFAULT_PROPS.inputProps } = this.props;
+        return (evt: React.KeyboardEvent<HTMLInputElement>) => {
+            const { inputProps = {} } = this.props;
             if (this.state.isOpen) {
-                Utils.safeInvoke(handleQueryListKeyUp, e);
+                Utils.safeInvoke(handleQueryListKeyUp, evt);
             }
-            Utils.safeInvoke(inputProps.onKeyUp, e);
+            Utils.safeInvoke(inputProps.onKeyUp, evt);
         };
     };
 }

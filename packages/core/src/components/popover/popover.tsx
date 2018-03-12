@@ -140,7 +140,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     /**
      * Ref supplied to the `pt-popover` element.
      */
-    popoverRef?: (ref: HTMLDivElement) => void;
+    popoverRef?: (ref: HTMLDivElement | null) => void;
 
     /**
      * Callback invoked when a popover begins to close.

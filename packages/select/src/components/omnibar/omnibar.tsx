@@ -68,14 +68,14 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
 
 export interface IOmnibarState<T> extends IOverlayableProps, IBackdropProps {
     activeItem?: T;
-    query?: string;
+    query: string;
 }
 
 export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
     public static displayName = "Blueprint2.Omnibar";
 
     public static ofType<T>() {
-        return (Omnibar as any) as new () => Omnibar<T>;
+        return Omnibar as new (props: IOmnibarProps<T>) => Omnibar<T>;
     }
 
     public state: IOmnibarState<T> = {
@@ -83,9 +83,9 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
     };
 
     private TypedQueryList = QueryList.ofType<T>();
-    private queryList: QueryList<T>;
+    private queryList: QueryList<T> | null;
     private refHandlers = {
-        queryList: (ref: QueryList<T>) => (this.queryList = ref),
+        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
     public render() {
@@ -168,9 +168,9 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
 
     private isQueryEmpty = () => this.state.query.length === 0;
 
-    private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
+    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
 
-    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
+    private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         if (!this.isQueryEmpty()) {
             Utils.safeInvoke(this.props.onItemSelect, item, event);
         }

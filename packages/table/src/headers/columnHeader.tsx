@@ -38,7 +38,7 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumn
      * Ref handler that receives the HTML element that should be measured to
      * indicate the fluid height of the column header.
      */
-    measurableElementRef?: (ref: HTMLElement) => void;
+    measurableElementRef?: (ref: HTMLElement | null) => void;
 
     /**
      * A callback invoked when user is done resizing the column

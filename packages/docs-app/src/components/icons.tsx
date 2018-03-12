@@ -6,6 +6,7 @@
 
 import * as React from "react";
 
+import { NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
 
 import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
@@ -95,7 +96,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
     }
 
     private renderZeroState() {
-        return <div className="pt-running-text pt-text-muted icons-zero-state">No icons found.</div>;
+        return <NonIdealState className="pt-text-muted" visual="zoom-out" description="No icons found" />;
     }
 
     private handleFilterChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
