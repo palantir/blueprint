@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import { AbstractPureComponent, IProps } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType } from "../../common/utils";

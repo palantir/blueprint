@@ -35,7 +35,7 @@
     "classnames": "^2.2",
     "moment": "^2.14.1",
     "moment-timezone": "^0.5.13",
-    "tslib": "^1.5.0"
+    "tslib": "^1.9.0"
   },
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.5.0",
@@ -49,7 +49,7 @@
     "react-test-renderer": "^16.2.0",
     "react-transition-group": "^2.2.1",
     "tslint": "^5.9.0",
-    "typescript": "~2.6.2",
+    "typescript": "~2.7.2",
     "webpack": "^3.10.0"
   },
   "repository": {

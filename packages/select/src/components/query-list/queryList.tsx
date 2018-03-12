@@ -146,7 +146,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
     }
 
-    private itemsParentRef: HTMLElement | null;
+    private itemsParentRef?: HTMLElement | null;
     private refHandlers = {
         itemsParent: (ref: HTMLElement | null) => (this.itemsParentRef = ref),
     };
@@ -155,7 +155,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
      * flag indicating that we should check whether selected item is in viewport after rendering,
      * typically because of keyboard change.
      */
-    private shouldCheckActiveItemInViewport: boolean;
+    private shouldCheckActiveItemInViewport: boolean = false;
 
     public render() {
         const { className, items, renderer, query } = this.props;

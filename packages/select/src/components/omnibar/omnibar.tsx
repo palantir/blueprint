@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -83,7 +83,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
     };
 
     private TypedQueryList = QueryList.ofType<T>();
-    private queryList: QueryList<T> | null;
+    private queryList?: QueryList<T> | null;
     private refHandlers = {
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };

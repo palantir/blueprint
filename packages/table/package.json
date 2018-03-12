@@ -33,7 +33,7 @@
     "@blueprintjs/core": "^2.0.0-rc.2",
     "classnames": "^2.2",
     "prop-types": "^15.6.0",
-    "tslib": "^1.5.0"
+    "tslib": "^1.9.0"
   },
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.5.0",
@@ -48,7 +48,7 @@
     "react-test-renderer": "^16.2.0",
     "react-transition-group": "^2.2.1",
     "tslint": "^5.9.0",
-    "typescript": "~2.6.2",
+    "typescript": "~2.7.2",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.1"
   },

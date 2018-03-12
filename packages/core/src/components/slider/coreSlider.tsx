@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
@@ -140,7 +140,8 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
         if (labelRenderer === false) {
             return undefined;
         } else if (isFunction(labelRenderer)) {
-            return labelRenderer(value);
+            // TODO: TS 2.7 might have a type narrowing issue?
+            return (labelRenderer as (value: number) => React.ReactChild)(value);
         } else {
             return value.toFixed(this.state.labelPrecision);
         }

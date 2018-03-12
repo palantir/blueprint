@@ -7,7 +7,7 @@
 import { Button, Classes, MenuItem } from "@blueprintjs/core";
 import { IconName, IconNames } from "@blueprintjs/icons";
 import { ItemRenderer, Select } from "@blueprintjs/select";
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 export interface IIconSelectProps {

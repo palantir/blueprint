@@ -7,7 +7,7 @@
 import { Classes, Hotkey, Hotkeys, HotkeysTarget, InputGroup, Keys, Popover, Position, Utils } from "@blueprintjs/core";
 import { IconContents } from "@blueprintjs/icons";
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import { IHeadingNode, IPageNode } from "documentalist/dist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";

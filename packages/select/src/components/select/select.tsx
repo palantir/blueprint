@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -92,8 +92,8 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     }
 
     private TypedQueryList = QueryList.ofType<T>();
-    private input: HTMLInputElement | null;
-    private list: QueryList<T> | null;
+    private input?: HTMLInputElement | null;
+    private list?: QueryList<T> | null;
     private previousFocusedElement: HTMLElement | undefined;
     private refHandlers = {
         input: (ref: HTMLInputElement | null) => {
