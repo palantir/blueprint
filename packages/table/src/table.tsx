@@ -714,6 +714,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             !CoreUtils.arraysEqual(newColumnWidths, this.state.columnWidths) ||
             !CoreUtils.arraysEqual(newRowHeights, this.state.rowHeights)
         ) {
+            // grid invalidation is required after changing this flag, 
+            // which happens at the end of this method.
             this.didUpdateColumnOrRowSizes = true;
         }
 
