@@ -36,7 +36,7 @@
     "classnames": "^2.2",
     "dom4": "^2.0.1",
     "normalize.css": "^7.0.0",
-    "popper.js": "^1.12.6",
+    "popper.js": "^1.14.0",
     "react-popper": "~0.7.4",
     "tslib": "^1.9.0"
   },

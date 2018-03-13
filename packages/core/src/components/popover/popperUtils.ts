@@ -4,23 +4,23 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import PopperJS from "popper.js";
+import {Placement, Position, Data, ModifierFn} from "popper.js";
 
 // Popper placement utils
 // ======================
 
 /** Converts a full placement to one of the four positions by stripping text after the `-`. */
-export function getPosition(placement: PopperJS.Placement) {
-    return placement.split("-")[0] as PopperJS.Position;
+export function getPosition(placement: Placement) {
+    return placement.split("-")[0] as Position;
 }
 
 /** Returns true if position is left or right. */
-export function isVerticalPosition(side: PopperJS.Position) {
+export function isVerticalPosition(side: Position) {
     return ["left", "right"].indexOf(side) !== -1;
 }
 
 /** Returns the opposite position. */
-export function getOppositePosition(side: PopperJS.Position) {
+export function getOppositePosition(side: Position) {
     switch (side) {
         case "top":
             return "bottom";
@@ -34,7 +34,7 @@ export function getOppositePosition(side: PopperJS.Position) {
 }
 
 /** Returns the CSS alignment keyword corresponding to given placement. */
-export function getAlignment(placement: PopperJS.Placement) {
+export function getAlignment(placement: Placement) {
     const align = placement.split("-")[1] as "start" | "end" | undefined;
     switch (align) {
         case "start":
@@ -50,7 +50,7 @@ export function getAlignment(placement: PopperJS.Placement) {
 // ================
 
 /** Modifier helper function to compute popper transform-origin based on arrow position */
-export function getTransformOrigin(data: PopperJS.Data) {
+export function getTransformOrigin(data: Data) {
     const position = getPosition(data.placement);
     if (data.arrowElement == null) {
         return isVerticalPosition(position)
@@ -71,7 +71,7 @@ export function getTransformOrigin(data: PopperJS.Data) {
 const ARROW_SPACING = 4;
 
 /** Popper modifier that offsets popper and arrow so arrow points out of the correct side */
-export const arrowOffsetModifier: PopperJS.ModifierFn = data => {
+export const arrowOffsetModifier: ModifierFn = data => {
     if (data.arrowElement == null) {
         return data;
     }
