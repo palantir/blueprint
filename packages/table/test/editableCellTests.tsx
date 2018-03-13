@@ -62,7 +62,7 @@ describe("<EditableCell>", () => {
         expect(onConfirm.called).to.be.true;
     });
 
-    it("doesn't change edited value on non-value prop changes", () => {
+    it("changes value state on non-value prop changes", () => {
         const onCancel = sinon.spy();
         const onChange = sinon.spy();
         const onConfirm = sinon.spy();
@@ -83,16 +83,17 @@ describe("<EditableCell>", () => {
         expect(onConfirm.called).to.be.false;
         expect(elem.find(`.${Classes.TABLE_EDITABLE_TEXT} .pt-editable-content`).text()).to.equal("new-text");
 
-        // set non-value prop
-        elem.setProps({ onChange: null });
-
-        // value stays the same
-        expect(elem.find(`.${Classes.TABLE_EDITABLE_TEXT} .pt-editable-content`).text()).to.equal("new-text");
-
         // confirm
         input.simulate("blur");
         expect(onCancel.called).to.be.false;
         expect(onConfirm.called).to.be.true;
+        // cell shows user-entered text until re-render
+        expect(elem.find(`.${Classes.TABLE_EDITABLE_TEXT}`).text()).to.equal("new-text");
+
+        // set non-value prop, forces EditableCell update
+        elem.setProps({ onChange: null });
+        // value resets to prop
+        expect(elem.find(`.${Classes.TABLE_EDITABLE_TEXT}`).text()).to.equal("test-value-5000");
     });
 
     it("passes index prop to callbacks if index was provided", () => {
