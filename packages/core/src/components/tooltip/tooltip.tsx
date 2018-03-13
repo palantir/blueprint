@@ -5,7 +5,7 @@
  */
 
 import classNames from "classnames";
-import PopperJS from "popper.js";
+import {Modifiers} from "popper.js";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -64,7 +64,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
      * Popper modifier options, passed directly to internal Popper instance.
      * See https://popper.js.org/popper-documentation.html#modifiers for complete details.
      */
-    modifiers?: PopperJS.Modifiers;
+    modifiers?: Modifiers;
 
     /**
      * Callback invoked in controlled mode when the tooltip open state *would* change due to
