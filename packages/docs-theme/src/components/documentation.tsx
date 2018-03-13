@@ -80,6 +80,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 
+    /** Pixels to offset when computing scrolled refence, based on margin of `.docs-anchor`. */
+    private scrollOffset = 0;
+
     private contentElement: HTMLElement;
     private navElement: HTMLElement;
     private refHandlers = {
@@ -174,6 +177,10 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         // whoa handling future history...
         window.addEventListener("hashchange", this.handleHashChange);
         document.addEventListener("scroll", this.handleScroll);
+        // compute offset from CSS styles (single point of truth)
+        requestAnimationFrame(() => {
+            this.scrollOffset = -parseInt(getComputedStyle(document.querySelector(".docs-anchor")).marginTop, 10) + 2;
+        });
     }
 
     public componentWillUnmount() {
@@ -220,7 +227,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     private handlePreviousSection = () => this.shiftSection(-1);
 
     private handleScroll = () => {
-        const activeSectionId = getScrolledReference(100, this.contentElement);
+        const activeSectionId = getScrolledReference(this.scrollOffset, this.contentElement);
         if (activeSectionId == null) {
             return;
         }
