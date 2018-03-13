@@ -21,7 +21,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
-import { MenuRenderer } from "../../common/menuRenderer";
+import { IMenuRendererProps, MenuRenderer } from "../../common/menuRenderer";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
@@ -198,25 +198,28 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     };
 
     private renderMenu(listProps: IQueryListRendererProps<T>) {
-        const { menuRenderer, initialContent, noResults } = this.props;
         const { items, itemsParentRef, renderItem } = listProps;
-        if (menuRenderer !== undefined) {
-            return menuRenderer({
-                items,
-                itemsParentRef,
-                query: this.state.query,
-                renderItem,
-            });
-        } else {
-            const maybeInitialContent = initialContent != null && this.isQueryEmpty() ? initialContent : null;
-            const renderedItems = items.map(renderItem).filter(item => item != null);
-            return (
-                <Menu ulRef={itemsParentRef}>
-                    {maybeInitialContent || (renderedItems.length > 0 ? renderedItems : noResults)}
-                </Menu>
-            );
-        }
+        const { menuRenderer = this.defaultMenuRenderer } = this.props;
+
+        return menuRenderer({
+            items,
+            itemsParentRef,
+            query: this.state.query,
+            renderItem,
+        });
     }
+
+    private defaultMenuRenderer = (menuProps: IMenuRendererProps<T>) => {
+        const { initialContent, noResults } = this.props;
+        const { items, itemsParentRef, renderItem } = menuProps;
+        const maybeInitialContent = initialContent != null && this.isQueryEmpty() ? initialContent : null;
+        const renderedItems = items.map(renderItem).filter(item => item != null);
+        return (
+            <Menu ulRef={itemsParentRef}>
+                {maybeInitialContent || (renderedItems.length > 0 ? renderedItems : noResults)}
+            </Menu>
+        );
+    };
 
     private maybeRenderInputClearButton() {
         return !this.isQueryEmpty() ? (
