@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -14,11 +14,11 @@ import { ITreeNode, TreeNode } from "./treeNode";
 
 export type TreeEventHandler = (node: ITreeNode, nodePath: number[], e: React.MouseEvent<HTMLElement>) => void;
 
-export interface ITreeProps extends IProps {
+export interface ITreeProps<T = {}> extends IProps {
     /**
      * The data specifying the contents and appearance of the tree.
      */
-    contents: ITreeNode[];
+    contents: Array<ITreeNode<T>>;
 
     /**
      * Invoked when a node is clicked anywhere other than the caret for expanding/collapsing the node.
@@ -48,7 +48,11 @@ export interface ITreeProps extends IProps {
     onNodeExpand?: TreeEventHandler;
 }
 
-export class Tree extends React.Component<ITreeProps, {}> {
+export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
+    public static ofType<T>() {
+        return Tree as new (props: ITreeProps<T>) => Tree<T>;
+    }
+
     public static nodeFromPath(path: number[], treeNodes: ITreeNode[]): ITreeNode {
         if (path.length === 1) {
             return treeNodes[path[0]];

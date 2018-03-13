@@ -5,7 +5,7 @@ Menus display lists of interactive items.
 @## JavaScript API
 
 The `Menu`, `MenuItem`, and `MenuDivider` components are available in the **@blueprintjs/core**
-package. Make sure to review the [general usage docs for JS components](#blueprint.usage).
+package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 The `Menu` API includes three stateless React components:
 
@@ -82,7 +82,7 @@ there is not enough room to the right.
 ```
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>JavaScript only</h5>
+    <h4 class="pt-callout-title">JavaScript only</h4>
     Submenus are only supported in the React components. They cannot be created with CSS alone because
     they rely on the [`Popover`](#core/components/popover) component for positioning and transitions.
 </div>

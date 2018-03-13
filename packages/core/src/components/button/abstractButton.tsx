@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import { Alignment } from "../../common/alignment";
@@ -32,7 +32,7 @@ export interface IButtonProps extends IActionProps {
     alignText?: Alignment;
 
     /** A ref handler that receives the native HTML element backing this component. */
-    elementRef?: (ref: HTMLElement) => any;
+    elementRef?: (ref: HTMLElement | null) => any;
 
     /**
      * If set to `true`, the button will display a centered loading spinner instead of its contents.

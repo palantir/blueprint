@@ -95,7 +95,7 @@ export interface IQueryListRendererProps<T> extends IProps {
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
      */
-    handleItemSelect: (item: T | undefined, event?: React.SyntheticEvent<HTMLElement>) => void;
+    handleItemSelect: (item: T, event?: React.SyntheticEvent<HTMLElement>) => void;
 
     /**
      * Keyboard handler for up/down arrow keys to shift the active item.
@@ -114,7 +114,7 @@ export interface IQueryListRendererProps<T> extends IProps {
      * `QueryList` will retrieve modifiers for the item and delegate to `itemRenderer` prop for the actual rendering.
      * The second parameter `index` is optional here; if provided, it will be passed through `itemRenderer` props.
      */
-    renderItem: (item: T, index?: number) => JSX.Element;
+    renderItem: (item: T, index?: number) => JSX.Element | null;
 
     /**
      * Array of all (unfiltered) items in the list.
@@ -126,7 +126,7 @@ export interface IQueryListRendererProps<T> extends IProps {
      * A ref handler that should be applied to the HTML element that contains the rendererd items.
      * This is required for the `QueryList` to scroll the active item into view automatically.
      */
-    itemsParentRef: (ref: HTMLElement) => void;
+    itemsParentRef: (ref: HTMLElement | null) => void;
 
     /**
      * Controlled query string. Attach an `onChange` handler to the relevant
@@ -136,7 +136,7 @@ export interface IQueryListRendererProps<T> extends IProps {
 }
 
 export interface IQueryListState<T> {
-    filteredItems?: T[];
+    filteredItems: T[];
 }
 
 export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
@@ -146,20 +146,21 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
     }
 
-    private itemsParentRef: HTMLElement;
+    private itemsParentRef?: HTMLElement | null;
     private refHandlers = {
-        itemsParent: (ref: HTMLElement) => (this.itemsParentRef = ref),
+        itemsParent: (ref: HTMLElement | null) => (this.itemsParentRef = ref),
     };
 
     /**
      * flag indicating that we should check whether selected item is in viewport after rendering,
      * typically because of keyboard change.
      */
-    private shouldCheckActiveItemInViewport: boolean;
+    private shouldCheckActiveItemInViewport: boolean = false;
 
     public render() {
-        const { items, renderer, query } = this.props;
+        const { className, items, renderer, query } = this.props;
         return renderer({
+            className,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
@@ -238,19 +239,21 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private getActiveIndex() {
+        const { activeItem } = this.props;
         // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
-        return this.state.filteredItems.indexOf(this.props.activeItem);
+        return activeItem == null ? -1 : this.state.filteredItems.indexOf(activeItem);
     }
 
     private getItemsParentPadding() {
-        const { paddingTop, paddingBottom } = getComputedStyle(this.itemsParentRef);
+        // assert ref exists because it was checked before calling
+        const { paddingTop, paddingBottom } = getComputedStyle(this.itemsParentRef!);
         return {
             paddingBottom: pxToNumber(paddingBottom),
             paddingTop: pxToNumber(paddingTop),
         };
     }
 
-    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
+    private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         Utils.safeInvoke(this.props.onActiveItemChange, item);
         Utils.safeInvoke(this.props.onItemSelect, item, event);
     };
@@ -276,7 +279,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         // using keyup for enter to play nice with Button's keyboard clicking.
         // if we were to process enter on keydown, then Button would click itself on keyup
         // and the popvoer would re-open out of our control :(.
-        if (event.keyCode === Keys.ENTER) {
+        if (event.keyCode === Keys.ENTER && activeItem != null) {
             event.preventDefault();
             Utils.safeInvoke(onItemSelect, activeItem, event);
         }
@@ -311,8 +314,8 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 }
 
-function pxToNumber(value: string) {
-    return parseInt(value.slice(0, -2), 10);
+function pxToNumber(value: string | null) {
+    return value == null ? 0 : parseInt(value.slice(0, -2), 10);
 }
 
 function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }: IQueryListProps<T>) {

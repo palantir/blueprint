@@ -58,6 +58,81 @@ describe("<DateInput>", () => {
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
+    it("Popover closes when ESC key pressed", () => {
+        const wrapper = mount(<DateInput {...DATE_FORMAT} />);
+        wrapper.setState({ isOpen: true });
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        wrapper.find("input").simulate("keydown", { which: Keys.ESCAPE });
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+    });
+
+    it("Popover closes when first day of the month is blurred", () => {
+        const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
+        const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
+        wrapper
+            .find("input")
+            .simulate("focus")
+            .simulate("blur");
+        // First day of month is the only .DayPicker-Day with tabIndex == 0
+        const tabbables = wrapper
+            .find(Popover)
+            .find(".DayPicker-Day")
+            .filter({ tabIndex: 0 });
+        const firstDay = tabbables.getDOMNode() as HTMLElement;
+        firstDay.dispatchEvent(createFocusEvent("blur"));
+        // manually updating wrapper is required with enzyme 3
+        // ref: https://github.com/airbnb/enzyme/blob/master/docs/guides/migration-from-2-to-3.md#for-mount-updates-are-sometimes-required-when-they-werent-before
+        wrapper.update();
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+    });
+
+    it("Popover should not close if focus moves to previous day", () => {
+        const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
+        const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
+        wrapper
+            .find("input")
+            .simulate("focus")
+            .simulate("blur");
+        const tabbables = wrapper
+            .find(Popover)
+            .find(".DayPicker-Day")
+            .filter({ tabIndex: 0 });
+        const firstDay = tabbables.getDOMNode() as HTMLElement;
+        const lastDayOfPrevMonth = wrapper
+            .find(Popover)
+            .find(".DayPicker-Body > .DayPicker-Week .DayPicker-Day--outside")
+            .last();
+        const relatedTarget = lastDayOfPrevMonth.getDOMNode();
+        const event = createFocusEvent("blur", relatedTarget);
+        firstDay.dispatchEvent(event);
+        wrapper.update();
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+    });
+
+    it("Popover should not close if focus moves to month select", () => {
+        const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
+        const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
+        wrapper.setState({ isOpen: true });
+        wrapper
+            .find("input")
+            .simulate("focus")
+            .simulate("blur");
+        wrapper.find(".pt-datepicker-month-select").simulate("change", { value: Months.FEBRUARY.toString() });
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+    });
+
+    it("Popover should not close if focus moves to year select", () => {
+        const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
+        const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
+        wrapper.setState({ isOpen: true });
+        wrapper
+            .find("input")
+            .simulate("focus")
+            .simulate("blur");
+        wrapper.find(".pt-datepicker-year-select").simulate("change", { value: "2016" });
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+    });
+
     it("setting timePrecision renders a TimePicker", () => {
         const wrapper = mount(<DateInput {...DATE_FORMAT} timePrecision={TimePickerPrecision.SECOND} />).setState({
             isOpen: true,
@@ -138,8 +213,8 @@ describe("<DateInput>", () => {
         assert.notStrictEqual(input.prop("value"), "fail", "value cannot be changed");
         assert.strictEqual(input.prop("leftIcon"), "star");
         assert.isTrue(input.prop("required"));
-        assert.isTrue(inputRef.calledOnce, "inputRef not invoked");
-        assert.isTrue(onFocus.calledOnce, "onFocus not invoked");
+        assert.isTrue(inputRef.called, "inputRef not invoked");
+        assert.isTrue(onFocus.called, "onFocus not invoked");
     });
 
     it("popoverProps are passed to Popover", () => {
@@ -532,5 +607,12 @@ describe("<DateInput>", () => {
             getSelectedDays: () => wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`),
             root: wrapper,
         };
+    }
+
+    // PhantomJS fails when creating FocusEvent, so creating an Event, and attaching releatedTarget works
+    function createFocusEvent(eventType: string, relatedTarget: EventTarget = null) {
+        const event = new Event(eventType) as any;
+        event.relatedTarget = relatedTarget;
+        return event;
     }
 });

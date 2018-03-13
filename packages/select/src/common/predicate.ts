@@ -20,4 +20,4 @@ export type ItemListPredicate<T> = (query: string, items: T[]) => T[];
  *
  * If defined with `itemListPredicate`, this prop will be ignored.
  */
-export type ItemPredicate<T> = (query: string, item: T, index: number) => boolean;
+export type ItemPredicate<T> = (query: string, item: T, index?: number) => boolean;

@@ -9,18 +9,18 @@
   "unpkg": "dist/labs.bundle.js",
   "sideEffects": false,
   "scripts": {
-    "compile": "npm-run-all -p 'compile:*'",
+    "compile": "npm-run-all -p \"compile:*\"",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
     "compile:css": "sass-compile ./src",
     "clean": "rm -rf dist/* && rm -rf lib/*",
-    "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
-    "dist": "npm-run-all -s 'dist:*'",
-    "dist:bundle": "NODE_ENV=production webpack",
+    "dev": "npm-run-all -p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+    "dist": "npm-run-all -s \"dist:*\"",
+    "dist:bundle": "cross-env NODE_ENV=production webpack",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
-    "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
-    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
+    "lint:stylelint": "stylelint -s scss \"src/**/*.scss\"",
+    "lint:tslint": "tslint \"{src,test}/**/*.{ts,tsx}\" -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
     "test": "npm-run-all -s test:pre -p test:karma",
     "test:pre": "tsc -p ./test",
@@ -33,7 +33,7 @@
     "@blueprintjs/select": "^2.0.0-rc.1",
     "@blueprintjs/timezone": "^2.0.0-rc.1",
     "classnames": "^2.2",
-    "tslib": "^1.5.0"
+    "tslib": "^1.9.0"
   },
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.5.0",
@@ -46,7 +46,7 @@
     "react-test-renderer": "^16.2.0",
     "react-transition-group": "^2.2.1",
     "tslint": "^5.9.0",
-    "typescript": "~2.6.2",
+    "typescript": "~2.7.2",
     "webpack": "^3.10.0"
   },
   "repository": {

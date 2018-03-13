@@ -12,7 +12,7 @@ vice versa. You do not need to apply sizing classes to the children&mdash;they i
 the parent input.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>Icons only</h5>
+    <h4 class="pt-callout-title">Icons only</h4>
     <p>You cannot use buttons with text in the CSS API for input groups. The padding for text inputs
     in CSS cannot accomodate buttons whose width varies due to text content. You should use icons on
     buttons instead.</p>
@@ -26,7 +26,7 @@ the parent input.
 @## JavaScript API
 
 The `InputGroup` component is available in the __@blueprintjs/core__ package. Make sure to review
-the [general usage docs for JS components](#blueprint.usage).
+the [getting started docs for installation info](#blueprint/getting-started).
 
 The `InputGroup` React component encapsulates the `.pt-input-group`
 [CSS API](#core/components/forms/input-group.css-api): it supports one non-interactive icon on the

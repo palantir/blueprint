@@ -8,7 +8,7 @@ import { Classes, Icon, InputGroup, MenuItem } from "@blueprintjs/core";
 import { IconContents } from "@blueprintjs/icons";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import { IHeadingNode, IPageNode } from "documentalist/dist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";

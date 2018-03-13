@@ -5,7 +5,7 @@
  */
 
 import { Icon, IProps, Popover, Position } from "@blueprintjs/core";
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";

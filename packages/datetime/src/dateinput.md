@@ -38,7 +38,7 @@ An implementation using `moment.js` could look like this:
 
 ```tsx
 import { DateInput, IDateFormatProps } from "@blueprintjs/datetime";
-import * as moment from "moment";
+import moment from "moment";
 
 function getMomentFormatter(format: string): IDateFormatProps {
     // note that locale argument comes from locale prop and may be undefined
@@ -56,7 +56,7 @@ function getMomentFormatter(format: string): IDateFormatProps {
 @## JavaScript API
 
 The `DateInput` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 ```tsx
 import { DateInput } from "@blueprintjs/datetime";

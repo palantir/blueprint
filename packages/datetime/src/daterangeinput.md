@@ -11,7 +11,7 @@ Use this component in forms where the user must enter a date range.
 @## JavaScript API
 
 The `DateRangeInput` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 Use the `onChange` function to listen for changes to the selected date. Use `onError` to listen for
 invalid entered dates or date ranges.

@@ -21,17 +21,14 @@ export interface IDatePickerCaptionProps extends CaptionElementProps {
 
 export interface IDatePickerCaptionState {
     monthWidth: number;
-    yearWidth: number;
 }
 
 export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionProps, IDatePickerCaptionState> {
     public state: IDatePickerCaptionState = {
         monthWidth: 0,
-        yearWidth: 0,
     };
 
     private displayedMonthText: string;
-    private displayedYearText: string;
 
     private containerElement: HTMLElement;
 
@@ -77,7 +74,6 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
         }
 
         this.displayedMonthText = months[displayMonth];
-        this.displayedYearText = displayYear.toString();
 
         const monthSelect = (
             <div className={Classes.DATEPICKER_CAPTION_SELECT} key="month">
@@ -104,11 +100,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
                 >
                     {yearOptionElements}
                 </select>
-                <Icon
-                    className={Classes.DATEPICKER_CAPTION_CARET}
-                    icon="caret-down"
-                    style={{ left: this.state.yearWidth }}
-                />
+                <Icon className={Classes.DATEPICKER_CAPTION_CARET} icon="caret-down" />
             </div>
         );
 
@@ -124,7 +116,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
     }
 
     public componentDidMount() {
-        this.positionArrows();
+        requestAnimationFrame(() => this.positionArrows());
     }
 
     public componentDidUpdate() {
@@ -138,8 +130,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
         // that we're measuring the width of text as sized within this component.
         const textClass = "pt-datepicker-caption-measure";
         const monthWidth = Utils.measureTextWidth(this.displayedMonthText, textClass, this.containerElement);
-        const yearWidth = Utils.measureTextWidth(this.displayedYearText, textClass, this.containerElement);
-        this.setState({ monthWidth, yearWidth });
+        this.setState({ monthWidth });
     }
 
     private handleMonthSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {

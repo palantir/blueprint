@@ -56,6 +56,7 @@ export const BUTTON_TEXT = "pt-button-text";
 
 export const CALLOUT = "pt-callout";
 export const CALLOUT_ICON = "pt-callout-icon";
+export const CALLOUT_TITLE = "pt-callout-title";
 
 export const CARD = "pt-card";
 
@@ -77,6 +78,7 @@ export const DIALOG_CLOSE_BUTTON = "pt-dialog-close-button";
 export const DIALOG_FOOTER = "pt-dialog-footer";
 export const DIALOG_FOOTER_ACTIONS = "pt-dialog-footer-actions";
 export const DIALOG_HEADER = "pt-dialog-header";
+export const DIALOG_HEADER_TITLE = "pt-dialog-header-title";
 
 export const EDITABLE_TEXT = "pt-editable-text";
 

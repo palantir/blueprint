@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/docs-theme",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.3",
   "description": "Blueprint theme for documentalist",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -9,28 +9,28 @@
   "unpkg": "dist/docs-theme.bundle.js",
   "sideEffects": false,
   "scripts": {
-    "compile": "npm-run-all -p 'compile:*'",
+    "compile": "npm-run-all -p \"compile:*\"",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
     "compile:css": "sass-compile ./src",
     "clean": "rm -rf dist/* && rm -rf lib/*",
-    "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
-    "dist": "npm-run-all -s 'dist:*'",
-    "dist:bundle": "NODE_ENV=production webpack",
+    "dev": "npm-run-all -p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+    "dist": "npm-run-all -s \"dist:*\"",
+    "dist:bundle": "cross-env NODE_ENV=production webpack",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
-    "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
-    "lint:tslint": "tslint 'src/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
+    "lint:stylelint": "stylelint -s scss \"src/**/*.scss\"",
+    "lint:tslint": "tslint \"src/**/*.{ts,tsx}\" -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
     "verify": "npm-run-all compile -p dist lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^2.0.0-rc.1",
-    "@blueprintjs/select": "^2.0.0-rc.1",
+    "@blueprintjs/core": "^2.0.0-rc.3",
+    "@blueprintjs/select": "^2.0.0-rc.3",
     "classnames": "^2.2",
-    "documentalist": "^1.0.0-beta.4",
+    "documentalist": "^1.1.0",
     "fuzzaldrin-plus": "^0.5.0",
-    "tslib": "^1.5.0"
+    "tslib": "^1.9.0"
   },
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.5.0",
@@ -40,7 +40,7 @@
     "react-dom": "^16.2.0",
     "react-transition-group": "^2.2.1",
     "tslint": "^5.9.0",
-    "typescript": "~2.6.2",
+    "typescript": "~2.7.2",
     "webpack": "^3.10.0"
   },
   "repository": {

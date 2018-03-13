@@ -3,7 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -58,15 +58,15 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
 
 export interface IMultiSelectState<T> {
     activeItem?: T;
-    isOpen?: boolean;
-    query?: string;
+    isOpen: boolean;
+    query: string;
 }
 
 export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState<T>> {
     public static displayName = "Blueprint2.MultiSelect";
 
     public static ofType<T>() {
-        return (MultiSelect as any) as new () => MultiSelect<T>;
+        return MultiSelect as new (props: IMultiSelectProps<T>) => MultiSelect<T>;
     }
 
     public state: IMultiSelectState<T> = {
@@ -75,11 +75,15 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     };
 
     private TypedQueryList = QueryList.ofType<T>();
-    private input: HTMLInputElement;
-    private queryList: QueryList<T>;
+    private input?: HTMLInputElement | null;
+    private queryList?: QueryList<T> | null;
     private refHandlers = {
-        input: (ref: HTMLInputElement) => (this.input = ref),
-        queryList: (ref: QueryList<T>) => (this.queryList = ref),
+        input: (ref: HTMLInputElement | null) => {
+            this.input = ref;
+            const { tagInputProps = {} } = this.props;
+            Utils.safeInvoke(tagInputProps.inputRef, ref);
+        },
+        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
     public render() {
@@ -162,18 +166,20 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
 
     private isQueryEmpty = () => this.state.query.length === 0;
 
-    private handleQueryChange = (e: React.FormEvent<HTMLInputElement>) => {
+    private handleQueryChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         const { tagInputProps = {}, openOnKeyDown } = this.props;
-        const query = e.currentTarget.value;
+        const query = evt.currentTarget.value;
         this.setState({ query, isOpen: !this.isQueryEmpty() || !openOnKeyDown });
 
         if (tagInputProps.inputProps != null) {
-            Utils.safeInvoke(tagInputProps.inputProps.onChange, e);
+            Utils.safeInvoke(tagInputProps.inputProps.onChange, evt);
         }
     };
 
-    private handleItemSelect = (item: T, e: React.SyntheticEvent<HTMLElement>) => {
-        this.input.focus();
+    private handleItemSelect = (item: T, evt?: React.SyntheticEvent<HTMLElement>) => {
+        if (this.input != null) {
+            this.input.focus();
+        }
         // make sure the query is valid by checking if activeItem is defined
         if (this.state.activeItem != null) {
             if (this.props.resetOnSelect && !this.isQueryEmpty()) {
@@ -182,7 +188,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                     query: "",
                 });
             }
-            Utils.safeInvoke(this.props.onItemSelect, item, e);
+            Utils.safeInvoke(this.props.onItemSelect, item, evt);
         }
     };
 
@@ -221,9 +227,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         Utils.safeInvoke(popoverProps.popoverDidOpen);
     };
 
-    private handleActiveItemChange = (activeItem: T) => {
-        this.setState({ activeItem });
-    };
+    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
 
     private getTargetKeyDownHandler = (
         handleQueryListKeyDown: React.EventHandler<React.KeyboardEvent<HTMLElement>>,
@@ -233,6 +237,11 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             const { resetOnSelect } = this.props;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
+                // By default the escape key will not trigger a blur on the
+                // input element. It must be done explicitly.
+                if (this.input != null) {
+                    this.input.blur();
+                }
                 this.setState({
                     activeItem: resetOnSelect ? this.props.items[0] : this.state.activeItem,
                     isOpen: false,

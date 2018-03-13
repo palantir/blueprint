@@ -10,7 +10,7 @@
 // we need some empty interfaces to show up in docs
 // tslint:disable no-empty-interface
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -34,7 +34,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
     disabled?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: (ref: HTMLInputElement) => any;
+    inputRef?: (ref: HTMLInputElement | null) => any;
 
     /** Whether the control is inline. */
     inline?: boolean;

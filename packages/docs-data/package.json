@@ -1,16 +1,16 @@
 {
   "name": "@blueprintjs/docs-data",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "private": true,
   "scripts": {
-    "compile": "./compile-docs-data",
+    "compile": "node ./compile-docs-data",
     "test": "exit 0"
   },
   "dependencies": {
-    "@blueprintjs/docs-theme": "^2.0.0-rc.1",
-    "documentalist": "^1.0.0-beta.4",
+    "@blueprintjs/docs-theme": "^2.0.0-rc.2",
+    "documentalist": "^1.1.0",
     "glob": "^7.1.2",
     "highlights": "^3.1.1",
     "marked": "^0.3.6",

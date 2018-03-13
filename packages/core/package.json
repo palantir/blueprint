@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/core",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.3",
   "description": "Core styles & components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -9,19 +9,19 @@
   "unpkg": "dist/core.bundle.js",
   "sideEffects": false,
   "scripts": {
-    "compile": "npm-run-all -p 'compile:*'",
+    "compile": "npm-run-all -p \"compile:*\"",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
     "compile:css": "sass-compile ./src",
     "clean": "rm -rf dist/* && rm -rf lib/*",
-    "dev": "npm-run-all -p 'compile:esm -- --watch' 'compile:css -- --watch'",
-    "dist": "npm-run-all -s 'dist:*'",
-    "dist:bundle": "NODE_ENV=production webpack",
+    "dev": "npm-run-all -p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+    "dist": "npm-run-all -s \"dist:*\"",
+    "dist:bundle": "cross-env NODE_ENV=production webpack",
     "dist:variables": "generate-css-variables common/_colors.scss common/_color-aliases.scss common/_variables.scss",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
-    "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
-    "lint:tslint": "tslint '{src,test}/**/*.{ts,tsx}' -c ../tslint-config -t codeFrame",
+    "lint:stylelint": "stylelint -s scss \"src/**/*.scss\"",
+    "lint:tslint": "tslint \"{src,test}/**/*.{ts,tsx}\" -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
     "test": "npm-run-all -s compile:cjs test:pre -p test:karma test:iso",
     "test:pre": "tsc -p ./test",
@@ -31,14 +31,14 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/icons": "^2.0.0-rc.1",
+    "@blueprintjs/icons": "^2.0.0-rc.3",
     "@types/dom4": "^2.0.0",
     "classnames": "^2.2",
     "dom4": "^2.0.1",
     "normalize.css": "^7.0.0",
     "popper.js": "^1.12.6",
     "react-popper": "~0.7.4",
-    "tslib": "^1.5.0"
+    "tslib": "^1.9.0"
   },
   "peerDependencies": {
     "react": "^16.0.0",
@@ -58,7 +58,7 @@
     "react-test-renderer": "^16.2.0",
     "react-transition-group": "^2.2.1",
     "tslint": "^5.9.0",
-    "typescript": "~2.6.2",
+    "typescript": "~2.7.2",
     "webpack": "^3.10.0"
   },
   "repository": {

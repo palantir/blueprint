@@ -6,7 +6,7 @@
 
 // tslint:disable max-classes-per-file
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
