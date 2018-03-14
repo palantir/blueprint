@@ -1,0 +1,88 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+$pkg-icon-width: 24px;
+
+$package-colors: (
+  "blueprint": $gray1,
+  "core": $blue3,
+  "datetime": $red3,
+  "icons": $gold4,
+  "select": $cobalt3,
+  "table-js": $forest3,
+  "timezone": $vermilion4,
+  "labs": $indigo3
+);
+
+$dark-package-colors: (
+  "blueprint": $gray3,
+  "core": $blue4,
+  "datetime": $red4,
+  "icons": $gold4,
+  "select": $cobalt4,
+  "table-js": $forest4,
+  "timezone": $vermilion5,
+  "labs": $indigo4
+);
+
+@mixin nav-colors($package-name, $item-background-color) {
+  &[data-route="#{$package-name}"] {
+    .docs-nav-package-icon {
+      background-color: rgba($item-background-color, 0.2);
+      fill: $item-background-color;
+    }
+
+    &:hover,
+    &.docs-nav-expanded {
+      .pt-menu-item,
+      + .docs-nav-menu .pt-menu-item.pt-active {
+        color: $item-background-color;
+      }
+
+      .docs-nav-package-icon {
+        background-color: rgba($item-background-color, 0.8);
+        fill: $white;
+      }
+
+      &:active .docs-nav-package-icon {
+        background-color: $item-background-color;
+      }
+    }
+  }
+}
+
+.docs-logo {
+  background-image: url("./assets/blueprint-logo.svg");
+
+  .pt-dark & {
+    background-image: url("./assets/blueprint-logo-white.svg");
+  }
+}
+
+.docs-nav-package-icon {
+  margin-right: $pt-grid-size;
+  border-radius: $pt-border-radius * 3;
+}
+
+.docs-nav-package {
+  @include pt-flex-container(row);
+  align-items: center;
+
+  .pt-menu-item {
+    flex: 1 1 auto;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  @each $package in map-keys($package-colors) {
+    @include nav-colors($package, map-get($package-colors, $package));
+
+    .pt-dark & {
+      @include nav-colors($package, map-get($dark-package-colors, $package));
+    }
+  }
+
+  + .docs-nav-menu {
+    margin-left: $pkg-icon-width + $pt-grid-size;
+  }
+}

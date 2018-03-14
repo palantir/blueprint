@@ -6,10 +6,12 @@
 
 import { Icon, Menu, MenuItem, NavbarHeading, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
-import { Banner, Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
-import { ITsDocBase } from "documentalist/dist/client";
+import { Banner, Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+import classNames from "classnames";
+import { isPageNode, ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
 import { NavbarActions } from "./navbarActions";
+import { NavIcon } from "./navIcons";
 
 const DARK_THEME = "pt-dark";
 const LIGHT_THEME = "";
@@ -58,6 +60,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                     {...this.props}
                     className={this.state.themeName}
                     onComponentUpdate={this.handleComponentUpdate}
+                    renderNavMenuItem={this.renderNavMenuItem}
                     renderViewSourceLinkText={this.renderViewSourceLinkText}
                     title={title}
                 />
@@ -89,6 +92,26 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             </Popover>
         );
     }
+
+    private renderNavMenuItem = (props: INavMenuItemProps) => {
+        if (isPageNode(props.section) && props.section.level === 1) {
+            const pkg = this.props.releases.find(p => p.name === `@blueprintjs/${props.section.route}`);
+            return (
+                <div className={classNames("docs-nav-package", props.className)} data-route={props.section.route}>
+                    <a className="pt-menu-item" href={props.href} onClick={props.onClick}>
+                        <NavIcon route={props.section.route} />
+                        <span>{props.section.title}</span>
+                    </a>
+                    {pkg && (
+                        <a href={pkg.url} target="_blank">
+                            <small>{pkg.version}</small>
+                        </a>
+                    )}
+                </div>
+            );
+        }
+        return <NavMenuItem {...props} />;
+    };
 
     private renderViewSourceLinkText(entry: ITsDocBase) {
         return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
