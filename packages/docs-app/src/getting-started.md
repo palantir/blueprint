@@ -49,6 +49,8 @@ The `main` module exports all symbols from all modules so you don't have to impo
         <!-- include dependencies manually -->
         <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
         <link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
+        <link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
+        <!-- NOTE: blueprint-icons.css file must be included alongside blueprint.css! -->
         ...
       </head>
       ...
@@ -57,8 +59,8 @@ The `main` module exports all symbols from all modules so you don't have to impo
 
     ```css.scss
     // or, using node-style package resolution in a CSS file:
-    // (dependencies' stylesheets should be resolved automatically)
-    @import "~@blueprintjs/core";
+    @import "~@blueprintjs/core/lib/css/blueprint.css";
+    @import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
     ```
 
 @### CDN consumption
@@ -80,6 +82,7 @@ These bundles _do not include_ external dependencies; your application will need
     <title>Blueprint Starter Kit</title>
     <link href="https://unpkg.com/normalize.css@^7.0.0" rel="stylesheet" />
     <link href="https://unpkg.com/@blueprintjs/core@^2.0.0/lib/css/blueprint.css" rel="stylesheet" />
+    <link href="https://unpkg.com/@blueprintjs/icons@^2.0.0/lib/css/blueprint-icons.css" rel="stylesheet" />
   </head>
   <body>
     <script src="https://unpkg.com/classnames@^2.2"></script>
@@ -90,6 +93,7 @@ These bundles _do not include_ external dependencies; your application will need
     <script src="https://unpkg.com/popper.js@^1.12.6/dist/umd/popper.js"></script>
     <script src="https://unpkg.com/react-popper@~0.7.4/dist/react-popper.min.js"></script>
     <script src="https://unpkg.com/@blueprintjs/core@^2.0.0"></script>
+    <script src="https://unpkg.com/@blueprintjs/icons@^2.0.0"></script>
 
     <div id="btn"></div>
     <script>

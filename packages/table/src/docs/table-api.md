@@ -1,216 +1,20 @@
 ---
-reference: table-js
+reference: api
 ---
 
-@# Table
-
-A highly interactive React `Table` component.
-
-<div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
-  If you are looking instead for the Blueprint-styled HTML table, see
-  [`.pt-html-table` in **@blueprintjs/core**](#core/components/table).
-</div>
-
-### Features
-
-* High-scale, data-agnostic
-* Customizable cell and header rendering
-* Virtualized viewport rendering
-* Selectable rows, columns and cells
-* Resizable rows and columns
-* Editable headers and cells
-* Integrated header and context menus
-
-@## Installation
-
-```sh
-npm install --save @blueprintjs/core @blueprintjs/table
-```
-
-@## Basic usage
-
-To create a table, you must define the rows and columns. Add children to the `Table` to create columns,
-and change the `numRows` prop on the `Table` to set the number of rows.
-
-For example, this code creates an empty table with three columns and five rows:
-
-```tsx
-<Table numRows={5}>
-    <Column />
-    <Column />
-    <Column />
-</Table>
-```
-
-The table is **data-agnostic**. It doesn't store any data internally, so it is up to you to bind the table to your data.
-
-You can specify how the data is displayed by defining the `cellRenderer` prop on each `Column` component.
-This is useful when working with typed columnar data, like database results.
-
-For example, this creates a table that renders dollar values:
-
-```tsx
-const cellRenderer = (rowIndex: number) => {
-    return <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>
-};
-<Table numRows={10}>
-    <Column name="Dollars" cellRenderer={cellRenderer}/>
-</Table>
-```
-
-@reactExample TableDollarExample
-
-@## Features
-
-@### Sorting
-
-Because the table is **data-agnostic**, you can display complex data in the
-table and perform arbitrary operations on it.
-
-For example, this data set of Sumo tournaments in 2015 contains rankings and
-win-tie-loss results for each competing rikishi (wrestler). For each column
-type, we define a different set of sort operations.
-
-In the table below, try:
-* Sorting with the menu in each column header
-* Selecting cells and copying with the right-click context menu
-
-@reactExample TableSortableExample
-
-@### Editing
-
-To make your table editable, use the `EditableCell` and
-`EditableName` components to create editable table cells and column names.
-
-To further extend the interactivity of the column headers, you can
-add children components to each `ColumnHeaderCell` defined in the
-`columnHeaderCellRenderer` prop of `Column`.
-
-The following example renders a table with editable column names (single
-click), editable table cells (double click), and selectable column types. In
-this example, the editable values are validated against an alpha character-only
-regular expression (`[a-zA-Z]`). If the content is invalid, a
-`Intent.DANGER` style is applied to the cell.
-
-@reactExample TableEditableExample
-
-@### Reordering
-
-The table supports drag-reordering of columns and rows via the `enableColumnReordering` and `enableRowReordering`
-props, respectively.
-
-#### Reordering columns
-
-When `enableColumnReordering={true}`, a drag handle will appear in the column header (or in the
-interaction bar, if `enableColumnInteractionBar={true}`).
-
-##### Single column
-
-To reorder a single column, click and drag the desired column's drag handle to the left or right,
-then release. This will work whether or not column selection is enabled.
-
-##### Multiple columns
-
-To allow reordering of multiple contiguous columns at once, first set the following additional
-props:
-
-- `enableMultipleSelection={true}`
-- `selectionModes={[RegionCardinality.FULL_COLUMNS, ...]}`
-
-Then drag-select the desired columns into a single selection, and grab any selected column's drag
-handle to reorder the entire selected block.
-
-##### Edge cases
-
-With disjoint column selections (specified via <kbd>Cmd</kbd> or <kbd>Ctrl</kbd> + click),
-only the selection containing the target drag handle will be reordered. All other
-selections will be cleared afterward.
-
-Reordering a column contained in two overlapping selections will currently result in undefined
-behavior.
-
-#### Reordering rows
-
-Rows do not have a drag handle, so they must be selected before reordering. To reorder a selection
-of one or more rows, simply click and drag anywhere in a selected row header, then release. Note
-that the following props must be set for row reordering to work:
-
-- `enableRowHeader={true}`
-- `enableRowReordering={true}`
-- `selectionModes={[RegionCardinality.FULL_ROWS, ...]}`
-- `enableMultipleSelection={true}` (to optionally enable multi-row reordering)
-
-#### Example
-
-@reactExample TableReorderableExample
-
-@### Loading states
-
-When fetching or updating data, it may be desirable to show a loading state. The table components
-provide fine-grain loading control of loading row headers, column headers, or individual cells.
-Several table components expose a `loading` or `loadingOptions` prop, but loading-related rendering
-is computed with components lower in the hierarchy taking priority. For example, a cell with
-`loading` set to `false` will never render its loading state even if the `Column` component to which
-it belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELLS ]`. The following examples
-display a table of the largest potentially hazardous asteroid (based on absolute magnitude)
-discovered in a given year.
-
-@#### Table loading states
-
-`Table` exposes a `loadingOptions` prop that allows you to control the loading state behavior of all
-column header, row header, and body cells. Try toggling the different options.
-
-@reactExample TableLoadingExample
-
-@#### Column loading states
-
-`Column` exposes a `loadingOptions` prop that allows you to control the loading state behavior of an
-individual column's header and body cells. Try selecting a different column in the dropdown below.
-
-@reactExample ColumnLoadingExample
-
-@#### Cells
-
-`Cell`, `EditableCell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
-control of which cells should show a loading state. Try selecting a different preset loading
-configuration.
-
-@reactExample CellLoadingExample
-
-@### Formatting
-
-To display long strings or native JavaScript objects, we provide
-`<TruncatedFormat>` and `<JSONFormat>` components, which are designed to be used
-within a `<Cell>`.
-
-Below is a table of timezones including the local time when this page was
-rendered. It uses a `<TruncatedFormat>` component to show the long date string
-and a `<JSONFormat>` component to show the timezone info object.
-
-@reactExample TableFormatsExample
-
-@### Freezing
-
-The table supports column and row freezing via the `numFrozenColumns` and `numFrozenRows` props,
-respectively. Passing `numFrozenColumns={n}` will freeze the `n` leftmost columns in place, while
-all other columns remain scrollable. Likewise, passing `numFrozenRows={m}` will freeze the `m`
-topmost rows in place, while all other rows remain scrollable.
-
-Here's an example of a table with 1 frozen columns and 2 frozen rows:
-
-@reactExample TableFreezingExample
-
-@## JavaScript API
+@# JavaScript API
 
 The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`
 components are available in the __@blueprintjs/table__ package.
 
-@### Table
+@## Table
 
 The top-level component of the table is `Table`. You must at least define the
 number of rows (`numRows` prop) as well as a set of `Column` children.
 
-@#### Instance methods
+@interface ITableProps
+
+@### Instance methods
 
 - `resizeRowsByTallestCell(columnIndices?: number | number[]): void` &ndash; Resizes all rows in the
     table to the height of the tallest visible cell in the specified columns. If no indices are
@@ -259,7 +63,7 @@ interface IResizeRowsByApproximateHeightOptions {
     type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
     ```
 
-- `scrollToRegion(region: IRegion): void` &ndash; Scrolls the table to the target [region](#table-js.region) in a
+- `scrollToRegion(region: IRegion): void` &ndash; Scrolls the table to the target [region](#table.region) in a
    fashion appropriate to the target region's cardinality:
     - `CELLS`: Scroll the top-left cell in the target region to the top-left corner of the viewport.
     - `FULL_ROWS`: Scroll the top-most row in the target region to the top of the viewport.
@@ -273,9 +77,7 @@ interface IResizeRowsByApproximateHeightOptions {
   scroll the target region as close to the top-left as possible until the bottom-right corner is
   reached.
 
-@interface ITableProps
-
-@### Column
+@## Column
 
 `Column` contains props for defining how the header and cells of that column
 are rendered.
@@ -288,14 +90,14 @@ Use the `rowHeaderCellRenderer` prop of `Table` to define row headers.
 
 @interface IColumnProps
 
-@### Cell
+@## Cell
 
 The `Cell` component renders content in the table body. `Cell`s should be
 returned from the `cellRenderer` method of each `Column`.
 
 @interface ICellProps
 
-@### ColumnHeaderCell
+@## ColumnHeaderCell
 
 Customize how each column header is displayed.
 
@@ -306,7 +108,7 @@ name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell`.
 
 @interface IColumnHeaderCellProps
 
-@### EditableName
+@## EditableName
 
 Return a `EditableName` component from the `nameRenderer` prop on a
 `ColumnHeaderCell` to enable click-to-edit functionality in the column
@@ -314,21 +116,21 @@ header.
 
 @interface IEditableNameProps
 
-@### EditableCell
+@## EditableCell
 
 Return a `EditableCell` component from the `cellRenderer` prop on a
 `Column` to enable double-click-to-edit functionality in the table body.
 
 @interface IEditableCellProps
 
-@### Region
+@## Region
 
 A region is a rectangular group of cells in the table.
 
 Regions are typically used to describe boundaries for selections (via the
 `selectedRegions` prop) and custom overlays (via the `styledRegionGroups` prop).
 You may also wish to scroll directly to a region in the table via the
-[`Table.scrollToRegion`](#table-js.instance-methods) instance method.
+[`Table.scrollToRegion`](#table.instance-methods) instance method.
 
 There are four different types of regions:
 - __Cell region:__ contains a finite, rectangular group of table cells
@@ -414,7 +216,7 @@ const cardinalities = [
 ```
 
 
-@### TruncatedFormat
+@## TruncatedFormat
 
 Wrap your cell contents with a `TruncatedFormat` component like so:
 
@@ -425,7 +227,7 @@ return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
 
 @interface ITruncatedFormatProps
 
-@### JSONFormat
+@## JSONFormat
 
 Wrap your JavaScript object cell contents with a `JSONFormat` component like so:
 
