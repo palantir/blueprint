@@ -14,4 +14,3 @@ with Sass and Less variables, an elegant color palette, and 300+ UI icons in two
 @page typography
 @page variables
 @page components
-@page resources

@@ -10,3 +10,4 @@ This file enumerates the exact order of root pages in the left sidebar.
 @page table
 @page timezone
 @page labs
+@page resources
