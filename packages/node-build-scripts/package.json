@@ -13,7 +13,7 @@
     "sass-dist": "./sass-dist"
   },
   "dependencies": {
-    "autoprefixer": "^8.1.0",
+    "autoprefixer": "^7.1.2",
     "node-sass": "^4.7.2",
     "node-sass-chokidar": "^0.0.3",
     "node-sass-package-importer": "^3.0.4",

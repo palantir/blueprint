@@ -6,7 +6,7 @@
     "test": "exit 0"
   },
   "dependencies": {
-    "autoprefixer": "^8.1.0",
+    "autoprefixer": "^7.1.2",
     "awesome-typescript-loader": "^3.4.1",
     "circular-dependency-plugin": "^4.3.0",
     "css-loader": "^0.28.8",
