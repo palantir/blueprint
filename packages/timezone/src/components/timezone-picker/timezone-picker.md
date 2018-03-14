@@ -2,14 +2,16 @@
 
 `TimezonePicker` allows the user to select from a list of timezones.
 
+[Moment Timezone](http://momentjs.com/timezone/) is used internally for the list of available timezones and
+timezone metadata.
+
 @reactExample TimezonePickerExample
 
 @## JavaScript API
 
-This component can be used in controlled or uncontrolled mode.
+This component only supports controlled usage.
+Control the selected timezone with the `value` prop.
 Use the `onChange` prop to listen for changes to the selected timezone.
-You can control the selected timezone by setting the `value` prop.
-Or, use the component in uncontrolled mode and specify an initial timezone by setting `defaultValue`.
 
 The `date` prop is used to determine the timezone offsets.
 This is because a timezone usually has more than one offset from UTC due to daylight saving time.
@@ -19,20 +21,16 @@ for more information.
 
 The initial list (shown before filtering) shows one timezone per timezone offset,
 using the most populous location for each offset.
-Moment Timezone uses a similar heuristic for
-[guessing](http://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/) the user's timezone.
-
-[Moment Timezone](http://momentjs.com/timezone/) is used internally for the list of available timezones and
-timezone metadata.
+Moment Timezone uses a similar [heuristic for guessing](http://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/)
+the user's timezone.
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
     <h4 class="pt-callout-title">Local timezone detection</h4>
-    We detect the local timezone when the `showLocalTimezone` prop is used.
-    We cannot guarantee that we'll get the correct local timezone in all browsers.
+    We detect the local timezone when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.
     In supported browsers, the [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.
     In other browsers, `Date` methods and a population heuristic are used.
     See [Moment Timezone's documentation](https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/)
-    for more information.
+    for more information and browser compatibility.
 </div>
 
 ```tsx

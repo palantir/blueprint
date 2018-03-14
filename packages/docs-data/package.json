@@ -5,6 +5,7 @@
   "types": "src/index.d.ts",
   "private": true,
   "scripts": {
+    "clean": "rm -rf src/generated/*",
     "compile": "node ./compile-docs-data",
     "test": "exit 0"
   },

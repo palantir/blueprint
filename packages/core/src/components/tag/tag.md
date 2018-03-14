@@ -2,6 +2,8 @@
 
 Tags are great for lists of strings.
 
+@reactExample TagExample
+
 @## CSS API
 
 An optional "remove" button can be added inside a tag as a `button.pt-tag-remove`. Also add the
@@ -41,4 +43,3 @@ Blueprint class name.
 
 @interface ITagProps
 
-@reactExample TagExample
