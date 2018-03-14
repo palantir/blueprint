@@ -8,6 +8,9 @@
   "style": "lib/css/blueprint.css",
   "unpkg": "dist/core.bundle.js",
   "sideEffects": false,
+  "bin": {
+    "upgrade-blueprint-2.0.0-rename": "./scripts/upgrade-blueprint-2.0.0-rename"
+  },
   "scripts": {
     "compile": "npm-run-all -p \"compile:*\"",
     "compile:esm": "tsc -p ./src",
