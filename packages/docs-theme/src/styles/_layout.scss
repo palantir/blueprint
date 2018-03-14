@@ -4,20 +4,12 @@
 @import "variables";
 @import "../../../core/src/components/forms/common";
 
-$nav-item-padding: $pt-grid-size;
 $nav-item-indent: $pt-grid-size * 2;
-$nav-item-icon-size: $pt-grid-size * 2.4;
-$nav-item-icon-margin: $pt-grid-size;
 
 $nav-item-color-hover: $minimal-button-background-color-hover;
 $nav-item-color-active: $minimal-button-background-color-active;
 $dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
 $dark-nav-item-color-active: $dark-minimal-button-background-color-active;
-
-$navbar-box-shadow: 0 1px 0 $pt-divider-black;
-$dark-navbar-box-shadow: 0 1px 0 $pt-dark-divider-black;
-
-$logo-width: $pt-grid-size * 6.5;
 
 /*
 Flex utils
@@ -88,18 +80,42 @@ Page layout elements
 Lefthand navigation menu
 */
 
-// nested menus are hidden by default
-.docs-nav-menu .docs-nav-menu {
-  display: none;
-}
+.docs-nav-menu {
+  .pt-menu-item {
+    padding-right: $pt-grid-size;
+    padding-left: 0;
+    white-space: initial;
 
-.docs-nav-expanded > .docs-nav-menu {
-  display: block;
-}
+    &:hover,
+    &.pt-active,
+    &.docs-nav-expanded {
+      // bold text instead of background color
+      background-color: transparent !important; // stylelint-disable-line declaration-no-important
+      font-weight: 600;
+    }
 
-.docs-nav-expand-all .docs-nav-menu {
-  // sometimes you need to show all the sections
-  display: block !important; // stylelint-disable-line declaration-no-important
+    @each $depth in (1, 2, 3, 4, 5) {
+      &.depth-#{$depth} {
+        padding-left: $nav-item-indent * $depth;
+      }
+    }
+  }
+
+  .docs-nav-menu {
+    // nested menus are hidden by default
+    display: none;
+    // nested menus indent automatically
+    margin-left: $nav-item-indent;
+  }
+
+  .docs-nav-expanded + & {
+    display: block;
+  }
+
+  .docs-nav-expand-all &u {
+    // sometimes you need to show all the sections
+    display: block !important; // stylelint-disable-line declaration-no-important
+  }
 }
 
 // empty state item is hidden by default...
@@ -110,54 +126,6 @@ Lefthand navigation menu
 // ...and appears when the actual menu is empty
 .docs-nav-menu:empty + .docs-empty-state {
   display: block;
-}
-
-.docs-menu-item {
-  .pt-menu-item {
-    padding-right: $nav-item-padding;
-    padding-left: $nav-item-padding;
-    white-space: initial;
-
-    &:hover,
-    &.pt-active {
-      background-color: transparent !important; // stylelint-disable declaration-no-important
-      font-weight: 600;
-    }
-  }
-
-  // stylelint-disable max-nesting-depth
-  &.depth-1 {
-    > .pt-menu-item {
-      // padding-left: $nav-item-padding + $nav-item-indent;
-      display: flex;
-      align-items: center;
-      text-transform: uppercase;
-      font-weight: 600;
-
-      .docs-menu-item-icon {
-        display: inline-block;
-        margin-right: $nav-item-icon-margin;
-        border-radius: $nav-item-icon-size / 3;
-        // box-shadow: inset 0 0 0 1px rgba($black, 0.2);
-        background-repeat: no-repeat;
-        background-position: center;
-        width: $nav-item-icon-size;
-        height: $nav-item-icon-size;
-      }
-
-      &.pt-active {
-        color: inherit;
-      }
-    }
-  }
-  // stylelint-enable max-nesting-depth
-
-  @each $depth in (2, 3, 4, 5, 6) {
-    &.depth-#{$depth} > .pt-menu-item {
-      padding-left: $nav-item-padding +
-        $nav-item-indent * ($depth - 2) + ($nav-item-icon-size + $nav-item-icon-margin);
-    }
-  }
 }
 
 // hides all documentation content, to focus on live examples

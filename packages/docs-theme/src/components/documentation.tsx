@@ -15,7 +15,8 @@ import { eachLayoutNode } from "../common/utils";
 import { ITagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
 import { Navigator, NavigatorTrigger } from "./navigator";
-import { INavMenuItemProps, NavMenu } from "./navMenu";
+import { NavMenu } from "./navMenu";
+import { INavMenuItemProps } from "./navMenuItem";
 import { Page } from "./page";
 import { ApiLink } from "./typescript/apiLink";
 
@@ -127,9 +128,10 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                         <div className="docs-nav-title">{this.props.title}</div>
                         <NavigatorTrigger onClick={this.handleOpenNavigator} />
                         <NavMenu
-                            items={nav}
                             activePageId={activePageId}
                             activeSectionId={activeSectionId}
+                            items={nav}
+                            level={0}
                             onItemClick={this.handleNavigation}
                             renderNavMenuItem={this.props.renderNavMenuItem}
                         />
@@ -235,9 +237,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navMenuElement = this.navElement
-            .querySelector(`a[href="#${activeSectionId}"]`)
-            .closest(".docs-menu-item-page");
+        const navMenuElement = this.navElement.querySelector(`a[href="#${activeSectionId}"]`);
         const innerBounds = navMenuElement.getBoundingClientRect();
         const outerBounds = this.navElement.getBoundingClientRect();
         if (innerBounds.top < outerBounds.top || innerBounds.bottom > outerBounds.bottom) {

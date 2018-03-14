@@ -4,6 +4,11 @@
 @import "variables";
 @import "../../../core/src/components/button/common";
 
+$navbar-box-shadow: 0 1px 0 $pt-divider-black;
+$dark-navbar-box-shadow: 0 1px 0 $pt-dark-divider-black;
+
+$logo-width: $pt-grid-size * 6.5;
+
 /*
 All the components that live *inside* the navbar.
 */

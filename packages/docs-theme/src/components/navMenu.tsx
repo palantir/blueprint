@@ -9,34 +9,16 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { IHeadingNode, IPageNode, isPageNode } from "documentalist/dist/client";
+import { INavMenuItemProps, NavMenuItem } from "./navMenuItem";
 
 export interface INavMenuProps extends IProps {
     activePageId: string;
     activeSectionId: string;
+    level: number;
     onItemClick: (reference: string) => void;
     items: Array<IPageNode | IHeadingNode>;
     renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
 }
-
-export interface INavMenuItemProps {
-    href: string;
-    isActive: boolean;
-    isExpanded: boolean;
-    onClick: () => void;
-    section: IPageNode | IHeadingNode;
-}
-
-export const NavMenuItem: React.SFC<INavMenuItemProps> = props => {
-    const itemClasses = classNames(Classes.MENU_ITEM, {
-        [Classes.ACTIVE]: props.isActive,
-    });
-    return (
-        <a className={itemClasses} href={props.href} onClick={props.onClick}>
-            {props.section.title}
-        </a>
-    );
-};
-NavMenuItem.displayName = "Docs2.NavMenuItem";
 
 export const NavMenu: React.SFC<INavMenuProps> = props => {
     const { renderNavMenuItem = NavMenuItem } = props;
@@ -44,13 +26,12 @@ export const NavMenu: React.SFC<INavMenuProps> = props => {
         const isActive = props.activeSectionId === section.route;
         const isExpanded = isActive || isParentOfRoute(section.route, props.activeSectionId);
         // active section gets selected styles, expanded section shows its children
-        const itemClasses = classNames(
-            "docs-menu-item",
-            `docs-menu-item-${isPageNode(section) ? "page" : "heading"}`,
-            `depth-${section.level}`,
-            { "docs-nav-expanded": isExpanded },
-        );
+        const itemClasses = classNames(`depth-${section.level - props.level - 1}`, {
+            "docs-nav-expanded": isExpanded,
+            [Classes.ACTIVE]: isActive,
+        });
         const item = renderNavMenuItem({
+            className: itemClasses,
             href: "#" + section.route,
             isActive,
             isExpanded,
@@ -58,9 +39,9 @@ export const NavMenu: React.SFC<INavMenuProps> = props => {
             section,
         });
         return (
-            <li className={itemClasses} key={section.route}>
+            <li key={section.route}>
                 {item}
-                {isPageNode(section) ? <NavMenu {...props} items={section.children} /> : null}
+                {isPageNode(section) ? <NavMenu {...props} level={section.level} items={section.children} /> : null}
             </li>
         );
     });
