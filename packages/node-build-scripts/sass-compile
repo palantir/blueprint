@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
-# Usage: sass-compile [outdir=lib/css/]
-
 if [ $# -eq 0 ]; then
-  echo "Usage: sass-compile <directory> [...args]"
+  echo "Usage: sass-compile <directory> [<output>] [...args]"
   exit 1
 fi
 
 # output directory defaults to lib/css
-OUTPUT=${1:-"lib/css/"}
+OUTPUT="lib/css/"
+if [[ $2 =~ ^[^-] ]]; then
+  # only assign if it's not a --arg
+  OUTPUT=$2
+fi
 
 # dependencies are hoisted to root node_modules, so load packages from there
 ROOT_NM=../../node_modules
