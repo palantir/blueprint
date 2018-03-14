@@ -10,8 +10,9 @@ $package-colors: (
   "icons": $gold4,
   "select": $cobalt3,
   "table": $forest3,
-  "timezone": $vermilion4,
-  "labs": $indigo3
+  "timezone": $violet3,
+  "labs": $indigo3,
+  "resources": $orange3,
 );
 
 $dark-package-colors: (
@@ -21,8 +22,9 @@ $dark-package-colors: (
   "icons": $gold4,
   "select": $cobalt4,
   "table": $forest4,
-  "timezone": $vermilion5,
-  "labs": $indigo4
+  "timezone": $violet4,
+  "labs": $indigo4,
+  "resources": $orange4,
 );
 
 @mixin nav-colors($package-name, $item-background-color) {

@@ -88,13 +88,10 @@ const ICON_CONTENTS: Record<string, JSX.Element> = {
 
     timezone: (
         <g transform="translate(6 5)" fillRule="evenodd">
-            <circle opacity=".4" cx="6.5" cy="6.5" r="6.5" />
-            <path
-                d="M6.5 13a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13zm0-1a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11z"
-                opacity={OPACITY}
-            />
-            <path d="M5.8 6.495l.996-.835 2.571 3.064-.995.836z" />
-            <path d="M6 2h1v4.5a.5.5 0 0 1-1 0V2z" />
+            <circle opacity={OPACITY / 2} cx="6.5" cy="6.5" r="5.5" />
+            <path d="M6.5 13a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13zm0-1a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11z" />
+            <path d="M5.789 6.463l.919-.771 2.571 3.064-.92.771z" />
+            <path d="M6 2h1v5H6z" />
         </g>
     ),
 };

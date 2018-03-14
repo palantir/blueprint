@@ -4,7 +4,16 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Icon, Menu, MenuItem, NavbarHeading, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
+import {
+    Classes,
+    Icon,
+    Menu,
+    MenuItem,
+    NavbarHeading,
+    Popover,
+    Position,
+    setHotkeysDialogProps,
+} from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 import { Banner, Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 import classNames from "classnames";
@@ -103,7 +112,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                         <span>{props.section.title}</span>
                     </a>
                     {pkg && (
-                        <a href={pkg.url} target="_blank">
+                        <a className={Classes.TEXT_MUTED} href={pkg.url} target="_blank">
                             <small>{pkg.version}</small>
                         </a>
                     )}
