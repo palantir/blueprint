@@ -76,7 +76,7 @@ const ICON_CONTENTS: Record<string, JSX.Element> = {
         </g>
     ),
 
-    "table-js": (
+    table: (
         <g fillRule="evenodd">
             <path
                 d="M10 15v-2h4v2h-4zm0 1h4v2h-4v-2zm8-1h-3v-2h3v2zm0 1a2 2 0 0 1-2 2h-1v-2h3zM6 15v-2h3v2H6zm0 1h3v2H8a2 2 0 0 1-2-2zm4-4v-2h4v2h-4zm8 0h-3v-2h3v2zM6 12v-2h3v2H6z"
