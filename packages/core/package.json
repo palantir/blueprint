@@ -20,6 +20,7 @@
     "dev": "npm-run-all -p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
     "dist": "npm-run-all -s \"dist:*\"",
     "dist:bundle": "cross-env NODE_ENV=production webpack",
+    "dist:css": "sass-dist lib/css/*.css",
     "dist:variables": "generate-css-variables common/_colors.scss common/_color-aliases.scss common/_variables.scss",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",

@@ -9,12 +9,16 @@
     "assert-package-layout": "./assert-package-layout",
     "generate-css-variables": "./generate-css-variables",
     "generate-icons-source": "./generate-icons-source",
-    "sass-compile": "./sass-compile"
+    "sass-compile": "./sass-compile",
+    "sass-dist": "./sass-dist"
   },
   "dependencies": {
+    "autoprefixer": "^8.1.0",
     "node-sass": "^4.7.2",
     "node-sass-chokidar": "^0.0.3",
     "node-sass-package-importer": "^3.0.4",
+    "postcss-cli": "^5.0.0",
+    "postcss-discard-comments": "^2.0.4",
     "strip-css-comments": "^3.0.0",
     "svgo": "^1.0.3"
   },
