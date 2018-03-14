@@ -24,7 +24,7 @@
 @page portal
 @page progress
 @page sliders
-@page table
+@page table-html
 @page tabs
 @page tag
 @page tag-input
