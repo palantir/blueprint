@@ -12,6 +12,8 @@ components are available in the __@blueprintjs/table__ package.
 The top-level component of the table is `Table`. You must at least define the
 number of rows (`numRows` prop) as well as a set of `Column` children.
 
+@interface ITableProps
+
 @### Instance methods
 
 - `resizeRowsByTallestCell(columnIndices?: number | number[]): void` &ndash; Resizes all rows in the
@@ -74,8 +76,6 @@ interface IResizeRowsByApproximateHeightOptions {
   If the target region is close to the bottom-right corner of the table, this function will simply
   scroll the target region as close to the top-left as possible until the bottom-right corner is
   reached.
-
-@interface ITableProps
 
 @## Column
 
