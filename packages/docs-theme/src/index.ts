@@ -7,5 +7,6 @@
 export * from "./components/banner";
 export * from "./components/baseExample";
 export * from "./components/documentation";
+export { NavMenuItem, INavMenuItemProps } from "./components/navMenu";
 export * from "./common";
 export * from "./tags";

@@ -15,7 +15,7 @@ import { eachLayoutNode } from "../common/utils";
 import { ITagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
 import { Navigator, NavigatorTrigger } from "./navigator";
-import { NavMenu } from "./navMenu";
+import { INavMenuItemProps, NavMenu } from "./navMenu";
 import { Page } from "./page";
 import { ApiLink } from "./typescript/apiLink";
 
@@ -44,6 +44,12 @@ export interface IDocumentationProps extends IProps {
      * @default "View source"
      */
     renderViewSourceLinkText?: (entry: ITsDocBase) => React.ReactNode;
+
+    /**
+     * Callback invoked to render the clickable nav menu items. (Nested menu structure is handled by the library.)
+     * The default implementation renders a `NavMenuItem` element, which is exported from this package.
+     */
+    renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
 
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: ITagRendererMap;
@@ -125,6 +131,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                             activePageId={activePageId}
                             activeSectionId={activeSectionId}
                             onItemClick={this.handleNavigation}
+                            renderNavMenuItem={this.props.renderNavMenuItem}
                         />
                     </div>
                     <article className="docs-content" ref={this.refHandlers.content} role="main">
