@@ -82,8 +82,19 @@
   font-size: $pt-font-size-large;
   font-weight: 600;
 
+  // optional interface description
+  + .docs-section {
+    box-shadow: 0 1px 0 $pt-divider-black;
+    padding: $pt-grid-size ($pt-grid-size * 2) 0;
+  }
+
   .pt-dark & {
     box-shadow: 0 1px 0 $pt-dark-divider-white;
+
+    + .docs-section {
+      box-shadow: 0 1px 0 $pt-dark-divider-white;
+      padding: $pt-grid-size ($pt-grid-size * 2) 0;
+    }
   }
 }
 
