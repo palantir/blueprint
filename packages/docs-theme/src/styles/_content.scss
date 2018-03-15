@@ -30,7 +30,7 @@ $dark-example-background-color: $dark-content-background-color;
 // so the heading will appear _below_ the navbar (since the navbar covers the top 50px of window).
 .docs-anchor {
   position: absolute;
-  margin-top: -$pt-navbar-height - $content-padding;
+  margin-top: -$content-padding * 2;
 }
 
 .docs-anchor-link {

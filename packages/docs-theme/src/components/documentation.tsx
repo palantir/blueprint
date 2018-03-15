@@ -23,6 +23,12 @@ import { ApiLink } from "./typescript/apiLink";
 
 export interface IDocumentationProps extends IProps {
     /**
+     * An element to place above the documentation, along the top of the viewport.
+     * For best results, use a `Banner` from this package.
+     */
+    banner?: JSX.Element;
+
+    /**
      * Default page to render in the absence of a hash route.
      */
     defaultPageId: string;
@@ -122,27 +128,34 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public render() {
         const { activeApiMember, activePageId, activeSectionId, isApiBrowserOpen } = this.state;
         const { nav, pages } = this.props.docs;
-        const examplesOnly = location.search === "?examples";
+        const rootClasses = classNames(
+            "docs-flex-column",
+            { "docs-examples-only": location.search === "?examples" },
+            this.props.className,
+        );
         return (
-            <div className={classNames("docs-app", { "docs-examples-only": examplesOnly }, this.props.className)}>
-                <div className="docs-nav-wrapper">
-                    <div className="docs-nav" ref={this.refHandlers.nav}>
-                        {this.props.header}
-                        <div className="docs-nav-divider" />
-                        <NavButton icon="search" hotkey="S" text="Search..." onClick={this.handleOpenNavigator} />
-                        <div className="docs-nav-divider" />
-                        <NavMenu
-                            activePageId={activePageId}
-                            activeSectionId={activeSectionId}
-                            items={nav}
-                            level={0}
-                            onItemClick={this.handleNavigation}
-                            renderNavMenuItem={this.props.renderNavMenuItem}
-                        />
+            <div className={rootClasses}>
+                {this.props.banner}
+                <div className="docs-app docs-flex-row">
+                    <div className="docs-nav-wrapper docs-flex-column">
+                        <div className="docs-nav" ref={this.refHandlers.nav}>
+                            {this.props.header}
+                            <div className="docs-nav-divider" />
+                            <NavButton icon="search" hotkey="S" text="Search..." onClick={this.handleOpenNavigator} />
+                            <div className="docs-nav-divider" />
+                            <NavMenu
+                                activePageId={activePageId}
+                                activeSectionId={activeSectionId}
+                                items={nav}
+                                level={0}
+                                onItemClick={this.handleNavigation}
+                                renderNavMenuItem={this.props.renderNavMenuItem}
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="docs-content-wrapper" ref={this.refHandlers.content} role="main">
-                    <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
+                    <main className="docs-content-wrapper" ref={this.refHandlers.content} role="main" tabIndex={0}>
+                        <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
+                    </main>
                 </div>
                 <Overlay className="docs-api-overlay" isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
                     <TypescriptExample tag="typescript" value={activeApiMember} />
@@ -180,6 +193,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public componentDidMount() {
         // hooray! so you don't have to!
         FocusStyleManager.onlyShowFocusOnTabs();
+        this.contentElement.focus();
         this.scrollToActiveSection();
         this.maybeScrollToActivePageMenuItem();
         Utils.safeInvoke(this.props.onComponentUpdate, this.state.activePageId);

@@ -36,20 +36,16 @@ Page layout elements
 */
 
 .docs-app {
-  display: flex;
-  flex-direction: row;
   background-color: $sidebar-background-color;
   height: 100vh;
 
-  &.pt-dark {
+  .pt-dark & {
     background-color: $dark-sidebar-background-color;
   }
 }
 
 .docs-nav-wrapper,
 .docs-content-wrapper {
-  display: flex;
-  flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
   overflow: auto;
