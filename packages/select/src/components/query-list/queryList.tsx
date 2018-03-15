@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { IProps, Keys, Utils } from "@blueprintjs/core";
+import { IProps, Keys, Menu, Utils } from "@blueprintjs/core";
 import { IItemModifiers, ItemRenderer } from "../../common/itemRenderer";
 import { IMenuRendererProps, MenuRenderer } from "../../common/menuRenderer";
 import { ItemListPredicate, ItemPredicate } from "../../common/predicate";
@@ -116,8 +116,16 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
     query: string;
 }
 
-/** Interface for object passed to `QueryList` `renderer` function. */
+/**
+ * An object describing how to render a `QueryList`.
+ * A `QueryList` `renderer` receives this object as its sole argument.
+ */
 export interface IQueryListRendererProps<T> extends IProps {
+    /**
+     * Array of items filtered by `itemListPredicate` or `itemPredicate`.
+     */
+    filteredItems: T[];
+
     /**
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
@@ -136,29 +144,10 @@ export interface IQueryListRendererProps<T> extends IProps {
      */
     handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
 
-    /**
-     * Call this function to render an `item`.
-     * `QueryList` will retrieve modifiers for the item and delegate to `itemRenderer` prop for the actual rendering.
-     * The second parameter `index` is optional here; if provided, it will be passed through `itemRenderer` props.
-     */
-    renderItem: (item: T, index?: number) => JSX.Element | null;
+    /** Rendered elements returned from `menuRenderer` prop. */
+    itemList: React.ReactNode;
 
-    /**
-     * Array of all (unfiltered) items in the list.
-     * See `filteredItems` for a filtered array based on `query`.
-     */
-    items: T[];
-
-    /**
-     * A ref handler that should be applied to the HTML element that contains the rendererd items.
-     * This is required for the `QueryList` to scroll the active item into view automatically.
-     */
-    itemsParentRef: (ref: HTMLElement | null) => void;
-
-    /**
-     * Controlled query string. Attach an `onChange` handler to the relevant
-     * element to control this prop from your application's state.
-     */
+    /** The current query string. */
     query: string;
 }
 
@@ -173,6 +162,22 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
     }
 
+    /**
+     * Helper method for rendering `props.filteredItems`, with optional support for `noResults`
+     * (when filtered items is empty) and `initialContent` (when query is empty).
+     */
+    public static renderFilteredItems(
+        props: IMenuRendererProps<any>,
+        noResults?: React.ReactNode,
+        initialContent?: React.ReactNode | null,
+    ): React.ReactNode {
+        if (props.query.length === 0 && initialContent !== undefined) {
+            return initialContent;
+        }
+        const items = props.filteredItems.map(props.renderItem).filter(item => item != null);
+        return items.length > 0 ? items : noResults;
+    }
+
     private itemsParentRef?: HTMLElement | null;
     private refHandlers = {
         itemsParent: (ref: HTMLElement | null) => (this.itemsParentRef = ref),
@@ -185,16 +190,22 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private shouldCheckActiveItemInViewport: boolean = false;
 
     public render() {
-        const { className, items, renderer, query } = this.props;
+        const { className, items, renderer, query, itemListRenderer = this.defaultMenuRenderer } = this.props;
+        const { filteredItems } = this.state;
         return renderer({
             className,
+            filteredItems,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
-            items,
-            itemsParentRef: this.refHandlers.itemsParent,
+            itemList: itemListRenderer({
+                filteredItems,
+                items,
+                itemsParentRef: this.refHandlers.itemsParent,
+                query,
+                renderItem: this.renderItem,
+            }),
             query,
-            renderItem: this.renderItem,
         });
     }
 
@@ -257,6 +268,30 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             }
         }
     }
+
+    private defaultMenuRenderer = (menuProps: IMenuRendererProps<T>) => {
+        const { initialContent, noResults } = this.props;
+        const menuContent = QueryList.renderFilteredItems(menuProps, noResults, initialContent);
+        return <Menu ulRef={menuProps.itemsParentRef}>{menuContent}</Menu>;
+    };
+
+    private renderItem = (item: T, index?: number) => {
+        const { activeItem, itemListPredicate, itemPredicate = () => true, query } = this.props;
+        const matchesPredicate = Utils.isFunction(itemListPredicate)
+            ? this.state.filteredItems.indexOf(item) >= 0
+            : itemPredicate(query, item, index);
+        const modifiers: IItemModifiers = {
+            active: activeItem === item,
+            disabled: false,
+            matchesPredicate,
+        };
+        return this.props.itemRenderer(item, {
+            handleClick: e => this.handleItemSelect(item, e),
+            index,
+            modifiers,
+            query,
+        });
+    };
 
     private getActiveElement() {
         if (this.itemsParentRef != null) {
@@ -322,24 +357,6 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const nextActiveIndex = Utils.clamp(this.getActiveIndex() + direction, 0, maxIndex);
         Utils.safeInvoke(this.props.onActiveItemChange, filteredItems[nextActiveIndex]);
     }
-
-    private renderItem = (item: T, index?: number) => {
-        const { activeItem, itemListPredicate, itemPredicate = () => true, query } = this.props;
-        const matchesPredicate = Utils.isFunction(itemListPredicate)
-            ? this.state.filteredItems.indexOf(item) >= 0
-            : itemPredicate(query, item, index);
-        const modifiers: IItemModifiers = {
-            active: activeItem === item,
-            disabled: false,
-            matchesPredicate,
-        };
-        return this.props.itemRenderer(item, {
-            handleClick: e => this.handleItemSelect(item, e),
-            index,
-            modifiers,
-            query,
-        });
-    };
 }
 
 function pxToNumber(value: string | null) {

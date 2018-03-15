@@ -9,7 +9,16 @@
  * A `menuRenderer` receives this object as its sole argument.
  */
 export interface IMenuRendererProps<T> {
-    /** Array of all items in the list. */
+    /**
+     * Array of items filtered by `itemListPredicate` or `itemPredicate`.
+     * See `items` for the full list of items.
+     */
+    filteredItems: T[];
+
+    /**
+     * Array of all items in the list.
+     *  See `filteredItems` for a filtered array based on `query` and predicate props.
+     */
     items: T[];
 
     /**
@@ -18,7 +27,7 @@ export interface IMenuRendererProps<T> {
     query: string;
 
     /**
-     * A ref handler that should be attached to the menu's outermost HTML element.
+     * A ref handler that should be attached to the parent HTML element of the menu items.
      * This is required for the active item to scroll into view automatically.
      */
     itemsParentRef: (ref: HTMLElement | null) => void;
