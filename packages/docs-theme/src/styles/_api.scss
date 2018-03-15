@@ -55,11 +55,6 @@
     }
   }
 
-  .docs-type-alias {
-    overflow: auto;
-    padding: $pt-grid-size ($pt-grid-size * 2);
-  }
-
   &.pt-dark {
     .docs-modifiers {
       box-shadow: $pt-dark-elevation-shadow-4;

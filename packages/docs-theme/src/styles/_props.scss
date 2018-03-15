@@ -98,6 +98,16 @@
   }
 }
 
+.docs-package-name {
+  // adjusts text baseline with interface name
+  margin-top: $pt-font-size-large - $pt-font-size;
+}
+
+.docs-type-alias {
+  overflow: auto;
+  padding: $pt-grid-size ($pt-grid-size * 2);
+}
+
 .docs-modifiers-table {
   th:first-child,
   td:first-child {
