@@ -3,6 +3,9 @@
 
 $pkg-icon-width: 24px;
 
+$logo-width: $pt-grid-size * 6.5;
+$logo-margin: $pt-grid-size * 1.5;
+
 $package-colors: (
   "blueprint": $gray1,
   "core": $blue3,
@@ -28,11 +31,37 @@ $dark-package-colors: (
 );
 
 .docs-logo {
+  display: block;
+  margin-right: $logo-margin;
   background-image: url("./assets/blueprint-logo.svg");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  width: $logo-width;
+  // SVG is width:height radio is 1:1.2
+  height: ceil($logo-width * 1.2);
 
   .pt-dark & {
     background-image: url("./assets/blueprint-logo-white.svg");
   }
+}
+
+
+.docs-heading {
+  margin-right: $pt-grid-size;
+  font-size: $pt-grid-size * 2;
+  font-weight: 600;
+
+  .pt-tag {
+    display: block;
+    margin-top: 3px;
+    margin-left: $pt-grid-size / 2;
+  }
+}
+
+.docs-version-list {
+  min-width: $pt-grid-size * 12;
+  max-height: $pt-grid-size * 20;
+  overflow: auto;
 }
 
 .docs-nav-package-icon {
