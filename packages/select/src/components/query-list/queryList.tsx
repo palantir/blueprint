@@ -7,8 +7,8 @@
 import * as React from "react";
 
 import { IProps, Keys, Menu, Utils } from "@blueprintjs/core";
+import { IItemListRendererProps, ItemListRenderer } from "../../common/itemListRenderer";
 import { IItemModifiers, ItemRenderer } from "../../common/itemRenderer";
-import { IMenuRendererProps, MenuRenderer } from "../../common/menuRenderer";
 import { ItemListPredicate, ItemPredicate } from "../../common/predicate";
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
@@ -48,7 +48,7 @@ export interface IListItemsProps<T> extends IProps {
      * and wraps them all in a `Menu` element. If the query is empty then `initialContent` is returned,
      * and if all items are filtered away then `noResults` is returned.
      */
-    itemListRenderer?: MenuRenderer<T>;
+    itemListRenderer?: ItemListRenderer<T>;
 
     /**
      * React content to render when query is empty.
@@ -167,7 +167,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
      * (when filtered items is empty) and `initialContent` (when query is empty).
      */
     public static renderFilteredItems(
-        props: IMenuRendererProps<any>,
+        props: IItemListRendererProps<any>,
         noResults?: React.ReactNode,
         initialContent?: React.ReactNode | null,
     ): React.ReactNode {
@@ -269,10 +269,10 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
     }
 
-    private defaultMenuRenderer = (menuProps: IMenuRendererProps<T>) => {
+    private defaultMenuRenderer = (listProps: IItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
-        const menuContent = QueryList.renderFilteredItems(menuProps, noResults, initialContent);
-        return <Menu ulRef={menuProps.itemsParentRef}>{menuContent}</Menu>;
+        const menuContent = QueryList.renderFilteredItems(listProps, noResults, initialContent);
+        return <Menu ulRef={listProps.itemsParentRef}>{menuContent}</Menu>;
     };
 
     private renderItem = (item: T, index?: number) => {

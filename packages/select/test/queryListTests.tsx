@@ -11,7 +11,7 @@ import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IMenuRendererProps, IQueryListRendererProps, ItemListPredicate, QueryList } from "../src/index";
+import { IItemListRendererProps, IQueryListRendererProps, ItemListPredicate, QueryList } from "../src/index";
 
 describe("<QueryList>", () => {
     const FilmQueryList = QueryList.ofType<IFilm>();
@@ -82,7 +82,7 @@ describe("<QueryList>", () => {
     });
 
     describe("renderFilteredItems()", () => {
-        const PROPS: IMenuRendererProps<string> = {
+        const PROPS: IItemListRendererProps<string> = {
             filteredItems: ["one"],
             items: ["one", "two", "three"],
             itemsParentRef: sinon.stub(),

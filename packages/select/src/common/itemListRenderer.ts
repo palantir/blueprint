@@ -5,10 +5,10 @@
  */
 
 /**
- * An object describing how to render the contents of a dropdown.
- * A `menuRenderer` receives this object as its sole argument.
+ * An object describing how to render the list of items.
+ * An `itemListRenderer` receives this object as its sole argument.
  */
-export interface IMenuRendererProps<T> {
+export interface IItemListRendererProps<T> {
     /**
      * Array of items filtered by `itemListPredicate` or `itemPredicate`.
      * See `items` for the full list of items.
@@ -40,5 +40,5 @@ export interface IMenuRendererProps<T> {
     renderItem: (item: T, index?: number) => JSX.Element | null;
 }
 
-/** Type alias for a function that renders the contents of a Dropdown. */
-export type MenuRenderer<T> = (dropdownProps: IMenuRendererProps<T>) => JSX.Element;
+/** Type alias for a function that renders the list of items. */
+export type ItemListRenderer<T> = (itemListProps: IItemListRendererProps<T>) => JSX.Element;

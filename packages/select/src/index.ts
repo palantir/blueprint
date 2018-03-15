@@ -5,7 +5,7 @@
  */
 
 export * from "./common/classes";
+export * from "./common/itemListRenderer";
 export * from "./common/itemRenderer";
-export * from "./common/menuRenderer";
 export * from "./common/predicate";
 export * from "./components";
