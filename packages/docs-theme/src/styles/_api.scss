@@ -1,18 +1,38 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
+@import "~@blueprintjs/core/src/common/react-transition";
 @import "variables";
 
-.docs-api-dialog {
-  width: auto;
-  height: 80vh;
-  padding: 0;
-
+.docs-api-overlay {
   .docs-modifiers {
+    @include react-transition-phase(
+      "pt-overlay",
+      "enter",
+      (transform: (translateX(100%), translateX(0))),
+      $pt-transition-duration * 2,
+      $pt-transition-ease,
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "pt-overlay",
+      "exit",
+      (transform: (translateX(100%), translateX(0))),
+      $pt-transition-duration,
+      $before: "&"
+    );
     display: flex;
     flex-direction: column;
+    top: 0;
+    right: 0;
+    bottom: 0;
     margin: 0;
-    width: $content-width;
+    box-shadow: $pt-elevation-shadow-4;
+    background: $white;
+    width: 50vw;
+    min-width: $pt-grid-size * 50;
+    max-width: $pt-grid-size * 80;
+    padding: 0;
   }
 
   .docs-interface-header {
@@ -23,7 +43,16 @@
 
   .docs-modifiers-table {
     overflow: auto;
-    padding: $pt-grid-size ($pt-grid-size * 2) ($pt-grid-size * 2);
+    padding: $pt-grid-size 0 ($pt-grid-size * 2);
+
+    th:first-child,
+    td:first-child {
+      padding-left: $pt-grid-size * 2;
+    }
+
+    td:last-child {
+      padding-right: $pt-grid-size * 2;
+    }
   }
 }
 

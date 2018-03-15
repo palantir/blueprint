@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
-import { Dialog, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
+import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Overlay, Utils } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
@@ -144,9 +144,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                 <div className="docs-content-wrapper" ref={this.refHandlers.content} role="main">
                     <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
                 </div>
-                <Dialog className="docs-api-dialog" isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
+                <Overlay className="docs-api-overlay" isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
                     <TypescriptExample tag="typescript" value={activeApiMember} />
-                </Dialog>
+                </Overlay>
                 <Navigator
                     isOpen={this.state.isNavigatorOpen}
                     items={nav}

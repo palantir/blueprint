@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import { ITsEnum, ITsEnumMember } from "documentalist/dist/client";
 import * as React from "react";
@@ -14,7 +15,7 @@ import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IEnumTableProps {
+export interface IEnumTableProps extends IProps {
     data: ITsEnum;
 }
 
@@ -28,7 +29,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
         const { data } = this.props;
         const { renderBlock } = this.context;
         return (
-            <div className="docs-modifiers pt-running-text-small">
+            <div className={classNames("docs-modifiers", "pt-running-text-small", this.props.className)}>
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
                 <ModifierTable title="Members">{data.members.map(this.renderPropRow)}</ModifierTable>

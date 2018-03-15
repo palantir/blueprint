@@ -72,10 +72,11 @@
 
 .docs-interface-header {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
+  position: relative;
   margin-bottom: $pt-grid-size;
-  border-bottom: 1px solid $pt-divider-black;
+  box-shadow: 0 1px 0 $pt-divider-black;
   padding: $pt-grid-size 0;
   font-family: $pt-font-family-monospace;
   font-size: $pt-font-size-large;
