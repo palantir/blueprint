@@ -20,6 +20,7 @@ export interface ITimePickerExampleState {
     disabled?: boolean;
     minTime?: Date;
     maxTime?: Date;
+    useAmPm?: boolean;
 }
 
 enum MinimumHours {
@@ -40,6 +41,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
         precision: TimePickerPrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
+        useAmPm: false,
     };
 
     private handlePrecisionChange = handleNumberChange(precision => this.setState({ precision }));
@@ -65,6 +67,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                     onChange={this.toggleShowArrowButtons}
                 />,
                 <Switch checked={this.state.disabled} label="Disabled" key="disabled" onChange={this.toggleDisabled} />,
+                <Switch checked={this.state.useAmPm} label="Use AM/PM" key="ampm" onChange={this.toggleUseAmPm} />,
             ],
             [
                 <label key={0} className={Classes.LABEL}>
@@ -113,6 +116,10 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
 
     private toggleDisabled = () => {
         this.setState({ disabled: !this.state.disabled });
+    };
+
+    private toggleUseAmPm = () => {
+        this.setState({ useAmPm: !this.state.useAmPm });
     };
 
     private changeMinHour = (hour: MinimumHours) => {

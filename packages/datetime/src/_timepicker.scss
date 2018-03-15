@@ -44,6 +44,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     background: $input-background-color;
     height: $timepicker-input-row-height;
     padding: $timepicker-row-padding;
+    vertical-align: middle;
     line-height: $timepicker-input-row-inner-height;
   }
 
@@ -71,6 +72,10 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     &:focus {
       box-shadow: input-transition-shadow($input-shadow-color-focus, true);
     }
+  }
+
+  .pt-timepicker-ampm-select {
+    margin-left: $pt-grid-size / 2;
   }
 
   &.pt-disabled {

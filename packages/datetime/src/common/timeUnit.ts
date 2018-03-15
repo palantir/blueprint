@@ -5,10 +5,12 @@
 */
 
 import * as Classes from "./classes";
+import { get12HourFrom24Hour, get24HourFrom12Hour } from "./dateUtils";
 
 /** describes a component of time. `H:MM:SS.MS` */
 export enum TimeUnit {
-    HOUR = "hour",
+    HOUR_24 = "24hour",
+    HOUR_12 = "12hour",
     MINUTE = "minute",
     SECOND = "second",
     MS = "ms",
@@ -17,8 +19,10 @@ export enum TimeUnit {
 /** Returns the given time unit component of the date. */
 export function getTimeUnit(unit: TimeUnit, date: Date) {
     switch (unit) {
-        case TimeUnit.HOUR:
+        case TimeUnit.HOUR_24:
             return date.getHours();
+        case TimeUnit.HOUR_12:
+            return get12HourFrom24Hour(date.getHours());
         case TimeUnit.MINUTE:
             return date.getMinutes();
         case TimeUnit.SECOND:
@@ -31,10 +35,13 @@ export function getTimeUnit(unit: TimeUnit, date: Date) {
 }
 
 /** Sets the given time unit to the given time in date object. Modifies given `date` object and returns it. */
-export function setTimeUnit(unit: TimeUnit, time: number, date: Date) {
+export function setTimeUnit(unit: TimeUnit, time: number, date: Date, isPm: boolean) {
     switch (unit) {
-        case TimeUnit.HOUR:
+        case TimeUnit.HOUR_24:
             date.setHours(time);
+            break;
+        case TimeUnit.HOUR_12:
+            date.setHours(get24HourFrom12Hour(time, isPm));
             break;
         case TimeUnit.MINUTE:
             date.setMinutes(time);
@@ -96,11 +103,13 @@ interface ITimeUnitMetadata {
 }
 
 const DEFAULT_MIN_HOUR = 0;
+const MERIDIEM_MIN_HOUR = 1;
 const DEFAULT_MIN_MINUTE = 0;
 const DEFAULT_MIN_SECOND = 0;
 const DEFAULT_MIN_MILLISECOND = 0;
 
 const DEFAULT_MAX_HOUR = 23;
+const MERIDIEM_MAX_HOUR = 12;
 const DEFAULT_MAX_MINUTE = 59;
 const DEFAULT_MAX_SECOND = 59;
 const DEFAULT_MAX_MILLISECOND = 999;
@@ -110,10 +119,15 @@ const DEFAULT_MAX_MILLISECOND = 999;
  * Use the `get*` methods above to access these fields.
  */
 const TimeUnitMetadata: Record<TimeUnit, ITimeUnitMetadata> = {
-    [TimeUnit.HOUR]: {
+    [TimeUnit.HOUR_24]: {
         className: Classes.TIMEPICKER_HOUR,
         max: DEFAULT_MAX_HOUR,
         min: DEFAULT_MIN_HOUR,
+    },
+    [TimeUnit.HOUR_12]: {
+        className: Classes.TIMEPICKER_HOUR,
+        max: MERIDIEM_MAX_HOUR,
+        min: MERIDIEM_MIN_HOUR,
     },
     [TimeUnit.MINUTE]: {
         className: Classes.TIMEPICKER_MINUTE,
