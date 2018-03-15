@@ -83,7 +83,7 @@
   font-weight: 600;
 
   .pt-dark & {
-    border-bottom-color: $pt-dark-divider-white;
+    box-shadow: 0 1px 0 $pt-dark-divider-white;
   }
 }
 

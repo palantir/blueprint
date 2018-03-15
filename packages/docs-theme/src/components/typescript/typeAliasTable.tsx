@@ -24,13 +24,16 @@ export class TypeAliasTable extends React.PureComponent<ITypeAliasTableProps> {
     public render() {
         const { data } = this.props;
         const { renderBlock, renderType } = this.context;
+        const aliases = data.type.split(" | ").map((type, i) => (
+            <div>
+                {i === 0 ? "=" : "|"} {renderType(type)}
+            </div>
+        ));
         return (
             <div className={classNames("docs-modifiers", "pt-running-text-small", this.props.className)}>
                 <ApiHeader {...data} />
-                <div className="docs-interface-table">
-                    {renderBlock(data.documentation)}
-                    <p className="docs-code">= {renderType(data.type)}</p>
-                </div>
+                {renderBlock(data.documentation)}
+                <div className="docs-modifiers-table docs-code">{aliases}</div>
             </div>
         );
     }
