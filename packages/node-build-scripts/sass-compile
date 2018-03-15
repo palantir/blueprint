@@ -5,12 +5,8 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-# output directory defaults to lib/css
-OUTPUT="lib/css/"
-if [[ $2 =~ ^[^-] ]]; then
-  # only assign if it's not a --arg
-  OUTPUT=$2
-fi
+# set OUTPUT env varible to change output directory
+OUTPUT="${OUTPUT:-lib/css/}"
 
 # dependencies are hoisted to root node_modules, so load packages from there
 ROOT_NM=../../node_modules

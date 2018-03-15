@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-# Usage: sass-compile [outdir=lib/css/]
-
-postcss $@ --use autoprefixer --use postcss-discard-comments --replace

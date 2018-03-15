@@ -7,10 +7,10 @@
   },
   "bin": {
     "assert-package-layout": "./assert-package-layout",
+    "css-dist": "./css-dist",
     "generate-css-variables": "./generate-css-variables",
     "generate-icons-source": "./generate-icons-source",
-    "sass-compile": "./sass-compile",
-    "sass-dist": "./sass-dist"
+    "sass-compile": "./sass-compile"
   },
   "dependencies": {
     "autoprefixer": "^7.1.2",
