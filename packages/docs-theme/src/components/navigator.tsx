@@ -17,7 +17,6 @@ import { eachLayoutNode } from "../common/utils";
 export interface INavigatorProps {
     isOpen: boolean;
     items: Array<IPageNode | IHeadingNode>;
-    onNavigate: (route: string) => void;
     onClose: () => void;
 }
 
@@ -99,5 +98,6 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
         );
     };
 
-    private handleItemSelect = (item: INavigationSection) => this.props.onNavigate(item.route);
+    // updating location.hash will trigger hashchange event, which Documentation will receive and use to navigate.
+    private handleItemSelect = (item: INavigationSection) => (location.hash = item.route);
 }

@@ -166,12 +166,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                 <Overlay className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
                     <TypescriptExample tag="typescript" value={activeApiMember} />
                 </Overlay>
-                <Navigator
-                    isOpen={this.state.isNavigatorOpen}
-                    items={nav}
-                    onClose={this.handleCloseNavigator}
-                    onNavigate={this.handleNavigation}
-                />
+                <Navigator isOpen={this.state.isNavigatorOpen} items={nav} onClose={this.handleCloseNavigator} />
             </div>
         );
     }
