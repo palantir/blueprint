@@ -54,7 +54,7 @@ If the query returns no results or `items` is empty, then `noResults` will be re
 
 By default, `Select` renders the displayed items in a [`Menu`](#core/components/menu). This behavior can be overridden by providing the `menuRenderer` prop, giving you full control over the layout of the items. For example, you can group items under a common heading, or render large data sets using [react-virtualized](https://github.com/bvaughn/react-virtualized).
 
-Note that the non-ideal states of `noResults` and `initialContent` are specific to the default renderer. If you provide the `menuRenderer` prop, these states will not be shown.
+Note that the non-ideal states of `noResults` and `initialContent` are specific to the default renderer. If you provide the `menuRenderer` prop, these props will be ignored.
 
 See the code sample in [Menu Renderer API](#select/select-component.menu-renderer-api) below for usage.
 
@@ -117,7 +117,7 @@ const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
 
 @### Menu Renderer API
 
-If provided, `Select`'s `menuRenderer` will be called to render the contents of the dropdown menu. It has access to the items, the current query, and a `renderItem` callback for rendering a single item. A ref handler (`itemsParentRef`) is given as well; it should be attached to the outermost element of the rendered menu so that the currently selected item can be scrolled into view automatically.
+If provided, the `menuRenderer` prop will be called to render the contents of the dropdown menu. It has access to the items, the current query, and a `renderItem` callback for rendering a single item. A ref handler (`itemsParentRef`) is given as well; it should be attached to the parent element of the rendered menu items so that the currently selected item can be scrolled into view automatically.
 
 ```tsx
 import { MenuRenderer } from "@blueprintjs/select";
@@ -128,7 +128,7 @@ const renderMenu: MenuRenderer<Film> = ({ items, itemsParentRef, query, renderIt
         <Menu ulRef={itemsParentRef}>
             <MenuItem
                 disabled={true}
-                text={`Found ${items.length} items matching "${query}"`}
+                text={`Found ${renderedItems.length} items matching "${query}"`}
             />
             {renderedItems}
         </Menu>
