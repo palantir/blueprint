@@ -86,3 +86,10 @@
     border-bottom-color: $pt-dark-divider-white;
   }
 }
+
+.docs-modifiers-table {
+  th:first-child,
+  td:first-child {
+    padding-left: 0;
+  }
+}
