@@ -133,6 +133,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             { "docs-examples-only": location.search === "?examples" },
             this.props.className,
         );
+        const apiClasses = classNames("docs-api-overlay", this.props.className);
         return (
             <div className={rootClasses}>
                 {this.props.banner}
@@ -153,11 +154,16 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                             />
                         </div>
                     </div>
-                    <main className="docs-content-wrapper" ref={this.refHandlers.content} role="main" tabIndex={0}>
+                    <main
+                        className="docs-content-wrapper docs-flex-column"
+                        ref={this.refHandlers.content}
+                        role="main"
+                        tabIndex={0}
+                    >
                         <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
                     </main>
                 </div>
-                <Overlay className="docs-api-overlay" isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
+                <Overlay className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
                     <TypescriptExample tag="typescript" value={activeApiMember} />
                 </Overlay>
                 <Navigator

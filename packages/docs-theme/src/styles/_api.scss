@@ -33,11 +33,6 @@
     min-width: $pt-grid-size * 50;
     max-width: $pt-grid-size * 80;
     padding: 0;
-
-    .pt-dark & {
-      background-color: $dark-sidebar-background-color;
-      box-shadow: $pt-dark-elevation-shadow-4;
-    }
   }
 
   .docs-interface-header {
@@ -62,6 +57,13 @@
 
     td:last-child {
       padding-right: $pt-grid-size * 2;
+    }
+  }
+
+  &.pt-dark {
+    .docs-modifiers {
+      box-shadow: $pt-dark-elevation-shadow-4;
+      background-color: $dark-sidebar-background-color;
     }
   }
 }
