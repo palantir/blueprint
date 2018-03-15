@@ -160,7 +160,13 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public renderHotkeys() {
         return (
             <Hotkeys>
-                <Hotkey global={true} combo="shift+s" label="Open navigator" onKeyDown={this.handleOpenNavigator} />
+                <Hotkey
+                    global={true}
+                    combo="shift+s"
+                    label="Open navigator"
+                    onKeyDown={this.handleOpenNavigator}
+                    preventDefault={true}
+                />
                 <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection} />
                 <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection} />
             </Hotkeys>

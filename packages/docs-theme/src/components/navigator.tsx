@@ -4,8 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, MenuItem } from "@blueprintjs/core";
-import { IconContents } from "@blueprintjs/icons";
+import { Classes, Icon, MenuItem } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import classNames from "classnames";
@@ -50,6 +49,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
         }
         return (
             <NavOmnibar
+                className="docs-navigator-menu"
                 itemListPredicate={this.filterMatches}
                 isOpen={this.props.isOpen}
                 items={this.sections}
@@ -73,16 +73,28 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
             [Classes.ACTIVE]: props.modifiers.active,
             [Classes.INTENT_PRIMARY]: props.modifiers.active,
         });
-        // add $icons16-family to font stack to support mixing icons with regular text!
-        const pathHtml = section.path.join(IconContents.CARET_RIGHT);
+
+        // insert caret-right between each path element
+        const pathElements = section.path.reduce<React.ReactChild[]>((elems, el) => {
+            elems.push(el, <Icon icon="caret-right" />);
+            return elems;
+        }, []);
+        pathElements.pop();
+
+        const text = (
+            <>
+                <div>{section.title}</div>
+                <small className={Classes.TEXT_MUTED}>{pathElements}</small>
+            </>
+        );
         return (
             <MenuItem
                 className={classes}
                 href={"#" + section.route}
                 key={section.route}
+                multiline={true}
                 onClick={props.handleClick}
-                text={section.title}
-                label={pathHtml}
+                text={text}
             />
         );
     };
