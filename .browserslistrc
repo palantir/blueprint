@@ -8,5 +8,3 @@ last 2 versions
 # ensure these are supported:
 Firefox ESR
 IE 11
-# because no one likes a dead browser:
-not dead
