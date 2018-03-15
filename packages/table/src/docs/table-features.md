@@ -2,7 +2,7 @@
 reference: features
 ---
 
-@# Table Features
+@# Table features
 
 @## Sorting
 
