@@ -88,7 +88,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { inputProps, noResults, popoverProps, ...restProps } = this.props;
+        const { inputProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
