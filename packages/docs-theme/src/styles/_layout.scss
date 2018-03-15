@@ -60,6 +60,7 @@ Page layout elements
   align-items: flex-end;
   position: relative;
   box-shadow: 1px 0 0 $pt-divider-black;
+  overflow-x: hidden;
 
   .pt-dark & {
     box-shadow: 1px 0 0 $pt-dark-divider-black;
