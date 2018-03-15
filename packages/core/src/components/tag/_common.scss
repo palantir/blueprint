@@ -103,11 +103,11 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
     cursor: pointer;
 
     &:hover {
-      background-color: rgba($background-color, $opacity - 0.1);
+      background-color: rgba($background-color, $opacity - 0.15);
     }
 
     &:active {
-      background-color: rgba($background-color, $opacity - 0.2);
+      background-color: rgba($background-color, $opacity - 0.3);
     }
   }
 }
