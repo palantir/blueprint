@@ -29,6 +29,9 @@ export interface IItemRendererProps {
 
     /** Modifiers that describe how to render this item, such as `active` or `disabled`. */
     modifiers: IItemModifiers;
+
+    /** The current query string used to filter the items. */
+    query: string;
 }
 
 /** Type alias for a function that receives an item and props and renders a JSX element (or `null`). */
