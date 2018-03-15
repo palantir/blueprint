@@ -66,6 +66,7 @@ Page layout elements
 .docs-content-wrapper {
   flex-basis: $content-width;
   align-items: flex-start;
+  outline: none;
   background-color: $content-background-color;
 
   .pt-dark & {
