@@ -79,7 +79,7 @@ Page layout elements
 
 .docs-page {
   max-width: $content-width;
-  padding: 0 0 $content-padding $content-padding * 2;
+  padding: 0 0 $content-padding * 2 $content-padding * 2;
 }
 
 .docs-nav {
