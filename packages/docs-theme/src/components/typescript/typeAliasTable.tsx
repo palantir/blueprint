@@ -33,7 +33,7 @@ export class TypeAliasTable extends React.PureComponent<ITypeAliasTableProps> {
             <div className={classNames("docs-modifiers", "pt-running-text-small", this.props.className)}>
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
-                <div className="docs-modifiers-table docs-code">{aliases}</div>
+                <div className="docs-type-alias docs-code">{aliases}</div>
             </div>
         );
     }

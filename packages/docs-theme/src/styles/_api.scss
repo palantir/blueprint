@@ -39,11 +39,6 @@
     flex: 0 0 auto;
     margin: 0;
     padding: $pt-grid-size ($pt-grid-size * 2);
-
-    // optional interface description
-    + .docs-section {
-      padding: $pt-grid-size ($pt-grid-size * 2) 0;
-    }
   }
 
   .docs-modifiers-table {
