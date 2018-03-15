@@ -53,8 +53,8 @@ describe("<Select>", () => {
 
     it("itemRenderer is called for each child", () => {
         select({}, "1999");
-        // each item is rendered three times :(
-        assert.equal(handlers.itemRenderer.callCount, TOP_100_FILMS.length * 3);
+        // each item is rendered once, then again only matched items twice
+        assert.equal(handlers.itemRenderer.callCount, TOP_100_FILMS.length + 8);
     });
 
     it("renders noResults when given empty list", () => {
@@ -119,11 +119,11 @@ describe("<Select>", () => {
 
     it("returns focus to focusable target after popover closed");
 
-    describe("menuRenderer", () => {
+    describe("itemListRenderer", () => {
         it("overrides default menu rendering", () => {
             const customClass = "custom";
             const wrapper = select({
-                menuRenderer: () => <ul className={customClass} />,
+                itemListRenderer: () => <ul className={customClass} />,
             });
             assert.lengthOf(wrapper.find(Menu), 0, "should not find Menu");
             assert.lengthOf(wrapper.find(`ul.${customClass}`), 1, "should find custom class");
@@ -132,7 +132,7 @@ describe("<Select>", () => {
 
         it("renderItem calls itemRenderer", () => {
             select({
-                menuRenderer: props => <ul>{props.items.map(props.renderItem)}</ul>,
+                itemListRenderer: props => <ul>{props.items.map(props.renderItem)}</ul>,
             });
             assert.equal(handlers.itemRenderer.callCount, TOP_100_FILMS.length);
         });
