@@ -4,14 +4,14 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import PopperJS from "popper.js";
+import { Placement } from "popper.js";
 import { Position } from "../../common/position";
 
 /**
  * Convert a position to a placement.
  * @param position the position to convert
  */
-export function positionToPlacement(position: Position | "auto"): PopperJS.Placement {
+export function positionToPlacement(position: Position | "auto"): Placement {
     /* istanbul ignore next */
     switch (position) {
         case Position.TOP_LEFT:

@@ -55,13 +55,9 @@
     "language-typescript": "github:giladgray/language-typescript#10.1.15",
     "lerna": "^2.7.1",
     "npm-run-all": "^4.1.2",
-    "postcss-import": "^11.0.0",
-    "postcss-url": "^7.3.0",
     "sinon": "^4.1.4",
-    "stylelint": "^8.4.0",
-    "stylelint-config-palantir": "^2.1.0",
-    "stylelint-config-standard": "^18.0.0",
-    "stylelint-scss": "^2.2.0",
+    "stylelint-config-palantir": "^3.0.2",
+    "stylelint-scss": "^2.5.0",
     "typescript": "~2.7.2"
   },
   "engines": {

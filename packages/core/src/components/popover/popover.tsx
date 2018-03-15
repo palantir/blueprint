@@ -5,11 +5,9 @@
  */
 
 import classNames from "classnames";
-import PopperJS from "popper.js";
+import { ModifierFn, Modifiers as PopperModifiers } from "popper.js";
 import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
-
-export type PopperModifiers = PopperJS.Modifiers;
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
@@ -22,6 +20,9 @@ import { Tooltip } from "../tooltip/tooltip";
 import { getArrowAngle, PopoverArrow } from "./arrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
+
+// re-export this symbol for library consumers
+export { PopperModifiers };
 
 export enum PopoverInteractionKind {
     CLICK = "click",
@@ -602,7 +603,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
-    private updatePopoverState: PopperJS.ModifierFn = data => {
+    private updatePopoverState: ModifierFn = data => {
         // pretty sure it's safe to always set these (and let sCU determine) because they're both strings
         this.setState({
             arrowRotation: getArrowAngle(data.placement),
