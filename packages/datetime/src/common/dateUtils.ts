@@ -205,3 +205,33 @@ export function getDateNextMonth(date: Date): Date {
         return new Date(date.getFullYear(), date.getMonth() + 1);
     }
 }
+
+export function convert24HourMeridiem(hour: number, toPm: boolean): number {
+    if (hour < 0 || hour > 23) {
+        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
+    }
+    return toPm ? hour % 12 + 12 : hour % 12;
+}
+
+export function getIsPmFrom24Hour(hour: number): boolean {
+    if (hour < 0 || hour > 23) {
+        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
+    }
+    return hour >= 12;
+}
+
+export function get12HourFrom24Hour(hour: number): number {
+    if (hour < 0 || hour > 23) {
+        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
+    }
+    const newHour = hour % 12;
+    return newHour === 0 ? 12 : newHour;
+}
+
+export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
+    if (hour < 1 || hour > 12) {
+        throw new Error(`hour must be between [1,12] inclusive: got ${hour}`);
+    }
+    const newHour = hour === 12 ? 0 : hour;
+    return isPm ? newHour + 12 : newHour;
+}

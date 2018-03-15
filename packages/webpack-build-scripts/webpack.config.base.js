@@ -81,7 +81,7 @@ const scssLoaders = [
     {
         loader: require.resolve("postcss-loader"),
         options: {
-            config: { path: path.resolve(__dirname, "postcss.config.js") },
+            plugins: [require("autoprefixer"), require("postcss-discard-comments")]
         },
     },
     require.resolve("sass-loader"),

@@ -221,4 +221,107 @@ describe("dateUtils", () => {
             assertTimeIs(time, 11, 20);
         });
     });
+
+    describe("convert24HourMeridiem", () => {
+        it("returns given hour, if hour is PM and toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(12, true)).to.equal(12);
+            expect(DateUtils.convert24HourMeridiem(13, true)).to.equal(13);
+            expect(DateUtils.convert24HourMeridiem(22, true)).to.equal(22);
+            expect(DateUtils.convert24HourMeridiem(23, true)).to.equal(23);
+        });
+
+        it("returns given hour in AM, if hour is PM and not toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(12, false)).to.equal(0);
+            expect(DateUtils.convert24HourMeridiem(13, false)).to.equal(1);
+            expect(DateUtils.convert24HourMeridiem(22, false)).to.equal(10);
+            expect(DateUtils.convert24HourMeridiem(23, false)).to.equal(11);
+        });
+
+        it("returns given hour, if hour is AM and not toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(0, false)).to.equal(0);
+            expect(DateUtils.convert24HourMeridiem(1, false)).to.equal(1);
+            expect(DateUtils.convert24HourMeridiem(10, false)).to.equal(10);
+            expect(DateUtils.convert24HourMeridiem(11, false)).to.equal(11);
+        });
+
+        it("returns given hour in PM, if hour is AM and toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(0, true)).to.equal(12);
+            expect(DateUtils.convert24HourMeridiem(1, true)).to.equal(13);
+            expect(DateUtils.convert24HourMeridiem(10, true)).to.equal(22);
+            expect(DateUtils.convert24HourMeridiem(11, true)).to.equal(23);
+        });
+
+        it("throws an error only for invalid hours", () => {
+            expect(() => DateUtils.convert24HourMeridiem(-1, true)).to.throw();
+            expect(() => DateUtils.convert24HourMeridiem(24, true)).to.throw();
+            expect(() => DateUtils.convert24HourMeridiem(0, true)).to.not.throw();
+            expect(() => DateUtils.convert24HourMeridiem(23, true)).to.not.throw();
+        });
+    });
+
+    describe("getIsPmFrom24Hour", () => {
+        it("returns true, if hour (in 24 range) is PM", () => {
+            expect(DateUtils.getIsPmFrom24Hour(12)).to.equal(true);
+            expect(DateUtils.getIsPmFrom24Hour(13)).to.equal(true);
+            expect(DateUtils.getIsPmFrom24Hour(17)).to.equal(true);
+            expect(DateUtils.getIsPmFrom24Hour(22)).to.equal(true);
+            expect(DateUtils.getIsPmFrom24Hour(23)).to.equal(true);
+        });
+
+        it("returns false, if hour (in 24 range) is AM", () => {
+            expect(DateUtils.getIsPmFrom24Hour(0)).to.equal(false);
+            expect(DateUtils.getIsPmFrom24Hour(1)).to.equal(false);
+            expect(DateUtils.getIsPmFrom24Hour(5)).to.equal(false);
+            expect(DateUtils.getIsPmFrom24Hour(10)).to.equal(false);
+            expect(DateUtils.getIsPmFrom24Hour(11)).to.equal(false);
+        });
+
+        it("throws an error only for invalid hours", () => {
+            expect(() => DateUtils.getIsPmFrom24Hour(-1)).to.throw();
+            expect(() => DateUtils.getIsPmFrom24Hour(24)).to.throw();
+            expect(() => DateUtils.getIsPmFrom24Hour(0)).to.not.throw();
+            expect(() => DateUtils.getIsPmFrom24Hour(23)).to.not.throw();
+        });
+    });
+
+    describe("get12HourFrom24Hour", () => {
+        it("returns correct 12-hour format from 24-hour format", () => {
+            expect(DateUtils.get12HourFrom24Hour(0)).to.equal(12);
+            expect(DateUtils.get12HourFrom24Hour(5)).to.equal(5);
+            expect(DateUtils.get12HourFrom24Hour(11)).to.equal(11);
+            expect(DateUtils.get12HourFrom24Hour(12)).to.equal(12);
+            expect(DateUtils.get12HourFrom24Hour(18)).to.equal(6);
+            expect(DateUtils.get12HourFrom24Hour(23)).to.equal(11);
+        });
+
+        it("throws an error only for invalid 24-hours", () => {
+            expect(() => DateUtils.get12HourFrom24Hour(-1)).to.throw();
+            expect(() => DateUtils.get12HourFrom24Hour(24)).to.throw();
+            expect(() => DateUtils.get12HourFrom24Hour(0)).to.not.throw();
+            expect(() => DateUtils.get12HourFrom24Hour(23)).to.not.throw();
+        });
+    });
+
+    describe("get24HourFrom12Hour", () => {
+        it("returns correct 24-hour format from 12-hour format, if isPm", () => {
+            expect(DateUtils.get24HourFrom12Hour(1, true)).to.equal(13);
+            expect(DateUtils.get24HourFrom12Hour(7, true)).to.equal(19);
+            expect(DateUtils.get24HourFrom12Hour(11, true)).to.equal(23);
+            expect(DateUtils.get24HourFrom12Hour(12, true)).to.equal(12);
+        });
+
+        it("returns correct 24-hour format from 12-hour format, if not isPm", () => {
+            expect(DateUtils.get24HourFrom12Hour(1, false)).to.equal(1);
+            expect(DateUtils.get24HourFrom12Hour(4, false)).to.equal(4);
+            expect(DateUtils.get24HourFrom12Hour(11, false)).to.equal(11);
+            expect(DateUtils.get24HourFrom12Hour(12, false)).to.equal(0);
+        });
+
+        it("throws an error only for invalid 12-hours", () => {
+            expect(() => DateUtils.get24HourFrom12Hour(0, true)).to.throw();
+            expect(() => DateUtils.get24HourFrom12Hour(13, true)).to.throw();
+            expect(() => DateUtils.get24HourFrom12Hour(1, true)).to.not.throw();
+            expect(() => DateUtils.get24HourFrom12Hour(12, true)).to.not.throw();
+        });
+    });
 });

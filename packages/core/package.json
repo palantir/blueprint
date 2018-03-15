@@ -20,6 +20,7 @@
     "dev": "npm-run-all -p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
     "dist": "npm-run-all -s \"dist:*\"",
     "dist:bundle": "cross-env NODE_ENV=production webpack",
+    "dist:css": "css-dist lib/css/*.css",
     "dist:variables": "generate-css-variables common/_colors.scss common/_color-aliases.scss common/_variables.scss",
     "dist:verify": "assert-package-layout",
     "lint": "npm-run-all -p lint:stylelint lint:tslint",
@@ -39,8 +40,8 @@
     "classnames": "^2.2",
     "dom4": "^2.0.1",
     "normalize.css": "^7.0.0",
-    "popper.js": "^1.12.6",
-    "react-popper": "~0.7.4",
+    "popper.js": "^1.14.1",
+    "react-popper": "^0.8.2",
     "tslib": "^1.9.0"
   },
   "peerDependencies": {

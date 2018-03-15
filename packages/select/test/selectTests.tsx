@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { InputGroup, Popover } from "@blueprintjs/core";
+import { InputGroup, Menu, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -118,6 +118,25 @@ describe("<Select>", () => {
     });
 
     it("returns focus to focusable target after popover closed");
+
+    describe("menuRenderer", () => {
+        it("overrides default menu rendering", () => {
+            const customClass = "custom";
+            const wrapper = select({
+                menuRenderer: () => <ul className={customClass} />,
+            });
+            assert.lengthOf(wrapper.find(Menu), 0, "should not find Menu");
+            assert.lengthOf(wrapper.find(`ul.${customClass}`), 1, "should find custom class");
+            assert.equal(handlers.itemRenderer.callCount, 0, "itemRenderer should not be called");
+        });
+
+        it("renderItem calls itemRenderer", () => {
+            select({
+                menuRenderer: props => <ul>{props.items.map(props.renderItem)}</ul>,
+            });
+            assert.equal(handlers.itemRenderer.callCount, TOP_100_FILMS.length);
+        });
+    });
 
     function select(props: Partial<ISelectProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(

@@ -7,6 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { Modifiers } from "popper.js";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { IActionProps, ILinkProps } from "../../common/props";
@@ -153,7 +154,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
     }
 }
 
-const SUBMENU_POPOVER_MODIFIERS: Popper.Modifiers = {
+const SUBMENU_POPOVER_MODIFIERS: Modifiers = {
     // 20px padding - scrollbar width + a bit
     flip: { boundariesElement: "viewport", padding: 20 },
     // shift popover up 5px so MenuItems align

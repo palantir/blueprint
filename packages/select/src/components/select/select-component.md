@@ -50,6 +50,14 @@ See the code sample in [Item Renderer API](#select/select-component.item-rendere
 
 If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list. You also have the option to provide `initialContent`, which will render in place of the item list if the query is empty.
 
+@## Custom menu
+
+By default, `Select` renders the displayed items in a [`Menu`](#core/components/menu). This behavior can be overridden by providing the `menuRenderer` prop, giving you full control over the layout of the items. For example, you can group items under a common heading, or render large data sets using [react-virtualized](https://github.com/bvaughn/react-virtualized).
+
+Note that the non-ideal states of `noResults` and `initialContent` are specific to the default renderer. If you provide the `menuRenderer` prop, these props will be ignored.
+
+See the code sample in [Menu Renderer API](#select/select-component.menu-renderer-api) below for usage.
+
 @## Controlled usage
 
 The `InputGroup` value is managed by `Select`'s internal state and is not exposed via props. If you would like to control it, you can circumvent `Select` state by passing your `value` state and `onChange` handler to `inputProps`. You can then query the `items` array directly and omit both predicate props.
@@ -106,3 +114,34 @@ const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
 ```
 
 @interface IItemRendererProps
+
+@### Menu Renderer API
+
+If provided, the `menuRenderer` prop will be called to render the contents of the dropdown menu. It has access to the items, the current query, and a `renderItem` callback for rendering a single item. A ref handler (`itemsParentRef`) is given as well; it should be attached to the parent element of the rendered menu items so that the currently selected item can be scrolled into view automatically.
+
+```tsx
+import { MenuRenderer } from "@blueprintjs/select";
+
+const renderMenu: MenuRenderer<Film> = ({ items, itemsParentRef, query, renderItem }) => {
+    const renderedItems = items.map(renderItem).filter(item => item != null);
+    return (
+        <Menu ulRef={itemsParentRef}>
+            <MenuItem
+                disabled={true}
+                text={`Found ${renderedItems.length} items matching "${query}"`}
+            />
+            {renderedItems}
+        </Menu>
+    );
+};
+
+<FilmSelect
+    itemPredicate={filterFilm}
+    itemRenderer={renderFilm}
+    items={...}
+    menuRenderer={renderMenu}
+    onItemSelect={...}
+/>
+```
+
+@interface IMenuRendererProps
