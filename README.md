@@ -42,7 +42,7 @@ These are the component libraries we publish to NPM.
 These are hosted on GitHub Pages as static web applications:
 
 - `docs-app` &ndash; Documentation site at blueprintjs.com/docs
-- `landing-app` &ndash; Landnig page at blueprintjs.com
+- `landing-app` &ndash; Landing page at blueprintjs.com
 
 These are used as development playground environments:
 
