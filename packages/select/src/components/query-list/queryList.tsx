@@ -310,6 +310,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             handleClick: e => this.handleItemSelect(item, e),
             index,
             modifiers,
+            query,
         });
     };
 }
