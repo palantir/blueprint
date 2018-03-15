@@ -21,7 +21,7 @@ export interface IMenuRendererProps<T> {
      * A ref handler that should be attached to the menu's outermost HTML element.
      * This is required for the active item to scroll into view automatically.
      */
-    itemsParentRef: (ref: HTMLElement) => void;
+    itemsParentRef: (ref: HTMLElement | null) => void;
 
     /**
      * Call this function to render an item.
