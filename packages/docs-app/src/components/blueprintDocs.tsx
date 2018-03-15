@@ -4,22 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import {
-    Classes,
-    Icon,
-    Menu,
-    MenuItem,
-    NavbarHeading,
-    Popover,
-    Position,
-    setHotkeysDialogProps,
-} from "@blueprintjs/core";
+import { Classes, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 import { Banner, Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 import classNames from "classnames";
 import { isPageNode, ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
-import { NavbarActions } from "./navbarActions";
+import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
 const DARK_THEME = "pt-dark";
@@ -45,19 +36,8 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     public state = { themeName: getTheme() };
 
     public render() {
-        const title = (
-            <>
-                <a className="docs-logo" href="/" />
-                <div>
-                    <NavbarHeading className="docs-heading">Blueprint</NavbarHeading>
-                    {this.renderVersionsMenu()}
-                </div>
-                <NavbarActions
-                    onToggleDark={this.handleToggleDark}
-                    releases={this.props.releases}
-                    useDarkTheme={this.state.themeName === DARK_THEME}
-                />
-            </>
+        const header = (
+            <NavHeader onToggleDark={this.handleToggleDark} useDarkTheme={this.state.themeName === DARK_THEME} />
         );
         return (
             <>
@@ -68,37 +48,12 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 <Documentation
                     {...this.props}
                     className={this.state.themeName}
+                    header={header}
                     onComponentUpdate={this.handleComponentUpdate}
                     renderNavMenuItem={this.renderNavMenuItem}
                     renderViewSourceLinkText={this.renderViewSourceLinkText}
-                    title={title}
                 />
             </>
-        );
-    }
-
-    private renderVersionsMenu() {
-        const { versions } = this.props;
-        if (versions.length === 1) {
-            return (
-                <div className="pt-text-muted" key="_versions">
-                    v{versions[0].version}
-                </div>
-            );
-        }
-
-        const match = /docs\/v([0-9]+)/.exec(location.href);
-        // default to latest release if we can't find a major version in the URL
-        const currentRelease = match == null ? versions[versions.length - 1].version : match[1];
-        const releaseItems = versions.map((rel, i) => <MenuItem key={i} href={rel.url} text={rel.version} />);
-        const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
-
-        return (
-            <Popover content={menu} position={Position.BOTTOM} key="_versions">
-                <button className="docs-version-selector pt-text-muted">
-                    v{currentRelease} <Icon icon="caret-down" />
-                </button>
-            </Popover>
         );
     }
 
@@ -136,9 +91,9 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     };
 
     private handleToggleDark = (useDark: boolean) => {
-        const themeName = useDark ? DARK_THEME : LIGHT_THEME;
-        setTheme(themeName);
-        setHotkeysDialogProps({ className: this.state.themeName });
-        this.setState({ themeName });
+        const nextThemeName = useDark ? DARK_THEME : LIGHT_THEME;
+        setTheme(nextThemeName);
+        setHotkeysDialogProps({ className: nextThemeName });
+        this.setState({ themeName: nextThemeName });
     };
 }
