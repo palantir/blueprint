@@ -11,6 +11,12 @@ $nav-item-color-active: $minimal-button-background-color-active;
 $dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
 $dark-nav-item-color-active: $dark-minimal-button-background-color-active;
 
+body,
+html {
+  // no body scrolling
+  overflow: hidden;
+}
+
 /*
 Flex utils
 */
