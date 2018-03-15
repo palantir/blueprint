@@ -42,18 +42,14 @@ $banner-height: $pt-grid-size * 4;
   .pt-dark & {
     box-shadow: 0 1px 0 $pt-divider-black;
   }
+
+  + .docs-app {
+    padding-top: $banner-height;
+  }
 }
 
 // shift entire page down by $banner-height pixels
 
 .docs-anchor {
   margin-top: -$pt-navbar-height - $content-padding - $banner-height;
-}
-
-.docs-banner + .docs-root {
-  padding-top: $banner-height;
-
-  .docs-nav {
-    top: $banner-height;
-  }
 }

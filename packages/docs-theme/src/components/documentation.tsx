@@ -14,7 +14,8 @@ import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentation
 import { eachLayoutNode } from "../common/utils";
 import { ITagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
-import { Navigator, NavigatorTrigger } from "./navigator";
+import { NavButton } from "./navButton";
+import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { INavMenuItemProps } from "./navMenuItem";
 import { Page } from "./page";
@@ -31,6 +32,13 @@ export interface IDocumentationProps extends IProps {
      * This theme requires the Markdown plugin, and optionally supports Typescript and KSS data.
      */
     docs: IDocsData;
+
+    /**
+     * Elements to render on the top of the sidebar, above the search box.
+     * This typically contains logo, title and navigation links.
+     * Use `.docs-nav-title` on an element for proper padding relative to other sidebar elements.
+     */
+    header: React.ReactNode;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -54,12 +62,6 @@ export interface IDocumentationProps extends IProps {
 
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: ITagRendererMap;
-
-    /**
-     * Elements to render on the top of the navbar above the search box.
-     * This typically contains logo, title and navigation links.
-     */
-    title: React.ReactNode;
 }
 
 export interface IDocumentationState {
@@ -122,11 +124,13 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { nav, pages } = this.props.docs;
         const examplesOnly = location.search === "?examples";
         return (
-            <div className={classNames("docs-root", { "docs-examples-only": examplesOnly }, this.props.className)}>
-                <div className="docs-app">
+            <div className={classNames("docs-app", { "docs-examples-only": examplesOnly }, this.props.className)}>
+                <div className="docs-nav-wrapper">
                     <div className="docs-nav" ref={this.refHandlers.nav}>
-                        <div className="docs-nav-title">{this.props.title}</div>
-                        <NavigatorTrigger onClick={this.handleOpenNavigator} />
+                        {this.props.header}
+                        <div className="docs-nav-divider" />
+                        <NavButton icon="search" hotkey="S" text="Search..." onClick={this.handleOpenNavigator} />
+                        <div className="docs-nav-divider" />
                         <NavMenu
                             activePageId={activePageId}
                             activeSectionId={activeSectionId}
@@ -136,19 +140,19 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                             renderNavMenuItem={this.props.renderNavMenuItem}
                         />
                     </div>
-                    <article className="docs-content" ref={this.refHandlers.content} role="main">
-                        <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
-                    </article>
-                    <Dialog className="docs-api-dialog" isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
-                        <TypescriptExample tag="typescript" value={activeApiMember} />
-                    </Dialog>
-                    <Navigator
-                        isOpen={this.state.isNavigatorOpen}
-                        items={nav}
-                        onClose={this.handleCloseNavigator}
-                        onNavigate={this.handleNavigation}
-                    />
                 </div>
+                <div className="docs-content-wrapper" ref={this.refHandlers.content} role="main">
+                    <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
+                </div>
+                <Dialog className="docs-api-dialog" isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
+                    <TypescriptExample tag="typescript" value={activeApiMember} />
+                </Dialog>
+                <Navigator
+                    isOpen={this.state.isNavigatorOpen}
+                    items={nav}
+                    onClose={this.handleCloseNavigator}
+                    onNavigate={this.handleNavigation}
+                />
             </div>
         );
     }
@@ -225,7 +229,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     private handlePreviousSection = () => this.shiftSection(-1);
 
     private handleScroll = () => {
-        const activeSectionId = getScrolledReference(100, this.contentElement);
+        const activeSectionId = getScrolledReference(100, this.contentElement, this.contentElement);
         if (activeSectionId == null) {
             return;
         }
@@ -247,7 +251,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
 
     private scrollToActiveSection() {
         if (this.contentElement != null) {
-            scrollToReference(this.state.activeSectionId, this.contentElement);
+            scrollToReference(this.state.activeSectionId, this.contentElement, this.contentElement);
         }
     }
 

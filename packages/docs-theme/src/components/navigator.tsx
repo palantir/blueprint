@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Icon, InputGroup, MenuItem } from "@blueprintjs/core";
+import { Classes, MenuItem } from "@blueprintjs/core";
 import { IconContents } from "@blueprintjs/icons";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
@@ -89,18 +89,3 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
 
     private handleItemSelect = (item: INavigationSection) => this.props.onNavigate(item.route);
 }
-
-export const NavigatorTrigger: React.SFC<{ onClick: () => void }> = props => (
-    <div className="docs-navigator-trigger" onClick={props.onClick}>
-        <InputGroup
-            leftIcon="search"
-            placeholder="Search..."
-            readOnly={true}
-            rightElement={
-                <div className={Classes.TEXT_MUTED}>
-                    <Icon icon="key-shift" /> S
-                </div>
-            }
-        />
-    </div>
-);

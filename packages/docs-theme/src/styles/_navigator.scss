@@ -28,21 +28,3 @@ $navigator-width: $pt-grid-size * 30;
 .pt-menu-item.pt-active .docs-result-path {
   color: $white;
 }
-
-.docs-navigator-trigger {
-  margin: $pt-grid-size 0;
-  cursor: pointer;
-
-  // TODO: hover/active states
-
-  .pt-input {
-    cursor: pointer;
-  }
-
-  .pt-input-action > * {
-    display: flex;
-    align-items: center;
-    margin-right: $pt-grid-size / 2;
-    height: $pt-input-height;
-  }
-}

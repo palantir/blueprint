@@ -29,44 +29,63 @@ Flex utils
 Page layout elements
 */
 
-.docs-root {
-  background-color: $content-background-color;
-
-  // usually this element is _way_ longer than the viewport, but sometimes it isn't.
-  // this ensures that it'll always at least fill the viewport so white page doesn't show through.
-  min-height: 100vh;
+.docs-app {
+  display: flex;
+  flex-direction: row;
+  background-color: $sidebar-background-color;
+  height: 100vh;
 
   &.pt-dark {
+    background-color: $dark-sidebar-background-color;
+  }
+}
+
+.docs-nav-wrapper,
+.docs-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: auto;
+}
+
+.docs-nav-wrapper {
+  flex-basis: $sidebar-width;
+  align-items: flex-end;
+  position: relative;
+  box-shadow: 1px 0 0 $pt-divider-black;
+
+  .pt-dark & {
+    box-shadow: 1px 0 0 $pt-dark-divider-black;
+  }
+}
+
+.docs-content-wrapper {
+  flex-basis: $content-width;
+  align-items: flex-start;
+  background-color: $content-background-color;
+
+  .pt-dark & {
     background-color: $dark-content-background-color;
   }
 }
 
-.docs-app {
-  // center container in window
-  margin: auto;
-  width: $container-width;
-}
-
-.docs-content {
-  // leave space for nav menu on the left (position: fixed)
-  margin-left: $sidebar-width;
-  // 1px top padding fixes removes extra top spacing
-  padding: 1px 0 $content-padding $content-padding * 2;
+.docs-page {
+  max-width: $content-width;
+  padding: 0 0 $content-padding $content-padding * 2;
 }
 
 .docs-nav {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  // box-shadow: 1px 0 0 $pt-divider-black;
   width: $sidebar-width;
-  overflow: auto;
-  padding: $sidebar-padding 0;
 
   .docs-navigator {
     margin-bottom: $pt-grid-size * 2;
     width: 100%;
     padding: 0 $pt-grid-size / 2;
+  }
+
+  > * {
+    padding: $sidebar-padding;
   }
 }
 
