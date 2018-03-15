@@ -25,14 +25,6 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     selectedItems?: T[];
 
     /**
-     * React child to render when query is empty.
-     */
-    initialContent?: React.ReactChild;
-
-    /** React child to render when filtering items returns zero results. */
-    noResults?: React.ReactChild;
-
-    /**
      * Whether the popover opens on key down or when `TagInput` is focused.
      * @default false
      */

@@ -25,14 +25,6 @@ import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-li
 
 export interface IOmnibarProps<T> extends IListItemsProps<T> {
     /**
-     * React child to render when query is empty.
-     */
-    initialContent?: React.ReactChild;
-
-    /** React child to render when filtering items returns zero results. */
-    noResults?: React.ReactChild;
-
-    /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
      * If you want to control the filter input, you can pass `value` and `onChange` here
      * to override `Select`'s own behavior.
@@ -90,11 +82,12 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { initialContent, isOpen, inputProps, noResults, overlayProps, ...restProps } = this.props;
+        const { initialContent = null, isOpen, inputProps, overlayProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
+                initialContent={initialContent}
                 activeItem={this.state.activeItem}
                 onActiveItemChange={this.handleActiveItemChange}
                 onItemSelect={this.handleItemSelect}

@@ -21,7 +21,6 @@ import {
     Utils,
 } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
-import { IMenuRendererProps, MenuRenderer } from "../../common/menuRenderer";
 import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
@@ -33,24 +32,11 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     filterable?: boolean;
 
     /**
-     * React child to render when query is empty.
-     */
-    initialContent?: React.ReactChild;
-
-    /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's children, if appropriate.
      * @default false
      */
     disabled?: boolean;
-
-    /** React child to render when filtering items returns zero results. */
-    noResults?: React.ReactChild;
-
-    /**
-     * Custom renderer for the contents of the dropdown.
-     */
-    menuRenderer?: MenuRenderer<T>;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).

@@ -38,9 +38,6 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
 
-    /** React child to render when filtering items returns zero results. */
-    noResults?: string | JSX.Element;
-
     /**
      * Whether the popover opens on key down or when the input is focused.
      * @default false

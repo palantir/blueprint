@@ -8,6 +8,7 @@ import * as React from "react";
 
 import { IProps, Keys, Utils } from "@blueprintjs/core";
 import { IItemModifiers, ItemRenderer } from "../../common/itemRenderer";
+import { IMenuRendererProps, MenuRenderer } from "../../common/menuRenderer";
 import { ItemListPredicate, ItemPredicate } from "../../common/predicate";
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
@@ -20,7 +21,7 @@ export interface IListItemsProps<T> extends IProps {
      * This method can reorder, add, or remove items at will.
      * (Supports filter algorithms that operate on the entire set, rather than individual items.)
      *
-     * If defined with `itemPredicate`, this prop takes priority and the other will be ignored.
+     * If `itemPredicate` is also defined, this prop takes priority and the other will be ignored.
      */
     itemListPredicate?: ItemListPredicate<T>;
 
@@ -29,7 +30,7 @@ export interface IListItemsProps<T> extends IProps {
      * This method will be invoked once for each item, so it should be performant. For more complex
      * queries, use `itemListPredicate` to operate once on the entire array.
      *
-     * If defined with `itemListPredicate`, this prop will be ignored.
+     * This prop is ignored if `itemListPredicate` is also defined.
      */
     itemPredicate?: ItemPredicate<T>;
 
@@ -39,6 +40,32 @@ export interface IListItemsProps<T> extends IProps {
      * should be attached to the returned element.
      */
     itemRenderer: ItemRenderer<T>;
+
+    /**
+     * Custom renderer for the contents of the dropdown.
+     *
+     * The default implementation invokes `itemRenderer` for each item that passes the predicate
+     * and wraps them all in a `Menu` element. If the query is empty then `initialContent` is returned,
+     * and if all items are filtered away then `noResults` is returned.
+     */
+    itemListRenderer?: MenuRenderer<T>;
+
+    /**
+     * React content to render when query is empty.
+     * If omitted, all items will be rendered (or result of `itemListPredicate` with empty query).
+     * If explicit `null`, nothing will be rendered when query is empty.
+     *
+     * This prop is ignored if a custom `menuRenderer` is supplied.
+     */
+    initialContent?: React.ReactNode | null;
+
+    /**
+     * React content to render when filtering items returns zero results.
+     * If omitted, nothing will be rendered in this case.
+     *
+     * This prop is ignored if a custom `menuRenderer` is supplied.
+     */
+    noResults?: React.ReactNode;
 
     /**
      * Callback invoked when an item from the list is selected,
