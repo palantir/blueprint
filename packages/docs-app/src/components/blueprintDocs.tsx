@@ -43,7 +43,11 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             </Banner>
         );
         const header = (
-            <NavHeader onToggleDark={this.handleToggleDark} useDarkTheme={this.state.themeName === DARK_THEME} />
+            <NavHeader
+                onToggleDark={this.handleToggleDark}
+                useDarkTheme={this.state.themeName === DARK_THEME}
+                versions={this.props.versions}
+            />
         );
         return (
             <Documentation
