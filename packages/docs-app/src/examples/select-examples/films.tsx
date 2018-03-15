@@ -151,7 +151,7 @@ function highlightText(text: string, query: string) {
     const words = query
         .split(/\s+/)
         .filter(word => word.length > 0)
-        .map(regexEscape);
+        .map(escapeRegExpChars);
     if (words.length === 0) {
         return [text];
     }
@@ -167,7 +167,7 @@ function highlightText(text: string, query: string) {
         if (before.length > 0) {
             tokens.push(before);
         }
-        tokens.push(<span style={{ fontWeight: "bold" }}>{match[0]}</span>);
+        tokens.push(<strong>{match[0]}</strong>);
         lastIndex = regexp.lastIndex;
     }
     const rest = text.slice(lastIndex);
@@ -177,7 +177,7 @@ function highlightText(text: string, query: string) {
     return tokens;
 }
 
-function regexEscape(text: string) {
+function escapeRegExpChars(text: string) {
     return text.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 }
 
