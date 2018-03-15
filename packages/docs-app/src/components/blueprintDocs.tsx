@@ -36,24 +36,25 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     public state = { themeName: getTheme() };
 
     public render() {
+        const banner = (
+            <Banner href="http://blueprintjs.com/docs/v1/">
+                This documentation is for Blueprint v2, which is currently under development. Click here to go to the v1
+                docs.
+            </Banner>
+        );
         const header = (
             <NavHeader onToggleDark={this.handleToggleDark} useDarkTheme={this.state.themeName === DARK_THEME} />
         );
         return (
-            <>
-                <Banner href="http://blueprintjs.com/docs/v1/">
-                    This documentation is for Blueprint v2, which is currently under development. Click here to go to
-                    the v1 docs.
-                </Banner>
-                <Documentation
-                    {...this.props}
-                    className={this.state.themeName}
-                    header={header}
-                    onComponentUpdate={this.handleComponentUpdate}
-                    renderNavMenuItem={this.renderNavMenuItem}
-                    renderViewSourceLinkText={this.renderViewSourceLinkText}
-                />
-            </>
+            <Documentation
+                {...this.props}
+                banner={banner}
+                className={this.state.themeName}
+                header={header}
+                onComponentUpdate={this.handleComponentUpdate}
+                renderNavMenuItem={this.renderNavMenuItem}
+                renderViewSourceLinkText={this.renderViewSourceLinkText}
+            />
         );
     }
 

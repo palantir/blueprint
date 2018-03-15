@@ -8,16 +8,15 @@ $banner-height: $pt-grid-size * 4;
 
 // banner along top of screen linking to v2 docs
 .docs-banner {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
+  @include pt-flex-container(row);
+  align-items: center;
+  justify-content: center;
 
   z-index: $pt-z-index-overlay - 1;
   box-shadow: inset 0 -1px 0 $pt-divider-black;
-  height: $banner-height;
+  min-height: $banner-height;
+  padding: $pt-grid-size $pt-grid-size * 2;
   text-align: center;
-  line-height: $banner-height;
   // stylelint-disable declaration-no-important
   color: $white !important;
 
@@ -43,13 +42,9 @@ $banner-height: $pt-grid-size * 4;
     box-shadow: 0 1px 0 $pt-divider-black;
   }
 
-  + .docs-app {
-    padding-top: $banner-height;
+  + .docs-app .docs-anchor {
+    // shift anchors down by $banner-height pixels
+    margin-top: -$content-padding * 2 - $banner-height;
   }
 }
 
-// shift entire page down by $banner-height pixels
-
-.docs-anchor {
-  margin-top: -$pt-navbar-height - $content-padding - $banner-height;
-}
