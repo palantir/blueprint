@@ -92,6 +92,11 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
 /** Interface for object passed to `QueryList` `renderer` function. */
 export interface IQueryListRendererProps<T> extends IProps {
     /**
+     * Array of filteredItems filtered by itemListPredicate or itemPredicate
+     */
+    filteredItems: T[];
+
+    /**
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
      */
@@ -159,8 +164,10 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     public render() {
         const { className, items, renderer, query } = this.props;
+        const { filteredItems } = this.state;
         return renderer({
             className,
+            filteredItems,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
