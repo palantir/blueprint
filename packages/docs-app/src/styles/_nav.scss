@@ -10,7 +10,7 @@ $package-colors: (
   "icons": $gold4,
   "select": $cobalt3,
   "table": $forest3,
-  "timezone": $violet3,
+  "timezone": $violet4,
   "labs": $indigo3,
   "resources": $orange3,
 );
@@ -22,36 +22,10 @@ $dark-package-colors: (
   "icons": $gold4,
   "select": $cobalt4,
   "table": $forest4,
-  "timezone": $violet4,
+  "timezone": $violet5,
   "labs": $indigo4,
-  "resources": $orange4,
+  "resources": $orange5,
 );
-
-@mixin nav-colors($package-name, $item-background-color) {
-  &[data-route="#{$package-name}"] {
-    .docs-nav-package-icon {
-      background-color: rgba($item-background-color, 0.2);
-      fill: $item-background-color;
-    }
-
-    &:hover,
-    &.docs-nav-expanded {
-      .pt-menu-item,
-      + .docs-nav-menu .pt-menu-item.pt-active {
-        color: $item-background-color;
-      }
-
-      .docs-nav-package-icon {
-        background-color: rgba($item-background-color, 0.8);
-        fill: $white;
-      }
-
-      &:active .docs-nav-package-icon {
-        background-color: $item-background-color;
-      }
-    }
-  }
-}
 
 .docs-logo {
   background-image: url("./assets/blueprint-logo.svg");
@@ -76,11 +50,51 @@ $dark-package-colors: (
     font-weight: 600;
   }
 
-  @each $package in map-keys($package-colors) {
-    @include nav-colors($package, map-get($package-colors, $package));
+  @each $package-name in map-keys($package-colors) {
+    $color: map-get($package-colors, $package-name);
+    $dark-color: map-get($dark-package-colors, $package-name);
 
-    .pt-dark & {
-      @include nav-colors($package, map-get($dark-package-colors, $package));
+    &[data-route="#{$package-name}"] {
+      .docs-nav-package-icon {
+        background-color: rgba($color, 0.1);
+        fill: $color;
+
+        .pt-dark & {
+          background-color: rgba($dark-color, 0.15);
+          fill: $dark-color;
+        }
+      }
+
+      // stylelint-disable max-nesting-depth
+      &:hover,
+      &.docs-nav-expanded {
+        .pt-menu-item,
+        + .docs-nav-menu .pt-menu-item.pt-active {
+          color: $color;
+
+          .pt-dark & {
+            color: $dark-color;
+          }
+        }
+
+        .docs-nav-package-icon {
+          background-color: rgba($color, 0.8);
+          fill: $white;
+
+          .pt-dark & {
+            background-color: rgba($dark-color, 0.8);
+          }
+        }
+
+        &:active .docs-nav-package-icon {
+          background-color: $color;
+
+          .pt-dark & {
+            background-color: $dark-color;
+          }
+        }
+      }
+      // stylelint-enable max-nesting-depth
     }
   }
 
