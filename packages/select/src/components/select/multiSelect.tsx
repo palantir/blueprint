@@ -11,7 +11,6 @@ import {
     IPopoverProps,
     ITagInputProps,
     Keys,
-    Menu,
     Popover,
     Position,
     TagInput,
@@ -141,20 +140,11 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                     />
                 </div>
                 <div onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)} onKeyUp={handleKeyUp}>
-                    <Menu ulRef={listProps.itemsParentRef}>{this.renderItems(listProps)}</Menu>
+                    {listProps.itemList}
                 </div>
             </Popover>
         );
     };
-
-    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
-        const { initialContent, noResults } = this.props;
-        if (initialContent != null && this.isQueryEmpty()) {
-            return initialContent;
-        }
-        const renderedItems = items.map(renderItem).filter(item => item != null);
-        return renderedItems.length > 0 ? renderedItems : noResults;
-    }
 
     private isQueryEmpty = () => this.state.query.length === 0;
 

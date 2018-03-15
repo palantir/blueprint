@@ -15,7 +15,6 @@ import {
     InputGroup,
     IOverlayableProps,
     IOverlayProps,
-    Menu,
     Overlay,
     Utils,
 } from "@blueprintjs/core";
@@ -131,33 +130,11 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                         {...inputProps}
                         onChange={this.handleQueryChange}
                     />
-                    {this.maybeRenderMenu(listProps)}
+                    {listProps.itemList}
                 </div>
             </Overlay>
         );
     };
-
-    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
-        const renderedItems = items.map(renderItem).filter(item => item != null);
-        return renderedItems.length > 0 ? renderedItems : this.props.noResults;
-    }
-
-    private maybeRenderMenu(listProps: IQueryListRendererProps<T>) {
-        const { initialContent } = this.props;
-        let menuChildren: any;
-
-        if (!this.isQueryEmpty()) {
-            menuChildren = this.renderItems(listProps);
-        } else if (initialContent != null) {
-            menuChildren = initialContent;
-        }
-
-        if (menuChildren != null) {
-            return <Menu ulRef={listProps.itemsParentRef}>{menuChildren}</Menu>;
-        }
-
-        return undefined;
-    }
 
     private isQueryEmpty = () => this.state.query.length === 0;
 

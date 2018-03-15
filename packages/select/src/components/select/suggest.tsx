@@ -13,7 +13,6 @@ import {
     InputGroup,
     IPopoverProps,
     Keys,
-    Menu,
     Popover,
     Position,
     Utils,
@@ -140,16 +139,11 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                     onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
                 />
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    <Menu ulRef={listProps.itemsParentRef}>{this.renderItems(listProps)}</Menu>
+                    {listProps.itemList}
                 </div>
             </Popover>
         );
     };
-
-    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
-        const renderedItems = items.map(renderItem).filter(item => item != null);
-        return renderedItems.length > 0 ? renderedItems : this.props.noResults;
-    }
 
     private selectText = () => {
         // wait until the input is properly focused to select the text inside of it
