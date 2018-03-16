@@ -60,8 +60,9 @@ export class Portal extends React.Component<IPortalProps, {}> {
         const targetElement = document.createElement("div");
         targetElement.classList.add(Classes.PORTAL);
 
-        if (this.context.blueprintPortalClassName != null) {
-            targetElement.classList.add(this.context.blueprintPortalClassName);
+        const { blueprintPortalClassName } = this.context;
+        if (blueprintPortalClassName != null && blueprintPortalClassName !== "") {
+            targetElement.classList.add(...blueprintPortalClassName.split(" "));
         }
 
         document.body.appendChild(targetElement);
