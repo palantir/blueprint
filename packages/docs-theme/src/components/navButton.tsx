@@ -4,7 +4,7 @@
 * Licensed under the terms of the LICENSE file distributed with this project.
 */
 
-import { Classes, Icon, IconName } from "@blueprintjs/core";
+import { Classes, Icon, IconName, KeyCombo } from "@blueprintjs/core";
 import * as React from "react";
 
 export interface INavButtonProps {
@@ -19,7 +19,7 @@ export const NavButton: React.SFC<INavButtonProps> = props => (
         <Icon icon={props.icon} />
         <span className={Classes.FILL}>{props.text}</span>
         <div style={{ opacity: 0.5 }}>
-            <Icon icon="key-shift" /> {props.hotkey}
+            <KeyCombo combo={props.hotkey} minimal={true} />
         </div>
     </div>
 );

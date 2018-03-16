@@ -142,7 +142,12 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                         <div className="docs-nav" ref={this.refHandlers.nav}>
                             {this.props.header}
                             <div className="docs-nav-divider" />
-                            <NavButton icon="search" hotkey="S" text="Search..." onClick={this.handleOpenNavigator} />
+                            <NavButton
+                                icon="search"
+                                hotkey="shift + s"
+                                text="Search..."
+                                onClick={this.handleOpenNavigator}
+                            />
                             <div className="docs-nav-divider" />
                             <NavMenu
                                 activePageId={activePageId}

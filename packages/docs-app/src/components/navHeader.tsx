@@ -48,7 +48,7 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
                 <div className="docs-nav-divider" />
                 <NavButton
                     icon={useDarkTheme ? "flash" : "moon"}
-                    hotkey="D"
+                    hotkey="shift + d"
                     text={useDarkTheme ? "Light theme" : "Dark theme"}
                     onClick={this.handleDarkSwitchChange}
                 />

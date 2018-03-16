@@ -28,35 +28,41 @@ export interface IKeyComboProps extends IProps {
     allowInInput?: boolean;
     combo: string;
     disabled?: boolean;
+    minimal?: boolean;
     preventDefault?: boolean;
     stopPropagation?: boolean;
 }
 
 export class KeyCombo extends React.Component<IKeyComboProps, {}> {
     public render() {
-        const keys = normalizeKeyCombo(this.props.combo);
-        const components = [] as JSX.Element[];
+        const keys = normalizeKeyCombo(this.props.combo).map(this.renderKey);
         const rootClasses = classNames("pt-key-combo", this.props.className);
-        for (let i = 0; i < keys.length; i++) {
-            let key = keys[i];
-            const icon = KeyIcons[key];
-            if (icon != null) {
-                components.push(
-                    <kbd className="pt-key pt-modifier-key" key={`key-${i}`}>
-                        <Icon icon={icon} /> {key}
-                    </kbd>,
-                );
-            } else {
-                if (key.length === 1) {
-                    key = key.toUpperCase();
-                }
-                components.push(
-                    <kbd className="pt-key" key={`key-${i}`}>
-                        {key}
-                    </kbd>,
-                );
-            }
-        }
-        return <span className={rootClasses}>{components}</span>;
+        return <span className={rootClasses}>{keys}</span>;
     }
+
+    private renderKey = (key: string, index: number) => {
+        const { minimal } = this.props;
+        const icon = KeyIcons[key];
+        const reactKey = `key-${index}`;
+        if (icon != null) {
+            return minimal ? (
+                <Icon icon={icon} key={reactKey} />
+            ) : (
+                <kbd className="pt-key pt-modifier-key" key={reactKey}>
+                    <Icon icon={icon} /> {key}
+                </kbd>
+            );
+        } else {
+            if (key.length === 1) {
+                key = key.toUpperCase();
+            }
+            return minimal ? (
+                key
+            ) : (
+                <kbd className="pt-key" key={reactKey}>
+                    {key}
+                </kbd>
+            );
+        }
+    };
 }
