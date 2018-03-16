@@ -12,6 +12,10 @@ export interface IItemListRendererProps<T> {
     /**
      * Array of items filtered by `itemListPredicate` or `itemPredicate`.
      * See `items` for the full list of items.
+     *
+     * Use `renderFilteredItems()` utility function from this library to
+     * map each item in this array through `renderItem`, with support for
+     * optional `noResults` and `initialContent` states.
      */
     filteredItems: T[];
 
@@ -42,3 +46,20 @@ export interface IItemListRendererProps<T> {
 
 /** Type alias for a function that renders the list of items. */
 export type ItemListRenderer<T> = (itemListProps: IItemListRendererProps<T>) => JSX.Element;
+
+/**
+ * `ItemListRenderer` helper method for rendering each item in `filteredItems`,
+ * with optional support for `noResults` (when filtered items is empty)
+ * and `initialContent` (when query is empty).
+ */
+export function renderFilteredItems(
+    props: IItemListRendererProps<any>,
+    noResults?: React.ReactNode,
+    initialContent?: React.ReactNode | null,
+): React.ReactNode {
+    if (props.query.length === 0 && initialContent !== undefined) {
+        return initialContent;
+    }
+    const items = props.filteredItems.map(props.renderItem).filter(item => item != null);
+    return items.length > 0 ? items : noResults;
+}

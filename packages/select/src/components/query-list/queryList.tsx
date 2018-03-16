@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { IProps, Keys, Menu, Utils } from "@blueprintjs/core";
-import { IItemListRendererProps, IItemModifiers, IListItemsProps } from "../../common";
+import { IItemListRendererProps, IItemModifiers, IListItemsProps, renderFilteredItems } from "../../common";
 
 export interface IQueryListProps<T> extends IListItemsProps<T> {
     /**
@@ -95,22 +95,6 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     public static ofType<T>() {
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
-    }
-
-    /**
-     * Helper method for rendering `props.filteredItems`, with optional support for `noResults`
-     * (when filtered items is empty) and `initialContent` (when query is empty).
-     */
-    public static renderFilteredItems(
-        props: IItemListRendererProps<any>,
-        noResults?: React.ReactNode,
-        initialContent?: React.ReactNode | null,
-    ): React.ReactNode {
-        if (props.query.length === 0 && initialContent !== undefined) {
-            return initialContent;
-        }
-        const items = props.filteredItems.map(props.renderItem).filter(item => item != null);
-        return items.length > 0 ? items : noResults;
     }
 
     private itemsParentRef?: HTMLElement | null;
@@ -207,7 +191,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     /** default `itemListRenderer` implementation */
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
-        const menuContent = QueryList.renderFilteredItems(listProps, noResults, initialContent);
+        const menuContent = renderFilteredItems(listProps, noResults, initialContent);
         return <Menu ulRef={listProps.itemsParentRef}>{menuContent}</Menu>;
     };
 
