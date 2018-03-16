@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/docs-theme",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Blueprint theme for documentalist",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -25,7 +25,7 @@
     "verify": "npm-run-all compile -p dist lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^1.35.5",
+    "@blueprintjs/core": "^1.35.6",
     "classnames": "^2.2",
     "documentalist": "^1.0.0",
     "fuzzaldrin-plus": "^0.5.0",
