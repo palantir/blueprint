@@ -2,7 +2,7 @@ version: 2
 jobs:
   install-dependencies:
     docker:
-      - image: circleci/node:8.9.4
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - restore_cache:
@@ -23,7 +23,7 @@ jobs:
 
   compile:
     docker:
-      - image: circleci/node:8.9.4
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:
@@ -42,7 +42,7 @@ jobs:
 
   lint:
     docker:
-      - image: circleci/node:8.9.4
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:
@@ -55,7 +55,7 @@ jobs:
 
   dist:
     docker:
-      - image: circleci/node:8.9.4
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:
@@ -73,7 +73,7 @@ jobs:
 
   test:
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:8.10.0-browsers
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
     parallelism: 4
@@ -94,7 +94,7 @@ jobs:
 
   deploy-preview:
     docker:
-      - image: circleci/node:8.9.4
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:
@@ -113,7 +113,7 @@ jobs:
 
   deploy-npm:
     docker:
-      - image: circleci/node:8.9.4
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:
