@@ -2,7 +2,7 @@ version: 2
 jobs:
   install-dependencies:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:8.9.4
     steps:
       - checkout
       - restore_cache:
