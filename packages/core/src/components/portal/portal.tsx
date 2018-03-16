@@ -96,6 +96,6 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
 
 function maybeAddClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {
-        classList.add(className);
+        classList.add(...className.split(" "));
     }
 }
