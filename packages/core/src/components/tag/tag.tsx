@@ -19,8 +19,8 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
     active?: boolean;
 
     /**
-     * Whether the tag should respond to user interactions. If set to `true`,
-     * hovering over the tag will change its color and mouse cursor.
+     * Whether the tag should visually respond to user interactions. If set
+     * to `true`, hovering over the tag will change its color and mouse cursor.
      *
      * Recommended when `onClick` is also defined.
      *
@@ -45,7 +45,7 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
     public static displayName = "Blueprint2.Tag";
 
     public render() {
-        const { active, children, className, intent, interactive, onClick, onRemove, ...htmlProps } = this.props;
+        const { active, children, className, intent, interactive, onRemove, ...htmlProps } = this.props;
         const isRemovable = Utils.isFunction(onRemove);
         const tagClasses = classNames(
             Classes.TAG,
@@ -65,7 +65,7 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
         ) : null;
 
         return (
-            <span {...htmlProps} className={tagClasses} onClick={onClick}>
+            <span {...htmlProps} className={tagClasses}>
                 {children}
                 {removeButton}
             </span>
