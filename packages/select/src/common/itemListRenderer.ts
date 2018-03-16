@@ -17,7 +17,7 @@ export interface IItemListRendererProps<T> {
 
     /**
      * Array of all items in the list.
-     *  See `filteredItems` for a filtered array based on `query` and predicate props.
+     * See `filteredItems` for a filtered array based on `query` and predicate props.
      */
     items: T[];
 

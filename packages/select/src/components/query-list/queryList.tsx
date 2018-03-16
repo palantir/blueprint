@@ -46,7 +46,7 @@ export interface IListItemsProps<T> extends IProps {
      *
      * The default implementation invokes `itemRenderer` for each item that passes the predicate
      * and wraps them all in a `Menu` element. If the query is empty then `initialContent` is returned,
-     * and if all items are filtered away then `noResults` is returned.
+     * and if there are no items that match the predicate then `noResults` is returned.
      */
     itemListRenderer?: ItemListRenderer<T>;
 
@@ -55,7 +55,7 @@ export interface IListItemsProps<T> extends IProps {
      * If omitted, all items will be rendered (or result of `itemListPredicate` with empty query).
      * If explicit `null`, nothing will be rendered when query is empty.
      *
-     * This prop is ignored if a custom `menuRenderer` is supplied.
+     * This prop is ignored if a custom `itemListRenderer` is supplied.
      */
     initialContent?: React.ReactNode | null;
 
@@ -63,7 +63,7 @@ export interface IListItemsProps<T> extends IProps {
      * React content to render when filtering items returns zero results.
      * If omitted, nothing will be rendered in this case.
      *
-     * This prop is ignored if a custom `menuRenderer` is supplied.
+     * This prop is ignored if a custom `itemListRenderer` is supplied.
      */
     noResults?: React.ReactNode;
 
@@ -144,7 +144,7 @@ export interface IQueryListRendererProps<T> extends IProps {
      */
     handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
 
-    /** Rendered elements returned from `menuRenderer` prop. */
+    /** Rendered elements returned from `itemListRenderer` prop. */
     itemList: React.ReactNode;
 
     /** The current query string. */
@@ -190,7 +190,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private shouldCheckActiveItemInViewport: boolean = false;
 
     public render() {
-        const { className, items, renderer, query, itemListRenderer = this.defaultMenuRenderer } = this.props;
+        const { className, items, renderer, query, itemListRenderer = this.renderItemList } = this.props;
         const { filteredItems } = this.state;
         return renderer({
             className,
@@ -269,12 +269,14 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
     }
 
-    private defaultMenuRenderer = (listProps: IItemListRendererProps<T>) => {
+    /** default `itemListRenderer` implementation */
+    private renderItemList = (listProps: IItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
         const menuContent = QueryList.renderFilteredItems(listProps, noResults, initialContent);
         return <Menu ulRef={listProps.itemsParentRef}>{menuContent}</Menu>;
     };
 
+    /** wrapper around `itemRenderer` to inject props */
     private renderItem = (item: T, index?: number) => {
         const { activeItem, query } = this.props;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;

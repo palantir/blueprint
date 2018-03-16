@@ -86,8 +86,8 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
         return (
             <this.TypedQueryList
                 {...restProps}
-                initialContent={initialContent}
                 activeItem={this.state.activeItem}
+                initialContent={initialContent}
                 onActiveItemChange={this.handleActiveItemChange}
                 onItemSelect={this.handleItemSelect}
                 query={this.state.query}
