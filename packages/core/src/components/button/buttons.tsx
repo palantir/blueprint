@@ -14,7 +14,7 @@ import { AbstractButton, IButtonProps } from "./abstractButton";
 
 export { IButtonProps };
 
-export class Button extends AbstractButton<HTMLButtonElement> {
+export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButtonElement>> {
     public static displayName = "Blueprint2.Button";
 
     public render() {
@@ -26,7 +26,7 @@ export class Button extends AbstractButton<HTMLButtonElement> {
     }
 }
 
-export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
+export class AnchorButton extends AbstractButton<React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static displayName = "Blueprint2.AnchorButton";
 
     public render() {
