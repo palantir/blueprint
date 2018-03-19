@@ -107,7 +107,7 @@ These bundles _do not include_ external dependencies; your application will need
 </html>
 ```
 
-@## JS Environment
+@## JS environment
 
 @### Language features
 
