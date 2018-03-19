@@ -13,8 +13,6 @@ $timepicker-divider-width: $pt-grid-size * 1.1 !default;
 $timepicker-control-width: $pt-grid-size * 3.3 !default;
 
 .pt-timepicker {
-  display: inline-block;
-  padding: 0 $pt-grid-size;
   white-space: nowrap;
 
   .pt-timepicker-arrow-row {

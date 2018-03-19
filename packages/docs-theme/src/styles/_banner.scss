@@ -9,6 +9,7 @@ $banner-height: $pt-grid-size * 4;
 // banner along top of screen linking to v2 docs
 .docs-banner {
   @include pt-flex-container(row);
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
 

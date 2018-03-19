@@ -21,7 +21,7 @@
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.2",
-    "webpack-dev-server": "^2.10.1",
+    "webpack-dev-server": "^2.11.1",
     "webpack-notifier": "^1.5.0"
   },
   "repository": {
