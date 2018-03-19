@@ -363,6 +363,7 @@
   &.pt-inline {
     display: inline-flex;
     margin: 0;
+    margin-left: $pt-grid-size;
   }
 }
 

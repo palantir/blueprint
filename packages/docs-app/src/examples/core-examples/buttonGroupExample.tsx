@@ -75,8 +75,8 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
                     label="Icons only"
                     onChange={this.handleIconOnlyChange}
                 />,
-                <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />,
             ],
+            [<AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />],
         ];
     }
 

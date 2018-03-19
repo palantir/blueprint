@@ -11,6 +11,7 @@ import * as sinon from "sinon";
 
 import {
     Classes as CoreClasses,
+    HTMLDivProps,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -26,8 +27,8 @@ import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any, {}>;
-type WrappedComponentInput = ReactWrapper<React.InputHTMLAttributes<HTMLInputElement>, any>;
-type WrappedComponentDayElement = ReactWrapper<React.HTMLAttributes<HTMLDivElement>, any>;
+type WrappedComponentInput = ReactWrapper<HTMLInputProps, any>;
+type WrappedComponentDayElement = ReactWrapper<HTMLDivProps, any>;
 
 type OutOfRangeTestFunction = (
     inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,

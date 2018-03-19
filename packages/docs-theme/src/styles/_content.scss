@@ -109,6 +109,10 @@ $dark-example-background-color: $dark-content-background-color;
   }
 }
 
+[data-modifier] > code {
+  white-space: nowrap;
+}
+
 // color the modifier label depending on modifier type
 [data-modifier="default"] > code {
   color: $gray3;
