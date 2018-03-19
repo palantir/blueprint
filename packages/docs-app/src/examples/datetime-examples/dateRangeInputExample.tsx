@@ -63,7 +63,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
                     {...format}
                     onChange={this.handleRangeChange}
                     popoverProps={this.popoverProps}
-                />{" "}
+                />
                 <MomentDateRange className={this.state.isPopoverOpen ? Classes.INLINE : ""} range={range} />
             </div>
         );

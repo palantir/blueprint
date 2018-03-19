@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ $# -eq 0 ]; then
-  echo "Usage: sass-compile <directory> [<output>] [...args]"
+  echo "Usage: [OUTPUT=dir] sass-compile <directory> [...args]"
   exit 1
 fi
 
