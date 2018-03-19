@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Finds the subset of packages which are ready to be published based on the latest Lerna publish commit.
  */
 
