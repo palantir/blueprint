@@ -21,14 +21,18 @@ CSS `border` property issues:
 
 `box-shadow` doesn't have these issues, we're using it instead of `border`.
 */
-$button-box-shadow: inset 0 0 0 $button-border-width rgba($black, 0.2),
-                    inset 0 (-$button-border-width) 0 rgba($black, 0.1) !default;
-$button-box-shadow-active: inset 0 0 0 $button-border-width rgba($black, 0.2),
-                           inset 0 1px 2px rgba($black, 0.2) !default;
-$button-intent-box-shadow: inset 0 0 0 $button-border-width rgba($black, 0.4),
-                           inset 0 (-$button-border-width) 0 rgba($black, 0.2) !default;
-$button-intent-box-shadow-active: inset 0 0 0 $button-border-width rgba($black, 0.4),
-                                  inset 0 1px 2px rgba($black, 0.2) !default;
+$button-box-shadow:
+  inset 0 0 0 $button-border-width rgba($black, 0.2),
+  inset 0 (-$button-border-width) 0 rgba($black, 0.1) !default;
+$button-box-shadow-active:
+  inset 0 0 0 $button-border-width rgba($black, 0.2),
+  inset 0 1px 2px rgba($black, 0.2) !default;
+$button-intent-box-shadow:
+  inset 0 0 0 $button-border-width rgba($black, 0.4),
+  inset 0 (-$button-border-width) 0 rgba($black, 0.2) !default;
+$button-intent-box-shadow-active:
+  inset 0 0 0 $button-border-width rgba($black, 0.4),
+  inset 0 1px 2px rgba($black, 0.2) !default;
 
 /*
 Overlay shadows are used for default buttons
@@ -36,17 +40,23 @@ floating on top of other elements. This way, the
 shadows blend with the colors beneath it.
 Switches and slider handles both use these variables.
 */
-$button-box-shadow-overlay: 0 0 0 $button-border-width rgba($black, 0.2),
-                            0 1px 1px rgba($black, 0.2) !default;
-$button-box-shadow-overlay-active: 0 0 0 $button-border-width rgba($black, 0.2),
-                                   inset 0 1px 1px rgba($black, 0.1) !default;
+$button-box-shadow-overlay:
+  0 0 0 $button-border-width rgba($black, 0.2),
+  0 1px 1px rgba($black, 0.2) !default;
+$button-box-shadow-overlay-active:
+  0 0 0 $button-border-width rgba($black, 0.2),
+  inset 0 1px 1px rgba($black, 0.1) !default;
 
-$dark-button-box-shadow: 0 0 0 $button-border-width rgba($black, 0.4) !default;
-$dark-button-box-shadow-active: 0 0 0 $button-border-width rgba($black, 0.6),
-                                inset 0 1px 2px rgba($black, 0.2) !default;
-$dark-button-intent-box-shadow: 0 0 0 $button-border-width rgba($black, 0.4) !default;
-$dark-button-intent-box-shadow-active: 0 0 0 $button-border-width rgba($black, 0.4),
-                                       inset 0 1px 2px rgba($black, 0.2) !default;
+$dark-button-box-shadow:
+  0 0 0 $button-border-width rgba($black, 0.4) !default;
+$dark-button-box-shadow-active:
+  0 0 0 $button-border-width rgba($black, 0.6),
+  inset 0 1px 2px rgba($black, 0.2) !default;
+$dark-button-intent-box-shadow:
+  0 0 0 $button-border-width rgba($black, 0.4) !default;
+$dark-button-intent-box-shadow-active:
+  0 0 0 $button-border-width rgba($black, 0.4),
+  inset 0 1px 2px rgba($black, 0.2) !default;
 
 $button-gradient: linear-gradient(to bottom, rgba($white, 0.8), rgba($white, 0)) !default;
 $button-intent-gradient: linear-gradient(to bottom, rgba($white, 0.1), rgba($white, 0)) !default;
