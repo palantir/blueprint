@@ -85,7 +85,6 @@
   // optional interface description
   + .docs-section {
     box-shadow: 0 1px 0 $pt-divider-black;
-    padding: $pt-grid-size ($pt-grid-size * 2) 0;
   }
 
   .pt-dark & {
@@ -93,7 +92,6 @@
 
     + .docs-section {
       box-shadow: 0 1px 0 $pt-dark-divider-white;
-      padding: $pt-grid-size ($pt-grid-size * 2) 0;
     }
   }
 }

@@ -37,8 +37,13 @@
 
   .docs-interface-header {
     flex: 0 0 auto;
-    margin: 0;
+    margin: 0 0 $pt-grid-size;
     padding: $pt-grid-size ($pt-grid-size * 2);
+
+    + .docs-section {
+      padding-right: $pt-grid-size * 2;
+      padding-left: $pt-grid-size * 2;
+    }
   }
 
   .docs-modifiers-table {
