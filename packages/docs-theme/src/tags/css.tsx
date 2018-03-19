@@ -32,7 +32,7 @@ export class CssExample extends React.PureComponent<ITag> {
         ));
         return (
             <div>
-                <ModifierTable title="Modifiers">{examples}</ModifierTable>
+                {examples.length > 0 && <ModifierTable title="Modifiers">{examples}</ModifierTable>}
                 <div className="docs-example-wrapper" data-reference={reference}>
                     {this.renderMarkupExample(markup)}
                     {modifiers.map(mod => this.renderMarkupExample(markup, mod.name))}

@@ -9,7 +9,7 @@ import * as React from "react";
 
 export interface IModifierTableProps {
     /** Message to display when children is empty. */
-    emptyMessage: string;
+    emptyMessage?: string;
 
     /** Title of the first column, describing the type of each row in the table. */
     title: string;
