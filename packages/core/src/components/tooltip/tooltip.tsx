@@ -101,6 +101,12 @@ export interface ITooltipProps extends IProps, IIntentProps {
     rootElementTag?: string;
 
     /**
+     * Component element of the popover target.
+     * @default "div"
+     */
+    targetComponent?: string;
+
+    /**
      * A space-delimited string of class names that are applied to the tooltip.
      */
     tooltipClassName?: string;
