@@ -2066,9 +2066,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private updateViewportRect = (nextViewportRect: Rect) => {
-        this.setState({ viewportRect: nextViewportRect });
-
         const { viewportRect } = this.state;
+        this.setState({ viewportRect: nextViewportRect });
 
         const didViewportChange =
             (viewportRect != null && !viewportRect.equals(nextViewportRect)) ||
