@@ -53,7 +53,7 @@ export class AlertExample extends BaseExample<{}> {
                     cancelButtonText="Cancel"
                     confirmButtonText="Move to Trash"
                     icon="trash"
-                    intent={Intent.PRIMARY}
+                    intent={Intent.DANGER}
                     isOpen={isOpen}
                     onCancel={this.handleMoveCancel}
                     onConfirm={this.handleMoveConfirm}
