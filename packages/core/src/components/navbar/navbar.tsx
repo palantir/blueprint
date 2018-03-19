@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { HTMLDivProps, IProps } from "../../common/props";
 import { NavbarDivider } from "./navbarDivider";
 import { NavbarGroup } from "./navbarGroup";
 import { NavbarHeading } from "./navbarHeading";
@@ -15,7 +15,7 @@ import { NavbarHeading } from "./navbarHeading";
 export { INavbarDividerProps } from "./navbarDivider";
 
 // allow the empty interface so we can label it clearly in the docs
-export interface INavbarProps extends IProps, React.HTMLAttributes<HTMLDivElement> {
+export interface INavbarProps extends IProps, HTMLDivProps {
     // Empty
 }
 

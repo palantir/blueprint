@@ -13,7 +13,7 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
-import { IProps } from "../../common/props";
+import { HTMLDivProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
@@ -406,7 +406,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     private renderPopper(content: JSX.Element) {
         const { usePortal, interactionKind, modifiers } = this.props;
 
-        const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
+        const popoverHandlers: HTMLDivProps = {
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
         };

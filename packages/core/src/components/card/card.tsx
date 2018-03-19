@@ -7,9 +7,9 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { HTMLDivProps, IProps } from "../../common/props";
 
-export interface ICardProps extends IProps, React.HTMLAttributes<HTMLDivElement> {
+export interface ICardProps extends IProps, HTMLDivProps {
     /**
      * Controls the intensity of the drop shadow beneath the card: the higher
      * the elevation, the higher the drop shadow. At elevation `0`, no drop
