@@ -84,6 +84,7 @@
   // optional interface description
   + .docs-section {
     display: flex;
+    flex-direction: column;
     margin-top: $pt-grid-size;
     box-shadow: 0 1px 0 $pt-divider-black;
   }

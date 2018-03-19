@@ -13,19 +13,13 @@ export function renderBlock(
     block: IBlock | undefined,
     tagRenderers: ITagRendererMap,
     className?: string,
-): JSX.Element[] {
+): JSX.Element | null {
     if (block === undefined) {
-        return [];
+        return null;
     }
-    return block.contents.map((node, i) => {
+    const contents = block.contents.map((node, i) => {
         if (typeof node === "string") {
-            return (
-                <div
-                    className={classNames("docs-section", className)}
-                    dangerouslySetInnerHTML={{ __html: node }}
-                    key={i}
-                />
-            );
+            return <div dangerouslySetInnerHTML={{ __html: node }} />;
         }
         try {
             const renderer = tagRenderers[node.tag];
@@ -42,4 +36,5 @@ export function renderBlock(
             );
         }
     });
+    return <div className={classNames("docs-section", className)}>{contents}</div>;
 }
