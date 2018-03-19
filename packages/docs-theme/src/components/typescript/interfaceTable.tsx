@@ -36,7 +36,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
             <div className="docs-modifiers pt-running-text-small">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
-                <ModifierTable title={title}>
+                <ModifierTable emptyMessage="This interface is empty." title={title}>
                     {propRows}
                     {this.renderIndexSignature(data.indexSignature)}
                 </ModifierTable>

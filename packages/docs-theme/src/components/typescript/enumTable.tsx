@@ -31,7 +31,9 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
             <div className="docs-modifiers pt-running-text-small">
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
-                <ModifierTable title="Members">{data.members.map(this.renderPropRow)}</ModifierTable>
+                <ModifierTable emptyMessage="This enum is empty." title="Members">
+                    {data.members.map(this.renderPropRow)}
+                </ModifierTable>
             </div>
         );
     }
