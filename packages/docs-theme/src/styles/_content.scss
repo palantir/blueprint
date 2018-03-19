@@ -56,6 +56,14 @@ $dark-example-background-color: $dark-content-background-color;
 .view-example-source {
   display: inline-block;
   margin-bottom: $pt-grid-size * 2;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  .pt-icon {
+    margin-right: $pt-grid-size / 2;
+  }
 }
 
 // full-bleed wrapper for example

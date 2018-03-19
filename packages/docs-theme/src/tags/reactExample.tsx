@@ -4,7 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Icon } from "@blueprintjs/core";
+import { Classes, Icon, Intent, Tag } from "@blueprintjs/core";
+import classNames from "classnames";
 import { ITag } from "documentalist/dist/client";
 import * as React from "react";
 
@@ -24,11 +25,14 @@ export interface IExampleProps {
     name: string;
 }
 
+const viewSourceClasses = classNames(Classes.LARGE, Classes.MINIMAL);
 export const ReactExample: React.SFC<IExampleProps> = props => (
     <div className="docs-example-wrapper">
         {props.example.render({ id: props.name })}
         <a className="view-example-source" href={props.example.sourceUrl} target="_blank">
-            <Icon icon="code" /> View source on GitHub
+            <Tag className={viewSourceClasses} intent={Intent.PRIMARY} interactive={true}>
+                <Icon icon="code" iconSize={Icon.SIZE_LARGE} />View source on GitHub
+            </Tag>
         </a>
     </div>
 );
