@@ -11,6 +11,8 @@ import * as Classes from "../../common/classes";
 import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 
+// NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
+// Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
 export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps {
     /**
      * Whether the input is non-interactive.
@@ -48,7 +50,7 @@ export interface IInputGroupState {
     rightElementWidth?: number;
 }
 
-export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroupProps, IInputGroupState> {
+export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInputProps, IInputGroupState> {
     public static displayName = "Blueprint2.InputGroup";
 
     public state: IInputGroupState = {
