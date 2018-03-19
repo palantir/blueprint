@@ -96,6 +96,11 @@ $reorder-handle-width: 22px !default;
   }
 }
 
+.pt-table-reorder-handle {
+  // center icon within handle
+  display: flex;
+}
+
 // The wide, transparent, clickable target that contains the
 // thin resize handle bar
 .pt-table-resize-handle-target {
