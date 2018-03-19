@@ -3,7 +3,6 @@
 
 @import "~@blueprintjs/icons/src/icons";
 @import "~@blueprintjs/core/src/common/react-transition";
-@import "~@blueprintjs/core/src/components/forms/common";
 
 // Specific Example Customizations
 
@@ -193,15 +192,13 @@
 .docs-popover-example {
   .docs-react-example {
     border-radius: $pt-border-radius;
-    box-shadow: $pt-input-box-shadow;
-    background: $light-gray4;
+    background: $light-gray3;
     width: 100%;
     height: 350px;
     overflow: scroll;
 
     .pt-dark & {
-      box-shadow: $pt-dark-input-box-shadow;
-      background: $dark-input-background-color;
+      background: $dark-gray5;
     }
   }
 
@@ -306,14 +303,12 @@
   .docs-popover-inline-example-scroll-container {
     flex: 1 1 auto;
     border-radius: $pt-border-radius;
-    box-shadow: $pt-input-box-shadow;
-    background: $light-gray4;
+    background: $light-gray3;
     overflow-x: scroll;
     overflow-y: hidden;
 
     .pt-dark & {
-      box-shadow: $pt-dark-input-box-shadow;
-      background: $dark-input-background-color;
+      background: $dark-gray5;
     }
 
     &:first-child {
