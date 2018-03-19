@@ -15,8 +15,7 @@ import { NavbarHeading } from "./navbarHeading";
 export { INavbarDividerProps } from "./navbarDivider";
 
 // allow the empty interface so we can label it clearly in the docs
-// tslint:disable-next-line:no-empty-interface
-export interface INavbarProps extends React.HTMLProps<HTMLDivElement>, IProps {
+export interface INavbarProps extends IProps, React.HTMLAttributes<HTMLDivElement> {
     // Empty
 }
 

@@ -10,7 +10,7 @@ import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface INavbarGroupProps extends React.HTMLProps<HTMLDivElement>, IProps {
+export interface INavbarGroupProps extends IProps, React.HTMLAttributes<HTMLDivElement> {
     /**
      * The side of the navbar on which the group should appear.
      * The `Alignment` enum provides constants for these values.

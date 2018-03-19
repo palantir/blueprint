@@ -48,7 +48,7 @@ export interface IInputGroupState {
     rightElementWidth?: number;
 }
 
-export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroupProps, IInputGroupState> {
+export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInputProps, IInputGroupState> {
     public static displayName = "Blueprint2.InputGroup";
 
     public state: IInputGroupState = {

@@ -10,14 +10,13 @@ import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 // allow the empty interface so we can label it clearly in the docs
-// tslint:disable-next-line:no-empty-interface
-export interface INavbarHeadingProps extends React.HTMLProps<HTMLDivElement>, IProps {
+export interface INavbarHeadingProps extends IProps, React.HTMLAttributes<HTMLDivElement> {
     // Empty
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class NavbarHeading extends React.PureComponent<React.HTMLProps<HTMLDivElement>, {}> {
+export class NavbarHeading extends React.PureComponent<INavbarHeadingProps, {}> {
     public static displayName = "Blueprint2.NavbarHeading";
 
     public render() {

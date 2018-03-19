@@ -12,7 +12,7 @@ import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
-export interface IPortalProps extends IProps, React.HTMLProps<HTMLDivElement> {
+export interface IPortalProps extends IProps, React.HTMLAttributes<HTMLDivElement> {
     /**
      * Callback invoked when the children of this `Portal` have been added to the DOM.
      */

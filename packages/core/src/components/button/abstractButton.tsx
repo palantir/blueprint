@@ -56,7 +56,7 @@ export interface IButtonState {
     isActive: boolean;
 }
 
-export abstract class AbstractButton<T> extends React.Component<React.HTMLProps<T> & IButtonProps, IButtonState> {
+export abstract class AbstractButton<T> extends React.Component<IButtonProps & React.HTMLAttributes<T>, IButtonState> {
     public state = {
         isActive: false,
     };

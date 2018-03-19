@@ -10,7 +10,7 @@ import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface IButtonGroupProps extends IProps, React.HTMLProps<HTMLDivElement> {
+export interface IButtonGroupProps extends IProps, React.HTMLAttributes<HTMLDivElement> {
     /**
      * Text alignment of button contents.
      * This prop only has an effect if buttons are wider than their default widths.

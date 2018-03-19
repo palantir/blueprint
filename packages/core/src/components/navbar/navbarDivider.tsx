@@ -10,8 +10,7 @@ import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
 // allow the empty interface so we can label it clearly in the docs
-// tslint:disable-next-line:no-empty-interface
-export interface INavbarDividerProps extends React.HTMLProps<HTMLDivElement>, IProps {
+export interface INavbarDividerProps extends IProps, React.HTMLAttributes<HTMLDivElement> {
     // Empty
 }
 
