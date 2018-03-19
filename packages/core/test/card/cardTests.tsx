@@ -37,4 +37,11 @@ describe("<Card>", () => {
         shallow(<Card onClick={onClick} />).simulate("click");
         assert.isTrue(onClick.calledOnce);
     });
+
+    it("supports HTML props", () => {
+        const onChange = sinon.spy();
+        const card = shallow(<Card onChange={onChange} title="foo" tabIndex={4000} />).find("div");
+        assert.strictEqual(card.prop("onChange"), onChange);
+        assert.strictEqual(card.prop("title"), "foo");
+    });
 });

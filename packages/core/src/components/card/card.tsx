@@ -9,7 +9,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface ICardProps extends IProps {
+export interface ICardProps extends IProps, React.HTMLAttributes<HTMLDivElement> {
     /**
      * Controls the intensity of the drop shadow beneath the card: the higher
      * the elevation, the higher the drop shadow. At elevation `0`, no drop
@@ -61,20 +61,13 @@ export class Card extends React.PureComponent<ICardProps, {}> {
     };
 
     public render() {
-        return (
-            <div className={this.getClassName()} onClick={this.props.onClick}>
-                {this.props.children}
-            </div>
-        );
-    }
-
-    private getClassName() {
-        const { elevation, interactive, className } = this.props;
-        return classNames(
+        const { className, elevation, interactive, ...htmlProps } = this.props;
+        const classes = classNames(
             Classes.CARD,
             { [Classes.INTERACTIVE]: interactive },
             ELEVATION_CLASSES[elevation],
             className,
         );
+        return <div className={classes} {...htmlProps} />;
     }
 }
