@@ -280,7 +280,7 @@ function queryHTMLElement(parent: Element, selector: string) {
 /**
  * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
  */
-function getScrolledReference(offset: number, container: HTMLElement, scrollParent = document.scrollingElement) {
+function getScrolledReference(offset: number, container: HTMLElement, scrollParent = document.documentElement) {
     const headings = container.querySelectorAll(".docs-title");
     for (let i = headings.length - 1; i >= 0; i--) {
         // iterating in reverse order so the first element below the threshold is the one we want.
@@ -296,7 +296,7 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
 /**
  * Scroll the scrollParent such that the reference heading appears at the top of the viewport.
  */
-function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.scrollingElement) {
+function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.documentElement) {
     // without rAF, on initial load this would scroll to the bottom because the CSS had not been applied.
     // with rAF, CSS is applied before updating scroll positions so all elements are in their correct places.
     requestAnimationFrame(() => {
