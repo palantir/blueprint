@@ -58,25 +58,6 @@ $dark-example-background-color: $dark-content-background-color;
   margin-bottom: $pt-grid-size * 2;
 }
 
-// modifiers table
-.docs-modifiers {
-  margin-top: $heading-margin;
-  margin-bottom: $heading-margin / 2;
-
-  th:first-child,
-  td:first-child {
-    padding-left: 0;
-  }
-
-  tr:first-child th {
-    padding-top: 0;
-  }
-
-  tr:last-child td {
-    padding-bottom: 0;
-  }
-}
-
 // full-bleed wrapper for example
 .docs-example-wrapper {
   display: flex;

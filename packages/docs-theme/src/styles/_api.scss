@@ -37,7 +37,6 @@
 
   .docs-interface-header {
     flex: 0 0 auto;
-    margin: 0 0 $pt-grid-size;
     padding: $pt-grid-size ($pt-grid-size * 2);
 
     + .docs-section {
@@ -48,7 +47,7 @@
 
   .docs-modifiers-table {
     overflow: auto;
-    padding: $pt-grid-size 0 ($pt-grid-size * 2);
+    padding-bottom: $pt-grid-size * 2;
 
     th:first-child,
     td:first-child {

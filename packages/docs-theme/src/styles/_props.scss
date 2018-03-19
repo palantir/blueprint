@@ -75,7 +75,6 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
-  margin-bottom: $pt-grid-size;
   box-shadow: 0 1px 0 $pt-divider-black;
   padding: $pt-grid-size 0;
   font-family: $pt-font-family-monospace;
@@ -84,6 +83,8 @@
 
   // optional interface description
   + .docs-section {
+    display: flex;
+    margin-top: $pt-grid-size;
     box-shadow: 0 1px 0 $pt-divider-black;
   }
 
@@ -111,4 +112,14 @@
   td:first-child {
     padding-left: 0;
   }
+
+  tr:last-child td {
+    padding-bottom: 0;
+  }
+}
+
+// modifiers table parent
+.docs-modifiers {
+  margin-top: $heading-margin;
+  margin-bottom: $heading-margin / 2;
 }
