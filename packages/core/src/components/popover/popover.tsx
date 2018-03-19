@@ -186,10 +186,10 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     targetClassName?: string;
 
     /**
-     * Component element of the popover target.
+     * The name of the HTML tag to use when rendering the popover target element.
      * @default "div"
      */
-    targetComponent?: string;
+    targetElementTag?: string;
 
     /**
      * Whether the popover should be rendered inside a `Portal` attached to `document.body`.
@@ -227,7 +227,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         openOnTargetFocus: true,
         position: "auto",
         rootElementTag: "span",
-        targetComponent: "div",
+        targetElementTag: "div",
         transitionDuration: 300,
         usePortal: true,
     };
@@ -266,7 +266,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     public render() {
-        const { className, disabled, hasBackdrop, targetClassName, targetComponent } = this.props;
+        const { className, disabled, hasBackdrop, targetClassName, targetElementTag } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
@@ -312,7 +312,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         return (
             <Manager tag={this.props.rootElementTag} className={classNames(Classes.POPOVER_WRAPPER, className)}>
-                <Target {...targetProps} component={targetComponent} innerRef={this.refHandlers.target}>
+                <Target {...targetProps} component={targetElementTag} innerRef={this.refHandlers.target}>
                     {target}
                 </Target>
                 <Overlay
