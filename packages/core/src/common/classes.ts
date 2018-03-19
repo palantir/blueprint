@@ -116,6 +116,7 @@ export const FORM_HELPER_TEXT = "pt-form-helper-text";
 export const MENU = "pt-menu";
 export const MENU_ITEM = "pt-menu-item";
 export const MENU_ITEM_LABEL = "pt-menu-item-label";
+export const MENU_ITEM_SINGLE_LINE = "pt-menu-item-single-line";
 export const MENU_SUBMENU = "pt-submenu";
 export const MENU_DIVIDER = "pt-menu-divider";
 export const MENU_HEADER = "pt-menu-header";
