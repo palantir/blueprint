@@ -3,6 +3,7 @@
 
 @import "~@blueprintjs/icons/src/icons";
 @import "~@blueprintjs/core/src/common/react-transition";
+@import "~@blueprintjs/core/src/components/forms/common";
 
 // Specific Example Customizations
 
@@ -191,9 +192,17 @@
 
 .docs-popover-example {
   .docs-react-example {
+    border-radius: $pt-border-radius;
+    box-shadow: $pt-input-box-shadow;
+    background: $light-gray4;
     width: 100%;
     height: 350px;
     overflow: scroll;
+
+    .pt-dark & {
+      box-shadow: $pt-dark-input-box-shadow;
+      background: $dark-input-background-color;
+    }
   }
 
   .docs-popover-example-scroll {
@@ -201,7 +210,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba($black, 0.1);
     min-width: 200%;
     min-height: 200%;
   }
@@ -215,8 +223,12 @@
   .docs-popover-position-example-instructions {
     display: inline-block;
     max-width: 25 * $pt-grid-size;
-    color: $gray3;
+    color: $pt-text-color-muted;
     font-style: italic;
+
+    .pt-dark & {
+      color: $pt-dark-text-color-muted;
+    }
   }
 
   .docs-popover-position-example-button {
@@ -293,16 +305,15 @@
 
   .docs-popover-inline-example-scroll-container {
     flex: 1 1 auto;
-    border: 1px solid $pt-divider-black;
     border-radius: $pt-border-radius;
-    box-shadow: inset 0 1px 1px rgba($black, 0.05);
+    box-shadow: $pt-input-box-shadow;
     background: $light-gray4;
     overflow-x: scroll;
     overflow-y: hidden;
 
     .pt-dark & {
-      border-color: $pt-dark-divider-black;
-      background: $dark-gray2;
+      box-shadow: $pt-dark-input-box-shadow;
+      background: $dark-input-background-color;
     }
 
     &:first-child {
