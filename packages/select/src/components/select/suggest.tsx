@@ -13,13 +13,12 @@ import {
     InputGroup,
     IPopoverProps,
     Keys,
-    Menu,
     Popover,
     Position,
     Utils,
 } from "@blueprintjs/core";
-import * as Classes from "../../common/classes";
-import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, IListItemsProps } from "../../common";
+import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
@@ -37,9 +36,6 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
-
-    /** React child to render when filtering items returns zero results. */
-    noResults?: string | JSX.Element;
 
     /**
      * Whether the popover opens on key down or when the input is focused.
@@ -92,7 +88,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { inputProps, noResults, popoverProps, ...restProps } = this.props;
+        const { inputProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -143,16 +139,11 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                     onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
                 />
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    <Menu ulRef={listProps.itemsParentRef}>{this.renderItems(listProps)}</Menu>
+                    {listProps.itemList}
                 </div>
             </Popover>
         );
     };
-
-    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
-        const renderedItems = items.map(renderItem).filter(item => item != null);
-        return renderedItems.length > 0 ? renderedItems : this.props.noResults;
-    }
 
     private selectText = () => {
         // wait until the input is properly focused to select the text inside of it

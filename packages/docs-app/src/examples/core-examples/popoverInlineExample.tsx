@@ -6,16 +6,16 @@
 
 import * as React from "react";
 
-import { Button, IPopoverProps, Popover, Position } from "@blueprintjs/core";
+import { Button, IPopoverProps, Popover, Position, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 
 export interface IPopoverInlineExampleState {
-    hasMounted?: boolean;
+    isOpen: boolean;
 }
 
 export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState> {
     public state: IPopoverInlineExampleState = {
-        hasMounted: false,
+        isOpen: false,
     };
 
     protected className = "docs-popover-inline-example";
@@ -29,23 +29,10 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
 
     public componentDidMount() {
         this.recenter();
-        this.setState({ hasMounted: true });
     }
 
     protected renderExample() {
-        const popoverBaseProps: IPopoverProps = {
-            enforceFocus: false,
-            // set to true after the initial mount, because Popper.js's
-            // `keepTogether` functionality apparently doesn't work once you
-            // render an open popover in a portal on mount.
-            isOpen: this.state.hasMounted ? true : false,
-            // not relevant to this example, but required in order for default
-            // modifiers to work (e.g. `hide`).
-            modifiers: { preventOverflow: { boundariesElement: "window" } },
-            popoverClassName: "docs-popover-inline-example-popover",
-            position: Position.BOTTOM,
-        };
-
+        const { isOpen } = this.state;
         return (
             <div className="docs-popover-inline-example-content">
                 <div
@@ -54,10 +41,13 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
                     onScroll={this.syncScrollLeft}
                 >
                     <div className="docs-popover-inline-example-scroll-content">
-                        <Popover {...popoverBaseProps} content="I am in a Portal (default)." usePortal={true}>
-                            <Button>
-                                <code>{`usePortal={true}`}</code>
-                            </Button>
+                        <Popover
+                            {...POPOVER_PROPS}
+                            content="I am in a Portal (default)."
+                            isOpen={isOpen}
+                            usePortal={true}
+                        >
+                            <code>{`usePortal={true}`}</code>
                         </Popover>
                     </div>
                 </div>
@@ -67,10 +57,8 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
                     onScroll={this.syncScrollRight}
                 >
                     <div className="docs-popover-inline-example-scroll-content">
-                        <Popover {...popoverBaseProps} content="I am an inline popover." usePortal={false}>
-                            <Button>
-                                <code>{`usePortal={false}`}</code>
-                            </Button>
+                        <Popover {...POPOVER_PROPS} content="I am an inline popover." isOpen={isOpen} usePortal={false}>
+                            <code>{`usePortal={false}`}</code>
                         </Popover>
                     </div>
                 </div>
@@ -79,8 +67,15 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
     }
 
     protected renderOptions() {
-        return [[<Button key="recenter" text="Re-center" icon="alignment-vertical-center" onClick={this.recenter} />]];
+        return [
+            [
+                <Switch key="open" checked={this.state.isOpen} label="Open" onChange={this.handleOpen} />,
+                <Button key="recenter" text="Re-center" icon="alignment-vertical-center" onClick={this.recenter} />,
+            ],
+        ];
     }
+
+    private handleOpen = () => this.setState({ isOpen: !this.state.isOpen });
 
     private recenter = () => {
         this.scrollToCenter(this.scrollContainerLeftRef);
@@ -109,3 +104,12 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
         }
     }
 }
+
+const POPOVER_PROPS: IPopoverProps = {
+    enforceFocus: false,
+    // not relevant to this example, but required in order for default
+    // modifiers to work (e.g. `hide`).
+    modifiers: { preventOverflow: { boundariesElement: "window" } },
+    popoverClassName: "docs-popover-inline-example-popover",
+    position: Position.BOTTOM,
+};

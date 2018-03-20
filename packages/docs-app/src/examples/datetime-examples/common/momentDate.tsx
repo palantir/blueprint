@@ -15,13 +15,9 @@ const FORMAT = "dddd, LL";
 export const MomentDate: React.SFC<{ date: Date; format?: string }> = ({ date, format = FORMAT }) => {
     const m = moment(date);
     if (m.isValid()) {
-        return (
-            <Tag className={Classes.LARGE} intent={Intent.PRIMARY}>
-                {m.format(format)}
-            </Tag>
-        );
+        return <Tag intent={Intent.PRIMARY}>{m.format(format)}</Tag>;
     } else {
-        return <Tag className={classNames(Classes.LARGE, Classes.MINIMAL)}>no date</Tag>;
+        return <Tag className={Classes.MINIMAL}>no date</Tag>;
     }
 };
 

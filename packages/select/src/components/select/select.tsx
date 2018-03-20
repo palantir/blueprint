@@ -15,14 +15,12 @@ import {
     InputGroup,
     IPopoverProps,
     Keys,
-    Menu,
     Popover,
     Position,
     Utils,
 } from "@blueprintjs/core";
-import * as Classes from "../../common/classes";
-import { IMenuRendererProps, MenuRenderer } from "../../common/menuRenderer";
-import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, IListItemsProps } from "../../common";
+import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -33,24 +31,11 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     filterable?: boolean;
 
     /**
-     * React child to render when query is empty.
-     */
-    initialContent?: React.ReactChild;
-
-    /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's children, if appropriate.
      * @default false
      */
     disabled?: boolean;
-
-    /** React child to render when filtering items returns zero results. */
-    noResults?: React.ReactChild;
-
-    /**
-     * Custom renderer for the contents of the dropdown.
-     */
-    menuRenderer?: MenuRenderer<T>;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
@@ -120,7 +105,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { filterable, initialContent, inputProps, noResults, popoverProps, ...restProps } = this.props;
+        const { filterable, inputProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -189,45 +174,19 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
-                    {this.renderMenu(listProps)}
+                    {listProps.itemList}
                 </div>
             </Popover>
         );
     };
 
-    private renderMenu(listProps: IQueryListRendererProps<T>) {
-        const { items, itemsParentRef, renderItem } = listProps;
-        const { menuRenderer = this.defaultMenuRenderer } = this.props;
-
-        return menuRenderer({
-            items,
-            itemsParentRef,
-            query: this.state.query,
-            renderItem,
-        });
-    }
-
-    private defaultMenuRenderer = (menuProps: IMenuRendererProps<T>) => {
-        const { initialContent, noResults } = this.props;
-        const { items, itemsParentRef, renderItem } = menuProps;
-        const maybeInitialContent = initialContent != null && this.isQueryEmpty() ? initialContent : null;
-        const renderedItems = items.map(renderItem).filter(item => item != null);
-        return (
-            <Menu ulRef={itemsParentRef}>
-                {maybeInitialContent || (renderedItems.length > 0 ? renderedItems : noResults)}
-            </Menu>
-        );
-    };
-
     private maybeRenderInputClearButton() {
-        return !this.isQueryEmpty() ? (
-            <Button className={CoreClasses.MINIMAL} icon="cross" onClick={this.resetQuery} />
-        ) : (
+        return this.state.query.length === 0 ? (
             undefined
+        ) : (
+            <Button className={CoreClasses.MINIMAL} icon="cross" onClick={this.resetQuery} />
         );
     }
-
-    private isQueryEmpty = () => this.state.query.length === 0;
 
     private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
 

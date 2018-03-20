@@ -57,7 +57,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     protected renderExample() {
         const { format, range, ...spreadProps } = this.state;
         return (
-            <div>
+            <>
                 <DateRangeInput
                     {...spreadProps}
                     {...format}
@@ -65,7 +65,7 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
                     popoverProps={this.popoverProps}
                 />
                 <MomentDateRange className={this.state.isPopoverOpen ? Classes.INLINE : ""} range={range} />
-            </div>
+            </>
         );
     }
 

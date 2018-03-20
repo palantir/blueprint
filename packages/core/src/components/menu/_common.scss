@@ -5,9 +5,21 @@ $half-grid-size: $pt-grid-size / 2 !default;
 
 $menu-item-border-radius: $pt-border-radius - 1 !default;
 
+// Set line-height of menu items to be a multiple of the font size. This is
+// needed because if the line-height does not extend far enough past the font's
+// baseline, clipping will occur when the .pt-text-overflow-ellipsis class is
+// applied to it (#2177). Also, line-height should be an even value, or content
+// will be misaligned by one pixel (Chrome quirk).
+$menu-item-line-height-factor: 1.4;
+$menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
+$menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
+
 $menu-min-width: $pt-grid-size * 18 !default;
 $menu-item-padding: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
 $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
+$menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) / 2 !default;
+$menu-item-padding-vertical-large:
+  ($pt-button-height-large - $menu-item-line-height-large) / 2 !default;
 
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray4 !default;
@@ -23,9 +35,9 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   @include pt-flex-container(row, $menu-item-padding);
   align-items: center;
   border-radius: $menu-item-border-radius;
-  padding: $menu-item-padding;
+  padding: $menu-item-padding-vertical $menu-item-padding;
   text-decoration: none;
-  line-height: $pt-icon-size-standard;
+  line-height: $menu-item-line-height;
   color: inherit;
   user-select: none;
 
@@ -103,8 +115,8 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 }
 
 @mixin menu-item-large() {
-  padding: $menu-item-padding-large $menu-item-padding;
-  line-height: $pt-icon-size-large;
+  padding: $menu-item-padding-vertical-large $menu-item-padding;
+  line-height: $menu-item-line-height-large;
   font-size: $pt-font-size-large;
 }
 

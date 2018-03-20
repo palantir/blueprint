@@ -279,7 +279,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
 
         if (hasBackdrop && isOpen) {
             return (
-                <CSSTransition classNames={transitionName} timeout={transitionDuration}>
+                <CSSTransition classNames={transitionName} key="__backdrop" timeout={transitionDuration}>
                     <div
                         {...backdropProps}
                         className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps.className)}
