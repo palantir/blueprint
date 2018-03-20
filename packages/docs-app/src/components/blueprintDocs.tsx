@@ -79,6 +79,10 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 </div>
             );
         }
+        if (props.section.title === "Components") {
+            // non-interactive header that expands its menu
+            return <div className="docs-nav-section docs-nav-expanded">{props.section.title}</div>;
+        }
         return <NavMenuItem {...props} />;
     };
 

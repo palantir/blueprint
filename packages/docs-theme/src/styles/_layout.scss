@@ -133,10 +133,19 @@ Lefthand navigation menu
   .docs-nav-expanded + & {
     display: block;
   }
+}
 
-  .docs-nav-expand-all &u {
-    // sometimes you need to show all the sections
-    display: block !important; // stylelint-disable-line declaration-no-important
+.docs-nav-section {
+  opacity: 0.5;
+  margin-top: $pt-grid-size * 2;
+  margin-bottom: $pt-grid-size;
+  text-transform: uppercase;
+  font-size: small;
+  font-weight: 600;
+
+  // dedent menu under a section title
+  + .docs-nav-menu {
+    margin-left: 0;
   }
 }
 
