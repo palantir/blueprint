@@ -129,6 +129,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { activeApiMember, activePageId, activeSectionId, isApiBrowserOpen } = this.state;
         const { nav, pages } = this.props.docs;
         const rootClasses = classNames(
+            "docs-root",
             "docs-flex-column",
             { "docs-examples-only": location.search === "?examples" },
             this.props.className,

@@ -19,7 +19,7 @@ export function renderBlock(
     }
     const contents = block.contents.map((node, i) => {
         if (typeof node === "string") {
-            return <div dangerouslySetInnerHTML={{ __html: node }} />;
+            return <div key={i} dangerouslySetInnerHTML={{ __html: node }} />;
         }
         try {
             const renderer = tagRenderers[node.tag];

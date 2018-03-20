@@ -35,9 +35,12 @@ Flex utils
 Page layout elements
 */
 
+.docs-root {
+  height: 100vh;
+}
+
 .docs-app {
   background-color: $sidebar-background-color;
-  height: 100vh;
 
   .pt-dark & {
     background-color: $dark-sidebar-background-color;

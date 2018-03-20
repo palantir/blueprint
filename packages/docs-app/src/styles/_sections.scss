@@ -47,7 +47,8 @@
 #{reference("pt-menu")},
 #{reference("pt-select.pt-inline")},
 #{reference("pt-skeleton")},
-#{reference("pt-tag")} {
+#{reference("pt-tag")},
+#{reference("pt-tag.pt-minimal")} {
   @include examples-per-row(2);
 }
 
