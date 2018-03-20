@@ -33,7 +33,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
             .sort((a, b) => a.name.localeCompare(b.name))
             .map(this.renderPropRow);
         return (
-            <div className={classNames("docs-modifiers", "pt-running-text-small", this.props.className)}>
+            <div className={classNames("docs-modifiers", this.props.className)}>
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
                 <ModifierTable emptyMessage="This interface is empty." title={title}>

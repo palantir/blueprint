@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
-import { FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Overlay, Utils } from "@blueprintjs/core";
+import { Classes, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Overlay, Utils } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
@@ -114,7 +114,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { docs, renderViewSourceLinkText } = this.props;
         return {
             getDocsData: () => docs,
-            renderBlock: block => renderBlock(block, this.props.tagRenderers),
+            renderBlock: block => renderBlock(block, this.props.tagRenderers, Classes.RUNNING_TEXT_SMALL),
             renderType: hasTypescriptData(docs)
                 ? type => linkify(type, docs.typescript, name => <ApiLink key={name} name={name} />)
                 : type => type,
