@@ -11,26 +11,17 @@ import {
     IPopoverProps,
     ITagInputProps,
     Keys,
-    Menu,
     Popover,
     Position,
     TagInput,
     Utils,
 } from "@blueprintjs/core";
-import * as Classes from "../../common/classes";
-import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, IListItemsProps } from "../../common";
+import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /** Controlled selected values. */
     selectedItems?: T[];
-
-    /**
-     * React child to render when query is empty.
-     */
-    initialContent?: React.ReactChild;
-
-    /** React child to render when filtering items returns zero results. */
-    noResults?: React.ReactChild;
 
     /**
      * Whether the popover opens on key down or when `TagInput` is focused.
@@ -88,15 +79,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const {
-            initialContent,
-            noResults,
-            openOnKeyDown,
-            popoverProps,
-            resetOnSelect,
-            tagInputProps,
-            ...restProps
-        } = this.props;
+        const { openOnKeyDown, popoverProps, resetOnSelect, tagInputProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -149,20 +132,11 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                     />
                 </div>
                 <div onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)} onKeyUp={handleKeyUp}>
-                    <Menu ulRef={listProps.itemsParentRef}>{this.renderItems(listProps)}</Menu>
+                    {listProps.itemList}
                 </div>
             </Popover>
         );
     };
-
-    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
-        const { initialContent, noResults } = this.props;
-        if (initialContent != null && this.isQueryEmpty()) {
-            return initialContent;
-        }
-        const renderedItems = items.map(renderItem).filter(item => item != null);
-        return renderedItems.length > 0 ? renderedItems : noResults;
-    }
 
     private isQueryEmpty = () => this.state.query.length === 0;
 
