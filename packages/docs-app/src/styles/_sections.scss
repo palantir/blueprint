@@ -282,9 +282,17 @@
 
   .docs-popover-position-label-side {
     color: $cobalt3;
+
+    .pt-dark & {
+      color: $cobalt5;
+    }
   }
 
   .docs-popover-position-label-alignment {
     color: $forest3;
+
+    .pt-dark & {
+      color: $forest5;
+    }
   }
 }
