@@ -47,12 +47,11 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 
   &.pt-menu-item-single-line {
     // Special case where text is wrapped in pt-text-overflow-ellipsis, which
-    // sets overflow: hidden. If line-height does not extend far enough past the
-    // font's baseline, this causes text to be clipped, so we bump it up here.
-    // Then, rather than relying on line-height, we set the element's height
-    // directly to adhere to the grid.
+    // sets overflow: hidden. With a non-default line-height, this causes text
+    // to be clipped. Instead, we set the height directly to adhere to the
+    // grid.
     height: $pt-grid-size * 3;
-    line-height: $pt-font-size * 2;
+    line-height: normal;
   }
 
   .pt-dark & {
