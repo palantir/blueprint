@@ -22,13 +22,11 @@ Flex utils
 */
 
 .docs-flex-row {
-  display: flex;
-  flex-direction: row;
+  @include pt-flex-container(row);
 }
 
 .docs-flex-column {
-  display: flex;
-  flex-direction: column;
+  @include pt-flex-container(column);
 }
 
 /*
@@ -45,13 +43,11 @@ Page layout elements
   .pt-dark & {
     background-color: $dark-sidebar-background-color;
   }
-}
 
-.docs-nav-wrapper,
-.docs-content-wrapper {
-  flex-grow: 1;
-  flex-shrink: 1;
-  overflow: auto;
+  > * {
+    // children of app scroll independently
+    overflow: auto;
+  }
 }
 
 .docs-nav-wrapper {

@@ -138,8 +138,8 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         return (
             <div className={rootClasses}>
                 {this.props.banner}
-                <div className="docs-app docs-flex-row">
-                    <div className="docs-nav-wrapper docs-flex-column">
+                <div className="docs-app docs-flex-row pt-fill">
+                    <div className="docs-nav-wrapper docs-flex-column pt-fill">
                         <div className="docs-nav" ref={this.refHandlers.nav}>
                             {this.props.header}
                             <div className="docs-nav-divider" />
@@ -161,7 +161,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                         </div>
                     </div>
                     <main
-                        className="docs-content-wrapper docs-flex-column"
+                        className="docs-content-wrapper docs-flex-column pt-fill"
                         onScroll={this.handleScroll}
                         ref={this.refHandlers.content}
                         role="main"
