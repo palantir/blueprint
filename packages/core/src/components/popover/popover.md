@@ -288,7 +288,7 @@ The backdrop element has the same opacity-fade transition as the `Dialog` backdr
 @### Portal rendering
 
 By default, popover contents are rendered in a [`Portal`](#core/components/portal) appended to `document.body`. This
-allows the the popover contents to "escape" the application DOM tree to avoid incompatible styles on ancestor elements.
+allows the popover contents to "escape" the application DOM tree to avoid incompatible styles on ancestor elements.
 (Incompatible styles typically include hidden `overflow` or complex `position` logic.) It also ensures that the popover
 will appear above all other content, as its container element appears after the application container in the DOM.
 
