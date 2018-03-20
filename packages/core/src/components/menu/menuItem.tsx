@@ -96,8 +96,6 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: disabled,
-                // prevent a clipping issue with `ellipsize` below
-                [Classes.MENU_ITEM_SINGLE_LINE]: !multiline,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
             },

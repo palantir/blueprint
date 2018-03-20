@@ -45,15 +45,6 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
     color: $pt-text-color-disabled;
   }
 
-  &.pt-menu-item-single-line {
-    // Special case where text is wrapped in pt-text-overflow-ellipsis, which
-    // sets overflow: hidden. With a non-default line-height, this causes text
-    // to be clipped. Instead, we set the height directly to adhere to the
-    // grid.
-    height: $pt-grid-size * 3;
-    line-height: normal;
-  }
-
   .pt-dark & {
     @include dark-menu-item($disabled-selector, $hover-selector);
   }
