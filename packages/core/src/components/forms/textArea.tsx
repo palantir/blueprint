@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
@@ -9,7 +9,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IIntentProps, IProps } from "../../common/props";
 
-export interface ITextAreaProps extends React.AllHTMLAttributes<HTMLTextAreaElement>, IIntentProps, IProps {
+export interface ITextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement>, IIntentProps, IProps {
     /**
      * Whether the text area should take up the full width of its container.
      */

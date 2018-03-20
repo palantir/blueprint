@@ -1,6 +1,7 @@
-/**
+/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- * @fileoverview Generates isomorphic tests for React components
+ *
+ * Generates isomorphic tests for React components
  */
 
 // TODO: make this an executable script that takes configuration from CLI arguments so we don't need

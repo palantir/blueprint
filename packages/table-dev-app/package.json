@@ -31,7 +31,7 @@
     "stylelint": "^8.4.0",
     "tslint": "^5.9.0",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.10.1"
+    "webpack-dev-server": "^2.11.1"
   },
   "repository": {
     "type": "git",

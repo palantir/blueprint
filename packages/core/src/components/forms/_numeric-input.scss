@@ -7,7 +7,7 @@
   // we need a very-specific selector here to override specificicty of selectors defined elsewhere.
   .pt-button-group.pt-vertical > .pt-button {
     // let the buttons shrink to equal heights
-    flex: 1 1 auto;
+    flex: 1 1 ($pt-button-height / 2 - 1);
     width: $pt-button-height;
     min-height: 0;
     padding: 0;

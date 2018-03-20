@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Switch } from "@blueprintjs/core";
+import { Position, Switch } from "@blueprintjs/core";
 import { DateInput, IDateFormatProps, TimePickerPrecision } from "@blueprintjs/datetime";
 import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
@@ -53,10 +53,12 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     defaultValue={new Date()}
                     className="foofoofoo"
                     onChange={this.handleDateChange}
-                    popoverProps={{ popoverClassName: "barbarbar" }}
+                    popoverProps={{ popoverClassName: "barbarbar", position: Position.BOTTOM }}
                     inputProps={{ className: "bazbazbaz" }}
-                />{" "}
-                <MomentDate date={date} />
+                />
+                <div className="docs-date-range pt-inline">
+                    <MomentDate date={date} />
+                </div>
             </div>
         );
     }

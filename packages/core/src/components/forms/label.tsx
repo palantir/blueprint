@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
@@ -9,7 +9,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface ILabelProps extends React.AllHTMLAttributes<HTMLLabelElement>, IProps {
+export interface ILabelProps extends React.LabelHTMLAttributes<HTMLLabelElement>, IProps {
     /**
      * Whether the label is non-interactive.
      * Be sure to explicitly disable any child controls as well.

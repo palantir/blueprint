@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
@@ -10,7 +10,7 @@ import { Utils } from "../../common";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface IFileInputProps extends React.AllHTMLAttributes<HTMLLabelElement>, IProps {
+export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, IProps {
     /**
      * Whether the file input is non-interactive.
      * Setting this to `true` will automatically disable the child input too.
@@ -56,7 +56,7 @@ export interface IFileInputProps extends React.AllHTMLAttributes<HTMLLabelElemen
 
 // TODO: write tests (ignoring for now to get a build passing quickly)
 /* istanbul ignore next */
-export class FileInput extends React.Component<IFileInputProps, {}> {
+export class FileInput extends React.PureComponent<IFileInputProps, {}> {
     public static displayName = "Blueprint2.FileInput";
 
     public static defaultProps: IFileInputProps = {

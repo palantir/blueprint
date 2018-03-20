@@ -4,6 +4,8 @@ An input group allows you to add icons and buttons _within_ a text input to expa
 functionality. For example, you might use an input group to build a visibility toggle for a password
 field.
 
+@reactExample InputGroupExample
+
 @## CSS API
 
 You can place a single `.pt-icon` or `.pt-button.pt-icon-*` on either end of the input. The order is
@@ -39,5 +41,3 @@ fashion. In addition to its own content props, it supports all valid props for H
 and proxies them to that element in the DOM; the most common ones are detailed below.
 
 @interface IInputGroupProps
-
-@reactExample InputGroupExample

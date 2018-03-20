@@ -55,9 +55,7 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
                 >
                     <div className="docs-popover-inline-example-scroll-content">
                         <Popover {...popoverBaseProps} content="I am in a Portal (default)." usePortal={true}>
-                            <Button>
-                                <code>{`usePortal={true}`}</code>
-                            </Button>
+                            <code>{`usePortal={true}`}</code>
                         </Popover>
                     </div>
                 </div>
@@ -68,9 +66,7 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
                 >
                     <div className="docs-popover-inline-example-scroll-content">
                         <Popover {...popoverBaseProps} content="I am an inline popover." usePortal={false}>
-                            <Button>
-                                <code>{`usePortal={false}`}</code>
-                            </Button>
+                            <code>{`usePortal={false}`}</code>
                         </Popover>
                     </div>
                 </div>

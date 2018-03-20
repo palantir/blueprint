@@ -7,12 +7,12 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, IIntentProps, Intent, IProps } from "../../common";
+import { Classes, HTMLDivProps, IIntentProps, Intent, IProps } from "../../common";
 import { Icon } from "../../index";
 import { IconName } from "../icon/icon";
 
 /** This component also supports the full range of HTML `<div>` props. */
-export interface ICalloutProps extends IIntentProps, IProps {
+export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side.
      *
@@ -30,7 +30,7 @@ export interface ICalloutProps extends IIntentProps, IProps {
     title?: string;
 }
 
-export class Callout extends React.PureComponent<ICalloutProps & React.HTMLAttributes<HTMLDivElement>, {}> {
+export class Callout extends React.PureComponent<ICalloutProps, {}> {
     public render() {
         const { className, children, icon: _nospread, intent, title, ...htmlProps } = this.props;
         const iconName = this.getIconName();
