@@ -5,6 +5,10 @@ $half-grid-size: $pt-grid-size / 2 !default;
 
 $menu-item-border-radius: $pt-border-radius - 1 !default;
 
+// Set line-height of menu items to be a multiple of the font size. This is
+// needed because if the line-height does not extend far enough past the font's
+// baseline, clipping will occur when the .pt-text-overflow-ellipsis class is
+// applied to it (#2177).
 $menu-item-line-height-factor: 1.5;
 $menu-item-line-height: $pt-font-size * $menu-item-line-height-factor;
 $menu-item-line-height-large: $pt-font-size-large * $menu-item-line-height-factor;
