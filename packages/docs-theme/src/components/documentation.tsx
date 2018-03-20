@@ -161,6 +161,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                     </div>
                     <main
                         className="docs-content-wrapper docs-flex-column"
+                        onScroll={this.handleScroll}
                         ref={this.refHandlers.content}
                         role="main"
                         tabIndex={0}
@@ -205,12 +206,10 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         Utils.safeInvoke(this.props.onComponentUpdate, this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", this.handleHashChange);
-        document.addEventListener("scroll", this.handleScroll);
     }
 
     public componentWillUnmount() {
         window.removeEventListener("hashchange", this.handleHashChange);
-        document.removeEventListener("scroll", this.handleScroll);
     }
 
     public componentDidUpdate(_prevProps: IDocumentationProps, prevState: IDocumentationState) {
@@ -255,7 +254,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     private handlePreviousSection = () => this.shiftSection(-1);
 
     private handleScroll = () => {
-        const activeSectionId = getScrolledReference(100, this.contentElement, this.contentElement);
+        const activeSectionId = getScrolledReference(100, this.contentElement);
         if (activeSectionId == null) {
             return;
         }
@@ -277,7 +276,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
 
     private scrollToActiveSection() {
         if (this.contentElement != null) {
-            scrollToReference(this.state.activeSectionId, this.contentElement, this.contentElement);
+            scrollToReference(this.state.activeSectionId, this.contentElement);
         }
     }
 
@@ -306,13 +305,13 @@ function queryHTMLElement(parent: Element, selector: string) {
 /**
  * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
  */
-function getScrolledReference(offset: number, container: HTMLElement, scrollParent = document.documentElement) {
-    const headings = Array.from(container.querySelectorAll(".docs-title"));
+function getScrolledReference(offset: number, scrollContainer: HTMLElement) {
+    const headings = Array.from(scrollContainer.querySelectorAll(".docs-title"));
     while (headings.length > 0) {
         // iterating in reverse order (popping from end / bottom of page)
         // so the first element below the threshold is the one we want.
         const element = headings.pop() as HTMLElement;
-        if (element.offsetTop < scrollParent.scrollTop + offset) {
+        if (element.offsetTop < scrollContainer.scrollTop + offset) {
             // relying on DOM structure to get reference
             return element.querySelector("[data-route]").getAttribute("data-route");
         }
@@ -321,16 +320,16 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
 }
 
 /**
- * Scroll the scrollParent such that the reference heading appears at the top of the viewport.
+ * Scroll the scroll container such that the reference heading appears at the top of the viewport.
  */
-function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.documentElement) {
+function scrollToReference(reference: string, scrollContainer: HTMLElement) {
     // without rAF, on initial load this would scroll to the bottom because the CSS had not been applied.
     // with rAF, CSS is applied before updating scroll positions so all elements are in their correct places.
     requestAnimationFrame(() => {
-        const headingAnchor = queryHTMLElement(container, `a[data-route="${reference}"]`);
+        const headingAnchor = queryHTMLElement(scrollContainer, `a[data-route="${reference}"]`);
         if (headingAnchor != null && headingAnchor.parentElement != null) {
             const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
-            scrollParent.scrollTop = scrollOffset;
+            scrollContainer.scrollTop = scrollOffset;
         }
     });
 }
