@@ -1,14 +1,11 @@
 @# Date input
 
-The `DateInput` component is an [input group](#core/components/forms/input-group) that shows a [`DatePicker`](#datetime/datepicker) in a [`Popover`](#core/components/popover) on focus.
+The `DateInput` component is an [input group](#core/components/forms/input-group) that shows a [`DatePicker`](#datetime/datepicker) in a [`Popover`](#core/components/popover) on focus. Use it in forms where the user must enter a date.
 
-Use the `onChange` function to listen for changes to the selected date. Use `onError` to listen for
-invalid entered dates.
-
-You can control the selected date by setting the `value` prop, or use the component in uncontrolled
-mode and specify an initial date by setting `defaultValue`.
-
-Use this component in forms where the user must enter a date.
+Customize the date format with `formatDate` and `parseDate` callbacks.
+Attach an `onChange` handler to listen for changes to the selected date.
+Use `onError` to listen for invalid entered dates.
+Control the selected date by setting the `value` prop, or use the component in uncontrolled mode and specify an initial date with `defaultValue`.
 
 @reactExample DateInputExample
 
@@ -18,6 +15,8 @@ Use this component in forms where the user must enter a date.
 
 - `formatDate(date, locale?)` receives the current `Date` and returns a string representation of it. The result of this function becomes the input value when it is not being edited.
 - `parseDate(str, locale?)` receives text inputted by the user and converts it to a `Date` object. The returned `Date` becomes the next value of the component.
+
+The optional `locale` argument is the value of the `locale` prop.
 
 A simple implementation using built-in browser methods could look like this:
 
@@ -61,7 +60,13 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 ```tsx
 import { DateInput } from "@blueprintjs/datetime";
 
-<DateInput value={this.state.date} onChange={this.handleDateChange} />
+<DateInput
+    formatDate={date => date.toLocaleString()}
+    onChange={this.handleDateChange}
+    parseDate={str => new Date(str)}
+    placeholder={"M/D/YYYY"}
+    value={this.state.date}
+/>
 ```
 
 @interface IDateInputProps
