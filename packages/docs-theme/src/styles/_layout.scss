@@ -11,10 +11,9 @@ $nav-item-color-active: $minimal-button-background-color-active;
 $dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
 $dark-nav-item-color-active: $dark-minimal-button-background-color-active;
 
-body,
-html {
-  // no body scrolling
-  overflow: hidden;
+body {
+  // vertical scrollbar is always visible for the `.pt-overlay-open` padding (from `scrollbar.ts`)
+  overflow-y: scroll;
 }
 
 /*
@@ -34,31 +33,44 @@ Page layout elements
 */
 
 .docs-root {
-  height: 100vh;
+  background-color: $content-background-color;
+
+  &.pt-dark {
+    background-color: $dark-content-background-color;
+  }
 }
 
 .docs-app {
-  background-color: $sidebar-background-color;
-
-  .pt-dark & {
-    background-color: $dark-sidebar-background-color;
-  }
-
-  > * {
-    // children of app scroll independently
-    overflow: auto;
-  }
+  @include pt-flex-container(row);
+  margin: auto;
+  max-width: $container-width;
+  min-height: 100vh;
 }
 
 .docs-nav-wrapper {
   flex-basis: $sidebar-width;
-  align-items: flex-end;
-  position: relative;
+}
+
+.docs-nav {
+  position: fixed;
   box-shadow: 1px 0 0 $pt-divider-black;
-  overflow-x: hidden;
+  background-color: $sidebar-background-color;
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: $sidebar-padding * 2;
+
+  // these rules allow the nav background-color to cover all area to the left
+  // stylelint-disable-next-line order/properties-order
+  margin-left: -999px;
+  padding-left: 999px;
 
   .pt-dark & {
     box-shadow: 1px 0 0 $pt-dark-divider-black;
+    background-color: $dark-sidebar-background-color;
+  }
+
+  > * {
+    padding: $sidebar-padding;
   }
 }
 
@@ -76,26 +88,6 @@ Page layout elements
 .docs-page {
   max-width: $content-width;
   padding: 0 0 $content-padding * 2 $content-padding * 2;
-}
-
-.docs-nav {
-  width: $sidebar-width;
-
-  .docs-navigator {
-    margin-bottom: $pt-grid-size * 2;
-    width: 100%;
-    padding: 0 $pt-grid-size / 2;
-  }
-
-  > * {
-    padding: $sidebar-padding;
-  }
-}
-
-.docs-nav-title {
-  @include pt-flex-container(row);
-  flex-wrap: wrap;
-  align-items: center;
 }
 
 /*
@@ -133,6 +125,12 @@ Lefthand navigation menu
   .docs-nav-expanded + & {
     display: block;
   }
+}
+
+.docs-nav-title {
+  @include pt-flex-container(row);
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .docs-nav-section {
