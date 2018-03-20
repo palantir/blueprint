@@ -61,6 +61,7 @@ Styleguide pt-menu
   &::before,
   .pt-icon {
     align-self: flex-start;
+    margin-top: ($menu-item-line-height - $pt-icon-size-standard) / 2;
     color: $pt-icon-color;
   }
 
@@ -99,6 +100,7 @@ Styleguide pt-menu
 
     &::before {
       @include pt-icon($pt-icon-size-large);
+      margin-top: ($menu-item-line-height-large - $pt-icon-size-large) / 2;
       margin-right: $menu-item-padding-large;
     }
   }
