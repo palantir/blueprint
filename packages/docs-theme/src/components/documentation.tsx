@@ -160,12 +160,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                             />
                         </div>
                     </div>
-                    <main
-                        className="docs-content-wrapper pt-fill"
-                        onScroll={this.handleScroll}
-                        ref={this.refHandlers.content}
-                        role="main"
-                    >
+                    <main className="docs-content-wrapper pt-fill" ref={this.refHandlers.content} role="main">
                         <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
                     </main>
                 </div>
@@ -201,16 +196,17 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public componentDidMount() {
         // hooray! so you don't have to!
         FocusStyleManager.onlyShowFocusOnTabs();
-        this.contentElement.focus();
         this.scrollToActiveSection();
         this.maybeScrollToActivePageMenuItem();
         Utils.safeInvoke(this.props.onComponentUpdate, this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", this.handleHashChange);
+        document.addEventListener("scroll", this.handleScroll);
     }
 
     public componentWillUnmount() {
         window.removeEventListener("hashchange", this.handleHashChange);
+        document.removeEventListener("scroll", this.handleScroll);
     }
 
     public componentDidUpdate(_prevProps: IDocumentationProps, prevState: IDocumentationState) {
@@ -255,7 +251,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     private handlePreviousSection = () => this.shiftSection(-1);
 
     private handleScroll = () => {
-        const activeSectionId = getScrolledReference(100, this.contentElement);
+        const activeSectionId = getScrolledReference(100, document.documentElement);
         if (activeSectionId == null) {
             return;
         }
@@ -277,7 +273,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
 
     private scrollToActiveSection() {
         if (this.contentElement != null) {
-            scrollToReference(this.state.activeSectionId, this.contentElement);
+            scrollToReference(this.state.activeSectionId, document.documentElement);
         }
     }
 
