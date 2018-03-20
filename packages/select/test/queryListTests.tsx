@@ -11,7 +11,7 @@ import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IItemListRendererProps, IQueryListRendererProps, ItemListPredicate, QueryList } from "../src/index";
+import { IQueryListRendererProps, ItemListPredicate, QueryList } from "../src/index";
 
 describe("<QueryList>", () => {
     const FilmQueryList = QueryList.ofType<IFilm>();
@@ -78,33 +78,6 @@ describe("<QueryList>", () => {
             filmQueryList.setProps({ activeItem: undefined });
             assert.isTrue(testProps.onActiveItemChange.returned(undefined));
             assert.equal(testProps.onActiveItemChange.callCount, 1);
-        });
-    });
-
-    describe("renderFilteredItems()", () => {
-        const PROPS: IItemListRendererProps<string> = {
-            filteredItems: ["one"],
-            items: ["one", "two", "three"],
-            itemsParentRef: sinon.stub(),
-            query: "x",
-            renderItem: () => <div />,
-        };
-        const noResults = <strong />;
-        const initialContent = <article />;
-
-        it("returns noResults if filtered items is empty", () => {
-            const element = QueryList.renderFilteredItems({ ...PROPS, filteredItems: [] }, noResults);
-            assert.equal(element, noResults);
-        });
-
-        it("returns initialContent if query is empty", () => {
-            const element = QueryList.renderFilteredItems({ ...PROPS, query: "" }, noResults, initialContent);
-            assert.equal(element, initialContent);
-        });
-
-        it("returns filteredItems mapped through renderItem", () => {
-            const elements = QueryList.renderFilteredItems(PROPS) as JSX.Element[];
-            assert.lengthOf(elements, PROPS.filteredItems.length);
         });
     });
 
