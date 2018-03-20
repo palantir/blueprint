@@ -13,7 +13,7 @@ Markup:
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis.
     Fusce dapibus metus in dapibus mollis. Quisque eget ex diam.
   </p>
-  <button type="button" class="pt-button {{.modifier}}" tabindex="-1">Submit</button>
+  <button type="button" class="pt-button pt-icon-add {{.modifier}}" tabindex="-1">Submit</button>
 </div>
 
 .pt-skeleton - Render this element as a skeleton, an outline of its true self.
@@ -52,5 +52,12 @@ Styleguide pt-skeleton
   animation: $skeleton-animation;
   pointer-events: none;
   user-select: none;
+
+  // Make pseudo-elements (CSS icons) and children invisible
+  &::before,
+  &::after,
+  * {
+    visibility: hidden !important;
+  }
 }
 /* stylelint-enable declaration-no-important */
