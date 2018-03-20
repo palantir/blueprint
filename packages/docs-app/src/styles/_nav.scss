@@ -32,6 +32,7 @@ $dark-package-colors: (
 
 .docs-logo {
   display: block;
+  opacity: 0.8;
   margin-right: $logo-margin;
   background-image: url("./assets/blueprint-logo.svg");
   background-repeat: no-repeat;
@@ -39,12 +40,26 @@ $dark-package-colors: (
   width: $logo-width;
   // SVG is width:height radio is 1:1.2
   height: ceil($logo-width * 1.2);
+  transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:active {
+    opacity: 1;
+  }
+
+  svg g {
+    fill: $dark-gray5;
+  }
 
   .pt-dark & {
-    background-image: url("./assets/blueprint-logo-white.svg");
+    svg g {
+      fill: $gray5;
+    }
   }
 }
-
 
 .docs-heading {
   margin-right: $pt-grid-size;

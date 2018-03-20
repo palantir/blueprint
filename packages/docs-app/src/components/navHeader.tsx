@@ -21,6 +21,7 @@ import { IPackageInfo } from "@blueprintjs/docs-data";
 import { NavButton } from "@blueprintjs/docs-theme";
 import classNames from "classnames";
 import * as React from "react";
+import { Logo } from "./logo";
 
 export interface INavHeaderProps {
     onToggleDark: (useDark: boolean) => void;
@@ -35,7 +36,9 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
         return (
             <>
                 <div className="docs-nav-title">
-                    <a className="docs-logo" href="/" />
+                    <a className="docs-logo" href="/">
+                        <Logo />
+                    </a>
                     <div>
                         <NavbarHeading className="docs-heading">
                             <span>Blueprint</span> {this.renderVersionsMenu()}
