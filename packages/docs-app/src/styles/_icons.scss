@@ -85,7 +85,7 @@ $icons-per-row: 5;
   flex-direction: column;
   align-items: center;
   border-radius: $pt-border-radius;
-  width: 100% / $icons-per-row - 1%;
+  width: 100% / $icons-per-row;
   height: $pt-grid-size * 12;
   padding: ($pt-grid-size * 2) 0;
 
