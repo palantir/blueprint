@@ -19,6 +19,7 @@ import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import { INavMenuItemProps } from "./navMenuItem";
 import { Page } from "./page";
+import { addScrollbarStyle } from "./scrollbar";
 import { ApiLink } from "./typescript/apiLink";
 
 export interface IDocumentationProps extends IProps {
@@ -193,6 +194,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     }
 
     public componentWillMount() {
+        addScrollbarStyle();
         this.updateHash();
     }
 
