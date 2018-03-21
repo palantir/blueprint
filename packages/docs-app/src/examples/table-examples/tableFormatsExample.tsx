@@ -79,7 +79,7 @@ export class TableFormatsExample extends BaseExample<{}> {
     private data = TIME_ZONES;
     private date = new Date();
 
-    public render() {
+    public renderExample() {
         return (
             <Table enableRowResizing={true} numRows={this.data.length}>
                 <Column name="Timezone" cellRenderer={this.renderTimezone} />

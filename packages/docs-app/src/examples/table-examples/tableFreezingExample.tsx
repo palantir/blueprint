@@ -20,7 +20,7 @@ const NUM_FROZEN_ROWS = 2;
 const NUM_FROZEN_COLUMNS = 1;
 
 export class TableFreezingExample extends BaseExample<ITableFreezingExampleState> {
-    public render() {
+    public renderExample() {
         return (
             <Table numRows={NUM_ROWS} numFrozenRows={NUM_FROZEN_ROWS} numFrozenColumns={NUM_FROZEN_COLUMNS}>
                 {this.renderColumns()}

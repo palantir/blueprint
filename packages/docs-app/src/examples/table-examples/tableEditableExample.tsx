@@ -34,17 +34,13 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
         sparseColumnIntents: [],
     };
 
-    public render() {
+    public renderExample() {
         const columns = this.state.columnNames.map((_: string, index: number) => {
             return (
                 <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
             );
         });
-        return (
-            <Table numRows={7} enableColumnInteractionBar={true}>
-                {columns}
-            </Table>
-        );
+        return <Table numRows={7}>{columns}</Table>;
     }
 
     public renderCell = (rowIndex: number, columnIndex: number) => {

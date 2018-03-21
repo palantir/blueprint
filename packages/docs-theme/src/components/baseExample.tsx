@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -16,11 +17,50 @@ export interface IBaseExampleProps {
  * Starter class for all React example components.
  * Examples and options are rendered into separate containers.
  */
-export class BaseExample<S> extends React.PureComponent<IBaseExampleProps, S> {
+export class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
     /** Define this prop to add a className to the example container */
     protected className: string;
 
+    // Can't put this in state, because the state typing is generic.
+    private hasDelayedBeforeInitialRender = false;
+    private hasCompletedInitialRender = false;
+
+    public shouldComponentUpdate(nextProps: IBaseExampleProps, nextState: S & object) {
+        return (
+            // HACKHACK: Permit one redundant re-render after the inital delay. (This will be the first proper render of
+            // the component.)
+            (this.hasDelayedBeforeInitialRender && !this.hasCompletedInitialRender) ||
+            // Now, mimic PureComponent shouldComponentUpdate behavior:
+            !Utils.shallowCompareKeys(this.props, nextProps) ||
+            !Utils.shallowCompareKeys(this.state, nextState)
+        );
+    }
+
+    public componentWillMount() {
+        // HACKHACK: The docs app suffers from a Flash of Unstyled Content that causes some 'width: 100%' examples to
+        // render incorrectly, because they mis-measure the horizontal space available to them. Until that bug is squashed,
+        // this is the workaround: delay initial render with a requestAnimationFrame.
+        requestAnimationFrame(() => {
+            this.hasDelayedBeforeInitialRender = true;
+            this.forceUpdate();
+        });
+    }
+
+    public componentDidUpdate(_nextProps: IBaseExampleProps, _nextState: S) {
+        // HACKHACK: Initial render happens as an *update* due to our requestAnimationFrame shenanigans, not as a mount.
+        // Once we've rendered initially, set this flag so that shouldComponentUpdate logic will return to its normal
+        // PureComponent-style logic, ignoring these flags henceforth.
+        if (!this.hasCompletedInitialRender) {
+            this.hasCompletedInitialRender = true;
+        }
+    }
+
     public render() {
+        // HACKHACK: This is the other required piece. Don't let any React nodes into the DOM until the
+        // requestAnimationFrame delay has elapsed. This prevents shouldComponentUpdate snafus at lower levels.
+        if (!this.hasDelayedBeforeInitialRender) {
+            return null;
+        }
         return (
             <div className={classNames("docs-example", this.className)} data-example-id={this.props.id}>
                 <div className="docs-react-example">{this.renderExample()}</div>
