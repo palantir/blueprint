@@ -60,13 +60,11 @@ Styleguide pt-menu
 
   &::before,
   .pt-icon {
-    align-self: flex-start;
     margin-top: ($menu-item-line-height - $pt-icon-size-standard) / 2;
     color: $pt-icon-color;
   }
 
   .pt-menu-item-label {
-    align-self: flex-start;
     color: $pt-text-color-muted;
   }
 
@@ -98,6 +96,11 @@ Styleguide pt-menu
 
   .pt-large & {
     @include menu-item-large();
+
+    .pt-icon {
+      // SVG icons remain standard size when menu is large
+      margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) / 2;
+    }
 
     &::before {
       @include pt-icon($pt-icon-size-large);
