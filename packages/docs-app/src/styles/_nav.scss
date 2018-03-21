@@ -3,9 +3,6 @@
 
 $pkg-icon-width: 24px;
 
-$logo-width: $pt-grid-size * 6.5;
-$logo-margin: $pt-grid-size * 1.5;
-
 $package-colors: (
   "blueprint": $gray1,
   "core": $blue3,
@@ -33,13 +30,7 @@ $dark-package-colors: (
 .docs-logo {
   display: block;
   opacity: 0.8;
-  margin-right: $logo-margin;
-  background-image: url("./assets/blueprint-logo.svg");
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  width: $logo-width;
-  // SVG is width:height radio is 1:1.2
-  height: ceil($logo-width * 1.2);
+  margin-right: $sidebar-padding;
   transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
 
   &:hover {
@@ -50,12 +41,10 @@ $dark-package-colors: (
     opacity: 1;
   }
 
-  svg g {
+  svg {
     fill: $dark-gray5;
-  }
 
-  .pt-dark & {
-    svg g {
+    .pt-dark & {
       fill: $gray5;
     }
   }
