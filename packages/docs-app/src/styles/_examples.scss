@@ -363,7 +363,6 @@
 .docs-date-range {
   @include pt-flex-container(row, $pt-grid-size / 2);
   align-items: center;
-  margin-left: $pt-grid-size;
 }
 
 .docs-wiggle {
