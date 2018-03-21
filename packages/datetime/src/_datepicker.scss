@@ -186,10 +186,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
         // IE11 styling to hide the arrow
         display: none;
       }
-
-      &:hover + .pt-datepicker-caption-caret {
-        color: $pt-text-color;
-      }
     }
   }
 
@@ -200,13 +196,17 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     &:first-child {
       margin-right: $pt-grid-size;
     }
+
+    &:hover .pt-datepicker-caption-caret {
+      fill: $pt-icon-color-hover;
+    }
   }
 
   .pt-datepicker-caption-caret {
     position: absolute;
     top: 2px;
     right: 0;
-    color: $pt-text-color-muted;
+    fill: $pt-icon-color;
     pointer-events: none;
   }
 
@@ -270,6 +270,17 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
     option {
       background-color: $dark-popover-background-color;
+    }
+
+    // we really need more than 4 compound selector
+    // to target the particular structure of this markup
+    // stylelint-disable-next-line
+    .pt-datepicker-caption-select:hover .pt-datepicker-caption-caret {
+      fill: $pt-dark-icon-color-hover;
+    }
+
+    .pt-datepicker-caption-caret {
+      fill: $pt-dark-icon-color;
     }
   }
 
