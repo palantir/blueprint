@@ -40,11 +40,7 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
                 <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
             );
         });
-        return (
-            <Table numRows={7} enableColumnInteractionBar={true}>
-                {columns}
-            </Table>
-        );
+        return <Table numRows={7}>{columns}</Table>;
     }
 
     public renderCell = (rowIndex: number, columnIndex: number) => {
