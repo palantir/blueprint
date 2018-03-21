@@ -31,7 +31,7 @@ header {
   position: relative;
   margin: 0;
   background-color: transparent;
-  height: calc(100vh - #{$pt-navbar-height} - 1px);
+  height: calc(100vh - #{$pt-navbar-height});
   overflow: hidden;
   text-align: center;
   user-select: none;
