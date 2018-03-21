@@ -46,7 +46,7 @@ export class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
         });
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(_nextProps: IBaseExampleProps, _nextState: S) {
         // HACKHACK: Initial render happens as an *update* due to our requestAnimationFrame shenanigans, not as a mount.
         // Once we've rendered initially, set this flag so that shouldComponentUpdate logic will return to its normal
         // PureComponent-style logic, ignoring these flags henceforth.
