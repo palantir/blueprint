@@ -365,6 +365,11 @@
   align-items: center;
 }
 
+// only for date input and date range input examples
+.pt-popover-wrapper + .docs-date-range {
+  margin-left: $pt-grid-size * 2;
+}
+
 .docs-wiggle {
   animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
 }
