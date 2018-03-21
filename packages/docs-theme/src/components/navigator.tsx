@@ -99,5 +99,8 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
     };
 
     // updating location.hash will trigger hashchange event, which Documentation will receive and use to navigate.
-    private handleItemSelect = (item: INavigationSection) => (location.hash = item.route);
+    private handleItemSelect = (item: INavigationSection) => {
+        location.hash = item.route;
+        this.props.onClose();
+    };
 }
