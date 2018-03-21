@@ -4,9 +4,6 @@
 @import "variables";
 @import "../../../core/src/components/forms/common";
 
-$nav-item-height: $pt-grid-size * 3;
-$nav-item-line-height: 16px;
-$nav-item-padding: $pt-grid-size;
 $nav-item-indent: $pt-grid-size * 2;
 
 $nav-item-color-hover: $minimal-button-background-color-hover;
@@ -14,23 +11,21 @@ $nav-item-color-active: $minimal-button-background-color-active;
 $dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
 $dark-nav-item-color-active: $dark-minimal-button-background-color-active;
 
-$navbar-box-shadow: 0 1px 0 $pt-divider-black;
-$dark-navbar-box-shadow: 0 1px 0 $pt-dark-divider-black;
-
-$logo-width: $pt-grid-size * 2.8;
+body {
+  // vertical scrollbar is always visible for the `.pt-overlay-open` padding (from `scrollbar.ts`)
+  overflow-y: scroll;
+}
 
 /*
 Flex utils
 */
 
 .docs-flex-row {
-  display: flex;
-  flex-direction: row;
+  @include pt-flex-container(row);
 }
 
 .docs-flex-column {
-  display: flex;
-  flex-direction: column;
+  @include pt-flex-container(column);
 }
 
 /*
@@ -40,60 +35,120 @@ Page layout elements
 .docs-root {
   background-color: $content-background-color;
 
-  // usually this element is _way_ longer than the viewport, but sometimes it isn't.
-  // this ensures that it'll always at least fill the viewport so white page doesn't show through.
-  min-height: 100vh;
-
   &.pt-dark {
     background-color: $dark-content-background-color;
   }
 }
 
 .docs-app {
-  // center container in window
+  @include pt-flex-container(row);
   margin: auto;
-  width: $container-width;
-  padding-top: $pt-navbar-height;
+  max-width: $container-width;
+  min-height: 100vh;
 }
 
-// navbar fixed to top of screen with same width as rest of app
-.docs-navbar {
-  position: fixed;
-  top: 0;
-  width: inherit;
-}
-
-.docs-content {
-  // leave space for nav menu on the left (position: fixed)
-  margin-left: $sidebar-width;
-  padding: 0 $sidebar-padding $content-padding $content-padding;
+.docs-nav-wrapper {
+  flex-basis: $sidebar-width;
 }
 
 .docs-nav {
+  $background-shift: 999px;
+
   position: fixed;
-  top: $pt-navbar-height;
-  bottom: 0;
-  width: $sidebar-width;
-  overflow: auto;
-  padding: $content-padding $sidebar-padding;
+  box-shadow: 1px 0 0 $pt-divider-black;
+  background-color: $sidebar-background-color;
+  width: $sidebar-width + $background-shift;
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: $sidebar-padding * 2;
+
+  // these rules allow the nav background-color to cover all area to the left
+  // stylelint-disable-next-line order/properties-order
+  margin-left: -$background-shift;
+  padding-left: $background-shift;
+
+  .pt-dark & {
+    box-shadow: 1px 0 0 $pt-dark-divider-black;
+    background-color: $dark-sidebar-background-color;
+  }
+
+  > * {
+    padding: $sidebar-padding;
+    padding-left: 0;
+  }
+}
+
+.docs-content-wrapper {
+  flex-basis: $content-width;
+  align-items: flex-start;
+  outline: none;
+  background-color: $content-background-color;
+
+  .pt-dark & {
+    background-color: $dark-content-background-color;
+  }
+}
+
+.docs-page {
+  max-width: $content-width;
+  padding: 0 0 $content-padding * 2 $content-padding * 2;
 }
 
 /*
 Lefthand navigation menu
 */
 
-// nested menus are hidden by default
-.docs-nav-menu .docs-nav-menu {
-  display: none;
+.docs-nav-menu {
+  .pt-menu-item {
+    padding-right: $pt-grid-size;
+    padding-left: 0;
+    white-space: initial;
+
+    &:hover,
+    &.pt-active,
+    &.docs-nav-expanded {
+      // bold text instead of background color
+      background-color: transparent !important; // stylelint-disable-line declaration-no-important
+      font-weight: 600;
+    }
+
+    @each $depth in (1, 2, 3, 4, 5) {
+      &.depth-#{$depth} {
+        padding-left: $nav-item-indent * $depth;
+      }
+    }
+  }
+
+  .docs-nav-menu {
+    // nested menus are hidden by default
+    display: none;
+    // nested menus indent automatically
+    margin-left: $nav-item-indent;
+  }
+
+  .docs-nav-expanded + & {
+    display: block;
+  }
 }
 
-.docs-nav-expanded > .docs-nav-menu {
-  display: block;
+.docs-nav-title {
+  @include pt-flex-container(row);
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-.docs-nav-expand-all .docs-nav-menu {
-  // sometimes you need to show all the sections
-  display: block !important; // stylelint-disable-line declaration-no-important
+.docs-nav-section {
+  opacity: 0.5;
+  margin-top: $pt-grid-size * 2;
+  margin-bottom: $pt-grid-size;
+  text-transform: uppercase;
+  font-size: small;
+  font-weight: 600;
+
+  // dedent menu under a section title
+  + .docs-nav-menu {
+    margin-left: 0;
+  }
 }
 
 // empty state item is hidden by default...
@@ -104,20 +159,6 @@ Lefthand navigation menu
 // ...and appears when the actual menu is empty
 .docs-nav-menu:empty + .docs-empty-state {
   display: block;
-}
-
-.docs-menu-item {
-  .pt-menu-item {
-    padding-right: $nav-item-padding;
-    padding-left: $nav-item-padding;
-    white-space: initial;
-  }
-
-  @each $depth in (2, 3, 4, 5, 6) {
-    &.depth-#{$depth} > .pt-menu-item {
-      padding-left: $nav-item-padding + $nav-item-indent * ($depth - 1);
-    }
-  }
 }
 
 // hides all documentation content, to focus on live examples

@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Intent, Tag } from "@blueprintjs/core";
+import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
 import classNames from "classnames";
 import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty, ITsSignature } from "documentalist/dist/client";
 import * as React from "react";
@@ -15,7 +15,7 @@ import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IInterfaceTableProps {
+export interface IInterfaceTableProps extends IProps {
     data: ITsClass | ITsInterface;
     title: string;
 }
@@ -33,7 +33,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
             .sort((a, b) => a.name.localeCompare(b.name))
             .map(this.renderPropRow);
         return (
-            <div className="docs-modifiers pt-running-text-small">
+            <div className={classNames("docs-modifiers", this.props.className)}>
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
                 <ModifierTable emptyMessage="This interface is empty." title={title}>

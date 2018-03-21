@@ -1,30 +1,18 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-$navigator-height: $pt-grid-size * 24.5;
-$navigator-min-width: $pt-grid-size * 22;
+$navigator-width: $pt-grid-size * 40;
 
-.docs-navigator {
-  .pt-input,
-  .pt-menu {
-    min-width: $navigator-min-width;
+.docs-navigator-menu {
+  left: calc(50% - #{$navigator-width / 2});
+  width: $navigator-width;
+
+  .pt-menu-item small {
+    // center-align text and SVG icons
+    display: flex;
   }
 
-  .pt-menu {
-    max-height: $navigator-height;
-    overflow: auto;
+  .pt-menu-item.pt-active small {
+    color: rgba($white, 0.7);
   }
-
-  .pt-menu-item {
-    flex-direction: column;
-    align-items: flex-start;
-
-    &:not(.pt-active) {
-      background: inherit;
-    }
-  }
-}
-
-.pt-menu-item.pt-active .docs-result-path {
-  color: $white;
 }

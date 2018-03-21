@@ -24,12 +24,10 @@ Licensed under the terms of the LICENSE file distributed with this project.
 @import "styles/colors";
 @import "styles/examples";
 @import "styles/icons";
+@import "styles/nav";
 @import "styles/resources";
 @import "styles/sections";
 
-.docs-logo {
-  background-image: url("./assets/blueprint-logo.svg");
-}
 
 .docs-releases-menu .pt-menu {
   min-width: 270px;

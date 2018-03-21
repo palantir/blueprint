@@ -9,62 +9,40 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { IHeadingNode, IPageNode, isPageNode } from "documentalist/dist/client";
+import { INavMenuItemProps, NavMenuItem } from "./navMenuItem";
 
 export interface INavMenuProps extends IProps {
     activePageId: string;
     activeSectionId: string;
+    level: number;
     onItemClick: (reference: string) => void;
     items: Array<IPageNode | IHeadingNode>;
+    renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
 }
-
-export interface INavMenuItemProps extends IProps {
-    item: IPageNode | IHeadingNode;
-    isActive: boolean;
-    onClick: (reference: string) => void;
-}
-
-// tslint:disable-next-line:max-line-length
-export const NavMenuItem: React.SFC<INavMenuItemProps & { children?: React.ReactNode }> = props => {
-    const { item } = props;
-    const classes = classNames(
-        "docs-menu-item",
-        `docs-menu-item-${isPageNode(item) ? "page" : "heading"}`,
-        `depth-${item.level}`,
-        props.className,
-    );
-    const itemClasses = classNames(Classes.MENU_ITEM, {
-        [Classes.ACTIVE]: props.isActive,
-        [Classes.INTENT_PRIMARY]: props.isActive,
-    });
-    const handleClick = () => props.onClick(item.route);
-    return (
-        <li className={classes} key={item.route}>
-            <a className={itemClasses} href={"#" + item.route} onClick={handleClick}>
-                {item.title}
-            </a>
-            {props.children}
-        </li>
-    );
-};
-NavMenuItem.displayName = "Docs2.NavMenuItem";
 
 export const NavMenu: React.SFC<INavMenuProps> = props => {
+    const { renderNavMenuItem = NavMenuItem } = props;
     const menu = props.items.map(section => {
         const isActive = props.activeSectionId === section.route;
         const isExpanded = isActive || isParentOfRoute(section.route, props.activeSectionId);
         // active section gets selected styles, expanded section shows its children
-        const itemClasses = classNames({ "docs-nav-expanded": isExpanded });
-        const childrenMenu = isPageNode(section) ? <NavMenu {...props} items={section.children} /> : undefined;
+        const itemClasses = classNames(`depth-${section.level - props.level - 1}`, {
+            "docs-nav-expanded": isExpanded,
+            [Classes.ACTIVE]: isActive,
+        });
+        const item = renderNavMenuItem({
+            className: itemClasses,
+            href: "#" + section.route,
+            isActive,
+            isExpanded,
+            onClick: () => props.onItemClick(section.route),
+            section,
+        });
         return (
-            <NavMenuItem
-                className={itemClasses}
-                key={section.route}
-                item={section}
-                isActive={isActive}
-                onClick={props.onItemClick}
-            >
-                {childrenMenu}
-            </NavMenuItem>
+            <li key={section.route}>
+                {item}
+                {isPageNode(section) ? <NavMenu {...props} level={section.level} items={section.children} /> : null}
+            </li>
         );
     });
     const classes = classNames("docs-nav-menu", "pt-list-unstyled", props.className);

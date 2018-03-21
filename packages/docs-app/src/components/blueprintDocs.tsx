@@ -4,12 +4,14 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Icon, Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
+import { Classes, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
-import { Banner, Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
-import { ITsDocBase } from "documentalist/dist/client";
+import { Banner, Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+import classNames from "classnames";
+import { isPageNode, ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
-import { NavbarActions } from "./navbarActions";
+import { NavHeader } from "./navHeader";
+import { NavIcon } from "./navIcons";
 
 const DARK_THEME = "pt-dark";
 const LIGHT_THEME = "";
@@ -34,62 +36,55 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     public state = { themeName: getTheme() };
 
     public render() {
-        const navbarLeft = [
-            <a className="docs-logo" href="/" key="_logo" />,
-            <div className="pt-navbar-heading docs-heading" key="_title">
-                Blueprint
-            </div>,
-            this.renderVersionsMenu(),
-        ];
-        const navbarRight = (
-            <NavbarActions
+        const banner = (
+            <Banner href="http://blueprintjs.com/docs/v1/">
+                This documentation is for Blueprint v2, which is currently under development. Click here to go to the v1
+                docs.
+            </Banner>
+        );
+        const header = (
+            <NavHeader
                 onToggleDark={this.handleToggleDark}
-                releases={this.props.releases}
                 useDarkTheme={this.state.themeName === DARK_THEME}
+                versions={this.props.versions}
             />
         );
         return (
-            <>
-                <Banner href="http://blueprintjs.com/docs/v1/">
-                    This documentation is for Blueprint v2, which is currently under development. Click here to go to
-                    the v1 docs.
-                </Banner>
-                <Documentation
-                    {...this.props}
-                    className={this.state.themeName}
-                    navbarLeft={navbarLeft}
-                    navbarRight={navbarRight}
-                    onComponentUpdate={this.handleComponentUpdate}
-                    renderViewSourceLinkText={this.renderViewSourceLinkText}
-                />
-            </>
+            <Documentation
+                {...this.props}
+                banner={banner}
+                className={this.state.themeName}
+                header={header}
+                onComponentUpdate={this.handleComponentUpdate}
+                renderNavMenuItem={this.renderNavMenuItem}
+                renderViewSourceLinkText={this.renderViewSourceLinkText}
+            />
         );
     }
 
-    private renderVersionsMenu() {
-        const { versions } = this.props;
-        if (versions.length === 1) {
+    private renderNavMenuItem = (props: INavMenuItemProps) => {
+        if (isPageNode(props.section) && props.section.level === 1) {
+            const pkg = this.props.releases.find(p => p.name === `@blueprintjs/${props.section.route}`);
             return (
-                <div className="pt-text-muted" key="_versions">
-                    v{versions[0].version}
+                <div className={classNames("docs-nav-package", props.className)} data-route={props.section.route}>
+                    <a className="pt-menu-item" href={props.href} onClick={props.onClick}>
+                        <NavIcon route={props.section.route} />
+                        <span>{props.section.title}</span>
+                    </a>
+                    {pkg && (
+                        <a className={Classes.TEXT_MUTED} href={pkg.url} target="_blank">
+                            <small>{pkg.version}</small>
+                        </a>
+                    )}
                 </div>
             );
         }
-
-        const match = /docs\/v([0-9]+)/.exec(location.href);
-        // default to latest release if we can't find a major version in the URL
-        const currentRelease = match == null ? versions[versions.length - 1].version : match[1];
-        const releaseItems = versions.map((rel, i) => <MenuItem key={i} href={rel.url} text={rel.version} />);
-        const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
-
-        return (
-            <Popover content={menu} position={Position.BOTTOM} key="_versions">
-                <button className="docs-version-selector pt-text-muted">
-                    v{currentRelease} <Icon icon="caret-down" />
-                </button>
-            </Popover>
-        );
-    }
+        if (props.section.title === "Components") {
+            // non-interactive header that expands its menu
+            return <div className="docs-nav-section docs-nav-expanded">{props.section.title}</div>;
+        }
+        return <NavMenuItem {...props} />;
+    };
 
     private renderViewSourceLinkText(entry: ITsDocBase) {
         return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
@@ -105,9 +100,9 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     };
 
     private handleToggleDark = (useDark: boolean) => {
-        const themeName = useDark ? DARK_THEME : LIGHT_THEME;
-        setTheme(themeName);
-        setHotkeysDialogProps({ className: this.state.themeName });
-        this.setState({ themeName });
+        const nextThemeName = useDark ? DARK_THEME : LIGHT_THEME;
+        setTheme(nextThemeName);
+        setHotkeysDialogProps({ className: nextThemeName });
+        this.setState({ themeName: nextThemeName });
     };
 }
