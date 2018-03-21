@@ -1,7 +1,4 @@
-<svg width="70" height="70" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        Artboard 2 Copy 4
-    </title>
+<svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <circle id="a" cx="21" cy="13" r="3"/>
         <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="b">
@@ -25,7 +22,7 @@
     <g fill="none" fill-rule="evenodd">
         <g>
             <g transform="translate(13 1)">
-                <path d="M37.267 51.27C40.312 55.788 42.676 59.35 43 60c1 2 .069.142.069.142.578 2.683-1.197 4.858-3.963 4.858H4.51C1.743 65 .16 62.854.97 60.225L1.5 58.5S7.008 51.05 11 45l.084-.139c.967.025 1.948.079 2.93.17 3.416.317 10.301 6.239 18.313 6.239h4.94z" fill="#BAE1FB"/>
+                <path d="M37.267 51.27C40.312 55.788 42.676 59.35 43 60c1 2 .069.142.069.142.578 2.683-1.197 4.858-3.963 4.858H4.51C1.743 65 .16 62.854.97 60.225L1.5 58.5S7.008 51.05 11 45l.084-.139a44.17 44.17 0 0 1 2.93.17c3.416.317 10.301 6.239 18.313 6.239h4.94z" fill="#BAE1FB"/>
                 <path d="M29.009 37.57l13.303 20.087C45.362 62.265 43.365 66 37.83 66H6.188c-5.526 0-7.53-3.74-4.48-8.343l13.301-20.086V20h14v17.57z" stroke="#137CBD" stroke-width="2"/>
                 <rect stroke="#137CBD" stroke-width="2" fill="#FFF" x="12" y="16" width="20" height="5" rx="2.5"/>
                 <rect fill="#137CBD" x="15" y="24" width="4" height="2" rx="1"/>

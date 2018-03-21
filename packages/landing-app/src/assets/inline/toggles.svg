@@ -1,9 +1,6 @@
-<svg width="450" height="346" viewBox="0 0 450 346" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        TOGGLES
-    </title>
+<svg width="450" height="346" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
-        <path d="M43.816 40h174.181A3.004 3.004 0 0 1 221 43v288.696c0 1.654-1.344 3-3.003 3H13.003a3.004 3.004 0 0 1-3.003-3V43.001C10 41.346 11.344 40 13.003 40h13.18c.051-.05.1-.1.145-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.151z" id="toggles-a"/>
+        <path d="M43.816 40h174.181A3.004 3.004 0 0 1 221 43v288.696c0 1.654-1.344 3-3.003 3H13.003a3.004 3.004 0 0 1-3.003-3V43.001A3.003 3.003 0 0 1 13.003 40h13.18c.051-.05.1-.1.145-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.151z" id="toggles-a"/>
         <mask id="toggles-M" x="0" y="0" width="211" height="303.71" fill="#fff">
             <use xlink:href="#toggles-a"/>
         </mask>
@@ -83,7 +80,7 @@
         <mask id="toggles-af" x="0" y="0" width="19" height="5" fill="#fff">
             <use xlink:href="#toggles-t"/>
         </mask>
-        <path d="M43.816 40H188.01A3.002 3.002 0 0 1 191 42.996v127.008a2.991 2.991 0 0 1-2.99 2.996H12.99a3.002 3.002 0 0 1-2.99-2.996V42.996A2.991 2.991 0 0 1 12.99 40h13.194c.05-.05.099-.1.144-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.151z" id="toggles-u"/>
+        <path d="M43.816 40H188.01a3.002 3.002 0 0 1 2.99 2.996v127.008a2.991 2.991 0 0 1-2.99 2.996H12.99a3.002 3.002 0 0 1-2.99-2.996V42.996A2.991 2.991 0 0 1 12.99 40h13.194c.05-.05.099-.1.144-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.151z" id="toggles-u"/>
         <mask id="toggles-ag" x="0" y="0" width="181" height="142.013" fill="#fff">
             <use xlink:href="#toggles-u"/>
         </mask>
@@ -119,7 +116,7 @@
         <mask id="toggles-ao" x="0" y="0" width="20" height="20.01" fill="#fff">
             <use xlink:href="#toggles-C"/>
         </mask>
-        <path d="M43.816 40H188.01A3.005 3.005 0 0 1 191 43v98.998a2.998 2.998 0 0 1-2.99 3H12.99a3.005 3.005 0 0 1-2.99-3V43A2.998 2.998 0 0 1 12.99 40h13.194c.05-.05.099-.1.144-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.15z" id="toggles-D"/>
+        <path d="M43.816 40H188.01a3.005 3.005 0 0 1 2.99 3v98.998a2.998 2.998 0 0 1-2.99 3H12.99a3.005 3.005 0 0 1-2.99-3V43a2.998 2.998 0 0 1 2.99-3h13.194c.05-.05.099-.1.144-.15l7.344-8.246c.733-.823 1.924-.822 2.656 0l7.344 8.245c.045.051.094.101.144.15z" id="toggles-D"/>
         <mask id="toggles-ap" x="0" y="0" width="181" height="114.013" fill="#fff">
             <use xlink:href="#toggles-D"/>
         </mask>
@@ -174,7 +171,7 @@
                         <use mask="url(#toggles-V)" stroke-width="4" xlink:href="#toggles-j"/>
                         <use mask="url(#toggles-W)" stroke-width="4" xlink:href="#toggles-k"/>
                         <use mask="url(#toggles-X)" stroke-width="4" xlink:href="#toggles-l"/>
-                        <path d="M62.5 68.5H92M62.5 108.5H116M62.5 148.5H89M62.5 188.5H131M62.5 228.5H127M62.5 268.5H123M62.5 308.5H104" stroke-width="3" stroke-linecap="square"/>
+                        <path d="M62.5 68.5H92m-29.5 40H116m-53.5 40H89m-26.5 40H131m-68.5 40H127m-64.5 40H123m-60.5 40H104" stroke-width="3" stroke-linecap="square"/>
                         <use mask="url(#toggles-Y)" stroke-width="4" xlink:href="#toggles-m"/>
                         <use mask="url(#toggles-Z)" stroke-width="4" xlink:href="#toggles-n"/>
                         <use mask="url(#toggles-aa)" stroke-width="4" xlink:href="#toggles-o"/>
@@ -190,7 +187,7 @@
                         <use mask="url(#toggles-ai)" stroke-width="4" xlink:href="#toggles-w"/>
                         <use mask="url(#toggles-aj)" stroke-width="4" xlink:href="#toggles-x"/>
                         <path d="M11 34v146M190 34v146M0 172h200M0 41h200" stroke-opacity=".5" stroke-width="2"/>
-                        <path d="M56.5 64.5H86M56.5 104.5H86M56.5 144.5H86" stroke-width="3" stroke-linecap="square"/>
+                        <path d="M56.5 64.5H86m-29.5 40H86m-29.5 40H86" stroke-width="3" stroke-linecap="square"/>
                         <use mask="url(#toggles-ak)" stroke-width="2" opacity=".4" xlink:href="#toggles-y"/>
                         <use mask="url(#toggles-al)" stroke-width="2" opacity=".4" xlink:href="#toggles-z"/>
                         <use mask="url(#toggles-am)" stroke-width="2" opacity=".4" xlink:href="#toggles-A"/>
@@ -207,7 +204,7 @@
                         <use mask="url(#toggles-au)" stroke-width="2" opacity=".4" xlink:href="#toggles-I"/>
                         <use mask="url(#toggles-av)" stroke-width="2" opacity=".4" xlink:href="#toggles-J"/>
                         <use mask="url(#toggles-aw)" stroke-width="2" opacity=".4" xlink:href="#toggles-K"/>
-                        <path d="M52.5 62.5H82M52.5 92.5H82M52.5 122.5H82" stroke-width="3" stroke-linecap="square"/>
+                        <path d="M52.5 62.5H82m-29.5 30H82m-29.5 30H82" stroke-width="3" stroke-linecap="square"/>
                         <use mask="url(#toggles-ax)" stroke-width="4" xlink:href="#toggles-L"/>
                     </g>
                 </g>

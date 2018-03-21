@@ -1,7 +1,4 @@
-<svg width="314" height="194" viewBox="0 0 314 194" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        INPUTS
-    </title>
+<svg width="314" height="194" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <rect id="input-groups-a" x="6" y="5" width="301" height="31" rx="3"/>
         <mask id="input-groups-w" x="0" y="0" width="301" height="31" fill="#fff">
@@ -141,7 +138,7 @@
                         </g>
                         <g transform="translate(0 152)">
                             <use mask="url(#input-groups-O)" stroke-width="4" opacity=".4" xlink:href="#input-groups-q"/>
-                            <path d="M306 0v42M0 6h314M7 0v42M0 35h314" stroke-opacity=".5" stroke-width="2"/>
+                            <path d="M306 0v42M0 6h314M7 0v42m-7-7h314" stroke-opacity=".5" stroke-width="2"/>
                             <use mask="url(#input-groups-P)" stroke-width="2" opacity=".4" xlink:href="#input-groups-r"/>
                             <use mask="url(#input-groups-Q)" stroke-width="2" opacity=".4" xlink:href="#input-groups-s"/>
                             <use mask="url(#input-groups-R)" stroke-width="2" opacity=".4" xlink:href="#input-groups-t"/>

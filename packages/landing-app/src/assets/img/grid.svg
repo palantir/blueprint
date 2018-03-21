@@ -1,7 +1,4 @@
-<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-    <title>
-        Slice
-    </title>
+<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
     <g fill="#FFF" fill-rule="evenodd">
         <path opacity=".1" d="M9 0h1v50H9zm10 0h1v50h-1zm10 0h1v50h-1zm10 0h1v50h-1z"/>
         <path opacity=".15" d="M49 0h1v50h-1z"/>

@@ -1,7 +1,4 @@
-<svg width="115" height="46" viewBox="0 0 115 46" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        RADIOS
-    </title>
+<svg width="115" height="46" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <circle id="radios-a" cx="8" cy="8" r="8"/>
         <mask id="radios-d" x="0" y="0" width="16" height="16" fill="#fff">

@@ -1,7 +1,4 @@
-<svg width="315" height="92" viewBox="0 0 315 92" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        SELECT MENUS
-    </title>
+<svg width="315" height="92" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <rect id="select-menus-a" x="7" y="5" width="301" height="31" rx="3"/>
         <mask id="select-menus-m" x="0" y="0" width="301" height="31" fill="#fff">

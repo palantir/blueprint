@@ -1,7 +1,4 @@
-<svg width="168" height="77" viewBox="0 0 168 77" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        CHECKBOXES
-    </title>
+<svg width="168" height="77" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <path id="checkboxes-a" d="M0 .977h16v16H0z"/>
         <mask id="checkboxes-f" x="0" y="0" width="16" height="16" fill="#fff">

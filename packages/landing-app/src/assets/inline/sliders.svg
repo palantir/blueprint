@@ -1,7 +1,4 @@
-<svg width="317" height="70" viewBox="0 0 317 70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        SLIDERS
-    </title>
+<svg width="317" height="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <rect id="sliders-a" x="7" y="6" width="74" height="9" rx="4.5"/>
         <mask id="sliders-q" x="0" y="0" width="74" height="9" fill="#fff">
@@ -75,26 +72,26 @@
                     <g>
                         <use mask="url(#sliders-q)" stroke-width="4" opacity=".4" xlink:href="#sliders-a"/>
                         <use mask="url(#sliders-r)" stroke-width="4" opacity=".4" xlink:href="#sliders-b"/>
-                        <path d="M1 7h79M150 7h162M0 14h80M150 14h167M8 1v20M307 1v20" stroke-opacity=".5" stroke-width="2"/>
+                        <path d="M1 7h79m70 0h162M0 14h80m70 0h167M8 1v20M307 1v20" stroke-opacity=".5" stroke-width="2"/>
                         <use mask="url(#sliders-s)" stroke-width="2" opacity=".4" xlink:href="#sliders-c"/>
                         <use mask="url(#sliders-t)" stroke-width="2" opacity=".4" xlink:href="#sliders-d"/>
                         <use mask="url(#sliders-u)" stroke-width="2" opacity=".4" xlink:href="#sliders-e"/>
                         <use mask="url(#sliders-v)" stroke-width="2" opacity=".4" xlink:href="#sliders-f"/>
                         <use mask="url(#sliders-w)" stroke-width="4" xlink:href="#sliders-g"/>
                         <use mask="url(#sliders-x)" stroke-width="4" xlink:href="#sliders-h"/>
-                        <path d="M98 7h32M98 13h32M97.661 11.839l2.679-3.679M102.661 11.839l2.679-3.679M107.661 11.839l2.679-3.679M112.661 11.839l2.679-3.679M117.661 11.839l2.679-3.679M122.661 11.839l2.679-3.679M127.661 11.839l2.679-3.679" stroke-width="2" stroke-linecap="square"/>
+                        <path d="M98 7h32m-32 6h32m-32.339-1.161l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679" stroke-width="2" stroke-linecap="square"/>
                     </g>
                     <g transform="translate(0 41)">
                         <use mask="url(#sliders-y)" stroke-width="4" opacity=".4" xlink:href="#sliders-i"/>
                         <use mask="url(#sliders-z)" stroke-width="4" opacity=".4" xlink:href="#sliders-j"/>
-                        <path d="M1 6h78M238 6h78M0 13h79M238 13h79M8 0v19M307 0v18" stroke-opacity=".5" stroke-width="2"/>
+                        <path d="M1 6h78m159 0h78M0 13h79m159 0h79M8 0v19M307 0v18" stroke-opacity=".5" stroke-width="2"/>
                         <use mask="url(#sliders-A)" stroke-width="2" opacity=".4" xlink:href="#sliders-k"/>
                         <use mask="url(#sliders-B)" stroke-width="2" opacity=".4" xlink:href="#sliders-l"/>
                         <use mask="url(#sliders-C)" stroke-width="2" opacity=".4" xlink:href="#sliders-m"/>
                         <use mask="url(#sliders-D)" stroke-width="2" opacity=".4" xlink:href="#sliders-n"/>
                         <use mask="url(#sliders-E)" stroke-width="4" xlink:href="#sliders-o"/>
                         <use mask="url(#sliders-F)" stroke-width="4" xlink:href="#sliders-p"/>
-                        <path d="M23 28H13M93 28H83M163 28h-10M233 28h-10M303 28h-10M98 6h121M98 12h121M96.661 10.839L99.34 7.16M101.661 10.839l2.679-3.679M106.661 10.839l2.679-3.679M111.661 10.839l2.679-3.679M116.661 10.839l2.679-3.679M121.661 10.839l2.679-3.679M126.661 10.839l2.679-3.679M131.661 10.839l2.679-3.679M136.661 10.839l2.679-3.679M141.661 10.839l2.679-3.679M146.661 10.839l2.679-3.679M151.661 10.839l2.679-3.679M156.661 10.839l2.679-3.679M161.661 10.839l2.679-3.679M166.661 10.839l2.679-3.679M171.661 10.839l2.679-3.679M176.661 10.839l2.679-3.679M181.661 10.839l2.679-3.679M186.661 10.839l2.679-3.679M191.661 10.839l2.679-3.679M196.661 10.839l2.679-3.679M201.661 10.839l2.679-3.679M206.661 10.839l2.679-3.679M211.661 10.839l2.679-3.679M216.661 10.839l2.679-3.679" stroke-width="2" stroke-linecap="square"/>
+                        <path d="M23 28H13m80 0H83m80 0h-10m80 0h-10m80 0h-10M98 6h121M98 12h121M96.661 10.839L99.34 7.16m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679m2.321 3.679l2.679-3.679" stroke-width="2" stroke-linecap="square"/>
                     </g>
                 </g>
             </g>

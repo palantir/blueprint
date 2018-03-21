@@ -1,7 +1,4 @@
-<svg width="70" height="70" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        Artboard 2 Copy 2
-    </title>
+<svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <linearGradient x1="21.157%" y1="6.442%" x2="90.979%" y2="97.719%" id="a">
             <stop stop-color="#E8F5FD" offset="0%"/>
@@ -36,7 +33,7 @@
                         <use fill="#000" filter="url(#d)" xlink:href="#c"/>
                         <use stroke="#137CBD" stroke-width="2" xlink:href="#c"/>
                     </g>
-                    <path d="M35.662 24.614l4.52 4.41M40.221 19.685l4.996 4.998" stroke="#137CBD" stroke-width="2"/>
+                    <path d="M35.662 24.614l4.52 4.41m.039-9.339l4.996 4.998" stroke="#137CBD" stroke-width="2"/>
                     <path d="M26.605 37.558c.581-.493.535-2.606 1.548-2.837 1.014-.231 2.267-.177 2.422.676.167.924-1.214 2.59.992 2.693a6.051 6.051 0 0 0 3.176-.708c.57-.303.427-.194 1.829-1.137 1.602-1.436 2.21-3.576 1.433-1.524-1 2.682-4.801 4.277-7.43 5.453-2.39 1.07-3.794 1.714-4.882 1.348-1.088-.365-.674.584.153-1.555.64-1.653.297-2.017.759-2.409z" stroke="#137CBD" fill="#137CBD"/>
                 </g>
             </g>

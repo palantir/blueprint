@@ -1,7 +1,4 @@
-<svg width="406" height="165" viewBox="0 0 406 165" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        ALERT
-    </title>
+<svg width="406" height="165" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <rect id="alert-a" x="16" y="13" width="371" height="143" rx="10"/>
         <mask id="alert-i" x="0" y="0" width="371" height="143" fill="#fff">
@@ -51,8 +48,8 @@
                         <use mask="url(#alert-n)" stroke-width="4" xlink:href="#alert-f"/>
                         <use mask="url(#alert-o)" stroke-width="4" xlink:href="#alert-g"/>
                         <use mask="url(#alert-p)" stroke-width="4" xlink:href="#alert-h"/>
-                        <path d="M95 48.5h235M95 68.5h145" stroke-width="5" stroke-linecap="square"/>
-                        <path d="M208 114.5h35M277.5 114.5H347" stroke-width="3" stroke-linecap="square"/>
+                        <path d="M95 48.5h235m-235 20h145" stroke-width="5" stroke-linecap="square"/>
+                        <path d="M208 114.5h35m34.5 0H347" stroke-width="3" stroke-linecap="square"/>
                     </g>
                 </g>
             </g>
