@@ -11,11 +11,10 @@ import * as SVGs from "./svgs";
 FocusStyleManager.onlyShowFocusOnTabs();
 
 Logo.init(
-    document.querySelector("header canvas.pt-logo") as HTMLCanvasElement,
-    document.querySelector("header canvas.pt-logo-background") as HTMLCanvasElement,
+    document.getElementById("pt-logo") as HTMLCanvasElement,
+    document.getElementById("pt-logo-background") as HTMLCanvasElement,
 );
 
 SVGs.init(document.querySelector(".pt-wireframes") as HTMLElement);
 
-const copyright = ".pt-copyright .pt-container > div:first-child";
-document.querySelector(copyright).innerHTML = `© 2014–${new Date().getFullYear()} Palantir Technologies`;
+document.getElementById("copyright").innerHTML = `© 2014–${new Date().getFullYear()} Palantir Technologies`;
