@@ -193,7 +193,7 @@ export class TableSortableExample extends BaseExample<{}> {
         sortedIndexMap: [] as number[],
     };
 
-    public render() {
+    public renderExample() {
         const numRows = this.state.data.length;
         const columns = this.state.columns.map(col => col.getColumn(this.getCellData, this.sortColumn));
         return (

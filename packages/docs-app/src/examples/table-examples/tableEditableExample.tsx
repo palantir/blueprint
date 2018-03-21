@@ -34,7 +34,7 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
         sparseColumnIntents: [],
     };
 
-    public render() {
+    public renderExample() {
         const columns = this.state.columnNames.map((_: string, index: number) => {
             return (
                 <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
