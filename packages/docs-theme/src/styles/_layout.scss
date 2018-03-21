@@ -52,17 +52,20 @@ Page layout elements
 }
 
 .docs-nav {
+  $background-shift: 999px;
+
   position: fixed;
   box-shadow: 1px 0 0 $pt-divider-black;
   background-color: $sidebar-background-color;
+  width: $sidebar-width + $background-shift;
   height: 100vh;
   overflow-y: auto;
   padding-bottom: $sidebar-padding * 2;
 
   // these rules allow the nav background-color to cover all area to the left
   // stylelint-disable-next-line order/properties-order
-  margin-left: -999px;
-  padding-left: 999px;
+  margin-left: -$background-shift;
+  padding-left: $background-shift;
 
   .pt-dark & {
     box-shadow: 1px 0 0 $pt-dark-divider-black;
@@ -71,6 +74,7 @@ Page layout elements
 
   > * {
     padding: $sidebar-padding;
+    padding-left: 0;
   }
 }
 
