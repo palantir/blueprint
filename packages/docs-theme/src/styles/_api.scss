@@ -40,6 +40,7 @@
     padding: $pt-grid-size ($pt-grid-size * 2);
 
     + .docs-section {
+      flex-shrink: 0;
       padding-right: $pt-grid-size * 2;
       padding-left: $pt-grid-size * 2;
     }
