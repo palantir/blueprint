@@ -53,7 +53,7 @@ $banner-height: $pt-grid-size * 4;
     padding-top: $banner-height;
 
     .docs-nav {
-      min-height: calc(100vh - #{$banner-height});
+      height: calc(100vh - #{$banner-height});
     }
 
     .docs-anchor {
