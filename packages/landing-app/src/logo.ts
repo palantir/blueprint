@@ -734,6 +734,8 @@ export abstract class CanvasRenderer {
         );
     };
 
+    public abstract render: () => void;
+
     public retinaScale: number;
     protected width: number;
     protected height: number;
@@ -743,8 +745,6 @@ export abstract class CanvasRenderer {
         this.height = this.ctx.canvas.clientHeight;
         this.retinaScale = SceneRenderer.IS_RETINA() ? 2 : 1;
     }
-
-    public abstract render(): void;
 
     protected resize() {
         this.retinaScale = SceneRenderer.IS_RETINA() ? 2 : 1;
@@ -761,13 +761,13 @@ export abstract class CanvasRenderer {
 class BackgroundRenderer extends CanvasRenderer {
     private static GRID_SIZE = 10;
 
-    public render() {
+    public render = () => {
         this.resize();
         this.ctx.clearRect(0, 0, this.width * this.retinaScale, this.height * this.retinaScale);
         this.renderBackground();
         this.renderGrid();
         this.renderBackgroundOverlays();
-    }
+    };
 
     private renderBackground() {
         this.ctx.save();
@@ -844,12 +844,12 @@ export class SceneRenderer extends CanvasRenderer {
         super(ctx);
     }
 
-    public render() {
+    public render = () => {
         this.resize();
 
         this.ctx.clearRect(0, 0, this.width * this.retinaScale, this.height * this.retinaScale);
         this.renderLogo();
-    }
+    };
 
     public renderLogo() {
         const projection = M()
@@ -862,7 +862,7 @@ export class SceneRenderer extends CanvasRenderer {
         const corners: Corner[] = [];
         this.scene.eachRenderable(projection, (object: any, transform: Matrix) => {
             if (object instanceof Shape) {
-                const shape = object as Shape;
+                const shape = object;
                 for (const face of shape.faces) {
                     face.projected = face.points.map(point =>
                         point
@@ -880,7 +880,7 @@ export class SceneRenderer extends CanvasRenderer {
                     faces.push(face);
                 }
             } else if (object instanceof Corner) {
-                const corner = object as Corner;
+                const corner = object;
                 corner.projected = corner.segments.map(
                     segment => segment.map(p => p.copy().transform(transform)) as ISegment,
                 );
@@ -998,6 +998,13 @@ export class SceneRenderer extends CanvasRenderer {
 }
 
 export function initializeLogo(canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElement) {
+    // background
+    const backgroundRenderer = new BackgroundRenderer(canvasBackground.getContext("2d"));
+    // render background once after page has settled
+    requestAnimationFrame(backgroundRenderer.render);
+    // then only re-render on resize, as background is static
+    document.addEventListener("resize", backgroundRenderer.render);
+
     // scene geometry
     const overlays = (rect: Shape) => {
         rect.faces[0].overlays = { "hard-light": "rgba(0,0,0,0.1)", "soft-light": "black" };
@@ -1073,15 +1080,9 @@ export function initializeLogo(canvas: HTMLCanvasElement, canvasBackground: HTML
     shadowGroups[1].add(dropShadowFrom(blocks[1].outline.faces[2]));
     shadowGroups[2].add(dropShadowFrom(blocks[2].outline.faces[2]));
 
-    // renderer
+    // scene
     const renderer = new SceneRenderer(canvas.getContext("2d"), scene);
-    const backgroundRenderer = new BackgroundRenderer(canvasBackground.getContext("2d"));
-    const render = () =>
-        requestAnimationFrame(() => {
-            backgroundRenderer.render();
-            renderer.render();
-        });
-    const animator = new Animator(render);
+    const animator = new Animator(renderer.render);
 
     // entrance animation
     const slideDownAnimation = (offset: number, model: SceneModel) => {
