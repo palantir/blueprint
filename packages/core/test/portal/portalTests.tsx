@@ -30,7 +30,7 @@ describe("<Portal>", () => {
         assert.lengthOf(document.getElementsByClassName(CLASS_TO_TEST), 1);
     });
 
-    it("propagates class names", () => {
+    it("propagates className to portal element", () => {
         const CLASS_TO_TEST = "bp-test-klass";
         portal = mount(
             <Portal className={CLASS_TO_TEST}>
@@ -38,12 +38,23 @@ describe("<Portal>", () => {
             </Portal>,
         );
 
-        const portalChild = document.querySelector(`.${CLASS_TO_TEST}`);
-        assert.strictEqual(portalChild.parentElement.className, Classes.PORTAL);
+        const portalChild = document.querySelector(`.${Classes.PORTAL}.${CLASS_TO_TEST}`);
+        assert.exists(portalChild);
+    });
+
+    it("updates className on portal element", () => {
+        portal = mount(
+            <Portal className="class-one">
+                <p>test</p>
+            </Portal>,
+        );
+        assert.exists(portal.find(".class-one"));
+        portal.setProps({ className: "class-two" });
+        assert.exists(portal.find(".class-two"));
     });
 
     it("respects blueprintPortalClassName on context", () => {
-        const CLASS_TO_TEST = "bp-test-klass";
+        const CLASS_TO_TEST = "bp-test-klass bp-other-class";
         portal = mount(
             <Portal>
                 <p>test</p>
@@ -51,7 +62,7 @@ describe("<Portal>", () => {
             { context: { blueprintPortalClassName: CLASS_TO_TEST } },
         );
 
-        const portalElement = document.querySelector(`.${CLASS_TO_TEST}`);
+        const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);
         assert.isTrue(portalElement.classList.contains(Classes.PORTAL));
     });
 });

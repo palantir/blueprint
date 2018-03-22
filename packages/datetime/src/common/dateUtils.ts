@@ -4,16 +4,17 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as moment from "moment";
-import { DateFormat } from "../dateFormatter";
 import { Months } from "./months";
 
 export type DateRange = [Date | undefined, Date | undefined];
-export type MomentDateRange = [moment.Moment, moment.Moment];
 
 export enum DateRangeBoundary {
     START = "start",
     END = "end",
+}
+
+export function isDateValid(date: Date | false | null): date is Date {
+    return date instanceof Date && !isNaN(date.valueOf());
 }
 
 export function areEqual(date1: Date, date2: Date) {
@@ -189,86 +190,6 @@ export function getDateOnlyWithTime(date: Date): Date {
     return new Date(0, 0, 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
 }
 
-export function isMomentNull(momentDate: moment.Moment) {
-    return momentDate.parsingFlags().nullInput;
-}
-
-export function isMomentValidAndInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
-    return momentDate.isValid() && isMomentInRange(momentDate, minDate, maxDate);
-}
-
-export function isMomentInRange(momentDate: moment.Moment, minDate: Date, maxDate: Date) {
-    return momentDate.isBetween(minDate, maxDate, "day", "[]");
-}
-
-/**
- * Translate a Date object into a moment, adjusting the local timezone into the moment one.
- * This is a no-op unless moment-timezone's setDefault has been called.
- */
-export function fromDateToMoment(date: Date) {
-    if (date == null) {
-        // moment(undefined) is equivalent to moment(), which returns the current date and time when
-        // invoked. thus, we need to explicitly return moment(null).
-        return moment(null);
-    } else if (typeof date === "string") {
-        return moment(date);
-    } else {
-        return moment([
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            date.getHours(),
-            date.getMinutes(),
-            date.getSeconds(),
-            date.getMilliseconds(),
-        ]);
-    }
-}
-
-/**
- * Translate a moment into a Date object, adjusting the moment timezone into the local one.
- * This is a no-op unless moment-timezone's setDefault has been called.
- */
-export function fromMomentToDate(momentDate: moment.Moment) {
-    if (momentDate == null) {
-        return undefined;
-    } else {
-        return new Date(
-            momentDate.year(),
-            momentDate.month(),
-            momentDate.date(),
-            momentDate.hours(),
-            momentDate.minutes(),
-            momentDate.seconds(),
-            momentDate.milliseconds(),
-        );
-    }
-}
-
-/**
- * Translate a DateRange into a MomentDateRange, adjusting the local timezone
- * into the moment one (a no-op unless moment-timezone's setDefault has been
- * called).
- */
-export function fromDateRangeToMomentDateRange(dateRange: DateRange) {
-    if (dateRange == null) {
-        return undefined;
-    }
-    return [fromDateToMoment(dateRange[0]), fromDateToMoment(dateRange[1])] as MomentDateRange;
-}
-
-/**
- * Translate a MomentDateRange into a DateRange, adjusting the moment timezone
- * into the local one. This is a no-op unless moment-timezone's setDefault has
- * been called.
- */
-export function fromMomentDateRangeToDateRange(momentDateRange: MomentDateRange) {
-    if (momentDateRange == null) {
-        return undefined;
-    }
-    return [fromMomentToDate(momentDateRange[0]), fromMomentToDate(momentDateRange[1])] as DateRange;
-}
-
 export function getDatePreviousMonth(date: Date): Date {
     if (date.getMonth() === Months.JANUARY) {
         return new Date(date.getFullYear() - 1, Months.DECEMBER);
@@ -285,27 +206,32 @@ export function getDateNextMonth(date: Date): Date {
     }
 }
 
-/**
- * Returns a date string in the provided format localized to the provided locale.
- */
-export function toLocalizedDateString(momentDate: moment.Moment, format: string, locale: string | undefined) {
-    const adjustedMomentDate = locale != null ? momentDate.locale(locale) : momentDate;
-    return adjustedMomentDate.format(format);
+export function convert24HourMeridiem(hour: number, toPm: boolean): number {
+    if (hour < 0 || hour > 23) {
+        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
+    }
+    return toPm ? hour % 12 + 12 : hour % 12;
 }
 
-export function momentToString(momentDate: moment.Moment, format: DateFormat, locale: string | undefined) {
-    if (typeof format === "string") {
-        return toLocalizedDateString(momentDate, format, locale);
-    } else {
-        return format.dateToString(momentDate.toDate());
+export function getIsPmFrom24Hour(hour: number): boolean {
+    if (hour < 0 || hour > 23) {
+        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
     }
+    return hour >= 12;
 }
 
-export function stringToMoment(dateString: string, format: DateFormat, locale: string | undefined) {
-    if (typeof format === "string") {
-        return moment(dateString, format, locale);
-    } else {
-        const date = format.stringToDate(dateString);
-        return date === undefined ? moment.invalid() : moment(date);
+export function get12HourFrom24Hour(hour: number): number {
+    if (hour < 0 || hour > 23) {
+        throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
     }
+    const newHour = hour % 12;
+    return newHour === 0 ? 12 : newHour;
+}
+
+export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
+    if (hour < 1 || hour > 12) {
+        throw new Error(`hour must be between [1,12] inclusive: got ${hour}`);
+    }
+    const newHour = hour === 12 ? 0 : hour;
+    return isPm ? newHour + 12 : newHour;
 }

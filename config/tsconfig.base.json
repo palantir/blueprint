@@ -1,7 +1,9 @@
 {
-    "version": "2.6.2",
+    "version": "2.7.2",
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
         "declaration": true,
+        "esModuleInterop": true,
         "experimentalDecorators": true,
         "importHelpers": true,
         "jsx": "react",

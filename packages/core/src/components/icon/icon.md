@@ -5,7 +5,7 @@
 </div>
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>SVG icons in 2.0</h5>
+    <h4 class="pt-callout-title">SVG icons in 2.0</h4>
     Blueprint 2.0 introduced SVG icon support and moved icon resources to a separate __@blueprintjs/icons__ package.
     The `Icon` component now renders SVG paths and the icon classes are no longer used by any Blueprint React component.
     Icon font support has been preserved but should be considered a legacy feature that will be removed in a
@@ -22,7 +22,7 @@ a JSX element to use as the icon.
 @## JavaScript API
 
 The `Icon` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon` prop is typed
 such that editors can offer autocomplete for known icon names. The optional `iconSize` prop ensures
@@ -34,7 +34,8 @@ for 16px and 20px grids. The `icon` prop dictates which SVG is rendered and `ico
 which pixel grid is used: `iconSize >= 20` will use the 20px grid and smaller icons will use the 16px grid.
 
 ```tsx
-import { Icon, IconNames, Intent } from "@blueprintjs/core";
+import { Icon, Intent } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 
 // string literals are supported through IconName union type
 <Icon icon="cross" />
@@ -61,7 +62,7 @@ import { Icon, IconNames, Intent } from "@blueprintjs/core";
 @## CSS API
 
 <div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h5>Icon fonts are legacy in 2.0</h5>
+    <h4 class="pt-callout-title">Icon fonts are legacy in 2.0</h4>
     Blueprint's icon fonts should be considered a legacy feature and will be removed in a future major version.
     The SVGs rendered by the React component do not suffer from the blurriness of icon fonts, and browser
     support is equivalent.
@@ -83,7 +84,7 @@ Icon classes also support the four `.pt-intent-*` modifiers to color the image.
 ```
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h5>Non-standard sizes</h5>
+    <h4 class="pt-callout-title">Non-standard sizes</h4>
     Generally, font icons should only be used at either 16px or 20px. However, if a non-standard size is
     necessary, set a `font-size` that is whole multiple of 16 or 20 with the relevant size class.
     You can instead use the class `pt-icon` to make the icon inherit its size from surrounding text.

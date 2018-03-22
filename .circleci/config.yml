@@ -2,7 +2,7 @@ version: 2
 jobs:
   install-dependencies:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - restore_cache:
@@ -23,7 +23,7 @@ jobs:
 
   compile:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:
@@ -42,7 +42,7 @@ jobs:
 
   lint:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:
@@ -55,7 +55,7 @@ jobs:
 
   dist:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:
@@ -73,10 +73,10 @@ jobs:
 
   test:
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:8.10.0-browsers
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
-    parallelism: 7
+    parallelism: 4
     steps:
       - checkout
       - attach_workspace:
@@ -87,17 +87,14 @@ jobs:
           command: |
               case $CIRCLE_NODE_INDEX in \
               0) yarn lerna run test --scope '@blueprintjs/core' ;; \
-              1) yarn lerna run test --scope '@blueprintjs/datetime' ;; \
-              2) yarn lerna run test --scope '@blueprintjs/icons' ;; \
-              3) yarn lerna run test --scope '@blueprintjs/labs' ;; \
-              4) yarn lerna run test --scope '@blueprintjs/select' ;; \
-              5) yarn lerna run test --scope '@blueprintjs/table' ;; \
-              6) yarn lerna run test --scope '@blueprintjs/timezone' ;; \
+              1) yarn lerna run test --scope '@blueprintjs/{datetime,timezone}' ;; \
+              2) yarn lerna run test --scope '@blueprintjs/table' ;; \
+              3) yarn lerna run test --scope '@blueprintjs/{icons,labs,select}' ;; \
               esac
 
   deploy-preview:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:
@@ -116,7 +113,7 @@ jobs:
 
   deploy-npm:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:8.10.0
     steps:
       - checkout
       - attach_workspace:

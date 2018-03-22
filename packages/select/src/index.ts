@@ -4,7 +4,5 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-export * from "./common/classes";
-export * from "./common/itemRenderer";
-export * from "./common/predicate";
+export * from "./common";
 export * from "./components";

@@ -30,7 +30,7 @@ $dark-example-background-color: $dark-content-background-color;
 // so the heading will appear _below_ the navbar (since the navbar covers the top 50px of window).
 .docs-anchor {
   position: absolute;
-  margin-top: -$pt-navbar-height - $content-padding;
+  margin-top: -$content-padding * 2;
 }
 
 .docs-anchor-link {
@@ -56,24 +56,13 @@ $dark-example-background-color: $dark-content-background-color;
 .view-example-source {
   display: inline-block;
   margin-bottom: $pt-grid-size * 2;
-}
 
-// modifiers table
-.docs-modifiers {
-  margin-top: $heading-margin;
-  margin-bottom: $heading-margin / 2;
-
-  th:first-child,
-  td:first-child {
-    padding-left: 0;
+  &:hover {
+    text-decoration: none;
   }
 
-  tr:first-child th {
-    padding-top: 0;
-  }
-
-  tr:last-child td {
-    padding-bottom: 0;
+  .pt-icon {
+    margin-right: $pt-grid-size / 2;
   }
 }
 
@@ -107,7 +96,12 @@ $dark-example-background-color: $dark-content-background-color;
   vertical-align: top;
 
   > code {
+    display: inline-block;
     margin-bottom: $pt-grid-size;
+
+    &:empty {
+      display: none;
+    }
   }
 
   &[data-modifier="default"]:last-child > code {
@@ -115,16 +109,8 @@ $dark-example-background-color: $dark-content-background-color;
   }
 }
 
-// modifier labels
-.docs-modifiers code,
-.docs-example > code {
-  display: inline-block;
-  line-height: 1.4;
+[data-modifier] > code {
   white-space: nowrap;
-
-  &:empty {
-    display: none;
-  }
 }
 
 // color the modifier label depending on modifier type

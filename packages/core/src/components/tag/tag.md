@@ -2,6 +2,8 @@
 
 Tags are great for lists of strings.
 
+@reactExample TagExample
+
 @## CSS API
 
 An optional "remove" button can be added inside a tag as a `button.pt-tag-remove`. Also add the
@@ -22,7 +24,7 @@ will adapt to its container's background color.
 @## JavaScript API
 
 The `Tag` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 Tag components render `.pt-tag` elements with optional close buttons. Provide tag content as `children`.
 
@@ -41,4 +43,3 @@ Blueprint class name.
 
 @interface ITagProps
 
-@reactExample TagExample

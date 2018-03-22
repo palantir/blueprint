@@ -1,9 +1,9 @@
-/**
+/*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../common/classes";
 
@@ -86,7 +86,7 @@ export interface ICellProps extends IIntentProps, IProps {
     /**
      * A ref handle to capture the outer div of this cell. Used internally.
      */
-    cellRef?: (ref: HTMLElement) => void;
+    cellRef?: (ref: HTMLElement | null) => void;
 }
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;

@@ -4,13 +4,11 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
-import { Utils } from "../../common";
-import { IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
-
-import * as Classes from "../../common/classes";
+import { Classes, IIntentProps, IProps, Utils } from "../../common";
+import { Icon } from "../icon/icon";
 
 export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HTMLSpanElement> {
     /**
@@ -19,6 +17,22 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      * @default false
      */
     active?: boolean;
+
+    /**
+     * Whether the tag should visually respond to user interactions. If set
+     * to `true`, hovering over the tag will change its color and mouse cursor.
+     *
+     * Recommended when `onClick` is also defined.
+     *
+     * @default false
+     */
+    interactive?: boolean;
+
+    /**
+     * Callback invoked when the tag is clicked.
+     * Recommended when `interactive` is `true`.
+     */
+    onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 
     /**
      * Click handler for remove button.
@@ -31,26 +45,29 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
     public static displayName = "Blueprint2.Tag";
 
     public render() {
-        const { active, className, intent, onRemove } = this.props;
+        const { active, children, className, intent, interactive, onRemove, ...htmlProps } = this.props;
+        const isRemovable = Utils.isFunction(onRemove);
         const tagClasses = classNames(
             Classes.TAG,
             Classes.intentClass(intent),
             {
-                [Classes.TAG_REMOVABLE]: onRemove != null,
+                [Classes.TAG_REMOVABLE]: isRemovable,
                 [Classes.ACTIVE]: active,
+                [Classes.INTERACTIVE]: interactive,
             },
             className,
         );
-        const button = Utils.isFunction(onRemove) ? (
-            <button type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick} />
-        ) : (
-            undefined
-        );
+        const isLarge = tagClasses.indexOf(Classes.LARGE) >= 0;
+        const removeButton = isRemovable ? (
+            <button type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick}>
+                <Icon icon="small-cross" iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD} />
+            </button>
+        ) : null;
 
         return (
-            <span {...removeNonHTMLProps(this.props)} className={tagClasses}>
-                {this.props.children}
-                {button}
+            <span {...htmlProps} className={tagClasses}>
+                {children}
+                {removeButton}
             </span>
         );
     }

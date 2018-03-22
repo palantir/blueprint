@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Generates data for packages/docs-app
  */
 
@@ -121,13 +121,16 @@ function generateVersionsData() {
 
         console.info("[docs-data] Major versions found:", majorVersions.join(", "));
 
-        fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_VERSIONS_FIELENAME), JSON.stringify(strMapToObj(majorVersionMap), null, 2));
+        fs.writeFileSync(
+            path.join(GENERATED_SRC_DIR, DOCS_VERSIONS_FIELENAME),
+            JSON.stringify(strMapToObj(majorVersionMap), null, 2),
+        );
     });
 }
 
 function strMapToObj(strMap) {
-    let obj = Object.create(null);
-    for (let [k,v] of strMap) {
+    const obj = Object.create(null);
+    for (const [k, v] of strMap) {
         // We don’t escape the key '__proto__'
         // which can cause problems on older engines
         obj[k] = v;

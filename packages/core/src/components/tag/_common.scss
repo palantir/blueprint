@@ -1,6 +1,9 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
+$tag-default-color: $gray1 !default;
+$dark-tag-default-color: $gray5 !default;
+
 $tag-icon-spacing: 3px !default;
 $tag-height: $pt-grid-size * 2 !default;
 $tag-padding: ($tag-height - $pt-icon-size-standard) / 2 !default;
@@ -10,12 +13,14 @@ $tag-height-large: $pt-grid-size * 3 !default;
 $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 
 @mixin pt-tag() {
+  @include pt-tag-interactive($tag-default-color, 1);
+
   display: inline-block;
   position: relative;
   border: none;
   border-radius: $pt-border-radius;
   box-shadow: none;
-  background-color: $gray1;
+  background-color: $tag-default-color;
   min-width: $tag-height;
   padding: $tag-padding ($tag-padding * 3);
   line-height: $pt-icon-size-standard;
@@ -27,7 +32,9 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   }
 
   .pt-dark & {
-    background-color: $gray5;
+    @include pt-tag-interactive($dark-tag-default-color, 1);
+
+    background-color: $dark-tag-default-color;
     color: $pt-text-color;
   }
 
@@ -56,33 +63,70 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 }
 
 @mixin pt-tag-intent($background-color, $text-color: $white) {
+  @include pt-tag-interactive($background-color, 1);
+
   background: $background-color;
   color: $text-color;
 }
 
 @mixin pt-tag-minimal() {
   &:not([class*="pt-intent-"]) {
+    @include pt-tag-minimal-interactive($tag-default-color, 0.2);
+
     background-color: rgba($gray3, 0.2);
     color: $pt-text-color;
 
     .pt-dark & {
+      @include pt-tag-minimal-interactive($dark-tag-default-color, 0.2);
+
       color: $pt-dark-text-color;
     }
   }
 }
 
 @mixin pt-tag-minimal-intent($background-color, $text-color, $dark-text-color) {
+  @include pt-tag-minimal-interactive($background-color, 0.15);
+
   background-color: rgba($background-color, 0.15);
   color: $text-color;
 
   .pt-dark & {
+    @include pt-tag-minimal-interactive($background-color, 0.25);
+
     background-color: rgba($background-color, 0.25);
     color: $dark-text-color;
   }
 }
 
+@mixin pt-tag-interactive($background-color, $opacity) {
+  &.pt-interactive {
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba($background-color, $opacity - 0.15);
+    }
+
+    &:active {
+      background-color: rgba($background-color, $opacity - 0.3);
+    }
+  }
+}
+
+@mixin pt-tag-minimal-interactive($background-color, $opacity) {
+  &.pt-interactive {
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba($background-color, $opacity + 0.1);
+    }
+
+    &:active {
+      background-color: rgba($background-color, $opacity + 0.2);
+    }
+  }
+}
+
 @mixin pt-tag-remove() {
-  @include pt-icon();
   position: absolute;
   top: 0;
   right: 0;
@@ -103,12 +147,17 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
     opacity: 1;
   }
 
-  &::before {
+  // CSS API support
+  &:empty::before {
+    @include pt-icon();
     content: $pt-icon-small-cross;
   }
 
   .pt-large & {
-    @include pt-icon-sized($pt-icon-size-large);
     padding: $tag-padding-large;
+
+    &:empty::before {
+      @include pt-icon-sized($pt-icon-size-large);
+    }
   }
 }

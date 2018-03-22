@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import PopperJS from "popper.js";
 import * as React from "react";
 
@@ -49,11 +49,7 @@ const VALID_POSITIONS: Array<Position | "auto"> = [
     Position.LEFT_BOTTOM,
 ];
 
-const POSITION_OPTIONS = VALID_POSITIONS.map((p: Position) => (
-    <option key={p} value={p}>
-        {p}
-    </option>
-));
+const POSITION_OPTIONS = VALID_POSITIONS.map(p => <option key={p} value={p} children={p} />);
 
 const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
 
@@ -153,6 +149,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                 <h5 key="app">Appearance</h5>,
                 <FormGroup
                     helperText="May be overridden to prevent overflow"
+                    key="position"
                     label="Position when opened"
                     labelFor="position"
                 >
@@ -252,12 +249,16 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
     private getContents(index: number) {
         return [
             <div>
-                <h5>Popover title</h5>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua.
-                </p>
-                <button className={classNames(Classes.BUTTON, Classes.POPOVER_DISMISS)}>Dismiss</button>
+                <h5>Confirm deletion</h5>
+                <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
+                <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 15 }}>
+                    <Button className={Classes.POPOVER_DISMISS} style={{ marginRight: 10 }}>
+                        Cancel
+                    </Button>
+                    <Button intent={Intent.DANGER} className={Classes.POPOVER_DISMISS}>
+                        Delete
+                    </Button>
+                </div>
             </div>,
             <div>
                 <label className={Classes.LABEL}>

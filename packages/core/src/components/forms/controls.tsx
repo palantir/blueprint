@@ -10,7 +10,7 @@
 // we need some empty interfaces to show up in docs
 // tslint:disable no-empty-interface
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -24,6 +24,9 @@ export interface IControlProps extends IProps, HTMLInputProps {
     /** Whether the control is checked. */
     checked?: boolean;
 
+    /** JSX label for the control. */
+    children?: React.ReactNode;
+
     /** Whether the control is initially checked (uncontrolled mode). */
     defaultChecked?: boolean;
 
@@ -31,7 +34,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
     disabled?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: (ref: HTMLInputElement) => any;
+    inputRef?: (ref: HTMLInputElement | null) => any;
 
     /** Whether the control is inline. */
     inline?: boolean;
@@ -39,8 +42,8 @@ export interface IControlProps extends IProps, HTMLInputProps {
     /**
      * Text label for the control.
      *
-     * This prop actually supports JSX elements, but TypeScript will throw an error because
-     * `HTMLAttributes` only allows strings. Use `labelElement` to supply a JSX element in TypeScript.
+     * Use `children` or `labelElement` to supply JSX content. This prop actually supports JSX elements,
+     * but TypeScript will throw an error because `HTMLAttributes` only allows strings.
      */
     label?: string;
 

@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
@@ -115,7 +115,7 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} iconSize={Icon.SIZE_LARGE} />
-                <h5>{title}</h5>
+                <h4 className={Classes.DIALOG_HEADER_TITLE}>{title}</h4>
                 {this.maybeRenderCloseButton()}
             </div>
         );

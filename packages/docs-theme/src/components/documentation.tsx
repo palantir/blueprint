@@ -4,22 +4,31 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import { isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
-import { Dialog, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
+import { Classes, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Overlay, Utils } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
 import { ITagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
+import { NavButton } from "./navButton";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
+import { INavMenuItemProps } from "./navMenuItem";
 import { Page } from "./page";
+import { addScrollbarStyle } from "./scrollbar";
 import { ApiLink } from "./typescript/apiLink";
 
 export interface IDocumentationProps extends IProps {
+    /**
+     * An element to place above the documentation, along the top of the viewport.
+     * For best results, use a `Banner` from this package.
+     */
+    banner?: JSX.Element;
+
     /**
      * Default page to render in the absence of a hash route.
      */
@@ -30,6 +39,19 @@ export interface IDocumentationProps extends IProps {
      * This theme requires the Markdown plugin, and optionally supports Typescript and KSS data.
      */
     docs: IDocsData;
+
+    /**
+     * Elements to render on the bottom of the sidebar, below the nav menu.
+     * This typically contains copyright information.
+     */
+    footer?: React.ReactNode;
+
+    /**
+     * Elements to render on the top of the sidebar, above the search box.
+     * This typically contains logo, title and navigation links.
+     * Use `.docs-nav-title` on an element for proper padding relative to other sidebar elements.
+     */
+    header: React.ReactNode;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -45,21 +67,14 @@ export interface IDocumentationProps extends IProps {
      */
     renderViewSourceLinkText?: (entry: ITsDocBase) => React.ReactNode;
 
+    /**
+     * Callback invoked to render the clickable nav menu items. (Nested menu structure is handled by the library.)
+     * The default implementation renders a `NavMenuItem` element, which is exported from this package.
+     */
+    renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
+
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: ITagRendererMap;
-
-    /**
-     * Elements to render on the left side of the navbar, typically logo and title.
-     * All elements will be wrapped in a single `.pt-navbar-group`.
-     * @default "Documentation"
-     */
-    navbarLeft?: React.ReactNode;
-
-    /**
-     * Element to render on the right side of the navbar, typically links and actions.
-     * All elements will be wrapped in a single `.pt-navbar-group`.
-     */
-    navbarRight?: React.ReactNode;
 }
 
 export interface IDocumentationState {
@@ -67,15 +82,12 @@ export interface IDocumentationState {
     activePageId: string;
     activeSectionId: string;
     isApiBrowserOpen: boolean;
+    isNavigatorOpen: boolean;
 }
 
 @HotkeysTarget
 export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
     public static childContextTypes = DocumentationContextTypes;
-
-    public static defaultProps = {
-        navbarLeft: "Documentation",
-    };
 
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
@@ -94,6 +106,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             activePageId: props.defaultPageId,
             activeSectionId: props.defaultPageId,
             isApiBrowserOpen: false,
+            isNavigatorOpen: false,
         };
 
         // build up static map of all references to their page, for navigation / routing
@@ -108,7 +121,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { docs, renderViewSourceLinkText } = this.props;
         return {
             getDocsData: () => docs,
-            renderBlock: block => renderBlock(block, this.props.tagRenderers),
+            renderBlock: block => renderBlock(block, this.props.tagRenderers, Classes.RUNNING_TEXT_SMALL),
             renderType: hasTypescriptData(docs)
                 ? type => linkify(type, docs.typescript, name => <ApiLink key={name} name={name} />)
                 : type => type,
@@ -122,32 +135,46 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public render() {
         const { activeApiMember, activePageId, activeSectionId, isApiBrowserOpen } = this.state;
         const { nav, pages } = this.props.docs;
-        const examplesOnly = location.search === "?examples";
+        const rootClasses = classNames(
+            "docs-root",
+            { "docs-examples-only": location.search === "?examples" },
+            this.props.className,
+        );
+        const apiClasses = classNames("docs-api-overlay", this.props.className);
         return (
-            <div className={classNames("docs-root", { "docs-examples-only": examplesOnly }, this.props.className)}>
+            <div className={rootClasses}>
+                {this.props.banner}
                 <div className="docs-app">
-                    <div className="pt-navbar docs-navbar docs-flex-row">
-                        <div className="pt-navbar-group pt-navbar-group-left">{this.props.navbarLeft}</div>
-                        <div className="pt-navbar-group">
-                            <Navigator items={nav} onNavigate={this.handleNavigation} />
+                    <div className="docs-nav-wrapper">
+                        <div className="docs-nav" ref={this.refHandlers.nav}>
+                            {this.props.header}
+                            <div className="docs-nav-divider" />
+                            <NavButton
+                                icon="search"
+                                hotkey="shift + s"
+                                text="Search..."
+                                onClick={this.handleOpenNavigator}
+                            />
+                            <div className="docs-nav-divider" />
+                            <NavMenu
+                                activePageId={activePageId}
+                                activeSectionId={activeSectionId}
+                                items={nav}
+                                level={0}
+                                onItemClick={this.handleNavigation}
+                                renderNavMenuItem={this.props.renderNavMenuItem}
+                            />
+                            {this.props.footer}
                         </div>
-                        <div className="pt-navbar-group pt-navbar-group-right">{this.props.navbarRight}</div>
                     </div>
-                    <div className="docs-nav" ref={this.refHandlers.nav}>
-                        <NavMenu
-                            items={nav}
-                            activePageId={activePageId}
-                            activeSectionId={activeSectionId}
-                            onItemClick={this.handleNavigation}
-                        />
-                    </div>
-                    <article className="docs-content" ref={this.refHandlers.content} role="main">
+                    <main className="docs-content-wrapper pt-fill" ref={this.refHandlers.content} role="main">
                         <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
-                    </article>
-                    <Dialog className="docs-api-dialog" isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
-                        <TypescriptExample tag="typescript" value={activeApiMember} />
-                    </Dialog>
+                    </main>
                 </div>
+                <Overlay className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
+                    <TypescriptExample tag="typescript" value={activeApiMember} />
+                </Overlay>
+                <Navigator isOpen={this.state.isNavigatorOpen} items={nav} onClose={this.handleCloseNavigator} />
             </div>
         );
     }
@@ -155,6 +182,13 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     public renderHotkeys() {
         return (
             <Hotkeys>
+                <Hotkey
+                    global={true}
+                    combo="shift+s"
+                    label="Open navigator"
+                    onKeyDown={this.handleOpenNavigator}
+                    preventDefault={true}
+                />
                 <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection} />
                 <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection} />
             </Hotkeys>
@@ -162,6 +196,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     }
 
     public componentWillMount() {
+        addScrollbarStyle();
         this.updateHash();
     }
 
@@ -207,11 +242,14 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         this.updateHash();
     };
 
+    private handleCloseNavigator = () => this.setState({ isNavigatorOpen: false });
+    private handleOpenNavigator = () => this.setState({ isNavigatorOpen: true });
+
     private handleNavigation = (activeSectionId: string) => {
         // only update state if this section reference is valid
         const activePageId = this.routeToPage[activeSectionId];
         if (activeSectionId !== undefined && activePageId !== undefined) {
-            this.setState({ activePageId, activeSectionId });
+            this.setState({ activePageId, activeSectionId, isNavigatorOpen: false });
             this.scrollToActiveSection();
         }
     };
@@ -220,7 +258,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     private handlePreviousSection = () => this.shiftSection(-1);
 
     private handleScroll = () => {
-        const activeSectionId = getScrolledReference(100, this.contentElement);
+        const activeSectionId = getScrolledReference(100, document.documentElement);
         if (activeSectionId == null) {
             return;
         }
@@ -232,9 +270,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navMenuElement = this.navElement
-            .querySelector(`a[href="#${activeSectionId}"]`)
-            .closest(".docs-menu-item-page");
+        const navMenuElement = this.navElement.querySelector(`a[href="#${activeSectionId}"]`);
         const innerBounds = navMenuElement.getBoundingClientRect();
         const outerBounds = this.navElement.getBoundingClientRect();
         if (innerBounds.top < outerBounds.top || innerBounds.bottom > outerBounds.bottom) {
@@ -244,7 +280,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
 
     private scrollToActiveSection() {
         if (this.contentElement != null) {
-            scrollToReference(this.state.activeSectionId, this.contentElement);
+            scrollToReference(this.state.activeSectionId, document.documentElement);
         }
     }
 
@@ -273,13 +309,13 @@ function queryHTMLElement(parent: Element, selector: string) {
 /**
  * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
  */
-function getScrolledReference(offset: number, container: HTMLElement, scrollParent = document.scrollingElement) {
-    const headings = Array.from(container.querySelectorAll(".docs-title"));
+function getScrolledReference(offset: number, scrollContainer: HTMLElement) {
+    const headings = Array.from(scrollContainer.querySelectorAll(".docs-title"));
     while (headings.length > 0) {
         // iterating in reverse order (popping from end / bottom of page)
         // so the first element below the threshold is the one we want.
         const element = headings.pop() as HTMLElement;
-        if (element.offsetTop < scrollParent.scrollTop + offset) {
+        if (element.offsetTop < scrollContainer.scrollTop + offset) {
             // relying on DOM structure to get reference
             return element.querySelector("[data-route]").getAttribute("data-route");
         }
@@ -288,16 +324,16 @@ function getScrolledReference(offset: number, container: HTMLElement, scrollPare
 }
 
 /**
- * Scroll the scrollParent such that the reference heading appears at the top of the viewport.
+ * Scroll the scroll container such that the reference heading appears at the top of the viewport.
  */
-function scrollToReference(reference: string, container: HTMLElement, scrollParent = document.scrollingElement) {
+function scrollToReference(reference: string, scrollContainer: HTMLElement) {
     // without rAF, on initial load this would scroll to the bottom because the CSS had not been applied.
     // with rAF, CSS is applied before updating scroll positions so all elements are in their correct places.
     requestAnimationFrame(() => {
-        const headingAnchor = queryHTMLElement(container, `a[data-route="${reference}"]`);
+        const headingAnchor = queryHTMLElement(scrollContainer, `a[data-route="${reference}"]`);
         if (headingAnchor != null && headingAnchor.parentElement != null) {
             const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
-            scrollParent.scrollTop = scrollOffset;
+            scrollContainer.scrollTop = scrollOffset;
         }
     });
 }

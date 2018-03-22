@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -15,23 +15,14 @@ import {
     InputGroup,
     IOverlayableProps,
     IOverlayProps,
-    Menu,
     Overlay,
     Utils,
 } from "@blueprintjs/core";
 
-import * as Classes from "../../common/classes";
-import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, IListItemsProps } from "../../common";
+import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface IOmnibarProps<T> extends IListItemsProps<T> {
-    /**
-     * React child to render when query is empty.
-     */
-    initialContent?: React.ReactChild;
-
-    /** React child to render when filtering items returns zero results. */
-    noResults?: React.ReactChild;
-
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
      * If you want to control the filter input, you can pass `value` and `onChange` here
@@ -68,14 +59,14 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
 
 export interface IOmnibarState<T> extends IOverlayableProps, IBackdropProps {
     activeItem?: T;
-    query?: string;
+    query: string;
 }
 
 export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
     public static displayName = "Blueprint2.Omnibar";
 
     public static ofType<T>() {
-        return (Omnibar as any) as new () => Omnibar<T>;
+        return Omnibar as new (props: IOmnibarProps<T>) => Omnibar<T>;
     }
 
     public state: IOmnibarState<T> = {
@@ -83,19 +74,20 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
     };
 
     private TypedQueryList = QueryList.ofType<T>();
-    private queryList: QueryList<T>;
+    private queryList?: QueryList<T> | null;
     private refHandlers = {
-        queryList: (ref: QueryList<T>) => (this.queryList = ref),
+        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { initialContent, isOpen, inputProps, noResults, overlayProps, ...restProps } = this.props;
+        const { initialContent = null, isOpen, inputProps, overlayProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
                 {...restProps}
                 activeItem={this.state.activeItem}
+                initialContent={initialContent}
                 onActiveItemChange={this.handleActiveItemChange}
                 onItemSelect={this.handleItemSelect}
                 query={this.state.query}
@@ -138,39 +130,17 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                         {...inputProps}
                         onChange={this.handleQueryChange}
                     />
-                    {this.maybeRenderMenu(listProps)}
+                    {listProps.itemList}
                 </div>
             </Overlay>
         );
     };
 
-    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
-        const renderedItems = items.map(renderItem).filter(item => item != null);
-        return renderedItems.length > 0 ? renderedItems : this.props.noResults;
-    }
-
-    private maybeRenderMenu(listProps: IQueryListRendererProps<T>) {
-        const { initialContent } = this.props;
-        let menuChildren: any;
-
-        if (!this.isQueryEmpty()) {
-            menuChildren = this.renderItems(listProps);
-        } else if (initialContent != null) {
-            menuChildren = initialContent;
-        }
-
-        if (menuChildren != null) {
-            return <Menu ulRef={listProps.itemsParentRef}>{menuChildren}</Menu>;
-        }
-
-        return undefined;
-    }
-
     private isQueryEmpty = () => this.state.query.length === 0;
 
-    private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
+    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
 
-    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
+    private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         if (!this.isQueryEmpty()) {
             Utils.safeInvoke(this.props.onItemSelect, item, event);
         }

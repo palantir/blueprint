@@ -4,13 +4,15 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 
+// NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
+// Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
 export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps {
     /**
      * Whether the input is non-interactive.
@@ -20,7 +22,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     disabled?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: (ref: HTMLInputElement) => any;
+    inputRef?: (ref: HTMLInputElement | null) => any;
 
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side of the input group,
@@ -48,7 +50,7 @@ export interface IInputGroupState {
     rightElementWidth?: number;
 }
 
-export class InputGroup extends React.PureComponent<HTMLInputProps & IInputGroupProps, IInputGroupState> {
+export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInputProps, IInputGroupState> {
     public static displayName = "Blueprint2.InputGroup";
 
     public state: IInputGroupState = {

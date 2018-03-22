@@ -3,9 +3,6 @@
     "compilerOptions": {
         "declaration": false,
         "lib": ["dom", "es5", "es6"],
-        "noImplicitAny": false,
-        "noUnusedLocals": false,
-        "noUnusedParameters": false,
         "outDir": "../dist"
     }
 }

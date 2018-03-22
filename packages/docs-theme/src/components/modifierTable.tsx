@@ -4,31 +4,42 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Classes } from "@blueprintjs/core";
 import * as React from "react";
 
-import { IKssModifier } from "documentalist/dist/client";
+export interface IModifierTableProps {
+    /** Message to display when children is empty. */
+    emptyMessage?: string;
 
-function renderModifier(modifier: IKssModifier, index: number) {
-    return (
-        <tr key={index}>
-            <td data-modifier={modifier.name}>
-                <code>{modifier.name}</code>
-            </td>
-            <td dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
-        </tr>
-    );
+    /** Title of the first column, describing the type of each row in the table. */
+    title: string;
 }
 
-export const ModifierTable: React.SFC<{ modifiers: IKssModifier[] }> = ({ modifiers }) => (
-    <div className="docs-modifiers">
+export const ModifierTable: React.SFC<IModifierTableProps> = ({ children, emptyMessage, title }) => (
+    <div className="docs-modifiers-table">
         <table className="pt-html-table">
             <thead>
                 <tr>
-                    <th>Modifier</th>
+                    <th>{title}</th>
                     <th>Description</th>
                 </tr>
             </thead>
-            <tbody>{modifiers.map(renderModifier)}</tbody>
+            <tbody>{isEmpty(children) ? renderEmptyState(emptyMessage) : children}</tbody>
         </table>
     </div>
 );
+
+function isEmpty(children: React.ReactNode) {
+    const array = React.Children.toArray(children);
+    return array.length === 0 || array.filter(item => !!item).length === 0;
+}
+
+function renderEmptyState(message = "Nothing here.") {
+    return (
+        <tr>
+            <td colSpan={2}>
+                <em className={Classes.TEXT_MUTED}>{message}</em>
+            </td>
+        </tr>
+    );
+}

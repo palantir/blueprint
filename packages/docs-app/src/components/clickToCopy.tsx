@@ -4,13 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
-import { IProps, Keys, removeNonHTMLProps, Utils } from "@blueprintjs/core";
+import { HTMLDivProps, IProps, Keys, removeNonHTMLProps, Utils } from "@blueprintjs/core";
 import { createKeyEventHandler } from "@blueprintjs/docs-theme";
 
-export interface IClickToCopyProps extends IProps, React.HTMLProps<HTMLDivElement> {
+export interface IClickToCopyProps extends IProps, HTMLDivProps {
     /**
      * Additional class names to apply after value has been copied
      * @default "docs-clipboard-copied"

@@ -1,10 +1,10 @@
-/**
+/*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-// tslint:disable
+// tslint:disable:max-classes-per-file no-conditional-assignment
 
 const LOGO_Y_OFFSET = 250;
 const SHADOW_DEPTH = 0.3;
@@ -66,7 +66,7 @@ export class Matrix {
         return this.matrix([1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1]);
     }
 
-    public scale(sx?, sy?, sz?) {
+    public scale(sx?: number, sy?: number, sz?: number) {
         if (sx == null) {
             sx = 1;
         }
@@ -100,6 +100,7 @@ export class Matrix {
 
 const M = (m?: IMatrixTuple) => new Matrix(m);
 
+// tslint:disable-next-line:no-shadowed-variable - complains about <T>, unsure why
 export abstract class Transformable<T extends Transformable<any>> {
     public abstract transform(matrix: Matrix): T;
 
@@ -125,9 +126,6 @@ export abstract class Transformable<T extends Transformable<any>> {
 }
 
 export class Quaternion {
-    private static PIXELS_PER_RADIAN = 2000;
-    private static POOL = new Quaternion();
-
     public static xy(x: number, y: number) {
         const quatX = Quaternion.pointAngle(P(0, 1, 0), x / Quaternion.PIXELS_PER_RADIAN);
         const quatY = Quaternion.pointAngle(P(1, 0, 0), y / Quaternion.PIXELS_PER_RADIAN);
@@ -146,13 +144,16 @@ export class Quaternion {
         return new Quaternion(scale * p.x, scale * p.y, scale * p.z, w);
     }
 
+    private static PIXELS_PER_RADIAN = 2000;
+    private static POOL = new Quaternion();
+
     public constructor(public x = 0, public y = 0, public z = 0, public w = 0) {}
 
     public copy() {
         return new Quaternion(this.x, this.y, this.z, this.w);
     }
 
-    public multiply(q) {
+    public multiply(q: Quaternion) {
         const pool = Quaternion.POOL;
         pool.x = this.w * q.x + this.x * q.w + this.y * q.z - this.z * q.y;
         pool.y = this.w * q.y + this.y * q.w + this.z * q.x - this.x * q.z;
@@ -166,19 +167,20 @@ export class Quaternion {
     }
 
     public toMatrix() {
-        const t = this;
+        // tslint:disable-next-line:no-this-assignment
+        const { w, x, y, z } = this;
         return M([
-            1 - 2 * (t.y * t.y + t.z * t.z),
-            2 * (t.x * t.y - t.w * t.z),
-            2 * (t.x * t.z + t.w * t.y),
+            1 - 2 * (y * y + z * z),
+            2 * (x * y - w * z),
+            2 * (x * z + w * y),
             0,
-            2 * (t.x * t.y + t.w * t.z),
-            1 - 2 * (t.x * t.x + t.z * t.z),
-            2 * (t.y * t.z - t.w * t.x),
+            2 * (x * y + w * z),
+            1 - 2 * (x * x + z * z),
+            2 * (y * z - w * x),
             0,
-            2 * (t.x * t.z - t.w * t.y),
-            2 * (t.y * t.z + t.w * t.x),
-            1 - 2 * (t.x * t.x + t.y * t.y),
+            2 * (x * z - w * y),
+            2 * (y * z + w * x),
+            1 - 2 * (x * x + y * y),
             0,
             0,
             0,
@@ -282,7 +284,7 @@ export class Face extends Transformable<Face> {
         ctx.beginPath();
         for (let i = 0; i < points.length; i++) {
             const p = points[i];
-            if (i == 0) {
+            if (i === 0) {
                 ctx.moveTo(p.x, p.y);
             } else {
                 ctx.lineTo(p.x, p.y);
@@ -326,26 +328,24 @@ export const F = (points: Point[]) => new Face(points);
 
 export class Shape extends Transformable<Shape> {
     public static JOIN(...shapes: Shape[]) {
-        const xorfaces: { [serialized: string]: Face } = {};
+        const xorFaces: { [serialized: string]: Face } = {};
         for (const shape of shapes) {
             for (const face of shape.faces) {
-                const consistent = face.points.slice();
-                consistent.sort((a, b) => a.x - b.x);
-                consistent.sort((a, b) => a.y - b.y);
-                consistent.sort((a, b) => a.z - b.z);
+                const consistent = face.points
+                    .slice()
+                    .sort((a, b) => a.x - b.x)
+                    .sort((a, b) => a.y - b.y)
+                    .sort((a, b) => a.z - b.z);
                 const key = JSON.stringify(consistent);
-                if (xorfaces[key] != null) {
-                    delete xorfaces[key];
+                if (xorFaces[key] != null) {
+                    delete xorFaces[key];
                 } else {
-                    xorfaces[key] = face;
+                    xorFaces[key] = face;
                 }
             }
         }
 
-        const faces = [] as Face[];
-        for (const key in xorfaces) {
-            faces.push(xorfaces[key]);
-        }
+        const faces = Object.keys(xorFaces).map(key => xorFaces[key]);
         return new Shape(faces);
     }
 
@@ -372,18 +372,23 @@ export class Shape extends Transformable<Shape> {
         super();
     }
 
-    public fill(color: string) {
+    public eachFace(callback: (f: Face) => void) {
         for (const f of this.faces) {
-            f.fill = color;
+            callback(f);
         }
         return this;
     }
 
+    public setEachFace<K extends keyof Face>(key: K, value: Face[K]) {
+        return this.eachFace(f => (f[key] = value));
+    }
+
+    public fill(color: string) {
+        return this.setEachFace("fill", color);
+    }
+
     public stroke(color: string) {
-        for (const f of this.faces) {
-            f.stroke = color;
-        }
-        return this;
+        return this.setEachFace("stroke", color);
     }
 
     public order(orders: number[]) {
@@ -393,10 +398,7 @@ export class Shape extends Transformable<Shape> {
     }
 
     public transform(m: Matrix): Shape {
-        for (const f of this.faces) {
-            f.transform(m);
-        }
-        return this;
+        return this.eachFace(f => f.transform(m));
     }
 }
 
@@ -435,9 +437,7 @@ export class Corner extends Transformable<Corner> {
     }
 }
 
-export interface IRenderableVisitor {
-    (object: any, transform: Matrix): void;
-}
+export type IRenderableVisitor = (object: any, transform: Matrix) => void;
 
 export class SceneModel extends Transformable<SceneModel> {
     public static ISOMETRIC = (() => {
@@ -449,7 +449,7 @@ export class SceneModel extends Transformable<SceneModel> {
             .matrix(shear);
     })();
 
-    public children = [];
+    public children: Array<Transformable<any>> = [];
     public xform = M();
 
     public constructor() {
@@ -471,7 +471,7 @@ export class SceneModel extends Transformable<SceneModel> {
         return this;
     }
 
-    public add(child: any) {
+    public add(child: Transformable<any>) {
         this.children.push(child);
         return this;
     }
@@ -503,26 +503,20 @@ export class SceneModel extends Transformable<SceneModel> {
 // Transitioners
 // # https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
 export const T = {
-    EASE_IN: (callback: IAnimatedCallback) => {
+    EASE_IN: (callback: IAnimatedCallback): IAnimatedCallback => {
         return t => callback(t * t * t * t * t);
     },
-    EASE_OUT: (callback: IAnimatedCallback) => {
-        return t => callback((t = t - 1) * t * t * t * t + 1);
+    EASE_IN_EXP: (e: number, callback: IAnimatedCallback): IAnimatedCallback => {
+        return t => callback(t === 0 ? 0 : Math.pow(e, 10 * (t - 1)));
     },
-    EASE_IN_OUT: (callback: IAnimatedCallback) => {
+    EASE_IN_OUT: (callback: IAnimatedCallback): IAnimatedCallback => {
         return t => callback((t *= 2) < 1 ? 1 / 2 * t * t * t * t : -1 / 2 * ((t -= 2) * t * t * t - 2));
     },
-    EASE_IN_EXP: (e: number, callback: IAnimatedCallback) => {
-        return t => callback(t == 0 ? 0 : Math.pow(e, 10 * (t - 1)));
-    },
-    EASE_OUT_EXP: (e: number, callback: IAnimatedCallback) => {
-        return t => callback(t == 1 ? 1 : 1 - Math.pow(e, -10 * t));
-    },
-    EASE_IN_OUT_EXP: (e, callback: IAnimatedCallback) => {
+    EASE_IN_OUT_EXP: (e: number, callback: IAnimatedCallback): IAnimatedCallback => {
         return t => {
-            if (t == 0) {
+            if (t === 0) {
                 callback(0);
-            } else if (t == 1) {
+            } else if (t === 1) {
                 callback(1);
             } else if ((t *= 2) < 1) {
                 callback(1 / 2 * Math.pow(e, 10 * (t - 1)));
@@ -531,7 +525,13 @@ export const T = {
             }
         };
     },
-    INTERPOLATE: (from: number, to: number, callback: IAnimatedCallback) => {
+    EASE_OUT: (callback: IAnimatedCallback): IAnimatedCallback => {
+        return t => callback((t = t - 1) * t * t * t * t + 1);
+    },
+    EASE_OUT_EXP: (e: number, callback: IAnimatedCallback): IAnimatedCallback => {
+        return t => callback(t === 1 ? 1 : 1 - Math.pow(e, -10 * t));
+    },
+    INTERPOLATE: (from: number, to: number, callback: IAnimatedCallback): IAnimatedCallback => {
         return (t: number) => callback((to - from) * t + from);
     },
 };
@@ -540,19 +540,15 @@ export interface ITickable {
     tick: (t: number) => boolean;
 }
 
-export interface IAnimatedCallback {
-    (t: number): void;
-}
+export type IAnimatedCallback = (t: number) => void;
 
 export interface IKeyFrame {
     duration: number;
     callback?: IAnimatedCallback;
-    starttime?: number;
+    startTime?: number;
 }
 
-export interface IRenderCallback {
-    (): void;
-}
+export type IRenderCallback = () => void;
 
 export class Accumulator implements ITickable {
     public alpha = 0.08; // convergence ratio
@@ -562,7 +558,7 @@ export class Accumulator implements ITickable {
         this.value = this.target;
     }
 
-    public tick(elapsed: number) {
+    public tick(_elapsed: number) {
         this.value = this.alpha * this.target + (1.0 - this.alpha) * this.value;
         if (this.callback != null) {
             this.callback(this.value);
@@ -572,9 +568,7 @@ export class Accumulator implements ITickable {
 }
 
 export class Timeline implements ITickable {
-    private queue = [] as IKeyFrame[];
-
-    public constructor() {}
+    private queue: IKeyFrame[] = [];
 
     public reset() {
         this.queue.length = 0;
@@ -587,23 +581,24 @@ export class Timeline implements ITickable {
     }
 
     public tween(duration: number, callback?: IAnimatedCallback) {
-        this.queue.push({ duration, callback } as IKeyFrame);
+        this.queue.push({ duration, callback });
         return this;
     }
 
     public tick(elapsed: number) {
-        if (this.queue.length == 0) {
+        if (this.queue.length === 0) {
             return false;
         }
 
         const anim = this.queue[0];
-        let { duration, callback, starttime } = anim;
+        const { duration, callback } = anim;
+        let { startTime } = anim;
 
-        if (starttime == null) {
-            anim.starttime = starttime = elapsed;
+        if (startTime == null) {
+            anim.startTime = startTime = elapsed;
         }
 
-        if (elapsed - starttime >= duration) {
+        if (elapsed - startTime >= duration) {
             if (callback != null) {
                 callback(1.0);
             }
@@ -611,7 +606,7 @@ export class Timeline implements ITickable {
             return this.queue.length > 0;
         } else {
             if (callback != null) {
-                callback((elapsed - starttime) / duration);
+                callback((elapsed - startTime) / duration);
             }
             return true;
         }
@@ -629,44 +624,54 @@ export class Ticker implements ITickable {
 
 export class Animator {
     private tickables: ITickable[] = [];
-    private starttime: number = 0;
+    private startTime: number = 0;
+    private frameId: number | undefined;
 
     public constructor(private render: IRenderCallback) {}
 
+    public accumulator(target: number) {
+        return this.add(new Accumulator(target));
+    }
+
     public ticker(callback: IRenderCallback) {
-        const ticker = new Ticker(callback);
-        this.tickables.push(ticker);
-        return ticker;
+        return this.add(new Ticker(callback));
     }
 
     public timeline() {
-        const timeline = new Timeline();
-        this.tickables.push(timeline);
-        return timeline;
+        return this.add(new Timeline());
     }
 
-    public accumulator(target: number, callback?: IAnimatedCallback) {
-        const accumulator = new Accumulator(target, callback);
-        this.tickables.push(accumulator);
-        return accumulator;
+    public isRunning() {
+        return this.frameId !== undefined;
     }
 
     public start() {
-        this.starttime = new Date().valueOf();
-        requestAnimationFrame(this.tick);
+        this.startTime = new Date().valueOf();
+        this.nextFrame();
     }
 
-    private tick = (t: number) => {
-        const elapsed = new Date().valueOf() - this.starttime;
-        let again = false;
-        for (const tickable of this.tickables) {
-            again = tickable.tick(elapsed) || again;
-        }
+    public stop() {
+        cancelAnimationFrame(this.frameId);
+        this.frameId = undefined;
+    }
+
+    private add<Type extends ITickable>(tickable: Type) {
+        this.tickables.push(tickable);
+        return tickable;
+    }
+
+    private tick = () => {
+        const elapsed = new Date().valueOf() - this.startTime;
+        const again = this.tickables.reduce<boolean>((repeat, tickable) => tickable.tick(elapsed) || repeat, false);
         this.render();
         if (again) {
-            requestAnimationFrame(this.tick);
+            this.nextFrame();
         }
     };
+
+    private nextFrame() {
+        this.frameId = requestAnimationFrame(this.tick);
+    }
 }
 
 /*-----------------------------------------------
@@ -729,6 +734,8 @@ export abstract class CanvasRenderer {
         );
     };
 
+    public abstract render: () => void;
+
     public retinaScale: number;
     protected width: number;
     protected height: number;
@@ -738,8 +745,6 @@ export abstract class CanvasRenderer {
         this.height = this.ctx.canvas.clientHeight;
         this.retinaScale = SceneRenderer.IS_RETINA() ? 2 : 1;
     }
-
-    public abstract render();
 
     protected resize() {
         this.retinaScale = SceneRenderer.IS_RETINA() ? 2 : 1;
@@ -756,19 +761,19 @@ export abstract class CanvasRenderer {
 class BackgroundRenderer extends CanvasRenderer {
     private static GRID_SIZE = 10;
 
-    public render() {
+    public render = () => {
         this.resize();
         this.ctx.clearRect(0, 0, this.width * this.retinaScale, this.height * this.retinaScale);
         this.renderBackground();
         this.renderGrid();
         this.renderBackgroundOverlays();
-    }
+    };
 
     private renderBackground() {
         this.ctx.save();
         this.ctx.scale(this.retinaScale, this.retinaScale);
 
-        let grd = this.ctx.createRadialGradient(
+        const grd = this.ctx.createRadialGradient(
             this.width / 2,
             this.height / 2,
             0,
@@ -788,9 +793,9 @@ class BackgroundRenderer extends CanvasRenderer {
         this.ctx.save();
         this.ctx.scale(this.retinaScale, this.retinaScale);
 
-        let grd = this.ctx.createLinearGradient(0, 0, 0, this.height);
-        grd.addColorStop(0, "rgba(0,0,0,0.6)");
-        grd.addColorStop(1, "rgba(0,0,0,0)");
+        const grd = this.ctx.createLinearGradient(0, 0, 0, this.height);
+        grd.addColorStop(0, "rgba(0,0,0,0.7)");
+        grd.addColorStop(1, "rgba(0,0,0,0.3)");
         this.ctx.fillStyle = grd;
         this.ctx.globalCompositeOperation = "overlay";
         this.ctx.fillRect(0, 0, this.width, this.height);
@@ -806,8 +811,8 @@ class BackgroundRenderer extends CanvasRenderer {
 
         this.ctx.globalCompositeOperation = "overlay";
         this.ctx.lineWidth = 1;
-        const light = "rgba(255, 255, 255, 0.05)";
-        const dark = "rgba(255, 255, 255, 0.1)";
+        const light = "rgba(255, 255, 255, 0.1)";
+        const dark = "rgba(255, 255, 255, 0.2)";
 
         // perfectly center gridline
         const major = BackgroundRenderer.GRID_SIZE * 5;
@@ -835,19 +840,16 @@ class BackgroundRenderer extends CanvasRenderer {
 }
 
 export class SceneRenderer extends CanvasRenderer {
-    // private buffer: CanvasBuffer;
-
     public constructor(ctx: CanvasRenderingContext2D, private scene: SceneModel) {
         super(ctx);
     }
 
-    public render() {
+    public render = () => {
         this.resize();
-        // this.buffer.matchSize(this.ctx);
 
         this.ctx.clearRect(0, 0, this.width * this.retinaScale, this.height * this.retinaScale);
         this.renderLogo();
-    }
+    };
 
     public renderLogo() {
         const projection = M()
@@ -856,14 +858,14 @@ export class SceneRenderer extends CanvasRenderer {
             .translate(this.width / 2, LOGO_Y_OFFSET)
             .scale(this.retinaScale, this.retinaScale);
 
-        const faces = [];
-        const corners = [];
+        const faces: Face[] = [];
+        const corners: Corner[] = [];
         this.scene.eachRenderable(projection, (object: any, transform: Matrix) => {
             if (object instanceof Shape) {
-                const shape = object as Shape;
+                const shape = object;
                 for (const face of shape.faces) {
-                    face.projected = face.points.map(p =>
-                        p
+                    face.projected = face.points.map(point =>
+                        point
                             .copy()
                             .transform(transform)
                             .round(),
@@ -878,7 +880,7 @@ export class SceneRenderer extends CanvasRenderer {
                     faces.push(face);
                 }
             } else if (object instanceof Corner) {
-                const corner = object as Corner;
+                const corner = object;
                 corner.projected = corner.segments.map(
                     segment => segment.map(p => p.copy().transform(transform)) as ISegment,
                 );
@@ -890,6 +892,13 @@ export class SceneRenderer extends CanvasRenderer {
         faces.sort((a, b) => a.order - b.order);
         this.renderFaces(faces);
         this.renderCorners(corners);
+    }
+
+    public debugFaceRenderOrder(face: Face) {
+        this.ctx.globalCompositeOperation = "source-over";
+        this.ctx.fillStyle = "lime";
+        this.ctx.font = "normal 10pt Calibri";
+        this.ctx.fillText("" + face.order, face.projectedCenter.x, face.projectedCenter.y);
     }
 
     private renderFaces(faces: Face[]) {
@@ -937,11 +946,11 @@ export class SceneRenderer extends CanvasRenderer {
 
         // composite overlays
         if (face.overlays != null) {
-            for (const operation in face.overlays) {
+            Object.keys(face.overlays).forEach(operation => {
                 this.ctx.globalCompositeOperation = operation;
                 this.ctx.fillStyle = face.overlays[operation];
                 this.ctx.fill();
-            }
+            });
             this.ctx.globalCompositeOperation = "source-over";
         }
 
@@ -959,13 +968,6 @@ export class SceneRenderer extends CanvasRenderer {
             this.ctx.setLineDash([]);
             // this.debugFaceRenderOrder(face);
         }
-    }
-
-    private debugFaceRenderOrder(face: Face) {
-        this.ctx.globalCompositeOperation = "source-over";
-        this.ctx.fillStyle = "lime";
-        this.ctx.font = "normal 10pt Calibri";
-        this.ctx.fillText("" + face.order, face.projectedCenter.x, face.projectedCenter.y);
     }
 
     private renderCorners(corners: Corner[]) {
@@ -995,57 +997,51 @@ export class SceneRenderer extends CanvasRenderer {
     }
 }
 
-export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElement) => {
+export function initializeLogo(canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElement) {
+    // background
+    const backgroundRenderer = new BackgroundRenderer(canvasBackground.getContext("2d"));
+    // render background once after page has settled
+    requestAnimationFrame(backgroundRenderer.render);
+    // then only re-render on resize, as background is static
+    document.addEventListener("resize", backgroundRenderer.render);
+
     // scene geometry
     const overlays = (rect: Shape) => {
-        const shadow = { "hard-light": "rgba(0,0,0,0.1)", "soft-light": "black" } as ICompositeOverlays;
-        const shadow2 = { "soft-light": "rgba(0,0,0,0.3)" } as ICompositeOverlays;
-        const highlight = { "soft-light": "rgba(255, 255, 255, 0.5)" } as ICompositeOverlays;
-        rect.faces[0].overlays = shadow;
-        rect.faces[2].overlays = shadow;
-        rect.faces[3].overlays = highlight;
-        rect.faces[5].overlays = shadow2;
+        rect.faces[0].overlays = { "hard-light": "rgba(0,0,0,0.1)", "soft-light": "black" };
+        rect.faces[2].overlays = { "hard-light": "rgba(0,0,0,0.1)", "soft-light": "black" };
+        rect.faces[3].overlays = { "soft-light": "rgba(0,0,0,0.3)" };
+        rect.faces[5].overlays = { "soft-light": "rgba(255, 255, 255, 0.5)" };
         return rect;
     };
 
-    const blocks = {
-        blockA: {
-            corner: Corner.CORNER().translate(0, -1, 0),
+    const blocks = [
+        {
             block: Shape.JOIN(overlays(Shape.RECT()).translate(0, 0, 0), overlays(Shape.RECT()).translate(0, 0, -1)),
+            corner: Corner.CORNER().translate(0, -1, 0),
             outline: Shape.RECT(-1, -1, -2),
         },
-        blockB: {
-            corner: Corner.CORNER().translate(-1, -2, 0),
+        {
             block: Shape.JOIN(overlays(Shape.RECT()).translate(-1, 0, 0), overlays(Shape.RECT()).translate(-1, -1, 0)),
+            corner: Corner.CORNER().translate(-1, -2, 0),
             outline: Shape.RECT(-1, -2, -1).translate(-1, 0, 0),
         },
-        blockC: {
-            corner: Corner.CORNER().translate(0, -2, -1),
+        {
             block: Shape.JOIN(
                 overlays(Shape.RECT()).translate(0, -1, -1),
                 overlays(Shape.RECT()).translate(-1, -1, -1),
             ),
+            corner: Corner.CORNER().translate(0, -2, -1),
             outline: Shape.RECT(-2, -1, -1).translate(0, -1, -1),
         },
-    };
+    ];
 
     // explicitly define render order to prevent overlap artifacts
-    blocks.blockA.block.order([30, 25, 9, 26, 28, 30, 6, 10, 14, 5]);
-    blocks.blockB.block.order([21, 9, 17, 22, 8, 24, 7, 30, 23, 11]);
-    blocks.blockC.block.order([18, 15, 16, 20, 4, 2, 3, 4, 10, 1]);
-    blocks.blockA.outline.order([31, 4, 4, 17, 31, 4]);
-    blocks.blockB.outline.order([25, 6, 6, 31, 25, 6]);
-    blocks.blockC.outline.order([21, 0, 0, 21, 21, 0]);
-
-    // // swap overlays of blockA to match mocks
-    // let shadows = blocks.blockA.block.faces[2].overlays;
-    // blocks.blockA.block.faces[2].overlays = null;
-    // blocks.blockA.block.faces[7].overlays = null;
-    // blocks.blockA.block.faces[9].overlays = shadows;
-
-    // shadows = blocks.blockC.block.faces[0].overlays;
-    // blocks.blockC.block.faces[0].overlays = null;
-    // blocks.blockC.block.faces[1].overlays = shadows;
+    blocks[0].block.order([30, 25, 9, 26, 28, 30, 6, 10, 14, 5]);
+    blocks[1].block.order([21, 9, 17, 22, 8, 24, 7, 30, 23, 11]);
+    blocks[2].block.order([18, 15, 16, 20, 4, 2, 3, 4, 10, 1]);
+    blocks[0].outline.order([31, 4, 4, 17, 31, 4]);
+    blocks[1].outline.order([25, 6, 6, 31, 25, 6]);
+    blocks[2].outline.order([21, 0, 0, 21, 21, 0]);
 
     // add dropshadow for bottom faces of blocks
     const dropShadowFrom = (face: Face) => {
@@ -1069,40 +1065,30 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     const explodeGroups = slideInGroups.map(g => g.group());
     const blockGroups = explodeGroups.map(g => g.group());
 
-    blockGroups[0]
-        .add(blocks.blockA.corner)
-        .add(blocks.blockA.block.fill("rgba(0, 180, 111, 0.9)"))
-        .add(blocks.blockA.outline.stroke("rgba(255, 255, 255, 0.7)"));
+    function configureBlockGroup(index: number, fill: string) {
+        blockGroups[index]
+            .add(blocks[index].corner)
+            .add(blocks[index].block.fill(fill))
+            .add(blocks[index].outline.stroke("rgba(255, 255, 255, 0.7)"));
+    }
 
-    blockGroups[1]
-        .add(blocks.blockB.corner)
-        .add(blocks.blockB.block.fill("rgba(245, 86, 86, 0.9)"))
-        .add(blocks.blockB.outline.stroke("rgba(255, 255, 255, 0.7)"));
+    configureBlockGroup(0, "rgba(0, 180, 111, 0.9)");
+    configureBlockGroup(1, "rgba(245, 86, 86, 0.9)");
+    configureBlockGroup(2, "rgba(34, 148, 217, 0.9)");
 
-    blockGroups[2]
-        .add(blocks.blockC.corner)
-        .add(blocks.blockC.block.fill("rgba(34, 148, 217, 0.9)"))
-        .add(blocks.blockC.outline.stroke("rgba(255, 255, 255, 0.7)"));
+    shadowGroups[0].add(dropShadowFrom(blocks[0].outline.faces[2]));
+    shadowGroups[1].add(dropShadowFrom(blocks[1].outline.faces[2]));
+    shadowGroups[2].add(dropShadowFrom(blocks[2].outline.faces[2]));
 
-    shadowGroups[0].add(dropShadowFrom(blocks.blockA.outline.faces[2]));
-    shadowGroups[1].add(dropShadowFrom(blocks.blockB.outline.faces[2]));
-    shadowGroups[2].add(dropShadowFrom(blocks.blockC.outline.faces[2]));
-
-    // renderer
+    // scene
     const renderer = new SceneRenderer(canvas.getContext("2d"), scene);
-    const backgroundRenderer = new BackgroundRenderer(canvasBackground.getContext("2d"));
-    const render = () =>
-        requestAnimationFrame(() => {
-            backgroundRenderer.render();
-            renderer.render();
-        });
-    const animator = new Animator(render);
+    const animator = new Animator(renderer.render);
 
     // entrance animation
     const slideDownAnimation = (offset: number, model: SceneModel) => {
         animator
             .timeline()
-            .tween(0, (t: number) => model.restore().translate(0, -8, 0))
+            .tween(0, () => model.restore().translate(0, -8, 0))
             .tween(offset + 100)
             .tween(1000, T.EASE_OUT_EXP(2, T.INTERPOLATE(-8, 0, (t: number) => model.restore().translate(0, t, 0))));
     };
@@ -1113,36 +1099,17 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
 
     // sheen animation
     const sheenAnimation = (offset: number, model: SceneModel) => {
-        const sheen = model.children[2];
+        const sheen = model.children[2] as Shape;
+
+        const interpolateLineDash = (t: number) =>
+            sheen.setEachFace("lineDash", [t, t / 3, t / 5, 1000 * renderer.retinaScale]);
 
         animator
             .timeline()
             .tween(offset)
-            .tween(
-                500,
-                T.EASE_IN(
-                    T.INTERPOLATE(0, 100 * renderer.retinaScale, t => {
-                        for (const f of sheen.faces) {
-                            f.lineDash = [t, t / 3, t / 5, 1000 * renderer.retinaScale];
-                        }
-                    }),
-                ),
-            )
-            .tween(
-                2000,
-                T.EASE_OUT(
-                    T.INTERPOLATE(100 * renderer.retinaScale, 0, t => {
-                        for (const f of sheen.faces) {
-                            f.lineDash = [t, t / 3, t / 5, 1000 * renderer.retinaScale];
-                        }
-                    }),
-                ),
-            )
-            .tween(0, t => {
-                for (const f of sheen.faces) {
-                    f.lineDash = null;
-                }
-            });
+            .tween(500, T.EASE_IN(T.INTERPOLATE(0, 100 * renderer.retinaScale, interpolateLineDash)))
+            .tween(2000, T.EASE_OUT(T.INTERPOLATE(100 * renderer.retinaScale, 0, interpolateLineDash)))
+            .tween(0, () => sheen.setEachFace("lineDash", null));
 
         animator
             .timeline()
@@ -1150,28 +1117,20 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
             .tween(500)
             .tween(
                 2000,
-                T.EASE_OUT(
-                    T.INTERPOLATE(0, -350 * renderer.retinaScale, t => {
-                        for (const f of sheen.faces) {
-                            f.lineDashOffset = t;
-                        }
-                    }),
-                ),
+                T.EASE_OUT(T.INTERPOLATE(0, -350 * renderer.retinaScale, t => sheen.setEachFace("lineDashOffset", t))),
             )
-            .tween(0, t => {
-                for (const f of sheen.faces) {
-                    f.lineDashOffset = null;
-                }
-            });
+            .tween(0, () => sheen.setEachFace("lineDashOffset", null));
     };
 
     const throttle = (wait: number, func: () => void) => {
-        let timeout = null;
-        const reset = () => (timeout = null);
+        let timeoutId: number | null = null;
+        const reset = () => {
+            timeoutId = null;
+        };
         return () => {
-            if (timeout == null) {
+            if (timeoutId == null) {
                 func();
-                timeout = setTimeout(reset, wait);
+                timeoutId = window.setTimeout(reset, wait);
             }
         };
     };
@@ -1181,14 +1140,13 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
         sheenAnimation(300, blockGroups[1]);
         sheenAnimation(500, blockGroups[2]);
     });
-    setTimeout(sheens, 1200);
+    window.setTimeout(sheens, 1200);
 
     // Update model transformations once per tick
     animator.ticker(() => {
-        let rotate = Quaternion.xyAlt(accumX.value, -accumY.value).toMatrix();
-        rotate = M()
+        const rotate = M()
             .translate(1, 1, 1)
-            .multiply(rotate)
+            .multiply(Quaternion.xyAlt(accumX.value, -accumY.value).toMatrix())
             .multiply(M().translate(-1, -1, -1));
 
         explodeGroups[0]
@@ -1251,7 +1209,7 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
         accumY.target = dcen.y;
     });
 
-    canvas.addEventListener("mouseleave", e => {
+    canvas.addEventListener("mouseleave", () => {
         unexplodeBlocks();
         accumX.target = 0;
         accumY.target = 0;
@@ -1263,5 +1221,17 @@ export const init = (canvas: HTMLCanvasElement, canvasBackground: HTMLCanvasElem
     canvas.addEventListener("mouseup", unexplodeBlocks);
     canvas.addEventListener("touchend", unexplodeBlocks);
 
+    /** bottom of the logo within the canvas element */
+    const LOGO_HEIGHT = 330;
+    document.addEventListener("scroll", () => {
+        // pause logo animation when offscreen to avoid scrolling performance impact
+        const isCanvasVisible = document.scrollingElement.scrollTop < LOGO_HEIGHT;
+        if (isCanvasVisible && !animator.isRunning()) {
+            animator.start();
+        } else if (!isCanvasVisible && animator.isRunning()) {
+            animator.stop();
+        }
+    });
+
     animator.start();
-};
+}

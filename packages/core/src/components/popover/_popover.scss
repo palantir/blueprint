@@ -107,24 +107,17 @@ $popover-width: $pt-grid-size * 35 !default;
   &.pt-popover-leave .pt-popover-content {
     pointer-events: none;
   }
+
+  // Popper.js applies this attribute when the target fully leaves boundaries
+  &[data-x-out-of-boundaries] {
+    display: none;
+  }
 }
 
 .pt-popover-wrapper {
   display: inline-block;
   position: relative;
   vertical-align: top;
-}
-
-.pt-popover-target {
-  display: inline-block;
-  position: relative;
-  vertical-align: top;
-
-  // avoid tether positioning bugs when nesting `display: inline` targets (BLUEPRINT-526)
-  // example: <Popover><Tooltip><button /></Tooltip></Popover>
-  > .pt-popover-target {
-    display: inline-block;
-  }
 
   // position the transition container using CSS when it is inline
   .pt-transition-container {
@@ -139,16 +132,6 @@ $popover-width: $pt-grid-size * 35 !default;
 }
 
 // fix positioning of popovers inside button groups (lots of extra nested elements)
-.pt-button-group {
-  &.pt-vertical .pt-popover-target {
-    display: block;
-  }
-
-  &:not(.pt-vertical) {
-    // make all containers float left to ensure proper sizing
-    .pt-popover-target,
-    .pt-tether-target {
-      float: left;
-    }
-  }
+.pt-button-group .pt-popover-target {
+  display: block;
 }

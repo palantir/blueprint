@@ -6,16 +6,22 @@
 
 import { IBlock } from "documentalist/dist/client";
 import * as React from "react";
-
 import { ITagRendererMap } from "../tags";
 
-export function renderBlock(block: IBlock | undefined, tagRenderers: ITagRendererMap): JSX.Element[] {
+export function renderBlock(
+    /** the block to render */
+    block: IBlock | undefined,
+    /** known tag renderers */
+    tagRenderers: ITagRendererMap,
+    /** class names to apply to element wrapping string content. */
+    textClassName?: string,
+): JSX.Element | null {
     if (block === undefined) {
-        return [];
+        return null;
     }
-    return block.contents.map((node, i) => {
+    const contents = block.contents.map((node, i) => {
         if (typeof node === "string") {
-            return <div className="docs-section pt-running-text" dangerouslySetInnerHTML={{ __html: node }} key={i} />;
+            return <div className={textClassName} key={i} dangerouslySetInnerHTML={{ __html: node }} />;
         }
         try {
             const renderer = tagRenderers[node.tag];
@@ -32,4 +38,5 @@ export function renderBlock(block: IBlock | undefined, tagRenderers: ITagRendere
             );
         }
     });
+    return <div className="docs-section">{contents}</div>;
 }

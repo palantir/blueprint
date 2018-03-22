@@ -10,14 +10,14 @@ Markup:
 <label class="pt-label {{.modifier}}">
   Label A
   <span class="pt-text-muted">(required)</span>
-  <input class="pt-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
+  <input class="pt-input" style="width: 180px;" type="text" placeholder="Text input" dir="auto" />
 </label>
 <label class="pt-label {{.modifier}}">
   Label B
   <span class="pt-text-muted">(optional)</span>
   <div class="pt-input-group">
     <span class="pt-icon pt-icon-calendar"></span>
-    <input class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+    <input class="pt-input" style="width: 180px;" type="text" placeholder="Input group" dir="auto" />
   </div>
 </label>
 

@@ -16,7 +16,7 @@ You can pass props to the inner `DatePicker` and `TimePicker` components using
 @## JavaScript API
 
 The `DateTimePicker` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 ```tsx
 import { DateTimePicker } from "@blueprintjs/datetime";

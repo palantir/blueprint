@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import { IconName } from "@blueprintjs/icons";
@@ -167,11 +167,16 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
      */
     private static FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
 
+    private static CONTINUOUS_CHANGE_DELAY = 300;
+    private static CONTINUOUS_CHANGE_INTERVAL = 100;
+
     private inputElement: HTMLInputElement;
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
     private didPasteEventJustOccur = false;
     private shouldSelectAfterUpdate = false;
+    private delta = 0;
+    private intervalId: number | null = null;
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
         super(props, context);
@@ -260,12 +265,16 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             const incrementButton = this.renderButton(
                 NumericInput.INCREMENT_KEY,
                 NumericInput.INCREMENT_ICON_NAME,
-                this.handleIncrementButtonClick,
+                this.handleIncrementButtonMouseDown,
+                this.handleIncrementButtonKeyDown,
+                this.handleIncrementButtonKeyUp,
             );
             const decrementButton = this.renderButton(
                 NumericInput.DECREMENT_KEY,
                 NumericInput.DECREMENT_ICON_NAME,
-                this.handleDecrementButtonClick,
+                this.handleDecrementButtonMouseDown,
+                this.handleDecrementButtonKeyDown,
+                this.handleDecrementButtonKeyUp,
             );
 
             const buttonGroup = (
@@ -324,13 +333,13 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     // Render Helpers
     // ==============
 
-    private renderButton(key: string, iconName: IconName, onClick: React.MouseEventHandler<HTMLElement>) {
-        // respond explicitly on key *up*, because onKeyDown triggers multiple
-        // times and doesn't always receive modifier-key flags, leading to an
-        // unintuitive/out-of-control incrementing experience.
-        const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-            this.handleButtonKeyUp(e, onClick);
-        };
+    private renderButton(
+        key: string,
+        iconName: IconName,
+        onMouseDown: React.MouseEventHandler<HTMLElement>,
+        onKeyDown: React.KeyboardEventHandler<HTMLElement>,
+        onKeyUp: React.KeyboardEventHandler<HTMLElement>,
+    ) {
         return (
             <Button
                 disabled={this.props.disabled || this.props.readOnly}
@@ -338,8 +347,9 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
                 intent={this.props.intent}
                 key={key}
                 onBlur={this.handleButtonBlur}
-                onClick={onClick}
+                onMouseDown={onMouseDown}
                 onFocus={this.handleButtonFocus}
+                onKeyDown={onKeyDown}
                 onKeyUp={onKeyUp}
             />
         );
@@ -353,13 +363,41 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     // ===================
 
     private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        const delta = this.getIncrementDelta(IncrementDirection.DOWN, e.shiftKey, e.altKey);
-        const nextValue = this.incrementValue(delta);
-        this.invokeValueCallback(nextValue, this.props.onButtonClick);
+        this.handleButtonClick(e, IncrementDirection.DOWN);
+    };
+
+    private handleDecrementButtonMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.handleButtonClick(e, IncrementDirection.DOWN);
+        this.startContinuousChange();
+    };
+
+    private handleDecrementButtonKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.updateDelta(IncrementDirection.DOWN, e);
+    };
+
+    private handleDecrementButtonKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.handleButtonKeyUp(e, IncrementDirection.DOWN, this.handleDecrementButtonClick);
     };
 
     private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        const delta = this.getIncrementDelta(IncrementDirection.UP, e.shiftKey, e.altKey);
+        this.handleButtonClick(e, IncrementDirection.UP);
+    };
+
+    private handleIncrementButtonMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
+        this.handleButtonClick(e, IncrementDirection.UP);
+        this.startContinuousChange();
+    };
+
+    private handleIncrementButtonKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.updateDelta(IncrementDirection.UP, e);
+    };
+
+    private handleIncrementButtonKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.handleButtonKeyUp(e, IncrementDirection.UP, this.handleIncrementButtonClick);
+    };
+
+    private handleButtonClick = (e: React.MouseEvent<HTMLInputElement>, direction: IncrementDirection) => {
+        const delta = this.updateDelta(direction, e);
         const nextValue = this.incrementValue(delta);
         this.invokeValueCallback(nextValue, this.props.onButtonClick);
     };
@@ -374,8 +412,13 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     private handleButtonKeyUp = (
         e: React.KeyboardEvent<HTMLInputElement>,
+        direction: IncrementDirection,
         onClick: React.MouseEventHandler<HTMLInputElement>,
     ) => {
+        this.updateDelta(direction, e);
+        // respond explicitly on key *up*, because onKeyDown triggers multiple
+        // times and doesn't always receive modifier-key flags, leading to an
+        // unintuitive/out-of-control incrementing experience.
         if (e.keyCode === Keys.SPACE || e.keyCode === Keys.ENTER) {
             // prevent the page from scrolling (this is the default browser
             // behavior for shift + space or alt + space).
@@ -391,6 +434,31 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             };
             onClick(fakeClickEvent as React.MouseEvent<HTMLInputElement>);
         }
+    };
+
+    private startContinuousChange() {
+        // The button's onMouseUp event handler doesn't fire if the user
+        // releases outside of the button, so we need to watch all the way
+        // from the top.
+        document.addEventListener("mouseup", this.stopContinuousChange);
+
+        // Initial delay is slightly longer to prevent the user from
+        // accidentally triggering the continuous increment/decrement.
+        this.setTimeout(() => {
+            this.intervalId = window.setInterval(this.handleContinuousChange, NumericInput.CONTINUOUS_CHANGE_INTERVAL);
+        }, NumericInput.CONTINUOUS_CHANGE_DELAY);
+    }
+
+    private stopContinuousChange = () => {
+        this.delta = 0;
+        this.clearTimeouts();
+        clearInterval(this.intervalId);
+        document.removeEventListener("mouseup", this.stopContinuousChange);
+    };
+
+    private handleContinuousChange = () => {
+        const nextValue = this.incrementValue(this.delta);
+        this.invokeValueCallback(nextValue, this.props.onButtonClick);
     };
 
     // Callbacks - Input
@@ -445,7 +513,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             // without interference.
             e.preventDefault();
 
-            const delta = this.getIncrementDelta(direction, e.shiftKey, e.altKey);
+            const delta = this.updateDelta(direction, e);
             this.incrementValue(delta);
         }
 
@@ -593,5 +661,13 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         // source: http://stackoverflow.com/a/18358056/5199574
         const scaleFactor = Math.pow(10, this.state.stepMaxPrecision);
         return Math.round(value * scaleFactor) / scaleFactor;
+    }
+
+    private updateDelta(
+        direction: IncrementDirection,
+        e: React.MouseEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>,
+    ) {
+        this.delta = this.getIncrementDelta(direction, e.shiftKey, e.altKey);
+        return this.delta;
     }
 }

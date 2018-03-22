@@ -4,24 +4,25 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
-import PopperJS from "popper.js";
+import classNames from "classnames";
+import { ModifierFn, Modifiers as PopperModifiers } from "popper.js";
 import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
-
-export type PopperModifiers = PopperJS.Modifiers;
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
-import { IProps } from "../../common/props";
+import { HTMLDivProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
 import { getArrowAngle, PopoverArrow } from "./arrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
+
+// re-export this symbol for library consumers
+export { PopperModifiers };
 
 export enum PopoverInteractionKind {
     CLICK = "click",
@@ -140,7 +141,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     /**
      * Ref supplied to the `pt-popover` element.
      */
-    popoverRef?: (ref: HTMLDivElement) => void;
+    popoverRef?: (ref: HTMLDivElement | null) => void;
 
     /**
      * Callback invoked when a popover begins to close.
@@ -185,6 +186,12 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     targetClassName?: string;
 
     /**
+     * The name of the HTML tag to use when rendering the popover target element.
+     * @default "div"
+     */
+    targetElementTag?: string;
+
+    /**
      * Whether the popover should be rendered inside a `Portal` attached to `document.body`.
      * Rendering content inside a `Portal` allows the popover content to escape the physical bounds of its
      * parent while still being positioned correctly relative to its target.
@@ -220,6 +227,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         openOnTargetFocus: true,
         position: "auto",
         rootElementTag: "span",
+        targetElementTag: "div",
         transitionDuration: 300,
         usePortal: true,
     };
@@ -258,7 +266,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     public render() {
-        const { className, disabled, hasBackdrop, targetClassName } = this.props;
+        const { className, disabled, hasBackdrop, targetClassName, targetElementTag } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
@@ -304,7 +312,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         return (
             <Manager tag={this.props.rootElementTag} className={classNames(Classes.POPOVER_WRAPPER, className)}>
-                <Target {...targetProps} innerRef={this.refHandlers.target}>
+                <Target {...targetProps} component={targetElementTag} innerRef={this.refHandlers.target}>
                     {target}
                 </Target>
                 <Overlay
@@ -405,7 +413,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     private renderPopper(content: JSX.Element) {
         const { usePortal, interactionKind, modifiers } = this.props;
 
-        const popoverHandlers: React.HTMLAttributes<HTMLDivElement> = {
+        const popoverHandlers: HTMLDivProps = {
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
         };
@@ -602,7 +610,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
-    private updatePopoverState: PopperJS.ModifierFn = data => {
+    private updatePopoverState: ModifierFn = data => {
         // pretty sure it's safe to always set these (and let sCU determine) because they're both strings
         this.setState({
             arrowRotation: getArrowAngle(data.placement),

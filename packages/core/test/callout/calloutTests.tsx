@@ -41,7 +41,7 @@ describe("<Callout>", () => {
     it("renders optional title element", () => {
         const title = "I am the title";
         const wrapper = shallow(<Callout title={title} />);
-        assert.strictEqual(wrapper.find("h5").text(), title);
+        assert.strictEqual(wrapper.find(`.${Classes.CALLOUT_TITLE}`).text(), title);
         // NOTE: JSX cannot be passed through `title` prop due to conflict with HTML props
         // shallow(<Callout title={<em>typings fail</em>} />);
     });

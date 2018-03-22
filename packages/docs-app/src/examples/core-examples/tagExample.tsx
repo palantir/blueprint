@@ -6,53 +6,78 @@
 
 import * as React from "react";
 
-import { Classes, Intent, Tag } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Button, Classes, Intent, Switch, Tag } from "@blueprintjs/core";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import classNames from "classnames";
+import { IntentSelect } from "./common/intentSelect";
 
-export class TagExample extends BaseExample<{ showTag?: boolean }> {
-    public state = {
-        showTag: true,
+export interface ITagExampleState {
+    intent: Intent;
+    interactive: boolean;
+    large: boolean;
+    minimal: boolean;
+    removable: boolean;
+    tags: string[];
+}
+
+export class TagExample extends BaseExample<ITagExampleState> {
+    public state: ITagExampleState = {
+        intent: Intent.NONE,
+        interactive: false,
+        large: false,
+        minimal: false,
+        removable: false,
+        tags: INITIAL_TAGS,
     };
 
     protected className = "docs-tag-example";
 
-    protected renderExample() {
-        return (
-            <div>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
-                    @jkillian
-                </Tag>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
-                    @adahiya
-                </Tag>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
-                    @ggray
-                </Tag>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
-                    @allorca
-                </Tag>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
-                    @bdwyer
-                </Tag>
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY}>
-                    @piotrk
-                </Tag>
-                {this.maybeRenderTag()}
-            </div>
-        );
-    }
+    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
+    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+    private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
+    private handleRemovableChange = handleBooleanChange(removable => this.setState({ removable }));
+    private handleInteractiveChange = handleBooleanChange(interactive => this.setState({ interactive }));
 
-    private maybeRenderTag() {
-        if (this.state.showTag) {
+    protected renderExample() {
+        const { intent, interactive, large, minimal, removable } = this.state;
+        const tagClasses = classNames({ [Classes.LARGE]: large, [Classes.MINIMAL]: minimal });
+        const tags = this.state.tags.map(tag => {
+            const onRemove = () => this.setState({ tags: this.state.tags.filter(t => t !== tag) });
             return (
-                <Tag className={Classes.MINIMAL} intent={Intent.PRIMARY} onRemove={this.deleteTag}>
-                    @dlipowicz
+                <Tag
+                    key={tag}
+                    className={tagClasses}
+                    intent={intent}
+                    interactive={interactive}
+                    onRemove={removable && onRemove}
+                >
+                    {tag}
                 </Tag>
             );
-        } else {
-            return undefined;
-        }
+        });
+        return <div>{tags}</div>;
     }
 
-    private deleteTag = () => this.setState({ showTag: false });
+    protected renderOptions() {
+        const { intent, interactive, large, minimal, removable } = this.state;
+        return [
+            [
+                <Switch key="large" label="Large" checked={large} onChange={this.handleLargeChange} />,
+                <Switch key="minimal" label="Minimal" checked={minimal} onChange={this.handleMinimalChange} />,
+                <Switch key="removable" label="Removable" checked={removable} onChange={this.handleRemovableChange} />,
+                <Switch
+                    key="interactive"
+                    label="Interactive"
+                    checked={interactive}
+                    onChange={this.handleInteractiveChange}
+                />,
+            ],
+            [<IntentSelect key="intent" intent={intent} onChange={this.handleIntentChange} />],
+            [<Button key="reset" text="Reset tags" onClick={this.resetTags} />],
+        ];
+    }
+
+    private resetTags = () => this.setState({ tags: INITIAL_TAGS });
 }
+
+const INITIAL_TAGS = ["@jkillian", "@adahiya", "@ggray", "@allorca", "@bdwyer", "@piotrk"];

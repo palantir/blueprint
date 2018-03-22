@@ -40,6 +40,7 @@ $swatch-copied-message: "#{$pt-icon-tick} Copied to clipboard";
   // override more specific selector above
   //stylelint-disable declaration-no-important
   &.docs-clipboard-copied .docs-clipboard-message::after {
+    font-family: $pt-font-family-monospace, "Icons16", sans-serif;
     content: $swatch-copied-message !important;
   }
 

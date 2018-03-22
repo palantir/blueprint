@@ -7,10 +7,10 @@ Callouts visually highlight important content for the user.
 @## CSS API
 
 Callouts use the same visual intent modifier classes as buttons. If you need a
-heading, use the `<h5>` element.
+heading, use the `<h4>` element with a `.pt-callout-title` class.
 
 <div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    Note that the `<h5>` heading is entirely optional.
+    Note that the title is entirely optional.
 </div>
 
 @css pt-callout
@@ -18,7 +18,7 @@ heading, use the `<h5>` element.
 @## JavaScript API
 
 The `Callout` component is available in the **@blueprintjs/core** package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 The component is a simple wrapper around the CSS API that provides props for modifiers and the optional title
 element. Any additional HTML props will be spread to the rendered `<div>` element. It provides two additional

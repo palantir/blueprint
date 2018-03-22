@@ -1,0 +1,10 @@
+# Browsers that Blueprint supports.
+# Every autoprefixer run in this repo will use this file for config.
+# Test queries at http://browserl.ist/
+
+# browsers with some usage plus recency:
+> 0.5%
+last 2 versions
+# ensure these are supported:
+Firefox ESR
+IE 11

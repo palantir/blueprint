@@ -25,7 +25,7 @@ screen as the user scrolls through the document.
 This modifier is not illustrated here because it breaks the documentation flow.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-    <h5>Body padding required</h5>
+    <h4 class="pt-callout-title">Body padding required</h4>
     The fixed navbar will lie on top of your other content unless you add padding to the top of the
     `<body>` element equal to the height of the navbar. Use the `$pt-navbar-height` Sass variable to
     access the height of the navbar (50px).
@@ -47,7 +47,7 @@ The `Navbar` component is available in the **@blueprintjs/core** package. The
 package also includes three small helper components: `NavbarGroup`,
 `NavbarHeading`, and `NavbarDivider`. These can be referenced by their aliases
 as well: `Navbar.Group`, `Navbar.Heading`, and `Navbar.Divider`, respectively.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 These components are simple wrappers around the corresponding CSS APIs. Each of
 them supports the full range of HTML props.

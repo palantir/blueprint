@@ -11,7 +11,7 @@ import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IQueryListRendererProps, QueryList } from "../src/index";
+import { IQueryListRendererProps, ItemListPredicate, QueryList } from "../src/index";
 
 describe("<QueryList>", () => {
     const FilmQueryList = QueryList.ofType<IFilm>();
@@ -36,8 +36,7 @@ describe("<QueryList>", () => {
             shallow(<FilmQueryList {...testProps} itemPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, testProps.items.length, "called once per item");
-            const { items, renderItem } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
-            const filteredItems = items.map(renderItem).filter(x => x != null);
+            const { filteredItems } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
             assert.lengthOf(filteredItems, 2, "returns only films from 1980");
         });
 
@@ -46,26 +45,30 @@ describe("<QueryList>", () => {
             shallow(<FilmQueryList {...testProps} itemListPredicate={predicate} query="1980" />);
 
             assert.equal(predicate.callCount, 1, "called once for entire list");
-            const { items, renderItem } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
-            const filteredItems = items.map(renderItem).filter(x => x != null);
+            const { filteredItems } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
             assert.lengthOf(filteredItems, 2, "returns only films from 1980");
         });
 
         it("prefers itemListPredicate if both are defined", () => {
             const predicate = sinon.spy(() => true);
-            const listPredicate = sinon.spy(() => true);
+            const listPredicate: ItemListPredicate<any> = (_q, items) => items;
+            const listPredicateSpy = sinon.spy(listPredicate);
             shallow(
-                <FilmQueryList {...testProps} itemPredicate={predicate} itemListPredicate={listPredicate} query="x" />,
+                <FilmQueryList
+                    {...testProps}
+                    itemPredicate={predicate}
+                    itemListPredicate={listPredicateSpy}
+                    query="1980"
+                />,
             );
-            assert.isTrue(listPredicate.called, "listPredicate should be invoked");
+            assert.isTrue(listPredicateSpy.called, "listPredicate should be invoked");
             assert.isFalse(predicate.called, "item predicate should not be invoked");
         });
 
         it("omitting both predicate props is supported", () => {
             shallow(<FilmQueryList {...testProps} query="1980" />);
-            const { items, renderItem } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
-            const filteredItems = items.map(renderItem).filter(x => x != null);
-            assert.lengthOf(filteredItems, items.length, "returns all films");
+            const { filteredItems } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
+            assert.lengthOf(filteredItems, testProps.items.length, "returns all films");
         });
 
         it("ensure onActiveItemChange is not called with undefined and empty list", () => {

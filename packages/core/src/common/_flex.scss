@@ -14,11 +14,13 @@
   flex-direction: $direction;
 
   > * {
-    flex: 0 0 auto;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 
   > #{$fill} {
-    flex: 1 1 auto;
+    flex-grow: 1;
+    flex-shrink: 1;
   }
 
   @if $margin != none {
