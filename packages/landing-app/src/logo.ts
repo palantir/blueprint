@@ -794,8 +794,8 @@ class BackgroundRenderer extends CanvasRenderer {
         this.ctx.scale(this.retinaScale, this.retinaScale);
 
         const grd = this.ctx.createLinearGradient(0, 0, 0, this.height);
-        grd.addColorStop(0, "rgba(0,0,0,0.6)");
-        grd.addColorStop(1, "rgba(0,0,0,0)");
+        grd.addColorStop(0, "rgba(0,0,0,0.7)");
+        grd.addColorStop(1, "rgba(0,0,0,0.3)");
         this.ctx.fillStyle = grd;
         this.ctx.globalCompositeOperation = "overlay";
         this.ctx.fillRect(0, 0, this.width, this.height);
@@ -811,8 +811,8 @@ class BackgroundRenderer extends CanvasRenderer {
 
         this.ctx.globalCompositeOperation = "overlay";
         this.ctx.lineWidth = 1;
-        const light = "rgba(255, 255, 255, 0.05)";
-        const dark = "rgba(255, 255, 255, 0.1)";
+        const light = "rgba(255, 255, 255, 0.1)";
+        const dark = "rgba(255, 255, 255, 0.2)";
 
         // perfectly center gridline
         const major = BackgroundRenderer.GRID_SIZE * 5;
