@@ -29,7 +29,7 @@ function injectSVG(elem: HTMLElement, id: string) {
     elem.appendChild(wrapper);
 }
 
-export function init(elem: HTMLElement) {
+export function initializeSVGs(elem: HTMLElement) {
     for (const id of Object.keys(HERO_SVGS)) {
         injectSVG(elem, id);
     }

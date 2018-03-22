@@ -5,16 +5,16 @@
  */
 
 import { FocusStyleManager } from "@blueprintjs/core";
-import * as Logo from "./logo";
-import * as SVGs from "./svgs";
+import { initializeLogo } from "./logo";
+import { initializeSVGs } from "./svgs";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-Logo.init(
+initializeLogo(
     document.getElementById("pt-logo") as HTMLCanvasElement,
     document.getElementById("pt-logo-background") as HTMLCanvasElement,
 );
 
-SVGs.init(document.querySelector(".pt-wireframes") as HTMLElement);
+initializeSVGs(document.querySelector(".pt-wireframes") as HTMLElement);
 
 document.getElementById("copyright").innerHTML = `© 2014–${new Date().getFullYear()} Palantir Technologies`;
