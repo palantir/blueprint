@@ -19,7 +19,7 @@ module.exports = Object.assign({}, baseConfig, {
     module: {
         rules: baseConfig.module.rules.slice(0, 2).concat([
             {
-                test: /^((?!inline).)*\.(eot|ttf|woff|woff2|svg|png)$/,
+                test: /^((?!svgs).)*\.(eot|ttf|woff|woff2|svg|png)$/,
                 loader: require.resolve("file-loader"),
             },
         ]),
