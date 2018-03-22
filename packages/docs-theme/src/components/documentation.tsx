@@ -41,6 +41,12 @@ export interface IDocumentationProps extends IProps {
     docs: IDocsData;
 
     /**
+     * Elements to render on the bottom of the sidebar, below the nav menu.
+     * This typically contains copyright information.
+     */
+    footer?: React.ReactNode;
+
+    /**
      * Elements to render on the top of the sidebar, above the search box.
      * This typically contains logo, title and navigation links.
      * Use `.docs-nav-title` on an element for proper padding relative to other sidebar elements.
@@ -158,6 +164,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                                 onItemClick={this.handleNavigation}
                                 renderNavMenuItem={this.props.renderNavMenuItem}
                             />
+                            {this.props.footer}
                         </div>
                     </div>
                     <main className="docs-content-wrapper pt-fill" ref={this.refHandlers.content} role="main">
