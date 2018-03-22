@@ -151,4 +151,8 @@ $dark-package-colors: (
     padding: 0 ($pt-grid-size / 2);
     fill: $white;
   }
+
+  a {
+    color: inherit;
+  }
 }
