@@ -43,7 +43,6 @@ This component is a simple wrapper around the corresponding CSS API. It supports
 <Label
     helperText="Helper text with details..."
     text="Label A"
-    required={true}
 >
     <input className="pt-input" id="text-input" placeholder="Placeholder text" />
 </Label>
