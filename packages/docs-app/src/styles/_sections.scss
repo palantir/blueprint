@@ -271,6 +271,11 @@
     width: 100%;
     height: $pt-grid-size * 30;
   }
+
+  // make all tables the same width
+  .pt-table-container {
+    width: 100%;
+  }
 }
 
 #{page("popover")} {

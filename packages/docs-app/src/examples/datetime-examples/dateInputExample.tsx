@@ -51,10 +51,8 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     {...spreadProps}
                     {...format}
                     defaultValue={new Date()}
-                    className="foofoofoo"
                     onChange={this.handleDateChange}
-                    popoverProps={{ popoverClassName: "barbarbar", position: Position.BOTTOM }}
-                    inputProps={{ className: "bazbazbaz" }}
+                    popoverProps={{ position: Position.BOTTOM }}
                 />
                 <div className="docs-date-range">
                     <MomentDate date={date} />
