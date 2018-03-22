@@ -15,11 +15,11 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Blueprint - A React-based UI toolkit for the web" />
     <meta property="og:description" content="A React-based UI toolkit for the web" />
-    <meta property="og:image" content="http://blueprintjs.com/assets/img/fb-image.png" />
+    <meta property="og:image" content="http://blueprintjs.com/assets/fb-image.png" />
 
     <!-- Styles -->
     <link rel="stylesheet" href="blueprint-landing.css">
-    <link rel="icon" href="assets/img/favicon.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="assets/favicon.png" sizes="32x32" type="image/png">
 
     <!-- Google Analytics -->
     <script type="text/javascript">
@@ -35,132 +35,32 @@
   </head>
   <body>
     <header>
-      <canvas height="600" class="pt-logo-background"></canvas>
+      <canvas id="pt-logo-background"></canvas>
       <div class="pt-wireframes"></div>
-      <canvas height="600" class="pt-logo"></canvas>
+      <canvas id="pt-logo"></canvas>
       <div class="pt-container">
         <h1>Blueprint</h1>
         <h3>A React-based UI toolkit for the web</h3>
         <div>
-          <a class="pt-button pt-minimal" href="docs/v1/">Docs</a>
+          <a class="pt-button pt-large pt-minimal" href="docs/v2/">Documentation</a>
           <span class="pt-icon-standard pt-icon-dot"></span>
-          <a class="pt-button pt-minimal" href="https://github.com/palantir/blueprint" target="_blank">GitHub</a>
+          <a class="pt-button pt-large pt-minimal" href="https://github.com/palantir/blueprint" target="_blank">GitHub</a>
         </div>
       </div>
     </header>
-    <div class="pt-info">
-      <div class="pt-description">
+    <footer class="pt-dark">
+      <div class="pt-about">
         <div class="pt-container">
-          <h2>Build complex, data-dense interfaces with ease</h2>
-          <div class="pt-running-text">
-            Blueprint is a collection of <a href="https://facebook.github.io/react/" target="_blank">React</a>
-            UI components that cover the majority of the common interface elements, patterns, and interactions on
-            the web. Using Blueprint ensures that you’ll end up with an elegant and easy-to-use UI, freeing you to
-            focus on building your product&mdash;not the atomic pieces that comprise it.
-          </div>
-          <a class="pt-button pt-large pt-intent-primary" href="docs/">Go to documentation</a>
-          <a class="pt-button pt-large" href="https://github.com/palantir/blueprint" target="_blank">View GitHub repository</a>
-        </div>
-        <div class="pt-components"></div>
-      </div>
-      <div class="pt-container pt-features pt-running-text-small">
-        <div class="pt-feature-column">
-          <div class="pt-feature">
-            <img src="assets/img/productivity.svg" alt="Productivity" />
-            <h4>Productivity</h4>
-            Enjoy a set of high quality generic components that you can use out of the box.
-          </div>
-          <div class="pt-feature">
-            <img src="assets/img/composition.svg" alt="Composition" />
-            <h4>Composition</h4>
-            React components and TypeScript interfaces are easy to compose together.
-          </div>
-          <div class="pt-feature">
-            <img src="assets/img/themes.svg" alt="Custom styles" />
-            <h4>Custom styles</h4>
-            Styles are built with Sass and designed to be flexible and customizable.
-          </div>
-        </div>
-        <div class="pt-feature-column">
-          <div class="pt-feature">
-            <img src="assets/img/system.svg" alt="Design system" />
-            <h4>Design system</h4>
-            Universal design concepts and modifiers are applicable across components.
-          </div>
-          <div class="pt-feature">
-            <img src="assets/img/types.svg" alt="Types and tests" />
-            <h4>Types and tests</h4>
-            TypeScript makes developing with Blueprint faster and more predictable with static types.
-          </div>
-          <div class="pt-feature">
-            <img src="assets/img/accessibility.svg" alt="Accessibility" />
-            <h4>Accessibility</h4>
-            Color combinations and keyboard interactions have been carefully crafted to be accessible.
-          </div>
-        </div>
-        <div class="pt-clear"></div>
-      </div>
-    </div>
-    <div class="pt-getting-started pt-dark">
-      <h2>Let’s get started</h2>
-      <div class="pt-steps">
-        <div class="pt-step">
-          <div class="pt-step-number">
-            1
-          </div>
-          <h4>Install via NPM</h4>
-          <pre>> npm install --save @blueprintjs/core</pre>
-        </div>
-        <div class="pt-step">
-          <div class="pt-step-number">
-            2
-          </div>
-          <h4>Import and use the components</h4>
-          <pre>import {
-    Button,
-    Menu,
-    MenuItem,
-    MenuDivider,
-    Popover,
-    Position
-} from "@blueprintjs/core";
-
-const menu = (
-    &lt;Menu>
-        &lt;MenuItem text="New" />
-        &lt;MenuItem text="Open" />
-        &lt;MenuItem text="Save" />
-        &lt;MenuDivider />
-        &lt;MenuItem text="Settings..." />
-    &lt;/Menu>
-);
-
-&lt;Popover content={menu} position={Position.BOTTOM_RIGHT}>
-    &lt;Button text="Actions" />
-&lt;/Popover></pre>
-        </div>
-        <div class="pt-step">
-          <div class="pt-step-number">
-            3
-          </div>
-          <h4>Learn and contribute!</h4>
-          <a class="pt-button pt-large pt-intent-primary" href="docs/">Go to documentation</a>
-          <a class="pt-button pt-large" href="https://github.com/palantir/blueprint" target="_blank">View GitHub repository</a>
-        </div>
-      </div>
-    </div>
-    <div class="pt-about pt-dark">
-      <div class="pt-container">
-        <img src="assets/img/palantir.svg" alt="Palantir" />
-        <p>Blueprint is an open source project<br>developed at Palantir.</p>
-        <div class="pt-hiring">
-          <div>We’re hiring designers and engineers!</div>
+          <img src="assets/palantir.svg" alt="Palantir">
+          <p>Blueprint is an open source project<br>developed at Palantir.</p>
+          <div class="pt-separator"></div>
+          <p>We’re hiring designers and engineers!</p>
           <a class="pt-button pt-intent-primary" href="https://www.palantir.com/careers/" target="_blank">View openings</a>
         </div>
       </div>
-      <div class="pt-copyright pt-dark">
+      <div class="pt-copyright">
         <div class="pt-container">
-          <div>© Palantir Technologies</div>
+          <div id="copyright">© 2014–2018 Palantir Technologies</div>
           <div>Licensed under <a href="https://github.com/palantir/blueprint/blob/develop/LICENSE" target="_blank">Apache-2.0</a></div>
         </div>
       </div>
