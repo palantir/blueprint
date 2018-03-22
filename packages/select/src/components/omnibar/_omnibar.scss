@@ -45,6 +45,10 @@ $omnibar-input-height: $pt-grid-size * 4;
     background-color: transparent;
     max-height: calc(#{$omnibar-height} - #{$omnibar-input-height});
     overflow: auto;
+
+    &:empty {
+      display: none;
+    }
   }
 
   .pt-dark &,

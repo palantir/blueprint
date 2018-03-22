@@ -3,12 +3,8 @@
  * @fileoverview Exports JSON data for packages/docs-app
  */
 
-const docsData = require("./generated/docs.json");
-const releasesData = require("./generated/releases.json");
-const versionsData = require("./generated/versions.json");
-
 module.exports = {
-    docsData,
-    releasesData,
-    versionsData,
+    docsData: require("./generated/docs.json"),
+    releasesData: require("./generated/releases.json"),
+    versionsData: require("./generated/versions.json"),
 };

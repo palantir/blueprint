@@ -5,7 +5,7 @@
  */
 
 import { AbstractPureComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import { DayModifiers } from "react-day-picker/types/common";
@@ -184,6 +184,11 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             initialMonth = props.initialMonth;
         } else if (value[0] != null) {
             initialMonth = DateUtils.clone(value[0]);
+        } else if (value[1] != null) {
+            initialMonth = DateUtils.clone(value[1]);
+            if (!DateUtils.areSameMonth(initialMonth, props.minDate)) {
+                initialMonth.setMonth(initialMonth.getMonth() - 1);
+            }
         } else if (DateUtils.isDayInRange(today, [props.minDate, props.maxDate])) {
             initialMonth = today;
         } else {
@@ -202,10 +207,11 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
 
         // show the selected end date's encompassing month in the right view if
         // the calendars don't have to be contiguous.
+        // if left view and right view months are the same, show next month in the right view.
         const leftView = MonthAndYear.fromDate(initialMonth);
         const rightDate = value[1];
         const rightView =
-            !props.contiguousCalendarMonths && rightDate != null
+            !props.contiguousCalendarMonths && rightDate != null && !DateUtils.areSameMonth(initialMonth, rightDate)
                 ? MonthAndYear.fromDate(rightDate)
                 : leftView.getNextMonth();
         this.state = { leftView, rightView, value, hoverValue: [null, null] };

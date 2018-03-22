@@ -1,9 +1,9 @@
-/**
+/*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import { EditableText, Hotkey, Hotkeys, HotkeysTarget, Utils as CoreUtils } from "@blueprintjs/core";
@@ -96,7 +96,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
 
     public componentWillReceiveProps(nextProps: IEditableCellProps) {
         const { value } = nextProps;
-        if (value !== this.props.value) {
+        if (value != null) {
             this.setState({ savedValue: value, dirtyValue: value });
         }
     }

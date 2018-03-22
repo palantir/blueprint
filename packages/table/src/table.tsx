@@ -1,11 +1,11 @@
-/**
+/*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import { ICellProps } from "./cell/cell";
@@ -2075,9 +2075,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     private updateViewportRect = (nextViewportRect: Rect) => {
-        this.setState({ viewportRect: nextViewportRect });
-
         const { viewportRect } = this.state;
+        this.setState({ viewportRect: nextViewportRect });
 
         const didViewportChange =
             (viewportRect != null && !viewportRect.equals(nextViewportRect)) ||

@@ -4,33 +4,36 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Position, Switch } from "@blueprintjs/core";
+import { DateInput, IDateFormatProps, TimePickerPrecision } from "@blueprintjs/datetime";
+import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
-import { DateInput, TimePickerPrecision } from "@blueprintjs/datetime";
 import { FORMATS, FormatSelect } from "./common/formatSelect";
+import { MomentDate } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDateInputExampleState {
-    closeOnSelection?: boolean;
-    disabled?: boolean;
-    formatKey?: string;
-    reverseMonthAndYearMenus?: boolean;
-    timePrecision?: TimePickerPrecision;
+    closeOnSelection: boolean;
+    date: Date | null;
+    disabled: boolean;
+    format: IDateFormatProps;
+    reverseMonthAndYearMenus: boolean;
+    timePrecision: TimePickerPrecision | undefined;
 }
 
 export class DateInputExample extends BaseExample<IDateInputExampleState> {
     public state: IDateInputExampleState = {
         closeOnSelection: true,
+        date: null,
         disabled: false,
-        formatKey: Object.keys(FORMATS)[0],
+        format: FORMATS[0],
         reverseMonthAndYearMenus: false,
+        timePrecision: undefined,
     };
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
-    private toggleFormat = handleStringChange(formatKey => this.setState({ formatKey }));
     private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
         this.setState({ reverseMonthAndYearMenus }),
     );
@@ -41,16 +44,20 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     );
 
     protected renderExample() {
-        const { formatKey, ...spreadableState } = this.state;
+        const { date, format, ...spreadProps } = this.state;
         return (
-            <DateInput
-                {...spreadableState}
-                format={FORMATS[formatKey]}
-                defaultValue={new Date()}
-                className="foofoofoo"
-                popoverProps={{ popoverClassName: "barbarbar" }}
-                inputProps={{ className: "bazbazbaz" }}
-            />
+            <>
+                <DateInput
+                    {...spreadProps}
+                    {...format}
+                    defaultValue={new Date()}
+                    onChange={this.handleDateChange}
+                    popoverProps={{ position: Position.BOTTOM }}
+                />
+                <div className="docs-date-range">
+                    <MomentDate date={date} />
+                </div>
+            </>
         );
     }
 
@@ -78,7 +85,10 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     onChange={this.toggleTimePrecision}
                 />,
             ],
-            [<FormatSelect key="Format" onChange={this.toggleFormat} selectedValue={this.state.formatKey} />],
+            [<FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />],
         ];
     }
+
+    private handleDateChange = (date: Date | null) => this.setState({ date });
+    private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });
 }

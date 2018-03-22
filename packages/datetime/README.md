@@ -6,12 +6,8 @@ Blueprint is a React UI toolkit for the web.
 
 This package contains a collection of React components for working with dates and times.
 
-Two third-party libraries are used in this package to ease the burden of time management:
-
-- [Moment.js](http://momentjs.com/) is the de facto library for manipulating dates in JavaScript.
-  We use it for formatting dates as strings.
-- [react-day-picker](http://react-day-picker.js.org/) is a solid React calendaring library.
-  We use it internally for the calendar and expose some parts of its API (particularly modifiers).
+[react-day-picker](http://react-day-picker.js.org/) is a dependency of this package; we use it
+to render calendars.
 
 ## Installation
 

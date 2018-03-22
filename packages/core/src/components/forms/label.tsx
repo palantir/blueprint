@@ -1,15 +1,15 @@
-/**
+/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 
-export interface ILabelProps extends React.AllHTMLAttributes<HTMLLabelElement>, IProps {
+export interface ILabelProps extends React.LabelHTMLAttributes<HTMLLabelElement>, IProps {
     /**
      * Whether the label is non-interactive.
      * Be sure to explicitly disable any child controls as well.
@@ -42,7 +42,7 @@ export class Label extends React.PureComponent<ILabelProps, {}> {
         return (
             <label {...htmlProps} className={rootClasses}>
                 {text}
-                <span className={classNames(Classes.TEXT_MUTED)}>{helperText}</span>
+                {helperText && <span className={Classes.TEXT_MUTED}> {helperText}</span>}
                 {children}
             </label>
         );

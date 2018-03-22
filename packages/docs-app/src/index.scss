@@ -1,5 +1,9 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the terms of the LICENSE file distributed with this project.
+/*!
+
+Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
+Licensed under the terms of the LICENSE file distributed with this project.
+
+*/
 
 @import "~normalize.css/normalize.css";
 
@@ -17,16 +21,13 @@
 @import "~@blueprintjs/docs-theme/src/styles/variables";
 
 // then our own styles
-@import "styles/banner";
 @import "styles/colors";
 @import "styles/examples";
 @import "styles/icons";
+@import "styles/nav";
 @import "styles/resources";
 @import "styles/sections";
 
-.docs-logo {
-  background-image: url("./assets/blueprint-logo.svg");
-}
 
 .docs-releases-menu .pt-menu {
   min-width: 270px;

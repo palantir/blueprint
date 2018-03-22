@@ -22,7 +22,7 @@ $icons-per-row: 5;
 
     h3 {
       flex: 1 1 100%;
-      margin: 0 0 $pt-grid-size * 5;
+      margin-top: 0;
       text-transform: capitalize;
     }
   }
@@ -44,7 +44,7 @@ $icons-per-row: 5;
   }
 
   &:hover::before {
-    transform: scale(1.2);
+    transform: scale(1.15);
     opacity: 1;
   }
 
@@ -84,9 +84,9 @@ $icons-per-row: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: $pt-grid-size 0;
   border-radius: $pt-border-radius;
-  width: 100% / $icons-per-row - 1%;
+  width: 100% / $icons-per-row;
+  height: $pt-grid-size * 12;
   padding: ($pt-grid-size * 2) 0;
 
   transition: background-color $hover-transition;
@@ -102,13 +102,12 @@ $icons-per-row: 5;
 
   &:hover {
     .docs-icon-name {
-      transform: translateY(-$pt-font-size);
+      transform: translateY(-1em);
       opacity: 0;
     }
 
-    .docs-icon-class-name,
-    .docs-clipboard-message {
-      transform: translateY(-$pt-font-size);
+    .docs-icon-detail {
+      transform: translateY(-1em);
       opacity: 1;
     }
   }
@@ -119,43 +118,24 @@ $icons-per-row: 5;
   }
 }
 
+.docs-icon-name,
 .docs-icon-detail {
+  transform: translateY(0);
   margin-top: $pt-grid-size * 2;
-  height: $pt-font-size * 2;
   text-align: center;
-  white-space: normal;
-
-  .docs-icon-name,
-  .docs-icon-class-name,
-  .docs-clipboard-message {
-    display: block;
-    transform: translateY(0);
-    opacity: 0;
-    line-height: 1;
-    font-size: $pt-font-size-small;
-    transition: transform $hover-transition, opacity $hover-transition;
-    word-wrap: break-word;
-  }
-
-  .docs-icon-name {
-    opacity: 1;
-  }
-
-  .docs-clipboard-message {
-    margin-top: $pt-grid-size / 2;
-  }
+  font-size: $pt-font-size-small;
+  transition: transform $hover-transition, opacity $hover-transition;
+  word-wrap: break-word;
 }
 
-.docs-icon-16::before {
-  padding: 0 (($pt-icon-size-large - $pt-icon-size-standard) / 2);
+.docs-icon-name {
+  position: absolute;
+  top: $pt-grid-size * 4;
+  opacity: 1;
 }
 
-.docs-icon-20 {
-  line-height: $pt-icon-size-large;
-
-  &::before {
-    @include pt-icon-sized($pt-icon-size-large);
-  }
+.docs-icon-detail {
+  opacity: 0;
 }
 
 .icons-zero-state {

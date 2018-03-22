@@ -4,17 +4,17 @@ Context menus present the user with a custom list of actions upon right-click.
 
 You can create context menus in either of the following ways:
 
-- by adding the `@ContextMenuTarget` [decorator](#core/components/context-menu.javascript-api--decorator)
+- by adding the `@ContextMenuTarget` [decorator](#core/components/context-menu.decorator-api)
   to a React component that implements `renderContextMenu(): JSX.Element`.
-- via the [imperative](#core/components/context-menu.javascript-api--imperative) `ContextMenu.show`
+- via the [imperative](#core/components/context-menu.imperative-api) `ContextMenu.show`
   and `ContextMenu.hide` API methods, ideal for non-React-based applications.
 
 @reactExample ContextMenuExample
 
-@## JavaScript API: decorator
+@## Decorator API
 
 The `ContextMenuTarget` decorator is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 The `@ContextMenuTarget` [class decorator][ts-decorator] can be applied to any `React.Component`
 class that meets the following requirements:
@@ -63,10 +63,10 @@ class RightClickMe extends React.Component<{}, {}> {
 [ts-decorator]: https://github.com/Microsoft/TypeScript-Handbook/blob/master/pages/Decorators.md
 [wiki-cm]: https://en.wikipedia.org/wiki/Context_menu
 
-@## JavaScript API: imperative
+@## Imperative API
 
 The `ContextMenu` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 The imperative API provides a single static `ContextMenu` object, enforcing the principle that only
 one context menu can be open at a time.

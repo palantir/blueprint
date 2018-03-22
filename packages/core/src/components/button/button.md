@@ -45,7 +45,7 @@ except for `.pt-fill` (due to lack of visual affordances).
 @## JavaScript API
 
 The `Button` and `AnchorButton` components are available in the **@blueprintjs/core** package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 Button components render buttons with Blueprint classes and attributes.
 See the [Buttons CSS docs](#core/components/button.css-api) for styling options.
@@ -56,7 +56,7 @@ Blueprint class name. If you specify other attributes that the component provide
 for an `<AnchorButton>`, you'll overide the default value.
 
 <div class="pt-callout pt-intent-danger pt-icon-error">
-    <h5>Interactions with disabled buttons</h5>
+    <h4 class="pt-callout-title">Interactions with disabled buttons</h4>
     Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
     This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
     the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,

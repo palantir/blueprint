@@ -1,0 +1,157 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+$pkg-icon-width: 24px;
+
+$package-colors: (
+  "blueprint": $gray1,
+  "core": $blue3,
+  "datetime": $red3,
+  "icons": $gold4,
+  "select": $cobalt3,
+  "table": $forest3,
+  "timezone": $vermilion4,
+  "labs": $indigo3,
+  "resources": $orange3,
+);
+
+$dark-package-colors: (
+  "blueprint": $gray3,
+  "core": $blue4,
+  "datetime": $red4,
+  "icons": $gold4,
+  "select": $cobalt4,
+  "table": $forest4,
+  "timezone": $vermilion5,
+  "labs": $indigo4,
+  "resources": $orange5,
+);
+
+.docs-logo {
+  display: block;
+  opacity: 0.8;
+  margin-right: $sidebar-padding;
+  transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:active {
+    opacity: 1;
+  }
+
+  svg {
+    fill: $dark-gray5;
+
+    .pt-dark & {
+      fill: $gray5;
+    }
+  }
+}
+
+.docs-heading {
+  margin-right: $pt-grid-size;
+  font-size: $pt-grid-size * 2;
+  font-weight: 600;
+
+  .pt-tag {
+    display: block;
+    margin-top: 3px;
+    margin-left: $pt-grid-size / 2;
+    padding-left: $pt-grid-size;
+  }
+}
+
+.docs-version-list {
+  min-width: $pt-grid-size * 12;
+  max-height: $pt-grid-size * 20;
+  overflow: auto;
+}
+
+.docs-nav-package-icon {
+  margin-right: $pt-grid-size;
+  border-radius: $pt-border-radius * 3;
+}
+
+.docs-nav-package {
+  @include pt-flex-container(row);
+  align-items: center;
+
+  .pt-menu-item {
+    flex: 1 1 auto;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  @each $package-name in map-keys($package-colors) {
+    $color: map-get($package-colors, $package-name);
+    $dark-color: map-get($dark-package-colors, $package-name);
+
+    &[data-route="#{$package-name}"] {
+      .docs-nav-package-icon {
+        background-color: rgba($color, 0.1);
+        fill: $color;
+
+        .pt-dark & {
+          background-color: rgba($dark-color, 0.15);
+          fill: $dark-color;
+        }
+      }
+
+      // stylelint-disable max-nesting-depth
+      &:hover,
+      &.docs-nav-expanded {
+        .pt-menu-item,
+        + .docs-nav-menu .pt-menu-item.pt-active {
+          color: $color;
+
+          .pt-dark & {
+            color: $dark-color;
+          }
+        }
+
+        .docs-nav-package-icon {
+          background-color: rgba($color, 0.8);
+          fill: $white;
+
+          .pt-dark & {
+            background-color: rgba($dark-color, 0.8);
+          }
+        }
+
+        &:active .docs-nav-package-icon {
+          background-color: $color;
+
+          .pt-dark & {
+            background-color: $dark-color;
+          }
+        }
+      }
+      // stylelint-enable max-nesting-depth
+    }
+  }
+
+  + .docs-nav-menu {
+    margin-bottom: $pt-grid-size / 2;
+    margin-left: $pkg-icon-width + $pt-grid-size;
+
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+.docs-copyright {
+  display: flex;
+  align-items: center;
+
+  svg {
+    height: 1.2em;
+    padding: 0 ($pt-grid-size / 2);
+  }
+
+  a:not(:hover) {
+    color: inherit;
+  }
+}

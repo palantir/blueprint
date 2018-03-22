@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Generates icons Sass and TypeScript source code from JSON metadata about icons.
  */
 

@@ -22,9 +22,17 @@ export class CssExample extends React.PureComponent<ITag> {
             return null;
         }
         const { markup, markupHtml, modifiers, reference } = css[value];
+        const examples = modifiers.map(modifier => (
+            <tr key={modifier.name}>
+                <td data-modifier={modifier.name}>
+                    <code>{modifier.name}</code>
+                </td>
+                <td dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
+            </tr>
+        ));
         return (
             <div>
-                {modifiers.length > 0 ? <ModifierTable modifiers={modifiers} /> : undefined}
+                {examples.length > 0 && <ModifierTable title="Modifiers">{examples}</ModifierTable>}
                 <div className="docs-example-wrapper" data-reference={reference}>
                     {this.renderMarkupExample(markup)}
                     {modifiers.map(mod => this.renderMarkupExample(markup, mod.name))}

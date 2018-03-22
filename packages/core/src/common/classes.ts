@@ -28,7 +28,15 @@ export const ROUND = "pt-round";
 // text utilities
 export const TEXT_MUTED = "pt-text-muted";
 export const TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
+export const UI_TEXT = "pt-ui-text";
 export const UI_TEXT_LARGE = "pt-ui-text-large";
+export const RUNNING_TEXT = "pt-running-text";
+export const RUNNING_TEXT_SMALL = "pt-running-text-small";
+export const MONOSPACE_TEXT = "pt-monospace-text";
+
+// lists
+export const LIST = "pt-list";
+export const LIST_UNSTYLED = "pt-list-unstyled";
 
 // components
 export const ALERT = "pt-alert";
@@ -48,6 +56,7 @@ export const BUTTON_TEXT = "pt-button-text";
 
 export const CALLOUT = "pt-callout";
 export const CALLOUT_ICON = "pt-callout-icon";
+export const CALLOUT_TITLE = "pt-callout-title";
 
 export const CARD = "pt-card";
 
@@ -69,6 +78,7 @@ export const DIALOG_CLOSE_BUTTON = "pt-dialog-close-button";
 export const DIALOG_FOOTER = "pt-dialog-footer";
 export const DIALOG_FOOTER_ACTIONS = "pt-dialog-footer-actions";
 export const DIALOG_HEADER = "pt-dialog-header";
+export const DIALOG_HEADER_TITLE = "pt-dialog-header-title";
 
 export const EDITABLE_TEXT = "pt-editable-text";
 

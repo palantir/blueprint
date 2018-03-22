@@ -1,8 +1,8 @@
 /*
-* Copyright 2018 Palantir Technologies, Inc. All rights reserved.
-*
-* Licensed under the terms of the LICENSE file distributed with this project.
-*/
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
+ */
 
 /**
  * Customize querying of entire `items` array. Return new list of items.
@@ -20,4 +20,4 @@ export type ItemListPredicate<T> = (query: string, items: T[]) => T[];
  *
  * If defined with `itemListPredicate`, this prop will be ignored.
  */
-export type ItemPredicate<T> = (query: string, item: T, index: number) => boolean;
+export type ItemPredicate<T> = (query: string, item: T, index?: number) => boolean;

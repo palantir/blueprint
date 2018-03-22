@@ -1,11 +1,11 @@
-/**
+/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import { AbstractComponent, IProps, Utils as CoreUtils } from "@blueprintjs/core";
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -40,7 +40,7 @@ export interface ITableQuadrantProps extends IProps {
      * A callback that receives a `ref` to the quadrant's body-wrapping element. Will need to be
      * provided only for the MAIN quadrant, because that quadrant contains the main table body.
      */
-    bodyRef?: React.Ref<HTMLElement>;
+    bodyRef?: (ref: HTMLElement | null) => any;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -71,7 +71,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that receives a `ref` to the quadrant's outermost element.
      */
-    quadrantRef?: React.Ref<HTMLElement>;
+    quadrantRef?: (ref: HTMLElement | null) => any;
 
     /**
      * The quadrant type. Informs the values of the parameters that will be passed to the
@@ -106,7 +106,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.
      */
-    scrollContainerRef?: React.Ref<HTMLElement>;
+    scrollContainerRef?: (ref: HTMLElement | null) => any;
 
     /**
      * CSS styles to apply to the quadrant's outermost element.

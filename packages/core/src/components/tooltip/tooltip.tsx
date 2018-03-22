@@ -4,14 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
-import PopperJS from "popper.js";
+import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { IIntentProps, IProps } from "../../common/props";
-import { Popover, PopoverInteractionKind } from "../popover/popover";
+import { Popover, PopoverInteractionKind, PopperModifiers } from "../popover/popover";
 
 export interface ITooltipProps extends IProps, IIntentProps {
     /**
@@ -64,7 +63,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
      * Popper modifier options, passed directly to internal Popper instance.
      * See https://popper.js.org/popper-documentation.html#modifiers for complete details.
      */
-    modifiers?: PopperJS.Modifiers;
+    modifiers?: PopperModifiers;
 
     /**
      * Callback invoked in controlled mode when the tooltip open state *would* change due to
@@ -100,6 +99,12 @@ export interface ITooltipProps extends IProps, IIntentProps {
      * @default "span"
      */
     rootElementTag?: string;
+
+    /**
+     * The name of the HTML tag to use when rendering the popover target element.
+     * @default "div"
+     */
+    targetElementTag?: string;
 
     /**
      * A space-delimited string of class names that are applied to the tooltip.

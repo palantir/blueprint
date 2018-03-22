@@ -4,15 +4,15 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, IIntentProps, Intent, IProps } from "../../common";
+import { Classes, HTMLDivProps, IIntentProps, Intent, IProps } from "../../common";
 import { Icon } from "../../index";
 import { IconName } from "../icon/icon";
 
 /** This component also supports the full range of HTML `<div>` props. */
-export interface ICalloutProps extends IIntentProps, IProps {
+export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side.
      *
@@ -25,24 +25,31 @@ export interface ICalloutProps extends IIntentProps, IProps {
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply pass
-     * `<h5>JSX title content<h5>` as first `children` element instead of using this prop.
+     * `<h4 className="pt-callout-title">JSX title content<h4>` as first `children` element instead of using this prop.
      */
     title?: string;
 }
 
-export class Callout extends React.PureComponent<ICalloutProps & React.HTMLAttributes<HTMLDivElement>, {}> {
+export class Callout extends React.PureComponent<ICalloutProps, {}> {
     public render() {
         const { className, children, icon: _nospread, intent, title, ...htmlProps } = this.props;
         const iconName = this.getIconName();
         const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className);
+
+        const maybeIcon =
+            iconName === undefined ? (
+                undefined
+            ) : (
+                <span className={Classes.CALLOUT_ICON}>
+                    <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />
+                </span>
+            );
+        const maybeTitle = title === undefined ? undefined : <h4 className={Classes.CALLOUT_TITLE}>{title}</h4>;
+
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && (
-                    <span className={Classes.CALLOUT_ICON}>
-                        <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />
-                    </span>
-                )}
-                {title && <h5>{title}</h5>}
+                {maybeIcon}
+                {maybeTitle}
                 {children}
             </div>
         );

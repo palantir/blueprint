@@ -109,6 +109,42 @@ describe("<TagInput>", () => {
             assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
         });
 
+        it("is invoked on blur when addOnBlur=true", done => {
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} onAdd={onAdd} />);
+            // simulate typing input text
+            wrapper.setProps({ inputProps: { value: NEW_VALUE } });
+            wrapper.find("input").simulate("change", { currentTarget: { value: NEW_VALUE } });
+            wrapper.simulate("blur");
+            // Need setTimeout here to wait for focus to change after blur event
+            setTimeout(() => {
+                assert.isTrue(onAdd.calledOnce);
+                done();
+            });
+        });
+
+        it("is not invoked on blur when addOnBlur=true but inputValue is empty", done => {
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} onAdd={onAdd} />);
+            wrapper.simulate("blur");
+            // Need setTimeout here to wait for focus to change after blur event
+            setTimeout(() => {
+                assert.isTrue(onAdd.notCalled);
+                done();
+            });
+        });
+
+        it("is not invoked on blur when addOnBlur=false", done => {
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} inputProps={{ value: NEW_VALUE }} onAdd={onAdd} />);
+            wrapper.simulate("blur");
+            // Need setTimeout here to wait for focus to change after blur event
+            setTimeout(() => {
+                assert.isTrue(onAdd.notCalled);
+                done();
+            });
+        });
+
         it("does not clear the input if onAdd returns false", () => {
             const onAdd = sinon.stub().returns(false);
             const wrapper = mountTagInput(onAdd);
@@ -440,8 +476,8 @@ describe("<TagInput>", () => {
     function createInputKeydownEventMetadata(value: string, which: number) {
         return {
             currentTarget: { value },
-            // Enzyme throws errors if we don't mock the preventDefault method.
-            preventDefault: () => {
+            // Enzyme throws errors if we don't mock the stopPropagation method.
+            stopPropagation: () => {
                 return;
             },
             which,

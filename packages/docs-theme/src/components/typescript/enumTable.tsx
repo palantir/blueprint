@@ -4,16 +4,18 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import { IProps } from "@blueprintjs/core";
+import classNames from "classnames";
 import { ITsEnum, ITsEnumMember } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IEnumTableProps {
+export interface IEnumTableProps extends IProps {
     data: ITsEnum;
 }
 
@@ -27,20 +29,12 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
         const { data } = this.props;
         const { renderBlock } = this.context;
         return (
-            <div className="docs-modifiers">
+            <div className={classNames("docs-modifiers", this.props.className)}>
                 <ApiHeader {...data} />
                 {renderBlock(data.documentation)}
-                <div className="docs-interface-table">
-                    <table className="pt-html-table">
-                        <thead>
-                            <tr>
-                                <th>Members</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>{data.members.map(this.renderPropRow)}</tbody>
-                    </table>
-                </div>
+                <ModifierTable emptyMessage="This enum is empty." title="Members">
+                    {data.members.map(this.renderPropRow)}
+                </ModifierTable>
             </div>
         );
     }

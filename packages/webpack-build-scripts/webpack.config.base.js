@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
@@ -81,7 +81,7 @@ const scssLoaders = [
     {
         loader: require.resolve("postcss-loader"),
         options: {
-            config: { path: path.resolve(__dirname, "postcss.config.js") },
+            plugins: [require("autoprefixer"), require("postcss-discard-comments")]
         },
     },
     require.resolve("sass-loader"),

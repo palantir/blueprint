@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -15,13 +15,12 @@ import {
     InputGroup,
     IPopoverProps,
     Keys,
-    Menu,
     Popover,
     Position,
     Utils,
 } from "@blueprintjs/core";
-import * as Classes from "../../common/classes";
-import { IListItemsProps, IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, IListItemsProps } from "../../common";
+import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
@@ -32,19 +31,11 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     filterable?: boolean;
 
     /**
-     * React child to render when query is empty.
-     */
-    initialContent?: React.ReactChild;
-
-    /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's children, if appropriate.
      * @default false
      */
     disabled?: boolean;
-
-    /** React child to render when filtering items returns zero results. */
-    noResults?: React.ReactChild;
 
     /**
      * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
@@ -80,43 +71,41 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
 
 export interface ISelectState<T> {
     activeItem?: T;
-    isOpen?: boolean;
-    query?: string;
+    isOpen: boolean;
+    query: string;
 }
 
 export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState<T>> {
     public static displayName = "Blueprint2.Select";
 
     public static ofType<T>() {
-        return Select as new () => Select<T>;
+        return Select as new (props: ISelectProps<T>) => Select<T>;
     }
 
-    public state: ISelectState<T> = { isOpen: false, query: "" };
-
-    private input: HTMLInputElement;
     private TypedQueryList = QueryList.ofType<T>();
-    private list: QueryList<T>;
+    private input?: HTMLInputElement | null;
+    private list?: QueryList<T> | null;
+    private previousFocusedElement: HTMLElement | undefined;
     private refHandlers = {
-        input: (ref: HTMLInputElement) => {
+        input: (ref: HTMLInputElement | null) => {
             this.input = ref;
 
             const { inputProps = {} } = this.props;
             Utils.safeInvoke(inputProps.inputRef, ref);
         },
-        queryList: (ref: QueryList<T>) => (this.list = ref),
+        queryList: (ref: QueryList<T> | null) => (this.list = ref),
     };
-    private previousFocusedElement: HTMLElement;
 
-    constructor(props?: ISelectProps<T>, context?: any) {
+    constructor(props: ISelectProps<T>, context?: any) {
         super(props, context);
-
-        const query = props && props.inputProps && props.inputProps.value !== undefined ? props.inputProps.value : "";
+        const { inputProps = {} } = props;
+        const query = inputProps.value == null ? "" : inputProps.value.toString();
         this.state = { isOpen: false, query };
     }
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { filterable, initialContent, inputProps, noResults, popoverProps, ...restProps } = this.props;
+        const { filterable, inputProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -134,7 +123,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     public componentWillReceiveProps(nextProps: ISelectProps<T>) {
         const { inputProps: nextInputProps = {} } = nextProps;
         if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
-            this.setState({ query: nextInputProps.value });
+            this.setState({ query: nextInputProps.value.toString() });
         }
     }
 
@@ -185,32 +174,21 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
-                    <Menu ulRef={listProps.itemsParentRef}>{this.renderItems(listProps)}</Menu>
+                    {listProps.itemList}
                 </div>
             </Popover>
         );
     };
 
-    private renderItems({ items, renderItem }: IQueryListRendererProps<T>) {
-        const { initialContent, noResults } = this.props;
-        if (initialContent != null && this.isQueryEmpty()) {
-            return initialContent;
-        }
-        const renderedItems = items.map(renderItem).filter(item => item != null);
-        return renderedItems.length > 0 ? renderedItems : noResults;
-    }
-
     private maybeRenderInputClearButton() {
-        return !this.isQueryEmpty() ? (
-            <Button className={CoreClasses.MINIMAL} icon="cross" onClick={this.resetQuery} />
-        ) : (
+        return this.state.query.length === 0 ? (
             undefined
+        ) : (
+            <Button className={CoreClasses.MINIMAL} icon="cross" onClick={this.resetQuery} />
         );
     }
 
-    private isQueryEmpty = () => this.state.query.length === 0;
-
-    private handleActiveItemChange = (activeItem: T) => this.setState({ activeItem });
+    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
 
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
@@ -219,7 +197,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         }
     };
 
-    private handleItemSelect = (item: T, event: React.SyntheticEvent<HTMLElement>) => {
+    private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
         if (this.props.resetOnSelect) {
             this.resetQuery();

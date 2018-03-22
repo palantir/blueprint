@@ -4,28 +4,12 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Intent, Switch, Tag } from "@blueprintjs/core";
+import { Classes, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
-import * as classNames from "classnames";
-import * as moment from "moment";
 import * as React from "react";
 
 import { DatePicker } from "@blueprintjs/datetime";
-
-const FORMAT = "dddd, LL";
-
-export const Moment: React.SFC<{ date: Date; format?: string }> = ({ date, format = FORMAT }) => {
-    const m = moment(date);
-    if (m.isValid()) {
-        return (
-            <Tag className={Classes.LARGE} intent={Intent.PRIMARY}>
-                {m.format(format)}
-            </Tag>
-        );
-    } else {
-        return <Tag className={classNames(Classes.LARGE, Classes.MINIMAL)}>no date</Tag>;
-    }
-};
+import { MomentDate } from "./common/momentDate";
 
 export interface IDatePickerExampleState {
     date?: Date;
@@ -54,7 +38,7 @@ export class DatePickerExample extends BaseExample<IDatePickerExampleState> {
                     reverseMonthAndYearMenus={this.state.reverseMonthAndYearMenus}
                     showActionsBar={this.state.showActionsBar}
                 />
-                <Moment date={this.state.date} />
+                <MomentDate date={this.state.date} />
             </div>
         );
     }

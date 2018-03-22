@@ -4,13 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Icon, Switch } from "@blueprintjs/core";
+import { Classes, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 
 import { DateRange, DateRangePicker } from "@blueprintjs/datetime";
-import { Moment } from "./datePickerExample";
+import { MomentDateRange } from "./common/momentDate";
 
 export interface IDateRangePickerExampleState {
     allowSingleDayRange?: boolean;
@@ -77,8 +77,6 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
     });
 
     protected renderExample() {
-        const [start, end] = this.state.dateRange;
-
         const minDate = MIN_DATE_OPTIONS[this.state.minDateIndex].value;
         const maxDate = MAX_DATE_OPTIONS[this.state.maxDateIndex].value;
 
@@ -94,11 +92,7 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
                     reverseMonthAndYearMenus={this.state.reverseMonthAndYearMenus}
                     shortcuts={this.state.shortcuts}
                 />
-                <div>
-                    <Moment date={start} />
-                    <Icon icon="arrow-right" iconSize={20} />
-                    <Moment date={end} />
-                </div>
+                <MomentDateRange range={this.state.dateRange} />
             </div>
         );
     }

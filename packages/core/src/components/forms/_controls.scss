@@ -178,7 +178,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Styleguide pt-radio
   */
 
-  // stylelint-disable-next-line order/declaration-block-order
+  // stylelint-disable-next-line order/order
   $radio-indicator-font-size: $pt-grid-size * 0.6 !default;
   $radio-indicator-font-size-large: $pt-grid-size * 0.8 !default;
 
@@ -228,7 +228,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Styleguide pt-switch
   */
 
-  // stylelint-disable-next-line order/declaration-block-order
+  // stylelint-disable-next-line order/order
   $switch-height: $control-indicator-size !default;
   $switch-height-large: $pt-grid-size * 2 !default;
   $switch-width: $pt-grid-size * 2.8 !default;

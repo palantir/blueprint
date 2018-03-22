@@ -16,4 +16,9 @@ import { Omnibar } from "@blueprintjs/select";
 export const Omnibox = Omnibar;
 export * from "@blueprintjs/select";
 
-export * from "@blueprintjs/timezone";
+export {
+    ITimezonePickerProps,
+    ITimezonePickerState,
+    TimezoneDisplayFormat,
+    TimezonePicker,
+} from "@blueprintjs/timezone";

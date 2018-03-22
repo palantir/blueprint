@@ -16,7 +16,7 @@ The **@blueprintjs/select** NPM package provides React components related to sel
 
 - [`QueryList`](#select/query-list), a higher-order component that provides interactions between a query string and a list of items.
 
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 ```sh
 npm install --save @blueprintjs/select

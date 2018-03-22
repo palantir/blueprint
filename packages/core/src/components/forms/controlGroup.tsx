@@ -1,15 +1,15 @@
-/**
+/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { HTMLDivProps, IProps } from "../../common/props";
 
-export interface IControlGroupProps extends React.AllHTMLAttributes<HTMLDivElement>, IProps {
+export interface IControlGroupProps extends IProps, HTMLDivProps {
     /**
      * Whether the control group should take up the full width of its container.
      */

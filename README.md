@@ -13,11 +13,13 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 [**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
 
-**Support question**? We use the [blueprintjs tag on Stack Overflow ▸](http://stackoverflow.com/questions/tagged/blueprintjs)
+**Support question**? We use the [**blueprintjs** tag on Stack Overflow **▸**](http://stackoverflow.com/questions/tagged/blueprintjs)
 
-## :construction: 2.0 in development :construction:
+## :star2: 2.0 is out! :star2:
 
-The `develop` branch of this repository is currently being used for development of the next major version of Blueprint. See [What's New in Blueprint 2.0](https://github.com/palantir/blueprint/wiki/What's-New-in-Blueprint-2.0) for a list of changes. Track progress with the [2.0.0 milestone](https://github.com/palantir/blueprint/milestone/23).
+[**What's new in Blueprint 2.0 ▸**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0)
+
+[**2.0 migration guide ▸**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path)
 
 To make a contribution that you wish to have released in a 1.x version of any `@blueprintjs` package, please submit a PR to the `release/1.x` branch.
 
@@ -42,7 +44,7 @@ These are the component libraries we publish to NPM.
 These are hosted on GitHub Pages as static web applications:
 
 - `docs-app` &ndash; Documentation site at blueprintjs.com/docs
-- `landing-app` &ndash; Landnig page at blueprintjs.com
+- `landing-app` &ndash; Landing page at blueprintjs.com
 
 These are used as development playground environments:
 
