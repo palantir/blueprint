@@ -151,7 +151,7 @@ $dark-package-colors: (
     padding: 0 ($pt-grid-size / 2);
   }
 
-  a {
+  a:not(:hover) {
     color: inherit;
   }
 }
