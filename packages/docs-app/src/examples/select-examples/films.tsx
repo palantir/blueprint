@@ -167,8 +167,8 @@ function highlightText(text: string, query: string) {
         if (before.length > 0) {
             tokens.push(before);
         }
-        tokens.push(<strong>{match[0]}</strong>);
         lastIndex = regexp.lastIndex;
+        tokens.push(<strong key={lastIndex}>{match[0]}</strong>);
     }
     const rest = text.slice(lastIndex);
     if (rest.length > 0) {
