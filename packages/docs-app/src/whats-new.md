@@ -17,6 +17,6 @@ Blueprint 2.0 features JavaScript API refactors, smaller & more modular packages
 
 The full annotated changelog and migration changes can be found on the GitHub wiki:
 
-<a class="pt-button pt-intent-primary pt-large" href="https://github.com/palantir/blueprint/wiki/What's-New-in-Blueprint-2.0" target="_blank">
-    What's New in Blueprint 2.0
+<a class="pt-button pt-intent-primary pt-large" href="https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0" target="_blank">
+    What's new in Blueprint 2.0
 </a>
