@@ -17,7 +17,7 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 ## :star2: 2.0 is out! :star2:
 
-[**What's New in Blueprint 2.0 ▸**](https://github.com/palantir/blueprint/wiki/What's-New-in-Blueprint-2.0)
+[**What's new in Blueprint 2.0 ▸**](https://github.com/palantir/blueprint/wiki/What's-New-in-Blueprint-2.0)
 
 [**2.0 migration guide ▸**](https://github.com/palantir/blueprint/wiki/What's-New-in-Blueprint-2.0#migration-path)
 
