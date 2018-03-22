@@ -1,7 +1,4 @@
-<svg width="315" height="104" viewBox="0 0 315 104" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        LABELS
-    </title>
+<svg width="315" height="104" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <rect id="labels-a" x="7" y="16" width="301" height="31" rx="3"/>
         <mask id="labels-k" x="0" y="0" width="301" height="31" fill="#fff">
@@ -50,7 +47,7 @@
                 <g opacity=".8">
                     <g transform="translate(0 1)">
                         <use mask="url(#labels-k)" stroke-width="4" opacity=".4" xlink:href="#labels-a"/>
-                        <path d="M1 17h314M0 46h314M8 11v42M307 11v42" stroke-opacity=".5" stroke-width="2"/>
+                        <path d="M1 17h314M0 46h314M8 11v42m299-42v42" stroke-opacity=".5" stroke-width="2"/>
                         <use mask="url(#labels-l)" stroke-width="2" opacity=".4" xlink:href="#labels-b"/>
                         <use mask="url(#labels-m)" stroke-width="2" opacity=".4" xlink:href="#labels-c"/>
                         <use mask="url(#labels-n)" stroke-width="2" opacity=".4" xlink:href="#labels-d"/>
@@ -64,7 +61,7 @@
                         <use mask="url(#labels-r)" stroke-width="2" opacity=".4" xlink:href="#labels-h"/>
                         <use mask="url(#labels-s)" stroke-width="2" opacity=".4" xlink:href="#labels-i"/>
                         <use mask="url(#labels-t)" stroke-width="2" opacity=".4" xlink:href="#labels-j"/>
-                        <path d="M0 20h97M129 20h35" stroke-width="3" stroke-linecap="square"/>
+                        <path d="M0 20h97m32 0h35" stroke-width="3" stroke-linecap="square"/>
                     </g>
                 </g>
             </g>

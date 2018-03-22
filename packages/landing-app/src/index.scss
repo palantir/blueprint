@@ -8,23 +8,29 @@ Licensed under the terms of the LICENSE file distributed with this project.
 @import "~@blueprintjs/core/lib/css/blueprint.css";
 @import "~@blueprintjs/core/src/common/variables";
 @import "svgs";
-@import "overrides";
+
+$body-background-color: $black;
+
+$canvas-height: 630px;
+$container-width: 760px;
 
 $mobile-breakpoint: 425px;
 $tablet-breakpoint: 768px;
 
 html {
+  background-color: $body-background-color;
   text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
+  background-color: $body-background-color;
   padding: 0;
 }
 
 .pt-container {
   margin: 0 auto;
-  max-width: $pt-grid-size * 96;
+  max-width: $container-width;
   padding: 0 $pt-grid-size * 2;
 }
 
@@ -32,20 +38,14 @@ header {
   position: relative;
   margin: 0;
   background-color: transparent;
-  height: $pt-grid-size * 60;
+  height: $canvas-height;
   overflow: hidden;
   text-align: center;
   user-select: none;
 
   .pt-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    clear: both;
+    @include position-all(absolute, 0);
     z-index: $pt-z-index-base;
-    max-width: inherit;
     pointer-events: none;
   }
 
@@ -68,9 +68,7 @@ header {
 
   .pt-button.pt-minimal {
     position: relative;
-    text-transform: uppercase;
     color: rgba($white, 0.7);
-    font-weight: 500;
     pointer-events: all;
 
     &:hover {
@@ -85,240 +83,48 @@ header {
   }
 
   .pt-icon-dot {
+    margin: $pt-grid-size / 2;
     color: rgba($white, 0.5);
   }
 
   canvas {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    cursor: pointer;
+    @include position-all(absolute, 0);
   }
 }
 
-.pt-info {
-  position: relative;
-  box-shadow: $pt-dark-elevation-shadow-2;
-  background-color: $white;
-  padding: 0 0 $pt-grid-size * 9;
-
-  .pt-description {
-    position: relative;
-    margin-bottom: $pt-grid-size * 10;
-    box-shadow: inset 0 -1px 0 rgba($black, 0.1);
-    background: $white;
-    background-image: linear-gradient(to right, $white, $light-gray4);
-    overflow: hidden;
-    padding: $pt-grid-size * 9 0;
-
-    .pt-container {
-      position: relative;
-      z-index: $pt-z-index-content;
-
-      h2 {
-        margin-bottom: $pt-grid-size * 3;
-        max-width: calc(50% - #{$pt-grid-size * 5});
-        line-height: 1.3em;
-        font-weight: 400;
-      }
-
-      .pt-running-text {
-        position: relative;
-        z-index: $pt-z-index-content;
-        margin-bottom: $pt-grid-size * 2.5;
-        max-width: calc(50% - #{$pt-grid-size * 4});
-        color: $pt-text-color-muted;
-      }
-
-      .pt-button {
-        margin: $pt-grid-size 0 0;
-
-        &.pt-intent-primary {
-          margin-right: $pt-grid-size * 2;
-        }
-      }
-    }
-
-    .pt-components {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      opacity: 0.8;
-      background: no-repeat url("./assets/img/components@2x.png") center center;
-      background-size: auto 100%;
-      width: $pt-grid-size * 80;
-      height: $pt-grid-size * 60;
-    }
-  }
-
-  .pt-feature-column {
-    max-width: calc(50% - #{$pt-grid-size} * 4);
-
-    &:nth-child(1) {
-      float: left;
-    }
-
-    &:nth-child(2) {
-      float: right;
-    }
-  }
-
-  .pt-feature {
-    color: $pt-text-color-muted;
-
-    &:not(:first-child) {
-      padding-top: $pt-grid-size * 6;
-    }
-
-    h4 {
-      margin-top: $pt-grid-size / 2;
-      font-weight: 400;
-    }
-
-    img {
-      float: left;
-      margin-right: $pt-grid-size * 3;
-      margin-bottom: $pt-grid-size * 5;
-      width: $pt-grid-size * 7;
-      height: $pt-grid-size * 7;
-    }
-  }
-}
-
-.pt-getting-started {
-  $background-color: $dark-gray2;
-
-  position: relative;
-  box-shadow: 0 1px 0 rgba($black, 0.8);
-  background-image: radial-gradient(
-    ellipse farthest-side at center -30 * $pt-grid-size,
-    rgba($background-color, 0) 0%,
-    $background-color 100%
-  );
-  padding: $pt-grid-size * 9 0;
-
-  &::before,
-  &::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    content: "";
-  }
-
-  &::before {
-    z-index: $pt-z-index-base - 2;
-    background-color: $background-color;
-  }
-
-  &::after {
-    z-index: $pt-z-index-base - 1;
-    background: url("./assets/img/grid.svg");
-  }
-
-  h2 {
-    position: relative;
-    margin-bottom: $pt-grid-size * 7;
-    text-align: center;
-    font-weight: 300;
-  }
-
-  .pt-steps {
-    position: relative;
-    z-index: $pt-z-index-base;
-    margin: 0 auto;
-    max-width: $pt-grid-size * 54;
-    padding: 0 $pt-grid-size * 2;
-  }
-
-  .pt-step {
-    margin: $pt-grid-size * 5 0 0;
-
-    .pt-step-number {
-      float: left;
-      margin-right: $pt-grid-size * 2;
-      margin-bottom: $pt-grid-size  * 7;
-      border-radius: $pt-grid-size * 10;
-      background-color: $blue3;
-      width: $pt-grid-size * 3;
-      height: $pt-grid-size * 3;
-      text-align: center;
-      line-height: 2.2;
-    }
-
-    h4 {
-      line-height: 1.5;
-      font-weight: 300;
-    }
-
-    p {
-      margin: $pt-grid-size * 2 $pt-grid-size * 5;
-    }
-
-    pre {
-      margin: $pt-grid-size * 1.7 $pt-grid-size * 5;
-    }
-
-    .pt-button {
-      margin-top: $pt-grid-size;
-
-      &.pt-intent-primary {
-        margin-right: $pt-grid-size * 2;
-      }
-    }
-  }
+footer {
+  background-color: transparent;
 }
 
 .pt-about {
-  background-color: $dark-gray1;
-  background-image: radial-gradient(
-    ellipse farthest-side at center 70 * $pt-grid-size,
-    $dark-gray1 0%,
-    $black 100%
-  );
-  padding: $pt-grid-size * 9 0 0;
-  text-align: center;
+  .pt-container {
+    @include pt-flex-container(column, $pt-grid-size * 3);
+    align-items: center;
+    padding-top: $pt-grid-size * 6;
+    padding-bottom: $pt-grid-size * 6;
+    text-align: center;
+  }
 
   img {
-    display: inline-block;
-    margin-bottom: $pt-grid-size * 3;
     width: $pt-grid-size * 6;
   }
 
-  p {
-    font-size: $pt-grid-size * 1.7;
+  p:first-of-type {
+    font-size: $pt-font-size-large;
   }
 
-  .pt-hiring {
-    position: relative;
-    margin-top: $pt-grid-size * 11;
+  p:last-of-type {
     font-weight: 300;
+  }
 
-    &::before {
-      position: absolute;
-      top: -$pt-grid-size * 6;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: $dark-gray5;
-      width: $pt-grid-size * 4;
-      height: 2px;
-      content: "";
-    }
-
-    .pt-button {
-      margin-top: $pt-grid-size * 3;
-    }
+  .pt-separator {
+    background-color: $dark-gray5;
+    width: $pt-grid-size * 4;
+    height: 2px;
   }
 }
 
 .pt-copyright {
-  position: relative;
-  margin-top: $pt-grid-size * 9;
-  text-align: left;
-
   &::before {
     display: block;
     background-image: linear-gradient(
@@ -333,88 +139,17 @@ header {
 
   .pt-container {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
-    padding: ($pt-grid-size * 2);
-  }
-}
-
-.pt-clear {
-  clear: both;
-}
-
-// no need create variables for these
-// stylelint-disable media-feature-name-no-vendor-prefix, scss/media-feature-value-dollar-variable
-// for greater resolution than retina
-@media (min-resolution: 216dpi) {
-  .pt-info .pt-description .pt-components {
-    background-image: url("./assets/img/components@3x.png");
-  }
-}
-// stylelint-enable media-feature-name-no-vendor-prefix, scss/media-feature-value-dollar-variable
-
-@media (max-width: $tablet-breakpoint) {
-  .pt-info {
-    padding-bottom: $pt-grid-size * 8;
-
-    .pt-description {
-      margin-bottom: $pt-grid-size * 8;
-      background-image: linear-gradient(to bottom, $white, $light-gray4);
-      padding-top: $pt-grid-size * 5;
-      padding-bottom: $pt-grid-size * 25;
-
-      .pt-container {
-        h2 {
-          margin-bottom: $pt-grid-size * 2;
-          max-width: none;
-          text-align: left;
-          font-size: 1.5em;
-        }
-
-        .pt-running-text {
-          margin-bottom: $pt-grid-size * 2;
-          max-width: none;
-        }
-      }
-
-      .pt-components {
-        top: auto;
-        right: 0;
-        bottom: -$pt-grid-size * 35;
-        left: 0;
-        opacity: 0.5;
-        background-position: center center;
-        width: auto;
-      }
-    }
-
-    .pt-feature {
-      img {
-        float: none;
-        margin-right: 0;
-        margin-bottom: $pt-grid-size / 2;
-        margin-left: -$pt-grid-size / 2;
-      }
-    }
-  }
-
-  .pt-features {
-    .pt-feature-column {
-      width: calc(50% - #{$pt-grid-size * 2});
-
-      &:nth-child(1) {
-        margin-right: $pt-grid-size * 2;
-      }
-
-      &:nth-child(2) {
-        margin-left: $pt-grid-size * 2;
-      }
-    }
+    min-height: $pt-navbar-height;
+    padding: $pt-grid-size / 2;
   }
 }
 
 @media (max-width: $mobile-breakpoint) {
   header {
+    height: $pt-grid-size * 80;
+
     h1 {
       font-size: $pt-grid-size * 3.6;
     }
@@ -423,76 +158,21 @@ header {
       margin-bottom: $pt-grid-size * 2.5;
       font-size: $pt-grid-size * 1.8;
     }
+
+    .pt-icon-dot {
+      display: block;
+    }
   }
+}
 
-  .pt-info {
-    padding: 0;
-
-    .pt-description {
-      margin-bottom: $pt-grid-size;
+@media (max-width: $tablet-breakpoint) {
+  .pt-copyright {
+    .pt-container {
+      flex-direction: column;
     }
 
     .pt-button {
-      width: 100%;
-
-      &.pt-intent-primary {
-        margin-bottom: $pt-grid-size * 2;
-      }
-    }
-  }
-
-  .pt-features {
-    padding-bottom: $pt-grid-size * 5;
-
-    .pt-feature-column {
-      width: auto;
-      max-width: none;
-
-      &:not(:first-child),
-      &:not(:last-child) {
-        float: none;
-        margin: 0;
-      }
-    }
-
-    .pt-feature,
-    .pt-feature:not(:first-child) {
-      padding-top: $pt-grid-size * 4;
-
-      img {
-        float: none;
-        margin-right: $pt-grid-size * 3;
-        margin-bottom: $pt-grid-size / 2;
-        margin-left: -$pt-grid-size / 2;
-      }
-    }
-  }
-
-  .pt-getting-started {
-    display: none;
-  }
-
-  .pt-about {
-    padding: $pt-grid-size * 5 0 0;
-
-    .pt-hiring {
-      margin-top: $pt-grid-size * 6;
-
-      &::before {
-        top: -$pt-grid-size * 3.2;
-      }
-
-      .pt-button {
-        margin-top: $pt-grid-size * 2;
-      }
-    }
-  }
-
-  .pt-copyright {
-    margin-top: $pt-grid-size * 5;
-
-    &::before {
-      background: $pt-dark-divider-white;
+      margin: $pt-grid-size / 2;
     }
   }
 }

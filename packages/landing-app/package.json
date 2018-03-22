@@ -12,8 +12,6 @@
     "lint:stylelint": "stylelint -s scss \"src/**/*.scss\"",
     "lint:tslint": "tslint \"{src,test}/**/*.{ts,tsx}\" -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
-    "optimize:img-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/img",
-    "optimize:inline-svgs": "svgo --disable=collapseGroups --pretty -f src/assets/inline && node scripts/dedupe-svg-ids.js",
     "test": "exit 0",
     "verify": "npm-run-all -p dist lint"
   },
@@ -29,7 +27,6 @@
     "copy-webpack-plugin": "^4.2.0",
     "npm-run-all": "^4.1.2",
     "raw-loader": "^0.5.1",
-    "svgo": "^1.0.3",
     "tslint": "^5.9.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"

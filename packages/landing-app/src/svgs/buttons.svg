@@ -1,7 +1,4 @@
-<svg width="454" height="115" viewBox="0 0 454 115" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        BUTTONS
-    </title>
+<svg width="454" height="115" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <rect id="buttons-a" x="6" y="7" width="111" height="31" rx="3"/>
         <mask id="buttons-I" x="0" y="0" width="111" height="31" fill="#fff">

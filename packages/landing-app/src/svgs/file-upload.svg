@@ -1,7 +1,4 @@
-<svg width="446" height="44" viewBox="0 0 446 44" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        UPLOAD
-    </title>
+<svg width="446" height="44" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <rect id="file-upload-a" x="9" y="7" width="431" height="31" rx="3"/>
         <mask id="file-upload-f" x="0" y="0" width="431" height="31" fill="#fff">
@@ -34,7 +31,7 @@
                     <use mask="url(#file-upload-h)" stroke-width="2" opacity=".4" xlink:href="#file-upload-c"/>
                     <use mask="url(#file-upload-i)" stroke-width="2" opacity=".4" xlink:href="#file-upload-d"/>
                     <use mask="url(#file-upload-j)" stroke-width="2" opacity=".4" xlink:href="#file-upload-e"/>
-                    <path d="M21.5 22.5H94M352.5 22.5H415" stroke-width="3" stroke-linecap="square"/>
+                    <path d="M21.5 22.5H94m258.5 0H415" stroke-width="3" stroke-linecap="square"/>
                 </g>
             </g>
         </g>

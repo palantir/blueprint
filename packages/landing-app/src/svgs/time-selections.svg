@@ -1,7 +1,4 @@
-<svg width="215" height="154" viewBox="0 0 215 154" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        TIME SELECTIONS
-    </title>
+<svg width="215" height="154" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <rect id="time-selections-a" x="7" y="16" width="201" height="31" rx="3"/>
         <mask id="time-selections-M" x="0" y="0" width="201" height="31" fill="#fff">
@@ -162,7 +159,7 @@
                 <g opacity=".8">
                     <g>
                         <use mask="url(#time-selections-M)" stroke-width="4" opacity=".4" xlink:href="#time-selections-a"/>
-                        <path d="M1 17h214M0 46h214M8 11v42M207 11v42" stroke-opacity=".5" stroke-width="2"/>
+                        <path d="M1 17h214M0 46h214M8 11v42m199-42v42" stroke-opacity=".5" stroke-width="2"/>
                         <use mask="url(#time-selections-N)" stroke-width="2" opacity=".4" xlink:href="#time-selections-b"/>
                         <use mask="url(#time-selections-O)" stroke-width="2" opacity=".4" xlink:href="#time-selections-c"/>
                         <use mask="url(#time-selections-P)" stroke-width="2" opacity=".4" xlink:href="#time-selections-d"/>
@@ -193,7 +190,7 @@
                     </g>
                     <g transform="translate(0 90)">
                         <use mask="url(#time-selections-aj)" stroke-width="4" opacity=".4" xlink:href="#time-selections-x"/>
-                        <path d="M1 17h134M0 46h134M8 11v42M127 11v42" stroke-opacity=".5" stroke-width="2"/>
+                        <path d="M1 17h134M0 46h134M8 11v42m119-42v42" stroke-opacity=".5" stroke-width="2"/>
                         <use mask="url(#time-selections-ak)" stroke-width="2" opacity=".4" xlink:href="#time-selections-y"/>
                         <use mask="url(#time-selections-al)" stroke-width="2" opacity=".4" xlink:href="#time-selections-z"/>
                         <use mask="url(#time-selections-am)" stroke-width="2" opacity=".4" xlink:href="#time-selections-A"/>

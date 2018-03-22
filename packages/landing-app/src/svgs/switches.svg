@@ -1,7 +1,4 @@
-<svg width="51" height="46" viewBox="0 0 51 46" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        SWITCHES
-    </title>
+<svg width="51" height="46" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <circle id="switches-a" cx="9" cy="8" r="5"/>
         <mask id="switches-e" x="0" y="0" width="10" height="10" fill="#fff">
