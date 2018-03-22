@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/labs",
-  "version": "0.15.3",
+  "version": "0.15.4",
   "description": "Incubator for unstable and in-development Blueprint components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -30,9 +30,9 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^2.0.0-rc.1",
-    "@blueprintjs/select": "^2.0.0-rc.1",
-    "@blueprintjs/timezone": "^2.0.0-rc.1",
+    "@blueprintjs/core": "^2.0.0",
+    "@blueprintjs/select": "^2.0.0",
+    "@blueprintjs/timezone": "^2.0.0",
     "classnames": "^2.2",
     "tslib": "^1.9.0"
   },

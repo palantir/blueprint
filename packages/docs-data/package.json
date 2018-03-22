@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/docs-data",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "private": true,
@@ -10,7 +10,7 @@
     "test": "exit 0"
   },
   "dependencies": {
-    "@blueprintjs/docs-theme": "^2.0.0-rc.2",
+    "@blueprintjs/docs-theme": "^2.0.0",
     "documentalist": "^1.2.0",
     "glob": "^7.1.2",
     "highlights": "^3.1.1",
