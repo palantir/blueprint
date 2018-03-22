@@ -133,6 +133,22 @@ $dark-package-colors: (
   }
 
   + .docs-nav-menu {
+    margin-bottom: $pt-grid-size / 2;
     margin-left: $pkg-icon-width + $pt-grid-size;
+
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+.docs-copyright {
+  display: flex;
+  align-items: center;
+
+  svg {
+    height: 1.2em;
+    padding: 0 ($pt-grid-size / 2);
+    fill: $white;
   }
 }
