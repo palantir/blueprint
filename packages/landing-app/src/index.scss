@@ -9,6 +9,8 @@ Licensed under the terms of the LICENSE file distributed with this project.
 @import "~@blueprintjs/core/src/common/variables";
 @import "svgs";
 
+$body-background-color: $black;
+
 $canvas-height: 630px;
 $container-width: 760px;
 
@@ -16,11 +18,13 @@ $mobile-breakpoint: 425px;
 $tablet-breakpoint: 768px;
 
 html {
+  background-color: $body-background-color;
   text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
+  background-color: $body-background-color;
   padding: 0;
 }
 
@@ -89,14 +93,8 @@ header {
   }
 }
 
-
 footer {
-  background-color: $dark-gray1;
-  background-image: radial-gradient(
-    ellipse farthest-side at center 70 * $pt-grid-size,
-    $dark-gray1 0%,
-    $black 100%
-  );
+  background-color: transparent;
 }
 
 .pt-about {
