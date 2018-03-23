@@ -49,6 +49,8 @@ Page layout elements
 
 .docs-nav-wrapper {
   flex-basis: $sidebar-width;
+  position: relative;
+  z-index: $pt-z-index-content;
   margin-left: $sidebar-padding * 2;
 }
 
