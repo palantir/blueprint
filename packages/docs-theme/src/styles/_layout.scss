@@ -49,6 +49,7 @@ Page layout elements
 
 .docs-nav-wrapper {
   flex-basis: $sidebar-width;
+  margin-left: $sidebar-padding * 2;
 }
 
 .docs-nav {
@@ -83,6 +84,7 @@ Page layout elements
   align-items: flex-start;
   outline: none;
   background-color: $content-background-color;
+  padding-right: $sidebar-padding * 2;
 
   .pt-dark & {
     background-color: $dark-content-background-color;
