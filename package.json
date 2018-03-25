@@ -60,6 +60,10 @@
     "stylelint-scss": "^2.5.0",
     "typescript": "~2.7.2"
   },
+  "peerDependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
   "engines": {
     "node": ">=6.1"
   },
