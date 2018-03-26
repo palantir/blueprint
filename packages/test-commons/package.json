@@ -18,7 +18,7 @@
     "enzyme-adapter-react-16": "^1.1.1"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": "^16.2.0"
   },
   "devDependencies": {
     "react": "^16.2.0",
