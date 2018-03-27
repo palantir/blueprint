@@ -204,7 +204,7 @@ $dark-selectable-header-menu-selected-hover-background:
     }
 
     // need to use a long selector here to properly scope the style
-    // stylelint-disable-next-line selector-max-compound-selectors
+    // stylelint-disable-next-line selector-max-compound-selectors,max-line-length
     .#{$ns}-dark .#{$ns}-table-selection-enabled .#{$ns}-table-header.#{$ns}-table-header-selected & {
       background-color: $dark-selectable-header-menu-selected-background;
     }
