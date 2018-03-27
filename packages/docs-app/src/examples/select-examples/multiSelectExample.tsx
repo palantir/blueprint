@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
+import { Button, Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
 import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
@@ -57,6 +57,13 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
             undefined
         );
 
+        const clearButton =
+            films.length > 0 ? (
+                <Button className={Classes.MINIMAL} icon={"cross"} onClick={this.handleClear} />
+            ) : (
+                undefined
+            );
+
         return (
             <FilmMultiSelect
                 {...filmSelectProps}
@@ -67,7 +74,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                 onItemSelect={this.handleFilmSelect}
                 popoverProps={{ popoverClassName: popoverMinimal ? Classes.MINIMAL : "" }}
                 tagRenderer={this.renderTag}
-                tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove }}
+                tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove, rightElement: clearButton }}
                 selectedItems={this.state.films}
             />
         );
@@ -176,4 +183,8 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
             this.setState({ [prop]: event.currentTarget.checked });
         };
     }
+
+    private handleClear = () => {
+        this.setState({ films: [] });
+    };
 }
