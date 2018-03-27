@@ -4,6 +4,9 @@
 @import "colors";
 @import "mixins";
 
+$pt-namespace: "pt" !default;
+$ns: $pt-namespace;
+
 // easily the most important variable, so it comes first
 // (so other variables can use it to define themselves)
 $pt-grid-size: 10px !default;
