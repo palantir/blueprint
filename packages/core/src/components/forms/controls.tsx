@@ -14,9 +14,9 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IProps, removeNonHTMLProps } from "../../common/props";
+import { HTMLInputProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
-import { HTMLInputProps } from "../../index";
+import { Icon } from "../icon/icon";
 
 export interface IControlProps extends IProps, HTMLInputProps {
     // NOTE: HTML props are duplicated here to provide control-specific documentation
@@ -50,7 +50,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
     /**
      * JSX Element label for the control.
      *
-     * This prop is necessary for TypeScript consumers as the type definition for `label` only
+     * This prop is a workaround for TypeScript consumers as the type definition for `label` only
      * accepts strings. JavaScript consumers can provide a JSX element directly to `label`.
      */
     labelElement?: React.ReactNode;
@@ -59,40 +59,85 @@ export interface IControlProps extends IProps, HTMLInputProps {
     onChange?: React.FormEventHandler<HTMLInputElement>;
 }
 
-const INVALID_PROPS: Array<keyof ICheckboxProps> = [
-    // we spread props to `<input>` but render `children` as its sibling
-    "children",
-    "defaultIndeterminate",
-    "indeterminate",
-    "labelElement",
-];
+/** Internal props for Checkbox/Radio/Switch to render correctly. */
+interface IControlInternalProps extends IControlProps {
+    indicator?: JSX.Element;
+    type: "checkbox" | "radio";
+    typeClassName: string;
+}
 
-/** Base Component class for all Controls */
-export class Control<P extends IControlProps> extends React.Component<P, {}> {
-    // generates control markup for given input type.
-    // optional inputRef in case the component needs reference for itself (don't forget to invoke the prop!).
-    protected renderControl(type: "checkbox" | "radio", typeClassName: string, inputRef = this.props.inputRef) {
-        const className = classNames(
-            Classes.CONTROL,
-            typeClassName,
-            {
-                [Classes.DISABLED]: this.props.disabled,
-                [Classes.INLINE]: this.props.inline,
-            },
-            this.props.className,
-        );
-        const inputProps = removeNonHTMLProps(this.props, INVALID_PROPS, true);
-        return (
-            <label className={className} style={this.props.style}>
-                <input {...inputProps} ref={inputRef} type={type} />
-                <span className={Classes.CONTROL_INDICATOR} />
-                {this.props.label}
-                {this.props.labelElement}
-                {this.props.children}
-            </label>
-        );
+/**
+ * Renders common control elements, with additional props to customize appearance.
+ * This component is not exported and is only used in this file for `Checkbox`, `Radio`, and `Switch` below.
+ */
+const Control: React.SFC<IControlInternalProps> = ({
+    children,
+    className,
+    indicator,
+    inline,
+    inputRef,
+    label,
+    labelElement,
+    style,
+    type,
+    typeClassName,
+    ...htmlProps
+}) => {
+    const classes = classNames(
+        Classes.CONTROL,
+        typeClassName,
+        {
+            [Classes.DISABLED]: htmlProps.disabled,
+            [Classes.INLINE]: inline,
+        },
+        className,
+    );
+    return (
+        <label className={classes} style={style}>
+            <input {...htmlProps} ref={inputRef} type={type} />
+            <span className={Classes.CONTROL_INDICATOR}>{indicator}</span>
+            {label}
+            {labelElement}
+            {children}
+        </label>
+    );
+};
+
+//
+// Switch
+//
+
+export interface ISwitchProps extends IControlProps {}
+
+export class Switch extends React.PureComponent<ISwitchProps> {
+    public static displayName = "Blueprint2.Switch";
+
+    public render() {
+        return <Control {...this.props} type="checkbox" typeClassName={Classes.SWITCH} />;
+    }
+
+    protected renderIndicator(): JSX.Element {
+        return null;
     }
 }
+
+//
+// Radio
+//
+
+export interface IRadioProps extends IControlProps {}
+
+export class Radio extends React.PureComponent<IRadioProps> {
+    public static displayName = "Blueprint2.Radio";
+
+    public render() {
+        return <Control {...this.props} type="radio" typeClassName={Classes.RADIO} />;
+    }
+}
+
+//
+// Checkbox
+//
 
 export interface ICheckboxProps extends IControlProps {
     /** Whether this checkbox is initially indeterminate (uncontrolled mode). */
@@ -102,24 +147,49 @@ export interface ICheckboxProps extends IControlProps {
      * Whether this checkbox is indeterminate, or "partially checked."
      * The checkbox will appear with a small dash instead of a tick to indicate that the value
      * is not exactly true or false.
+     *
+     * Note that this prop takes precendence over `checked`: if a checkbox is marked both
+     * `checked` and `indeterminate` via props, it will appear as indeterminate in the DOM.
      */
     indeterminate?: boolean;
 }
 
-export class Checkbox extends Control<ICheckboxProps> {
+// checkbox stores state so it can render an icon in the indicator
+export interface ICheckboxState {
+    checked: boolean;
+    indeterminate: boolean;
+}
+
+export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState> {
     public static displayName = "Blueprint2.Checkbox";
+
+    public state: ICheckboxState = {
+        checked: this.props.checked || this.props.defaultChecked || false,
+        indeterminate: this.props.indeterminate || this.props.defaultIndeterminate || false,
+    };
 
     // must maintain internal reference for `indeterminate` support
     private input: HTMLInputElement;
 
     public render() {
-        return this.renderControl("checkbox", "pt-checkbox", this.handleInputRef);
+        const { defaultIndeterminate, indeterminate, ...controlProps } = this.props;
+        return (
+            <Control
+                {...controlProps}
+                indicator={this.renderIndicator()}
+                inputRef={this.handleInputRef}
+                onChange={this.handleChange}
+                type="checkbox"
+                typeClassName={Classes.CHECKBOX}
+            />
+        );
+    }
+
+    public componentWillReceiveProps({ checked, indeterminate }: ICheckboxProps) {
+        this.setState({ checked, indeterminate });
     }
 
     public componentDidMount() {
-        if (this.props.defaultIndeterminate != null) {
-            this.input.indeterminate = this.props.defaultIndeterminate;
-        }
         this.updateIndeterminate();
     }
 
@@ -127,34 +197,28 @@ export class Checkbox extends Control<ICheckboxProps> {
         this.updateIndeterminate();
     }
 
+    private renderIndicator() {
+        if (this.state.indeterminate) {
+            return <Icon icon="small-minus" />;
+        } else if (this.state.checked) {
+            return <Icon icon="small-tick" />;
+        }
+        return null;
+    }
+
     private updateIndeterminate() {
-        if (this.props.indeterminate != null) {
-            this.input.indeterminate = this.props.indeterminate;
+        if (this.state.indeterminate != null) {
+            this.input.indeterminate = this.state.indeterminate;
         }
     }
+
+    private handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+        const { checked, indeterminate } = evt.target;
+        this.setState({ checked, indeterminate });
+    };
 
     private handleInputRef = (ref: HTMLInputElement) => {
         this.input = ref;
         safeInvoke(this.props.inputRef, ref);
     };
-}
-
-export interface ISwitchProps extends IControlProps {}
-
-export class Switch extends Control<ISwitchProps> {
-    public static displayName = "Blueprint2.Switch";
-
-    public render() {
-        return this.renderControl("checkbox", "pt-switch");
-    }
-}
-
-export interface IRadioProps extends IControlProps {}
-
-export class Radio extends Control<IRadioProps> {
-    public static displayName = "Blueprint2.Radio";
-
-    public render() {
-        return this.renderControl("radio", "pt-radio");
-    }
 }
