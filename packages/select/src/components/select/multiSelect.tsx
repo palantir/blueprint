@@ -99,10 +99,10 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         const { handleKeyDown, handleKeyUp, query } = listProps;
         const defaultInputProps: HTMLInputProps = {
             placeholder: "Search...",
+            value: query,
             ...tagInputProps.inputProps,
             // tslint:disable-next-line:object-literal-sort-keys
             onChange: this.handleQueryChange,
-            value: query,
         };
 
         return (
