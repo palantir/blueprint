@@ -43,7 +43,7 @@ Markup:
 Styleguide pt-control-group
 */
 
-.pt-control-group {
+.#{$ns}-control-group {
   // create a new stacking context to isolate all the z-indices
   @include new-render-layer();
   @include pt-flex-container(row);
@@ -56,14 +56,14 @@ Styleguide pt-control-group
   // equally-specific styles (e.g. we don't want mouse interactions or focus
   // changes to change the z-index of a disabled element).
 
-  .pt-button,
-  .pt-input,
-  .pt-select {
+  .#{$ns}-button,
+  .#{$ns}-input,
+  .#{$ns}-select {
     // create a new stacking context
     position: relative;
   }
 
-  .pt-input {
+  .#{$ns}-input {
     z-index: index($control-group-stack, "input-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
@@ -83,12 +83,12 @@ Styleguide pt-control-group
 
     &[readonly],
     &:disabled,
-    &.pt-disabled {
+    &.#{$ns}-disabled {
       z-index: index($control-group-stack, "input-disabled");
     }
   }
 
-  .pt-input-group[class*="pt-intent"] .pt-input {
+  .#{$ns}-input-group[class*="pt-intent"] .#{$ns}-input {
     z-index: index($control-group-stack, "intent-input-default");
 
     &:focus {
@@ -96,8 +96,8 @@ Styleguide pt-control-group
     }
   }
 
-  .pt-button,
-  .pt-select select {
+  .#{$ns}-button,
+  .#{$ns}-select select {
     z-index: index($control-group-stack, "button-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
@@ -118,7 +118,7 @@ Styleguide pt-control-group
 
     &[readonly],
     &:disabled,
-    &.pt-disabled {
+    &.#{$ns}-disabled {
       z-index: index($control-group-stack, "button-disabled");
     }
 
@@ -139,32 +139,32 @@ Styleguide pt-control-group
 
       &[readonly],
       &:disabled,
-      &.pt-disabled {
+      &.#{$ns}-disabled {
         z-index: index($control-group-stack, "intent-button-disabled");
       }
     }
   }
 
   // input group contents appear above input always
-  .pt-input-group > .pt-icon,
-  .pt-input-group > .pt-button,
-  .pt-input-group > .pt-input-action {
+  .#{$ns}-input-group > .#{$ns}-icon,
+  .#{$ns}-input-group > .#{$ns}-button,
+  .#{$ns}-input-group > .#{$ns}-input-action {
     z-index: index($control-group-stack, "input-group-children");
   }
 
   // keep the select-menu carets on top of everything always (particularly when
-  // .pt-selects are focused).
-  .pt-select::after {
+  // .#{$ns}-selects are focused).
+  .#{$ns}-select::after {
     z-index: index($control-group-stack, "select-caret");
   }
 
   // have consecutive elements share a border
-  &:not(.pt-vertical) {
+  &:not(.#{$ns}-vertical) {
     > * {
       margin-right: -$button-border-width;
     }
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       > * {
         margin-right: 0;
       }
@@ -172,7 +172,7 @@ Styleguide pt-control-group
       // consecutive buttons within a button group look okay out of the box, but
       // we need need to make a small correction for non-grouped buttons. this
       // replicates what's already done in dark theme button groups.
-      > .pt-button + .pt-button {
+      > .#{$ns}-button + .#{$ns}-button {
         margin-left: $button-border-width;
       }
     }
@@ -190,7 +190,7 @@ Styleguide pt-control-group
   }
 
   // bring back border radius on these buttons
-  .pt-input-group .pt-button {
+  .#{$ns}-input-group .#{$ns}-button {
     border-radius: $pt-border-radius;
   }
 
@@ -211,14 +211,14 @@ Styleguide pt-control-group
     <button class="pt-button pt-icon-plus pt-fixed"></button>
   </div>
 
-  Styleguide pt-control-group.pt-fill
+  Styleguide pt-control-group.#{$ns}-fill
   */
 
-  > .pt-fill {
+  > .#{$ns}-fill {
     flex: 1 1 auto;
   }
 
-  &.pt-fill > *:not(.pt-fixed) {
+  &.#{$ns}-fill > *:not(.#{$ns}-fixed) {
     flex: 1 1 auto;
   }
 
@@ -238,10 +238,10 @@ Styleguide pt-control-group
     <button class="pt-button pt-large pt-intent-primary">Login</button>
   </div>
 
-  Styleguide pt-control-group.pt-vertical
+  Styleguide pt-control-group.#{$ns}-vertical
   */
 
-  &.pt-vertical {
+  &.#{$ns}-vertical {
     flex-direction: column;
 
     > * {

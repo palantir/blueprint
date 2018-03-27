@@ -60,7 +60,7 @@
     }
   }
 
-  &.pt-dark {
+  &.#{$ns}-dark {
     .docs-modifiers {
       box-shadow: $pt-dark-elevation-shadow-4;
       background-color: $dark-sidebar-background-color;

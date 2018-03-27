@@ -15,7 +15,7 @@
 }
 
 @mixin table-skeleton() {
-  .pt-skeleton {
+  .#{$ns}-skeleton {
     opacity: 0;
     height: $pt-grid-size * 0.5;
     animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;

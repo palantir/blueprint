@@ -10,7 +10,7 @@ $hover-transition: $pt-transition-duration $pt-transition-ease;
 $icons-per-row: 5;
 
 .docs-icons {
-  .pt-input-group {
+  .#{$ns}-input-group {
     margin: ($pt-grid-size * 5) 0;
   }
 
@@ -52,18 +52,18 @@ $icons-per-row: 5;
     background-color: $light-gray3;
   }
 
-  .pt-icon,
-  .pt-icon-large,
+  .#{$ns}-icon,
+  .#{$ns}-icon-large,
   .docs-icon-svg {
     position: relative;
   }
 
-  .pt-icon,
-  .pt-icon-large {
+  .#{$ns}-icon,
+  .#{$ns}-icon-large {
     color: $pt-icon-color;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     &::before {
       background-color: $dark-gray3;
     }
@@ -72,8 +72,8 @@ $icons-per-row: 5;
       background-color: $dark-gray2;
     }
 
-    .pt-icon,
-    .pt-icon-large {
+    .#{$ns}-icon,
+    .#{$ns}-icon-large {
       color: $pt-dark-icon-color;
     }
   }

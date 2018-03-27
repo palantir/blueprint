@@ -3,27 +3,27 @@
 
 @import "../../common/variables";
 
-.pt-alert {
+.#{$ns}-alert {
   max-width: $pt-grid-size * 40;
   padding: $pt-grid-size * 2;
 }
 
-.pt-alert-body {
+.#{$ns}-alert-body {
   display: flex;
 
-  .pt-icon {
+  .#{$ns}-icon {
     margin-top: 0;
     margin-right: $pt-grid-size * 2;
     font-size: $pt-icon-size-large * 2;
   }
 }
 
-.pt-alert-footer {
+.#{$ns}-alert-footer {
   display: flex;
   flex-direction: row-reverse;
   margin-top: $pt-grid-size;
 
-  .pt-button {
+  .#{$ns}-button {
     margin-left: $pt-grid-size;
   }
 }

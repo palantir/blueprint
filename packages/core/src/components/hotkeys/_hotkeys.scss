@@ -6,7 +6,7 @@
 $kbd-key-size: 25px !default;
 $modifier-key-padding: 3px 8px 3px 6px !default;
 
-.pt-key {
+.#{$ns}-key {
   display: inline-block;
   border-radius: $pt-border-radius - 1;
   box-shadow: $pt-elevation-shadow-2;
@@ -21,11 +21,11 @@ $modifier-key-padding: 3px 8px 3px 6px !default;
   font-family: inherit;
   font-size: $pt-font-size-small;
 
-  &.pt-modifier-key {
+  &.#{$ns}-modifier-key {
     padding: $modifier-key-padding;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     box-shadow: $pt-dark-elevation-shadow-2,
                 inset 0 1px 0 rgba($white, 0.05);
     background: $dark-gray5;
@@ -33,33 +33,33 @@ $modifier-key-padding: 3px 8px 3px 6px !default;
   }
 }
 
-.pt-key-combo .pt-key:not(:last-child) {
+.#{$ns}-key-combo .#{$ns}-key:not(:last-child) {
   margin-right: $pt-grid-size / 2;
 }
 
-.pt-hotkey-dialog {
+.#{$ns}-hotkey-dialog {
   top: $pt-grid-size * 4;
   padding-bottom: 0;
 
-  .pt-dialog-body {
+  .#{$ns}-dialog-body {
     margin: 0;
     padding: 0;
   }
 
-  .pt-key-combo {
+  .#{$ns}-key-combo {
     flex: 1 0 auto;
     width: $pt-grid-size * 16;
     text-align: right;
   }
 }
 
-.pt-hotkey-column {
+.#{$ns}-hotkey-column {
   margin: auto;
   max-height: 80vh;
   overflow-y: auto;
   padding: $pt-grid-size * 3;
 
-  .pt-hotkey-group {
+  .#{$ns}-hotkey-group {
     margin-bottom: $pt-grid-size * 3;
 
     &:not(:first-child) {
@@ -68,7 +68,7 @@ $modifier-key-padding: 3px 8px 3px 6px !default;
   }
 }
 
-.pt-hotkey {
+.#{$ns}-hotkey {
   display: flex;
   align-items: baseline;
   justify-content: space-between;

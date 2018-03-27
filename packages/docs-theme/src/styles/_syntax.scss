@@ -91,7 +91,7 @@ $dark-syntax-token-colors: (
     font-style: italic;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     @include syntax($dark-syntax-token-colors);
     background: $dark-syntax-background-color;
     color: $dark-syntax-text-color;

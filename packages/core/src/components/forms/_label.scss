@@ -21,52 +21,52 @@ Markup:
   </div>
 </label>
 
-.pt-inline - Inline
+.#{$ns}-inline - Inline
 
 Styleguide pt-label
 */
 
 // stylelint-disable-next-line selector-no-qualifying-type
-label.pt-label {
+label.#{$ns}-label {
   display: block;
   margin: 0 0 ($pt-grid-size * 1.5);
 
-  .pt-input,
-  .pt-select,
-  .pt-popover-wrapper {
+  .#{$ns}-input,
+  .#{$ns}-select,
+  .#{$ns}-popover-wrapper {
     display: block;
     margin-top: $pt-grid-size / 2;
     text-transform: none;
   }
 
-  .pt-select select {
+  .#{$ns}-select select {
     width: 100%;
     vertical-align: top;
     font-weight: 400;
   }
 
-  &.pt-inline {
+  &.#{$ns}-inline {
     line-height: $pt-input-height;
 
-    .pt-input,
-    .pt-input-group,
-    .pt-select,
-    .pt-popover-wrapper {
+    .#{$ns}-input,
+    .#{$ns}-input-group,
+    .#{$ns}-select,
+    .#{$ns}-popover-wrapper {
       display: inline-block;
       margin: 0 0 0 ($pt-grid-size / 2);
       vertical-align: top;
     }
 
-    .pt-input-group .pt-input {
+    .#{$ns}-input-group .#{$ns}-input {
       margin-left: 0;
     }
 
-    &.pt-large {
+    &.#{$ns}-large {
       line-height: $pt-input-height-large;
     }
   }
 
-  &:not(.pt-inline) .pt-popover-target {
+  &:not(.#{$ns}-inline) .#{$ns}-popover-target {
     display: block;
   }
 
@@ -96,22 +96,22 @@ label.pt-label {
     </div>
   </label>
 
-  Styleguide pt-label.pt-disabled
+  Styleguide pt-label.#{$ns}-disabled
   */
 
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     &,
-    .pt-text-muted {
+    .#{$ns}-text-muted {
       color: $pt-text-color-disabled;
     }
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     color: $pt-dark-heading-color;
 
-    &.pt-disabled {
+    &.#{$ns}-disabled {
       &,
-      .pt-text-muted {
+      .#{$ns}-text-muted {
         color: $pt-dark-text-color-disabled;
       }
     }

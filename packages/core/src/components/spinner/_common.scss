@@ -16,19 +16,19 @@ $spinner-speed-small: $pt-transition-duration * 4 !default;
 $spinner-speed-large: $pt-transition-duration * 4.5 !default;
 
 @mixin spinner-size($width-factor, $stroke-width, $speed) {
-  &:not(.pt-svg-spinner) {
+  &:not(.#{$ns}-svg-spinner) {
     width: $spinner-width * $width-factor;
 
-    .pt-spinner-svg-container {
+    .#{$ns}-spinner-svg-container {
       animation-duration: $speed;
     }
   }
 
-  &.pt-svg-spinner {
+  &.#{$ns}-svg-spinner {
     animation-duration: $speed;
   }
 
-  .pt-svg-spinner-transform-group {
+  .#{$ns}-svg-spinner-transform-group {
     transform: scale($width-factor);
   }
 

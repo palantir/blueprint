@@ -32,7 +32,7 @@
 .docs-react-options-column {
   flex: 0 0 $options-width;
 
-  .pt-control:not(.pt-inline) {
+  .#{$ns}-control:not(.#{$ns}-inline) {
     margin-right: 0;
   }
 }

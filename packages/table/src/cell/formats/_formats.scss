@@ -3,11 +3,11 @@
 @import "../../common/variables";
 @import "../common";
 
-.pt-table-null {
+.#{$ns}-table-null {
   color: $pt-text-color-disabled;
 }
 
-.pt-table-truncated-value {
+.#{$ns}-table-truncated-value {
   position: absolute;
   top: 0;
   // note: changing this value can throw off the width calculation in truncated popover
@@ -19,7 +19,7 @@
   text-overflow: ellipsis;
 }
 
-.pt-table-truncated-format-text {
+.#{$ns}-table-truncated-format-text {
   position: absolute;
   top: 0;
   // note: changing this value can throw off the width calculation in truncated popover
@@ -31,7 +31,7 @@
   text-overflow: ellipsis;
 }
 
-.pt-table-truncated-popover-target {
+.#{$ns}-table-truncated-popover-target {
   position: absolute;
   top: 0;
   right: $pt-grid-size / 2;
@@ -44,14 +44,14 @@
   padding: 0 $pt-grid-size / 2;
   text-align: center;
 
-  .pt-icon-standard {
+  .#{$ns}-icon-standard {
     line-height: $cell-height;
   }
 
-  &.pt-popover-open {
+  &.#{$ns}-popover-open {
     opacity: 1;
 
-    .pt-icon-standard {
+    .#{$ns}-icon-standard {
       color: $pt-intent-primary;
     }
   }
@@ -61,7 +61,7 @@
   }
 }
 
-.pt-table-truncated-popover {
+.#{$ns}-table-truncated-popover {
   min-width: 20 * $pt-grid-size;
   max-width: 60 * $pt-grid-size;
   max-height: 30 * $pt-grid-size;
@@ -70,11 +70,11 @@
   font-family: $pt-font-family-monospace;
 }
 
-.pt-table-popover-whitespace-pre {
+.#{$ns}-table-popover-whitespace-pre {
   white-space: pre;
 }
 
-.pt-table-popover-whitespace-normal {
+.#{$ns}-table-popover-whitespace-normal {
   white-space: normal;
 }
 

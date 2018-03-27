@@ -11,11 +11,11 @@ Markup:
   We build products that make people better at their most important work.
 </div>
 
-.pt-elevation-0 - Ground floor. This level provides just a gentle border shadow.
-.pt-elevation-1 - First. Subtle drop shadow intended for static containers.
-.pt-elevation-2 - Second. An even stronger shadow, moving on up.
-.pt-elevation-3 - Third. For containers overlaying content temporarily.
-.pt-elevation-4 - Fourth. The strongest shadow, usually for overlay containers on top of backdrops.
+.#{$ns}-elevation-0 - Ground floor. This level provides just a gentle border shadow.
+.#{$ns}-elevation-1 - First. Subtle drop shadow intended for static containers.
+.#{$ns}-elevation-2 - Second. An even stronger shadow, moving on up.
+.#{$ns}-elevation-3 - Third. For containers overlaying content temporarily.
+.#{$ns}-elevation-4 - Fourth. The strongest shadow, usually for overlay containers on top of backdrops.
 
 Styleguide pt-card
 */
@@ -40,7 +40,7 @@ $dark-elevation-shadows: (
   $pt-dark-elevation-shadow-4
 );
 
-.pt-card {
+.#{$ns}-card {
   border-radius: $pt-border-radius;
   box-shadow: $pt-elevation-shadow-0;
   background-color: $card-background-color;
@@ -48,19 +48,19 @@ $dark-elevation-shadows: (
   transition: transform ($pt-transition-duration * 2) $pt-transition-ease,
               box-shadow ($pt-transition-duration * 2) $pt-transition-ease;
 
-  &.pt-dark,
-  .pt-dark & {
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
     box-shadow: $pt-dark-elevation-shadow-0;
     background-color: $dark-card-background-color;
   }
 }
 
 @for $index from 1 through length($elevation-shadows) {
-  .pt-elevation-#{$index - 1} {
+  .#{$ns}-elevation-#{$index - 1} {
     box-shadow: nth($elevation-shadows, $index);
 
-    &.pt-dark,
-    .pt-dark & {
+    &.#{$ns}-dark,
+    .#{$ns}-dark & {
       box-shadow: nth($dark-elevation-shadows, $index);
     }
   }
@@ -85,16 +85,16 @@ Markup:
   </div>
 </div>
 
-Styleguide pt-card.pt-interactive
+Styleguide pt-card.#{$ns}-interactive
 */
 
-.pt-card.pt-interactive {
+.#{$ns}-card.#{$ns}-interactive {
   &:hover {
     box-shadow: $pt-elevation-shadow-3;
     cursor: pointer;
 
-    &.pt-dark,
-    .pt-dark & {
+    &.#{$ns}-dark,
+    .#{$ns}-dark & {
       box-shadow: $pt-dark-elevation-shadow-3;
     }
   }
@@ -104,8 +104,8 @@ Styleguide pt-card.pt-interactive
     box-shadow: $pt-elevation-shadow-1;
     transition-duration: 0;
 
-    &.pt-dark,
-    .pt-dark & {
+    &.#{$ns}-dark,
+    .#{$ns}-dark & {
       box-shadow: $pt-dark-elevation-shadow-1;
     }
   }

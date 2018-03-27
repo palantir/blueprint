@@ -29,6 +29,6 @@ Licensed under the terms of the LICENSE file distributed with this project.
 @import "styles/sections";
 
 
-.docs-releases-menu .pt-menu {
+.docs-releases-menu .#{$ns}-menu {
   min-width: 270px;
 }

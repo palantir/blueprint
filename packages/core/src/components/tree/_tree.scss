@@ -44,13 +44,13 @@ Styleguide pt-tree
 $tree-row-height: $pt-grid-size * 3 !default;
 $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
-.pt-tree-node-list {
+.#{$ns}-tree-node-list {
   margin: 0;
   padding-left: 0;
   list-style: none;
 }
 
-.pt-tree-root {
+.#{$ns}-tree-root {
   // lets us position hover/selection effects based on the width of the whole tree
   position: relative;
   background-color: transparent;
@@ -59,12 +59,12 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 }
 
 @for $i from 0 through 20 {
-  .pt-tree-node-content-#{$i} {
+  .#{$ns}-tree-node-content-#{$i} {
     padding-left: ($tree-row-height - $tree-icon-spacing) * $i;
   }
 }
 
-.pt-tree-node-content {
+.#{$ns}-tree-node-content {
   display: flex;
   align-items: center;
   width: 100%;
@@ -76,42 +76,42 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   }
 }
 
-.pt-tree-node-caret,
-.pt-tree-node-caret-none {
+.#{$ns}-tree-node-caret,
+.#{$ns}-tree-node-caret-none {
   position: relative;
   min-width: $pt-grid-size * 3;
   // CSS API: override default icon styles, which appear first for some reason
   line-height: $tree-row-height !important; // stylelint-disable-line declaration-no-important
 }
 
-.pt-tree-node-caret {
+.#{$ns}-tree-node-caret {
   @include pt-icon-colors();
   transform: rotate(0deg);
   cursor: pointer;
   text-align: center;
   transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
 
-  &.pt-tree-node-caret-open {
+  &.#{$ns}-tree-node-caret-open {
     transform: rotate(90deg);
   }
 
   // CSS API support
-  &.pt-icon-standard::before {
+  &.#{$ns}-icon-standard::before {
     content: $pt-icon-caret-right;
   }
 
-  .pt-icon {
+  .#{$ns}-icon {
     margin: $tree-icon-spacing;
   }
 }
 
-.pt-tree-node-icon {
+.#{$ns}-tree-node-icon {
   position: relative;
   margin-right: $tree-icon-spacing;
   color: $pt-icon-color;
 }
 
-.pt-tree-node-label {
+.#{$ns}-tree-node-label {
   @include overflow-ellipsis();
   flex: 1 1 auto;
   position: relative;
@@ -123,13 +123,13 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   }
 }
 
-.pt-tree-node-secondary-label {
+.#{$ns}-tree-node-secondary-label {
   padding: 0 ($pt-grid-size / 2);
   line-height: $tree-row-height;
   user-select: none;
 }
 
-.pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
+.#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
   background-color: $pt-intent-primary;
 
   &,
@@ -137,7 +137,7 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
     color: $white;
   }
 
-  .pt-tree-node-caret {
+  .#{$ns}-tree-node-caret {
     &::before {
       color: rgba($white, 0.7);
     }
@@ -148,16 +148,16 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   }
 }
 
-.pt-dark {
-  .pt-tree-node-content:hover {
+.#{$ns}-dark {
+  .#{$ns}-tree-node-content:hover {
     background-color: rgba($gray1, 0.3);
   }
 
-  .pt-tree-node-icon {
+  .#{$ns}-tree-node-icon {
     color: $pt-dark-icon-color;
   }
 
-  .pt-tree-node.pt-tree-node-selected > .pt-tree-node-content {
+  .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
     background-color: $pt-intent-primary;
   }
 }

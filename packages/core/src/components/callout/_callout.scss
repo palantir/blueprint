@@ -12,16 +12,16 @@ Markup:
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
 </div>
 
-.pt-intent-primary - Primary intent
-.pt-intent-success - Success intent
-.pt-intent-warning - Warning intent
-.pt-intent-danger  - Danger intent
-.pt-icon-info-sign - With an icon
+.#{$ns}-intent-primary - Primary intent
+.#{$ns}-intent-success - Success intent
+.#{$ns}-intent-warning - Warning intent
+.#{$ns}-intent-danger  - Danger intent
+.#{$ns}-icon-info-sign - With an icon
 
 Styleguide pt-callout
 */
 
-.pt-callout {
+.#{$ns}-callout {
   @include running-typography-small();
   position: relative;
   border-radius: $pt-border-radius;
@@ -40,13 +40,13 @@ Styleguide pt-callout
     }
   }
 
-  .pt-callout-title {
+  .#{$ns}-callout-title {
     margin-top: 0;
     margin-bottom: $pt-grid-size / 2;
     line-height: $pt-icon-size-large;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     background-color: rgba($gray3, 0.2);
 
     &[class*="pt-icon-"]::before {
@@ -55,35 +55,35 @@ Styleguide pt-callout
   }
 
   @each $intent, $color in $pt-intent-colors {
-    &.pt-intent-#{$intent} {
+    &.#{$ns}-intent-#{$intent} {
       background-color: rgba($color, 0.15);
 
       &[class*="pt-icon-"]::before,
-      .pt-callout-icon,
-      .pt-callout-title {
+      .#{$ns}-callout-icon,
+      .#{$ns}-callout-title {
         color: map-get($pt-intent-text-colors, $intent);
       }
 
-      .pt-dark & {
+      .#{$ns}-dark & {
         background-color: rgba($color, 0.25);
 
         &[class*="pt-icon-"]::before,
-        .pt-callout-icon,
-        .pt-callout-title {
+        .#{$ns}-callout-icon,
+        .#{$ns}-callout-title {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }
       }
     }
   }
 
-  .pt-running-text & {
+  .#{$ns}-running-text & {
     margin: ($pt-grid-size * 2) 0;
   }
 }
 
 // callout icon fills vertical space at left side, pushing title and content over.
-// note that CSS API `.pt-callout.pt-icon-[name]` is still supported.
-.pt-callout-icon {
+// note that CSS API `.#{$ns}-callout.#{$ns}-icon-[name]` is still supported.
+.#{$ns}-callout-icon {
   float: left;
   margin-right: $pt-grid-size;
   height: 100%;

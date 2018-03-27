@@ -4,12 +4,12 @@
 @import "~@blueprintjs/core/src/common/variables";
 @import "../select/select";
 
-.pt-multi-select {
+.#{$ns}-multi-select {
   min-width: $pt-grid-size * 15;
 }
 
-.pt-multi-select-popover {
-  .pt-menu {
+.#{$ns}-multi-select-popover {
+  .#{$ns}-menu {
     max-width: $select-popover-max-width;
     max-height: $select-popover-max-height;
     overflow: auto;

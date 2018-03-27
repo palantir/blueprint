@@ -12,19 +12,19 @@ Markup:
 <button type="button" class="pt-button pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
 
 :disabled - Disabled state
-.pt-disabled - Disabled appearance
-.pt-intent-primary - Primary intent
-.pt-intent-success - Success intent
-.pt-intent-warning - Warning intent
-.pt-intent-danger - Danger intent
-.pt-active - Active appearance
-.pt-large - Larger size
-.pt-small - Smaller size
-.pt-fill - Fill parent container
+.#{$ns}-disabled - Disabled appearance
+.#{$ns}-intent-primary - Primary intent
+.#{$ns}-intent-success - Success intent
+.#{$ns}-intent-warning - Warning intent
+.#{$ns}-intent-danger - Danger intent
+.#{$ns}-active - Active appearance
+.#{$ns}-large - Larger size
+.#{$ns}-small - Smaller size
+.#{$ns}-fill - Fill parent container
 
 Styleguide pt-button
 */
-.pt-button {
+.#{$ns}-button {
   @include pt-button-base();
   @include pt-button-height($pt-button-height);
 
@@ -33,18 +33,18 @@ Styleguide pt-button
   }
 
   &:disabled,
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     cursor: not-allowed;
   }
 
-  &.pt-fill {
+  &.#{$ns}-fill {
     display: flex;
     width: 100%;
   }
 
   // default is `text-align: left` so we only need `right` case.
-  &.pt-align-right,
-  .pt-align-right & {
+  &.#{$ns}-align-right,
+  .#{$ns}-align-right & {
     text-align: right;
   }
 
@@ -53,30 +53,30 @@ Styleguide pt-button
   }
 
   @each $intent, $colors in $button-intents {
-    &.pt-intent-#{$intent} {
+    &.#{$ns}-intent-#{$intent} {
       @include pt-button-intent($colors...);
     }
   }
 
-  &[class*="pt-intent-"] .pt-button-spinner .pt-spinner-head {
+  &[class*="pt-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
     stroke: $white;
   }
 
-  &.pt-loading {
+  &.#{$ns}-loading {
     position: relative;
 
     &[class*="pt-icon-"]::before {
       visibility: hidden;
     }
 
-    .pt-button-spinner {
+    .#{$ns}-button-spinner {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
 
-    > :not(.pt-button-spinner) {
+    > :not(.#{$ns}-button-spinner) {
       visibility: hidden;
     }
   }
@@ -90,7 +90,7 @@ Styleguide pt-button
   <button type="button" class="pt-button pt-large pt-icon-add">Large button</button>
   <button type="button" class="pt-button pt-large pt-icon-refresh"></button>
 
-  Styleguide pt-button.pt-icon
+  Styleguide pt-button.#{$ns}-icon
   */
 
   /*
@@ -116,7 +116,7 @@ Styleguide pt-button
     <span class="pt-icon-standard pt-icon-cross pt-align-right"></span>
   </button>
 
-  Styleguide pt-button.pt-icon-advanced
+  Styleguide pt-button.#{$ns}-icon-advanced
   */
   &[class*="pt-icon-"] {
     &::before {
@@ -128,20 +128,20 @@ Styleguide pt-button
   #{$icon-classes} {
     color: $pt-icon-color;
 
-    &.pt-align-right {
+    &.#{$ns}-align-right {
       margin-left: $button-icon-spacing;
     }
   }
 
   // button with SVG icon only (no text or children)
-  .pt-icon:first-child:last-child,
+  .#{$ns}-icon:first-child:last-child,
   // if loading, then it contains exactly [spinner, icon]
-  .pt-spinner + .pt-icon:last-child {
+  .#{$ns}-spinner + .#{$ns}-icon:last-child {
     // center icon horizontally. this works for large buttons too.
     margin: 0 (-($pt-button-height - $pt-icon-size-standard) / 2);
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     &:not([class*="pt-intent-"]) {
       @include pt-dark-button();
 
@@ -157,14 +157,14 @@ Styleguide pt-button
     &[class*="pt-intent-"] {
       @include pt-dark-button-intent();
 
-      .pt-button-spinner .pt-spinner-head {
+      .#{$ns}-button-spinner .#{$ns}-spinner-head {
         stroke: $dark-progress-head-color;
       }
     }
   }
 
   &:disabled,
-  &.pt-disabled,
+  &.#{$ns}-disabled,
   &[class*="pt-intent-"] {
     // disabled and intent button icon should use same color as text
     // stylelint-disable declaration-no-important
@@ -185,31 +185,31 @@ Styleguide pt-button
   <a role="button" class="pt-button pt-minimal {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
   <button type="button" class="pt-button pt-minimal pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
 
-  .pt-disabled - Disabled appearance
-  .pt-intent-primary - Primary intent
-  .pt-intent-success - Success intent
-  .pt-intent-warning - Warning intent
-  .pt-intent-danger - Danger intent
+  .#{$ns}-disabled - Disabled appearance
+  .#{$ns}-intent-primary - Primary intent
+  .#{$ns}-intent-success - Success intent
+  .#{$ns}-intent-warning - Warning intent
+  .#{$ns}-intent-danger - Danger intent
 
-  Styleguide pt-button.pt-minimal
+  Styleguide pt-button.#{$ns}-minimal
   */
 
-  &.pt-minimal {
+  &.#{$ns}-minimal {
     @include pt-button-minimal();
   }
 
-  &.pt-large,
-  .pt-large & {
+  &.#{$ns}-large,
+  .#{$ns}-large & {
     @include pt-button-height-large();
   }
 
-  &.pt-small,
-  .pt-small & {
+  &.#{$ns}-small,
+  .#{$ns}-small & {
     @include pt-button-height-small();
   }
 }
 
-a.pt-button {
+a.#{$ns}-button {
   text-align: center;
   text-decoration: none;
   transition: none;
@@ -221,18 +221,18 @@ a.pt-button {
     color: $pt-text-color;
   }
 
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     color: $button-color-disabled;
   }
 }
 
-.pt-button-text {
+.#{$ns}-button-text {
   // default: don't grow to fill but allow shrinking as necessary
   flex: 0 1 auto;
 
-  // when alignment is set, grow to fill and inherit `text-align` set on `.pt-button`
-  .pt-align-left &,
-  .pt-align-right & {
+  // when alignment is set, grow to fill and inherit `text-align` set on `.#{$ns}-button`
+  .#{$ns}-align-left &,
+  .#{$ns}-align-right & {
     flex: 1 1 auto;
   }
 }
