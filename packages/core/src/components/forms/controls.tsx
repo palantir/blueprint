@@ -115,10 +115,6 @@ export class Switch extends React.PureComponent<ISwitchProps> {
     public render() {
         return <Control {...this.props} type="checkbox" typeClassName={Classes.SWITCH} />;
     }
-
-    protected renderIndicator(): JSX.Element {
-        return null;
-    }
 }
 
 //
