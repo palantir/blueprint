@@ -64,11 +64,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     height: $control-indicator-size;
     line-height: $control-indicator-size;
     user-select: none;
-
-    &::before {
-      position: relative;
-      content: "";
-    }
   }
 
   input:checked ~ .pt-control-indicator {
@@ -151,11 +146,12 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       @extend input:checked;
     }
 
-    input:checked ~ .pt-control-indicator::before {
+    // CSS API support
+    input:checked ~ .pt-control-indicator:empty::before {
       content: $pt-icon-small-tick;
     }
 
-    input:indeterminate ~ .pt-control-indicator::before {
+    input:indeterminate ~ .pt-control-indicator:empty::before {
       content: $pt-icon-small-minus;
     }
   }
@@ -273,6 +269,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
       &::before {
         display: block;
+        position: relative;
         top: $switch-indicator-margin;
         left: $switch-indicator-margin;
         border-radius: $switch-height;
