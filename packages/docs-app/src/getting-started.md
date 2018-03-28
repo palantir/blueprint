@@ -145,7 +145,7 @@ npm install --save @types/moment
 
 Blueprint's declaration files require **TypeScript 2.3+** for default generic parameter arguments: `<P = {}>`.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
   For more information, see [Understanding TypeScript](#blueprint/getting-started.understanding-typescript) below.
 </div>
 

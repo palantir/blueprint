@@ -2,9 +2,9 @@
 
 A highly interactive React `Table` component.
 
-<div class="pt-callout pt-large pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
   If you are looking instead for the Blueprint-styled HTML table, see
-  [`.pt-html-table` in **@blueprintjs/core**](#core/components/table-html).
+  [`.@ns-html-table` in **@blueprintjs/core**](#core/components/table-html).
 </div>
 
 ### Features

@@ -1,11 +1,11 @@
 @# Icon
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     See [**Icons**](#icons) for a searchable list of all available UI icons.
 </div>
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4 class="pt-callout-title">SVG icons in 2.0</h4>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-callout-title">SVG icons in 2.0</h4>
     Blueprint 2.0 introduced SVG icon support and moved icon resources to a separate __@blueprintjs/icons__ package.
     The `Icon` component now renders SVG paths and the icon classes are no longer used by any Blueprint React component.
     Icon font support has been preserved but should be considered a legacy feature that will be removed in a
@@ -51,7 +51,7 @@ import { IconNames } from "@blueprintjs/icons";
 ```html
 <Icon icon="globe" iconSize={30} />
 <!-- renders the following HTML markup: -->
-<svg class="pt-icon" data-icon="globe" width="30" height="30" viewBox="0 0 20 20">
+<svg class="@ns-icon" data-icon="globe" width="30" height="30" viewBox="0 0 20 20">
     <title>globe</title>
     <path ... />
 </svg>
@@ -61,8 +61,8 @@ import { IconNames } from "@blueprintjs/icons";
 
 @## CSS API
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h4 class="pt-callout-title">Icon fonts are legacy in 2.0</h4>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-callout-title">Icon fonts are legacy in 2.0</h4>
     Blueprint's icon fonts should be considered a legacy feature and will be removed in a future major version.
     The SVGs rendered by the React component do not suffer from the blurriness of icon fonts, and browser
     support is equivalent.
@@ -71,21 +71,21 @@ import { IconNames } from "@blueprintjs/icons";
 The CSS-only icons API uses the __icon fonts__ from the __@blueprintjs/icons__ package.
 
 To use Blueprint UI icons via CSS, you must apply two classes to a `<span>` element:
-- a __sizing class__, either `pt-icon-standard` (16px) or `pt-icon-large` (20px)
-- an __icon name class__, such as `pt-icon-projects`
+- a __sizing class__, either `@ns-icon-standard` (16px) or `@ns-icon-large` (20px)
+- an __icon name class__, such as `@ns-icon-projects`
 
-Icon classes also support the four `.pt-intent-*` modifiers to color the image.
+Icon classes also support the four `.@ns-intent-*` modifiers to color the image.
 
 ```html
-<span class="pt-icon-{{size}} pt-icon-{{name}}"></span>
+<span class="@ns-icon-{{size}} @ns-icon-{{name}}"></span>
 
-<span class="pt-icon-standard pt-icon-projects"></span>
-<span class="pt-icon-large pt-icon-geosearch pt-intent-success"></span>
+<span class="@ns-icon-standard @ns-icon-projects"></span>
+<span class="@ns-icon-large @ns-icon-geosearch @ns-intent-success"></span>
 ```
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4 class="pt-callout-title">Non-standard sizes</h4>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-callout-title">Non-standard sizes</h4>
     Generally, font icons should only be used at either 16px or 20px. However, if a non-standard size is
     necessary, set a `font-size` that is whole multiple of 16 or 20 with the relevant size class.
-    You can instead use the class `pt-icon` to make the icon inherit its size from surrounding text.
+    You can instead use the class `@ns-icon` to make the icon inherit its size from surrounding text.
 </div>

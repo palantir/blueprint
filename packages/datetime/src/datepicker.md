@@ -38,7 +38,7 @@ by using the component in controlled mode and with the `modifiers` prop:
 
 ```css.scss
 // in CSS
-.pt-datepicker .DayPicker-Day--isSunday {
+.@ns-datepicker .DayPicker-Day--isSunday {
   // CSS rules to make the day appear disabled
 }
 ```
