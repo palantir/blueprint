@@ -288,10 +288,8 @@
 }
 
 .docs-popover-sizing-example {
-  .#{$ns}-popover-content {
-    max-height: $pt-grid-size * 15;
-    overflow-y: auto;
-  }
+  max-height: $pt-grid-size * 15;
+  overflow-y: auto;
 }
 
 .docs-popover-inline-example {

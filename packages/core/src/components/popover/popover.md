@@ -317,11 +317,17 @@ prop.
 @### Sizing
 
 Popovers by default have a `max-width` but no `max-height`. To constrain the height of a popover
-and make its content scrollable, set the appropriate CSS rules on `.pt-popover-content`:
+and make its content scrollable, add a custom class to your popover content element and attach
+styles to that class:
+
+```tsx
+<Popover content={<div class="custom-class">...</div>}>
+    ...
+</Popover>
+```
 
 ```css.scss
-// pass "my-popover" to `popoverClassName` prop.
-.my-popover .pt-popover-content {
+.custom-class {
     max-height: $pt-grid-size * 15;
     overflow-y: auto;
 }
