@@ -462,7 +462,10 @@ describe("<Popover>", () => {
             });
 
             it("is invoked with `false` when clicking .pt-popover-dismiss", () => {
-                renderPopover({ isOpen: true, onInteraction }, <button className="pt-popover-dismiss">Dismiss</button>)
+                renderPopover(
+                    { isOpen: true, onInteraction },
+                    <button className={Classes.POPOVER_DISMISS}>Dismiss</button>,
+                )
                     .findClass(Classes.POPOVER_DISMISS)
                     .simulate("click");
                 assert.isTrue(onInteraction.calledOnce);
@@ -538,7 +541,7 @@ describe("<Popover>", () => {
                     interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
                     usePortal: true,
                 },
-                <button className="pt-popover-dismiss">Dismiss</button>,
+                <button className={Classes.POPOVER_DISMISS}>Dismiss</button>,
             );
 
             wrapper.simulateTarget("click").assertIsOpen();
@@ -553,7 +556,7 @@ describe("<Popover>", () => {
                     interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
                     usePortal: false,
                 },
-                <button className="pt-popover-dismiss">Dismiss</button>,
+                <button className={Classes.POPOVER_DISMISS}>Dismiss</button>,
             );
 
             wrapper.simulateTarget("click").assertIsOpen();

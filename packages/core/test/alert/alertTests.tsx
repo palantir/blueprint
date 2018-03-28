@@ -136,7 +136,7 @@ describe("<Alert>", () => {
                     <p>There is no going back.</p>
                 </Alert>,
             );
-            const overlay = alert.find(".pt-overlay").hostNodes();
+            const overlay = alert.find("." + Classes.OVERLAY).hostNodes();
 
             overlay.simulate("keydown", { which: Keys.ESCAPE });
             assert.isTrue(onCancel.notCalled);
@@ -155,7 +155,7 @@ describe("<Alert>", () => {
                     <p>There is no going back.</p>
                 </Alert>,
             );
-            const backdrop = alert.find(".pt-overlay-backdrop").hostNodes();
+            const backdrop = alert.find("." + Classes.OVERLAY_BACKDROP).hostNodes();
 
             backdrop.simulate("mousedown");
             assert.isTrue(onCancel.notCalled);

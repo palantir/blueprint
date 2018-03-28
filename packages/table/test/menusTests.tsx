@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Menu } from "@blueprintjs/core";
+import { Classes, Menu } from "@blueprintjs/core";
 import { expect } from "chai";
 import * as React from "react";
 import * as sinon from "sinon";
@@ -54,7 +54,7 @@ describe("Menus", () => {
                 </Menu>,
             );
 
-            menu.find("a.pt-menu-item").mouse("click");
+            menu.find(`.${Classes.MENU_ITEM}`).mouse("click");
             expect(clipboardSpy.called).to.be.true;
             expect(clipboardSpy.lastCall.args).to.deep.equal([[["X"], ["X"], ["X"]]]);
             expect(onCopySpy.called).to.be.true;

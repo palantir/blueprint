@@ -413,7 +413,7 @@ describe("<TagInput>", () => {
         assert.isTrue(
             // the wrapper is a React element; the first child is rendered <div>.
             wrapper.childAt(0).hasClass(Classes.DISABLED),
-            `.${Classes.DISABLED} should be applied to .pt-tag-input`,
+            `.${Classes.DISABLED} should be applied to tag-input`,
         );
         assert.isTrue(
             wrapper
@@ -423,7 +423,7 @@ describe("<TagInput>", () => {
             ".pt-input-ghost should have a 'disabled' attribute",
         );
         wrapper.find(Tag).forEach(tag => {
-            assert.isFalse(tag.hasClass("pt-tag-removeable"), ".pt-tag should not have .pt-tag-removable applied");
+            assert.isFalse(tag.hasClass(Classes.TAG_REMOVABLE), "tag should not have tag-removable applied");
         });
     });
 

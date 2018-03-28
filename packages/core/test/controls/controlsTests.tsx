@@ -8,13 +8,13 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Icon } from "../../src";
+import { Classes, Icon } from "../../src";
 import { Checkbox, IControlProps, Radio, Switch } from "../../src/components/forms/controls";
 
 type ControlType = typeof Checkbox | typeof Radio | typeof Switch;
 
 describe("Controls:", () => {
-    controlsTests(Checkbox, "checkbox", "pt-checkbox", () => {
+    controlsTests(Checkbox, "checkbox", Classes.CHECKBOX, () => {
         describe("indeterminate", () => {
             let input: HTMLInputElement;
             const handleInputRef = (ref: HTMLInputElement) => (input = ref);
@@ -53,15 +53,15 @@ describe("Controls:", () => {
         });
     });
 
-    controlsTests(Switch, "checkbox", "pt-switch");
+    controlsTests(Switch, "checkbox", Classes.SWITCH);
 
-    controlsTests(Radio, "radio", "pt-radio");
+    controlsTests(Radio, "radio", Classes.RADIO);
 
     function controlsTests(classType: ControlType, propType: string, className: string, moreTests?: () => void) {
         describe(`<${classType.displayName.split(".")[1]}>`, () => {
-            it(`renders .pt-control.${className}`, () => {
+            it(`renders .${Classes.CONTROL}.${className}`, () => {
                 const control = mountControl();
-                assert.isTrue(control.find(".pt-control").hasClass(className));
+                assert.isTrue(control.find(`.${Classes.CONTROL}`).hasClass(className));
             });
 
             it(`renders input[type=${propType}]`, () => {

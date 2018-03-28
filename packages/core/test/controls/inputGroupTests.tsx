@@ -9,13 +9,13 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Icon, InputGroup } from "../../src/index";
+import { Classes, Icon, InputGroup } from "../../src/index";
 
 describe("<InputGroup>", () => {
     it("renders left icon before input", () => {
         const input = mount(<InputGroup leftIcon="star" />).children();
         assert.isTrue(input.childAt(0).is(Icon));
-        assert.isTrue(input.childAt(1).hasClass("pt-input"));
+        assert.isTrue(input.childAt(1).hasClass(Classes.INPUT));
     });
 
     it("supports custom style", () => {
@@ -27,11 +27,11 @@ describe("<InputGroup>", () => {
         assert.equal(inputElement.style.background, "yellow");
     });
 
-    it("renders right element inside .pt-input-action after input", () => {
+    it(`renders right element inside .${Classes.INPUT_ACTION} after input`, () => {
         const action = mount(<InputGroup rightElement={<address />} />)
             .children()
             .childAt(2);
-        assert.isTrue(action.hasClass("pt-input-action"));
+        assert.isTrue(action.hasClass(Classes.INPUT_ACTION));
         assert.lengthOf(action.find("address"), 1);
     });
 

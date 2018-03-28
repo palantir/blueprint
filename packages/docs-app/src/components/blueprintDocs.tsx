@@ -13,7 +13,7 @@ import * as React from "react";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
-const DARK_THEME = "pt-dark";
+const DARK_THEME = Classes.DARK;
 const LIGHT_THEME = "";
 const THEME_LOCAL_STORAGE_KEY = "pt-blueprint-theme";
 
@@ -72,7 +72,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             const pkg = this.props.releases.find(p => p.name === `@blueprintjs/${props.section.route}`);
             return (
                 <div className={classNames("docs-nav-package", props.className)} data-route={props.section.route}>
-                    <a className="pt-menu-item" href={props.href} onClick={props.onClick}>
+                    <a className={Classes.MENU_ITEM} href={props.href} onClick={props.onClick}>
                         <NavIcon route={props.section.route} />
                         <span>{props.section.title}</span>
                     </a>
@@ -99,9 +99,9 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     // run non-React code on the newly rendered sections.
     private handleComponentUpdate = () => {
         // indeterminate checkbox styles must be applied via JavaScript.
-        Array.from(document.querySelectorAll(".pt-checkbox input[indeterminate]")).forEach((el: HTMLInputElement) => {
-            el.indeterminate = true;
-        });
+        Array.from(document.querySelectorAll(`.${Classes.CHECKBOX} input[indeterminate]`)).forEach(
+            (el: HTMLInputElement) => (el.indeterminate = true),
+        );
     };
 
     private handleToggleDark = (useDark: boolean) => {

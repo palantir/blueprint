@@ -101,7 +101,10 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
             className,
         );
 
-        const contentClasses = classNames(Classes.TREE_NODE_CONTENT, `pt-tree-node-content-${this.props.depth}`);
+        const contentClasses = classNames(
+            Classes.TREE_NODE_CONTENT,
+            `${Classes.TREE_NODE_CONTENT}-${this.props.depth}`,
+        );
 
         return (
             <li className={classes}>

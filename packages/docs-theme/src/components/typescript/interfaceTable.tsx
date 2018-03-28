@@ -58,7 +58,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
         const typeInfo = isTsProperty(entry) ? (
             <>
                 <strong>{renderType(entry.type)}</strong>
-                <em className="docs-prop-default pt-text-muted">{entry.defaultValue}</em>
+                <em className={classNames("docs-prop-default", Classes.TEXT_MUTED)}>{entry.defaultValue}</em>
             </>
         ) : (
             <>

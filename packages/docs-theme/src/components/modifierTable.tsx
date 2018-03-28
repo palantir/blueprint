@@ -17,7 +17,7 @@ export interface IModifierTableProps {
 
 export const ModifierTable: React.SFC<IModifierTableProps> = ({ children, emptyMessage, title }) => (
     <div className="docs-modifiers-table">
-        <table className="pt-html-table">
+        <table className={Classes.HTML_TABLE}>
             <thead>
                 <tr>
                     <th>{title}</th>

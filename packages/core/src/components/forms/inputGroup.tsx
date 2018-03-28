@@ -103,7 +103,7 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
             return undefined;
         }
         return (
-            <span className="pt-input-action" ref={this.refHandlers.rightElement}>
+            <span className={Classes.INPUT_ACTION} ref={this.refHandlers.rightElement}>
                 {rightElement}
             </span>
         );

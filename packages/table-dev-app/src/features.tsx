@@ -9,7 +9,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Button, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Button, Classes, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 
 import {
     Cell,
@@ -363,7 +363,7 @@ class RowSelectableTable extends React.Component<{}, {}> {
 
 ReactDOM.render(<RowSelectableTable />, document.getElementById("table-select-rows"));
 
-document.getElementById("table-ledger").classList.add("pt-table-striped");
+document.getElementById("table-ledger").classList.add(Classes.HTML_TABLE_STRIPED);
 
 ReactDOM.render(getTableComponent(3, 7, {}, { className: "" }), document.getElementById("table-ledger"));
 

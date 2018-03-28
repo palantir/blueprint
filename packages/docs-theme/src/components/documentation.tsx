@@ -167,7 +167,11 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                             {this.props.footer}
                         </div>
                     </div>
-                    <main className="docs-content-wrapper pt-fill" ref={this.refHandlers.content} role="main">
+                    <main
+                        className={classNames("docs-content-wrapper", Classes.FILL)}
+                        ref={this.refHandlers.content}
+                        role="main"
+                    >
                         <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
                     </main>
                 </div>

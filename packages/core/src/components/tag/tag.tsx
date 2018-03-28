@@ -13,7 +13,7 @@ import { Icon } from "../icon/icon";
 export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HTMLSpanElement> {
     /**
      * If set to `true`, the tag will display in an active state.
-     * This is equivalent to setting `className="pt-active"`.
+     * This is equivalent to setting `className={Classes.ACTIVE}`.
      * @default false
      */
     active?: boolean;
