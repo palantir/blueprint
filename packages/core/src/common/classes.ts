@@ -195,6 +195,7 @@ export const SVG_SPINNER = `${NS}-svg-spinner`;
 
 export const TAB = `${NS}-tab`;
 export const TAB_INDICATOR = `${NS}-tab-indicator`;
+export const TAB_INDICATOR_WRAPPER = `${TAB_INDICATOR}-wrapper`;
 export const TAB_LIST = `${NS}-tab-list`;
 export const TAB_PANEL = `${NS}-tab-panel`;
 export const TABS = `${NS}-tabs`;

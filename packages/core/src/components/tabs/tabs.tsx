@@ -16,7 +16,7 @@ import * as Utils from "../../common/utils";
 import { ITabProps, Tab, TabId } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
-export const Expander: React.SFC<{}> = () => <div className="pt-flex-expander" />;
+export const Expander: React.SFC<{}> = () => <div className={Classes.FLEX_EXPANDER} />;
 
 type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
 
@@ -122,8 +122,8 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
             .map(this.renderTabPanel);
 
         const tabIndicator = this.props.animate ? (
-            <div className="pt-tab-indicator-wrapper" style={indicatorWrapperStyle}>
-                <div className="pt-tab-indicator" />
+            <div className={Classes.TAB_INDICATOR + "-wrapper"} style={indicatorWrapperStyle}>
+                <div className={Classes.TAB_INDICATOR} />
             </div>
         ) : (
             undefined
