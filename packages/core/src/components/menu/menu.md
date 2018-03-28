@@ -153,4 +153,4 @@ defined as part of `.pt-menu-item`.</small>
 
 Add an `li.pt-menu-header`. Wrap the text in an `<h6>` tag for proper typography and borders.
 
-@css menu-menu-header
+@css menu-header

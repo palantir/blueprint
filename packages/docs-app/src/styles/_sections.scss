@@ -16,8 +16,8 @@
 // Generate a selector for KSS examples that match or are nested inside this reference.
 @function reference-all($ref) {
   // exact reference + children, not a simple prefix.
-  // so "#{$ns}-button" captures "#{$ns}-button.#{$ns}-minimal", not "#{$ns}-button-group"
-  @return reference($ref), reference($ref + ".", "^=");
+  // so "button" captures "button-minimal", not "button-group"
+  @return reference($ref, "^=");
 }
 
 // Generate a selector for a React example by name
@@ -42,36 +42,36 @@
 
 // CSS examples
 
-#{reference("pt-file-input")},
-#{reference("pt-label")},
-#{reference("pt-menu")},
-#{reference("pt-select.pt-inline")},
-#{reference("pt-skeleton")},
-#{reference("pt-tag")},
-#{reference("pt-tag.pt-minimal")} {
+#{reference("file-input")},
+#{reference("label")},
+#{reference("menu")},
+#{reference("select-inline")},
+#{reference("skeleton")},
+#{reference("tag")},
+#{reference("tag-minimal")} {
   @include examples-per-row(2);
 }
 
-#{reference-all("pt-input")},
-#{reference("pt-button")},
-#{reference("pt-button.pt-minimal")},
-#{reference("pt-card")},
-#{reference("pt-input-group")},
-#{reference("pt-progress-bar")},
-#{reference("pt-spinner")},
-#{reference("pt-textarea")} {
+#{reference-all("input")},
+#{reference("button")},
+#{reference("button-minimal")},
+#{reference("card")},
+#{reference("input-group")},
+#{reference("progress-bar")},
+#{reference("spinner")},
+#{reference("textarea")} {
   @include examples-per-row(3);
 }
 
-#{reference("pt-checkbox")},
-#{reference("pt-radio")},
-#{reference("pt-switch")} {
+#{reference("checkbox")},
+#{reference("radio")},
+#{reference("switch")} {
   .docs-example {
     flex-basis: 10%;
   }
 }
 
-#{reference-all("pt-button")},
+#{page("button")},
 #{example("AlertExample")},
 #{example("ToastExample")} {
   // put more space between buttons in all button sections
@@ -84,13 +84,13 @@
   }
 }
 
-#{reference("pt-button-group.pt-vertical")} {
+#{reference("button-group-vertical")} {
   .#{$ns}-button-group {
     margin-right: $pt-grid-size * 2;
   }
 }
 
-#{reference-all("#{$ns}-control-group")} {
+#{reference-all("control-group")} {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -100,13 +100,13 @@
   }
 }
 
-#{reference("#{$ns}-input-group")} {
+#{reference("input-group")} {
   .#{$ns}-input-group {
     margin-bottom: $pt-grid-size;
   }
 }
 
-#{reference("#{$ns}-select")} {
+#{reference("select")} {
   @include examples-per-row(4);
 
   .docs-example {
@@ -114,7 +114,7 @@
   }
 }
 
-#{reference("#{$ns}-select.#{$ns}-inline")} {
+#{reference("select-inline")} {
   justify-content: initial;
 
   .docs-example {
@@ -123,8 +123,8 @@
   }
 }
 
-#{reference("#{$ns}-menu")},
-#{reference("#{$ns}-menu.#{$ns}-menu-header")} {
+#{reference("menu")},
+#{reference("menu-header")} {
   justify-content: initial;
 
   .docs-example {
@@ -138,14 +138,14 @@
   }
 }
 
-#{reference("#{$ns}-spinner")} {
+#{reference("spinner")} {
   .docs-react-example > svg {
     width: $pt-grid-size * 10;
     height: $pt-grid-size * 10;
   }
 }
 
-#{reference("#{$ns}-tree")} {
+#{reference("tree")} {
   .#{$ns}-tree {
     background-color: $white;
     width: $pt-grid-size * 35;
