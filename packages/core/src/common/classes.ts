@@ -27,6 +27,17 @@ export const FIXED_TOP = `${NS}-fixed-top`;
 export const VERTICAL = `${NS}-vertical`;
 export const ROUND = `${NS}-round`;
 
+export const ELEVATION_0 = `${NS}-elevation-0`;
+export const ELEVATION_1 = `${NS}-elevation-1`;
+export const ELEVATION_2 = `${NS}-elevation-2`;
+export const ELEVATION_3 = `${NS}-elevation-3`;
+export const ELEVATION_4 = `${NS}-elevation-4`;
+
+export const INTENT_PRIMARY = intentClass(Intent.PRIMARY);
+export const INTENT_SUCCESS = intentClass(Intent.SUCCESS);
+export const INTENT_WARNING = intentClass(Intent.WARNING);
+export const INTENT_DANGER = intentClass(Intent.DANGER);
+
 // text utilities
 export const TEXT_MUTED = `${NS}-text-muted`;
 export const TEXT_OVERFLOW_ELLIPSIS = `${NS}-text-overflow-ellipsis`;
@@ -63,6 +74,7 @@ export const CALLOUT_TITLE = `${NS}-callout-title`;
 export const CARD = `${NS}-card`;
 
 export const COLLAPSE = `${NS}-collapse`;
+export const COLLAPSE_BODY = `${COLLAPSE}-body`;
 
 export const COLLAPSIBLE_LIST = `${NS}-collapse-list`;
 
@@ -84,11 +96,7 @@ export const DIALOG_HEADER_TITLE = `${NS}-dialog-header-title`;
 
 export const EDITABLE_TEXT = `${NS}-editable-text`;
 
-export const ELEVATION_0 = `${NS}-elevation-0`;
-export const ELEVATION_1 = `${NS}-elevation-1`;
-export const ELEVATION_2 = `${NS}-elevation-2`;
-export const ELEVATION_3 = `${NS}-elevation-3`;
-export const ELEVATION_4 = `${NS}-elevation-4`;
+export const FLEX_EXPANDER = `${NS}-flex-expander`;
 
 export const HTML_TABLE = `${NS}-html-table`;
 export const HTML_TABLE_STRIPED = `${NS}-html-table-striped`;
@@ -96,6 +104,7 @@ export const HTML_TABLE_BORDERED = `${NS}-html-table-bordered`;
 
 export const INPUT = `${NS}-input`;
 export const INPUT_GROUP = `${NS}-input-group`;
+export const INPUT_ACTION = `${NS}-input-action`;
 
 export const CHECKBOX = `${NS}-checkbox`;
 export const RADIO = `${NS}-radio`;
@@ -105,10 +114,15 @@ export const FILE_UPLOAD_INPUT = `${NS}-file-upload-input`;
 
 export const INPUT_GHOST = `${NS}-input-ghost`;
 
-export const INTENT_PRIMARY = `${NS}-intent-primary`;
-export const INTENT_SUCCESS = `${NS}-intent-success`;
-export const INTENT_WARNING = `${NS}-intent-warning`;
-export const INTENT_DANGER = `${NS}-intent-danger`;
+export const KEY = `${NS}-key`;
+export const KEY_COMBO = `${KEY}-combo`;
+export const MODIFIER_KEY = `${NS}-modifier-key`;
+
+export const HOTKEY = `${NS}-hotkey`;
+export const HOTKEY_LABEL = `${HOTKEY}-label`;
+export const HOTKEY_GROUP = `${HOTKEY}-group`;
+export const HOTKEY_COLUMN = `${HOTKEY}-column`;
+export const HOTKEY_DIALOG = `${HOTKEY}-dialog`;
 
 export const LABEL = `${NS}-label`;
 export const FORM_GROUP = `${NS}-form-group`;
@@ -147,6 +161,7 @@ export const POPOVER = `${NS}-popover`;
 export const POPOVER_ARROW = `${NS}-popover-arrow`;
 export const POPOVER_BACKDROP = `${NS}-popover-backdrop`;
 export const POPOVER_CONTENT = `${NS}-popover-content`;
+export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
 export const POPOVER_DISMISS = `${NS}-popover-dismiss`;
 export const POPOVER_DISMISS_OVERRIDE = `${NS}-popover-dismiss-override`;
 export const POPOVER_OPEN = `${NS}-popover-open`;
@@ -168,12 +183,18 @@ export const SKELETON = `${NS}-skeleton`;
 export const SLIDER = `${NS}-slider`;
 export const SLIDER_HANDLE = `${SLIDER}-handle`;
 export const SLIDER_LABEL = `${SLIDER}-label`;
+export const SLIDER_PROGRESS = `${SLIDER}-progress`;
 export const RANGE_SLIDER = `${NS}-range-slider`;
 
 export const SPINNER = `${NS}-spinner`;
+export const SPINNER_HEAD = `${NS}-spinner-head`;
+export const SPINNER_NO_SPIN = `${NS}-no-spin`;
+export const SPINNER_TRACK = `${NS}-spinner-track`;
+export const SPINNER_SVG_CONTAINER = `${NS}-spinner-svg-container`;
 export const SVG_SPINNER = `${NS}-svg-spinner`;
 
 export const TAB = `${NS}-tab`;
+export const TAB_INDICATOR = `${NS}-tab-indicator`;
 export const TAB_LIST = `${NS}-tab-list`;
 export const TAB_PANEL = `${NS}-tab-panel`;
 export const TABS = `${NS}-tabs`;
@@ -191,6 +212,7 @@ export const TOAST_CONTAINER = `${NS}-toast-container`;
 export const TOAST_MESSAGE = `${NS}-toast-message`;
 
 export const TOOLTIP = `${NS}-tooltip`;
+export const TOOLTIP_INDICATOR = `${TOOLTIP}-indicator`;
 
 export const TREE = `${NS}-tree`;
 export const TREE_NODE = `${NS}-tree-node`;
