@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Colors } from "@blueprintjs/core";
+import { Classes, Colors } from "@blueprintjs/core";
 
 import { ClickToCopy } from "./clickToCopy";
 
@@ -72,12 +72,14 @@ export const ColorBar: React.SFC<{ colors: string[] }> = ({ colors }) => {
         <div className="docs-color-swatch" key={i} style={{ backgroundColor: getHexCode(name) }} />
     ));
 
+    const preClasses = classNames("docs-color-bar-hexes", "docs-clipboard-message", Classes.TEXT_OVERFLOW_ELLIPSIS);
+
     return (
         <ClickToCopy value={jsonString}>
             <div className="docs-color-bar">
                 <div className="docs-color-bar-swatches">{swatches}</div>
                 <pre
-                    className="docs-color-bar-hexes docs-clipboard-message pt-text-overflow-ellipsis"
+                    className={preClasses}
                     data-hover-message="Click to copy JSON array of hex colors"
                     data-message={hexString}
                 />

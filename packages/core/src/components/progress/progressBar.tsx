@@ -25,13 +25,13 @@ export class ProgressBar extends React.PureComponent<IProgressBarProps, {}> {
 
     public render() {
         const { className, intent, value } = this.props;
-        const classes = classNames("pt-progress-bar", Classes.intentClass(intent), className);
+        const classes = classNames(Classes.PROGRESS_BAR, Classes.intentClass(intent), className);
         // don't set width if value is null (rely on default CSS value)
         const width = value == null ? null : 100 * clamp(value, 0, 1) + "%";
 
         return (
             <div className={classes}>
-                <div className="pt-progress-meter" style={{ width }} />
+                <div className={Classes.PROGRESS_METER} style={{ width }} />
             </div>
         );
     }

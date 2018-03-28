@@ -4,10 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Classes, ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
+import classNames from "classnames";
 import * as React from "react";
-
-import { ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
-
 import { ClickToCopy } from "./clickToCopy";
 
 export interface IDocsIconProps {
@@ -32,8 +31,11 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
                 <div className="docs-icon-name">{displayName}</div>
                 <div className="docs-icon-detail">
                     <p className="docs-code">{iconName}</p>
-                    <div className="pt-text-muted">Right-click to download</div>
-                    <div className="docs-clipboard-message pt-text-muted" data-hover-message="Click to copy name" />
+                    <div className={Classes.TEXT_MUTED}>Right-click to download</div>
+                    <div
+                        className={classNames("docs-clipboard-message", Classes.TEXT_MUTED)}
+                        data-hover-message="Click to copy name"
+                    />
                 </div>
             </ClickToCopy>
         );

@@ -21,6 +21,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
+import * as Classes from "./common/classes";
 import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
@@ -209,7 +210,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                 content={wrappedPopoverContent}
                 enforceFocus={false}
                 onClose={this.handleClosePopover}
-                popoverClassName={classNames("pt-dateinput-popover", popoverProps.popoverClassName)}
+                popoverClassName={classNames(Classes.DATEINPUT_POPOVER, popoverProps.popoverClassName)}
             >
                 <InputGroup
                     autoComplete="off"

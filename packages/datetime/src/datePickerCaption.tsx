@@ -126,10 +126,12 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
     private containerRefHandler = (r: HTMLElement) => (this.containerElement = r);
 
     private positionArrows() {
-        // pass our container element to the measureTextWidth utility to ensure
-        // that we're measuring the width of text as sized within this component.
-        const textClass = "pt-datepicker-caption-measure";
-        const monthWidth = Utils.measureTextWidth(this.displayedMonthText, textClass, this.containerElement);
+        // measure width of text as rendered inside our container element.
+        const monthWidth = Utils.measureTextWidth(
+            this.displayedMonthText,
+            Classes.DATEPICKER_CAPTION_MEASURE,
+            this.containerElement,
+        );
         this.setState({ monthWidth });
     }
 

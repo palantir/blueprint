@@ -150,7 +150,7 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
                 style: containerStyle,
             },
             <div
-                className="pt-collapse-body"
+                className={Classes.COLLAPSE_BODY}
                 ref={this.contentsRefHandler}
                 style={contentsStyle}
                 aria-hidden={!isContentVisible && this.props.keepChildrenMounted}

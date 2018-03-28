@@ -29,8 +29,8 @@ describe("<Tag>", () => {
         assert.isTrue(handleRemove.calledOnce);
     });
 
-    it("passes other props onto .pt-tag element", () => {
-        const element = shallow(<Tag title="baz qux">Hello</Tag>).find(".pt-tag");
+    it(`passes other props onto .${Classes.TAG} element`, () => {
+        const element = shallow(<Tag title="baz qux">Hello</Tag>).find("." + Classes.TAG);
         assert.deepEqual(element.prop("title"), "baz qux");
     });
 

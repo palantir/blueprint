@@ -137,7 +137,7 @@ describe("MenuItem", () => {
         assertOverflow(false);
     });
 
-    it("label and labelElement are rendered in .pt-menu-item-label", () => {
+    it(`label and labelElement are rendered in .${Classes.MENU_ITEM_LABEL}`, () => {
         const wrapper = shallow(
             <MenuItem text="text" label="label text" labelElement={<article>label element</article>} />,
         );

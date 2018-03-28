@@ -120,7 +120,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
     protected renderExample() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
         const popoverClassName = classNames(this.className, {
-            "pt-popover-content-sizing": exampleIndex <= 2,
+            [Classes.POPOVER_CONTENT_SIZING]: exampleIndex <= 2,
         });
         return (
             <div className="docs-popover-example-scroll" ref={this.centerScroll}>

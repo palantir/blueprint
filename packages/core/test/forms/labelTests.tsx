@@ -7,13 +7,13 @@
 import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
-import { Label } from "../../src/index";
+import { Classes, Label } from "../../src/index";
 
 describe("<Label>", () => {
     it("renders a space between text and helperText", () => {
         const wrapper = shallow(
             <Label text="Username" helperText="(blah blah)">
-                <input autoFocus={true} className="pt-input" type="text" />
+                <input autoFocus={true} className={Classes.INPUT} type="text" />
             </Label>,
         );
         assert.strictEqual(wrapper.text(), "Username (blah blah)");
@@ -22,7 +22,7 @@ describe("<Label>", () => {
     it("does not put an extra space after text when helperText is not defined", () => {
         const wrapper = shallow(
             <Label text="Username">
-                <input autoFocus={true} className="pt-input" type="text" />
+                <input autoFocus={true} className={Classes.INPUT} type="text" />
             </Label>,
         );
         assert.strictEqual(wrapper.text(), "Username");

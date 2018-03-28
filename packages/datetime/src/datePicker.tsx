@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractPureComponent, Button, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, Classes as CoreClasses, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
@@ -214,16 +214,8 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     private renderOptionsBar() {
         return (
             <div className={Classes.DATEPICKER_FOOTER}>
-                <Button
-                    className="pt-minimal pt-datepicker-footer-button"
-                    onClick={this.handleTodayClick}
-                    text="Today"
-                />
-                <Button
-                    className="pt-minimal pt-datepicker-footer-button"
-                    onClick={this.handleClearClick}
-                    text="Clear"
-                />
+                <Button className={CoreClasses.MINIMAL} onClick={this.handleTodayClick} text="Today" />
+                <Button className={CoreClasses.MINIMAL} onClick={this.handleClearClick} text="Clear" />
             </div>
         );
     }

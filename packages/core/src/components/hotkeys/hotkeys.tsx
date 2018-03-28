@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import classNames from "classnames";
-import { AbstractPureComponent, IProps } from "../../common";
+import { AbstractPureComponent, Classes, IProps } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType } from "../../common/utils";
 import { Hotkey, IHotkeyProps } from "./hotkey";
@@ -58,7 +58,7 @@ export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
             const groupLabel = hotkey.group;
             if (groupLabel !== lastGroup) {
                 elems.push(
-                    <h4 key={`group-${elems.length}`} className="pt-hotkey-group">
+                    <h4 key={`group-${elems.length}`} className={Classes.HOTKEY_GROUP}>
                         {groupLabel}
                     </h4>,
                 );
@@ -66,7 +66,7 @@ export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
             }
             elems.push(<Hotkey key={elems.length} {...hotkey} />);
         }
-        const rootClasses = classNames("pt-hotkey-column", this.props.className);
+        const rootClasses = classNames(Classes.HOTKEY_COLUMN, this.props.className);
         return <div className={rootClasses}>{elems}</div>;
     }
 
