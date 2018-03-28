@@ -7,7 +7,7 @@
 import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
-const NS = "bp3";
+const NS = "pt";
 
 // modifiers
 export const DARK = `${NS}-dark`;
