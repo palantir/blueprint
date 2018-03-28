@@ -62,21 +62,6 @@ function generateDocumentalistData() {
         )
         .use(".scss", new dm.KssPlugin())
         .documentGlobs("../*/src/**/*.{scss,md}", "../*/src/index.{ts,tsx}")
-        .then(docs => {
-            // replace `#{$ns}` interpolations in KSS examples.
-            // this is a particular quirk of Blueprint so it lives here instead of in a library.
-            Object.keys(docs.css).forEach(key => {
-                const example = docs.css[key];
-                docs.css[key] = {
-                    documentation: example.documentation,
-                    markup: replaceNS(example.markup),
-                    markupHtml: replaceNS(example.markupHtml),
-                    modifiers: example.modifiers.map(mod => ({ ...mod, name: replaceNS(mod.name) })),
-                    reference: example.reference,
-                };
-            });
-            return docs;
-        })
         .then(docs => JSON.stringify(docs, transformDocumentalistData, 2))
         .then(content => fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_DATA_FILENAME), content));
 }
@@ -84,7 +69,7 @@ function generateDocumentalistData() {
 function transformDocumentalistData(key, value) {
     // remove all class declarations as they're currently unused and only increase bundle size
     if (value != null && value.kind !== "class") {
-        return value;
+        return replaceNS(value);
     }
     return undefined;
 }
@@ -155,7 +140,7 @@ function strMapToObj(strMap) {
     return obj;
 }
 
-/** @param {string} text replace `#{$ns}` with Blueprint class namespace. */
+/** @param {any} text replace `#{$ns}` with Blueprint class namespace. if not a string, simply returns `text`. */
 function replaceNS(text) {
-    return text.replace(/#{\$ns}/g, Classes.getClassNamespace());
+    return typeof text === "string" ? text.replace(/#{\$ns}/g, Classes.getClassNamespace()) : text;
 }
