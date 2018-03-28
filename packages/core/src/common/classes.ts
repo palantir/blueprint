@@ -72,7 +72,7 @@ export const CALLOUT_TITLE = "pt-callout-title";
 export const CARD = "pt-card";
 
 export const COLLAPSE = "pt-collapse";
-export const COLLAPSE_BODY = "${COLLAPSE}-body";
+export const COLLAPSE_BODY = "pt-collapse-body";
 
 export const COLLAPSIBLE_LIST = "pt-collapse-list";
 
@@ -159,7 +159,7 @@ export const POPOVER = "pt-popover";
 export const POPOVER_ARROW = "pt-popover-arrow";
 export const POPOVER_BACKDROP = "pt-popover-backdrop";
 export const POPOVER_CONTENT = "pt-popover-content";
-export const POPOVER_CONTENT_SIZING = "${POPOVER_CONTENT}-sizing";
+export const POPOVER_CONTENT_SIZING = "pt-popover-content-sizing";
 export const POPOVER_DISMISS = "pt-popover-dismiss";
 export const POPOVER_DISMISS_OVERRIDE = "pt-popover-dismiss-override";
 export const POPOVER_OPEN = "pt-popover-open";
@@ -193,6 +193,7 @@ export const SVG_SPINNER = "pt-svg-spinner";
 
 export const TAB = "pt-tab";
 export const TAB_INDICATOR = "pt-tab-indicator";
+export const TAB_INDICATOR_WRAPPER = "pt-tab-indicator-wrapper";
 export const TAB_LIST = "pt-tab-list";
 export const TAB_PANEL = "pt-tab-panel";
 export const TABS = "pt-tabs";
