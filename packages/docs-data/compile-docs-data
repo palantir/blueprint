@@ -142,5 +142,5 @@ function strMapToObj(strMap) {
 
 /** @param {any} text replace `#{$ns}` with Blueprint class namespace. if not a string, simply returns `text`. */
 function replaceNS(text) {
-    return typeof text === "string" ? text.replace(/#{\$ns}/g, Classes.getClassNamespace()) : text;
+    return typeof text === "string" ? text.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace()) : text;
 }
