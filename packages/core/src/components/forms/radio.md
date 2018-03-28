@@ -11,7 +11,7 @@ element.
 
 @## CSS API
 
-@css pt-radio
+@css radio
 
 @## JavaScript API
 

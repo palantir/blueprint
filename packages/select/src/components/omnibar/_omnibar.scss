@@ -15,7 +15,7 @@ $omnibar-input-height: $pt-grid-size * 4;
   );
 
   @include react-transition(
-    "pt-overlay",
+    "#{$ns}-overlay",
     $omnibar-transition-props,
     $duration: $pt-transition-duration * 2,
     $easing: $pt-transition-ease,

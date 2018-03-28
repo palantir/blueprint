@@ -23,7 +23,7 @@ the parent input.
     component _does_ support arbitrary content in its right element.
 </div>
 
-@css pt-input-group
+@css input-group
 
 @## JavaScript API
 

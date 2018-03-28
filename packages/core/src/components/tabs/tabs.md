@@ -10,7 +10,7 @@ class `pt-tabs`. You should add the proper accessibility attributes (`role`, `ar
 You may also simply omit hidden tabs from your markup to improve performance (the `Tabs`
 JavaScript component does this by default).
 
-@css pt-tabs
+@css tabs
 
 @## JavaScript API
 

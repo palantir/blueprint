@@ -8,16 +8,16 @@
 File input
 
 Markup:
-<label class="pt-file-input {{.modifier}}">
+<label class="#{$ns}-file-input {{.modifier}}">
   <input type="file" {{:modifier}}/>
-  <span class="pt-file-upload-input">Choose file...</span>
+  <span class="#{$ns}-file-upload-input">Choose file...</span>
 </label>
 
 :disabled - Disabled
 .#{$ns}-large - Larger size
 .#{$ns}-fill - Take up full width of parent element
 
-Styleguide pt-file-input
+Styleguide file-input
 */
 
 $file-input-button-width: $pt-grid-size * 7;

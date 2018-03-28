@@ -179,12 +179,12 @@ $dark-popover-background-color: $dark-gray4 !default;
 }
 
 @mixin fade-transition() {
-  @include react-transition("pt-popover", (opacity: 0 1), $before: "&");
+  @include react-transition("#{$ns}-popover", (opacity: 0 1), $before: "&");
 }
 
 @mixin scale-transition() {
   @include react-transition(
-    "pt-popover",
+    "#{$ns}-popover",
     (transform: scale(0.3) scale(1)),
     $duration: $pt-transition-duration * 3,
     $easing: $pt-transition-ease-bounce,

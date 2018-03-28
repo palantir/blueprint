@@ -13,4 +13,4 @@ This component adds Blueprint styling to native HTML tables.
 
 Apply the `pt-html-table` class to a `<table>` element. You can apply modifiers as additional classes.
 
-@css pt-html-table
+@css html-table

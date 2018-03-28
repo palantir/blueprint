@@ -89,7 +89,7 @@ Markup:
 .#{$ns}-ui-text - Default UI text. This is applied to the document body as part of core styles.
 .#{$ns}-ui-text-large - Larger UI text.
 
-Styleguide pt-ui-text
+Styleguide ui-text
 */
 
 .#{$ns}-ui-text {
@@ -120,7 +120,7 @@ elements:</p>
 
 .#{$ns}-running-text - Apply larger font size and additional spacing.
 
-Styleguide pt-running-text
+Styleguide running-text
 */
 
 .#{$ns}-running-text {
@@ -388,17 +388,17 @@ Right-to-left text
 
 Markup:
 <h4>Arabic:</h4>
-<p class="pt-rtl">
+<p class="#{$ns}-rtl">
   لكل لأداء بمحاولة من. مدينة الواقعة يبق أي, وإعلان وقوعها، حول كل, حدى عجّل مشروط الخاسرة قد.
   من الذود تكبّد بين, و لها واحدة الأراضي. عل الصفحة والروسية يتم, أي للحكومة استعملت شيء. أم وصل زهاء اليا
 </p>
 <h4>Hebrew:</h4>
-<p class="pt-rtl">
+<p class="#{$ns}-rtl">
   כדי על עזרה יידיש הבהרה, מלא באגים טכניים דת. תנך או ברית ביולי. כתב בה הטבע למנוע, דת כלים פיסיקה החופשית זכר.
   מתן החלל מאמרשיחהצפה ב. הספרות אנציקלופדיה אם זכר, על שימושי שימושיים תאולוגיה עזה
 </p>
 
-Styleguide pt-rtl
+Styleguide rtl
 */
 
 .#{$ns}-rtl {

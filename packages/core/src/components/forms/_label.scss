@@ -7,23 +7,23 @@
 Labels
 
 Markup:
-<label class="pt-label {{.modifier}}">
+<label class="#{$ns}-label {{.modifier}}">
   Label A
-  <span class="pt-text-muted">(required)</span>
-  <input class="pt-input" style="width: 180px;" type="text" placeholder="Text input" dir="auto" />
+  <span class="#{$ns}-text-muted">(required)</span>
+  <input class="#{$ns}-input" style="width: 180px;" type="text" placeholder="Text input" dir="auto" />
 </label>
-<label class="pt-label {{.modifier}}">
+<label class="#{$ns}-label {{.modifier}}">
   Label B
-  <span class="pt-text-muted">(optional)</span>
-  <div class="pt-input-group">
-    <span class="pt-icon pt-icon-calendar"></span>
-    <input class="pt-input" style="width: 180px;" type="text" placeholder="Input group" dir="auto" />
+  <span class="#{$ns}-text-muted">(optional)</span>
+  <div class="#{$ns}-input-group">
+    <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
+    <input class="#{$ns}-input" style="width: 180px;" type="text" placeholder="Input group" dir="auto" />
   </div>
 </label>
 
 .#{$ns}-inline - Inline
 
-Styleguide pt-label
+Styleguide label
 */
 
 // stylelint-disable-next-line selector-no-qualifying-type
@@ -74,21 +74,21 @@ label.#{$ns}-label {
   Disabled labels
 
   Markup:
-  <label class="pt-label pt-disabled">
+  <label class="#{$ns}-label #{$ns}-disabled">
     Label A
-    <span class="pt-text-muted">(optional)</span>
-    <input disabled class="pt-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
+    <span class="#{$ns}-text-muted">(optional)</span>
+    <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
   </label>
-  <label class="pt-label pt-disabled">
+  <label class="#{$ns}-label #{$ns}-disabled">
     Label B
-    <div class="pt-input-group pt-disabled">
-      <span class="pt-icon pt-icon-calendar"></span>
-      <input disabled class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+    <div class="#{$ns}-input-group #{$ns}-disabled">
+      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
+      <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
     </div>
   </label>
-  <label class="pt-label pt-disabled">
+  <label class="#{$ns}-label #{$ns}-disabled">
     Label C
-    <div class="pt-select pt-disabled">
+    <div class="#{$ns}-select #{$ns}-disabled">
       <select disabled>
         <option selected>Choose an item...</option>
         <option value="1">One</option>
@@ -96,7 +96,7 @@ label.#{$ns}-label {
     </div>
   </label>
 
-  Styleguide pt-label.#{$ns}-disabled
+  Styleguide label-disabled
   */
 
   &.#{$ns}-disabled {

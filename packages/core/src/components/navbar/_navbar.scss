@@ -7,24 +7,24 @@
 Navbars
 
 Markup:
-<nav class="pt-navbar {{.modifier}}">
-  <div class="pt-navbar-group pt-align-left">
-    <div class="pt-navbar-heading">Blueprint</div>
-    <input class="pt-input" placeholder="Search files..." type="text" />
+<nav class="#{$ns}-navbar {{.modifier}}">
+  <div class="#{$ns}-navbar-group #{$ns}-align-left">
+    <div class="#{$ns}-navbar-heading">Blueprint</div>
+    <input class="#{$ns}-input" placeholder="Search files..." type="text" />
   </div>
-  <div class="pt-navbar-group pt-align-right">
-    <button class="pt-button pt-minimal pt-icon-home">Home</button>
-    <button class="pt-button pt-minimal pt-icon-document">Files</button>
-    <span class="pt-navbar-divider"></span>
-    <button class="pt-button pt-minimal pt-icon-user"></button>
-    <button class="pt-button pt-minimal pt-icon-notifications"></button>
-    <button class="pt-button pt-minimal pt-icon-cog"></button>
+  <div class="#{$ns}-navbar-group #{$ns}-align-right">
+    <button class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-home">Home</button>
+    <button class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-document">Files</button>
+    <span class="#{$ns}-navbar-divider"></span>
+    <button class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-user"></button>
+    <button class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-notifications"></button>
+    <button class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-cog"></button>
   </div>
 </nav>
 
 .#{$ns}-dark - Dark theme
 
-Styleguide pt-navbar
+Styleguide navbar
 */
 
 $navbar-padding: $pt-grid-size * 1.5 !default;
@@ -102,21 +102,21 @@ $dark-navbar-background-color: $dark-gray5 !default;
 Fixed width
 
 Markup:
-<nav class="pt-navbar pt-dark">
+<nav class="#{$ns}-navbar #{$ns}-dark">
   <div style="margin: 0 auto; width: 480px;"> <!-- ADD ME -->
-    <div class="pt-navbar-group pt-align-left">
-      <div class="pt-navbar-heading">Blueprint</div>
+    <div class="#{$ns}-navbar-group #{$ns}-align-left">
+      <div class="#{$ns}-navbar-heading">Blueprint</div>
     </div>
-    <div class="pt-navbar-group pt-align-right">
-      <button class="pt-button pt-minimal pt-icon-home">Home</button>
-      <button class="pt-button pt-minimal pt-icon-document">Files</button>
-      <span class="pt-navbar-divider"></span>
-      <button class="pt-button pt-minimal pt-icon-user"></button>
-      <button class="pt-button pt-minimal pt-icon-notifications"></button>
-      <button class="pt-button pt-minimal pt-icon-cog"></button>
+    <div class="#{$ns}-navbar-group #{$ns}-align-right">
+      <button class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-home">Home</button>
+      <button class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-document">Files</button>
+      <span class="#{$ns}-navbar-divider"></span>
+      <button class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-user"></button>
+      <button class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-notifications"></button>
+      <button class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-cog"></button>
     </div>
   </div>
 </nav>
 
-Styleguide pt-navbar.#{$ns}-container
+Styleguide navbar-container
 */

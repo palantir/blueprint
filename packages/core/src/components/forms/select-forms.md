@@ -8,10 +8,10 @@ modifiers on the wrapper and attribute modifiers directly on the `<select>`.
     alternative to the `<select>` tag.
 </div>
 
-@css pt-select
+@css select
 
 @## Labeled static dropdown
 
 You can label `<select>` tags, similar to how you label any other form control.
 
-@css pt-select.pt-inline
+@css select-inline

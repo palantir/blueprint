@@ -7,7 +7,7 @@
 Cards
 
 Markup:
-<div class="pt-card {{.modifier}}">
+<div class="#{$ns}-card {{.modifier}}">
   We build products that make people better at their most important work.
 </div>
 
@@ -17,7 +17,7 @@ Markup:
 .#{$ns}-elevation-3 - Third. For containers overlaying content temporarily.
 .#{$ns}-elevation-4 - Fourth. The strongest shadow, usually for overlay containers on top of backdrops.
 
-Styleguide pt-card
+Styleguide card
 */
 
 $card-padding: $pt-grid-size * 2 !default;
@@ -71,21 +71,21 @@ Interactive cards
 
 Markup:
 <div class="docs-card-example">
-  <div class="pt-card pt-elevation-0 pt-interactive">
+  <div class="#{$ns}-card #{$ns}-elevation-0 #{$ns}-interactive">
     <h5><a href="#">Data fusion platforms</a></h5>
     <p>Back-end infrastructure for integrating, managing, and securing data of any kind, from any source, at massive scale.</p>
   </div>
-  <div class="pt-card pt-elevation-1 pt-interactive">
+  <div class="#{$ns}-card #{$ns}-elevation-1 #{$ns}-interactive">
     <h5><a href="#">Analytical applications</a></h5>
     <p>User interfaces that enable people to interact smoothly with data, ask better questions, and make better decisions.</p>
   </div>
-  <div class="pt-card pt-elevation-2 pt-interactive">
+  <div class="#{$ns}-card #{$ns}-elevation-2 #{$ns}-interactive">
     <h5><a href="#">For any data problem</a></h5>
     <p>Proven technology that can be deployed today, adapts to any domain, and produces operational results in weeks.</p>
   </div>
 </div>
 
-Styleguide pt-card.#{$ns}-interactive
+Styleguide card-interactive
 */
 
 .#{$ns}-card.#{$ns}-interactive {

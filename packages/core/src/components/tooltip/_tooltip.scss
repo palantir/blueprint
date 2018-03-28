@@ -20,7 +20,7 @@
   );
   // lightweight scale for tooltips
   @include react-transition(
-    "pt-popover",
+    "#{$ns}-popover",
     (transform: scale(0.8) scale(1)),
     $duration: $pt-transition-duration,
     $after: "> &"

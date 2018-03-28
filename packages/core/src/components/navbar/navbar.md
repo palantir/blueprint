@@ -14,7 +14,7 @@ Use the following classes to construct a navbar:
 * `.pt-navbar-heading` &ndash; Larger text for your application title.
 * `.pt-navbar-divider` &ndash; Thin vertical line that can be placed between groups of elements.
 
-@css pt-navbar
+@css navbar
 
 @### Fixed to viewport top
 
@@ -39,7 +39,7 @@ can align the navbar to match.
 Wrap your `.pt-navbar-group`s in an element with your desired `width` and `margin: 0 auto;` to
 horizontally center it.
 
-@css pt-navbar.pt-container
+@css navbar-container
 
 @## JavaScript API
 

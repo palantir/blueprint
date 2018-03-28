@@ -8,8 +8,8 @@
 Button
 
 Markup:
-<a role="button" class="pt-button {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
-<button type="button" class="pt-button pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
+<a role="button" class="#{$ns}-button {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
+<button type="button" class="#{$ns}-button #{$ns}-icon-add {{.modifier}}" {{:modifier}}>Button</button>
 
 :disabled - Disabled state
 .#{$ns}-disabled - Disabled appearance
@@ -22,7 +22,7 @@ Markup:
 .#{$ns}-small - Smaller size
 .#{$ns}-fill - Fill parent container
 
-Styleguide pt-button
+Styleguide button
 */
 .#{$ns}-button {
   @include pt-button-base();
@@ -48,7 +48,7 @@ Styleguide pt-button
     text-align: right;
   }
 
-  &:not([class*="pt-intent-"]) {
+  &:not([class*="#{$ns}-intent-"]) {
     @include pt-button();
   }
 
@@ -58,14 +58,14 @@ Styleguide pt-button
     }
   }
 
-  &[class*="pt-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
+  &[class*="#{$ns}-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
     stroke: $white;
   }
 
   &.#{$ns}-loading {
     position: relative;
 
-    &[class*="pt-icon-"]::before {
+    &[class*="#{$ns}-icon-"]::before {
       visibility: hidden;
     }
 
@@ -85,40 +85,40 @@ Styleguide pt-button
   Buttons with icons
 
   Markup:
-  <button type="button" class="pt-button pt-icon-add">Default button</button>
-  <button type="button" class="pt-button pt-icon-refresh"></button>
-  <button type="button" class="pt-button pt-large pt-icon-add">Large button</button>
-  <button type="button" class="pt-button pt-large pt-icon-refresh"></button>
+  <button type="button" class="#{$ns}-button #{$ns}-icon-add">Default button</button>
+  <button type="button" class="#{$ns}-button #{$ns}-icon-refresh"></button>
+  <button type="button" class="#{$ns}-button #{$ns}-large #{$ns}-icon-add">Large button</button>
+  <button type="button" class="#{$ns}-button #{$ns}-large #{$ns}-icon-refresh"></button>
 
-  Styleguide pt-button.#{$ns}-icon
+  Styleguide button-icon
   */
 
   /*
   Advanced icon usage
 
   Markup:
-  <button type="button" class="pt-button pt-intent-success">
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success">
     Next step
-    <span class="pt-icon-standard pt-icon-arrow-right pt-align-right"></span>
+    <span class="#{$ns}-icon-standard #{$ns}-icon-arrow-right #{$ns}-align-right"></span>
   </button>
-  <button type="button" class="pt-button">
-    <span class="pt-icon-standard pt-icon-user"></span>
+  <button type="button" class="#{$ns}-button">
+    <span class="#{$ns}-icon-standard #{$ns}-icon-user"></span>
     Profile settings
-    <span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
+    <span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
   </button>
-  <button type="button" class="pt-button pt-intent-danger">
+  <button type="button" class="#{$ns}-button #{$ns}-intent-danger">
     Reset
-    <span class="pt-icon-standard pt-icon-refresh pt-align-right"></span>
+    <span class="#{$ns}-icon-standard #{$ns}-icon-refresh #{$ns}-align-right"></span>
   </button>
-  <button type="button" class="pt-button pt-large">
-    <span class="pt-icon-standard pt-icon-document"></span>
+  <button type="button" class="#{$ns}-button #{$ns}-large">
+    <span class="#{$ns}-icon-standard #{$ns}-icon-document"></span>
     upload.txt
-    <span class="pt-icon-standard pt-icon-cross pt-align-right"></span>
+    <span class="#{$ns}-icon-standard #{$ns}-icon-cross #{$ns}-align-right"></span>
   </button>
 
-  Styleguide pt-button.#{$ns}-icon-advanced
+  Styleguide button-icon-advanced
   */
-  &[class*="pt-icon-"] {
+  &[class*="#{$ns}-icon-"] {
     &::before {
       @include pt-icon();
       color: $pt-icon-color;
@@ -142,10 +142,10 @@ Styleguide pt-button
   }
 
   .#{$ns}-dark & {
-    &:not([class*="pt-intent-"]) {
+    &:not([class*="#{$ns}-intent-"]) {
       @include pt-dark-button();
 
-      &[class*="pt-icon-"]::before {
+      &[class*="#{$ns}-icon-"]::before {
         color: $pt-dark-icon-color;
       }
 
@@ -154,7 +154,7 @@ Styleguide pt-button
       }
     }
 
-    &[class*="pt-intent-"] {
+    &[class*="#{$ns}-intent-"] {
       @include pt-dark-button-intent();
 
       .#{$ns}-button-spinner .#{$ns}-spinner-head {
@@ -165,7 +165,7 @@ Styleguide pt-button
 
   &:disabled,
   &.#{$ns}-disabled,
-  &[class*="pt-intent-"] {
+  &[class*="#{$ns}-intent-"] {
     // disabled and intent button icon should use same color as text
     // stylelint-disable declaration-no-important
     &::before {
@@ -182,8 +182,8 @@ Styleguide pt-button
   Minimal buttons
 
   Markup:
-  <a role="button" class="pt-button pt-minimal {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
-  <button type="button" class="pt-button pt-minimal pt-icon-add {{.modifier}}" {{:modifier}}>Button</button>
+  <a role="button" class="#{$ns}-button #{$ns}-minimal {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
+  <button type="button" class="#{$ns}-button #{$ns}-minimal #{$ns}-icon-add {{.modifier}}" {{:modifier}}>Button</button>
 
   .#{$ns}-disabled - Disabled appearance
   .#{$ns}-intent-primary - Primary intent
@@ -191,7 +191,7 @@ Styleguide pt-button
   .#{$ns}-intent-warning - Warning intent
   .#{$ns}-intent-danger - Danger intent
 
-  Styleguide pt-button.#{$ns}-minimal
+  Styleguide button-minimal
   */
 
   &.#{$ns}-minimal {

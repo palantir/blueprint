@@ -31,7 +31,7 @@ for most short strings of text which are not headings or titles. If you wish to 
 element's font size and line height to the default base styles, use the `.pt-ui-text` class.
 For longer running text, see [running text styles](#core/typography.running-text).
 
-@css pt-ui-text
+@css ui-text
 
 @## Running text
 
@@ -43,7 +43,7 @@ elements:
 - `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
 - `<ul>` and `<ol>` tags receive [`.pt-list`](#core/typography.lists) styles for legibility.
 
-@css pt-running-text
+@css running-text
 
 @## Links
 
@@ -90,7 +90,7 @@ use the library of your choice for managing internationalized strings.
 
 Use the utility class `.pt-rtl`.
 
-@css pt-rtl
+@css rtl
 
 @## Dark theme
 

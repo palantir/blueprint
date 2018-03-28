@@ -9,7 +9,7 @@ You can apply sizing directly on the button group container element.
 
 You should implement interactive segmented controls as button groups.
 
-@css pt-button-group
+@css button-group
 
 @### Responsive button groups
 
@@ -22,19 +22,19 @@ to expand it to fill the available space while other buttons retain their origin
 
 You can adjust the specific size of a button with the `flex-basis` CSS property.
 
-@css pt-button-group.pt-fill
+@css button-group-fill
 
 @### Vertical button groups
 
-Add the class `pt-vertical` to create a vertical button group. The buttons in a vertical
+Add the class `Classes.VERTICAL` to create a vertical button group. The buttons in a vertical
 group all have the same size as the widest button in the group.
 
-Add the modifier class `pt-align-left` (or `align={Alignment.LEFT}` in the React component) to
+Add the modifier class `Classes.ALIGN_LEFT` (or `align={Alignment.LEFT}` in the React component) to
 left-align button text and icon and right-align `rightIcon`.
 
-You can also combine vertical groups with the `pt-fill` and `pt-minimal` class modifiers.
+You can also combine vertical groups with the `Classes.FILL` and `Classes.MINIMAL` class modifiers.
 
-@css pt-button-group.pt-vertical
+@css button-group-vertical
 
 @## JavaScript API
 

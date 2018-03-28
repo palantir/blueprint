@@ -76,7 +76,7 @@
   );
 
   @include react-transition-phase(
-    "pt-overlay",
+    "#{$ns}-overlay",
     "enter",
     $enter,
     $pt-transition-duration * 3,
@@ -84,7 +84,7 @@
     $before: "&"
   );
   @include react-transition-phase(
-    "pt-overlay",
+    "#{$ns}-overlay",
     "exit",
     $leave,
     $pt-transition-duration * 5,

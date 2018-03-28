@@ -9,35 +9,35 @@
 Button groups
 
 Markup:
-<div class="pt-button-group {{.modifier}}">
-  <a class="pt-button pt-icon-database" tabindex="0" role="button">Queries</a>
-  <a class="pt-button pt-icon-function" tabindex="0" role="button">Functions</a>
-  <a class="pt-button" tabindex="0" role="button">
-    Options <span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <a class="#{$ns}-button #{$ns}-icon-database" tabindex="0" role="button">Queries</a>
+  <a class="#{$ns}-button #{$ns}-icon-function" tabindex="0" role="button">Functions</a>
+  <a class="#{$ns}-button" tabindex="0" role="button">
+    Options <span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
   </a>
 </div>
 <br /><br />
-<div class="pt-button-group {{.modifier}}">
-  <a class="pt-button pt-icon-chart" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-control" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-graph" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-camera" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-map" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-code" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-th" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-time" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-compressed" tabindex="0" role="button"></a>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <a class="#{$ns}-button #{$ns}-icon-chart" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-control" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-graph" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-camera" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-map" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-code" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-th" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-time" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-compressed" tabindex="0" role="button"></a>
 </div>
 <br /><br />
-<div class="pt-button-group {{.modifier}}">
-  <button type="button" class="pt-button pt-intent-success">Save</button>
-  <button type="button" class="pt-button pt-intent-success pt-icon-caret-down"></button>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success">Save</button>
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success #{$ns}-icon-caret-down"></button>
 </div>
 
 .#{$ns}-large - Use large buttons
 .#{$ns}-minimal - Use minimal buttons
 
-Styleguide pt-button-group
+Styleguide button-group
 */
 
 .#{$ns}-button-group {
@@ -72,7 +72,7 @@ Styleguide pt-button-group
       z-index: index($control-group-stack, "button-disabled");
     }
 
-    &[class*="pt-intent-"] {
+    &[class*="#{$ns}-intent-"] {
       z-index: index($control-group-stack, "intent-button-default");
 
       &:focus {
@@ -121,21 +121,21 @@ Styleguide pt-button-group
   Responsive
 
   Markup:
-  <div class="pt-button-group pt-large pt-fill">
-    <a class="pt-button pt-intent-primary pt-fixed" tabindex="0" role="button">Start</a>
-    <a class="pt-button pt-intent-primary" tabindex="0" role="button">Left</a>
-    <a class="pt-button pt-intent-primary pt-active" tabindex="0" role="button">Middle</a>
-    <a class="pt-button pt-intent-primary" tabindex="0" role="button">Right</a>
-    <a class="pt-button pt-intent-primary pt-fixed" tabindex="0" role="button">End</a>
+  <div class="#{$ns}-button-group #{$ns}-large #{$ns}-fill">
+    <a class="#{$ns}-button #{$ns}-intent-primary #{$ns}-fixed" tabindex="0" role="button">Start</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary" tabindex="0" role="button">Left</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary #{$ns}-active" tabindex="0" role="button">Middle</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary" tabindex="0" role="button">Right</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary #{$ns}-fixed" tabindex="0" role="button">End</a>
   </div>
   <br />
-  <div class="pt-button-group pt-fill">
-    <button class="pt-button pt-icon-arrow-left"></button>
-    <button class="pt-button pt-fill">Middle</button>
-    <button class="pt-button pt-icon-arrow-right"></button>
+  <div class="#{$ns}-button-group #{$ns}-fill">
+    <button class="#{$ns}-button #{$ns}-icon-arrow-left"></button>
+    <button class="#{$ns}-button #{$ns}-fill">Middle</button>
+    <button class="#{$ns}-button #{$ns}-icon-arrow-right"></button>
   </div>
 
-  Styleguide pt-button-group.#{$ns}-fill
+  Styleguide button-group}-fill
   */
 
   &.#{$ns}-fill {
@@ -151,25 +151,25 @@ Styleguide pt-button-group
   Vertical button groups
 
   Markup:
-  <div class="pt-button-group pt-vertical">
-    <a class="pt-button pt-icon-search-template" role="button" tabindex="0"></a>
-    <a class="pt-button pt-icon-zoom-in" role="button" tabindex="0"></a>
-    <a class="pt-button pt-icon-zoom-out" role="button" tabindex="0"></a>
-    <a class="pt-button pt-icon-zoom-to-fit" role="button" tabindex="0"></a>
+  <div class="#{$ns}-button-group #{$ns}-vertical">
+    <a class="#{$ns}-button #{$ns}-icon-search-template" role="button" tabindex="0"></a>
+    <a class="#{$ns}-button #{$ns}-icon-zoom-in" role="button" tabindex="0"></a>
+    <a class="#{$ns}-button #{$ns}-icon-zoom-out" role="button" tabindex="0"></a>
+    <a class="#{$ns}-button #{$ns}-icon-zoom-to-fit" role="button" tabindex="0"></a>
   </div>
-  <div class="pt-button-group pt-vertical">
-    <button type="button" class="pt-button pt-active">Home</button>
-    <button type="button" class="pt-button">Pages</button>
-    <button type="button" class="pt-button">Blog</button>
-    <button type="button" class="pt-button">Calendar</button>
+  <div class="#{$ns}-button-group #{$ns}-vertical">
+    <button type="button" class="#{$ns}-button #{$ns}-active">Home</button>
+    <button type="button" class="#{$ns}-button">Pages</button>
+    <button type="button" class="#{$ns}-button">Blog</button>
+    <button type="button" class="#{$ns}-button">Calendar</button>
   </div>
-  <div class="pt-button-group pt-vertical pt-align-left pt-large">
-    <button type="button" class="pt-button pt-intent-primary pt-icon-document">Text</button>
-    <button type="button" class="pt-button pt-intent-primary pt-icon-media pt-active">Media</button>
-    <button type="button" class="pt-button pt-intent-primary pt-icon-link">Sources</button>
+  <div class="#{$ns}-button-group #{$ns}-vertical #{$ns}-align-left #{$ns}-large">
+    <button type="button" class="#{$ns}-button #{$ns}-intent-primary #{$ns}-icon-document">Text</button>
+    <button type="button" class="#{$ns}-button #{$ns}-intent-primary #{$ns}-icon-media #{$ns}-active">Media</button>
+    <button type="button" class="#{$ns}-button #{$ns}-intent-primary #{$ns}-icon-link">Sources</button>
   </div>
 
-  Styleguide pt-button-group.#{$ns}-vertical
+  Styleguide button-group-vertical
   */
 
   &.#{$ns}-vertical {

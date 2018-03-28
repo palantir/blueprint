@@ -7,8 +7,8 @@
 Callout
 
 Markup:
-<div class="pt-callout {{.modifier}}">
-  <h4 class="pt-callout-title">Callout Heading</h4>
+<div class="#{$ns}-callout {{.modifier}}">
+  <h4 class="#{$ns}-callout-title">Callout Heading</h4>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
 </div>
 
@@ -18,7 +18,7 @@ Markup:
 .#{$ns}-intent-danger  - Danger intent
 .#{$ns}-icon-info-sign - With an icon
 
-Styleguide pt-callout
+Styleguide callout
 */
 
 .#{$ns}-callout {
@@ -28,7 +28,7 @@ Styleguide pt-callout
   background-color: rgba($gray3, 0.15);
   padding: $pt-grid-size ($pt-grid-size * 1.2) ($pt-grid-size * 0.9);
 
-  &[class*="pt-icon-"] {
+  &[class*="#{$ns}-icon-"] {
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
     &::before {
@@ -49,7 +49,7 @@ Styleguide pt-callout
   .#{$ns}-dark & {
     background-color: rgba($gray3, 0.2);
 
-    &[class*="pt-icon-"]::before {
+    &[class*="#{$ns}-icon-"]::before {
       color: $pt-dark-icon-color;
     }
   }
@@ -58,7 +58,7 @@ Styleguide pt-callout
     &.#{$ns}-intent-#{$intent} {
       background-color: rgba($color, 0.15);
 
-      &[class*="pt-icon-"]::before,
+      &[class*="#{$ns}-icon-"]::before,
       .#{$ns}-callout-icon,
       .#{$ns}-callout-title {
         color: map-get($pt-intent-text-colors, $intent);
@@ -67,7 +67,7 @@ Styleguide pt-callout
       .#{$ns}-dark & {
         background-color: rgba($color, 0.25);
 
-        &[class*="pt-icon-"]::before,
+        &[class*="#{$ns}-icon-"]::before,
         .#{$ns}-callout-icon,
         .#{$ns}-callout-title {
           color: map-get($pt-dark-intent-text-colors, $intent);

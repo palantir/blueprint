@@ -9,18 +9,18 @@
 Input groups
 
 Markup:
-<div class="pt-input-group {{.modifier}}">
-  <span class="pt-icon pt-icon-filter"></span>
-  <input type="text" class="pt-input" {{:modifier}} placeholder="Filter histogram..." />
+<div class="#{$ns}-input-group {{.modifier}}">
+  <span class="#{$ns}-icon #{$ns}-icon-filter"></span>
+  <input type="text" class="#{$ns}-input" {{:modifier}} placeholder="Filter histogram..." />
 </div>
-<div class="pt-input-group {{.modifier}}">
-  <input type="password" class="pt-input" {{:modifier}} placeholder="Enter your password..." />
-  <button class="pt-button pt-minimal pt-intent-warning pt-icon-lock" {{:modifier}}></button>
+<div class="#{$ns}-input-group {{.modifier}}">
+  <input type="password" class="#{$ns}-input" {{:modifier}} placeholder="Enter your password..." />
+  <button class="#{$ns}-button #{$ns}-minimal #{$ns}-intent-warning #{$ns}-icon-lock" {{:modifier}}></button>
 </div>
-<div class="pt-input-group {{.modifier}}">
-  <span class="pt-icon pt-icon-search"></span>
-  <input type="text" class="pt-input" {{:modifier}} placeholder="Search" />
-  <button class="pt-button pt-minimal pt-intent-primary pt-icon-arrow-right" {{:modifier}}></button>
+<div class="#{$ns}-input-group {{.modifier}}">
+  <span class="#{$ns}-icon #{$ns}-icon-search"></span>
+  <input type="text" class="#{$ns}-input" {{:modifier}} placeholder="Search" />
+  <button class="#{$ns}-button #{$ns}-minimal #{$ns}-intent-primary #{$ns}-icon-arrow-right" {{:modifier}}></button>
 </div>
 
 :disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-input-group</code> for icon coloring (not shown below).
@@ -28,7 +28,7 @@ Markup:
 .#{$ns}-large - Large group. Children will adjust size accordingly.
 .#{$ns}-intent-primary - Primary intent. (All 4 intents are supported.)
 
-Styleguide pt-input-group
+Styleguide input-group
 */
 
 // 3px space between small button and regular input

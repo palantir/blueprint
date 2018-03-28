@@ -13,7 +13,7 @@ heading, use the `<h4>` element with a `.pt-callout-title` class.
     Note that the title is entirely optional.
 </div>
 
-@css pt-callout
+@css callout
 
 @## JavaScript API
 

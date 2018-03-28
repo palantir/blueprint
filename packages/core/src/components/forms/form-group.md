@@ -16,7 +16,7 @@ Similar to labels, nested controls need to be styled separately.
 
 - Add `.pt-large` to `.pt-form-group` to align the label when used with large inline Blueprint controls.
 
-@css pt-form-group
+@css form-group
 
 @## JavaScript API
 

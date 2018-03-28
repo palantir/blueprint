@@ -12,7 +12,7 @@ component supports it handily with a prop).
 
 @## CSS API
 
-@css pt-checkbox
+@css checkbox
 
 @## JavaScript API
 
@@ -45,4 +45,4 @@ the display of the label itself.
 
 Here's an example of how you might group together some controls and label them.
 
-@css pt-checkbox.pt-inline
+@css checkbox-inline

@@ -53,7 +53,7 @@ $popover-width: $pt-grid-size * 35 !default;
 
     &.#{$ns}-popover {
       @include react-transition(
-        "pt-popover",
+        "#{$ns}-popover",
         (transform: scale(1) scale(1)),
         $duration: $pt-transition-duration,
         $after: "> &"

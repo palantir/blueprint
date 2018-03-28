@@ -8,20 +8,20 @@
 Tabs
 
 Markup:
-<div class="pt-tabs">
-    <ul class="pt-tab-list {{.modifier}}" role="tablist">
-        <li class="pt-tab" role="tab" aria-selected="true">Selected tab</li>
-        <li class="pt-tab" role="tab">Another tab</li>
-        <li class="pt-tab" role="tab" aria-disabled="true">Disabled tab</li>
+<div class="#{$ns}-tabs">
+    <ul class="#{$ns}-tab-list {{.modifier}}" role="tablist">
+        <li class="#{$ns}-tab" role="tab" aria-selected="true">Selected tab</li>
+        <li class="#{$ns}-tab" role="tab">Another tab</li>
+        <li class="#{$ns}-tab" role="tab" aria-disabled="true">Disabled tab</li>
     </ul>
-    <div class="pt-tab-panel" role="tabpanel">Selected panel</div>
-    <div class="pt-tab-panel" role="tabpanel" aria-hidden="true">Another panel</div>
-    <div class="pt-tab-panel" role="tabpanel" aria-hidden="true">Disabled panel</div>
+    <div class="#{$ns}-tab-panel" role="tabpanel">Selected panel</div>
+    <div class="#{$ns}-tab-panel" role="tabpanel" aria-hidden="true">Another panel</div>
+    <div class="#{$ns}-tab-panel" role="tabpanel" aria-hidden="true">Disabled panel</div>
 </div>
 
 .#{$ns}-large - Large tabs
 
-Styleguide pt-tabs
+Styleguide tabs
 */
 
 $tab-color-selected: $pt-link-color !default;

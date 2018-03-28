@@ -15,14 +15,14 @@ Use the `pt-button` class to access button styles. You should implement buttons 
   user from focusing them by pressing <kbd class="pt-key">tab</kbd> on the keyboard.
 * Note that `<a>` tags do not respond to the `:disabled` attribute; use `.pt-disabled` instead.
 
-@css pt-button
+@css button
 
 @### Buttons with icons
 
 Add an icon before the button text with `pt-icon-*` classes.
 You _do not_ need to include an icon sizing class.
 
-@css pt-button.pt-icon
+@css button-icon
 
 @### Advanced icon layout
 
@@ -32,7 +32,7 @@ Add multiple icons to the same button, or move icons after the text.
 
 To adjust margins on right-aligned icons, add the class `pt-align-right` to the icon.
 
-@css pt-button.pt-icon-advanced
+@css button-icon-advanced
 
 @### Minimal buttons
 
@@ -40,7 +40,7 @@ For a subtler button that appears to fade into the UI, add the `.pt-minimal` mod
 to any `.pt-button`. `pt-minimal` is compatible with all other button modifiers,
 except for `.pt-fill` (due to lack of visual affordances).
 
-@css pt-button.pt-minimal
+@css button-minimal
 
 @## JavaScript API
 

@@ -12,7 +12,7 @@ may also use the provided styles by themselves, without using the component.
     you may want to do this as well in your own usage.
 </div>
 
-@css pt-tree
+@css tree
 
 @## JavaScript API
 

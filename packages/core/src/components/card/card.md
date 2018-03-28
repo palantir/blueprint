@@ -10,7 +10,7 @@ height in the UI.
 You can also use the `.pt-elevation-*` classes by themselves to apply shadows to any arbitrary
 element.
 
-@css pt-card
+@css card
 
 @### Interactive cards
 
@@ -20,7 +20,7 @@ the card increases by two levels.
 
 Users expect an interactive card to be a single clickable unit.
 
-@css pt-card.pt-interactive
+@css card-interactive
 
 @## JavaScript API
 

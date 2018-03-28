@@ -16,4 +16,4 @@ approximately the length of your expected text.
     will allow these skeleton elements to be focused when they shouldn't be.
 </div>
 
-@css pt-skeleton
+@css skeleton

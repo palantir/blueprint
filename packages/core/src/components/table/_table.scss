@@ -7,7 +7,7 @@
 Tables
 
 Markup:
-<table class="pt-html-table {{.modifier}}">
+<table class="#{$ns}-html-table {{.modifier}}">
   <thead>
     <tr>
       <th>Project</th>
@@ -39,7 +39,7 @@ Markup:
 .#{$ns}-html-table-bordered  - Bordered appearance
 .#{$ns}-interactive  - Enables hover styles on rows
 
-Styleguide pt-html-table
+Styleguide html-table
 */
 
 $table-row-height: $pt-grid-size * 4 !default;

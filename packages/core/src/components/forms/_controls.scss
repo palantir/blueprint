@@ -117,9 +117,9 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Checkbox
 
   Markup:
-  <label class="pt-control pt-checkbox {{.modifier}}">
+  <label class="#{$ns}-control #{$ns}-checkbox {{.modifier}}">
     <input type="checkbox" {{:modifier}} />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     Checkbox
   </label>
 
@@ -130,7 +130,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   .#{$ns}-align-right - Right-aligned indicator
   .#{$ns}-large - Large
 
-  Styleguide pt-checkbox
+  Styleguide checkbox
   */
 
   &.#{$ns}-checkbox {
@@ -160,9 +160,9 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Radio
 
   Markup:
-  <label class="pt-control pt-radio {{.modifier}}">
+  <label class="#{$ns}-control #{$ns}-radio {{.modifier}}">
     <input type="radio" name="docs-radio-regular" {{:modifier}} />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     Radio
   </label>
 
@@ -171,7 +171,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   .#{$ns}-align-right - Right-aligned indicator
   .#{$ns}-large - Large
 
-  Styleguide pt-radio
+  Styleguide radio
   */
 
   // stylelint-disable-next-line order/order
@@ -210,9 +210,9 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Switch
 
   Markup:
-  <label class="pt-control pt-switch {{.modifier}}">
+  <label class="#{$ns}-control #{$ns}-switch {{.modifier}}">
     <input type="checkbox" {{:modifier}} />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     Switch
   </label>
 
@@ -221,7 +221,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   .#{$ns}-align-right - Right-aligned indicator
   .#{$ns}-large - Large
 
-  Styleguide pt-switch
+  Styleguide switch
   */
 
   // stylelint-disable-next-line order/order
@@ -528,23 +528,23 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Inline labels
 
   Markup:
-  <label class="pt-label">A group of related options</label>
-  <label class="pt-control pt-checkbox pt-inline">
+  <label class="#{$ns}-label">A group of related options</label>
+  <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
     <input type="checkbox" />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     First
   </label>
-  <label class="pt-control pt-checkbox pt-inline">
+  <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
     <input type="checkbox" />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     Second
   </label>
-  <label class="pt-control pt-checkbox pt-inline">
+  <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
     <input type="checkbox" />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     Third
   </label>
 
-  Styleguide pt-checkbox.#{$ns}-inline
+  Styleguide checkbox-inline
   */
 }

@@ -1,8 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "../../core/src/common/variables";
-@import "../../datetime/src/common";
+@import "./common";
 
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern

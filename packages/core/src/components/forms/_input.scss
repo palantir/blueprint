@@ -7,7 +7,7 @@
 Text inputs
 
 Markup:
-<input class="pt-input {{.modifier}}" {{:modifier}} type="text" placeholder="Text input" dir="auto" />
+<input class="#{$ns}-input {{.modifier}}" {{:modifier}} type="text" placeholder="Text input" dir="auto" />
 
 :disabled - Disabled
 :readonly - Readonly
@@ -19,7 +19,7 @@ Markup:
 .#{$ns}-intent-danger - Danger intent
 .#{$ns}-fill - Take up full width of parent element
 
-Styleguide pt-input
+Styleguide input
 */
 
 .#{$ns}-input {
@@ -56,22 +56,22 @@ Styleguide pt-input
 Search inputs
 
 Markup:
-<div class="pt-input-group {{.modifier}}">
-  <span class="pt-icon pt-icon-search"></span>
-  <input class="pt-input" {{:modifier}} type="search" placeholder="Search input" dir="auto" />
+<div class="#{$ns}-input-group {{.modifier}}">
+  <span class="#{$ns}-icon #{$ns}-icon-search"></span>
+  <input class="#{$ns}-input" {{:modifier}} type="search" placeholder="Search input" dir="auto" />
 </div>
 
 :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-input-group</code> for icon coloring (not shown below).
 .#{$ns}-large - Large
 
-Styleguide pt-input.#{$ns}-search
+Styleguide input-search
 */
 
 /*
 Textareas
 
 Markup:
-<textarea class="pt-input {{.modifier}}" {{:modifier}} dir="auto"></textarea>
+<textarea class="#{$ns}-input {{.modifier}}" {{:modifier}} dir="auto"></textarea>
 
 :disabled - Disabled
 :readonly - Readonly
@@ -80,7 +80,7 @@ Markup:
 .#{$ns}-intent-danger  - Danger intent
 .#{$ns}-fill  - Take up full width of parent element
 
-Styleguide pt-textarea
+Styleguide textarea
 */
 
 // stylelint-disable selector-no-qualifying-type

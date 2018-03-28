@@ -8,23 +8,23 @@
 Progress bars
 
 Markup:
-<div class="pt-progress-bar {{.modifier}}">
-  <div class="pt-progress-meter" style="width: 25%"></div>
+<div class="#{$ns}-progress-bar {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 25%"></div>
 </div>
-<div class="pt-progress-bar pt-intent-primary {{.modifier}}">
-  <div class="pt-progress-meter" style="width: 50%"></div>
+<div class="#{$ns}-progress-bar #{$ns}-intent-primary {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 50%"></div>
 </div>
-<div class="pt-progress-bar pt-intent-success {{.modifier}}">
-  <div class="pt-progress-meter" style="width: 75%"></div>
+<div class="#{$ns}-progress-bar #{$ns}-intent-success {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 75%"></div>
 </div>
-<div class="pt-progress-bar pt-intent-danger {{.modifier}}">
-  <div class="pt-progress-meter" style="width: 100%"></div>
+<div class="#{$ns}-progress-bar #{$ns}-intent-danger {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 100%"></div>
 </div>
 
 .#{$ns}-no-stripes   - No stripes
 .#{$ns}-no-animation - No animation
 
-Styleguide pt-progress-bar
+Styleguide progress-bar
 */
 
 $progress-bar-stripes-color: rgba($white, 0.2) !default;

@@ -8,7 +8,7 @@
 Selects
 
 Markup:
-<div class="pt-select {{.modifier}}">
+<div class="#{$ns}-select {{.modifier}}">
   <select {{:modifier}}>
     <option selected>Choose an item...</option>
     <option value="1">One</option>
@@ -23,7 +23,7 @@ Markup:
 .#{$ns}-large - Large
 .#{$ns}-fill - Expand to fill parent container
 
-Styleguide pt-select
+Styleguide select
 */
 
 .#{$ns}-select {
@@ -92,9 +92,9 @@ Styleguide pt-select
 Inline
 
 Markup:
-<label class="pt-label {{.modifier}}">
+<label class="#{$ns}-label {{.modifier}}">
   Label A
-  <div class="pt-select">
+  <div class="#{$ns}-select">
     <select>
       <option selected>Choose an item...</option>
       <option value="1">One</option>
@@ -104,5 +104,5 @@ Markup:
 
 .#{$ns}-inline - Inline
 
-Styleguide pt-select.#{$ns}-inline
+Styleguide select-inline
 */

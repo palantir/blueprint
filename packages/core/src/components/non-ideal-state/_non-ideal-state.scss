@@ -9,17 +9,17 @@
 Non-ideal state
 
 Markup:
-<div class="pt-non-ideal-state">
-  <div class="pt-non-ideal-state-visual pt-non-ideal-state-icon">
-    <span class="pt-icon pt-icon-folder-open"></span>
+<div class="#{$ns}-non-ideal-state">
+  <div class="#{$ns}-non-ideal-state-visual #{$ns}-non-ideal-state-icon">
+    <span class="#{$ns}-icon #{$ns}-icon-folder-open"></span>
   </div>
-  <h4 class="pt-non-ideal-state-title">This folder is empty</h4>
-  <div class="pt-non-ideal-state-description">
+  <h4 class="#{$ns}-non-ideal-state-title">This folder is empty</h4>
+  <div class="#{$ns}-non-ideal-state-description">
     Create a new file to populate the folder.
   </div>
 </div>
 
-Styleguide pt-non-ideal-state
+Styleguide non-ideal-state
 */
 
 .#{$ns}-non-ideal-state {

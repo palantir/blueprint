@@ -11,7 +11,7 @@ Wrap that all in a `label` with class `pt-file-input`.
 
 @## CSS API
 
-@css pt-file-input
+@css file-input
 
 @## JavaScript API
 

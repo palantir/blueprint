@@ -7,18 +7,18 @@
 Skeletons
 
 Markup:
-<div class="pt-card">
+<div class="#{$ns}-card">
   <h5><a class="{{.modifier}}" href="#" tabindex="-1">Card heading</a></h5>
   <p class="{{.modifier}}">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis.
     Fusce dapibus metus in dapibus mollis. Quisque eget ex diam.
   </p>
-  <button type="button" class="pt-button pt-icon-add {{.modifier}}" tabindex="-1">Submit</button>
+  <button type="button" class="#{$ns}-button #{$ns}-icon-add {{.modifier}}" tabindex="-1">Submit</button>
 </div>
 
 .#{$ns}-skeleton - Render this element as a skeleton, an outline of its true self.
 
-Styleguide pt-skeleton
+Styleguide skeleton
 */
 
 @keyframes glow {

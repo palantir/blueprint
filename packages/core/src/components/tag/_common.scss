@@ -70,7 +70,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 }
 
 @mixin pt-tag-minimal() {
-  &:not([class*="pt-intent-"]) {
+  &:not([class*="#{$ns}-intent-"]) {
     @include pt-tag-minimal-interactive($tag-default-color, 0.2);
 
     background-color: rgba($gray3, 0.2);

@@ -11,7 +11,7 @@ limited: values above `100%` appear as 100% progress and values below `0%` appea
 
 Omitting `width` will result in an "indeterminate" progress meter that fills the entire bar.
 
-@css pt-progress-bar
+@css progress-bar
 
 @## JavaScript API
 

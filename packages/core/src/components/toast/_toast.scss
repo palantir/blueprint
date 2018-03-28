@@ -16,7 +16,7 @@ $toast-margin: $pt-grid-size * 2 !default;
 
   // new toasts slide in from the top
   @include react-transition-phase(
-    "pt-toast",
+    "#{$ns}-toast",
     "enter",
     $enter-translate,
     $duration: $pt-transition-duration * 3,
@@ -24,7 +24,7 @@ $toast-margin: $pt-grid-size * 2 !default;
     $before: "&"
   );
   @include react-transition-phase(
-    "pt-toast",
+    "#{$ns}-toast",
     "enter",
     $enter-translate,
     $duration: $pt-transition-duration * 3,
@@ -34,7 +34,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   );
   // leaving toasts simply fade away
   @include react-transition-phase(
-    "pt-toast",
+    "#{$ns}-toast",
     "exit",
     $leave-blur,
     $duration: $pt-transition-duration * 3,
@@ -42,7 +42,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   );
   // younger siblings of leaving toasts wait a moment before moving to fill gap
   @include react-transition-phase(
-    "pt-toast",
+    "#{$ns}-toast",
     "exit",
     $enter-translate,
     $delay: $pt-transition-duration / 2,
@@ -87,7 +87,7 @@ $toast-margin: $pt-grid-size * 2 !default;
     }
   }
 
-  &[class*="pt-intent-"] {
+  &[class*="#{$ns}-intent-"] {
     a {
       color: rgba($white, 0.7);
 
@@ -103,7 +103,7 @@ $toast-margin: $pt-grid-size * 2 !default;
 
   // HACKHACK custom colors for buttons on intent background so they always show up nice
   // stylelint-disable declaration-no-important
-  &[class*="pt-intent-"] .#{$ns}-button {
+  &[class*="#{$ns}-intent-"] .#{$ns}-button {
     &,
     &::before,
     .#{$ns}-icon,
