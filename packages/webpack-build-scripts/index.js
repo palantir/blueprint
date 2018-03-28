@@ -11,9 +11,12 @@ module.exports = {
     karmaConfig,
     COMMON_EXTERNALS: {
         "@blueprintjs/core": "var Blueprint.Core",
+        "@blueprintjs/icons": "var Blueprint.Icons",
         "@blueprintjs/datetime": "var Blueprint.Datetime",
         "@blueprintjs/labs": "var Blueprint.Labs",
+        "@blueprintjs/select": "var Blueprint.Select",
         "@blueprintjs/table": "var Blueprint.Table",
+        "@blueprintjs/timezone": "var Blueprint.Timezone",
         "classnames": "classNames",
         "dom4": "window",
         "jquery": "$",
@@ -23,6 +26,5 @@ module.exports = {
         "react-transition-group": "ReactTransitionGroup",
         "react-day-picker": "DayPicker",
         "react-dom": "ReactDOM",
-        "tether": "Tether",
     },
 };
