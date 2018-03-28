@@ -4,9 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+export const DATEINPUT = "pt-dateinput";
+export const DATEINPUT_POPOVER = "pt-dateinput-popover";
+
 export const DATEPICKER = "pt-datepicker";
 export const DATEPICKER_CAPTION = "pt-datepicker-caption";
 export const DATEPICKER_CAPTION_CARET = "pt-datepicker-caption-caret";
+export const DATEPICKER_CAPTION_MEASURE = "pt-datepicker-caption-measure";
 export const DATEPICKER_CAPTION_SELECT = "pt-datepicker-caption-select";
 export const DATEPICKER_DAY = "DayPicker-Day";
 export const DATEPICKER_DAY_DISABLED = "DayPicker-Day--disabled";
