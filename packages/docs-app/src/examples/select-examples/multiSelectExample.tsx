@@ -59,7 +59,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
 
         const clearButton =
             films.length > 0 ? (
-                <Button className={Classes.MINIMAL} icon={"cross"} onClick={this.handleClear} />
+                <Button className={Classes.MINIMAL} icon="cross" onClick={this.handleClear} />
             ) : (
                 undefined
             );
@@ -184,7 +184,5 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
         };
     }
 
-    private handleClear = () => {
-        this.setState({ films: [] });
-    };
+    private handleClear = () => this.setState({ films: [] });
 }
