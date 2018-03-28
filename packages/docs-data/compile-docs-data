@@ -1,10 +1,12 @@
 #!/usr/bin/env node
+
 /**
  * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Generates data for packages/docs-app
  */
 
 // @ts-check
+const { Classes } = require("@blueprintjs/core/lib/cjs/common");
 const { execSync, spawn } = require("child_process");
 const dm = require("documentalist");
 const fs = require("fs");
@@ -60,6 +62,21 @@ function generateDocumentalistData() {
         )
         .use(".scss", new dm.KssPlugin())
         .documentGlobs("../*/src/**/*.{scss,md}", "../*/src/index.{ts,tsx}")
+        .then(docs => {
+            // replace `#{$ns}` interpolations in KSS examples.
+            // this is a particular quirk of Blueprint so it lives here instead of in a library.
+            Object.keys(docs.css).forEach(key => {
+                const example = docs.css[key];
+                docs.css[key] = {
+                    documentation: example.documentation,
+                    markup: replaceNS(example.markup),
+                    markupHtml: replaceNS(example.markupHtml),
+                    modifiers: example.modifiers.map(mod => ({ ...mod, name: replaceNS(mod.name) })),
+                    reference: example.reference,
+                };
+            });
+            return docs;
+        })
         .then(docs => JSON.stringify(docs, transformDocumentalistData, 2))
         .then(content => fs.writeFileSync(path.join(GENERATED_SRC_DIR, DOCS_DATA_FILENAME), content));
 }
@@ -136,4 +153,9 @@ function strMapToObj(strMap) {
         obj[k] = v;
     }
     return obj;
+}
+
+/** @param {string} text replace `#{$ns}` with Blueprint class namespace. */
+function replaceNS(text) {
+    return text.replace(/#{\$ns}/g, Classes.getClassNamespace());
 }

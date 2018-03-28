@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes } from "@blueprintjs/core";
 import { IKssPluginData, ITag } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
@@ -22,8 +21,7 @@ export class CssExample extends React.PureComponent<ITag> {
         if (css == null || css[value] == null) {
             return null;
         }
-        const { markup, markupHtml, reference } = css[value];
-        const modifiers = css[value].modifiers.map(mod => ({ ...mod, name: namespace(mod.name) }));
+        const { markup, markupHtml, modifiers, reference } = css[value];
         const examples = modifiers.map(modifier => (
             <tr key={modifier.name}>
                 <td data-modifier={modifier.name}>
@@ -68,7 +66,3 @@ export class CssExample extends React.PureComponent<ITag> {
 }
 
 const MODIFIER_PLACEHOLDER_REGEXP = /\{\{([.:]?)modifier\}\}/g;
-
-function namespace(modifier: string) {
-    return modifier.replace("#{$ns}", Classes.getClassNamespace());
-}
