@@ -30,6 +30,9 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      */
     leftIcon?: IconName | JSX.Element;
 
+    /** Whether this input should use large styles. */
+    large?: boolean;
+
     /** Placeholder text in the absence of any value. */
     placeholder?: string;
 
@@ -38,6 +41,9 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      * For best results, use a minimal button, tag, or small spinner.
      */
     rightElement?: JSX.Element;
+
+    /** Whether the input (and any buttons) should appear with rounded caps. */
+    round?: boolean;
 
     /**
      * HTML `input` type attribute.
@@ -63,12 +69,14 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
     };
 
     public render() {
-        const { className, intent, leftIcon } = this.props;
+        const { className, intent, large, leftIcon, round } = this.props;
         const classes = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: this.props.disabled,
+                [Classes.LARGE]: large,
+                [Classes.ROUND]: round,
             },
             className,
         );

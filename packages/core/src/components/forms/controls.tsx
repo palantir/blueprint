@@ -4,15 +4,14 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-// HACKHACK: these components should go in separate files
-// tslint:disable max-classes-per-file
-
 // we need some empty interfaces to show up in docs
-// tslint:disable no-empty-interface
+// HACKHACK: these components should go in separate files
+// tslint:disable max-classes-per-file no-empty-interface
 
 import classNames from "classnames";
 import * as React from "react";
 
+import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import { HTMLInputProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
@@ -20,6 +19,12 @@ import { Icon } from "../icon/icon";
 
 export interface IControlProps extends IProps, HTMLInputProps {
     // NOTE: HTML props are duplicated here to provide control-specific documentation
+
+    /**
+     * Alignment of the indicator within container.
+     * @default Alignment.LEFT
+     */
+    alignIndicator?: Alignment;
 
     /** Whether the control is checked. */
     checked?: boolean;
@@ -36,7 +41,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
     /** Ref handler that receives HTML `<input>` element backing this component. */
     inputRef?: (ref: HTMLInputElement | null) => any;
 
-    /** Whether the control is inline. */
+    /** Whether the control should appear as an inline element. */
     inline?: boolean;
 
     /**
@@ -55,6 +60,9 @@ export interface IControlProps extends IProps, HTMLInputProps {
      */
     labelElement?: React.ReactNode;
 
+    /** Whether this control should use large styles. */
+    large?: boolean;
+
     /** Event handler invoked when input value is changed. */
     onChange?: React.FormEventHandler<HTMLInputElement>;
 }
@@ -71,6 +79,7 @@ interface IControlInternalProps extends IControlProps {
  * This component is not exported and is only used in this file for `Checkbox`, `Radio`, and `Switch` below.
  */
 const Control: React.SFC<IControlInternalProps> = ({
+    alignIndicator,
     children,
     className,
     indicator,
@@ -78,6 +87,7 @@ const Control: React.SFC<IControlInternalProps> = ({
     inputRef,
     label,
     labelElement,
+    large,
     style,
     type,
     typeClassName,
@@ -89,7 +99,9 @@ const Control: React.SFC<IControlInternalProps> = ({
         {
             [Classes.DISABLED]: htmlProps.disabled,
             [Classes.INLINE]: inline,
+            [Classes.LARGE]: large,
         },
+        Classes.alignmentClass(alignIndicator),
         className,
     );
     return (
