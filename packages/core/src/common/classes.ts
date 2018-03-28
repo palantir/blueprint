@@ -7,7 +7,7 @@
 import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
-const NS = process.env.BLUEPRINT_NAMESPACE || "pt";
+const NS = "bp3";
 
 // modifiers
 export const DARK = `${NS}-dark`;
@@ -49,27 +49,27 @@ export const MONOSPACE_TEXT = `${NS}-monospace-text`;
 
 // lists
 export const LIST = `${NS}-list`;
-export const LIST_UNSTYLED = `${NS}-list-unstyled`;
+export const LIST_UNSTYLED = `${LIST}-unstyled`;
 
 // components
 export const ALERT = `${NS}-alert`;
-export const ALERT_BODY = `${NS}-alert-body`;
-export const ALERT_CONTENTS = `${NS}-alert-contents`;
-export const ALERT_FOOTER = `${NS}-alert-footer`;
+export const ALERT_BODY = `${ALERT}-body`;
+export const ALERT_CONTENTS = `${ALERT}-contents`;
+export const ALERT_FOOTER = `${ALERT}-footer`;
 
 export const BREADCRUMB = `${NS}-breadcrumb`;
-export const BREADCRUMB_CURRENT = `${NS}-breadcrumb-current`;
-export const BREADCRUMBS = `${NS}-breadcrumbs`;
-export const BREADCRUMBS_COLLAPSED = `${NS}-breadcrumbs-collapsed`;
+export const BREADCRUMB_CURRENT = `${BREADCRUMB}-current`;
+export const BREADCRUMBS = `${BREADCRUMB}s`;
+export const BREADCRUMBS_COLLAPSED = `${BREADCRUMB}s-collapsed`;
 
 export const BUTTON = `${NS}-button`;
-export const BUTTON_GROUP = `${NS}-button-group`;
-export const BUTTON_SPINNER = `${NS}-button-spinner`;
-export const BUTTON_TEXT = `${NS}-button-text`;
+export const BUTTON_GROUP = `${BUTTON}-group`;
+export const BUTTON_SPINNER = `${BUTTON}-spinner`;
+export const BUTTON_TEXT = `${BUTTON}-text`;
 
 export const CALLOUT = `${NS}-callout`;
-export const CALLOUT_ICON = `${NS}-callout-icon`;
-export const CALLOUT_TITLE = `${NS}-callout-title`;
+export const CALLOUT_ICON = `${CALLOUT}-icon`;
+export const CALLOUT_TITLE = `${CALLOUT}-title`;
 
 export const CARD = `${NS}-card`;
 
@@ -79,40 +79,39 @@ export const COLLAPSE_BODY = `${COLLAPSE}-body`;
 export const COLLAPSIBLE_LIST = `${NS}-collapse-list`;
 
 export const CONTEXT_MENU = `${NS}-context-menu`;
-export const CONTEXT_MENU_POPOVER_TARGET = `${NS}-context-menu-popover-target`;
+export const CONTEXT_MENU_POPOVER_TARGET = `${CONTEXT_MENU}-popover-target`;
 
-export const CONTROL = `${NS}-control`;
 export const CONTROL_GROUP = `${NS}-control-group`;
-export const CONTROL_INDICATOR = `${NS}-control-indicator`;
 
 export const DIALOG = `${NS}-dialog`;
-export const DIALOG_CONTAINER = `${NS}-dialog-container`;
-export const DIALOG_BODY = `${NS}-dialog-body`;
-export const DIALOG_CLOSE_BUTTON = `${NS}-dialog-close-button`;
-export const DIALOG_FOOTER = `${NS}-dialog-footer`;
-export const DIALOG_FOOTER_ACTIONS = `${NS}-dialog-footer-actions`;
-export const DIALOG_HEADER = `${NS}-dialog-header`;
-export const DIALOG_HEADER_TITLE = `${NS}-dialog-header-title`;
+export const DIALOG_CONTAINER = `${DIALOG}-container`;
+export const DIALOG_BODY = `${DIALOG}-body`;
+export const DIALOG_CLOSE_BUTTON = `${DIALOG}-close-button`;
+export const DIALOG_FOOTER = `${DIALOG}-footer`;
+export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
+export const DIALOG_HEADER = `${DIALOG}-header`;
+export const DIALOG_HEADER_TITLE = `${DIALOG}-header-title`;
 
 export const EDITABLE_TEXT = `${NS}-editable-text`;
 
 export const FLEX_EXPANDER = `${NS}-flex-expander`;
 
 export const HTML_TABLE = `${NS}-html-table`;
-export const HTML_TABLE_STRIPED = `${NS}-html-table-striped`;
-export const HTML_TABLE_BORDERED = `${NS}-html-table-bordered`;
+export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
+export const HTML_TABLE_BORDERED = `${HTML_TABLE}-bordered`;
 
 export const INPUT = `${NS}-input`;
-export const INPUT_GROUP = `${NS}-input-group`;
-export const INPUT_ACTION = `${NS}-input-action`;
+export const INPUT_GHOST = `${INPUT}-ghost`;
+export const INPUT_GROUP = `${INPUT}-group`;
+export const INPUT_ACTION = `${INPUT}-action`;
 
+export const CONTROL = `${NS}-control`;
+export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
 export const CHECKBOX = `${NS}-checkbox`;
 export const RADIO = `${NS}-radio`;
 export const SWITCH = `${NS}-switch`;
 export const FILE_INPUT = `${NS}-file-input`;
 export const FILE_UPLOAD_INPUT = `${NS}-file-upload-input`;
-
-export const INPUT_GHOST = `${NS}-input-ghost`;
 
 export const KEY = `${NS}-key`;
 export const KEY_COMBO = `${KEY}-combo`;
@@ -130,43 +129,43 @@ export const FORM_CONTENT = `${NS}-form-content`;
 export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
 
 export const MENU = `${NS}-menu`;
-export const MENU_ITEM = `${NS}-menu-item`;
-export const MENU_ITEM_LABEL = `${NS}-menu-item-label`;
+export const MENU_ITEM = `${MENU}-item`;
+export const MENU_ITEM_LABEL = `${MENU_ITEM}-label`;
 export const MENU_SUBMENU = `${NS}-submenu`;
-export const MENU_DIVIDER = `${NS}-menu-divider`;
-export const MENU_HEADER = `${NS}-menu-header`;
+export const MENU_DIVIDER = `${MENU}-divider`;
+export const MENU_HEADER = `${MENU}-header`;
 
 export const NAVBAR = `${NS}-navbar`;
-export const NAVBAR_GROUP = `${NS}-navbar-group`;
-export const NAVBAR_HEADING = `${NS}-navbar-heading`;
-export const NAVBAR_DIVIDER = `${NS}-navbar-divider`;
+export const NAVBAR_GROUP = `${NAVBAR}-group`;
+export const NAVBAR_HEADING = `${NAVBAR}-heading`;
+export const NAVBAR_DIVIDER = `${NAVBAR}-divider`;
 
 export const NON_IDEAL_STATE = `${NS}-non-ideal-state`;
-export const NON_IDEAL_STATE_ACTION = `${NS}-non-ideal-state-action`;
-export const NON_IDEAL_STATE_DESCRIPTION = `${NS}-non-ideal-state-description`;
-export const NON_IDEAL_STATE_ICON = `${NS}-non-ideal-state-icon`;
-export const NON_IDEAL_STATE_TITLE = `${NS}-non-ideal-state-title`;
-export const NON_IDEAL_STATE_VISUAL = `${NS}-non-ideal-state-visual`;
+export const NON_IDEAL_STATE_ACTION = `${NON_IDEAL_STATE}-action`;
+export const NON_IDEAL_STATE_DESCRIPTION = `${NON_IDEAL_STATE}-description`;
+export const NON_IDEAL_STATE_ICON = `${NON_IDEAL_STATE}-icon`;
+export const NON_IDEAL_STATE_TITLE = `${NON_IDEAL_STATE}-title`;
+export const NON_IDEAL_STATE_VISUAL = `${NON_IDEAL_STATE}-visual`;
 
 export const NUMERIC_INPUT = `${NS}-numeric-input`;
 
 export const OVERLAY = `${NS}-overlay`;
-export const OVERLAY_BACKDROP = `${NS}-overlay-backdrop`;
-export const OVERLAY_CONTENT = `${NS}-overlay-content`;
-export const OVERLAY_INLINE = `${NS}-overlay-inline`;
-export const OVERLAY_OPEN = `${NS}-overlay-open`;
-export const OVERLAY_SCROLL_CONTAINER = `${NS}-overlay-scroll-container`;
+export const OVERLAY_BACKDROP = `${OVERLAY}-backdrop`;
+export const OVERLAY_CONTENT = `${OVERLAY}-content`;
+export const OVERLAY_INLINE = `${OVERLAY}-inline`;
+export const OVERLAY_OPEN = `${OVERLAY}-open`;
+export const OVERLAY_SCROLL_CONTAINER = `${OVERLAY}-scroll-container`;
 
 export const POPOVER = `${NS}-popover`;
-export const POPOVER_ARROW = `${NS}-popover-arrow`;
-export const POPOVER_BACKDROP = `${NS}-popover-backdrop`;
-export const POPOVER_CONTENT = `${NS}-popover-content`;
+export const POPOVER_ARROW = `${POPOVER}-arrow`;
+export const POPOVER_BACKDROP = `${POPOVER}-backdrop`;
+export const POPOVER_CONTENT = `${POPOVER}-content`;
 export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
-export const POPOVER_DISMISS = `${NS}-popover-dismiss`;
-export const POPOVER_DISMISS_OVERRIDE = `${NS}-popover-dismiss-override`;
-export const POPOVER_OPEN = `${NS}-popover-open`;
-export const POPOVER_TARGET = `${NS}-popover-target`;
-export const POPOVER_WRAPPER = `${NS}-popover-wrapper`;
+export const POPOVER_DISMISS = `${POPOVER}-dismiss`;
+export const POPOVER_DISMISS_OVERRIDE = `${POPOVER_DISMISS}-override`;
+export const POPOVER_OPEN = `${POPOVER}-open`;
+export const POPOVER_TARGET = `${POPOVER}-target`;
+export const POPOVER_WRAPPER = `${POPOVER}-wrapper`;
 export const TRANSITION_CONTAINER = `${NS}-transition-container`;
 
 export const PROGRESS_BAR = `${NS}-progress-bar`;
@@ -187,52 +186,52 @@ export const SLIDER_PROGRESS = `${SLIDER}-progress`;
 export const RANGE_SLIDER = `${NS}-range-slider`;
 
 export const SPINNER = `${NS}-spinner`;
-export const SPINNER_HEAD = `${NS}-spinner-head`;
+export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
-export const SPINNER_TRACK = `${NS}-spinner-track`;
-export const SPINNER_SVG_CONTAINER = `${NS}-spinner-svg-container`;
+export const SPINNER_TRACK = `${SPINNER}-track`;
+export const SPINNER_SVG_CONTAINER = `${SPINNER}-svg-container`;
 export const SVG_SPINNER = `${NS}-svg-spinner`;
 
 export const TAB = `${NS}-tab`;
-export const TAB_INDICATOR = `${NS}-tab-indicator`;
+export const TAB_INDICATOR = `${TAB}-indicator`;
 export const TAB_INDICATOR_WRAPPER = `${TAB_INDICATOR}-wrapper`;
-export const TAB_LIST = `${NS}-tab-list`;
-export const TAB_PANEL = `${NS}-tab-panel`;
-export const TABS = `${NS}-tabs`;
+export const TAB_LIST = `${TAB}-list`;
+export const TAB_PANEL = `${TAB}-panel`;
+export const TABS = `${TAB}s`;
 
 export const TAG = `${NS}-tag`;
-export const TAG_REMOVABLE = `${NS}-tag-removable`;
-export const TAG_REMOVE = `${NS}-tag-remove`;
+export const TAG_REMOVABLE = `${TAG}-removable`;
+export const TAG_REMOVE = `${TAG}-remove`;
 
 export const TAG_INPUT = `${NS}-tag-input`;
-export const TAG_INPUT_ICON = `${NS}-tag-input-icon`;
-export const TAG_INPUT_VALUES = `${NS}-tag-input-values`;
+export const TAG_INPUT_ICON = `${TAG_INPUT}-icon`;
+export const TAG_INPUT_VALUES = `${TAG_INPUT}-values`;
 
 export const TOAST = `${NS}-toast`;
-export const TOAST_CONTAINER = `${NS}-toast-container`;
-export const TOAST_MESSAGE = `${NS}-toast-message`;
+export const TOAST_CONTAINER = `${TOAST}-container`;
+export const TOAST_MESSAGE = `${TOAST}-message`;
 
 export const TOOLTIP = `${NS}-tooltip`;
 export const TOOLTIP_INDICATOR = `${TOOLTIP}-indicator`;
 
 export const TREE = `${NS}-tree`;
 export const TREE_NODE = `${NS}-tree-node`;
-export const TREE_NODE_CARET = `${NS}-tree-node-caret`;
-export const TREE_NODE_CARET_CLOSED = `${NS}-tree-node-caret-closed`;
-export const TREE_NODE_CARET_NONE = `${NS}-tree-node-caret-none`;
-export const TREE_NODE_CARET_OPEN = `${NS}-tree-node-caret-open`;
-export const TREE_NODE_CONTENT = `${NS}-tree-node-content`;
-export const TREE_NODE_EXPANDED = `${NS}-tree-node-expanded`;
-export const TREE_NODE_ICON = `${NS}-tree-node-icon`;
-export const TREE_NODE_LABEL = `${NS}-tree-node-label`;
-export const TREE_NODE_LIST = `${NS}-tree-node-list`;
-export const TREE_NODE_SECONDARY_LABEL = `${NS}-tree-node-secondary-label`;
-export const TREE_NODE_SELECTED = `${NS}-tree-node-selected`;
+export const TREE_NODE_CARET = `${TREE_NODE}-caret`;
+export const TREE_NODE_CARET_CLOSED = `${TREE_NODE_CARET}-closed`;
+export const TREE_NODE_CARET_NONE = `${TREE_NODE_CARET}-none`;
+export const TREE_NODE_CARET_OPEN = `${TREE_NODE_CARET}-open`;
+export const TREE_NODE_CONTENT = `${TREE_NODE}-content`;
+export const TREE_NODE_EXPANDED = `${TREE_NODE}-expanded`;
+export const TREE_NODE_ICON = `${TREE_NODE}-icon`;
+export const TREE_NODE_LABEL = `${TREE_NODE}-label`;
+export const TREE_NODE_LIST = `${TREE_NODE}-list`;
+export const TREE_NODE_SECONDARY_LABEL = `${TREE_NODE}-secondary-label`;
+export const TREE_NODE_SELECTED = `${TREE_NODE}-selected`;
 export const TREE_ROOT = `${NS}-tree-root`;
 
 export const ICON = `${NS}-icon`;
-export const ICON_STANDARD = `${NS}-icon-standard`;
-export const ICON_LARGE = `${NS}-icon-large`;
+export const ICON_STANDARD = `${ICON}-standard`;
+export const ICON_LARGE = `${ICON}-large`;
 
 /**
  * Returns the namespace prefix for all Blueprint CSS classes.
