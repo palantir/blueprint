@@ -148,7 +148,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         const { inputProps = {} } = this.props;
-        this.setState({ query: event.currentTarget.value });
+        this.setState({ query: event.target.value });
         Utils.safeInvoke(inputProps.onChange, event);
     };
 

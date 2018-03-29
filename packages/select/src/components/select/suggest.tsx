@@ -235,7 +235,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
         this.setState({
             isTyping: true,
-            query: event.currentTarget.value,
+            query: event.target.value,
         });
 
         Utils.safeInvoke(inputProps.onChange, event);

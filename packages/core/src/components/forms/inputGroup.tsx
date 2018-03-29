@@ -30,6 +30,9 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      */
     leftIcon?: IconName | JSX.Element;
 
+    /** Change event handler. Use `event.target.value` for new value. */
+    onChange: React.FormEventHandler<HTMLInputElement>
+
     /** Placeholder text in the absence of any value. */
     placeholder?: string;
 

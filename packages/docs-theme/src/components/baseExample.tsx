@@ -101,12 +101,12 @@ export class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
 
 /** Event handler that exposes the target element's value as a boolean. */
 export function handleBooleanChange(handler: (checked: boolean) => void) {
-    return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).checked);
+    return (event: React.FormEvent<HTMLInputElement>) => handler(event.target.checked);
 }
 
 /** Event handler that exposes the target element's value as a string. */
 export function handleStringChange(handler: (value: string) => void) {
-    return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
+    return (event: React.FormEvent<HTMLInputElement>) => handler(event.target.value);
 }
 
 /** Event handler that exposes the target element's value as a number. */
