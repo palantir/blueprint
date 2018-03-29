@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
+import { Button, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
 import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
@@ -64,7 +64,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                 itemRenderer={this.renderFilm}
                 noResults={<MenuItem disabled={true} text="No results." />}
                 onItemSelect={this.handleFilmSelect}
-                popoverProps={{ popoverClassName: popoverMinimal ? Classes.MINIMAL : "" }}
+                popoverProps={{ minimal: popoverMinimal }}
                 tagRenderer={this.renderTag}
                 tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove, rightElement: clearButton }}
                 selectedItems={this.state.films}
@@ -119,19 +119,14 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
 
     private renderTag = (film: IFilm) => film.title;
 
+    // NOTE: not using Films.itemRenderer here so we can set icons.
     private renderFilm: ItemRenderer<IFilm> = (film, { modifiers, handleClick }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
-        // NOTE: not using Films.itemRenderer here so we can set icons.
-        const classes = classNames({
-            [Classes.ACTIVE]: modifiers.active,
-            [Classes.INTENT_PRIMARY]: modifiers.active,
-        });
-
         return (
             <MenuItem
-                className={classes}
+                active={modifiers.active}
                 icon={this.isFilmSelected(film) ? "tick" : "blank"}
                 key={film.rank}
                 label={film.year.toString()}
