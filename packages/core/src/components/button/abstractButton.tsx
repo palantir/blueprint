@@ -34,6 +34,12 @@ export interface IButtonProps extends IActionProps {
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement | null) => any;
 
+    /** Whether this button should expand to fill its container. */
+    fill?: boolean;
+
+    /** Whether this button should use large styles. */
+    large?: boolean;
+
     /**
      * If set to `true`, the button will display a centered loading spinner instead of its contents.
      * The width of the button is not affected by the value of this prop.
@@ -41,8 +47,14 @@ export interface IButtonProps extends IActionProps {
      */
     loading?: boolean;
 
+    /** Whether this button should use minimal styles. */
+    minimal?: boolean;
+
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
     rightIcon?: IconName | JSX.Element;
+
+    /** Whether this button should use small styles. */
+    small?: boolean;
 
     /**
      * HTML `type` attribute of button. Common values are `"button"` and `"submit"`.
@@ -77,7 +89,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const { alignText, loading } = this.props;
+        const { alignText, fill, large, loading, minimal, small } = this.props;
         const disabled = this.props.disabled || loading;
 
         const className = classNames(
@@ -85,7 +97,11 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
             {
                 [Classes.ACTIVE]: this.state.isActive || this.props.active,
                 [Classes.DISABLED]: disabled,
+                [Classes.FILL]: fill,
+                [Classes.LARGE]: large,
                 [Classes.LOADING]: loading,
+                [Classes.MINIMAL]: minimal,
+                [Classes.SMALL]: small,
             },
             Classes.alignmentClass(alignText),
             Classes.intentClass(this.props.intent),

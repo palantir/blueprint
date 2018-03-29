@@ -20,6 +20,12 @@ const SPINNER_TRACK = "M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 
 const PATH_LENGTH = 280;
 
 export interface ISpinnerProps extends IProps, IIntentProps {
+    /** Whether this spinner should use large styles. */
+    large?: boolean;
+
+    /** Whether this spinner should use small styles. */
+    small?: boolean;
+
     /**
      * A value between 0 and 1 (inclusive) representing how far along the operation is.
      * Values below 0 or above 1 will be interpreted as 0 or 1 respectively.
@@ -32,11 +38,13 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
     public static displayName = "Blueprint2.Spinner";
 
     public render() {
-        const { className, intent, value } = this.props;
+        const { className, intent, large, small, value } = this.props;
         const classes = classNames(
             Classes.SPINNER,
             Classes.intentClass(intent),
             {
+                [Classes.LARGE]: large,
+                [Classes.SMALL]: small,
                 "pt-no-spin": value != null,
             },
             className,
