@@ -4,10 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, Intent, ITagProps, Switch, TagInput } from "@blueprintjs/core";
+import { Button, Intent, ITagProps, Label, Switch, TagInput } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
@@ -54,11 +53,6 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
     protected renderExample() {
         const { addOnBlur, disabled, fill, large, values } = this.state;
 
-        const classes = classNames({
-            [Classes.FILL]: fill,
-            [Classes.LARGE]: large,
-        });
-
         const clearButton = (
             <Button
                 disabled={disabled}
@@ -73,20 +67,22 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         // example purposes!!
         const getTagProps = (_v: string, index: number): ITagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
+            large,
             minimal: this.state.minimal,
         });
 
         return (
             <TagInput
-                className={classes}
+                addOnBlur={addOnBlur}
                 disabled={disabled}
-                rightElement={clearButton}
+                fill={fill}
+                large={large}
                 leftIcon="user"
                 onChange={this.handleChange}
                 placeholder="Separate values with commas..."
+                rightElement={clearButton}
                 tagProps={getTagProps}
                 values={values}
-                addOnBlur={addOnBlur}
             />
         );
     }
@@ -115,9 +111,7 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
                 />,
             ],
             [
-                <label key="heading" className={Classes.LABEL}>
-                    Tag props
-                </label>,
+                <Label text="Tag props" key="heading" />,
                 <Switch
                     checked={this.state.minimal}
                     label="Use minimal tags"
