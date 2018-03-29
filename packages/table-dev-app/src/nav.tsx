@@ -24,8 +24,8 @@ export class Nav extends React.Component<INavProps, {}> {
                     <Navbar.Heading>Blueprint Table</Navbar.Heading>
                 </Navbar.Group>
                 <Navbar.Group align={Alignment.RIGHT}>
-                    <AnchorButton className={Classes.MINIMAL} href="index.html" text="Home" />
-                    <AnchorButton className={Classes.MINIMAL} href="features.html" text="Features (Legacy)" />
+                    <AnchorButton href="index.html" minimal={true} text="Home" />
+                    <AnchorButton href="features.html" minimal={true} text="Features (Legacy)" />
                     <Navbar.Divider />
                     <Switch style={darkThemeToggleStyles} label="Dark theme" onChange={this.handleToggleDarkTheme} />
                 </Navbar.Group>

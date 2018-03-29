@@ -54,10 +54,10 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
         const lockButton = (
             <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
                 <Button
-                    className={Classes.MINIMAL}
-                    intent={Intent.WARNING}
                     disabled={disabled}
                     icon={showPassword ? "unlock" : "lock"}
+                    intent={Intent.WARNING}
+                    minimal={true}
                     onClick={this.handleLockClick}
                 />
             </Tooltip>
@@ -74,15 +74,13 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                 disabled={disabled}
                 position={Position.BOTTOM_RIGHT}
             >
-                <Button className={Classes.MINIMAL} disabled={disabled} rightIcon="caret-down">
+                <Button disabled={disabled} minimal={true} rightIcon="caret-down">
                     can edit
                 </Button>
             </Popover>
         );
 
-        const resultsTag = (
-            <Tag className={Classes.MINIMAL}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>
-        );
+        const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
 
         return (
             <div className="docs-input-group-example docs-flex-row">

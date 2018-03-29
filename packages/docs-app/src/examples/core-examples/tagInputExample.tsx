@@ -61,9 +61,9 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
 
         const clearButton = (
             <Button
-                className={Classes.MINIMAL}
                 disabled={disabled}
                 icon={values.length > 1 ? "cross" : "refresh"}
+                minimal={true}
                 onClick={this.handleClear}
             />
         );

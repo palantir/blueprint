@@ -54,12 +54,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
         ) : null;
 
-        const clearButton =
-            films.length > 0 ? (
-                <Button className={Classes.MINIMAL} icon="cross" onClick={this.handleClear} />
-            ) : (
-                undefined
-            );
+        const clearButton = films.length > 0 ? <Button icon="cross" minimal={true} onClick={this.handleClear} /> : null;
 
         return (
             <FilmMultiSelect
