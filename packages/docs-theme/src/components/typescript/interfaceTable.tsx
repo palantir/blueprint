@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Intent, IProps, Tag } from "@blueprintjs/core";
+import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
 import classNames from "classnames";
 import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty, ITsSignature } from "documentalist/dist/client";
 import * as React from "react";
