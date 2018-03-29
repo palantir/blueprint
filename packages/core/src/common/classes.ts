@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Elevation } from "../components/card/card";
 import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
@@ -25,11 +26,11 @@ export const FIXED_TOP = "pt-fixed-top";
 export const VERTICAL = "pt-vertical";
 export const ROUND = "pt-round";
 
-export const ELEVATION_0 = "pt-elevation-0";
-export const ELEVATION_1 = "pt-elevation-1";
-export const ELEVATION_2 = "pt-elevation-2";
-export const ELEVATION_3 = "pt-elevation-3";
-export const ELEVATION_4 = "pt-elevation-4";
+export const ELEVATION_0 = elevationClass(Elevation.ZERO);
+export const ELEVATION_1 = elevationClass(Elevation.ONE);
+export const ELEVATION_2 = elevationClass(Elevation.TWO);
+export const ELEVATION_3 = elevationClass(Elevation.THREE);
+export const ELEVATION_4 = elevationClass(Elevation.FOUR);
 
 export const INTENT_PRIMARY = intentClass(Intent.PRIMARY);
 export const INTENT_SUCCESS = intentClass(Intent.SUCCESS);
@@ -242,6 +243,13 @@ export function alignmentClass(alignment: Alignment) {
         default:
             return undefined;
     }
+}
+
+export function elevationClass(elevation: Elevation) {
+    if (elevation == null) {
+        return undefined;
+    }
+    return `pt-elevation-${elevation}`;
 }
 
 /** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
