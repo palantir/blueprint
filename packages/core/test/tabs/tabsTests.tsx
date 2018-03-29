@@ -79,12 +79,12 @@ describe("<Tabs>", () => {
         }
     });
 
-    it("renders without `pt-large` when by default", () => {
+    it(`renders without ${Classes.LARGE} when by default`, () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         assert.lengthOf(wrapper.find(`.${Classes.TAB_LIST}.${Classes.LARGE}`), 0);
     });
 
-    it("renders using `pt-large` when large={true}", () => {
+    it(`renders using ${Classes.LARGE} when large={true}`, () => {
         const wrapper = mount(
             <Tabs id={ID} large={true}>
                 {getTabsContents()}
@@ -202,7 +202,7 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         assert.isUndefined(wrapper.state().indicatorWrapperStyle);
-        assert.equal(wrapper.find(".pt-tab-indicator").length, 0);
+        assert.equal(wrapper.find("." + Classes.TAB_INDICATOR).length, 0);
     });
 
     it("removes indicator element when selected tab is removed", () => {

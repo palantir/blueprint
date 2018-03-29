@@ -48,7 +48,7 @@ export class ProgressBar extends React.PureComponent<IProgressBarProps, {}> {
 
         return (
             <div className={classes}>
-                <div className="pt-progress-meter" style={{ width }} />
+                <div className={Classes.PROGRESS_METER} style={{ width }} />
             </div>
         );
     }

@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, IProps } from "../../common";
+import { AbstractPureComponent, Classes, IProps } from "../../common";
 import { KeyCombo } from "./keyCombo";
 
 export interface IHotkeyProps extends IProps {
@@ -85,10 +85,10 @@ export class Hotkey extends AbstractPureComponent<IHotkeyProps, {}> {
     public render() {
         const { label, className, ...spreadableProps } = this.props;
 
-        const rootClasses = classNames("pt-hotkey", className);
+        const rootClasses = classNames(Classes.HOTKEY, className);
         return (
             <div className={rootClasses}>
-                <div className="pt-hotkey-label">{label}</div>
+                <div className={Classes.HOTKEY_LABEL}>{label}</div>
                 <KeyCombo {...spreadableProps} />
             </div>
         );

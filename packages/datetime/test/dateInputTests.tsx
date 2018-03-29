@@ -117,7 +117,7 @@ describe("<DateInput>", () => {
             .find("input")
             .simulate("focus")
             .simulate("blur");
-        wrapper.find(".pt-datepicker-month-select").simulate("change", { value: Months.FEBRUARY.toString() });
+        wrapper.find(`.${Classes.DATEPICKER_MONTH_SELECT}`).simulate("change", { value: Months.FEBRUARY.toString() });
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
@@ -129,7 +129,7 @@ describe("<DateInput>", () => {
             .find("input")
             .simulate("focus")
             .simulate("blur");
-        wrapper.find(".pt-datepicker-year-select").simulate("change", { value: "2016" });
+        wrapper.find(`.${Classes.DATEPICKER_YEAR_SELECT}`).simulate("change", { value: "2016" });
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
@@ -318,7 +318,9 @@ describe("<DateInput>", () => {
             const defaultValue = new Date(2017, Months.JANUARY, 1);
             const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
             wrapper.setState({ isOpen: true });
-            wrapper.find(".pt-datepicker-month-select").simulate("change", { value: Months.FEBRUARY.toString() });
+            wrapper
+                .find(`.${Classes.DATEPICKER_MONTH_SELECT}`)
+                .simulate("change", { value: Months.FEBRUARY.toString() });
             assert.isTrue(wrapper.find(Popover).prop("isOpen"));
         });
 

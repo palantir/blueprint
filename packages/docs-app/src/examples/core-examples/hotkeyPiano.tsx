@@ -9,7 +9,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
+import { Classes, Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 
 class Oscillator {
@@ -126,7 +126,7 @@ class PianoKey extends React.Component<IPianoKeyProps, {}> {
             "piano-key-pressed": pressed,
             "piano-key-sharp": /\#/.test(note),
         });
-        const elevation = classNames(pressed ? "pt-elevation-0" : "pt-elevation-2");
+        const elevation = classNames(pressed ? Classes.ELEVATION_0 : Classes.ELEVATION_2);
         return (
             <div className={classes}>
                 <div className={elevation}>

@@ -235,7 +235,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             assertFocus(() => {
-                const backdrops = Array.from(document.querySelectorAll(".pt-overlay-backdrop"));
+                const backdrops = Array.from(document.querySelectorAll("." + Classes.OVERLAY_BACKDROP));
                 assert.include(backdrops, document.activeElement);
             }, done);
         });

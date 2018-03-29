@@ -45,7 +45,7 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
             {
                 [Classes.LARGE]: large,
                 [Classes.SMALL]: small,
-                "pt-no-spin": value != null,
+                [Classes.SPINNER_NO_SPIN]: value != null,
             },
             className,
         );
@@ -59,7 +59,7 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
 
         // HACKHACK to squash error regarding React.SVGProps missing prop pathLength
         const svgPathAttributes: React.DOMAttributes<SVGPathElement> = {
-            className: "pt-spinner-head",
+            className: Classes.SPINNER_HEAD,
             d: SPINNER_TRACK,
             pathLength: PATH_LENGTH,
             style,
@@ -68,7 +68,7 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
         return this.renderContainer(
             classes,
             <svg viewBox={classes.indexOf(Classes.SMALL) >= 0 ? "-15 -15 130 130" : "0 0 100 100"}>
-                <path className="pt-spinner-track" d={SPINNER_TRACK} />
+                <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
                 <path {...svgPathAttributes} />
             </svg>,
         );
@@ -78,7 +78,7 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
     protected renderContainer(classes: string, content: JSX.Element) {
         return (
             <div className={classes}>
-                <div className="pt-spinner-svg-container">{content}</div>
+                <div className={Classes.SPINNER_SVG_CONTAINER}>{content}</div>
             </div>
         );
     }

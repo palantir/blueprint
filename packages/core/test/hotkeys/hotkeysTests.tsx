@@ -17,6 +17,7 @@ import { dispatchTestKeyboardEvent, expectPropValidationError } from "@blueprint
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
 import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 import {
+    Classes,
     comboMatches,
     getKeyCombo,
     getKeyComboString,
@@ -147,8 +148,9 @@ describe("Hotkeys", () => {
 
             // wait for the dialog to animate in
             setTimeout(() => {
-                expect(document.querySelector(".pt-hotkey-column")).to.exist;
-                expect(document.querySelector(".pt-overlay-open").classList.contains("pt-overlay-inline")).to.be.false;
+                expect(document.querySelector("." + Classes.HOTKEY_COLUMN)).to.exist;
+                expect(document.querySelector("." + Classes.OVERLAY_OPEN).classList.contains(Classes.OVERLAY_INLINE)).to
+                    .be.false;
                 hideHotkeysDialog();
                 comp.detach();
                 attachTo.remove();
