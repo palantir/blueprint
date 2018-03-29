@@ -21,6 +21,7 @@ import {
 } from "../../common";
 import * as Errors from "../../common/errors";
 
+import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
@@ -238,10 +239,10 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             <InputGroup
                 autoComplete="off"
                 {...inputGroupHtmlProps}
-                className={classNames({ [Classes.LARGE]: large })}
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
+                large={large}
                 leftIcon={this.props.leftIcon}
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
@@ -278,10 +279,10 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             );
 
             const buttonGroup = (
-                <div key="button-group" className={classNames(Classes.BUTTON_GROUP, Classes.VERTICAL, Classes.FIXED)}>
+                <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                     {incrementButton}
                     {decrementButton}
-                </div>
+                </ButtonGroup>
             );
 
             const inputElems = buttonPosition === Position.LEFT ? [buttonGroup, inputGroup] : [inputGroup, buttonGroup];
@@ -289,9 +290,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             const classes = classNames(
                 Classes.NUMERIC_INPUT,
                 Classes.CONTROL_GROUP,
-                {
-                    [Classes.LARGE]: large,
-                },
+                { [Classes.LARGE]: large },
                 className,
             );
 
