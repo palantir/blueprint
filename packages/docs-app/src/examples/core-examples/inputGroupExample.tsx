@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -45,9 +44,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     protected renderExample() {
-        const { disabled, filterValue, showPassword, tagValue } = this.state;
-
-        const largeClassName = classNames({ [Classes.LARGE]: this.state.large });
+        const { disabled, filterValue, large, showPassword, tagValue } = this.state;
 
         const maybeSpinner = filterValue ? <Spinner className={Classes.SMALL} /> : undefined;
 
@@ -86,8 +83,8 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
             <div className="docs-input-group-example docs-flex-row">
                 <div className="docs-flex-column">
                     <InputGroup
-                        className={largeClassName}
                         disabled={disabled}
+                        large={large}
                         leftIcon="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
@@ -95,8 +92,8 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         value={filterValue}
                     />
                     <InputGroup
-                        className={largeClassName}
                         disabled={disabled}
+                        large={large}
                         placeholder="Enter your password..."
                         rightElement={lockButton}
                         type={showPassword ? "text" : "password"}
@@ -104,8 +101,8 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                 </div>
                 <div className="docs-flex-column">
                     <InputGroup
-                        className={largeClassName}
                         disabled={disabled}
+                        large={large}
                         leftIcon="tag"
                         onChange={this.handleTagChange}
                         placeholder="Find tags"
@@ -113,8 +110,8 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         value={tagValue}
                     />
                     <InputGroup
-                        className={largeClassName}
                         disabled={disabled}
+                        large={large}
                         placeholder="Add people or groups..."
                         rightElement={permissionsMenu}
                     />
