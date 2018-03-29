@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, EditableText, Intent, NumericInput, Switch } from "@blueprintjs/core";
@@ -69,10 +68,11 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                         Max length
                     </label>
                     <NumericInput
+                        className={Classes.FORM_CONTENT}
+                        fill={true}
                         id={INPUT_ID}
-                        className={classNames(Classes.FORM_CONTENT, Classes.FILL)}
-                        min={0}
                         max={300}
+                        min={0}
                         onValueChange={this.handleMaxLengthChange}
                         placeholder="Unlimited"
                         value={this.state.maxLength || ""}

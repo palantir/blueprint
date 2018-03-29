@@ -53,6 +53,9 @@ export interface INumericInputProps extends IIntentProps, IProps {
      */
     disabled?: boolean;
 
+    /** Whether the numeric input should take up the full width of its container. */
+    fill?: boolean;
+
     /**
      * If set to `true`, the input will display with larger styling.
      * This is equivalent to setting `pt-large` via className on the
@@ -214,7 +217,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     }
 
     public render() {
-        const { buttonPosition, className, large } = this.props;
+        const { buttonPosition, className, fill, large } = this.props;
 
         const inputGroupHtmlProps = removeNonHTMLProps(
             this.props,
@@ -290,7 +293,10 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             const classes = classNames(
                 Classes.NUMERIC_INPUT,
                 Classes.CONTROL_GROUP,
-                { [Classes.LARGE]: large },
+                {
+                    [Classes.FILL]: fill,
+                    [Classes.LARGE]: large,
+                },
                 className,
             );
 
