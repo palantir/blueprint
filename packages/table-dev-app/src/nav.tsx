@@ -19,7 +19,7 @@ export class Nav extends React.Component<INavProps, {}> {
         };
 
         return (
-            <Navbar className="pt-dark pt-fixed-top">
+            <Navbar className={Classes.DARK} fixedToTop={true}>
                 <Navbar.Group align={Alignment.LEFT}>
                     <Navbar.Heading>Blueprint Table</Navbar.Heading>
                 </Navbar.Group>
