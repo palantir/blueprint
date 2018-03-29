@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
 import { Button, Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
@@ -47,15 +46,13 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
     protected renderExample() {
         const { films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
         const getTagProps = (_value: string, index: number): ITagProps => ({
-            className: tagMinimal ? Classes.MINIMAL : "",
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
+            minimal: tagMinimal,
         });
 
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
-        ) : (
-            undefined
-        );
+        ) : null;
 
         const clearButton =
             films.length > 0 ? (

@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
+import { Intent, IProps, Tag } from "@blueprintjs/core";
 import classNames from "classnames";
 import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty, ITsSignature } from "documentalist/dist/client";
 import * as React from "react";
@@ -106,10 +106,10 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
         const { flags: { isDeprecated, isOptional }, inheritedFrom } = entry;
         return (
             <>
-                {!isOptional && <Tag children="Required" className={Classes.MINIMAL} intent={Intent.SUCCESS} />}
+                {!isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
                 <DeprecatedTag isDeprecated={isDeprecated} />
                 {inheritedFrom && (
-                    <Tag className={Classes.MINIMAL}>
+                    <Tag minimal={true}>
                         Inherited from <code>{renderType(inheritedFrom)}</code>
                     </Tag>
                 )}

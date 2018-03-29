@@ -72,8 +72,8 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         // NOTE: avoid this pattern in your app (use this.getTagProps instead); this is only for
         // example purposes!!
         const getTagProps = (_v: string, index: number): ITagProps => ({
-            className: this.state.minimal ? Classes.MINIMAL : "",
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
+            minimal: this.state.minimal,
         });
 
         return (
