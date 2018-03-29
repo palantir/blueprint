@@ -117,7 +117,7 @@ describe("<DateInput>", () => {
             .find("input")
             .simulate("focus")
             .simulate("blur");
-        wrapper.find(`.${Classes.DATEPICKER_CAPTION_SELECT}`).simulate("change", { value: Months.FEBRUARY.toString() });
+        wrapper.find(`.${Classes.DATEPICKER_MONTH_SELECT}`).simulate("change", { value: Months.FEBRUARY.toString() });
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
