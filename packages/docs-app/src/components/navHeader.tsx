@@ -75,7 +75,7 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
         const { versions } = this.props;
         if (versions.length === 1) {
             return (
-                <div className="pt-text-muted" key="_versions">
+                <div className={Classes.TEXT_MUTED} key="_versions">
                     v{versions[0].version}
                 </div>
             );

@@ -6,9 +6,10 @@
 
 import * as React from "react";
 
-import { NonIdealState } from "@blueprintjs/core";
+import { Classes, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
 
+import classNames from "classnames";
 import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
 
 const ICONS_PER_ROW = 5;
@@ -58,17 +59,14 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
             .filter(group => group != null);
         return (
             <div className="docs-icons">
-                <div className="pt-input-group pt-large pt-fill">
-                    <span className="pt-icon pt-icon-search" />
-                    <input
-                        className="pt-input pt-fill"
-                        dir="auto"
-                        onChange={this.handleFilterChange}
-                        placeholder="Search for icons..."
-                        type="search"
-                        value={this.state.filter}
-                    />
-                </div>
+                <InputGroup
+                    className={classNames(Classes.LARGE, Classes.FILL)}
+                    leftIcon="search"
+                    placeholder="Search for icons..."
+                    onChange={this.handleFilterChange}
+                    type="search"
+                    value={this.state.filter}
+                />
                 {groupElements.length > 0 ? groupElements : this.renderZeroState()}
             </div>
         );
@@ -96,7 +94,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
     }
 
     private renderZeroState() {
-        return <NonIdealState className="pt-text-muted" visual="zoom-out" description="No icons found" />;
+        return <NonIdealState className={Classes.TEXT_MUTED} visual="zoom-out" description="No icons found" />;
     }
 
     private handleFilterChange = (e: React.SyntheticEvent<HTMLInputElement>) => {

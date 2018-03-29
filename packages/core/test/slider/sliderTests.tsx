@@ -191,7 +191,7 @@ describe("<Slider>", () => {
 
     it("fill does not exceed bounds if initialValue outside bounds of min/max", () => {
         const style = renderSlider(<Slider initialValue={-10} min={0} value={5} />)
-            .find(".pt-slider-progress")
+            .find("." + Classes.SLIDER_PROGRESS)
             .prop("style") as React.CSSProperties;
         assert.strictEqual(style.left, 0);
     });

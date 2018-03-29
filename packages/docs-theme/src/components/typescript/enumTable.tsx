@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IProps } from "@blueprintjs/core";
+import { Classes, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import { ITsEnum, ITsEnumMember } from "documentalist/dist/client";
 import * as React from "react";
@@ -57,7 +57,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
                 <td className="docs-prop-details">
                     <code className="docs-prop-type">
                         <strong>{entry.name}</strong>
-                        <em className="docs-prop-default pt-text-muted">{entry.defaultValue}</em>
+                        <em className={classNames("docs-prop-default", Classes.TEXT_MUTED)}>{entry.defaultValue}</em>
                     </code>
                     <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>
                     <p className="docs-prop-tags">{this.renderTags(entry)}</p>
