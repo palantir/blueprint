@@ -9,22 +9,23 @@ import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
 // modifiers
-export const DARK = "pt-dark";
 export const ACTIVE = "pt-active";
-export const MINIMAL = "pt-minimal";
-export const DISABLED = "pt-disabled";
-export const SMALL = "pt-small";
-export const LARGE = "pt-large";
-export const LOADING = "pt-loading";
-export const INTERACTIVE = "pt-interactive";
 export const ALIGN_LEFT = "pt-align-left";
 export const ALIGN_RIGHT = "pt-align-right";
-export const INLINE = "pt-inline";
+export const DARK = "pt-dark";
+export const DISABLED = "pt-disabled";
 export const FILL = "pt-fill";
 export const FIXED = "pt-fixed";
 export const FIXED_TOP = "pt-fixed-top";
-export const VERTICAL = "pt-vertical";
+export const INLINE = "pt-inline";
+export const INTERACTIVE = "pt-interactive";
+export const LARGE = "pt-large";
+export const LOADING = "pt-loading";
+export const MINIMAL = "pt-minimal";
+export const MULTILINE = "pt-multiline";
 export const ROUND = "pt-round";
+export const SMALL = "pt-small";
+export const VERTICAL = "pt-vertical";
 
 export const ELEVATION_0 = elevationClass(Elevation.ZERO);
 export const ELEVATION_1 = elevationClass(Elevation.ONE);
@@ -94,6 +95,10 @@ export const DIALOG_HEADER = "pt-dialog-header";
 export const DIALOG_HEADER_TITLE = "pt-dialog-header-title";
 
 export const EDITABLE_TEXT = "pt-editable-text";
+export const EDITABLE_TEXT_CONTENT = "pt-editable-content";
+export const EDITABLE_TEXT_EDITING = "pt-editable-editing";
+export const EDITABLE_TEXT_INPUT = "pt-editable-input";
+export const EDITABLE_TEXT_PLACEHOLDER = "pt-editable-placeholder";
 
 export const FLEX_EXPANDER = "pt-flex-expander";
 
