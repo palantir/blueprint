@@ -52,8 +52,6 @@ export class Slider extends CoreSlider<ISliderProps> {
         const { tickSizeRatio } = this.state;
         const initialValue = clamp(this.props.initialValue, this.props.min, this.props.max);
 
-        // let offset = Math.round((initialValue - this.props.min) * tickSize);
-        // let size = Math.round((this.props.value - initialValue) * tickSize);
         let offset = (initialValue - this.props.min) * tickSizeRatio;
         let size = (this.props.value - initialValue) * tickSizeRatio;
 

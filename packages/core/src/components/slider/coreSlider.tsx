@@ -178,7 +178,6 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
             return undefined;
         }
 
-        // const stepSize = Math.round(this.state.tickSize * labelStepSize);
         const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
         const labels: JSX.Element[] = [];
         // tslint:disable-next-line:one-variable-per-declaration ban-comma-operator
