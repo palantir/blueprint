@@ -224,14 +224,20 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         safeInvoke(this.props.onCancel, lastValue);
     };
 
-    public toggleEditing = () => {
+    public toggleEditing = (skipConfirm = false) => {
         if (this.state.isEditing) {
             const { value } = this.state;
             this.setState({ isEditing: false, lastValue: value });
-            safeInvoke(this.props.onConfirm, value);
+            if (!skipConfirm) {
+                safeInvoke(this.props.onConfirm, value);
+            }
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
+    };
+
+    private handleBlur = () => {
+        this.toggleEditing(this.props.confirmOnEnterKey);
     };
 
     private handleFocus = () => {
@@ -285,7 +291,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         const props: React.HTMLProps<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
             maxLength,
-            onBlur: this.toggleEditing,
+            onBlur: this.handleBlur,
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,
             ref: this.refHandlers.input,
