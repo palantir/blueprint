@@ -193,7 +193,7 @@ describe("<Slider>", () => {
         const style = renderSlider(<Slider initialValue={-10} min={0} value={5} />)
             .find("." + Classes.SLIDER_PROGRESS)
             .prop("style") as React.CSSProperties;
-        assert.strictEqual(style.left, 0);
+        assert.strictEqual(style.left, "0%");
     });
 
     describe("vertical orientation", () => {
