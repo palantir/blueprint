@@ -52,23 +52,26 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
     private handles: Handle[] = [];
 
     protected renderFill() {
-        const { tickSize } = this.state;
+        const { tickSizeRatio } = this.state;
         const [startValue, endValue] = this.props.value;
         if (startValue === endValue) {
             return undefined;
         }
-        // expand by 1px in each direction so it sits under the handle border
-        let offset = Math.round((startValue - this.props.min) * tickSize) - 1;
-        let size = Math.round((endValue - startValue) * tickSize) + 2;
+        let offsetRatio = (startValue - this.props.min) * tickSizeRatio;
+        let sizeRatio = (endValue - startValue) * tickSizeRatio;
 
-        if (size < 0) {
-            offset += size;
-            size = Math.abs(size);
+        if (sizeRatio < 0) {
+            offsetRatio += sizeRatio;
+            sizeRatio = Math.abs(sizeRatio);
         }
 
+        // expand by 1px in each direction so it sits under the handle border
+        const offsetCalc = `calc(${offsetRatio * 100}% - 1px)`;
+        const sizeCalc = `calc(${sizeRatio * 100}% + 2px)`;
+
         const style: React.CSSProperties = this.props.vertical
-            ? { bottom: offset, height: size }
-            : { left: offset, width: size };
+            ? { bottom: offsetCalc, height: sizeCalc }
+            : { left: offsetCalc, width: sizeCalc };
 
         return <div className={`${Classes.SLIDER}-progress`} style={style} />;
     }
@@ -87,6 +90,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
                 ref={this.addHandleRef}
                 stepSize={stepSize}
                 tickSize={this.state.tickSize}
+                tickSizeRatio={this.state.tickSizeRatio}
                 value={val}
                 vertical={vertical}
             />

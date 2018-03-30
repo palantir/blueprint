@@ -25,6 +25,7 @@ export interface IHandleProps extends IProps {
     onRelease?: (newValue: number) => void;
     stepSize?: number;
     tickSize?: number;
+    tickSizeRatio?: number;
     value?: number;
     vertical?: boolean;
 }
@@ -50,12 +51,13 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
     };
 
     public render() {
-        const { className, disabled, label, min, tickSize, value, vertical } = this.props;
+        const { className, disabled, label, min, tickSizeRatio, value, vertical } = this.props;
         const { isMoving } = this.state;
 
         const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);
-        const offset = Math.round((value - min) * tickSize - handleMidpoint);
-        const style: React.CSSProperties = vertical ? { bottom: offset } : { left: offset };
+        const offsetRatio = (value - min) * tickSizeRatio;
+        const offsetCalc = `calc(${offsetRatio * 100}% - ${handleMidpoint}px)`;
+        const style: React.CSSProperties = vertical ? { bottom: offsetCalc } : { left: offsetCalc };
 
         return (
             <span
