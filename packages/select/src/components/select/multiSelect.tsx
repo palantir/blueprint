@@ -56,7 +56,7 @@ export interface IMultiSelectState<T> {
 export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState<T>> {
     public static displayName = "Blueprint2.MultiSelect";
 
-    public static defaultProps = {
+    public static defaultProps: Partial<IMultiSelectProps<any>> = {
         openOnKeyDown: false,
         resetOnSelect: true,
     };
