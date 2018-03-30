@@ -230,7 +230,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
     private updateTickSize() {
         if (this.trackElement != null) {
             const trackSize = this.props.vertical ? this.trackElement.clientHeight : this.trackElement.clientWidth;
-            const tickSizeRatio = 1 / (this.props.max as number) - (this.props.min as number);
+            const tickSizeRatio = 1 / ((this.props.max as number) - (this.props.min as number));
             const tickSize = trackSize * tickSizeRatio;
             this.setState({ tickSize, tickSizeRatio });
         }
