@@ -70,6 +70,7 @@ writeLinesToFile("iconNames.ts", ...exportIconConsts(icon => icon.iconName));
     ICONS_METADATA.forEach(({iconName, displayName}) => {
         writeLinesToFile(
             `${iconName}.ts`,
+            "// tslint:disable:prettier",
             `export const iconName = "${iconName}";`,
             `export const displayName = "${displayName}";`,
             `export const svgPaths16: string[] = ${iconSvgPaths16[iconName]};`,
