@@ -56,19 +56,6 @@ writeLinesToFile("iconNames.ts", ...exportIconConsts(icon => icon.iconName));
     const iconSvgPaths20 = await buildPaths(20);
 
     writeLinesToFile(
-        "iconSvgPaths.ts",
-        'import { IconName } from "../iconName";',
-        "",
-        "export const IconSvgPaths16: Record<IconName, string[]> = {",
-        ...(buildPathsObject(iconSvgPaths16)),
-        "};",
-        "",
-        "export const IconSvgPaths20: Record<IconName, string[]> = {",
-        ...(buildPathsObject(iconSvgPaths20)),
-        "};",
-    );
-
-    writeLinesToFile(
         "svgIcons.ts",
         "// tslint:disable:prettier",
         'import { SVGIcon } from "../svgIcon"',
