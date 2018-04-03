@@ -76,15 +76,15 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
         }
 
         const svgIcon = typeof icon === "string" ? this.getSvgIconFromName(icon) : (icon as SVGIcon);
+        if (svgIcon == null) {
+            return null;
+        }
 
         // choose which pixel grid is most appropriate for given icon size
         const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
         const pathStrings = pixelGridSize === Icon.SIZE_STANDARD ? svgIcon[1] : svgIcon[2];
 
         const paths = this.renderSvgPaths(pathStrings);
-        if (paths == null) {
-            return null;
-        }
 
         const classes = classNames(Classes.ICON, Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
