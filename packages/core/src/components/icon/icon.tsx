@@ -7,9 +7,16 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
+import { IconName, SVGIcon } from "@blueprintjs/icons";
 import { Classes, IIntentProps, IProps } from "../../common";
+import * as Errors from "../../common/errors";
 
+let allIcons: { [key: string]: SVGIcon | undefined } | null = null;
+
+if (!(global as any).BLUEPRINT_ICONS_TREE_SHAKING) {
+    // tslint:disable-next-line:no-var-requires
+    allIcons = require("@blueprintjs/icons");
+}
 export { IconName };
 
 export interface IIconProps extends IIntentProps, IProps {
@@ -27,13 +34,13 @@ export interface IIconProps extends IIntentProps, IProps {
      * be explicitly set to falsy values to render nothing.
      *
      * - If `null` or `undefined` or `false`, this component will render nothing.
-     * - If given an `IconName` (a string literal union of all icon names),
+     * - If given an `IconName` (a string literal union of all icon names) or an `SVGIcon`,
      *   that icon will be rendered as an `<svg>` with `<path>` tags.
      * - If given a `JSX.Element`, that element will be rendered and _all other props on this component are ignored._
      *   This type is supported to simplify usage of this component in other Blueprint components.
      *   As a consumer, you should never use `<Icon icon={<element />}` directly; simply render `<element />` instead.
      */
-    icon: IconName | JSX.Element | false | null | undefined;
+    icon: IconName | SVGIcon | JSX.Element | false | null | undefined;
 
     /**
      * Size of the icon, in pixels.
@@ -62,17 +69,19 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
     public static readonly SIZE_LARGE = 20;
 
     public render() {
-        const { className, color, icon, iconSize = Icon.SIZE_STANDARD, intent, title = icon, ...svgProps } = this.props;
+        const { className, color, icon, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
 
-        if (icon == null) {
-            return null;
-        } else if (typeof icon !== "string") {
+        if (icon == null || icon === false || React.isValidElement(icon)) {
             return icon;
         }
 
+        const svgIcon = typeof icon === "string" ? this.getSvgIconFromName(icon) : (icon as SVGIcon);
+
         // choose which pixel grid is most appropriate for given icon size
         const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
-        const paths = this.renderSvgPaths(pixelGridSize, icon);
+        const pathStrings = pixelGridSize === Icon.SIZE_STANDARD ? svgIcon[1] : svgIcon[2];
+
+        const paths = this.renderSvgPaths(pathStrings);
         if (paths == null) {
             return null;
         }
@@ -85,6 +94,8 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
         if (color != null) {
             style = { ...style, fill: color };
         }
+
+        const { title = svgIcon[0] } = this.props;
 
         return (
             <svg
@@ -102,9 +113,18 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
         );
     }
 
-    private renderSvgPaths(pathsSize: number, iconName: IconName) {
-        const svgPathsRecord = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
-        const pathStrings = svgPathsRecord[iconName];
+    private getSvgIconFromName(iconName: IconName) {
+        const camelCaseIconName = iconName
+            .split("-")
+            .reduce((result, word, i) => result + (i ? word[0].toUpperCase() + word.slice(1) : word));
+
+        if (allIcons == null) {
+            throw new Error(Errors.ICON_STRING_NAMES_NOT_SUPPORTED);
+        }
+        return allIcons[`${camelCaseIconName}Icon`];
+    }
+
+    private renderSvgPaths(pathStrings: string[] | null) {
         if (pathStrings == null) {
             return null;
         }

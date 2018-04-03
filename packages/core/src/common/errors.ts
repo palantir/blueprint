@@ -26,6 +26,11 @@ export const HOTKEYS_WARN_DECORATOR_NO_METHOD = ns + ` @HotkeysTarget-decorated 
 export const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
     ns + ` "@HotkeysTarget-decorated components must return a single JSX.Element or an empty render.`;
 
+export const ICON_STRING_NAMES_NOT_SUPPORTED =
+    ns +
+    ` Specifying icon by string name is not supported because the BLUEPRINT_ICONS_TREE_SHAKING flag has been set.` +
+    ` Icons must be imported as individual modules from the @blueprintjs/icons package.`;
+
 export const NUMERIC_INPUT_MIN_MAX =
     ns + ` <NumericInput> requires min to be strictly less than max if both are defined.`;
 export const NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND =
