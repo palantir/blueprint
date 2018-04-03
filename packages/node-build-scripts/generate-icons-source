@@ -8,6 +8,7 @@
 const fs = require("fs");
 const path = require("path");
 const SVGO = require("svgo");
+const lodash = require("lodash");
 const { COPYRIGHT_HEADER } = require("./constants");
 
 const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }] });
@@ -67,36 +68,18 @@ writeLinesToFile("iconNames.ts", ...exportIconConsts(icon => icon.iconName));
         "};",
     );
 
-    ICONS_METADATA.forEach(({iconName, displayName}) => {
-        writeLinesToFile(
-            `${iconName}.ts`,
-            "// tslint:disable:prettier",
-            `export const iconName = "${iconName}";`,
-            `export const displayName = "${displayName}";`,
-            `export const svgPaths16: string[] = ${iconSvgPaths16[iconName]};`,
-            `export const svgPaths20: string[] = ${iconSvgPaths20[iconName]};`,
-        )
-    });
-
-    const moduleMap = [];
-
     writeLinesToFile(
-        "allIcons.ts",
+        "svgIcons.ts",
         "// tslint:disable:prettier",
-        'import { IconModule } from "../iconModule";',
-        'import { IconName } from "../iconName";',
+        'import { SVGIcon } from "../svgIcon"',
         "",
-        ...ICONS_METADATA.map(({iconName}, index) => {
-            const alias = `icon${index}`;
-            moduleMap.push([iconName, alias]);
-            return `import * as ${alias} from "./${iconName}";`
+        ...ICONS_METADATA.map(({iconName}) => {
+            const alias = lodash.camelCase(iconName);
+            return `export const ${alias}Icon: SVGIcon = [`
+                + `"${iconName}"` + ","
+                + iconSvgPaths16[iconName] + ","
+                + iconSvgPaths20[iconName] + "]"
         }),
-        "",
-        "export const allIcons: { [K in IconName]: IconModule } = {",
-        ...moduleMap.map(([iconName, alias]) => {
-            return `    "${iconName}": ${alias},`
-        }),
-        "};",
     );
 })();
 
