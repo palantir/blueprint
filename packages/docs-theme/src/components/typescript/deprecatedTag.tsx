@@ -4,13 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Intent, Tag } from "@blueprintjs/core";
+import { Intent, Tag } from "@blueprintjs/core";
 import * as React from "react";
 
 export const DeprecatedTag: React.SFC<{ isDeprecated: boolean | string | undefined }> = ({ isDeprecated }) => {
     if (isDeprecated === true || typeof isDeprecated === "string") {
         return (
-            <Tag className={Classes.MINIMAL} intent={Intent.DANGER}>
+            <Tag intent={Intent.DANGER} minimal={true}>
                 {typeof isDeprecated === "string" ? (
                     <span dangerouslySetInnerHTML={markdownCode(`Deprecated: ${isDeprecated}`)} />
                 ) : (

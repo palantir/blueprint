@@ -6,9 +6,8 @@
 
 import * as React from "react";
 
-import { Button, Classes, Intent, Switch, Tag } from "@blueprintjs/core";
+import { Button, Intent, Switch, Tag } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
-import classNames from "classnames";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface ITagExampleState {
@@ -39,18 +38,11 @@ export class TagExample extends BaseExample<ITagExampleState> {
     private handleInteractiveChange = handleBooleanChange(interactive => this.setState({ interactive }));
 
     protected renderExample() {
-        const { intent, interactive, large, minimal, removable } = this.state;
-        const tagClasses = classNames({ [Classes.LARGE]: large, [Classes.MINIMAL]: minimal });
+        const { removable, ...tagProps } = this.state;
         const tags = this.state.tags.map(tag => {
             const onRemove = () => this.setState({ tags: this.state.tags.filter(t => t !== tag) });
             return (
-                <Tag
-                    key={tag}
-                    className={tagClasses}
-                    intent={intent}
-                    interactive={interactive}
-                    onRemove={removable && onRemove}
-                >
+                <Tag key={tag} onRemove={removable && onRemove} {...tagProps}>
                     {tag}
                 </Tag>
             );

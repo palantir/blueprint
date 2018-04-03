@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
 import { AnchorButton, Button, Classes, Intent, Switch } from "@blueprintjs/core";
@@ -50,11 +49,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
     }
 
     protected renderExample() {
-        const { large, minimal, iconOnly, wiggling, ...buttonProps } = this.state;
-        const classes = classNames({
-            [Classes.LARGE]: large,
-            [Classes.MINIMAL]: minimal,
-        });
+        const { iconOnly, wiggling, ...buttonProps } = this.state;
 
         return (
             <div className="docs-react-example-row">
@@ -63,7 +58,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     <br />
                     <br />
                     <Button
-                        className={classNames(classes, { "docs-wiggle": this.state.wiggling })}
+                        className={this.state.wiggling ? "docs-wiggle" : ""}
                         icon="refresh"
                         onClick={this.beginWiggling}
                         {...buttonProps}
@@ -76,7 +71,6 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     <br />
                     <br />
                     <AnchorButton
-                        className={classes}
                         href="./#core/components/button.javascript-api"
                         icon="duplicate"
                         rightIcon="share"

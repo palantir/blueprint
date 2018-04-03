@@ -7,7 +7,6 @@
 import { Classes, Icon, MenuItem } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
-import classNames from "classnames";
 import { IHeadingNode, IPageNode } from "documentalist/dist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";
@@ -68,11 +67,6 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
             return null;
         }
 
-        const classes = classNames({
-            [Classes.ACTIVE]: props.modifiers.active,
-            [Classes.INTENT_PRIMARY]: props.modifiers.active,
-        });
-
         // insert caret-right between each path element
         const pathElements = section.path.reduce<React.ReactChild[]>((elems, el) => {
             elems.push(el, <Icon icon="caret-right" />);
@@ -88,7 +82,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
         );
         return (
             <MenuItem
-                className={classes}
+                active={props.modifiers.active}
                 href={"#" + section.route}
                 key={section.route}
                 multiline={true}

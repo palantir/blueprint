@@ -9,7 +9,6 @@ import * as React from "react";
 
 import {
     Button,
-    Classes as CoreClasses,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -184,7 +183,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         return this.state.query.length === 0 ? (
             undefined
         ) : (
-            <Button className={CoreClasses.MINIMAL} icon="cross" onClick={this.resetQuery} />
+            <Button icon="cross" minimal={true} onClick={this.resetQuery} />
         );
     }
 

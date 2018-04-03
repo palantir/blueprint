@@ -678,11 +678,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderButton(label: string, props: IButtonProps) {
-        return (
-            <Button intent={Intent.PRIMARY} className={classNames(Classes.FILL)} {...props}>
-                {label}
-            </Button>
-        );
+        return <Button fill={true} intent={Intent.PRIMARY} text={label} {...props} />;
     }
 
     private renderScrollToSection() {
@@ -723,9 +719,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                     {shouldShowRowSelectMenu ? scrollToRowSelectMenu : undefined}
                     {shouldShowColumnSelectMenu ? scrollToColumnSelectMenu : undefined}
                 </div>
-                <Button intent={Intent.PRIMARY} className={Classes.FILL} onClick={this.handleScrollToButtonClick}>
-                    Scroll
-                </Button>
+                <Button fill={true} intent={Intent.PRIMARY} onClick={this.handleScrollToButtonClick} text="Scroll" />
             </div>
         );
     }

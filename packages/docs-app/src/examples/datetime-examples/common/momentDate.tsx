@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Icon, Intent, IProps, Tag } from "@blueprintjs/core";
+import { Icon, Intent, IProps, Tag } from "@blueprintjs/core";
 import { DateRange } from "@blueprintjs/datetime";
 import classNames from "classnames";
 import moment from "moment";
@@ -17,7 +17,7 @@ export const MomentDate: React.SFC<{ date: Date; format?: string }> = ({ date, f
     if (m.isValid()) {
         return <Tag intent={Intent.PRIMARY}>{m.format(format)}</Tag>;
     } else {
-        return <Tag className={Classes.MINIMAL}>no date</Tag>;
+        return <Tag minimal={true}>no date</Tag>;
     }
 };
 

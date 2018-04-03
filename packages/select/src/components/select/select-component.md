@@ -101,7 +101,7 @@ const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
     }
     return (
         <MenuItem
-            className={modifiers.active ? Classes.ACTIVE : ""}
+            active={modifiers.active}
             key={film.title}
             label={film.year}
             onClick={handleClick}

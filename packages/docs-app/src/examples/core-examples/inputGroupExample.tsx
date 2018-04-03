@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -45,19 +44,17 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     protected renderExample() {
-        const { disabled, filterValue, showPassword, tagValue } = this.state;
-
-        const largeClassName = classNames({ [Classes.LARGE]: this.state.large });
+        const { disabled, filterValue, large, showPassword, tagValue } = this.state;
 
         const maybeSpinner = filterValue ? <Spinner className={Classes.SMALL} /> : undefined;
 
         const lockButton = (
             <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
                 <Button
-                    className={Classes.MINIMAL}
-                    intent={Intent.WARNING}
                     disabled={disabled}
                     icon={showPassword ? "unlock" : "lock"}
+                    intent={Intent.WARNING}
+                    minimal={true}
                     onClick={this.handleLockClick}
                 />
             </Tooltip>
@@ -74,22 +71,20 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                 disabled={disabled}
                 position={Position.BOTTOM_RIGHT}
             >
-                <Button className={Classes.MINIMAL} disabled={disabled} rightIcon="caret-down">
+                <Button disabled={disabled} minimal={true} rightIcon="caret-down">
                     can edit
                 </Button>
             </Popover>
         );
 
-        const resultsTag = (
-            <Tag className={Classes.MINIMAL}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>
-        );
+        const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
 
         return (
             <div className="docs-input-group-example docs-flex-row">
                 <div className="docs-flex-column">
                     <InputGroup
-                        className={largeClassName}
                         disabled={disabled}
+                        large={large}
                         leftIcon="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
@@ -97,8 +92,8 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         value={filterValue}
                     />
                     <InputGroup
-                        className={largeClassName}
                         disabled={disabled}
+                        large={large}
                         placeholder="Enter your password..."
                         rightElement={lockButton}
                         type={showPassword ? "text" : "password"}
@@ -106,8 +101,8 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                 </div>
                 <div className="docs-flex-column">
                     <InputGroup
-                        className={largeClassName}
                         disabled={disabled}
+                        large={large}
                         leftIcon="tag"
                         onChange={this.handleTagChange}
                         placeholder="Find tags"
@@ -115,8 +110,8 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
                         value={tagValue}
                     />
                     <InputGroup
-                        className={largeClassName}
                         disabled={disabled}
+                        large={large}
                         placeholder="Add people or groups..."
                         rightElement={permissionsMenu}
                     />
