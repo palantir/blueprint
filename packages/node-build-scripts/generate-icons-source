@@ -51,16 +51,19 @@ writeLinesToFile("iconNames.ts", ...exportIconConsts(icon => icon.iconName));
 
 (async () => {
     // SVG path strings. IIFE to unwrap async.
+    const iconSvgPaths16 = await buildPaths(16);
+    const iconSvgPaths20 = await buildPaths(20);
+
     writeLinesToFile(
         "iconSvgPaths.ts",
         'import { IconName } from "../iconName";',
         "",
         "export const IconSvgPaths16: Record<IconName, string[]> = {",
-        ...(await buildPathsObject("IconSvgPaths", 16)),
+        ...(buildPathsObject(iconSvgPaths16)),
         "};",
         "",
         "export const IconSvgPaths20: Record<IconName, string[]> = {",
-        ...(await buildPathsObject("IconSvgPaths", 20)),
+        ...(buildPathsObject(iconSvgPaths20)),
         "};",
     );
 })();
@@ -101,14 +104,14 @@ function exportIconConsts(valueGetter) {
     return ICONS_METADATA.map(icon => `export const ${toEnumName(icon)} = "${valueGetter(icon)}";`);
 }
 
-/**
+/*
  * Loads SVG file for each icon, extracts path strings `d="path-string"`,
- * and constructs map of icon name to array of path strings.
- * @param {string} objectName
+ * and returns a map of icon names to stringified arrays of path strings.
  * @param {16 | 20} size
  */
-async function buildPathsObject(objectName, size) {
-    return Promise.all(
+async function buildPaths(size) {
+    const paths = {};
+    await Promise.all(
         ICONS_METADATA.map(async icon => {
             const filepath = path.resolve(__dirname, `../../resources/icons/${size}px/${icon.iconName}.svg`);
             const svg = fs.readFileSync(filepath, "utf-8");
@@ -116,7 +119,19 @@ async function buildPathsObject(objectName, size) {
                 .optimize(svg, { path: filepath })
                 .then(({ data }) => data.match(/ d="[^"]+"/g) || [])
                 .then(paths => paths.map(s => s.slice(3)));
-            return `    "${icon.iconName}": [${pathStrings.join(",\n")}],`;
+            paths[icon.iconName] = `[${pathStrings.join(",\n")}]`;
         }),
     );
+  return paths;
+}
+
+/**
+ * Returns stringified contents of a map of icon names to arrays of path
+ * strings.
+ * @param {Object} paths - paths as returned by buildPaths
+ */
+function buildPathsObject(paths) {
+    return Object.keys(paths).map(iconName => {
+        return `    "${iconName}": ${paths[iconName]},`
+    });
 }
