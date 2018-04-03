@@ -27,6 +27,9 @@ const customProps = {
     },
     Suggest: {
         items: [],
+    },
+    Omnibar: {
+        items: [],
     }
 };
 
