@@ -72,7 +72,7 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
         const { className, color, icon, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
 
         if (icon == null || icon === false || React.isValidElement(icon)) {
-            return icon;
+            return icon || null;
         }
 
         const svgIcon = typeof icon === "string" ? this.getSvgIconFromName(icon) : (icon as SVGIcon);
