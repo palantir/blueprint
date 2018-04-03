@@ -6,7 +6,6 @@
 import * as React from "react";
 
 import { Alignment, AnchorButton, Classes, Navbar, Switch } from "@blueprintjs/core";
-import classNames from "classnames";
 
 export interface INavProps {
     selected?: string;
