@@ -76,6 +76,27 @@ writeLinesToFile("iconNames.ts", ...exportIconConsts(icon => icon.iconName));
             `export const svgPaths20: string[] = ${iconSvgPaths20[iconName]};`,
         )
     });
+
+    const moduleMap = [];
+
+    writeLinesToFile(
+        "allIcons.ts",
+        "// tslint:disable:prettier",
+        'import { IconModule } from "../iconModule";',
+        'import { IconName } from "../iconName";',
+        "",
+        ...ICONS_METADATA.map(({iconName}, index) => {
+            const alias = `icon${index}`;
+            moduleMap.push([iconName, alias]);
+            return `import * as ${alias} from "./${iconName}";`
+        }),
+        "",
+        "export const allIcons: { [K in IconName]: IconModule } = {",
+        ...moduleMap.map(([iconName, alias]) => {
+            return `    "${iconName}": ${alias},`
+        }),
+        "};",
+    );
 })();
 
 /**
