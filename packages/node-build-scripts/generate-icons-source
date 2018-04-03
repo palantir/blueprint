@@ -66,6 +66,16 @@ writeLinesToFile("iconNames.ts", ...exportIconConsts(icon => icon.iconName));
         ...(buildPathsObject(iconSvgPaths20)),
         "};",
     );
+
+    ICONS_METADATA.forEach(({iconName, displayName}) => {
+        writeLinesToFile(
+            `${iconName}.ts`,
+            `export const iconName = "${iconName}";`,
+            `export const displayName = "${displayName}";`,
+            `export const svgPaths16: string[] = ${iconSvgPaths16[iconName]};`,
+            `export const svgPaths20: string[] = ${iconSvgPaths20[iconName]};`,
+        )
+    });
 })();
 
 /**
