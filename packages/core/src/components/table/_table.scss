@@ -68,8 +68,11 @@ table.#{$ns}-html-table {
     color: $pt-text-color;
   }
 
-  tbody tr:first-child td {
-    box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
+  tbody tr:first-child {
+    th,
+    td {
+      box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
+    }
   }
 
   &.#{$ns}-small {
@@ -132,8 +135,12 @@ table.#{$ns}-html-table {
       color: $pt-dark-text-color;
     }
 
-    tbody tr:first-child td {
-      box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
+
+    tbody tr:first-child {
+      th,
+      td {
+        box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
+      }
     }
 
     &.#{$ns}-html-table-striped {

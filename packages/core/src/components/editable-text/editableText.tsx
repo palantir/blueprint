@@ -156,9 +156,9 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
             Classes.intentClass(this.props.intent),
             {
                 [Classes.DISABLED]: disabled,
-                "pt-editable-editing": this.state.isEditing,
-                "pt-editable-placeholder": !hasValue,
-                "pt-multiline": multiline,
+                [Classes.EDITABLE_TEXT_EDITING]: this.state.isEditing,
+                [Classes.EDITABLE_TEXT_PLACEHOLDER]: !hasValue,
+                [Classes.MULTILINE]: multiline,
             },
             this.props.className,
         );
@@ -183,7 +183,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         return (
             <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex}>
                 {this.maybeRenderInput(value)}
-                <span className="pt-editable-content" ref={this.refHandlers.content} style={contentStyle}>
+                <span className={Classes.EDITABLE_TEXT_CONTENT} ref={this.refHandlers.content} style={contentStyle}>
                     {hasValue ? value : this.props.placeholder}
                 </span>
             </div>
@@ -283,7 +283,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
             return undefined;
         }
         const props: React.HTMLProps<HTMLInputElement | HTMLTextAreaElement> = {
-            className: "pt-editable-input",
+            className: Classes.EDITABLE_TEXT_INPUT,
             maxLength,
             onBlur: this.toggleEditing,
             onChange: this.handleTextChange,

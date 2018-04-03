@@ -4,10 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
+import { Classes, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface ITabsExampleState {
@@ -33,16 +32,16 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
     protected renderExample() {
         return (
             <div className="docs-tabs-example">
-                <div className={Classes.NAVBAR}>
-                    <div className={classNames(Classes.NAVBAR_GROUP, Classes.ALIGN_LEFT)}>
-                        <div className={Classes.NAVBAR_HEADING}>Tabs Example</div>
-                    </div>
-                    <div className={classNames(Classes.NAVBAR_GROUP, Classes.ALIGN_LEFT)}>
+                <Navbar>
+                    <Navbar.Group>
+                        <Navbar.Heading>Tabs Example</Navbar.Heading>
+                    </Navbar.Group>
+                    <Navbar.Group>
                         {/* controlled mode & no panels (see h1 below): */}
                         <Tabs
                             animate={this.state.animate}
-                            className={Classes.LARGE}
                             id="navbar"
+                            large={true}
                             onChange={this.handleNavbarTabChange}
                             selectedTabId={this.state.navbarTabId}
                         >
@@ -50,8 +49,8 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
                             <Tab id="Files" title="Files" />
                             <Tab id="Builds" title="Builds" />
                         </Tabs>
-                    </div>
-                </div>
+                    </Navbar.Group>
+                </Navbar>
                 <h1 style={{ marginTop: 30, marginBottom: 30 }}>{this.state.navbarTabId}</h1>
                 {/* uncontrolled mode & each Tab has a panel: */}
                 <Tabs

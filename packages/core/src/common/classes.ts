@@ -4,34 +4,36 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Elevation } from "../components/card/card";
 import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
 const NS = "pt";
 
 // modifiers
-export const DARK = `${NS}-dark`;
-export const ACTIVE = `${NS}-active`;
-export const MINIMAL = `${NS}-minimal`;
-export const DISABLED = `${NS}-disabled`;
-export const SMALL = `${NS}-small`;
-export const LARGE = `${NS}-large`;
-export const LOADING = `${NS}-loading`;
-export const INTERACTIVE = `${NS}-interactive`;
-export const ALIGN_LEFT = `${NS}-align-left`;
-export const ALIGN_RIGHT = `${NS}-align-right`;
-export const INLINE = `${NS}-inline`;
-export const FILL = `${NS}-fill`;
-export const FIXED = `${NS}-fixed`;
-export const FIXED_TOP = `${NS}-fixed-top`;
-export const VERTICAL = `${NS}-vertical`;
-export const ROUND = `${NS}-round`;
+export const ACTIVE = "pt-active";
+export const ALIGN_LEFT = "pt-align-left";
+export const ALIGN_RIGHT = "pt-align-right";
+export const DARK = "pt-dark";
+export const DISABLED = "pt-disabled";
+export const FILL = "pt-fill";
+export const FIXED = "pt-fixed";
+export const FIXED_TOP = "pt-fixed-top";
+export const INLINE = "pt-inline";
+export const INTERACTIVE = "pt-interactive";
+export const LARGE = "pt-large";
+export const LOADING = "pt-loading";
+export const MINIMAL = "pt-minimal";
+export const MULTILINE = "pt-multiline";
+export const ROUND = "pt-round";
+export const SMALL = "pt-small";
+export const VERTICAL = "pt-vertical";
 
-export const ELEVATION_0 = `${NS}-elevation-0`;
-export const ELEVATION_1 = `${NS}-elevation-1`;
-export const ELEVATION_2 = `${NS}-elevation-2`;
-export const ELEVATION_3 = `${NS}-elevation-3`;
-export const ELEVATION_4 = `${NS}-elevation-4`;
+export const ELEVATION_0 = elevationClass(Elevation.ZERO);
+export const ELEVATION_1 = elevationClass(Elevation.ONE);
+export const ELEVATION_2 = elevationClass(Elevation.TWO);
+export const ELEVATION_3 = elevationClass(Elevation.THREE);
+export const ELEVATION_4 = elevationClass(Elevation.FOUR);
 
 export const INTENT_PRIMARY = intentClass(Intent.PRIMARY);
 export const INTENT_SUCCESS = intentClass(Intent.SUCCESS);
@@ -93,6 +95,10 @@ export const DIALOG_HEADER = `${DIALOG}-header`;
 export const DIALOG_HEADER_TITLE = `${DIALOG}-header-title`;
 
 export const EDITABLE_TEXT = `${NS}-editable-text`;
+export const EDITABLE_TEXT_CONTENT = `${EDITABLE_TEXT}-content`;
+export const EDITABLE_TEXT_EDITING = `${EDITABLE_TEXT}-editing`;
+export const EDITABLE_TEXT_INPUT = `${EDITABLE_TEXT}-input`;
+export const EDITABLE_TEXT_PLACEHOLDER = `${EDITABLE_TEXT}-placeholder`;
 
 export const FLEX_EXPANDER = `${NS}-flex-expander`;
 
@@ -251,6 +257,13 @@ export function alignmentClass(alignment: Alignment) {
         default:
             return undefined;
     }
+}
+
+export function elevationClass(elevation: Elevation) {
+    if (elevation == null) {
+        return undefined;
+    }
+    return `${NS}-elevation-${elevation}`;
 }
 
 /** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */

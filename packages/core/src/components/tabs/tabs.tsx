@@ -122,12 +122,10 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
             .map(this.renderTabPanel);
 
         const tabIndicator = this.props.animate ? (
-            <div className={Classes.TAB_INDICATOR + "-wrapper"} style={indicatorWrapperStyle}>
+            <div className={Classes.TAB_INDICATOR_WRAPPER} style={indicatorWrapperStyle}>
                 <div className={Classes.TAB_INDICATOR} />
             </div>
-        ) : (
-            undefined
-        );
+        ) : null;
 
         const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical }, this.props.className);
         const tabListClasses = classNames(Classes.TAB_LIST, {

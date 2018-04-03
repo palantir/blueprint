@@ -7,7 +7,6 @@
 import { Button, Classes, MenuItem } from "@blueprintjs/core";
 import { IconName, IconNames } from "@blueprintjs/icons";
 import { ItemRenderer, Select } from "@blueprintjs/select";
-import classNames from "classnames";
 import * as React from "react";
 
 export interface IIconSelectProps {
@@ -51,11 +50,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
         if (!modifiers.matchesPredicate) {
             return null;
         }
-        const classes = classNames({
-            [Classes.ACTIVE]: modifiers.active,
-            [Classes.INTENT_PRIMARY]: modifiers.active,
-        });
-        return <MenuItem className={classes} icon={icon} key={icon} onClick={handleClick} text={icon} />;
+        return <MenuItem active={modifiers.active} icon={icon} key={icon} onClick={handleClick} text={icon} />;
     };
 
     private filterIconName = (query: string, iconName: IconName | typeof NONE) => {

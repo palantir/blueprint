@@ -31,7 +31,7 @@ import {
 } from "@blueprintjs/table/src";
 
 import { Nav } from "./nav";
-ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));
+ReactDOM.render(<Nav selected="features" />, document.getElementById("nav"));
 
 function getTableComponent(numCols: number, numRows: number, columnProps?: any, tableProps?: any) {
     // combine table overrides

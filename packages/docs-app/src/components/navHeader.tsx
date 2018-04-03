@@ -19,7 +19,6 @@ import {
 } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 import { NavButton } from "@blueprintjs/docs-theme";
-import classNames from "classnames";
 import * as React from "react";
 import { Logo } from "./logo";
 
@@ -90,7 +89,7 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
 
         return (
             <Popover content={menu} position={Position.BOTTOM} key="_versions">
-                <Tag className={classNames(Classes.INTERACTIVE, Classes.MINIMAL, Classes.ROUND)}>
+                <Tag interactive={true} minimal={true} round={true}>
                     v{currentRelease.split(".", 1)} <Icon icon="caret-down" />
                 </Tag>
             </Popover>

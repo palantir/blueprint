@@ -19,6 +19,9 @@ export interface ILabelProps extends React.LabelHTMLAttributes<HTMLLabelElement>
     /** The helper text to show next to the label. */
     helperText?: React.ReactNode;
 
+    /** Whether to render the label and children on a single line. */
+    inline?: boolean;
+
     /** The text to show in the label. */
     text: React.ReactNode;
 }
@@ -29,12 +32,13 @@ export class Label extends React.PureComponent<ILabelProps, {}> {
     public static displayName = "Blueprint2.Label";
 
     public render() {
-        const { children, className, disabled, helperText, text, ...htmlProps } = this.props;
+        const { children, className, disabled, helperText, inline, text, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
             Classes.LABEL,
             {
                 [Classes.DISABLED]: disabled,
+                [Classes.INLINE]: inline,
             },
             className,
         );

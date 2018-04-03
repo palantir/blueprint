@@ -9,5 +9,5 @@ import * as ReactDOM from "react-dom";
 import { MutableTable } from "./mutableTable";
 import { Nav } from "./nav";
 
-ReactDOM.render(<Nav selected="perf" />, document.getElementById("nav"));
+ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));
 ReactDOM.render(<MutableTable />, document.querySelector("#page-content"));

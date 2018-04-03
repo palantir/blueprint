@@ -28,6 +28,12 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      */
     interactive?: boolean;
 
+    /** Whether this tag should use large styles. */
+    large?: boolean;
+
+    /** Whether this tag should use minimal styles. */
+    minimal?: boolean;
+
     /**
      * Callback invoked when the tag is clicked.
      * Recommended when `interactive` is `true`.
@@ -39,13 +45,27 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      * Button will only be rendered if this prop is defined.
      */
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
+
+    /** Whether this tag should have rounded ends. */
+    round?: boolean;
 }
 
 export class Tag extends React.PureComponent<ITagProps, {}> {
     public static displayName = "Blueprint2.Tag";
 
     public render() {
-        const { active, children, className, intent, interactive, onRemove, ...htmlProps } = this.props;
+        const {
+            active,
+            children,
+            className,
+            intent,
+            interactive,
+            large,
+            minimal,
+            onRemove,
+            round,
+            ...htmlProps
+        } = this.props;
         const isRemovable = Utils.isFunction(onRemove);
         const tagClasses = classNames(
             Classes.TAG,
@@ -54,10 +74,13 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
                 [Classes.TAG_REMOVABLE]: isRemovable,
                 [Classes.ACTIVE]: active,
                 [Classes.INTERACTIVE]: interactive,
+                [Classes.LARGE]: large,
+                [Classes.MINIMAL]: minimal,
+                [Classes.ROUND]: round,
             },
             className,
         );
-        const isLarge = tagClasses.indexOf(Classes.LARGE) >= 0;
+        const isLarge = large || tagClasses.indexOf(Classes.LARGE) >= 0;
         const removeButton = isRemovable ? (
             <button type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick}>
                 <Icon icon="small-cross" iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD} />

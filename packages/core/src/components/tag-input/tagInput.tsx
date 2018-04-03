@@ -31,6 +31,9 @@ export interface ITagInputProps extends IProps {
      */
     disabled?: boolean;
 
+    /** Whether the tag input should take up the full width of its container. */
+    fill?: boolean;
+
     /**
      * React props to pass to the `<input>` element.
      * Note that `ref` and `key` are not supported here; use `inputRef` below.
@@ -42,6 +45,9 @@ export interface ITagInputProps extends IProps {
 
     /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;
+
+    /** Whether the tag input should use a large size. */
+    large?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render on the left side of the input. */
     leftIcon?: IconName | JSX.Element;
@@ -190,14 +196,16 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     }
 
     public render() {
-        const { className, inputProps, leftIcon, placeholder, values } = this.props;
+        const { className, disabled, fill, inputProps, large, leftIcon, placeholder, values } = this.props;
 
         const classes = classNames(
             Classes.INPUT,
             Classes.TAG_INPUT,
             {
                 [Classes.ACTIVE]: this.state.isInputFocused,
-                [Classes.DISABLED]: this.props.disabled,
+                [Classes.DISABLED]: disabled,
+                [Classes.FILL]: fill,
+                [Classes.LARGE]: large,
             },
             className,
         );
@@ -227,7 +235,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
                         placeholder={resolvedPlaceholder}
                         ref={this.refHandlers.input}
                         className={classNames(Classes.INPUT_GHOST, inputProps.className)}
-                        disabled={this.props.disabled}
+                        disabled={disabled}
                     />
                 </div>
                 {this.props.rightElement}

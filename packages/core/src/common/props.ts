@@ -91,19 +91,24 @@ export interface IOptionProps extends IProps {
 /** A collection of curated prop keys used across our Components which are not valid HTMLElement props. */
 const INVALID_PROPS = [
     "active",
+    "alignText",
     "containerRef",
     "elementRef",
+    "fill",
     "icon",
     "inputRef",
     "intent",
     "inline",
+    "large",
     "loading",
     "leftIcon",
+    "minimal",
     "onChildrenMount",
     "onRemove",
     "popoverProps",
     "rightElement",
     "rightIcon",
+    "small",
     "text",
 ];
 

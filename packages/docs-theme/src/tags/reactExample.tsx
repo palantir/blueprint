@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AnchorButton, Classes, Intent } from "@blueprintjs/core";
+import { AnchorButton, Intent } from "@blueprintjs/core";
 import { ITag } from "documentalist/dist/client";
 import * as React from "react";
 
@@ -28,10 +28,10 @@ export const ReactExample: React.SFC<IExampleProps> = props => (
     <div className="docs-example-wrapper">
         {props.example.render({ id: props.name })}
         <AnchorButton
-            className={Classes.MINIMAL}
             href={props.example.sourceUrl}
             icon="code"
             intent={Intent.PRIMARY}
+            minimal={true}
             target="_blank"
             text="View source on GitHub"
         />
