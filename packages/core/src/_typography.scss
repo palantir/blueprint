@@ -32,17 +32,6 @@ small {
 }
 
 /*
-Fonts
-
-Markup:
-<div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
-
-.pt-monospace-text - Use a monospace font (ideal for code)
-
-Styleguide fonts
-*/
-
-/*
 Headings
 
 Markup:
@@ -227,24 +216,21 @@ a {
 Preformatted text
 
 Markup:
-<code>$ npm install</code>
-<pre>
-%pt-select {
-  @include pt-button();
-  border-radius: $pt-border-radius;
-  height: $pt-button-height;
-  padding: 0 ($input-padding-horizontal * 3) 0 $input-padding-horizontal;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-}
-</pre>
-<pre><code>export function hasModifier(modifiers: ts.ModifiersArray, ...modifierKinds: ts.SyntaxKind[]) {
-    if (modifiers == null || modifierKinds == null) {
-        return false;
-    }
-    return modifiers.some((m) => {
-        return modifierKinds.some((k) => m.kind === k);
-    });
+<p>
+  The <code class="pt-code">Portal</code> component functions like a declarative
+  <code class="pt-code">appendChild()</code>, or jQuery's <code class="pt-code">$.fn.appendTo()</code>.
+</p>
+<div class="pt-running-text">
+  <pre>The children of a <code>Portal</code> component are appended to the <code>&lt;body></code> element.</pre>
+</div>
+<pre class="pt-code-block"><code>// code sample
+export function hasModifier(modifiers: ts.ModifiersArray, ...modifierKinds: ts.SyntaxKind[]) {
+  if (modifiers == null || modifierKinds == null) {
+    return false;
+  }
+  return modifiers.some((m) => {
+    return modifierKinds.some((k) => m.kind === k);
+  });
 }</code></pre>
 
 Styleguide preformatted
@@ -308,13 +294,7 @@ Styleguide preformatted
 Block quotes
 
 Markup:
-<blockquote>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-  </p>
+<blockquote class="pt-blockquote">
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
     labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -322,6 +302,16 @@ Markup:
     voluptate velit esse cillum dolore eu fugiat nulla pariatur.
   </p>
 </blockquote>
+<div class="pt-running-text">
+  <blockquote>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+      voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    </p>
+  </blockquote>
+</div>
 
 Styleguide blockquote
 */
@@ -344,19 +334,24 @@ Styleguide blockquote
 Lists
 
 Markup:
-<ul class="{{.modifier}}">
+<ol class="pt-list">
   <li>Item the first</li>
   <li>Item the second</li>
-  <li>Item the third</li>
-</ul>
-<ol class="{{.modifier}}">
-  <li>Item the first</li>
-  <li>Item the second</li>
-  <li>Item the third</li>
+  <li>
+    Item the third
+    <ol>
+      <li>Item the fourth</li>
+      <li>Item the fifth</li>
+    </ol>
+  </li>
 </ol>
-
-.pt-list - Add a little spacing between items for readability.
-.pt-list-unstyled - Remove all list styling (including indicators) so you can add your own.
+<div class="pt-running-text">
+  <ul>
+  <li>Item the first</li>
+  <li>Item the second</li>
+  <li>Item the third</li>
+  </ul>
+</div>
 
 Styleguide lists
 */

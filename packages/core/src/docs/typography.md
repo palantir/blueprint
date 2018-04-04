@@ -12,19 +12,13 @@ proper contrast.
 Instead, reference the classes and variables we provide in Blueprint (`.pt-ui-text`,
 `$pt-font-size-large`, etc.).
 
-@## Fonts
+@## UI text
+
+Blueprint's default text styles are applied via `.pt-ui-text` or `.pt-ui-text-large`. A handful
+of other utility classes can be combined freely to further customize a block of text.
 
 Blueprint does not include any fonts of its own; it will use the default sans-serif operating system
 font. We provide a class to use the default monospace font instead.
-
-
-@css fonts
-
-@## Headings
-
-@css headings
-
-@## UI text
 
 The base font size for Blueprint web applications is 14px. This should be the default type size
 for most short strings of text which are not headings or titles. If you wish to reset some
@@ -33,13 +27,15 @@ For longer running text, see [running text styles](#core/typography.running-text
 
 @css pt-ui-text
 
+@## Headings
+
+@css headings
+
 @## Running text
 
-Longform text, such as rendered Markdown documents, benefit from additional spacing and slightly
-large font size. Apply `.pt-running-text` to the parent element to adjust spacing for the following
-elements:
+Longform text, such as rendered Markdown documents, benefit from increased spacing and support for unclassed textual elements. Apply `.pt-running-text` to the parent element to apply the following styles to all children:
 
-- `<p>` tags have increased line-height and font size.
+- `<h*>`, `<ul>`, `<ol>`, `<blockquote>`, `<code>`, `<pre>` do not require additional CSS classes for styles. This is great for rendered Markdown documents.
 - `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
 - `<ul>` and `<ol>` tags receive [`.pt-list`](#core/typography.lists) styles for legibility.
 
