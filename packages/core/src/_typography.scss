@@ -42,10 +42,6 @@ Markup:
 Styleguide fonts
 */
 
-.pt-monospace-text {
-  @include monospace-typography();
-}
-
 /*
 Headings
 
@@ -84,10 +80,16 @@ $headers: (
 UI text
 
 Markup:
-<div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
+<div class="{{.modifier}}">
+  Blueprint components react overlay date picker. Breadcrumbs dialog progress non-ideal state.
+</div>
 
-.pt-ui-text - Default UI text. This is applied to the document body as part of core styles.
-.pt-ui-text-large - Larger UI text.
+.pt-ui-text - Default Blueprint font styles.
+.pt-ui-text-large - Larger font styles.
+.pt-monospace-text - Use a monospace font (ideal for code).
+.pt-text-muted - Changes text color to a gentler gray.
+.pt-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its
+  container.
 
 Styleguide pt-ui-text
 */
@@ -99,6 +101,22 @@ Styleguide pt-ui-text
 .pt-ui-text-large {
   line-height: 1.25;
   font-size: $pt-font-size-large;
+}
+
+.pt-monospace-text {
+  @include monospace-typography();
+}
+
+.pt-text-muted {
+  color: $pt-text-color-muted;
+
+  .pt-dark & {
+    color: $pt-dark-text-color-muted;
+  }
+}
+
+.pt-text-overflow-ellipsis {
+  @include overflow-ellipsis();
 }
 
 /*
@@ -370,33 +388,6 @@ Styleguide lists
   li {
     padding: 0;
   }
-}
-
-/*
-Text utilities
-
-Markup:
-<div class="{{.modifier}}" style="width: 320px;">
-  Blueprint components react overlay date picker. Breadcrumbs dialog progress non-ideal state.
-</div>
-
-.pt-text-muted - Changes text color to a gentler gray.
-.pt-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its
-  container.
-
-Styleguide utilities
-*/
-
-.pt-text-muted {
-  color: $pt-text-color-muted;
-
-  .pt-dark & {
-    color: $pt-dark-text-color-muted;
-  }
-}
-
-.pt-text-overflow-ellipsis {
-  @include overflow-ellipsis();
 }
 
 /*
