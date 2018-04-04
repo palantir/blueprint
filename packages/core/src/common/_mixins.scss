@@ -52,9 +52,13 @@ $pt-dark-intent-text-colors: (
   font-size: $pt-font-size;
 }
 
-@mixin header-typography() {
+@mixin heading-typography() {
   color: $pt-heading-color;
   font-weight: 600;
+
+  .pt-dark & {
+    color: $pt-dark-heading-color;
+  }
 }
 
 @mixin monospace-typography() {

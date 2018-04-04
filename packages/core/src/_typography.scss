@@ -35,18 +35,24 @@ small {
 Headings
 
 Markup:
-<h1>H1 heading</h1>
-<h2>H2 heading</h2>
-<h3>H3 heading</h3>
-<h4>H4 heading</h4>
-<h5>H5 heading</h5>
-<h6>H6 heading</h6>
+<h1 class="pt-heading">H1 heading</h1>
+<h2 class="pt-heading">H2 heading</h2>
+<h3 class="pt-heading">H3 heading</h3>
+<h4 class="pt-heading">H4 heading</h4>
+<h5 class="pt-heading">H5 heading</h5>
+<h6 class="pt-heading">H6 heading</h6>
 
 Styleguide headings
 */
 
+.pt-heading {
+  @include heading-typography();
+  margin: 0 0 $pt-grid-size;
+  padding: 0;
+}
+
 // tag: (font-size, line-height)
-$headers: (
+$headings: (
   "h1": (36px, 40px),
   "h2": (28px, 32px),
   "h3": (22px, 25px),
@@ -55,13 +61,14 @@ $headers: (
   "h6": (14px, 16px)
 );
 
-@each $header, $props in $headers {
-  #{$header} {
-    @include header-typography();
-    margin: 0 0 $pt-grid-size;
-    padding: 0;
+@each $tag, $props in $headings {
+  %#{$tag} {
     line-height: nth($props, 2);
     font-size: nth($props, 1);
+  }
+
+  #{$tag}.pt-heading {
+    @extend %#{$tag};
   }
 }
 
@@ -133,8 +140,10 @@ Styleguide pt-running-text
 .pt-running-text {
   @include running-typography();
 
-  @each $header, $props in $headers {
-    #{$header} {
+  @each $tag, $props in $headings {
+    #{$tag} {
+      @extend %#{$tag};
+      @include heading-typography();
       margin-top: $pt-grid-size * 4;
       margin-bottom: $pt-grid-size * 2;
     }
@@ -409,10 +418,4 @@ Styleguide pt-rtl
 
 .pt-dark {
   color: $pt-dark-text-color;
-
-  @each $header, $props in $headers {
-    #{$header} {
-      color: $pt-dark-heading-color;
-    }
-  }
 }
