@@ -74,7 +74,7 @@ export interface IDocumentationProps extends IProps {
     renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
 
     /**
-     * HTML element to use as the scroll parent. By default document.documentElement is assumed to be the scroll container.
+     * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.
      * @default document.documentElement
      */
     scrollParent?: HTMLElement;
