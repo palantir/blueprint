@@ -132,15 +132,37 @@ Styleguide pt-running-text
       margin-bottom: $pt-grid-size * 2;
     }
   }
-}
 
-.pt-running-text-small {
-  @include running-typography-small();
-}
+  hr {
+    margin: ($pt-grid-size * 2) 0;
+    border: none;
+    border-bottom: 1px solid $pt-divider-black;
 
-p {
-  margin: 0 0 $pt-grid-size;
-  padding: 0;
+    .pt-dark & {
+      border-color: $pt-dark-divider-white;
+    }
+  }
+
+  p {
+    margin: 0 0 $pt-grid-size;
+    padding: 0;
+  }
+
+  blockquote {
+    @extend %blockquote;
+  }
+
+  code {
+    @extend %code;
+  }
+
+  pre {
+    @extend %code-block;
+
+    > code {
+      // undo
+    }
+  }
 }
 
 /*
@@ -210,12 +232,9 @@ Markup:
 Styleguide preformatted
 */
 
-pre,
-code {
+%code {
   @include monospace-typography();
-}
 
-code {
   border-radius: $pt-border-radius;
   box-shadow: inset border-shadow(0.2);
   background: $pt-code-background-color;
@@ -229,7 +248,9 @@ code {
   }
 }
 
-pre {
+%code-block {
+  @include monospace-typography();
+
   display: block;
   margin: $pt-grid-size 0;
   border-radius: $pt-border-radius;
@@ -242,26 +263,27 @@ pre {
   word-break: break-all;
   word-wrap: break-word;
 
-  > code {
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
-    padding: 0;
-    white-space: pre-wrap;
-    color: inherit;
-    font-size: inherit;
-  }
-
   .pt-dark & {
     box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
     background: $pt-dark-code-background-color;
     color: $pt-dark-text-color;
-
-    > code {
-      box-shadow: none;
-      background: transparent;
-    }
   }
+
+  > code {
+    box-shadow: none;
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+}
+
+.pt-code {
+  @extend %code;
+}
+
+.pt-code-block {
+  @extend %code-block;
 }
 
 /*
@@ -286,19 +308,18 @@ Markup:
 Styleguide blockquote
 */
 
-blockquote {
-  @include running-typography();
+%blockquote {
   margin: 0 0 $pt-grid-size;
   border-left: solid 4px rgba($gray4, 0.5);
   padding: 0 ($pt-grid-size * 2);
 
-  p:last-child {
-    margin-bottom: 0;
-  }
-
   .pt-dark & {
     border-color: rgba($gray2, 0.5);
   }
+}
+
+.pt-blockquote {
+  @extend %blockquote;
 }
 
 /*
@@ -322,28 +343,23 @@ Markup:
 Styleguide lists
 */
 
-ol,
-ul {
+%list {
   margin: $pt-grid-size 0;
   padding-left: $pt-grid-size * 4;
-}
 
-.pt-list,
-.pt-running-text ul,
-.pt-running-text ol {
   li:not(:last-child) {
-    padding-bottom: $pt-grid-size / 2;
+    margin-bottom: $pt-grid-size / 2;
   }
 
-  // remove bottom margin on final element in list item because list items put their own spacing
-  li :last-child {
-    margin-bottom: 0;
-  }
-
+  // nested lists
   ol,
   ul {
     margin-top: $pt-grid-size / 2;
   }
+}
+
+.pt-list {
+  @extend %list;
 }
 
 .pt-list-unstyled {
