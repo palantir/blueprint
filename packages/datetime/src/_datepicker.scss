@@ -171,6 +171,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       padding-left: $pt-grid-size / 2;
       line-height: $pt-input-height;
       color: $pt-text-color;
+      font-family: inherit;
       font-weight: 600;
 
       // stylelint-disable property-no-vendor-prefix
