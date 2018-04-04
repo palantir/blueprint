@@ -73,6 +73,12 @@ export interface IDocumentationProps extends IProps {
      */
     renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
 
+    /**
+     * Element to use as the scroll parent. By default document.documentElement is assumed to be the scroll container.
+     * @default document.documentElement
+     */
+    scrollParent?: HTMLElement;
+
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: ITagRendererMap;
 }
@@ -87,6 +93,10 @@ export interface IDocumentationState {
 
 @HotkeysTarget
 export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
+    public static defaultProps: Partial<IDocumentationProps> = {
+        scrollParent: document.documentElement,
+    };
+
     public static childContextTypes = DocumentationContextTypes;
 
     /** Map of section route to containing page reference. */
@@ -262,7 +272,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     private handlePreviousSection = () => this.shiftSection(-1);
 
     private handleScroll = () => {
-        const activeSectionId = getScrolledReference(100, document.documentElement);
+        const activeSectionId = getScrolledReference(100, this.props.scrollParent);
         if (activeSectionId == null) {
             return;
         }
@@ -284,7 +294,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
 
     private scrollToActiveSection() {
         if (this.contentElement != null) {
-            scrollToReference(this.state.activeSectionId, document.documentElement);
+            scrollToReference(this.state.activeSectionId, this.props.scrollParent);
         }
     }
 
