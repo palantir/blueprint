@@ -54,7 +54,12 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
         const { className, disabled, label, min, tickSizeRatio, value, vertical } = this.props;
         const { isMoving } = this.state;
 
-        const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement);
+        // The handle midpoint of RangeSlider is actually shifted by a margin to
+        // be on the edge of the visible handle element. Because the midpoint
+        // calculation does not take this margin into account, we instead
+        // measure the long side (which is equal to the short side plus the
+        // margin).
+        const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);
         const offsetRatio = (value - min) * tickSizeRatio;
         const offsetCalc = `calc(${offsetRatio * 100}% - ${handleMidpoint}px)`;
         const style: React.CSSProperties = vertical ? { bottom: offsetCalc } : { left: offsetCalc };
