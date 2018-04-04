@@ -3036,5 +3036,40 @@
     "tags": "typography, text, font-style, line, removed",
     "group": "editor",
     "content": "\\e7a6"
+  },
+  {
+    "name": "Updated",
+    "className": "pt-icon-updated",
+    "tags": "time, recent, success",
+    "group": "interface",
+    "content": "\\e7a7"
+  },
+  {
+    "name": "Outdated",
+    "className": "pt-icon-outdated",
+    "tags": "time, error, warning",
+    "group": "interface",
+    "content": "\\e7a8"
+  },
+  {
+    "name": "Flame",
+    "className": "pt-icon-flame",
+    "tags": "fire, trendy, hot, popular",
+    "group": "miscellaneous",
+    "content": "\\e7a9"
+  },
+  {
+    "name": "Folder: new",
+    "className": "pt-icon-folder-new",
+    "tags": "create, group, organize, sort",
+    "group": "file",
+    "content": "\\e7b0"
+  },
+  {
+    "name": "Mountain",
+    "className": "pt-icon-mountain",
+    "tags": "summit, climb, peak",
+    "group": "miscellaneous",
+    "content": "\\e7b1"
   }
 ]
