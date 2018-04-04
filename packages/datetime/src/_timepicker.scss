@@ -65,7 +65,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     padding: 0;
     text-align: center;
     color: $pt-text-color;
-    font-family: "fixed-width";
+    font-family: inherit;
     transition: $input-transition;
 
     &:focus {
