@@ -5,6 +5,7 @@
  */
 
 import { Classes } from "@blueprintjs/core";
+import classNames from "classnames";
 import * as React from "react";
 
 export interface IModifierTableProps {
@@ -16,7 +17,7 @@ export interface IModifierTableProps {
 }
 
 export const ModifierTable: React.SFC<IModifierTableProps> = ({ children, emptyMessage, title }) => (
-    <div className="docs-modifiers-table">
+    <div className={classNames("docs-modifiers-table", Classes.RUNNING_TEXT)}>
         <table className={Classes.HTML_TABLE}>
             <thead>
                 <tr>
