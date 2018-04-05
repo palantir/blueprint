@@ -10,7 +10,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { isFunction } from "../../common/utils";
-import { CoreSlider, ICoreSliderProps } from "./coreSlider";
+import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
 import { Handle } from "./handle";
 
 export type NumberRange = [number, number];
@@ -66,8 +66,8 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         }
 
         // expand by 1px in each direction so it sits under the handle border
-        const offsetCalc = `calc(${(offsetRatio * 100).toFixed(2)}% - 1px)`;
-        const sizeCalc = `calc(${(sizeRatio * 100).toFixed(2)}% + 2px)`;
+        const offsetCalc = `calc(${formatPercentage(offsetRatio)} - 1px)`;
+        const sizeCalc = `calc(${formatPercentage(sizeRatio)} + 2px)`;
 
         const style: React.CSSProperties = this.props.vertical
             ? { bottom: offsetCalc, height: sizeCalc }

@@ -8,7 +8,7 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { clamp } from "../../common/utils";
-import { CoreSlider, ICoreSliderProps } from "./coreSlider";
+import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
 import { Handle } from "./handle";
 
 export interface ISliderProps extends ICoreSliderProps {
@@ -60,8 +60,8 @@ export class Slider extends CoreSlider<ISliderProps> {
             size = Math.abs(size);
         }
 
-        const offsetPercentage = `${(offset * 100).toFixed(2)}%`;
-        const sizePercentage = `${(size * 100).toFixed(2)}%`;
+        const offsetPercentage = formatPercentage(offset);
+        const sizePercentage = formatPercentage(size);
 
         const style: React.CSSProperties = this.props.vertical
             ? { bottom: offsetPercentage, height: sizePercentage }

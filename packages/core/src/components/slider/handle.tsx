@@ -12,6 +12,7 @@ import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
+import { formatPercentage } from "./coreSlider";
 
 /**
  * N.B. some properties need to be optional for spread in slider.tsx to work
@@ -61,7 +62,7 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
         // margin).
         const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);
         const offsetRatio = (value - min) * tickSizeRatio;
-        const offsetCalc = `calc(${(offsetRatio * 100).toFixed(2)}% - ${handleMidpoint}px)`;
+        const offsetCalc = `calc(${formatPercentage(offsetRatio)} - ${handleMidpoint}px)`;
         const style: React.CSSProperties = vertical ? { bottom: offsetCalc } : { left: offsetCalc };
 
         return (

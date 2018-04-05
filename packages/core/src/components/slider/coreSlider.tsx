@@ -186,7 +186,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
             i < max || approxEqual(i, max);
             i += labelStepSize, offsetRatio += stepSizeRatio
         ) {
-            const offsetPercentage = `${(offsetRatio * 100).toFixed(2)}%`;
+            const offsetPercentage = formatPercentage(offsetRatio);
             const style = this.props.vertical ? { bottom: offsetPercentage } : { left: offsetPercentage };
             labels.push(
                 <div className={`${Classes.SLIDER}-label`} key={i} style={style}>
@@ -235,4 +235,9 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
             this.setState({ tickSize, tickSizeRatio });
         }
     }
+}
+
+/** Helper function for formatting ratios as CSS percentage values. */
+export function formatPercentage(ratio: number) {
+    return `${(ratio * 100).toFixed(2)}%`;
 }
