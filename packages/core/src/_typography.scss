@@ -107,17 +107,20 @@ Styleguide pt-ui-text
 Running text
 
 Markup:
-<div class="{{.modifier}}">
-  <p>Longform text, such as rendered Markdown documents, benefit from additional spacing and slightly
-large font size. Apply <code>.pt-running-text</code> to the parent element to adjust spacing for the following
-elements:</p>
-  <ul>
-    <li><code>&lt;p></code> tags have increased line-height and font size.</li>
-    <li><code>&lt;h*></code> tag margins are adjusted to provide clear separation between sections in a document.</li>
-    <li><code>&lt;ul></code> and <code>&lt;ol></code> tags receive [`.pt-list`](#typography.lists) styles for legibility.</li>
-  </ul>
-  <h3>New section</h3>
-  <p>And another paragraph.</p>
+<div class="pt-running-text {{.modifier}}">
+  <blockquote>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </p>
+    <ul>
+      <li>Item the <code>first</code>.</li>
+      <li>Item the <strong>second</strong></code>.</li>
+      <li>Item the <a href="#core/typography.running-text">third</a>.</li>
+    </ul>
+    <h3>New section</h3>
+    <p>And another paragraph.</p>
+  </blockquote>
 </div>
 
 .pt-text-large - Use larger font size.
@@ -167,12 +170,13 @@ Styleguide pt-running-text
   ul,
   ol {
     @extend %list;
-    }
   }
+}
 
 // NOTE: this must be defined after .pt-running-text in order to override font-size.
 .pt-text-large {
   font-size: $pt-font-size-large;
+  // line-height comes from .pt-(ui|running)-text
 }
 
 /*
@@ -219,13 +223,8 @@ a {
 Preformatted text
 
 Markup:
-<p>
-  The <code class="pt-code">Portal</code> component functions like a declarative
-  <code class="pt-code">appendChild()</code>, or jQuery's <code class="pt-code">$.fn.appendTo()</code>.
-</p>
-<div class="pt-running-text">
-  <pre>The children of a <code>Portal</code> component are appended to the <code>&lt;body></code> element.</pre>
-</div>
+<p>Use the <code class="pt-code">&lt;code></code> tag for snippets of code.</p>
+<pre class="pt-code-block">Use the &lt;pre> tag for blocks of code.</pre>
 <pre class="pt-code-block"><code>// code sample
 export function hasModifier(modifiers: ts.ModifiersArray, ...modifierKinds: ts.SyntaxKind[]) {
   if (modifiers == null || modifierKinds == null) {
@@ -247,6 +246,7 @@ Styleguide preformatted
   background: $pt-code-background-color;
   padding: 2px 5px;
   color: $pt-code-text-color;
+  font-size: $pt-font-size-small;
 
   .pt-dark & {
     box-shadow: inset border-shadow(0.4);
@@ -305,16 +305,6 @@ Markup:
     voluptate velit esse cillum dolore eu fugiat nulla pariatur.
   </p>
 </blockquote>
-<div class="pt-running-text">
-  <blockquote>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-      voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-    </p>
-  </blockquote>
-</div>
 
 Styleguide blockquote
 */
@@ -337,31 +327,27 @@ Styleguide blockquote
 Lists
 
 Markup:
-<ol class="pt-list">
+<ol class="{{.modifier}}">
   <li>Item the first</li>
   <li>Item the second</li>
   <li>
     Item the third
-    <ol>
+    <ol class="{{.modifier}}">
       <li>Item the fourth</li>
       <li>Item the fifth</li>
     </ol>
   </li>
 </ol>
-<div class="pt-running-text">
-  <ul>
-  <li>Item the first</li>
-  <li>Item the second</li>
-  <li>Item the third</li>
-  </ul>
-</div>
+
+.pt-list - Comfortable margins and padding. Note that this modifier must be applied to each nested `ul` or `ol` element.
+.pt-list-unstyled - Remove list item decorators and all margins and padding.
 
 Styleguide lists
 */
 
 %list {
   margin: $pt-grid-size 0;
-  padding-left: $pt-grid-size * 4;
+  padding-left: $pt-grid-size * 3;
 
   li:not(:last-child) {
     margin-bottom: $pt-grid-size / 2;
