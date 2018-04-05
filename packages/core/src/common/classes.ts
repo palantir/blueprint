@@ -39,15 +39,17 @@ export const INTENT_WARNING = intentClass(Intent.WARNING);
 export const INTENT_DANGER = intentClass(Intent.DANGER);
 
 // text utilities
+export const UI_TEXT = "pt-ui-text";
+export const RUNNING_TEXT = "pt-running-text";
+export const MONOSPACE_TEXT = "pt-monospace-text";
 export const TEXT_MUTED = "pt-text-muted";
 export const TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
-export const UI_TEXT = "pt-ui-text";
-export const UI_TEXT_LARGE = "pt-ui-text-large";
-export const RUNNING_TEXT = "pt-running-text";
-export const RUNNING_TEXT_SMALL = "pt-running-text-small";
-export const MONOSPACE_TEXT = "pt-monospace-text";
 
-// lists
+// textual elements
+export const BLOCKQUOTE = "pt-blockquote";
+export const CODE = "pt-code";
+export const CODE_BLOCK = "pt-code-block";
+export const HEADING = "pt-heading";
 export const LIST = "pt-list";
 export const LIST_UNSTYLED = "pt-list-unstyled";
 

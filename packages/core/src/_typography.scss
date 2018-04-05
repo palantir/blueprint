@@ -174,12 +174,13 @@ Styleguide pt-running-text
 
   pre {
     @extend %code-block;
+  }
 
-    > code {
-      // undo
+  ul,
+  ol {
+    @extend %list;
     }
   }
-}
 
 /*
 Links
