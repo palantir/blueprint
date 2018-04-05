@@ -8,7 +8,7 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { clamp } from "../../common/utils";
-import { CoreSlider, ICoreSliderProps } from "./coreSlider";
+import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
 import { Handle } from "./handle";
 
 export interface ISliderProps extends ICoreSliderProps {
@@ -49,20 +49,23 @@ export class Slider extends CoreSlider<ISliderProps> {
     private handle: Handle;
 
     protected renderFill() {
-        const { tickSize } = this.state;
+        const { tickSizeRatio } = this.state;
         const initialValue = clamp(this.props.initialValue, this.props.min, this.props.max);
 
-        let offset = Math.round((initialValue - this.props.min) * tickSize);
-        let size = Math.round((this.props.value - initialValue) * tickSize);
+        let offsetRatio = (initialValue - this.props.min) * tickSizeRatio;
+        let sizeRatio = (this.props.value - initialValue) * tickSizeRatio;
 
-        if (size < 0) {
-            offset += size;
-            size = Math.abs(size);
+        if (sizeRatio < 0) {
+            offsetRatio += sizeRatio;
+            sizeRatio = Math.abs(sizeRatio);
         }
 
+        const offsetPercentage = formatPercentage(offsetRatio);
+        const sizePercentage = formatPercentage(sizeRatio);
+
         const style: React.CSSProperties = this.props.vertical
-            ? { bottom: offset, height: size }
-            : { left: offset, width: size };
+            ? { bottom: offsetPercentage, height: sizePercentage }
+            : { left: offsetPercentage, width: sizePercentage };
 
         return <div className={`${Classes.SLIDER}-progress`} style={style} />;
     }
