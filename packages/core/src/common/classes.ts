@@ -42,6 +42,7 @@ export const INTENT_DANGER = intentClass(Intent.DANGER);
 export const UI_TEXT = "pt-ui-text";
 export const RUNNING_TEXT = "pt-running-text";
 export const MONOSPACE_TEXT = "pt-monospace-text";
+export const TEXT_LARGE = "pt-text-large";
 export const TEXT_MUTED = "pt-text-muted";
 export const TEXT_OVERFLOW_ELLIPSIS = "pt-text-overflow-ellipsis";
 

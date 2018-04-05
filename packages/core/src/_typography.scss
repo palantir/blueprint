@@ -7,16 +7,6 @@
 @import "common/mixins";
 @import "~@blueprintjs/icons/src/icons";
 
-hr {
-  margin: ($pt-grid-size * 2) 0;
-  border: none;
-  border-bottom: 1px solid $pt-divider-black;
-
-  .pt-dark & {
-    border-color: $pt-dark-divider-white;
-  }
-}
-
 // consistent cross-browser text selection
 ::selection {
   background: $pt-text-selection-color;
@@ -80,11 +70,12 @@ Markup:
   Blueprint components react overlay date picker. Breadcrumbs dialog progress non-ideal state.
 </div>
 
-.pt-ui-text - Default Blueprint font styles.
-.pt-ui-text-large - Larger font styles.
+.pt-ui-text - Default Blueprint font styles, applied to the `<body>` tag and available as a class for nested resets.
 .pt-monospace-text - Use a monospace font (ideal for code).
-.pt-text-muted - Changes text color to a gentler gray.
-.pt-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its
+.pt-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
+.pt-text-large - Use a larger font size.
+.pt-text-muted - Change text color to a gentler gray.
+.pt-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its
   container.
 
 Styleguide pt-ui-text
@@ -94,14 +85,11 @@ Styleguide pt-ui-text
   @include base-typography();
 }
 
-.pt-ui-text-large {
-  line-height: 1.25;
-  font-size: $pt-font-size-large;
-}
-
 .pt-monospace-text {
   @include monospace-typography();
 }
+
+// NOTE: .pt-text-large defined below after .pt-running-text
 
 .pt-text-muted {
   color: $pt-text-color-muted;
@@ -132,7 +120,7 @@ elements:</p>
   <p>And another paragraph.</p>
 </div>
 
-.pt-running-text - Apply larger font size and additional spacing.
+.pt-text-large - Use larger font size.
 
 Styleguide pt-running-text
 */
@@ -181,6 +169,11 @@ Styleguide pt-running-text
     @extend %list;
     }
   }
+
+// NOTE: this must be defined after .pt-running-text in order to override font-size.
+.pt-text-large {
+  font-size: $pt-font-size-large;
+}
 
 /*
 Links
