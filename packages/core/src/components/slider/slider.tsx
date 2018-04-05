@@ -52,16 +52,16 @@ export class Slider extends CoreSlider<ISliderProps> {
         const { tickSizeRatio } = this.state;
         const initialValue = clamp(this.props.initialValue, this.props.min, this.props.max);
 
-        let offset = (initialValue - this.props.min) * tickSizeRatio;
-        let size = (this.props.value - initialValue) * tickSizeRatio;
+        let offsetRatio = (initialValue - this.props.min) * tickSizeRatio;
+        let sizeRatio = (this.props.value - initialValue) * tickSizeRatio;
 
-        if (size < 0) {
-            offset += size;
-            size = Math.abs(size);
+        if (sizeRatio < 0) {
+            offsetRatio += sizeRatio;
+            sizeRatio = Math.abs(sizeRatio);
         }
 
-        const offsetPercentage = formatPercentage(offset);
-        const sizePercentage = formatPercentage(size);
+        const offsetPercentage = formatPercentage(offsetRatio);
+        const sizePercentage = formatPercentage(sizeRatio);
 
         const style: React.CSSProperties = this.props.vertical
             ? { bottom: offsetPercentage, height: sizePercentage }
