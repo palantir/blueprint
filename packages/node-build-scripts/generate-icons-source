@@ -106,15 +106,13 @@ function exportIconConsts(valueGetter) {
     return ICONS_METADATA.map(icon => `export const ${toEnumName(icon)} = "${valueGetter(icon)}";`);
 }
 
-/*
+/**
  * Loads SVG file for each icon, extracts path strings `d="path-string"`,
  * and returns a map of icon names to stringified arrays of path strings.
  * @param {16 | 20} size
  */
 async function buildPaths(size) {
-    const paths = {};
-    await Promise.all(
-        ICONS_METADATA.map(async icon => {
+    return await ICONS_METADATA.reduce(async (paths, icon) => {
             const filepath = path.resolve(__dirname, `../../resources/icons/${size}px/${icon.iconName}.svg`);
             const svg = fs.readFileSync(filepath, "utf-8");
             const pathStrings = await svgo
@@ -122,9 +120,8 @@ async function buildPaths(size) {
                 .then(({ data }) => data.match(/ d="[^"]+"/g) || [])
                 .then(paths => paths.map(s => s.slice(3)));
             paths[icon.iconName] = `[${pathStrings.join(",\n")}]`;
-        }),
-    );
   return paths;
+    }, {});
 }
 
 /**
@@ -133,7 +130,5 @@ async function buildPaths(size) {
  * @param {Object} paths - paths as returned by buildPaths
  */
 function buildPathsObject(paths) {
-    return Object.keys(paths).map(iconName => {
-        return `    "${iconName}": ${paths[iconName]},`
-    });
+    return Object.keys(paths).map(iconName => `    "${iconName}": ${paths[iconName]},`);
 }
