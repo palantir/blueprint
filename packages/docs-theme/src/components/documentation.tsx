@@ -93,10 +93,6 @@ export interface IDocumentationState {
 
 @HotkeysTarget
 export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
-    public static defaultProps: Partial<IDocumentationProps> = {
-        scrollParent: document.documentElement,
-    };
-
     public static childContextTypes = DocumentationContextTypes;
 
     /** Map of section route to containing page reference. */
@@ -323,7 +319,7 @@ function queryHTMLElement(parent: Element, selector: string) {
 /**
  * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
  */
-function getScrolledReference(offset: number, scrollContainer: HTMLElement) {
+function getScrolledReference(offset: number, scrollContainer: HTMLElement = document.documentElement) {
     const headings = Array.from(scrollContainer.querySelectorAll(".docs-title"));
     while (headings.length > 0) {
         // iterating in reverse order (popping from end / bottom of page)
@@ -340,7 +336,7 @@ function getScrolledReference(offset: number, scrollContainer: HTMLElement) {
 /**
  * Scroll the scroll container such that the reference heading appears at the top of the viewport.
  */
-function scrollToReference(reference: string, scrollContainer: HTMLElement) {
+function scrollToReference(reference: string, scrollContainer: HTMLElement = document.documentElement) {
     // without rAF, on initial load this would scroll to the bottom because the CSS had not been applied.
     // with rAF, CSS is applied before updating scroll positions so all elements are in their correct places.
     requestAnimationFrame(() => {
