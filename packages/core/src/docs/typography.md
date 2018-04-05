@@ -14,32 +14,34 @@ Instead, reference the classes and variables we provide in Blueprint (`.pt-ui-te
 
 @## UI text
 
-Blueprint's default text styles are applied via `.pt-ui-text` or `.pt-ui-text-large`. A handful
-of other utility classes can be combined freely to further customize a block of text.
-
-Blueprint does not include any fonts of its own; it will use the default sans-serif operating system
-font. We provide a class to use the default monospace font instead.
+Blueprint does not include any fonts of its own; it will use the default sans-serif operating system font.
+A handful of utility CSS classes can be combined freely to further customize a block of text.
 
 The base font size for Blueprint web applications is 14px. This should be the default type size
 for most short strings of text which are not headings or titles. If you wish to reset some
 element's font size and line height to the default base styles, use the `.pt-ui-text` class.
-For longer running text, see [running text styles](#core/typography.running-text).
+
+For longer blocks of running text, such as articles or documents, see [running text styles](#core/typography.running-text).
 
 @css pt-ui-text
 
-@## Headings
-
-@css headings
-
 @## Running text
 
-Longform text, such as rendered Markdown documents, benefit from increased spacing and support for unclassed textual elements. Apply `.pt-running-text` to the parent element to apply the following styles to all children:
+Longform text, such as rendered Markdown documents, benefit from increased spacing and support for unclassed textual elements.
+Apply `.pt-running-text` to the parent element to apply the following styles to all children:
 
 - `<h*>`, `<ul>`, `<ol>`, `<blockquote>`, `<code>`, `<pre>` do not require additional CSS classes for styles. This is great for rendered Markdown documents.
 - `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
 - `<ul>` and `<ol>` tags receive [`.pt-list`](#core/typography.lists) styles for legibility.
 
 @css pt-running-text
+
+@## Headings
+
+Apply the `.pt-heading` class to one of the six `<h*>` tags (or nest them inside a `.pt-running-text` container)
+to adjust font size and line height.
+
+@css headings
 
 @## Links
 
@@ -50,32 +52,32 @@ Putting an icon inside a link will cause it to inherit the link's text color.
 
 @## Preformatted text
 
-Use `<pre>` for code blocks, and `<code>` for inline code. Note that `<pre>` blocks will
-retain _all_ whitespace so you'll have to format the content accordingly.
+Use `.pt-code` for inline code elements (typically with the `<code>` tag).
+Use `.pt-code-block` for mulitline blocks of code (typically on a `<pre>` tag).
+Note that `<pre>` blocks will retain _all_ whitespace so you'll have to format the content accordingly.
+
+When nested inside a `.pt-running-text` container, use the `<pre>` or `<code>` tags directly without CSS classes.
 
 @css preformatted
 
 @## Block quotes
 
-Block quotes are treated as running text.
+Block quotes receive a left border and padding to distinguish them from body text.
+
+Use the `.pt-blockquote` class or nest a `<blockquote>` element inside a `.pt-running-text` container.
 
 @css blockquote
 
 @## Lists
 
-Blueprint provides a small amount of global styling and a few modifier classes for list elements.
+Use `.pt-list` to adjust list margins and padding to match Blueprint's grid. `<ul>` and `<ol>` elements inside a
+`.pt-running-text` container will automatically assume these styles to promote readability.
 
-`<ul>` and `<ol>` elements in blocks with the `.pt-running-text` modifier class will
-automatically assume the `.pt-list` styles to promote readability.
+Use `.pt-list-unstyled` to remove list item decorations and margins and padding.
+
+Note that these classes must be applied to each nested `<ul>` or `<ol>` element in a tree.
 
 @css lists
-
-@## Text utilities
-
-Blueprint provides a small handful of class-based text utilities which can applied to any element
-that contains text.
-
-@css utilities
 
 @## Internationalization
 

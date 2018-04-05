@@ -110,8 +110,8 @@ Markup:
 <div class="pt-running-text {{.modifier}}">
   <blockquote>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      eiusmod tempor incididunt ut labore et dolore magna aliqua.
     </p>
     <ul>
       <li>Item the <code>first</code>.</li>
@@ -119,7 +119,10 @@ Markup:
       <li>Item the <a href="#core/typography.running-text">third</a>.</li>
     </ul>
     <h3>New section</h3>
-    <p>And another paragraph.</p>
+    <p>
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+      nisi ut aliquip ex ea commodo consequat.
+    </p>
   </blockquote>
 </div>
 
@@ -299,10 +302,10 @@ Block quotes
 Markup:
 <blockquote class="pt-blockquote">
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+    ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
   </p>
 </blockquote>
 
@@ -339,7 +342,7 @@ Markup:
   </li>
 </ol>
 
-.pt-list - Comfortable margins and padding. Note that this modifier must be applied to each nested `ul` or `ol` element.
+.pt-list - Comfortable margins and padding.
 .pt-list-unstyled - Remove list item decorators and all margins and padding.
 
 Styleguide lists
