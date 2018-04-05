@@ -22,7 +22,7 @@ Styleguide pt-callout
 */
 
 .pt-callout {
-  @include running-typography-small();
+  @include running-typography();
   position: relative;
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
