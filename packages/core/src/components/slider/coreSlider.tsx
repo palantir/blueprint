@@ -186,7 +186,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
             i < max || approxEqual(i, max);
             i += labelStepSize, offsetRatio += stepSizeRatio
         ) {
-            const offsetPercent = `${offsetRatio * 100}%`;
+            const offsetPercent = `${(offsetRatio * 100).toFixed(2)}%`;
             const style = this.props.vertical ? { bottom: offsetPercent } : { left: offsetPercent };
             labels.push(
                 <div className={`${Classes.SLIDER}-label`} key={i} style={style}>

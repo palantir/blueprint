@@ -61,7 +61,7 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
         // margin).
         const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);
         const offsetRatio = (value - min) * tickSizeRatio;
-        const offsetCalc = `calc(${offsetRatio * 100}% - ${handleMidpoint}px)`;
+        const offsetCalc = `calc(${(offsetRatio * 100).toFixed(2)}% - ${handleMidpoint}px)`;
         const style: React.CSSProperties = vertical ? { bottom: offsetCalc } : { left: offsetCalc };
 
         return (

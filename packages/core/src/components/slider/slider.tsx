@@ -60,8 +60,8 @@ export class Slider extends CoreSlider<ISliderProps> {
             size = Math.abs(size);
         }
 
-        const offsetPercentage = `${offset * 100}%`;
-        const sizePercentage = `${size * 100}%`;
+        const offsetPercentage = `${(offset * 100).toFixed(2)}%`;
+        const sizePercentage = `${(size * 100).toFixed(2)}%`;
 
         const style: React.CSSProperties = this.props.vertical
             ? { bottom: offsetPercentage, height: sizePercentage }

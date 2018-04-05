@@ -66,8 +66,8 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         }
 
         // expand by 1px in each direction so it sits under the handle border
-        const offsetCalc = `calc(${offsetRatio * 100}% - 1px)`;
-        const sizeCalc = `calc(${sizeRatio * 100}% + 2px)`;
+        const offsetCalc = `calc(${(offsetRatio * 100).toFixed(2)}% - 1px)`;
+        const sizeCalc = `calc(${(sizeRatio * 100).toFixed(2)}% + 2px)`;
 
         const style: React.CSSProperties = this.props.vertical
             ? { bottom: offsetCalc, height: sizeCalc }
