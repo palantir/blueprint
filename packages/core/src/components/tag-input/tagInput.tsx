@@ -262,13 +262,14 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         if (!tag) {
             return null;
         }
-        const { tagProps } = this.props;
+        const { large, tagProps } = this.props;
         const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
         return (
             <Tag
                 active={index === this.state.activeIndex}
                 data-tag-index={index}
                 key={tag + "__" + index}
+                large={large}
                 onRemove={this.props.disabled ? null : this.handleRemoveTag}
                 {...props}
             >
