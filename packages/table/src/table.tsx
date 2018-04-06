@@ -423,19 +423,19 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     public static childContextTypes: React.ValidationMap<
         IColumnInteractionBarContextTypes
-    > = columnInteractionBarContextTypes;
+        > = columnInteractionBarContextTypes;
 
     // these default values for `resizeRowsByApproximateHeight` have been
     // fine-tuned to work well with default Table font styles.
     private static resizeRowsByApproximateHeightDefaults: Record<
         keyof IResizeRowsByApproximateHeightOptions,
         number
-    > = {
-        getApproximateCharWidth: 8,
-        getApproximateLineHeight: 18,
-        getCellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
-        getNumBufferLines: 1,
-    };
+        > = {
+            getApproximateCharWidth: 8,
+            getApproximateLineHeight: 18,
+            getCellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
+            getNumBufferLines: 1,
+        };
 
     private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
@@ -878,19 +878,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
         React.Children.forEach(children, (child: React.ReactElement<any>) => {
-            // save as a variable so that union type narrowing works
-            const childType = child.type;
-
-            // the second part of this conditional will never be true, but it
-            // informs the TS compiler that we won't be invoking
-            // childType.prototype on a "string" element.
-            if (typeof child === "string" || typeof childType === "string") {
+            if (!Utils.isElementOfType(child, Column)) {
                 throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
-            } else {
-                const isColumn = childType.prototype === Column.prototype || Column.prototype.isPrototypeOf(childType);
-                if (!isColumn) {
-                    throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
-                }
             }
         });
 
@@ -1230,13 +1219,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const nextScrollTop =
             tableBottom < viewportRect.top + viewportRect.height
                 ? // scroll the last row into view
-                  Math.max(0, tableBottom - viewportRect.height)
+                Math.max(0, tableBottom - viewportRect.height)
                 : viewportRect.top;
 
         const nextScrollLeft =
             tableRight < viewportRect.left + viewportRect.width
                 ? // scroll the last column into view
-                  Math.max(0, tableRight - viewportRect.width)
+                Math.max(0, tableRight - viewportRect.width)
                 : viewportRect.left;
 
         this.syncViewportPosition(nextScrollLeft, nextScrollTop);
