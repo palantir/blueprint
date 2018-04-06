@@ -168,8 +168,8 @@ $input-button-height-large: $pt-button-height !default;
   }
 
   &.pt-fill {
-    width: 100%;
     flex: 1 1 auto;
+    width: 100%;
   }
 
   &.pt-round {
