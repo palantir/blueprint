@@ -8,7 +8,7 @@ export * from "./iconName";
 export * from "./iconPartial";
 export * from "./intent";
 export * from "./props";
-export * from "./svgIcon";
+export * from "./svgIconPaths";
 
 import * as classes from "./classes";
 

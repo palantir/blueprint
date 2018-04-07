@@ -6,7 +6,7 @@
 
 import { IconName } from "./iconName";
 import { Intent } from "./intent";
-import { SVGIcon } from "./svgIcon";
+import { SVGIconPaths } from "./svgIconPaths";
 
 /**
  * A shared base interface for all Blueprint component props.
@@ -63,5 +63,5 @@ export interface IIconProps extends IIconBaseProps {
      *   This type is supported to simplify usage of this component in other Blueprint components.
      *   As a consumer, you should never use `<Icon icon={<element />}` directly; simply render `<element />` instead.
      */
-    icon: IconName | SVGIcon | JSX.Element | false | null | undefined;
+    icon: IconName | SVGIconPaths | JSX.Element | false | null | undefined;
 }

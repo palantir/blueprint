@@ -8,4 +8,4 @@
  * - `[1]`: 16px SVG path
  * - `[2]`: 20px SVG path
  */
-export type SVGIcon = [string, string[], string[]];
+export type SVGIconPaths = [string, string[], string[]];
