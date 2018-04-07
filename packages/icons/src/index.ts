@@ -11,3 +11,4 @@ export { IconContents, IconNames };
 export { IconName, SVGIcon } from "./common";
 
 export * from "./components";
+export * from "./generated/svgIcons";
