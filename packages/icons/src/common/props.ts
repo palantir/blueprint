@@ -67,5 +67,5 @@ export interface IIconProps extends IIconBaseProps {
      *   This type is supported to simplify usage of this component in other Blueprint components.
      *   As a consumer, you should never use `<Icon icon={<element />}` directly; simply render `<element />` instead.
      */
-    icon: IconName | SVGIconPaths | JSX.Element | false | null | undefined;
+    icon: IconName | JSX.Element | false | null | undefined;
 }

@@ -4,19 +4,18 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, IconName, IIconProps, SVGIcon } from "../../common";
+import { IconName, IconPartial, IIconProps } from "../../common";
 import * as Errors from "../../common/errors";
 
-let allIcons: { [key: string]: SVGIcon | undefined } | null = null;
+let allIcons: { [key: string]: IconPartial | undefined } | null = null;
 
 if (!(global as any).BLUEPRINT_ICONS_TREE_SHAKING) {
     // tslint:disable-next-line:no-var-requires
-    allIcons = require("@blueprintjs/icons");
+    allIcons = require("../../generated/svgIcons");
 }
-export { IconName };
+export { IIconProps };
 
 export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<SVGElement>> {
     public static displayName = "Blueprint2.Icon";
@@ -25,65 +24,26 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
     public static readonly SIZE_LARGE = 20;
 
     public render() {
-        const { className, color, icon, iconSize = Icon.SIZE_STANDARD, intent, ...svgProps } = this.props;
+        const { icon, ...props } = this.props;
 
-        if (icon == null || icon === false || React.isValidElement(icon)) {
-            return icon || null;
-        }
-
-        const svgIcon = typeof icon === "string" ? this.getSvgIconFromName(icon) : (icon as SVGIcon);
-        if (svgIcon == null) {
+        if (icon == null) {
             return null;
+        } else if (typeof icon !== "string") {
+            return icon;
         }
 
-        // choose which pixel grid is most appropriate for given icon size
-        const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
-        const pathStrings = pixelGridSize === Icon.SIZE_STANDARD ? svgIcon[1] : svgIcon[2];
-
-        const paths = this.renderSvgPaths(pathStrings);
-
-        const classes = classNames(Classes.ICON, Classes.intentClass(intent), className);
-        const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
-
-        // ".pt-icon" will apply a "fill" CSS style, so we need to inject an inline style to override it
-        let { style = {} } = this.props;
-        if (color != null) {
-            style = { ...style, fill: color };
-        }
-
-        const { title = svgIcon[0] } = this.props;
-
-        return (
-            <svg
-                {...svgProps}
-                className={classes}
-                style={style}
-                data-icon={icon}
-                width={iconSize}
-                height={iconSize}
-                viewBox={viewBox}
-            >
-                {title ? <title>{title}</title> : null}
-                {paths}
-            </svg>
-        );
+        const IconComponent = this.getIconComponentFromName(icon);
+        return IconComponent != null ? <IconComponent {...props} /> : null;
     }
 
-    private getSvgIconFromName(iconName: IconName) {
-        const camelCaseIconName = iconName
+    private getIconComponentFromName(iconName: IconName) {
+        const pascalCaseIconName = iconName
             .split("-")
-            .reduce((result, word, i) => result + (i ? word[0].toUpperCase() + word.slice(1) : word));
+            .reduce((result, word) => result + word[0].toUpperCase() + word.slice(1), "");
 
         if (allIcons == null) {
             throw new Error(Errors.ICON_STRING_NAMES_NOT_SUPPORTED);
         }
-        return allIcons[`${camelCaseIconName}Icon`];
-    }
-
-    private renderSvgPaths(pathStrings: string[] | null) {
-        if (pathStrings == null) {
-            return null;
-        }
-        return pathStrings.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
+        return allIcons[`${pascalCaseIconName}Icon`];
     }
 }
