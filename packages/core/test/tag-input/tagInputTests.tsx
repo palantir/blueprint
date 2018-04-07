@@ -48,7 +48,7 @@ describe("<TagInput>", () => {
             const hasClass = wrapper
                 .childAt(0) // TagInput's root <div> element
                 .childAt(0) // left-icon React wrapper
-                .childAt(0) // left-icon <div> element
+                .find("svg") // Icon wraps SVGIcon, which wraps svg
                 .hasClass(className);
             assert.isTrue(hasClass, errorMessage);
         };
