@@ -4,7 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { IconName } from "./iconName";
 import { Intent } from "./intent";
+import { SVGIcon } from "./svgIcon";
 
 /**
  * A shared base interface for all Blueprint component props.

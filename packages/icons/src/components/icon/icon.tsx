@@ -7,8 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IconName, SVGIcon } from "@blueprintjs/icons";
-import { Classes, IIntentProps, IProps } from "../../common";
+import { Classes, IconName, IIntentProps, IProps, SVGIcon } from "../../common";
 import * as Errors from "../../common/errors";
 
 let allIcons: { [key: string]: SVGIcon | undefined } | null = null;

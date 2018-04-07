@@ -4,8 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+export * from "./iconName";
 export * from "./intent";
 export * from "./props";
+export * from "./svgIcon";
 
 import * as Classes from "./classes";
 

@@ -8,7 +8,6 @@ import * as IconContents from "./generated/iconContents";
 import * as IconNames from "./generated/iconNames";
 
 export { IconContents, IconNames };
-export { IconName } from "./iconName";
-export { SVGIcon } from "./svgIcon";
+export { IconName, SVGIcon } from "./common";
 
 export * from "./components";
