@@ -5,6 +5,7 @@
  */
 
 export * from "./iconName";
+export * from "./iconPartial";
 export * from "./intent";
 export * from "./props";
 export * from "./svgIcon";
