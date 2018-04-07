@@ -9,7 +9,7 @@ export * from "./intent";
 export * from "./props";
 export * from "./svgIcon";
 
-import * as Classes from "./classes";
+import * as classes from "./classes";
 
-export const Classes;
+export const Classes = classes;
 // NOTE: Errors is not exported in public API
