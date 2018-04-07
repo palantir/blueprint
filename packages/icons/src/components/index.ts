@@ -5,3 +5,4 @@
  */
 
 export * from "./icon/icon";
+export * from "./icon/svgIcon";

@@ -56,16 +56,16 @@ writeLinesToFile("iconNames.ts", ...exportIconConsts(icon => icon.iconName));
     const iconSvgPaths20 = await buildPaths(20);
 
     writeLinesToFile(
-        "svgIcons.ts",
+        "svgIcons.tsx",
         "// tslint:disable:prettier",
-        'import { SVGIcon } from "../svgIcon"',
+        'import * as React from "react";',
+        'import { IconPartial } from "../common";',
+        'import { SVGIcon } from "../components";',
         "",
         ...ICONS_METADATA.map(({iconName}) => {
-            const alias = lodash.camelCase(iconName);
-            return `export const ${alias}Icon: SVGIcon = [`
-                + `"${iconName}"` + ","
-                + iconSvgPaths16[iconName] + ","
-                + iconSvgPaths20[iconName] + "]"
+            const alias = lodash.upperFirst(lodash.camelCase(iconName)) + "Icon";
+            const svgIconData = `["${iconName}", ${iconSvgPaths16[iconName]}, ${iconSvgPaths20[iconName]}]`;
+            return `export const ${alias}: IconPartial = props => <SVGIcon paths={${svgIconData}} {...props} />;`;
         }),
     );
 })();
