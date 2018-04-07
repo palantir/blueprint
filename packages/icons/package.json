@@ -25,8 +25,10 @@
     "lint:stylelint": "stylelint -s scss \"src/**/*.scss\"",
     "lint:tslint": "tslint \"{src,test}/**/*.{ts,tsx}\" -e \"src/generated/**/*\" -c ../tslint-config -t codeFrame",
     "lint-fix": "yarn lint:tslint --fix",
-    "test": "npm-run-all -s compile:pre compile:cjs test:pre -p test:iso",
+    "test": "npm-run-all -s compile:pre compile:cjs test:pre -p test:karma test:iso",
     "test:pre": "tsc -p ./test",
+    "test:karma": "karma start",
+    "test:karma:debug": "karma start --single-run=false --reporters=mocha --debug",
     "test:iso": "mocha test/isotest.js",
     "verify": "npm-run-all compile -p dist test lint"
   },

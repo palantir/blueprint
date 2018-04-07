@@ -11,7 +11,9 @@ const Icons = require("../lib/cjs");
 describe("Icons isomorphic rendering", () => {
     generateIsomorphicTests(
         Icons,
-        {},
+        {
+            SVGIcon: { paths: ["dummy", [], []] }
+        },
         {}
     );
 });
