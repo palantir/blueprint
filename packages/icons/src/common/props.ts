@@ -50,6 +50,10 @@ export interface IIconBaseProps extends IIntentProps, IProps {
     title?: string | false | null;
 }
 
+export interface ISVGIconProps extends IIconBaseProps {
+    paths: SVGIconPaths;
+}
+
 export interface IIconProps extends IIconBaseProps {
     /**
      * Name of a Blueprint UI icon, or an icon element, to render.
