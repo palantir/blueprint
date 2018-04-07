@@ -9,7 +9,9 @@ const path = require("path");
 module.exports = function (config) {
     const baseConfig = createKarmaConfig({
         dirname: __dirname,
-        coverageExcludes: [],
+        coverageExcludes: [
+            "src/generated/*",
+        ],
     });
     config.set(baseConfig);
     config.set({
