@@ -1,7 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "~@blueprintjs/core/src/common/mixins";
+@import "~@blueprintjs/core/src/common/variables";
 
 #{$icon-classes} {
   display: inline-block;
