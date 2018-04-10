@@ -301,10 +301,15 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
 
     private updateInputDimensions() {
         if (this.valueElement != null) {
-            const { maxLines, minLines, minWidth, multiline } = this.props;
+            const { maxLines, minLines, minWidth, multiline, value } = this.props;
+            const isControlled = value !== undefined && value !== null;
             const { parentElement, textContent } = this.valueElement;
             let { scrollHeight, scrollWidth } = this.valueElement;
             const lineHeight = getLineHeight(this.valueElement);
+            // Reset input height in controlled mode if value is empty
+            if (multiline && isControlled && value === "") {
+                scrollHeight = lineHeight;
+            }
             // add one line to computed <span> height if text ends in newline
             // because <span> collapses that trailing whitespace but <textarea> shows it
             if (multiline && this.state.isEditing && /\n$/.test(textContent)) {
@@ -328,7 +333,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
                 inputWidth: Math.max(scrollWidth, minWidth),
             });
             // synchronizes the ::before pseudo-element's height while editing for Chrome 53
-            if (multiline && this.state.isEditing) {
+            if (multiline && (this.state.isEditing || isControlled)) {
                 this.setTimeout(() => (parentElement.style.height = `${scrollHeight}px`));
             }
         }
