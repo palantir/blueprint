@@ -28,12 +28,6 @@
     box-shadow: none;
     padding: 0 $half-grid-size;
 
-    &.pt-align-left {
-      right: 0;
-      padding-right: $half-grid-size;
-      padding-left: 0;
-    }
-
     > .pt-popover-content {
       box-shadow: $pt-popover-box-shadow;
     }
