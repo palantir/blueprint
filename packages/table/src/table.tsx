@@ -1219,13 +1219,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const nextScrollTop =
             tableBottom < viewportRect.top + viewportRect.height
                 ? // scroll the last row into view
-                    Math.max(0, tableBottom - viewportRect.height)
+                  Math.max(0, tableBottom - viewportRect.height)
                 : viewportRect.top;
 
         const nextScrollLeft =
             tableRight < viewportRect.left + viewportRect.width
                 ? // scroll the last column into view
-                    Math.max(0, tableRight - viewportRect.width)
+                  Math.max(0, tableRight - viewportRect.width)
                 : viewportRect.left;
 
         this.syncViewportPosition(nextScrollLeft, nextScrollTop);
