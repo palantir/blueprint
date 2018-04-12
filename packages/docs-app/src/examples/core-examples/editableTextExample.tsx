@@ -61,8 +61,8 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
 
     protected renderOptions() {
         return [
+            [<IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />],
             [
-                <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />,
                 <div className={Classes.FORM_GROUP} key="maxlength">
                     <label className={Classes.LABEL} htmlFor={INPUT_ID}>
                         Max length

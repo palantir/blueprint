@@ -77,6 +77,9 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     key="Reverse month and year menus"
                     onChange={this.toggleReverseMonthAndYearMenus}
                 />,
+            ],
+            [<FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />],
+            [
                 <PrecisionSelect
                     label="Time Precision"
                     key="precision"
@@ -85,7 +88,6 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     onChange={this.toggleTimePrecision}
                 />,
             ],
-            [<FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />],
         ];
     }
 
