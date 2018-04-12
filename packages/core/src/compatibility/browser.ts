@@ -6,9 +6,9 @@
 
 const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
 const browser = {
-    isEdge: !!userAgent.match(/Edge/),
-    isInternetExplorer: !!userAgent.match(/Trident/) || !!userAgent.match(/rv:11/),
-    isWebkit: !!userAgent.match(/AppleWebKit/),
+    isEdge: /Edge/.test(userAgent),
+    isInternetExplorer: /Trident|rv:11/.test(userAgent),
+    isWebkit: /AppleWebKit/.test(userAgent),
 };
 
 export const Browser = {

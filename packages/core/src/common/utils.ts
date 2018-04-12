@@ -10,7 +10,7 @@ import { CLAMP_MIN_MAX } from "./errors";
 
 export * from "./utils/compareUtils";
 
-// only accessible within this file, so use `Utils.isNodeEnv` from the outside.
+// only accessible within this file, so use `Utils.isNodeEnv(env)` from the outside.
 declare var process: { env: any };
 
 /** Returns whether `process.env.NODE_ENV` exists and equals `env`. */
@@ -173,14 +173,9 @@ export function throttleReactEventCallback(
                 event2.preventDefault();
             }
         },
-        (event2: React.SyntheticEvent<any>) => {
-            // prevent React from reclaiming the event object before we
-            // reference it
-            event2.persist();
-        },
-        (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => {
-            callback(event2, ...otherArgs2);
-        },
+        // prevent React from reclaiming the event object before we reference it
+        (event2: React.SyntheticEvent<any>) => event2.persist(),
+        callback,
     );
     return throttledFunc;
 }
