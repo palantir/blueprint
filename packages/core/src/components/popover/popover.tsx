@@ -499,22 +499,19 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
     };
 
-    private handleTargetFocus = (e?: React.FormEvent<HTMLElement>) => {
+    private handleTargetFocus = (e?: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             this.handleMouseEnter(e);
         }
     };
 
-    private handleTargetBlur = (e?: React.FormEvent<HTMLElement>) => {
+    private handleTargetBlur = (e?: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             // if the next element to receive focus is within the popover, we'll want to leave the
-            // popover open. we must do this check *after* the next element focuses, so we use a
-            // timeout of 0 to flush the rest of the event queue before proceeding.
-            this.setTimeout(() => {
-                if (!this.isElementInPopover(document.activeElement)) {
+            // popover open.
+            if (!this.isElementInPopover(e.relatedTarget as HTMLElement)) {
                     this.handleMouseLeave(e);
                 }
-            });
         }
     };
 
