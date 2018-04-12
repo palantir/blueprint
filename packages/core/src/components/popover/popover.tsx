@@ -249,6 +249,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     // now that mouseleave is triggered when you cross the gap between the two.
     private isMouseInTargetOrPopover = false;
 
+    // a flag that indicates whether the target previously lost focus to another
+    // element on the same page.
+    private lostFocusOnSamePage = true;
+
     private refHandlers = {
         popover: (ref: HTMLDivElement) => {
             this.popoverElement = ref;
@@ -501,6 +505,11 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     private handleTargetFocus = (e?: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
+            if (e.relatedTarget == null && !this.lostFocusOnSamePage) {
+                // ignore this focus event -- the target was already focused but the page itself
+                // lost focus (e.g. due to switching tabs).
+                return;
+            }
             this.handleMouseEnter(e);
         }
     };
@@ -510,9 +519,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             // if the next element to receive focus is within the popover, we'll want to leave the
             // popover open.
             if (!this.isElementInPopover(e.relatedTarget as HTMLElement)) {
-                    this.handleMouseLeave(e);
-                }
+                this.handleMouseLeave(e);
+            }
         }
+        this.lostFocusOnSamePage = e.relatedTarget != null;
     };
 
     private handleMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
