@@ -6,8 +6,7 @@
 .docs-react-example,
 .docs-react-example-row,
 .docs-react-options, {
-  display: flex;
-  flex-direction: row;
+  @include pt-flex-container(row, $pt-grid-size * 5);
 }
 
 .docs-react-options {
@@ -20,25 +19,8 @@
   }
 }
 
-.docs-react-example-column,
-.docs-react-options-column {
-  margin-right: $options-margin * 2;
-
-  &:last-child {
-    margin: 0;
-  }
-}
-
-.docs-react-options-column {
-  flex: 0 0 $options-width;
-
-  .pt-control:not(.pt-inline) {
-    margin-right: 0;
-  }
-}
-
-.docs-react-example-column {
-  flex: 0 0 auto;
+.docs-react-options-column .pt-control:not(.pt-inline) {
+  margin-right: 0;
 }
 
 .docs-inline-example {
