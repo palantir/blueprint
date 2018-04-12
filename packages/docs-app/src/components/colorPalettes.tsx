@@ -97,8 +97,10 @@ function createPaletteBook(palettes: string[][], className?: string): React.SFC<
     );
 }
 
+export const BlackWhitePalette = createPaletteBook([["black"], ["white"]]);
+
 export const GrayscalePalette = createPaletteBook(
-    [["black"], ["white"], expand("dark-gray"), expand("gray"), expand("light-gray")],
+    [expand("dark-gray"), expand("gray"), expand("light-gray")],
     "docs-color-book-grayscale",
 );
 
