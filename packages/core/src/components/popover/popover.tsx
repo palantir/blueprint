@@ -503,7 +503,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
     };
 
-    private handleTargetFocus = (e?: React.FocusEvent<HTMLElement>) => {
+    private handleTargetFocus = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             if (e.relatedTarget == null && !this.lostFocusOnSamePage) {
                 // ignore this focus event -- the target was already focused but the page itself
@@ -514,7 +514,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
     };
 
-    private handleTargetBlur = (e?: React.FocusEvent<HTMLElement>) => {
+    private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             // if the next element to receive focus is within the popover, we'll want to leave the
             // popover open.
