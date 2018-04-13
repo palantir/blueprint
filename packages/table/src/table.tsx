@@ -878,7 +878,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
         React.Children.forEach(children, (child: React.ReactElement<any>) => {
-            if (!Utils.isElementOfType(child, Column)) {
+            if (!CoreUtils.isElementOfType(child, Column)) {
                 throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
             }
         });

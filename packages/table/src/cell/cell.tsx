@@ -10,7 +10,7 @@ import * as Classes from "../common/classes";
 import { Classes as CoreClasses, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
-import { Utils } from "../common/utils";
+import { Utils } from "@blueprintjs/core";
 import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";
 
