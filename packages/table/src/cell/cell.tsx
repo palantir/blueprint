@@ -10,7 +10,6 @@ import * as Classes from "../common/classes";
 import { Classes as CoreClasses, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
-import { Utils } from "@blueprintjs/core";
 import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";
 
@@ -146,7 +145,7 @@ export class Cell extends React.Component<ICellProps, {}> {
         const modifiedChildren = React.Children.map(this.props.children, child => {
             if (
                 (style != null && React.isValidElement(child)) ||
-                (Utils.isElementOfType(child, TruncatedFormat) || Utils.isElementOfType(child, JSONFormat))
+                (CoreUtils.isElementOfType(child, TruncatedFormat) || CoreUtils.isElementOfType(child, JSONFormat))
             ) {
                 return React.cloneElement(child as React.ReactElement<any>, {
                     parentCellHeight: parseInt(style.height, 10),
