@@ -10,9 +10,9 @@ import * as Classes from "../common/classes";
 import { Classes as CoreClasses, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
+import { Utils } from "../common/utils";
 import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";
-import { Utils } from "../common/utils";
 
 export interface ICellProps extends IIntentProps, IProps {
     key?: string;
@@ -144,9 +144,10 @@ export class Cell extends React.Component<ICellProps, {}> {
         // add width and height to the children, for use in shouldComponentUpdate in truncatedFormat
         // note: these aren't actually used by truncated format, just in shouldComponentUpdate
         const modifiedChildren = React.Children.map(this.props.children, child => {
-            if (style != null && React.isValidElement(child) ||
-                (Utils.isElementOfType(child, TruncatedFormat) ||
-                    Utils.isElementOfType(child, JSONFormat))) {
+            if (
+                (style != null && React.isValidElement(child)) ||
+                (Utils.isElementOfType(child, TruncatedFormat) || Utils.isElementOfType(child, JSONFormat))
+            ) {
                 return React.cloneElement(child as React.ReactElement<any>, {
                     parentCellHeight: parseInt(style.height, 10),
                     parentCellWidth: parseInt(style.width, 10),
