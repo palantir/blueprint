@@ -4,10 +4,11 @@
   "description": "TSLint configuration for @blueprintjs packages",
   "scripts": {
     "compile": "tsc -p ./src",
-    "test": "exit 0"
+    "test": "./scripts/test-rules"
   },
   "dependencies": {
     "prettier": "^1.7.4",
+    "tslib": "^1.9.0",
     "tslint": "^5.7.0",
     "tslint-config-prettier": "^1.6.0",
     "tslint-plugin-prettier": "^1.3.0",
