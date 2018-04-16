@@ -25,11 +25,6 @@ module.exports = {
                 // ["assert", "equal", "use assert.strictEqual instead"]
             ],
         },
-        "file-header": {
-            options: [
-                "Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved.",
-            ],
-        },
         "jsx-key": false,
         "linebreak-style": {
             options: ["LF"],
