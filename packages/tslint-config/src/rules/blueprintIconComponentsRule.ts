@@ -8,7 +8,7 @@ import * as Lint from "tslint";
 import * as ts from "typescript";
 
 const OPTION_COMPONENT = "component";
-const OPTION_ENUM = "enum";
+const OPTION_LITERAL = "literal";
 
 export class Rule extends Lint.Rules.AbstractRule {
     // tslint:disable:object-literal-sort-keys
@@ -17,15 +17,15 @@ export class Rule extends Lint.Rules.AbstractRule {
         description: "Enforce usage of JSX Icon components over IconName string literals (or vice-versa)",
         options: {
             type: "array",
-            items: [{ enum: [OPTION_COMPONENT, OPTION_ENUM], type: "string" }],
+            items: [{ enum: [OPTION_COMPONENT, OPTION_LITERAL], type: "string" }],
             minLength: 1,
             maxLength: 1,
         },
         optionsDescription: Lint.Utils.dedent`
             One of the following two options must be provided:
             * \`"${OPTION_COMPONENT}"\` requires JSX Icon components for \`icon\` props.
-            * \`"${OPTION_ENUM}"\` requires \`IconName\` string literals for \`icon\` props.`,
-        optionExamples: [`[true, "${OPTION_COMPONENT}"]`, `[true, "${OPTION_ENUM}"]`],
+            * \`"${OPTION_LITERAL}"\` requires \`IconName\` string literals for \`icon\` props.`,
+        optionExamples: [`[true, "${OPTION_COMPONENT}"]`, `[true, "${OPTION_LITERAL}"]`],
         type: "functionality",
         typescriptOnly: false,
     };
@@ -48,7 +48,7 @@ function walk(ctx: Lint.WalkContext<string>): void {
             // TODO add fix argument
             if (ts.isStringLiteral(initializer) && option === OPTION_COMPONENT) {
                 ctx.addFailureAt(node.getStart(ctx.sourceFile), node.getWidth(ctx.sourceFile), Rule.COMPONENT_MESSAGE);
-            } else if (ts.isJsxExpression(initializer) && option === OPTION_ENUM) {
+            } else if (ts.isJsxExpression(initializer) && option === OPTION_LITERAL) {
                 ctx.addFailureAt(node.getStart(ctx.sourceFile), node.getWidth(ctx.sourceFile), Rule.ENUM_MESSAGE);
             }
         }
