@@ -214,11 +214,11 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         // hooray! so you don't have to!
         FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
-        this.maybeScrollToActivePageMenuItem();
         Utils.safeInvoke(this.props.onComponentUpdate, this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", this.handleHashChange);
         document.addEventListener("scroll", this.handleScroll);
+        requestAnimationFrame(() => this.maybeScrollToActivePageMenuItem());
     }
 
     public componentWillUnmount() {
@@ -280,11 +280,11 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navMenuElement = this.navElement.querySelector(`a[href="#${activeSectionId}"]`);
-        const innerBounds = navMenuElement.getBoundingClientRect();
-        const outerBounds = this.navElement.getBoundingClientRect();
-        if (innerBounds.top < outerBounds.top || innerBounds.bottom > outerBounds.bottom) {
-            navMenuElement.scrollIntoView();
+        const navItemElement = this.navElement.querySelector(`a[href="#${activeSectionId}"]`) as HTMLElement;
+        const scrollOffset = navItemElement.offsetTop - this.navElement.scrollTop;
+        if (scrollOffset < 0 || scrollOffset > this.navElement.offsetHeight) {
+            // reveal two items above this item in list
+            this.navElement.scrollTop = navItemElement.offsetTop - navItemElement.offsetHeight * 2;
         }
     }
 
