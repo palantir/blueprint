@@ -7,25 +7,36 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 
-const PATTERN = /^pt-/;
+const PATTERN = /\bpt-[\w-]+\b/;
 
 export class Rule extends Lint.Rules.AbstractRule {
-    static FAILURE_STRING = "use Blueprint Classes constants instead of literal strings";
+    // tslint:disable:object-literal-sort-keys
+    public static metadata: Lint.IRuleMetadata = {
+        ruleName: "blueprint-classes-constants",
+        description: "Enforce usage of Classes constants over namespaced string literals.",
+        options: null,
+        optionsDescription: "Not configurable",
+        optionExamples: ["true"],
+        type: "style",
+        typescriptOnly: false,
+    };
+    // tslint:enable:object-literal-sort-keys
 
-    apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-        return this.applyWithWalker(new ClassesConstantsWalker(sourceFile, this.getOptions()));
+    public static FAILURE_STRING = "use Blueprint `Classes` constant instead of string literal";
+
+    public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+        return this.applyWithFunction(sourceFile, walk);
     }
 }
 
-// The walker takes care of all the work.
-class ClassesConstantsWalker extends Lint.RuleWalker {
-    visitStringLiteral(node: ts.StringLiteral) {
-        if (PATTERN.test(node.getFullText())) {
-            // create a failure at the current position
-            this.addFailure(this.createFailure(node.getStart(), node.getWidth(), Rule.FAILURE_STRING));
+function walk(ctx: Lint.WalkContext<void>): void {
+    return ts.forEachChild(ctx.sourceFile, function cb(node: ts.Node): void {
+        if (ts.isStringLiteral(node)) {
+            const match = PATTERN.exec(node.getFullText());
+            if (match != null) {
+                ctx.addFailureAt(node.getFullStart() + match.index, match[0].length, Rule.FAILURE_STRING);
+            }
         }
-
-        // call the base version of this visitor to actually parse this node
-        super.visitStringLiteral(node);
-    }
+        return ts.forEachChild(node, cb);
+    });
 }

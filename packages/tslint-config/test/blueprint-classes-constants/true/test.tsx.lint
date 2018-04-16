@@ -1,0 +1,7 @@
+<Button className="my-class pt-large" />
+                            ~~~~~~~~    [msg]
+
+classNames(Classes.BUTTON, "pt-intent-primary")
+                            ~~~~~~~~~~~~~~~~~     [msg]
+
+[msg]: use Blueprint `Classes` constant instead of string literal
