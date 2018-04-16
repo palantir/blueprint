@@ -4,6 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// tslint:disable:blueprint-classes-constants
+
 export const DATEINPUT = "pt-dateinput";
 export const DATEINPUT_POPOVER = "pt-dateinput-popover";
 
@@ -40,3 +42,5 @@ export const TIMEPICKER_MILLISECOND = "pt-timepicker-millisecond";
 export const TIMEPICKER_MINUTE = "pt-timepicker-minute";
 export const TIMEPICKER_SECOND = "pt-timepicker-second";
 export const TIMEPICKER_AMPM_SELECT = "pt-timepicker-ampm-select";
+
+// tslint:enable:blueprint-classes-constants

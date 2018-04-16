@@ -33,6 +33,6 @@ export class Nav extends React.PureComponent<INavProps> {
     }
 
     private handleToggleDarkTheme() {
-        document.body.classList.toggle("pt-dark");
+        document.body.classList.toggle(Classes.DARK);
     }
 }

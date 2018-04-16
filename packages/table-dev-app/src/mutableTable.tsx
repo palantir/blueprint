@@ -601,7 +601,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         );
 
         return (
-            <div className="sidebar pt-elevation-0">
+            <div className={classNames("sidebar", Classes.ELEVATION_0)}>
                 <h4>Table</h4>
                 <h6>Display</h6>
                 {this.renderSwitch("Inline", "showInline")}

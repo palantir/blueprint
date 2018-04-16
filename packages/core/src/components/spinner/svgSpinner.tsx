@@ -12,6 +12,8 @@ import { Spinner } from "./spinner";
 
 export class SVGSpinner extends Spinner {
     protected renderContainer(classes: string, content: JSX.Element) {
+        // TODO: planning to remove this nested `g` element in 3.0
+        // tslint:disable:blueprint-classes-constants
         return (
             <g className={classNames(Classes.SVG_SPINNER, classes)}>
                 <g className="pt-svg-spinner-transform-group">{content}</g>
