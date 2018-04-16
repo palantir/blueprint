@@ -1,7 +1,7 @@
 {
   "extends": [
     "./packages/tslint-config",
-    "./packages/tslint-rules"
+    "./packages/tslint-config/blueprint-rules"
   ],
   "rules": {
     "file-header": {

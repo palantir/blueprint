@@ -3,6 +3,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+/**
+ * Enable Blueprint-specific TSLint rules defined in this package.
+ */
 module.exports = {
     rulesDirectory: "./lib/rules",
 
