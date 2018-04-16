@@ -27,6 +27,7 @@ Markup:
 .pt-round - Rounded caps. Button will also be rounded.
 .pt-large - Large group. Children will adjust size accordingly.
 .pt-intent-primary - Primary intent. (All 4 intents are supported.)
+.pt-fill - Take up full width of parent element.
 
 Styleguide pt-input-group
 */
@@ -164,6 +165,11 @@ $input-button-height-large: $pt-button-height !default;
     .pt-input-action > .pt-spinner {
       margin: ($pt-input-height-large - $spinner-width * $spinner-width-factor-small) / 2;
     }
+  }
+
+  &.pt-fill {
+    flex: 1 1 auto;
+    width: 100%;
   }
 
   &.pt-round {
