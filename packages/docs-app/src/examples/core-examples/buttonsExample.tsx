@@ -54,9 +54,9 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         return (
             <div className="docs-react-example-row">
                 <div className="docs-react-example-column">
-                    <code>Button</code>
-                    <br />
-                    <br />
+                    <p>
+                        <code>Button</code>
+                    </p>
                     <Button
                         className={this.state.wiggling ? "docs-wiggle" : ""}
                         icon="refresh"
@@ -67,9 +67,9 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                     </Button>
                 </div>
                 <div className="docs-react-example-column">
-                    <code>AnchorButton</code>
-                    <br />
-                    <br />
+                    <p>
+                        <code>AnchorButton</code>
+                    </p>
                     <AnchorButton
                         href="./#core/components/button.javascript-api"
                         icon="duplicate"

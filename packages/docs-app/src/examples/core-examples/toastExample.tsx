@@ -119,6 +119,8 @@ export class ToastExample extends BaseExample<IToasterProps> {
                         </select>
                     </div>
                 </label>,
+            ],
+            [
                 <Switch
                     checked={this.state.autoFocus}
                     label="Auto focus"
