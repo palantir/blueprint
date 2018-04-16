@@ -3,7 +3,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-
 module.exports = externalize({
     "@blueprintjs/core": ["Blueprint", "Core"],
     "@blueprintjs/icons": ["Blueprint", "Icons"],
