@@ -1,0 +1,2 @@
+<Button icon="tick" />
+<Button icon={<TickIcon />} />

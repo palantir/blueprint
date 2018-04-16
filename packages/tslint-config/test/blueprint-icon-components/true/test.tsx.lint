@@ -1,0 +1,4 @@
+<Button icon="tick" />
+        ~~~~~~~~~~~    [use <NameIcon /> component for icon prop]
+
+<Button icon={<TickIcon />} />
