@@ -13,8 +13,6 @@ module.exports = {
 
     defaultSeverity: "error",
 
-    rulesDirectory: "./rules",
-
     rules: {
         "ban": {
             options: [
@@ -27,8 +25,6 @@ module.exports = {
                 // ["assert", "equal", "use assert.strictEqual instead"]
             ],
         },
-        "blueprint-classes-constants": true,
-        "blueprint-icon-components": false,
         "file-header": {
             options: [
                 "Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved.",

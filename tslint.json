@@ -1,5 +1,8 @@
 {
-  "extends": "./packages/tslint-config",
+  "extends": [
+    "./packages/tslint-config",
+    "./packages/tslint-rules"
+  ],
   "rules": {
     "file-header": {
       "options": [

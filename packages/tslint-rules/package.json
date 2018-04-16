@@ -1,0 +1,19 @@
+{
+  "name": "@blueprintjs/tslint-rules",
+  "version": "1.0.0",
+  "description": "Additional TSLint rules for use in @blueprintjs-based applications",
+  "scripts": {
+    "compile": "tsc -p ./src",
+    "test": "tslint --rules-dir ./lib/rules --test test/rules/**/tslint.json"
+  },
+  "dependencies": {
+    "tslib": "^1.9.0",
+    "tslint": "^5.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "author": "Palantir Technologies",
+  "license": "Apache-2.0"
+}
