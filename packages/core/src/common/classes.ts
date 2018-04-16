@@ -8,6 +8,8 @@ import { Elevation } from "../components/card/card";
 import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
+// tslint:disable:blueprint-classes-constants
+
 // modifiers
 export const ACTIVE = "pt-active";
 export const ALIGN_LEFT = "pt-align-left";
