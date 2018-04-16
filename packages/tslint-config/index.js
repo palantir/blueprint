@@ -28,7 +28,7 @@ module.exports = {
             ],
         },
         "blueprint-classes-constants": true,
-        "blueprint-icon-components": true,
+        "blueprint-icon-components": false,
         "file-header": {
             options: [
                 "Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved.",
