@@ -42,7 +42,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 function walk(ctx: Lint.WalkContext<string>): void {
     return ts.forEachChild(ctx.sourceFile, function cb(node: ts.Node): void {
-        if (ts.isJsxAttribute(node)) {
+        if (ts.isJsxAttribute(node) && node.name.text === "icon") {
             const { initializer } = node;
             const option = ctx.options;
             // TODO add fix argument

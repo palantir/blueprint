@@ -1,4 +1,5 @@
-<Button icon="tick" />
-
 <Button icon={<TickIcon />} />
         ~~~~~~~~~~~~~~~~~~~    [use IconName string literal for icon prop]
+
+<Button icon="tick" />
+<InputGroup rightElement={<Button />} />

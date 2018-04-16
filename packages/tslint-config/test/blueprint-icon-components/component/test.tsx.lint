@@ -2,3 +2,4 @@
         ~~~~~~~~~~~    [use <NameIcon /> component for icon prop]
 
 <Button icon={<TickIcon />} />
+<InputGroup rightElement={<Button />} />
