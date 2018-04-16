@@ -4,7 +4,7 @@
   "description": "TSLint configuration for @blueprintjs packages",
   "scripts": {
     "compile": "tsc -p ./src",
-    "test": "./scripts/test-rules"
+    "test": "tslint --rules-dir ./rules --test test/**/tslint.json"
   },
   "dependencies": {
     "prettier": "^1.7.4",
