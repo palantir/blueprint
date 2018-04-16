@@ -12,8 +12,8 @@
 export function addScrollbarStyle() {
     const width = getScrollbarWidth();
     const stylesheet = createStyleSheet();
-    stylesheet.insertRule(`.pt-overlay-open .docs-root { padding-right: ${width}px }`);
-    stylesheet.insertRule(`.pt-overlay-open .docs-banner { padding-right: ${20 + width}px; }`);
+    stylesheet.insertRule(`.pt-overlay-open .docs-banner { padding-right: ${20 + width}px; }`, 0);
+    stylesheet.insertRule(`.pt-overlay-open .docs-root { padding-right: ${width}px }`, 0);
 }
 
 function createStyleSheet() {
