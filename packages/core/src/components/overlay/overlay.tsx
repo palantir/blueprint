@@ -368,7 +368,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
 
         const isClickInThisOverlayOrDescendant = openStack
             .slice(stackIndex)
-            .some(({ containerElement }) => containerElement && containerElement.contains(eventTarget));
+            .some(({ containerElement: elem }) => elem && elem.contains(eventTarget) && !elem.isSameNode(eventTarget));
 
         if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
             // casting to any because this is a native event
