@@ -46,11 +46,18 @@ describe("ContextMenu", () => {
         assertContextMenuWasRendered();
     });
 
-    it("invokes onClose callback when menu closed", () => {
-        const onClose = spy();
-        ContextMenu.show(MENU, { left: 0, top: 0 }, onClose);
+    it("invokes onClose callback when menu closed", done => {
+        ContextMenu.show(MENU, { left: 0, top: 0 }, done);
         ContextMenu.hide();
-        assert.isTrue(onClose.calledOnce, "onClose not called");
+    });
+
+    it("removes element from the DOM after closing", done => {
+        ContextMenu.show(MENU, { left: 0, top: 0 });
+        ContextMenu.hide();
+        setTimeout(() => {
+            assert.isTrue(document.querySelector(`.${Classes.CONTEXT_MENU}`) == null);
+            done();
+        }, 110);
     });
 
     it("does not invoke previous onClose callback", () => {
