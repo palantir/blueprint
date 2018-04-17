@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { IconName, IconPartial, IIconProps } from "../../common";
+import { IconName, IconPartial, IIconBaseProps } from "../../common";
 import * as Errors from "../../common/errors";
 import { SVGIcon } from "./svgIcon";
 
@@ -16,7 +16,22 @@ if (!(global as any).BLUEPRINT_ICONS_TREE_SHAKING) {
     // tslint:disable-next-line:no-var-requires
     allIcons = require("../../generated/svgIcons");
 }
-export { IIconProps };
+
+export interface IIconProps extends IIconBaseProps {
+    /**
+     * Name of a Blueprint UI icon, or an icon element, to render.
+     * This prop is required because it determines the content of the component, but it can
+     * be explicitly set to falsy values to render nothing.
+     *
+     * - If `null` or `undefined` or `false`, this component will render nothing.
+     * - If given an `IconName` (a string literal union of all icon names) or an `SVGIcon`,
+     *   that icon will be rendered as an `<svg>` with `<path>` tags.
+     * - If given a `JSX.Element`, that element will be rendered and _all other props on this component are ignored._
+     *   This type is supported to simplify usage of this component in other Blueprint components.
+     *   As a consumer, you should never use `<Icon icon={<element />}` directly; simply render `<element />` instead.
+     */
+    icon: IconName | JSX.Element | false | null | undefined;
+}
 
 export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<SVGElement>> {
     public static displayName = "Blueprint2.Icon";

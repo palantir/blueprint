@@ -7,7 +7,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, ISVGIconProps } from "../../common";
+import { Classes, IIconBaseProps, SVGIconPaths } from "../../common";
+
+export interface ISVGIconProps extends IIconBaseProps {
+    paths: SVGIconPaths;
+}
 
 export class SVGIcon extends React.PureComponent<ISVGIconProps & React.SVGAttributes<SVGElement>> {
     public static displayName = "Blueprint2.SVGIcon";

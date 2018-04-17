@@ -4,9 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IconName } from "./iconName";
 import { Intent } from "./intent";
-import { SVGIconPaths } from "./svgIconPaths";
 
 /**
  * A shared base interface for all Blueprint component props.
@@ -48,24 +46,4 @@ export interface IIconBaseProps extends IIntentProps, IProps {
      * By default, this is set to the icon's name for accessibility.
      */
     title?: string | false | null;
-}
-
-export interface ISVGIconProps extends IIconBaseProps {
-    paths: SVGIconPaths;
-}
-
-export interface IIconProps extends IIconBaseProps {
-    /**
-     * Name of a Blueprint UI icon, or an icon element, to render.
-     * This prop is required because it determines the content of the component, but it can
-     * be explicitly set to falsy values to render nothing.
-     *
-     * - If `null` or `undefined` or `false`, this component will render nothing.
-     * - If given an `IconName` (a string literal union of all icon names) or an `SVGIcon`,
-     *   that icon will be rendered as an `<svg>` with `<path>` tags.
-     * - If given a `JSX.Element`, that element will be rendered and _all other props on this component are ignored._
-     *   This type is supported to simplify usage of this component in other Blueprint components.
-     *   As a consumer, you should never use `<Icon icon={<element />}` directly; simply render `<element />` instead.
-     */
-    icon: IconName | JSX.Element | false | null | undefined;
 }
