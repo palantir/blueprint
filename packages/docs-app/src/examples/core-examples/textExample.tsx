@@ -4,10 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Text } from "@blueprintjs/core";
+import { Text, TextArea } from "@blueprintjs/core";
 import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
 
 export interface ITextExampleState {
@@ -31,8 +30,8 @@ export class TextExample extends BaseExample<ITextExampleState> {
                     {this.state.textContent}
                     &nbsp;
                 </Text>
-                <textarea
-                    className={classNames(Classes.INPUT, Classes.FILL)}
+                <TextArea
+                    fill={true}
                     onChange={this.onInputChange}
                     style={{ marginTop: 20 }}
                     value={this.state.textContent}

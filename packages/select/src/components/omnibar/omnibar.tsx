@@ -8,7 +8,6 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
-    Classes as CoreClasses,
     HTMLInputProps,
     IBackdropProps,
     IInputGroupProps,
@@ -123,7 +122,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                 <div className={classNames(listProps.className, Classes.OMNIBAR)} {...handlers}>
                     <InputGroup
                         autoFocus={true}
-                        className={CoreClasses.LARGE}
+                        large={true}
                         leftIcon="search"
                         placeholder="Search..."
                         value={listProps.query}

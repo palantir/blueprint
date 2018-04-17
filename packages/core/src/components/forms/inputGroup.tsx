@@ -11,6 +11,8 @@ import * as Classes from "../../common/classes";
 import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 
+const DEFAULT_RIGHT_ELEMENT_WIDTH = 10;
+
 // NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
 // Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
 export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps {
@@ -53,14 +55,14 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
 }
 
 export interface IInputGroupState {
-    rightElementWidth?: number;
+    rightElementWidth: number;
 }
 
 export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInputProps, IInputGroupState> {
     public static displayName = "Blueprint2.InputGroup";
 
     public state: IInputGroupState = {
-        rightElementWidth: 30,
+        rightElementWidth: DEFAULT_RIGHT_ELEMENT_WIDTH,
     };
 
     private rightElement: HTMLElement;
@@ -125,7 +127,7 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
                 this.setState({ rightElementWidth: clientWidth });
             }
         } else {
-            this.setState({ rightElementWidth: 0 });
+            this.setState({ rightElementWidth: DEFAULT_RIGHT_ELEMENT_WIDTH });
         }
     }
 }

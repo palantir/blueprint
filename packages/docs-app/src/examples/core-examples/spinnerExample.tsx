@@ -26,7 +26,7 @@ export class SpinnerExample extends ProgressExample {
 
     protected renderOptions() {
         const options = super.renderOptions();
-        options[0].push(
+        options.push([
             <label className={Classes.LABEL} key="size">
                 Size (via <code>className</code>)
                 <div className={Classes.SELECT}>
@@ -39,7 +39,7 @@ export class SpinnerExample extends ProgressExample {
                     </select>
                 </div>
             </label>,
-        );
+        ]);
         return options;
     }
 }

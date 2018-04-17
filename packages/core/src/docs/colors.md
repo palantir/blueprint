@@ -10,6 +10,7 @@ the main UI frame: containers, headers, sections, boxes, etc.
 If you need to call attention to a particular element (buttons, icons, tooltips, etc.),
 use one of the [core colors](#colors.core-colors).
 
+@reactDocs BlackWhitePalette
 @reactDocs GrayscalePalette
 
 @## Core colors

@@ -34,7 +34,7 @@ export interface IPrecisionSelectProps {
 
 export const PrecisionSelect: React.SFC<IPrecisionSelectProps> = props => (
     <label className={Classes.LABEL}>
-        {props.label == null ? props.label : "Precision"}
+        {props.label || "Precision"}
         <div className={Classes.SELECT}>
             <select value={props.value} onChange={props.onChange}>
                 {props.allowEmpty ? <option value="-1">None</option> : undefined}

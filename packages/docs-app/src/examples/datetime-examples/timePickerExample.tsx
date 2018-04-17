@@ -53,7 +53,6 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
     protected renderOptions() {
         return [
             [
-                <PrecisionSelect value={this.state.precision} onChange={this.handlePrecisionChange} key="precision" />,
                 <Switch
                     checked={this.state.selectAllOnFocus}
                     label="Select all on focus"
@@ -69,6 +68,7 @@ export class TimePickerExample extends BaseExample<ITimePickerExampleState> {
                 <Switch checked={this.state.disabled} label="Disabled" key="disabled" onChange={this.toggleDisabled} />,
                 <Switch checked={this.state.useAmPm} label="Use AM/PM" key="ampm" onChange={this.toggleUseAmPm} />,
             ],
+            [<PrecisionSelect value={this.state.precision} onChange={this.handlePrecisionChange} key="precision" />],
             [
                 <label key={0} className={Classes.LABEL}>
                     Minimum time

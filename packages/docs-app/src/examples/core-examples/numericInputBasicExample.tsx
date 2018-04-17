@@ -3,7 +3,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent, NumericInput, Position, Switch } from "@blueprintjs/core";
@@ -129,7 +128,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
                 this.renderSwitch("Disabled", showDisabled, this.toggleDisabled),
                 this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly),
                 this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
-                this.renderSwitch("Full width", showFullWidth, this.toggleFullWidth),
+                this.renderSwitch("Fill container", showFullWidth, this.toggleFullWidth),
                 this.renderSwitch("Large", showLargeSize, this.toggleLargeSize),
             ],
             [
@@ -153,7 +152,7 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
             <NumericInput
                 allowNumericCharactersOnly={this.state.numericCharsOnly}
                 buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
-                className={classNames({ [Classes.FILL]: this.state.showFullWidth })}
+                fill={this.state.showFullWidth}
                 intent={this.state.intent}
                 large={this.state.showLargeSize}
                 min={MIN_VALUES[this.state.minValueIndex].value}

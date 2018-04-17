@@ -37,9 +37,7 @@ export class Callout extends React.PureComponent<ICalloutProps, {}> {
         const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className);
 
         const maybeIcon =
-            iconName === undefined ? (
-                undefined
-            ) : (
+            iconName === undefined ? null : (
                 <span className={Classes.CALLOUT_ICON}>
                     <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />
                 </span>

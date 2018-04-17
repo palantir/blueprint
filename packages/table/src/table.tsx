@@ -710,6 +710,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
+        if (
+            !CoreUtils.arraysEqual(newColumnWidths, this.state.columnWidths) ||
+            !CoreUtils.arraysEqual(newRowHeights, this.state.rowHeights)
+        ) {
+            // grid invalidation is required after changing this flag,
+            // which happens at the end of this method.
+            this.didUpdateColumnOrRowSizes = true;
+        }
+
         let newSelectedRegions = selectedRegions;
         if (selectedRegions == null) {
             // if we're in uncontrolled mode, filter out all selected regions that don't
@@ -878,19 +887,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
         React.Children.forEach(children, (child: React.ReactElement<any>) => {
-            // save as a variable so that union type narrowing works
-            const childType = child.type;
-
-            // the second part of this conditional will never be true, but it
-            // informs the TS compiler that we won't be invoking
-            // childType.prototype on a "string" element.
-            if (typeof child === "string" || typeof childType === "string") {
+            if (!CoreUtils.isElementOfType(child, Column)) {
                 throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
-            } else {
-                const isColumn = childType.prototype === Column.prototype || Column.prototype.isPrototypeOf(childType);
-                if (!isColumn) {
-                    throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
-                }
             }
         });
 

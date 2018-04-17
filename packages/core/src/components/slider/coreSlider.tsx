@@ -78,6 +78,8 @@ export interface ISliderState {
     labelPrecision?: number;
     /** the client size, in pixels, of one tick */
     tickSize?: number;
+    /** the size of one tick as a ratio of the component's client size */
+    tickSizeRatio?: number;
 }
 
 export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPureComponent<P, ISliderState> {
@@ -93,6 +95,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
         this.state = {
             labelPrecision: this.getLabelPrecision(props),
             tickSize: 0,
+            tickSizeRatio: 0,
         };
     }
 
@@ -175,11 +178,16 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
             return undefined;
         }
 
-        const stepSize = Math.round(this.state.tickSize * labelStepSize);
+        const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
         const labels: JSX.Element[] = [];
         // tslint:disable-next-line:one-variable-per-declaration ban-comma-operator
-        for (let i = min, offset = 0; i < max || approxEqual(i, max); i += labelStepSize, offset += stepSize) {
-            const style = this.props.vertical ? { bottom: offset } : { left: offset };
+        for (
+            let i = min, offsetRatio = 0;
+            i < max || approxEqual(i, max);
+            i += labelStepSize, offsetRatio += stepSizeRatio
+        ) {
+            const offsetPercentage = formatPercentage(offsetRatio);
+            const style = this.props.vertical ? { bottom: offsetPercentage } : { left: offsetPercentage };
             labels.push(
                 <div className={`${Classes.SLIDER}-label`} key={i} style={style}>
                     {this.formatLabel(i)}
@@ -222,8 +230,14 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
     private updateTickSize() {
         if (this.trackElement != null) {
             const trackSize = this.props.vertical ? this.trackElement.clientHeight : this.trackElement.clientWidth;
-            const tickSize = trackSize / ((this.props.max as number) - (this.props.min as number));
-            this.setState({ tickSize });
+            const tickSizeRatio = 1 / ((this.props.max as number) - (this.props.min as number));
+            const tickSize = trackSize * tickSizeRatio;
+            this.setState({ tickSize, tickSizeRatio });
         }
     }
+}
+
+/** Helper function for formatting ratios as CSS percentage values. */
+export function formatPercentage(ratio: number) {
+    return `${(ratio * 100).toFixed(2)}%`;
 }

@@ -172,7 +172,8 @@ Lefthand navigation menu
 .docs-examples-only {
   .docs-markup,
   .docs-modifiers,
-  .docs-section {
+  .docs-title,
+  .docs-section > .pt-running-text {
     display: none;
   }
 }

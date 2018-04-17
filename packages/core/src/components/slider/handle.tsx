@@ -12,6 +12,7 @@ import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
+import { formatPercentage } from "./coreSlider";
 
 /**
  * N.B. some properties need to be optional for spread in slider.tsx to work
@@ -25,6 +26,7 @@ export interface IHandleProps extends IProps {
     onRelease?: (newValue: number) => void;
     stepSize?: number;
     tickSize?: number;
+    tickSizeRatio?: number;
     value?: number;
     vertical?: boolean;
 }
@@ -50,12 +52,18 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
     };
 
     public render() {
-        const { className, disabled, label, min, tickSize, value, vertical } = this.props;
+        const { className, disabled, label, min, tickSizeRatio, value, vertical } = this.props;
         const { isMoving } = this.state;
 
+        // The handle midpoint of RangeSlider is actually shifted by a margin to
+        // be on the edge of the visible handle element. Because the midpoint
+        // calculation does not take this margin into account, we instead
+        // measure the long side (which is equal to the short side plus the
+        // margin).
         const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);
-        const offset = Math.round((value - min) * tickSize - handleMidpoint);
-        const style: React.CSSProperties = vertical ? { bottom: offset } : { left: offset };
+        const offsetRatio = (value - min) * tickSizeRatio;
+        const offsetCalc = `calc(${formatPercentage(offsetRatio)} - ${handleMidpoint}px)`;
+        const style: React.CSSProperties = vertical ? { bottom: offsetCalc } : { left: offsetCalc };
 
         return (
             <span

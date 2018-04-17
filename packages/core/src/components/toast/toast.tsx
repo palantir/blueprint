@@ -11,6 +11,7 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { IActionProps, IIntentProps, ILinkProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
+import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
 import { Icon, IconName } from "../icon/icon";
 
@@ -65,10 +66,10 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
             >
                 <Icon icon={icon} />
                 <span className={Classes.TOAST_MESSAGE}>{message}</span>
-                <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
+                <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
                     <Button icon="cross" onClick={this.handleCloseClick} />
-                </div>
+                </ButtonGroup>
             </div>
         );
     }

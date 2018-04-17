@@ -187,16 +187,10 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         if (!modifiers.matchesPredicate) {
             return null;
         }
-
-        const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
-            [CoreClasses.ACTIVE]: modifiers.active,
-            [CoreClasses.INTENT_PRIMARY]: modifiers.active,
-        });
-
         return (
             <MenuItem
                 key={item.key}
-                className={classes}
+                active={modifiers.active}
                 icon={item.iconName}
                 text={item.text}
                 label={item.label}
