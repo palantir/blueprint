@@ -173,7 +173,7 @@ describe("<Popover>", () => {
         warnSpy.restore();
     });
 
-    it("lifecycle methods are called appropriately", () => {
+    it("lifecycle methods are called appropriately", done => {
         const popoverWillOpen = sinon.spy(() =>
             assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 0),
         );
@@ -183,21 +183,31 @@ describe("<Popover>", () => {
         const popoverWillClose = sinon.spy(() =>
             assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1),
         );
+        // DOM is still present in didClose; element is removed shortly after
+        const popoverDidClose = sinon.spy();
 
         wrapper = renderPopover({
             interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
+            popoverDidClose,
             popoverDidOpen,
             popoverWillClose,
             popoverWillOpen,
+            transitionDuration: 1,
         }).simulateTarget("click");
         assert.isTrue(popoverWillOpen.calledOnce);
         assert.isTrue(popoverDidOpen.calledOnce);
         assert.isTrue(popoverWillClose.notCalled);
+        assert.isTrue(popoverDidClose.notCalled);
 
         wrapper.simulateTarget("click");
-        assert.isTrue(popoverDidOpen.calledOnce);
-        assert.isTrue(popoverWillOpen.calledOnce);
-        assert.isTrue(popoverWillClose.calledOnce);
+        setTimeout(() => {
+            assert.isTrue(popoverDidOpen.calledOnce);
+            assert.isTrue(popoverWillOpen.calledOnce);
+            assert.isTrue(popoverWillClose.calledOnce);
+            assert.isTrue(popoverDidClose.calledOnce);
+            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 0);
+            done();
+        });
     });
 
     it("popoverDidOpen is called even if popoverWillOpen is not specified", () => {

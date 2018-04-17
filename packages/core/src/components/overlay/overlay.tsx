@@ -105,6 +105,13 @@ export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps
     didOpen?: () => any;
 
     /**
+     * Lifecycle callback invoked after a child element finishes exiting the DOM.
+     * This will be invoked for each child of the `Overlay` except for the backdrop element.
+     * The argument is the underlying HTML element that left the DOM.
+     */
+    didClose?: (node: HTMLElement) => any;
+
+    /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
      */
@@ -261,7 +268,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             );
         const { transitionDuration, transitionName } = this.props;
         return (
-            <CSSTransition classNames={transitionName} timeout={transitionDuration}>
+            <CSSTransition classNames={transitionName} onExited={this.props.didClose} timeout={transitionDuration}>
                 {decoratedChild}
             </CSSTransition>
         );
