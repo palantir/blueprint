@@ -8,6 +8,7 @@ import * as React from "react";
 
 import { IconName, IconPartial, IIconProps } from "../../common";
 import * as Errors from "../../common/errors";
+import { SVGIcon } from "./svgIcon";
 
 let allIcons: { [key: string]: IconPartial | undefined } | null = null;
 
@@ -20,8 +21,8 @@ export { IIconProps };
 export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<SVGElement>> {
     public static displayName = "Blueprint2.Icon";
 
-    public static readonly SIZE_STANDARD = 16;
-    public static readonly SIZE_LARGE = 20;
+    public static readonly SIZE_STANDARD = SVGIcon.SIZE_STANDARD;
+    public static readonly SIZE_LARGE = SVGIcon.SIZE_LARGE;
 
     public render() {
         const { icon, ...props } = this.props;
