@@ -249,6 +249,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     // now that mouseleave is triggered when you cross the gap between the two.
     private isMouseInTargetOrPopover = false;
 
+    // a flag that indicates whether the target previously lost focus to another
+    // element on the same page.
+    private lostFocusOnSamePage = true;
+
     private refHandlers = {
         popover: (ref: HTMLDivElement) => {
             this.popoverElement = ref;
@@ -499,23 +503,26 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
     };
 
-    private handleTargetFocus = (e?: React.FormEvent<HTMLElement>) => {
+    private handleTargetFocus = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
+            if (e.relatedTarget == null && !this.lostFocusOnSamePage) {
+                // ignore this focus event -- the target was already focused but the page itself
+                // lost focus (e.g. due to switching tabs).
+                return;
+            }
             this.handleMouseEnter(e);
         }
     };
 
-    private handleTargetBlur = (e?: React.FormEvent<HTMLElement>) => {
+    private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             // if the next element to receive focus is within the popover, we'll want to leave the
-            // popover open. we must do this check *after* the next element focuses, so we use a
-            // timeout of 0 to flush the rest of the event queue before proceeding.
-            this.setTimeout(() => {
-                if (!this.isElementInPopover(document.activeElement)) {
-                    this.handleMouseLeave(e);
-                }
-            });
+            // popover open.
+            if (!this.isElementInPopover(e.relatedTarget as HTMLElement)) {
+                this.handleMouseLeave(e);
+            }
         }
+        this.lostFocusOnSamePage = e.relatedTarget != null;
     };
 
     private handleMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
