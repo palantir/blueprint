@@ -55,15 +55,7 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTarget>>(Wr
                         const htmlElement = ReactDOM.findDOMNode(this);
                         const darkTheme = htmlElement != null && isDarkTheme(htmlElement);
                         e.preventDefault();
-                        ContextMenu.show(
-                            menu,
-                            {
-                                left: e.clientX,
-                                top: e.clientY,
-                            },
-                            this.onContextMenuClose,
-                            darkTheme,
-                        );
+                        ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, this.onContextMenuClose, darkTheme);
                     }
                 }
 

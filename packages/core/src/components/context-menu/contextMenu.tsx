@@ -20,32 +20,31 @@ export interface IOffset {
 }
 
 interface IContextMenuState {
-    isOpen?: boolean;
-    isDarkTheme?: boolean;
-    menu?: JSX.Element;
-    offset?: IOffset;
+    isOpen: boolean;
+    isDarkTheme: boolean;
+    menu: JSX.Element;
+    offset: IOffset;
     onClose?: () => void;
 }
 
 const POPPER_MODIFIERS: PopperModifiers = {
-    preventOverflow: { boundariesElement: "window" },
+    preventOverflow: { boundariesElement: "viewport" },
 };
 const TRANSITION_DURATION = 100;
 
 /* istanbul ignore next */
 class ContextMenu extends AbstractPureComponent<{}, IContextMenuState> {
     public state: IContextMenuState = {
+        isDarkTheme: false,
         isOpen: false,
+        menu: null,
+        offset: null,
     };
 
     public render() {
         // prevent right-clicking in a context menu
         const content = <div onContextMenu={this.cancelContextMenu}>{this.state.menu}</div>;
         const popoverClassName = classNames({ [Classes.DARK]: this.state.isDarkTheme });
-
-        // the target isn't relevant in this case. the context menu simply
-        // appears overlayed at the desired offset on the screen.
-        const emptyTarget = <div />;
 
         // wrap the popover in a positioned div to make sure it is properly
         // offset on the screen.
@@ -62,10 +61,9 @@ class ContextMenu extends AbstractPureComponent<{}, IContextMenuState> {
                     onInteraction={this.handlePopoverInteraction}
                     position={Position.RIGHT_TOP}
                     popoverClassName={popoverClassName}
+                    target={<div />}
                     transitionDuration={TRANSITION_DURATION}
-                >
-                    {emptyTarget}
-                </Popover>
+                />
             </div>
         );
     }
