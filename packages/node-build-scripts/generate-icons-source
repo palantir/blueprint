@@ -121,7 +121,7 @@ async function buildPaths(size) {
             .then(({ data }) => data.match(/ d="[^"]+"/g) || [])
             .then(paths => paths.map(s => s.slice(3)));
         paths[icon.iconName] = `[${pathStrings.join(",\n")}]`;
-  return paths;
+        return paths;
     }, Promise.resolve({}));
 }
 
