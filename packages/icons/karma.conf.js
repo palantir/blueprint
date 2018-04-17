@@ -1,5 +1,5 @@
-/**
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+/*
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
  */
 
 const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
