@@ -22,8 +22,6 @@ module.exports = {
                 ["describe", "only", "should not be committed to repo"],
                 ["it", "only", "should not be committed to repo"],
                 ["test", "only", "should not be committed to repo"],
-                // TODO: enable
-                // ["assert", "equal", "use assert.strictEqual instead"]
             ],
         },
         "jsx-key": false,
