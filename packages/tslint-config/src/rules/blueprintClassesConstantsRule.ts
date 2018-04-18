@@ -10,9 +10,9 @@ import * as ts from "typescript";
 const PATTERN = /\bpt-[\w-]+\b/;
 
 export class Rule extends Lint.Rules.AbstractRule {
-    // tslint:disable:object-literal-sort-keys
     public static metadata: Lint.IRuleMetadata = {
         ruleName: "blueprint-classes-constants",
+        // tslint:disable-next-line:object-literal-sort-keys
         description: "Enforce usage of Classes constants over namespaced string literals.",
         options: null,
         optionsDescription: "Not configurable",
@@ -20,7 +20,6 @@ export class Rule extends Lint.Rules.AbstractRule {
         type: "style",
         typescriptOnly: false,
     };
-    // tslint:enable:object-literal-sort-keys
 
     public static FAILURE_STRING = "use Blueprint `Classes` constant instead of string literal";
 
