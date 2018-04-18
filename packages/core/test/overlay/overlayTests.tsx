@@ -112,6 +112,42 @@ describe("<Overlay>", () => {
         assert.isTrue(didOpen.calledOnce, "didOpen not invoked when overlay open");
     });
 
+    it("invokes didClose when Overlay is closed", done => {
+        const didClose = spy();
+        mountWrapper(
+            <Overlay didClose={didClose} isOpen={true} transitionDuration={1}>
+                {createOverlayContents()}
+            </Overlay>,
+        );
+        assert.isTrue(didClose.notCalled, "didClose invoked when overlay open");
+
+        wrapper.setProps({ isOpen: false });
+        // didClose relies on transition onExited so we go async for a sec
+        setTimeout(() => {
+            wrapper.update();
+            assert.isTrue(didClose.calledOnce, "didClose not invoked when overlay closed");
+            assert.isFalse(wrapper.find("h1").exists(), "no content");
+            done();
+        });
+    });
+
+    it("invokes didClose when inline Overlay is closed", done => {
+        const didClose = spy();
+        mountWrapper(
+            <Overlay didClose={didClose} isOpen={true} usePortal={false} transitionDuration={1}>
+                {createOverlayContents()}
+            </Overlay>,
+        );
+        assert.isTrue(didClose.notCalled, "didClose invoked when overlay open");
+
+        wrapper.setProps({ isOpen: false });
+        // didClose relies on transition onExited so we go async for a sec
+        setTimeout(() => {
+            assert.isTrue(didClose.calledOnce, "didClose not invoked when overlay closed");
+            done();
+        });
+    });
+
     it("renders portal attached to body when not inline after first opened", () => {
         mountWrapper(<Overlay isOpen={false}>{createOverlayContents()}</Overlay>);
         assert.lengthOf(wrapper.find(Portal), 0, "unexpected Portal");
