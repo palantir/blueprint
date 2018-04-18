@@ -10,7 +10,6 @@ import * as ReactDOM from "react-dom";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { HTMLDivProps, IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
 
 export interface IPortalProps extends IProps, HTMLDivProps {
     /**
