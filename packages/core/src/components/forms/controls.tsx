@@ -223,6 +223,7 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
     private handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         const { checked, indeterminate } = evt.target;
         this.setState({ checked, indeterminate });
+        safeInvoke(this.props.onChange, evt);
     };
 
     private handleInputRef = (ref: HTMLInputElement) => {

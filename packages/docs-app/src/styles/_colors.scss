@@ -13,7 +13,7 @@ $swatch-hover-message: "Click to copy hex code";
 $swatch-copied-message: "#{$pt-icon-tick} Copied to clipboard";
 
 @function palette-width($columns) {
-  @return ($content-width - $content-padding * 2 - $palette-spacing * ($columns - 1)) / $columns;
+  @return (102% - 2% * $columns) / $columns;
 }
 
 .docs-clipboard {
@@ -115,7 +115,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
   margin-bottom: $palette-spacing;
   cursor: pointer;
 
-  .docs-color-book-grayscale &:not(.docs-color-palette-single) {
+  .docs-color-book-grayscale & {
     flex-basis: palette-width(3);
   }
 

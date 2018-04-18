@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/core",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "description": "Core styles & components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -35,11 +35,11 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/icons": "^2.0.0",
+    "@blueprintjs/icons": "^2.1.1",
     "@types/dom4": "^2.0.0",
     "classnames": "^2.2",
     "dom4": "^2.0.1",
-    "normalize.css": "^7.0.0",
+    "normalize.css": "^8.0.0",
     "popper.js": "^1.14.1",
     "react-popper": "^0.8.2",
     "tslib": "^1.9.0"

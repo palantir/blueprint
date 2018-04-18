@@ -257,13 +257,6 @@
   }
 }
 
-#{example("PopoverExample")} {
-  // wider lines for this example so labels wrap less
-  .#{$ns}-label {
-    width: $pt-grid-size * 21;
-  }
-}
-
 // give all Table examples a fixed height
 #{page("table")},
 #{page("features")} {

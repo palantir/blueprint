@@ -225,6 +225,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     key="preventOverflow"
                     onChange={this.getModifierChangeHandler("preventOverflow")}
                 >
+                    <br />
                     <div className={Classes.SELECT} style={{ marginTop: 5 }}>
                         <select
                             disabled={!preventOverflow.enabled}

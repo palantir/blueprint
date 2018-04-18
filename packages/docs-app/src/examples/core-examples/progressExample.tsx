@@ -55,8 +55,8 @@ export class ProgressExample extends BaseExample<IProgressExampleState> {
                     showTrackFill={false}
                     value={this.state.value}
                 />,
-                <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleModifierChange} />,
             ],
+            [<IntentSelect intent={this.state.intent} key="intent" onChange={this.handleModifierChange} />],
         ];
     }
 

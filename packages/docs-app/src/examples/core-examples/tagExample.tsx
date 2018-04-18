@@ -56,7 +56,6 @@ export class TagExample extends BaseExample<ITagExampleState> {
             [
                 <Switch key="large" label="Large" checked={large} onChange={this.handleLargeChange} />,
                 <Switch key="minimal" label="Minimal" checked={minimal} onChange={this.handleMinimalChange} />,
-                <Switch key="removable" label="Removable" checked={removable} onChange={this.handleRemovableChange} />,
                 <Switch
                     key="interactive"
                     label="Interactive"
@@ -65,7 +64,10 @@ export class TagExample extends BaseExample<ITagExampleState> {
                 />,
             ],
             [<IntentSelect key="intent" intent={intent} onChange={this.handleIntentChange} />],
-            [<Button key="reset" text="Reset tags" onClick={this.resetTags} />],
+            [
+                <Switch key="removable" label="Removable" checked={removable} onChange={this.handleRemovableChange} />,
+                <Button key="reset" text="Reset tags" onClick={this.resetTags} />,
+            ],
         ];
     }
 

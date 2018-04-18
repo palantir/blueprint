@@ -73,6 +73,12 @@ export interface IDocumentationProps extends IProps {
      */
     renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
 
+    /**
+     * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.
+     * @default document.documentElement
+     */
+    scrollParent?: HTMLElement;
+
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: ITagRendererMap;
 }
@@ -208,11 +214,11 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         // hooray! so you don't have to!
         FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
-        this.maybeScrollToActivePageMenuItem();
         Utils.safeInvoke(this.props.onComponentUpdate, this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", this.handleHashChange);
         document.addEventListener("scroll", this.handleScroll);
+        requestAnimationFrame(() => this.maybeScrollToActivePageMenuItem());
     }
 
     public componentWillUnmount() {
@@ -262,7 +268,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     private handlePreviousSection = () => this.shiftSection(-1);
 
     private handleScroll = () => {
-        const activeSectionId = getScrolledReference(100, document.documentElement);
+        const activeSectionId = getScrolledReference(100, this.props.scrollParent);
         if (activeSectionId == null) {
             return;
         }
@@ -274,17 +280,17 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navMenuElement = this.navElement.querySelector(`a[href="#${activeSectionId}"]`);
-        const innerBounds = navMenuElement.getBoundingClientRect();
-        const outerBounds = this.navElement.getBoundingClientRect();
-        if (innerBounds.top < outerBounds.top || innerBounds.bottom > outerBounds.bottom) {
-            navMenuElement.scrollIntoView();
+        const navItemElement = this.navElement.querySelector(`a[href="#${activeSectionId}"]`) as HTMLElement;
+        const scrollOffset = navItemElement.offsetTop - this.navElement.scrollTop;
+        if (scrollOffset < 0 || scrollOffset > this.navElement.offsetHeight) {
+            // reveal two items above this item in list
+            this.navElement.scrollTop = navItemElement.offsetTop - navItemElement.offsetHeight * 2;
         }
     }
 
     private scrollToActiveSection() {
         if (this.contentElement != null) {
-            scrollToReference(this.state.activeSectionId, document.documentElement);
+            scrollToReference(this.state.activeSectionId, this.props.scrollParent);
         }
     }
 
@@ -313,7 +319,7 @@ function queryHTMLElement(parent: Element, selector: string) {
 /**
  * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
  */
-function getScrolledReference(offset: number, scrollContainer: HTMLElement) {
+function getScrolledReference(offset: number, scrollContainer: HTMLElement = document.documentElement) {
     const headings = Array.from(scrollContainer.querySelectorAll(".docs-title"));
     while (headings.length > 0) {
         // iterating in reverse order (popping from end / bottom of page)
@@ -330,7 +336,7 @@ function getScrolledReference(offset: number, scrollContainer: HTMLElement) {
 /**
  * Scroll the scroll container such that the reference heading appears at the top of the viewport.
  */
-function scrollToReference(reference: string, scrollContainer: HTMLElement) {
+function scrollToReference(reference: string, scrollContainer: HTMLElement = document.documentElement) {
     // without rAF, on initial load this would scroll to the bottom because the CSS had not been applied.
     // with rAF, CSS is applied before updating scroll positions so all elements are in their correct places.
     requestAnimationFrame(() => {

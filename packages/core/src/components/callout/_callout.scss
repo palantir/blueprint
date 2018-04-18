@@ -26,13 +26,26 @@ Styleguide callout
   position: relative;
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
+  width: 100%;
   padding: $pt-grid-size ($pt-grid-size * 1.2) ($pt-grid-size * 0.9);
 
+  // CSS API support
   &[class*="#{$ns}-icon-"] {
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
     &::before {
       @include pt-icon($pt-icon-size-large);
+      position: absolute;
+      top: $pt-grid-size;
+      left: $pt-grid-size;
+      color: $pt-icon-color;
+    }
+  }
+
+  &.#{$ns}-callout-icon {
+    padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
+
+    .#{$ns}-icon {
       position: absolute;
       top: $pt-grid-size;
       left: $pt-grid-size;
@@ -59,7 +72,7 @@ Styleguide callout
       background-color: rgba($color, 0.15);
 
       &[class*="#{$ns}-icon-"]::before,
-      .#{$ns}-callout-icon,
+      .#{$ns}-icon,
       .#{$ns}-callout-title {
         color: map-get($pt-intent-text-colors, $intent);
       }
@@ -79,13 +92,4 @@ Styleguide callout
   .#{$ns}-running-text & {
     margin: ($pt-grid-size * 2) 0;
   }
-}
-
-// callout icon fills vertical space at left side, pushing title and content over.
-// note that CSS API `.#{$ns}-callout.#{$ns}-icon-[name]` is still supported.
-.#{$ns}-callout-icon {
-  float: left;
-  margin-right: $pt-grid-size;
-  height: 100%;
-  color: $pt-icon-color;
 }
