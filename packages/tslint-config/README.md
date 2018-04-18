@@ -4,7 +4,13 @@
 
 Blueprint is a React UI toolkit for the web.
 
-This package contains configuration for [TSLint](https://palantir.github.io/tslint) (the TypeScript linter) and a handful of new rules specifically for use when developing against Blueprint libraries
+This package contains configuration for [TSLint](https://palantir.github.io/tslint) (the TypeScript linter) and a handful of new rules specifically for use when developing against Blueprint libraries.
+
+Key features include:
+
+- React & JSX rules from [tslint-react](https://github.com/palantir/tslint-react).
+- [Prettier](https://github.com/prettier/prettier) integration for consistent code style and automatic fixes.
+- [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
 
 ## Installation
 
@@ -12,9 +18,9 @@ This package contains configuration for [TSLint](https://palantir.github.io/tsli
 yarn add @blueprintjs/tslint-config tslint
 ```
 
-## Basic usage
+## Usage
 
-Simply extend this package in your `tslint.json` to use the default rules configuration. This configuration is applicable to any codebase (you do not have to use Blueprint packages).
+Simply extend this package in your `tslint.json` to use the default rules configuration. This configuration includes Blueprint-specific rules which enforce semantics particular to usage with `@blueprintjs` packages.
 
 `tslint.json`
 ```json
@@ -23,63 +29,75 @@ Simply extend this package in your `tslint.json` to use the default rules config
 }
 ```
 
-## Advanced usage
+### Rules-only usage
 
-To enable the Blueprint-specific rules which enforce semantics particular to `@blueprintjs` packages, add another `extends` entry.
+To enable the Blueprint-specific rules _only_ without the full TSLint config, extend the `blueprint-rules` config inside the package:
 
 `tslint.json`
-```json
+```diff
 {
   "extends": [
-    "@blueprintjs/tslint-config",
-    "@blueprintjs/tslint-config/blueprint-rules"
++   "@blueprintjs/tslint-config/blueprint-rules"
   ]
 }
 ```
 
-### Rules
+### Editor integration
 
-#### `blueprint-classes-constants`
+⭐️ **VS Code:** Enable the `tslint.autoFixOnSave` option to fix all fixable failures every time you save. Most importantly, this will automatically apply the Prettier formatting fixes!
+
+## Rules
+
+### `blueprint-classes-constants`
+
 Enforce usage of `Classes` constants over namespaced string literals.
 
-```tsx
-// Bad
-const element = <div className="pt-navbar" />;
-
-// Good
-const element = <div className={Classes.NAVBAR} />;
-```
+Each `@blueprintjs` package exports a `Classes` object that contains constants for every CSS class defined by the package. While the values of the constants may change between releases, the names of the constants will remain more stable.
 
 ```json
 {
-    "rules": {
-        // enable:
-        "blueprint-classes-constants": true,
-        // disable:
-        "blueprint-classes-constants": false,
-    }
+  "rules": {
+    "blueprint-classes-constants": true,
+  }
 }
 ```
 
-#### `blueprint-icon-components`
+```diff
+-const element = <div className="pt-navbar" />;
++const element = <div className={Classes.NAVBAR} />;
+```
+
+### `blueprint-icon-components`
 
 Enforce usage of JSX `Icon` components over `IconName` string literals (or vice-versa) in `icon` JSX props. Note that this rule only supports hardcoded values in the `icon` prop; it does not handle expressions or conditionals.
 
+Named icon components (`TickIcon`, `GraphIcon`, etc) can be imported from the `@blueprintjs/icons` package.
+
 This rule is disabled in the `blueprint-rules` config as it is most useful to ensure that the `@blueprintjs/icons` package can be tree-shaken (an opt-in process which requires using components and _never_ `IconName` literals).
 
-**Rule options:** `["component", "literal"]`
-
-```json
+```js
 {
-    "rules": {
-        // enforce `icon={<TickIcon />}` usage:
-        "blueprint-icon-components": [true, "component"],
-        // enforce `icon="tick"` usage:
-        "blueprint-icon-components": [true, "literal"],
-        // allow either usage:
-        "blueprint-icon-components": [false],
+  "rules": {
+    // default uses "component"
+    "blueprint-icon-components": true,
+    // expanded syntax
+    "blueprint-icon-components": {
+      "options": ["component" | "literal"] // choose one
     }
+  }
 }
+```
+
+`"component"`
+```diff
+-<Button icon="tick" />
++<Button icon={<TickIcon />} />
+```
+
+`"literal"`
+```diff
+-<Button icon={<GraphIcon />} />
++<Button icon="graph" />
 ```
 
 
