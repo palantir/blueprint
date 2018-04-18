@@ -65,4 +65,17 @@ describe("<Portal>", () => {
         const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);
         assert.isTrue(portalElement.classList.contains(Classes.PORTAL));
     });
+
+    it("children mount before onChildrenMount invoked", done => {
+        function spy() {
+            // can't use `portal` in here as `mount()` has not finished, so query DOM directly
+            assert.exists(document.querySelector("p"));
+            done();
+        }
+        portal = mount(
+            <Portal onChildrenMount={spy}>
+                <p>test</p>
+            </Portal>,
+        );
+    });
 });

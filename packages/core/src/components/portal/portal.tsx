@@ -65,8 +65,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     public componentDidMount() {
         this.portalElement = this.createContainerElement();
         document.body.appendChild(this.portalElement);
-        safeInvoke(this.props.onChildrenMount);
-        this.setState({ hasMounted: true });
+        this.setState({ hasMounted: true }, this.props.onChildrenMount);
     }
 
     public componentDidUpdate(prevProps: IPortalProps) {
