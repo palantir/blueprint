@@ -10,7 +10,6 @@ import * as ReactDOM from "react-dom";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { HTMLDivProps, IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
 
 export interface IPortalProps extends IProps, HTMLDivProps {
     /**
@@ -65,8 +64,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     public componentDidMount() {
         this.portalElement = this.createContainerElement();
         document.body.appendChild(this.portalElement);
-        safeInvoke(this.props.onChildrenMount);
-        this.setState({ hasMounted: true });
+        this.setState({ hasMounted: true }, this.props.onChildrenMount);
     }
 
     public componentDidUpdate(prevProps: IPortalProps) {
