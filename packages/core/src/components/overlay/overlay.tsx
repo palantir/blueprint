@@ -363,12 +363,14 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         const { canOutsideClickClose, isOpen, onClose } = this.props;
         const eventTarget = e.target as HTMLElement;
 
-        const { openStack } = Overlay;
-        const stackIndex = openStack.indexOf(this);
-
-        const isClickInThisOverlayOrDescendant = openStack
+        const stackIndex = Overlay.openStack.indexOf(this);
+        const isClickInThisOverlayOrDescendant = Overlay.openStack
             .slice(stackIndex)
-            .some(({ containerElement: elem }) => elem && elem.contains(eventTarget) && !elem.isSameNode(eventTarget));
+            .some(({ containerElement: elem }) => {
+                // `elem` is the container of backdrop & content, so clicking on that container
+                // should not count as being "inside" the overlay.
+                return elem && elem.contains(eventTarget) && !elem.isSameNode(eventTarget);
+            });
 
         if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
             // casting to any because this is a native event

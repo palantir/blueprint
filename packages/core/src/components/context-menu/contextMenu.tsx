@@ -19,6 +19,11 @@ export interface IOffset {
     top: number;
 }
 
+interface IContextMenuProps {
+    /** Callback invoked after the menu has finished transitioning to a closed state. */
+    didClose: () => void;
+}
+
 interface IContextMenuState {
     isOpen: boolean;
     isDarkTheme: boolean;
@@ -33,7 +38,7 @@ const POPPER_MODIFIERS: PopperModifiers = {
 const TRANSITION_DURATION = 100;
 
 /* istanbul ignore next */
-class ContextMenu extends AbstractPureComponent<{ didClose: () => void }, IContextMenuState> {
+class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,
         isOpen: false,
