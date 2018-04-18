@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "blueprint-icon-components": {
+      "options": ["component"]
+    }
+  }
+}

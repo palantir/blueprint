@@ -4,9 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// tslint:disable:blueprint-classes-constants
+
 export const MULTISELECT = "pt-multi-select";
 export const MULTISELECT_POPOVER = `${MULTISELECT}-popover`;
 export const OMNIBAR = "pt-omnibar";
 export const OMNIBAR_OVERLAY = `${OMNIBAR}-overlay`;
 export const SELECT = "pt-select";
 export const SELECT_POPOVER = `${SELECT}-popover`;
+
+// tslint:enable:blueprint-classes-constants

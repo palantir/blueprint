@@ -417,10 +417,10 @@ describe("<TagInput>", () => {
         );
         assert.isTrue(
             wrapper
-                .find(".pt-input-ghost")
+                .find(".pt-input-ghost") // tslint:disable-line:blueprint-classes-constants
                 .first()
                 .prop("disabled"),
-            ".pt-input-ghost should have a 'disabled' attribute",
+            "input should be disabled",
         );
         wrapper.find(Tag).forEach(tag => {
             assert.isFalse(tag.hasClass(Classes.TAG_REMOVABLE), "tag should not have tag-removable applied");

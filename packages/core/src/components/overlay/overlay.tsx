@@ -135,7 +135,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         isOpen: false,
         lazy: true,
         transitionDuration: 300,
-        transitionName: "pt-overlay",
+        transitionName: Classes.OVERLAY,
         usePortal: true,
     };
 

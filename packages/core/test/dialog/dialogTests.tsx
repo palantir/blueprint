@@ -31,7 +31,7 @@ describe("<Dialog>", () => {
         });
     });
 
-    it("attempts to close when .pt-overlay-backdrop element is moused down", () => {
+    it("attempts to close when overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
             <Dialog isOpen={true} onClose={onClose} usePortal={false}>
@@ -42,7 +42,7 @@ describe("<Dialog>", () => {
         assert.isTrue(onClose.calledOnce);
     });
 
-    it("attempts to close when .pt-dialog-container element is moused down", () => {
+    it("attempts to close when dialog container element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
             <Dialog isOpen={true} onClose={onClose} usePortal={false}>
@@ -53,7 +53,7 @@ describe("<Dialog>", () => {
         assert.isTrue(onClose.calledOnce);
     });
 
-    it("doesn't close when canOutsideClickClose=false and .pt-overlay-backdrop element is moused down", () => {
+    it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
             <Dialog canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>

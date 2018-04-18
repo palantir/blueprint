@@ -1,0 +1,5 @@
+<Button icon="tick" />
+        ~~~~~~~~~~~    [use <NamedIcon /> component for icon prop]
+
+<Button icon={<TickIcon />} />
+<InputGroup rightElement={<Button />} />

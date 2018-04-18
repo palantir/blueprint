@@ -4,7 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// tslint:disable:blueprint-classes-constants
+
 export const TABLE_BODY = "pt-table-body";
+export const TABLE_BODY_CELLS = "pt-table-body-cells";
 export const TABLE_BODY_SCROLL_CLIENT = "pt-table-body-scroll-client";
 export const TABLE_BODY_VIRTUAL_CLIENT = "pt-table-body-virtual-client";
 export const TABLE_BOTTOM_CONTAINER = "pt-table-bottom-container";
@@ -122,3 +125,5 @@ export function columnCellIndexClass(columnIndex: string | number) {
 export function rowCellIndexClass(rowIndex: string | number) {
     return dimensionIndexClass("pt-table-cell-row-", rowIndex);
 }
+
+// tslint:enable:blueprint-classes-constants

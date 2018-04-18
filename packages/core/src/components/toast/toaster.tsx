@@ -166,7 +166,7 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
                 isOpen={this.state.toasts.length > 0 || this.props.children != null}
                 onClose={this.handleClose}
                 transitionDuration={350}
-                transitionName="pt-toast"
+                transitionName={Classes.TOAST}
                 usePortal={this.props.usePortal}
             >
                 {this.state.toasts.map(this.renderToast, this)}

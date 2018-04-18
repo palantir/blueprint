@@ -8,6 +8,8 @@ import { Elevation } from "../components/card/card";
 import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
+// tslint:disable:blueprint-classes-constants
+
 // modifiers
 export const ACTIVE = "pt-active";
 export const ALIGN_LEFT = "pt-align-left";
@@ -46,6 +48,8 @@ export const UI_TEXT_LARGE = "pt-ui-text-large";
 export const RUNNING_TEXT = "pt-running-text";
 export const RUNNING_TEXT_SMALL = "pt-running-text-small";
 export const MONOSPACE_TEXT = "pt-monospace-text";
+
+export const FOCUS_DISABLED = "pt-focus-disabled";
 
 // lists
 export const LIST = "pt-list";
@@ -272,3 +276,5 @@ export function intentClass(intent = Intent.NONE) {
     }
     return `pt-intent-${intent.toLowerCase()}`;
 }
+
+// tslint:enable:blueprint-classes-constants

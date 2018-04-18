@@ -336,11 +336,11 @@ describe("<DateInput>", () => {
             wrapper.setState({ isOpen: true });
 
             // try typing a new time
-            wrapper.find(".pt-timepicker-millisecond").simulate("change", { target: { value: "1" } });
+            wrapper.find(`.${Classes.TIMEPICKER_MILLISECOND}`).simulate("change", { target: { value: "1" } });
             assert.isTrue(wrapper.find(Popover).prop("isOpen"));
 
             // try keyboard-incrementing to a new time
-            wrapper.find(".pt-timepicker-millisecond").simulate("keydown", { which: Keys.ARROW_UP });
+            wrapper.find(`.${Classes.TIMEPICKER_MILLISECOND}`).simulate("keydown", { which: Keys.ARROW_UP });
             assert.isTrue(wrapper.find(Popover).prop("isOpen"));
         });
 

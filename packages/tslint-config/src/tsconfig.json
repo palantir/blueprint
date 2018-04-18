@@ -1,0 +1,7 @@
+{
+    "extends": "../../../config/tsconfig.base",
+    "compilerOptions": {
+        "module": "commonjs",
+        "outDir": "../lib/rules"
+    }
+}
