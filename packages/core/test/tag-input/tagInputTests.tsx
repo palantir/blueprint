@@ -417,7 +417,7 @@ describe("<TagInput>", () => {
         );
         assert.isTrue(
             wrapper
-                .find(".pt-input-ghost")
+                .find(`.${Classes.INPUT_GHOST}`)
                 .first()
                 .prop("disabled"),
             ".pt-input-ghost should have a 'disabled' attribute",

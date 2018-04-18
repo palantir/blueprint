@@ -8,26 +8,26 @@ import { Elevation } from "../components/card/card";
 import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
-const NS = "pt";
+const NS = process.env.BLUEPRINT_NAMESPACE || "pt";
 
 // modifiers
-export const ACTIVE = "pt-active";
-export const ALIGN_LEFT = "pt-align-left";
-export const ALIGN_RIGHT = "pt-align-right";
-export const DARK = "pt-dark";
-export const DISABLED = "pt-disabled";
-export const FILL = "pt-fill";
-export const FIXED = "pt-fixed";
-export const FIXED_TOP = "pt-fixed-top";
-export const INLINE = "pt-inline";
-export const INTERACTIVE = "pt-interactive";
-export const LARGE = "pt-large";
-export const LOADING = "pt-loading";
-export const MINIMAL = "pt-minimal";
-export const MULTILINE = "pt-multiline";
-export const ROUND = "pt-round";
-export const SMALL = "pt-small";
-export const VERTICAL = "pt-vertical";
+export const ACTIVE = `${NS}-active`;
+export const ALIGN_LEFT = `${NS}-align-left`;
+export const ALIGN_RIGHT = `${NS}-align-right`;
+export const DARK = `${NS}-dark`;
+export const DISABLED = `${NS}-disabled`;
+export const FILL = `${NS}-fill`;
+export const FIXED = `${NS}-fixed`;
+export const FIXED_TOP = `${NS}-fixed-top`;
+export const INLINE = `${NS}-inline`;
+export const INTERACTIVE = `${NS}-interactive`;
+export const LARGE = `${NS}-large`;
+export const LOADING = `${NS}-loading`;
+export const MINIMAL = `${NS}-minimal`;
+export const MULTILINE = `${NS}-multiline`;
+export const ROUND = `${NS}-round`;
+export const SMALL = `${NS}-small`;
+export const VERTICAL = `${NS}-vertical`;
 
 export const ELEVATION_0 = elevationClass(Elevation.ZERO);
 export const ELEVATION_1 = elevationClass(Elevation.ONE);
@@ -241,7 +241,7 @@ export const ICON_LARGE = `${ICON}-large`;
 
 /**
  * Returns the namespace prefix for all Blueprint CSS classes.
- * Customize this namespace with the `process.env.BLUEPRINT_NAMESPACE` environment variable.
+ * Customize this namespace at build time with the `process.env.BLUEPRINT_NAMESPACE` environment variable.
  */
 export function getClassNamespace() {
     return NS;
