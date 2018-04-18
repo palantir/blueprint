@@ -1,5 +1,7 @@
 {
   "rules": {
-    "blueprint-icon-components": [true, "literal"]
+    "blueprint-icon-components": {
+      "options": ["literal"]
+    }
   }
 }
