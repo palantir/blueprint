@@ -11,28 +11,27 @@ const OPTION_COMPONENT = "component";
 const OPTION_LITERAL = "literal";
 
 export class Rule extends Lint.Rules.AbstractRule {
-    // tslint:disable:object-literal-sort-keys
     public static metadata: Lint.IRuleMetadata = {
         ruleName: "blueprint-icon-components",
+        // tslint:disable-next-line:object-literal-sort-keys
         description: "Enforce usage of JSX Icon components over IconName string literals (or vice-versa)",
         options: {
-            type: "array",
             items: [{ enum: [OPTION_COMPONENT, OPTION_LITERAL], type: "string" }],
-            minLength: 1,
             maxLength: 1,
+            minLength: 0,
+            type: "array",
         },
         optionsDescription: Lint.Utils.dedent`
-            One of the following two options must be provided:
-            * \`"${OPTION_COMPONENT}"\` requires JSX Icon components for \`icon\` props.
+            Accepts one option which can be either of the following values:
+            * \`"${OPTION_COMPONENT}"\` (default) requires JSX Icon components for \`icon\` props.
             * \`"${OPTION_LITERAL}"\` requires \`IconName\` string literals for \`icon\` props.`,
-        optionExamples: [`[true, "${OPTION_COMPONENT}"]`, `[true, "${OPTION_LITERAL}"]`],
+        optionExamples: [`true`, `false`, `[true, "${OPTION_COMPONENT}"]`, `[true, "${OPTION_LITERAL}"]`],
         type: "functionality",
         typescriptOnly: false,
     };
-    // tslint:enable:object-literal-sort-keys
 
-    public static COMPONENT_MESSAGE = "use <NameIcon /> component for icon prop";
-    public static ENUM_MESSAGE = "use IconName string literal for icon prop";
+    public static COMPONENT_MESSAGE = "use <NamedIcon /> component for icon prop";
+    public static LITERAL_MESSAGE = "use IconName string literal for icon prop";
 
     public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
         const [option = OPTION_COMPONENT] = this.ruleArguments;
@@ -49,7 +48,7 @@ function walk(ctx: Lint.WalkContext<string>): void {
             if (ts.isStringLiteral(initializer) && option === OPTION_COMPONENT) {
                 ctx.addFailureAt(node.getStart(ctx.sourceFile), node.getWidth(ctx.sourceFile), Rule.COMPONENT_MESSAGE);
             } else if (ts.isJsxExpression(initializer) && option === OPTION_LITERAL) {
-                ctx.addFailureAt(node.getStart(ctx.sourceFile), node.getWidth(ctx.sourceFile), Rule.ENUM_MESSAGE);
+                ctx.addFailureAt(node.getStart(ctx.sourceFile), node.getWidth(ctx.sourceFile), Rule.LITERAL_MESSAGE);
             }
         }
         return ts.forEachChild(node, cb);
