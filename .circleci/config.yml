@@ -51,7 +51,7 @@ jobs:
           keys:
             - v7-dependency-cache-{{ checksum "yarn.lock" }}
             - v7-dependency-cache-
-      - run: yarn compile --scope "@blueprintjs/tslint*"
+      - run: yarn compile --scope "@blueprintjs/tslint-config"
       - run: yarn lint
 
   dist:

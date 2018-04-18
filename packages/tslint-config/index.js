@@ -8,7 +8,8 @@ module.exports = {
         "tslint:latest",
         "tslint-react",
         "tslint-config-prettier",
-        "tslint-plugin-prettier"
+        "tslint-plugin-prettier",
+        "./blueprint-rules",
     ],
 
     defaultSeverity: "error",
