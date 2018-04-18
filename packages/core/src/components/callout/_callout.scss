@@ -26,13 +26,26 @@ Styleguide pt-callout
   position: relative;
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
+  width: 100%;
   padding: $pt-grid-size ($pt-grid-size * 1.2) ($pt-grid-size * 0.9);
 
+  // CSS API support
   &[class*="pt-icon-"] {
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
     &::before {
       @include pt-icon($pt-icon-size-large);
+      position: absolute;
+      top: $pt-grid-size;
+      left: $pt-grid-size;
+      color: $pt-icon-color;
+    }
+  }
+
+  &.pt-callout-icon {
+    padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
+
+    .pt-icon {
       position: absolute;
       top: $pt-grid-size;
       left: $pt-grid-size;
@@ -59,7 +72,7 @@ Styleguide pt-callout
       background-color: rgba($color, 0.15);
 
       &[class*="pt-icon-"]::before,
-      .pt-callout-icon,
+      .pt-icon,
       .pt-callout-title {
         color: map-get($pt-intent-text-colors, $intent);
       }
@@ -79,13 +92,4 @@ Styleguide pt-callout
   .pt-running-text & {
     margin: ($pt-grid-size * 2) 0;
   }
-}
-
-// callout icon fills vertical space at left side, pushing title and content over.
-// note that CSS API `.pt-callout.pt-icon-[name]` is still supported.
-.pt-callout-icon {
-  float: left;
-  margin-right: $pt-grid-size;
-  height: 100%;
-  color: $pt-icon-color;
 }
