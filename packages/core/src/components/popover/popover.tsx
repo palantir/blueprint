@@ -134,6 +134,11 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     popoverClassName?: string;
 
     /**
+     * Callback invoked after the popover closes and has been removed from the DOM.
+     */
+    popoverDidClose?: () => void;
+
+    /**
      * Callback invoked when the popover opens after it is added to the DOM.
      */
     popoverDidOpen?: () => void;
@@ -326,6 +331,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                     canEscapeKeyClose={this.props.canEscapeKeyClose}
                     canOutsideClickClose={this.props.interactionKind === PopoverInteractionKind.CLICK}
                     className={this.props.portalClassName}
+                    didClose={this.props.popoverDidClose}
                     didOpen={this.handleContentMount}
                     enforceFocus={this.props.enforceFocus}
                     hasBackdrop={hasBackdrop}

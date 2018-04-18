@@ -19,33 +19,37 @@ export interface IOffset {
     top: number;
 }
 
+interface IContextMenuProps {
+    /** Callback invoked after the menu has finished transitioning to a closed state. */
+    didClose: () => void;
+}
+
 interface IContextMenuState {
-    isOpen?: boolean;
-    isDarkTheme?: boolean;
-    menu?: JSX.Element;
-    offset?: IOffset;
+    isOpen: boolean;
+    isDarkTheme: boolean;
+    menu: JSX.Element;
+    offset: IOffset;
     onClose?: () => void;
 }
 
 const POPPER_MODIFIERS: PopperModifiers = {
-    preventOverflow: { boundariesElement: "window" },
+    preventOverflow: { boundariesElement: "viewport" },
 };
 const TRANSITION_DURATION = 100;
 
 /* istanbul ignore next */
-class ContextMenu extends AbstractPureComponent<{}, IContextMenuState> {
+class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
+        isDarkTheme: false,
         isOpen: false,
+        menu: null,
+        offset: null,
     };
 
     public render() {
         // prevent right-clicking in a context menu
         const content = <div onContextMenu={this.cancelContextMenu}>{this.state.menu}</div>;
         const popoverClassName = classNames({ [Classes.DARK]: this.state.isDarkTheme });
-
-        // the target isn't relevant in this case. the context menu simply
-        // appears overlayed at the desired offset on the screen.
-        const emptyTarget = <div />;
 
         // wrap the popover in a positioned div to make sure it is properly
         // offset on the screen.
@@ -62,10 +66,10 @@ class ContextMenu extends AbstractPureComponent<{}, IContextMenuState> {
                     onInteraction={this.handlePopoverInteraction}
                     position={Position.RIGHT_TOP}
                     popoverClassName={popoverClassName}
+                    popoverDidClose={this.props.didClose}
+                    target={<div />}
                     transitionDuration={TRANSITION_DURATION}
-                >
-                    {emptyTarget}
-                </Popover>
+                />
             </div>
         );
     }
@@ -105,6 +109,7 @@ class ContextMenu extends AbstractPureComponent<{}, IContextMenuState> {
     };
 }
 
+let contextMenuElement: HTMLElement;
 let contextMenu: ContextMenu;
 
 /**
@@ -113,11 +118,11 @@ let contextMenu: ContextMenu;
  * room onscreen. The optional callback will be invoked when this menu closes.
  */
 export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean) {
-    if (contextMenu == null) {
-        const contextMenuElement = document.createElement("div");
+    if (contextMenuElement == null) {
+        contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);
         document.body.appendChild(contextMenuElement);
-        contextMenu = ReactDOM.render(<ContextMenu />, contextMenuElement) as ContextMenu;
+        contextMenu = ReactDOM.render(<ContextMenu didClose={remove} />, contextMenuElement) as ContextMenu;
     }
 
     contextMenu.show(menu, offset, onClose, isDarkTheme);
@@ -133,4 +138,13 @@ export function hide() {
 /** Return whether a context menu is currently open. */
 export function isOpen() {
     return contextMenu != null && contextMenu.state.isOpen;
+}
+
+function remove() {
+    if (contextMenuElement != null) {
+        ReactDOM.unmountComponentAtNode(contextMenuElement);
+        contextMenuElement.remove();
+        contextMenuElement = null;
+        contextMenu = null;
+    }
 }
