@@ -6,7 +6,7 @@ Blueprint is a React UI toolkit for the web.
 
 This package contains configuration for [TSLint](https://palantir.github.io/tslint) (the TypeScript linter) and a handful of new rules specifically for use when developing against Blueprint libraries.
 
-Key features include:
+**Key features:**
 
 - React & JSX rules from [tslint-react](https://github.com/palantir/tslint-react).
 - [Prettier](https://github.com/prettier/prettier) integration for consistent code style and automatic fixes.
