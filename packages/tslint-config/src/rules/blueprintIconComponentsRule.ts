@@ -24,7 +24,8 @@ export class Rule extends Lint.Rules.AbstractRule {
         optionsDescription: Lint.Utils.dedent`
             Accepts one option which can be either of the following values:
             * \`"${OPTION_COMPONENT}"\` (default) requires JSX Icon components for \`icon\` props.
-            * \`"${OPTION_LITERAL}"\` requires \`IconName\` string literals for \`icon\` props.`,
+            * \`"${OPTION_LITERAL}"\` requires \`IconName\` string literals for \`icon\` props.
+            A fixer is available for \`"${OPTION_COMPONENT}"\` that converts a string literal to the corresponding component.`,
         optionExamples: [`true`, `false`, `[true, "${OPTION_COMPONENT}"]`, `[true, "${OPTION_LITERAL}"]`],
         type: "functionality",
         typescriptOnly: false,
@@ -44,13 +45,34 @@ function walk(ctx: Lint.WalkContext<string>): void {
         if (ts.isJsxAttribute(node) && node.name.text === "icon") {
             const { initializer } = node;
             const option = ctx.options;
-            // TODO add fix argument
             if (ts.isStringLiteral(initializer) && option === OPTION_COMPONENT) {
-                ctx.addFailureAt(node.getStart(ctx.sourceFile), node.getWidth(ctx.sourceFile), Rule.COMPONENT_MESSAGE);
+                addFailure(ctx, node, Rule.COMPONENT_MESSAGE, `icon={<${pascalCase(initializer.text)}Icon />}`);
             } else if (ts.isJsxExpression(initializer) && option === OPTION_LITERAL) {
-                ctx.addFailureAt(node.getStart(ctx.sourceFile), node.getWidth(ctx.sourceFile), Rule.LITERAL_MESSAGE);
+                const match = /<(\w+)Icon /.exec(initializer.getText());
+                const literal = match == null ? undefined : `icon="${dashCase(match[1])}"`;
+                addFailure(ctx, node, Rule.LITERAL_MESSAGE, literal);
             }
         }
         return ts.forEachChild(node, cb);
     });
+}
+
+function addFailure(ctx: Lint.WalkContext<string>, node: ts.Declaration, message: string, replacement?: string) {
+    const start = node.getStart(ctx.sourceFile);
+    const width = node.getWidth(ctx.sourceFile);
+    const fixer = replacement == null ? undefined : new Lint.Replacement(start, width, replacement);
+    ctx.addFailureAt(start, width, message, fixer);
+}
+
+/** "MultiWordPhrase" => "multi-word-phrase" */
+function dashCase(text: string) {
+    return text.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`).replace(/^-+/, "");
+}
+
+/** "multi-word-phrase" => "MultiWordPhrase" */
+function pascalCase(text: string) {
+    return text
+        .split("-")
+        .map(s => s[0].toUpperCase() + s.slice(1).toLowerCase())
+        .join("");
 }

@@ -71,6 +71,8 @@ Each `@blueprintjs` package exports a `Classes` object that contains constants f
 
 Enforce usage of JSX `Icon` components over `IconName` string literals (or vice-versa) in `icon` JSX props. Note that this rule only supports hardcoded values in the `icon` prop; it does not handle expressions or conditionals.
 
+A fixer is available for this rule that will convert between string literals and named `Icon` components. Note that the implementation is naive and may require intervention, such as to import a component or fix an invalid name.
+
 Named icon components (`TickIcon`, `GraphIcon`, etc) can be imported from the `@blueprintjs/icons` package.
 
 This rule is disabled in the `blueprint-rules` config as it is most useful to ensure that the `@blueprintjs/icons` package can be tree-shaken (an opt-in process which requires using components and _never_ `IconName` literals).
