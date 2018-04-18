@@ -8,7 +8,8 @@ module.exports = {
         "tslint:latest",
         "tslint-react",
         "tslint-config-prettier",
-        "tslint-plugin-prettier"
+        "tslint-plugin-prettier",
+        "./blueprint-rules",
     ],
 
     defaultSeverity: "error",
@@ -21,13 +22,6 @@ module.exports = {
                 ["describe", "only", "should not be committed to repo"],
                 ["it", "only", "should not be committed to repo"],
                 ["test", "only", "should not be committed to repo"],
-                // TODO: enable
-                // ["assert", "equal", "use assert.strictEqual instead"]
-            ],
-        },
-        "file-header": {
-            options: [
-                "Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved.",
             ],
         },
         "jsx-key": false,

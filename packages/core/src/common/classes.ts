@@ -49,6 +49,8 @@ export const RUNNING_TEXT = `${NS}-running-text`;
 export const RUNNING_TEXT_SMALL = `${NS}-running-text-small`;
 export const MONOSPACE_TEXT = `${NS}-monospace-text`;
 
+export const FOCUS_DISABLED = `${NS}-focus-disabled`;
+
 // lists
 export const LIST = `${NS}-list`;
 export const LIST_UNSTYLED = `${LIST}-unstyled`;

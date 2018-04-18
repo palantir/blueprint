@@ -9,6 +9,7 @@ import { Classes } from "@blueprintjs/core";
 const NS = Classes.getClassNamespace();
 
 export const TABLE_BODY = `${NS}-table-body`;
+export const TABLE_BODY_CELLS = `${NS}-table-body-cells`;
 export const TABLE_BODY_SCROLL_CLIENT = `${NS}-table-body-scroll-client`;
 export const TABLE_BODY_VIRTUAL_CLIENT = `${NS}-table-body-virtual-client`;
 export const TABLE_BOTTOM_CONTAINER = `${NS}-table-bottom-container`;

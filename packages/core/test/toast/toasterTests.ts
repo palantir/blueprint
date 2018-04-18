@@ -26,7 +26,7 @@ describe("Toaster", () => {
         ReactDOM.unmountComponentAtNode(testsContainerElement);
     });
 
-    it("does not attach .pt-toast-container to body on script load", () => {
+    it("does not attach toast container to body on script load", () => {
         assert.lengthOf(document.getElementsByClassName(Classes.TOAST_CONTAINER), 0, "unexpected toast container");
     });
 
@@ -132,7 +132,7 @@ describe("Toaster", () => {
             toaster.show({ message: "focus on me" });
             // small explicit timeout reduces flakiness of these tests
             setTimeout(() => {
-                assert.equal(testsContainerElement.querySelector(".pt-toast"), document.activeElement);
+                assert.equal(testsContainerElement.querySelector(`.${Classes.TOAST}`), document.activeElement);
                 done();
             }, 10);
         });
