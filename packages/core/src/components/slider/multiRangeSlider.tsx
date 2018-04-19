@@ -9,21 +9,14 @@ import * as React from "react";
 
 import { Classes, Intent } from "../../common";
 import { intentClass } from "../../common/classes";
-import { isFunction } from "../../common/utils";
+import * as Utils from "../../common/utils";
 import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
 import { Handle } from "./handle";
-
-export type SliderHandleType = "full" | "lower" | "upper";
-
-export interface ISliderHandleProps {
-    value: number;
-    trackIntentAbove?: Intent;
-    trackIntentBelow?: Intent;
-    type?: SliderHandleType;
-}
+import { SliderHandle, ISliderHandleProps } from "./sliderHandle";
+import * as Errors from "../../common/errors";
 
 export interface IMultiRangeSliderProps extends ICoreSliderProps {
-    handles: ISliderHandleProps[];
+    children?: React.ReactNode;
     defaultTrackIntent?: Intent;
     onChange?(values: number[]): void;
     onRelease?(values: number[]): void;
@@ -32,7 +25,6 @@ export interface IMultiRangeSliderProps extends ICoreSliderProps {
 export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
     public static defaultProps: IMultiRangeSliderProps = {
         disabled: false,
-        handles: [],
         labelStepSize: 1,
         max: 10,
         min: 0,
@@ -48,8 +40,20 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
 
     public componentWillReceiveProps(nextProps: IMultiRangeSliderProps & { children: React.ReactNode }) {
         super.componentWillReceiveProps(nextProps);
-        if (nextProps.handles.length !== this.props.handles.length) {
+        if (getHandles(nextProps).length !== this.getHandles().length) {
             this.handles = [];
+        }
+    }
+
+    protected validateProps(props: IMultiRangeSliderProps) {
+        let anyNonHandleChildren = false;
+        React.Children.forEach(props.children, child => {
+            if (child != null && !Utils.isElementOfType(child, SliderHandle)) {
+                anyNonHandleChildren = true;
+            }
+        });
+        if (anyNonHandleChildren) {
+            throw new Error(Errors.MULTIRANGESLIDER_INVALID_CHILD);
         }
     }
 
@@ -85,7 +89,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
                     [Classes.UPPER]: type === "upper",
                 })}
                 disabled={disabled}
-                key={`${index}-${this.props.handles.length}`}
+                key={`${index}-${this.getHandles().length}`}
                 label={this.formatLabel(value)}
                 max={max}
                 min={min}
@@ -169,8 +173,8 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
 
     private getHandlerForIndex = (index: number, callback?: (values: number[]) => void) => {
         return (newValue: number) => {
-            if (isFunction(callback)) {
-                const values = this.props.handles.map(handle => handle.value);
+            if (Utils.isFunction(callback)) {
+                const values = this.getHandles().map(handle => handle.value);
                 const start = values.slice(0, index);
                 const end = values.slice(index + 1);
                 const newValues = [...start, newValue, ...end];
@@ -183,15 +187,26 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
     private handleChange = (values: number[]) => {
         const oldValues = this.getSortedHandles().map(handle => handle.value);
         const newValues = values.slice().sort(compare);
-        if (!areValuesEqual(newValues, oldValues) && isFunction(this.props.onChange)) {
+        if (!areValuesEqual(newValues, oldValues) && Utils.isFunction(this.props.onChange)) {
             this.props.onChange(newValues);
         }
     };
 
     private getSortedHandles(): ISliderHandleProps[] {
-        const handlesCopy = this.props.handles.slice();
-        return handlesCopy.sort((left, right) => compare(left.value, right.value));
+        const handles = this.getHandles();
+        return handles.sort((left, right) => compare(left.value, right.value));
     }
+
+    private getHandles(): ISliderHandleProps[] {
+        return getHandles(this.props);
+    }
+}
+
+function getHandles({ children }: IMultiRangeSliderProps): ISliderHandleProps[] {
+    return React.Children.map(
+        children,
+        child => (Utils.isElementOfType(child, SliderHandle) ? child.props : null),
+    ).filter(child => child !== null);
 }
 
 function compare(left: number, right: number) {

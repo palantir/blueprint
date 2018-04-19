@@ -53,6 +53,7 @@ export * from "./progress/progressBar";
 export * from "./slider/multiRangeSlider";
 export * from "./slider/rangeSlider";
 export * from "./slider/slider";
+export * from "./slider/sliderHandle";
 export * from "./spinner/spinner";
 export * from "./spinner/svgSpinner";
 export * from "./tabs/tab";
