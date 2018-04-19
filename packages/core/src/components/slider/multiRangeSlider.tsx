@@ -9,11 +9,11 @@ import * as React from "react";
 
 import { Classes, Intent } from "../../common";
 import { intentClass } from "../../common/classes";
+import * as Errors from "../../common/errors";
 import * as Utils from "../../common/utils";
 import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
 import { Handle } from "./handle";
-import { SliderHandle, ISliderHandleProps } from "./sliderHandle";
-import * as Errors from "../../common/errors";
+import { ISliderHandleProps, SliderHandle } from "./sliderHandle";
 
 export interface IMultiRangeSliderProps extends ICoreSliderProps {
     children?: React.ReactNode;

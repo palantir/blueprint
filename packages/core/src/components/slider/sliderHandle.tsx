@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Intent } from '../../common';
+import { Intent } from "../../common";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 
 export type SliderHandleType = "full" | "lower" | "upper";
