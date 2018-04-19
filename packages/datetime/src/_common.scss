@@ -1,7 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "../../core/src/components/button/common";
+@import "~@blueprintjs/core/src/common/variables";
+@import "~@blueprintjs/icons/src/icons";
 
 $datepicker-min-width: $pt-grid-size * 21 !default;
 $datepicker-day-size: $pt-grid-size * 3 !default;

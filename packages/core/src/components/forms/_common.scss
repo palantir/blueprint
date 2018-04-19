@@ -97,12 +97,12 @@ $control-group-stack: (
   appearance: none;
 
   &:focus,
-  &.pt-active {
+  &.#{$ns}-active {
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
   }
 
   &[type="search"],
-  &.pt-round {
+  &.#{$ns}-round {
     border-radius: $pt-input-height;
     // override normalize.css
     box-sizing: border-box;
@@ -114,7 +114,7 @@ $control-group-stack: (
   }
 
   &:disabled,
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     @include pt-input-disabled();
   }
 }
@@ -141,7 +141,7 @@ $control-group-stack: (
   font-size: $pt-font-size-large;
 
   &[type="search"],
-  &.pt-round {
+  &.#{$ns}-round {
     padding: 0 $input-padding-horizontal * 1.5;
   }
 }
@@ -176,7 +176,7 @@ $control-group-stack: (
   }
 
   &:disabled,
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     @include pt-dark-input-disabled();
   }
 }
@@ -196,7 +196,7 @@ $control-group-stack: (
   }
 
   &:disabled,
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     box-shadow: none;
   }
 }
@@ -216,7 +216,7 @@ $control-group-stack: (
   }
 
   &:disabled,
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     box-shadow: none;
   }
 }
@@ -265,7 +265,7 @@ $control-group-stack: (
   content: $pt-icon-double-caret-vertical;
   pointer-events: none;
 
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     color: $pt-icon-color-disabled;
   }
 }

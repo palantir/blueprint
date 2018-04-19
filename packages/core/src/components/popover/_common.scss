@@ -23,7 +23,7 @@ $dark-popover-background-color: $dark-gray4 !default;
   // we have to slide it over by that amount first and then by the set offset value
   $computed-arrow-offset: ($arrow-diagonal-half-size - $arrow-square-size) * 0.5 + $arrow-offset;
 
-  .pt-popover-arrow {
+  .#{$ns}-popover-arrow {
     position: absolute;
     width: $arrow-square-size;
     height: $arrow-square-size;
@@ -37,11 +37,11 @@ $dark-popover-background-color: $dark-gray4 !default;
   }
 
   // shift content away from target edge to make space for the arrow
-  .pt-tether-element-attached-bottom.pt-tether-target-attached-top > & {
+  .#{$ns}-tether-element-attached-bottom.#{$ns}-tether-target-attached-top > & {
     margin-top: -$content-margin;
     margin-bottom: $content-margin;
 
-    > .pt-popover-arrow {
+    > .#{$ns}-popover-arrow {
       bottom: $arrow-position;
 
       svg {
@@ -50,10 +50,10 @@ $dark-popover-background-color: $dark-gray4 !default;
     }
   }
 
-  .pt-tether-element-attached-left.pt-tether-target-attached-right > & {
+  .#{$ns}-tether-element-attached-left.#{$ns}-tether-target-attached-right > & {
     margin-left: $content-margin;
 
-    > .pt-popover-arrow {
+    > .#{$ns}-popover-arrow {
       left: $arrow-position;
 
       svg {
@@ -62,10 +62,10 @@ $dark-popover-background-color: $dark-gray4 !default;
     }
   }
 
-  .pt-tether-element-attached-top.pt-tether-target-attached-bottom > & {
+  .#{$ns}-tether-element-attached-top.#{$ns}-tether-target-attached-bottom > & {
     margin-top: $content-margin;
 
-    > .pt-popover-arrow {
+    > .#{$ns}-popover-arrow {
       top: $arrow-position;
 
       svg {
@@ -74,14 +74,14 @@ $dark-popover-background-color: $dark-gray4 !default;
     }
   }
 
-  .pt-tether-element-attached-right.pt-tether-target-attached-left > & {
+  .#{$ns}-tether-element-attached-right.#{$ns}-tether-target-attached-left > & {
     // we keep the positive right margin for ease of arrow positioning.
     margin-right: $content-margin;
     // div will expand to the right and parent div won't be repositioned,
     // so we need to use negative left margin to move content.
     margin-left: -$content-margin;
 
-    > .pt-popover-arrow {
+    > .#{$ns}-popover-arrow {
       right: $arrow-position;
 
       svg {
@@ -91,12 +91,12 @@ $dark-popover-background-color: $dark-gray4 !default;
   }
 
   // "center" and "middle" attachments
-  .pt-tether-element-attached-middle > & > .pt-popover-arrow {
+  .#{$ns}-tether-element-attached-middle > & > .#{$ns}-popover-arrow {
     top: 50%;
     transform: translateY(-50%);
   }
 
-  .pt-tether-element-attached-center > & > .pt-popover-arrow {
+  .#{$ns}-tether-element-attached-center > & > .#{$ns}-popover-arrow {
     right: 50%;
     transform: translateX(50%);
   }
@@ -105,14 +105,14 @@ $dark-popover-background-color: $dark-gray4 !default;
   @each $side in (top, right, left, bottom) {
     // giant selector is 1 character too long :(
     // stylelint-disable-next-line max-line-length
-    .pt-tether-element-attached-#{$side}.pt-tether-target-attached-#{$side} > & > .pt-popover-arrow {
+    .#{$ns}-tether-element-attached-#{$side}.#{$ns}-tether-target-attached-#{$side} > & > .#{$ns}-popover-arrow {
       #{$side}: $computed-arrow-offset;
     }
   }
 
   @each $top in (top, middle, bottom) {
     @each $left in (left, center, right) {
-      .pt-tether-element-attached-#{$top}.pt-tether-element-attached-#{$left} > & {
+      .#{$ns}-tether-element-attached-#{$top}.#{$ns}-tether-element-attached-#{$left} > & {
         @if ($top == middle) {
           // "middle" is tether's way of saying "top == center"
           transform-origin: center $left;
@@ -135,21 +135,21 @@ $dark-popover-background-color: $dark-gray4 !default;
 ) {
   box-shadow: $shadows;
 
-  .pt-popover-content {
+  .#{$ns}-popover-content {
     background: $background-color;
     color: $text-color;
   }
 
-  .pt-popover-arrow::before {
+  .#{$ns}-popover-arrow::before {
     box-shadow: 1px 1px 6px rgba($black, $arrow-drop-shadow-opacity);
   }
 
-  .pt-popover-arrow-border {
+  .#{$ns}-popover-arrow-border {
     fill: $black;
     fill-opacity: $arrow-border-shadow-opacity;
   }
 
-  .pt-popover-arrow-fill {
+  .#{$ns}-popover-arrow-fill {
     fill: $background-color;
   }
 }
@@ -157,34 +157,34 @@ $dark-popover-background-color: $dark-gray4 !default;
 @mixin popover-inline-position() {
   position: absolute;
 
-  &.pt-tether-element-attached-bottom.pt-tether-target-attached-top    { bottom: 100%; }
-  &.pt-tether-element-attached-left.pt-tether-target-attached-right    { left: 100%; }
-  &.pt-tether-element-attached-top.pt-tether-target-attached-bottom    { top: 100%; }
-  &.pt-tether-element-attached-right.pt-tether-target-attached-left    { right: 100%; }
+  &.#{$ns}-tether-element-attached-bottom.#{$ns}-tether-target-attached-top    { bottom: 100%; }
+  &.#{$ns}-tether-element-attached-left.#{$ns}-tether-target-attached-right    { left: 100%; }
+  &.#{$ns}-tether-element-attached-top.#{$ns}-tether-target-attached-bottom    { top: 100%; }
+  &.#{$ns}-tether-element-attached-right.#{$ns}-tether-target-attached-left    { right: 100%; }
 
-  &.pt-tether-element-attached-top.pt-tether-target-attached-top       { top: 0; }
-  &.pt-tether-element-attached-right.pt-tether-target-attached-right   { right: 0; }
-  &.pt-tether-element-attached-bottom.pt-tether-target-attached-bottom { bottom: 0; }
-  &.pt-tether-element-attached-left.pt-tether-target-attached-left     { left: 0; }
+  &.#{$ns}-tether-element-attached-top.#{$ns}-tether-target-attached-top       { top: 0; }
+  &.#{$ns}-tether-element-attached-right.#{$ns}-tether-target-attached-right   { right: 0; }
+  &.#{$ns}-tether-element-attached-bottom.#{$ns}-tether-target-attached-bottom { bottom: 0; }
+  &.#{$ns}-tether-element-attached-left.#{$ns}-tether-target-attached-left     { left: 0; }
 
-  &.pt-tether-element-attached-middle {
+  &.#{$ns}-tether-element-attached-middle {
     top: 50%;
     transform: translateY(-50%);
   }
 
-  &.pt-tether-element-attached-center {
+  &.#{$ns}-tether-element-attached-center {
     left: 50%;
     transform: translateX(-50%);
   }
 }
 
 @mixin fade-transition() {
-  @include react-transition("pt-popover", (opacity: 0 1), $before: "&");
+  @include react-transition("#{$ns}-popover", (opacity: 0 1), $before: "&");
 }
 
 @mixin scale-transition() {
   @include react-transition(
-    "pt-popover",
+    "#{$ns}-popover",
     (transform: scale(0.3) scale(1)),
     $duration: $pt-transition-duration * 3,
     $easing: $pt-transition-ease-bounce,

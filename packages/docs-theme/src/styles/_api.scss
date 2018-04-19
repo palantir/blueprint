@@ -7,7 +7,7 @@
 .docs-api-overlay {
   .docs-modifiers {
     @include react-transition-phase(
-      "pt-overlay",
+      "#{$ns}-overlay",
       "enter",
       (transform: (translateX(100%), translateX(0))),
       $pt-transition-duration * 2,
@@ -15,7 +15,7 @@
       $before: "&"
     );
     @include react-transition-phase(
-      "pt-overlay",
+      "#{$ns}-overlay",
       "exit",
       (transform: (translateX(100%), translateX(0))),
       $pt-transition-duration,
@@ -60,7 +60,7 @@
     }
   }
 
-  &.pt-dark {
+  &.#{$ns}-dark {
     .docs-modifiers {
       box-shadow: $pt-dark-elevation-shadow-4;
       background-color: $dark-sidebar-background-color;

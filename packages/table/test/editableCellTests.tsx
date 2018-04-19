@@ -46,7 +46,7 @@ describe("<EditableCell>", () => {
 
         // start editing
         elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
-        const input = elem.find(`.${Classes.TABLE_EDITABLE_TEXT} input`);
+        const input = elem.find("input");
         expect(input.length).to.equal(1);
 
         // make changes
@@ -54,7 +54,7 @@ describe("<EditableCell>", () => {
         expect(onChange.called).to.be.true;
         expect(onCancel.called).to.be.false;
         expect(onConfirm.called).to.be.false;
-        expect(elem.find(`.${Classes.TABLE_EDITABLE_TEXT} .pt-editable-content`).text()).to.equal("new-text");
+        expect(elem.text()).to.equal("new-text");
 
         // confirm
         input.simulate("blur");
@@ -81,19 +81,19 @@ describe("<EditableCell>", () => {
         expect(onChange.called).to.be.true;
         expect(onCancel.called).to.be.false;
         expect(onConfirm.called).to.be.false;
-        expect(elem.find(`.${Classes.TABLE_EDITABLE_TEXT} .pt-editable-content`).text()).to.equal("new-text");
+        expect(elem.text()).to.equal("new-text");
 
         // confirm
         input.simulate("blur");
         expect(onCancel.called).to.be.false;
         expect(onConfirm.called).to.be.true;
         // cell shows user-entered text until re-render
-        expect(elem.find(`.${Classes.TABLE_EDITABLE_TEXT}`).text()).to.equal("new-text");
+        expect(elem.text()).to.equal("new-text");
 
         // set non-value prop, forces EditableCell update
         elem.setProps({ onChange: null });
         // value resets to prop
-        expect(elem.find(`.${Classes.TABLE_EDITABLE_TEXT}`).text()).to.equal("test-value-5000");
+        expect(elem.text()).to.equal("test-value-5000");
     });
 
     it("passes index prop to callbacks if index was provided", () => {
@@ -119,13 +119,11 @@ describe("<EditableCell>", () => {
         elem.setState({ isEditing: true, dirtyValue: "" });
 
         // change value
-        const input = elem.find(`.${Classes.TABLE_EDITABLE_TEXT} input`);
-        expect(input.length).to.equal(1);
-        input.simulate("change", { target: { value: CHANGED_VALUE } });
+        elem.find("input").simulate("change", { target: { value: CHANGED_VALUE } });
         expect(onChangeSpy.firstCall.args).to.deep.equal([CHANGED_VALUE, ROW_INDEX, COLUMN_INDEX]);
 
         // confirm
-        input.simulate("blur");
+        elem.find("input").simulate("blur");
         expect(onChangeSpy.firstCall.args).to.deep.equal([CHANGED_VALUE, ROW_INDEX, COLUMN_INDEX]);
     });
 });

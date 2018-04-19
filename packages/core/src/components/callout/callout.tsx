@@ -24,8 +24,9 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     /**
      * String content of optional title element.
      *
-     * Due to a conflict with the HTML prop types, to provide JSX content simply pass
-     * `<h4 className="pt-callout-title">JSX title content<h4>` as first `children` element instead of using this prop.
+     * Due to a conflict with the HTML prop types, to provide JSX content simply
+     * pass `<h4 className={Classes.CALLOUT_TITLE}>JSX title content<h4>` as
+     * first `children` element instead of using this prop.
      */
     title?: string;
 }

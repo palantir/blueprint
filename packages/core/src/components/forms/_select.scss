@@ -8,7 +8,7 @@
 Selects
 
 Markup:
-<div class="pt-select {{.modifier}}">
+<div class="#{$ns}-select {{.modifier}}">
   <select {{:modifier}}>
     <option selected>Choose an item...</option>
     <option value="1">One</option>
@@ -18,15 +18,15 @@ Markup:
   </select>
 </div>
 
-:disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-select</code> for icon coloring (not shown below).
-.pt-minimal - Minimal appearance
-.pt-large - Large
-.pt-fill - Expand to fill parent container
+:disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-select</code> for icon coloring (not shown below).
+.#{$ns}-minimal - Minimal appearance
+.#{$ns}-large - Large
+.#{$ns}-fill - Expand to fill parent container
 
-Styleguide pt-select
+Styleguide select
 */
 
-.pt-select {
+.#{$ns}-select {
   display: inline-block;
   position: relative;
   vertical-align: middle;
@@ -49,11 +49,11 @@ Styleguide pt-select
     @extend %pt-select-arrow;
   }
 
-  &.pt-minimal select {
+  &.#{$ns}-minimal select {
     @extend %pt-select-minimal;
   }
 
-  &.pt-large {
+  &.#{$ns}-large {
     &::after {
       top: 0;
       right: $pt-grid-size * 1.2;
@@ -65,14 +65,14 @@ Styleguide pt-select
     }
   }
 
-  &.pt-fill {
+  &.#{$ns}-fill {
     &,
     select {
       width: 100%;
     }
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     select {
       @extend %pt-dark-select;
     }
@@ -92,9 +92,9 @@ Styleguide pt-select
 Inline
 
 Markup:
-<label class="pt-label {{.modifier}}">
+<label class="#{$ns}-label {{.modifier}}">
   Label A
-  <div class="pt-select">
+  <div class="#{$ns}-select">
     <select>
       <option selected>Choose an item...</option>
       <option value="1">One</option>
@@ -102,7 +102,7 @@ Markup:
   </div>
 </label>
 
-.pt-inline - Inline
+.#{$ns}-inline - Inline
 
-Styleguide pt-select.pt-inline
+Styleguide select-inline
 */

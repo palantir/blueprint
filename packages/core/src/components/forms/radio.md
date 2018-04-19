@@ -1,8 +1,8 @@
 @# Radios
 
-Blueprint's custom radio buttons use an extra `.pt-control-indicator` element after the `<input>`
+Blueprint's custom radio buttons use an extra `.@ns-control-indicator` element after the `<input>`
 to achieve their custom styling. You should then wrap the whole thing in a `<label>` with the
-classes `.pt-control.pt-radio`.
+classes `.@ns-control.@ns-radio`.
 
 Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>`
 element.
@@ -11,7 +11,7 @@ element.
 
 @## CSS API
 
-@css pt-radio
+@css radio
 
 @## JavaScript API
 

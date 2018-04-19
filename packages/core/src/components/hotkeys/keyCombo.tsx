@@ -30,7 +30,7 @@ export interface IKeyComboProps extends IProps {
 
     /**
      * Whether to render in a minimal style.
-     * If `false`, each key in the combo will be rendered inside a `kbd.pt-key`.
+     * If `false`, each key in the combo will be rendered inside a `<kbd>` tag.
      * If `true`, only the icon or short name of a key will be rendered with no wrapper styles.
      * @default false
      */

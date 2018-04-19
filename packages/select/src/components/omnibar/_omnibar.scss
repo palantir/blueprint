@@ -8,14 +8,14 @@ $omnibar-height: 60vh !default;
 $omnibar-width: $pt-grid-size * 50 !default;
 $omnibar-input-height: $pt-grid-size * 4;
 
-.pt-omnibar {
+.#{$ns}-omnibar {
   $omnibar-transition-props: (
     filter: (blur($pt-grid-size * 2), blur(0)),
     opacity: (0.2, 1),
   );
 
   @include react-transition(
-    "pt-overlay",
+    "#{$ns}-overlay",
     $omnibar-transition-props,
     $duration: $pt-transition-duration * 2,
     $easing: $pt-transition-ease,
@@ -29,7 +29,7 @@ $omnibar-input-height: $pt-grid-size * 4;
   background-color: $white;
   width: $omnibar-width;
 
-  .pt-input {
+  .#{$ns}-input {
     border-radius: 0;
     background-color: transparent;
 
@@ -39,7 +39,7 @@ $omnibar-input-height: $pt-grid-size * 4;
     }
   }
 
-  .pt-menu {
+  .#{$ns}-menu {
     border-radius: 0;
     box-shadow: inset 0 1px 0 $pt-divider-black;
     background-color: transparent;
@@ -51,13 +51,13 @@ $omnibar-input-height: $pt-grid-size * 4;
     }
   }
 
-  .pt-dark &,
-  &.pt-dark {
+  .#{$ns}-dark &,
+  &.#{$ns}-dark {
     box-shadow: $pt-dark-elevation-shadow-4;
     background-color: $dark-gray4;
   }
 }
 
-.pt-omnibar-overlay .pt-overlay-backdrop {
+.#{$ns}-omnibar-overlay .#{$ns}-overlay-backdrop {
   background-color: rgba($black, 0.2);
 }

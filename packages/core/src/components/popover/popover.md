@@ -52,19 +52,19 @@ The __target__ acts as the trigger for the popover; user interaction will show t
 positioned on the page next to the target; the `position` prop determines the relative position (on
 which side of the target).
 
-Internally, the provided target is wrapped in a `span.pt-popover-target`. This in turn is wrapped in a `span.pt-popover-wrapper`. The extra `pt-popover-wrapper` is present so that both the popover and target will be wrapped in a single element when rendering popovers [inline](#core/components/popover.inline-rendering).
+Internally, the provided target is wrapped in a `span.@ns-popover-target`. This in turn is wrapped in a `span.@ns-popover-wrapper`. The extra `@ns-popover-wrapper` is present so that both the popover and target will be wrapped in a single element when rendering popovers [inline](#core/components/popover.inline-rendering).
 
 ```tsx
-<span class="pt-popover-wrapper">
-    <span class="pt-popover-target">
+<span class="@ns-popover-wrapper">
+    <span class="@ns-popover-target">
         <Button text="My target" />
     </span>
     <!-- inline Popover would render here -->
 </span>
 ```
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h4 class="pt-callout-title">Button targets</h4>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-callout-title">Button targets</h4>
     Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
     events, which interferes with the popover functioning. If you need to disable a button that
     triggers a popover, you should use [`AnchorButton`](#core/components/button.anchor-button) instead.
@@ -76,20 +76,20 @@ const { Button, Intent, Popover, PopoverInteractionKind, Position } = "@blueprin
 
 export class PopoverExample extends React.Component {
     public render() {
-        // popover content gets no padding by default; add the "pt-popover-content-sizing"
+        // popover content gets no padding by default; add the "@ns-popover-content-sizing"
         // class to the popover to set nice padding between its border and content,
         // and a default width when inline.
         return (
             <Popover
                 interactionKind={PopoverInteractionKind.CLICK}
-                popoverClassName="pt-popover-content-sizing"
+                popoverClassName="@ns-popover-content-sizing"
                 position={Position.RIGHT}
             >
                 <Button intent={Intent.PRIMARY}>Popover target</Button>
                 <div>
                     <h5>Popover title</h5>
                     <p>...</p>
-                    <Button className="pt-popover-dismiss">Dismiss</Button>
+                    <Button className="@ns-popover-dismiss">Dismiss</Button>
                 </div>
             </Popover>
         );
@@ -143,7 +143,7 @@ Modifiers are the tools through which you customize Popper.js's behavior. Popper
 - `arrowOffset` moves the popper a little bit to make room for the arrow
 - `updatePopoverState` saves off some popper data to `Popover` React state for fancy things
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     To understand all the Popper.js modifiers available to you, you'll want to read [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers).
 </div>
 
@@ -162,8 +162,8 @@ It is important to pay attention to the value of the `nextOpenState` parameter a
 in your application logic whether you should care about a particular invocation (for instance,
 if the `nextOpenState` is not the same as the `Popover`'s current state).
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h4 class="pt-callout-title">Disabling controlled popovers</h4>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-callout-title">Disabling controlled popovers</h4>
     <p>If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
     The popover will re-open when `disabled` is set to `false.</p>
 </div>
@@ -181,7 +181,7 @@ export class ControlledPopoverExample extends React.Component<{}, { isOpen: bool
             <div>
                 <h5>Popover Title</h5>
                 <p>...</p>
-                <button class="pt-button pt-popover-dismiss">Close popover</button>
+                <button class="@ns-button @ns-popover-dismiss">Close popover</button>
             </div>
         );
 
@@ -193,7 +193,7 @@ export class ControlledPopoverExample extends React.Component<{}, { isOpen: bool
                 onInteraction={(state) => this.handleInteraction(state)}
                 position={Position.RIGHT}
             >
-                <button className="pt-button pt-intent-primary">Popover target</button>
+                <button className="@ns-button @ns-intent-primary">Popover target</button>
             </Popover>
         );
     }
@@ -230,23 +230,23 @@ The following example demonstrates the various interaction kinds (note: these Po
 
 The __@blueprintjs/core__ package exports the above values in the `PopoverInteractionKind` enumeration.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Refer to the top-level [Popover example](#core/components/popover) to experiment with the various `PopoverInteractionKind`s.
 </div>
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4 class="pt-callout-title">Conditionally styling popover targets</h4>
-    When a popover is open, the target has a <code>.pt-popover-open</code> class applied to it.
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-callout-title">Conditionally styling popover targets</h4>
+    When a popover is open, the target has a <code>.@ns-popover-open</code> class applied to it.
     You can use this to style the target differently when the popover is open.
 </div>
 
 #### Click-to-close elements
 
 To enable click-to-close behavior on an element inside a popover, simply add the class
-`pt-popover-dismiss` to that element. For example, the "Dismiss" button in the top-level [Popover example](#core/components/popover) has this class. To enable this behavior on the entire popover, pass the
-`popoverClassName="pt-popover-dismiss"` prop.
+`@ns-popover-dismiss` to that element. For example, the "Dismiss" button in the top-level [Popover example](#core/components/popover) has this class. To enable this behavior on the entire popover, pass the
+`popoverClassName="@ns-popover-dismiss"` prop.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Dismiss elements won't have any effect in a popover with
     `PopoverInteractionKind.HOVER_TARGET_ONLY`, because there is no way to interact with the popover
     content itself (the popover is dismissed the moment the user mouses away from the target).
@@ -273,13 +273,13 @@ An error is thrown if used otherwise.
 #### Styling the backdrop
 
 By default, the popover backdrop is invisible, but you can easily add your own styles to
-`.pt-popover-backdrop` to customize the appearance of the backdrop (for example, you could give it
+`.@ns-popover-backdrop` to customize the appearance of the backdrop (for example, you could give it
 a translucent background color, like the backdrop for the [`Dialog`](#core/components/dialog) component).
 
 The backdrop element has the same opacity-fade transition as the `Dialog` backdrop.
 
-<div class="pt-callout pt-intent-danger pt-icon-error">
-    <h4 class="pt-callout-title">Dangerous edge case</h4>
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-callout-title">Dangerous edge case</h4>
     Rendering a `<Popover isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break
     your application by covering the UI with an invisible non-interactive backdrop. This edge case
     must be handled by your application code or simply avoided if possible.
@@ -303,9 +303,9 @@ everything else on the page without needing to manually adjust z-indices, and Po
 
 @### Dark theme
 
-The `Popover` component automatically detects whether its trigger is nested inside a `.pt-dark`
+The `Popover` component automatically detects whether its trigger is nested inside a `.@ns-dark`
 container and applies the same class to itself. You can also explicitly apply the dark theme to
-the React component by providing the prop `popoverClassName="pt-dark"`.
+the React component by providing the prop `popoverClassName="@ns-dark"`.
 
 As a result, any component that you place inside a `Popover` (such as a `Menu`) automatically
 inherits the dark theme styles. Note that [`Tooltip`](#core/components/tooltip) uses `Popover` internally, so it also benefits
@@ -317,11 +317,17 @@ prop.
 @### Sizing
 
 Popovers by default have a `max-width` but no `max-height`. To constrain the height of a popover
-and make its content scrollable, set the appropriate CSS rules on `.pt-popover-content`:
+and make its content scrollable, add a custom class to your popover content element and attach
+styles to that class:
+
+```tsx
+<Popover content={<div class="custom-class">...</div>}>
+    ...
+</Popover>
+```
 
 ```css.scss
-// pass "my-popover" to `popoverClassName` prop.
-.my-popover .pt-popover-content {
+.custom-class {
     max-height: $pt-grid-size * 15;
     overflow-y: auto;
 }
@@ -346,7 +352,7 @@ documentation.
 
 @## Testing
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Your best resource for strategies in popover testing is
     [its own unit test suite.](https://github.com/palantir/blueprint/blob/develop/packages/core/test/popover/popoverTests.tsx)
 </div>
@@ -398,7 +404,7 @@ setTimeout(() => {
 
 If `inline` rendering is not an option, `Popover` instances expose `popoverElement` and
 `targetElement` refs of the actual DOM elements. Importantly, `popoverElement` points to the
-`.pt-popover` element inside the `Portal` so you can use it to easily query popover contents without
+`.@ns-popover` element inside the `Portal` so you can use it to easily query popover contents without
 knowing precisely where they are in the DOM. These properties exist primarily to simplify testing;
 do not rely on them for feature work.
 
@@ -406,6 +412,6 @@ do not rely on them for feature work.
 // using mount() from enzyme
 const wrapper = mount(<Popover content={<div className="test">test</div>} />);
 const { popoverElement } = wrapper.instance();
-// popoverElement is the parent element of .pt-popover
+// popoverElement is the parent element of .@ns-popover
 popoverElement.querySelector(".test").textContent; // "test"
 ```

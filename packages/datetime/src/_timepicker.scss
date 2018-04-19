@@ -1,8 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "../../core/src/common/variables";
-@import "../../core/src/components/forms/common";
+@import "~@blueprintjs/core/src/components/forms/common";
+@import "./common";
 
 $timepicker-input-row-height: $pt-grid-size * 3 !default;
 // subtract two because of inset shadow
@@ -12,21 +12,21 @@ $timepicker-row-padding: 0 1px !default;
 $timepicker-divider-width: $pt-grid-size * 1.1 !default;
 $timepicker-control-width: $pt-grid-size * 3.3 !default;
 
-.pt-timepicker {
+.#{$ns}-timepicker {
   white-space: nowrap;
 
-  .pt-timepicker-arrow-row {
+  .#{$ns}-timepicker-arrow-row {
     padding: $timepicker-row-padding;
   }
 
-  .pt-timepicker-arrow-button {
+  .#{$ns}-timepicker-arrow-button {
     @include pt-icon-colors();
     display: inline-block;
     width: $timepicker-control-width;
     padding: ($pt-grid-size * 0.4) 0;
     text-align: center;
 
-    + .pt-timepicker-arrow-button {
+    + .#{$ns}-timepicker-arrow-button {
       margin-left: $timepicker-divider-width;
     }
 
@@ -35,7 +35,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     }
   }
 
-  .pt-timepicker-input-row {
+  .#{$ns}-timepicker-input-row {
     display: inline-block;
     border-radius: $pt-border-radius;
     box-shadow: $pt-input-box-shadow;
@@ -46,7 +46,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     line-height: $timepicker-input-row-inner-height;
   }
 
-  .pt-timepicker-divider-text {
+  .#{$ns}-timepicker-divider-text {
     display: inline-block;
     width: $timepicker-divider-width;
     text-align: center;
@@ -54,7 +54,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     font-size: $pt-font-size-large;
   }
 
-  .pt-timepicker-input {
+  .#{$ns}-timepicker-input {
     outline: 0;
     border: 0;
     border-radius: $pt-border-radius;
@@ -72,40 +72,40 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     }
   }
 
-  .pt-timepicker-ampm-select {
+  .#{$ns}-timepicker-ampm-select {
     margin-left: $pt-grid-size / 2;
   }
 
-  &.pt-disabled {
-    .pt-timepicker-input-row {
+  &.#{$ns}-disabled {
+    .#{$ns}-timepicker-input-row {
       @include pt-input-disabled();
     }
 
-    .pt-timepicker-input,
-    .pt-timepicker-divider-text {
+    .#{$ns}-timepicker-input,
+    .#{$ns}-timepicker-divider-text {
       cursor: not-allowed;
       color: $input-color-disabled;
     }
 
-    .pt-timepicker-arrow-button,
-    .pt-timepicker-arrow-button:hover {
+    .#{$ns}-timepicker-arrow-button,
+    .#{$ns}-timepicker-arrow-button:hover {
       cursor: not-allowed;
       color: $input-color-disabled;
     }
   }
 }
 
-.pt-dark .pt-timepicker {
-  .pt-timepicker-input-row {
+.#{$ns}-dark .#{$ns}-timepicker {
+  .#{$ns}-timepicker-input-row {
     box-shadow: $pt-dark-input-box-shadow;
     background: $dark-input-background-color;
   }
 
-  .pt-timepicker-divider-text {
+  .#{$ns}-timepicker-divider-text {
     color: $pt-dark-text-color-muted;
   }
 
-  .pt-timepicker-input {
+  .#{$ns}-timepicker-input {
     color: $pt-dark-text-color;
   }
 }

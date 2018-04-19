@@ -24,8 +24,7 @@ const HERO_SVGS: Record<string, string> = {
 
 function injectSVG(elem: HTMLElement, id: string) {
     const wrapper = document.createElement("div");
-    // tslint:disable-next-line:blueprint-classes-constants
-    wrapper.classList.add("pt-wireframe", `pt-logo-wireframe-${id}`);
+    wrapper.classList.add("landing-wireframe", `landing-logo-wireframe-${id}`);
     wrapper.innerHTML = HERO_SVGS[id];
     elem.appendChild(wrapper);
 }

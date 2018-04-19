@@ -30,12 +30,12 @@ dark theme class), call the `setHotkeysDialogProps` function with `IDialogProps`
 @## Piano example
 
 Also known as the keyboard keyboard. First, click the keys or press
-<span class="pt-key-combo">
-    <kbd class="pt-key pt-modifier-key">
-        <span class="pt-icon-standard pt-icon-key-shift"></span>
+<span class="@ns-key-combo">
+    <kbd class="@ns-key @ns-modifier-key">
+        <span class="@ns-icon-standard @ns-icon-key-shift"></span>
         shift
     </kbd>
-    <kbd class="pt-key">P</kbd>
+    <kbd class="@ns-key">P</kbd>
 </span>
 to focus the piano, then press the keys on your keyboard to play some music!
 

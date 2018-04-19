@@ -10,8 +10,8 @@ value). For enter & appear transitions, each property will transition from its i
 value. For exit transitions, each property will transition in reverse, from final to initial.
 
 **Simple example:**
-`@include react-transition("pt-popover", (opacity: 0 1), $before: "&");`
-Transition named "pt-popover" moves opacity from 0 to 1. `"&"` indicates that the
+`@include react-transition("popover", (opacity: 0 1), $before: "&");`
+Transition named "popover" moves opacity from 0 to 1. `"&"` indicates that the
 Transition classes are expected to be applied to this element, where the mixin is invoked.
 
 **Params:**
@@ -52,8 +52,8 @@ If `enter` phase is given then `appear` phase will be generated at the same time
 If `exit` phase is given then property values are animated in reverse, from final to initial.
 
 **Example:**
-@include react-transition-phase(pt-toast, enter, $enter-translate, $before: "&");
-@include react-transition-phase(pt-toast, leave, $leave-blur, $pt-transition-duration * 3, $before: "&");
+@include react-transition-phase(toast, enter, $enter-translate, $before: "&");
+@include react-transition-phase(toast, leave, $leave-blur, $pt-transition-duration * 3, $before: "&");
 */
 @mixin react-transition-phase(
   $name,

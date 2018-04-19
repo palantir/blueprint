@@ -20,7 +20,7 @@ In this case, a good practice is to add a call to action directing the user what
 You may use the provided styles without using the React component described below.
 See the example below.
 
-@css pt-non-ideal-state
+@css non-ideal-state
 
 @## JavaScript API
 

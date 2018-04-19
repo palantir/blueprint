@@ -3,7 +3,7 @@
 These variables are semantic aliases of our [colors](#colors).
 They are used throughout Blueprint itself to ensure consistent color usage across components.
 
-<table class="pt-html-table docs-color-aliases-table">
+<table class="@ns-html-table docs-color-aliases-table">
     <thead>
         <tr>
             <th></th>

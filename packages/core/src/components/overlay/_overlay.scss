@@ -6,27 +6,27 @@
 $overlay-background-color: rgba($black, 0.7) !default;
 
 // restricts scrolling of underlying content while the overlay is open
-body.pt-overlay-open {
+body.#{$ns}-overlay-open {
   overflow: hidden;
 }
 
-.pt-overlay {
+.#{$ns}-overlay {
   // 0-out all positions so page won't jump when position changes (0s already there)
   @include position-all(static, 0);
   z-index: $pt-z-index-overlay;
 
-  &:not(.pt-overlay-open) {
+  &:not(.#{$ns}-overlay-open) {
     // because of the 0-position covering the viewport,
     // we must ignore the mouse when not open
     pointer-events: none;
   }
 
-  &.pt-overlay-scroll-container {
+  &.#{$ns}-overlay-scroll-container {
     // scroll container covers the entire viewport
     position: fixed;
     overflow: auto;
 
-    &.pt-overlay-inline {
+    &.#{$ns}-overlay-inline {
       // when rendered inline, we want the overlay to position itself relative to
       // its parent container, not relative to the whole window. thus, we change
       // to position:absolute.
@@ -34,7 +34,7 @@ body.pt-overlay-open {
     }
   }
 
-  &.pt-overlay-inline {
+  &.#{$ns}-overlay-inline {
     // inline overlays can overflow container by default (see Dialog & Popover)
     overflow: visible;
   }
@@ -42,13 +42,13 @@ body.pt-overlay-open {
 
 // this class is added to each Overlay child so that users won't need to
 // explicitly manage the position mode for inline and non-inline rendering.
-.pt-overlay-content {
+.#{$ns}-overlay-content {
   // default fixed pulls it out of the flow and makes it viewport-relative
   position: fixed;
   z-index: $pt-z-index-overlay;
 
-  .pt-overlay-inline &,
-  .pt-overlay-scroll-container & {
+  .#{$ns}-overlay-inline &,
+  .#{$ns}-overlay-scroll-container & {
     // but inline (or scrollable) overlays want their children to respect
     // the parent positioning context. also allows the content to scroll.
     position: absolute;
@@ -56,10 +56,10 @@ body.pt-overlay-open {
 }
 
 // fixed position so the backdrop forecefully covers the whole screen
-.pt-overlay-backdrop {
+.#{$ns}-overlay-backdrop {
   @include position-all(fixed, 0);
   @include react-transition(
-    "pt-overlay",
+    "#{$ns}-overlay",
     (opacity: 0 1),
     $pt-transition-duration * 2,
     $before: "&"
@@ -74,7 +74,7 @@ body.pt-overlay-open {
   }
 
   // as mentioned above: when inline, Overlay backdrop must respect parent
-  .pt-overlay-inline & {
+  .#{$ns}-overlay-inline & {
     position: absolute;
   }
 }

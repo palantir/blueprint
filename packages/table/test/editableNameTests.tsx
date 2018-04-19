@@ -9,13 +9,13 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes } from "@blueprintjs/core";
+import { EditableText } from "@blueprintjs/core";
 import { EditableName } from "../src/index";
 
 describe("<EditableName>", () => {
     it("renders", () => {
         const elem = mount(<EditableName name="test-name-5000" />);
-        expect(elem.find(`.${Classes.EDITABLE_TEXT_CONTENT}`).text()).to.equal("test-name-5000");
+        expect(elem.find(EditableText).text()).to.equal("test-name-5000");
     });
 
     it("edits", () => {
@@ -27,16 +27,18 @@ describe("<EditableName>", () => {
         );
 
         // focus
-        elem.find(`.${Classes.EDITABLE_TEXT}`).simulate("focus");
+        elem.find(EditableText).simulate("focus");
 
         // edit
         const input = elem
-            .find(`.${Classes.EDITABLE_TEXT_INPUT}`)
+            .find(EditableText)
+            .find("input")
             .simulate("change", { target: { value: "my-changed-name" } });
+
         expect(onChange.called).to.be.true;
         expect(onCancel.called).to.be.false;
         expect(onConfirm.called).to.be.false;
-        expect(elem.find(`.${Classes.EDITABLE_TEXT_CONTENT}`).text()).to.equal("my-changed-name");
+        expect(elem.find(EditableText).text()).to.equal("my-changed-name");
 
         // confirm
         input.simulate("blur");

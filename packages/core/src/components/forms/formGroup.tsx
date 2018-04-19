@@ -16,7 +16,10 @@ export interface IFormGroupProps extends IIntentProps, IProps {
      */
     disabled?: boolean;
 
-    /** Optional helper text. The given content will be wrapped in `.pt-form-helper-text` and displayed beneath `children`. */
+    /**
+     * Optional helper text. The given content will be wrapped in
+     * `Classes.FORM_HELPER_TEXT` and displayed beneath `children`.
+     */
     helperText?: React.ReactNode;
 
     /** Whether to render the label and children on a single line. */
@@ -45,10 +48,11 @@ export interface IFormGroupProps extends IIntentProps, IProps {
 
 export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
     /**
-     * Element used to render `required` message when a boolean value is provided for that prop.
-     * Modifying the value of this property will change the default globally in your app.
+     * Element used to render `required` message when a boolean value is
+     * provided for that prop. Modifying the value of this property will change
+     * the default globally in your app.
      *
-     * Defaults to `<span class="pt-text-muted">(required)</span>`.
+     * Defaults to `<span class={Classes.TEXT_MUTED}>(required)</span>`.
      */
     public static DEFAULT_REQUIRED_CONTENT = <span className={Classes.TEXT_MUTED}>(required)</span>;
 

@@ -5,12 +5,12 @@
 
 $collapse-transition: ($pt-transition-duration * 2) $pt-transition-ease !default;
 
-.pt-collapse {
+.#{$ns}-collapse {
   height: 0;
   overflow-y: hidden;
   transition: height $collapse-transition;
 
-  .pt-collapse-body {
+  .#{$ns}-collapse-body {
     transition: transform $collapse-transition;
 
     &[aria-hidden="true"] {

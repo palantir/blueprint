@@ -8,7 +8,7 @@ You can create spinners manually by inserting their whole markup into your HTML.
 Spinners created via markup use same modifier classes as the
 [React `Spinner` component](#core/components/progress/spinner.javascript-api).
 
-@css pt-spinner
+@css spinner
 
 @## JavaScript API
 
@@ -24,8 +24,8 @@ indefinitely (this is the default appearance).
 Note that the CSS modifiers described in the [CSS API](#core/components/progress/spinner.css-api)
 are supported via the `className` prop.
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h4 class="pt-callout-title">IE11 compatibility note</h4>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-callout-title">IE11 compatibility note</h4>
     IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
     `value` will not smoothly transition as `value` changes. Indeterminate spinners still animate
     correctly because they rely on CSS animations, not transitions.
@@ -41,8 +41,8 @@ are supported via the `className` prop.
 
 Use the `SVGSpinner` component to render a spinner inside an SVG element.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4 class="pt-callout-title">Sizing note</h4>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-callout-title">Sizing note</h4>
     Because of the way SVG elements are sized, you may need to manually scale the spinner inside your
     SVG to make it an appropriate size.
 </div>

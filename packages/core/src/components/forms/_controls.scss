@@ -19,7 +19,7 @@ $control-checked-background-color: nth(map-get($button-intents, "primary"), 1) !
 $control-checked-background-color-hover: nth(map-get($button-intents, "primary"), 2) !default;
 $control-checked-background-color-active: nth(map-get($button-intents, "primary"), 3) !default;
 
-.pt-control {
+.#{$ns}-control {
   display: block;
   position: relative;
   margin-bottom: $pt-grid-size;
@@ -30,12 +30,12 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   text-transform: none;
   line-height: $control-indicator-size;
 
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     cursor: not-allowed;
     color: $pt-text-color-disabled;
   }
 
-  &.pt-inline {
+  &.#{$ns}-inline {
     display: inline-block;
     margin-right: $pt-grid-size * 2;
   }
@@ -48,7 +48,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     z-index: -1; // don't let it intercept clicks
   }
 
-  .pt-control-indicator {
+  .#{$ns}-control-indicator {
     @include pt-icon($pt-icon-size-standard);
     position: absolute;
     top: 0;
@@ -66,7 +66,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     user-select: none;
   }
 
-  input:checked ~ .pt-control-indicator {
+  input:checked ~ .#{$ns}-control-indicator {
     box-shadow: $button-intent-box-shadow;
     background-color: $control-checked-background-color;
     background-image: $button-intent-gradient;
@@ -74,40 +74,40 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   &:hover {
-    .pt-control-indicator {
+    .#{$ns}-control-indicator {
       background-color: $control-background-color-hover;
     }
 
-    input:checked ~ .pt-control-indicator {
+    input:checked ~ .#{$ns}-control-indicator {
       box-shadow: $button-intent-box-shadow;
       background-color: $control-checked-background-color-hover;
     }
   }
 
   input:not(:disabled):active {
-    ~ .pt-control-indicator {
+    ~ .#{$ns}-control-indicator {
       box-shadow: $button-box-shadow-active;
       background: $control-background-color-active;
     }
 
-    &:checked ~ .pt-control-indicator {
+    &:checked ~ .#{$ns}-control-indicator {
       box-shadow: $button-intent-box-shadow-active;
       background: $control-checked-background-color-active;
     }
   }
 
-  input:focus ~ .pt-control-indicator {
+  input:focus ~ .#{$ns}-control-indicator {
     @include focus-outline();
   }
 
   input:disabled {
-    ~ .pt-control-indicator {
+    ~ .#{$ns}-control-indicator {
       box-shadow: none;
       background: $button-background-color-disabled;
       cursor: not-allowed;
     }
 
-    &:checked ~ .pt-control-indicator {
+    &:checked ~ .#{$ns}-control-indicator {
       box-shadow: none;
       background: rgba($control-checked-background-color, 0.5);
     }
@@ -117,24 +117,24 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Checkbox
 
   Markup:
-  <label class="pt-control pt-checkbox {{.modifier}}">
+  <label class="#{$ns}-control #{$ns}-checkbox {{.modifier}}">
     <input type="checkbox" {{:modifier}} />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     Checkbox
   </label>
 
   :checked  - Checked
-  :disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
+  :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-control</code> to change text color (not shown below).
   :indeterminate - Indeterminate. Note that this style can only be achieved via JavaScript
                    <code>input.indeterminate = true</code>.
-  .pt-align-right - Right-aligned indicator
-  .pt-large - Large
+  .#{$ns}-align-right - Right-aligned indicator
+  .#{$ns}-large - Large
 
-  Styleguide pt-checkbox
+  Styleguide checkbox
   */
 
-  &.pt-checkbox {
-    .pt-control-indicator {
+  &.#{$ns}-checkbox {
+    .#{$ns}-control-indicator {
       border-radius: $pt-border-radius;
       font-size: $control-indicator-size;
     }
@@ -147,11 +147,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     }
 
     // CSS API support
-    input:checked ~ .pt-control-indicator:empty::before {
+    input:checked ~ .#{$ns}-control-indicator:empty::before {
       content: $pt-icon-small-tick;
     }
 
-    input:indeterminate ~ .pt-control-indicator:empty::before {
+    input:indeterminate ~ .#{$ns}-control-indicator:empty::before {
       content: $pt-icon-small-minus;
     }
   }
@@ -160,31 +160,31 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Radio
 
   Markup:
-  <label class="pt-control pt-radio {{.modifier}}">
+  <label class="#{$ns}-control #{$ns}-radio {{.modifier}}">
     <input type="radio" name="docs-radio-regular" {{:modifier}} />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     Radio
   </label>
 
   :checked  - Selected
-  :disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
-  .pt-align-right - Right-aligned indicator
-  .pt-large - Large
+  :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-control</code> to change text color (not shown below).
+  .#{$ns}-align-right - Right-aligned indicator
+  .#{$ns}-large - Large
 
-  Styleguide pt-radio
+  Styleguide radio
   */
 
   // stylelint-disable-next-line order/order
   $radio-indicator-font-size: $pt-grid-size * 0.6 !default;
   $radio-indicator-font-size-large: $pt-grid-size * 0.8 !default;
 
-  &.pt-radio {
-    .pt-control-indicator {
+  &.#{$ns}-radio {
+    .#{$ns}-control-indicator {
       border-radius: 50%;
       font-size: $radio-indicator-font-size;
     }
 
-    input:checked ~ .pt-control-indicator::before {
+    input:checked ~ .#{$ns}-control-indicator::before {
       display: inline-block;
       position: absolute;
       top: 50%;
@@ -197,11 +197,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       content: "";
     }
 
-    input:checked:disabled ~ .pt-control-indicator::before {
+    input:checked:disabled ~ .#{$ns}-control-indicator::before {
       box-shadow: none;
     }
 
-    input:focus ~ .pt-control-indicator {
+    input:focus ~ .#{$ns}-control-indicator {
       -moz-outline-radius: $control-indicator-size;
     }
   }
@@ -210,18 +210,18 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Switch
 
   Markup:
-  <label class="pt-control pt-switch {{.modifier}}">
+  <label class="#{$ns}-control #{$ns}-switch {{.modifier}}">
     <input type="checkbox" {{:modifier}} />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     Switch
   </label>
 
   :checked  - Selected
-  :disabled - Disabled. Also add <code>.pt-disabled</code> to <code>.pt-control</code> to change text color (not shown below).
-  .pt-align-right - Right-aligned indicator
-  .pt-large - Large
+  :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-control</code> to change text color (not shown below).
+  .#{$ns}-align-right - Right-aligned indicator
+  .#{$ns}-large - Large
 
-  Styleguide pt-switch
+  Styleguide switch
   */
 
   // stylelint-disable-next-line order/order
@@ -255,10 +255,10 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   $dark-switch-indicator-background-color: $dark-gray4 !default;
   $dark-switch-indicator-background-color-disabled: rgba($black, 0.4) !default;
 
-  &.pt-switch {
+  &.#{$ns}-switch {
     padding-left: $switch-width + $pt-grid-size;
 
-    .pt-control-indicator {
+    .#{$ns}-control-indicator {
       border: none;
       border-radius: $switch-width;
       box-shadow: none;
@@ -283,7 +283,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       }
     }
 
-    input:checked ~ .pt-control-indicator {
+    input:checked ~ .#{$ns}-control-indicator {
       box-shadow: none;
       background-color: $switch-checked-background-color;
       width: $switch-width;
@@ -296,22 +296,22 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     }
 
     &:hover {
-      .pt-control-indicator {
+      .#{$ns}-control-indicator {
         background-color: $switch-background-color-hover;
       }
 
-      input:checked ~ .pt-control-indicator {
+      input:checked ~ .#{$ns}-control-indicator {
         background-color: $switch-checked-background-color-hover;
       }
     }
 
     input:not(:disabled):active {
-      ~ .pt-control-indicator {
+      ~ .#{$ns}-control-indicator {
         box-shadow: none;
         background-color: $switch-background-color-active;
       }
 
-      &:checked ~ .pt-control-indicator {
+      &:checked ~ .#{$ns}-control-indicator {
         background-color: $control-checked-background-color-active;
 
         &::before {
@@ -321,7 +321,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     }
 
     input:disabled {
-      ~ .pt-control-indicator {
+      ~ .#{$ns}-control-indicator {
         background-color: $switch-background-color-disabled;
 
         &::before {
@@ -330,30 +330,30 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         }
       }
 
-      &:checked ~ .pt-control-indicator {
+      &:checked ~ .#{$ns}-control-indicator {
         background-color: $switch-checked-background-color-disabled;
       }
     }
   }
 
   // right-aligned indicator is glued to the right side of the container
-  &.pt-align-right {
+  &.#{$ns}-align-right {
     padding-right: $control-indicator-size + $pt-grid-size;
     padding-left: 0;
 
-    .pt-control-indicator {
+    .#{$ns}-control-indicator {
       right: 0;
       left: auto;
     }
   }
 
-  &.pt-large {
+  &.#{$ns}-large {
     min-height: $control-indicator-size-large;
     padding-left: $control-indicator-size-large + $pt-grid-size;
     line-height: $control-indicator-size-large;
     font-size: $pt-font-size-large;
 
-    .pt-control-indicator {
+    .#{$ns}-control-indicator {
       width: $control-indicator-size-large;
       height: $control-indicator-size-large;
       line-height: $control-indicator-size-large;
@@ -361,18 +361,18 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       font-size: $control-indicator-size-large;
     }
 
-    &.pt-checkbox input:checked ~ .pt-control-indicator::before {
+    &.#{$ns}-checkbox input:checked ~ .#{$ns}-control-indicator::before {
       top: 1px;
     }
 
-    &.pt-radio .pt-control-indicator {
+    &.#{$ns}-radio .#{$ns}-control-indicator {
       font-size: $radio-indicator-font-size-large;
     }
 
-    &.pt-switch {
+    &.#{$ns}-switch {
       padding-left: $switch-width-large + $pt-grid-size;
 
-      .pt-control-indicator {
+      .#{$ns}-control-indicator {
         width: $switch-width-large;
         height: $switch-height-large;
 
@@ -382,7 +382,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         }
       }
 
-      input:checked ~ .pt-control-indicator {
+      input:checked ~ .#{$ns}-control-indicator {
         width: $switch-width-large;
         height: $switch-height-large;
 
@@ -393,70 +393,70 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     }
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     color: $pt-dark-text-color;
 
-    &.pt-disabled {
+    &.#{$ns}-disabled {
       color: $pt-dark-text-color-disabled;
     }
 
-    .pt-control-indicator {
+    .#{$ns}-control-indicator {
       box-shadow: $dark-button-box-shadow;
       background-color: $dark-control-background-color;
       background-image: $dark-button-gradient;
     }
 
-    input:checked ~ .pt-control-indicator {
+    input:checked ~ .#{$ns}-control-indicator {
       box-shadow: $dark-button-intent-box-shadow;
     }
 
     &:hover {
-      .pt-control-indicator {
+      .#{$ns}-control-indicator {
         background-color: $dark-control-background-color-hover;
       }
     }
 
     input:not(:disabled):active {
-      ~ .pt-control-indicator {
+      ~ .#{$ns}-control-indicator {
         box-shadow: $dark-button-box-shadow-active;
         background: $dark-control-background-color-active;
       }
 
-      &:checked ~ .pt-control-indicator {
+      &:checked ~ .#{$ns}-control-indicator {
         box-shadow: $dark-button-intent-box-shadow-active;
         background-color: $control-checked-background-color-active;
       }
     }
 
     input:disabled {
-      ~ .pt-control-indicator {
+      ~ .#{$ns}-control-indicator {
         box-shadow: none;
         background: $dark-button-background-color-disabled;
         cursor: not-allowed;
       }
 
-      &:checked ~ .pt-control-indicator {
+      &:checked ~ .#{$ns}-control-indicator {
         box-shadow: none;
         background: rgba($control-checked-background-color-active, 0.5);
       }
     }
 
-    &.pt-checkbox {
+    &.#{$ns}-checkbox {
       input:checked {
-        &:disabled ~ .pt-control-indicator::before {
+        &:disabled ~ .#{$ns}-control-indicator::before {
           color: $dark-button-color-disabled;
         }
       }
     }
 
-    &.pt-radio {
-      input:checked:disabled ~ .pt-control-indicator::before {
+    &.#{$ns}-radio {
+      input:checked:disabled ~ .#{$ns}-control-indicator::before {
         background: $dark-button-color-disabled;
       }
     }
 
-    &.pt-switch {
-      .pt-control-indicator {
+    &.#{$ns}-switch {
+      .#{$ns}-control-indicator {
         box-shadow: none;
         background: $dark-switch-background-color;
 
@@ -466,7 +466,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         }
       }
 
-      input:checked ~ .pt-control-indicator {
+      input:checked ~ .#{$ns}-control-indicator {
         box-shadow: none;
         background-color: $dark-switch-checked-background-color;
 
@@ -476,17 +476,17 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       }
 
       &:hover {
-        .pt-control-indicator {
+        .#{$ns}-control-indicator {
           background: $dark-switch-background-color-hover;
         }
 
-        input:checked ~ .pt-control-indicator {
+        input:checked ~ .#{$ns}-control-indicator {
           background: $dark-switch-checked-background-color-hover;
         }
       }
 
       input:not(:disabled):active {
-        ~ .pt-control-indicator {
+        ~ .#{$ns}-control-indicator {
           box-shadow: none;
           background: $dark-switch-background-color-active;
 
@@ -497,7 +497,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
           }
         }
 
-        &:checked ~ .pt-control-indicator {
+        &:checked ~ .#{$ns}-control-indicator {
           background: $dark-switch-checked-background-color-active;
 
           &::before {
@@ -507,7 +507,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       }
 
       input:disabled {
-        ~ .pt-control-indicator {
+        ~ .#{$ns}-control-indicator {
           background: $dark-switch-background-color-disabled;
 
           &::before {
@@ -517,7 +517,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
           // stylelint-enable max-nesting-depth
         }
 
-        &:checked ~ .pt-control-indicator {
+        &:checked ~ .#{$ns}-control-indicator {
           background: $dark-switch-checked-background-color-disabled;
         }
       }
@@ -528,23 +528,23 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Inline labels
 
   Markup:
-  <label class="pt-label">A group of related options</label>
-  <label class="pt-control pt-checkbox pt-inline">
+  <label class="#{$ns}-label">A group of related options</label>
+  <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
     <input type="checkbox" />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     First
   </label>
-  <label class="pt-control pt-checkbox pt-inline">
+  <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
     <input type="checkbox" />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     Second
   </label>
-  <label class="pt-control pt-checkbox pt-inline">
+  <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
     <input type="checkbox" />
-    <span class="pt-control-indicator"></span>
+    <span class="#{$ns}-control-indicator"></span>
     Third
   </label>
 
-  Styleguide pt-checkbox.pt-inline
+  Styleguide checkbox-inline
   */
 }

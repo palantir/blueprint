@@ -95,7 +95,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
     position?: Position | "auto";
 
     /**
-     * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).
+     * The name of the HTML tag to use when rendering the popover target wrapper element (`Classes.POPOVER_WRAPPER`).
      * @default "span"
      */
     rootElementTag?: string;

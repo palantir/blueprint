@@ -28,7 +28,7 @@ $banner-height: $pt-grid-size * 4;
   color: $white !important;
 
   @each $intent, $colors in $button-intents {
-    &.pt-intent-#{$intent} {
+    &.#{$ns}-intent-#{$intent} {
       background: nth($colors, 1);
 
       &:hover {
@@ -45,7 +45,7 @@ $banner-height: $pt-grid-size * 4;
     text-decoration: none;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     box-shadow: 0 1px 0 $pt-divider-black;
   }
 

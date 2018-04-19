@@ -10,6 +10,7 @@
     "test": "exit 0"
   },
   "dependencies": {
+    "@blueprintjs/core": "^2.0.0",
     "@blueprintjs/docs-theme": "^2.0.0",
     "documentalist": "^1.2.0",
     "glob": "^7.1.2",

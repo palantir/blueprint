@@ -32,8 +32,8 @@ See the [Fonts section](#core/typography.fonts) for more information and usage g
 
 @## Icon variables
 
-Most icons should be displayed using the `span.pt-icon-*` classes or via modifier classes on
-components like `.pt-button`. In rare cases, you may need direct access to the content
+Most icons should be displayed using the `span.@ns-icon-*` classes or via modifier classes on
+components like `.@ns-button`. In rare cases, you may need direct access to the content
 string that generates each icon in the icon font. Blueprint provides these variables with
 straightforward names (see the [Icons section](#core/icons) for the full list of identifiers):
 

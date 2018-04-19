@@ -4,20 +4,20 @@
 @import "../common/variables";
 @import "./common";
 
-.pt-table-cell {
+.#{$ns}-table-cell {
   @include cell();
   @include cell-cursors();
 
-  &.pt-table-truncated-cell {
+  &.#{$ns}-table-truncated-cell {
     overflow: hidden;
   }
 
-  &.pt-large,
-  .pt-large & {
+  &.#{$ns}-large,
+  .#{$ns}-large & {
     @include cell-large();
   }
 
-  &.pt-loading {
+  &.#{$ns}-loading {
     @include cell-content-align-vertical();
     color: transparent;
   }
@@ -28,35 +28,35 @@
   }
 }
 
-.pt-table-cell-interactive {
+.#{$ns}-table-cell-interactive {
   z-index: $interactive-cell-z-index;
 }
 
-.pt-table-striped {
-  .pt-table-cell-ledger-even {
+.#{$ns}-table-striped {
+  .#{$ns}-table-cell-ledger-even {
     background-color: $cell-background-color;
   }
 
-  .pt-table-cell-ledger-odd {
+  .#{$ns}-table-cell-ledger-odd {
     background-color: mix($table-background-color, $cell-background-color, 50%);
   }
 
-  .pt-dark & {
-    .pt-table-cell-ledger-even {
+  .#{$ns}-dark & {
+    .#{$ns}-table-cell-ledger-even {
       background-color: $dark-cell-background-color;
     }
 
-    .pt-table-cell-ledger-odd {
+    .#{$ns}-table-cell-ledger-odd {
       background-color: mix($dark-table-background-color, $dark-cell-background-color, 50%);
     }
   }
 }
 
-.pt-table-editable-name input {
+.#{$ns}-table-editable-name input {
   height: $cell-height; // fixed height for IE11
 }
 
-.pt-table-editable-text {
+.#{$ns}-table-editable-text {
   position: absolute;
   top: 0;
   right: 0;

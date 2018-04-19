@@ -19,7 +19,7 @@
   }
 }
 
-.docs-react-options-column .pt-control:not(.pt-inline) {
+.docs-react-options-column .#{$ns}-control:not(.#{$ns}-inline) {
   margin-right: 0;
 }
 

@@ -44,7 +44,7 @@ $dark-package-colors: (
   svg {
     fill: $dark-gray5;
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       fill: $gray5;
     }
   }
@@ -55,7 +55,7 @@ $dark-package-colors: (
   font-size: $pt-grid-size * 2;
   font-weight: 600;
 
-  .pt-tag {
+  .#{$ns}-tag {
     display: block;
     margin-top: 3px;
     margin-left: $pt-grid-size / 2;
@@ -78,7 +78,7 @@ $dark-package-colors: (
   @include pt-flex-container(row);
   align-items: center;
 
-  .pt-menu-item {
+  .#{$ns}-menu-item {
     flex: 1 1 auto;
     text-transform: uppercase;
     font-weight: 600;
@@ -93,7 +93,7 @@ $dark-package-colors: (
         background-color: rgba($color, 0.1);
         fill: $color;
 
-        .pt-dark & {
+        .#{$ns}-dark & {
           background-color: rgba($dark-color, 0.15);
           fill: $dark-color;
         }
@@ -102,11 +102,11 @@ $dark-package-colors: (
       // stylelint-disable max-nesting-depth
       &:hover,
       &.docs-nav-expanded {
-        .pt-menu-item,
-        + .docs-nav-menu .pt-menu-item.pt-active {
+        .#{$ns}-menu-item,
+        + .docs-nav-menu .#{$ns}-menu-item.#{$ns}-active {
           color: $color;
 
-          .pt-dark & {
+          .#{$ns}-dark & {
             color: $dark-color;
           }
         }
@@ -115,7 +115,7 @@ $dark-package-colors: (
           background-color: rgba($color, 0.8);
           fill: $white;
 
-          .pt-dark & {
+          .#{$ns}-dark & {
             background-color: rgba($dark-color, 0.8);
           }
         }
@@ -123,7 +123,7 @@ $dark-package-colors: (
         &:active .docs-nav-package-icon {
           background-color: $color;
 
-          .pt-dark & {
+          .#{$ns}-dark & {
             background-color: $dark-color;
           }
         }
