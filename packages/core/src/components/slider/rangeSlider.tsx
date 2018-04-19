@@ -80,6 +80,10 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         const { disabled, max, min, onRelease, stepSize, value, vertical } = this.props;
         return value.map((val, index) => (
             <Handle
+                className={classNames({
+                    [Classes.LOWER]: index === RangeIndex.START,
+                    [Classes.UPPER]: index === RangeIndex.END,
+                })}
                 disabled={disabled}
                 key={index}
                 label={this.formatLabel(val)}

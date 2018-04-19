@@ -48,7 +48,10 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
 
     private handleElement: HTMLElement;
     private refHandlers = {
-        handle: (el: HTMLSpanElement) => (this.handleElement = el),
+        handle: (el: HTMLSpanElement) => {
+            this.handleElement = el;
+            this.forceUpdate();
+        },
     };
 
     public render() {

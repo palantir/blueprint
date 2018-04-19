@@ -111,7 +111,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
         );
         return (
             <div className={classes} onMouseDown={this.maybeHandleTrackClick} onTouchStart={this.maybeHandleTrackTouch}>
-                <div className={`${Classes.SLIDER}-track`} ref={this.refHandlers.track} />
+                <div className={Classes.SLIDER_TRACK} ref={this.refHandlers.track} />
                 {this.maybeRenderFill()}
                 {this.maybeRenderAxis()}
                 {this.renderHandles()}

@@ -191,8 +191,12 @@ export const SKELETON = "pt-skeleton";
 export const SLIDER = "pt-slider";
 export const SLIDER_HANDLE = "pt-slider-handle";
 export const SLIDER_LABEL = "pt-slider-label";
+export const SLIDER_TRACK = "pt-slider-track";
 export const SLIDER_PROGRESS = "pt-slider-progress";
 export const RANGE_SLIDER = "pt-range-slider";
+export const MULTI_RANGE_SLIDER = "pt-multi-range-slider";
+export const LOWER = "pt-lower";
+export const UPPER = "pt-upper";
 
 export const SPINNER = "pt-spinner";
 export const SPINNER_HEAD = "pt-spinner-head";
