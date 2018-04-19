@@ -27,7 +27,7 @@ export interface IHeaderCellProps extends IProps {
     /**
      * If `true`, the row/column `name` will be replaced with a fixed-height skeleton, and the
      * `resizeHandle` will not be rendered. If passing in additional children to this component, you
-     * will also want to conditionally apply the `.pt-skeleton` class where appropriate.
+     * will also want to conditionally apply `Classes.SKELETON` where appropriate.
      * @default false
      */
     loading?: boolean;

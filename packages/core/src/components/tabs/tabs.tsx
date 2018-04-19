@@ -44,8 +44,7 @@ export interface ITabsProps extends IProps {
     id: TabId;
 
     /**
-     * If set to `true`, the tabs will display with larger styling.
-     * This is equivalent to setting `pt-large` on the `.pt-tab-list` element.
+     * If set to `true`, the tab titles will display with larger styling.
      * This will apply large styles only to the tabs at this level, not to nested tabs.
      * @default false
      */
@@ -211,7 +210,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         }) as TabElement[];
     }
 
-    /** Queries root HTML element for all `.pt-tab`s with optional filter selector */
+    /** Queries root HTML element for all tabs with optional filter selector */
     private getTabElements(subselector = "") {
         if (this.tablistElement == null) {
             return [];

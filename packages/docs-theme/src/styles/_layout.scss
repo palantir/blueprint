@@ -173,7 +173,7 @@ Lefthand navigation menu
   .docs-markup,
   .docs-modifiers,
   .docs-title,
-  .docs-section > .pt-running-text {
+  .docs-section > .#{$ns}-running-text {
     display: none;
   }
 }

@@ -6,7 +6,7 @@ Blueprint packages provide React components in JS files and associated styles in
 
 ```tsx
 // Don't do this! Avoid hardcoding Blueprint class names.
-<button className="pt-button pt-large">Don't do this!</button>
+<button className="@ns-button @ns-large">Don't do this!</button>
 ```
 
 The **best practice** is to add your own class to an element and then reference that class whenever needed.
