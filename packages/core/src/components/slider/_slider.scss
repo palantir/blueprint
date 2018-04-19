@@ -154,7 +154,8 @@ $track-height: $track-size !default;
     }
   }
 
-  &.pt-lower, &.pt-upper {
+  &.pt-lower,
+  &.pt-upper {
     width: $handle-size / 2;
   }
 
@@ -208,7 +209,8 @@ $track-height: $track-size !default;
       margin-left: 0;
     }
 
-    &.pt-upper, &.pt-lower {
+    &.pt-upper,
+    &.pt-lower {
       margin-left: 0;
       width: $handle-size;
       height: $handle-size / 2;
