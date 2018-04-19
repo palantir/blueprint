@@ -21,7 +21,7 @@ export interface ICardProps extends IProps, HTMLDivProps {
 
     /**
      * Whether the card should respond to user interactions. If set to `true`,
-     * hovering over the card will increase the card's elevation
+     * hovering over the card will increase the card's elevation to the maximum
      * and change the mouse cursor to a pointer.
      *
      * Recommended when `onClick` is also defined.

@@ -16,7 +16,7 @@ element.
 
 Add the `.@ns-interactive` modifier class to make a `.@ns-card` respond to user interactions. When you
 hover over cards with this class applied, the mouse changes to a pointer and the elevation shadow on
-the card increases by two levels.
+the card increases to the maximum level.
 
 Users expect an interactive card to be a single clickable unit.
 
