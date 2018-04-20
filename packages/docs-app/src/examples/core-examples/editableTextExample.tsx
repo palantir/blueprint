@@ -49,7 +49,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                     maxLines={12}
                     minLines={3}
                     multiline={true}
-                    placeholder="Edit report... (controlled)"
+                    placeholder="Edit report... (controlled, multiline)"
                     selectAllOnFocus={this.state.selectAllOnFocus}
                     confirmOnEnterKey={this.state.confirmOnEnterKey}
                     value={this.state.report}
@@ -86,12 +86,9 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                     key="focus"
                     onChange={this.toggleSelectAll}
                 />,
-                <Switch
-                    checked={this.state.confirmOnEnterKey}
-                    label="Swap keypress for confirm and newline (multiline only)"
-                    key="swap"
-                    onChange={this.toggleSwap}
-                />,
+                <Switch checked={this.state.confirmOnEnterKey} key="swap" onChange={this.toggleSwap}>
+                    Swap keypress for confirm and newline<br />(multiline only)
+                </Switch>,
             ],
         ];
     }
