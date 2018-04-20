@@ -154,7 +154,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
     }
 
     private getOffsetRatio(value: number, tickSizeRatio: number) {
-        return (value - this.props.min) * tickSizeRatio;
+        return Utils.clamp((value - this.props.min) * tickSizeRatio, 0, 1);
     }
 
     private nearestHandleForValue(handles: Handle[], getOffset: (handle: Handle) => number): Handle | undefined {
@@ -211,12 +211,7 @@ function getHandles({ children }: IMultiRangeSliderProps): ISliderHandleProps[] 
 }
 
 function compare(left: number, right: number) {
-    if (left < right) {
-        return -1;
-    } else if (left > right) {
-        return 1;
-    }
-    return 0;
+    return left - right;
 }
 
 function areValuesEqual(left: number[], right: number[]) {
