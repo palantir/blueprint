@@ -37,8 +37,8 @@
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      .#{$ns}-editable-input,
-      .#{$ns}-editable-content {
+      .#{$ns}-editable-text-input,
+      .#{$ns}-editable-text-content {
         color: $color;
       }
 
@@ -46,7 +46,7 @@
         box-shadow: input-transition-shadow($color), inset border-shadow(0.4, $color, 1px);
       }
 
-      &.#{$ns}-editable-editing::before {
+      &.#{$ns}-editable-text-editing::before {
         box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
       }
     }
@@ -58,7 +58,7 @@
                   inset 0 0 0 1px $pt-dark-divider-white;
     }
 
-    &.#{$ns}-editable-editing::before {
+    &.#{$ns}-editable-text-editing::before {
       box-shadow: input-transition-shadow($dark-input-shadow-color-focus, true),
                   $pt-dark-input-box-shadow;
       background-color: $dark-input-background-color;
@@ -70,7 +70,7 @@
 
     @each $intent, $color in $pt-dark-intent-text-colors {
       &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-editable-content {
+        .#{$ns}-editable-text-content {
           color: $color;
         }
 
@@ -78,7 +78,7 @@
           box-shadow: input-transition-shadow($color), inset border-shadow(0.4, $color, 1px);
         }
 
-        &.#{$ns}-editable-editing::before {
+        &.#{$ns}-editable-text-editing::before {
           box-shadow: input-transition-shadow($color, true), $pt-dark-input-box-shadow;
         }
       }
@@ -86,8 +86,8 @@
   }
 }
 
-.#{$ns}-editable-input,
-.#{$ns}-editable-content {
+.#{$ns}-editable-text-input,
+.#{$ns}-editable-text-content {
   display: inherit;
   position: relative;
   // inherit and respect parent bounds and text styles
@@ -102,7 +102,7 @@
   resize: none;
 }
 
-.#{$ns}-editable-input {
+.#{$ns}-editable-text-input {
   // reset browser input styles (we're using an input solely because you can type in it)
   border: none;
   box-shadow: none;
@@ -121,7 +121,7 @@
   }
 }
 
-.#{$ns}-editable-content {
+.#{$ns}-editable-text-content {
   overflow: hidden;
   // magical number to account for slight increase in input width for cursor bar
   padding-right: 2px;
@@ -129,13 +129,13 @@
   // preserve so trailing whitespace is included in scrollWidth
   white-space: pre;
 
-  .#{$ns}-editable-editing > & {
+  .#{$ns}-editable-text-editing > & {
     position: absolute;
     left: 0;
     visibility: hidden;
   }
 
-  .#{$ns}-editable-placeholder > & {
+  .#{$ns}-editable-text-placeholder > & {
     color: $input-placeholder-color;
 
     .#{$ns}-dark & {
@@ -144,10 +144,10 @@
   }
 }
 
-.#{$ns}-editable-text.#{$ns}-multiline {
+.#{$ns}-editable-text-text.#{$ns}-multiline {
   display: block;
 
-  .#{$ns}-editable-content {
+  .#{$ns}-editable-text-content {
     overflow: auto;
     white-space: pre-wrap;
     word-wrap: break-word;
