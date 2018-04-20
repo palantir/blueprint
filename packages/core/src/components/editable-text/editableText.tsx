@@ -278,7 +278,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
     };
 
     private maybeRenderInput(value: string) {
-        const { maxLength, multiline } = this.props;
+        const { maxLength, multiline, placeholder } = this.props;
         if (!this.state.isEditing) {
             return undefined;
         }
@@ -288,6 +288,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
             onBlur: this.toggleEditing,
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,
+            placeholder,
             ref: this.refHandlers.input,
             style: {
                 height: this.state.inputHeight,

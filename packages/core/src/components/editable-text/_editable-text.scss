@@ -26,7 +26,7 @@
                 inset 0 0 0 1px $pt-divider-black;
   }
 
-  &.#{$ns}-editable-editing::before {
+  &.#{$ns}-editable-text-editing::before {
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
     background-color: $input-background-color;
   }
@@ -103,6 +103,7 @@
 }
 
 .#{$ns}-editable-text-input {
+  @include pt-input-placeholder();
   // reset browser input styles (we're using an input solely because you can type in it)
   border: none;
   box-shadow: none;
@@ -144,7 +145,7 @@
   }
 }
 
-.#{$ns}-editable-text-text.#{$ns}-multiline {
+.#{$ns}-editable-text.#{$ns}-multiline {
   display: block;
 
   .#{$ns}-editable-text-content {
