@@ -52,7 +52,10 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
 
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
-        ) : null;
+        ) : (
+            // explicit undefined (not null) for default behavior (show full list)
+            undefined
+        );
 
         const clearButton = films.length > 0 ? <Button icon="cross" minimal={true} onClick={this.handleClear} /> : null;
 
