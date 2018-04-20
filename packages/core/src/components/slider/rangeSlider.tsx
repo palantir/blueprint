@@ -73,7 +73,7 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
             ? { bottom: offsetCalc, height: sizeCalc }
             : { left: offsetCalc, width: sizeCalc };
 
-        return <div className={`${Classes.SLIDER}-progress`} style={style} />;
+        return <div className={classNames(Classes.SLIDER_PROGRESS, Classes.INTENT_PRIMARY)} style={style} />;
     }
 
     protected renderHandles() {
