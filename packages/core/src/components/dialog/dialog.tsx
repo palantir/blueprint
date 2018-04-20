@@ -29,8 +29,9 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     hasBackdrop?: boolean;
 
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render in the dialog's header.
-     * Note that the header will only be rendered if `title` is provided.
+     * Name of a Blueprint UI icon (or an icon element) to render in the
+     * dialog's header. Note that the header will only be rendered if `title` is
+     * provided.
      */
     icon?: IconName | JSX.Element;
 
@@ -48,15 +49,14 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     style?: React.CSSProperties;
 
     /**
-     * Title of the dialog.
-     * If provided, a `.pt-dialog-header` element will be rendered inside the dialog
-     * before any children elements.
+     * Title of the dialog. If provided, an element with `Classes.DIALOG_HEADER`
+     * will be rendered inside the dialog before any children elements.
      */
     title?: React.ReactNode;
 
     /**
-     * Name of the transition for internal `CSSTransition`.
-     * Providing your own name here will require defining new CSS transition properties.
+     * Name of the transition for internal `CSSTransition`. Providing your own
+     * name here will require defining new CSS transition properties.
      */
     transitionName?: string;
 }

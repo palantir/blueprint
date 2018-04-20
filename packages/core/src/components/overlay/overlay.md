@@ -28,8 +28,8 @@ optional backdrop element will be inserted before the children if `hasBackdrop={
 The `onClose` callback prop is invoked when user interaction causes the overlay to close,
 but your application is responsible for updating the state that actually closes the overlay.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4 class="pt-callout-title">A note about overlay content positioning</h4>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-callout-title">A note about overlay content positioning</h4>
     When rendered inline, content will automatically be set to `position: absolute` to respect
     document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
 </div>
@@ -49,11 +49,11 @@ but your application is responsible for updating the state that actually closes 
 
 Overlays rely heavily on fixed and absolute positioning. By default, a large overlay will not cause
 the page to scroll, and any overflowing content will be hidden. Fortunately, Blueprint makes
-scrolling support very easy: simply pass `"pt-overlay-scroll-container"` as the Overlay `className`,
+scrolling support very easy: simply pass `"@ns-overlay-scroll-container"` as the Overlay `className`,
 and we'll take care of the rest.
 
 ```tsx
-<Overlay className="pt-overlay-scroll-container" ... />
+<Overlay className="@ns-overlay-scroll-container" ... />
 ```
 
 The `Dialog` component applies this CSS class automatically.

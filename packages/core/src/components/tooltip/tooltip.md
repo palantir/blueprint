@@ -16,8 +16,8 @@ When creating a tooltip, you must specify both:
 
 The content will appear in a contrasting popover when the target is hovered over.
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h4 class="pt-callout-title">Button targets</h4>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-callout-title">Button targets</h4>
     Buttons make great tooltip targets, but the `disabled` attribute will prevent all
     events so the enclosing `Tooltip` will not know when to respond.
     Use [`AnchorButton`](#core/components/button.anchor-button) instead;

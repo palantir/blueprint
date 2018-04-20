@@ -4,7 +4,7 @@ Buttons trigger actions when clicked.
 
 @## CSS API
 
-Use the `pt-button` class to access button styles. You should implement buttons using the
+Use the `@ns-button` class to access button styles. You should implement buttons using the
 `<button>` or `<a>` tags rather than `<div>` for the purposes of HTML accessibility and semantics.
 
 * Make sure to include `type="button"` on `<button>` tags (use `type="submit"` when used in a
@@ -12,35 +12,35 @@ Use the `pt-button` class to access button styles. You should implement buttons 
 * Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
   focusable by default.
 * For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
-  user from focusing them by pressing <kbd class="pt-key">tab</kbd> on the keyboard.
-* Note that `<a>` tags do not respond to the `:disabled` attribute; use `.pt-disabled` instead.
+  user from focusing them by pressing <kbd class="@ns-key">tab</kbd> on the keyboard.
+* Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
 
-@css pt-button
+@css button
 
 @### Buttons with icons
 
-Add an icon before the button text with `pt-icon-*` classes.
+Add an icon before the button text with `@ns-icon-*` classes.
 You _do not_ need to include an icon sizing class.
 
-@css pt-button.pt-icon
+@css button-icon
 
 @### Advanced icon layout
 
-You can use a `pt-icon-*` class on a button to add a single icon before the button
+You can use a `@ns-icon-*` class on a button to add a single icon before the button
 text, but for more advanced icon layouts, use `<span>` tags inside the button.
 Add multiple icons to the same button, or move icons after the text.
 
-To adjust margins on right-aligned icons, add the class `pt-align-right` to the icon.
+To adjust margins on right-aligned icons, add the class `@ns-align-right` to the icon.
 
-@css pt-button.pt-icon-advanced
+@css button-icon-advanced
 
 @### Minimal buttons
 
-For a subtler button that appears to fade into the UI, add the `.pt-minimal` modifier
-to any `.pt-button`. `pt-minimal` is compatible with all other button modifiers,
-except for `.pt-fill` (due to lack of visual affordances).
+For a subtler button that appears to fade into the UI, add the `.@ns-minimal` modifier
+to any `.@ns-button`. `@ns-minimal` is compatible with all other button modifiers,
+except for `.@ns-fill` (due to lack of visual affordances).
 
-@css pt-button.pt-minimal
+@css button-minimal
 
 @## JavaScript API
 
@@ -55,12 +55,12 @@ provide a `className` prop, the class names you provide will be added alongside 
 Blueprint class name. If you specify other attributes that the component provides, such as a `role`
 for an `<AnchorButton>`, you'll overide the default value.
 
-<div class="pt-callout pt-intent-danger pt-icon-error">
-    <h4 class="pt-callout-title">Interactions with disabled buttons</h4>
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-callout-title">Interactions with disabled buttons</h4>
     Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
     This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
     the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,
-    but `AnchorButton` uses the class `.pt-disabled` because `<a>` tags do not support the `disabled`
+    but `AnchorButton` uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled`
     attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
     when disabled but permit other events.
 </div>
@@ -72,7 +72,7 @@ for an `<AnchorButton>`, you'll overide the default value.
 ```jsx
 <AnchorButton text="Click" />
 // renders:
-<a class="pt-button" role="button" tabIndex={0}>Click</a>
+<a class="@ns-button" role="button" tabIndex={0}>Click</a>
 ```
 
 @### Button
@@ -80,7 +80,7 @@ for an `<AnchorButton>`, you'll overide the default value.
 ```jsx
 <Button icon="refresh" />
 // renders:
-<button class="pt-button pt-icon-refresh" type="button"></button>
+<button class="@ns-button @ns-icon-refresh" type="button"></button>
 ```
 
 @interface IButtonProps

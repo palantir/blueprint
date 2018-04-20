@@ -4,13 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-// tslint:disable:blueprint-classes-constants
+import { Classes } from "@blueprintjs/core";
 
-export const MULTISELECT = "pt-multi-select";
+const NS = Classes.getClassNamespace();
+
+export const MULTISELECT = `${NS}-multi-select`;
 export const MULTISELECT_POPOVER = `${MULTISELECT}-popover`;
-export const OMNIBAR = "pt-omnibar";
+export const OMNIBAR = `${NS}-omnibar`;
 export const OMNIBAR_OVERLAY = `${OMNIBAR}-overlay`;
-export const SELECT = "pt-select";
+export const SELECT = `${NS}-select`;
 export const SELECT_POPOVER = `${SELECT}-popover`;
-
-// tslint:enable:blueprint-classes-constants

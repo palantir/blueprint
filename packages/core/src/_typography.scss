@@ -12,7 +12,7 @@ hr {
   border: none;
   border-bottom: 1px solid $pt-divider-black;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     border-color: $pt-dark-divider-white;
   }
 }
@@ -37,12 +37,12 @@ Fonts
 Markup:
 <div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
 
-.pt-monospace-text - Use a monospace font (ideal for code)
+.#{$ns}-monospace-text - Use a monospace font (ideal for code)
 
 Styleguide fonts
 */
 
-.pt-monospace-text {
+.#{$ns}-monospace-text {
   @include monospace-typography();
 }
 
@@ -86,17 +86,17 @@ UI text
 Markup:
 <div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
 
-.pt-ui-text - Default UI text. This is applied to the document body as part of core styles.
-.pt-ui-text-large - Larger UI text.
+.#{$ns}-ui-text - Default UI text. This is applied to the document body as part of core styles.
+.#{$ns}-ui-text-large - Larger UI text.
 
-Styleguide pt-ui-text
+Styleguide ui-text
 */
 
-.pt-ui-text {
+.#{$ns}-ui-text {
   @include base-typography();
 }
 
-.pt-ui-text-large {
+.#{$ns}-ui-text-large {
   line-height: 1.25;
   font-size: $pt-font-size-large;
 }
@@ -107,23 +107,23 @@ Running text
 Markup:
 <div class="{{.modifier}}">
   <p>Longform text, such as rendered Markdown documents, benefit from additional spacing and slightly
-large font size. Apply <code>.pt-running-text</code> to the parent element to adjust spacing for the following
+large font size. Apply <code>.#{$ns}-running-text</code> to the parent element to adjust spacing for the following
 elements:</p>
   <ul>
     <li><code>&lt;p></code> tags have increased line-height and font size.</li>
     <li><code>&lt;h*></code> tag margins are adjusted to provide clear separation between sections in a document.</li>
-    <li><code>&lt;ul></code> and <code>&lt;ol></code> tags receive [`.pt-list`](#typography.lists) styles for legibility.</li>
+    <li><code>&lt;ul></code> and <code>&lt;ol></code> tags receive <code>.#{$ns}-list</code> styles for legibility.</li>
   </ul>
   <h3>New section</h3>
   <p>And another paragraph.</p>
 </div>
 
-.pt-running-text - Apply larger font size and additional spacing.
+.#{$ns}-running-text - Apply larger font size and additional spacing.
 
-Styleguide pt-running-text
+Styleguide running-text
 */
 
-.pt-running-text {
+.#{$ns}-running-text {
   @include running-typography();
 
   @each $header, $props in $headers {
@@ -134,7 +134,7 @@ Styleguide pt-running-text
   }
 }
 
-.pt-running-text-small {
+.#{$ns}-running-text-small {
   @include running-typography-small();
 }
 
@@ -169,12 +169,12 @@ a {
   }
 
   code,
-  .pt-dark & code {
+  .#{$ns}-dark & code {
     color: inherit;
   }
 
-  .pt-dark &,
-  .pt-dark &:hover {
+  .#{$ns}-dark &,
+  .#{$ns}-dark &:hover {
     color: $pt-dark-link-color;
 
     #{$icon-classes} {
@@ -222,7 +222,7 @@ code {
   padding: 2px 5px;
   color: $pt-code-text-color;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     box-shadow: inset border-shadow(0.4);
     background: $pt-dark-code-background-color;
     color: $pt-dark-code-text-color;
@@ -252,7 +252,7 @@ pre {
     font-size: inherit;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
     background: $pt-dark-code-background-color;
     color: $pt-dark-text-color;
@@ -296,7 +296,7 @@ blockquote {
     margin-bottom: 0;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     border-color: rgba($gray2, 0.5);
   }
 }
@@ -316,8 +316,8 @@ Markup:
   <li>Item the third</li>
 </ol>
 
-.pt-list - Add a little spacing between items for readability.
-.pt-list-unstyled - Remove all list styling (including indicators) so you can add your own.
+.#{$ns}-list - Add a little spacing between items for readability.
+.#{$ns}-list-unstyled - Remove all list styling (including indicators) so you can add your own.
 
 Styleguide lists
 */
@@ -328,9 +328,9 @@ ul {
   padding-left: $pt-grid-size * 4;
 }
 
-.pt-list,
-.pt-running-text ul,
-.pt-running-text ol {
+.#{$ns}-list,
+.#{$ns}-running-text ul,
+.#{$ns}-running-text ol {
   li:not(:last-child) {
     padding-bottom: $pt-grid-size / 2;
   }
@@ -346,7 +346,7 @@ ul {
   }
 }
 
-.pt-list-unstyled {
+.#{$ns}-list-unstyled {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -364,22 +364,22 @@ Markup:
   Blueprint components react overlay date picker. Breadcrumbs dialog progress non-ideal state.
 </div>
 
-.pt-text-muted - Changes text color to a gentler gray.
-.pt-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its
+.#{$ns}-text-muted - Changes text color to a gentler gray.
+.#{$ns}-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its
   container.
 
 Styleguide utilities
 */
 
-.pt-text-muted {
+.#{$ns}-text-muted {
   color: $pt-text-color-muted;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     color: $pt-dark-text-color-muted;
   }
 }
 
-.pt-text-overflow-ellipsis {
+.#{$ns}-text-overflow-ellipsis {
   @include overflow-ellipsis();
 }
 
@@ -388,24 +388,24 @@ Right-to-left text
 
 Markup:
 <h4>Arabic:</h4>
-<p class="pt-rtl">
+<p class="#{$ns}-rtl">
   لكل لأداء بمحاولة من. مدينة الواقعة يبق أي, وإعلان وقوعها، حول كل, حدى عجّل مشروط الخاسرة قد.
   من الذود تكبّد بين, و لها واحدة الأراضي. عل الصفحة والروسية يتم, أي للحكومة استعملت شيء. أم وصل زهاء اليا
 </p>
 <h4>Hebrew:</h4>
-<p class="pt-rtl">
+<p class="#{$ns}-rtl">
   כדי על עזרה יידיש הבהרה, מלא באגים טכניים דת. תנך או ברית ביולי. כתב בה הטבע למנוע, דת כלים פיסיקה החופשית זכר.
   מתן החלל מאמרשיחהצפה ב. הספרות אנציקלופדיה אם זכר, על שימושי שימושיים תאולוגיה עזה
 </p>
 
-Styleguide pt-rtl
+Styleguide rtl
 */
 
-.pt-rtl {
+.#{$ns}-rtl {
   text-align: right;
 }
 
-.pt-dark {
+.#{$ns}-dark {
   color: $pt-dark-text-color;
 
   @each $header, $props in $headers {

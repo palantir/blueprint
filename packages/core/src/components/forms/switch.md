@@ -7,7 +7,7 @@ simulates on/off instead of checked/unchecked.
 
 @## CSS API
 
-@css pt-switch
+@css switch
 
 @## JavaScript API
 

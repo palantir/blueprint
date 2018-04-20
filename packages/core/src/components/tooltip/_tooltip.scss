@@ -5,7 +5,7 @@
 @import "../popover/common";
 @import "./common";
 
-.pt-tooltip {
+.#{$ns}-tooltip {
   @include popover-sizing(
     $arrow-square-size: 22px,
     $arrow-offset: 3px,
@@ -20,18 +20,18 @@
   );
   // lightweight scale for tooltips
   @include react-transition(
-    "pt-popover",
+    "#{$ns}-popover",
     (transform: scale(0.8) scale(1)),
     $duration: $pt-transition-duration,
     $after: "> &"
   );
 
-  .pt-popover-content {
+  .#{$ns}-popover-content {
     padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
   }
 
-  &.pt-dark,
-  .pt-dark & {
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
     @include popover-appearance(
       $dark-tooltip-background-color,
       $dark-tooltip-text-color,
@@ -42,25 +42,25 @@
   }
 
   @each $intent, $color in $pt-intent-colors {
-    &.pt-intent-#{$intent} {
-      .pt-popover-content {
+    &.#{$ns}-intent-#{$intent} {
+      .#{$ns}-popover-content {
         background: $color;
         color: $white;
       }
 
-      .pt-popover-arrow-fill {
+      .#{$ns}-popover-arrow-fill {
         fill: $color;
       }
     }
   }
 }
 
-.pt-popover-target .pt-tooltip {
+.#{$ns}-popover-target .#{$ns}-tooltip {
   // inline tooltips don't get auto-sizing, so this sort of emulates it
   white-space: nowrap;
 }
 
-.pt-tooltip-indicator {
+.#{$ns}-tooltip-indicator {
   border-bottom: dotted 1px;
   cursor: help;
 }

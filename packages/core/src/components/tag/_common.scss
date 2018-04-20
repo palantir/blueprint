@@ -27,22 +27,22 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   color: $pt-dark-text-color;
   font-size: $pt-font-size-small;
 
-  &.pt-round {
+  &.#{$ns}-round {
     border-radius: $tag-height / 2;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     @include pt-tag-interactive($dark-tag-default-color, 1);
 
     background-color: $dark-tag-default-color;
     color: $pt-text-color;
   }
 
-  &.pt-tag-removable {
+  &.#{$ns}-tag-removable {
     padding-right: $tag-height;
   }
 
-  &.pt-active {
+  &.#{$ns}-active {
     @include focus-outline(0);
   }
 }
@@ -53,11 +53,11 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   line-height: $pt-icon-size-large;
   font-size: $pt-font-size;
 
-  &.pt-round {
+  &.#{$ns}-round {
     border-radius: $tag-height-large / 2;
   }
 
-  &.pt-tag-removable {
+  &.#{$ns}-tag-removable {
     padding-right: $tag-height-large;
   }
 }
@@ -70,13 +70,13 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 }
 
 @mixin pt-tag-minimal() {
-  &:not([class*="pt-intent-"]) {
+  &:not([class*="#{$ns}-intent-"]) {
     @include pt-tag-minimal-interactive($tag-default-color, 0.2);
 
     background-color: rgba($gray3, 0.2);
     color: $pt-text-color;
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       @include pt-tag-minimal-interactive($dark-tag-default-color, 0.2);
 
       color: $pt-dark-text-color;
@@ -90,7 +90,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   background-color: rgba($background-color, 0.15);
   color: $text-color;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     @include pt-tag-minimal-interactive($background-color, 0.25);
 
     background-color: rgba($background-color, 0.25);
@@ -99,7 +99,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 }
 
 @mixin pt-tag-interactive($background-color, $opacity) {
-  &.pt-interactive {
+  &.#{$ns}-interactive {
     cursor: pointer;
 
     &:hover {
@@ -113,7 +113,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 }
 
 @mixin pt-tag-minimal-interactive($background-color, $opacity) {
-  &.pt-interactive {
+  &.#{$ns}-interactive {
     cursor: pointer;
 
     &:hover {
@@ -153,7 +153,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
     content: $pt-icon-small-cross;
   }
 
-  .pt-large & {
+  .#{$ns}-large & {
     padding: $tag-padding-large;
 
     &:empty::before {

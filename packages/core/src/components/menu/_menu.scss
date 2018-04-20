@@ -12,28 +12,28 @@
 Menus
 
 Markup:
-<ul class="pt-menu {{.modifier}} pt-elevation-1">
+<ul class="#{$ns}-menu {{.modifier}} #{$ns}-elevation-1">
   <li>
-    <a class="pt-menu-item pt-icon-people" tabindex="0">Share...</a>
+    <a class="#{$ns}-menu-item #{$ns}-icon-people" tabindex="0">Share...</a>
   </li>
   <li>
-    <a class="pt-menu-item pt-icon-circle-arrow-right" tabindex="0">Move...</a>
+    <a class="#{$ns}-menu-item #{$ns}-icon-circle-arrow-right" tabindex="0">Move...</a>
   </li>
   <li>
-    <a class="pt-menu-item pt-icon-edit" tabindex="0">Rename</a>
+    <a class="#{$ns}-menu-item #{$ns}-icon-edit" tabindex="0">Rename</a>
   </li>
-  <li class="pt-menu-divider"></li>
+  <li class="#{$ns}-menu-divider"></li>
   <li>
-    <a class="pt-menu-item pt-icon-trash pt-intent-danger" tabindex="0">Delete</a>
+    <a class="#{$ns}-menu-item #{$ns}-icon-trash #{$ns}-intent-danger" tabindex="0">Delete</a>
   </li>
 </ul>
 
-.pt-large - Large size (only supported on <code>.pt-menu</code>)
+.#{$ns}-large - Large size (only supported on <code>.#{$ns}-menu</code>)
 
-Styleguide pt-menu
+Styleguide menu
 */
 
-.pt-menu {
+.#{$ns}-menu {
   margin: 0;
   border-radius: $pt-border-radius;
   background: $menu-background-color;
@@ -44,11 +44,11 @@ Styleguide pt-menu
   color: $pt-text-color;
 }
 
-.pt-menu-divider {
+.#{$ns}-menu-divider {
   @include menu-divider();
 }
 
-.pt-menu-item {
+.#{$ns}-menu-item {
   @include menu-item();
   @include menu-item-intent();
 
@@ -59,12 +59,12 @@ Styleguide pt-menu
   }
 
   &::before,
-  .pt-icon {
+  .#{$ns}-icon {
     margin-top: ($menu-item-line-height - $pt-icon-size-standard) / 2;
     color: $pt-icon-color;
   }
 
-  .pt-menu-item-label {
+  .#{$ns}-menu-item-label {
     color: $pt-text-color-muted;
   }
 
@@ -72,14 +72,14 @@ Styleguide pt-menu
     color: inherit;
   }
 
-  &.pt-active,
+  &.#{$ns}-active,
   &:active {
     background-color: $menu-item-color-active;
   }
 
   // pt-disable always overrides over styles
   // stylelint-disable declaration-no-important
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     // override global a:focus styles
     outline: none !important;
     background-color: inherit !important;
@@ -87,17 +87,17 @@ Styleguide pt-menu
     color: $pt-text-color-disabled !important;
 
     &::before,
-    .pt-icon,
-    .pt-menu-item-label {
+    .#{$ns}-icon,
+    .#{$ns}-menu-item-label {
       color: $pt-icon-color-disabled !important;
     }
   }
   // stylelint-enable declaration-no-important
 
-  .pt-large & {
+  .#{$ns}-large & {
     @include menu-item-large();
 
-    .pt-icon {
+    .#{$ns}-icon {
       // SVG icons remain standard size when menu is large
       margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) / 2;
     }
@@ -110,7 +110,7 @@ Styleguide pt-menu
   }
 }
 
-button.pt-menu-item {
+button.#{$ns}-menu-item {
   border: none;
   background: none;
   width: 100%;
@@ -121,77 +121,77 @@ button.pt-menu-item {
 Menu headers
 
 Markup:
-<ul class="pt-menu pt-elevation-1">
-  <li class="pt-menu-header"><h6>Layouts</h6></li>
-  <li><button type="button" class="pt-menu-item pt-icon-layout-auto">Auto</button></li>
-  <li><button type="button" class="pt-menu-item pt-icon-layout-circle">Circle</button></li>
-  <li><button type="button" class="pt-menu-item pt-icon-layout-grid">Grid</button></li>
-  <li class="pt-menu-header"><h6>Views</h6></li>
-  <li><button type="button" class="pt-menu-item pt-icon-history">History</button></li>
-  <li><button type="button" class="pt-menu-item pt-icon-star">Favorites</button></li>
-  <li><button type="button" class="pt-menu-item pt-icon-envelope">Messages</button></li>
+<ul class="#{$ns}-menu #{$ns}-elevation-1">
+  <li class="#{$ns}-menu-header"><h6>Layouts</h6></li>
+  <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-layout-auto">Auto</button></li>
+  <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-layout-circle">Circle</button></li>
+  <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-layout-grid">Grid</button></li>
+  <li class="#{$ns}-menu-header"><h6>Views</h6></li>
+  <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-history">History</button></li>
+  <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-star">Favorites</button></li>
+  <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-envelope">Messages</button></li>
 </ul>
 
-Styleguide pt-menu.pt-menu-header
+Styleguide menu-header
 */
 
-.pt-menu-header {
+.#{$ns}-menu-header {
   @include menu-header($heading-selector: "> h6");
 
-  .pt-large & {
+  .#{$ns}-large & {
     @include menu-header-large($heading-selector: "> h6");
   }
 }
 
 // dark theme
-.pt-dark {
-  .pt-menu {
+.#{$ns}-dark {
+  .#{$ns}-menu {
     background: $dark-menu-background-color;
     color: $pt-dark-text-color;
   }
 
-  .pt-menu-item {
+  .#{$ns}-menu-item {
     @include menu-item-intent($pt-dark-intent-text-colors);
 
     &::before,
-    .pt-icon {
+    .#{$ns}-icon {
       color: $pt-dark-icon-color;
     }
 
-    .pt-menu-item-label {
+    .#{$ns}-menu-item-label {
       color: $pt-dark-text-color-muted;
     }
 
-    &.pt-active,
+    &.#{$ns}-active,
     &:active {
       background-color: $dark-menu-item-color-active;
     }
 
     // pt-disable always overrides over styles
     // stylelint-disable declaration-no-important
-    &.pt-disabled {
+    &.#{$ns}-disabled {
       color: $pt-dark-text-color-disabled !important;
 
       &::before,
-      .pt-icon,
-      .pt-menu-item-label {
+      .#{$ns}-icon,
+      .#{$ns}-menu-item-label {
         color: $pt-dark-icon-color-disabled !important;
       }
     }
     // stylelint-enable declaration-no-important
   }
 
-  .pt-menu-divider,
-  .pt-menu-header {
+  .#{$ns}-menu-divider,
+  .#{$ns}-menu-header {
     border-color: $pt-dark-divider-white;
   }
 
-  .pt-menu-header > h6 {
+  .#{$ns}-menu-header > h6 {
     color: $pt-dark-heading-color;
   }
 }
 
 // #402 support menu inside label
-.pt-label .pt-menu {
+.#{$ns}-label .#{$ns}-menu {
   margin-top: $pt-grid-size / 2;
 }

@@ -43,7 +43,7 @@ $dark-example-background-color: $dark-content-background-color;
   padding: $link-icon-padding;
   line-height: $pt-icon-size-standard;
 
-  .pt-icon-standard {
+  .#{$ns}-icon-standard {
     vertical-align: top;
   }
 
@@ -61,7 +61,7 @@ $dark-example-background-color: $dark-content-background-color;
     text-decoration: none;
   }
 
-  .pt-icon {
+  .#{$ns}-icon {
     margin-right: $pt-grid-size / 2;
   }
 }
@@ -79,7 +79,7 @@ $dark-example-background-color: $dark-content-background-color;
     display: none;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     border-color: $pt-dark-divider-black;
     background-color: $dark-example-background-color;
   }

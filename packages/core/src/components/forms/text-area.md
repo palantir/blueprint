@@ -8,7 +8,7 @@ You should also specify `dir="auto"` on text areas
 
 @## CSS API
 
-@css pt-textarea
+@css textarea
 
 @## JavaScript API
 

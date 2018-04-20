@@ -41,9 +41,9 @@ class MenuExample extends React.Component<{}, {}> {
 
 @### Menu
 
-A `Menu`'s children (menu items and dividers) are rendered as the contents of a `.pt-menu` element.
+A `Menu`'s children (menu items and dividers) are rendered as the contents of a `.@ns-menu` element.
 
-You can add the `pt-large` class to the `Menu` to make a larger version of the menu.
+You can add the `@ns-large` class to the `Menu` to make a larger version of the menu.
 
 @interface IMenuProps
 
@@ -51,7 +51,7 @@ You can add the `pt-large` class to the `Menu` to make a larger version of the m
 
 A `MenuItem` is a single interactive item in a `Menu`.
 
-This component renders an `a.pt-menu-item`. Make the `MenuItem` a link by providing the `href`,
+This component renders an `a.@ns-menu-item`. Make the `MenuItem` a link by providing the `href`,
 `target`, and `onClick` props as necessary.
 
 Create submenus by nesting `MenuItem`s inside each other as `children`. Use the `text` prop
@@ -81,8 +81,8 @@ there is not enough room to the right.
 </Menu>
 ```
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h4 class="pt-callout-title">JavaScript only</h4>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-callout-title">JavaScript only</h4>
     Submenus are only supported in the React components. They cannot be created with CSS alone because
     they rely on the [`Popover`](#core/components/popover) component for positioning and transitions.
 </div>
@@ -100,7 +100,7 @@ element as the `content` property of a `Popover`:
 
 When the user clicks a menu item that is not disabled and is not part of a submenu, the popover is
 automatically dismissed (in other words, the menu closes). This is because the `MenuItem` component
-adds the `pt-popover-dismiss` class to these items by default (see
+adds the `@ns-popover-dismiss` class to these items by default (see
 [Popover JavaScript API](#core/components/popover) for more information). If you want to opt out of
 this behavior, you can add the `shouldDismissPopover` prop to a `MenuItem`.
 
@@ -111,46 +111,46 @@ dismiss the `Popover`. Selecting other menu items does dismiss the popover.
 
 @## CSS API
 
-Menus can be constructed manually using the HTML markup and `pt-menu-*` classes below. However, you
+Menus can be constructed manually using the HTML markup and `@ns-menu-*` classes below. However, you
 should use the menu [React components](#core/components/menu.javscript-api) instead wherever possible,
 as they abstract away the tedious parts of implementing a menu.
 
-* Begin with a `ul.pt-menu`. Each `li` child denotes a single entry in the menu.
+* Begin with a `ul.@ns-menu`. Each `li` child denotes a single entry in the menu.
 
-* Put a `.pt-menu-item` element inside an `li` to create a clickable entry. Use either `<button>` or
+* Put a `.@ns-menu-item` element inside an `li` to create a clickable entry. Use either `<button>` or
   `<a>` tags for menu items to denote interactivity.
 
 * Add icons to menu items the same way you would to buttons: simply add the appropriate
-  `pt-icon-<name>` class\*.
+  `@ns-icon-<name>` class\*.
 
-* Make menu items active with the class `pt-active` (along with `pt-intent-*` if suitable).
+* Make menu items active with the class `@ns-active` (along with `@ns-intent-*` if suitable).
 
-* Make menu items non-interactive with the class `pt-disabled`.
+* Make menu items non-interactive with the class `@ns-disabled`.
 
 * Wrap menu item text in a `<span>` element for proper alignment. (Note that React automatically
   does this.)
 
-* Add a right-aligned label to a menu item by adding a `span.pt-menu-item-label` inside the
-  `.pt-menu-item`, after the content. Add an icon to the label by adding icon classes to the label
-  element (`pt-icon-standard` size is recommended).
+* Add a right-aligned label to a menu item by adding a `span.@ns-menu-item-label` inside the
+  `.@ns-menu-item`, after the content. Add an icon to the label by adding icon classes to the label
+  element (`@ns-icon-standard` size is recommended).
 
-* Add a divider between items with `li.pt-menu-divider`.
+* Add a divider between items with `li.@ns-menu-divider`.
 
 * If you want the popover to close when the user clicks a menu item, add the class
-  `pt-popover-dismiss` to any relevant menu items.
+  `@ns-popover-dismiss` to any relevant menu items.
 
-<small>\* You do not need to add a `pt-icon-<sizing>` class to menu items—icon sizing is
-defined as part of `.pt-menu-item`.</small>
+<small>\* You do not need to add a `@ns-icon-<sizing>` class to menu items—icon sizing is
+defined as part of `.@ns-menu-item`.</small>
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Note that the following examples are `display: inline-block`; you may need to adjust
     menu width in your own usage.
 </div>
 
-@css pt-menu
+@css menu
 
 @### Section headers
 
-Add an `li.pt-menu-header`. Wrap the text in an `<h6>` tag for proper typography and borders.
+Add an `li.@ns-menu-header`. Wrap the text in an `<h6>` tag for proper typography and borders.
 
-@css pt-menu.pt-menu-header
+@css menu-header

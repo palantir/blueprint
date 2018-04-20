@@ -37,7 +37,7 @@
 
   &:empty { display: none; }
 
-  .pt-tag {
+  .#{$ns}-tag {
     margin-top: $tag-top-margin;
     margin-right: $pt-grid-size;
   }
@@ -61,7 +61,7 @@
 .docs-prop-is-required code {
   color: $green3;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     color: $green4;
   }
 
@@ -89,7 +89,7 @@
     box-shadow: 0 1px 0 $pt-divider-black;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     box-shadow: 0 1px 0 $pt-dark-divider-white;
 
     + .docs-section {

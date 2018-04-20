@@ -2,8 +2,8 @@
 
 Dialogs present content overlaid over other parts of the UI.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4 class="pt-callout-title">Terminology note</h4>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-callout-title">Terminology note</h4>
     The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
     _Modal_ is an adjective that describes parts of a UI.
     An element is considered modal if it
@@ -25,7 +25,7 @@ There are two ways to render dialogs:
 * in-place in the DOM tree. Set `usePortal={false}` to enable this behavior.
 
 `Dialog` is a stateless React component. The children you provide to this component
-are rendered as contents inside the `.pt-dialog` element.
+are rendered as contents inside the `.@ns-dialog` element.
 
 ```tsx
 interface IDialogExampleState {
@@ -45,9 +45,9 @@ class DialogExample extends React.Component<{}, IDialogExampleState> {
                     onClose={this.toggleDialog}
                     title="Dialog header"
                 >
-                    <div className="pt-dialog-body">Some content</div>
-                    <div className="pt-dialog-footer">
-                        <div className="pt-dialog-footer-actions">
+                    <div className="@ns-dialog-body">Some content</div>
+                    <div className="@ns-dialog-footer">
+                        <div className="@ns-dialog-footer-actions">
                             <Button text="Secondary" />
                             <Button
                                 intent={Intent.PRIMARY}
@@ -69,10 +69,10 @@ class DialogExample extends React.Component<{}, IDialogExampleState> {
 
 @## CSS API
 
-You can create dialogs manually using the HTML markup and `pt-dialog-*` classes below.
+You can create dialogs manually using the HTML markup and `@ns-dialog-*` classes below.
 However, you should use the dialog [JavaScript APIs](#core/components/dialog.javascript-api) whenever possible,
 as they automatically generate some of this markup.
 
 More examples of dialog content are shown below.
 
-@css pt-dialog
+@css dialog

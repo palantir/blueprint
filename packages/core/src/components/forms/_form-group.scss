@@ -8,113 +8,113 @@
 Form groups
 
 Markup:
-<div class="pt-form-group">
-  <label class="pt-label" for="example-form-group-input-a">
+<div class="#{$ns}-form-group">
+  <label class="#{$ns}-label" for="example-form-group-input-a">
     Label A
-    <span class="pt-text-muted">(required)</span>
+    <span class="#{$ns}-text-muted">(required)</span>
   </label>
-  <div class="pt-form-content">
-    <input id="example-form-group-input-a" class="pt-input" style="width: 300px;" placeholder="Placeholder text" type="text" dir="auto" />
-    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+  <div class="#{$ns}-form-content">
+    <input id="example-form-group-input-a" class="#{$ns}-input" style="width: 300px;" placeholder="Placeholder text" type="text" dir="auto" />
+    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
-<div class="pt-form-group pt-intent-danger">
-  <label class="pt-label" for="example-form-group-input-b">
+<div class="#{$ns}-form-group #{$ns}-intent-danger">
+  <label class="#{$ns}-label" for="example-form-group-input-b">
     Label B
-    <span class="pt-text-muted">(required)</span>
+    <span class="#{$ns}-text-muted">(required)</span>
   </label>
-  <div class="pt-form-content">
-    <div class="pt-input-group pt-intent-danger">
-      <span class="pt-icon pt-icon-calendar"></span>
-      <input id="example-form-group-input-b" class="pt-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+  <div class="#{$ns}-form-content">
+    <div class="#{$ns}-input-group #{$ns}-intent-danger">
+      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
+      <input id="example-form-group-input-b" class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
     </div>
-    <div class="pt-form-helper-text">Please enter a value</div>
+    <div class="#{$ns}-form-helper-text">Please enter a value</div>
   </div>
 </div>
-<div class="pt-form-group">
-  <label class="pt-label" for="example-form-group-switch-c">
+<div class="#{$ns}-form-group">
+  <label class="#{$ns}-label" for="example-form-group-switch-c">
     Label C
-    <span class="pt-text-muted">(required)</span>
+    <span class="#{$ns}-text-muted">(required)</span>
   </label>
-  <div class="pt-form-content">
-    <label class="pt-control pt-switch">
+  <div class="#{$ns}-form-content">
+    <label class="#{$ns}-control #{$ns}-switch">
       <input id="example-form-group-switch-c" type="checkbox" />
-      <span class="pt-control-indicator"></span>
+      <span class="#{$ns}-control-indicator"></span>
       Switch C
     </label>
-    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
-<div class="pt-form-group pt-inline">
-  <label class="pt-label" for="example-form-group-input-d">
+<div class="#{$ns}-form-group #{$ns}-inline">
+  <label class="#{$ns}-label" for="example-form-group-input-d">
     Label D
-    <span class="pt-text-muted">(optional)</span>
+    <span class="#{$ns}-text-muted">(optional)</span>
   </label>
-  <div class="pt-form-content">
-    <div class="pt-input-group">
-      <span class="pt-icon pt-icon-calendar"></span>
-      <input id="example-form-group-input-d" class="pt-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+  <div class="#{$ns}-form-content">
+    <div class="#{$ns}-input-group">
+      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
+      <input id="example-form-group-input-d" class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
     </div>
-    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
-<div class="pt-form-group pt-inline pt-large pt-disabled">
-  <label class="pt-label" for="example-form-group-input-e">
+<div class="#{$ns}-form-group #{$ns}-inline #{$ns}-large #{$ns}-disabled">
+  <label class="#{$ns}-label" for="example-form-group-input-e">
     Label E
-    <span class="pt-text-muted">(optional)</span>
+    <span class="#{$ns}-text-muted">(optional)</span>
   </label>
-  <div class="pt-form-content">
-    <div class="pt-input-group pt-large pt-disabled">
-      <span class="pt-icon pt-icon-calendar"></span>
-      <input id="example-form-group-input-e" class="pt-input" disabled style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+  <div class="#{$ns}-form-content">
+    <div class="#{$ns}-input-group #{$ns}-large #{$ns}-disabled">
+      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
+      <input id="example-form-group-input-e" class="#{$ns}-input" disabled style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
     </div>
-    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
-<div class="pt-form-group pt-inline">
-  <label class="pt-label" for="example-form-group-switch-f">
+<div class="#{$ns}-form-group #{$ns}-inline">
+  <label class="#{$ns}-label" for="example-form-group-switch-f">
     Label F
   </label>
-  <div class="pt-form-content">
-    <label class="pt-control pt-switch">
+  <div class="#{$ns}-form-content">
+    <label class="#{$ns}-control #{$ns}-switch">
       <input id="example-form-group-switch-f" type="checkbox" />
-      <span class="pt-control-indicator"></span>
+      <span class="#{$ns}-control-indicator"></span>
       Switch F
     </label>
-    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
-<div class="pt-form-group pt-inline pt-large pt-disabled">
-  <label class="pt-label" for="example-form-group-switch-g">
+<div class="#{$ns}-form-group #{$ns}-inline #{$ns}-large #{$ns}-disabled">
+  <label class="#{$ns}-label" for="example-form-group-switch-g">
     Label G
   </label>
-  <div class="pt-form-content">
-    <label class="pt-control pt-switch pt-large pt-disabled">
+  <div class="#{$ns}-form-content">
+    <label class="#{$ns}-control #{$ns}-switch #{$ns}-large #{$ns}-disabled">
       <input id="example-form-group-switch-g" type="checkbox" disabled />
-      <span class="pt-control-indicator"></span>
+      <span class="#{$ns}-control-indicator"></span>
       Switch G
     </label>
-    <div class="pt-form-helper-text">Helper text with details / user feedback</div>
+    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
   </div>
 </div>
 
-Styleguide pt-form-group
+Styleguide form-group
 */
 
-.pt-form-group {
+.#{$ns}-form-group {
   display: flex;
   flex-direction: column;
   margin: 0 0 ($pt-grid-size * 1.5);
 
-  label.pt-label {
+  label.#{$ns}-label {
     margin-bottom: $pt-grid-size / 2;
   }
 
-  .pt-control {
+  .#{$ns}-control {
     margin-top: $pt-grid-size / 2;
   }
 
-  .pt-form-helper-text {
+  .#{$ns}-form-helper-text {
     margin-top: $pt-grid-size / 2;
     color: $pt-text-color-muted;
     font-size: $pt-font-size-small;
@@ -122,55 +122,55 @@ Styleguide pt-form-group
 
   // stylelint-disable-next-line order/declaration-block-order
   @each $intent, $color in $pt-intent-text-colors {
-    &.pt-intent-#{$intent} {
-      .pt-form-helper-text {
+    &.#{$ns}-intent-#{$intent} {
+      .#{$ns}-form-helper-text {
         color: $color;
       }
     }
   }
 
-  &.pt-inline {
+  &.#{$ns}-inline {
     flex-direction: row;
     align-items: baseline;
 
-    &.pt-large label.pt-label {
+    &.#{$ns}-large label.#{$ns}-label {
       margin: 0 $pt-grid-size 0 0;
       line-height: $pt-input-height-large;
     }
 
-    label.pt-label {
+    label.#{$ns}-label {
       margin: 0 $pt-grid-size 0 0;
       line-height: $pt-input-height;
     }
   }
 
-  &.pt-disabled {
-    .pt-label,
-    .pt-text-muted,
-    .pt-form-helper-text {
+  &.#{$ns}-disabled {
+    .#{$ns}-label,
+    .#{$ns}-text-muted,
+    .#{$ns}-form-helper-text {
       // pt-disable always overrides over styles
       // stylelint-disable-next-line declaration-no-important
       color: $pt-text-color-disabled !important;
     }
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     @each $intent, $color in $pt-dark-intent-text-colors {
-      &.pt-intent-#{$intent} {
-        .pt-form-helper-text {
+      &.#{$ns}-intent-#{$intent} {
+        .#{$ns}-form-helper-text {
           color: $color;
         }
       }
     }
 
-    .pt-form-helper-text {
+    .#{$ns}-form-helper-text {
       color: $pt-dark-text-color-muted;
     }
 
-    &.pt-disabled {
-      .pt-label,
-      .pt-text-muted,
-      .pt-form-helper-text {
+    &.#{$ns}-disabled {
+      .#{$ns}-label,
+      .#{$ns}-text-muted,
+      .#{$ns}-form-helper-text {
         // pt-disable always overrides over styles
         // stylelint-disable-next-line declaration-no-important
         color: $pt-dark-text-color-disabled !important;

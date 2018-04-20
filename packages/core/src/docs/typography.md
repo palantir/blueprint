@@ -9,7 +9,7 @@ Keep in mind these general web typography guidelines when building your applicat
 - If you choose to go with a custom text color, make sure the background behind it provides
 proper contrast.
 - Try not to explicitly write pixel values for your font-size or line-height CSS rules.
-Instead, reference the classes and variables we provide in Blueprint (`.pt-ui-text`,
+Instead, reference the classes and variables we provide in Blueprint (`.@ns-ui-text`,
 `$pt-font-size-large`, etc.).
 
 @## Fonts
@@ -28,22 +28,22 @@ font. We provide a class to use the default monospace font instead.
 
 The base font size for Blueprint web applications is 14px. This should be the default type size
 for most short strings of text which are not headings or titles. If you wish to reset some
-element's font size and line height to the default base styles, use the `.pt-ui-text` class.
+element's font size and line height to the default base styles, use the `.@ns-ui-text` class.
 For longer running text, see [running text styles](#core/typography.running-text).
 
-@css pt-ui-text
+@css ui-text
 
 @## Running text
 
 Longform text, such as rendered Markdown documents, benefit from additional spacing and slightly
-large font size. Apply `.pt-running-text` to the parent element to adjust spacing for the following
+large font size. Apply `.@ns-running-text` to the parent element to adjust spacing for the following
 elements:
 
 - `<p>` tags have increased line-height and font size.
 - `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
-- `<ul>` and `<ol>` tags receive [`.pt-list`](#core/typography.lists) styles for legibility.
+- `<ul>` and `<ol>` tags receive [`.@ns-list`](#core/typography.lists) styles for legibility.
 
-@css pt-running-text
+@css running-text
 
 @## Links
 
@@ -69,8 +69,8 @@ Block quotes are treated as running text.
 
 Blueprint provides a small amount of global styling and a few modifier classes for list elements.
 
-`<ul>` and `<ol>` elements in blocks with the `.pt-running-text` modifier class will
-automatically assume the `.pt-list` styles to promote readability.
+`<ul>` and `<ol>` elements in blocks with the `.@ns-running-text` modifier class will
+automatically assume the `.@ns-list` styles to promote readability.
 
 @css lists
 
@@ -88,30 +88,30 @@ use the library of your choice for managing internationalized strings.
 
 @### Right-to-left text
 
-Use the utility class `.pt-rtl`.
+Use the utility class `.@ns-rtl`.
 
-@css pt-rtl
+@css rtl
 
 @## Dark theme
 
 Blueprint provides two UI color themes: light and dark. The light theme is active by default. The
-dark theme can be applied by adding the class `pt-dark` to a container element to theme all nested
+dark theme can be applied by adding the class `@ns-dark` to a container element to theme all nested
 elements.
 
-Once applied, the dark theme will cascade to nested `.pt-*` elements inside a `.pt-dark` container.
+Once applied, the dark theme will cascade to nested `.@ns-*` elements inside a `.@ns-dark` container.
 There is no way to nest light-themed elements inside a dark container.
 
-Most elements only support the dark theme when nested inside a `.pt-dark` container because it does
+Most elements only support the dark theme when nested inside a `.@ns-dark` container because it does
 not make sense to mark individual elements as dark. The dark container is therefore responsible for
 setting a dark background color.
 
-The following elements and components support the `.pt-dark` class directly (i.e, `.pt-app.pt-dark`)
+The following elements and components support the `.@ns-dark` class directly (i.e, `.@ns-app.@ns-dark`)
 and can be used as a container for nested dark children:
 
-- `.pt-app`
-- `.pt-card`
+- `.@ns-app`
+- `.@ns-card`
 - Overlays: `Dialog`, `Popover`, `Tooltip`, `Toast`
-- `Popover` and `Tooltip` will automatically detect when their trigger is inside a `.pt-dark`
+- `Popover` and `Tooltip` will automatically detect when their trigger is inside a `.@ns-dark`
 container and add the same class to themselves.
 
 Rather than illustrating dark components inline, this documentation site provides a site-wide switch

@@ -15,6 +15,6 @@ Blueprint 2.0 features JavaScript API refactors, smaller & more modular packages
 - `Popover2` is now the default `Popover`. It uses [Popper.js](https://popper.js.org/) instead of [Tether](http://tether.io/), which provides much better auto-positioning capabilities and solves a number of outstanding bugs out-of-the-box.
 - All Labs components (in `@blueprintjs/labs`) have been moved into separate packages so that you no longer have to deal with the `0.x` version range for many components that are used widely in production.
 
-<a class="pt-button pt-intent-primary" href="https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0" target="_blank" style="margin-top: 30px;">
+<a class="@ns-button @ns-intent-primary" href="https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0" target="_blank" style="margin-top: 30px;">
     View the full changelog on the wiki
 </a>

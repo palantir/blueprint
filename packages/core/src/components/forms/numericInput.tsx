@@ -58,8 +58,8 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
      * If set to `true`, the input will display with larger styling.
-     * This is equivalent to setting `pt-large` via className on the
-     * parent `.pt-control-group` and on the child `.pt-input-group`.
+     * This is equivalent to setting `Classes.LARGE` via className on the
+     * parent control group and on the child input group.
      * @default false
      */
     large?: boolean;

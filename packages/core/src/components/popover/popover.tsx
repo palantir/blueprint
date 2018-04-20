@@ -103,7 +103,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * Whether to apply minimal styles to this popover, which includes removing the arrow
-     * and adding the `.pt-minimal` class to minimize and accelerate the transitions.
+     * and adding `Classes.MINIMAL` to minimize and accelerate the transitions.
      * @default false
      */
     minimal?: boolean;
@@ -144,7 +144,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     popoverDidOpen?: () => void;
 
     /**
-     * Ref supplied to the `pt-popover` element.
+     * Ref supplied to the `Classes.POPOVER` element.
      */
     popoverRef?: (ref: HTMLDivElement | null) => void;
 
@@ -174,7 +174,8 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     position?: Position | "auto";
 
     /**
-     * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).
+     * The name of the HTML tag to use when rendering the popover target wrapper
+     * element (`Classes.POPOVER_WRAPPER`).
      * @default "span"
      */
     rootElementTag?: string;

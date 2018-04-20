@@ -28,7 +28,7 @@ body {
   padding: 0;
 }
 
-.pt-container {
+.landing-container {
   margin: 0 auto;
   max-width: $container-width;
   padding: 0 $pt-grid-size * 2;
@@ -43,7 +43,7 @@ header {
   text-align: center;
   user-select: none;
 
-  .pt-container {
+  .landing-container {
     @include position-all(absolute, 0);
     z-index: $pt-z-index-base;
     pointer-events: none;
@@ -66,7 +66,7 @@ header {
     font-weight: 400;
   }
 
-  .pt-button.pt-minimal {
+  .#{$ns}-button.landing-button {
     position: relative;
     color: rgba($white, 0.7);
     pointer-events: all;
@@ -82,7 +82,7 @@ header {
     }
   }
 
-  .pt-icon-dot {
+  .#{$ns}-icon-dot {
     margin: $pt-grid-size / 2;
     color: rgba($white, 0.5);
   }
@@ -96,8 +96,8 @@ footer {
   background-color: transparent;
 }
 
-.pt-about {
-  .pt-container {
+.landing-about {
+  .landing-container {
     @include pt-flex-container(column, $pt-grid-size * 3);
     align-items: center;
     padding-top: $pt-grid-size * 6;
@@ -117,14 +117,14 @@ footer {
     font-weight: 300;
   }
 
-  .pt-separator {
+  .landing-separator {
     background-color: $dark-gray5;
     width: $pt-grid-size * 4;
     height: 2px;
   }
 }
 
-.pt-copyright {
+.landing-copyright {
   &::before {
     display: block;
     background-image: linear-gradient(
@@ -137,7 +137,7 @@ footer {
     content: "";
   }
 
-  .pt-container {
+  .landing-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -159,19 +159,19 @@ footer {
       font-size: $pt-grid-size * 1.8;
     }
 
-    .pt-icon-dot {
+    .#{$ns}-icon-dot {
       display: block;
     }
   }
 }
 
 @media (max-width: $tablet-breakpoint) {
-  .pt-copyright {
-    .pt-container {
+  .landing-copyright {
+    .landing-container {
       flex-direction: column;
     }
 
-    .pt-button {
+    .landing-button {
       margin: $pt-grid-size / 2;
     }
   }

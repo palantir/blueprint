@@ -1,17 +1,17 @@
 @# File input
 
-Use the standard `input type="file"` along with a `span` with class `pt-file-upload-input`.
-Wrap that all in a `label` with class `pt-file-input`.
+Use the standard `input type="file"` along with a `span` with class `@ns-file-upload-input`.
+Wrap that all in a `label` with class `@ns-file-input`.
 
-<div class="pt-callout pt-intent-warning pt-icon-warning-sign">
-    <h4 class="pt-callout-title">Static file name</h4>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-callout-title">Static file name</h4>
     File name does not update on file selection. To get this behavior,
     you must implement it separately in JS.
 </div>
 
 @## CSS API
 
-@css pt-file-input
+@css file-input
 
 @## JavaScript API
 

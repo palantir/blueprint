@@ -7,7 +7,7 @@
 Tables
 
 Markup:
-<table class="pt-html-table {{.modifier}}">
+<table class="#{$ns}-html-table {{.modifier}}">
   <thead>
     <tr>
       <th>Project</th>
@@ -34,12 +34,12 @@ Markup:
   </tbody>
 </table>
 
-.pt-small - Small, condensed appearance
-.pt-html-table-striped   - Striped appearance
-.pt-html-table-bordered  - Bordered appearance
-.pt-interactive  - Enables hover styles on rows
+.#{$ns}-small - Small, condensed appearance
+.#{$ns}-html-table-striped   - Striped appearance
+.#{$ns}-html-table-bordered  - Bordered appearance
+.#{$ns}-interactive  - Enables hover styles on rows
 
-Styleguide pt-html-table
+Styleguide html-table
 */
 
 $table-row-height: $pt-grid-size * 4 !default;
@@ -48,7 +48,7 @@ $table-border-width: 1px !default;
 $table-border-color: $pt-divider-black !default;
 $dark-table-border-color: $pt-dark-divider-white !default;
 
-table.pt-html-table {
+table.#{$ns}-html-table {
   border-spacing: 0;
   font-size: $pt-font-size;
 
@@ -75,7 +75,7 @@ table.pt-html-table {
     }
   }
 
-  &.pt-small {
+  &.#{$ns}-small {
     $small-vertical-padding: centered-text($table-row-height-small);
 
     th,
@@ -85,14 +85,14 @@ table.pt-html-table {
     }
   }
 
-  &.pt-html-table-striped {
+  &.#{$ns}-html-table-striped {
     tbody tr:nth-child(odd) td {
       background: rgba($gray5, 0.2);
     }
   }
 
   // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
-  &.pt-html-table-bordered {
+  &.#{$ns}-html-table-bordered {
     th:not(:first-child) {
       box-shadow: inset $table-border-width 0 0 0 $table-border-color;
     }
@@ -105,7 +105,7 @@ table.pt-html-table {
       }
     }
 
-    &.pt-html-table-striped {
+    &.#{$ns}-html-table-striped {
       tbody tr:not(:first-child) td {
         box-shadow: none;
 
@@ -116,14 +116,14 @@ table.pt-html-table {
     }
   }
 
-  &.pt-interactive {
+  &.#{$ns}-interactive {
     tbody tr:hover td {
       background-color: rgba($gray5, 0.4);
       cursor: pointer;
     }
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     // a bunch of deep compound selectors ahead, but there's not really a better way to do this right now
     // stylelint-disable selector-max-compound-selectors
 
@@ -143,14 +143,14 @@ table.pt-html-table {
       }
     }
 
-    &.pt-html-table-striped {
+    &.#{$ns}-html-table-striped {
       tbody tr:nth-child(odd) td {
         background: rgba($gray1, 0.15);
       }
     }
 
     // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
-    &.pt-html-table-bordered {
+    &.#{$ns}-html-table-bordered {
       th:not(:first-child) {
         box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
       }
@@ -163,7 +163,7 @@ table.pt-html-table {
         }
       }
 
-      &.pt-html-table-striped {
+      &.#{$ns}-html-table-striped {
         tbody tr:not(:first-child) td {
           box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
 
@@ -176,7 +176,7 @@ table.pt-html-table {
       }
     }
 
-    &.pt-interactive {
+    &.#{$ns}-interactive {
       tbody tr:hover td {
         background-color: rgba($gray1, 0.3);
         cursor: pointer;

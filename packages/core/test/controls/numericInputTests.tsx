@@ -93,7 +93,7 @@ describe("<NumericInput>", () => {
         });
 
         it(`renders the children in a ${Classes.CONTROL_GROUP} when buttons are visible`, () => {
-            // if the input is put into a .pt-control-group by itself, it'll have squared border radii
+            // if the input is put into a control group by itself, it'll have squared border radii
             // on the left, which we don't want.
             const component = mount(<NumericInput />);
 
@@ -104,7 +104,7 @@ describe("<NumericInput>", () => {
         });
 
         it(`does not render the children in a ${Classes.CONTROL_GROUP} when buttons are hidden`, () => {
-            // if the input is put into a .pt-control-group by itself, it'll have squared border radii
+            // if the input is put into a control group by itself, it'll have squared border radii
             // on the left, which we don't want.
             const component = mount(<NumericInput buttonPosition={null} />);
 

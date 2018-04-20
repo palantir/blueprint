@@ -6,7 +6,7 @@
 $region-default-color: $gray3 !default;
 $region-selected-color: $pt-intent-primary !default;
 
-.pt-table-overlay-layer {
+.#{$ns}-table-overlay-layer {
   position: absolute;
   top: 0;
   right: 0;
@@ -17,56 +17,56 @@ $region-selected-color: $pt-intent-primary !default;
   pointer-events: none;
 }
 
-.pt-table-overlay {
+.#{$ns}-table-overlay {
   position: absolute;
 }
 
-.pt-table-region {
+.#{$ns}-table-region {
   border: $cell-border-width solid $region-default-color;
   background-color: rgba($region-default-color, 0.1);
 }
 
-.pt-table-selection-region {
+.#{$ns}-table-selection-region {
   border: $cell-border-width solid $region-selected-color;
   background-color: rgba($region-selected-color, 0.1);
 
-  .pt-table-column-headers & {
+  .#{$ns}-table-column-headers & {
     // Issue #120 - Don't actually overlay a color since it causes artifacts.
     background-color: transparent;
   }
 
-  .pt-table-row-headers & {
+  .#{$ns}-table-row-headers & {
     // Issue #120
     background-color: transparent;
   }
 }
 
-.pt-table-focus-region {
+.#{$ns}-table-focus-region {
   border: 2px solid $blue3;
 }
 
-.pt-table-column-headers .pt-table-region {
+.#{$ns}-table-column-headers .#{$ns}-table-region {
   border-bottom: none;
 }
 
-.pt-table-row-headers .pt-table-region {
+.#{$ns}-table-row-headers .#{$ns}-table-region {
   border-right: none;
 }
 
-.pt-table-vertical-guide {
+.#{$ns}-table-vertical-guide {
   top: 0;
   bottom: 0;
 }
 
-.pt-table-horizontal-guide {
+.#{$ns}-table-horizontal-guide {
   right: 0;
   left: 0;
 }
 
-.pt-table-reordering-cursor-overlay {
+.#{$ns}-table-reordering-cursor-overlay {
   cursor: grabbing;
 
-  .pt-table-reordering & {
+  .#{$ns}-table-reordering & {
     pointer-events: all;
   }
 }

@@ -7,66 +7,66 @@
 Labels
 
 Markup:
-<label class="pt-label {{.modifier}}">
+<label class="#{$ns}-label {{.modifier}}">
   Label A
-  <span class="pt-text-muted">(required)</span>
-  <input class="pt-input" style="width: 180px;" type="text" placeholder="Text input" dir="auto" />
+  <span class="#{$ns}-text-muted">(required)</span>
+  <input class="#{$ns}-input" style="width: 180px;" type="text" placeholder="Text input" dir="auto" />
 </label>
-<label class="pt-label {{.modifier}}">
+<label class="#{$ns}-label {{.modifier}}">
   Label B
-  <span class="pt-text-muted">(optional)</span>
-  <div class="pt-input-group">
-    <span class="pt-icon pt-icon-calendar"></span>
-    <input class="pt-input" style="width: 180px;" type="text" placeholder="Input group" dir="auto" />
+  <span class="#{$ns}-text-muted">(optional)</span>
+  <div class="#{$ns}-input-group">
+    <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
+    <input class="#{$ns}-input" style="width: 180px;" type="text" placeholder="Input group" dir="auto" />
   </div>
 </label>
 
-.pt-inline - Inline
+.#{$ns}-inline - Inline
 
-Styleguide pt-label
+Styleguide label
 */
 
 // stylelint-disable-next-line selector-no-qualifying-type
-label.pt-label {
+label.#{$ns}-label {
   display: block;
   margin: 0 0 ($pt-grid-size * 1.5);
 
-  .pt-input,
-  .pt-select,
-  .pt-popover-wrapper {
+  .#{$ns}-input,
+  .#{$ns}-select,
+  .#{$ns}-popover-wrapper {
     display: block;
     margin-top: $pt-grid-size / 2;
     text-transform: none;
   }
 
-  .pt-select select {
+  .#{$ns}-select select {
     width: 100%;
     vertical-align: top;
     font-weight: 400;
   }
 
-  &.pt-inline {
+  &.#{$ns}-inline {
     line-height: $pt-input-height;
 
-    .pt-input,
-    .pt-input-group,
-    .pt-select,
-    .pt-popover-wrapper {
+    .#{$ns}-input,
+    .#{$ns}-input-group,
+    .#{$ns}-select,
+    .#{$ns}-popover-wrapper {
       display: inline-block;
       margin: 0 0 0 ($pt-grid-size / 2);
       vertical-align: top;
     }
 
-    .pt-input-group .pt-input {
+    .#{$ns}-input-group .#{$ns}-input {
       margin-left: 0;
     }
 
-    &.pt-large {
+    &.#{$ns}-large {
       line-height: $pt-input-height-large;
     }
   }
 
-  &:not(.pt-inline) .pt-popover-target {
+  &:not(.#{$ns}-inline) .#{$ns}-popover-target {
     display: block;
   }
 
@@ -74,21 +74,21 @@ label.pt-label {
   Disabled labels
 
   Markup:
-  <label class="pt-label pt-disabled">
+  <label class="#{$ns}-label #{$ns}-disabled">
     Label A
-    <span class="pt-text-muted">(optional)</span>
-    <input disabled class="pt-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
+    <span class="#{$ns}-text-muted">(optional)</span>
+    <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
   </label>
-  <label class="pt-label pt-disabled">
+  <label class="#{$ns}-label #{$ns}-disabled">
     Label B
-    <div class="pt-input-group pt-disabled">
-      <span class="pt-icon pt-icon-calendar"></span>
-      <input disabled class="pt-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+    <div class="#{$ns}-input-group #{$ns}-disabled">
+      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
+      <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
     </div>
   </label>
-  <label class="pt-label pt-disabled">
+  <label class="#{$ns}-label #{$ns}-disabled">
     Label C
-    <div class="pt-select pt-disabled">
+    <div class="#{$ns}-select #{$ns}-disabled">
       <select disabled>
         <option selected>Choose an item...</option>
         <option value="1">One</option>
@@ -96,22 +96,22 @@ label.pt-label {
     </div>
   </label>
 
-  Styleguide pt-label.pt-disabled
+  Styleguide label-disabled
   */
 
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     &,
-    .pt-text-muted {
+    .#{$ns}-text-muted {
       color: $pt-text-color-disabled;
     }
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     color: $pt-dark-heading-color;
 
-    &.pt-disabled {
+    &.#{$ns}-disabled {
       &,
-      .pt-text-muted {
+      .#{$ns}-text-muted {
         color: $pt-dark-text-color-disabled;
       }
     }

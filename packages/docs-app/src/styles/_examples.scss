@@ -7,11 +7,11 @@
 // Specific Example Customizations
 
 .docs-example-wrapper {
-  .pt-slider:not(:last-child) {
+  .#{$ns}-slider:not(:last-child) {
     margin-bottom: $options-margin;
   }
 
-  .pt-callout {
+  .#{$ns}-callout {
     margin: 0;
   }
 }
@@ -20,7 +20,7 @@
   display: flex;
   justify-content: space-between;
 
-  .pt-card {
+  .#{$ns}-card {
     width: floor(($content-width - $pt-grid-size * 10) / 3);
 
     &:hover a {
@@ -34,16 +34,16 @@
 }
 
 .docs-datetime-example {
-  > .pt-datepicker {
+  > .#{$ns}-datepicker {
     margin-bottom: $pt-grid-size * 2;
   }
 
-  > .pt-datetimepicker {
+  > .#{$ns}-datetimepicker {
     display: inline-block;
     margin-bottom: $pt-grid-size * 2;
   }
 
-  .pt-icon-arrow-right {
+  .#{$ns}-icon-arrow-right {
     margin: 0 ($pt-grid-size / 2);
   }
 }
@@ -53,7 +53,7 @@
   align-items: center;
   height: $pt-grid-size * 6;
 
-  .pt-button + .pt-button {
+  .#{$ns}-button + .#{$ns}-button {
     margin-left: $pt-grid-size;
   }
 }
@@ -76,7 +76,7 @@
   );
 
   @include react-transition-phase(
-    "pt-overlay",
+    "#{$ns}-overlay",
     "enter",
     $enter,
     $pt-transition-duration * 3,
@@ -84,7 +84,7 @@
     $before: "&"
   );
   @include react-transition-phase(
-    "pt-overlay",
+    "#{$ns}-overlay",
     "exit",
     $leave,
     $pt-transition-duration * 5,
@@ -110,7 +110,7 @@
   background: $light-gray3;
   padding: $options-margin;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     background: $dark-gray5;
   }
 
@@ -143,7 +143,7 @@
     margin-right: $options-margin;
   }
 
-  .pt-input-group {
+  .#{$ns}-input-group {
     width: $pt-grid-size * 30;
 
     &:first-child {
@@ -164,27 +164,27 @@
   &.docs-slider-example-vertical {
     display: flex;
 
-    .pt-slider {
+    .#{$ns}-slider {
       margin-right: $pt-grid-size * 10;
       margin-bottom: 0;
     }
   }
 }
 
-.docs-tabs-example .pt-navbar .pt-tab {
+.docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
   line-height: $pt-navbar-height;
 }
 
-.docs-example-wrapper .pt-navbar {
+.docs-example-wrapper .#{$ns}-navbar {
   position: static;
   width: 100%;
 }
 
-.docs-tag-example .pt-tag:not(:last-child) {
+.docs-tag-example .#{$ns}-tag:not(:last-child) {
   margin-right: $pt-grid-size * 0.5;
 }
 
-.pt-progress-bar.docs-toast-progress {
+.#{$ns}-progress-bar.docs-toast-progress {
   margin-top: $pt-grid-size / 2;
   margin-bottom: 0;
 }
@@ -197,7 +197,7 @@
     height: 350px;
     overflow: scroll;
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       background: $dark-gray5;
     }
   }
@@ -211,7 +211,7 @@
     min-height: 200%;
   }
 
-  .pt-popover & {
+  .#{$ns}-popover & {
     padding: $pt-grid-size;
   }
 }
@@ -223,7 +223,7 @@
     color: $pt-text-color-muted;
     font-style: italic;
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       color: $pt-dark-text-color-muted;
     }
   }
@@ -250,12 +250,12 @@
     align-items: flex-end;
   }
 
-  .pt-popover-wrapper {
+  .#{$ns}-popover-wrapper {
     // Add a bit of space between borders of consecutive buttons.
     margin: $pt-grid-size / 2;
   }
 
-  .pt-popover-content {
+  .#{$ns}-popover-content {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -275,23 +275,21 @@
 }
 
 .docs-popover-minimal-example {
-  .pt-button:first-child {
+  .#{$ns}-button:first-child {
     margin-right: $pt-grid-size;
   }
 }
 
 .docs-popover-interaction-kind-example {
-  .pt-button {
+  .#{$ns}-button {
     margin-right: $pt-grid-size;
     font-family: $pt-font-family-monospace;
   }
 }
 
 .docs-popover-sizing-example {
-  .pt-popover-content {
-    max-height: $pt-grid-size * 15;
-    overflow-y: auto;
-  }
+  max-height: $pt-grid-size * 15;
+  overflow-y: auto;
 }
 
 .docs-popover-inline-example {
@@ -307,7 +305,7 @@
     overflow-x: scroll;
     overflow-y: hidden;
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       background: $dark-gray5;
     }
 
@@ -338,7 +336,7 @@
 }
 
 .docs-popover-inline-example-popover {
-  .pt-popover-content {
+  .#{$ns}-popover-content {
     padding: $pt-grid-size;
     white-space: nowrap;
   }
@@ -356,7 +354,7 @@
   justify-content: center;
 }
 
-.docs-menu-example .pt-menu {
+.docs-menu-example .#{$ns}-menu {
   max-width: 280px;
 }
 
@@ -366,7 +364,7 @@
 }
 
 // only for date input and date range input examples
-.pt-popover-wrapper + .docs-date-range {
+.#{$ns}-popover-wrapper + .docs-date-range {
   margin-left: $pt-grid-size * 2;
 }
 

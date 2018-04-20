@@ -18,7 +18,7 @@ import { Spinner } from "../spinner/spinner";
 export interface IButtonProps extends IActionProps {
     /**
      * If set to `true`, the button will display in an active state.
-     * This is equivalent to setting `className="pt-active"`.
+     * This is equivalent to setting `className={Classes.ACTIVE}`.
      * @default false
      */
     active?: boolean;

@@ -39,7 +39,7 @@ $dark-asset-background-color: rgba($light-gray1, 0.1);
     background-color: $asset-background-color;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     small {
       color: $pt-dark-text-color-muted;
     }

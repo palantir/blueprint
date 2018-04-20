@@ -120,7 +120,7 @@ export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps
     /**
      * Name of the transition for internal `CSSTransition`.
      * Providing your own name here will require defining new CSS transition properties.
-     * @default "pt-overlay"
+     * @default Classes.OVERLAY
      */
     transitionName?: string;
 }

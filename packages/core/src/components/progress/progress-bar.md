@@ -5,13 +5,13 @@ loading state.
 
 @## CSS API
 
-Set the current progress of the bar via a `width` style rule on the inner `.pt-progress-meter`
+Set the current progress of the bar via a `width` style rule on the inner `.@ns-progress-meter`
 element. This is a very simple CSS-only component, and input validation for `width` values is
 limited: values above `100%` appear as 100% progress and values below `0%` appear as 0%.
 
 Omitting `width` will result in an "indeterminate" progress meter that fills the entire bar.
 
-@css pt-progress-bar
+@css progress-bar
 
 @## JavaScript API
 

@@ -7,12 +7,12 @@ $navigator-width: $pt-grid-size * 40;
   left: calc(50% - #{$navigator-width / 2});
   width: $navigator-width;
 
-  .pt-menu-item small {
+  .#{$ns}-menu-item small {
     // center-align text and SVG icons
     display: flex;
   }
 
-  .pt-menu-item.pt-active small {
+  .#{$ns}-menu-item.#{$ns}-active small {
     color: rgba($white, 0.7);
   }
 }

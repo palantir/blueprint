@@ -7,21 +7,21 @@
   display: inline-block;
 
   @each $intent, $color in $pt-intent-colors {
-    &.pt-intent-#{$intent} {
+    &.#{$ns}-intent-#{$intent} {
       color: $color;
     }
   }
 }
 
-span.pt-icon-standard {
+span.#{$ns}-icon-standard {
   @include pt-icon($pt-icon-size-standard);
 }
 
-span.pt-icon-large {
+span.#{$ns}-icon-large {
   @include pt-icon($pt-icon-size-large);
 }
 
-span.pt-icon {
+span.#{$ns}-icon {
   line-height: 1;
   font-family: $icons20-family;
   font-size: inherit;
@@ -34,12 +34,12 @@ span.pt-icon {
 }
 
 @each $name, $content in $icons {
-  .pt-icon-#{$name}::before {
+  .#{$ns}-icon-#{$name}::before {
     content: $content;
   }
 }
 
-svg.pt-icon {
+svg.#{$ns}-icon {
   // respect dimensions exactly
   flex: 0 0 auto;
   vertical-align: top;

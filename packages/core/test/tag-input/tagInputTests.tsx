@@ -417,7 +417,7 @@ describe("<TagInput>", () => {
         );
         assert.isTrue(
             wrapper
-                .find(".pt-input-ghost") // tslint:disable-line:blueprint-classes-constants
+                .find(`.${Classes.INPUT_GHOST}`)
                 .first()
                 .prop("disabled"),
             "input should be disabled",

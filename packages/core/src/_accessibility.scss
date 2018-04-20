@@ -5,13 +5,13 @@
   @include focus-outline();
 }
 
-.pt-focus-disabled :focus {
+.#{$ns}-focus-disabled :focus {
   // override any focus outline anywhere
   // stylelint-disable declaration-no-important
   outline: none !important;
 
   // special override for checkbox etc which render focus on a separate element
-  ~ .pt-control-indicator {
+  ~ .#{$ns}-control-indicator {
     outline: none !important;
   }
 }

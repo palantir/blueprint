@@ -8,20 +8,20 @@
 Tabs
 
 Markup:
-<div class="pt-tabs">
-    <ul class="pt-tab-list {{.modifier}}" role="tablist">
-        <li class="pt-tab" role="tab" aria-selected="true">Selected tab</li>
-        <li class="pt-tab" role="tab">Another tab</li>
-        <li class="pt-tab" role="tab" aria-disabled="true">Disabled tab</li>
+<div class="#{$ns}-tabs">
+    <ul class="#{$ns}-tab-list {{.modifier}}" role="tablist">
+        <li class="#{$ns}-tab" role="tab" aria-selected="true">Selected tab</li>
+        <li class="#{$ns}-tab" role="tab">Another tab</li>
+        <li class="#{$ns}-tab" role="tab" aria-disabled="true">Disabled tab</li>
     </ul>
-    <div class="pt-tab-panel" role="tabpanel">Selected panel</div>
-    <div class="pt-tab-panel" role="tabpanel" aria-hidden="true">Another panel</div>
-    <div class="pt-tab-panel" role="tabpanel" aria-hidden="true">Disabled panel</div>
+    <div class="#{$ns}-tab-panel" role="tabpanel">Selected panel</div>
+    <div class="#{$ns}-tab-panel" role="tabpanel" aria-hidden="true">Another panel</div>
+    <div class="#{$ns}-tab-panel" role="tabpanel" aria-hidden="true">Disabled panel</div>
 </div>
 
-.pt-large - Large tabs
+.#{$ns}-large - Large tabs
 
-Styleguide pt-tabs
+Styleguide tabs
 */
 
 $tab-color-selected: $pt-link-color !default;
@@ -29,22 +29,22 @@ $dark-tab-color-selected: $pt-dark-link-color !default;
 
 $tab-indicator-width: 3px !default;
 
-.pt-tabs.pt-vertical {
+.#{$ns}-tabs.#{$ns}-vertical {
   display: flex;
 
   // include '>' to ensure we're only modifying
   // these tabs, not tabs that might be further
   // down the DOM hierarchy (i.e. tabs in tabs)
-  > .pt-tab-list {
+  > .#{$ns}-tab-list {
     flex-direction: column;
     align-items: flex-start;
 
-    .pt-tab {
+    .#{$ns}-tab {
       width: 100%;
       padding: 0 $pt-grid-size;
     }
 
-    .pt-tab-indicator-wrapper .pt-tab-indicator {
+    .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
       top: 0;
       right: 0;
       bottom: 0;
@@ -58,13 +58,13 @@ $tab-indicator-width: 3px !default;
   // same consideration here: avoid styling any
   // other tabs that might be contained in this
   // vertical tab component
-  > .pt-tab-panel {
+  > .#{$ns}-tab-panel {
     margin-top: 0;
     padding-left: $pt-grid-size * 2;
   }
 }
 
-.pt-tab-list {
+.#{$ns}-tab-list {
   display: flex;
   flex: 0 0 auto;
   align-items: flex-end;
@@ -81,7 +81,7 @@ $tab-indicator-width: 3px !default;
   }
 }
 
-.pt-tab {
+.#{$ns}-tab {
   @include overflow-ellipsis();
   flex: 0 0 auto;
   position: relative;
@@ -99,7 +99,7 @@ $tab-indicator-width: 3px !default;
     color: inherit;
   }
 
-  .pt-tab-indicator-wrapper ~ & {
+  .#{$ns}-tab-indicator-wrapper ~ & {
     // the bottom border is only for static markup, therefore
     // we never want a bottom border if there's a tab indicator
     // stylelint-disable-next-line declaration-no-important
@@ -125,13 +125,13 @@ $tab-indicator-width: 3px !default;
     -moz-outline-radius: 0;
   }
 
-  .pt-large > & {
+  .#{$ns}-large > & {
     line-height: $pt-button-height-large;
     font-size: $pt-font-size-large;
   }
 }
 
-.pt-tab-panel {
+.#{$ns}-tab-panel {
   margin-top: $pt-grid-size * 2;
 
   &[aria-hidden="true"] {
@@ -139,7 +139,7 @@ $tab-indicator-width: 3px !default;
   }
 }
 
-.pt-tab-indicator-wrapper {
+.#{$ns}-tab-indicator-wrapper {
   position: absolute;
   top: 0;
   left: 0;
@@ -149,7 +149,7 @@ $tab-indicator-width: 3px !default;
   transition-timing-function: $pt-transition-ease;
   pointer-events: none;
 
-  .pt-tab-indicator {
+  .#{$ns}-tab-indicator {
     position: absolute;
     right: 0;
     bottom: 0;
@@ -158,13 +158,13 @@ $tab-indicator-width: 3px !default;
     height: $tab-indicator-width;
   }
 
-  &.pt-no-animation {
+  &.#{$ns}-no-animation {
     transition: none;
   }
 }
 
-.pt-dark {
-  .pt-tab {
+.#{$ns}-dark {
+  .#{$ns}-tab {
     color: $pt-dark-text-color;
 
     &[aria-disabled="true"] {
@@ -181,11 +181,11 @@ $tab-indicator-width: 3px !default;
     }
   }
 
-  .pt-tab-indicator {
+  .#{$ns}-tab-indicator {
     background-color: $dark-tab-color-selected;
   }
 }
 
-.pt-flex-expander {
+.#{$ns}-flex-expander {
   flex: 1 1;
 }

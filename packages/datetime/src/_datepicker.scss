@@ -1,10 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "~@blueprintjs/icons/src/icons";
-@import "../../core/src/common/variables";
-@import "../../core/src/components/popover/common";
-@import "../../datetime/src/common";
+@import "~@blueprintjs/core/src/components/popover/common";
+@import "./common";
 
 $cell-size: $pt-grid-size * 3 !default;
 $header-height: $pt-grid-size * 4 !default;
@@ -21,7 +19,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
-.pt-datepicker {
+.#{$ns}-datepicker {
   position: relative;
   border-radius: $pt-border-radius;
   background: $datepicker-background-color;
@@ -154,7 +152,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
   }
 
-  .pt-datepicker-caption {
+  .#{$ns}-datepicker-caption {
     display: table-caption;
     border-bottom: 1px solid $pt-divider-black;
     padding: 0 $pt-grid-size;
@@ -178,7 +176,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       -webkit-appearance: none;
       // stylelint-enable property-no-vendor-prefix
 
-      &:focus + .pt-datepicker-caption-caret {
+      &:focus + .#{$ns}-datepicker-caption-caret {
         display: inline;
       }
 
@@ -189,7 +187,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
   }
 
-  .pt-datepicker-caption-select {
+  .#{$ns}-datepicker-caption-select {
     display: inline-block;
     position: relative;
 
@@ -197,12 +195,12 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       margin-right: $pt-grid-size;
     }
 
-    &:hover .pt-datepicker-caption-caret {
+    &:hover .#{$ns}-datepicker-caption-caret {
       fill: $pt-icon-color-hover;
     }
   }
 
-  .pt-datepicker-caption-caret {
+  .#{$ns}-datepicker-caption-caret {
     position: absolute;
     top: 2px;
     right: 0;
@@ -210,7 +208,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     pointer-events: none;
   }
 
-  .pt-datepicker-footer {
+  .#{$ns}-datepicker-footer {
     display: flex;
     justify-content: space-between;
     margin-top: $pt-grid-size;
@@ -220,12 +218,12 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   }
 }
 
-.pt-datepicker-caption-measure {
+.#{$ns}-datepicker-caption-measure {
   padding-left: $pt-grid-size / 2;
   font-weight: 600;
 }
 
-.pt-dark .pt-datepicker {
+.#{$ns}-dark .#{$ns}-datepicker {
   background: $dark-datepicker-background-color;
 
   .DayPicker-WeekNumber {
@@ -261,7 +259,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
   }
 
-  .pt-datepicker-caption {
+  .#{$ns}-datepicker-caption {
     border-bottom-color: $pt-dark-divider-black;
 
     select {
@@ -275,16 +273,16 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     // we really need more than 4 compound selector
     // to target the particular structure of this markup
     // stylelint-disable-next-line
-    .pt-datepicker-caption-select:hover .pt-datepicker-caption-caret {
+    .#{$ns}-datepicker-caption-select:hover .#{$ns}-datepicker-caption-caret {
       fill: $pt-dark-icon-color-hover;
     }
 
-    .pt-datepicker-caption-caret {
+    .#{$ns}-datepicker-caption-caret {
       fill: $pt-dark-icon-color;
     }
   }
 
-  .pt-datepicker-footer {
+  .#{$ns}-datepicker-footer {
     border-top-color: $pt-dark-divider-black;
   }
 }

@@ -9,41 +9,41 @@
 Button groups
 
 Markup:
-<div class="pt-button-group {{.modifier}}">
-  <a class="pt-button pt-icon-database" tabindex="0" role="button">Queries</a>
-  <a class="pt-button pt-icon-function" tabindex="0" role="button">Functions</a>
-  <a class="pt-button" tabindex="0" role="button">
-    Options <span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <a class="#{$ns}-button #{$ns}-icon-database" tabindex="0" role="button">Queries</a>
+  <a class="#{$ns}-button #{$ns}-icon-function" tabindex="0" role="button">Functions</a>
+  <a class="#{$ns}-button" tabindex="0" role="button">
+    Options <span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
   </a>
 </div>
 <br /><br />
-<div class="pt-button-group {{.modifier}}">
-  <a class="pt-button pt-icon-chart" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-control" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-graph" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-camera" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-map" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-code" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-th" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-time" tabindex="0" role="button"></a>
-  <a class="pt-button pt-icon-compressed" tabindex="0" role="button"></a>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <a class="#{$ns}-button #{$ns}-icon-chart" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-control" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-graph" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-camera" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-map" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-code" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-th" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-time" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-compressed" tabindex="0" role="button"></a>
 </div>
 <br /><br />
-<div class="pt-button-group {{.modifier}}">
-  <button type="button" class="pt-button pt-intent-success">Save</button>
-  <button type="button" class="pt-button pt-intent-success pt-icon-caret-down"></button>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success">Save</button>
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success #{$ns}-icon-caret-down"></button>
 </div>
 
-.pt-large - Use large buttons
-.pt-minimal - Use minimal buttons
+.#{$ns}-large - Use large buttons
+.#{$ns}-minimal - Use minimal buttons
 
-Styleguide pt-button-group
+Styleguide button-group
 */
 
-.pt-button-group {
+.#{$ns}-button-group {
   display: inline-flex;
 
-  .pt-button {
+  .#{$ns}-button {
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
@@ -63,16 +63,16 @@ Styleguide pt-button-group
     }
 
     &:active,
-    &.pt-active {
+    &.#{$ns}-active {
       z-index: index($control-group-stack, "button-active");
     }
 
     &:disabled,
-    &.pt-disabled {
+    &.#{$ns}-disabled {
       z-index: index($control-group-stack, "button-disabled");
     }
 
-    &[class*="pt-intent-"] {
+    &[class*="#{$ns}-intent-"] {
       z-index: index($control-group-stack, "intent-button-default");
 
       &:focus {
@@ -84,35 +84,35 @@ Styleguide pt-button-group
       }
 
       &:active,
-      &.pt-active {
+      &.#{$ns}-active {
         z-index: index($control-group-stack, "intent-button-active");
       }
 
       &:disabled,
-      &.pt-disabled {
+      &.#{$ns}-disabled {
         z-index: index($control-group-stack, "intent-button-disabled");
       }
     }
   }
 
   // support wrapping buttons in a tooltip, which adds a wrapper element
-  &:not(.pt-minimal) {
-    > .pt-popover-wrapper:not(:first-child) .pt-popover-target .pt-button,
-    > .pt-button:not(:first-child) {
+  &:not(.#{$ns}-minimal) {
+    > .#{$ns}-popover-wrapper:not(:first-child) .#{$ns}-popover-target .#{$ns}-button,
+    > .#{$ns}-button:not(:first-child) {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
 
-    > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
-    > .pt-button:not(:last-child) {
+    > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+    > .#{$ns}-button:not(:last-child) {
       margin-right: -$button-border-width;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
   }
 
-  &.pt-minimal {
-    .pt-button {
+  &.#{$ns}-minimal {
+    .#{$ns}-button {
       @include pt-button-minimal();
     }
   }
@@ -121,29 +121,29 @@ Styleguide pt-button-group
   Responsive
 
   Markup:
-  <div class="pt-button-group pt-large pt-fill">
-    <a class="pt-button pt-intent-primary pt-fixed" tabindex="0" role="button">Start</a>
-    <a class="pt-button pt-intent-primary" tabindex="0" role="button">Left</a>
-    <a class="pt-button pt-intent-primary pt-active" tabindex="0" role="button">Middle</a>
-    <a class="pt-button pt-intent-primary" tabindex="0" role="button">Right</a>
-    <a class="pt-button pt-intent-primary pt-fixed" tabindex="0" role="button">End</a>
+  <div class="#{$ns}-button-group #{$ns}-large #{$ns}-fill">
+    <a class="#{$ns}-button #{$ns}-intent-primary #{$ns}-fixed" tabindex="0" role="button">Start</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary" tabindex="0" role="button">Left</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary #{$ns}-active" tabindex="0" role="button">Middle</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary" tabindex="0" role="button">Right</a>
+    <a class="#{$ns}-button #{$ns}-intent-primary #{$ns}-fixed" tabindex="0" role="button">End</a>
   </div>
   <br />
-  <div class="pt-button-group pt-fill">
-    <button class="pt-button pt-icon-arrow-left"></button>
-    <button class="pt-button pt-fill">Middle</button>
-    <button class="pt-button pt-icon-arrow-right"></button>
+  <div class="#{$ns}-button-group #{$ns}-fill">
+    <button class="#{$ns}-button #{$ns}-icon-arrow-left"></button>
+    <button class="#{$ns}-button #{$ns}-fill">Middle</button>
+    <button class="#{$ns}-button #{$ns}-icon-arrow-right"></button>
   </div>
 
-  Styleguide pt-button-group.pt-fill
+  Styleguide button-group}-fill
   */
 
-  &.pt-fill {
+  &.#{$ns}-fill {
     display: flex;
   }
 
-  .pt-button.pt-fill,
-  &.pt-fill .pt-button:not(.pt-fixed) {
+  .#{$ns}-button.#{$ns}-fill,
+  &.#{$ns}-fill .#{$ns}-button:not(.#{$ns}-fixed) {
     flex: 1 1 auto;
   }
 
@@ -151,78 +151,78 @@ Styleguide pt-button-group
   Vertical button groups
 
   Markup:
-  <div class="pt-button-group pt-vertical">
-    <a class="pt-button pt-icon-search-template" role="button" tabindex="0"></a>
-    <a class="pt-button pt-icon-zoom-in" role="button" tabindex="0"></a>
-    <a class="pt-button pt-icon-zoom-out" role="button" tabindex="0"></a>
-    <a class="pt-button pt-icon-zoom-to-fit" role="button" tabindex="0"></a>
+  <div class="#{$ns}-button-group #{$ns}-vertical">
+    <a class="#{$ns}-button #{$ns}-icon-search-template" role="button" tabindex="0"></a>
+    <a class="#{$ns}-button #{$ns}-icon-zoom-in" role="button" tabindex="0"></a>
+    <a class="#{$ns}-button #{$ns}-icon-zoom-out" role="button" tabindex="0"></a>
+    <a class="#{$ns}-button #{$ns}-icon-zoom-to-fit" role="button" tabindex="0"></a>
   </div>
-  <div class="pt-button-group pt-vertical">
-    <button type="button" class="pt-button pt-active">Home</button>
-    <button type="button" class="pt-button">Pages</button>
-    <button type="button" class="pt-button">Blog</button>
-    <button type="button" class="pt-button">Calendar</button>
+  <div class="#{$ns}-button-group #{$ns}-vertical">
+    <button type="button" class="#{$ns}-button #{$ns}-active">Home</button>
+    <button type="button" class="#{$ns}-button">Pages</button>
+    <button type="button" class="#{$ns}-button">Blog</button>
+    <button type="button" class="#{$ns}-button">Calendar</button>
   </div>
-  <div class="pt-button-group pt-vertical pt-align-left pt-large">
-    <button type="button" class="pt-button pt-intent-primary pt-icon-document">Text</button>
-    <button type="button" class="pt-button pt-intent-primary pt-icon-media pt-active">Media</button>
-    <button type="button" class="pt-button pt-intent-primary pt-icon-link">Sources</button>
+  <div class="#{$ns}-button-group #{$ns}-vertical #{$ns}-align-left #{$ns}-large">
+    <button type="button" class="#{$ns}-button #{$ns}-intent-primary #{$ns}-icon-document">Text</button>
+    <button type="button" class="#{$ns}-button #{$ns}-intent-primary #{$ns}-icon-media #{$ns}-active">Media</button>
+    <button type="button" class="#{$ns}-button #{$ns}-intent-primary #{$ns}-icon-link">Sources</button>
   </div>
 
-  Styleguide pt-button-group.pt-vertical
+  Styleguide button-group-vertical
   */
 
-  &.pt-vertical {
+  &.#{$ns}-vertical {
     flex-direction: column;
     align-items: stretch;
     vertical-align: top;
 
-    .pt-button {
+    .#{$ns}-button {
       // we never want that margin-right when vertical
       margin-right: 0 !important; // stylelint-disable-line declaration-no-important
       // needed to ensure buttons take up the full width when wrapped in a Popover:
       width: 100%;
     }
 
-    &:not(.pt-minimal) {
-      > .pt-popover-wrapper:first-child .pt-popover-target .pt-button,
-      > .pt-button:first-child {
+    &:not(.#{$ns}-minimal) {
+      > .#{$ns}-popover-wrapper:first-child .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-button:first-child {
         border-radius: $pt-border-radius $pt-border-radius 0 0;
       }
 
-      > .pt-popover-wrapper:last-child .pt-popover-target .pt-button,
-      > .pt-button:last-child {
+      > .#{$ns}-popover-wrapper:last-child .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-button:last-child {
         border-radius: 0 0 $pt-border-radius $pt-border-radius;
       }
 
-      > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
-      > .pt-button:not(:last-child) {
+      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-button:not(:last-child) {
         margin-bottom: -$button-border-width;
       }
     }
   }
 
-  &.pt-align-left .pt-button {
+  &.#{$ns}-align-left .#{$ns}-button {
     text-align: left;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     // support wrapping buttons in a Blueprint.Tooltip, which adds a wrapper element
     // in dark theme, we adjust the spacing between buttons for best visual results
-    &:not(.pt-minimal) {
+    &:not(.#{$ns}-minimal) {
       // deeply nested selector necessary to target the appropriate popover
       // wrapper, yet ensure we only style buttons within the target.
       // stylelint-disable-next-line selector-max-compound-selectors
-      > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
-      > .pt-button:not(:last-child) {
+      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-button:not(:last-child) {
         margin-right: $button-border-width;
       }
     }
 
-    &.pt-vertical {
+    &.#{$ns}-vertical {
       // stylelint-disable-next-line selector-max-compound-selectors
-      > .pt-popover-wrapper:not(:last-child) .pt-popover-target .pt-button,
-      > .pt-button:not(:last-child) {
+      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-button:not(:last-child) {
         margin-bottom: $button-border-width;
       }
     }

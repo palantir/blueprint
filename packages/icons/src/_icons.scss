@@ -4,10 +4,13 @@
 @import "generated/icon-variables";
 @import "generated/icon-map";
 
+$pt-namespace: "pt" !default;
+$ns: $pt-namespace;
+
 $icon-classes: (
-  ".pt-icon",
-  ".pt-icon-standard",
-  ".pt-icon-large"
+  ".#{$ns}-icon",
+  ".#{$ns}-icon-standard",
+  ".#{$ns}-icon-large"
 ) !default;
 
 @mixin pt-icon-font-smoothing() {
@@ -33,7 +36,7 @@ $icon-classes: (
     color: $pt-icon-color-hover;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     color: $pt-dark-icon-color;
 
     &:hover {
