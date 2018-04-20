@@ -48,8 +48,8 @@ const ColorSwatch: React.SFC<{ colorName: string; hexCode: string }> = ({ colorN
     };
     return (
         <ClickToCopy className="docs-color-swatch" style={style} value={hexCode}>
-            <div className="docs-color-swatch-trigger docs-clipboard-message" data-message={hexCode}>
-                <span>@{colorName}</span>
+            <div className="docs-color-swatch-trigger docs-clipboard-message" data-message={`@${colorName}`}>
+                <span>{hexCode}</span>
             </div>
         </ClickToCopy>
     );

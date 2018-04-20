@@ -144,6 +144,7 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
   border-top-width: 0;
   border-bottom-width: 0;
   height: $swatch-height;
+  font-family: $pt-font-family-monospace;
 
   &:first-child {
     border-top-width: 1px;
@@ -202,6 +203,9 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
   white-space: nowrap;
   font-size: $pt-font-size-small;
   transition: all $pt-transition-duration $pt-transition-ease;
+
+  // ClickToCopy uses ::after element for variable name so we re-order in flexbox
+  span { order: 1; }
 }
 
 .docs-color-bar-swatches {
