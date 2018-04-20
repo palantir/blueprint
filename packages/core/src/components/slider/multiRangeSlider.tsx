@@ -68,8 +68,8 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
             const left = expandedHandles[index];
             const right = expandedHandles[index + 1];
             const fillIntentPriorities = [
-                left.trackIntentAbove,
-                right.trackIntentBelow,
+                left.trackIntentAfter,
+                right.trackIntentBefore,
                 this.props.defaultTrackIntent,
                 Intent.NONE,
             ];
@@ -85,8 +85,8 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
         return this.getSortedHandles().map(({ value, type }, index) => (
             <Handle
                 className={classNames({
-                    [Classes.LOWER]: type === "lower",
-                    [Classes.UPPER]: type === "upper",
+                    [Classes.START]: type === "start",
+                    [Classes.END]: type === "end",
                 })}
                 disabled={disabled}
                 key={`${index}-${this.getHandles().length}`}
@@ -119,34 +119,34 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
         }
     }
 
-    private renderTrackFill(index: number, left: ISliderHandleProps, right: ISliderHandleProps, intent: Intent) {
+    private renderTrackFill(index: number, start: ISliderHandleProps, end: ISliderHandleProps, intent: Intent) {
         const { tickSizeRatio } = this.state;
-        const lowerValue = left.value;
-        const upperValue = right.value;
+        const startValue = start.value;
+        const endValue = end.value;
 
-        if (lowerValue === upperValue) {
+        if (startValue === endValue) {
             return undefined;
         }
 
-        let lowerOffsetRatio = this.getOffsetRatio(lowerValue, tickSizeRatio);
-        let upperOffsetRatio = this.getOffsetRatio(upperValue, tickSizeRatio);
+        let startOffsetRatio = this.getOffsetRatio(startValue, tickSizeRatio);
+        let endOffsetRatio = this.getOffsetRatio(endValue, tickSizeRatio);
 
-        if (lowerOffsetRatio > upperOffsetRatio) {
-            const temp = upperOffsetRatio;
-            upperOffsetRatio = lowerOffsetRatio;
-            lowerOffsetRatio = temp;
+        if (startOffsetRatio > endOffsetRatio) {
+            const temp = endOffsetRatio;
+            endOffsetRatio = startOffsetRatio;
+            startOffsetRatio = temp;
         }
 
-        const lowerOffset = formatPercentage(lowerOffsetRatio);
-        const upperOffset = formatPercentage(1 - upperOffsetRatio);
+        const startOffset = formatPercentage(startOffsetRatio);
+        const endOffset = formatPercentage(1 - endOffsetRatio);
 
         const style: React.CSSProperties = this.props.vertical
-            ? { bottom: lowerOffset, top: upperOffset, left: 0 }
-            : { left: lowerOffset, right: upperOffset, top: 0 };
+            ? { bottom: startOffset, top: endOffset, left: 0 }
+            : { left: startOffset, right: endOffset, top: 0 };
 
         const classes = classNames(Classes.SLIDER_PROGRESS, intentClass(intent), {
-            [Classes.LOWER]: left.type === "lower",
-            [Classes.UPPER]: right.type === "upper",
+            [Classes.START]: start.type === "start",
+            [Classes.END]: end.type === "end",
             [`${Classes.SLIDER_PROGRESS}-empty`]: intent === Intent.NONE,
         });
 

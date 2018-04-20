@@ -81,8 +81,8 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
         return value.map((val, index) => (
             <Handle
                 className={classNames({
-                    [Classes.LOWER]: index === RangeIndex.START,
-                    [Classes.UPPER]: index === RangeIndex.END,
+                    [Classes.START]: index === RangeIndex.START,
+                    [Classes.END]: index === RangeIndex.END,
                 })}
                 disabled={disabled}
                 key={index}

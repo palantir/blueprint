@@ -7,12 +7,12 @@
 import { Intent } from "../../common";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 
-export type SliderHandleType = "full" | "lower" | "upper";
+export type SliderHandleType = "full" | "start" | "end";
 
 export interface ISliderHandleProps {
     value: number;
-    trackIntentAbove?: Intent;
-    trackIntentBelow?: Intent;
+    trackIntentAfter?: Intent;
+    trackIntentBefore?: Intent;
     type?: SliderHandleType;
 }
 

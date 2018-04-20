@@ -194,8 +194,8 @@ export const SLIDER_TRACK = `${SLIDER}-track`;
 export const SLIDER_PROGRESS = `${SLIDER}-progress`;
 export const RANGE_SLIDER = `${NS}-range-slider`;
 export const MULTI_RANGE_SLIDER = `${NS}-multi-range-slider`;
-export const LOWER = `${NS}-lower`;
-export const UPPER = `${NS}-upper`;
+export const START = `${NS}-start`;
+export const END = `${NS}-end`;
 
 export const SPINNER = `${NS}-spinner`;
 export const SPINNER_HEAD = `${SPINNER}-head`;

@@ -58,12 +58,12 @@ $track-height: $track-size !default;
 
 .#{$ns}-slider-progress,
 .#{$ns}-dark .#{$ns}-slider-progress {
-  &.#{$ns}-lower {
+  &.#{$ns}-start {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 
-  &.#{$ns}-upper {
+  &.#{$ns}-end {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
@@ -152,17 +152,17 @@ $track-height: $track-size !default;
     }
   }
 
-  &.#{$ns}-lower,
-  &.#{$ns}-upper {
+  &.#{$ns}-start,
+  &.#{$ns}-end {
     width: $handle-size / 2;
   }
 
-  &.#{$ns}-lower {
+  &.#{$ns}-start {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  &.#{$ns}-upper {
+  &.#{$ns}-end {
     margin-left: $handle-size / 2;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -207,14 +207,14 @@ $track-height: $track-size !default;
       margin-left: 0;
     }
 
-    &.#{$ns}-upper,
-    &.#{$ns}-lower {
+    &.#{$ns}-end,
+    &.#{$ns}-start {
       margin-left: 0;
       width: $handle-size;
       height: $handle-size / 2;
     }
 
-    &.#{$ns}-lower {
+    &.#{$ns}-start {
       border-top-left-radius: 0;
       border-bottom-right-radius: $pt-border-radius;
 
@@ -223,7 +223,7 @@ $track-height: $track-size !default;
       }
     }
 
-    &.#{$ns}-upper {
+    &.#{$ns}-end {
       margin-bottom: $handle-size / 2;
       border-top-left-radius: $pt-border-radius;
       border-bottom-left-radius: 0;
