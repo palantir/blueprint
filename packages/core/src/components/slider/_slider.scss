@@ -37,12 +37,16 @@ $track-height: $track-size !default;
   }
 }
 
-.#{$ns}-slider-track:first-child {
+@mixin slider-progress-empty {
   background: rgba($gray1, 0.2);
 
   .#{$ns}-dark & {
     background: rgba($black, 0.5);
   }
+}
+
+.#{$ns}-slider-track:first-child {
+  @include slider-progress-empty();
 }
 
 .#{$ns}-slider-track,
@@ -68,6 +72,10 @@ $track-height: $track-size !default;
     &.#{$ns}-intent-#{$intent} {
       background-color: $color;
     }
+  }
+
+  &.#{$ns}-slider-progress-empty {
+    @include slider-progress-empty();
   }
 }
 
@@ -221,5 +229,11 @@ $track-height: $track-size !default;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
+  }
+}
+
+.#{$ns}-multi-range-slider {
+  .#{$ns}-slider-track:first-child {
+    background: none;
   }
 }

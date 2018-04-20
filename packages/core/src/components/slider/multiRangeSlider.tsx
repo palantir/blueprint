@@ -124,7 +124,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
         const lowerValue = left.value;
         const upperValue = right.value;
 
-        if (intent === Intent.NONE || lowerValue === upperValue) {
+        if (lowerValue === upperValue) {
             return undefined;
         }
 
@@ -147,6 +147,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
         const classes = classNames(Classes.SLIDER_PROGRESS, intentClass(intent), {
             [Classes.LOWER]: left.type === "lower",
             [Classes.UPPER]: right.type === "upper",
+            [`${Classes.SLIDER_PROGRESS}-empty`]: intent === Intent.NONE,
         });
 
         return <div key={`track-${index}`} className={classes} style={style} />;
