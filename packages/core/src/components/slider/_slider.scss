@@ -64,20 +64,10 @@ $track-height: $track-size !default;
     border-bottom-right-radius: 0;
   }
 
-  &.#{$ns}-intent-primary {
-    background: $pt-intent-primary;
-  }
-
-  &.#{$ns}-intent-success {
-    background: $pt-intent-success;
-  }
-
-  &.#{$ns}-intent-warning {
-    background: $pt-intent-warning;
-  }
-
-  &.#{$ns}-intent-danger {
-    background: $pt-intent-danger;
+  @each $intent, $color in $pt-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      background-color: $color;
+    }
   }
 }
 
