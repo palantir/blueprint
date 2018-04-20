@@ -50,6 +50,8 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
     private refHandlers = {
         handle: (el: HTMLSpanElement) => {
             this.handleElement = el;
+            // TODO If this ends up being the approved way of working, only call this function on the first ref and add
+            // a comment explaning why.
             this.forceUpdate();
         },
     };
