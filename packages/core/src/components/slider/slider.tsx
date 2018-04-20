@@ -5,6 +5,7 @@
  */
 
 import * as React from "react";
+import classNames from "classnames";
 
 import * as Classes from "../../common/classes";
 import { clamp } from "../../common/utils";
@@ -67,7 +68,7 @@ export class Slider extends CoreSlider<ISliderProps> {
             ? { bottom: offsetPercentage, height: sizePercentage }
             : { left: offsetPercentage, width: sizePercentage };
 
-        return <div className={`${Classes.SLIDER}-progress`} style={style} />;
+        return <div className={classNames(Classes.SLIDER_PROGRESS, Classes.INTENT_PRIMARY)} style={style} />;
     }
 
     protected renderHandles() {
