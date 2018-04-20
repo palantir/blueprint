@@ -7,6 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { IRangeSliderProps } from '..';
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
@@ -83,6 +84,16 @@ export interface ISliderState {
 }
 
 export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPureComponent<P, ISliderState> {
+    public static defaultProps: ICoreSliderProps = {
+        disabled: false,
+        labelStepSize: 1,
+        max: 10,
+        min: 0,
+        showTrackFill: true,
+        stepSize: 1,
+        vertical: false,
+    };
+
     public className = Classes.SLIDER;
 
     private trackElement: HTMLElement;

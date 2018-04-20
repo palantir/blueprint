@@ -34,15 +34,9 @@ export interface ISliderProps extends ICoreSliderProps {
 
 export class Slider extends CoreSlider<ISliderProps> {
     public static defaultProps: ISliderProps = {
-        disabled: false,
+        ...CoreSlider.defaultProps,
         initialValue: 0,
-        labelStepSize: 1,
-        max: 10,
-        min: 0,
-        showTrackFill: true,
-        stepSize: 1,
         value: 0,
-        vertical: false,
     };
 
     public static displayName: "Blueprint.Slider";

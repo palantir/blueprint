@@ -23,15 +23,7 @@ export interface IMultiRangeSliderProps extends ICoreSliderProps {
 }
 
 export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
-    public static defaultProps: IMultiRangeSliderProps = {
-        disabled: false,
-        labelStepSize: 1,
-        max: 10,
-        min: 0,
-        showTrackFill: true,
-        stepSize: 1,
-        vertical: false,
-    };
+    public static defaultProps: IMultiRangeSliderProps = CoreSlider.defaultProps;
 
     public static displayName = "Blueprint2.MultiRangeSlider";
     public className = classNames(Classes.SLIDER, Classes.MULTI_RANGE_SLIDER);
