@@ -3,6 +3,5 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-export * from "./generateIsomorphicTests";
 export * from "./testErrorBoundary";
 export * from "./utils";
