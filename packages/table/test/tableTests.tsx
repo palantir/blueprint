@@ -1544,7 +1544,7 @@ describe("<Table>", () => {
                     expectPropValidationError(
                         Table,
                         {
-                            children: [<Column />, <Column />, <Column />],
+                            children: [<Column key={0} />, <Column key={1} />, <Column key={2} />],
                             columnWidths: [1, 2],
                         },
                         Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH,
