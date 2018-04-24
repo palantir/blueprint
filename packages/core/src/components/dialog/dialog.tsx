@@ -37,10 +37,18 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
 
     /**
      * Whether to show the close button in the dialog's header.
-     * Note that the header will only be rendered if `title` is provided.
+     * Note that the header will only be rendered if `title` is provided or if `isMaximizeable` is true.
      * @default true
      */
     isCloseButtonShown?: boolean;
+
+    /**
+     * Whether to allow a user to maximize the dialog to full browser width and height.
+     * If true, a maximize button is shown in the dialog's header (which turns into a minimize button when the dialog is maximized).
+     * The header will only be rendered if `title` is provided or if `isMaximizeable` is true.
+     * @default false
+     */
+    isMaximizeable?: boolean;
 
     /**
      * CSS styles to apply to the dialog.
@@ -61,7 +69,11 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     transitionName?: string;
 }
 
-export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
+export interface IDialogState {
+    /** Whether the dialog is currently maximized to cover the whole viewport. */
+    isMaximized?: boolean;
+}
+export class Dialog extends AbstractPureComponent<IDialogProps, IDialogState> {
     public static defaultProps: IDialogProps = {
         canOutsideClickClose: true,
         isOpen: false,
@@ -69,11 +81,26 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
 
     public static displayName = "Blueprint2.Dialog";
 
+    public constructor(props?: IDialogProps) {
+        super(props);
+        this.state = {
+            isMaximized: false,
+        };
+    }
+
     public render() {
+        const classes = classNames(
+            Classes.DIALOG,
+            {
+                [Classes.DIALOG_MAXIMIZED]: this.state.isMaximized,
+            },
+            this.props.className,
+        );
+
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
                 <div className={Classes.DIALOG_CONTAINER} onMouseDown={this.handleContainerMouseDown}>
-                    <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
+                    <div className={classes} style={this.props.style}>
                         {this.maybeRenderHeader()}
                         {this.props.children}
                     </div>
@@ -99,7 +126,25 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         if (this.props.isCloseButtonShown !== false) {
             return (
                 <button aria-label="Close" className={Classes.DIALOG_CLOSE_BUTTON} onClick={this.props.onClose}>
-                    <Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />
+                    <Icon icon="small-cross" title="Close" iconSize={Icon.SIZE_LARGE} />
+                </button>
+            );
+        } else {
+            return undefined;
+        }
+    }
+
+    // todo: check this.  default should be no maximize icon
+    private maybeRenderMaximizeButton() {
+        // show maximize button if prop is true
+        // this gives us a behavior as if the default value were `false`
+        if (this.props.isMaximizeable !== !true) {
+            const icon = this.state.isMaximized ? "minimize" : "maximize";
+            const title = this.state.isMaximized ? "Minimize" : "Maximize";
+            return (
+                // todo: need to shrink icon, better position, use own class name
+                <button aria-label="Maximize" className={Classes.DIALOG_CLOSE_BUTTON} onClick={this.onToggleMaximize}>
+                    <Icon icon={icon} title={title} iconSize={Icon.SIZE_STANDARD} />
                 </button>
             );
         } else {
@@ -108,14 +153,15 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
     }
 
     private maybeRenderHeader() {
-        const { icon, title } = this.props;
-        if (title == null) {
+        const { icon, title, isMaximizeable } = this.props;
+        if (title == null && isMaximizeable == null) {
             return undefined;
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} iconSize={Icon.SIZE_LARGE} />
                 <h4 className={Classes.DIALOG_HEADER_TITLE}>{title}</h4>
+                {this.maybeRenderMaximizeButton()}
                 {this.maybeRenderCloseButton()}
             </div>
         );
@@ -127,5 +173,11 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         if (isClickOutsideDialog && this.props.canOutsideClickClose) {
             safeInvoke(this.props.onClose, evt);
         }
+    };
+
+    private onToggleMaximize = (): void => {
+        this.setState({
+            isMaximized: !this.state.isMaximized,
+        });
     };
 }

@@ -21,7 +21,7 @@ export interface IOverlayExampleState {
     usePortal: boolean;
 }
 
-export class OverlayExample extends BaseExample<IOverlayExampleState> {
+export class OverlayExample<S> extends BaseExample<{}> {
     public state: IOverlayExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,

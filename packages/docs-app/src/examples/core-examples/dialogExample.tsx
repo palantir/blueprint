@@ -6,10 +6,25 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, Classes, Dialog, Intent, Tooltip } from "@blueprintjs/core";
-import { OverlayExample } from "./overlayExample";
+import { AnchorButton, Button, Classes, Dialog, Intent, Switch, Tooltip } from "@blueprintjs/core";
+import { handleBooleanChange } from "@blueprintjs/docs-theme";
+import { IOverlayExampleState, OverlayExample } from "./overlayExample";
 
-export class DialogExample extends OverlayExample {
+export interface IDialogExampleState extends IOverlayExampleState {
+    isMaximizeable: boolean;
+}
+
+export class DialogExample extends OverlayExample<IDialogExampleState> {
+    public state: IDialogExampleState;
+
+    private handleIsMaximizeableChange = handleBooleanChange(isMaximizeable => this.setState({ isMaximizeable }));
+
+    public constructor(props?: any, context?: any) {
+        super(props, context);
+        this.state = this.state as IDialogExampleState;
+        this.state.isMaximizeable = true;
+    }
+
     protected renderExample() {
         return (
             <div className="docs-dialog-example">
@@ -72,6 +87,17 @@ export class DialogExample extends OverlayExample {
         const options = super.renderOptions();
         // delete "hasBackdrop" switch from option controls
         options[1].splice(2, 1);
+
+        // add isMaximizeable switch to option controls
+        const { isMaximizeable } = this.state;
+        options[1].push(
+            <Switch
+                checked={isMaximizeable}
+                key="maximizeable"
+                label="Can be maximized"
+                onChange={this.handleIsMaximizeableChange}
+            />,
+        );
         return options;
     }
 }

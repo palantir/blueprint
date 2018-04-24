@@ -88,6 +88,12 @@ $dialog-padding: $pt-grid-size * 2 !default;
     background: $pt-dark-app-background-color;
     color: $pt-dark-text-color;
   }
+
+  &.#{$ns}-dialog-maximized {
+    margin: 0 0;
+    width: 100vw;
+    height: 100vh;
+  }
 }
 
 .#{$ns}-dialog-header {
@@ -133,7 +139,8 @@ $dialog-padding: $pt-grid-size * 2 !default;
   }
 }
 
-.#{$ns}-dialog-close-button {
+.#{$ns}-dialog-close-button,
+.#{$ns}-dialog-maximize-button {
   // large icon with interactive colors
   @include pt-icon($pt-icon-size-large);
   @include pt-icon-colors();

@@ -95,6 +95,8 @@ export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
 export const DIALOG_HEADER_TITLE = `${DIALOG}-header-title`;
+export const DIALOG_MAXIMIZE_BUTTON = `${DIALOG}-maximize-button`;
+export const DIALOG_MAXIMIZED = `${DIALOG}-maximized`;
 
 export const EDITABLE_TEXT = `${NS}-editable-text`;
 export const EDITABLE_TEXT_CONTENT = `${EDITABLE_TEXT}-content`;
