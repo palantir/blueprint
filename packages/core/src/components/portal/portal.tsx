@@ -59,13 +59,8 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         if (isReact15 || typeof document === "undefined" || !this.state.hasMounted) {
             return null;
         } else {
-            console.log("Creating portal");
             return ReactDOM.createPortal(this.props.children, this.portalElement);
         }
-    }
-
-    public componentDidCatch(e: any) {
-        console.log(e);
     }
 
     public componentDidMount() {
