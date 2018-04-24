@@ -3,7 +3,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons/isomorphic");
+const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const DateTime = require("../lib/cjs");
 
