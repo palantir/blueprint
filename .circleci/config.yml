@@ -98,6 +98,8 @@ jobs:
       - image: circleci/node:8.10.0-browsers
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
+    environment:
+      REACT: 15 # use React 15 for these tests
     parallelism: 4
     steps:
       - checkout
@@ -108,10 +110,10 @@ jobs:
       - run:
           command: |
               case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run test15 --scope '@blueprintjs/core' ;; \
-              1) yarn lerna run test15 --scope '@blueprintjs/{datetime,timezone}' ;; \
-              2) yarn lerna run test15 --scope '@blueprintjs/table' ;; \
-              3) yarn lerna run test15 --scope '@blueprintjs/{icons,labs,select}' ;; \
+              0) yarn lerna run test --scope '@blueprintjs/core' ;; \
+              1) yarn lerna run test --scope '@blueprintjs/{datetime,timezone}' ;; \
+              2) yarn lerna run test --scope '@blueprintjs/table' ;; \
+              3) yarn lerna run test --scope '@blueprintjs/{icons,labs,select}' ;; \
               esac
 
   deploy-preview:
