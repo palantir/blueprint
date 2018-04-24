@@ -17,14 +17,16 @@ module.exports = {
     rules: {
         "ban": {
             options: [
-                ["Object", "assign", "use TS2.1 object spread { ...a, ...b }"],
+                ["_", "extend", "use object spread: { ...a, ...b }"],
+                ["_", "isNull", "use plain JS: == null"],
+                ["_", "isDefined", "use plain JS: != null"],
+                ["Object", "assign", "use object spread: { ...a, ...b }"],
                 ["Object", "getOwnPropertyNames", "use Object.keys()"],
                 ["describe", "only", "should not be committed to repo"],
                 ["it", "only", "should not be committed to repo"],
                 ["test", "only", "should not be committed to repo"],
             ],
         },
-        "jsx-key": false,
         "linebreak-style": {
             options: ["LF"],
         },
@@ -32,9 +34,9 @@ module.exports = {
             options: ["log", "time", "timeEnd", "trace"],
         },
         "no-default-export": true,
-
-        // TODO: enable this
-        "no-implicit-dependencies": false,
+        "no-implicit-dependencies": {
+            options: ["dev"]
+        },
         "no-invalid-this": {
             options: ["check-function-in-method"]
         },
@@ -51,8 +53,6 @@ module.exports = {
         },
         "no-unnecessary-callback-wrapper": true,
         "no-unnecessary-initializer": true,
-        // TODO: enable no-unused-expression. Currently, a lot of chai assertions are not written as proper statements.
-        "no-unused-expression": false,
         "prefer-conditional-expression": false,
         "prettier": {
             options: {
@@ -63,14 +63,15 @@ module.exports = {
         },
         "variable-name": {
             options: [
+                "allow-leading-underscore",
+                "allow-pascal-case",
                 "ban-keywords",
                 "check-format",
-                "allow-leading-underscore",
-                "allow-pascal-case"
             ]
         }
     },
     jsRules: {
+        "no-console": false,
         "object-literal-sort-keys": false,
         "trailing-comma": false,
     }

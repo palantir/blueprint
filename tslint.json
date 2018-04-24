@@ -6,6 +6,10 @@
         "Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved.",
         "Copyright 2018 Palantir Technologies, Inc. All rights reserved.\n\nLicensed under the terms of the LICENSE file distributed with this project."
       ]
-    }
+    },
+    // TODO: test dependencies are only declared at root but used in all packages.
+    "no-implicit-dependencies": false,
+    // TODO: Currently, a lot of chai assertions are not written as proper statements.
+    "no-unused-expression": false
   }
 }
