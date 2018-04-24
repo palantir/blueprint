@@ -249,7 +249,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
 
     private getContents(index: number) {
         return [
-            <div>
+            <div key="text">
                 <h5>Confirm deletion</h5>
                 <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
                 <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 15 }}>
@@ -261,14 +261,14 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     </Button>
                 </div>
             </div>,
-            <div>
+            <div key="input">
                 <label className={Classes.LABEL}>
                     Enter some text
                     <input autoFocus={true} className={Classes.INPUT} type="text" />
                 </label>
             </div>,
-            <Slider min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
-            <Menu>
+            <Slider key="slider" min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
+            <Menu key="menu">
                 <MenuDivider title="Edit" />
                 <MenuItem icon="cut" text="Cut" label="⌘X" />
                 <MenuItem icon="duplicate" text="Copy" label="⌘C" />
@@ -286,7 +286,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     <MenuItem icon="underline" text="Underline" />
                 </MenuItem>
             </Menu>,
-            <PopoverExample {...this.props} />,
+            <PopoverExample key="popoverexample" {...this.props} />,
         ][index];
     }
 

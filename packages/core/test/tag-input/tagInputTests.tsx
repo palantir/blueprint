@@ -30,7 +30,12 @@ describe("<TagInput>", () => {
     });
 
     it("values can be valid JSX nodes", () => {
-        const values = [<strong>Albert</strong>, undefined, ["Bar", <em key="thol">thol</em>, "omew"], "Casper"];
+        const values = [
+            <strong key="al">Albert</strong>,
+            undefined,
+            ["Bar", <em key="thol">thol</em>, "omew"],
+            "Casper",
+        ];
         const wrapper = mount(<TagInput values={values} />);
         // undefined does not produce a tag
         assert.lengthOf(wrapper.find(Tag), values.length - 1);
@@ -376,7 +381,7 @@ describe("<TagInput>", () => {
     it("arrow key interactions ignore falsy values", () => {
         const MIXED_VALUES = [
             undefined,
-            <strong>Albert</strong>,
+            <strong key="al">Albert</strong>,
             false,
             ["Bar", <em key="thol">thol</em>, "omew"],
             null,
