@@ -1,17 +1,14 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
- * Generates isomorphic tests for React components
+ * Generates isomorphic tests for React components.
  */
 
-// TODO: make this an executable script that takes configuration from CLI arguments so we don't need
-// to use the `mocha` CLI and write an isotest.js file in every project
+// tslint:disable-next-line:no-var-requires
+require("../../bootstrap");
 
 import * as Enzyme from "enzyme";
-import React16Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
-
-Enzyme.configure({ adapter: new React16Adapter() });
 
 /**
  * Determines if the passed Component is a React Class or not

@@ -4,10 +4,13 @@
 
 require("./polyfill");
 
-const Enzyme = require("enzyme");
 // REACT env variable should be 15 or 16.
-const Adapter = require(`enzyme-adapter-react-${process.env.REACT}`);
+const { REACT = 16 } = process.env;
+
+const Enzyme = require("enzyme");
+const Adapter = require(`enzyme-adapter-react-${REACT}`);
 
 Enzyme.configure({ adapter: new Adapter() });
+
 // tslint:disable-next-line:no-console
-console.info(`Enzyme configured with ${Adapter.name}.`);
+console.info(`Enzyme configured with \x1b[35m${Adapter.name}\x1b[0m`);
