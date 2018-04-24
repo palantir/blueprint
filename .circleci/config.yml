@@ -93,6 +93,27 @@ jobs:
               3) yarn lerna run test --scope '@blueprintjs/{icons,labs,select}' ;; \
               esac
 
+  test-15:
+    docker:
+      - image: circleci/node:8.10.0-browsers
+        environment:
+            CHROME_BIN: "/usr/bin/google-chrome"
+    parallelism: 4
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          command: |
+              case $CIRCLE_NODE_INDEX in \
+              0) yarn lerna run test15 --scope '@blueprintjs/core' ;; \
+              1) yarn lerna run test15 --scope '@blueprintjs/{datetime,timezone}' ;; \
+              2) yarn lerna run test15 --scope '@blueprintjs/table' ;; \
+              3) yarn lerna run test15 --scope '@blueprintjs/{icons,labs,select}' ;; \
+              esac
+
   deploy-preview:
     docker:
       - image: circleci/node:8.10.0
@@ -135,6 +156,8 @@ workflows:
       - dist:
           requires: [compile]
       - test:
+          requires: [compile]
+      - test-15:
           requires: [compile]
       - deploy-preview:
           requires: [dist]
