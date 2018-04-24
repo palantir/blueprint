@@ -144,19 +144,17 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
 
     protected renderChildren(): React.ReactNode {
         const { children, icon, loading, rightIcon, text } = this.props;
-        return (
-            <>
-                {loading && <Spinner className={classNames(Classes.SMALL, Classes.BUTTON_SPINNER)} />}
-                <Icon icon={icon} />
-                {(text || children) && (
-                    <span className={Classes.BUTTON_TEXT}>
-                        {text}
-                        {children}
-                    </span>
-                )}
-                <Icon icon={rightIcon} />
-            </>
-        );
+        return [
+            loading && <Spinner key="loading" className={classNames(Classes.SMALL, Classes.BUTTON_SPINNER)} />,
+            <Icon key="leftIcon" icon={icon} />,
+            (text || children) && (
+                <span key="text" className={Classes.BUTTON_TEXT}>
+                    {text}
+                    {children}
+                </span>
+            ),
+            <Icon key="rightIcon" icon={rightIcon} />,
+        ];
     }
 }
 

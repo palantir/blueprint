@@ -10,9 +10,9 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
-
 import * as Keys from "../../src/common/keys";
 import { Classes, IOverlayProps, Overlay, Portal, Utils } from "../../src/index";
+import { findInPortal } from "../utils";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
 
@@ -215,7 +215,7 @@ describe("<Overlay>", () => {
             const onClose = spy();
             mountWrapper(
                 <Overlay isOpen={true} onClose={onClose}>
-                    <div>
+                    <div id="outer-element">
                         {createOverlayContents()}
                         <Overlay isOpen={true}>
                             <div id="inner-element">{createOverlayContents()}</div>
@@ -223,7 +223,8 @@ describe("<Overlay>", () => {
                     </div>
                 </Overlay>,
             );
-            wrapper.find("#inner-element").simulate("mousedown");
+            // this hackery is necessary for React 15 support, where Portals break trees.
+            findInPortal(findInPortal(wrapper, "#outer-element"), "#inner-element").simulate("mousedown");
             assert.isTrue(onClose.notCalled);
         });
 
