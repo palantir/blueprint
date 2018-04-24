@@ -7,7 +7,6 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IRangeSliderProps } from '..';
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
