@@ -10,4 +10,4 @@ const Adapter = require(`enzyme-adapter-react-${process.env.REACT}`);
 
 Enzyme.configure({ adapter: new Adapter() });
 // tslint:disable-next-line:no-console
-console.info(`Enzyme configured with ${adapter.name}.`);
+console.info(`Enzyme configured with ${Adapter.name}.`);
