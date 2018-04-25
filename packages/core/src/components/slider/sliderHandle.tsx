@@ -4,8 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import * as React from "react";
 import { Intent } from "../../common";
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
 
 export type SliderHandleType = "full" | "start" | "end";
 
@@ -16,6 +16,6 @@ export interface ISliderHandleProps {
     type?: SliderHandleType;
 }
 
-export class SliderHandle extends AbstractPureComponent<ISliderHandleProps> {
+export class SliderHandle extends React.PureComponent<ISliderHandleProps> {
     public static displayName = "Blueprint2.SliderHandle";
 }

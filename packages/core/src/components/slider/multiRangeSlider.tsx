@@ -16,7 +16,7 @@ import { Handle } from "./handle";
 import { ISliderHandleProps, SliderHandle } from "./sliderHandle";
 
 export interface IMultiRangeSliderProps extends ICoreSliderProps {
-    children?: React.ReactNode;
+    children?: Array<React.ReactElement<SliderHandle>>;
     defaultTrackIntent?: Intent;
     onChange?(values: number[]): void;
     onRelease?(values: number[]): void;
@@ -179,7 +179,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
 
     private handleChange = (values: number[]) => {
         const oldValues = this.getSortedHandles().map(handle => handle.value);
-        const newValues = values.slice().sort(compare);
+        const newValues = values.slice().sort((left, right) => left - right);
         if (!areValuesEqual(newValues, oldValues) && Utils.isFunction(this.props.onChange)) {
             this.props.onChange(newValues);
         }
@@ -187,7 +187,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
 
     private getSortedHandles(): ISliderHandleProps[] {
         const handles = this.getHandles();
-        return handles.sort((left, right) => compare(left.value, right.value));
+        return handles.sort((left, right) => left.value - right.value);
     }
 
     private getHandles(): ISliderHandleProps[] {
@@ -200,10 +200,6 @@ function getHandles({ children }: IMultiRangeSliderProps): ISliderHandleProps[] 
         children,
         child => (Utils.isElementOfType(child, SliderHandle) ? child.props : null),
     ).filter(child => child !== null);
-}
-
-function compare(left: number, right: number) {
-    return left - right;
 }
 
 function areValuesEqual(left: number[], right: number[]) {

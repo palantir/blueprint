@@ -48,13 +48,14 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
 
     private handleElement: HTMLElement;
     private refHandlers = {
-        handle: (el: HTMLSpanElement) => {
-            this.handleElement = el;
-            // TODO If this ends up being the approved way of working, only call this function on the first ref and add
-            // a comment explaning why.
-            this.forceUpdate();
-        },
+        handle: (el: HTMLSpanElement) => (this.handleElement = el),
     };
+
+    public componentDidMount() {
+        // The first time this component renders, it has no ref to the handle and thus incorrectly centers the handle.
+        // Therefore, on the first mount, force a re-render to center the handle with the ref'd component.
+        this.forceUpdate();
+    }
 
     public render() {
         const { className, disabled, label, min, tickSizeRatio, value, vertical } = this.props;
