@@ -60,11 +60,9 @@ module.exports = {
                 NODE_ENV: JSON.stringify("test"),
             },
         }),
-
-        // TODO: enable this
-        // new CircularDependencyPlugin({
-        //     exclude: /.js|node_modules/,
-        //     failOnError: true,
-        // }),
+        new CircularDependencyPlugin({
+            exclude: /.js|node_modules/,
+            failOnError: true,
+        }),
     ],
 };
