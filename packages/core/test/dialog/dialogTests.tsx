@@ -85,6 +85,25 @@ describe("<Dialog>", () => {
             assert.match(dialog.find(`.${Classes.DIALOG_HEADER}`).text(), /^Hello!/);
         });
 
+        it(`renders .${Classes.DIALOG_HEADER} if title prop is given and isMaximizeable={true}`, () => {
+            const dialog = mount(
+                <Dialog isOpen={true} title="Hello!" isMaximizeable={true} usePortal={false}>
+                    dialog body
+                </Dialog>,
+            );
+            assert.match(dialog.find(`.${Classes.DIALOG_HEADER}`).text(), /^Hello!/);
+        });
+
+        it(`renders .${Classes.DIALOG_HEADER} if isMaximizeable={true}`, () => {
+            const dialog = mount(
+                <Dialog isOpen={true} isMaximizeable={true} usePortal={false}>
+                    dialog body
+                </Dialog>,
+            );
+            // if no text is in the title bar, the AriaLabel attribute values of the buttons are found!
+            assert.match(dialog.find(`.${Classes.DIALOG_HEADER}`).text(), /^MaximizeClose$/);
+        });
+
         it(`renders close button if isCloseButtonShown={true}`, () => {
             const dialog = mount(
                 <Dialog isCloseButtonShown={true} isOpen={true} title="Hello!" usePortal={false}>
@@ -106,6 +125,42 @@ describe("<Dialog>", () => {
             );
             dialog.find(`.${Classes.DIALOG_CLOSE_BUTTON}`).simulate("click");
             assert.isTrue(onClose.calledOnce, "onClose not called");
+        });
+
+        it(`renders maximize button if isMaximizeable={true}`, () => {
+            const dialog = mount(
+                <Dialog isMaximizeable={true} isOpen={true} usePortal={false}>
+                    dialog body
+                </Dialog>,
+            );
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`), 1);
+
+            dialog.setProps({ isMaximizeable: false });
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`), 0);
+        });
+
+        it("clicking maximize button triggers onToggleMaximize and adds DIALOG_MAXIMIZED class", () => {
+            const dialog = mount(
+                <Dialog isMaximizeable={true} isOpen={true} usePortal={false}>
+                    dialog body
+                </Dialog>,
+            );
+            dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`).simulate("click");
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAXIMIZED}`), 1);
+        });
+
+        it("clicking minimize button triggers onToggleMaximize and removes DIALOG_MAXIMIZED class", () => {
+            const dialog = mount(
+                <Dialog isMaximizeable={true} isOpen={true} usePortal={false}>
+                    dialog body
+                </Dialog>,
+            );
+            // maximize dialog
+            dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`).simulate("click");
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAXIMIZED}`), 1);
+            // minimize dialog
+            dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`).simulate("click");
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAXIMIZED}`), 0);
         });
     });
 
