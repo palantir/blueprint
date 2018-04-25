@@ -4,11 +4,9 @@
 
 require("./polyfill");
 
-// REACT env variable should be 15 or 16.
-const { REACT = 16 } = process.env;
-
 const Enzyme = require("enzyme");
-const Adapter = require(`enzyme-adapter-react-${REACT}`);
+// test against React 15 with REACT=15 env variable.
+const Adapter = require(`enzyme-adapter-react-${process.env.REACT || 16}`);
 
 Enzyme.configure({ adapter: new Adapter() });
 

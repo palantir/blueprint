@@ -4,18 +4,12 @@
  * Generates isomorphic tests for React components.
  */
 
-// tslint:disable-next-line:no-var-requires
-require("../../bootstrap");
+import "../../bootstrap";
 
 import * as Enzyme from "enzyme";
 import * as React from "react";
 
-/**
- * Determines if the passed Component is a React Class or not
- * `TestUtils.isElement()`
- * @returns {boolean}
- */
-function isReactClass(Component: any): boolean {
+function isReactClass(Component: any): Component is React.ComponentClass<any> {
     return (
         typeof Component !== "undefined" &&
         typeof Component.prototype !== "undefined" &&
@@ -26,7 +20,7 @@ function isReactClass(Component: any): boolean {
 
 /**
  * Tests that each ComponentClass in Components can be isomorphically rendered on the server.
- * @param Components  main export from package
+ * @param Components namespace export from package
  * @param props custom props per component
  * @param children custom children per component
  * @param skipList array of component names to skip
@@ -46,11 +40,10 @@ export function generateIsomorphicTests(
                     it.skip(`<${componentName}>`);
                 } else {
                     it(`<${componentName}>`, () => {
-                        const element = React.createElement(Component, props[componentName], children[componentName]);
                         // render to static HTML, just as a server would.
                         // we care merely that `render()` succeeds: it can be server-rendered.
                         // errors will fail the test and log full stack traces to the console. nifty!
-                        Enzyme.render(element);
+                        Enzyme.render(React.createElement(Component, props[componentName], children[componentName]));
                     });
                 }
             }
