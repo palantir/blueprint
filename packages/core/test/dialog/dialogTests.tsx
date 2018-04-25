@@ -139,17 +139,7 @@ describe("<Dialog>", () => {
             assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`), 0);
         });
 
-        it("clicking maximize button triggers onToggleMaximize and adds DIALOG_MAXIMIZED class", () => {
-            const dialog = mount(
-                <Dialog isMaximizeable={true} isOpen={true} usePortal={false}>
-                    dialog body
-                </Dialog>,
-            );
-            dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`).simulate("click");
-            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAXIMIZED}`), 1);
-        });
-
-        it("clicking minimize button triggers onToggleMaximize and removes DIALOG_MAXIMIZED class", () => {
+        it("clicking maximize/minimize button triggers onToggleMaximize and adds/removes DIALOG_MAXIMIZED class", () => {
             const dialog = mount(
                 <Dialog isMaximizeable={true} isOpen={true} usePortal={false}>
                     dialog body
@@ -158,6 +148,7 @@ describe("<Dialog>", () => {
             // maximize dialog
             dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`).simulate("click");
             assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAXIMIZED}`), 1);
+
             // minimize dialog
             dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`).simulate("click");
             assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAXIMIZED}`), 0);
