@@ -134,16 +134,17 @@ export class Dialog extends AbstractPureComponent<IDialogProps, IDialogState> {
         }
     }
 
-    // todo: check this.  default should be no maximize icon
     private maybeRenderMaximizeButton() {
         // show maximize button if prop is true
         // this gives us a behavior as if the default value were `false`
-        if (this.props.isMaximizeable !== !true) {
+        if (this.props.isMaximizeable === true) {
             const icon = this.state.isMaximized ? "minimize" : "maximize";
             const title = this.state.isMaximized ? "Minimize" : "Maximize";
+            const classes = classNames(Classes.DIALOG_MAXIMIZE_BUTTON, {
+                [Classes.DIALOG_HAS_BUTTON_ON_THE_RIGHT]: this.props.isCloseButtonShown !== false,
+            });
             return (
-                // todo: need to shrink icon, better position, use own class name
-                <button aria-label="Maximize" className={Classes.DIALOG_CLOSE_BUTTON} onClick={this.onToggleMaximize}>
+                <button aria-label="Maximize" className={classes} onClick={this.onToggleMaximize}>
                     <Icon icon={icon} title={title} iconSize={Icon.SIZE_STANDARD} />
                 </button>
             );

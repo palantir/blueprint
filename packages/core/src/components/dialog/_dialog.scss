@@ -139,8 +139,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
   }
 }
 
-.#{$ns}-dialog-close-button,
-.#{$ns}-dialog-maximize-button {
+.#{$ns}-dialog-close-button {
   // large icon with interactive colors
   @include pt-icon($pt-icon-size-large);
   @include pt-icon-colors();
@@ -156,6 +155,29 @@ $dialog-padding: $pt-grid-size * 2 !default;
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     margin: 0;
+  }
+}
+
+.#{$ns}-dialog-maximize-button {
+  // large icon with interactive colors
+  @include pt-icon($pt-icon-size-standard);
+  @include pt-icon-colors();
+  flex: 0 0 auto;
+
+  // button reset
+  border: none;
+  background: none;
+
+  cursor: pointer;
+  padding: $pt-grid-size;
+
+  .#{$ns}-icon-large,
+  .#{$ns}-icon {
+    margin: 0;
+  }
+
+  &.#{$ns}-dialog-has-button-on-the-right {
+    padding: $pt-grid-size 0;
   }
 }
 
