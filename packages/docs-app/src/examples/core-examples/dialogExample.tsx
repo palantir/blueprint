@@ -14,14 +14,13 @@ export interface IDialogExampleState extends IOverlayExampleState {
     isMaximizeable: boolean;
 }
 
-export class DialogExample extends OverlayExample<IDialogExampleState> {
-    public state: IDialogExampleState;
+export class DialogExample extends OverlayExample {
+    public state: IDialogExampleState & IOverlayExampleState;
 
     private handleIsMaximizeableChange = handleBooleanChange(isMaximizeable => this.setState({ isMaximizeable }));
 
     public constructor(props?: any, context?: any) {
         super(props, context);
-        this.state = this.state as IDialogExampleState;
         this.state.isMaximizeable = true;
     }
 
