@@ -95,7 +95,7 @@ export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
 export const DIALOG_HEADER_TITLE = `${DIALOG}-header-title`;
-export const DIALOG_MAXIMIZE_BUTTON = `${DIALOG}-maximize-button`;
+export const DIALOG_MAX_MIN_BUTTON = `${DIALOG}-max-min-button`;
 export const DIALOG_HAS_BUTTON_ON_THE_RIGHT = `${DIALOG}-has-button-on-the-right`;
 export const DIALOG_MAXIMIZED = `${DIALOG}-maximized`;
 

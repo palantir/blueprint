@@ -140,11 +140,11 @@ export class Dialog extends AbstractPureComponent<IDialogProps, IDialogState> {
         if (this.props.isMaximizeable === true) {
             const icon = this.state.isMaximized ? "minimize" : "maximize";
             const title = this.state.isMaximized ? "Minimize" : "Maximize";
-            const classes = classNames(Classes.DIALOG_MAXIMIZE_BUTTON, {
+            const classes = classNames(Classes.DIALOG_MAX_MIN_BUTTON, {
                 [Classes.DIALOG_HAS_BUTTON_ON_THE_RIGHT]: this.props.isCloseButtonShown !== false,
             });
             return (
-                <button aria-label="Maximize" className={classes} onClick={this.onToggleMaximize}>
+                <button aria-label={title} className={classes} onClick={this.onToggleMaximize}>
                     <Icon icon={icon} title={title} iconSize={Icon.SIZE_STANDARD} />
                 </button>
             );

@@ -158,7 +158,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
   }
 }
 
-.#{$ns}-dialog-maximize-button {
+.#{$ns}-dialog-max-min-button {
   // large icon with interactive colors
   @include pt-icon($pt-icon-size-standard);
   @include pt-icon-colors();
