@@ -155,7 +155,7 @@ export class Dialog extends AbstractPureComponent<IDialogProps, IDialogState> {
 
     private maybeRenderHeader() {
         const { icon, title, isMaximizeable } = this.props;
-        if (title == null && isMaximizeable == null) {
+        if (title == null && isMaximizeable !== true) {
             return undefined;
         }
         return (
