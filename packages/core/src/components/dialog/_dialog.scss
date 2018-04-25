@@ -90,10 +90,12 @@ $dialog-padding: $pt-grid-size * 2 !default;
   }
 
   &.#{$ns}-dialog-maximized {
-    margin: 0 0;
     // !important overrides inline styles and other class rules
-    width: 100vw !important; // stylelint-disable-line declaration-no-important
-    height: 100vh !important; // stylelint-disable-line declaration-no-important
+    // so maximize can really mean maximize.
+    // stylelint-disable declaration-no-important
+    margin: 0 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
   }
 }
 
