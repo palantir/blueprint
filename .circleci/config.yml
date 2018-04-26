@@ -72,11 +72,13 @@ jobs:
             - packages/*/dist
             - packages/*/lib
 
-  test:
+  test-react-15:
     docker:
       - image: circleci/node:8.10.0-browsers
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
+    environment:
+      REACT: 15 # use React 15 for this job
     parallelism: 4
     steps:
       - checkout
@@ -93,13 +95,11 @@ jobs:
               3) yarn lerna run test --scope '@blueprintjs/{icons,labs,select}' ;; \
               esac
 
-  test-15:
+  test-react-16:
     docker:
       - image: circleci/node:8.10.0-browsers
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
-    environment:
-      REACT: 15 # use React 15 for these tests
     parallelism: 4
     steps:
       - checkout
@@ -157,9 +157,9 @@ workflows:
           requires: [install-dependencies]
       - dist:
           requires: [compile]
-      - test:
+      - test-react-15:
           requires: [compile]
-      - test-15:
+      - test-react-16:
           requires: [compile]
       - deploy-preview:
           requires: [dist]
