@@ -11,17 +11,19 @@ import { handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IOverlayExampleState, OverlayExample } from "./overlayExample";
 
 export interface IDialogExampleState extends IOverlayExampleState {
-    isMaximizeable: boolean;
+    isMaximizeButtonShown: boolean;
 }
 
 export class DialogExample extends OverlayExample {
     public state: IDialogExampleState & IOverlayExampleState;
 
-    private handleIsMaximizeableChange = handleBooleanChange(isMaximizeable => this.setState({ isMaximizeable }));
+    private handleisMaximizeButtonShownChange = handleBooleanChange(isMaximizeButtonShown => {
+        this.setState({ isMaximizeButtonShown });
+    });
 
     public constructor(props?: any, context?: any) {
         super(props, context);
-        this.state.isMaximizeable = true;
+        this.state.isMaximizeButtonShown = false;
     }
 
     protected renderExample() {
@@ -87,14 +89,14 @@ export class DialogExample extends OverlayExample {
         // delete "hasBackdrop" switch from option controls
         options[1].splice(2, 1);
 
-        // add isMaximizeable switch to option controls
-        const { isMaximizeable } = this.state;
+        // add isMaximizeButtonShown switch to option controls
+        const { isMaximizeButtonShown } = this.state;
         options[1].push(
             <Switch
-                checked={isMaximizeable}
+                checked={isMaximizeButtonShown}
                 key="maximizeable"
                 label="Can be maximized"
-                onChange={this.handleIsMaximizeableChange}
+                onChange={this.handleisMaximizeButtonShownChange}
             />,
         );
         return options;
