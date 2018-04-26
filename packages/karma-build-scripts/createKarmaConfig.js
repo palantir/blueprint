@@ -91,11 +91,12 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
     // enable JUnit reporter only if env variable is set (such as on Circle)
     if (process.env.JUNIT_REPORT_PATH) {
         console.info("Enabling JUnit reporter.");
-        config.reporters.push("junit");
+        // disable mocha reporter on circle for HUGE performance increase
+        config.reporters = ["coverage", "junit"];
         config.junitReporter = {
             outputDir: path.join(process.env.JUNIT_REPORT_PATH, path.basename(dirname)),
-            outputFile: process.env.JUNIT_REPORT_NAME,
-            useBrowserName: false
+            outputFile: "junit.xml",
+            useBrowserName: false,
         };
     }
 
