@@ -85,7 +85,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     onConfirm?(value: string): void;
 
     /** Callback invoked after the user enters edit mode. */
-    onEdit?(): void;
+    onEdit?(value: string): void;
 }
 
 export interface IEditableTextState {
@@ -196,7 +196,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
 
     public componentDidUpdate(_: IEditableTextProps, prevState: IEditableTextState) {
         if (this.state.isEditing && !prevState.isEditing) {
-            safeInvoke(this.props.onEdit);
+            safeInvoke(this.props.onEdit, prevState.value);
         }
         this.updateInputDimensions();
     }
