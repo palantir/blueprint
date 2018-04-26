@@ -138,7 +138,6 @@ describe("<EditableText>", () => {
 
         it("calls onEdit when entering edit mode and passes the initial value to the callback", () => {
             const editSpy = spy();
-            
             const INIT_VALUE = "hello";
             
             mount(<EditableText onEdit={editSpy} defaultValue={INIT_VALUE} />)
