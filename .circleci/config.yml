@@ -93,13 +93,13 @@ jobs:
               2) yarn lerna run --parallel test:karma ;; \
               esac
           environment:
-            JUNIT_REPORT_PATH: ./junit/
+            JUNIT_REPORT_PATH: ~/junit/
             JUNIT_REPORT_NAME: test-results.xml
           when: always
       - store_test_results:
           path: ~/junit
       - store_artifacts:
-          path: ./junit
+          path: ~/junit
 
   deploy-preview:
     docker:
