@@ -62,6 +62,11 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
             path.join(dirname, "test/index.ts"),
         ],
         frameworks: ["mocha", "chai", "sinon"],
+        junitReporter: {
+            outputDir: process.env.JUNIT_REPORT_PATH,
+            outputFile: process.env.JUNIT_REPORT_NAME,
+            useBrowserName: false
+        },
         mime: {
             "text/x-typescript": ["ts", "tsx"],
         },
@@ -70,7 +75,7 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
             [path.join(dirname, "test/**/*.ts")]: "sourcemap",
             [path.join(dirname, "test/index.ts")]: "webpack",
         },
-        reporters: ["mocha", "coverage"],
+        reporters: ["coverage", "junit", "mocha"],
         singleRun: true,
         webpack: Object.assign({}, webpackBuildScripts.karmaConfig, {
             entry: {

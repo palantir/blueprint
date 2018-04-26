@@ -84,14 +84,22 @@ jobs:
           at: '.'
       - restore_cache:
           key: v7-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: mkdir ~/junit
       - run:
           command: |
               case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run test --scope '@blueprintjs/core' ;; \
-              1) yarn lerna run test --scope '@blueprintjs/{datetime,timezone}' ;; \
-              2) yarn lerna run test --scope '@blueprintjs/table' ;; \
-              3) yarn lerna run test --scope '@blueprintjs/{icons,labs,select}' ;; \
+              0) yarn lerna run --parallel test:pre ;; \
+              1) yarn lerna run --parallel test:iso ;; \
+              2) yarn lerna run --parallel test:karma ;; \
               esac
+          environment:
+            JUNIT_REPORT_PATH: ./junit/
+            JUNIT_REPORT_NAME: test-results.xml
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ./junit
 
   deploy-preview:
     docker:
