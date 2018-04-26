@@ -78,8 +78,6 @@ jobs:
       - image: circleci/node:8.10.0-browsers
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
-    environment:
-      JUNIT_REPORT_PATH: ./junit
     parallelism: 4
     steps:
       - checkout
@@ -95,6 +93,8 @@ jobs:
               1) yarn lerna run --parallel test:iso ;; \
               2) yarn lerna run --parallel test:karma ;; \
               esac
+          environment:
+            JUNIT_REPORT_PATH: ./junit
           when: always
       - store_test_results:
           path: ./junit
