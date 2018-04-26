@@ -13,7 +13,7 @@ const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Int
 
 const VALUES = [
     // supports single JSX elements
-    <strong>Albert</strong>,
+    <strong key="al">Albert</strong>,
     // supports JSX "fragments" (don't forget `key` on elements in arrays!)
     ["Bar", <em key="thol">thol</em>, "omew"],
     // and supports simple strings
