@@ -19,7 +19,7 @@
     "compile:css": "sass-compile ./src",
     "compile:test": "tsc -p ./test",
     "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
-    "dist": "npm-run-all -s \"dist:*\"",
+    "dist": "run-s \"dist:*\"",
     "dist:bundle": "cross-env NODE_ENV=production webpack",
     "dist:css": "css-dist lib/css/*.css",
     "dist:variables": "generate-css-variables common/_colors.scss common/_color-aliases.scss common/_variables.scss",
