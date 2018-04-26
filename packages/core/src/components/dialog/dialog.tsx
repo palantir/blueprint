@@ -124,13 +124,13 @@ export class Dialog extends AbstractPureComponent<IDialogProps, IDialogState> {
             if (props.isCloseButtonShown != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_CLOSE_BUTTON);
             }
-            if (props.isMaximizeButtonShown != null) {
+            if (props.isMaximizeButtonShown) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_MAXIMIZE_BUTTON);
             }
         }
 
         if (!props.usePortal) {
-            if (props.isMaximizeButtonShown != null) {
+            if (props.isMaximizeButtonShown) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_MAXIMIZE_BUTTON);
             }
         }
