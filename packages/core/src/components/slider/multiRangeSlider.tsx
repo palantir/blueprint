@@ -180,7 +180,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
     private handleChange = (values: number[]) => {
         const oldValues = this.getSortedHandles().map(handle => handle.value);
         const newValues = values.slice().sort((left, right) => left - right);
-        if (!areValuesEqual(newValues, oldValues) && Utils.isFunction(this.props.onChange)) {
+        if (!Utils.arraysEqual(newValues, oldValues) && Utils.isFunction(this.props.onChange)) {
             this.props.onChange(newValues);
         }
     };
@@ -200,18 +200,6 @@ function getHandles({ children }: IMultiRangeSliderProps): ISliderHandleProps[] 
         children,
         child => (Utils.isElementOfType(child, SliderHandle) ? child.props : null),
     ).filter(child => child !== null);
-}
-
-function areValuesEqual(left: number[], right: number[]) {
-    if (left.length !== right.length) {
-        return false;
-    }
-    for (let index = 0; index < left.length; index++) {
-        if (left[index] !== right[index]) {
-            return false;
-        }
-    }
-    return true;
 }
 
 function argMin<T>(values: T[], argFn: (value: T) => any): T | undefined {
