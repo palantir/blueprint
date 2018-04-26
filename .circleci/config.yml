@@ -79,7 +79,7 @@ jobs:
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
     environment:
-      JUNIT_REPORT_PATH: ~/junit/
+      JUNIT_REPORT_PATH: ./junit
     parallelism: 4
     steps:
       - checkout
@@ -97,9 +97,9 @@ jobs:
               esac
           when: always
       - store_test_results:
-          path: ~/junit
+          path: ./junit
       - store_artifacts:
-          path: ~/junit
+          path: ./junit
 
   deploy-preview:
     docker:

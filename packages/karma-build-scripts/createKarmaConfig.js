@@ -94,7 +94,7 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
         // disable mocha reporter on circle for HUGE performance increase
         config.reporters = ["coverage", "junit"];
         config.junitReporter = {
-            outputDir: path.join(process.env.JUNIT_REPORT_PATH, path.basename(dirname)),
+            outputDir: path.join(process.env.CIRCLE_WORKING_DIRECTORY, process.env.JUNIT_REPORT_PATH, path.basename(dirname)),
             outputFile: "junit.xml",
             useBrowserName: false,
         };
