@@ -43,6 +43,8 @@ describe("<Popover>", () => {
     });
 
     describe("validation:", () => {
+        it("fails", () => assert.fail());
+
         it("throws error if given no target", () => {
             expectPropValidationError(Popover, {}, Errors.POPOVER_REQUIRES_TARGET);
         });
