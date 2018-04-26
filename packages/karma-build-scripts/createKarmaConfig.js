@@ -19,7 +19,7 @@ const KARMA_SERVER_PORT = 9876;
 module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverageOverrides }) {
     const packageManifest = require(`${dirname}/package.json`);
 
-    return {
+    const config = {
         basePath: dirname,
         browserNoActivityTimeout: 100000,
         browsers: ["ChromeHeadless"],
@@ -62,11 +62,6 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
             path.join(dirname, "test/index.ts"),
         ],
         frameworks: ["mocha", "chai", "sinon"],
-        junitReporter: {
-            outputDir: process.env.JUNIT_REPORT_PATH,
-            outputFile: process.env.JUNIT_REPORT_NAME,
-            useBrowserName: false
-        },
         mime: {
             "text/x-typescript": ["ts", "tsx"],
         },
@@ -75,7 +70,7 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
             [path.join(dirname, "test/**/*.ts")]: "sourcemap",
             [path.join(dirname, "test/index.ts")]: "webpack",
         },
-        reporters: ["coverage", "junit", "mocha"],
+        reporters: ["coverage", "mocha"],
         singleRun: true,
         webpack: Object.assign({}, webpackBuildScripts.karmaConfig, {
             entry: {
@@ -92,5 +87,18 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
             },
         },
     };
+
+    // enable JUnit reporter only if env variable is set (such as on Circle)
+    if (process.env.JUNIT_REPORT_PATH) {
+        console.info("Enabling JUnit reporter.");
+        config.reporters.push("junit");
+        config.junitReporter = {
+            outputDir: path.join(process.env.JUNIT_REPORT_PATH, path.basename(dirname)),
+            outputFile: process.env.JUNIT_REPORT_NAME,
+            useBrowserName: false
+        };
+    }
+
+    return config;
 };
 
