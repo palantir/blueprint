@@ -95,8 +95,9 @@ module.exports = function createKarmaConfig(
 
     // enable JUnit reporter only if env variable is set (such as on Circle)
     if (process.env.JUNIT_REPORT_PATH) {
-        const outputDir = path.join(
-            process.env.CIRCLE_WORKING_DIRECTORY,
+        const outputDir = path.resolve(
+            __dirname,
+            "../..",
             process.env.JUNIT_REPORT_PATH,
             path.basename(dirname),
         );

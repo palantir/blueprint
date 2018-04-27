@@ -54,7 +54,7 @@ jobs:
           keys:
             - v7-dependency-cache-{{ checksum "yarn.lock" }}
             - v7-dependency-cache-
-      - run: echo $JUNIT_REPORT_PATH
+      - run: mkdir -p ./reports/tslint ./report/stylelint
       - run: yarn compile --scope "@blueprintjs/tslint-config"
       - run: yarn lint
       - store_test_results:

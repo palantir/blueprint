@@ -13,7 +13,7 @@ const stylelint = require("stylelint");
 const emitReport = process.env.JUNIT_REPORT_PATH != null;
 
 const options = {
-    configFile: path.join(__dirname, "../..", ".stylelintrc"),
+    configFile: path.resolve(__dirname, "../..", ".stylelintrc"),
     files: "src/**/*.scss",
     formatter: emitReport ? require("stylelint-junit-formatter") : "string",
     syntax: "scss",
@@ -23,10 +23,11 @@ stylelint.lint(options).then(resultObject => {
     if (emitReport) {
         // emit JUnit XML report to <cwd>/<reports>/<pkg>/stylelint.xml when this env variable is set
         const reportPath = path.join(
-            process.env.CIRCLE_WORKING_DIRECTORY,
+            __dirname,
+            "../..",
             process.env.JUNIT_REPORT_PATH,
-            path.basename(process.cwd()),
-            "stylelint.xml",
+            "stylelint",
+            `${path.basename(process.cwd())}.xml`,
         );
         console.info(`JUnit report will appear in ${reportPath}`);
         fs.writeFileSync(reportPath, resultObject.output);
