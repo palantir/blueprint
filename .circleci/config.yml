@@ -53,7 +53,10 @@ jobs:
             - v7-dependency-cache-{{ checksum "yarn.lock" }}
             - v7-dependency-cache-
       - run: yarn compile --scope "@blueprintjs/tslint-config"
-      - run: yarn lint
+      - run:
+          command: yarn lint
+          environment:
+            JUNIT_REPORT_PATH: ./reports
 
   dist:
     docker:
