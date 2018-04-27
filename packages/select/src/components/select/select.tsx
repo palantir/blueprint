@@ -92,8 +92,8 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
             const { inputProps = {} } = this.props;
             Utils.safeInvoke(inputProps.inputRef, ref);
         },
-        queryList: (ref: QueryList<T> | null) => (this.list = ref),
-    };
+        queryList: (ref: QueryList<T> | null) => (this.list = ref)
+    }
 
     constructor(props: ISelectProps<T>, context?: any) {
         super(props, context);
