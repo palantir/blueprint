@@ -16,10 +16,10 @@ const fakeFocusEngine = {
 const focusEngine =
     typeof document !== "undefined"
         ? new InteractionModeEngine(document.documentElement, FOCUS_DISABLED)
-        : fakeFocusEngine;
+        : fakeFocusEngine
 
 export const FocusStyleManager = {
     alwaysShowFocus: () => focusEngine.stop(),
     isActive: () => focusEngine.isActive(),
-    onlyShowFocusOnTabs: () => focusEngine.start(),
+    onlyShowFocusOnTabs: () => focusEngine.start()
 };
