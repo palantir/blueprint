@@ -1,13 +1,32 @@
 @# Labels
 
-Labels enhance the usability of your forms.
-
 <div class="@ns-callout @ns-intent-success @ns-icon-comparison">
     <h4 class="@ns-callout-title">Simple labels vs. form groups</h4>
     <p>Blueprint provides two ways of connecting label text to control fields, depending on the complexity of the control.</p>
     <p>Simple labels are a basic way to connect a label with a single control.</p>
     <p>Form groups support more complex control layouts but require more markup to maintain consistent visuals.</p>
 </div>
+
+Labels enhance the usability of your forms.
+
+@reactExample LabelExample
+
+@## JavaScript API
+
+The `Label` component is available in the __@blueprintjs/core__ package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+
+This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
+
+```tsx
+<Label
+    helperText="Helper text with details..."
+    text="Label A"
+>
+    <input className="@ns-input" id="text-input" placeholder="Placeholder text" />
+</Label>
+```
+
+@interface ILabelProps
 
 @## CSS API
 
@@ -33,19 +52,3 @@ must add the `:disabled` attribute directly to any nested elements to disable th
 
 @css label-disabled
 
-@## JavaScript API
-
-The `Label` component is available in the __@blueprintjs/core__ package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
-
-```tsx
-<Label
-    helperText="Helper text with details..."
-    text="Label A"
->
-    <input className="@ns-input" id="text-input" placeholder="Placeholder text" />
-</Label>
-```
-
-@interface ILabelProps
