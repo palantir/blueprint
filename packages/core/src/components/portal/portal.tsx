@@ -10,8 +10,10 @@ import * as ReactDOM from "react-dom";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
+import { isFunction } from "../../common/utils";
 
-const isReact15 = typeof ReactDOM.createPortal === "undefined";
+/** Detect if `React.createPortal()` API method does not exist. */
+const cannotCreatePortal = !isFunction(ReactDOM.createPortal);
 
 export interface IPortalProps extends IProps {
     /**
@@ -56,7 +58,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         // Only render `children` once this component has mounted in a browser environment, so they are
         // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
         // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-        if (isReact15 || typeof document === "undefined" || !this.state.hasMounted) {
+        if (cannotCreatePortal || typeof document === "undefined" || !this.state.hasMounted) {
             return null;
         } else {
             return ReactDOM.createPortal(this.props.children, this.portalElement);
@@ -67,8 +69,8 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         this.portalElement = this.createContainerElement();
         document.body.appendChild(this.portalElement);
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
-        if (isReact15) {
-            this.renderReact15();
+        if (cannotCreatePortal) {
+            this.unstableRenderNoPortal();
         }
     }
 
@@ -78,14 +80,14 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
             this.portalElement.classList.remove(prevProps.className);
             maybeAddClass(this.portalElement.classList, this.props.className);
         }
-        if (isReact15) {
-            this.renderReact15();
+        if (cannotCreatePortal) {
+            this.unstableRenderNoPortal();
         }
     }
 
     public componentWillUnmount() {
         if (this.portalElement != null) {
-            if (isReact15) {
+            if (cannotCreatePortal) {
                 ReactDOM.unmountComponentAtNode(this.portalElement);
             }
             this.portalElement.remove();
@@ -102,7 +104,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         return container;
     }
 
-    private renderReact15() {
+    private unstableRenderNoPortal() {
         ReactDOM.unstable_renderSubtreeIntoContainer(
             /* parentComponent */ this,
             <div>{this.props.children}</div>,
