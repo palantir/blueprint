@@ -8,12 +8,12 @@ Labels
 
 Markup:
 <label class="#{$ns}-label {{.modifier}}">
-  Label A
+  <span class="#{$ns}-label-text">Label A</span>
   <span class="#{$ns}-text-muted">(required)</span>
   <input class="#{$ns}-input" style="width: 180px;" type="text" placeholder="Text input" dir="auto" />
 </label>
 <label class="#{$ns}-label {{.modifier}}">
-  Label B
+  <span class="#{$ns}-label-text">Label B</span>
   <span class="#{$ns}-text-muted">(optional)</span>
   <div class="#{$ns}-input-group">
     <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
@@ -30,6 +30,10 @@ Styleguide label
 label.#{$ns}-label {
   display: block;
   margin: 0 0 ($pt-grid-size * 1.5);
+
+  .#{$ns}-label-text {
+    font-weight: 600;
+  }
 
   .#{$ns}-input,
   .#{$ns}-select,
@@ -75,19 +79,19 @@ label.#{$ns}-label {
 
   Markup:
   <label class="#{$ns}-label #{$ns}-disabled">
-    Label A
+    <span class="#{$ns}-label-text">Label A</span>
     <span class="#{$ns}-text-muted">(optional)</span>
     <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
   </label>
   <label class="#{$ns}-label #{$ns}-disabled">
-    Label B
+    <span class="#{$ns}-label-text">Label B</span>
     <div class="#{$ns}-input-group #{$ns}-disabled">
       <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
       <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
     </div>
   </label>
   <label class="#{$ns}-label #{$ns}-disabled">
-    Label C
+    <span class="#{$ns}-label-text">Label C</span>
     <div class="#{$ns}-select #{$ns}-disabled">
       <select disabled>
         <option selected>Choose an item...</option>
