@@ -44,7 +44,7 @@
     "dom4": "^2.0.1",
     "normalize.css": "^8.0.0",
     "popper.js": "^1.14.1",
-    "react-popper": "^0.8.2",
+    "react-popper": "^1.0.0",
     "react-transition-group": "^2.2.1",
     "resize-observer-polyfill": "^1.5.0",
     "tslib": "^1.9.0"
