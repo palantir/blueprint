@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, IIntentProps, IProps, Utils } from "../../common";
-import { Icon } from "../icon/icon";
+import { Icon, IconName } from "../icon/icon";
 
 export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HTMLSpanElement> {
     /**
@@ -17,6 +17,9 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      * @default false
      */
     active?: boolean;
+
+    /** Name of a Blueprint UI icon (or an icon element) to render before the text. */
+    icon?: IconName | JSX.Element;
 
     /**
      * Whether the tag should visually respond to user interactions. If set
@@ -46,6 +49,9 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      */
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
 
+    /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
+    rightIcon?: IconName | JSX.Element;
+
     /** Whether this tag should have rounded ends. */
     round?: boolean;
 }
@@ -58,11 +64,13 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
             active,
             children,
             className,
+            icon,
             intent,
             interactive,
             large,
             minimal,
             onRemove,
+            rightIcon,
             round,
             ...htmlProps
         } = this.props;
@@ -89,7 +97,9 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
 
         return (
             <span {...htmlProps} className={tagClasses}>
+                {<Icon icon={icon} className={Classes.ALIGN_LEFT} />}
                 {children}
+                {<Icon icon={rightIcon} className={Classes.ALIGN_RIGHT} />}
                 {removeButton}
             </span>
         );
