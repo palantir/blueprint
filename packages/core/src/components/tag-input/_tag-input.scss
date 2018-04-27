@@ -5,10 +5,14 @@
 @import "../forms/common";
 @import "../tag/common";
 
-$ti-padding: ($pt-input-height - $tag-height) / 2;
+$tag-input-padding: ($pt-input-height - $tag-height) / 2;
 
-$ti-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
-$ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
+$tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
+$tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
+
+$tag-input-outline-color: $pt-outline-color;
+$tag-input-outline-offset: 1px;
+$tag-input-outline-size: 2px;
 
 .#{$ns}-tag-input {
   @include pt-flex-container(row, $fill: ".#{$ns}-tag-input-values");
@@ -17,34 +21,47 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
   height: auto;
   min-height: $pt-input-height;
   padding-right: 0;
-  padding-left: $ti-padding;
+  padding-left: $tag-input-padding;
 
   .#{$ns}-tag-input-icon {
     // margins to center icon in one-line input
-    margin-top: $ti-icon-padding;
-    margin-right: $ti-icon-padding;
-    margin-left: $ti-icon-padding - $ti-padding;
+    margin-top: $tag-input-icon-padding;
+    margin-right: $tag-input-icon-padding;
+    margin-left: $tag-input-icon-padding - $tag-input-padding;
     color: $pt-icon-color;
   }
 
   .#{$ns}-tag-input-values {
-    @include pt-flex-container(row, $ti-padding);
+    @include pt-flex-container(row, $tag-input-padding);
     flex-wrap: wrap;
     align-items: center;
     // fill vertical height
     align-self: stretch;
-    margin-top: $ti-padding;
-    margin-right: $ti-icon-padding;
+    margin-top: $tag-input-padding;
+    margin-right: $tag-input-icon-padding;
 
     > * {
-      margin-bottom: $ti-padding;
+      margin-bottom: $tag-input-padding;
     }
   }
 
   .#{$ns}-tag {
+    position: relative;
     // NOTE: in order to wrap long words, you must set explicit width on TagInput,
     // or use .#{$ns}-fill CSS class modifier.
     overflow-wrap: break-word;
+
+    &::before {
+      @include position-all(absolute, -$tag-input-outline-offset);
+
+      border-radius: $pt-border-radius;
+      box-shadow: 0 0 0 0 $tag-input-outline-color;
+      content: "";
+    }
+
+    &.#{$ns}-active::before {
+      box-shadow: 0 0 0 $tag-input-outline-size $tag-input-outline-color;
+    }
   }
 
   .#{$ns}-input-ghost {
@@ -71,13 +88,13 @@ $ti-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
   }
 
   &.#{$ns}-large {
-    @include pt-flex-margin(row, $ti-icon-padding-large);
+    @include pt-flex-margin(row, $tag-input-icon-padding-large);
     height: auto;
     min-height: $pt-input-height-large;
 
     .#{$ns}-tag-input-icon {
-      margin-top: $ti-icon-padding-large;
-      margin-left: $ti-icon-padding-large - $ti-padding;
+      margin-top: $tag-input-icon-padding-large;
+      margin-left: $tag-input-icon-padding-large - $tag-input-padding;
     }
 
     .#{$ns}-input-ghost {

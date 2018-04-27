@@ -71,7 +71,7 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin focus-outline($offset: 2px) {
-  outline: rgba($blue3, 0.5) auto 2px;
+  outline: $pt-outline-color auto 2px;
   outline-offset: $offset;
   -moz-outline-radius: 6px;
 }
