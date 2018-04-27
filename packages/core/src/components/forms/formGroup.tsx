@@ -54,7 +54,7 @@ export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
      *
      * Defaults to `<span class={Classes.TEXT_MUTED}>(required)</span>`.
      */
-    public static DEFAULT_REQUIRED_CONTENT = <span className={Classes.TEXT_MUTED}>(required)</span>;
+    public static DEFAULT_REQUIRED_CONTENT = <span className={Classes.TEXT_MUTED}> (required)</span>;
 
     public render() {
         const { children, label, labelFor } = this.props;
@@ -87,7 +87,7 @@ export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
 
     private maybeRenderRequiredLabel() {
         const { requiredLabel } = this.props;
-        return requiredLabel === true ? FormGroup.DEFAULT_REQUIRED_CONTENT : requiredLabel;
+        return requiredLabel === true ? FormGroup.DEFAULT_REQUIRED_CONTENT : <span> {requiredLabel}</span>;
     }
 
     private maybeRenderHelperText() {
