@@ -47,16 +47,16 @@ export class TagExample extends BaseExample<ITagExampleState> {
     private handleRoundChange = handleBooleanChange(round => this.setState({ round }));
 
     protected renderExample() {
-        const { icon, removable, rightIcon, ...tagProps } = this.state;
+        const { icon, removable, rightIcon, tags: exampleTags, ...tagProps } = this.state;
         const tags = this.state.tags.map(tag => {
             const onRemove = () => this.setState({ tags: this.state.tags.filter(t => t !== tag) });
             return (
                 <Tag
                     key={tag}
                     onRemove={removable && onRemove}
-                    {...tagProps}
                     icon={icon === true ? "person" : undefined}
                     rightIcon={rightIcon === true ? "small-tick" : undefined}
+                    {...tagProps}
                 >
                     {tag}
                 </Tag>

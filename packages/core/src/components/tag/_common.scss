@@ -44,7 +44,6 @@ $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !defau
     color: $pt-text-color;
 
     > #{$icon-classes} {
-      flex: 0 0 auto;
       fill: currentColor;
     }
   }
