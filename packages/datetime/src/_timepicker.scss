@@ -24,7 +24,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     display: inline-block;
     width: $timepicker-control-width;
     padding: ($pt-grid-size * 0.4) 0;
-    text-align: center
+    text-align: center;
 
     + .#{$ns}-timepicker-arrow-button {
       margin-left: $timepicker-divider-width;
