@@ -16,7 +16,25 @@ jobs:
           key: v7-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-            - packages/*/node_modules
+            # explicitly list each package node_modules
+            - packages/core/node_modules
+            - packages/datetime/node_modules
+            - packages/docs-app/node_modules
+            - packages/docs-data/node_modules
+            - packages/docs-theme/node_modules
+            - packages/icons/node_modules
+            - packages/karma-build-scripts/node_modules
+            - packages/labs/node_modules
+            - packages/landing-app/node_modules
+            - packages/node-build-scripts/node_modules
+            - packages/select/node_modules
+            - packages/table/node_modules
+            - packages/table-dev-app/node_modules
+            - packages/test-commons/node_modules
+            - packages/test-react15/node_modules
+            - packages/timezone/node_modules
+            - packages/tslint-config/node_modules
+            - packages/webpack-build-scripts/node_modules
       - persist_to_workspace:
           root: '.'
           paths:
