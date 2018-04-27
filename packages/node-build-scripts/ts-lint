@@ -9,10 +9,8 @@ if [[ -z $JUNIT_REPORT_PATH ]]; then
 else
   # CI lint emits JUnit XML report file in <reports>/<pkg>/tslint.xml
   NAME=$(basename "$PWD")
-  OUT="$JUNIT_REPORT_PATH/$NAME/tslint.xml"
+  OUT="$CIRCLE_WORKING_DIRECTORY/$JUNIT_REPORT_PATH/$NAME/tslint.xml"
   mkdir -p $(dirname $OUT)
   tslint $FILES --format junit --out $OUT $@
   echo "JUnit report written to $OUT"
 fi
-
-

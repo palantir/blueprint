@@ -20,12 +20,20 @@ const options = {
 };
 
 stylelint.lint(options).then(resultObject => {
-    if (process.env.JUNIT_REPORT_PATH != null) {
-        // emit JUnit XML report to <reports>/<pkg>/stylelint.xml when this env variable is set
-        const reportPath = `${process.env.JUNIT_REPORT_PATH}/${path.basename(process.cwd())}/stylelint.xml`;
+    if (emitReport) {
+        // emit JUnit XML report to <cwd>/<reports>/<pkg>/stylelint.xml when this env variable is set
+        const reportPath = path.join(
+            process.env.CIRCLE_WORKING_DIRECTORY,
+            process.env.JUNIT_REPORT_PATH,
+            path.basename(process.cwd()),
+            "stylelint.xml",
+        );
+        console.info(`JUnit report will appear in ${reportPath}`);
         fs.writeFileSync(reportPath, resultObject.output);
-        console.info(`JUnit report written to ${reportPath}`);
     } else {
         console.info(resultObject.output);
+    }
+    if (resultObject.errored) {
+        process.exitCode = 2;
     }
 });

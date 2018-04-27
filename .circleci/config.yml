@@ -45,7 +45,7 @@ jobs:
     docker:
       - image: circleci/node:8.10.0
     environment:
-      JUNIT_REPORT_PATH: $CIRCLE_WORKING_DIRECTORY/reports
+      JUNIT_REPORT_PATH: reports
     steps:
       - checkout
       - attach_workspace:
@@ -101,7 +101,7 @@ jobs:
               2) yarn lerna run --parallel test:karma ;; \
               esac
           environment:
-            JUNIT_REPORT_PATH: ./reports
+            JUNIT_REPORT_PATH: reports
           when: always
       - store_test_results:
           path: ./reports
