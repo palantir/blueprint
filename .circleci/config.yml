@@ -44,6 +44,8 @@ jobs:
   lint:
     docker:
       - image: circleci/node:8.10.0
+    environment:
+      JUNIT_REPORT_PATH: $CIRCLE_WORKING_DIRECTORY/reports
     steps:
       - checkout
       - attach_workspace:
@@ -52,11 +54,13 @@ jobs:
           keys:
             - v7-dependency-cache-{{ checksum "yarn.lock" }}
             - v7-dependency-cache-
+      - run: echo $JUNIT_REPORT_PATH
       - run: yarn compile --scope "@blueprintjs/tslint-config"
-      - run:
-          command: yarn lint
-          environment:
-            JUNIT_REPORT_PATH: ./reports
+      - run: yarn lint
+      - store_test_results:
+          path: ./reports
+      - store_artifacts:
+          path: ./reports
 
   dist:
     docker:
