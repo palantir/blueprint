@@ -16,7 +16,7 @@ else
   # CI lint emits JUnit XML report file in <reports>/tslint/<pkg>.xml
   NAME=$(basename "$PWD")
   REPORT_DIR=$(absolute_path "$CIRCLE_WORKING_DIRECTORY/$JUNIT_REPORT_PATH")
-  OUT=$REPORT_DIR/tslint/$NAME.xml"
+  OUT="$REPORT_DIR/tslint/$NAME.xml"
   tslint $FILES --format junit --out $OUT $@
   echo "JUnit report written to $OUT"
 fi
