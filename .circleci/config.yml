@@ -85,7 +85,7 @@ jobs:
           at: '.'
       - restore_cache:
           key: v7-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: mkdir ~/junit
+      - run: mkdir ./reports
       - run:
           command: |
               case $CIRCLE_NODE_INDEX in \
@@ -94,12 +94,12 @@ jobs:
               2) yarn lerna run --parallel test:karma ;; \
               esac
           environment:
-            JUNIT_REPORT_PATH: ~/junit
+            JUNIT_REPORT_PATH: ./reports
           when: always
       - store_test_results:
-          path: ~/junit
+          path: ./reports
       - store_artifacts:
-          path: ~/junit
+          path: ./reports
 
   deploy-preview:
     docker:
