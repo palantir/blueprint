@@ -56,7 +56,7 @@ export class TagExample extends BaseExample<ITagExampleState> {
                     onRemove={removable && onRemove}
                     {...tagProps}
                     icon={icon === true ? "person" : undefined}
-                    rightIcon={rightIcon === true ? "person" : undefined}
+                    rightIcon={rightIcon === true ? "small-tick" : undefined}
                 >
                     {tag}
                 </Tag>
