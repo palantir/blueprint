@@ -28,7 +28,7 @@
   "devDependencies": {
     "@blueprintjs/webpack-build-scripts": "^0.5.0",
     "npm-run-all": "^4.1.2",
-    "stylelint": "^8.4.0",
+    "stylelint": "~8.4.0",
     "tslint": "^5.9.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"
