@@ -41,10 +41,6 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   &.#{$ns}-tag-removable {
     padding-right: $tag-height;
   }
-
-  &.#{$ns}-active {
-    @include focus-outline(0);
-  }
 }
 
 @mixin pt-tag-large() {
@@ -106,6 +102,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
       background-color: rgba($background-color, $opacity - 0.15);
     }
 
+    &.pt-active,
     &:active {
       background-color: rgba($background-color, $opacity - 0.3);
     }
@@ -120,6 +117,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
       background-color: rgba($background-color, $opacity + 0.1);
     }
 
+    &.pt-active,
     &:active {
       background-color: rgba($background-color, $opacity + 0.2);
     }
