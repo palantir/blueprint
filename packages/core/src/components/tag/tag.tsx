@@ -88,7 +88,7 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
         ) : null;
 
         return (
-            <span {...htmlProps} className={tagClasses}>
+            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? 0 : -1}>
                 {children}
                 {removeButton}
             </span>
