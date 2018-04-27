@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import { ModifierFn, Modifiers as PopperModifiers } from "popper.js";
 import * as React from "react";
-import { Manager, Popper, Target } from "react-popper";
+import { Manager, Popper, PopperChildrenProps, Reference, RefProps } from "react-popper";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
@@ -176,7 +176,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * The name of the HTML tag to use when rendering the popover target element.
      * @default "div"
      */
-    targetElementTag?: string;
+    targetElementTag?: keyof JSX.IntrinsicElements;
 
     /**
      * Whether the popover should be rendered inside a `Portal` attached to `document.body`.
@@ -197,6 +197,8 @@ export interface IPopoverState {
     isOpen?: boolean;
     hasDarkParent?: boolean;
 }
+
+type RefHandler = (ref: HTMLElement) => void;
 
 export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
     public static displayName = "Blueprint2.Popover";
@@ -239,7 +241,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     private lostFocusOnSamePage = true;
 
     private refHandlers = {
-        popover: (ref: HTMLDivElement) => {
+        popover: (ref: HTMLElement) => {
             this.popoverElement = ref;
             Utils.safeInvoke(this.props.popoverRef, ref);
         },
@@ -255,42 +257,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     public render() {
-        const { className, disabled, targetClassName, targetElementTag } = this.props;
+        const { disabled, modifiers } = this.props;
         const { isOpen } = this.state;
-        const isHoverInteractionKind = this.isHoverInteractionKind();
-
-        let targetProps: React.HTMLAttributes<HTMLElement>;
-        if (isHoverInteractionKind) {
-            targetProps = {
-                onBlur: this.handleTargetBlur,
-                onFocus: this.handleTargetFocus,
-                onMouseEnter: this.handleMouseEnter,
-                onMouseLeave: this.handleMouseLeave,
-            };
-            // any one of the CLICK* values
-        } else {
-            targetProps = {
-                onClick: this.handleTargetClick,
-            };
-        }
-        targetProps.className = classNames(
-            Classes.POPOVER_TARGET,
-            {
-                [Classes.POPOVER_OPEN]: isOpen,
-            },
-            targetClassName,
-        );
 
         const children = this.understandChildren();
-        const targetTabIndex = this.props.openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
-        const target: JSX.Element = React.cloneElement(children.target, {
-            className: classNames(children.target.props.className, {
-                [Classes.ACTIVE]: isOpen && !isHoverInteractionKind,
-            }),
-            // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            disabled: isOpen && Utils.isElementOfType(children.target, Tooltip) ? true : children.target.props.disabled,
-            tabIndex: targetTabIndex,
-        });
 
         const isContentEmpty = children.content == null;
         // need to do this check in render(), because `isOpen` is derived from
@@ -298,12 +268,23 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         if (isContentEmpty && !disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
             console.warn(Errors.POPOVER_WARN_EMPTY_CONTENT);
         }
+        const allModifiers: PopperModifiers = {
+            ...modifiers,
+            arrowOffset: {
+                enabled: this.isArrowEnabled(),
+                fn: arrowOffsetModifier,
+                order: 510, // arrow is 500
+            },
+            updatePopoverState: {
+                enabled: true,
+                fn: this.updatePopoverState,
+                order: 900,
+            },
+        };
 
         return (
-            <Manager tag={this.props.rootElementTag} className={classNames(Classes.POPOVER_WRAPPER, className)}>
-                <Target {...targetProps} component={targetElementTag} innerRef={this.refHandlers.target}>
-                    {target}
-                </Target>
+            <Manager>
+                <Reference>{this.renderTarget}</Reference>
                 <Overlay
                     autoFocus={this.props.autoFocus}
                     backdropClassName={Classes.POPOVER_BACKDROP}
@@ -323,7 +304,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                     transitionName={Classes.POPOVER}
                     usePortal={this.props.usePortal}
                 >
-                    {this.renderPopper(children.content)}
+                    <Popper placement={positionToPlacement(this.props.position)} modifiers={allModifiers}>
+                        {this.renderPopper}
+                    </Popper>
                 </Overlay>
             </Manager>
         );
@@ -393,8 +376,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
     }
 
-    private renderPopper(content: JSX.Element) {
-        const { usePortal, interactionKind, modifiers } = this.props;
+    private renderPopper = (props: PopperChildrenProps) => {
+        const content = Utils.ensureElement(this.understandChildren().content);
+        const { usePortal, interactionKind } = this.props;
 
         const popoverHandlers: HTMLDivProps = {
             // always check popover clicks for dismiss class
@@ -417,40 +401,59 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             this.props.popoverClassName,
         );
 
-        const isArrowEnabled =
-            !this.props.minimal &&
-            // omitting `arrow` from `modifiers` uses Popper default, which does show an arrow.
-            (modifiers.arrow == null || modifiers.arrow.enabled);
-        const allModifiers: PopperModifiers = {
-            ...modifiers,
-            arrowOffset: {
-                enabled: isArrowEnabled,
-                fn: arrowOffsetModifier,
-                order: 510, // arrow is 500
-            },
-            updatePopoverState: {
-                enabled: true,
-                fn: this.updatePopoverState,
-                order: 900,
-            },
-        };
-
-        const placement = positionToPlacement(this.props.position);
-
         return (
-            <Popper className={Classes.TRANSITION_CONTAINER} placement={placement} modifiers={allModifiers}>
-                <div
-                    className={popoverClasses}
-                    ref={this.refHandlers.popover}
-                    style={{ transformOrigin: this.state.transformOrigin }}
-                    {...popoverHandlers}
-                >
-                    {isArrowEnabled ? <PopoverArrow angle={this.state.arrowRotation} /> : undefined}
-                    <div className={Classes.POPOVER_CONTENT}>{content}</div>
-                </div>
-            </Popper>
+            <div
+                className={popoverClasses}
+                ref={multiRef(props.ref, this.refHandlers.popover)}
+                style={{ ...props.style, transformOrigin: this.state.transformOrigin }}
+                {...popoverHandlers}
+            >
+                {this.isArrowEnabled() && (
+                    <PopoverArrow arrowProps={props.arrowProps} angle={this.state.arrowRotation} />
+                )}
+                <div className={Classes.POPOVER_CONTENT}>{content}</div>
+            </div>
         );
-    }
+    };
+
+    private renderTarget = (props: RefProps) => {
+        const { className, isOpen, targetClassName, targetElementTag } = this.props;
+        const isHoverInteractionKind = this.isHoverInteractionKind();
+
+        let targetProps: React.HTMLAttributes<HTMLElement>;
+        if (isHoverInteractionKind) {
+            targetProps = {
+                onBlur: this.handleTargetBlur,
+                onFocus: this.handleTargetFocus,
+                onMouseEnter: this.handleMouseEnter,
+                onMouseLeave: this.handleMouseLeave,
+            };
+            // any one of the CLICK* values
+        } else {
+            targetProps = {
+                onClick: this.handleTargetClick,
+            };
+        }
+        targetProps.className = classNames(
+            Classes.POPOVER_TARGET,
+            { [Classes.POPOVER_OPEN]: isOpen },
+            className,
+            targetClassName,
+        );
+
+        const rawTarget = Utils.ensureElement(this.understandChildren().target);
+        const targetTabIndex = this.props.openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
+        const target: JSX.Element = React.cloneElement(rawTarget, {
+            className: classNames(rawTarget.props.className, {
+                [Classes.ACTIVE]: isOpen && !isHoverInteractionKind,
+            }),
+            // force disable single Tooltip child when popover is open (BLUEPRINT-552)
+            disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip) ? true : rawTarget.props.disabled,
+            tabIndex: targetTabIndex,
+        });
+
+        return React.createElement(targetElementTag, { ...targetProps, ref: props.ref }, target);
+    };
 
     // content and target can be specified as props or as children. this method
     // normalizes the two approaches, preferring child over prop.
@@ -577,6 +580,12 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
     }
 
+    private isArrowEnabled() {
+        const { minimal, modifiers: { arrow } } = this.props;
+        // omitting `arrow` from `modifiers` uses Popper default, which does show an arrow.
+        return !minimal && (arrow == null || arrow.enabled);
+    }
+
     private isElementInPopover(element: Element) {
         return this.popoverElement != null && this.popoverElement.contains(element);
     }
@@ -597,4 +606,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         });
         return data;
     };
+}
+
+function multiRef(...refs: Array<(ref: HTMLElement) => void>) {
+    return (ref: HTMLElement) => refs.forEach(handler => handler(ref));
 }

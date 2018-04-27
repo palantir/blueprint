@@ -105,7 +105,7 @@ export interface ITooltipProps extends IProps, IIntentProps, IOverlayLifecyclePr
      * The name of the HTML tag to use when rendering the popover target element.
      * @default "div"
      */
-    targetElementTag?: string;
+    targetElementTag?: keyof JSX.IntrinsicElements;
 
     /**
      * A space-delimited string of class names that are applied to the tooltip.

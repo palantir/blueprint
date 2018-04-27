@@ -6,7 +6,6 @@
 
 import { Placement } from "popper.js";
 import * as React from "react";
-import { Arrow } from "react-popper";
 
 import * as Classes from "../../common/classes";
 import { getPosition } from "./popperUtils";
@@ -35,12 +34,18 @@ export function getArrowAngle(placement: Placement) {
     }
 }
 
-export const PopoverArrow: React.SFC<{ angle: number }> = ({ angle }) => (
-    <Arrow className={Classes.POPOVER_ARROW}>
+export interface IPopoverArrowProps {
+    // TODO: angle => placement, use `getArrowAngle`, remove state
+    angle: number;
+    arrowProps: React.HTMLProps<HTMLElement>;
+}
+
+export const PopoverArrow: React.SFC<IPopoverArrowProps> = ({ angle, arrowProps }) => (
+    <div className={Classes.POPOVER_ARROW} {...arrowProps}>
         <svg viewBox="0 0 30 30" style={{ transform: `rotate(${angle}deg)` }}>
             <path className={Classes.POPOVER_ARROW + "-border"} d={SVG_SHADOW_PATH} />
             <path className={Classes.POPOVER_ARROW + "-fill"} d={SVG_ARROW_PATH} />
         </svg>
-    </Arrow>
+    </div>
 );
 PopoverArrow.displayName = "Blueprint2.PopoverArrow";
