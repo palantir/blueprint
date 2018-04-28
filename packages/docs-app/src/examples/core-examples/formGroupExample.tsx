@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
@@ -48,6 +48,7 @@ export class FormGroupExample extends BaseExample<IFormGroupExampleState> {
         const { disabled, helperText, inline } = this.state;
         return [
             [
+                <Switch key="disabled" label="Disabled" checked={disabled} onChange={this.handleDisabledChange} />,
                 <Switch key="inline" label="Inline" checked={inline} onChange={this.handleInlineChange} />,
                 <Switch
                     key="helperText"
@@ -55,7 +56,6 @@ export class FormGroupExample extends BaseExample<IFormGroupExampleState> {
                     checked={helperText}
                     onChange={this.handleHelperTextChange}
                 />,
-                <Switch key="disabled" label="Disabled" checked={disabled} onChange={this.handleDisabledChange} />,
             ],
         ];
     }
