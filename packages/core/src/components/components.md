@@ -23,9 +23,9 @@
 @page popover
 @page portal
 @page progress-bar
-@page sliders
 @page skeleton
 @page spinner
+@page sliders
 @page table-html
 @page tabs
 @page tag
