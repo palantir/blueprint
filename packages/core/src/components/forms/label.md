@@ -11,23 +11,6 @@ Labels enhance the usability of your forms.
 
 @reactExample LabelExample
 
-@## JavaScript API
-
-The `Label` component is available in the __@blueprintjs/core__ package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
-
-```tsx
-<Label
-    helperText="Helper text with details..."
-    text="Label A"
->
-    <input className="@ns-input" id="text-input" placeholder="Placeholder text" />
-</Label>
-```
-
-@interface ILabelProps
-
 @## CSS API
 
 @### Simple labels
@@ -50,5 +33,21 @@ This styles the label text, but does not disable any nested children like inputs
 must add the `:disabled` attribute directly to any nested elements to disable them. Similarly the respective
 `@ns-*` form control will need a `.@ns-disabled` modifier. See the examples below.
 
-@css label-disabled
+@css label-disabled=
 
+@## JavaScript API
+
+The `Label` component is available in the __@blueprintjs/core__ package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+
+This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
+
+```tsx
+<Label
+    helperText="Helper text with details..."
+    text="Label A"
+>
+    <input className="@ns-input" id="text-input" placeholder="Placeholder text" />
+</Label>
+```
+
+@interface ILabelProps
