@@ -73,4 +73,3 @@ scheme that does not imply order, merely difference in kind.
 
 @reactDocs QualitativeSchemePalette
 
-@include color-aliases
