@@ -45,7 +45,7 @@ export class Label extends React.PureComponent<ILabelProps, {}> {
 
         return (
             <label {...htmlProps} className={rootClasses}>
-                <span className={Classes.LABEL_TEXT}>{text}</span>
+                <strong>{text}</strong>
                 {helperText && <span className={Classes.TEXT_MUTED}> {helperText}</span>}
                 {children}
             </label>

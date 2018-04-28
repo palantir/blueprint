@@ -10,7 +10,7 @@ Form groups
 Markup:
 <div class="#{$ns}-form-group">
   <label class="#{$ns}-label" for="example-form-group-input-a">
-    <span class="#{$ns}-label-text">Label A</span>
+    <strong>Label A</strong>
     <span class="#{$ns}-text-muted">(required)</span>
   </label>
   <div class="#{$ns}-form-content">
@@ -20,7 +20,7 @@ Markup:
 </div>
 <div class="#{$ns}-form-group #{$ns}-intent-danger">
   <label class="#{$ns}-label" for="example-form-group-input-b">
-    <span class="#{$ns}-label-text">Label B</span>
+    <strong>Label B</strong>
     <span class="#{$ns}-text-muted">(required)</span>
   </label>
   <div class="#{$ns}-form-content">
@@ -33,7 +33,7 @@ Markup:
 </div>
 <div class="#{$ns}-form-group">
   <label class="#{$ns}-label" for="example-form-group-switch-c">
-    <span class="#{$ns}-label-text">Label C</span>
+    <strong>Label C</strong>
     <span class="#{$ns}-text-muted">(required)</span>
   </label>
   <div class="#{$ns}-form-content">
@@ -47,7 +47,7 @@ Markup:
 </div>
 <div class="#{$ns}-form-group #{$ns}-inline">
   <label class="#{$ns}-label" for="example-form-group-input-d">
-    <span class="#{$ns}-label-text">Label D</span>
+    <strong>Label D</strong>
     <span class="#{$ns}-text-muted">(optional)</span>
   </label>
   <div class="#{$ns}-form-content">
@@ -60,7 +60,7 @@ Markup:
 </div>
 <div class="#{$ns}-form-group #{$ns}-inline #{$ns}-large #{$ns}-disabled">
   <label class="#{$ns}-label" for="example-form-group-input-e">
-    <span class="#{$ns}-label-text">Label E</span>
+    <strong>Label E</strong>
     <span class="#{$ns}-text-muted">(optional)</span>
   </label>
   <div class="#{$ns}-form-content">
@@ -73,7 +73,7 @@ Markup:
 </div>
 <div class="#{$ns}-form-group #{$ns}-inline">
   <label class="#{$ns}-label" for="example-form-group-switch-f">
-    <span class="#{$ns}-label-text">Label F</span>
+    <strong>Label F</strong>
   </label>
   <div class="#{$ns}-form-content">
     <label class="#{$ns}-control #{$ns}-switch">
@@ -86,7 +86,7 @@ Markup:
 </div>
 <div class="#{$ns}-form-group #{$ns}-inline #{$ns}-large #{$ns}-disabled">
   <label class="#{$ns}-label" for="example-form-group-switch-g">
-    <span class="#{$ns}-label-text">Label G</span>
+    <strong>Label G</strong>
   </label>
   <div class="#{$ns}-form-content">
     <label class="#{$ns}-control #{$ns}-switch #{$ns}-large #{$ns}-disabled">

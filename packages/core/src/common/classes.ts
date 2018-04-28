@@ -132,7 +132,6 @@ export const HOTKEY_COLUMN = `${HOTKEY}-column`;
 export const HOTKEY_DIALOG = `${HOTKEY}-dialog`;
 
 export const LABEL = `${NS}-label`;
-export const LABEL_TEXT = `${NS}-label-text`;
 export const FORM_GROUP = `${NS}-form-group`;
 export const FORM_CONTENT = `${NS}-form-content`;
 export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
