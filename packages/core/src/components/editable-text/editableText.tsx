@@ -196,7 +196,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
 
     public componentDidUpdate(_: IEditableTextProps, prevState: IEditableTextState) {
         if (this.state.isEditing && !prevState.isEditing) {
-            safeInvoke(this.props.onEdit, prevState.value);
+            safeInvoke(this.props.onEdit, this.state.value);
         }
         this.updateInputDimensions();
     }
