@@ -88,6 +88,15 @@ $dialog-padding: $pt-grid-size * 2 !default;
     background: $pt-dark-app-background-color;
     color: $pt-dark-text-color;
   }
+
+  &.#{$ns}-dialog-maximized {
+    // !important overrides inline styles and other class rules
+    // so maximize can really mean maximize.
+    // stylelint-disable declaration-no-important
+    margin: 0 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+  }
 }
 
 .#{$ns}-dialog-header {
@@ -149,6 +158,29 @@ $dialog-padding: $pt-grid-size * 2 !default;
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     margin: 0;
+  }
+}
+
+.#{$ns}-dialog-max-min-button {
+  // large icon with interactive colors
+  @include pt-icon($pt-icon-size-standard);
+  @include pt-icon-colors();
+  flex: 0 0 auto;
+
+  // button reset
+  border: none;
+  background: none;
+
+  cursor: pointer;
+  padding: $pt-grid-size;
+
+  .#{$ns}-icon-large,
+  .#{$ns}-icon {
+    margin: 0;
+  }
+
+  &.#{$ns}-dialog-has-button-on-the-right {
+    padding: $pt-grid-size 0;
   }
 }
 

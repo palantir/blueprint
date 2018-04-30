@@ -107,6 +107,44 @@ describe("<Dialog>", () => {
             dialog.find(`.${Classes.DIALOG_CLOSE_BUTTON}`).simulate("click");
             assert.isTrue(onClose.calledOnce, "onClose not called");
         });
+
+        it(`renders maximize button if isMaximizeButtonShown={true} and if usePortal={true}`, () => {
+            const dialog = mount(
+                <Dialog isMaximizeButtonShown={true} title="Hello!" isOpen={true} usePortal={true}>
+                    dialog body
+                </Dialog>,
+            );
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`), 1);
+
+            dialog.setProps({ isMaximizeButtonShown: false });
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`), 0);
+            dialog.setProps({ usePortal: false }); // get dialog out of portal so as not affect overlay tests
+        });
+
+        it(`does not render maximize button if isMaximizeButtonShown={true} and if usePortal={false}`, () => {
+            const dialog = mount(
+                <Dialog isMaximizeButtonShown={true} title="Hello!" isOpen={true} usePortal={false}>
+                    dialog body
+                </Dialog>,
+            );
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`), 0);
+        });
+
+        it("clicking maximize/minimize button adds/removes DIALOG_MAXIMIZED class", () => {
+            const dialog = mount(
+                <Dialog isMaximizeButtonShown={true} title="Hello!" isOpen={true} usePortal={true}>
+                    dialog body
+                </Dialog>,
+            );
+            // maximize dialog
+            dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`).simulate("click");
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAXIMIZED}`), 1);
+
+            // minimize dialog
+            dialog.find(`.${Classes.DIALOG_MAX_MIN_BUTTON}`).simulate("click");
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_MAXIMIZED}`), 0);
+            dialog.setProps({ usePortal: false }); // get dialog out of portal so as not affect overlay tests
+        });
     });
 
     it("only adds its className in one location", () => {
