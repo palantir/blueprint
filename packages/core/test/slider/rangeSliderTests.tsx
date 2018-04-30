@@ -5,15 +5,16 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { dispatchMouseEvent, dispatchTouchEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
-import { Classes, ISliderProps, RangeSlider } from "../../src/index";
+import { Classes, RangeSlider } from "../../src/index";
+import * as Utils from "./sliderTestUtils";
 
 describe("<RangeSlider>", () => {
     let testsContainerElement: HTMLElement;
@@ -43,7 +44,7 @@ describe("<RangeSlider>", () => {
             .find(Handle)
             .first()
             .simulate("mousedown", { clientX: 0 });
-        mouseMoveHorizontal(slider.state("tickSize"), 5);
+        Utils.mouseMoveHorizontal(slider.state("tickSize"), 5);
         // called 4 times, for the move to 1, 2, 3, and 4
         assert.equal(changeSpy.callCount, 4);
         assert.deepEqual(changeSpy.args.map(arg => arg[0]), [[1, 10], [2, 10], [3, 10], [4, 10]]);
@@ -56,7 +57,7 @@ describe("<RangeSlider>", () => {
             .find(Handle)
             .first()
             .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
-        touchMoveHorizontal(slider.state("tickSize"), 5);
+        Utils.touchMoveHorizontal(slider.state("tickSize"), 5);
         // called 4 times, for the move to 1, 2, 3, and 4
         assert.equal(changeSpy.callCount, 4);
         assert.deepEqual(changeSpy.args.map(arg => arg[0]), [[1, 10], [2, 10], [3, 10], [4, 10]]);
@@ -71,7 +72,7 @@ describe("<RangeSlider>", () => {
             .last()
             .simulate("mousedown", { clientX: tickSize * 10 });
         // move leftwards because it defaults to the max value
-        mouseMoveHorizontal(-tickSize, 5, tickSize * 10);
+        Utils.mouseMoveHorizontal(-tickSize, 5, tickSize * 10);
         // called 4 times, for the move to 9, 8, 7, and 6
         assert.equal(changeSpy.callCount, 4);
         assert.deepEqual(changeSpy.args.map(arg => arg[0]), [[0, 9], [0, 8], [0, 7], [0, 6]]);
@@ -86,7 +87,7 @@ describe("<RangeSlider>", () => {
             .last()
             .simulate("touchstart", { changedTouches: [{ clientX: tickSize * 10 }] });
         // move leftwards because it defaults to the max value
-        touchMoveHorizontal(-tickSize, 5, tickSize * 10);
+        Utils.touchMoveHorizontal(-tickSize, 5, tickSize * 10);
         // called 4 times, for the move to 9, 8, 7, and 6
         assert.equal(changeSpy.callCount, 4);
         assert.deepEqual(changeSpy.args.map(arg => arg[0]), [[0, 9], [0, 8], [0, 7], [0, 6]]);
@@ -119,7 +120,7 @@ describe("<RangeSlider>", () => {
             .find(Handle)
             .last()
             .simulate("mousedown", { clientX: 0 });
-        mouseUpHorizontal(slider.state("tickSize") * 4);
+        Utils.mouseUpHorizontal(slider.state("tickSize") * 4);
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
         assert.deepEqual(releaseSpy.args[0][0], [0, 4]);
     });
@@ -131,7 +132,7 @@ describe("<RangeSlider>", () => {
             .find(Handle)
             .last()
             .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
-        touchEndHorizontal(slider.state("tickSize") * 4);
+        Utils.touchEndHorizontal(slider.state("tickSize") * 4);
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
         assert.deepEqual(releaseSpy.args[0][0], [0, 4]);
     });
@@ -143,7 +144,7 @@ describe("<RangeSlider>", () => {
             .find(Handle)
             .first()
             .simulate("mousedown", { clientX: 0 });
-        mouseUpHorizontal();
+        Utils.mouseUpHorizontal();
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
         assert.deepEqual(releaseSpy.args[0][0], [0, 10]);
         assert.isTrue(changeSpy.notCalled, "onChange was called when value hasn't changed");
@@ -156,7 +157,7 @@ describe("<RangeSlider>", () => {
             .find(Handle)
             .first()
             .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
-        touchEndHorizontal();
+        Utils.touchEndHorizontal();
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
         assert.deepEqual(releaseSpy.args[0][0], [0, 10]);
         assert.isTrue(changeSpy.notCalled, "onChange was called when value hasn't changed");
@@ -169,7 +170,7 @@ describe("<RangeSlider>", () => {
             .find(Handle)
             .first()
             .simulate("mousedown", { clientX: 0 });
-        mouseMoveHorizontal(slider.state("tickSize"), 5);
+        Utils.mouseMoveHorizontal(slider.state("tickSize"), 5);
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
 
@@ -180,7 +181,7 @@ describe("<RangeSlider>", () => {
             .find(Handle)
             .first()
             .simulate("touchstart", { changedTouches: [{ clientX: 0 }] });
-        touchMoveHorizontal(slider.state("tickSize"), 5);
+        Utils.touchMoveHorizontal(slider.state("tickSize"), 5);
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
 
@@ -222,13 +223,13 @@ describe("<RangeSlider>", () => {
 
         it("moving mouse on bottom handle updates first value in range", () => {
             const slider = renderSlider(<RangeSlider vertical={true} onChange={changeSpy} />);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider
                 .find(Handle)
                 .first()
                 .simulate("mousedown", { clientY: sliderBottom });
-            mouseMoveVertical(slider.state("tickSize"), 5, 0, sliderBottom);
+            Utils.mouseMoveVertical(slider.state("tickSize"), 5, 0, sliderBottom);
 
             // called 4 times, for the move to 1, 2, 3, and 4
             assert.equal(changeSpy.callCount, 4);
@@ -237,13 +238,13 @@ describe("<RangeSlider>", () => {
 
         it("moving touch on bottom handle updates first value in range", () => {
             const slider = renderSlider(<RangeSlider vertical={true} onChange={changeSpy} />);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider
                 .find(Handle)
                 .first()
                 .simulate("touchstart", { changedTouches: [{ clientY: sliderBottom }] });
-            touchMoveVertical(slider.state("tickSize"), 5, 0, sliderBottom);
+            Utils.touchMoveVertical(slider.state("tickSize"), 5, 0, sliderBottom);
 
             // called 4 times, for the move to 1, 2, 3, and 4
             assert.equal(changeSpy.callCount, 4);
@@ -253,8 +254,8 @@ describe("<RangeSlider>", () => {
         it("moving mouse on top handle updates second value in range", () => {
             const slider = renderSlider(<RangeSlider vertical={true} onChange={changeSpy} />);
             const tickSize = slider.state("tickSize");
-            const sliderTop = getSliderTopPixel(slider);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderTop = Utils.getSliderTopPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             // const FUDGE_FACTOR = 10;
             slider
@@ -262,7 +263,7 @@ describe("<RangeSlider>", () => {
                 .last()
                 .simulate("mousedown", { clientY: sliderTop });
             // move downwards because it defaults to the max value
-            mouseMoveVertical(-tickSize, 5, tickSize * 10, sliderBottom);
+            Utils.mouseMoveVertical(-tickSize, 5, tickSize * 10, sliderBottom);
 
             // called 4 times, for the move to 9, 8, 7, and 6
             assert.equal(changeSpy.callCount, 4);
@@ -272,15 +273,15 @@ describe("<RangeSlider>", () => {
         it("moving touch on top handle updates second value in range", () => {
             const slider = renderSlider(<RangeSlider vertical={true} onChange={changeSpy} />);
             const tickSize = slider.state("tickSize");
-            const sliderTop = getSliderTopPixel(slider);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderTop = Utils.getSliderTopPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider
                 .find(Handle)
                 .last()
                 .simulate("touchstart", { changedTouches: [{ clientY: sliderTop }] });
             // move downwards because it defaults to the max value
-            touchMoveVertical(-tickSize, 5, tickSize * 10, sliderBottom);
+            Utils.touchMoveVertical(-tickSize, 5, tickSize * 10, sliderBottom);
 
             // called 4 times, for the move to 9, 8, 7, and 6
             assert.equal(changeSpy.callCount, 4);
@@ -289,13 +290,13 @@ describe("<RangeSlider>", () => {
 
         it("releasing mouse calls onRelease with nearest value", () => {
             const slider = renderSlider(<RangeSlider vertical={true} onRelease={releaseSpy} />);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider
                 .find(Handle)
                 .last()
                 .simulate("mousedown", { clientY: sliderBottom });
-            mouseUpVertical(sliderBottom - slider.state("tickSize") * 4);
+            Utils.mouseUpVertical(sliderBottom - slider.state("tickSize") * 4);
 
             assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
             assert.deepEqual(releaseSpy.args[0][0], [0, 4]);
@@ -303,13 +304,13 @@ describe("<RangeSlider>", () => {
 
         it("releasing touch calls onRelease with nearest value", () => {
             const slider = renderSlider(<RangeSlider vertical={true} onRelease={releaseSpy} />);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider
                 .find(Handle)
                 .last()
                 .simulate("touchstart", { changedTouches: [{ clientY: sliderBottom }] });
-            touchEndVertical(sliderBottom - slider.state("tickSize") * 4);
+            Utils.touchEndVertical(sliderBottom - slider.state("tickSize") * 4);
 
             assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
             assert.deepEqual(releaseSpy.args[0][0], [0, 4]);
@@ -318,76 +319,5 @@ describe("<RangeSlider>", () => {
 
     function renderSlider(slider: JSX.Element) {
         return mount(slider, { attachTo: testsContainerElement });
-    }
-
-    function mouseMoveHorizontal(movement: number, times = 1, initialValue = 0) {
-        genericMoveHorizontal(movement, times, initialValue, "mousemove");
-    }
-
-    function mouseMoveVertical(movement: number, times: number, initialValue: number, sliderBottom: number) {
-        genericMoveVertical(movement, times, initialValue, sliderBottom, "mousemove");
-    }
-
-    function mouseUpHorizontal(clientX = 0) {
-        dispatchMouseEvent(document, "mouseup", clientX, undefined);
-    }
-
-    function mouseUpVertical(clientY = 0) {
-        dispatchMouseEvent(document, "mouseup", undefined, clientY);
-    }
-
-    function touchMoveHorizontal(movement: number, times = 1, initialValue = 0) {
-        genericMoveHorizontal(movement, times, initialValue, "touchmove");
-    }
-
-    function touchMoveVertical(movement: number, times = 1, initialValue = 0, sliderBottom: number) {
-        genericMoveVertical(movement, times, initialValue, sliderBottom, "touchmove");
-    }
-
-    function genericMoveHorizontal(
-        movement: number,
-        times: number,
-        initialValue: number,
-        eventType: "mousemove" | "touchmove",
-    ) {
-        const dispatchEventFn = getDispatchEventFn(eventType);
-        for (let x = 0; x < times; x += 1) {
-            dispatchEventFn(document, eventType, initialValue + x * movement, undefined);
-        }
-    }
-
-    function genericMoveVertical(
-        movement: number,
-        times: number,
-        initialValue: number,
-        sliderBottom: number,
-        eventType: "mousemove" | "touchmove",
-    ) {
-        const dispatchEventFn = getDispatchEventFn(eventType);
-        for (let i = 0; i < times; i += 1) {
-            const clientPixel = sliderBottom - (initialValue + i * movement);
-            dispatchEventFn(document, eventType, undefined, clientPixel);
-        }
-    }
-
-    function touchEndHorizontal(clientX = 0) {
-        dispatchTouchEvent(document, "touchend", clientX, undefined);
-    }
-
-    function touchEndVertical(clientY = 0) {
-        dispatchTouchEvent(document, "touchend", undefined, clientY);
-    }
-
-    function getDispatchEventFn(eventType: "mousemove" | "touchmove") {
-        return eventType === "touchmove" ? dispatchTouchEvent : dispatchMouseEvent;
-    }
-
-    function getSliderTopPixel(slider: ReactWrapper<ISliderProps, any>) {
-        return slider.getDOMNode().getBoundingClientRect().top;
-    }
-
-    function getSliderBottomPixel(slider: ReactWrapper<ISliderProps, any>) {
-        const { height, top } = slider.getDOMNode().getBoundingClientRect();
-        return height + top;
     }
 });
