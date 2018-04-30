@@ -118,7 +118,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * Callback invoked in controlled mode when the popover open state *would* change due to
      * user interaction based on the value of `interactionKind`.
      */
-    onInteraction?: (nextOpenState: boolean) => void;
+    onInteraction?: (nextOpenState: boolean, e: React.SyntheticEvent<HTMLElement>) => void;
 
     /**
      * Whether the popover should open when its target is focused.
@@ -604,7 +604,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             if (this.props.isOpen == null) {
                 this.setState({ isOpen });
             } else {
-                Utils.safeInvoke(this.props.onInteraction, isOpen);
+                Utils.safeInvoke(this.props.onInteraction, isOpen, e);
             }
             if (!isOpen) {
                 Utils.safeInvoke(this.props.onClose, e);
