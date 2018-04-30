@@ -44,9 +44,9 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
 
     /**
      * Whether to allow a user to maximize the dialog to full browser width and height.
-     * This will be ignored if `usePortal` is false.
      * If true, a maximize button is shown in the dialog's header (it turns into a minimize button when the dialog is maximized).
-     * The header will only be rendered if `title` is provided.
+     * This will be ignored if `usePortal` is false.
+     * This will be ignored if `title` is undefined because the header will only be rendered if `title` is provided.
      * @default false
      */
     isMaximizeButtonShown?: boolean;
