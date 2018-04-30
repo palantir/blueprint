@@ -22,7 +22,9 @@
 @page overlay
 @page popover
 @page portal
-@page progress
+@page progress-bar
+@page skeleton
+@page spinner
 @page sliders
 @page table-html
 @page tabs
