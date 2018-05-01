@@ -96,7 +96,6 @@ export const DIALOG_CLOSE_BUTTON = `${DIALOG}-close-button`;
 export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
-export const DIALOG_HEADER_TITLE = `${DIALOG}-header-title`;
 
 export const EDITABLE_TEXT = `${NS}-editable-text`;
 export const EDITABLE_TEXT_CONTENT = `${EDITABLE_TEXT}-content`;
