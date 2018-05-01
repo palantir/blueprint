@@ -61,14 +61,10 @@ describe("<EditableText>", () => {
 
         it("calls onChange when escape key pressed and value is unconfirmed", () => {
             const changeSpy = spy();
-            const input = mount(
-                <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />,
-            ).find("input");
-
-            input.simulate("keydown", { which: Keys.ESCAPE });
-            assert.equal(changeSpy.callCount, 0, "onChange called incorrectly"); // no change so no invoke
-
-            input.simulate("change", { target: { value: "hello" } }).simulate("keydown", { which: Keys.ESCAPE });
+            mount(<EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />)
+                .find("input")
+                .simulate("change", { target: { value: "hello" } })
+                .simulate("keydown", { which: Keys.ESCAPE });
             assert.equal(changeSpy.callCount, 2, "onChange not called twice"); // change & escape
             assert.deepEqual(changeSpy.args[1], ["alphabet"], `unexpected argument "${changeSpy.args[1][0]}"`);
         });

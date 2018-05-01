@@ -30,4 +30,18 @@ application.
 `Portal` supports the following options on its [React context](https://facebook.github.io/react/docs/context.html).
 To use them, supply a child context to a subtree that contains the Portals you want to customize.
 
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    Blueprint uses the React 15-compatible `getChildContext()` API instead of the newer React 16.3 `React.createContext()` API.
+</div>
+
 @interface IPortalContext
+
+@### React 15
+
+In a **React 15** environment, `Portal` will use `ReactDOM.unstable_renderSubtreeIntoContainer` to achieve the teleportation effect, which has a few caveats:
+
+1. `Portal` `children` are wrapped in an extra `<div>` inside the portal container element.
+1. Test harnesses such as `enzyme` cannot trivially find elements "through" Portals as they're not in the same React tree.
+1. React `context` _is_ preserved (this one's a good thing).
+
+In a **React 16+** environment, the `Portal` component will use [`ReactDOM.createPortal`](https://reactjs.org/docs/portals.html) which preserves the React tree perfectly and does not require any of the above caveats.

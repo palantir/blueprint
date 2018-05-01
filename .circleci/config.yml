@@ -98,12 +98,15 @@ jobs:
             - packages/*/dist
             - packages/*/lib
 
-  test:
+  test-react-15:
     docker:
       - image: circleci/node:8.10.0-browsers
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
-    parallelism: 4
+    environment:
+      JUNIT_REPORT_PATH: reports
+      REACT: 15 # use React 15 for this job
+    parallelism: 3
     steps:
       - checkout
       - attach_workspace:
@@ -118,8 +121,34 @@ jobs:
               1) yarn lerna run --parallel test:iso ;; \
               2) yarn lerna run --parallel test:karma ;; \
               esac
-          environment:
-            JUNIT_REPORT_PATH: reports
+          when: always
+      - store_test_results:
+          path: ./reports
+      - store_artifacts:
+          path: ./reports
+
+  test-react-16:
+    docker:
+      - image: circleci/node:8.10.0-browsers
+        environment:
+            CHROME_BIN: "/usr/bin/google-chrome"
+    environment:
+      JUNIT_REPORT_PATH: reports
+    parallelism: 3
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache:
+          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: mkdir ./reports
+      - run:
+          command: |
+              case $CIRCLE_NODE_INDEX in \
+              0) yarn lerna run --parallel test:pre ;; \
+              1) yarn lerna run --parallel test:iso ;; \
+              2) yarn lerna run --parallel test:karma ;; \
+              esac
           when: always
       - store_test_results:
           path: ./reports
@@ -167,7 +196,9 @@ workflows:
           requires: [install-dependencies]
       - dist:
           requires: [compile]
-      - test:
+      - test-react-15:
+          requires: [compile]
+      - test-react-16:
           requires: [compile]
       - deploy-preview:
           requires: [dist]
