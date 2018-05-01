@@ -100,7 +100,6 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         const defaultInputProps: HTMLInputProps = {
             placeholder: "Search...",
             ...tagInputProps.inputProps,
-            // tslint:disable-next-line:object-literal-sort-keys
             onChange: this.handleQueryChange,
             value: query,
         };

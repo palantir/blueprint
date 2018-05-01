@@ -8,7 +8,7 @@
     "compile": "tsc -p ./src",
     "clean": "rm -rf lib/*",
     "dev": "yarn compile --watch",
-    "lint": "tslint \"src/**/*.{ts,tsx}\" -t codeFrame",
+    "lint": "ts-lint",
     "test": "exit 0"
   },
   "dependencies": {
@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "react": "^16.2.0",
-    "tslint": "^5.9.0",
     "typescript": "~2.7.2"
   },
   "repository": {
