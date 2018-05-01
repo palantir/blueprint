@@ -104,15 +104,15 @@ jobs:
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
     environment:
-        JUNIT_REPORT_PATH: reports
-        REACT: 15 # use React 15 for this job
-    parallelism: 4
+      JUNIT_REPORT_PATH: reports
+      REACT: 15 # use React 15 for this job
+    parallelism: 3
     steps:
       - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
       - run: mkdir ./reports
       - run:
           command: |
@@ -133,8 +133,8 @@ jobs:
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
     environment:
-        JUNIT_REPORT_PATH: reports
-    parallelism: 4
+      JUNIT_REPORT_PATH: reports
+    parallelism: 3
     steps:
       - checkout
       - attach_workspace:
