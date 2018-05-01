@@ -5,6 +5,7 @@
  */
 
 export const TABLE_BODY = "bp-table-body";
+export const TABLE_BODY_CELLS = "bp-table-body-cells";
 export const TABLE_BODY_SCROLL_CLIENT = "bp-table-body-scroll-client";
 export const TABLE_BODY_VIRTUAL_CLIENT = "bp-table-body-virtual-client";
 export const TABLE_BOTTOM_CONTAINER = "bp-table-bottom-container";
@@ -45,6 +46,7 @@ export const TABLE_NO_WRAP_TEXT = "bp-table-no-wrap-text";
 export const TABLE_NULL = "bp-table-null";
 export const TABLE_OVERLAY = "bp-table-overlay";
 export const TABLE_OVERLAY_LAYER = "bp-table-overlay-layer";
+export const TABLE_OVERLAY_REORDERING_CURSOR = "bp-table-reordering-cursor-overlay";
 export const TABLE_POPOVER_WHITESPACE_NORMAL = "bp-table-popover-whitespace-normal";
 export const TABLE_POPOVER_WHITESPACE_PRE = "bp-table-popover-whitespace-pre";
 export const TABLE_QUADRANT = "bp-table-quadrant";
