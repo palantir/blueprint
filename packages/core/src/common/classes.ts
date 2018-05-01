@@ -8,7 +8,7 @@ import { Elevation } from "../components/card/card";
 import { Alignment } from "./alignment";
 import { Intent } from "./intent";
 
-const NS = process.env.BLUEPRINT_NAMESPACE || "pt";
+const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
 
 // modifiers
 export const ACTIVE = `${NS}-active`;

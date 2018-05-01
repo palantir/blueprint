@@ -4,8 +4,7 @@
 @import "generated/icon-variables";
 @import "generated/icon-map";
 
-$pt-namespace: "pt" !default;
-$ns: $pt-namespace;
+$ns: "bp3" !default;
 
 $icon-classes: (
   ".#{$ns}-icon",
