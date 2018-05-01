@@ -104,7 +104,8 @@ jobs:
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
     environment:
-      REACT: 15 # use React 15 for this job
+        JUNIT_REPORT_PATH: reports
+        REACT: 15 # use React 15 for this job
     parallelism: 4
     steps:
       - checkout
@@ -112,20 +113,27 @@ jobs:
           at: '.'
       - restore_cache:
           key: v7-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: mkdir ./reports
       - run:
           command: |
               case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run test --scope '@blueprintjs/core' ;; \
-              1) yarn lerna run test --scope '@blueprintjs/{datetime,timezone}' ;; \
-              2) yarn lerna run test --scope '@blueprintjs/table' ;; \
-              3) yarn lerna run test --scope '@blueprintjs/{icons,labs,select}' ;; \
+              0) yarn lerna run --parallel test:pre ;; \
+              1) yarn lerna run --parallel test:iso ;; \
+              2) yarn lerna run --parallel test:karma ;; \
               esac
+          when: always
+      - store_test_results:
+          path: ./reports
+      - store_artifacts:
+          path: ./reports
 
   test-react-16:
     docker:
       - image: circleci/node:8.10.0-browsers
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
+    environment:
+        JUNIT_REPORT_PATH: reports
     parallelism: 4
     steps:
       - checkout
@@ -141,8 +149,6 @@ jobs:
               1) yarn lerna run --parallel test:iso ;; \
               2) yarn lerna run --parallel test:karma ;; \
               esac
-          environment:
-            JUNIT_REPORT_PATH: reports
           when: always
       - store_test_results:
           path: ./reports
