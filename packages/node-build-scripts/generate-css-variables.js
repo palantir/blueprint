@@ -4,6 +4,7 @@
  * @fileoverview Asserts that all library packages adhere to the layout spec.
  */
 
+// @ts-check
 const fs = require("fs");
 const path = require("path");
 const stripCssComments = require("strip-css-comments");

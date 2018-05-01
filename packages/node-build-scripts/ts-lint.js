@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
-/*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
- *
- * Licensed under the terms of the LICENSE file distributed with this project.
+/**
+ * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * @fileoverview Runs TSLint, with support for generating JUnit report
  */
 
 // @ts-check
@@ -20,6 +19,7 @@ let outputStream = process.stdout;
 if (process.env.JUNIT_REPORT_PATH != null) {
     format = "junit";
     out = junitReportPath("tslint");
+    console.info(`TSLint report will appear in ${reportPath}`);
     outputStream = fs.createWriteStream(out, { flags: "w+" });
 }
 
