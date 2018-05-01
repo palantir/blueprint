@@ -1,6 +1,6 @@
 <img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint/tree/develop.svg?style=svg)](https://circleci.com/gh/palantir/blueprint/tree/develop)
+# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint/tree/develop.svg?style=svg)](https://circleci.com/gh/palantir/workflows/blueprint)
 
 Blueprint is a React-based UI toolkit for the web.
 
@@ -9,19 +9,21 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 [**View the full documentation ▸**](http://blueprintjs.com/docs)
 
+[**What's new in Blueprint 2.0 ▸**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0)
+
+[**1.x &rarr; 2.0 migration guide ▸**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path)
+
 [**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
 [**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
 
 **Support question**? We use the [**blueprintjs** tag on Stack Overflow **▸**](http://stackoverflow.com/questions/tagged/blueprintjs)
 
-## :star2: 2.0 is out! :star2:
+## 🚧 3.0 is in progress! 🚧
 
-[**What's new in Blueprint 2.0 ▸**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0)
+Blueprint 3.0 will support multiple major versions of Blueprint on the same page through removing global styles and deconflicting selectors. It also restores support for React 15 in most packages.
 
-[**2.0 migration guide ▸**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path)
-
-To make a contribution that you wish to have released in a 1.x version of any `@blueprintjs` package, please submit a PR to the `release/1.x` branch.
+To make a contribution that you wish to have released in an earlier major version of any `@blueprintjs` package, please submit a PR to the `release/1.x` or `release/2.x` branch.
 
 ## Packages
 
