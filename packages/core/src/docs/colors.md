@@ -54,14 +54,14 @@ Blueprint provides variables for colors in Sass, Less, and JavaScript.
 }
 ```
 
+Hex values for these colors can be accessed in JavaScript through the `Colors` export.
+Note that aliases are not currently available in JavaScript.
+
 ```tsx
 import { Colors } from "@blueprintjs/core";
 
 <div style={{ color: Colors.BLUE3, background: Colors.BLACK }} />
 ```
-
-Hex values for these colors can be accessed in JavaScript. The global version of the module exposes
-the `Blueprint.Colors` object. In CommonJS, you may `import { Colors } from "@blueprintjs/core"`.
 
 @## Color schemes
 
