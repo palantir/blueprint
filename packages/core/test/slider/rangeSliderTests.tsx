@@ -29,7 +29,7 @@ describe("<RangeSlider>", () => {
 
     it("does not render progress bar if handles are equal", () => {
         const slider = renderSlider(<RangeSlider value={[4, 4]} />);
-        assert.isFalse(slider.find(`.${Classes.SLIDER}-progress`).exists());
+        assert.isFalse(slider.find(`.${Classes.SLIDER_PROGRESS}`).exists());
     });
 
     it("throws error if range value contains null", () => {

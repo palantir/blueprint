@@ -73,7 +73,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
     }
 
     protected renderHandles() {
-        const { disabled, max, min, stepSize, vertical, onRelease } = this.props;
+        const { disabled, max, min, stepSize, vertical } = this.props;
         return this.getSortedHandles().map(({ value, type }, index) => (
             <Handle
                 className={classNames({
@@ -86,7 +86,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
                 max={max}
                 min={min}
                 onChange={this.getHandlerForIndex(index, this.handleChange)}
-                onRelease={this.getHandlerForIndex(index, onRelease)}
+                onRelease={this.getHandlerForIndex(index, this.handleRelease)}
                 ref={this.addHandleRef}
                 stepSize={stepSize}
                 tickSize={this.state.tickSize}
@@ -185,6 +185,13 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
         }
     };
 
+    private handleRelease = (values: number[]) => {
+        if (Utils.isFunction(this.props.onRelease)) {
+            const newValues = values.slice().sort((left, right) => left - right);
+            this.props.onRelease(newValues);
+        }
+    };
+
     private getSortedHandles(): ISliderHandleProps[] {
         const handles = this.getHandles();
         return handles.sort((left, right) => left.value - right.value);
@@ -196,10 +203,12 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
 }
 
 function getHandles({ children }: IMultiRangeSliderProps): ISliderHandleProps[] {
-    return React.Children.map(
+    const maybeHandles = React.Children.map(
         children,
         child => (Utils.isElementOfType(child, SliderHandle) ? child.props : null),
-    ).filter(child => child !== null);
+    );
+    const handles = maybeHandles != null ? maybeHandles : [];
+    return handles.filter(handle => handle !== null);
 }
 
 function argMin<T>(values: T[], argFn: (value: T) => any): T | undefined {
