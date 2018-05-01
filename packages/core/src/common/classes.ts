@@ -26,10 +26,10 @@ export const SMALL = "pt-small";
 export const VERTICAL = "pt-vertical";
 
 export const ELEVATION_0 = "pt-elevation-0";
-export const ELEVATION_1 = "pt-elevation-1"; 
-export const ELEVATION_2 = "pt-elevation-2"; 
-export const ELEVATION_3 = "pt-elevation-3"; 
-export const ELEVATION_4 = "pt-elevation-4"; 
+export const ELEVATION_1 = "pt-elevation-1";
+export const ELEVATION_2 = "pt-elevation-2";
+export const ELEVATION_3 = "pt-elevation-3";
+export const ELEVATION_4 = "pt-elevation-4";
 
 export const INTENT_PRIMARY = "pt-intent-primary";
 export const INTENT_SUCCESS = "pt-intent-success";
