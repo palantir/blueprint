@@ -51,7 +51,7 @@ $pt-dark-intent-text-colors: (
   color: $pt-heading-color;
   font-weight: 600;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     color: $pt-dark-heading-color;
   }
 }
