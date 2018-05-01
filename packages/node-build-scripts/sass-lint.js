@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-/*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
- *
- * Licensed under the terms of the LICENSE file distributed with this project.
+/**
+ * @license Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * @fileoverview Runs stylelint, with support for generating JUnit report
  */
 
+// @ts-check
 const fs = require("fs");
 const path = require("path");
 const stylelint = require("stylelint");
@@ -24,7 +24,7 @@ stylelint.lint(options).then(resultObject => {
     if (emitReport) {
         // emit JUnit XML report to <cwd>/<reports>/<pkg>/stylelint.xml when this env variable is set
         const reportPath = junitReportPath("stylelint");
-        console.info(`JUnit report will appear in ${reportPath}`);
+        console.info(`Stylelint report will appear in ${reportPath}`);
         fs.writeFileSync(reportPath, resultObject.output);
     } else {
         console.info(resultObject.output);

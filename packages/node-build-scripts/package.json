@@ -6,11 +6,11 @@
     "test": "exit 0"
   },
   "bin": {
-    "assert-package-layout": "./assert-package-layout",
-    "css-dist": "./css-dist",
-    "generate-css-variables": "./generate-css-variables",
-    "generate-icons-source": "./generate-icons-source",
-    "sass-compile": "./sass-compile",
+    "assert-package-layout": "./assert-package-layout.js",
+    "css-dist": "./css-dist.sh",
+    "generate-css-variables": "./generate-css-variables.js",
+    "generate-icons-source": "./generate-icons-source.js",
+    "sass-compile": "./sass-compile.sh",
     "sass-lint": "./sass-lint.js",
     "ts-lint": "./ts-lint.js"
   },

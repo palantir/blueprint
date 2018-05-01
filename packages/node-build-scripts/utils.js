@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+// @ts-check
 const path = require("path");
 
 /**
