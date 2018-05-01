@@ -46,14 +46,6 @@ export enum Elevation {
     FOUR = 4,
 }
 
-const ELEVATION_CLASSES = [
-    Classes.ELEVATION_0,
-    Classes.ELEVATION_1,
-    Classes.ELEVATION_2,
-    Classes.ELEVATION_3,
-    Classes.ELEVATION_4,
-];
-
 @PureRender
 export class Card extends React.Component<ICardProps, {}> {
     public static displayName = "Blueprint.Card";
@@ -75,7 +67,7 @@ export class Card extends React.Component<ICardProps, {}> {
         return classNames(
             Classes.CARD,
             { [Classes.INTERACTIVE]: interactive },
-            ELEVATION_CLASSES[elevation],
+            Classes.elevationClass(elevation),
             className,
         );
     }
