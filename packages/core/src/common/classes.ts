@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Elevation } from "../components/card/card";
 import { Intent } from "./intent";
 
 // modifiers
@@ -239,13 +238,6 @@ export const TREE_ROOT = "pt-tree-root";
 export const ICON = "pt-icon";
 export const ICON_STANDARD = "pt-icon-standard";
 export const ICON_LARGE = "pt-icon-large";
-
-export function elevationClass(elevation: Elevation) {
-    if (elevation == null) {
-        return undefined;
-    }
-    return `pt-elevation-${elevation}`;
-}
 
 /** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
 export function iconClass(iconName?: string) {
