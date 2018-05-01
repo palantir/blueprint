@@ -23,7 +23,10 @@ export interface IMultiRangeSliderProps extends ICoreSliderProps {
 }
 
 export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
-    public static defaultProps: IMultiRangeSliderProps = CoreSlider.defaultProps;
+    public static defaultProps: IMultiRangeSliderProps = {
+        ...CoreSlider.defaultProps,
+        defaultTrackIntent: Intent.NONE,
+    };
 
     public static displayName = "Blueprint2.MultiRangeSlider";
     public className = classNames(Classes.SLIDER, Classes.MULTI_RANGE_SLIDER);
@@ -63,7 +66,6 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
                 left.trackIntentAfter,
                 right.trackIntentBefore,
                 this.props.defaultTrackIntent,
-                Intent.NONE,
             ];
             const fillIntent = fillIntentPriorities.filter(intent => intent != null)[0];
             tracks.push(this.renderTrackFill(index, left, right, fillIntent));
