@@ -9,6 +9,7 @@
 const fs = require("fs");
 const path = require("path");
 const stylelint = require("stylelint");
+const { junitReportPath } = require("./utils");
 
 const emitReport = process.env.JUNIT_REPORT_PATH != null;
 
@@ -22,13 +23,7 @@ const options = {
 stylelint.lint(options).then(resultObject => {
     if (emitReport) {
         // emit JUnit XML report to <cwd>/<reports>/<pkg>/stylelint.xml when this env variable is set
-        const reportPath = path.join(
-            __dirname,
-            "../..",
-            process.env.JUNIT_REPORT_PATH,
-            "stylelint",
-            `${path.basename(process.cwd())}.xml`,
-        );
+        const reportPath = junitReportPath("stylelint");
         console.info(`JUnit report will appear in ${reportPath}`);
         fs.writeFileSync(reportPath, resultObject.output);
     } else {

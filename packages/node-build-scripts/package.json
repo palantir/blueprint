@@ -11,8 +11,8 @@
     "generate-css-variables": "./generate-css-variables",
     "generate-icons-source": "./generate-icons-source",
     "sass-compile": "./sass-compile",
-    "sass-lint": "./sass-lint",
-    "ts-lint": "./ts-lint"
+    "sass-lint": "./sass-lint.js",
+    "ts-lint": "./ts-lint.js"
   },
   "dependencies": {
     "autoprefixer": "^7.1.2",
