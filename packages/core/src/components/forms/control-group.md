@@ -8,7 +8,7 @@ Note that `.@ns-control-group` does not cascade any modifiers to its children. F
 child must be marked individually as `.@ns-large` for uniform large appearance.
 
 <div class="@ns-callout @ns-intent-success @ns-icon-comparison">
-    <h4 class="@ns-callout-title">Control group vs. input group</h4>
+    <h4 class="@ns-heading">Control group vs. input group</h4>
     <p>Both components group multiple elements into a single unit, but their usage patterns are
     different.</p>
     <p>Think of `.@ns-control-group` as a parent with multiple children, each of them a
