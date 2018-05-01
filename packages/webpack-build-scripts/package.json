@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/webpack-build-scripts",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Webpack build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
