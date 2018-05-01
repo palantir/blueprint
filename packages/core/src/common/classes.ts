@@ -76,7 +76,6 @@ export const BUTTON_TEXT = `${BUTTON}-text`;
 
 export const CALLOUT = `${NS}-callout`;
 export const CALLOUT_ICON = `${CALLOUT}-icon`;
-export const CALLOUT_TITLE = `${CALLOUT}-title`;
 
 export const CARD = `${NS}-card`;
 
