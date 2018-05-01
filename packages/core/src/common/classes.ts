@@ -103,10 +103,6 @@ export const EDITABLE_TEXT_PLACEHOLDER = "pt-editable-placeholder";
 
 export const FLEX_EXPANDER = "pt-flex-expander";
 
-export const HTML_TABLE = "pt-html-table";
-export const HTML_TABLE_STRIPED = "pt-html-table-striped";
-export const HTML_TABLE_BORDERED = "pt-html-table-bordered";
-
 export const INPUT = "pt-input";
 export const INPUT_GROUP = "pt-input-group";
 export const INPUT_ACTION = "pt-input-action";
@@ -114,7 +110,7 @@ export const INPUT_ACTION = "pt-input-action";
 export const CHECKBOX = "pt-checkbox";
 export const RADIO = "pt-radio";
 export const SWITCH = "pt-switch";
-export const FILE_INPUT = "pt-file-input";
+export const FILE_UPLOAD = "pt-file-upload";
 export const FILE_UPLOAD_INPUT = "pt-file-upload-input";
 
 export const INPUT_GHOST = "pt-input-ghost";
@@ -204,6 +200,11 @@ export const TAB_INDICATOR_WRAPPER = "pt-tab-indicator-wrapper";
 export const TAB_LIST = "pt-tab-list";
 export const TAB_PANEL = "pt-tab-panel";
 export const TABS = "pt-tabs";
+
+export const TABLE = "pt-table";	
+export const TABLE_CONDENSED = "pt-condensed";	
+export const TABLE_STRIPED = "pt-striped";	
+export const TABLE_BORDERED = "pt-bordered";
 
 export const TAG = "pt-tag";
 export const TAG_REMOVABLE = "pt-tag-removable";
