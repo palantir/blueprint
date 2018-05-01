@@ -46,17 +46,16 @@ describe("<MultiRangeSlider>", () => {
         assert.lengthOf(slider.find(`.${Classes.SLIDER_PROGRESS}`), 3);
     });
 
-    // it("handle values are automatically sorted", () => {
-    //     const onRelease = sinon.spy();
-    //     const slider = renderSlider({ values: [10, 5, 0], onRelease: onRelease });
-    //     slider
-    //         .find(Handle)
-    //         .first()
-    //         .simulate("mousedown", { clientX: 0 });
-    //     Utils.mouseUpHorizontal();
-    //     assert.equal(onRelease.callCount, 1);
-    //     assert.deepEqual(onRelease.firstCall.args[0], [1, 5, 10]);
-    // });
+    it("handle values are automatically sorted", () => {
+        const slider = renderSlider({ values: [5, 10, 0], onRelease });
+        slider
+            .find(Handle)
+            .first()
+            .simulate("mousedown", { clientX: 0 });
+        Utils.mouseUpHorizontal();
+        assert.equal(onRelease.callCount, 1);
+        assert.deepEqual(onRelease.firstCall.args[0], [0, 5, 10]);
+    });
 
     it("moving mouse on the first handle updates the first value", () => {
         const slider = renderSlider({ onChange });

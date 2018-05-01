@@ -167,7 +167,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
     private getHandlerForIndex = (index: number, callback?: (values: number[]) => void) => {
         return (newValue: number) => {
             if (Utils.isFunction(callback)) {
-                const values = this.getHandles().map(handle => handle.value);
+                const values = this.getSortedHandles().map(handle => handle.value);
                 const start = values.slice(0, index);
                 const end = values.slice(index + 1);
                 const newValues = [...start, newValue, ...end];
