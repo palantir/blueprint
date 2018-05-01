@@ -2,6 +2,8 @@
 
 Trees display hierarchical data.
 
+@reactExample TreeExample
+
 @## CSS API
 
 See below for the [JavaScript API](#core/components/tree.javascript-api) for the `Tree` React component. However, you
@@ -28,8 +30,6 @@ parameter `nodePath`, which is an array of numbers representing a node's positio
 example, `[2, 0]` represents the first child (`0`) of the third top-level node (`2`).
 
 @interface ITreeProps
-
-@reactExample TreeExample
 
 @### Instance methods
 

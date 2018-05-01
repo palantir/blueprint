@@ -136,12 +136,14 @@ describe("<EditableText>", () => {
             assert.isTrue(confirmSpy.calledWith(OLD_VALUE), `unexpected argument "${confirmSpy.args[0][0]}"`);
         });
 
-        it("calls onEdit when entering edit mode", () => {
+        it("calls onEdit when entering edit mode and passes the initial value to the callback", () => {
             const editSpy = spy();
-            mount(<EditableText onEdit={editSpy} />)
+            const INIT_VALUE = "hello";
+            mount(<EditableText onEdit={editSpy} defaultValue={INIT_VALUE} />)
                 .find("div")
                 .simulate("focus");
             assert.isTrue(editSpy.calledOnce, "onEdit called once");
+            assert.isTrue(editSpy.calledWith(INIT_VALUE), `unexpected argument "${editSpy.args[0][0]}"`);
         });
 
         it("stops editing when disabled", () => {

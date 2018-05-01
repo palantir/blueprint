@@ -12,7 +12,7 @@ import { DateTimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
 import { MomentDate } from "./common/momentDate";
 
 export class DateTimePickerExample extends BaseExample<{ date: Date }> {
-    public state = { date: null as Date };
+    public state = { date: new Date() };
 
     protected renderExample() {
         const timeProps = { precision: TimePickerPrecision.SECOND };
@@ -20,6 +20,7 @@ export class DateTimePickerExample extends BaseExample<{ date: Date }> {
             <div className="docs-datetime-example">
                 <DateTimePicker
                     className={Classes.ELEVATION_1}
+                    value={this.state.date}
                     timePickerProps={timeProps}
                     onChange={this.handleDateChange}
                 />
