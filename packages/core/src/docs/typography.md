@@ -105,14 +105,13 @@ Most elements only support the dark theme when nested inside a `.@ns-dark` conta
 not make sense to mark individual elements as dark. The dark container is therefore responsible for
 setting a dark background color.
 
-The following elements and components support the `.@ns-dark` class directly (i.e, `.@ns-app.@ns-dark`)
+The following elements and components support the `.@ns-dark` class directly (i.e, `.@ns-card.@ns-dark`)
 and can be used as a container for nested dark children:
 
-- `.@ns-app`
-- `.@ns-card`
+- `Card`
 - Overlays: `Dialog`, `Popover`, `Tooltip`, `Toast`
 - `Popover` and `Tooltip` will automatically detect when their trigger is inside a `.@ns-dark`
 container and add the same class to themselves.
 
 Rather than illustrating dark components inline, this documentation site provides a site-wide switch
-in the top right corner of the page to enable the dark theme. Try it out as you read the docs.
+in the sidebar to enable the dark theme. Try it out as you read the docs.

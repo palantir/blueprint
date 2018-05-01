@@ -175,10 +175,10 @@ Styleguide running-text
   }
 }
 
-// NOTE: this must be defined after .#{$ns}-running-text in order to override font-size.
+// NOTE: this must be defined after .@ns-running-text in order to override font-size.
 .#{$ns}-text-large {
   font-size: $pt-font-size-large;
-  // line-height comes from .#{$ns}-(ui|running)-text
+  // line-height comes from .@ns-(ui|running)-text
 }
 
 /*
@@ -299,13 +299,11 @@ Styleguide preformatted
 Block quotes
 
 Markup:
-<blockquote class="pt-blockquote">
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-    ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-  </p>
+<blockquote class="@ns-blockquote">
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 </blockquote>
 
 Styleguide blockquote
@@ -334,10 +332,10 @@ Markup:
   <li>Item the second</li>
   <li>
     Item the third
-    <ol class="{{.modifier}}">
+    <ul class="{{.modifier}}">
       <li>Item the fourth</li>
       <li>Item the fifth</li>
-    </ol>
+    </ul>
   </li>
 </ol>
 
@@ -380,13 +378,13 @@ Styleguide lists
 Right-to-left text
 
 Markup:
-<h4>Arabic:</h4>
-<p class="#{$ns}-rtl">
+<h5 class="@ns-heading">Arabic:</h5>
+<p class="@ns-rtl">
   لكل لأداء بمحاولة من. مدينة الواقعة يبق أي, وإعلان وقوعها، حول كل, حدى عجّل مشروط الخاسرة قد.
   من الذود تكبّد بين, و لها واحدة الأراضي. عل الصفحة والروسية يتم, أي للحكومة استعملت شيء. أم وصل زهاء اليا
 </p>
-<h4>Hebrew:</h4>
-<p class="#{$ns}-rtl">
+<h5 class="@ns-heading">Hebrew:</h5>
+<p class="@ns-rtl">
   כדי על עזרה יידיש הבהרה, מלא באגים טכניים דת. תנך או ברית ביולי. כתב בה הטבע למנוע, דת כלים פיסיקה החופשית זכר.
   מתן החלל מאמרשיחהצפה ב. הספרות אנציקלופדיה אם זכר, על שימושי שימושיים תאולוגיה עזה
 </p>
