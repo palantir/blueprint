@@ -20,9 +20,9 @@
     "dist:css": "css-dist lib/css/*.css",
     "dist:verify": "assert-package-layout",
     "lint": "run-p lint:scss lint:ts",
-    "lint:scss": "stylelint -s scss \"src/**/*.scss\"",
-    "lint:ts": "tslint \"src/**/*.{ts,tsx}\" -t codeFrame",
-    "lint-fix": "yarn lint:ts --fix",
+    "lint:scss": "sass-lint",
+    "lint:ts": "ts-lint",
+    "lint-fix": "ts-lint --fix",
     "verify": "npm-run-all compile -p dist lint"
   },
   "dependencies": {
@@ -40,7 +40,6 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-transition-group": "^2.2.1",
-    "tslint": "^5.9.0",
     "typescript": "~2.7.2",
     "webpack": "^3.10.0"
   },
