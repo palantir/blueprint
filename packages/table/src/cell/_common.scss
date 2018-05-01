@@ -29,19 +29,19 @@ $cell-transition-duration: $pt-transition-duration * 3;
   font-size: $pt-font-size-small;
   transition: color $cell-transition-duration;
 
-  .pt-dark & {
-    &:not([class*="pt-intent-"]):not(.pt-loading) {
+  .#{$ns}-dark & {
+    &:not([class*="#{$ns}-intent-"]):not(.#{$ns}-loading) {
       color: $dark-cell-text-color;
     }
   }
 
   @each $intent, $color in $pt-intent-colors {
-    &.pt-intent-#{$intent} {
+    &.#{$ns}-intent-#{$intent} {
       background-color: rgba($color, $cell-background-color-opacity);
       color: map-get($pt-intent-text-colors, $intent);
     }
 
-    .pt-dark &.pt-intent-#{$intent} {
+    .#{$ns}-dark &.#{$ns}-intent-#{$intent} {
       background: rgba($color, $cell-background-color-opacity);
       color: map-get($pt-dark-intent-text-colors, $intent);
     }
@@ -55,11 +55,11 @@ $cell-transition-duration: $pt-transition-duration * 3;
 }
 
 @mixin cell-cursors() {
-  .pt-table-editing-enabled & {
+  .#{$ns}-table-editing-enabled & {
     cursor: $select-text-cursor;
   }
 
-  .pt-table-selection-enabled & {
+  .#{$ns}-table-selection-enabled & {
     cursor: $select-cell-cursor;
   }
 }

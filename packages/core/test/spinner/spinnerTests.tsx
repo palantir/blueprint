@@ -26,7 +26,10 @@ describe("Spinner", () => {
     it("value sets stroke-dashoffset", () => {
         // dash offset = X * (1 - value)
         const root = mount(<Spinner value={0.35} />);
-        assert.isTrue(root.find(`.${Classes.SPINNER}`).hasClass(Classes.SPINNER_NO_SPIN), "missing class pt-no-spin");
+        assert.isTrue(
+            root.find(`.${Classes.SPINNER}`).hasClass(Classes.SPINNER_NO_SPIN),
+            `missing class ${Classes.SPINNER_NO_SPIN}`,
+        );
         assertStrokePercent(root, 0.35);
     });
 

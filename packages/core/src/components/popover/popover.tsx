@@ -103,7 +103,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * Whether to apply minimal styles to this popover, which includes removing the arrow
-     * and adding the `.pt-minimal` class to minimize and accelerate the transitions.
+     * and adding `Classes.MINIMAL` to minimize and accelerate the transitions.
      * @default false
      */
     minimal?: boolean;
@@ -118,7 +118,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * Callback invoked in controlled mode when the popover open state *would* change due to
      * user interaction based on the value of `interactionKind`.
      */
-    onInteraction?: (nextOpenState: boolean) => void;
+    onInteraction?: (nextOpenState: boolean, e?: React.SyntheticEvent<HTMLElement>) => void;
 
     /**
      * Whether the popover should open when its target is focused.
@@ -134,12 +134,17 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     popoverClassName?: string;
 
     /**
+     * Callback invoked after the popover closes and has been removed from the DOM.
+     */
+    popoverDidClose?: () => void;
+
+    /**
      * Callback invoked when the popover opens after it is added to the DOM.
      */
     popoverDidOpen?: () => void;
 
     /**
-     * Ref supplied to the `pt-popover` element.
+     * Ref supplied to the `Classes.POPOVER` element.
      */
     popoverRef?: (ref: HTMLDivElement | null) => void;
 
@@ -169,7 +174,8 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     position?: Position | "auto";
 
     /**
-     * The name of the HTML tag to use when rendering the popover target wrapper element (`.pt-popover-target`).
+     * The name of the HTML tag to use when rendering the popover target wrapper
+     * element (`Classes.POPOVER_WRAPPER`).
      * @default "span"
      */
     rootElementTag?: string;
@@ -249,6 +255,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     // now that mouseleave is triggered when you cross the gap between the two.
     private isMouseInTargetOrPopover = false;
 
+    // a flag that indicates whether the target previously lost focus to another
+    // element on the same page.
+    private lostFocusOnSamePage = true;
+
     private refHandlers = {
         popover: (ref: HTMLDivElement) => {
             this.popoverElement = ref;
@@ -322,6 +332,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                     canEscapeKeyClose={this.props.canEscapeKeyClose}
                     canOutsideClickClose={this.props.interactionKind === PopoverInteractionKind.CLICK}
                     className={this.props.portalClassName}
+                    didClose={this.props.popoverDidClose}
                     didOpen={this.handleContentMount}
                     enforceFocus={this.props.enforceFocus}
                     hasBackdrop={hasBackdrop}
@@ -499,23 +510,26 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
     };
 
-    private handleTargetFocus = (e?: React.FormEvent<HTMLElement>) => {
+    private handleTargetFocus = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
+            if (e.relatedTarget == null && !this.lostFocusOnSamePage) {
+                // ignore this focus event -- the target was already focused but the page itself
+                // lost focus (e.g. due to switching tabs).
+                return;
+            }
             this.handleMouseEnter(e);
         }
     };
 
-    private handleTargetBlur = (e?: React.FormEvent<HTMLElement>) => {
+    private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             // if the next element to receive focus is within the popover, we'll want to leave the
-            // popover open. we must do this check *after* the next element focuses, so we use a
-            // timeout of 0 to flush the rest of the event queue before proceeding.
-            this.setTimeout(() => {
-                if (!this.isElementInPopover(document.activeElement)) {
-                    this.handleMouseLeave(e);
-                }
-            });
+            // popover open.
+            if (!this.isElementInPopover(e.relatedTarget as HTMLElement)) {
+                this.handleMouseLeave(e);
+            }
         }
+        this.lostFocusOnSamePage = e.relatedTarget != null;
     };
 
     private handleMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
@@ -590,7 +604,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             if (this.props.isOpen == null) {
                 this.setState({ isOpen });
             } else {
-                Utils.safeInvoke(this.props.onInteraction, isOpen);
+                Utils.safeInvoke(this.props.onInteraction, isOpen, e);
             }
             if (!isOpen) {
                 Utils.safeInvoke(this.props.onClose, e);

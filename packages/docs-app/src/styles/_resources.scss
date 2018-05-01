@@ -10,8 +10,7 @@ $dark-asset-background-color: rgba($light-gray1, 0.1);
 
 .docs-asset {
   display: inline-block;
-  margin: $pt-grid-size * 2;
-  margin-left: 0;
+  margin: $pt-grid-size ($pt-grid-size * 2) $pt-grid-size 0;
   border-radius: $pt-border-radius * 2;
   box-shadow: inset 0 0 0 2px rgba($gray3, 0.3);
   background: url("#{$resources-path}/sketch-mac-icon@2x.png") no-repeat $asset-padding * 1.5 center;
@@ -40,7 +39,7 @@ $dark-asset-background-color: rgba($light-gray1, 0.1);
     background-color: $asset-background-color;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     small {
       color: $pt-dark-text-color-muted;
     }

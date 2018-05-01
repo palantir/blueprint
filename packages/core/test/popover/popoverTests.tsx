@@ -138,7 +138,7 @@ describe("<Popover>", () => {
         assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass("baz"));
     });
 
-    it("adds .pt-popover-open class to target when the popover is open", () => {
+    it("adds POPOVER_OPEN class to target when the popover is open", () => {
         wrapper = renderPopover();
         assert.isFalse(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
         wrapper.setState({ isOpen: true });
@@ -173,7 +173,7 @@ describe("<Popover>", () => {
         warnSpy.restore();
     });
 
-    it("lifecycle methods are called appropriately", () => {
+    it("lifecycle methods are called appropriately", done => {
         const popoverWillOpen = sinon.spy(() =>
             assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 0),
         );
@@ -183,21 +183,31 @@ describe("<Popover>", () => {
         const popoverWillClose = sinon.spy(() =>
             assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1),
         );
+        // DOM is still present in didClose; element is removed shortly after
+        const popoverDidClose = sinon.spy();
 
         wrapper = renderPopover({
             interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
+            popoverDidClose,
             popoverDidOpen,
             popoverWillClose,
             popoverWillOpen,
+            transitionDuration: 1,
         }).simulateTarget("click");
         assert.isTrue(popoverWillOpen.calledOnce);
         assert.isTrue(popoverDidOpen.calledOnce);
         assert.isTrue(popoverWillClose.notCalled);
+        assert.isTrue(popoverDidClose.notCalled);
 
         wrapper.simulateTarget("click");
-        assert.isTrue(popoverDidOpen.calledOnce);
-        assert.isTrue(popoverWillOpen.calledOnce);
-        assert.isTrue(popoverWillClose.calledOnce);
+        setTimeout(() => {
+            assert.isTrue(popoverDidOpen.calledOnce);
+            assert.isTrue(popoverWillOpen.calledOnce);
+            assert.isTrue(popoverWillClose.calledOnce);
+            assert.isTrue(popoverDidClose.calledOnce);
+            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 0);
+            done();
+        });
     });
 
     it("popoverDidOpen is called even if popoverWillOpen is not specified", () => {
@@ -210,14 +220,14 @@ describe("<Popover>", () => {
         assert.isTrue(popoverDidOpen.calledOnce);
     });
 
-    it("inherits .pt-dark from trigger ancestor", () => {
+    it("inherits dark theme from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
         const { popover } = renderPopover({ isOpen: true, inheritDarkTheme: true, usePortal: true });
         assert.isTrue(popover.matches(`.${Classes.DARK}`));
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
-    it("inheritDarkTheme=false disables inheriting .pt-dark from trigger ancestor", () => {
+    it("inheritDarkTheme=false disables inheriting dark theme from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
         const { popover } = renderPopover({ inheritDarkTheme: false, isOpen: true, usePortal: true });
         assert.isFalse(popover.matches(`.${Classes.DARK}`));
@@ -461,7 +471,7 @@ describe("<Popover>", () => {
                 assert.isTrue(onInteraction.calledWith(false), "B");
             });
 
-            it("is invoked with `false` when clicking .pt-popover-dismiss", () => {
+            it("is invoked with `false` when clicking POPOVER_DISMISS", () => {
                 renderPopover(
                     { isOpen: true, onInteraction },
                     <button className={Classes.POPOVER_DISMISS}>Dismiss</button>,
@@ -535,7 +545,7 @@ describe("<Popover>", () => {
             wrapper.then(() => wrapper.assertIsOpen(false), done);
         });
 
-        it("clicking .pt-popover-dismiss closes popover when usePortal=true", () => {
+        it("clicking POPOVER_DISMISS closes popover when usePortal=true", () => {
             wrapper = renderPopover(
                 {
                     interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
@@ -550,7 +560,7 @@ describe("<Popover>", () => {
             wrapper.update().assertIsOpen(false);
         });
 
-        it("clicking .pt-popover-dismiss closes popover when usePortal=false", () => {
+        it("clicking POPOVER_DISMISS closes popover when usePortal=false", () => {
             wrapper = renderPopover(
                 {
                     interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,

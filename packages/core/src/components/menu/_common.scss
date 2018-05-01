@@ -7,7 +7,7 @@ $menu-item-border-radius: $pt-border-radius - 1 !default;
 
 // Set line-height of menu items to be a multiple of the font size. This is
 // needed because if the line-height does not extend far enough past the font's
-// baseline, clipping will occur when the .pt-text-overflow-ellipsis class is
+// baseline, clipping will occur when the .#{$ns}-text-overflow-ellipsis class is
 // applied to it (#2177). Also, line-height should be an even value, or content
 // will be misaligned by one pixel (Chrome quirk).
 $menu-item-line-height-factor: 1.4;
@@ -31,7 +31,7 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
-@mixin menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
+@mixin menu-item($disabled-selector: ".#{$ns}-disabled", $hover-selector: ":hover") {
   @include pt-flex-container(row, $menu-item-padding);
   align-items: flex-start;
   border-radius: $menu-item-border-radius;
@@ -41,7 +41,7 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   color: inherit;
   user-select: none;
 
-  > .pt-fill {
+  > .#{$ns}-fill {
     word-break: break-word;
   }
 
@@ -57,12 +57,12 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
     color: $pt-text-color-disabled;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     @include dark-menu-item($disabled-selector, $hover-selector);
   }
 }
 
-@mixin dark-menu-item($disabled-selector: ".pt-disabled", $hover-selector: ":hover") {
+@mixin dark-menu-item($disabled-selector: ".#{$ns}-disabled", $hover-selector: ":hover") {
   color: inherit;
 
   &#{$hover-selector} {
@@ -78,21 +78,21 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 
 @mixin menu-item-intent($text-colors: $pt-intent-text-colors) {
   @each $intent, $color in $text-colors {
-    &.pt-intent-#{$intent} {
+    &.#{$ns}-intent-#{$intent} {
       color: $color;
 
-      .pt-icon {
+      .#{$ns}-icon {
         color: inherit;
       }
 
       &::before,
       &::after,
-      .pt-menu-item-label {
+      .#{$ns}-menu-item-label {
         color: $color;
       }
 
       &:hover,
-      &.pt-active {
+      &.#{$ns}-active {
         background-color: nth(map-get($button-intents, $intent), 1);
       }
 
@@ -102,11 +102,11 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 
       &:hover,
       &:active,
-      &.pt-active {
+      &.#{$ns}-active {
         &,
         &::before,
         &::after,
-        .pt-menu-item-label {
+        .#{$ns}-menu-item-label {
           color: $white;
         }
       }
@@ -125,7 +125,7 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   margin: $half-grid-size;
   border-top: 1px solid $pt-divider-black;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     border-top-color: $pt-dark-divider-white;
   }
 }

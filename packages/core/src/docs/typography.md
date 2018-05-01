@@ -9,8 +9,8 @@ Keep in mind these general web typography guidelines when building your applicat
 - If you choose to go with a custom text color, make sure the background behind it provides
 proper contrast.
 - Try not to explicitly write pixel values for your font-size or line-height CSS rules.
-Instead, reference the classes and variables we provide in Blueprint (`.pt-ui-text`,
-`$pt-font-size-large`, etc.).
+Instead, reference the classes and variables we provide in Blueprint (`.@ns-ui-text`,
+`$@ns-font-size-large`, etc.).
 
 @## UI text
 
@@ -19,26 +19,26 @@ A handful of utility CSS classes can be combined freely to further customize a b
 
 The base font size for Blueprint web applications is 14px. This should be the default type size
 for most short strings of text which are not headings or titles. If you wish to reset some
-element's font size and line height to the default base styles, use the `.pt-ui-text` class.
+element's font size and line height to the default base styles, use the `.@ns-ui-text` class.
 
 For longer blocks of running text, such as articles or documents, see [running text styles](#core/typography.running-text).
 
-@css pt-ui-text
+@css ui-text
 
 @## Running text
 
 Longform text, such as rendered Markdown documents, benefit from increased spacing and support for unclassed textual elements.
-Apply `.pt-running-text` to the parent element to apply the following styles to all children:
+Apply `.@ns-running-text` to the parent element to apply the following styles to all children:
 
 - `<h*>`, `<ul>`, `<ol>`, `<blockquote>`, `<code>`, `<pre>` do not require additional CSS classes for styles. This is great for rendered Markdown documents.
 - `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
-- `<ul>` and `<ol>` tags receive [`.pt-list`](#core/typography.lists) styles for legibility.
+- `<ul>` and `<ol>` tags receive [`.@ns-list`](#core/typography.lists) styles for legibility.
 
-@css pt-running-text
+@css running-text
 
 @## Headings
 
-Apply the `.pt-heading` class to one of the six `<h*>` tags (or nest them inside a `.pt-running-text` container)
+Apply the `.@ns-heading` class to one of the six `<h*>` tags (or nest them inside a `.@ns-running-text` container)
 to adjust font size and line height.
 
 @css headings
@@ -52,11 +52,11 @@ Putting an icon inside a link will cause it to inherit the link's text color.
 
 @## Preformatted text
 
-Use `.pt-code` for inline code elements (typically with the `<code>` tag).
-Use `.pt-code-block` for mulitline blocks of code (typically on a `<pre>` tag).
+Use `.@ns-code` for inline code elements (typically with the `<code>` tag).
+Use `.@ns-code-block` for mulitline blocks of code (typically on a `<pre>` tag).
 Note that `<pre>` blocks will retain _all_ whitespace so you'll have to format the content accordingly.
 
-When nested inside a `.pt-running-text` container, use the `<pre>` or `<code>` tags directly without CSS classes.
+When nested inside a `.@ns-running-text` container, use the `<pre>` or `<code>` tags directly without CSS classes.
 
 @css preformatted
 
@@ -64,16 +64,18 @@ When nested inside a `.pt-running-text` container, use the `<pre>` or `<code>` t
 
 Block quotes receive a left border and padding to distinguish them from body text.
 
-Use the `.pt-blockquote` class or nest a `<blockquote>` element inside a `.pt-running-text` container.
+Use the `.@ns-blockquote` class or nest a `<blockquote>` element inside a `.@ns-running-text` container.
 
 @css blockquote
 
 @## Lists
 
-Use `.pt-list` to adjust list margins and padding to match Blueprint's grid. `<ul>` and `<ol>` elements inside a
-`.pt-running-text` container will automatically assume these styles to promote readability.
+Blueprint provides a small amount of global styling and a few modifier classes for list elements.
 
-Use `.pt-list-unstyled` to remove list item decorations and margins and padding.
+`<ul>` and `<ol>` elements in blocks with the `.@ns-running-text` modifier class will
+automatically assume the `.@ns-list` styles to promote readability.
+
+Use `.@ns-list-unstyled` to remove list item decorations and margins and padding.
 
 Note that these classes must be applied to each nested `<ul>` or `<ol>` element in a tree.
 
@@ -86,30 +88,30 @@ use the library of your choice for managing internationalized strings.
 
 @### Right-to-left text
 
-Use the utility class `.pt-rtl`.
+Use the utility class `.@ns-rtl`.
 
-@css pt-rtl
+@css rtl
 
 @## Dark theme
 
 Blueprint provides two UI color themes: light and dark. The light theme is active by default. The
-dark theme can be applied by adding the class `pt-dark` to a container element to theme all nested
+dark theme can be applied by adding the class `@ns-dark` to a container element to theme all nested
 elements.
 
-Once applied, the dark theme will cascade to nested `.pt-*` elements inside a `.pt-dark` container.
+Once applied, the dark theme will cascade to nested `.@ns-*` elements inside a `.@ns-dark` container.
 There is no way to nest light-themed elements inside a dark container.
 
-Most elements only support the dark theme when nested inside a `.pt-dark` container because it does
+Most elements only support the dark theme when nested inside a `.@ns-dark` container because it does
 not make sense to mark individual elements as dark. The dark container is therefore responsible for
 setting a dark background color.
 
-The following elements and components support the `.pt-dark` class directly (i.e, `.pt-app.pt-dark`)
+The following elements and components support the `.@ns-dark` class directly (i.e, `.@ns-app.@ns-dark`)
 and can be used as a container for nested dark children:
 
-- `.pt-app`
-- `.pt-card`
+- `.@ns-app`
+- `.@ns-card`
 - Overlays: `Dialog`, `Popover`, `Tooltip`, `Toast`
-- `Popover` and `Tooltip` will automatically detect when their trigger is inside a `.pt-dark`
+- `Popover` and `Tooltip` will automatically detect when their trigger is inside a `.@ns-dark`
 container and add the same class to themselves.
 
 Rather than illustrating dark components inline, this documentation site provides a site-wide switch

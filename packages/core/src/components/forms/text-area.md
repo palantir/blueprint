@@ -6,11 +6,11 @@ You should also specify `dir="auto"` on text areas
 [to better support RTL languages](http://www.w3.org/International/questions/qa-html-dir#dirauto)
 (in all browsers except Internet Explorer).
 
-@### CSS API
+@## CSS API
 
-@css pt-textarea
+@css textarea
 
-@### JavaScript API
+@## JavaScript API
 
 The `TextArea` component is available in the __@blueprintjs/core__ package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 

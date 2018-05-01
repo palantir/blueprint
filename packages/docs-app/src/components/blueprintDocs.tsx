@@ -15,7 +15,7 @@ import { NavIcon } from "./navIcons";
 
 const DARK_THEME = Classes.DARK;
 const LIGHT_THEME = "";
-const THEME_LOCAL_STORAGE_KEY = "pt-blueprint-theme";
+const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 
 /** Return the current theme className. */
 export function getTheme(): string {

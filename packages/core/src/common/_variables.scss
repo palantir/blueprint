@@ -4,7 +4,10 @@
 @import "colors";
 @import "mixins";
 
-// easily the most important variable, so it comes first
+// Namespace appended to the beginning of each CSS class: `.#{$ns}-button`.
+$ns: "pt" !default;
+
+// easily the most important variable, so it comes up top
 // (so other variables can use it to define themselves)
 $pt-grid-size: 10px !default;
 

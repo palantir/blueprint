@@ -2,29 +2,29 @@
 // Licensed under the terms of the LICENSE file distributed with this project.
 
 @import "../../common/variables";
-@import "../progress/common";
+@import "common";
 
 /*
 Progress bars
 
 Markup:
-<div class="pt-progress-bar {{.modifier}}">
-  <div class="pt-progress-meter" style="width: 25%"></div>
+<div class="#{$ns}-progress-bar {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 25%"></div>
 </div>
-<div class="pt-progress-bar pt-intent-primary {{.modifier}}">
-  <div class="pt-progress-meter" style="width: 50%"></div>
+<div class="#{$ns}-progress-bar #{$ns}-intent-primary {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 50%"></div>
 </div>
-<div class="pt-progress-bar pt-intent-success {{.modifier}}">
-  <div class="pt-progress-meter" style="width: 75%"></div>
+<div class="#{$ns}-progress-bar #{$ns}-intent-success {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 75%"></div>
 </div>
-<div class="pt-progress-bar pt-intent-danger {{.modifier}}">
-  <div class="pt-progress-meter" style="width: 100%"></div>
+<div class="#{$ns}-progress-bar #{$ns}-intent-danger {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 100%"></div>
 </div>
 
-.pt-no-stripes   - No stripes
-.pt-no-animation - No animation
+.#{$ns}-no-stripes   - No stripes
+.#{$ns}-no-animation - No animation
 
-Styleguide pt-progress-bar
+Styleguide progress-bar
 */
 
 $progress-bar-stripes-color: rgba($white, 0.2) !default;
@@ -53,7 +53,7 @@ $progress-bar-gradient: linear-gradient(
   }
 }
 
-.pt-progress-bar {
+.#{$ns}-progress-bar {
   display: block;
   position: relative;
   border-radius: $progress-bar-border-radius;
@@ -62,7 +62,7 @@ $progress-bar-gradient: linear-gradient(
   height: $progress-bar-height;
   overflow: hidden;
 
-  .pt-progress-meter {
+  .#{$ns}-progress-meter {
     position: absolute;
     border-radius: $progress-bar-border-radius;
     background: $progress-bar-gradient;
@@ -74,26 +74,26 @@ $progress-bar-gradient: linear-gradient(
     transition: width ($pt-transition-duration * 2) $pt-transition-ease;
   }
 
-  &:not(.pt-no-animation):not(.pt-no-stripes) .pt-progress-meter {
+  &:not(.#{$ns}-no-animation):not(.#{$ns}-no-stripes) .#{$ns}-progress-meter {
     animation: linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse;
   }
 
-  &.pt-no-stripes .pt-progress-meter {
+  &.#{$ns}-no-stripes .#{$ns}-progress-meter {
     background-image: none;
   }
 }
 
-.pt-dark .pt-progress-bar,
-.pt-progress-bar.pt-dark {
+.#{$ns}-dark .#{$ns}-progress-bar,
+.#{$ns}-progress-bar.#{$ns}-dark {
   background: $dark-progress-track-color;
 
-  .pt-progress-meter {
+  .#{$ns}-progress-meter {
     background-color: $dark-progress-head-color;
   }
 }
 
 @each $intent, $color in $pt-intent-colors {
-  .pt-progress-bar.pt-intent-#{$intent} .pt-progress-meter {
+  .#{$ns}-progress-bar.#{$ns}-intent-#{$intent} .#{$ns}-progress-meter {
     background-color: $color;
   }
 }

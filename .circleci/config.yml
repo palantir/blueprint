@@ -7,15 +7,34 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v7-dependency-cache-{{ checksum "yarn.lock" }}
-            - v7-dependency-cache-
+            - v9-dependency-cache-{{ checksum "yarn.lock" }}
+            - v9-dependency-cache-
       - run: yarn
       - run: echo "Checking if lockfiles changed..." && git diff --exit-code
       - run: npm rebuild node-sass
       - save_cache:
-          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
+            # explicitly list each package node_modules
+            - packages/core/node_modules
+            - packages/datetime/node_modules
+            - packages/docs-app/node_modules
+            - packages/docs-data/node_modules
+            - packages/docs-theme/node_modules
+            - packages/icons/node_modules
+            - packages/karma-build-scripts/node_modules
+            - packages/labs/node_modules
+            - packages/landing-app/node_modules
+            - packages/node-build-scripts/node_modules
+            - packages/select/node_modules
+            - packages/table/node_modules
+            - packages/table-dev-app/node_modules
+            - packages/test-commons/node_modules
+            - packages/test-react15/node_modules
+            - packages/timezone/node_modules
+            - packages/tslint-config/node_modules
+            - packages/webpack-build-scripts/node_modules
       - persist_to_workspace:
           root: '.'
           paths:
@@ -30,8 +49,8 @@ jobs:
           at: '.'
       - restore_cache:
           keys:
-            - v7-dependency-cache-{{ checksum "yarn.lock" }}
-            - v7-dependency-cache-
+            - v9-dependency-cache-{{ checksum "yarn.lock" }}
+            - v9-dependency-cache-
       - run: yarn compile
       - persist_to_workspace:
           root: '.'
@@ -43,15 +62,23 @@ jobs:
   lint:
     docker:
       - image: circleci/node:8.10.0
+    environment:
+      JUNIT_REPORT_PATH: reports
     steps:
       - checkout
       - attach_workspace:
           at: '.'
       - restore_cache:
           keys:
-            - v7-dependency-cache-{{ checksum "yarn.lock" }}
-            - v7-dependency-cache-
+            - v9-dependency-cache-{{ checksum "yarn.lock" }}
+            - v9-dependency-cache-
+      - run: mkdir -p ./reports/tslint ./reports/stylelint
+      - run: yarn compile --scope "@blueprintjs/tslint-config"
       - run: yarn lint
+      - store_test_results:
+          path: ./reports
+      - store_artifacts:
+          path: ./reports
 
   dist:
     docker:
@@ -61,7 +88,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn dist:libs
       - run: yarn dist:apps
       # we don't need to run dist:docs here until we start publishing GitHub Pages from CI
@@ -82,15 +109,22 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
+      - run: mkdir ./reports
       - run:
           command: |
               case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run test --scope '@blueprintjs/core' ;; \
-              1) yarn lerna run test --scope '@blueprintjs/{datetime,timezone}' ;; \
-              2) yarn lerna run test --scope '@blueprintjs/table' ;; \
-              3) yarn lerna run test --scope '@blueprintjs/{icons,labs,select}' ;; \
+              0) yarn lerna run --parallel test:pre ;; \
+              1) yarn lerna run --parallel test:iso ;; \
+              2) yarn lerna run --parallel test:karma ;; \
               esac
+          environment:
+            JUNIT_REPORT_PATH: reports
+          when: always
+      - store_test_results:
+          path: ./reports
+      - store_artifacts:
+          path: ./reports
 
   deploy-preview:
     docker:
@@ -119,7 +153,7 @@ jobs:
       - attach_workspace:
           at: '.'
       - restore_cache:
-          key: v7-dependency-cache-{{ checksum "yarn.lock" }}
+          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:

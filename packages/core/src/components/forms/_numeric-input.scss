@@ -2,10 +2,10 @@
 @import "../../common/variables";
 @import "./common";
 
-.pt-numeric-input {
+.#{$ns}-numeric-input {
 
   // we need a very-specific selector here to override specificicty of selectors defined elsewhere.
-  .pt-button-group.pt-vertical > .pt-button {
+  .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
     // let the buttons shrink to equal heights
     flex: 1 1 ($pt-button-height / 2 - 1);
     width: $pt-button-height;
@@ -22,8 +22,8 @@
   }
 
   // fix button border radii when the buttons are on the left
-  .pt-button-group.pt-vertical {
-    &:first-child > .pt-button {
+  .#{$ns}-button-group.#{$ns}-vertical {
+    &:first-child > .#{$ns}-button {
       &:first-child {
         border-radius: $pt-border-radius 0 0 0;
       }
@@ -34,7 +34,7 @@
     }
   }
 
-  &.pt-large .pt-button-group.pt-vertical > .pt-button {
+  &.#{$ns}-large .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
     width: $pt-button-height-large;
   }
 }

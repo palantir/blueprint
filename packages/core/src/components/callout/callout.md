@@ -7,13 +7,13 @@ Callouts visually highlight important content for the user.
 @## CSS API
 
 Callouts use the same visual intent modifier classes as buttons. If you need a
-heading, use the `<h4>` element with a `.pt-callout-title` class.
+heading, use the `<h4>` element with a `.@ns-callout-title` class.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Note that the title is entirely optional.
 </div>
 
-@css pt-callout
+@css callout
 
 @## JavaScript API
 
@@ -26,7 +26,7 @@ useful features:
 
 1. Providing an `intent` will set use a default icon per intent, which can be overridden by supplying
    your own `icon`.
-1. The React component renders an SVG `Icon` element for the `icon` prop, instead of the `.pt-icon-*`
+1. The React component renders an SVG `Icon` element for the `icon` prop, instead of the `.@ns-icon-*`
    CSS class.
 
 @interface ICalloutProps

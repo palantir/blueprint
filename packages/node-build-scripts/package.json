@@ -1,16 +1,18 @@
 {
   "name": "@blueprintjs/node-build-scripts",
-  "version": "0.5.0",
+  "version": "0.6.1",
   "description": "Node.js build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
   },
   "bin": {
-    "assert-package-layout": "./assert-package-layout",
-    "css-dist": "./css-dist",
-    "generate-css-variables": "./generate-css-variables",
-    "generate-icons-source": "./generate-icons-source",
-    "sass-compile": "./sass-compile"
+    "assert-package-layout": "./assert-package-layout.js",
+    "css-dist": "./css-dist.sh",
+    "generate-css-variables": "./generate-css-variables.js",
+    "generate-icons-source": "./generate-icons-source.js",
+    "sass-compile": "./sass-compile.sh",
+    "sass-lint": "./sass-lint.js",
+    "ts-lint": "./ts-lint.js"
   },
   "dependencies": {
     "autoprefixer": "^7.1.2",
@@ -20,7 +22,11 @@
     "postcss-cli": "^5.0.0",
     "postcss-discard-comments": "^2.0.4",
     "strip-css-comments": "^3.0.0",
-    "svgo": "^1.0.3"
+    "stylelint": "~8.4.0",
+    "stylelint-junit-formatter": "^0.2.0",
+    "svgo": "^1.0.3",
+    "tslint": "^5.9.1",
+    "typescript": "~2.7.2"
   },
   "repository": {
     "type": "git",

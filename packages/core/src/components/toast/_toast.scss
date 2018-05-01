@@ -9,14 +9,14 @@ $toast-min-width: $pt-grid-size * 30 !default;
 $toast-max-width: $pt-grid-size * 50 !default;
 $toast-margin: $pt-grid-size * 2 !default;
 
-.pt-toast {
+.#{$ns}-toast {
   // toast transition properties
   $enter-translate: (transform: translateY(-$toast-height) translateY(0));
   $leave-blur: (opacity: 0 1, filter: blur($pt-grid-size) blur(0));
 
   // new toasts slide in from the top
   @include react-transition-phase(
-    "pt-toast",
+    "#{$ns}-toast",
     "enter",
     $enter-translate,
     $duration: $pt-transition-duration * 3,
@@ -24,7 +24,7 @@ $toast-margin: $pt-grid-size * 2 !default;
     $before: "&"
   );
   @include react-transition-phase(
-    "pt-toast",
+    "#{$ns}-toast",
     "enter",
     $enter-translate,
     $duration: $pt-transition-duration * 3,
@@ -34,7 +34,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   );
   // leaving toasts simply fade away
   @include react-transition-phase(
-    "pt-toast",
+    "#{$ns}-toast",
     "exit",
     $leave-blur,
     $duration: $pt-transition-duration * 3,
@@ -42,7 +42,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   );
   // younger siblings of leaving toasts wait a moment before moving to fill gap
   @include react-transition-phase(
-    "pt-toast",
+    "#{$ns}-toast",
     "exit",
     $enter-translate,
     $delay: $pt-transition-duration / 2,
@@ -65,29 +65,29 @@ $toast-margin: $pt-grid-size * 2 !default;
   // toast is interactive even though container isn't
   pointer-events: all;
 
-  .pt-button-group {
+  .#{$ns}-button-group {
     flex: 0 0 auto;
     padding: ($toast-height - $pt-button-height) / 2;
     padding-left: 0;
   }
 
-  > .pt-icon {
+  > .#{$ns}-icon {
     margin: ($toast-height - $pt-icon-size-standard) / 2;
     margin-right: 0;
     color: $pt-icon-color;
   }
 
-  &.pt-dark,
-  .pt-dark & {
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
     box-shadow: $pt-dark-elevation-shadow-3;
     background-color: $dark-gray5;
 
-    > .pt-icon {
+    > .#{$ns}-icon {
       color: $pt-dark-icon-color;
     }
   }
 
-  &[class*="pt-intent-"] {
+  &[class*="#{$ns}-intent-"] {
     a {
       color: rgba($white, 0.7);
 
@@ -96,17 +96,17 @@ $toast-margin: $pt-grid-size * 2 !default;
       }
     }
 
-    > .pt-icon {
+    > .#{$ns}-icon {
       color: $white;
     }
   }
 
   // HACKHACK custom colors for buttons on intent background so they always show up nice
   // stylelint-disable declaration-no-important
-  &[class*="pt-intent-"] .pt-button {
+  &[class*="#{$ns}-intent-"] .#{$ns}-button {
     &,
     &::before,
-    .pt-icon,
+    .#{$ns}-icon,
     &:active {
       color: rgba($white, 0.7) !important;
     }
@@ -134,19 +134,19 @@ $toast-margin: $pt-grid-size * 2 !default;
 
   // define these last so they override default dark colors above
   @each $intent, $color in $pt-intent-colors {
-    &.pt-intent-#{$intent} {
+    &.#{$ns}-intent-#{$intent} {
       background-color: $color;
       color: $white;
     }
   }
 }
 
-.pt-toast-message {
+.#{$ns}-toast-message {
   flex: 1 1 auto;
   padding: centered-text($toast-height);
 }
 
-.pt-toast-container {
+.#{$ns}-toast-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -168,32 +168,32 @@ $toast-margin: $pt-grid-size * 2 !default;
   // container will not block clicks on elements behind it
   pointer-events: none;
 
-  &.pt-toast-container-top {
+  &.#{$ns}-toast-container-top {
     top: 0;
-    // clear opposite side cuz .pt-overlay has all sides 0'ed
+    // clear opposite side cuz .#{$ns}-overlay has all sides 0'ed
     bottom: auto;
   }
 
-  &.pt-toast-container-bottom {
+  &.#{$ns}-toast-container-bottom {
     flex-direction: column-reverse;
     top: auto;
     bottom: 0;
   }
 
-  &.pt-toast-container-left {
+  &.#{$ns}-toast-container-left {
     align-items: flex-start;
   }
 
-  &.pt-toast-container-right {
+  &.#{$ns}-toast-container-right {
     align-items: flex-end;
   }
 }
 
-.pt-toast-container-bottom .pt-toast {
+.#{$ns}-toast-container-bottom .#{$ns}-toast {
   // minimal diff in react-transition styles so we can avoid calling those mixins again
-  &.pt-toast-enter:not(.pt-toast-enter-active),
-  &.pt-toast-enter:not(.pt-toast-enter-active) ~ .pt-toast,
-  &.pt-toast-leave-active ~ .pt-toast {
+  &.#{$ns}-toast-enter:not(.#{$ns}-toast-enter-active),
+  &.#{$ns}-toast-enter:not(.#{$ns}-toast-enter-active) ~ .#{$ns}-toast,
+  &.#{$ns}-toast-leave-active ~ .#{$ns}-toast {
     transform: translateY($toast-margin + $toast-height);
   }
 }

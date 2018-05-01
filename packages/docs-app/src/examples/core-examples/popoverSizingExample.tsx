@@ -11,12 +11,14 @@ import { BaseExample } from "@blueprintjs/docs-theme";
 import { FileMenu } from "./common/fileMenu";
 
 export class PopoverSizingExample extends BaseExample<{}> {
-    protected className = "docs-popover-sizing-example";
-
     protected renderExample() {
         return (
             <div>
-                <Popover content={<FileMenu />} position={Position.BOTTOM_LEFT} usePortal={false}>
+                <Popover
+                    content={<FileMenu className="docs-popover-sizing-example" />}
+                    position={Position.BOTTOM_LEFT}
+                    usePortal={false}
+                >
                     <Button>Open...</Button>
                 </Popover>
             </div>

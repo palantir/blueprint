@@ -9,12 +9,12 @@
 Control groups
 
 Markup:
-<div class="pt-control-group">
-  <button class="pt-button pt-icon-filter">Filter</button>
-  <input type="text" class="pt-input" placeholder="Find filters..." />
+<div class="#{$ns}-control-group">
+  <button class="#{$ns}-button #{$ns}-icon-filter">Filter</button>
+  <input type="text" class="#{$ns}-input" placeholder="Find filters..." />
 </div>
-<div class="pt-control-group">
-  <div class="pt-select">
+<div class="#{$ns}-control-group">
+  <div class="#{$ns}-select">
     <select>
       <option selected>Filter...</option>
       <option value="1">Issues</option>
@@ -22,28 +22,28 @@ Markup:
       <option value="3">Projects</option>
     </select>
   </div>
-  <div class="pt-input-group">
-    <span class="pt-icon pt-icon-search"></span>
-    <input type="text" class="pt-input" value="from:ggray to:allorca" />
+  <div class="#{$ns}-input-group">
+    <span class="#{$ns}-icon #{$ns}-icon-search"></span>
+    <input type="text" class="#{$ns}-input" value="from:ggray to:allorca" />
   </div>
 </div>
-<div class="pt-control-group">
-  <div class="pt-input-group">
-    <span class="pt-icon pt-icon-people"></span>
-    <input type="text" class="pt-input" placeholder="Find collaborators..." style="padding-right:94px" />
-    <div class="pt-input-action">
-      <button class="pt-button pt-minimal pt-intent-primary">
-        can view<span class="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
+<div class="#{$ns}-control-group">
+  <div class="#{$ns}-input-group">
+    <span class="#{$ns}-icon #{$ns}-icon-people"></span>
+    <input type="text" class="#{$ns}-input" placeholder="Find collaborators..." style="padding-right:94px" />
+    <div class="#{$ns}-input-action">
+      <button class="#{$ns}-button #{$ns}-minimal #{$ns}-intent-primary">
+        can view<span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
       </button>
     </div>
   </div>
-  <button class="pt-button pt-intent-primary">Add</button>
+  <button class="#{$ns}-button #{$ns}-intent-primary">Add</button>
 </div>
 
-Styleguide pt-control-group
+Styleguide control-group
 */
 
-.pt-control-group {
+.#{$ns}-control-group {
   // create a new stacking context to isolate all the z-indices
   @include new-render-layer();
   @include pt-flex-container(row);
@@ -56,14 +56,14 @@ Styleguide pt-control-group
   // equally-specific styles (e.g. we don't want mouse interactions or focus
   // changes to change the z-index of a disabled element).
 
-  .pt-button,
-  .pt-input,
-  .pt-select {
+  .#{$ns}-button,
+  .#{$ns}-input,
+  .#{$ns}-select {
     // create a new stacking context
     position: relative;
   }
 
-  .pt-input {
+  .#{$ns}-input {
     z-index: index($control-group-stack, "input-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
@@ -73,7 +73,7 @@ Styleguide pt-control-group
       border-radius: $pt-border-radius;
     }
 
-    &[class*="pt-intent"] {
+    &[class*="#{$ns}-intent"] {
       z-index: index($control-group-stack, "intent-input-default");
 
       &:focus {
@@ -83,12 +83,12 @@ Styleguide pt-control-group
 
     &[readonly],
     &:disabled,
-    &.pt-disabled {
+    &.#{$ns}-disabled {
       z-index: index($control-group-stack, "input-disabled");
     }
   }
 
-  .pt-input-group[class*="pt-intent"] .pt-input {
+  .#{$ns}-input-group[class*="#{$ns}-intent"] .#{$ns}-input {
     z-index: index($control-group-stack, "intent-input-default");
 
     &:focus {
@@ -96,8 +96,8 @@ Styleguide pt-control-group
     }
   }
 
-  .pt-button,
-  .pt-select select {
+  .#{$ns}-button,
+  .#{$ns}-select select {
     z-index: index($control-group-stack, "button-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
@@ -118,11 +118,11 @@ Styleguide pt-control-group
 
     &[readonly],
     &:disabled,
-    &.pt-disabled {
+    &.#{$ns}-disabled {
       z-index: index($control-group-stack, "button-disabled");
     }
 
-    &[class*="pt-intent"] {
+    &[class*="#{$ns}-intent"] {
       z-index: index($control-group-stack, "intent-button-default");
 
       &:focus {
@@ -139,32 +139,32 @@ Styleguide pt-control-group
 
       &[readonly],
       &:disabled,
-      &.pt-disabled {
+      &.#{$ns}-disabled {
         z-index: index($control-group-stack, "intent-button-disabled");
       }
     }
   }
 
   // input group contents appear above input always
-  .pt-input-group > .pt-icon,
-  .pt-input-group > .pt-button,
-  .pt-input-group > .pt-input-action {
+  .#{$ns}-input-group > .#{$ns}-icon,
+  .#{$ns}-input-group > .#{$ns}-button,
+  .#{$ns}-input-group > .#{$ns}-input-action {
     z-index: index($control-group-stack, "input-group-children");
   }
 
   // keep the select-menu carets on top of everything always (particularly when
-  // .pt-selects are focused).
-  .pt-select::after {
+  // .#{$ns}-selects are focused).
+  .#{$ns}-select::after {
     z-index: index($control-group-stack, "select-caret");
   }
 
   // have consecutive elements share a border
-  &:not(.pt-vertical) {
+  &:not(.#{$ns}-vertical) {
     > * {
       margin-right: -$button-border-width;
     }
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       > * {
         margin-right: 0;
       }
@@ -172,7 +172,7 @@ Styleguide pt-control-group
       // consecutive buttons within a button group look okay out of the box, but
       // we need need to make a small correction for non-grouped buttons. this
       // replicates what's already done in dark theme button groups.
-      > .pt-button + .pt-button {
+      > .#{$ns}-button + .#{$ns}-button {
         margin-left: $button-border-width;
       }
     }
@@ -190,7 +190,7 @@ Styleguide pt-control-group
   }
 
   // bring back border radius on these buttons
-  .pt-input-group .pt-button {
+  .#{$ns}-input-group .#{$ns}-button {
     border-radius: $pt-border-radius;
   }
 
@@ -198,27 +198,27 @@ Styleguide pt-control-group
   Responsive control groups
 
   Markup:
-  <div class="pt-control-group">
-    <div class="pt-input-group pt-fill">
-      <span class="pt-icon pt-icon-people"></span>
-      <input type="text" class="pt-input" placeholder="Find collaborators..." />
+  <div class="#{$ns}-control-group">
+    <div class="#{$ns}-input-group #{$ns}-fill">
+      <span class="#{$ns}-icon #{$ns}-icon-people"></span>
+      <input type="text" class="#{$ns}-input" placeholder="Find collaborators..." />
     </div>
-    <button class="pt-button pt-intent-primary">Add</button>
+    <button class="#{$ns}-button #{$ns}-intent-primary">Add</button>
   </div>
-  <div class="pt-control-group pt-fill">
-    <button class="pt-button pt-icon-minus pt-fixed"></button>
-    <input type="text" class="pt-input" placeholder="Enter a value..." />
-    <button class="pt-button pt-icon-plus pt-fixed"></button>
+  <div class="#{$ns}-control-group #{$ns}-fill">
+    <button class="#{$ns}-button #{$ns}-icon-minus #{$ns}-fixed"></button>
+    <input type="text" class="#{$ns}-input" placeholder="Enter a value..." />
+    <button class="#{$ns}-button #{$ns}-icon-plus #{$ns}-fixed"></button>
   </div>
 
-  Styleguide pt-control-group.pt-fill
+  Styleguide control-group-fill
   */
 
-  > .pt-fill {
+  > .#{$ns}-fill {
     flex: 1 1 auto;
   }
 
-  &.pt-fill > *:not(.pt-fixed) {
+  &.#{$ns}-fill > *:not(.#{$ns}-fixed) {
     flex: 1 1 auto;
   }
 
@@ -226,22 +226,22 @@ Styleguide pt-control-group
   Vertical control groups
 
   Markup:
-  <div class="pt-control-group pt-vertical" style="width: 300px;">
-    <div class="pt-input-group pt-large">
-      <span class="pt-icon pt-icon-person"></span>
-      <input type="text" class="pt-input" placeholder="Username" />
+  <div class="#{$ns}-control-group #{$ns}-vertical" style="width: 300px;">
+    <div class="#{$ns}-input-group #{$ns}-large">
+      <span class="#{$ns}-icon #{$ns}-icon-person"></span>
+      <input type="text" class="#{$ns}-input" placeholder="Username" />
     </div>
-    <div class="pt-input-group pt-large">
-      <span class="pt-icon pt-icon-lock"></span>
-      <input type="password" class="pt-input" placeholder="Password" />
+    <div class="#{$ns}-input-group #{$ns}-large">
+      <span class="#{$ns}-icon #{$ns}-icon-lock"></span>
+      <input type="password" class="#{$ns}-input" placeholder="Password" />
     </div>
-    <button class="pt-button pt-large pt-intent-primary">Login</button>
+    <button class="#{$ns}-button #{$ns}-large #{$ns}-intent-primary">Login</button>
   </div>
 
-  Styleguide pt-control-group.pt-vertical
+  Styleguide control-group-vertical
   */
 
-  &.pt-vertical {
+  &.#{$ns}-vertical {
     flex-direction: column;
 
     > * {

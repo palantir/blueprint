@@ -2,17 +2,19 @@
 
 Trees display hierarchical data.
 
+@reactExample TreeExample
+
 @## CSS API
 
 See below for the [JavaScript API](#core/components/tree.javascript-api) for the `Tree` React component. However, you
 may also use the provided styles by themselves, without using the component.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Note that the following examples set a maximum width and background color for the tree;
     you may want to do this as well in your own usage.
 </div>
 
-@css pt-tree
+@css tree
 
 @## JavaScript API
 
@@ -28,8 +30,6 @@ parameter `nodePath`, which is an array of numbers representing a node's positio
 example, `[2, 0]` represents the first child (`0`) of the third top-level node (`2`).
 
 @interface ITreeProps
-
-@reactExample TreeExample
 
 @### Instance methods
 

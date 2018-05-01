@@ -2,26 +2,26 @@
 // Licensed under the terms of the LICENSE file distributed with this project.
 
 @import "../../common/variables";
-@import "../progress/common";
+@import "../progress-bar/common";
 @import "./common";
 
 /*
 Spinners
 
 Markup:
-<div class="pt-spinner {{.modifier}}">
-  <div class="pt-spinner-svg-container">
+<div class="#{$ns}-spinner {{.modifier}}">
+  <div class="#{$ns}-spinner-svg-container">
     <svg viewBox="0 0 100 100">
-      <path class="pt-spinner-track" d="M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89"></path>
-      <path class="pt-spinner-head" d="M 94.5 50 A 44.5 44.5 0 0 0 50 5.5"></path>
+      <path class="#{$ns}-spinner-track" d="M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89"></path>
+      <path class="#{$ns}-spinner-head" d="M 94.5 50 A 44.5 44.5 0 0 0 50 5.5"></path>
     </svg>
   </div>
 </div>
 
-.pt-small - Small spinner
-.pt-large - Large spinner
+.#{$ns}-small - Small spinner
+.#{$ns}-large - Large spinner
 
-Styleguide pt-spinner
+Styleguide spinner
 */
 
 @keyframes pt-spinner-animation {
@@ -32,24 +32,24 @@ Styleguide pt-spinner
 // see https://css-tricks.com/scale-svg/
 // how to Scale SVG to Fit the Available Width (and adjust the height to match) Option 4
 
-.pt-spinner {
+.#{$ns}-spinner {
   @include spinner-size($spinner-width-factor, $spinner-stroke-width, $spinner-speed);
 
   path {
     fill-opacity: 0;
   }
 
-  .pt-spinner-head {
+  .#{$ns}-spinner-head {
     transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
     stroke: $progress-head-color;
     stroke-linecap: round;
   }
 
-  .pt-spinner-track {
+  .#{$ns}-spinner-track {
     stroke: $progress-track-color;
   }
 
-  &.pt-small {
+  &.#{$ns}-small {
     @include spinner-size(
       $spinner-width-factor-small,
       $spinner-stroke-width-small,
@@ -57,7 +57,7 @@ Styleguide pt-spinner
     );
   }
 
-  &.pt-large {
+  &.#{$ns}-large {
     @include spinner-size(
       $spinner-width-factor-large,
       $spinner-stroke-width-large,
@@ -66,10 +66,10 @@ Styleguide pt-spinner
   }
 }
 
-.pt-spinner:not(.pt-svg-spinner) {
+.#{$ns}-spinner:not(.#{$ns}-svg-spinner) {
   display: inline-block;
 
-  .pt-spinner-svg-container {
+  .#{$ns}-spinner-svg-container {
     position: relative;
     width: 100%;
     height: 0;
@@ -78,7 +78,7 @@ Styleguide pt-spinner
     animation: pt-spinner-animation $spinner-speed linear infinite;
   }
 
-  &.pt-no-spin .pt-spinner-svg-container {
+  &.#{$ns}-no-spin .#{$ns}-spinner-svg-container {
     animation: none;
   }
 
@@ -91,31 +91,31 @@ Styleguide pt-spinner
   }
 }
 
-.pt-svg-spinner {
+.#{$ns}-svg-spinner {
   transform-origin: center;
   animation: pt-spinner-animation $spinner-speed linear infinite;
 
-  &.pt-no-spin {
+  &.#{$ns}-no-spin {
     animation: none;
   }
 }
 
-.pt-svg-spinner-transform-group {
+.#{$ns}-svg-spinner-transform-group {
   transform-origin: center;
 }
 
-.pt-dark .pt-spinner {
-  .pt-spinner-head {
+.#{$ns}-dark .#{$ns}-spinner {
+  .#{$ns}-spinner-head {
     stroke: $dark-progress-head-color;
   }
 
-  .pt-spinner-track {
+  .#{$ns}-spinner-track {
     stroke: $dark-progress-track-color;
   }
 }
 
 @each $intent, $color in $pt-intent-colors {
-  .pt-spinner.pt-intent-#{$intent} .pt-spinner-head {
+  .#{$ns}-spinner.#{$ns}-intent-#{$intent} .#{$ns}-spinner-head {
     stroke: $color;
   }
 }

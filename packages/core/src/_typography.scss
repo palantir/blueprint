@@ -35,7 +35,7 @@ Markup:
 Styleguide headings
 */
 
-.pt-heading {
+.#{$ns}-heading {
   @include heading-typography();
   margin: 0 0 $pt-grid-size;
   padding: 0;
@@ -57,7 +57,7 @@ $headings: (
     font-size: nth($props, 1);
   }
 
-  #{$tag}.pt-heading {
+  #{$tag}.#{$ns}-heading {
     @extend %#{$tag};
   }
 }
@@ -70,36 +70,35 @@ Markup:
   Blueprint components react overlay date picker. Breadcrumbs dialog progress non-ideal state.
 </div>
 
-.pt-ui-text - Default Blueprint font styles, applied to the `<body>` tag and available as a class for nested resets.
-.pt-monospace-text - Use a monospace font (ideal for code).
-.pt-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
-.pt-text-large - Use a larger font size.
-.pt-text-muted - Change text color to a gentler gray.
-.pt-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its
-  container.
+.#{$ns}-ui-text - Default Blueprint font styles, applied to the `<body>` tag and available as a class for nested resets.
+.#{$ns}-monospace-text - Use a monospace font (ideal for code).
+.#{$ns}-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
+.#{$ns}-text-large - Use a larger font size.
+.#{$ns}-text-muted - Change text color to a gentler gray.
+.#{$ns}-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its container.
 
-Styleguide pt-ui-text
+Styleguide ui-text
 */
 
-.pt-ui-text {
+.#{$ns}-ui-text {
   @include base-typography();
 }
 
-.pt-monospace-text {
+.#{$ns}-monospace-text {
   @include monospace-typography();
 }
 
-// NOTE: .pt-text-large defined below after .pt-running-text
+// NOTE: .#{$ns}-text-large defined below after .#{$ns}-running-text
 
-.pt-text-muted {
+.#{$ns}-text-muted {
   color: $pt-text-color-muted;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     color: $pt-dark-text-color-muted;
   }
 }
 
-.pt-text-overflow-ellipsis {
+.#{$ns}-text-overflow-ellipsis {
   @include overflow-ellipsis();
 }
 
@@ -107,7 +106,7 @@ Styleguide pt-ui-text
 Running text
 
 Markup:
-<div class="pt-running-text {{.modifier}}">
+<div class="@ns-running-text {{.modifier}}">
   <blockquote>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -126,12 +125,12 @@ Markup:
   </blockquote>
 </div>
 
-.pt-text-large - Use larger font size.
+.#{$ns}-text-large - Use larger font size.
 
-Styleguide pt-running-text
+Styleguide running-text
 */
 
-.pt-running-text {
+.#{$ns}-running-text {
   @include running-typography();
 
   @each $tag, $props in $headings {
@@ -148,7 +147,7 @@ Styleguide pt-running-text
     border: none;
     border-bottom: 1px solid $pt-divider-black;
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       border-color: $pt-dark-divider-white;
     }
   }
@@ -176,10 +175,10 @@ Styleguide pt-running-text
   }
 }
 
-// NOTE: this must be defined after .pt-running-text in order to override font-size.
-.pt-text-large {
+// NOTE: this must be defined after .#{$ns}-running-text in order to override font-size.
+.#{$ns}-text-large {
   font-size: $pt-font-size-large;
-  // line-height comes from .pt-(ui|running)-text
+  // line-height comes from .#{$ns}-(ui|running)-text
 }
 
 /*
@@ -208,12 +207,12 @@ a {
   }
 
   code,
-  .pt-dark & code {
+  .#{$ns}-dark & code {
     color: inherit;
   }
 
-  .pt-dark &,
-  .pt-dark &:hover {
+  .#{$ns}-dark &,
+  .#{$ns}-dark &:hover {
     color: $pt-dark-link-color;
 
     #{$icon-classes} {
@@ -251,7 +250,7 @@ Styleguide preformatted
   color: $pt-code-text-color;
   font-size: $pt-font-size-small;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     box-shadow: inset border-shadow(0.4);
     background: $pt-dark-code-background-color;
     color: $pt-dark-code-text-color;
@@ -273,7 +272,7 @@ Styleguide preformatted
   word-break: break-all;
   word-wrap: break-word;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
     background: $pt-dark-code-background-color;
     color: $pt-dark-text-color;
@@ -288,11 +287,11 @@ Styleguide preformatted
   }
 }
 
-.pt-code {
+.#{$ns}-code {
   @extend %code;
 }
 
-.pt-code-block {
+.#{$ns}-code-block {
   @extend %code-block;
 }
 
@@ -317,12 +316,12 @@ Styleguide blockquote
   border-left: solid 4px rgba($gray4, 0.5);
   padding: 0 ($pt-grid-size * 2);
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     border-color: rgba($gray2, 0.5);
   }
 }
 
-.pt-blockquote {
+.#{$ns}-blockquote {
   @extend %blockquote;
 }
 
@@ -342,8 +341,8 @@ Markup:
   </li>
 </ol>
 
-.pt-list - Comfortable margins and padding.
-.pt-list-unstyled - Remove list item decorators and all margins and padding.
+.#{$ns}-list - Add a little spacing between items for readability.
+.#{$ns}-list-unstyled - Remove all list styling (including indicators) so you can add your own.
 
 Styleguide lists
 */
@@ -363,11 +362,11 @@ Styleguide lists
   }
 }
 
-.pt-list {
+.#{$ns}-list {
   @extend %list;
 }
 
-.pt-list-unstyled {
+.#{$ns}-list-unstyled {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -382,23 +381,23 @@ Right-to-left text
 
 Markup:
 <h4>Arabic:</h4>
-<p class="pt-rtl">
+<p class="#{$ns}-rtl">
   لكل لأداء بمحاولة من. مدينة الواقعة يبق أي, وإعلان وقوعها، حول كل, حدى عجّل مشروط الخاسرة قد.
   من الذود تكبّد بين, و لها واحدة الأراضي. عل الصفحة والروسية يتم, أي للحكومة استعملت شيء. أم وصل زهاء اليا
 </p>
 <h4>Hebrew:</h4>
-<p class="pt-rtl">
+<p class="#{$ns}-rtl">
   כדי על עזרה יידיש הבהרה, מלא באגים טכניים דת. תנך או ברית ביולי. כתב בה הטבע למנוע, דת כלים פיסיקה החופשית זכר.
   מתן החלל מאמרשיחהצפה ב. הספרות אנציקלופדיה אם זכר, על שימושי שימושיים תאולוגיה עזה
 </p>
 
-Styleguide pt-rtl
+Styleguide rtl
 */
 
-.pt-rtl {
+.#{$ns}-rtl {
   text-align: right;
 }
 
-.pt-dark {
+.#{$ns}-dark {
   color: $pt-dark-text-color;
 }

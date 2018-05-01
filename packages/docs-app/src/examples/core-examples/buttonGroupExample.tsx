@@ -76,7 +76,7 @@ export class ButtonGroupExample extends BaseExample<IButtonGroupExampleState> {
                     onChange={this.handleIconOnlyChange}
                 />,
             ],
-            [<AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />],
+            [<AlignmentSelect key="align" align={this.state.alignText} onChange={this.handleAlignChange} />],
         ];
     }
 

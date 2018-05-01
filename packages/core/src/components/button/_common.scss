@@ -3,7 +3,7 @@
 
 @import "../../common/mixins";
 @import "../../common/variables";
-@import "../progress/common";
+@import "../progress-bar/common";
 
 $button-border-width: 1px !default;
 $button-padding: ($pt-grid-size / 2) $pt-grid-size !default;
@@ -103,7 +103,6 @@ $button-intents: (
   cursor: pointer;
   padding: $button-padding;
   text-align: left;
-  font-family: inherit;
   font-size: $pt-font-size;
 }
 
@@ -140,12 +139,12 @@ $button-intents: (
   }
 
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     @include pt-button-active();
   }
 
   &:disabled,
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     @include pt-button-disabled();
   }
 }
@@ -170,8 +169,8 @@ $button-intents: (
   cursor: not-allowed;
   color: $button-color-disabled;
 
-  &.pt-active,
-  &.pt-active:hover {
+  &.#{$ns}-active,
+  &.#{$ns}-active:hover {
     background: $button-background-color-active-disabled;
   }
 }
@@ -184,7 +183,7 @@ $button-intents: (
 
   &:hover,
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     color: $white;
   }
 
@@ -194,14 +193,14 @@ $button-intents: (
   }
 
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     box-shadow: $button-intent-box-shadow-active;
     background-color: $active-color;
     background-image: none;
   }
 
   &:disabled,
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     @include pt-button-intent-disabled($default-color);
   }
 }
@@ -222,7 +221,7 @@ $button-intents: (
 
   &:hover,
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     color: $pt-dark-text-color;
   }
 
@@ -231,16 +230,16 @@ $button-intents: (
   }
 
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     @include pt-dark-button-active();
   }
 
   &:disabled,
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     @include pt-dark-button-disabled();
   }
 
-  .pt-button-spinner .pt-spinner-head {
+  .#{$ns}-button-spinner .#{$ns}-spinner-head {
     background: $dark-progress-track-color;
     stroke: $dark-progress-head-color;
   }
@@ -263,7 +262,7 @@ $button-intents: (
   background-image: none;
   color: $dark-button-color-disabled;
 
-  &.pt-active {
+  &.#{$ns}-active {
     background: $dark-button-background-color-active-disabled;
   }
 }
@@ -276,12 +275,12 @@ $button-intents: (
   }
 
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     box-shadow: $dark-button-intent-box-shadow-active;
   }
 
   &:disabled,
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     @include pt-dark-button-intent-disabled();
   }
 }
@@ -304,7 +303,7 @@ $button-intents: (
   }
 
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     box-shadow: none;
     background: $minimal-button-background-color-active;
     color: $pt-text-color;
@@ -312,23 +311,23 @@ $button-intents: (
 
   &:disabled,
   &:disabled:hover,
-  &.pt-disabled,
-  &.pt-disabled:hover {
+  &.#{$ns}-disabled,
+  &.#{$ns}-disabled:hover {
     background: none;
     cursor: not-allowed;
     color: $pt-text-color-disabled;
 
-    &.pt-active {
+    &.#{$ns}-active {
       background: $minimal-button-background-color-active;
     }
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     @include pt-dark-button-minimal();
   }
 
   @each $intent, $colors in $button-intents {
-    &.pt-intent-#{$intent} {
+    &.#{$ns}-intent-#{$intent} {
       @include pt-button-minimal-intent(
         map-get($pt-intent-colors, $intent),
         map-get($pt-intent-text-colors, $intent),
@@ -345,7 +344,7 @@ $button-intents: (
 
   &:hover,
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     box-shadow: none;
     background: none;
   }
@@ -355,20 +354,20 @@ $button-intents: (
   }
 
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     background: $dark-minimal-button-background-color-active;
     color: $pt-dark-text-color;
   }
 
   &:disabled,
   &:disabled:hover,
-  &.pt-disabled,
-  &.pt-disabled:hover {
+  &.#{$ns}-disabled,
+  &.#{$ns}-disabled:hover {
     background: none;
     cursor: not-allowed;
     color: $pt-dark-text-color-disabled;
 
-    &.pt-active {
+    &.#{$ns}-active {
       background: $dark-minimal-button-background-color-active;
     }
   }
@@ -379,7 +378,7 @@ $button-intents: (
 
   &:hover,
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     box-shadow: none;
     background: none;
     color: $text-color;
@@ -391,26 +390,26 @@ $button-intents: (
   }
 
   &:active,
-  &.pt-active {
+  &.#{$ns}-active {
     background: rgba($intent-color, 0.3);
     color: $text-color;
   }
 
   &:disabled,
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     background: none;
     color: rgba($text-color, 0.5);
 
-    &.pt-active {
+    &.#{$ns}-active {
       background: rgba($intent-color, 0.3);
     }
   }
 
-  .pt-button-spinner .pt-spinner-head {
+  .#{$ns}-button-spinner .#{$ns}-spinner-head {
     stroke: $text-color;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     color: $dark-text-color;
 
     &:hover {
@@ -419,17 +418,17 @@ $button-intents: (
     }
 
     &:active,
-    &.pt-active {
+    &.#{$ns}-active {
       background: rgba($intent-color, 0.3);
       color: $dark-text-color;
     }
 
     &:disabled,
-    &.pt-disabled {
+    &.#{$ns}-disabled {
       background: none;
       color: rgba($dark-text-color, 0.5);
 
-      &.pt-active {
+      &.#{$ns}-active {
         background: rgba($intent-color, 0.3);
       }
     }
@@ -443,7 +442,7 @@ $button-intents: (
   background: $pt-divider-black;
   width: $minimal-button-divider-width;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     background: $pt-dark-divider-white;
   }
 }

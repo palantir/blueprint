@@ -13,11 +13,9 @@ export * from "./intent";
 export * from "./position";
 export * from "./props";
 
-import * as classes from "./classes";
-import * as keys from "./keys";
-import * as utils from "./utils";
+import * as Classes from "./classes";
+import * as Keys from "./keys";
+import * as Utils from "./utils";
 
-export const Classes = classes;
-export const Keys = keys;
-export const Utils = utils;
+export { Classes, Keys, Utils };
 // NOTE: Errors is not exported in public API

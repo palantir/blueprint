@@ -9,44 +9,44 @@ Tags
 
 Markup:
 <p>
-  <span class="pt-tag {{.modifier}}">125</span>
-  <span class="pt-tag {{.modifier}}">Done</span>
-  <span class="pt-tag pt-tag-removable {{.modifier}}">
+  <span class="#{$ns}-tag {{.modifier}}">125</span>
+  <span class="#{$ns}-tag {{.modifier}}">Done</span>
+  <span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
     Tracking
-    <button class="pt-tag-remove"></button>
+    <button class="#{$ns}-tag-remove"></button>
   </span>
-  <span class="pt-tag pt-tag-removable {{.modifier}}">
+  <span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
     Crushed
-    <button class="pt-tag-remove"></button>
+    <button class="#{$ns}-tag-remove"></button>
   </span>
 </p>
-<span class="pt-tag pt-tag-removable {{.modifier}}">
+<span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
   A rather long string of text that wraps to multiple lines
   demonstrates the position of the remove button.
-  <button class="pt-tag-remove"></button>
+  <button class="#{$ns}-tag-remove"></button>
 </span>
 
-.pt-large - Large
-.pt-round - Rounded corners, ideal for badges
-.pt-interactive - Hover and active effects
-.pt-intent-primary - Primary intent
-.pt-intent-success - Success intent
-.pt-intent-warning - Warning intent
-.pt-intent-danger  - Danger intent
+.#{$ns}-large - Large
+.#{$ns}-round - Rounded corners, ideal for badges
+.#{$ns}-interactive - Hover and active effects
+.#{$ns}-intent-primary - Primary intent
+.#{$ns}-intent-success - Success intent
+.#{$ns}-intent-warning - Warning intent
+.#{$ns}-intent-danger  - Danger intent
 
-Styleguide pt-tag
+Styleguide tag
 */
 
-.pt-tag {
+.#{$ns}-tag {
   @include pt-tag();
 
-  &.pt-large,
-  .pt-large & {
+  &.#{$ns}-large,
+  .#{$ns}-large & {
     @include pt-tag-large();
   }
 
   @each $intent, $color in $pt-intent-colors {
-    &.pt-intent-#{$intent} {
+    &.#{$ns}-intent-#{$intent} {
       @include pt-tag-intent($color);
     }
   }
@@ -55,29 +55,29 @@ Styleguide pt-tag
   Minimal tags
 
   Markup:
-  <div class="pt-tag pt-minimal {{.modifier}}">125</div>
-  <div class="pt-tag pt-minimal {{.modifier}}">Done</div>
-  <div class="pt-tag pt-minimal pt-tag-removable {{.modifier}}">
+  <div class="#{$ns}-tag #{$ns}-minimal {{.modifier}}">125</div>
+  <div class="#{$ns}-tag #{$ns}-minimal {{.modifier}}">Done</div>
+  <div class="#{$ns}-tag #{$ns}-minimal #{$ns}-tag-removable {{.modifier}}">
     Tracking
-    <button class="pt-tag-remove"></button>
+    <button class="#{$ns}-tag-remove"></button>
   </div>
 
-  .pt-large - Large
-  .pt-round - Rounded corners, ideal for badges
-  .pt-interactive - Hover and active effects
-  .pt-intent-primary - Primary intent
-  .pt-intent-success - Success intent
-  .pt-intent-warning - Warning intent
-  .pt-intent-danger  - Danger intent
+  .#{$ns}-large - Large
+  .#{$ns}-round - Rounded corners, ideal for badges
+  .#{$ns}-interactive - Hover and active effects
+  .#{$ns}-intent-primary - Primary intent
+  .#{$ns}-intent-success - Success intent
+  .#{$ns}-intent-warning - Warning intent
+  .#{$ns}-intent-danger  - Danger intent
 
-  Styleguide pt-tag.pt-minimal
+  Styleguide tag-minimal
   */
 
-  &.pt-minimal {
+  &.#{$ns}-minimal {
     @include pt-tag-minimal();
 
     @each $intent, $color in $pt-intent-colors {
-      &.pt-intent-#{$intent} {
+      &.#{$ns}-intent-#{$intent} {
         @include pt-tag-minimal-intent(
           $color,
           map-get($pt-intent-text-colors, $intent),
@@ -88,6 +88,6 @@ Styleguide pt-tag
   }
 }
 
-.pt-tag-remove {
+.#{$ns}-tag-remove {
   @include pt-tag-remove();
 }

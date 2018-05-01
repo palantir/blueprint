@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/table-dev-app",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Dev application for @blueprintjs/table",
   "private": true,
   "scripts": {
@@ -8,28 +8,27 @@
     "clean": "rm -rf dist/*",
     "dev": "webpack-dev-server --config ./webpack.config.js",
     "dist": "cross-env NODE_ENV=production yarn bundle",
-    "lint": "npm-run-all -p lint:stylelint lint:tslint",
-    "lint:stylelint": "stylelint -s scss \"src/**/*.scss\"",
-    "lint:tslint": "tslint \"{src,test}/**/*.{ts,tsx}\" -c ../tslint-config -t codeFrame",
-    "lint-fix": "yarn lint:tslint --fix",
+    "lint": "npm-run-all -p lint:scss lint:ts",
+    "lint:scss": "sass-lint",
+    "lint:ts": "ts-lint",
+    "lint-fix": "ts-lint --fix",
     "test": "exit 0",
     "verify": "npm-run-all -p dist lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^2.0.0",
-    "@blueprintjs/table": "^2.0.0",
+    "@blueprintjs/core": "^2.3.1",
+    "@blueprintjs/table": "^2.1.1",
     "classnames": "^2.2.5",
     "dom4": "^2.0.1",
-    "normalize.css": "^7.0.0",
+    "normalize.css": "^8.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-transition-group": "^2.2.1"
   },
   "devDependencies": {
-    "@blueprintjs/webpack-build-scripts": "^0.5.0",
+    "@blueprintjs/webpack-build-scripts": "^0.5.2",
     "npm-run-all": "^4.1.2",
-    "stylelint": "^8.4.0",
-    "tslint": "^5.9.0",
+    "stylelint": "~8.4.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"
   },

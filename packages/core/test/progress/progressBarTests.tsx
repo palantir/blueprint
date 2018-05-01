@@ -11,7 +11,7 @@ import * as React from "react";
 import { Classes, ProgressBar } from "../../src/index";
 
 describe("ProgressBar", () => {
-    it("renders a .pt-progress-bar", () => {
+    it("renders a PROGRESS_BAR", () => {
         assert.lengthOf(mount(<ProgressBar />).find("." + Classes.PROGRESS_BAR), 1);
     });
 

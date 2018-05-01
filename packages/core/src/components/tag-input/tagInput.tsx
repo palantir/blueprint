@@ -122,7 +122,7 @@ export interface ITagInputProps extends IProps {
 
     /**
      * Element to render on right side of input.
-     * For best results, use a small spinner or minimal button (button height will adjust if `TagInput` use `.pt-large`).
+     * For best results, use a small spinner or minimal button (button height will adjust if `TagInput` uses large styles).
      * Other elements will likely require custom styles for correct positioning.
      */
     rightElement?: JSX.Element;
@@ -262,13 +262,14 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         if (!tag) {
             return null;
         }
-        const { tagProps } = this.props;
+        const { large, tagProps } = this.props;
         const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
         return (
             <Tag
                 active={index === this.state.activeIndex}
                 data-tag-index={index}
                 key={tag + "__" + index}
+                large={large}
                 onRemove={this.props.disabled ? null : this.handleRemoveTag}
                 {...props}
             >

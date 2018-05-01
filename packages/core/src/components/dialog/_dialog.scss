@@ -10,47 +10,47 @@
 Dialog
 
 Markup:
-<!-- this container element fills its parent and centers the .pt-dialog within it -->
-<div class="pt-dialog-container">
-  <div class="pt-dialog">
-    <div class="pt-dialog-header">
-      <span class="pt-icon-large pt-icon-inbox"></span>
-      <h4 class="pt-dialog-header-title">Dialog header</h4>
-      <button aria-label="Close" class="pt-dialog-close-button pt-icon-small-cross"></button>
+<!-- this container element fills its parent and centers the .#{$ns}-dialog within it -->
+<div class="#{$ns}-dialog-container">
+  <div class="#{$ns}-dialog">
+    <div class="#{$ns}-dialog-header">
+      <span class="#{$ns}-icon-large #{$ns}-icon-inbox"></span>
+      <h4 class="#{$ns}-dialog-header-title">Dialog header</h4>
+      <button aria-label="Close" class="#{$ns}-dialog-close-button #{$ns}-icon-small-cross"></button>
     </div>
-    <div class="pt-dialog-body">
+    <div class="#{$ns}-dialog-body">
       This dialog hasn't been wired up with any open or close interactions.
       It's just an example of markup and styles.
     </div>
-    <div class="pt-dialog-footer">
-      <div class="pt-dialog-footer-actions">
-        <button type="button" class="pt-button">Secondary button</button>
-        <button type="submit" class="pt-button pt-intent-primary">Primary button</button>
+    <div class="#{$ns}-dialog-footer">
+      <div class="#{$ns}-dialog-footer-actions">
+        <button type="button" class="#{$ns}-button">Secondary button</button>
+        <button type="submit" class="#{$ns}-button #{$ns}-intent-primary">Primary button</button>
       </div>
     </div>
   </div>
 </div>
 
-Styleguide pt-dialog
+Styleguide dialog
 */
 
 $dialog-border-radius: $pt-border-radius * 2 !default;
 $dialog-margin: ($pt-grid-size * 3) 0 !default;
 $dialog-padding: $pt-grid-size * 2 !default;
 
-.pt-dialog-container {
+.#{$ns}-dialog-container {
   $dialog-transition-props: (
     opacity: (0, 1),
     transform: (scale(0.5), scale(1))
   );
 
   @include react-transition(
-    "pt-overlay",
+    "#{$ns}-overlay",
     $dialog-transition-props,
     $duration: $pt-transition-duration * 3,
     $easing: $pt-transition-ease-bounce,
     $before: "&",
-    $after: "> .pt-dialog"
+    $after: "> .#{$ns}-dialog"
   );
   display: flex;
   align-items: center;
@@ -60,14 +60,14 @@ $dialog-padding: $pt-grid-size * 2 !default;
   user-select: none;
 
   // LEGACY: override old (<= 1.24.0) dialog styles when inside a container to respect flex layout
-  .pt-dialog {
+  .#{$ns}-dialog {
     // stylelint-disable-next-line declaration-no-important
     position: static !important;
     transform: none;
   }
 }
 
-.pt-dialog {
+.#{$ns}-dialog {
   display: flex;
   flex-direction: column;
   margin: $dialog-margin;
@@ -82,15 +82,15 @@ $dialog-padding: $pt-grid-size * 2 !default;
     outline: 0;
   }
 
-  &.pt-dark,
-  .pt-dark & {
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
     box-shadow: $pt-dark-dialog-box-shadow;
     background: $pt-dark-app-background-color;
     color: $pt-dark-text-color;
   }
 }
 
-.pt-dialog-header {
+.#{$ns}-dialog-header {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
@@ -100,14 +100,14 @@ $dialog-padding: $pt-grid-size * 2 !default;
   min-height: $pt-icon-size-large + $dialog-padding;
   padding-left: $dialog-padding;
 
-  .pt-icon-large,
-  .pt-icon {
+  .#{$ns}-icon-large,
+  .#{$ns}-icon {
     flex: 0 0 auto;
     margin-right: $dialog-padding / 2;
     color: $pt-icon-color;
   }
 
-  .pt-dialog-header-title {
+  .#{$ns}-dialog-header-title {
     @include overflow-ellipsis();
     flex: 1 1 auto;
     margin: 0;
@@ -118,22 +118,22 @@ $dialog-padding: $pt-grid-size * 2 !default;
     }
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     box-shadow: 0 1px 0 $pt-dark-divider-black;
     background: $dark-gray4;
 
-    .pt-icon-large,
-    .pt-icon {
+    .#{$ns}-icon-large,
+    .#{$ns}-icon {
       color: $pt-dark-icon-color;
     }
 
-    .pt-dialog-header-title {
+    .#{$ns}-dialog-header-title {
       color: $pt-dark-heading-color;
     }
   }
 }
 
-.pt-dialog-close-button {
+.#{$ns}-dialog-close-button {
   // large icon with interactive colors
   @include pt-icon($pt-icon-size-large);
   @include pt-icon-colors();
@@ -146,28 +146,28 @@ $dialog-padding: $pt-grid-size * 2 !default;
   cursor: pointer;
   padding: $pt-grid-size;
 
-  .pt-icon-large,
-  .pt-icon {
+  .#{$ns}-icon-large,
+  .#{$ns}-icon {
     margin: 0;
   }
 }
 
-.pt-dialog-body {
+.#{$ns}-dialog-body {
   flex: 1 1 auto;
   margin: $dialog-padding;
   line-height: $pt-grid-size * 1.8;
 }
 
-.pt-dialog-footer {
+.#{$ns}-dialog-footer {
   flex: 0 0 auto;
   margin: 0 $dialog-padding;
 }
 
-.pt-dialog-footer-actions {
+.#{$ns}-dialog-footer-actions {
   display: flex;
   justify-content: flex-end;
 
-  .pt-button {
+  .#{$ns}-button {
     margin-left: $pt-grid-size;
   }
 }

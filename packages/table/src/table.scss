@@ -21,7 +21,7 @@ $column-z-index: $body-z-index + 1 !default;
 $row-z-index: $column-z-index + 1 !default;
 $menu-z-index: $row-z-index + 1 !default;
 
-.pt-table-container {
+.#{$ns}-table-container {
   @include force-hardware-acceleration();
   display: flex;
   flex-direction: column;
@@ -32,41 +32,41 @@ $menu-z-index: $row-z-index + 1 !default;
   max-height: 100%;
   overflow: hidden;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     background-color: $dark-table-background-color;
   }
 
-  .pt-loading {
+  .#{$ns}-loading {
     @include table-skeleton();
     color: transparent;
   }
 }
 
-.pt-table-top-container {
+.#{$ns}-table-top-container {
   display: flex;
   flex: 0 0 auto;
   min-height: 0%; // Must use % unit for IE11
 
-  .pt-table-container.pt-table-no-rows & {
+  .#{$ns}-table-container.#{$ns}-table-no-rows & {
     // edge case when there are no rows: keep bottom borders visible on menu
     // element and column headers
     padding-bottom: 1px;
   }
 }
 
-.pt-table-bottom-container {
+.#{$ns}-table-bottom-container {
   display: flex;
   flex: 1 1 auto;
   height: 100%; // IE 11
   min-height: 0%; // Must use % unit for IE11
   color: $cell-text-color;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     color: $dark-cell-text-color;
   }
 }
 
-.pt-table-menu {
+.#{$ns}-table-menu {
   flex: 0 0 auto;
   // Stay above the moving table-header
   position: relative;
@@ -74,12 +74,12 @@ $menu-z-index: $row-z-index + 1 !default;
 
   background-color: $header-background-color;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     background-color: $dark-header-background-color;
   }
 }
 
-.pt-table-column-headers {
+.#{$ns}-table-column-headers {
   display: block;
 
   // allow absolute position for region overlays
@@ -90,13 +90,13 @@ $menu-z-index: $row-z-index + 1 !default;
   background-color: $header-background-color;
   color: $column-header-text-color;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     background-color: $dark-header-background-color;
     color: $dark-column-header-text-color;
   }
 }
 
-.pt-table-row-headers {
+.#{$ns}-table-row-headers {
   flex: 0 0 auto;
   // allow absolute position for region overlay
   position: relative;
@@ -109,46 +109,46 @@ $menu-z-index: $row-z-index + 1 !default;
   // animate width changes on scroll end
   transition: width $pt-transition-duration $pt-transition-ease;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     background-color: $dark-header-background-color;
     color: $dark-row-header-text-color;
   }
 }
 
-.pt-table-body {
+.#{$ns}-table-body {
   flex: 1 1 100%;
   position: relative;
   z-index: $body-z-index;
   overflow: scroll;
 }
 
-.pt-table-body-virtual-client {
+.#{$ns}-table-body-virtual-client {
   position: relative;
 }
 
-.pt-table-cell-client {
+.#{$ns}-table-cell-client {
   background: $cell-background-color;
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     background: $dark-cell-background-color;
   }
 }
 
-.pt-table-tbody {
+.#{$ns}-table-tbody {
   display: block;
   white-space: nowrap;
 }
 
-.pt-table-cell {
+.#{$ns}-table-cell {
   display: inline-block;
 }
 
-.pt-table-no-layout {
+.#{$ns}-table-no-layout {
   display: inline-block;
   position: absolute;
 }
 
-.pt-table-scrollbar-measure {
+.#{$ns}-table-scrollbar-measure {
   position: absolute;
   top: -9999px;
   width: $pt-grid-size * 10;

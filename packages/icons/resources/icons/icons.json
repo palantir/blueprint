@@ -3036,5 +3036,47 @@
     "tags": "typography, text, font-style, line, removed",
     "group": "editor",
     "content": "\\e7a6"
+  },
+  {
+    "displayName": "Updated",
+    "iconName": "updated",
+    "tags": "time, recent, success",
+    "group": "interface",
+    "content": "\\e7a7"
+  },
+  {
+    "displayName": "Outdated",
+    "iconName": "outdated",
+    "tags": "time, error, warning",
+    "group": "interface",
+    "content": "\\e7a8"
+  },
+  {
+    "displayName": "Flame",
+    "iconName": "flame",
+    "tags": "fire, trendy, hot, popular",
+    "group": "miscellaneous",
+    "content": "\\e7a9"
+  },
+  {
+    "displayName": "Folder: new",
+    "iconName": "folder-new",
+    "tags": "create, group, organize, sort",
+    "group": "file",
+    "content": "\\e7b0"
+  },
+  {
+    "displayName": "Mountain",
+    "iconName": "mountain",
+    "tags": "summit, climb, peak",
+    "group": "miscellaneous",
+    "content": "\\e7b1"
+  },
+  {
+    "displayName": "Shield",
+    "iconName": "shield",
+    "tags": "protect, protection, secure, security, safe, safety, privacy, marking, control",
+    "group": "miscellaneous",
+    "content": "\\e7b2"
   }
 ]

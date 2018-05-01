@@ -48,8 +48,8 @@ const ColorSwatch: React.SFC<{ colorName: string; hexCode: string }> = ({ colorN
     };
     return (
         <ClickToCopy className="docs-color-swatch" style={style} value={hexCode}>
-            <div className="docs-color-swatch-trigger docs-clipboard-message" data-message={hexCode}>
-                <span>@{colorName}</span>
+            <div className="docs-color-swatch-trigger docs-clipboard-message" data-message={`@${colorName}`}>
+                <span>{hexCode}</span>
             </div>
         </ClickToCopy>
     );
@@ -97,8 +97,10 @@ function createPaletteBook(palettes: string[][], className?: string): React.SFC<
     );
 }
 
+export const BlackWhitePalette = createPaletteBook([["black"], ["white"]]);
+
 export const GrayscalePalette = createPaletteBook(
-    [["black"], ["white"], expand("dark-gray"), expand("gray"), expand("light-gray")],
+    [expand("dark-gray"), expand("gray"), expand("light-gray")],
     "docs-color-book-grayscale",
 );
 

@@ -8,21 +8,21 @@
 Breadcrumbs
 
 Markup:
-<ul class="pt-breadcrumbs">
-  <li><a class="pt-breadcrumbs-collapsed" href="#"></a></li>
-  <li><a class="pt-breadcrumb pt-disabled">Folder one</a></li>
-  <li><a class="pt-breadcrumb" href="#">Folder two</a></li>
-  <li><a class="pt-breadcrumb" href="#">Folder three</a></li>
-  <li><span class="pt-breadcrumb pt-breadcrumb-current">File</span></li>
+<ul class="#{$ns}-breadcrumbs">
+  <li><a class="#{$ns}-breadcrumbs-collapsed" href="#"></a></li>
+  <li><a class="#{$ns}-breadcrumb #{$ns}-disabled">Folder one</a></li>
+  <li><a class="#{$ns}-breadcrumb" href="#">Folder two</a></li>
+  <li><a class="#{$ns}-breadcrumb" href="#">Folder three</a></li>
+  <li><span class="#{$ns}-breadcrumb #{$ns}-breadcrumb-current">File</span></li>
 </ul>
 
-Styleguide pt-breadcrumbs
+Styleguide breadcrumbs
 */
 
 // shaving off 1px for perfect centering (... icon is 5px high)
 $breadcrumb-line-height: $pt-icon-size-large - 1px !default;
 
-.pt-breadcrumbs {
+.#{$ns}-breadcrumbs {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -51,42 +51,42 @@ $breadcrumb-line-height: $pt-icon-size-large - 1px !default;
   }
 }
 
-.pt-breadcrumb,
-.pt-breadcrumb-current,
-.pt-breadcrumbs-collapsed {
+.#{$ns}-breadcrumb,
+.#{$ns}-breadcrumb-current,
+.#{$ns}-breadcrumbs-collapsed {
   display: inline-block;
   line-height: $breadcrumb-line-height;
   font-size: $pt-font-size-large;
 }
 
-.pt-breadcrumb,
-.pt-breadcrumbs-collapsed {
+.#{$ns}-breadcrumb,
+.#{$ns}-breadcrumbs-collapsed {
   color: $pt-text-color-muted;
 }
 
-.pt-breadcrumb {
+.#{$ns}-breadcrumb {
   &:hover {
     text-decoration: none;
   }
 
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     cursor: not-allowed;
     color: $pt-text-color-disabled;
   }
 }
 
-.pt-breadcrumb-current {
+.#{$ns}-breadcrumb-current {
   color: inherit;
   font-weight: 600;
 
-  .pt-input {
+  .#{$ns}-input {
     vertical-align: baseline;
     font-size: inherit;
     font-weight: inherit;
   }
 }
 
-.pt-breadcrumbs-collapsed {
+.#{$ns}-breadcrumbs-collapsed {
   margin-right: 2px;
   border: none;
   border-radius: $pt-border-radius;
@@ -107,25 +107,25 @@ $breadcrumb-line-height: $pt-icon-size-large - 1px !default;
   }
 }
 
-.pt-dark {
-  .pt-breadcrumb,
-  .pt-breadcrumbs-collapsed {
+.#{$ns}-dark {
+  .#{$ns}-breadcrumb,
+  .#{$ns}-breadcrumbs-collapsed {
     color: $pt-dark-text-color-muted;
   }
 
-  .pt-breadcrumbs > li::after {
+  .#{$ns}-breadcrumbs > li::after {
     color: $pt-dark-icon-color;
   }
 
-  .pt-breadcrumb.pt-disabled {
+  .#{$ns}-breadcrumb.#{$ns}-disabled {
     color: $pt-dark-text-color-disabled;
   }
 
-  .pt-breadcrumb-current {
+  .#{$ns}-breadcrumb-current {
     color: $pt-dark-text-color;
   }
 
-  .pt-breadcrumbs-collapsed {
+  .#{$ns}-breadcrumbs-collapsed {
     background: rgba($black, 0.4);
 
     &:hover {

@@ -3,14 +3,14 @@
 @## CSS API
 
 In addition to the [JavaScript API](#core/components/tabs.javascript-api), Blueprint also offers tab styles with the
-class `pt-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and
+class `@ns-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and
 `aria-hidden`) if you choose to implement tabs with CSS.
 
-`.pt-tab-panel` elements with `aria-hidden="true"` are hidden automatically by the Blueprint CSS.
+`.@ns-tab-panel` elements with `aria-hidden="true"` are hidden automatically by the Blueprint CSS.
 You may also simply omit hidden tabs from your markup to improve performance (the `Tabs`
 JavaScript component does this by default).
 
-@css pt-tabs
+@css tabs
 
 @## JavaScript API
 
@@ -33,7 +33,7 @@ import { Tab, Tabs } from "@blueprintjs/core";
     <Tab id="rx" title="React" panel={<ReactPanel />} />
     <Tab id="bb" disabled title="Backbone" panel={<BackbonePanel />} />
     <Tabs.Expander />
-    <input className="pt-input" type="text" placeholder="Search..." />
+    <input className="@ns-input" type="text" placeholder="Search..." />
 </Tabs>
 ```
 

@@ -8,24 +8,24 @@
 File input
 
 Markup:
-<label class="pt-file-input {{.modifier}}">
+<label class="#{$ns}-file-input {{.modifier}}">
   <input type="file" {{:modifier}}/>
-  <span class="pt-file-upload-input">Choose file...</span>
+  <span class="#{$ns}-file-upload-input">Choose file...</span>
 </label>
 
 :disabled - Disabled
-.pt-large - Larger size
-.pt-fill - Take up full width of parent element
+.#{$ns}-large - Larger size
+.#{$ns}-fill - Take up full width of parent element
 
-Styleguide pt-file-input
+Styleguide file-input
 */
 
-$file-input-button-width: $pt-grid-size * 7;
-$file-input-button-width-large: $pt-grid-size * 8.5;
-$file-input-button-padding: ($pt-input-height - $pt-button-height-small) / 2;
-$file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) / 2;
+$file-input-button-width: $pt-grid-size * 7 !default;
+$file-input-button-width-large: $pt-grid-size * 8.5 !default;
+$file-input-button-padding: ($pt-input-height - $pt-button-height-small) / 2 !default;
+$file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) / 2 !default;
 
-.pt-file-input {
+.#{$ns}-file-input {
   display: inline-block;
   position: relative;
   cursor: pointer;
@@ -40,15 +40,15 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
     // pt-file-input wraps and hides the native element for better control over
     // visual styles. to disable, we need to disable the hidden child input, not
     // the surrounding wrapper. see #689 for gory details.
-    &:disabled + .pt-file-upload-input,
-    &.pt-disabled + .pt-file-upload-input {
+    &:disabled + .#{$ns}-file-upload-input,
+    &.#{$ns}-disabled + .#{$ns}-file-upload-input {
       @include pt-input-disabled();
 
       &::after {
         @include pt-button-disabled();
       }
 
-      .pt-dark & {
+      .#{$ns}-dark & {
         @include pt-dark-input-disabled();
 
         &::after {
@@ -58,17 +58,17 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
     }
   }
 
-  &.pt-fill {
+  &.#{$ns}-fill {
     width: 100%;
   }
 
-  &.pt-large,
-  .pt-large & {
+  &.#{$ns}-large,
+  .#{$ns}-large & {
     height: $pt-input-height-large;
   }
 }
 
-.pt-file-upload-input {
+.#{$ns}-file-upload-input {
   @include pt-input();
   @include overflow-ellipsis();
   position: absolute;
@@ -100,7 +100,7 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
     @include pt-button-active();
   }
 
-  .pt-large & {
+  .#{$ns}-large & {
     @include pt-input-large();
     padding-right: $file-input-button-width-large + $input-padding-horizontal;
 
@@ -112,7 +112,7 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
     }
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     @include pt-dark-input();
     color: $pt-dark-text-color-muted;
 
@@ -133,4 +133,4 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
 // hack to force the button shadow to display since
 // it doesn't render correct via the `pt-button` mixin
 // stylelint-disable-next-line
-.pt-file-upload-input::after { box-shadow: $button-box-shadow; }
+.#{$ns}-file-upload-input::after { box-shadow: $button-box-shadow; }

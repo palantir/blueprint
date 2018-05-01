@@ -105,6 +105,13 @@ export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps
     didOpen?: () => any;
 
     /**
+     * Lifecycle callback invoked after a child element finishes exiting the DOM.
+     * This will be invoked for each child of the `Overlay` except for the backdrop element.
+     * The argument is the underlying HTML element that left the DOM.
+     */
+    didClose?: (node: HTMLElement) => any;
+
+    /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
      */
@@ -113,7 +120,7 @@ export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps
     /**
      * Name of the transition for internal `CSSTransition`.
      * Providing your own name here will require defining new CSS transition properties.
-     * @default "pt-overlay"
+     * @default Classes.OVERLAY
      */
     transitionName?: string;
 }
@@ -135,7 +142,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         isOpen: false,
         lazy: true,
         transitionDuration: 300,
-        transitionName: "pt-overlay",
+        transitionName: Classes.OVERLAY,
         usePortal: true,
     };
 
@@ -261,7 +268,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             );
         const { transitionDuration, transitionName } = this.props;
         return (
-            <CSSTransition classNames={transitionName} timeout={transitionDuration}>
+            <CSSTransition classNames={transitionName} onExited={this.props.didClose} timeout={transitionDuration}>
                 {decoratedChild}
             </CSSTransition>
         );
@@ -356,12 +363,14 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         const { canOutsideClickClose, isOpen, onClose } = this.props;
         const eventTarget = e.target as HTMLElement;
 
-        const { openStack } = Overlay;
-        const stackIndex = openStack.indexOf(this);
-
-        const isClickInThisOverlayOrDescendant = openStack
+        const stackIndex = Overlay.openStack.indexOf(this);
+        const isClickInThisOverlayOrDescendant = Overlay.openStack
             .slice(stackIndex)
-            .some(({ containerElement }) => containerElement && containerElement.contains(eventTarget));
+            .some(({ containerElement: elem }) => {
+                // `elem` is the container of backdrop & content, so clicking on that container
+                // should not count as being "inside" the overlay.
+                return elem && elem.contains(eventTarget) && !elem.isSameNode(eventTarget);
+            });
 
         if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
             // casting to any because this is a native event

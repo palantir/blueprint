@@ -66,10 +66,8 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
                     label="Vertical"
                 />,
             ],
-            [
-                <IntentSelect key="intent" intent={this.state.intent} onChange={this.handleIntentChange} />,
-                <AlignmentSelect align={alignText} onChange={this.handleAlignChange} />,
-            ],
+            [<AlignmentSelect key="align" align={alignText} onChange={this.handleAlignChange} />],
+            [<IntentSelect key="intent" intent={this.state.intent} onChange={this.handleIntentChange} />],
         ];
     }
 
