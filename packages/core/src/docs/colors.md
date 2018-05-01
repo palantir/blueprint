@@ -1,14 +1,11 @@
 @# Colors
 
-Hex values for these colors can be accessed in JavaScript. The global version of the module exposes
-the `Blueprint.Colors` object. In CommonJS, you may `import { Colors } from "@blueprintjs/core"`.
-
 @## Gray scale
 
 Black, white and everything in between. The gray scale should be used for
 the main UI frame: containers, headers, sections, boxes, etc.
 If you need to call attention to a particular element (buttons, icons, tooltips, etc.),
-use one of the [core colors](#colors.core-colors).
+use one of the [core colors](#core/colors.core-colors).
 
 @reactDocs BlackWhitePalette
 @reactDocs GrayscalePalette
@@ -42,6 +39,29 @@ accessibility standards and should therefore not be used for typical user
 interface design — take a look at [core colors](#colors.core-colors) instead.
 
 @reactDocs ExtendedColorsPalette
+
+@## Usage
+
+Blueprint provides variables for colors in Sass, Less, and JavaScript.
+[Semantic aliases for common colors](#core/variables.color-aliases) are also provided in Sass and Less.
+
+```css.scss
+@import "~@blueprintjs/core/lib/scss/variables";
+
+.rule {
+    color: $pt-link-color;
+    background: $black;
+}
+```
+
+```tsx
+import { Colors } from "@blueprintjs/core";
+
+<div style={{ color: Colors.BLUE3, background: Colors.BLACK }} />
+```
+
+Hex values for these colors can be accessed in JavaScript. The global version of the module exposes
+the `Blueprint.Colors` object. In CommonJS, you may `import { Colors } from "@blueprintjs/core"`.
 
 @## Color schemes
 

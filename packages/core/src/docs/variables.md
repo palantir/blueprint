@@ -108,8 +108,9 @@ dark theme components.
 
 @## Color aliases
 
-These variables are semantic aliases of our [colors](#colors).
-They are used throughout Blueprint itself to ensure consistent color usage across components.
+These variables are semantic aliases of our [colors](#core/colors).
+They are used throughout Blueprint itself to ensure consistent color usage across components
+and are available in the Sass or Less variables files.
 
 <table class="@ns-html-table docs-color-aliases-table">
     <thead>
