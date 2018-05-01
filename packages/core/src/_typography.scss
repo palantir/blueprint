@@ -7,16 +7,6 @@
 @import "common/mixins";
 @import "~@blueprintjs/icons/src/icons";
 
-hr {
-  margin: ($pt-grid-size * 2) 0;
-  border: none;
-  border-bottom: 1px solid $pt-divider-black;
-
-  .#{$ns}-dark & {
-    border-color: $pt-dark-divider-white;
-  }
-}
-
 // consistent cross-browser text selection
 ::selection {
   background: $pt-text-selection-color;
@@ -32,36 +22,27 @@ small {
 }
 
 /*
-Fonts
-
-Markup:
-<div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
-
-.#{$ns}-monospace-text - Use a monospace font (ideal for code)
-
-Styleguide fonts
-*/
-
-.#{$ns}-monospace-text {
-  @include monospace-typography();
-}
-
-/*
 Headings
 
 Markup:
-<h1>H1 heading</h1>
-<h2>H2 heading</h2>
-<h3>H3 heading</h3>
-<h4>H4 heading</h4>
-<h5>H5 heading</h5>
-<h6>H6 heading</h6>
+<h1 class="pt-heading">H1 heading</h1>
+<h2 class="pt-heading">H2 heading</h2>
+<h3 class="pt-heading">H3 heading</h3>
+<h4 class="pt-heading">H4 heading</h4>
+<h5 class="pt-heading">H5 heading</h5>
+<h6 class="pt-heading">H6 heading</h6>
 
 Styleguide headings
 */
 
+.#{$ns}-heading {
+  @include heading-typography();
+  margin: 0 0 $pt-grid-size;
+  padding: 0;
+}
+
 // tag: (font-size, line-height)
-$headers: (
+$headings: (
   "h1": (36px, 40px),
   "h2": (28px, 32px),
   "h3": (22px, 25px),
@@ -70,13 +51,14 @@ $headers: (
   "h6": (14px, 16px)
 );
 
-@each $header, $props in $headers {
-  #{$header} {
-    @include header-typography();
-    margin: 0 0 $pt-grid-size;
-    padding: 0;
+@each $tag, $props in $headings {
+  %#{$tag} {
     line-height: nth($props, 2);
     font-size: nth($props, 1);
+  }
+
+  #{$tag}.#{$ns}-heading {
+    @extend %#{$tag};
   }
 }
 
@@ -84,10 +66,16 @@ $headers: (
 UI text
 
 Markup:
-<div class="{{.modifier}}">Blueprint components react overlay date picker.</div>
+<div class="{{.modifier}}">
+  Blueprint components react overlay date picker. Breadcrumbs dialog progress non-ideal state.
+</div>
 
-.#{$ns}-ui-text - Default UI text. This is applied to the document body as part of core styles.
-.#{$ns}-ui-text-large - Larger UI text.
+.#{$ns}-ui-text - Default Blueprint font styles, applied to the `<body>` tag and available as a class for nested resets.
+.#{$ns}-monospace-text - Use a monospace font (ideal for code).
+.#{$ns}-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
+.#{$ns}-text-large - Use a larger font size.
+.#{$ns}-text-muted - Change text color to a gentler gray.
+.#{$ns}-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its container.
 
 Styleguide ui-text
 */
@@ -96,29 +84,48 @@ Styleguide ui-text
   @include base-typography();
 }
 
-.#{$ns}-ui-text-large {
-  line-height: 1.25;
-  font-size: $pt-font-size-large;
+.#{$ns}-monospace-text {
+  @include monospace-typography();
+}
+
+// NOTE: .#{$ns}-text-large defined below after .#{$ns}-running-text
+
+.#{$ns}-text-muted {
+  color: $pt-text-color-muted;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-text-color-muted;
+  }
+}
+
+.#{$ns}-text-overflow-ellipsis {
+  @include overflow-ellipsis();
 }
 
 /*
 Running text
 
 Markup:
-<div class="{{.modifier}}">
-  <p>Longform text, such as rendered Markdown documents, benefit from additional spacing and slightly
-large font size. Apply <code>.#{$ns}-running-text</code> to the parent element to adjust spacing for the following
-elements:</p>
-  <ul>
-    <li><code>&lt;p></code> tags have increased line-height and font size.</li>
-    <li><code>&lt;h*></code> tag margins are adjusted to provide clear separation between sections in a document.</li>
-    <li><code>&lt;ul></code> and <code>&lt;ol></code> tags receive <code>.#{$ns}-list</code> styles for legibility.</li>
-  </ul>
-  <h3>New section</h3>
-  <p>And another paragraph.</p>
+<div class="@ns-running-text {{.modifier}}">
+  <blockquote>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    </p>
+    <ul>
+      <li>Item the <code>first</code>.</li>
+      <li>Item the <strong>second</strong></code>.</li>
+      <li>Item the <a href="#core/typography.running-text">third</a>.</li>
+    </ul>
+    <h3>New section</h3>
+    <p>
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+      nisi ut aliquip ex ea commodo consequat.
+    </p>
+  </blockquote>
 </div>
 
-.#{$ns}-running-text - Apply larger font size and additional spacing.
+.#{$ns}-text-large - Use larger font size.
 
 Styleguide running-text
 */
@@ -126,21 +133,52 @@ Styleguide running-text
 .#{$ns}-running-text {
   @include running-typography();
 
-  @each $header, $props in $headers {
-    #{$header} {
+  @each $tag, $props in $headings {
+    #{$tag} {
+      @extend %#{$tag};
+      @include heading-typography();
       margin-top: $pt-grid-size * 4;
       margin-bottom: $pt-grid-size * 2;
     }
   }
+
+  hr {
+    margin: ($pt-grid-size * 2) 0;
+    border: none;
+    border-bottom: 1px solid $pt-divider-black;
+
+    .#{$ns}-dark & {
+      border-color: $pt-dark-divider-white;
+    }
+  }
+
+  p {
+    margin: 0 0 $pt-grid-size;
+    padding: 0;
+  }
+
+  blockquote {
+    @extend %blockquote;
+  }
+
+  code {
+    @extend %code;
+  }
+
+  pre {
+    @extend %code-block;
+  }
+
+  ul,
+  ol {
+    @extend %list;
+  }
 }
 
-.#{$ns}-running-text-small {
-  @include running-typography-small();
-}
-
-p {
-  margin: 0 0 $pt-grid-size;
-  padding: 0;
+// NOTE: this must be defined after .@ns-running-text in order to override font-size.
+.#{$ns}-text-large {
+  font-size: $pt-font-size-large;
+  // line-height comes from .@ns-(ui|running)-text
 }
 
 /*
@@ -187,40 +225,30 @@ a {
 Preformatted text
 
 Markup:
-<code>$ npm install</code>
-<pre>
-%pt-select {
-  @include pt-button();
-  border-radius: $pt-border-radius;
-  height: $pt-button-height;
-  padding: 0 ($input-padding-horizontal * 3) 0 $input-padding-horizontal;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-}
-</pre>
-<pre><code>export function hasModifier(modifiers: ts.ModifiersArray, ...modifierKinds: ts.SyntaxKind[]) {
-    if (modifiers == null || modifierKinds == null) {
-        return false;
-    }
-    return modifiers.some((m) => {
-        return modifierKinds.some((k) => m.kind === k);
-    });
+<p>Use the <code class="pt-code">&lt;code></code> tag for snippets of code.</p>
+<pre class="pt-code-block">Use the &lt;pre> tag for blocks of code.</pre>
+<pre class="pt-code-block"><code>// code sample
+export function hasModifier(modifiers: ts.ModifiersArray, ...modifierKinds: ts.SyntaxKind[]) {
+  if (modifiers == null || modifierKinds == null) {
+    return false;
+  }
+  return modifiers.some((m) => {
+    return modifierKinds.some((k) => m.kind === k);
+  });
 }</code></pre>
 
 Styleguide preformatted
 */
 
-pre,
-code {
+%code {
   @include monospace-typography();
-}
 
-code {
   border-radius: $pt-border-radius;
   box-shadow: inset border-shadow(0.2);
   background: $pt-code-background-color;
   padding: 2px 5px;
   color: $pt-code-text-color;
+  font-size: $pt-font-size-small;
 
   .#{$ns}-dark & {
     box-shadow: inset border-shadow(0.4);
@@ -229,7 +257,9 @@ code {
   }
 }
 
-pre {
+%code-block {
+  @include monospace-typography();
+
   display: block;
   margin: $pt-grid-size 0;
   border-radius: $pt-border-radius;
@@ -242,78 +272,71 @@ pre {
   word-break: break-all;
   word-wrap: break-word;
 
-  > code {
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
-    padding: 0;
-    white-space: pre-wrap;
-    color: inherit;
-    font-size: inherit;
-  }
-
   .#{$ns}-dark & {
     box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
     background: $pt-dark-code-background-color;
     color: $pt-dark-text-color;
-
-    > code {
-      box-shadow: none;
-      background: transparent;
-    }
   }
+
+  > code {
+    box-shadow: none;
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+}
+
+.#{$ns}-code {
+  @extend %code;
+}
+
+.#{$ns}-code-block {
+  @extend %code-block;
 }
 
 /*
 Block quotes
 
 Markup:
-<blockquote>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-  </p>
+<blockquote class="@ns-blockquote">
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 </blockquote>
 
 Styleguide blockquote
 */
 
-blockquote {
-  @include running-typography();
+%blockquote {
   margin: 0 0 $pt-grid-size;
   border-left: solid 4px rgba($gray4, 0.5);
   padding: 0 ($pt-grid-size * 2);
-
-  p:last-child {
-    margin-bottom: 0;
-  }
 
   .#{$ns}-dark & {
     border-color: rgba($gray2, 0.5);
   }
 }
 
+.#{$ns}-blockquote {
+  @extend %blockquote;
+}
+
 /*
 Lists
 
 Markup:
-<ul class="{{.modifier}}">
-  <li>Item the first</li>
-  <li>Item the second</li>
-  <li>Item the third</li>
-</ul>
 <ol class="{{.modifier}}">
   <li>Item the first</li>
   <li>Item the second</li>
-  <li>Item the third</li>
+  <li>
+    Item the third
+    <ul class="{{.modifier}}">
+      <li>Item the fourth</li>
+      <li>Item the fifth</li>
+    </ul>
+  </li>
 </ol>
 
 .#{$ns}-list - Add a little spacing between items for readability.
@@ -322,28 +345,23 @@ Markup:
 Styleguide lists
 */
 
-ol,
-ul {
+%list {
   margin: $pt-grid-size 0;
-  padding-left: $pt-grid-size * 4;
-}
+  padding-left: $pt-grid-size * 3;
 
-.#{$ns}-list,
-.#{$ns}-running-text ul,
-.#{$ns}-running-text ol {
   li:not(:last-child) {
-    padding-bottom: $pt-grid-size / 2;
+    margin-bottom: $pt-grid-size / 2;
   }
 
-  // remove bottom margin on final element in list item because list items put their own spacing
-  li :last-child {
-    margin-bottom: 0;
-  }
-
+  // nested lists
   ol,
   ul {
     margin-top: $pt-grid-size / 2;
   }
+}
+
+.#{$ns}-list {
+  @extend %list;
 }
 
 .#{$ns}-list-unstyled {
@@ -357,43 +375,16 @@ ul {
 }
 
 /*
-Text utilities
-
-Markup:
-<div class="{{.modifier}}" style="width: 320px;">
-  Blueprint components react overlay date picker. Breadcrumbs dialog progress non-ideal state.
-</div>
-
-.#{$ns}-text-muted - Changes text color to a gentler gray.
-.#{$ns}-text-overflow-ellipsis - Truncates a single line of text with an ellipsis if it overflows its
-  container.
-
-Styleguide utilities
-*/
-
-.#{$ns}-text-muted {
-  color: $pt-text-color-muted;
-
-  .#{$ns}-dark & {
-    color: $pt-dark-text-color-muted;
-  }
-}
-
-.#{$ns}-text-overflow-ellipsis {
-  @include overflow-ellipsis();
-}
-
-/*
 Right-to-left text
 
 Markup:
-<h4>Arabic:</h4>
-<p class="#{$ns}-rtl">
+<h5 class="@ns-heading">Arabic:</h5>
+<p class="@ns-rtl">
   لكل لأداء بمحاولة من. مدينة الواقعة يبق أي, وإعلان وقوعها، حول كل, حدى عجّل مشروط الخاسرة قد.
   من الذود تكبّد بين, و لها واحدة الأراضي. عل الصفحة والروسية يتم, أي للحكومة استعملت شيء. أم وصل زهاء اليا
 </p>
-<h4>Hebrew:</h4>
-<p class="#{$ns}-rtl">
+<h5 class="@ns-heading">Hebrew:</h5>
+<p class="@ns-rtl">
   כדי על עזרה יידיש הבהרה, מלא באגים טכניים דת. תנך או ברית ביולי. כתב בה הטבע למנוע, דת כלים פיסיקה החופשית זכר.
   מתן החלל מאמרשיחהצפה ב. הספרות אנציקלופדיה אם זכר, על שימושי שימושיים תאולוגיה עזה
 </p>
@@ -407,10 +398,4 @@ Styleguide rtl
 
 .#{$ns}-dark {
   color: $pt-dark-text-color;
-
-  @each $header, $props in $headers {
-    #{$header} {
-      color: $pt-dark-heading-color;
-    }
-  }
 }

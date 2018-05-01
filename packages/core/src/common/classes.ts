@@ -40,20 +40,23 @@ export const INTENT_SUCCESS = intentClass(Intent.SUCCESS);
 export const INTENT_WARNING = intentClass(Intent.WARNING);
 export const INTENT_DANGER = intentClass(Intent.DANGER);
 
-// text utilities
-export const TEXT_MUTED = `${NS}-text-muted`;
-export const TEXT_OVERFLOW_ELLIPSIS = `${NS}-text-overflow-ellipsis`;
-export const UI_TEXT = `${NS}-ui-text`;
-export const UI_TEXT_LARGE = `${NS}-ui-text-large`;
-export const RUNNING_TEXT = `${NS}-running-text`;
-export const RUNNING_TEXT_SMALL = `${NS}-running-text-small`;
-export const MONOSPACE_TEXT = `${NS}-monospace-text`;
-
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
 
-// lists
+// text utilities
+export const UI_TEXT = `${NS}-ui-text`;
+export const RUNNING_TEXT = `${NS}-running-text`;
+export const MONOSPACE_TEXT = `${NS}-monospace-text`;
+export const TEXT_LARGE = `${NS}-text-large`;
+export const TEXT_MUTED = `${NS}-text-muted`;
+export const TEXT_OVERFLOW_ELLIPSIS = `${NS}-text-overflow-ellipsis`;
+
+// textual elements
+export const BLOCKQUOTE = `${NS}-blockquote`;
+export const CODE = `${NS}-code`;
+export const CODE_BLOCK = `${NS}-code-block`;
+export const HEADING = `${NS}-heading`;
 export const LIST = `${NS}-list`;
-export const LIST_UNSTYLED = `${LIST}-unstyled`;
+export const LIST_UNSTYLED = `${NS}-list-unstyled`;
 
 // components
 export const ALERT = `${NS}-alert`;
