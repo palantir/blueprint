@@ -201,9 +201,9 @@ export const TAB_LIST = "pt-tab-list";
 export const TAB_PANEL = "pt-tab-panel";
 export const TABS = "pt-tabs";
 
-export const TABLE = "pt-table";	
-export const TABLE_CONDENSED = "pt-condensed";	
-export const TABLE_STRIPED = "pt-striped";	
+export const TABLE = "pt-table";
+export const TABLE_CONDENSED = "pt-condensed";
+export const TABLE_STRIPED = "pt-striped";
 export const TABLE_BORDERED = "pt-bordered";
 
 export const TAG = "pt-tag";
