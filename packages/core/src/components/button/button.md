@@ -12,7 +12,7 @@ Use the `@ns-button` class to access button styles. You should implement buttons
 * Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
   focusable by default.
 * For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
-  user from focusing them by pressing <kbd class="@ns-key">tab</kbd> on the keyboard.
+  user from focusing them by pressing <kbd>tab</kbd> on the keyboard.
 * Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
 
 @css button

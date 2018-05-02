@@ -73,7 +73,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     placeholder?: string;
 
     /**
-     * The increment between successive values when <kbd class="pt-key">shift</kbd> is held.
+     * The increment between successive values when <kbd>shift</kbd> is held.
      * Pass explicit `null` value to disable this interaction.
      * @default 10
      */
@@ -86,7 +86,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     min?: number;
 
     /**
-     * The increment between successive values when <kbd class="pt-key">alt</kbd> is held.
+     * The increment between successive values when <kbd>alt</kbd> is held.
      * Pass explicit `null` value to disable this interaction.
      * @default 0.1
      */

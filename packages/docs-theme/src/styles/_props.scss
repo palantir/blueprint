@@ -2,12 +2,14 @@
 // Licensed under the terms of the LICENSE file distributed with this project.
 
 .docs-prop-details code {
-  box-shadow: none;
-  background: none;
+  // stylelint-disable declaration-no-important
+  box-shadow: none !important;
+  background: none !important;
   padding: 0;
-  color: inherit;
+  color: inherit !important;
   font-size: small;
   font-weight: 600;
+  // stylelint-enable declaration-no-important
 }
 
 .docs-prop-default {

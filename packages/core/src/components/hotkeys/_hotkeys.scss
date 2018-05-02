@@ -3,36 +3,6 @@
 @import "../../common/variables";
 @import "../../common/mixins";
 
-$kbd-key-size: 25px !default;
-$modifier-key-padding: 3px 8px 3px 6px !default;
-
-.#{$ns}-key {
-  display: inline-block;
-  border-radius: $pt-border-radius - 1;
-  box-shadow: $pt-elevation-shadow-2;
-  background: $white;
-  min-width: $kbd-key-size;
-  height: $kbd-key-size;
-  padding: 3px 5px;
-  vertical-align: middle;
-  text-align: center;
-  line-height: $pt-grid-size * 2;
-  color: $pt-text-color-muted;
-  font-family: inherit;
-  font-size: $pt-font-size-small;
-
-  &.#{$ns}-modifier-key {
-    padding: $modifier-key-padding;
-  }
-
-  .#{$ns}-dark & {
-    box-shadow: $pt-dark-elevation-shadow-2,
-                inset 0 1px 0 rgba($white, 0.05);
-    background: $dark-gray5;
-    color: $pt-dark-text-color-muted;
-  }
-}
-
 .#{$ns}-key-combo .#{$ns}-key:not(:last-child) {
   margin-right: $pt-grid-size / 2;
 }
