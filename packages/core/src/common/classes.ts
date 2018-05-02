@@ -76,7 +76,6 @@ export const BUTTON_TEXT = `${BUTTON}-text`;
 
 export const CALLOUT = `${NS}-callout`;
 export const CALLOUT_ICON = `${CALLOUT}-icon`;
-export const CALLOUT_TITLE = `${CALLOUT}-title`;
 
 export const CARD = `${NS}-card`;
 
@@ -97,7 +96,6 @@ export const DIALOG_CLOSE_BUTTON = `${DIALOG}-close-button`;
 export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
-export const DIALOG_HEADER_TITLE = `${DIALOG}-header-title`;
 
 export const EDITABLE_TEXT = `${NS}-editable-text`;
 export const EDITABLE_TEXT_CONTENT = `${EDITABLE_TEXT}-content`;
@@ -152,10 +150,6 @@ export const NAVBAR_HEADING = `${NAVBAR}-heading`;
 export const NAVBAR_DIVIDER = `${NAVBAR}-divider`;
 
 export const NON_IDEAL_STATE = `${NS}-non-ideal-state`;
-export const NON_IDEAL_STATE_ACTION = `${NON_IDEAL_STATE}-action`;
-export const NON_IDEAL_STATE_DESCRIPTION = `${NON_IDEAL_STATE}-description`;
-export const NON_IDEAL_STATE_ICON = `${NON_IDEAL_STATE}-icon`;
-export const NON_IDEAL_STATE_TITLE = `${NON_IDEAL_STATE}-title`;
 export const NON_IDEAL_STATE_VISUAL = `${NON_IDEAL_STATE}-visual`;
 
 export const NUMERIC_INPUT = `${NS}-numeric-input`;

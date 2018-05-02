@@ -9,44 +9,32 @@ Non-ideal state
 
 Markup:
 <div class="#{$ns}-non-ideal-state">
-  <div class="#{$ns}-non-ideal-state-visual #{$ns}-non-ideal-state-icon">
+  <div class="#{$ns}-non-ideal-state-visual">
     <span class="#{$ns}-icon #{$ns}-icon-folder-open"></span>
   </div>
-  <h4 class="#{$ns}-non-ideal-state-title">This folder is empty</h4>
-  <div class="#{$ns}-non-ideal-state-description">
-    Create a new file to populate the folder.
-  </div>
+  <h4 class="#{$ns}-heading">This folder is empty</h4>
+  <div>Create a new file to populate the folder.</div>
 </div>
 
 Styleguide non-ideal-state
 */
 
 .#{$ns}-non-ideal-state {
-  display: flex;
-  flex-direction: column;
+  @include pt-flex-container(column, $pt-grid-size * 2);
   align-items: center;
   justify-content: center;
   margin: 0 auto;
   width: 100%;
   max-width: $pt-grid-size * 40;
   height: 100%;
+  text-align: center;
 }
 
-.#{$ns}-non-ideal-state > :not(:last-child) {
-  margin-bottom: $pt-grid-size * 2;
-}
-
-.#{$ns}-non-ideal-state-icon .#{$ns}-icon {
+.#{$ns}-non-ideal-state-visual {
   color: $pt-icon-color-disabled;
   font-size: $pt-icon-size-large * 3;
 
   .#{$ns}-dark & {
     color: $pt-dark-icon-color-disabled;
   }
-}
-
-.#{$ns}-non-ideal-state-title,
-.#{$ns}-non-ideal-state-description {
-  max-width: 100%; // for Internet Explorer (https://github.com/palantir/blueprint/issues/1193)
-  text-align: center;
 }

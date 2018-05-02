@@ -17,12 +17,15 @@ export class NonIdealStateExample extends BaseExample<{}> {
             </span>
         );
         return (
-            <NonIdealState
-                visual="search"
-                title="No search results"
-                description={description}
-                action={<InputGroup className={Classes.ROUND} leftIcon="search" placeholder="Search..." />}
-            />
+            // empty wrapper div to cancel parent flexbox styles
+            <div style={{ margin: "auto" }}>
+                <NonIdealState
+                    icon="search"
+                    title="No search results"
+                    description={description}
+                    action={<InputGroup className={Classes.ROUND} leftIcon="search" placeholder="Search..." />}
+                />
+            </div>
         );
     }
 }
