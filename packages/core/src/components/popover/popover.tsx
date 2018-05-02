@@ -15,7 +15,6 @@ import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { HTMLDivProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
-import { ensureElement } from '../../common/utils';
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
 import { getArrowAngle, PopoverArrow } from "./arrow";
@@ -488,8 +487,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         // #validateProps asserts that 1 <= children.length <= 2 so content is optional
         const [targetChild, contentChild] = React.Children.toArray(children);
         return {
-            content: ensureElement(contentChild == null ? contentProp : contentChild),
-            target: ensureElement(targetChild == null ? targetProp : targetChild),
+            content: Utils.ensureElement(contentChild == null ? contentProp : contentChild),
+            target: Utils.ensureElement(targetChild == null ? targetProp : targetChild),
         };
     }
 
