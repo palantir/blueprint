@@ -56,17 +56,30 @@ $track-height: $track-size !default;
   border-radius: $pt-border-radius;
 }
 
-.#{$ns}-slider-progress,
-.#{$ns}-dark .#{$ns}-slider-progress {
-  &.#{$ns}-start {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+.#{$ns}-slider-progress {
+  .#{$ns}-slider:not(.#{$ns}-vertical) & {
+    &.#{$ns}-start {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  
+    &.#{$ns}-end {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
   }
 
-  &.#{$ns}-end {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
+  .#{$ns}-slider.#{$ns}-vertical & {
+    &.#{$ns}-start {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  
+    &.#{$ns}-end {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  } 
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
