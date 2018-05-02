@@ -94,7 +94,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
     }
 
     private renderZeroState() {
-        return <NonIdealState className={Classes.TEXT_MUTED} visual="zoom-out" description="No icons found" />;
+        return <NonIdealState className={Classes.TEXT_MUTED} icon="zoom-out" description="No icons found" />;
     }
 
     private handleFilterChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
