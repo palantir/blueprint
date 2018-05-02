@@ -15,7 +15,7 @@ Markup:
   <div class="#{$ns}-dialog">
     <div class="#{$ns}-dialog-header">
       <span class="#{$ns}-icon-large #{$ns}-icon-inbox"></span>
-      <h4 class="#{$ns}-dialog-header-title">Dialog header</h4>
+      <h4 class="#{$ns}-heading">Dialog header</h4>
       <button aria-label="Close" class="#{$ns}-dialog-close-button #{$ns}-icon-small-cross"></button>
     </div>
     <div class="#{$ns}-dialog-body">
@@ -107,7 +107,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
     color: $pt-icon-color;
   }
 
-  .#{$ns}-dialog-header-title {
+  .#{$ns}-heading {
     @include overflow-ellipsis();
     flex: 1 1 auto;
     margin: 0;
@@ -125,10 +125,6 @@ $dialog-padding: $pt-grid-size * 2 !default;
     .#{$ns}-icon-large,
     .#{$ns}-icon {
       color: $pt-dark-icon-color;
-    }
-
-    .#{$ns}-dialog-header-title {
-      color: $pt-dark-heading-color;
     }
   }
 }

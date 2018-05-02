@@ -56,7 +56,7 @@ Blueprint class name. If you specify other attributes that the component provide
 for an `<AnchorButton>`, you'll overide the default value.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-callout-title">Interactions with disabled buttons</h4>
+    <h4 class="@ns-heading">Interactions with disabled buttons</h4>
     Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
     This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
     the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,
@@ -69,7 +69,7 @@ for an `<AnchorButton>`, you'll overide the default value.
 
 @### Anchor button
 
-```jsx
+```tsx
 <AnchorButton text="Click" />
 // renders:
 <a class="@ns-button" role="button" tabIndex={0}>Click</a>
@@ -77,7 +77,7 @@ for an `<AnchorButton>`, you'll overide the default value.
 
 @### Button
 
-```jsx
+```tsx
 <Button icon="refresh" />
 // renders:
 <button class="@ns-button @ns-icon-refresh" type="button"></button>
