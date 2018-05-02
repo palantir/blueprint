@@ -19,24 +19,23 @@ describe("<NonIdealState>", () => {
                 action={<p>More text!</p>}
                 description="An error occured."
                 title="ERROR"
-                visual="folder-close"
+                icon="folder-close"
             />,
         );
-        [
-            Classes.NON_IDEAL_STATE,
-            Classes.NON_IDEAL_STATE_VISUAL,
-            Classes.NON_IDEAL_STATE_ICON,
-            Classes.NON_IDEAL_STATE_TITLE,
-            Classes.NON_IDEAL_STATE_DESCRIPTION,
-            Classes.NON_IDEAL_STATE_ACTION,
-        ].forEach(className => {
+        [Classes.HEADING, Classes.ICON, Classes.NON_IDEAL_STATE_VISUAL, Classes.NON_IDEAL_STATE].forEach(className => {
             assert.lengthOf(wrapper.find(`.${className}`), 1, `missing ${className}`);
         });
     });
 
+    it("ensures description is wrapped in an element", () => {
+        const wrapper = shallow(<NonIdealState description="foo" />);
+        assert.lengthOf(wrapper.find("div"), 1);
+        assert.strictEqual(wrapper.find("div").text(), "foo");
+    });
+
     it("can render a JSX visual", () => {
-        const wrapper = shallow(<NonIdealState description="foo" title="bar" visual={<Spinner />} />);
+        const wrapper = shallow(<NonIdealState description="foo" title="bar" icon={<Spinner />} />);
         assert.lengthOf(wrapper.find(Spinner), 1);
-        assert.lengthOf(wrapper.find(`.${Classes.NON_IDEAL_STATE_ICON}`), 0);
+        assert.lengthOf(wrapper.find(`.${Classes.ICON}`), 0);
     });
 });

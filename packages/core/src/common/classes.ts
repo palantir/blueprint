@@ -152,10 +152,6 @@ export const NAVBAR_HEADING = `${NAVBAR}-heading`;
 export const NAVBAR_DIVIDER = `${NAVBAR}-divider`;
 
 export const NON_IDEAL_STATE = `${NS}-non-ideal-state`;
-export const NON_IDEAL_STATE_ACTION = `${NON_IDEAL_STATE}-action`;
-export const NON_IDEAL_STATE_DESCRIPTION = `${NON_IDEAL_STATE}-description`;
-export const NON_IDEAL_STATE_ICON = `${NON_IDEAL_STATE}-icon`;
-export const NON_IDEAL_STATE_TITLE = `${NON_IDEAL_STATE}-title`;
 export const NON_IDEAL_STATE_VISUAL = `${NON_IDEAL_STATE}-visual`;
 
 export const NUMERIC_INPUT = `${NS}-numeric-input`;
