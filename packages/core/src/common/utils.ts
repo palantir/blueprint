@@ -25,6 +25,22 @@ export function isFunction(value: any): value is Function {
 }
 
 /**
+ * Converts a React child to an element: non-empty strings or numbers are wrapped in `<span>`;
+ * empty strings are discarded.
+ */
+export function ensureElement(child: React.ReactChild | undefined, tagName: keyof JSX.IntrinsicElements = "span") {
+    // wrap text in a <span> so children are always elements
+    if (typeof child === "string") {
+        // cull whitespace strings
+        return child.trim().length > 0 ? React.createElement(tagName, {}, child) : undefined;
+    } else if (typeof child === "number") {
+        return React.createElement(tagName, {}, child);
+    } else {
+        return child;
+    }
+}
+
+/**
  * Represents anything that has a `name` property such as Functions.
  */
 export interface INamed {

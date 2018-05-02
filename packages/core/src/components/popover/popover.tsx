@@ -15,6 +15,7 @@ import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
 import { HTMLDivProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
+import { ensureElement } from '../../common/utils';
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
 import { getArrowAngle, PopoverArrow } from "./arrow";
@@ -632,20 +633,4 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         });
         return data;
     };
-}
-
-/**
- * Converts a react child to an element: non-empty strings or numbers are wrapped in `<span>`;
- * empty strings are discarded.
- */
-function ensureElement(child: React.ReactChild | undefined) {
-    // wrap text in a <span> so children are always elements
-    if (typeof child === "string") {
-        // cull whitespace strings
-        return child.trim().length > 0 ? <span>{child}</span> : undefined;
-    } else if (typeof child === "number") {
-        return <span>{child}</span>;
-    } else {
-        return child;
-    }
 }
