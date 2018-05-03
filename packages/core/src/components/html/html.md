@@ -13,8 +13,7 @@ will automatically include the appropriate CSS class:
 - `Blockquote`
 - `Code`
 - `Pre`
-- `Ol`
-- `Ul`
+- `OL` & `UL` (note uppercase)
 - `Table` (see [Table (HTML)](http://localhost:9000/#core/components/table-html))
 
 These components each support the full set of relevant HTML attributes **and an
