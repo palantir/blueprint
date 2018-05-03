@@ -32,7 +32,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 function walk(ctx: Lint.WalkContext<void>): void {
     return ts.forEachChild(ctx.sourceFile, function cb(node: ts.Node): void {
-        if (ts.isJsxOpeningElement(node)) {
+        if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
             const match = PATTERN.exec(node.tagName.getFullText());
             if (match != null) {
                 const name = match[1].charAt(0).toUpperCase() + match[1].slice(1);
