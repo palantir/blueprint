@@ -27,6 +27,9 @@ function htmlElement<E extends HTMLElement>(
     };
 }
 
+// the following components are linted by blueprint-html-components because
+// they should rarely be used without the Blueprint classes/styles:
+
 export const H1 = htmlElement<HTMLHeadingElement>("h1", HEADING);
 export const H2 = htmlElement<HTMLHeadingElement>("h2", HEADING);
 export const H3 = htmlElement<HTMLHeadingElement>("h3", HEADING);
@@ -37,5 +40,8 @@ export const H6 = htmlElement<HTMLHeadingElement>("h6", HEADING);
 export const Blockquote = htmlElement<HTMLElement>("blockquote", BLOCKQUOTE);
 export const Code = htmlElement<HTMLElement>("code", CODE);
 export const Pre = htmlElement<HTMLElement>("pre", CODE_BLOCK);
-export const Ol = htmlElement<HTMLElement>("ol", LIST);
-export const Ul = htmlElement<HTMLElement>("ul", LIST);
+
+// these two are not linted by blueprint-html-components because there are valid
+// uses of these elements without Blueprint styles:
+export const OL = htmlElement<HTMLElement>("ol", LIST);
+export const UL = htmlElement<HTMLElement>("ul", LIST);
