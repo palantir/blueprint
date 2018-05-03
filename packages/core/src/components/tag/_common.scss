@@ -8,6 +8,8 @@ $tag-icon-spacing: 3px !default;
 $tag-height: $pt-grid-size * 2 !default;
 $tag-padding: ($tag-height - $pt-icon-size-standard) / 2 !default;
 $tag-margin: ($pt-input-height - $tag-height) / 2 !default;
+$tag-border-radius: $pt-border-radius;
+$tag-border-radius-round: $pt-border-radius * 10;
 
 $tag-height-large: $pt-grid-size * 3 !default;
 $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
@@ -18,7 +20,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   display: inline-block;
   position: relative;
   border: none;
-  border-radius: $pt-border-radius;
+  border-radius: $tag-border-radius;
   box-shadow: none;
   background-color: $tag-default-color;
   min-width: $tag-height;
@@ -28,7 +30,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   font-size: $pt-font-size-small;
 
   &.#{$ns}-round {
-    border-radius: $tag-height / 2;
+    border-radius: $tag-border-radius-round;
   }
 
   .#{$ns}-dark & {

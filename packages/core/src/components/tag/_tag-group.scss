@@ -1,0 +1,24 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "../../common/variables";
+@import "./common";
+
+$tag-group-spacing: 1px;
+
+.#{$ns}-tag-group {
+  display: inline-flex;
+
+  .#{$ns}-tag {
+    &:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:not(:last-child) {
+      margin-right: $tag-group-spacing;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}

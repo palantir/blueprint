@@ -211,6 +211,8 @@ export const TAG = `${NS}-tag`;
 export const TAG_REMOVABLE = `${TAG}-removable`;
 export const TAG_REMOVE = `${TAG}-remove`;
 
+export const TAG_GROUP = `${NS}-tag-group`;
+
 export const TAG_INPUT = `${NS}-tag-input`;
 export const TAG_INPUT_ICON = `${TAG_INPUT}-icon`;
 export const TAG_INPUT_VALUES = `${TAG_INPUT}-values`;

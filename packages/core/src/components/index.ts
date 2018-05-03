@@ -57,6 +57,7 @@ export * from "./spinner/svgSpinner";
 export * from "./tabs/tab";
 export * from "./tabs/tabs";
 export * from "./tag/tag";
+export * from "./tag/tagGroup";
 export * from "./tag-input/tagInput";
 export * from "./toast/toast";
 export * from "./toast/toaster";
