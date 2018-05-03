@@ -52,8 +52,8 @@ describe("<Popover>", () => {
             const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover>
-                    <h1 />
-                    <h2 />
+                    <button />
+                    <article />
                     {"h3"}
                 </Popover>,
             );

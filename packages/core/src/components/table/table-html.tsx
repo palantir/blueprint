@@ -36,6 +36,7 @@ export class Table extends React.PureComponent<ITableHtmlProps> {
             },
             className,
         );
+        // tslint:disable-next-line:blueprint-html-components
         return <table {...htmlProps} ref={elementRef} className={classes} />;
     }
 }
