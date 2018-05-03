@@ -16,6 +16,7 @@ export * from "./props";
 import * as Classes from "./classes";
 import * as Keys from "./keys";
 import * as Utils from "./utils";
+import * as Variables from "./variables";
 
 export { Classes, Keys, Utils };
 // NOTE: Errors is not exported in public API
