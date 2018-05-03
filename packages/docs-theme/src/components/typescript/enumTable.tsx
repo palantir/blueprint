@@ -49,6 +49,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
             "docs-prop-is-required": !isOptional,
         });
 
+        // tslint:disable:blueprint-html-components - this is inside RUNNING_TEXT
         return (
             <tr key={name}>
                 <td className={classes}>
@@ -64,6 +65,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
                 </td>
             </tr>
         );
+        // tslint:enable:blueprint-html-components
     };
 
     private renderTags(entry: ITsEnumMember) {

@@ -9,7 +9,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Button, Classes, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Button, Classes, H4, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 
 import {
     Cell,
@@ -523,7 +523,7 @@ ReactDOM.render(
                         name={`${alpha} Column with a substantially long header name`}
                         menuRenderer={renderTestMenu}
                     >
-                        <h4>Header {alpha}</h4>
+                        <H4>Header {alpha}</H4>
                         <p>Whatever interactive header content goes here lorem ipsum.</p>
                     </ColumnHeaderCell>
                 );

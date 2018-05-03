@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes } from "@blueprintjs/core";
+import { Classes, Code, H3 } from "@blueprintjs/core";
 import classNames from "classnames";
 import { IBlock } from "documentalist/dist/client";
 import * as React from "react";
@@ -35,9 +35,9 @@ export function renderBlock(
         } catch (ex) {
             console.error(ex.message);
             return (
-                <h3 key={`__error-${i}`}>
-                    <code className={Classes.CODE}>{ex.message}</code>
-                </h3>
+                <H3 key={`__error-${i}`}>
+                    <Code>{ex.message}</Code>
+                </H3>
             );
         }
     });
