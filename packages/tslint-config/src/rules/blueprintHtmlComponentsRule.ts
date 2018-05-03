@@ -7,7 +7,7 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 
-const PATTERN = /^(h[1-6]|code|pre|blockquote|ul|ol|table)$/;
+const PATTERN = /^(h[1-6]|code|pre|blockquote|table)$/;
 
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
@@ -32,7 +32,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 function walk(ctx: Lint.WalkContext<void>): void {
     return ts.forEachChild(ctx.sourceFile, function cb(node: ts.Node): void {
-        if (ts.isJsxOpeningElement(node) || ts.isJsxClosingElement(node)) {
+        if (ts.isJsxOpeningElement(node)) {
             const match = PATTERN.exec(node.tagName.getFullText());
             if (match != null) {
                 const name = match[1].charAt(0).toUpperCase() + match[1].slice(1);
