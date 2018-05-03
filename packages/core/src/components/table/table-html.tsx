@@ -23,6 +23,8 @@ export interface ITableHtmlProps extends React.HTMLAttributes<HTMLTableElement>,
     striped?: boolean;
 }
 
+// this component is simple enough that tests would be purely tautological.
+/* istanbul ignore next */
 export class Table extends React.PureComponent<ITableHtmlProps> {
     public render() {
         const { bordered, className, elementRef, interactive, small, striped, ...htmlProps } = this.props;
