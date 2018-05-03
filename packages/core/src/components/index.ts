@@ -47,6 +47,7 @@ export * from "./navbar/navbarGroup";
 export * from "./navbar/navbarHeading";
 export * from "./non-ideal-state/nonIdealState";
 export * from "./overlay/overlay";
+export * from "./table/table-html";
 export * from "./text/text";
 export * from "./popover/popover";
 export * from "./portal/portal";
