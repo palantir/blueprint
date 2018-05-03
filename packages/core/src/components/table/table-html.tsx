@@ -26,12 +26,16 @@ export interface ITableHtmlProps extends React.HTMLAttributes<HTMLTableElement>,
 export class Table extends React.PureComponent<ITableHtmlProps> {
     public render() {
         const { bordered, className, elementRef, interactive, small, striped, ...htmlProps } = this.props;
-        const classes = classNames(HTML_TABLE, {
-            [HTML_TABLE_BORDERED]: bordered,
-            [HTML_TABLE_STRIPED]: striped,
-            [INTERACTIVE]: interactive,
-            [SMALL]: small,
-        });
+        const classes = classNames(
+            HTML_TABLE,
+            {
+                [HTML_TABLE_BORDERED]: bordered,
+                [HTML_TABLE_STRIPED]: striped,
+                [INTERACTIVE]: interactive,
+                [SMALL]: small,
+            },
+            className,
+        );
         return <table {...htmlProps} ref={elementRef} className={classes} />;
     }
 }
