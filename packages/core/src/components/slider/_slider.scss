@@ -57,30 +57,6 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider-progress {
-  .#{$ns}-slider:not(.#{$ns}-vertical) & {
-    &.#{$ns}-start {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  
-    &.#{$ns}-end {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  }
-
-  .#{$ns}-slider.#{$ns}-vertical & {
-    &.#{$ns}-start {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  
-    &.#{$ns}-end {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-  } 
-
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       background-color: $color;
@@ -196,6 +172,18 @@ $track-height: $track-size !default;
   font-size: $pt-font-size-small;
 }
 
+.#{$ns}-slider:not(.#{$ns}-vertical) .#{$ns}-slider-progress {
+  &.#{$ns}-start {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &.#{$ns}-end {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
 .#{$ns}-slider.#{$ns}-vertical {
   @include slider-orientation($pt-input-height-large, $vertical: true);
 
@@ -206,6 +194,16 @@ $track-height: $track-size !default;
 
   .#{$ns}-slider-progress {
     top: auto;
+
+    &.#{$ns}-start {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &.#{$ns}-end {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
   }
 
   .#{$ns}-slider-label {
