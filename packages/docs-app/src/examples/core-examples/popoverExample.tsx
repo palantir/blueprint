@@ -11,6 +11,7 @@ import * as React from "react";
 import {
     Button,
     Classes,
+    Code,
     FormGroup,
     H5,
     Icon,
@@ -137,7 +138,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                 </Popover>
                 <p>
                     Scroll around this container to experiment<br />
-                    with <code>flip</code> and <code>preventOverflow</code> modifiers.
+                    with <Code>flip</Code> and <Code>preventOverflow</Code> modifiers.
                 </p>
             </div>
         );
@@ -174,7 +175,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     </div>
                 </label>,
                 <Switch checked={this.state.usePortal} key="portal" onChange={this.toggleUsePortal}>
-                    Use <code>Portal</code>
+                    Use <Code>Portal</Code>
                 </Switch>,
                 <Switch
                     checked={this.state.minimal}
