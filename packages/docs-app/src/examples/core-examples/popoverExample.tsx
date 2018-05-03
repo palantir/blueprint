@@ -12,6 +12,7 @@ import {
     Button,
     Classes,
     FormGroup,
+    H5,
     Icon,
     Intent,
     Menu,
@@ -146,7 +147,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         const { arrow, flip, preventOverflow } = this.state.modifiers;
         return [
             [
-                <h5 key="app">Appearance</h5>,
+                <H5 key="app">Appearance</H5>,
                 <FormGroup
                     helperText="May be overridden to prevent overflow"
                     key="position"
@@ -189,7 +190,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                 />,
             ],
             [
-                <h5 key="int">Interactions</h5>,
+                <H5 key="int">Interactions</H5>,
                 <RadioGroup
                     key="interaction"
                     label="Interaction kind"
@@ -206,7 +207,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                 <br key="break" />,
             ],
             [
-                <h5 key="mod">Modifiers</h5>,
+                <H5 key="mod">Modifiers</H5>,
                 <Switch
                     checked={arrow.enabled}
                     label="Arrow"
@@ -250,7 +251,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
     private getContents(index: number) {
         return [
             <div key="text">
-                <h5>Confirm deletion</h5>
+                <H5>Confirm deletion</H5>
                 <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
                 <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 15 }}>
                     <Button className={Classes.POPOVER_DISMISS} style={{ marginRight: 10 }}>

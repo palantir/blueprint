@@ -59,11 +59,11 @@ $modifier-key-padding: 3px 8px 3px 6px !default;
   overflow-y: auto;
   padding: $pt-grid-size * 3;
 
-  .#{$ns}-hotkey-group {
-    margin-bottom: $pt-grid-size * 3;
+  .#{$ns}-heading {
+    margin-bottom: $pt-grid-size * 2;
 
     &:not(:first-child) {
-      margin-top: $pt-grid-size * 5;
+      margin-top: $pt-grid-size * 4;
     }
   }
 }

@@ -9,6 +9,7 @@ import * as React from "react";
 
 import { Classes, HTMLDivProps, IIntentProps, Intent, IProps } from "../../common";
 import { Icon } from "../../index";
+import { H4 } from "../html/html";
 import { IconName } from "../icon/icon";
 
 /** This component also supports the full range of HTML `<div>` props. */
@@ -25,8 +26,9 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply
-     * pass `<h4 className={Classes.HEADING}>JSX title content<h4>` as
-     * first `children` element instead of using this prop.
+     * pass `<H4>JSX title content</H4>`  as first `children` element instead of
+     * using this prop (note uppercase tag name to use the Blueprint Heading
+     * component).
      */
     title?: string;
 }
@@ -45,7 +47,7 @@ export class Callout extends React.PureComponent<ICalloutProps, {}> {
         return (
             <div className={classes} {...htmlProps}>
                 {iconName && <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />}
-                {title && <h4 className={Classes.HEADING}>{title}</h4>}
+                {title && <H4>{title}</H4>}
                 {children}
             </div>
         );
