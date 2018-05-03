@@ -5,6 +5,7 @@
 @import "~@blueprintjs/core/src/common/mixins";
 
 $container-width: $pt-grid-size * 110;
+$container-padding: $pt-grid-size / 2;
 
 $sidebar-width: $pt-grid-size * 27;
 $sidebar-padding: $pt-grid-size * 1.5;
