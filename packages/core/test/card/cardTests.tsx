@@ -9,7 +9,7 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Card, Classes } from "../../src/index";
+import { Card, Classes, H4 } from "../../src/index";
 
 describe("<Card>", () => {
     it("supports elevation, interactive, and className props", () => {
@@ -24,7 +24,7 @@ describe("<Card>", () => {
     it("renders children", () => {
         const wrapper = shallow(
             <Card>
-                <h4>Card content</h4>
+                <H4>Card content</H4>
             </Card>,
         );
 

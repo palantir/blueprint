@@ -479,6 +479,6 @@ describe("<Overlay>", () => {
 
     let index = 0;
     function createOverlayContents() {
-        return <h1 id={`overlay-${index++}`}>Overlay content!</h1>;
+        return <strong id={`overlay-${index++}`}>Overlay content!</strong>;
     }
 });

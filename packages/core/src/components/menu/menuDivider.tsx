@@ -9,6 +9,7 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
+import { H6 } from "../html/html";
 
 export interface IMenuDividerProps extends IProps {
     /** This component does not support children. */
@@ -30,7 +31,7 @@ export class MenuDivider extends React.Component<IMenuDividerProps, {}> {
             // section header with title
             return (
                 <li className={classNames(Classes.MENU_HEADER, className)}>
-                    <h6>{title}</h6>
+                    <H6>{title}</H6>
                 </li>
             );
         }
