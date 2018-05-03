@@ -27,9 +27,7 @@ describe("<Card>", () => {
                 <H4>Card content</H4>
             </Card>,
         );
-
-        assert.lengthOf(wrapper.children(), 1);
-        assert.equal(wrapper.children().html(), "<h4>Card content</h4>");
+        assert.isTrue(wrapper.find(H4).exists());
     });
 
     it("calls onClick when card is clicked", () => {
