@@ -33,11 +33,3 @@ you provide a `className` prop, the class names you provide will be added alongs
 Blueprint class name.
 
 @interface ITagProps
-
-@# Tag groups
-
-Tag groups help you visually group tags together, similarly to what button groups are doing for buttons.
-
-@reactExample TagGroupExample
-
-@interface ITagGroupProps
