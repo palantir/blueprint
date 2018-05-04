@@ -7,7 +7,7 @@
   "typings": "lib/esm/index.d.ts",
   "style": "lib/css/blueprint-timezone.css",
   "unpkg": "dist/timezone.bundle.js",
-  "sideEffects": false,
+  "sideEffects": ["*.css"],
   "scripts": {
     "clean": "rm -rf dist/* && rm -rf lib/*",
     "compile": "run-p \"compile:*\"",
