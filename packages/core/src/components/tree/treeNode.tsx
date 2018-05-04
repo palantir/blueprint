@@ -116,7 +116,7 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
                     ref={this.handleContentRef}
                 >
                     <span className={caretClasses} onClick={showCaret ? this.handleCaretClick : undefined}>
-                        {showCaret && <Icon icon="caret-right" />}
+                        {showCaret && <Icon icon="chevron-right" />}
                     </span>
                     <Icon className={Classes.TREE_NODE_ICON} icon={icon} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>

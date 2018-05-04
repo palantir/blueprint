@@ -97,7 +97,7 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
   // CSS API support
   &.#{$ns}-icon-standard::before {
-    content: $pt-icon-caret-right;
+    content: $pt-icon-chevron-right;
   }
 
   .#{$ns}-icon {
