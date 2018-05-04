@@ -51,16 +51,8 @@ $tag-input-outline-size: 2px;
     // or use .#{$ns}-fill CSS class modifier.
     overflow-wrap: break-word;
 
-    &::before {
-      @include position-all(absolute, -$tag-input-outline-offset);
-
-      border-radius: $pt-border-radius;
-      box-shadow: 0 0 0 0 $tag-input-outline-color;
-      content: "";
-    }
-
-    &.#{$ns}-active::before {
-      box-shadow: 0 0 0 $tag-input-outline-size $tag-input-outline-color;
+    &.#{$ns}-active {
+      @include focus-outline(0);
     }
   }
 
