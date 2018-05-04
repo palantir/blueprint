@@ -105,6 +105,10 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   }
 }
 
+#{$icon-classes} {
+  color: $pt-icon-color;
+}
+
 .#{$ns}-tree-node-icon {
   position: relative;
   margin-right: $tree-icon-spacing;
@@ -153,7 +157,7 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
     background-color: rgba($gray1, 0.3);
   }
 
-  .#{$ns}-tree-node-icon {
+  #{$icon-classes} {
     color: $pt-dark-icon-color;
   }
 
