@@ -6,11 +6,14 @@ $dark-tag-default-color: $gray5 !default;
 
 $tag-icon-spacing: 3px !default;
 $tag-height: $pt-grid-size * 2 !default;
-$tag-padding: ($tag-height - $pt-icon-size-standard) / 2 !default;
+$tag-padding-vertical: ($tag-height - $pt-icon-size-standard) / 2 !default;
+$tag-padding-horizontal: $tag-padding-vertical * 3 !default;
 $tag-margin: ($pt-input-height - $tag-height) / 2 !default;
 
 $tag-height-large: $pt-grid-size * 3 !default;
-$tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
+$tag-padding-vertical-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
+$tag-padding-horizontal-large: $tag-padding-vertical-large * 2 !default;
+$tag-round-padding-offset: 1.4 !default;
 
 @mixin pt-tag() {
   @include pt-tag-interactive($tag-default-color, 1);
@@ -22,13 +25,15 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   box-shadow: none;
   background-color: $tag-default-color;
   min-width: $tag-height;
-  padding: $tag-padding ($tag-padding * 3);
+  padding: $tag-padding-vertical $tag-padding-horizontal;
   line-height: $pt-icon-size-standard;
   color: $pt-dark-text-color;
   font-size: $pt-font-size-small;
 
   &.#{$ns}-round {
     border-radius: $tag-height-large;
+    padding-right: $tag-padding-horizontal * $tag-round-padding-offset;
+    padding-left: $tag-padding-horizontal * $tag-round-padding-offset;
   }
 
   .#{$ns}-dark & {
@@ -49,12 +54,13 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 
 @mixin pt-tag-large() {
   min-width: $tag-height-large;
-  padding: $tag-padding-large ($tag-padding-large * 2);
+  padding: $tag-padding-vertical-large $tag-padding-horizontal-large;
   line-height: $pt-icon-size-large;
   font-size: $pt-font-size;
 
   &.#{$ns}-round {
-    border-radius: $tag-height-large / 2;
+    padding-right: $tag-padding-horizontal-large * $tag-round-padding-offset;
+    padding-left: $tag-padding-horizontal-large * $tag-round-padding-offset;
   }
 
   &.#{$ns}-tag-removable {
@@ -134,7 +140,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   border: none;
   background: none;
   cursor: pointer;
-  padding: $tag-padding;
+  padding: $tag-padding-vertical $tag-padding-horizontal;
   color: inherit;
 
   &:hover {
@@ -154,7 +160,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   }
 
   .#{$ns}-large & {
-    padding: $tag-padding-large;
+    padding: $tag-padding-vertical-large $tag-padding-horizontal-large;
 
     &:empty::before {
       @include pt-icon-sized($pt-icon-size-large);

@@ -13,6 +13,7 @@ $tag-group-spacing: 1px !default;
   > .#{$ns}-tag:not(:first-child) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    padding-left: $tag-padding-horizontal;
   }
 
   > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-tag,
@@ -20,5 +21,6 @@ $tag-group-spacing: 1px !default;
     margin-right: $tag-group-spacing;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    padding-right: $tag-padding-horizontal;
   }
 }
