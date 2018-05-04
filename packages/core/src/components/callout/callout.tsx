@@ -26,7 +26,7 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply
-     * pass `<H4>JSX title content</H4>`  as first `children` element instead of
+     * pass `<H4>JSX title content</H4>` as first `children` element instead of
      * using this prop (note uppercase tag name to use the Blueprint Heading
      * component).
      */
