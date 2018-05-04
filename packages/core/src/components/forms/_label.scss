@@ -31,10 +31,6 @@ label.#{$ns}-label {
   display: block;
   margin: 0 0 ($pt-grid-size * 1.5);
 
-  strong {
-    font-weight: 600;
-  }
-
   .#{$ns}-input,
   .#{$ns}-select,
   .#{$ns}-popover-wrapper {
