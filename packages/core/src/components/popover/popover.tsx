@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import { ModifierFn, Modifiers as PopperModifiers } from "popper.js";
 import * as React from "react";
-import { Manager, Popper, PopperChildrenProps, Reference, RefProps } from "react-popper";
+import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
@@ -198,8 +198,6 @@ export interface IPopoverState {
     hasDarkParent?: boolean;
 }
 
-type RefHandler = (ref: HTMLElement) => void;
-
 export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
     public static displayName = "Blueprint2.Popover";
 
@@ -284,7 +282,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         return (
             <Manager>
-                <Reference>{this.renderTarget}</Reference>
+                <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>
                 <Overlay
                     autoFocus={this.props.autoFocus}
                     backdropClassName={Classes.POPOVER_BACKDROP}
@@ -304,7 +302,11 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                     transitionName={Classes.POPOVER}
                     usePortal={this.props.usePortal}
                 >
-                    <Popper placement={positionToPlacement(this.props.position)} modifiers={allModifiers}>
+                    <Popper
+                        innerRef={this.refHandlers.popover}
+                        placement={positionToPlacement(this.props.position)}
+                        modifiers={allModifiers}
+                    >
                         {this.renderPopper}
                     </Popper>
                 </Overlay>
@@ -404,7 +406,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         return (
             <div
                 className={popoverClasses}
-                ref={multiRef(props.ref, this.refHandlers.popover)}
+                ref={props.ref}
                 style={{ ...props.style, transformOrigin: this.state.transformOrigin }}
                 {...popoverHandlers}
             >
@@ -416,7 +418,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         );
     };
 
-    private renderTarget = (props: RefProps) => {
+    private renderTarget = (props: ReferenceChildrenProps) => {
         const { className, isOpen, targetClassName, targetElementTag } = this.props;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
@@ -606,8 +608,4 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         });
         return data;
     };
-}
-
-function multiRef(...refs: Array<(ref: HTMLElement) => void>) {
-    return (ref: HTMLElement) => refs.forEach(handler => handler(ref));
 }
