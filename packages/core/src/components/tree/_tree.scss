@@ -112,7 +112,6 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 .#{$ns}-tree-node-icon {
   position: relative;
   margin-right: $tree-icon-spacing;
-  color: $pt-icon-color;
 }
 
 .#{$ns}-tree-node-label {
