@@ -130,6 +130,12 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   padding: 0 ($pt-grid-size / 2);
   line-height: $tree-row-height;
   user-select: none;
+
+  .#{$ns}-popover-wrapper,
+  .#{$ns}-popover-target {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
