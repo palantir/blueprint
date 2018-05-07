@@ -17,9 +17,9 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 Use the [appropriate issue template](https://github.com/palantir/blueprint/issues/new) before submitting.
 
-### Migrating from 1.x to 2.x?
+### What's new in 2.0
 
-Please review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path) on the wiki.
+Check out the [**2.0 changelog**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0) on the wiki, and make sure to review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path).
 
 ## 🚧 3.0 is in progress! 🚧
 
