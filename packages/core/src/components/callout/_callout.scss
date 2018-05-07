@@ -45,7 +45,8 @@ Styleguide callout
   &.#{$ns}-callout-icon {
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
-    > .#{$ns}-icon {
+    // make sure we only target the callout icon, not what's in the content
+    > .#{$ns}-icon:first-child {
       position: absolute;
       top: $pt-grid-size;
       left: $pt-grid-size;
