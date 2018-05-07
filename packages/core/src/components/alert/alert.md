@@ -1,4 +1,4 @@
-@# Alerts
+@# `Alert`
 
 Alerts notify users of important information and force them to acknowledge the alert content before
 continuing.
@@ -13,7 +13,7 @@ to show the type of the alert.
 
 @reactExample AlertExample
 
-@## JavaScript API
+@## Props
 
 The `Alert` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).

@@ -1,6 +1,42 @@
-@# Buttons
+@# `Button`
 
 Buttons trigger actions when clicked.
+
+@reactExample ButtonsExample
+
+@## Props
+
+The `Button` and `AnchorButton` components are available in the **@blueprintjs/core** package.
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+
+```tsx
+<Button icon="refresh" onClick={...} />
+// renders:
+<button class="@ns-button @ns-icon-refresh" type="button"></button>
+```
+
+```tsx
+<AnchorButton text="Click" onClick={...} />
+// renders:
+<a class="@ns-button" role="button" tabIndex={0}>Click</a>
+```
+
+You can provide your own props to these components as if they were regular JSX
+HTML elements. If you provide a `className` prop, the class names you provide
+will be merged with the Blueprint class name. Other attributes, such as a `role`
+for an `<AnchorButton>`, will override the defaults.
+
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-heading">Interactions with disabled buttons</h4>
+    Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
+    This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
+    the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,
+    but `AnchorButton` uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled`
+    attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
+    when disabled but permit other events.
+</div>
+
+@interface IButtonProps
 
 @## CSS API
 
@@ -41,46 +77,3 @@ to any `.@ns-button`. `@ns-minimal` is compatible with all other button modifier
 except for `.@ns-fill` (due to lack of visual affordances).
 
 @css button-minimal
-
-@## JavaScript API
-
-The `Button` and `AnchorButton` components are available in the **@blueprintjs/core** package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-Button components render buttons with Blueprint classes and attributes.
-See the [Buttons CSS docs](#core/components/button.css-api) for styling options.
-
-You can provide your own props to these components as if they were regular JSX HTML elements. If you
-provide a `className` prop, the class names you provide will be added alongside of the default
-Blueprint class name. If you specify other attributes that the component provides, such as a `role`
-for an `<AnchorButton>`, you'll overide the default value.
-
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Interactions with disabled buttons</h4>
-    Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
-    This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
-    the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,
-    but `AnchorButton` uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled`
-    attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
-    when disabled but permit other events.
-</div>
-
-@reactExample ButtonsExample
-
-@### Anchor button
-
-```tsx
-<AnchorButton text="Click" />
-// renders:
-<a class="@ns-button" role="button" tabIndex={0}>Click</a>
-```
-
-@### Button
-
-```tsx
-<Button icon="refresh" />
-// renders:
-<button class="@ns-button @ns-icon-refresh" type="button"></button>
-```
-
-@interface IButtonProps
