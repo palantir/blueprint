@@ -128,7 +128,6 @@ export const MODIFIER_KEY = `${NS}-modifier-key`;
 
 export const HOTKEY = `${NS}-hotkey`;
 export const HOTKEY_LABEL = `${HOTKEY}-label`;
-export const HOTKEY_GROUP = `${HOTKEY}-group`;
 export const HOTKEY_COLUMN = `${HOTKEY}-column`;
 export const HOTKEY_DIALOG = `${HOTKEY}-dialog`;
 
