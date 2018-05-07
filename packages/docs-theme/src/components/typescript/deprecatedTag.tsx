@@ -6,6 +6,7 @@
 
 import { Intent, Tag } from "@blueprintjs/core";
 import * as React from "react";
+import { markdownCode } from "../../common/utils";
 
 export const DeprecatedTag: React.SFC<{ isDeprecated: boolean | string | undefined }> = ({ isDeprecated }) => {
     if (isDeprecated === true || typeof isDeprecated === "string") {
@@ -22,16 +23,3 @@ export const DeprecatedTag: React.SFC<{ isDeprecated: boolean | string | undefin
     return null;
 };
 DeprecatedTag.displayName = "Docs2.DeprecatedTag";
-
-/**
- * Minimal markdown renderer that supports only backtick `code` elements and triple-backtick `pre` elements.
- * Does not provide any syntax highlighting.
- */
-function markdownCode(text: string) {
-    return {
-        __html: text
-            .replace("<", "&lt;")
-            .replace(/```([^`]+)```/g, (_, code) => `<pre>${code}</pre>`)
-            .replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`),
-    };
-}

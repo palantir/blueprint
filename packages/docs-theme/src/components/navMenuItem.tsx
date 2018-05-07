@@ -8,6 +8,7 @@ import { Classes } from "@blueprintjs/core";
 import classNames from "classnames";
 import { IHeadingNode, IPageNode } from "documentalist/dist/client";
 import * as React from "react";
+import { markdownCode } from "../common/utils";
 
 export interface INavMenuItemProps {
     /** This element never receives `children`. */
@@ -36,7 +37,7 @@ export const NavMenuItem: React.SFC<INavMenuItemProps> = props => {
     const { className, isActive, isExpanded, section, ...htmlProps } = props;
     return (
         <a className={classNames(Classes.MENU_ITEM, className)} {...htmlProps}>
-            <span className={Classes.FILL}>{section.title}</span>
+            <span className={Classes.FILL} dangerouslySetInnerHTML={markdownCode(section.title)} />
         </a>
     );
 };
