@@ -10,6 +10,7 @@ import classNames from "classnames";
 import { AbstractPureComponent, Classes, IProps } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType } from "../../common/utils";
+import { H4 } from "../html/html";
 import { Hotkey, IHotkeyProps } from "./hotkey";
 
 export { Hotkey, IHotkeyProps } from "./hotkey";
@@ -57,11 +58,7 @@ export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
         for (const hotkey of hotkeys) {
             const groupLabel = hotkey.group;
             if (groupLabel !== lastGroup) {
-                elems.push(
-                    <h4 key={`group-${elems.length}`} className={Classes.HOTKEY_GROUP}>
-                        {groupLabel}
-                    </h4>,
-                );
+                elems.push(<H4 key={`group-${elems.length}`}>{groupLabel}</H4>);
                 lastGroup = groupLabel;
             }
             elems.push(<Hotkey key={elems.length} {...hotkey} />);

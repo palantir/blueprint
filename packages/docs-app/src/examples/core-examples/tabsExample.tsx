@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
+import { Classes, H1, H3, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface ITabsExampleState {
@@ -51,7 +51,7 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
                         </Tabs>
                     </Navbar.Group>
                 </Navbar>
-                <h1 style={{ marginTop: 30, marginBottom: 30 }}>{this.state.navbarTabId}</h1>
+                <H1 style={{ marginTop: 30, marginBottom: 30 }}>{this.state.navbarTabId}</H1>
                 {/* uncontrolled mode & each Tab has a panel: */}
                 <Tabs
                     animate={this.state.animate}
@@ -103,7 +103,7 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
 
 const ReactPanel: React.SFC<{}> = () => (
     <div>
-        <h3>Example panel: React</h3>
+        <H3>Example panel: React</H3>
         <p className={Classes.RUNNING_TEXT}>
             Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology
             stack, it's easy to try it out on a small feature in an existing project.
@@ -113,7 +113,7 @@ const ReactPanel: React.SFC<{}> = () => (
 
 const AngularPanel: React.SFC<{}> = () => (
     <div>
-        <h3>Example panel: Angular</h3>
+        <H3>Example panel: Angular</H3>
         <p className={Classes.RUNNING_TEXT}>
             HTML is great for declaring static documents, but it falters when we try to use it for declaring dynamic
             views in web-applications. AngularJS lets you extend HTML vocabulary for your application. The resulting
@@ -124,7 +124,7 @@ const AngularPanel: React.SFC<{}> = () => (
 
 const EmberPanel: React.SFC<{}> = () => (
     <div>
-        <h3>Example panel: Ember</h3>
+        <H3>Example panel: Ember</H3>
         <p className={Classes.RUNNING_TEXT}>
             Ember.js is an open-source JavaScript application framework, based on the model-view-controller (MVC)
             pattern. It allows developers to create scalable single-page web applications by incorporating common idioms
@@ -136,6 +136,6 @@ const EmberPanel: React.SFC<{}> = () => (
 
 const BackbonePanel: React.SFC<{}> = () => (
     <div>
-        <h3>Backbone</h3>
+        <H3>Backbone</H3>
     </div>
 );

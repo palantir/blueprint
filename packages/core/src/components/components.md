@@ -14,6 +14,7 @@
 @page dialog
 @page editable-text
 @page forms
+@page html
 @page hotkeys
 @page icon
 @page menu

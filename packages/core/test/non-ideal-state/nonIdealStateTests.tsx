@@ -8,7 +8,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Classes, NonIdealState } from "../../src/index";
+import { Classes, H4, NonIdealState } from "../../src/index";
 
 describe("<NonIdealState>", () => {
     it("renders its contents", () => {
@@ -20,8 +20,9 @@ describe("<NonIdealState>", () => {
                 icon="folder-close"
             />,
         );
-        [Classes.HEADING, Classes.NON_IDEAL_STATE_VISUAL, Classes.NON_IDEAL_STATE].forEach(className => {
-            assert.lengthOf(wrapper.find(`.${className}`), 1, `missing ${className}`);
+        assert.exists(wrapper.find(H4), "missing H4");
+        [Classes.NON_IDEAL_STATE_VISUAL, Classes.NON_IDEAL_STATE].forEach(className => {
+            assert.isTrue(wrapper.find(`.${className}`).exists(), `missing ${className}`);
         });
     });
 

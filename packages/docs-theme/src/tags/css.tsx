@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes } from "@blueprintjs/core";
+import { Classes, Code } from "@blueprintjs/core";
 import { IKssPluginData, ITag } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
@@ -26,7 +26,7 @@ export class CssExample extends React.PureComponent<ITag> {
         const examples = modifiers.map(modifier => (
             <tr key={modifier.name}>
                 <td data-modifier={modifier.name}>
-                    <code className={Classes.CODE}>{modifier.name}</code>
+                    <Code>{modifier.name}</Code>
                 </td>
                 <td className="docs-prop-description" dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
             </tr>
@@ -46,7 +46,7 @@ export class CssExample extends React.PureComponent<ITag> {
     private renderMarkupExample(markup: string, modifierName = "default") {
         return (
             <div className="docs-example" data-modifier={modifierName} key={modifierName}>
-                <code className={Classes.CODE}>{modifierName}</code>
+                <Code>{modifierName}</Code>
                 {this.renderMarkupForModifier(markup, modifierName)}
             </div>
         );

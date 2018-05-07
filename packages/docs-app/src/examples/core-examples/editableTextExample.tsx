@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, EditableText, Intent, NumericInput, Switch } from "@blueprintjs/core";
+import { Classes, EditableText, FormGroup, H1, Intent, NumericInput, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -35,14 +35,14 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
     protected renderExample() {
         return (
             <div className="docs-editable-text-example">
-                <h1>
+                <H1>
                     <EditableText
                         intent={this.state.intent}
                         maxLength={this.state.maxLength}
                         placeholder="Edit title..."
                         selectAllOnFocus={this.state.selectAllOnFocus}
                     />
-                </h1>
+                </H1>
                 <EditableText
                     intent={this.state.intent}
                     maxLength={this.state.maxLength}
@@ -63,10 +63,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
         return [
             [<IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />],
             [
-                <div className={Classes.FORM_GROUP} key="maxlength">
-                    <label className={Classes.LABEL} htmlFor={INPUT_ID}>
-                        Max length
-                    </label>
+                <FormGroup label="Max length" labelFor={INPUT_ID} key="maxlength">
                     <NumericInput
                         className={Classes.FORM_CONTENT}
                         fill={true}
@@ -77,7 +74,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                         placeholder="Unlimited"
                         value={this.state.maxLength || ""}
                     />
-                </div>,
+                </FormGroup>,
             ],
             [
                 <Switch

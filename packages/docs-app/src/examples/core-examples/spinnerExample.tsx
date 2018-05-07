@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, Spinner } from "@blueprintjs/core";
+import { Classes, Code, Spinner } from "@blueprintjs/core";
 import { handleStringChange } from "@blueprintjs/docs-theme";
 import { ProgressExample } from "./progressExample";
 
@@ -28,7 +28,7 @@ export class SpinnerExample extends ProgressExample {
         const options = super.renderOptions();
         options.push([
             <label className={Classes.LABEL} key="size">
-                Size (via <code>className</code>)
+                Size (via <Code>className</Code>)
                 <div className={Classes.SELECT}>
                     <select value={this.state.className} onChange={this.handleSizeChange}>
                         {SIZES.map((opt, i) => (

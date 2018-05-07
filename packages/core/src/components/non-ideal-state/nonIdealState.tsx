@@ -10,6 +10,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 import { ensureElement } from "../../common/utils";
+import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 
 export interface INonIdealStateProps extends IProps {
@@ -41,7 +42,7 @@ export class NonIdealState extends React.PureComponent<INonIdealStateProps, {}> 
         return (
             <div className={classNames(Classes.NON_IDEAL_STATE, className)}>
                 {this.maybeRenderVisual()}
-                {title && <h4 className={Classes.HEADING}>{title}</h4>}
+                {title && <H4>{title}</H4>}
                 {description && ensureElement(description, "div")}
                 {action}
                 {children}

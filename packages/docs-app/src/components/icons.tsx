@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, InputGroup, NonIdealState } from "@blueprintjs/core";
+import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
 
 import classNames from "classnames";
@@ -84,7 +84,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
             }
             return (
                 <div className="docs-icon-group" key={index}>
-                    <h3>{groupName}</h3>
+                    <H3>{groupName}</H3>
                     {iconElements}
                 </div>
             );
