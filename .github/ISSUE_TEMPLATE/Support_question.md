@@ -1,5 +1,5 @@
 ---
-name: 🙋‍♀️ Support question
+name: 🙋‍ Support question
 about: Need help with Blueprint?
 ---
 
