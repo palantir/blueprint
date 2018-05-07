@@ -211,9 +211,9 @@ a {
 Preformatted text
 
 Markup:
-<p>Use the <code class="pt-code">&lt;code></code> tag for snippets of code.</p>
-<pre class="pt-code-block">Use the &lt;pre> tag for blocks of code.</pre>
-<pre class="pt-code-block"><code>// code sample
+<p>Use the <code class="@ns-code">&lt;code></code> tag for snippets of code.</p>
+<pre class="@ns-code-block">Use the &lt;pre> tag for blocks of code.</pre>
+<pre class="@ns-code-block"><code>// code sample
 export function hasModifier(modifiers: ts.ModifiersArray, ...modifierKinds: ts.SyntaxKind[]) {
   if (modifiers == null || modifierKinds == null) {
     return false;
