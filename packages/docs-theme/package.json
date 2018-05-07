@@ -7,7 +7,7 @@
   "typings": "lib/esm/index.d.ts",
   "style": "lib/css/docs-theme.css",
   "unpkg": "dist/docs-theme.bundle.js",
-  "sideEffects": false,
+  "sideEffects": ["*.css"],
   "scripts": {
     "clean": "rm -rf dist/* && rm -rf lib/*",
     "compile": "run-p \"compile:*\"",
