@@ -7,17 +7,19 @@ Blueprint is a React-based UI toolkit for the web.
 It is optimized for building complex, data-dense web interfaces for _desktop applications_.
 If you rely heavily on mobile interactions and are looking for a mobile-first UI toolkit, this may not be for you.
 
+[**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
+
 [**View the full documentation ▸**](http://blueprintjs.com/docs)
-
-[**What's new in Blueprint 2.0 ▸**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0)
-
-[**1.x &rarr; 2.0 migration guide ▸**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path)
 
 [**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
-[**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
+### Bug report? Feature request? Support question?
 
-**Support question**? We use the [**blueprintjs** tag on Stack Overflow **▸**](http://stackoverflow.com/questions/tagged/blueprintjs)
+Use the [appropriate issue template](https://github.com/palantir/blueprint/issues/new) before submitting.
+
+### Migrating from 1.x to 2.x?
+
+Please review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path) on the wiki.
 
 ## 🚧 3.0 is in progress! 🚧
 
