@@ -381,6 +381,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     private renderPopper = (props: PopperChildrenProps) => {
         const content = Utils.ensureElement(this.understandChildren().content);
         const { usePortal, interactionKind } = this.props;
+        const { transformOrigin } = this.state;
 
         const popoverHandlers: HTMLDivProps = {
             // always check popover clicks for dismiss class
@@ -404,16 +405,13 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         );
 
         return (
-            <div
-                className={popoverClasses}
-                ref={props.ref}
-                style={{ ...props.style, transformOrigin: this.state.transformOrigin }}
-                {...popoverHandlers}
-            >
-                {this.isArrowEnabled() && (
-                    <PopoverArrow arrowProps={props.arrowProps} angle={this.state.arrowRotation} />
-                )}
-                <div className={Classes.POPOVER_CONTENT}>{content}</div>
+            <div className={Classes.TRANSITION_CONTAINER} ref={props.ref} style={props.style}>
+                <div className={popoverClasses} style={{ transformOrigin }} {...popoverHandlers}>
+                    {this.isArrowEnabled() && (
+                        <PopoverArrow arrowProps={props.arrowProps} angle={this.state.arrowRotation} />
+                    )}
+                    <div className={Classes.POPOVER_CONTENT}>{content}</div>
+                </div>
             </div>
         );
     };
