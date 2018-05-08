@@ -26,9 +26,6 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     /** Whether this spinner should use small styles. */
     small?: boolean;
 
-    /** CSS style properties to apply to the SVG element. */
-    style?: React.CSSProperties;
-
     /**
      * A value between 0 and 1 (inclusive) representing how far along the operation is.
      * Values below 0 or above 1 will be interpreted as 0 or 1 respectively.
@@ -41,7 +38,7 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
     public static displayName = "Blueprint2.Spinner";
 
     public render() {
-        const { className, intent, large, small, style, value } = this.props;
+        const { className, intent, large, small, value } = this.props;
         const classes = classNames(
             Classes.SPINNER,
             Classes.intentClass(intent),
@@ -61,7 +58,7 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
         };
 
         return (
-            <svg className={classes} style={style} viewBox="0 0 100 100">
+            <svg className={classes} viewBox="0 0 100 100">
                 <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
                 <path className={Classes.SPINNER_HEAD} d={SPINNER_TRACK} pathLength={PATH_LENGTH} style={headStyle} />
             </svg>
