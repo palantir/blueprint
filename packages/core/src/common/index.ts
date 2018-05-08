@@ -9,6 +9,7 @@ export * from "./abstractPureComponent";
 export * from "./alignment";
 export * from "./colors";
 export * from "./constructor";
+export * from "./elevation";
 export * from "./intent";
 export * from "./position";
 export * from "./props";

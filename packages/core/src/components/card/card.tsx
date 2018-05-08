@@ -7,6 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
+import { Elevation } from "../../common/elevation";
 import { HTMLDivProps, IProps } from "../../common/props";
 
 export interface ICardProps extends IProps, HTMLDivProps {
@@ -35,14 +36,6 @@ export interface ICardProps extends IProps, HTMLDivProps {
      * Recommended when `interactive` is `true`.
      */
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
-}
-
-export enum Elevation {
-    ZERO = 0,
-    ONE = 1,
-    TWO = 2,
-    THREE = 3,
-    FOUR = 4,
 }
 
 export class Card extends React.PureComponent<ICardProps, {}> {
