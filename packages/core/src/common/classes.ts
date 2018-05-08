@@ -193,8 +193,6 @@ export const SPINNER = `${NS}-spinner`;
 export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
-export const SPINNER_SVG_CONTAINER = `${SPINNER}-svg-container`;
-export const SVG_SPINNER = `${NS}-svg-spinner`;
 
 export const TAB = `${NS}-tab`;
 export const TAB_INDICATOR = `${TAB}-indicator`;
