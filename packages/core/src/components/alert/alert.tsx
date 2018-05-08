@@ -20,7 +20,7 @@ import { Icon, IconName } from "../icon/icon";
 
 export interface IAlertProps extends IProps {
     /**
-     * Whether pressing <kbd class="pt-key">escape</kbd> when focused on the Alert should cancel the alert.
+     * Whether pressing <kbd>escape</kbd> when focused on the Alert should cancel the alert.
      * If this prop is enabled, then either `onCancel` or `onClose` must also be defined.
      * @default false
      */

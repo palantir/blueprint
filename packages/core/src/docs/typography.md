@@ -30,7 +30,7 @@ For longer blocks of running text, such as articles or documents, see [running t
 Longform text, such as rendered Markdown documents, benefit from increased spacing and support for unclassed textual elements.
 Apply `.@ns-running-text` to the parent element to apply the following styles to all children:
 
-- `<h*>`, `<ul>`, `<ol>`, `<blockquote>`, `<code>`, `<pre>` do not require additional CSS classes for styles. This is great for rendered Markdown documents.
+- `<h*>`, `<ul>`, `<ol>`, `<blockquote>`, `<code>`, `<pre>`, `<kbd>` tags do not require additional CSS classes for styles. This is great for rendered Markdown documents.
 - `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
 - `<ul>` and `<ol>` tags receive [`.@ns-list`](#core/typography.lists) styles for legibility.
 

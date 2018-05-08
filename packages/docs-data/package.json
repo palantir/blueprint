@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf src/generated/*",
-    "compile": "node ./compile-docs-data",
+    "compile": "node ./compile-docs-data.js",
     "test": "exit 0"
   },
   "dependencies": {
