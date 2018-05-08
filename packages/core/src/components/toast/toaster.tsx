@@ -20,12 +20,12 @@ import { IToastProps, Toast } from "./toast";
 
 export type IToastOptions = IToastProps & { key?: string };
 export type ToasterPosition =
-    | Position.TOP
-    | Position.TOP_LEFT
-    | Position.TOP_RIGHT
-    | Position.BOTTOM
-    | Position.BOTTOM_LEFT
-    | Position.BOTTOM_RIGHT;
+    | typeof Position.TOP
+    | typeof Position.TOP_LEFT
+    | typeof Position.TOP_RIGHT
+    | typeof Position.BOTTOM
+    | typeof Position.BOTTOM_LEFT
+    | typeof Position.BOTTOM_RIGHT;
 
 /** Instance methods available on a `<Toaster>` component instance. */
 export interface IToaster {

@@ -37,7 +37,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
      * The position of the buttons with respect to the input field.
      * @default Position.RIGHT
      */
-    buttonPosition?: Position.LEFT | Position.RIGHT | "none";
+    buttonPosition?: typeof Position.LEFT | typeof Position.RIGHT | "none";
 
     /**
      * Whether the value should be clamped to `[min, max]` on blur.
