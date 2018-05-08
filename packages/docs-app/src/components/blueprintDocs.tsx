@@ -38,8 +38,8 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     public render() {
         const banner = (
             <Banner href="http://blueprintjs.com/docs/v2/">
-                This documentation is for <strong>Blueprint v3.0.0</strong>, which is currently under development. Click
-                here to go to the v2.x - docs.
+                This documentation is for&nbsp;<strong>Blueprint v3.0.0</strong>, which is currently under development.
+                Click here to go to the v2.x docs.
             </Banner>
         );
         const footer = (
