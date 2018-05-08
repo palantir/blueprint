@@ -3,36 +3,6 @@
 @import "../../common/variables";
 @import "../../common/mixins";
 
-$kbd-key-size: 25px !default;
-$modifier-key-padding: 3px 8px 3px 6px !default;
-
-.#{$ns}-key {
-  display: inline-block;
-  border-radius: $pt-border-radius - 1;
-  box-shadow: $pt-elevation-shadow-2;
-  background: $white;
-  min-width: $kbd-key-size;
-  height: $kbd-key-size;
-  padding: 3px 5px;
-  vertical-align: middle;
-  text-align: center;
-  line-height: $pt-grid-size * 2;
-  color: $pt-text-color-muted;
-  font-family: inherit;
-  font-size: $pt-font-size-small;
-
-  &.#{$ns}-modifier-key {
-    padding: $modifier-key-padding;
-  }
-
-  .#{$ns}-dark & {
-    box-shadow: $pt-dark-elevation-shadow-2,
-                inset 0 1px 0 rgba($white, 0.05);
-    background: $dark-gray5;
-    color: $pt-dark-text-color-muted;
-  }
-}
-
 .#{$ns}-key-combo .#{$ns}-key:not(:last-child) {
   margin-right: $pt-grid-size / 2;
 }
@@ -46,10 +16,8 @@ $modifier-key-padding: 3px 8px 3px 6px !default;
     padding: 0;
   }
 
-  .#{$ns}-key-combo {
-    flex: 1 0 auto;
-    width: $pt-grid-size * 16;
-    text-align: right;
+  .#{$ns}-hotkey-label {
+    flex-grow: 1;
   }
 }
 
@@ -59,18 +27,18 @@ $modifier-key-padding: 3px 8px 3px 6px !default;
   overflow-y: auto;
   padding: $pt-grid-size * 3;
 
-  .#{$ns}-hotkey-group {
-    margin-bottom: $pt-grid-size * 3;
+  .#{$ns}-heading {
+    margin-bottom: $pt-grid-size * 2;
 
     &:not(:first-child) {
-      margin-top: $pt-grid-size * 5;
+      margin-top: $pt-grid-size * 4;
     }
   }
 }
 
 .#{$ns}-hotkey {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin-right: 0;
   margin-left: 0;

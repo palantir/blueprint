@@ -10,9 +10,9 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
-
 import * as Keys from "../../src/common/keys";
 import { Classes, IOverlayProps, Overlay, Portal, Utils } from "../../src/index";
+import { findInPortal } from "../utils";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
 
@@ -53,7 +53,7 @@ describe("<Overlay>", () => {
                 {createOverlayContents()}
             </Overlay>,
         );
-        assert.lengthOf(overlay.find("h1"), 1);
+        assert.lengthOf(overlay.find("strong"), 1);
         assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 1);
         overlay.unmount();
     });
@@ -81,7 +81,7 @@ describe("<Overlay>", () => {
                 {createOverlayContents()}
             </Overlay>,
         );
-        assert.lengthOf(overlay.find("h1"), 1);
+        assert.lengthOf(overlay.find("strong"), 1);
         assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 0);
         overlay.unmount();
     });
@@ -126,7 +126,7 @@ describe("<Overlay>", () => {
         setTimeout(() => {
             wrapper.update();
             assert.isTrue(didClose.calledOnce, "didClose not invoked when overlay closed");
-            assert.isFalse(wrapper.find("h1").exists(), "no content");
+            assert.isFalse(wrapper.find("strong").exists(), "no content");
             done();
         });
     });
@@ -215,7 +215,7 @@ describe("<Overlay>", () => {
             const onClose = spy();
             mountWrapper(
                 <Overlay isOpen={true} onClose={onClose}>
-                    <div>
+                    <div id="outer-element">
                         {createOverlayContents()}
                         <Overlay isOpen={true}>
                             <div id="inner-element">{createOverlayContents()}</div>
@@ -223,7 +223,8 @@ describe("<Overlay>", () => {
                     </div>
                 </Overlay>,
             );
-            wrapper.find("#inner-element").simulate("mousedown");
+            // this hackery is necessary for React 15 support, where Portals break trees.
+            findInPortal(findInPortal(wrapper, "#outer-element"), "#inner-element").simulate("mousedown");
             assert.isTrue(onClose.notCalled);
         });
 
@@ -258,7 +259,7 @@ describe("<Overlay>", () => {
             );
             const portal = overlay.find(Portal);
             assert.isTrue(portal.exists(), "missing Portal");
-            assert.lengthOf(portal.find("h1"), 1, "missing h1");
+            assert.lengthOf(portal.find("strong"), 1, "missing h1");
             overlay.unmount();
         });
     });
@@ -325,7 +326,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             wrapper.find(BACKDROP_SELECTOR).simulate("mousedown");
-            assertFocus(`h1.${Classes.OVERLAY_CONTENT}`, done);
+            assertFocus(`strong.${Classes.OVERLAY_CONTENT}`, done);
         });
 
         it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
@@ -478,6 +479,6 @@ describe("<Overlay>", () => {
 
     let index = 0;
     function createOverlayContents() {
-        return <h1 id={`overlay-${index++}`}>Overlay content!</h1>;
+        return <strong id={`overlay-${index++}`}>Overlay content!</strong>;
     }
 });

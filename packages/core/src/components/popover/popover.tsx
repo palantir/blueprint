@@ -118,7 +118,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * Callback invoked in controlled mode when the popover open state *would* change due to
      * user interaction based on the value of `interactionKind`.
      */
-    onInteraction?: (nextOpenState: boolean) => void;
+    onInteraction?: (nextOpenState: boolean, e?: React.SyntheticEvent<HTMLElement>) => void;
 
     /**
      * Whether the popover should open when its target is focused.
@@ -487,8 +487,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         // #validateProps asserts that 1 <= children.length <= 2 so content is optional
         const [targetChild, contentChild] = React.Children.toArray(children);
         return {
-            content: ensureElement(contentChild == null ? contentProp : contentChild),
-            target: ensureElement(targetChild == null ? targetProp : targetChild),
+            content: Utils.ensureElement(contentChild == null ? contentProp : contentChild),
+            target: Utils.ensureElement(targetChild == null ? targetProp : targetChild),
         };
     }
 
@@ -604,7 +604,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             if (this.props.isOpen == null) {
                 this.setState({ isOpen });
             } else {
-                Utils.safeInvoke(this.props.onInteraction, isOpen);
+                Utils.safeInvoke(this.props.onInteraction, isOpen, e);
             }
             if (!isOpen) {
                 Utils.safeInvoke(this.props.onClose, e);
@@ -632,20 +632,4 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         });
         return data;
     };
-}
-
-/**
- * Converts a react child to an element: non-empty strings or numbers are wrapped in `<span>`;
- * empty strings are discarded.
- */
-function ensureElement(child: React.ReactChild | undefined) {
-    // wrap text in a <span> so children are always elements
-    if (typeof child === "string") {
-        // cull whitespace strings
-        return child.trim().length > 0 ? <span>{child}</span> : undefined;
-    } else if (typeof child === "number") {
-        return <span>{child}</span>;
-    } else {
-        return child;
-    }
 }

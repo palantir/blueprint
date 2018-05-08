@@ -10,40 +10,38 @@ Keep in mind these general web typography guidelines when building your applicat
 proper contrast.
 - Try not to explicitly write pixel values for your font-size or line-height CSS rules.
 Instead, reference the classes and variables we provide in Blueprint (`.@ns-ui-text`,
-`$pt-font-size-large`, etc.).
-
-@## Fonts
-
-Blueprint does not include any fonts of its own; it will use the default sans-serif operating system
-font. We provide a class to use the default monospace font instead.
-
-
-@css fonts
-
-@## Headings
-
-@css headings
+`$@ns-font-size-large`, etc.).
 
 @## UI text
+
+Blueprint does not include any fonts of its own; it will use the default sans-serif operating system font.
+A handful of utility CSS classes can be combined freely to further customize a block of text.
 
 The base font size for Blueprint web applications is 14px. This should be the default type size
 for most short strings of text which are not headings or titles. If you wish to reset some
 element's font size and line height to the default base styles, use the `.@ns-ui-text` class.
-For longer running text, see [running text styles](#core/typography.running-text).
+
+For longer blocks of running text, such as articles or documents, see [running text styles](#core/typography.running-text).
 
 @css ui-text
 
 @## Running text
 
-Longform text, such as rendered Markdown documents, benefit from additional spacing and slightly
-large font size. Apply `.@ns-running-text` to the parent element to adjust spacing for the following
-elements:
+Longform text, such as rendered Markdown documents, benefit from increased spacing and support for unclassed textual elements.
+Apply `.@ns-running-text` to the parent element to apply the following styles to all children:
 
-- `<p>` tags have increased line-height and font size.
+- `<h*>`, `<ul>`, `<ol>`, `<blockquote>`, `<code>`, `<pre>`, `<kbd>` tags do not require additional CSS classes for styles. This is great for rendered Markdown documents.
 - `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
 - `<ul>` and `<ol>` tags receive [`.@ns-list`](#core/typography.lists) styles for legibility.
 
 @css running-text
+
+@## Headings
+
+Apply the `.@ns-heading` class to one of the six `<h*>` tags (or nest them inside a `.@ns-running-text` container)
+to adjust font size and line height.
+
+@css headings
 
 @## Links
 
@@ -54,14 +52,19 @@ Putting an icon inside a link will cause it to inherit the link's text color.
 
 @## Preformatted text
 
-Use `<pre>` for code blocks, and `<code>` for inline code. Note that `<pre>` blocks will
-retain _all_ whitespace so you'll have to format the content accordingly.
+Use `.@ns-code` for inline code elements (typically with the `<code>` tag).
+Use `.@ns-code-block` for mulitline blocks of code (typically on a `<pre>` tag).
+Note that `<pre>` blocks will retain _all_ whitespace so you'll have to format the content accordingly.
+
+When nested inside a `.@ns-running-text` container, use the `<pre>` or `<code>` tags directly without CSS classes.
 
 @css preformatted
 
 @## Block quotes
 
-Block quotes are treated as running text.
+Block quotes receive a left border and padding to distinguish them from body text.
+
+Use the `.@ns-blockquote` class or nest a `<blockquote>` element inside a `.@ns-running-text` container.
 
 @css blockquote
 
@@ -72,14 +75,11 @@ Blueprint provides a small amount of global styling and a few modifier classes f
 `<ul>` and `<ol>` elements in blocks with the `.@ns-running-text` modifier class will
 automatically assume the `.@ns-list` styles to promote readability.
 
+Use `.@ns-list-unstyled` to remove list item decorations and margins and padding.
+
+Note that these classes must be applied to each nested `<ul>` or `<ol>` element in a tree.
+
 @css lists
-
-@## Text utilities
-
-Blueprint provides a small handful of class-based text utilities which can applied to any element
-that contains text.
-
-@css utilities
 
 @## Internationalization
 
@@ -105,14 +105,13 @@ Most elements only support the dark theme when nested inside a `.@ns-dark` conta
 not make sense to mark individual elements as dark. The dark container is therefore responsible for
 setting a dark background color.
 
-The following elements and components support the `.@ns-dark` class directly (i.e, `.@ns-app.@ns-dark`)
+The following elements and components support the `.@ns-dark` class directly (i.e, `.@ns-card.@ns-dark`)
 and can be used as a container for nested dark children:
 
-- `.@ns-app`
-- `.@ns-card`
+- `Card`
 - Overlays: `Dialog`, `Popover`, `Tooltip`, `Toast`
 - `Popover` and `Tooltip` will automatically detect when their trigger is inside a `.@ns-dark`
 container and add the same class to themselves.
 
 Rather than illustrating dark components inline, this documentation site provides a site-wide switch
-in the top right corner of the page to enable the dark theme. Try it out as you read the docs.
+in the sidebar to enable the dark theme. Try it out as you read the docs.

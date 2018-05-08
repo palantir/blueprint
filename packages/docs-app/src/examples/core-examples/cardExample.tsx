@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Card, Classes, Elevation, Slider, Switch } from "@blueprintjs/core";
+import { Button, Card, Classes, Elevation, H5, Label, Slider, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 
 export interface ICardExampleState {
@@ -25,9 +25,9 @@ export class CardExample extends BaseExample<ICardExampleState> {
     protected renderExample() {
         return (
             <Card {...this.state}>
-                <h5>
+                <H5>
                     <a href="#">Analytical applications</a>
-                </h5>
+                </H5>
                 <p>
                     User interfaces that enable people to interact smoothly with data, ask better questions, and make
                     better decisions.
@@ -40,9 +40,7 @@ export class CardExample extends BaseExample<ICardExampleState> {
     protected renderOptions() {
         return [
             [
-                <label className={Classes.LABEL} key="visible-label">
-                    Elevation
-                </label>,
+                <Label key="visible-label" text="Elevation" />,
                 <Slider
                     key="visible"
                     max={4}

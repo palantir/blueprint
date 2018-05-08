@@ -3,7 +3,7 @@
 Dialogs present content overlaid over other parts of the UI.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-callout-title">Terminology note</h4>
+    <h4 class="@ns-heading">Terminology note</h4>
     The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
     _Modal_ is an adjective that describes parts of a UI.
     An element is considered modal if it

@@ -6,13 +6,12 @@
 // @ts-check
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
-// TODO: get this to work with require("@std/esm")(module)("../lib/esm")
 const Core = require("../lib/cjs");
 
 const tooltipContent = { content: React.createElement("h1", {}, "content") };
 const customProps = {
     Hotkey: { combo: "mod+s", global: true, label: "save" },
-    Icon: { iconName: "pt-icon-build" },
+    Icon: { iconName: "build" },
     KeyCombo: { combo: "?" },
     Overlay: { lazy: false, usePortal: false },
     SVGTooltip: tooltipContent,

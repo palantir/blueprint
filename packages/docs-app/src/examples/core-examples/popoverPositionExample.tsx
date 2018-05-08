@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Popover, Position } from "@blueprintjs/core";
+import { Button, Code, Popover, Position } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 
 const EXAMPLE_CLASS = "docs-popover-position-example";
@@ -32,6 +32,7 @@ export class PopoverPositionExample extends BaseExample<{}> {
 
     protected renderExample() {
         return (
+            // tslint:disable-next-line:blueprint-html-components
             <table className={TABLE_CLASS}>
                 <tbody>
                     <tr className={ROW_CLASS}>
@@ -89,17 +90,17 @@ export class PopoverPositionExample extends BaseExample<{}> {
         const popoverAlignmentSentence =
             alignmentLabel === undefined ? (
                 <>
-                    Aligned at <code className={ALIGNMENT_LABEL_CLASS}>(center)</code>.
+                    Aligned at <Code className={ALIGNMENT_LABEL_CLASS}>(center)</Code>.
                 </>
             ) : (
                 <>
-                    Aligned on <code className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</code> edge.
+                    Aligned on <Code className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</Code> edge.
                 </>
             );
 
         const content = (
             <div>
-                Popover on <code className={SIDE_LABEL_CLASS}>{sideLabel}</code>.<br />
+                Popover on <Code className={SIDE_LABEL_CLASS}>{sideLabel}</Code>.<br />
                 {popoverAlignmentSentence}
             </div>
         );

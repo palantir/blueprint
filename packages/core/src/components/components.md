@@ -14,6 +14,7 @@
 @page dialog
 @page editable-text
 @page forms
+@page html
 @page hotkeys
 @page icon
 @page menu
@@ -22,7 +23,9 @@
 @page overlay
 @page popover
 @page portal
-@page progress
+@page progress-bar
+@page skeleton
+@page spinner
 @page sliders
 @page table-html
 @page tabs

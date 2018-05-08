@@ -2,24 +2,22 @@
 // Licensed under the terms of the LICENSE file distributed with this project.
 
 @import "../../common/variables";
-@import "../progress/common";
+@import "../progress-bar/common";
 @import "./common";
 
 /*
 Spinners
 
 Markup:
-<div class="#{$ns}-spinner {{.modifier}}">
-  <div class="#{$ns}-spinner-svg-container">
-    <svg viewBox="0 0 100 100">
-      <path class="#{$ns}-spinner-track" d="M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89"></path>
-      <path class="#{$ns}-spinner-head" d="M 94.5 50 A 44.5 44.5 0 0 0 50 5.5"></path>
-    </svg>
-  </div>
-</div>
+<svg class="#{$ns}-spinner {{.modifier}}" viewBox="0 0 100 100">
+  <path class="#{$ns}-spinner-track" d="M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89"></path>
+  <path class="#{$ns}-spinner-head" d="M 94.5 50 A 44.5 44.5 0 0 0 50 5.5"></path>
+</svg>
 
 .#{$ns}-small - Small spinner
 .#{$ns}-large - Large spinner
+.#{$ns}-intent-primary - All four intents are supported
+.#{$ns}-no-spin - Disable spinning animation
 
 Styleguide spinner
 */
@@ -29,24 +27,31 @@ Styleguide spinner
   to   { transform: rotate(360deg); }
 }
 
-// see https://css-tricks.com/scale-svg/
-// how to Scale SVG to Fit the Available Width (and adjust the height to match) Option 4
-
 .#{$ns}-spinner {
   @include spinner-size($spinner-width-factor, $spinner-stroke-width, $spinner-speed);
+  // allow paths to overflow container -- critical for edges of circles!
+  overflow: visible;
+  vertical-align: middle;
 
   path {
     fill-opacity: 0;
   }
 
   .#{$ns}-spinner-head {
+    transform-origin: center;
     transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
+    animation: pt-spinner-animation $spinner-speed linear infinite;
+    animation-duration: inherit;
     stroke: $progress-head-color;
     stroke-linecap: round;
   }
 
   .#{$ns}-spinner-track {
     stroke: $progress-track-color;
+  }
+
+  &.#{$ns}-no-spin .#{$ns}-spinner-head {
+    animation: none;
   }
 
   &.#{$ns}-small {
@@ -64,44 +69,6 @@ Styleguide spinner
       $spinner-speed-large
     );
   }
-}
-
-.#{$ns}-spinner:not(.#{$ns}-svg-spinner) {
-  display: inline-block;
-
-  .#{$ns}-spinner-svg-container {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding: 0;
-    padding-bottom: 100%;
-    animation: pt-spinner-animation $spinner-speed linear infinite;
-  }
-
-  &.#{$ns}-no-spin .#{$ns}-spinner-svg-container {
-    animation: none;
-  }
-
-  svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.#{$ns}-svg-spinner {
-  transform-origin: center;
-  animation: pt-spinner-animation $spinner-speed linear infinite;
-
-  &.#{$ns}-no-spin {
-    animation: none;
-  }
-}
-
-.#{$ns}-svg-spinner-transform-group {
-  transform-origin: center;
 }
 
 .#{$ns}-dark .#{$ns}-spinner {

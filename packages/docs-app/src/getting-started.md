@@ -4,8 +4,8 @@
 
 @### NPM packages
 
-Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope. The full
-package list and their latest versions appear under the _Releases_ dropdown above.
+Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope.
+Each package appears at the top level of the sidebar, along with its current version.
 
 Each package contains a CSS file and a collection of CommonJS modules exposing React components.
 The `main` module exports all symbols from all modules so you don't have to import individual files
@@ -19,7 +19,7 @@ The `main` module exports all symbols from all modules so you don't have to impo
     yarn add @blueprintjs/core
     ```
 
-1. If you see `UNMET PEER DEPENDENCY` errors, you should manually install React:
+1. If you see `UNMET PEER DEPENDENCY` errors, you should manually install React (v15.3 or greater):
 
     ```sh
     yarn add react react-dom react-transition-group
@@ -70,8 +70,8 @@ Blueprint supports the venerable [unpkg CDN](https://unpkg.com). Each package pr
 library on the `Blueprint` global variable: `Blueprint.Core`, `Blueprint.Datetime`, etc.
 
 These bundles _do not include_ external dependencies; your application will need to ensure that
-`normalize.css`, `react`, `react-dom`, `react-transition-group`, `classnames`, `popper.js`, and
-`react-popper`are available at runtime.
+`normalize.css`, `classnames`, `dom4`, `react`, `react-dom`, `react-transition-group`, `popper.js`, and
+`react-popper` are available at runtime.
 
 ```html
 <!DOCTYPE html>
@@ -98,7 +98,7 @@ These bundles _do not include_ external dependencies; your application will need
     <div id="btn"></div>
     <script>
       const button = React.createElement(Blueprint.Core.Button, {
-        icon: "predictive-analysis",
+        icon: "cloud",
         text: "CDN Blueprint is go!",
       });
       ReactDOM.render(button, document.querySelector("#btn"));
@@ -139,8 +139,8 @@ install typings for Blueprint's dependencies before you can consume it:
 # required for all @blueprintjs packages:
 npm install --save @types/react @types/react-dom @types/react-transition-group
 
-# @blueprintjs/datetime requires:
-npm install --save @types/moment
+# @blueprintjs/timezone requires:
+npm install --save @types/moment-timezone
 ```
 
 Blueprint's declaration files require **TypeScript 2.3+** for default generic parameter arguments: `<P = {}>`.
@@ -181,7 +181,7 @@ ReactDOM.unmountComponentAtNode(myContainerElement);
 
 Check out the [React API docs](https://facebook.github.io/react/docs/react-api.html) for more details.
 
-You'll need to install **React 16.2+** alongside Blueprint.
+You'll need to install React v15.3 or greater alongside Blueprint.
 
 ```sh
 npm install --save @blueprintjs/core react react-dom react-transition-group

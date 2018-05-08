@@ -61,14 +61,10 @@ describe("<EditableText>", () => {
 
         it("calls onChange when escape key pressed and value is unconfirmed", () => {
             const changeSpy = spy();
-            const input = mount(
-                <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />,
-            ).find("input");
-
-            input.simulate("keydown", { which: Keys.ESCAPE });
-            assert.equal(changeSpy.callCount, 0, "onChange called incorrectly"); // no change so no invoke
-
-            input.simulate("change", { target: { value: "hello" } }).simulate("keydown", { which: Keys.ESCAPE });
+            mount(<EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />)
+                .find("input")
+                .simulate("change", { target: { value: "hello" } })
+                .simulate("keydown", { which: Keys.ESCAPE });
             assert.equal(changeSpy.callCount, 2, "onChange not called twice"); // change & escape
             assert.deepEqual(changeSpy.args[1], ["alphabet"], `unexpected argument "${changeSpy.args[1][0]}"`);
         });
@@ -136,12 +132,14 @@ describe("<EditableText>", () => {
             assert.isTrue(confirmSpy.calledWith(OLD_VALUE), `unexpected argument "${confirmSpy.args[0][0]}"`);
         });
 
-        it("calls onEdit when entering edit mode", () => {
+        it("calls onEdit when entering edit mode and passes the initial value to the callback", () => {
             const editSpy = spy();
-            mount(<EditableText onEdit={editSpy} />)
+            const INIT_VALUE = "hello";
+            mount(<EditableText onEdit={editSpy} defaultValue={INIT_VALUE} />)
                 .find("div")
                 .simulate("focus");
             assert.isTrue(editSpy.calledOnce, "onEdit called once");
+            assert.isTrue(editSpy.calledWith(INIT_VALUE), `unexpected argument "${editSpy.args[0][0]}"`);
         });
 
         it("stops editing when disabled", () => {

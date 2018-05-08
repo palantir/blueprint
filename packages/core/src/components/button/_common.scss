@@ -3,7 +3,7 @@
 
 @import "../../common/mixins";
 @import "../../common/variables";
-@import "../progress/common";
+@import "../progress-bar/common";
 
 $button-border-width: 1px !default;
 $button-padding: ($pt-grid-size / 2) $pt-grid-size !default;

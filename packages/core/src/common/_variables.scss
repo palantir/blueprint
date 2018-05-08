@@ -5,7 +5,7 @@
 @import "mixins";
 
 // Namespace appended to the beginning of each CSS class: `.#{$ns}-button`.
-$ns: "pt" !default;
+$ns: "bp3" !default;
 
 // easily the most important variable, so it comes up top
 // (so other variables can use it to define themselves)

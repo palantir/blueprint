@@ -73,7 +73,7 @@ $dark-example-background-color: $dark-content-background-color;
   justify-content: space-between;
 
   position: relative;
-  margin-top: $content-padding;
+  margin-top: $content-padding * 2;
 
   &:empty {
     display: none;

@@ -30,7 +30,9 @@
 // (Default styles give flex-basis of 100% to each example.)
 @mixin examples-per-row($amount) {
   .docs-example {
-    flex-basis: floor(100% / $amount);
+    $width: floor(100% / $amount);
+    flex-basis: $width;
+    width: $width;
     padding-right: $pt-grid-size * 2;
 
     &[data-modifier=".#{$ns}-fill"] {
@@ -42,6 +44,8 @@
 
 // CSS examples
 
+#{reference("ui-text")},
+#{reference("running-text")},
 #{reference("file-input")},
 #{reference("label")},
 #{reference("menu")},
@@ -52,6 +56,7 @@
   @include examples-per-row(2);
 }
 
+#{reference("lists")},
 #{reference-all("input")},
 #{reference("button")},
 #{reference("button-minimal")},

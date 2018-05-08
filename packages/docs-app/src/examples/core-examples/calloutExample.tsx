@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Callout, Intent, Switch } from "@blueprintjs/core";
+import { Callout, Code, Intent, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 import { IconSelect } from "./common/iconSelect";
@@ -26,7 +26,7 @@ export class CalloutExample extends BaseExample<ICalloutExampleState> {
         return (
             <Callout {...calloutProps} title={showHeader ? "Visually important content" : undefined}>
                 The component is a simple wrapper around the CSS API that provides props for modifiers and optional
-                title element. Any additional HTML props will be spread to the rendered <code>{"<div>"}</code> element.
+                title element. Any additional HTML props will be spread to the rendered <Code>{"<div>"}</Code> element.
             </Callout>
         );
     }

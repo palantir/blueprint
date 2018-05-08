@@ -7,7 +7,7 @@ Callouts visually highlight important content for the user.
 @## CSS API
 
 Callouts use the same visual intent modifier classes as buttons. If you need a
-heading, use the `<h4>` element with a `.@ns-callout-title` class.
+heading, use the `<h4>` element with a `.@ns-heading` class.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Note that the title is entirely optional.

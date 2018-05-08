@@ -12,7 +12,7 @@ Use the `@ns-button` class to access button styles. You should implement buttons
 * Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
   focusable by default.
 * For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
-  user from focusing them by pressing <kbd class="@ns-key">tab</kbd> on the keyboard.
+  user from focusing them by pressing <kbd>tab</kbd> on the keyboard.
 * Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
 
 @css button
@@ -56,7 +56,7 @@ Blueprint class name. If you specify other attributes that the component provide
 for an `<AnchorButton>`, you'll overide the default value.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-callout-title">Interactions with disabled buttons</h4>
+    <h4 class="@ns-heading">Interactions with disabled buttons</h4>
     Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
     This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
     the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,
@@ -69,7 +69,7 @@ for an `<AnchorButton>`, you'll overide the default value.
 
 @### Anchor button
 
-```jsx
+```tsx
 <AnchorButton text="Click" />
 // renders:
 <a class="@ns-button" role="button" tabIndex={0}>Click</a>
@@ -77,7 +77,7 @@ for an `<AnchorButton>`, you'll overide the default value.
 
 @### Button
 
-```jsx
+```tsx
 <Button icon="refresh" />
 // renders:
 <button class="@ns-button @ns-icon-refresh" type="button"></button>

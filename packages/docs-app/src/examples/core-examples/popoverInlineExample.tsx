@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, IPopoverProps, Popover, Position, Switch } from "@blueprintjs/core";
+import { Button, Code, IPopoverProps, Popover, Position, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 
 export interface IPopoverInlineExampleState {
@@ -47,7 +47,7 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
                             isOpen={isOpen}
                             usePortal={true}
                         >
-                            <code>{`usePortal={true}`}</code>
+                            <Code>{`usePortal={true}`}</Code>
                         </Popover>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
                 >
                     <div className="docs-popover-inline-example-scroll-content">
                         <Popover {...POPOVER_PROPS} content="I am an inline popover." isOpen={isOpen} usePortal={false}>
-                            <code>{`usePortal={false}`}</code>
+                            <Code>{`usePortal={false}`}</Code>
                         </Popover>
                     </div>
                 </div>
