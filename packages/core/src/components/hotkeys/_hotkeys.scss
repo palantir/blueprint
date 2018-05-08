@@ -17,9 +17,8 @@
   }
 
   .#{$ns}-key-combo {
-    flex: 1 0 auto;
+    justify-content: flex-end;
     width: $pt-grid-size * 16;
-    text-align: right;
   }
 }
 
@@ -48,4 +47,9 @@
   &:not(:last-child) {
     margin-bottom: $pt-grid-size;
   }
+}
+
+.#{$ns}-key-combo {
+  display: inline-flex;
+  align-items: center;
 }
