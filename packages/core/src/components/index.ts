@@ -55,7 +55,6 @@ export * from "./progress-bar/progressBar";
 export * from "./slider/rangeSlider";
 export * from "./slider/slider";
 export * from "./spinner/spinner";
-export * from "./spinner/svgSpinner";
 export * from "./tabs/tab";
 export * from "./tabs/tabs";
 export * from "./tag/tag";

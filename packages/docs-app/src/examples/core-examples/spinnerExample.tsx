@@ -31,11 +31,7 @@ export class SpinnerExample extends ProgressExample {
                 Size (via <Code>className</Code>)
                 <div className={Classes.SELECT}>
                     <select value={this.state.className} onChange={this.handleSizeChange}>
-                        {SIZES.map((opt, i) => (
-                            <option key={i} {...opt}>
-                                {opt.label}
-                            </option>
-                        ))}
+                        {SIZES.map((opt, i) => <option key={i} {...opt} />)}
                     </select>
                 </div>
             </label>,
