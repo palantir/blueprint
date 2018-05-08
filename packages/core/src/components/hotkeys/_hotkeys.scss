@@ -16,9 +16,8 @@
     padding: 0;
   }
 
-  .#{$ns}-key-combo {
-    justify-content: flex-end;
-    width: $pt-grid-size * 16;
+  .#{$ns}-hotkey-label {
+    flex-grow: 1;
   }
 }
 
@@ -39,7 +38,7 @@
 
 .#{$ns}-hotkey {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin-right: 0;
   margin-left: 0;
@@ -47,9 +46,4 @@
   &:not(:last-child) {
     margin-bottom: $pt-grid-size;
   }
-}
-
-.#{$ns}-key-combo {
-  display: inline-flex;
-  align-items: center;
 }

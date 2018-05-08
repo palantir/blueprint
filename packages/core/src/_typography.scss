@@ -286,29 +286,23 @@ Styleguide preformatted
 }
 
 %keyboard {
-  $kbd-key-size: $pt-button-height-small;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: $pt-border-radius;
   box-shadow: $pt-elevation-shadow-1;
   background: $white;
-  min-width: $kbd-key-size;
-  height: $kbd-key-size;
-  padding: ($pt-grid-size * 0.3) ($pt-grid-size / 2);
-  text-align: center;
-  line-height: $pt-grid-size * 2;
+  min-width: $pt-button-height-small;
+  height: $pt-button-height-small;
+  padding: $pt-border-radius ($pt-border-radius * 2);
+  vertical-align: middle;
+  line-height: $pt-button-height-small;
   color: $pt-text-color-muted;
   font-family: inherit;
   font-size: $pt-font-size-small;
 
-  &.#{$ns}-modifier-key {
-    padding-right: $pt-grid-size * 0.8;
-    padding-left: $pt-grid-size * 0.6;
-
-    #{$icon-classes} {
-      margin-right: $pt-grid-size / 2;
-    }
+  #{$icon-classes} {
+    margin-right: $pt-grid-size / 2;
   }
 
   .#{$ns}-dark & {
