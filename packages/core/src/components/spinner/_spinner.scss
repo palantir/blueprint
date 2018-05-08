@@ -31,7 +31,7 @@ Styleguide spinner
   @include spinner-size($spinner-width-factor, $spinner-stroke-width, $spinner-speed);
   // allow paths to overflow container -- critical for edges of circles!
   overflow: visible;
-  vertical-align: top;
+  vertical-align: middle;
 
   path {
     fill-opacity: 0;

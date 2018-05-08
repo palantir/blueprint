@@ -17,6 +17,7 @@ $spinner-speed-large: $pt-transition-duration * 6 !default;
 
 @mixin spinner-size($width-factor, $stroke-width, $speed) {
   width: $spinner-width * $width-factor;
+  height: $spinner-width * $width-factor;
   animation-duration: $speed;
   stroke-width: $stroke-width;
 }
