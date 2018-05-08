@@ -26,6 +26,9 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     /** Whether this spinner should use small styles. */
     small?: boolean;
 
+    /** CSS style properties to apply to the SVG element. */
+    style?: React.CSSProperties;
+
     /**
      * A value between 0 and 1 (inclusive) representing how far along the operation is.
      * Values below 0 or above 1 will be interpreted as 0 or 1 respectively.
@@ -38,7 +41,7 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
     public static displayName = "Blueprint2.Spinner";
 
     public render() {
-        const { className, intent, large, small, value } = this.props;
+        const { className, intent, large, small, style, value } = this.props;
         const classes = classNames(
             Classes.SPINNER,
             Classes.intentClass(intent),
@@ -50,36 +53,18 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
             className,
         );
 
-        const style: React.CSSProperties = {
+        const headStyle: React.CSSProperties = {
             strokeDasharray: `${PATH_LENGTH} ${PATH_LENGTH}`,
             // default to quarter-circle when indeterminate
             // IE11: CSS transitions on SVG elements are Not Supported :(
             strokeDashoffset: PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1)),
         };
 
-        // HACKHACK to squash error regarding React.SVGProps missing prop pathLength
-        const svgPathAttributes: React.DOMAttributes<SVGPathElement> = {
-            className: Classes.SPINNER_HEAD,
-            d: SPINNER_TRACK,
-            pathLength: PATH_LENGTH,
-            style,
-        } as any;
-
-        return this.renderContainer(
-            classes,
-            <svg viewBox={classes.indexOf(Classes.SMALL) >= 0 ? "-15 -15 130 130" : "0 0 100 100"}>
-                <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
-                <path {...svgPathAttributes} />
-            </svg>,
-        );
-    }
-
-    // abstract away the container elements so SVGSpinner can do its own thing
-    protected renderContainer(classes: string, content: JSX.Element) {
         return (
-            <div className={classes}>
-                <div className={Classes.SPINNER_SVG_CONTAINER}>{content}</div>
-            </div>
+            <svg className={classes} style={style} viewBox="0 0 100 100">
+                <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
+                <path className={Classes.SPINNER_HEAD} d={SPINNER_TRACK} pathLength={PATH_LENGTH} style={headStyle} />
+            </svg>
         );
     }
 }
