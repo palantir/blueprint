@@ -106,7 +106,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
       background-color: rgba($background-color, $opacity - 0.15);
     }
 
-    &.pt-active,
+    &.#{$ns}-active,
     &:active {
       background-color: rgba($background-color, $opacity - 0.3);
     }
@@ -121,7 +121,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
       background-color: rgba($background-color, $opacity + 0.1);
     }
 
-    &.pt-active,
+    &.#{$ns}-active,
     &:active {
       background-color: rgba($background-color, $opacity + 0.2);
     }

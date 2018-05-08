@@ -5,14 +5,10 @@
 @import "../forms/common";
 @import "../tag/common";
 
-$tag-input-padding: ($pt-input-height - $tag-height) / 2;
+$tag-input-padding: ($pt-input-height - $tag-height) / 2 !default;
 
-$tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2;
-$tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2;
-
-$tag-input-outline-color: $pt-outline-color;
-$tag-input-outline-offset: 1px;
-$tag-input-outline-size: 2px;
+$tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2 !default;
+$tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2 !default;
 
 .#{$ns}-tag-input {
   @include pt-flex-container(row, $fill: ".#{$ns}-tag-input-values");
