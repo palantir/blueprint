@@ -1,14 +1,28 @@
 version: 2
-jobs:
-  install-dependencies:
+
+aliases:
+  - &setup-env
     docker:
       - image: circleci/node:8.10.0
-    steps:
+  - &setup-steps
       - checkout
+      - attach_workspace:
+          at: '.'
       - restore_cache:
           keys:
             - v9-dependency-cache-{{ checksum "yarn.lock" }}
             - v9-dependency-cache-
+  - &store-test-results
+      - store_test_results:
+          path: ./reports
+      - store_artifacts:
+          path: ./reports
+
+jobs:
+  install-dependencies:
+    <<: *setup-env
+    steps:
+      <<: *setup-steps
       - run: yarn
       - run: echo "Checking if lockfiles changed..." && git diff --exit-code
       - run: npm rebuild node-sass
@@ -41,16 +55,9 @@ jobs:
             - yarn.lock
 
   compile:
-    docker:
-      - image: circleci/node:8.10.0
+    <<: *setup-env
     steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          keys:
-            - v9-dependency-cache-{{ checksum "yarn.lock" }}
-            - v9-dependency-cache-
+      <<: *setup-steps
       - run: yarn compile
       - persist_to_workspace:
           root: '.'
@@ -60,35 +67,20 @@ jobs:
             - packages/*/src/generated
 
   lint:
-    docker:
-      - image: circleci/node:8.10.0
+    <<: *setup-env
     environment:
       JUNIT_REPORT_PATH: reports
     steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          keys:
-            - v9-dependency-cache-{{ checksum "yarn.lock" }}
-            - v9-dependency-cache-
+      <<: *setup-steps
       - run: mkdir -p ./reports/tslint ./reports/stylelint
       - run: yarn compile --scope "@blueprintjs/tslint-config"
       - run: yarn lint
-      - store_test_results:
-          path: ./reports
-      - store_artifacts:
-          path: ./reports
+      <<: *store-test-results
 
   dist:
-    docker:
-      - image: circleci/node:8.10.0
+    <<: *setup-env
     steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
+      <<: *setup-steps
       - run: yarn dist:libs
       - run: yarn dist:apps
       # we don't need to run dist:docs here until we start publishing GitHub Pages from CI
@@ -98,62 +90,32 @@ jobs:
             - packages/*/dist
             - packages/*/lib
 
-  test-react-15:
+  test-react-16: &run-tests
     docker:
       - image: circleci/node:8.10.0-browsers
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
+    environment:
+      JUNIT_REPORT_PATH: reports
+    parallelism: 3
+    steps:
+      <<: *setup-steps
+      - run: mkdir ./reports
+      - run:
+          command: |
+              case $CIRCLE_NODE_INDEX in \
+              0) yarn lerna run --parallel test:pre ;; \
+              1) yarn lerna run --parallel test:iso ;; \
+              2) yarn lerna run --parallel test:karma ;; \
+              esac
+          when: always
+      <<: *store-test-results
+
+  test-react-15:
+    <<: *run-tests
     environment:
       JUNIT_REPORT_PATH: reports
       REACT: 15 # use React 15 for this job
-    parallelism: 3
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: mkdir ./reports
-      - run:
-          command: |
-              case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run --parallel test:pre ;; \
-              1) yarn lerna run --parallel test:iso ;; \
-              2) yarn lerna run --parallel test:karma ;; \
-              esac
-          when: always
-      - store_test_results:
-          path: ./reports
-      - store_artifacts:
-          path: ./reports
-
-  test-react-16:
-    docker:
-      - image: circleci/node:8.10.0-browsers
-        environment:
-            CHROME_BIN: "/usr/bin/google-chrome"
-    environment:
-      JUNIT_REPORT_PATH: reports
-    parallelism: 3
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: mkdir ./reports
-      - run:
-          command: |
-              case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run --parallel test:pre ;; \
-              1) yarn lerna run --parallel test:iso ;; \
-              2) yarn lerna run --parallel test:karma ;; \
-              esac
-          when: always
-      - store_test_results:
-          path: ./reports
-      - store_artifacts:
-          path: ./reports
 
   deploy-preview:
     docker:
@@ -178,11 +140,7 @@ jobs:
     docker:
       - image: circleci/node:8.10.0
     steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
+      <<: *setup-steps
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
