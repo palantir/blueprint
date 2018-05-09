@@ -5,9 +5,9 @@ reference: html
 @# HTML elements
 
 In order to avoid conflicts with other stylesheets, Blueprint does not style
-most HTML elements directly. Instead, we provide corresponding CSS `Classes` for . As a
-convenience, we also provide React components for the following elements which
-will automatically include the appropriate CSS class:
+most HTML elements directly. Instead, we provide corresponding CSS `Classes` and
+for the following elements and React components which will automatically include
+the appropriate CSS class:
 
 - `H1` - `H6`
 - `Blockquote`
