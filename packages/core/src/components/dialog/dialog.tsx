@@ -123,7 +123,7 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
     }
 
     private handleContainerMouseDown = (evt: React.MouseEvent<HTMLDivElement>) => {
-        // quick re-implementation of canOutsideClickClose because .pt-dialog-container covers the backdrop
+        // quick re-implementation of canOutsideClickClose because DIALOG_CONTAINER covers the backdrop
         const isClickOutsideDialog = (evt.target as HTMLElement).closest(`.${Classes.DIALOG}`) == null;
         if (isClickOutsideDialog && this.props.canOutsideClickClose) {
             safeInvoke(this.props.onClose, evt);

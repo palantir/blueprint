@@ -5,25 +5,32 @@ reference: html
 @# HTML elements
 
 In order to avoid conflicts with other stylesheets, Blueprint does not style
-most HTML elements directly. Instead, we provide corresponding CSS `Classes` for . As a
-convenience, we also provide React components for the following elements which
-will automatically include the appropriate CSS class:
+most HTML elements directly. Instead, we provide several ways to style basic elements:
 
-- `H1` - `H6`
-- `Blockquote`
-- `Code`
-- `Pre`
-- `OL` & `UL` (note uppercase)
-- `Table` (see [Table (HTML)](http://localhost:9000/#core/components/table-html))
+1. Use Blueprint React components: `<H1>`
+1. Apply Blueprint the `Classes` constant to an HTML tag: `<h1 className={Classes.HEADING}>`
+1. Nest HTML tags inside a container with `Classes.RUNNING_TEXT` (see below).
 
-These components each support the full set of relevant HTML attributes **and an
+The following elements should be used in this manner:
+
+| Component | HTML tag | `Classes` constant |
+|-|-|-|
+| `H1` - `H6` | `h1` - `h6` | `HEADING` |
+| `Blockquote` | `blockquote` | `BLOCKQUOTE` |
+| `Code` | `code` | `CODE` |
+| `Pre` | `pre` | `CODE_BLOCK` |
+| `OL` | `ol` | `LIST` |
+| `UL` | `ul` | `LIST` |
+| `Table` | `table` | `HTML_TABLE` - see [Table (HTML)](http://localhost:9000/#core/components/table-html) |
+
+The React components listed above each support the full set of relevant HTML attributes **and an
 optional `elementRef` prop** to access the instance of the HTML element itself
 (not the React component).
 
-@## Alternate usage
+@## Nested usage
 
 Applying `Classes.RUNNING_TEXT` to a container element allows the above HTML
-elements (except `Table`) to be used directly without additional CSS classes.
+elements to be used directly without additional CSS classes.
 This is very useful for rendering generated markup where you cannot control the
 exact HTML elements, such as a Markdown document.
 
