@@ -27,7 +27,7 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   color: $pt-dark-text-color;
   font-size: $pt-font-size-small;
 
-  &.#{$ns}-active {
+  &:focus {
     @include focus-outline(0);
   }
 
