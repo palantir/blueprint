@@ -262,7 +262,7 @@ export function elevationClass(elevation: Elevation) {
     return `${NS}-elevation-${elevation}`;
 }
 
-/** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
+/** Returns CSS class for icon name. */
 export function iconClass(iconName?: string) {
     if (iconName == null) {
         return undefined;
