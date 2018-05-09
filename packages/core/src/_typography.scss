@@ -151,12 +151,16 @@ Styleguide running-text
     @extend %code;
   }
 
+  kbd {
+    @extend %keyboard;
+  }
+
   pre {
     @extend %code-block;
   }
 
-  kbd {
-    @extend %keyboard;
+  table {
+    @extend %html-table;
   }
 
   ul,
