@@ -263,22 +263,6 @@
 }
 
 // give all Table examples a fixed height
-#{page("html")} {
-  table {
-    margin-bottom: $pt-grid-size * 3;
-
-    th:first-child,
-    td:first-child {
-      padding-left: 0;
-    }
-
-    tr:last-child td {
-      padding-bottom: 0;
-    }
-  }
-}
-
-// give all Table examples a fixed height
 #{page("table")},
 #{page("features")} {
   .docs-react-example {
