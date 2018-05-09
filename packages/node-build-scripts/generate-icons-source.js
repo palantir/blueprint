@@ -36,12 +36,12 @@ writeLinesToFile(
     "_icon-map.scss",
     '@import "icon-variables";',
     "$icons: (",
-    ...ICONS_METADATA.map(icon => `  "${icon.iconName}": $${toLongName(icon)},`),
+    ...ICONS_METADATA.map(icon => `  "${icon.iconName}": ${toSassVariable(icon)},`),
     ");",
 );
 
 // simple variable definitions
-writeLinesToFile("_icon-variables.scss", ...ICONS_METADATA.map(icon => `$${toLongName(icon)}: "${icon.content}";`));
+writeLinesToFile("_icon-variables.scss", ...ICONS_METADATA.map(icon => `${toSassVariable(icon)}: "${icon.content}";`));
 
 // map ENUM_NAME to unicode character
 writeLinesToFile("iconContents.ts", ...exportIconConsts(icon => icon.content.replace("\\", "\\u")));
@@ -77,11 +77,11 @@ async function writeLinesToFile(filename, ...lines) {
 }
 
 /**
- * Adds `pt-icon-` prefix to iconName.
+ * Returns Sass variable name `$pt-icon-{name}`.
  * @param {IconMetadata} icon
  */
-function toLongName(icon) {
-    return `pt-icon-${icon.iconName}`;
+function toSassVariable(icon) {
+    return `$pt-icon-${icon.iconName}`;
 }
 
 /**

@@ -148,7 +148,7 @@ Styleguide form-group
     .#{$ns}-label,
     .#{$ns}-text-muted,
     .#{$ns}-form-helper-text {
-      // pt-disable always overrides over styles
+      // disabled state always overrides over styles
       // stylelint-disable-next-line declaration-no-important
       color: $pt-text-color-disabled !important;
     }
@@ -171,7 +171,7 @@ Styleguide form-group
       .#{$ns}-label,
       .#{$ns}-text-muted,
       .#{$ns}-form-helper-text {
-        // pt-disable always overrides over styles
+        // disabled state always overrides over styles
         // stylelint-disable-next-line declaration-no-important
         color: $pt-dark-text-color-disabled !important;
       }

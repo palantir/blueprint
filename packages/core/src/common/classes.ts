@@ -193,8 +193,6 @@ export const SPINNER = `${NS}-spinner`;
 export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
-export const SPINNER_SVG_CONTAINER = `${SPINNER}-svg-container`;
-export const SVG_SPINNER = `${NS}-svg-spinner`;
 
 export const TAB = `${NS}-tab`;
 export const TAB_INDICATOR = `${TAB}-indicator`;
@@ -264,7 +262,7 @@ export function elevationClass(elevation: Elevation) {
     return `${NS}-elevation-${elevation}`;
 }
 
-/** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
+/** Returns CSS class for icon name. */
 export function iconClass(iconName?: string) {
     if (iconName == null) {
         return undefined;

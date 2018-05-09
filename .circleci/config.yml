@@ -208,4 +208,5 @@ workflows:
             branches:
               only:
                 - develop
+                - next
                 - /^release\/.*/

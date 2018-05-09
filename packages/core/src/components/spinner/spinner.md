@@ -36,13 +36,3 @@ are supported via the `className` prop.
 @reactExample SpinnerExample
 
 [msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg
-
-@### SVG spinner
-
-Use the `SVGSpinner` component to render a spinner inside an SVG element.
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Sizing note</h4>
-    Because of the way SVG elements are sized, you may need to manually scale the spinner inside your
-    SVG to make it an appropriate size.
-</div>
