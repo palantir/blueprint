@@ -27,16 +27,17 @@ aliases:
       - packages/timezone/node_modules
       - packages/tslint-config/node_modules
       - packages/webpack-build-scripts/node_modules
-  build_dirs: &build-dirs
-    root: '.'
-    paths:
-      - packages/*/dist
-      - packages/*/lib
-      - packages/*/src/generated
   restore_cache: &restore-cache
     keys:
       - v9-dependency-cache-{{ checksum "yarn.lock" }}
       - v9-dependency-cache-
+  build_dirs: &build-dirs
+    root: '.'
+    paths:
+      # directories to persist to workspace
+      - packages/*/dist
+      - packages/*/lib
+      - packages/*/src/generated
   reports_path: &reports-path
     path: ./reports
 
@@ -119,6 +120,7 @@ jobs:
       - store_artifacts: *reports-path
 
   test-react-15:
+    # copy test-react16 and override environment
     <<: *run-tests
     environment:
       JUNIT_REPORT_PATH: reports
@@ -171,7 +173,7 @@ workflows:
       - deploy-preview:
           requires: [dist]
       - deploy-npm:
-          requires: [dist]
+          requires: [dist, lint, test-react15, test-react16]
           filters:
             branches:
               only:
