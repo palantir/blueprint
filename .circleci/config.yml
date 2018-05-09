@@ -32,6 +32,7 @@ aliases:
     paths:
       - packages/*/dist
       - packages/*/lib
+      - packages/*/src/generated
   restore_cache: &restore-cache
     keys:
       - v9-dependency-cache-{{ checksum "yarn.lock" }}
