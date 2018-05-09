@@ -1,159 +1,127 @@
 version: 2
-jobs:
-  install-dependencies:
+
+aliases:
+  setup_env: &setup-env
     docker:
       - image: circleci/node:8.10.0
+  save_cache: &save-cache
+    key: v9-dependency-cache-{{ checksum "yarn.lock" }}
+    paths:
+      - node_modules
+      # explicitly list each package node_modules
+      - packages/core/node_modules
+      - packages/datetime/node_modules
+      - packages/docs-app/node_modules
+      - packages/docs-data/node_modules
+      - packages/docs-theme/node_modules
+      - packages/icons/node_modules
+      - packages/karma-build-scripts/node_modules
+      - packages/labs/node_modules
+      - packages/landing-app/node_modules
+      - packages/node-build-scripts/node_modules
+      - packages/select/node_modules
+      - packages/table/node_modules
+      - packages/table-dev-app/node_modules
+      - packages/test-commons/node_modules
+      - packages/test-react15/node_modules
+      - packages/timezone/node_modules
+      - packages/tslint-config/node_modules
+      - packages/webpack-build-scripts/node_modules
+  build_dirs: &build-dirs
+    root: '.'
+    paths:
+      - packages/*/dist
+      - packages/*/lib
+  restore_cache: &restore-cache
+    keys:
+      - v9-dependency-cache-{{ checksum "yarn.lock" }}
+      - v9-dependency-cache-
+  reports_path: &reports-path
+    path: ./reports
+
+jobs:
+  install-dependencies:
+    <<: *setup-env
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v9-dependency-cache-{{ checksum "yarn.lock" }}
-            - v9-dependency-cache-
-      - run: yarn
-      - run: echo "Checking if lockfiles changed..." && git diff --exit-code
+      - attach_workspace:
+          at: '.'
+      - restore_cache: *restore-cache
+      - run: yarn --frozen-lockfile
       - run: npm rebuild node-sass
-      - save_cache:
-          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-            # explicitly list each package node_modules
-            - packages/core/node_modules
-            - packages/datetime/node_modules
-            - packages/docs-app/node_modules
-            - packages/docs-data/node_modules
-            - packages/docs-theme/node_modules
-            - packages/icons/node_modules
-            - packages/karma-build-scripts/node_modules
-            - packages/labs/node_modules
-            - packages/landing-app/node_modules
-            - packages/node-build-scripts/node_modules
-            - packages/select/node_modules
-            - packages/table/node_modules
-            - packages/table-dev-app/node_modules
-            - packages/test-commons/node_modules
-            - packages/test-react15/node_modules
-            - packages/timezone/node_modules
-            - packages/tslint-config/node_modules
-            - packages/webpack-build-scripts/node_modules
+      - save_cache: *save-cache
       - persist_to_workspace:
           root: '.'
           paths:
             - yarn.lock
 
   compile:
-    docker:
-      - image: circleci/node:8.10.0
+    <<: *setup-env
     steps:
       - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache:
-          keys:
-            - v9-dependency-cache-{{ checksum "yarn.lock" }}
-            - v9-dependency-cache-
+      - restore_cache: *restore-cache
       - run: yarn compile
-      - persist_to_workspace:
-          root: '.'
-          paths:
-            - packages/*/dist
-            - packages/*/lib
-            - packages/*/src/generated
+      - persist_to_workspace: *build-dirs
 
   lint:
-    docker:
-      - image: circleci/node:8.10.0
+    <<: *setup-env
     environment:
       JUNIT_REPORT_PATH: reports
     steps:
       - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache:
-          keys:
-            - v9-dependency-cache-{{ checksum "yarn.lock" }}
-            - v9-dependency-cache-
+      - restore_cache: *restore-cache
       - run: mkdir -p ./reports/tslint ./reports/stylelint
       - run: yarn compile --scope "@blueprintjs/tslint-config"
       - run: yarn lint
-      - store_test_results:
-          path: ./reports
-      - store_artifacts:
-          path: ./reports
+      - store_test_results: *reports-path
+      - store_artifacts: *reports-path
 
   dist:
-    docker:
-      - image: circleci/node:8.10.0
+    <<: *setup-env
     steps:
       - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache:
-          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-cache
       - run: yarn dist:libs
       - run: yarn dist:apps
-      # we don't need to run dist:docs here until we start publishing GitHub Pages from CI
-      - persist_to_workspace:
-          root: '.'
-          paths:
-            - packages/*/dist
-            - packages/*/lib
+      # skip dist:docs because we do not publish GitHub Pages from CI
+      - persist_to_workspace: *build-dirs
 
-  test-react-15:
+  test-react-16: &run-tests
     docker:
       - image: circleci/node:8.10.0-browsers
         environment:
             CHROME_BIN: "/usr/bin/google-chrome"
+    environment:
+      JUNIT_REPORT_PATH: reports
+    parallelism: 3
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - restore_cache: *restore-cache
+      - run: mkdir ./reports
+      - run:
+          command: |
+              case $CIRCLE_NODE_INDEX in \
+              0) yarn lerna run --parallel test:pre ;; \
+              1) yarn lerna run --parallel test:iso ;; \
+              2) yarn lerna run --parallel test:karma ;; \
+              esac
+          when: always
+      - store_test_results: *reports-path
+      - store_artifacts: *reports-path
+
+  test-react-15:
+    <<: *run-tests
     environment:
       JUNIT_REPORT_PATH: reports
       REACT: 15 # use React 15 for this job
-    parallelism: 3
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: mkdir ./reports
-      - run:
-          command: |
-              case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run --parallel test:pre ;; \
-              1) yarn lerna run --parallel test:iso ;; \
-              2) yarn lerna run --parallel test:karma ;; \
-              esac
-          when: always
-      - store_test_results:
-          path: ./reports
-      - store_artifacts:
-          path: ./reports
-
-  test-react-16:
-    docker:
-      - image: circleci/node:8.10.0-browsers
-        environment:
-            CHROME_BIN: "/usr/bin/google-chrome"
-    environment:
-      JUNIT_REPORT_PATH: reports
-    parallelism: 3
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - restore_cache:
-          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
-      - run: mkdir ./reports
-      - run:
-          command: |
-              case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run --parallel test:pre ;; \
-              1) yarn lerna run --parallel test:iso ;; \
-              2) yarn lerna run --parallel test:karma ;; \
-              esac
-          when: always
-      - store_test_results:
-          path: ./reports
-      - store_artifacts:
-          path: ./reports
 
   deploy-preview:
     docker:
@@ -181,8 +149,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache:
-          key: v9-dependency-cache-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-cache
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
