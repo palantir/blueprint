@@ -11,7 +11,7 @@ most HTML elements directly. Instead, we provide several ways to style basic ele
 1. Apply the Blueprint `Classes` constant to an HTML tag: `<h1 className={Classes.HEADING}>`.
 1. Nest HTML tags inside a container with `Classes.RUNNING_TEXT` (see below).
 
-The following elements should be used in the following way:
+The following elements should be used in this manner:
 
 | Component | HTML tag | `Classes` constant |
 |-|-|-|
