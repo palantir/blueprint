@@ -4,7 +4,7 @@
 # and the "Publish" commit created by Lerna. Requires confirmation.
 
 read -p "⚠️  Delete lerna publish commit and tags? [y/N] " response
-if [[ $response =~ ^(no|n| ) ]] || [[ -z $response ]]; then
+if [[ ! $response =~ ^(yes|y)$ ]]; then
   exit
 fi
 
