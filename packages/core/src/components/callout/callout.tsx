@@ -37,18 +37,15 @@ export class Callout extends React.PureComponent<ICalloutProps, {}> {
     public render() {
         const { className, children, icon, intent, title, ...htmlProps } = this.props;
         const iconName = this.getIconName(icon, intent);
-        const classes = classNames(
-            Classes.CALLOUT,
-            Classes.intentClass(intent),
-            { [Classes.CALLOUT_ICON]: iconName != null },
-            className,
-        );
+        const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className);
 
         return (
             <div className={classes} {...htmlProps}>
                 {iconName && <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />}
-                {title && <H4>{title}</H4>}
-                {children}
+                <div>
+                    {title && <H4>{title}</H4>}
+                    {children}
+                </div>
             </div>
         );
     }
