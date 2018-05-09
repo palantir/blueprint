@@ -7,11 +7,11 @@ reference: html
 In order to avoid conflicts with other stylesheets, Blueprint does not style
 most HTML elements directly. Instead, we provide several ways to style basic elements:
 
-1. Use Blueprint React components: `<H1>`
-1. Apply Blueprint the `Classes` constant to an HTML tag: `<h1 className={Classes.HEADING}>`
+1. Use Blueprint React components: `<H1>`.
+1. Apply the Blueprint `Classes` constant to an HTML tag: `<h1 className={Classes.HEADING}>`.
 1. Nest HTML tags inside a container with `Classes.RUNNING_TEXT` (see below).
 
-The following elements should be used in this manner:
+The following elements should be used in the following way:
 
 | Component | HTML tag | `Classes` constant |
 |-|-|-|
@@ -21,7 +21,7 @@ The following elements should be used in this manner:
 | `Pre` | `pre` | `CODE_BLOCK` |
 | `OL` | `ol` | `LIST` |
 | `UL` | `ul` | `LIST` |
-| `Table` | `table` | `HTML_TABLE` - see [Table (HTML)](http://localhost:9000/#core/components/table-html) |
+| `Table` | `table` | `HTML_TABLE` - see [Table (HTML)](#core/components/table-html) |
 
 The React components listed above each support the full set of relevant HTML attributes **and an
 optional `elementRef` prop** to access the instance of the HTML element itself
@@ -34,7 +34,7 @@ elements to be used directly without additional CSS classes.
 This is very useful for rendering generated markup where you cannot control the
 exact HTML elements, such as a Markdown document.
 
-See [Typography > Running text](#core/typography.running-text) for more information.
+See the [Running text](#core/typography.running-text) documentation for more information.
 
 @## Linting
 
