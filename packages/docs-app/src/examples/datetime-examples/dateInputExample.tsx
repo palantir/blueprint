@@ -5,8 +5,8 @@
  */
 
 import { Position, Switch } from "@blueprintjs/core";
-import { DateInput, IDateFormatProps, TimePickerPrecision } from "@blueprintjs/datetime";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
+import { DateInput, IDateFormatProps, TimePrecision } from "@blueprintjs/datetime";
+import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
@@ -19,7 +19,7 @@ export interface IDateInputExampleState {
     disabled: boolean;
     format: IDateFormatProps;
     reverseMonthAndYearMenus: boolean;
-    timePrecision: TimePickerPrecision | undefined;
+    timePrecision: TimePrecision | undefined;
 }
 
 export class DateInputExample extends BaseExample<IDateInputExampleState> {
@@ -37,10 +37,8 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
         this.setState({ reverseMonthAndYearMenus }),
     );
-    private toggleTimePrecision = handleNumberChange(timePrecision =>
-        this.setState({
-            timePrecision: timePrecision < 0 ? undefined : timePrecision,
-        }),
+    private toggleTimePrecision = handleStringChange((timePrecision: TimePrecision) =>
+        this.setState({ timePrecision }),
     );
 
     protected renderExample() {

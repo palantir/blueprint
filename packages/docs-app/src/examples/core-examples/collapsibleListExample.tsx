@@ -7,34 +7,26 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import {
-    Classes,
-    CollapseFrom,
-    CollapsibleList,
-    IMenuItemProps,
-    MenuItem,
-    RadioGroup,
-    Slider,
-} from "@blueprintjs/core";
+import { Boundary, Classes, CollapsibleList, IMenuItemProps, MenuItem, RadioGroup, Slider } from "@blueprintjs/core";
 import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
 
 export interface ICollapsibleListExampleState {
-    collapseFrom?: CollapseFrom;
+    collapseFrom?: Boundary;
     visibleItemCount?: number;
 }
 
 const COLLAPSE_FROM_RADIOS = [
-    { label: "Start", value: CollapseFrom.START.toString() },
-    { label: "End", value: CollapseFrom.END.toString() },
+    { label: "Start", value: Boundary.START.toString() },
+    { label: "End", value: Boundary.END.toString() },
 ];
 
 export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleState> {
     public state: ICollapsibleListExampleState = {
-        collapseFrom: CollapseFrom.START,
+        collapseFrom: Boundary.START,
         visibleItemCount: 3,
     };
 
-    private handleChangeCollapse = handleStringChange((collapseFrom: CollapseFrom) => this.setState({ collapseFrom }));
+    private handleChangeCollapse = handleStringChange((collapseFrom: Boundary) => this.setState({ collapseFrom }));
 
     protected renderExample() {
         return (
