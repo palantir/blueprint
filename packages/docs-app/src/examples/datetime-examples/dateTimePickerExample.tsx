@@ -20,7 +20,7 @@ export class DateTimePickerExample extends BaseExample<{ date: Date }> {
                 <DateTimePicker
                     className={Classes.ELEVATION_1}
                     value={this.state.date}
-                    timePickerProps={{ precision: "second" }}
+                    timePickerProps={{ precision: "second", useAmPm: true }}
                     onChange={this.handleDateChange}
                 />
                 <div>

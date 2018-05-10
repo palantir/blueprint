@@ -132,8 +132,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     public render() {
-        const shouldRenderSeconds = this.props.precision >= TimePrecision.SECOND;
-        const shouldRenderMilliseconds = this.props.precision >= TimePrecision.MILLISECOND;
+        const shouldRenderMilliseconds = this.props.precision === TimePrecision.MILLISECOND;
+        const shouldRenderSeconds = shouldRenderMilliseconds || this.props.precision === TimePrecision.SECOND;
         const hourUnit = this.props.useAmPm ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
         const classes = classNames(Classes.TIMEPICKER, this.props.className, {
             [CoreClasses.DISABLED]: this.props.disabled,
