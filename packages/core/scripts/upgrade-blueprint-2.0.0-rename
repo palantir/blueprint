@@ -103,7 +103,7 @@ function rename() {
     # Name parameters
     fromString=$1
     toString=$2
-    findRegexp=$3
+    findRegexp=${3:-$fromString}
     files=$(matchingFiles "$findRegexp")
 
     if [[ -z ${files// } ]]; then
@@ -127,7 +127,7 @@ function warn() {
     # Name parameters
     fromString=$1
     toString=$2
-    findRegexp=$3
+    findRegexp=${3:-$fromString}
     files=$(matchingFiles "$findRegexp")
 
     if [[ -z ${files// } ]]; then
@@ -136,7 +136,7 @@ function warn() {
         count=$(echo "$files" | wc -l | awk '{print $1}')
         echo ""
         echo -e "${RED}WARNING: Skipping ${BLUE}${fromString}${RESET} -> ${GREEN}${toString}${RESET}"
-        echo -e "${RED}Since ${BLUE}${fromString}${RED} is very common, you'll need to manually rename this string.${RESET}"
+        echo -e "${RED}Can't safely change ${BLUE}${fromString}${RED}, you'll need to manually rename/remove this string.${RESET}"
         echo -e "${RED}It was found in these files ${BLUE}${count}${RED} files:${RESET}"
         echo "$files"
     fi
