@@ -24,12 +24,13 @@ import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 // re-export this symbol for library consumers
 export { PopperModifiers };
 
-export enum PopoverInteractionKind {
-    CLICK = "click",
-    CLICK_TARGET_ONLY = "click-target",
-    HOVER = "hover",
-    HOVER_TARGET_ONLY = "hover-target",
-}
+export const PopoverInteractionKind = {
+    CLICK: "click" as "click",
+    CLICK_TARGET_ONLY: "click-target" as "click-target",
+    HOVER: "hover" as "hover",
+    HOVER_TARGET_ONLY: "hover-target" as "hover-target",
+};
+export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
 
 export interface IPopoverProps extends IOverlayableProps, IProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
