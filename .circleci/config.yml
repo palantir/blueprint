@@ -173,7 +173,7 @@ workflows:
       - deploy-preview:
           requires: [dist]
       - deploy-npm:
-          requires: [dist, lint, test-react15, test-react16]
+          requires: [dist, lint, test-react-15, test-react-16]
           filters:
             branches:
               only:
