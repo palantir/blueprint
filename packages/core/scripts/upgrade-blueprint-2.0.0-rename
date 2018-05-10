@@ -218,6 +218,6 @@ warnProp inline usePortal
 echo "
 
 Removed props"
-warn submenuViewportMargins REMOVED
-warn useSmartPositioning REMOVED
-warn popoverPosition REMOVED
+warnProp submenuViewportMargins REMOVED
+warnProp useSmartPositioning REMOVED
+warnProp popoverPosition REMOVED
