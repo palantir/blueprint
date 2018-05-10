@@ -232,6 +232,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
                         onChange={this.handleInputChange}
                         onKeyDown={this.handleInputKeyDown}
                         onKeyUp={this.handleInputKeyUp}
+                        onPaste={this.handlePaste}
                         placeholder={resolvedPlaceholder}
                         ref={this.refHandlers.input}
                         className={classNames(Classes.INPUT_GHOST, inputProps.className)}
@@ -414,4 +415,18 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     private isValidIndex(index: number) {
         return index !== NONE && index < this.props.values.length;
     }
+
+    private handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+        // we don't want it to show up in the input since we're directly adding the terms
+        event.preventDefault();
+        const { onChange, values } = this.props;
+        const clipboardText = event.clipboardData.getData("text")
+        const newValues = [].concat(...clipboardText.split(/\n|\r/).map((s) => this.getValues(s)))
+            
+       
+        if (Utils.isFunction(onChange)) {
+           onChange([...values, ...newValues]);
+        }
+    }
+
 }
