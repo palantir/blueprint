@@ -7,6 +7,7 @@
 export * from "./abstractComponent";
 export * from "./abstractPureComponent";
 export * from "./alignment";
+export * from "./boundary";
 export * from "./colors";
 export * from "./constructor";
 export * from "./elevation";
