@@ -1,10 +1,11 @@
 version: 2
 
-aliases:
-  setup_env: &setup-env
+# this block contains anchors to reusable blocks of config.
+references:
+  setup_env: &setup_env
     docker:
       - image: circleci/node:8.10.0
-  save_cache: &save-cache
+  save_cache: &save_cache
     key: v9-dependency-cache-{{ checksum "yarn.lock" }}
     paths:
       - node_modules
@@ -27,74 +28,74 @@ aliases:
       - packages/timezone/node_modules
       - packages/tslint-config/node_modules
       - packages/webpack-build-scripts/node_modules
-  restore_cache: &restore-cache
+  restore_cache: &restore_cache
     keys:
       - v9-dependency-cache-{{ checksum "yarn.lock" }}
       - v9-dependency-cache-
-  build_dirs: &build-dirs
+  persist_to_workspace: &persist_to_workspace
     root: '.'
     paths:
       # directories to persist to workspace
       - packages/*/dist
       - packages/*/lib
       - packages/*/src/generated
-  reports_path: &reports-path
+  reports_path: &reports_path
     path: ./reports
 
 jobs:
   install-dependencies:
-    <<: *setup-env
+    <<: *setup_env
     steps:
       - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache: *restore-cache
+      - restore_cache: *restore_cache
       - run: yarn --frozen-lockfile
       - run: npm rebuild node-sass
-      - save_cache: *save-cache
+      - save_cache: *save_cache
       - persist_to_workspace:
           root: '.'
           paths:
             - yarn.lock
 
   compile:
-    <<: *setup-env
+    <<: *setup_env
     steps:
       - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache: *restore-cache
+      - restore_cache: *restore_cache
       - run: yarn compile
-      - persist_to_workspace: *build-dirs
+      - persist_to_workspace: *persist_to_workspace
 
   lint:
-    <<: *setup-env
+    <<: *setup_env
     environment:
       JUNIT_REPORT_PATH: reports
     steps:
       - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache: *restore-cache
+      - restore_cache: *restore_cache
       - run: mkdir -p ./reports/tslint ./reports/stylelint
       - run: yarn compile --scope "@blueprintjs/tslint-config"
       - run: yarn lint
-      - store_test_results: *reports-path
-      - store_artifacts: *reports-path
+      - store_test_results: *reports_path
+      - store_artifacts: *reports_path
 
   dist:
-    <<: *setup-env
+    <<: *setup_env
     steps:
       - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache: *restore-cache
+      - restore_cache: *restore_cache
       - run: yarn dist:libs
       - run: yarn dist:apps
       # skip dist:docs because we do not publish GitHub Pages from CI
-      - persist_to_workspace: *build-dirs
+      - persist_to_workspace: *persist_to_workspace
 
-  test-react-16: &run-tests
+  test-react-16: &test-react
     docker:
       - image: circleci/node:8.10.0-browsers
         environment:
@@ -106,7 +107,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache: *restore-cache
+      - restore_cache: *restore_cache
       - run: mkdir ./reports
       - run:
           command: |
@@ -116,12 +117,12 @@ jobs:
               2) yarn lerna run --parallel test:karma ;; \
               esac
           when: always
-      - store_test_results: *reports-path
-      - store_artifacts: *reports-path
+      - store_test_results: *reports_path
+      - store_artifacts: *reports_path
 
   test-react-15:
-    # copy test-react16 and override environment
-    <<: *run-tests
+    # copy test-react-16 and override environment
+    <<: *test-react
     environment:
       JUNIT_REPORT_PATH: reports
       REACT: 15 # use React 15 for this job
@@ -146,13 +147,12 @@ jobs:
           command: ./scripts/submit-preview-comment
 
   deploy-npm:
-    docker:
-      - image: circleci/node:8.10.0
+    <<: *setup_env
     steps:
       - checkout
       - attach_workspace:
           at: '.'
-      - restore_cache: *restore-cache
+      - restore_cache: *restore_cache
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
