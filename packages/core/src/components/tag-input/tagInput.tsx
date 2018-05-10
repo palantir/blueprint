@@ -420,13 +420,10 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         // we don't want it to show up in the input since we're directly adding the terms
         event.preventDefault();
         const { onChange, values } = this.props;
-        const clipboardText = event.clipboardData.getData("text")
-        const newValues = [].concat(...clipboardText.split(/\n|\r/).map((s) => this.getValues(s)))
-            
-       
+        const clipboardText = event.clipboardData.getData("text");
+        const newValues = [].concat(...clipboardText.split(/\n|\r/).map(s => this.getValues(s)));
         if (Utils.isFunction(onChange)) {
-           onChange([...values, ...newValues]);
+            onChange([...values, ...newValues]);
         }
-    }
-
+    };
 }
