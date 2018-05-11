@@ -25,7 +25,7 @@ export interface IExampleProps {
 }
 
 export const ReactExample: React.SFC<IExampleProps> = props => (
-    <div className="docs-example-wrapper">
+    <div>
         {props.example.render({ id: props.name })}
         <AnchorButton
             href={props.example.sourceUrl}

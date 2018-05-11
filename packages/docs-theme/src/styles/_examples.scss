@@ -3,20 +3,67 @@
 
 // Base Styles for All Examples
 
-.docs-example {
+
+
+// full-bleed wrapper for example
+.docs-example-frame {
+  display: flex;
+  position: relative;
+  margin-top: $content-padding * 2;
+
   border-radius: $pt-border-radius;
   box-shadow: $pt-elevation-shadow-1;
+  width: 100%;
   overflow: hidden;
+
+  &:empty {
+    display: none;
+  }
+
+  .#{$ns}-dark & {
+    border-color: $pt-dark-divider-black;
+    background-color: $dark-example-background-color;
+  }
 }
 
-.docs-react-example,
-.docs-react-options, {
-  @include pt-flex-container(row, $pt-grid-size * 5);
+.docs-example-wrapper {
+  @include pt-flex-container(column, $fill: ".docs-example");
+  flex: 1 1 auto;
+  // explicit 0 width ensures options column takes up its space first,
+  // then the rest is filled by this element
+  width: 0;
+
+  .editor {
+    flex: 0 0 auto;
+    margin: 0;
+    border-top: 1px solid $pt-divider-black;
+    box-shadow: none;
+  }
+}
+
+.docs-example {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  background: $white;
+  padding-top: $pt-grid-size * 2;
+  padding-left: $pt-grid-size * 2;
+  // other sides set below to space out children:
+
+  > * {
+    margin-right: $pt-grid-size * 2;
+    margin-bottom: $pt-grid-size * 2;
+  }
+}
+
+.docs-example-options {
+  @include pt-flex-container(column, $pt-grid-size);
+  flex: 0 0 auto;
+  border-left: 1px solid $pt-divider-black;
+  max-width: $pt-grid-size * 30;
   padding: $pt-grid-size * 2;
-}
-
-.docs-react-options {
-  border-top: 1px solid $pt-divider-black;
   text-align: left;
 
   // hide when empty (div is always rendered)
@@ -25,7 +72,7 @@
   }
 }
 
-.docs-react-options-column > :last-child {
+.docs-example-options-column > :last-child {
   margin-bottom: 0;
 }
 
@@ -37,4 +84,39 @@
   &:last-child {
     margin-right: 0;
   }
+}
+
+.view-example-source {
+  display: inline-block;
+  margin-bottom: $pt-grid-size * 2;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  .#{$ns}-icon {
+    margin-right: $pt-grid-size / 2;
+  }
+}
+
+
+[data-modifier] > code {
+  white-space: nowrap;
+}
+
+// color the modifier label depending on modifier type
+[data-modifier="default"] > code {
+  color: $gray3;
+}
+
+[data-modifier="default"]:last-child > code {
+  display: none;
+}
+
+[data-modifier^=":"] > code {
+  color: $attribute-modifier-color;
+}
+
+[data-modifier^="."] > code {
+  color: $class-modifier-color;
 }
