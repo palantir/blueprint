@@ -3,14 +3,20 @@
 
 // Base Styles for All Examples
 
+.docs-example {
+  border-radius: $pt-border-radius;
+  box-shadow: $pt-elevation-shadow-1;
+  overflow: hidden;
+}
+
 .docs-react-example,
-.docs-react-example-row,
 .docs-react-options, {
   @include pt-flex-container(row, $pt-grid-size * 5);
+  padding: $pt-grid-size * 2;
 }
 
 .docs-react-options {
-  margin-top: $options-margin;
+  border-top: 1px solid $pt-divider-black;
   text-align: left;
 
   // hide when empty (div is always rendered)
@@ -19,8 +25,8 @@
   }
 }
 
-.docs-react-options-column .#{$ns}-control:not(.#{$ns}-inline) {
-  margin-right: 0;
+.docs-react-options-column > :last-child {
+  margin-bottom: 0;
 }
 
 .docs-inline-example {
