@@ -75,7 +75,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
                 <td className="docs-prop-details">
                     <code className="docs-prop-type">{typeInfo}</code>
                     <div className="docs-prop-description">{renderBlock(documentation)}</div>
-                    <p className="docs-prop-tags">{this.renderTags(entry)}</p>
+                    <div className="docs-prop-tags">{this.renderTags(entry)}</div>
                 </td>
             </tr>
         );
