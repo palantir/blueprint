@@ -3,7 +3,7 @@
 
 // Base Styles for All Examples
 
-
+// TODO: dark support
 
 // full-bleed wrapper for example
 .docs-example-frame {
@@ -21,8 +21,7 @@
   }
 
   .#{$ns}-dark & {
-    border-color: $pt-dark-divider-black;
-    background-color: $dark-example-background-color;
+    box-shadow: $pt-dark-elevation-shadow-1;
   }
 }
 
@@ -38,6 +37,10 @@
     margin: 0;
     border-top: 1px solid $pt-divider-black;
     box-shadow: none;
+
+    .#{$ns}-dark & {
+      border-top-color: $pt-dark-divider-black;
+    }
   }
 }
 
@@ -47,7 +50,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
-  background: $white;
+  max-width: 100%;
+  background: $example-background-color;
   padding-top: $pt-grid-size * 2;
   padding-left: $pt-grid-size * 2;
   // other sides set below to space out children:
@@ -56,12 +60,17 @@
     margin-right: $pt-grid-size * 2;
     margin-bottom: $pt-grid-size * 2;
   }
+
+  .#{$ns}-dark & {
+    background: $dark-example-background-color;
+  }
 }
 
 .docs-example-options {
   @include pt-flex-container(column, $pt-grid-size);
   flex: 0 0 auto;
-  border-left: 1px solid $pt-divider-black;
+  border-left: 1px solid;
+  border-color: $pt-divider-black;
   max-width: $pt-grid-size * 30;
   padding: $pt-grid-size * 2;
   text-align: left;
@@ -70,19 +79,9 @@
   &:empty {
     display: none;
   }
-}
 
-.docs-example-options-column > :last-child {
-  margin-bottom: 0;
-}
-
-.docs-inline-example {
-  display: inline-block;
-  margin-right: $options-margin * 2;
-  vertical-align: top;
-
-  &:last-child {
-    margin-right: 0;
+  .#{$ns}-dark & {
+    border-color: $pt-dark-divider-black;
   }
 }
 
@@ -99,24 +98,11 @@
   }
 }
 
-
-[data-modifier] > code {
-  white-space: nowrap;
-}
-
-// color the modifier label depending on modifier type
-[data-modifier="default"] > code {
-  color: $gray3;
-}
-
-[data-modifier="default"]:last-child > code {
-  display: none;
-}
-
-[data-modifier^=":"] > code {
+// colors for CSS modifiers
+[data-modifier^=":"] {
   color: $attribute-modifier-color;
 }
 
-[data-modifier^="."] > code {
+[data-modifier^="."] {
   color: $class-modifier-color;
 }

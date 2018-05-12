@@ -10,9 +10,9 @@ $link-icon-padding: $pt-grid-size;
 $class-modifier-color: $rose4;
 $attribute-modifier-color: $violet5;
 
-$example-padding: $content-padding;
-$example-background-color: $content-background-color;
-$dark-example-background-color: $dark-content-background-color;
+$example-padding: $pt-grid-size * 2;
+$example-background-color: $white;
+$dark-example-background-color: $dark-gray4;
 
 // title of a section
 .docs-title {
