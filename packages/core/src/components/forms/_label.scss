@@ -29,7 +29,8 @@ Styleguide label
 // stylelint-disable-next-line selector-no-qualifying-type
 label.#{$ns}-label {
   display: block;
-  margin: 0 0 ($pt-grid-size * 1.5);
+  margin-top: 0;
+  margin-bottom: ($pt-grid-size * 1.5);
 
   .#{$ns}-input,
   .#{$ns}-select,
