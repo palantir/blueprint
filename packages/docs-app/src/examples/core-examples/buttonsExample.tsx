@@ -52,7 +52,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         const { iconOnly, wiggling, ...buttonProps } = this.state;
 
         return (
-            <div className="docs-react-example-row">
+            <>
                 <div className="docs-react-example-column">
                     <p>
                         <Code>Button</Code>
@@ -79,7 +79,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                         {...buttonProps}
                     />
                 </div>
-            </div>
+            </>
         );
     }
 

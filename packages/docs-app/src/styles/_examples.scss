@@ -6,55 +6,26 @@
 
 // Specific Example Customizations
 
-.docs-example-wrapper {
-  .#{$ns}-slider:not(:last-child) {
-    margin-bottom: $options-margin;
-  }
-
-  .#{$ns}-callout {
-    margin: 0;
-  }
-}
-
 .docs-card-example {
-  display: flex;
-  justify-content: space-between;
+  @include pt-flex-container(row, $pt-grid-size * 2);
 
   .#{$ns}-card {
-    width: floor(($content-width - $pt-grid-size * 10) / 3);
+    flex: 1 1 auto;
 
     &:hover a {
       text-decoration: underline;
-    }
-
-    p {
-      margin: 0;
     }
   }
 }
 
 .docs-datetime-example {
-  > .#{$ns}-datepicker {
-    margin-bottom: $pt-grid-size * 2;
-  }
-
-  > .#{$ns}-datetimepicker {
-    display: inline-block;
-    margin-bottom: $pt-grid-size * 2;
+  > :last-child:not(:first-child) {
+    // space above date tags, if present
+    margin-top: $pt-grid-size * 2;
   }
 
   .#{$ns}-icon-arrow-right {
     margin: 0 ($pt-grid-size / 2);
-  }
-}
-
-.docs-dialog-example {
-  display: flex;
-  align-items: center;
-  height: $pt-grid-size * 6;
-
-  .#{$ns}-button + .#{$ns}-button {
-    margin-left: $pt-grid-size;
   }
 }
 
@@ -97,24 +68,16 @@
 }
 
 .docs-context-menu-example {
-  $node-size: $pt-grid-size * 8;
-  $icon-size: $pt-icon-size-standard * 2;
-  $node-border-width: 4px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include pt-flex-container(column, $pt-grid-size * 2);
   justify-content: center;
-
-  border-radius: $pt-border-radius;
-  background: $light-gray3;
-  padding: $options-margin;
-
-  .#{$ns}-dark & {
-    background: $dark-gray5;
-  }
+  align-items: center;
+  height: $pt-grid-size * 20;
 
   .context-menu-node {
+    $node-size: $pt-grid-size * 8;
+    $icon-size: $pt-icon-size-standard * 2;
+    $node-border-width: 4px;
+
     border: $node-border-width solid $white;
     border-radius: 50%;
     box-shadow: $pt-elevation-shadow-2;
@@ -138,6 +101,67 @@
   }
 }
 
+.docs-hotkey-piano-example {
+  opacity: 0.5;
+
+  &:focus {
+    opacity: 1;
+  }
+
+  > :first-child {
+    margin-bottom: $pt-grid-size * 2;
+  }
+
+  .piano-key {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+
+    > div {
+      margin-right: $pt-grid-size/2;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      background-color: $white;
+      width: $pt-grid-size * 8;
+      height: $pt-grid-size * 24;
+      color: $black;
+    }
+  }
+
+  .piano-key-sharp {
+    z-index: 2;
+    width: 0;
+    overflow: visible;
+    vertical-align: top;
+
+    > div {
+      position: absolute;
+      top: 0;
+      left: $pt-grid-size * -4;
+      background-color: $black;
+      height: $pt-grid-size * 16;
+      color: $white;
+    }
+  }
+
+  .piano-key-pressed > div {
+    background-color: $pt-intent-primary;
+    color: $white;
+  }
+
+  .piano-key-text {
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+    left: 0;
+    text-align: center;
+  }
+
+  .piano-key-note {
+    opacity: 0.5;
+  }
+}
+
 .docs-input-group-example {
   .docs-flex-column {
     margin-right: $options-margin;
@@ -152,36 +176,18 @@
   }
 }
 
-.docs-progress-example {
-  .docs-react-example {
-    flex-direction: column;
-  }
-}
-
 .docs-slider-example {
-  width: 100%;
-
-  &.docs-slider-example-vertical {
-    display: flex;
-
-    .#{$ns}-slider {
-      margin-right: $pt-grid-size * 10;
-      margin-bottom: 0;
-    }
+  .docs-example {
+    // more padding because slider labels bleed outside container
+    padding-left: $pt-grid-size * 4;
+    padding-top: $pt-grid-size * 4;
+    padding-right: $pt-grid-size * 2;
+    padding-bottom: $pt-grid-size * 2;
   }
 }
 
 .docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
   line-height: $pt-navbar-height;
-}
-
-.docs-example-wrapper .#{$ns}-navbar {
-  position: static;
-  width: 100%;
-}
-
-.docs-tag-example .#{$ns}-tag:not(:last-child) {
-  margin-right: $pt-grid-size * 0.5;
 }
 
 .#{$ns}-progress-bar.docs-toast-progress {
@@ -190,16 +196,10 @@
 }
 
 .docs-popover-example {
-  .docs-react-example {
-    border-radius: $pt-border-radius;
-    background: $light-gray3;
-    width: 100%;
-    height: 350px;
+  .docs-example {
+    display: block;
+    max-height: 700px;
     overflow: scroll;
-
-    .#{$ns}-dark & {
-      background: $dark-gray5;
-    }
   }
 
   .docs-popover-example-scroll {
@@ -207,8 +207,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 200%;
-    min-height: 200%;
+    width: 1000px;
+    height: 1500px;
   }
 
   .#{$ns}-popover & {
@@ -217,7 +217,7 @@
 }
 
 .docs-popover-position-example {
-  .docs-popover-position-example-instructions {
+  em {
     display: inline-block;
     max-width: 25 * $pt-grid-size;
     color: $pt-text-color-muted;
@@ -228,26 +228,20 @@
     }
   }
 
-  .docs-popover-position-example-button {
-    font-family: $pt-font-family-monospace;
-  }
-
-  .docs-popover-position-example-table {
-    margin: 0 auto;
-  }
-
-  .docs-popover-position-example-cell-right,
-  .docs-popover-position-example-cell-left {
+  td:first-child {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
   }
 
-  .docs-popover-position-example-cell-center {
+  td:nth-child(2) {
     text-align: center;
   }
 
-  .docs-popover-position-example-cell-left {
-    align-items: flex-end;
+  td:nth-child(3) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .#{$ns}-popover-wrapper {
@@ -342,16 +336,35 @@
   }
 }
 
+
+.docs-popover-position-example {
+  .docs-popover-position-value-code-block {
+    text-align: center;
+    font-size: $pt-font-size-large;
+    font-weight: 600;
+  }
+
+  .docs-popover-position-label-side {
+    color: $cobalt3;
+
+    .#{$ns}-dark & {
+      color: $cobalt5;
+    }
+  }
+
+  .docs-popover-position-label-alignment {
+    color: $forest3;
+
+    .#{$ns}-dark & {
+      color: $forest5;
+    }
+  }
+}
+
 .docs-tooltip-example {
   > div {
     margin-bottom: $pt-grid-size;
   }
-}
-
-.docs-icon-example {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .docs-menu-example .#{$ns}-menu {
@@ -361,11 +374,6 @@
 .docs-date-range {
   @include pt-flex-container(row, $pt-grid-size / 2);
   align-items: center;
-}
-
-// only for date input and date range input examples
-.#{$ns}-popover-wrapper + .docs-date-range {
-  margin-left: $pt-grid-size * 2;
 }
 
 .docs-wiggle {

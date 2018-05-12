@@ -5,10 +5,6 @@ table {
   width: 100%;
 }
 
-.#{$ns}-progress-bar {
-  margin-bottom: $pt-grid-size;
-}
-
 // override normalize.css
 input[type="search"] {
   box-sizing: border-box;

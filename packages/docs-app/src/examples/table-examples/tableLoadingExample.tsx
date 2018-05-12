@@ -30,8 +30,6 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
         rowHeadersLoading: true,
     };
 
-    protected className = "docs-table-loading-example";
-
     private handleCellsLoading = handleBooleanChange(cellsLoading => this.setState({ cellsLoading }));
 
     private handleColumnHeadersLoading = handleBooleanChange(columnHeadersLoading => {

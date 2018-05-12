@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
 import { Slider, Switch } from "@blueprintjs/core";
@@ -18,6 +17,8 @@ export interface ISliderExampleState {
 }
 
 export class SliderExample extends BaseExample<ISliderExampleState> {
+    public className = "docs-slider-example";
+
     public state: ISliderExampleState = {
         value1: 0,
         value2: 2.5,
@@ -29,13 +30,8 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
 
     protected renderExample() {
         const { vertical } = this.state;
-
-        const rootClasses = classNames("docs-slider-example", {
-            "docs-slider-example-vertical": vertical,
-        });
-
         return (
-            <div className={rootClasses}>
+            <>
                 <Slider
                     min={0}
                     max={10}
@@ -66,14 +62,12 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     value={this.state.value3}
                     vertical={vertical}
                 />
-            </div>
+            </>
         );
     }
 
     protected renderOptions() {
-        return [
-            [<Switch checked={this.state.vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />],
-        ];
+        return <Switch checked={this.state.vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />;
     }
 
     private getChangeHandler(key: string) {

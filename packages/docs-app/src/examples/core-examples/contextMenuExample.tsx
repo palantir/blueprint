@@ -9,7 +9,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 
 /**
@@ -49,8 +49,6 @@ class GraphNode extends React.PureComponent<{}, { isContextMenuOpen: boolean }> 
  */
 @ContextMenuTarget
 export class ContextMenuExample extends BaseExample<{}> {
-    public className = "docs-context-menu-example";
-
     public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
         return (
             <Menu>
@@ -72,10 +70,11 @@ export class ContextMenuExample extends BaseExample<{}> {
     }
 
     public renderExample() {
-        return <GraphNode />;
-    }
-
-    protected renderOptions() {
-        return <span>Right-click on node or background.</span>;
+        return (
+            <div className="docs-context-menu-example">
+                <GraphNode />
+                <span className={Classes.TEXT_MUTED}>Right-click on node or background.</span>
+            </div>
+        );
     }
 }

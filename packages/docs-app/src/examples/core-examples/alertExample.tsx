@@ -32,7 +32,7 @@ export class AlertExample extends BaseExample<{}> {
     protected renderExample() {
         const { isOpen, isOpenError, ...switchProps } = this.state;
         return (
-            <div>
+            <>
                 <Button onClick={this.handleErrorOpen} text="Open file error alert" />
                 <Alert
                     {...switchProps}
@@ -64,7 +64,7 @@ export class AlertExample extends BaseExample<{}> {
                     </p>
                 </Alert>
                 <Toaster ref={ref => (this.toaster = ref)} />
-            </div>
+            </>
         );
     }
 

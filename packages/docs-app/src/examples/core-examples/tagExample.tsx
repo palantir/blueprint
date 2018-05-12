@@ -38,8 +38,8 @@ export class TagExample extends BaseExample<ITagExampleState> {
     private handleInteractiveChange = handleBooleanChange(interactive => this.setState({ interactive }));
 
     protected renderExample() {
-        const { removable, ...tagProps } = this.state;
-        const tags = this.state.tags.map(tag => {
+        const { removable, tags, ...tagProps } = this.state;
+        const tagElements = tags.map(tag => {
             const onRemove = () => this.setState({ tags: this.state.tags.filter(t => t !== tag) });
             return (
                 <Tag key={tag} onRemove={removable && onRemove} {...tagProps}>
@@ -47,7 +47,7 @@ export class TagExample extends BaseExample<ITagExampleState> {
                 </Tag>
             );
         });
-        return <div>{tags}</div>;
+        return <>{tagElements}</>;
     }
 
     protected renderOptions() {

@@ -12,7 +12,7 @@ import { OverlayExample } from "./overlayExample";
 export class DialogExample extends OverlayExample {
     protected renderExample() {
         return (
-            <div className="docs-dialog-example">
+            <>
                 <Button onClick={this.handleOpen}>Show dialog</Button>
                 <Dialog
                     className={this.props.themeName}
@@ -64,7 +64,7 @@ export class DialogExample extends OverlayExample {
                         </div>
                     </div>
                 </Dialog>
-            </div>
+            </>
         );
     }
 

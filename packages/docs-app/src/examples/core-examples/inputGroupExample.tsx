@@ -80,43 +80,39 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
         const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
 
         return (
-            <div className="docs-input-group-example docs-flex-row">
-                <div className="docs-flex-column">
-                    <InputGroup
-                        disabled={disabled}
-                        large={large}
-                        leftIcon="filter"
-                        onChange={this.handleFilterChange}
-                        placeholder="Filter histogram..."
-                        rightElement={maybeSpinner}
-                        value={filterValue}
-                    />
-                    <InputGroup
-                        disabled={disabled}
-                        large={large}
-                        placeholder="Enter your password..."
-                        rightElement={lockButton}
-                        type={showPassword ? "text" : "password"}
-                    />
-                </div>
-                <div className="docs-flex-column">
-                    <InputGroup
-                        disabled={disabled}
-                        large={large}
-                        leftIcon="tag"
-                        onChange={this.handleTagChange}
-                        placeholder="Find tags"
-                        rightElement={resultsTag}
-                        value={tagValue}
-                    />
-                    <InputGroup
-                        disabled={disabled}
-                        large={large}
-                        placeholder="Add people or groups..."
-                        rightElement={permissionsMenu}
-                    />
-                </div>
-            </div>
+            <>
+                <InputGroup
+                    disabled={disabled}
+                    large={large}
+                    leftIcon="filter"
+                    onChange={this.handleFilterChange}
+                    placeholder="Filter histogram..."
+                    rightElement={maybeSpinner}
+                    value={filterValue}
+                />
+                <InputGroup
+                    disabled={disabled}
+                    large={large}
+                    placeholder="Enter your password..."
+                    rightElement={lockButton}
+                    type={showPassword ? "text" : "password"}
+                />
+                <InputGroup
+                    disabled={disabled}
+                    large={large}
+                    leftIcon="tag"
+                    onChange={this.handleTagChange}
+                    placeholder="Find tags"
+                    rightElement={resultsTag}
+                    value={tagValue}
+                />
+                <InputGroup
+                    disabled={disabled}
+                    large={large}
+                    placeholder="Add people or groups..."
+                    rightElement={permissionsMenu}
+                />
+            </>
         );
     }
 
