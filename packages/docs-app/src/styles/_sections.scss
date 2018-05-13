@@ -4,13 +4,13 @@
 @import "~@blueprintjs/core/src/common/variables";
 
 // Generate a selector for a page ID by reference
-@function page($ref, $comparator: "=") {
-  @return "[data-page-id#{$comparator}\"#{$ref}\"]";
+@function page($ref, $comparator: "$=") {
+  @return '[data-page-id#{$comparator}"#{$ref}"]';
 }
 
 // Generate a selector for a React example by name
 @function example($NameExample, $comparator: "=") {
-  @return "[data-example-id#{$comparator}\"#{$NameExample}\"]";
+  @return '[data-example-id#{$comparator}"#{$NameExample}"]';
 }
 
 // CSS examples
