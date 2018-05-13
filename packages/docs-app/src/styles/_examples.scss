@@ -162,20 +162,6 @@
   }
 }
 
-.docs-input-group-example {
-  .docs-flex-column {
-    margin-right: $options-margin;
-  }
-
-  .#{$ns}-input-group {
-    width: $pt-grid-size * 30;
-
-    &:first-child {
-      margin-bottom: $options-margin;
-    }
-  }
-}
-
 .docs-slider-example {
   .docs-example {
     // more padding because slider labels bleed outside container
