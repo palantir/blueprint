@@ -9,14 +9,14 @@ import * as React from "react";
 import { Classes, InputGroup, NonIdealState, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export interface ISliderExampleState {
+export interface INonIdealStateExampleState {
     action?: boolean;
     description?: boolean;
     icon?: boolean;
 }
 
-export class NonIdealStateExample extends BaseExample<ISliderExampleState> {
-    public state: ISliderExampleState = {
+export class NonIdealStateExample extends BaseExample<INonIdealStateExampleState> {
+    public state: INonIdealStateExampleState = {
         action: true,
         description: true,
         icon: true,
