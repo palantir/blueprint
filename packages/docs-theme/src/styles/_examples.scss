@@ -100,7 +100,7 @@ $dark-options-background-color: $dark-gray4;
 .docs-example-view-source {
   display: block;
   margin-top: $example-frame-spacing;
-  margin-bottom: $pt-grid-size * 2;
+  margin-bottom: $pt-grid-size * 4;
   border-radius: $example-frame-border-radius;
 
   &.#{$ns}-button {
