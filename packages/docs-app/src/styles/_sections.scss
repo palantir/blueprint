@@ -42,6 +42,42 @@
   }
 }
 
+#{example("HotkeyTester")} {
+  .docs-hotkey-tester {
+    @include pt-flex-container(column, $pt-grid-size);
+    flex: 1 1;
+    align-items: center;
+    justify-content: space-around;
+    opacity: 0.4;
+    border: 2px solid rgba($gray3, 0.8);
+    border-radius: $pt-border-radius * 2;
+    background: rgba($gray3, 0.2);
+    max-width: 70%;
+    min-height: $pt-grid-size * 12;
+    padding: $pt-grid-size * 2;
+    transition: all $pt-transition-duration $pt-transition-ease;
+
+    &:hover {
+      opacity: 0.6;
+      cursor: pointer;
+    }
+
+    &:focus {
+      opacity: 1;
+      border: 2px solid rgba($blue3, 0.6);
+      background: rgba($blue3, 0.1);
+      cursor: default;
+      color: map-get($pt-intent-text-colors, "primary");
+
+      .#{$ns}-dark & {
+        border: 2px solid rgba($blue4, 0.6);
+        background: rgba($blue4, 0.1);
+        color: map-get($pt-dark-intent-text-colors, "primary");
+      }
+    }
+  }
+}
+
 #{example("NumericInputExtendedExample")} {
   .#{$ns}-numeric-input input {
     width: $pt-grid-size * 23;

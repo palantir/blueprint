@@ -14,11 +14,13 @@ export interface IHotkeyTesterState {
 }
 
 export class HotkeyTester extends BaseExample<IHotkeyTesterState> {
-    public state: IHotkeyTesterState = { combo: null };
+    public state: IHotkeyTesterState = {
+        combo: null,
+    };
 
     protected renderExample() {
         return (
-            <div className="hotkey-tester-example" onKeyDown={this.handleKeyDown} tabIndex={0}>
+            <div className="docs-hotkey-tester" onKeyDown={this.handleKeyDown} onBlur={this.handleBlur} tabIndex={0}>
                 {this.renderKeyCombo()}
             </div>
         );
@@ -30,9 +32,10 @@ export class HotkeyTester extends BaseExample<IHotkeyTesterState> {
             return "Click here then press a key combo";
         } else {
             return (
-                <div>
-                    <KeyCombo combo={combo} /> or <Code>{combo}</Code>
-                </div>
+                <>
+                    <KeyCombo combo={combo} />
+                    <Code>{combo}</Code>
+                </>
             );
         }
     }
@@ -44,4 +47,6 @@ export class HotkeyTester extends BaseExample<IHotkeyTesterState> {
         const combo = getKeyComboString(e.nativeEvent as KeyboardEvent);
         this.setState({ combo });
     };
+
+    private handleBlur = () => this.setState({ combo: null });
 }
