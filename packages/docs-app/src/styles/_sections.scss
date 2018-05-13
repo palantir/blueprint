@@ -21,6 +21,13 @@
   }
 }
 
+#{page("forms/label")},
+#{page("forms/select-forms")} {
+  .docs-example .#{$ns}-label:last-child {
+    margin-bottom: 0;
+  }
+}
+
 #{page("table-html")} {
   .docs-example {
     padding: $pt-grid-size;
