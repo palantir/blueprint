@@ -33,8 +33,6 @@
   }
 }
 
-#{example("SliderExample")}
-
 // give all Table examples a fixed height
 #{page("table", "^=")} {
   .docs-example-frame {
@@ -42,9 +40,8 @@
   }
 
   .docs-example-options {
-    border-left: none;
-    border-top-style: solid;
-    border-top-width: 1px;
+    margin-top: $pt-grid-size;
+    margin-left: 0;
     max-width: unset;
   }
 
