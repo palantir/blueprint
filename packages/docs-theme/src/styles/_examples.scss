@@ -83,8 +83,9 @@ $dark-options-background-color: $dark-gray5;
     display: none;
   }
 
-  .#{$ns}-label:last-child,
-  .#{$ns}-control:last-child {
+  .#{$ns}-control:last-child,
+  .#{$ns}-form-group:last-child,
+  .#{$ns}-label:last-child {
     margin-bottom: 0;
   }
 
