@@ -164,16 +164,6 @@
   }
 }
 
-.docs-slider-example {
-  .docs-example {
-    // more padding because slider labels bleed outside container
-    padding-left: $pt-grid-size * 4;
-    padding-top: $pt-grid-size * 4;
-    padding-right: $pt-grid-size * 2;
-    padding-bottom: $pt-grid-size * 2;
-  }
-}
-
 .docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
   line-height: $pt-navbar-height;
 }

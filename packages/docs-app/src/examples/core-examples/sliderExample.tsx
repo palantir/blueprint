@@ -17,8 +17,6 @@ export interface ISliderExampleState {
 }
 
 export class SliderExample extends BaseExample<ISliderExampleState> {
-    public className = "docs-slider-example";
-
     public state: ISliderExampleState = {
         value1: 0,
         value2: 2.5,

@@ -15,8 +15,6 @@ export interface IRangeSliderExampleState {
 }
 
 export class RangeSliderExample extends BaseExample<IRangeSliderExampleState> {
-    public className = "docs-slider-example";
-
     public state: IRangeSliderExampleState = {
         range: [36, 72],
         vertical: false,
