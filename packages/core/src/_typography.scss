@@ -221,17 +221,20 @@ a {
 Preformatted text
 
 Markup:
+<div>
 <p>Use the <code class="@ns-code">&lt;code></code> tag for snippets of code.</p>
 <pre class="@ns-code-block">Use the &lt;pre> tag for blocks of code.</pre>
 <pre class="@ns-code-block"><code>// code sample
-export function hasModifier(modifiers: ts.ModifiersArray, ...modifierKinds: ts.SyntaxKind[]) {
+export function hasModifier(
+  modifiers: ts.ModifiersArray,
+  ...modifierKinds: ts.SyntaxKind[],
+) {
   if (modifiers == null || modifierKinds == null) {
     return false;
   }
-  return modifiers.some((m) => {
-    return modifierKinds.some((k) => m.kind === k);
-  });
+  return modifiers.some(m => modifierKinds.some(k => m.kind === k));
 }</code></pre>
+</div>
 
 Styleguide preformatted
 */
