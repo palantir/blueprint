@@ -65,6 +65,7 @@ Markup:
 .#{$ns}-monospace-text - Use a monospace font (ideal for code).
 .#{$ns}-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
 .#{$ns}-text-large - Use a larger font size.
+.#{$ns}-text-small - Use a smaller font size.
 .#{$ns}-text-muted - Change text color to a gentler gray.
 .#{$ns}-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its container.
 
@@ -172,9 +173,14 @@ Styleguide running-text
   }
 }
 
-// NOTE: this must be defined after .@ns-running-text in order to override font-size.
+// NOTE: these must be defined after .@ns-running-text in order to override font-size.
 .#{$ns}-text-large {
   font-size: $pt-font-size-large;
+  // line-height comes from .@ns-(ui|running)-text
+}
+
+.#{$ns}-text-small {
+  font-size: $pt-font-size-small;
   // line-height comes from .@ns-(ui|running)-text
 }
 
