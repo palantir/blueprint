@@ -4,7 +4,7 @@
 @import "~@blueprintjs/icons/src/icons";
 @import "~@blueprintjs/core/src/common/react-transition";
 
-// Specific Example Customizations
+// Specific example customizations
 
 .docs-card-example {
   @include pt-flex-container(row, $pt-grid-size * 2);
@@ -37,6 +37,7 @@
   }
 }
 
+// prettier-ignore
 .docs-overlay-example-transition {
   $overlay-example-width: $pt-grid-size * 40;
   $enter: (
@@ -61,6 +62,7 @@
     $pt-transition-duration * 5,
     $before: "&"
   );
+
   top: 0;
   left: calc(50% - #{$overlay-example-width / 2});
   margin: 10vh 0;
@@ -322,7 +324,6 @@
   }
 }
 
-
 .docs-popover-position-example {
   .docs-popover-position-value-code-block {
     text-align: center;
@@ -367,8 +368,16 @@
 }
 
 @keyframes docs-wiggle-rotate {
-  0% { transform: rotate(0); }
-  25% { transform: rotate(-3deg); }
-  75% { transform: rotate(3deg); }
-  100% { transform: rotate(0); }
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
 }
