@@ -15,6 +15,16 @@
 
 // CSS examples
 
+#{page("table-html")} {
+  .docs-example {
+    padding: $pt-grid-size;
+  }
+
+  .#{$ns}-html-table {
+    margin: $pt-grid-size;
+  }
+}
+
 #{page("tree")} .#{$ns}-tree {
   width: $pt-grid-size * 35;
 }
