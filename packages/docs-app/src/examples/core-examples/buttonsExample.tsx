@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, Classes, Code, Intent, Switch } from "@blueprintjs/core";
+import { AnchorButton, Button, Code, Intent, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
