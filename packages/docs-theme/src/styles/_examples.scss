@@ -25,7 +25,7 @@ $dark-options-background-color: $dark-gray4;
   &:empty {
     display: none;
   }
-  }
+}
 
 .docs-example-wrapper {
   @include pt-flex-container(column, $example-frame-spacing, $fill: ".docs-example");
@@ -118,10 +118,10 @@ $dark-options-background-color: $dark-gray4;
 }
 
 // colors for CSS modifiers
-[data-modifier^=":"] {
+.#{$ns}-code[data-modifier^=":"] {
   color: $attribute-modifier-color;
 }
 
-[data-modifier^="."] {
+.#{$ns}-code[data-modifier^="."] {
   color: $class-modifier-color;
 }
