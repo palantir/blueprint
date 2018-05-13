@@ -1,32 +1,34 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-// Base Styles for All Examples
+// Base styles for all examples
 
-// TODO: dark support
+$example-frame-spacing: $pt-grid-size;
+$example-frame-border-radius: $pt-border-radius * 2;
+$example-spacing: $pt-grid-size * 4;
+
+$example-background-color: $white;
+$code-background-color: $light-gray4;
+$options-background-color: $light-gray4;
+
+$dark-example-background-color: $dark-gray2;
+$dark-code-background-color: $dark-gray4;
+$dark-options-background-color: $dark-gray4;
 
 // full-bleed wrapper for example
 .docs-example-frame {
-  display: flex;
+  @include pt-flex-container(row, $fill: ".docs-example");
   position: relative;
   margin-top: $content-padding * 2;
-
-  border-radius: $pt-border-radius;
-  box-shadow: $pt-elevation-shadow-1;
   width: 100%;
-  overflow: hidden;
 
   &:empty {
     display: none;
   }
-
-  .#{$ns}-dark & {
-    box-shadow: $pt-dark-elevation-shadow-1;
   }
-}
 
 .docs-example-wrapper {
-  @include pt-flex-container(column, $fill: ".docs-example");
+  @include pt-flex-container(column, $example-frame-spacing, $fill: ".docs-example");
   flex: 1 1 auto;
   // explicit 0 width ensures options column takes up its space first,
   // then the rest is filled by this element
@@ -35,11 +37,13 @@
   .editor {
     flex: 0 0 auto;
     margin: 0;
-    border-top: 1px solid $pt-divider-black;
+    border-radius: $example-frame-border-radius;
     box-shadow: none;
+    background: $code-background-color;
 
     .#{$ns}-dark & {
-      border-top-color: $pt-dark-divider-black;
+      box-shadow: none;
+      background: $dark-code-background-color;
     }
   }
 }
@@ -50,15 +54,13 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
-  max-width: 100%;
+  border-radius: $example-frame-border-radius;
   background: $example-background-color;
-  padding-top: $pt-grid-size * 2;
-  padding-left: $pt-grid-size * 2;
-  // other sides set below to space out children:
+  max-width: 100%;
+  padding: $example-spacing / 2;
 
   > * {
-    margin-right: $pt-grid-size * 2;
-    margin-bottom: $pt-grid-size * 2;
+    margin: $example-spacing / 2;
   }
 
   .#{$ns}-dark & {
@@ -67,21 +69,31 @@
 }
 
 .docs-example-options {
-  @include pt-flex-container(column, $pt-grid-size);
+  @include pt-flex-container(column, $pt-grid-size * 2);
   flex: 0 0 auto;
-  border-left: 1px solid;
-  border-color: $pt-divider-black;
+  border-radius: $example-frame-border-radius;
+  background-color: $options-background-color;
   max-width: $pt-grid-size * 30;
   padding: $pt-grid-size * 2;
   text-align: left;
+  margin-left: $example-frame-spacing;
 
   // hide when empty (div is always rendered)
   &:empty {
     display: none;
   }
 
+  .#{$ns}-label:last-child,
+  .#{$ns}-control:last-child {
+    margin-bottom: 0;
+  }
+
+  .docs-prop-description {
+    font-size: $pt-font-size-small;
+  }
+
   .#{$ns}-dark & {
-    border-color: $pt-dark-divider-black;
+    background-color: $dark-options-background-color;
   }
 }
 
