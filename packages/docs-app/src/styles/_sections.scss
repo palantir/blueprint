@@ -42,6 +42,23 @@
   }
 }
 
+#{example("HotkeyPiano")} {
+  .docs-hotkey-piano-example {
+    opacity: 0.4;
+    transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
+
+    &:hover {
+      opacity: 0.6;
+      cursor: pointer;
+    }
+
+    &:focus {
+      opacity: 1;
+      cursor: default;
+    }
+  }
+}
+
 #{example("HotkeyTester")} {
   .docs-hotkey-tester {
     @include pt-flex-container(column, $pt-grid-size);
