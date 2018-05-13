@@ -98,7 +98,6 @@ Running text
 
 Markup:
 <div class="@ns-running-text {{.modifier}}">
-  <blockquote>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
       eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -113,7 +112,6 @@ Markup:
       Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
       nisi ut aliquip ex ea commodo consequat.
     </p>
-  </blockquote>
 </div>
 
 .#{$ns}-text-large - Use larger font size.
