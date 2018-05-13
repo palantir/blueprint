@@ -12,12 +12,12 @@ Headings
 
 Markup:
 <div>
-<h1 class="@ns-heading">H1 heading</h1>
-<h2 class="@ns-heading">H2 heading</h2>
-<h3 class="@ns-heading">H3 heading</h3>
-<h4 class="@ns-heading">H4 heading</h4>
-<h5 class="@ns-heading">H5 heading</h5>
-<h6 class="@ns-heading">H6 heading</h6>
+  <h1 class="@ns-heading">H1 heading</h1>
+  <h2 class="@ns-heading">H2 heading</h2>
+  <h3 class="@ns-heading">H3 heading</h3>
+  <h4 class="@ns-heading">H4 heading</h4>
+  <h5 class="@ns-heading">H5 heading</h5>
+  <h6 class="@ns-heading">H6 heading</h6>
 </div>
 
 Styleguide headings
@@ -67,6 +67,7 @@ Markup:
 .#{$ns}-text-large - Use a larger font size.
 .#{$ns}-text-small - Use a smaller font size.
 .#{$ns}-text-muted - Change text color to a gentler gray.
+.#{$ns}-text-disabled - Change text color to a transparent, faded gray.
 .#{$ns}-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its container.
 
 Styleguide ui-text
@@ -90,6 +91,14 @@ Styleguide ui-text
   }
 }
 
+.#{$ns}-text-disabled {
+  color: $pt-text-color-disabled;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-text-color-disabled;
+  }
+}
+
 .#{$ns}-text-overflow-ellipsis {
   @include overflow-ellipsis();
 }
@@ -99,20 +108,20 @@ Running text
 
 Markup:
 <div class="@ns-running-text {{.modifier}}">
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-      eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    </p>
-    <ul>
-      <li>Item the <code>first</code>.</li>
-      <li>Item the <strong>second</strong></code>.</li>
-      <li>Item the <a href="#core/typography.running-text">third</a>.</li>
-    </ul>
-    <h3>New section</h3>
-    <p>
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-      nisi ut aliquip ex ea commodo consequat.
-    </p>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  </p>
+  <ul>
+    <li>Item the <code>first</code>.</li>
+    <li>Item the <strong>second</strong></code>.</li>
+    <li>Item the <a href="#core/typography.running-text">third</a>.</li>
+  </ul>
+  <h3>New section</h3>
+  <p>
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat.
+  </p>
 </div>
 
 .#{$ns}-text-large - Use larger font size.
@@ -229,9 +238,9 @@ Preformatted text
 
 Markup:
 <div>
-<p>Use the <code class="@ns-code">&lt;code></code> tag for snippets of code.</p>
-<pre class="@ns-code-block">Use the &lt;pre> tag for blocks of code.</pre>
-<pre class="@ns-code-block"><code>// code sample
+  <p>Use the <code class="@ns-code">&lt;code></code> tag for snippets of code.</p>
+  <pre class="@ns-code-block">Use the &lt;pre> tag for blocks of code.</pre>
+  <pre class="@ns-code-block"><code>// code sample
 export function hasModifier(
   modifiers: ts.ModifiersArray,
   ...modifierKinds: ts.SyntaxKind[],
