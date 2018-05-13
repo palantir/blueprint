@@ -97,16 +97,23 @@ $dark-options-background-color: $dark-gray4;
   }
 }
 
-.view-example-source {
-  display: inline-block;
+.docs-example-view-source {
+  display: block;
+  margin-top: $example-frame-spacing;
   margin-bottom: $pt-grid-size * 2;
+  border-radius: $example-frame-border-radius;
 
-  &:hover {
-    text-decoration: none;
+  &.#{$ns}-button {
+    height: $pt-button-height-large;
+    transition: background-color $pt-transition-duration $pt-transition-ease;
   }
 
-  .#{$ns}-icon {
-    margin-right: $pt-grid-size / 2;
+  &:not(:hover):not(:active) {
+    background-color: $code-background-color;
+
+    .#{$ns}-dark & {
+      background-color: $dark-code-background-color;
+    }
   }
 }
 

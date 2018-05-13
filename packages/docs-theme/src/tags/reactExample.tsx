@@ -28,6 +28,8 @@ export const ReactExample: React.SFC<IExampleProps> = props => (
     <div>
         {props.example.render({ id: props.name })}
         <AnchorButton
+            className="docs-example-view-source"
+            fill={true}
             href={props.example.sourceUrl}
             icon="code"
             intent={Intent.PRIMARY}
