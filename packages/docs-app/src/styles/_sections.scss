@@ -25,6 +25,11 @@
   .docs-example {
     justify-content: unset;
   }
+
+  .#{$ns}-code-block {
+    width: $pt-grid-size * 40;
+    overflow: hidden;
+  }
 }
 
 #{example("NumericInputExtendedExample")} {
