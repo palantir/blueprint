@@ -15,6 +15,12 @@
 
 // CSS examples
 
+#{page("forms/form-group")} {
+  .docs-example .#{$ns}-form-group:last-child {
+    margin-bottom: 0;
+  }
+}
+
 #{page("table-html")} {
   .docs-example {
     padding: $pt-grid-size;
