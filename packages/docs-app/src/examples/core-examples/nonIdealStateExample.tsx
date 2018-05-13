@@ -6,23 +6,55 @@
 
 import * as React from "react";
 
-import { Classes, InputGroup, NonIdealState } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Classes, InputGroup, NonIdealState, Switch } from "@blueprintjs/core";
+import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export class NonIdealStateExample extends BaseExample<{}> {
+export interface ISliderExampleState {
+    action?: boolean;
+    description?: boolean;
+    icon?: boolean;
+}
+
+export class NonIdealStateExample extends BaseExample<ISliderExampleState> {
+    public state: ISliderExampleState = {
+        action: true,
+        description: true,
+        icon: true,
+    };
+
+    private toggleAction = handleBooleanChange(action => this.setState({ action }));
+    private toggleIcon = handleBooleanChange(icon => this.setState({ icon }));
+    private toggleDescription = handleBooleanChange(description => this.setState({ description }));
+
     protected renderExample() {
+        const action = <InputGroup className={Classes.ROUND} leftIcon="search" placeholder="Search..." />;
         const description = (
-            <span>
+            <div>
                 Your search didn't match any files.<br />Try searching for something else.
-            </span>
+            </div>
         );
         return (
             <NonIdealState
-                icon="search"
+                icon={this.state.icon ? "search" : undefined}
                 title="No search results"
-                description={description}
-                action={<InputGroup className={Classes.ROUND} leftIcon="search" placeholder="Search..." />}
+                description={this.state.description ? description : undefined}
+                action={this.state.action ? action : undefined}
             />
         );
+    }
+
+    protected renderOptions() {
+        return [
+            [
+                <Switch checked={this.state.icon} label="Show icon" key="icon" onChange={this.toggleIcon} />,
+                <Switch
+                    checked={this.state.description}
+                    label="Show description"
+                    key="description"
+                    onChange={this.toggleDescription}
+                />,
+                <Switch checked={this.state.action} label="Show action" key="action" onChange={this.toggleAction} />,
+            ],
+        ];
     }
 }
