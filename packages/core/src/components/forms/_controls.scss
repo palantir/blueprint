@@ -528,6 +528,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Inline labels
 
   Markup:
+  <div>
   <label class="#{$ns}-label">A group of related options</label>
   <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
     <input type="checkbox" />
@@ -544,6 +545,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     <span class="#{$ns}-control-indicator"></span>
     Third
   </label>
+  </div>
 
   Styleguide checkbox-inline
   */
