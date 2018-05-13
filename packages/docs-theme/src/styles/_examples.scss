@@ -71,12 +71,12 @@ $dark-options-background-color: $dark-gray5;
 .docs-example-options {
   @include pt-flex-container(column, $pt-grid-size * 2);
   flex: 0 0 auto;
+  margin-left: $example-frame-spacing;
   border-radius: $example-frame-border-radius;
   background-color: $options-background-color;
   max-width: $pt-grid-size * 30;
   padding: $pt-grid-size * 2;
   text-align: left;
-  margin-left: $example-frame-spacing;
 
   // hide when empty (div is always rendered)
   &:empty {

@@ -71,8 +71,8 @@
 
 .docs-context-menu-example {
   @include pt-flex-container(column, $pt-grid-size * 2);
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: $pt-grid-size * 20;
 
   .context-menu-node {
@@ -244,6 +244,28 @@
       font-weight: 600;
     }
   }
+
+  .docs-popover-position-value-code-block {
+    text-align: center;
+    font-size: $pt-font-size-large;
+    font-weight: 600;
+  }
+
+  .docs-popover-position-label-side {
+    color: $cobalt3;
+
+    .#{$ns}-dark & {
+      color: $cobalt5;
+    }
+  }
+
+  .docs-popover-position-label-alignment {
+    color: $forest3;
+
+    .#{$ns}-dark & {
+      color: $forest5;
+    }
+  }
 }
 
 .docs-popover-minimal-example {
@@ -314,30 +336,6 @@
   }
 }
 
-.docs-popover-position-example {
-  .docs-popover-position-value-code-block {
-    text-align: center;
-    font-size: $pt-font-size-large;
-    font-weight: 600;
-  }
-
-  .docs-popover-position-label-side {
-    color: $cobalt3;
-
-    .#{$ns}-dark & {
-      color: $cobalt5;
-    }
-  }
-
-  .docs-popover-position-label-alignment {
-    color: $forest3;
-
-    .#{$ns}-dark & {
-      color: $forest5;
-    }
-  }
-}
-
 .docs-tooltip-example {
   > div {
     margin-bottom: $pt-grid-size;
@@ -361,12 +359,15 @@
   0% {
     transform: rotate(0);
   }
+
   25% {
     transform: rotate(-3deg);
   }
+
   75% {
     transform: rotate(3deg);
   }
+
   100% {
     transform: rotate(0);
   }
