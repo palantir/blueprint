@@ -34,7 +34,7 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
             <div className="docs-tabs-example">
                 <Navbar>
                     <Navbar.Group>
-                        <Navbar.Heading>Tabs Example</Navbar.Heading>
+                        <Navbar.Heading>Tabs example</Navbar.Heading>
                     </Navbar.Group>
                     <Navbar.Group>
                         {/* controlled mode & no panels (see h1 below): */}

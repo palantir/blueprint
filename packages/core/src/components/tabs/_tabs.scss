@@ -42,6 +42,12 @@ $tab-indicator-width: 3px !default;
     .#{$ns}-tab {
       width: 100%;
       padding: 0 $pt-grid-size;
+      border-radius: $pt-border-radius;
+
+      &[aria-selected="true"] {
+        background-color: rgba($pt-intent-primary, 0.2);
+        box-shadow: none;
+      }
     }
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
@@ -100,9 +106,10 @@ $tab-indicator-width: 3px !default;
   }
 
   .#{$ns}-tab-indicator-wrapper ~ & {
-    // the bottom border is only for static markup, therefore
-    // we never want a bottom border if there's a tab indicator
+    // these properties are only for static markup, therefore
+    // we never want them if there's a tab indicator
     // stylelint-disable-next-line declaration-no-important
+    background-color: transparent !important;
     box-shadow: none !important;
   }
 
@@ -113,7 +120,7 @@ $tab-indicator-width: 3px !default;
 
   &[aria-selected="true"] {
     border-radius: 0;
-    box-shadow: inset 0 (- $tab-indicator-width) 0 $tab-color-selected;
+    box-shadow: inset 0 (-$tab-indicator-width) 0 $tab-color-selected;
   }
 
   &[aria-selected="true"],
@@ -172,7 +179,7 @@ $tab-indicator-width: 3px !default;
     }
 
     &[aria-selected="true"] {
-      box-shadow: inset 0 (- $tab-indicator-width) 0 $dark-tab-color-selected;
+      box-shadow: inset 0 (-$tab-indicator-width) 0 $dark-tab-color-selected;
     }
 
     &[aria-selected="true"],
