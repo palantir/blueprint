@@ -93,6 +93,11 @@ describe("Utils", () => {
     it.skip("throttleEvent");
 
     describe("ensureElement", () => {
+        it("handles undefined/null", () => {
+            assert.isUndefined(Utils.ensureElement(undefined));
+            assert.isUndefined(Utils.ensureElement(null));
+        });
+
         it("wraps strings & numbers", () => {
             assert.strictEqual(Utils.ensureElement("foo").type, "span");
             assert.strictEqual(Utils.ensureElement(1234).type, "span");

@@ -30,8 +30,9 @@ export function isFunction(value: any): value is Function {
  * are discarded.
  */
 export function ensureElement(child: React.ReactChild | undefined, tagName: keyof JSX.IntrinsicElements = "span") {
-    // wrap text in a <span> so children are always elements
-    if (typeof child === "string") {
+    if (child == null) {
+        return undefined;
+    } else if (typeof child === "string") {
         // cull whitespace strings
         return child.trim().length > 0 ? React.createElement(tagName, {}, child) : undefined;
     } else if (typeof child === "number" || typeof child.type === "symbol") {
