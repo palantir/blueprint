@@ -95,11 +95,11 @@ export class ToastExample extends BaseExample<IToasterProps> {
 
     protected renderExample() {
         return (
-            <div>
+            <>
                 {this.TOAST_BUILDERS.map(this.renderToastDemo, this)}
                 <Button onClick={this.handleProgressToast} text="Upload file" />
                 <Toaster {...this.state} ref={this.refHandlers.toaster} />
-            </div>
+            </>
         );
     }
 

@@ -40,8 +40,14 @@ $tab-indicator-width: 3px !default;
     align-items: flex-start;
 
     .#{$ns}-tab {
+      border-radius: $pt-border-radius;
       width: 100%;
       padding: 0 $pt-grid-size;
+
+      &[aria-selected="true"] {
+        box-shadow: none;
+        background-color: rgba($pt-intent-primary, 0.2);
+      }
     }
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
@@ -100,10 +106,12 @@ $tab-indicator-width: 3px !default;
   }
 
   .#{$ns}-tab-indicator-wrapper ~ & {
-    // the bottom border is only for static markup, therefore
-    // we never want a bottom border if there's a tab indicator
-    // stylelint-disable-next-line declaration-no-important
+    // these properties are only for static markup, therefore
+    // we never want them if there's a tab indicator
+    // stylelint-disable declaration-no-important
     box-shadow: none !important;
+    background-color: transparent !important;
+    // stylelint-enable declaration-no-important
   }
 
   &[aria-disabled="true"] {
@@ -113,7 +121,7 @@ $tab-indicator-width: 3px !default;
 
   &[aria-selected="true"] {
     border-radius: 0;
-    box-shadow: inset 0 (- $tab-indicator-width) 0 $tab-color-selected;
+    box-shadow: inset 0 (-$tab-indicator-width) 0 $tab-color-selected;
   }
 
   &[aria-selected="true"],
@@ -172,7 +180,7 @@ $tab-indicator-width: 3px !default;
     }
 
     &[aria-selected="true"] {
-      box-shadow: inset 0 (- $tab-indicator-width) 0 $dark-tab-color-selected;
+      box-shadow: inset 0 (-$tab-indicator-width) 0 $dark-tab-color-selected;
     }
 
     &[aria-selected="true"],

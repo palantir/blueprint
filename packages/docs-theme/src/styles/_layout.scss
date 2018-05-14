@@ -51,7 +51,6 @@ Page layout elements
   flex-basis: $sidebar-width;
   position: relative;
   z-index: $pt-z-index-content;
-  margin-left: $sidebar-padding * 2;
 }
 
 .docs-nav {
@@ -68,7 +67,7 @@ Page layout elements
   // these rules allow the nav background-color to cover all area to the left
   // stylelint-disable-next-line order/properties-order
   margin-left: -$background-shift;
-  padding-left: $background-shift;
+  padding-left: $background-shift + $container-padding;
 
   .#{$ns}-dark & {
     box-shadow: 1px 0 0 $pt-dark-divider-black;
@@ -86,7 +85,6 @@ Page layout elements
   align-items: flex-start;
   outline: none;
   background-color: $content-background-color;
-  padding-right: $sidebar-padding * 2;
 
   .#{$ns}-dark & {
     background-color: $dark-content-background-color;
@@ -95,7 +93,10 @@ Page layout elements
 
 .docs-page {
   max-width: $content-width;
-  padding: 0 0 $content-padding * 2 $content-padding * 2;
+  padding-top: 0;
+  padding-right: $container-padding;
+  padding-bottom: $content-padding * 2;
+  padding-left: $content-padding * 2;
 }
 
 /*
@@ -143,7 +144,6 @@ Lefthand navigation menu
 }
 
 .docs-nav-section {
-  opacity: 0.5;
   margin-top: $pt-grid-size * 2;
   margin-bottom: $pt-grid-size;
   text-transform: uppercase;

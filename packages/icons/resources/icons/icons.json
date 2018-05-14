@@ -3071,5 +3071,12 @@
     "tags": "summit, climb, peak",
     "group": "miscellaneous",
     "content": "\\e7b1"
+  },
+  {
+    "displayName": "Shield",
+    "iconName": "shield",
+    "tags": "protect, protection, secure, security, safe, safety, privacy, marking, control",
+    "group": "miscellaneous",
+    "content": "\\e7b2"
   }
 ]

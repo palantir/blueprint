@@ -1,7 +1,9 @@
-<!-- IF YOU ARE A PALANTIR EMPLOYEE, DO NOT POST INTERNAL LINKS OR REFERENCES HERE -->
+---
+name: 🐛 Bug report
+about: Something not working as expected?
+---
 
-<!-- Is this a support question? Please post to Stack Overflow with the "blueprintjs" tag instead. -->
-<!-- Delete this template for feature requests. -->
+<!-- IF YOU ARE A PALANTIR EMPLOYEE, DO NOT POST INTERNAL LINKS OR REFERENCES HERE -->
 
 ### Bug report
 
@@ -19,5 +21,9 @@
 <!-- fill this out -->
 
 #### Expected behavior
+
+<!-- fill this out -->
+
+#### Possible solution
 
 <!-- fill this out -->

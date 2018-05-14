@@ -26,9 +26,23 @@ Licensed under the terms of the LICENSE file distributed with this project.
 @import "styles/icons";
 @import "styles/nav";
 @import "styles/resources";
-@import "styles/sections";
 
 
 .docs-releases-menu .#{$ns}-menu {
   min-width: 270px;
+}
+
+// remove padding on left side of tables in documentation
+.docs-section .#{$ns}-running-text table {
+  margin: $content-padding 0;
+
+  th {
+    padding-top: 0;
+  }
+
+  th:first-child,
+  td:first-child {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }

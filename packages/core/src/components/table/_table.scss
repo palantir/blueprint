@@ -48,7 +48,8 @@ $table-border-width: 1px !default;
 $table-border-color: $pt-divider-black !default;
 $dark-table-border-color: $pt-dark-divider-white !default;
 
-table.#{$ns}-html-table {
+// placeholder for extending inside running-text (see typography)
+%html-table {
   border-spacing: 0;
   font-size: $pt-font-size;
 
@@ -74,6 +75,10 @@ table.#{$ns}-html-table {
       box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
     }
   }
+}
+
+table.#{$ns}-html-table {
+  @extend %html-table;
 
   &.#{$ns}-small {
     $small-vertical-padding: centered-text($table-row-height-small);

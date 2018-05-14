@@ -23,11 +23,7 @@ export class IconExample extends BaseExample<IIconExampleState> {
     };
 
     protected renderExample() {
-        return (
-            <div className="docs-icon-example" style={{ height: MAX_ICON_SIZE, width: MAX_ICON_SIZE }}>
-                <Icon {...this.state} />
-            </div>
-        );
+        return <Icon {...this.state} />;
     }
 
     protected renderOptions() {

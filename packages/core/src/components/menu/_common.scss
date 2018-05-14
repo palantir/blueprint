@@ -151,7 +151,7 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 }
 
 @mixin menu-heading() {
-  @include header-typography();
+  @include heading-typography();
   @include overflow-ellipsis();
   margin: 0;
   padding: $pt-grid-size $menu-item-padding 0 1px;

@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, Classes, Intent, Switch } from "@blueprintjs/core";
+import { AnchorButton, Button, Code, Intent, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -52,10 +52,10 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         const { iconOnly, wiggling, ...buttonProps } = this.state;
 
         return (
-            <div className="docs-react-example-row">
+            <>
                 <div className="docs-react-example-column">
                     <p>
-                        <code>Button</code>
+                        <Code>Button</Code>
                     </p>
                     <Button
                         className={this.state.wiggling ? "docs-wiggle" : ""}
@@ -68,7 +68,7 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                 </div>
                 <div className="docs-react-example-column">
                     <p>
-                        <code>AnchorButton</code>
+                        <Code>AnchorButton</Code>
                     </p>
                     <AnchorButton
                         href="./#core/components/button.javascript-api"
@@ -79,16 +79,13 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                         {...buttonProps}
                     />
                 </div>
-            </div>
+            </>
         );
     }
 
     protected renderOptions() {
         return [
             [
-                <label className={Classes.LABEL} key="label">
-                    Modifiers
-                </label>,
                 <Switch checked={this.state.active} key="active" label="Active" onChange={this.handleActiveChange} />,
                 <Switch
                     checked={this.state.disabled}

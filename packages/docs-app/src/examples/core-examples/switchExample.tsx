@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, Switch } from "@blueprintjs/core";
+import { Classes, Code, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 
 export class SwitchExample extends BaseExample<{}> {
@@ -18,7 +18,7 @@ export class SwitchExample extends BaseExample<{}> {
                 <Switch labelElement={<em>Public</em>} />
                 <Switch labelElement={<u>Cooperative</u>} defaultChecked={true} />
                 <small>
-                    This example uses <code>labelElement</code> to demonstrate JSX labels.
+                    This example uses <Code>labelElement</Code> to demonstrate JSX labels.
                 </small>
             </div>
         );

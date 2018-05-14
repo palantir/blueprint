@@ -70,19 +70,17 @@ $dark-elevation-shadows: (
 Interactive cards
 
 Markup:
-<div class="docs-card-example">
-  <div class="#{$ns}-card #{$ns}-elevation-0 #{$ns}-interactive">
-    <h5><a href="#">Data fusion platforms</a></h5>
-    <p>Back-end infrastructure for integrating, managing, and securing data of any kind, from any source, at massive scale.</p>
-  </div>
-  <div class="#{$ns}-card #{$ns}-elevation-1 #{$ns}-interactive">
-    <h5><a href="#">Analytical applications</a></h5>
-    <p>User interfaces that enable people to interact smoothly with data, ask better questions, and make better decisions.</p>
-  </div>
-  <div class="#{$ns}-card #{$ns}-elevation-2 #{$ns}-interactive">
-    <h5><a href="#">For any data problem</a></h5>
-    <p>Proven technology that can be deployed today, adapts to any domain, and produces operational results in weeks.</p>
-  </div>
+<div class="#{$ns}-card #{$ns}-elevation-0 #{$ns}-interactive">
+  <h5 class="#{$ns}-heading"><a href="#">Data fusion platforms</a></h5>
+  <div>Back-end infrastructure for integrating, managing, and securing data of any kind, from any source, at massive scale.</div>
+</div>
+<div class="#{$ns}-card #{$ns}-elevation-1 #{$ns}-interactive">
+  <h5 class="#{$ns}-heading"><a href="#">Analytical applications</a></h5>
+  <div>User interfaces that enable people to interact smoothly with data, ask better questions, and make better decisions.</div>
+</div>
+<div class="#{$ns}-card #{$ns}-elevation-2 #{$ns}-interactive">
+  <h5 class="#{$ns}-heading"><a href="#">For any data problem</a></h5>
+  <div>Proven technology that can be deployed today, adapts to any domain, and produces operational results in weeks.</div>
 </div>
 
 Styleguide card-interactive

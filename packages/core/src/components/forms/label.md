@@ -1,7 +1,7 @@
 @# Labels
 
 <div class="@ns-callout @ns-intent-success @ns-icon-comparison">
-    <h4 class="@ns-callout-title">Simple labels vs. form groups</h4>
+    <h4 class="@ns-heading">Simple labels vs. form groups</h4>
     <p>Blueprint provides two ways of connecting label text to control fields, depending on the complexity of the control.</p>
     <p>Simple labels are a basic way to connect a label with a single control.</p>
     <p>Form groups support more complex control layouts but require more markup to maintain consistent visuals.</p>

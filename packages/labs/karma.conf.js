@@ -9,13 +9,12 @@ const packageManifest = require("./package.json");
 
 module.exports = function (config) {
     const baseConfig = createKarmaConfig({
+        coverage: false,
         dirname: __dirname,
     });
     config.set(baseConfig);
     config.set({
         // test task should pass; we intentionally have no tests
         failOnEmptyTestSuite: false,
-        // disable coverage reporter
-        reporters: ["mocha"],
     });
 };

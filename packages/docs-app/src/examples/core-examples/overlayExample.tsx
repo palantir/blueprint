@@ -6,7 +6,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, Intent, Overlay, Switch } from "@blueprintjs/core";
+import { Button, Classes, Code, H3, Intent, Overlay, Switch } from "@blueprintjs/core";
 import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
@@ -52,7 +52,7 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
                 <Button elementRef={this.refHandlers.button} onClick={this.handleOpen} text="Show overlay" />
                 <Overlay onClose={this.handleClose} className={Classes.OVERLAY_SCROLL_CONTAINER} {...this.state}>
                     <div className={classes}>
-                        <h3>I'm an Overlay!</h3>
+                        <H3>I'm an Overlay!</H3>
                         <p>
                             This is a simple container with some inline styles to position it on the screen. Its CSS
                             transitions are customized for this example only to demonstrate how easily custom
@@ -61,7 +61,7 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
                         <p>
                             Click the right button below to transfer focus to the "Show overlay" trigger button outside
                             of this overlay. If persistent focus is enabled, focus will be constrained to the overlay.
-                            Use the <code>tab</code> key to move to the next focusable element to illustrate this
+                            Use the <Code>tab</Code> key to move to the next focusable element to illustrate this
                             effect.
                         </p>
                         <br />
@@ -94,10 +94,8 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
                     onChange={this.handleEnforceFocusChange}
                 />,
                 <Switch checked={usePortal} key="portal" onChange={this.handleUsePortalChange}>
-                    Use <code>Portal</code>
+                    Use <Code>Portal</Code>
                 </Switch>,
-            ],
-            [
                 <Switch
                     checked={this.state.canOutsideClickClose}
                     key="click"

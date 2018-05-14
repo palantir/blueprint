@@ -24,17 +24,15 @@ export class RangeSliderExample extends BaseExample<IRangeSliderExampleState> {
 
     protected renderExample() {
         return (
-            <div style={{ width: "100%" }}>
-                <RangeSlider
-                    min={0}
-                    max={100}
-                    stepSize={2}
-                    labelStepSize={20}
-                    onChange={this.handleValueChange}
-                    value={this.state.range}
-                    vertical={this.state.vertical}
-                />
-            </div>
+            <RangeSlider
+                min={0}
+                max={100}
+                stepSize={2}
+                labelStepSize={20}
+                onChange={this.handleValueChange}
+                value={this.state.range}
+                vertical={this.state.vertical}
+            />
         );
     }
 

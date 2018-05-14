@@ -46,7 +46,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
     protected renderExample() {
         const { date, format, ...spreadProps } = this.state;
         return (
-            <>
+            <div className="docs-datetime-example">
                 <DateInput
                     {...spreadProps}
                     {...format}
@@ -57,7 +57,7 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                 <div className="docs-date-range">
                     <MomentDate date={date} />
                 </div>
-            </>
+            </div>
         );
     }
 

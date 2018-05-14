@@ -29,7 +29,9 @@ Styleguide button
   @include pt-button-height($pt-button-height);
 
   &:empty {
-    padding: 0;
+    // override padding from other modifiers (for CSS icon support)
+    // stylelint-disable-next-line declaration-no-important
+    padding: 0 !important;
   }
 
   &:disabled,

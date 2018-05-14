@@ -1,13 +1,15 @@
 {
   "name": "@blueprintjs/core",
-  "version": "2.2.1",
+  "version": "3.0.0-beta.0",
   "description": "Core styles & components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "typings": "lib/esm/index.d.ts",
   "style": "lib/css/blueprint.css",
   "unpkg": "dist/core.bundle.js",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "bin": {
     "upgrade-blueprint-2.0.0-rename": "./scripts/upgrade-blueprint-2.0.0-rename"
   },
@@ -24,9 +26,9 @@
     "dist:variables": "generate-css-variables common/_colors.scss common/_color-aliases.scss common/_variables.scss",
     "dist:verify": "assert-package-layout",
     "lint": "run-p lint:scss lint:ts",
-    "lint:scss": "stylelint -s scss \"src/**/*.scss\"",
-    "lint:ts": "tslint \"{src,test}/**/*.{ts,tsx}\" -t codeFrame",
-    "lint-fix": "yarn lint:ts --fix",
+    "lint:scss": "sass-lint",
+    "lint:ts": "ts-lint",
+    "lint-fix": "ts-lint --fix",
     "test": "run-s test:pre test:iso test:karma",
     "test:pre": "tsc -p ./test",
     "test:iso": "mocha test/isotest.js",
@@ -35,7 +37,7 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/icons": "^2.1.1",
+    "@blueprintjs/icons": "^3.0.0-beta.0",
     "@types/dom4": "^2.0.0",
     "classnames": "^2.2",
     "dom4": "^2.0.1",
@@ -45,14 +47,14 @@
     "tslib": "^1.9.0"
   },
   "peerDependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.0.0",
+    "react": "^15.3.0 || 16",
+    "react-dom": "^15.3.0 || 16",
     "react-transition-group": "^2.2.1"
   },
   "devDependencies": {
-    "@blueprintjs/karma-build-scripts": "^0.5.0",
-    "@blueprintjs/node-build-scripts": "^0.5.0",
-    "@blueprintjs/test-commons": "^0.5.1",
+    "@blueprintjs/karma-build-scripts": "^0.6.1",
+    "@blueprintjs/node-build-scripts": "^0.6.1",
+    "@blueprintjs/test-commons": "^0.6.0",
     "enzyme": "^3.3.0",
     "karma": "^1.7.1",
     "mocha": "^4.1.0",
@@ -61,7 +63,6 @@
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
     "react-transition-group": "^2.2.1",
-    "tslint": "^5.9.0",
     "typescript": "~2.7.2",
     "webpack": "^3.10.0"
   },

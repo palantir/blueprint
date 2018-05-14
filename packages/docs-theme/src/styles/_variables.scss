@@ -5,16 +5,14 @@
 @import "~@blueprintjs/core/src/common/mixins";
 
 $container-width: $pt-grid-size * 110;
+$container-padding: $pt-grid-size / 2;
 
 $sidebar-width: $pt-grid-size * 27;
 $sidebar-padding: $pt-grid-size * 1.5;
 $sidebar-background-color: $white;
-$dark-sidebar-background-color: $dark-gray4;
+$dark-sidebar-background-color: $dark-gray5;
 
 $content-width: $container-width - $sidebar-width;
 $content-padding: $pt-grid-size * 2;
 $content-background-color: $light-gray5;
-$dark-content-background-color: $dark-gray3;
-
-$options-width: $pt-grid-size * 18;
-$options-margin: $pt-grid-size * 3;
+$dark-content-background-color: $dark-gray4;
