@@ -8,8 +8,25 @@
   @return '[data-page-id#{$comparator}"#{$ref}"]';
 }
 
-// Generate a selector for a React example by name
-@function example($NameExample, $comparator: "=") {
-  @return '[data-example-id#{$comparator}"#{$NameExample}"]';
+#{page("tree")} .#{$ns}-tree {
+  width: $pt-grid-size * 35;
 }
 
+#{page("table", "^=")} {
+  // make all tables the same width & height
+  .#{$ns}-table-container {
+    width: 100%;
+    height: $pt-grid-size * 36;
+  }
+
+  // options appear below table (so tables can occupy full width)
+  .docs-example-frame {
+    flex-direction: column;
+  }
+
+  .docs-example-options {
+    margin-top: $pt-grid-size;
+    margin-left: 0;
+    max-width: unset;
+  }
+}

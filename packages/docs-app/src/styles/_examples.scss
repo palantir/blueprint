@@ -4,28 +4,22 @@
 @import "~@blueprintjs/icons/src/icons";
 @import "~@blueprintjs/core/src/common/react-transition";
 
+// Generate a selector for a React example by name
+@function example($NameExample, $comparator: "=") {
+  @return '[data-example-id#{$comparator}"#{$NameExample}"]';
+}
+
 // Specific example customizations
 
-/**
-  * Core package
-  */
+//
+// CORE
+//
 
 @keyframes docs-wiggle-rotate {
-  0% {
-    transform: rotate(0);
-  }
-
-  25% {
-    transform: rotate(-3deg);
-  }
-
-  75% {
-    transform: rotate(3deg);
-  }
-
-  100% {
-    transform: rotate(0);
-  }
+  0% { transform: rotate(0); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+  100% { transform: rotate(0); }
 }
 
 #{example("ButtonsExample")} {
@@ -96,19 +90,6 @@
     &.context-menu-open {
       box-shadow: $pt-elevation-shadow-2, 0 0 0 4px $orange4;
     }
-  }
-}
-
-#{page("forms/form-group")} {
-  .docs-example .#{$ns}-form-group:last-child {
-    margin-bottom: 0;
-  }
-}
-
-#{page("forms/label")},
-#{page("forms/select-forms")} {
-  .docs-example .#{$ns}-label:last-child {
-    margin-bottom: 0;
   }
 }
 
@@ -218,12 +199,6 @@
 
 .docs-menu-example .#{$ns}-menu {
   max-width: 280px;
-}
-
-#{page("navbar")} {
-  .#{$ns}-navbar {
-    margin: 0;
-  }
 }
 
 // prettier-ignore
@@ -426,16 +401,6 @@
   margin-bottom: 0;
 }
 
-#{page("table-html")} {
-  .docs-example {
-    padding: $pt-grid-size;
-  }
-
-  .#{$ns}-html-table {
-    margin: $pt-grid-size;
-  }
-}
-
 .docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
   line-height: $pt-navbar-height;
 }
@@ -446,36 +411,9 @@
   }
 }
 
-#{page("tree")} .#{$ns}-tree {
-  width: $pt-grid-size * 35;
-}
-
-/**
-  * Table package
-  */
-
-// give all Table examples a fixed height
-#{page("table", "^=")} {
-  .docs-example-frame {
-    flex-direction: column;
-  }
-
-  .docs-example-options {
-    margin-top: $pt-grid-size;
-    margin-left: 0;
-    max-width: unset;
-  }
-
-  // make all tables the same width
-  .#{$ns}-table-container {
-    width: 100%;
-    height: $pt-grid-size * 36;
-  }
-}
-
-/**
-  * Datetime package
-  */
+//
+// DATETIME
+//
 
 .docs-datetime-example {
   display: flex;
