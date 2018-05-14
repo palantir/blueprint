@@ -60,6 +60,10 @@ $dark-options-background-color: $dark-gray5;
     display: none;
   }
 
+  .docs-prop-description {
+    font-size: $pt-font-size-small;
+  }
+
   .#{$ns}-control:last-child,
   .#{$ns}-form-group:last-child,
   .#{$ns}-label:last-child {

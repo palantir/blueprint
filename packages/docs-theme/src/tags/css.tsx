@@ -35,6 +35,7 @@ export class CssExample extends React.PureComponent<ITag> {
                 onChange={this.getModifierToggleHandler(modifier.name)}
             >
                 <Code data-modifier={modifier.name}>{modifier.name}</Code>
+                <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
             </Checkbox>
         ));
         return (
