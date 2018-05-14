@@ -35,9 +35,9 @@ Markup:
 </table>
 
 .#{$ns}-small - Small, condensed appearance
-.#{$ns}-html-table-striped   - Striped appearance
-.#{$ns}-html-table-bordered  - Bordered appearance
-.#{$ns}-interactive  - Enables hover styles on rows
+.#{$ns}-html-table-striped - Striped appearance
+.#{$ns}-html-table-bordered - Bordered appearance
+.#{$ns}-interactive - Enables hover styles on rows
 
 Styleguide html-table
 */
@@ -92,7 +92,7 @@ table.#{$ns}-html-table {
 
   &.#{$ns}-html-table-striped {
     tbody tr:nth-child(odd) td {
-      background: rgba($gray5, 0.2);
+      background: rgba($gray5, 0.15);
     }
   }
 
@@ -122,9 +122,15 @@ table.#{$ns}-html-table {
   }
 
   &.#{$ns}-interactive {
-    tbody tr:hover td {
-      background-color: rgba($gray5, 0.4);
-      cursor: pointer;
+    tbody tr {
+      &:hover td {
+        background-color: rgba($gray5, 0.3);
+        cursor: pointer;
+      }
+
+      &:active td {
+        background-color: rgba($gray5, 0.4);
+      }
     }
   }
 
@@ -182,9 +188,15 @@ table.#{$ns}-html-table {
     }
 
     &.#{$ns}-interactive {
-      tbody tr:hover td {
-        background-color: rgba($gray1, 0.3);
-        cursor: pointer;
+      tbody tr {
+        &:hover td {
+          background-color: rgba($gray1, 0.3);
+          cursor: pointer;
+        }
+
+        &:active td {
+          background-color: rgba($gray1, 0.4);
+        }
       }
     }
   }
