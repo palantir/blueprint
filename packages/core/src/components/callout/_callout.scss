@@ -33,8 +33,6 @@ Styleguide callout
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
-    // no flex layout as icon is absolute positioned within padding-left.
-    display: block;
     position: relative;
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
