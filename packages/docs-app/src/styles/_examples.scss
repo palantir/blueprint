@@ -6,6 +6,34 @@
 
 // Specific example customizations
 
+/**
+  * Core package
+  */
+
+@keyframes docs-wiggle-rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  25% {
+    transform: rotate(-3deg);
+  }
+
+  75% {
+    transform: rotate(3deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+#{example("ButtonsExample")} {
+  .docs-wiggle {
+    animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
+  }
+}
+
 .docs-card-example {
   @include pt-flex-container(row, $pt-grid-size * 2);
 
@@ -18,17 +46,6 @@
   }
 }
 
-.docs-datetime-example {
-  > :last-child:not(:first-child) {
-    // space above date tags, if present
-    margin-top: $pt-grid-size * 2;
-  }
-
-  .#{$ns}-icon-arrow-right {
-    margin: 0 ($pt-grid-size / 2);
-  }
-}
-
 .docs-editable-text-example {
   width: 100%;
 
@@ -37,36 +54,15 @@
   }
 }
 
-// prettier-ignore
-.docs-overlay-example-transition {
-  $overlay-example-width: $pt-grid-size * 40;
-  $enter: (
-    transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))
-  );
-  $leave: (
-    transform: (translateY(150vh) rotate(-20deg), translateY(0) rotate(0deg))
-  );
+#{example("CollapseExample")} {
+  .docs-example {
+    justify-content: unset;
+  }
 
-  @include react-transition-phase(
-    "#{$ns}-overlay",
-    "enter",
-    $enter,
-    $pt-transition-duration * 3,
-    $pt-transition-ease-bounce,
-    $before: "&"
-  );
-  @include react-transition-phase(
-    "#{$ns}-overlay",
-    "exit",
-    $leave,
-    $pt-transition-duration * 5,
-    $before: "&"
-  );
-
-  top: 0;
-  left: calc(50% - #{$overlay-example-width / 2});
-  margin: 10vh 0;
-  width: $overlay-example-width;
+  .#{$ns}-code-block {
+    width: $pt-grid-size * 40;
+    overflow: hidden;
+  }
 }
 
 .docs-context-menu-example {
@@ -103,11 +99,31 @@
   }
 }
 
+#{page("forms/form-group")} {
+  .docs-example .#{$ns}-form-group:last-child {
+    margin-bottom: 0;
+  }
+}
+
+#{page("forms/label")},
+#{page("forms/select-forms")} {
+  .docs-example .#{$ns}-label:last-child {
+    margin-bottom: 0;
+  }
+}
+
 .docs-hotkey-piano-example {
-  opacity: 0.5;
+  opacity: 0.4;
+  transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
+
+  &:hover {
+    opacity: 0.6;
+    cursor: pointer;
+  }
 
   &:focus {
     opacity: 1;
+    cursor: default;
   }
 
   > :first-child {
@@ -164,13 +180,82 @@
   }
 }
 
-.docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
-  line-height: $pt-navbar-height;
+#{example("HotkeyTester")} {
+  .docs-hotkey-tester {
+    @include pt-flex-container(column, $pt-grid-size);
+    flex: 1 1;
+    align-items: center;
+    justify-content: space-around;
+    opacity: 0.4;
+    border: 2px solid rgba($gray3, 0.8);
+    border-radius: $pt-border-radius * 2;
+    background: rgba($gray3, 0.2);
+    max-width: 70%;
+    min-height: $pt-grid-size * 12;
+    padding: $pt-grid-size * 2;
+    transition: all $pt-transition-duration $pt-transition-ease;
+
+    &:hover {
+      opacity: 0.6;
+      cursor: pointer;
+    }
+
+    &:focus {
+      opacity: 1;
+      border: 2px solid rgba($blue3, 0.6);
+      background: rgba($blue3, 0.1);
+      cursor: default;
+      color: map-get($pt-intent-text-colors, "primary");
+
+      .#{$ns}-dark & {
+        border: 2px solid rgba($blue4, 0.6);
+        background: rgba($blue4, 0.1);
+        color: map-get($pt-dark-intent-text-colors, "primary");
+      }
+    }
+  }
 }
 
-.#{$ns}-progress-bar.docs-toast-progress {
-  margin-top: $pt-grid-size / 2;
-  margin-bottom: 0;
+.docs-menu-example .#{$ns}-menu {
+  max-width: 280px;
+}
+
+#{page("navbar")} {
+  .#{$ns}-navbar {
+    margin: 0;
+  }
+}
+
+// prettier-ignore
+.docs-overlay-example-transition {
+  $overlay-example-width: $pt-grid-size * 40;
+  $enter: (
+    transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))
+  );
+  $leave: (
+    transform: (translateY(150vh) rotate(-20deg), translateY(0) rotate(0deg))
+  );
+
+  @include react-transition-phase(
+    "#{$ns}-overlay",
+    "enter",
+    $enter,
+    $pt-transition-duration * 3,
+    $pt-transition-ease-bounce,
+    $before: "&"
+  );
+  @include react-transition-phase(
+    "#{$ns}-overlay",
+    "exit",
+    $leave,
+    $pt-transition-duration * 5,
+    $before: "&"
+  );
+
+  top: 0;
+  left: calc(50% - #{$overlay-example-width / 2});
+  margin: 10vh 0;
+  width: $overlay-example-width;
 }
 
 .docs-popover-example {
@@ -336,39 +421,78 @@
   }
 }
 
+.#{$ns}-progress-bar.docs-toast-progress {
+  margin-top: $pt-grid-size / 2;
+  margin-bottom: 0;
+}
+
+#{page("table-html")} {
+  .docs-example {
+    padding: $pt-grid-size;
+  }
+
+  .#{$ns}-html-table {
+    margin: $pt-grid-size;
+  }
+}
+
+.docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
+  line-height: $pt-navbar-height;
+}
+
 .docs-tooltip-example {
   > div {
     margin-bottom: $pt-grid-size;
   }
 }
 
-.docs-menu-example .#{$ns}-menu {
-  max-width: 280px;
+#{page("tree")} .#{$ns}-tree {
+  width: $pt-grid-size * 35;
+}
+
+/**
+  * Table package
+  */
+
+// give all Table examples a fixed height
+#{page("table", "^=")} {
+  .docs-example-frame {
+    flex-direction: column;
+  }
+
+  .docs-example-options {
+    margin-top: $pt-grid-size;
+    margin-left: 0;
+    max-width: unset;
+  }
+
+  // make all tables the same width
+  .#{$ns}-table-container {
+    width: 100%;
+    height: $pt-grid-size * 36;
+  }
+}
+
+/**
+  * Datetime package
+  */
+
+.docs-datetime-example {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > :last-child:not(:first-child) {
+    // space above date tags, if present
+    margin-top: $pt-grid-size * 2;
+  }
+
+  .#{$ns}-icon-arrow-right {
+    margin: 0 ($pt-grid-size / 2);
+  }
 }
 
 .docs-date-range {
   @include pt-flex-container(row, $pt-grid-size / 2);
   align-items: center;
-}
-
-.docs-wiggle {
-  animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
-}
-
-@keyframes docs-wiggle-rotate {
-  0% {
-    transform: rotate(0);
-  }
-
-  25% {
-    transform: rotate(-3deg);
-  }
-
-  75% {
-    transform: rotate(3deg);
-  }
-
-  100% {
-    transform: rotate(0);
-  }
 }
