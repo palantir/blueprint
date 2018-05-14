@@ -61,6 +61,14 @@
   }
 }
 
+#{page("datetime", "^=")} {
+  .docs-datetime-example {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 #{example("HotkeyPiano")} {
   .docs-hotkey-piano-example {
     opacity: 0.4;
