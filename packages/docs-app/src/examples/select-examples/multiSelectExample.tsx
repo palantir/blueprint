@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
+import { Button, H5, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { BaseExample } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
 import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
@@ -78,6 +78,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
     protected renderOptions() {
         return [
             [
+                <H5 key="props">Props</H5>,
                 <Switch
                     key="focus"
                     label="Open popover on key down"
@@ -98,6 +99,7 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
                 />,
             ],
             [
+                <H5 key="example">Example</H5>,
                 <Switch
                     key="minimal-tag"
                     label="Minimal tag style"
