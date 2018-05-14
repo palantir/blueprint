@@ -35,6 +35,8 @@ $dark-options-background-color: $dark-gray5;
   justify-content: space-around;
   border-radius: $example-frame-border-radius;
   background: $example-background-color;
+  // https://css-tricks.com/flexbox-truncated-text/#article-header-id-3
+  min-width: 0;
   max-width: 100%;
   padding: $example-spacing / 2;
 
