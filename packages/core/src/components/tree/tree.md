@@ -10,8 +10,10 @@ See below for the [JavaScript API](#core/components/tree.javascript-api) for the
 may also use the provided styles by themselves, without using the component.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    Note that the following examples set a maximum width and background color for the tree;
-    you may want to do this as well in your own usage.
+    <div class="@ns-callout-text">
+        Note that the following examples set a maximum width and background color for the tree;
+        you may want to do this as well in your own usage.
+    </div>
 </div>
 
 @css tree

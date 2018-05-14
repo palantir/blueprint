@@ -34,8 +34,10 @@ Simply ignoring the type annotations (any italics in code blocks) will produce v
 Familiarity with the syntax is suggested so you can follow our examples source code.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-  For more information, see the TypeScript Handbook for [basic types][basic-types]
-  and [consuming declaration files][decl-files].
+    <div class="@ns-callout-text">
+        For more information, see the TypeScript Handbook for [basic types][basic-types]
+        and [consuming declaration files][decl-files].
+    </div>
 </div>
 
 [basic-types]: https://www.typescriptlang.org/docs/handbook/basic-types.html

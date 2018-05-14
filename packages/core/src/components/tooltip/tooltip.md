@@ -17,11 +17,13 @@ When creating a tooltip, you must specify both:
 The content will appear in a contrasting popover when the target is hovered over.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Button targets</h4>
-    Buttons make great tooltip targets, but the `disabled` attribute will prevent all
-    events so the enclosing `Tooltip` will not know when to respond.
-    Use [`AnchorButton`](#core/components/button.anchor-button) instead;
-    see the [callout here](#core/components/button.javascript-api) for more details.
+    <div class="@ns-callout-text">
+        <h4 class="@ns-heading">Button targets</h4>
+        Buttons make great tooltip targets, but the `disabled` attribute will prevent all
+        events so the enclosing `Tooltip` will not know when to respond.
+        Use [`AnchorButton`](#core/components/button.anchor-button) instead;
+        see the [callout here](#core/components/button.javascript-api) for more details.
+    </div>
 </div>
 
 @interface ITooltipProps

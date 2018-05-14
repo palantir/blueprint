@@ -17,10 +17,12 @@ The children of a `Portal` component are appended to the `<body>` element.
 application.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">A note about responsive layouts</h4>
-    For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
-    may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
-    apply `position: absolute` to the `<body>` tag.
+    <div class="@ns-callout-text">
+        <h4 class="@ns-heading">A note about responsive layouts</h4>
+        For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
+        may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
+        apply `position: absolute` to the `<body>` tag.
+    </div>
 </div>
 
 @interface IPortalProps
@@ -31,7 +33,9 @@ application.
 To use them, supply a child context to a subtree that contains the Portals you want to customize.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    Blueprint uses the React 15-compatible `getChildContext()` API instead of the newer React 16.3 `React.createContext()` API.
+    <div class="@ns-callout-text">
+        Blueprint uses the React 15-compatible `getChildContext()` API instead of the newer React 16.3 `React.createContext()` API.
+    </div>
 </div>
 
 @interface IPortalContext

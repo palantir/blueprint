@@ -10,10 +10,12 @@ when using skeletons to show loading text, you should use some sort of placehold
 approximately the length of your expected text.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Manually disable focusable elements</h4>
-    When using the `.@ns-skeleton` class on focusable elements such as inputs and buttons, be sure to
-    disable the element, via either the `disabled` or `tabindex="-1"` attributes. Failing to do so
-    will allow these skeleton elements to be focused when they shouldn't be.
+    <div class="@ns-callout-text">
+        <h4 class="@ns-heading">Manually disable focusable elements</h4>
+        When using the `.@ns-skeleton` class on focusable elements such as inputs and buttons, be sure to
+        disable the element, via either the `disabled` or `tabindex="-1"` attributes. Failing to do so
+        will allow these skeleton elements to be focused when they shouldn't be.
+    </div>
 </div>
 
 @css skeleton
