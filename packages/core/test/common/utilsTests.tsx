@@ -92,6 +92,34 @@ describe("Utils", () => {
     // TODO: not sure how to test this. perhaps with the help of https://github.com/alexreardon/raf-stub?
     it.skip("throttleEvent");
 
+    describe("ensureElement", () => {
+        it("wraps strings & numbers", () => {
+            assert.strictEqual(Utils.ensureElement("foo").type, "span");
+            assert.strictEqual(Utils.ensureElement(1234).type, "span");
+        });
+
+        it("returns undefined for whitespace strings", () => {
+            assert.isUndefined(Utils.ensureElement("   "));
+        });
+
+        it("passes through JSX elements", () => {
+            const el = <div>my element</div>;
+            assert.strictEqual(Utils.ensureElement(el), el);
+        });
+
+        // React 16 only
+        if (React.Fragment !== undefined) {
+            it("wraps JSX fragments in element", () => {
+                const el = Utils.ensureElement(
+                    <>
+                        one <em>two</em> three
+                    </>,
+                );
+                assert.strictEqual(el.type, "span");
+            });
+        }
+    });
+
     describe("throttleReactEventCallback", () => {
         let callback: SinonSpy;
         let fakeEvent: any; // cast as `any` to avoid having to set every required property on the event
