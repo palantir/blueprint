@@ -107,6 +107,10 @@
 }
 
 .docs-modifiers-table {
+  .docs-section & .#{$ns}-html-table {
+    margin-top: $pt-grid-size;
+  }
+
   th:first-child,
   td:first-child {
     padding-left: 0;
