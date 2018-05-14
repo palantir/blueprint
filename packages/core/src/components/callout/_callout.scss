@@ -8,8 +8,10 @@ Callout
 
 Markup:
 <div class="#{$ns}-callout {{.modifier}}">
-  <h4 class="#{$ns}-heading">Callout heading</h4>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
+  <div class="#{$ns}-callout-text">
+    <h4 class="#{$ns}-heading">Callout heading</h4>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
+  </div>
 </div>
 
 .#{$ns}-intent-primary - Primary intent
@@ -27,7 +29,7 @@ Styleguide callout
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
   width: 100%;
-  padding: $pt-grid-size;
+  padding: $pt-grid-size ($pt-grid-size * 1.2) ($pt-grid-size * 0.9);
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {

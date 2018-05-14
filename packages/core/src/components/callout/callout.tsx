@@ -42,7 +42,7 @@ export class Callout extends React.PureComponent<ICalloutProps, {}> {
         return (
             <div className={classes} {...htmlProps}>
                 {iconName && <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />}
-                <div>
+                <div className={Classes.CALLOUT_TEXT}>
                     {title && <H4>{title}</H4>}
                     {children}
                 </div>

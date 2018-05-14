@@ -75,6 +75,7 @@ export const BUTTON_SPINNER = `${BUTTON}-spinner`;
 export const BUTTON_TEXT = `${BUTTON}-text`;
 
 export const CALLOUT = `${NS}-callout`;
+export const CALLOUT_TEXT = `${CALLOUT}-text`;
 
 export const CARD = `${NS}-card`;
 
