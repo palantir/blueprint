@@ -285,6 +285,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
     &.#{$ns}-align-right {
       padding-right: $switch-width + $pt-grid-size;
+      padding-left: 0;
     }
 
     input:checked ~ .#{$ns}-control-indicator {
@@ -402,6 +403,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
 
       &.#{$ns}-align-right {
         padding-right: $switch-width-large + $pt-grid-size;
+        padding-left: 0;
       }
     }
   }
