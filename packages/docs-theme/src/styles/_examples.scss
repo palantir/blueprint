@@ -43,6 +43,10 @@ $dark-options-background-color: $dark-gray5;
   .#{$ns}-dark & {
     background: $dark-example-background-color;
   }
+
+  > * {
+    margin: $example-spacing / 2;
+  }
 }
 
 .docs-example-options {
