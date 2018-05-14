@@ -4,51 +4,27 @@
 $pkg-icon-width: 24px;
 
 $package-colors: (
-  "blueprint": $gray1,
-  "core": $blue3,
-  "datetime": $red3,
-  "icons": $gold4,
-  "select": $cobalt3,
-  "table": $forest3,
-  "timezone": $vermilion4,
-  "labs": $indigo3,
-  "resources": $orange3,
+  "blueprint": ($gray1, $black),
+  "core": ($blue3, $blue2),
+  "datetime": ($red3, $red2),
+  "icons": ($gold4, $gold3),
+  "select": ($cobalt3, $cobalt2),
+  "table": ($forest3, $forest2),
+  "timezone": ($vermilion4, $vermilion3),
+  "labs": ($indigo3, $indigo2),
+  "resources": ($orange3, $orange2),
 );
 
 $dark-package-colors: (
-  "blueprint": $gray3,
-  "core": $blue4,
-  "datetime": $red4,
-  "icons": $gold4,
-  "select": $cobalt4,
-  "table": $forest4,
-  "timezone": $vermilion5,
-  "labs": $indigo4,
-  "resources": $orange5,
-);
-
-$package-text-colors: (
-  "blueprint": $black,
-  "core": $blue2,
-  "datetime": $red2,
-  "icons": $gold3,
-  "select": $cobalt2,
-  "table": $forest2,
-  "timezone": $vermilion3,
-  "labs": $indigo2,
-  "resources": $orange2,
-);
-
-$dark-package-text-colors: (
-  "blueprint": $white,
-  "core": $blue5,
-  "datetime": $red5,
-  "icons": $gold5,
-  "select": $cobalt5,
-  "table": $forest5,
-  "timezone": $vermilion5,
-  "labs": $indigo5,
-  "resources": $orange5,
+  "blueprint": ($gray3, $white),
+  "core": ($blue4, $blue5),
+  "datetime": ($red4, $red5),
+  "icons": ($gold4, $gold5),
+  "select": ($cobalt4, $cobalt5),
+  "table": ($forest4, $forest5),
+  "timezone": ($vermilion5, $vermilion5),
+  "labs": ($indigo4, $indigo5),
+  "resources": ($orange5, $orange5),
 );
 
 .docs-logo {
@@ -110,10 +86,10 @@ $dark-package-text-colors: (
   }
 
   @each $package-name in map-keys($package-colors) {
-    $color: map-get($package-colors, $package-name);
-    $dark-color: map-get($dark-package-colors, $package-name);
-    $text-color: map-get($package-text-colors, $package-name);
-    $dark-text-color: map-get($dark-package-text-colors, $package-name);
+    $color: nth(map-get($package-colors, $package-name), 1);
+    $dark-color: nth(map-get($dark-package-colors, $package-name), 1);
+    $text-color: nth(map-get($package-colors, $package-name), 2);
+    $dark-text-color: nth(map-get($dark-package-colors, $package-name), 2);
 
     &[data-route="#{$package-name}"] {
       .docs-nav-package-icon {
