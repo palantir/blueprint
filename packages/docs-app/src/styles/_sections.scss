@@ -28,6 +28,12 @@
   }
 }
 
+#{page("navbar")} {
+  .#{$ns}-navbar {
+    margin: 0;
+  }
+}
+
 #{page("table-html")} {
   .docs-example {
     padding: $pt-grid-size;
