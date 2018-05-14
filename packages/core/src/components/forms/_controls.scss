@@ -265,7 +265,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       background: $switch-background-color;
       width: $switch-width;
       height: $switch-height;
-      transition: background $pt-transition-duration $pt-transition-ease;
+      transition: background-color $pt-transition-duration $pt-transition-ease;
 
       &::before {
         display: block;
@@ -281,6 +281,10 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         content: "";
         transition: left $pt-transition-duration $pt-transition-ease;
       }
+    }
+
+    &.#{$ns}-align-right {
+      padding-right: $switch-width + $pt-grid-size;
     }
 
     input:checked ~ .#{$ns}-control-indicator {
@@ -361,6 +365,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       font-size: $control-indicator-size-large;
     }
 
+    &.#{$ns}-align-right {
+      padding-right: $control-indicator-size-large + $pt-grid-size;
+      padding-left: 0;
+    }
+
     &.#{$ns}-checkbox input:checked ~ .#{$ns}-control-indicator::before {
       top: 1px;
     }
@@ -389,6 +398,10 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         &::before {
           left: $switch-width-large - $switch-height-large + $switch-indicator-margin;
         }
+      }
+
+      &.#{$ns}-align-right {
+        padding-right: $switch-width-large + $pt-grid-size;
       }
     }
   }
