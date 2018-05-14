@@ -338,10 +338,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         background-color: $switch-checked-background-color-disabled;
       }
     }
-
-    &.#{$ns}-align-right {
-      padding-right: $switch-width + $pt-grid-size;
-    }
   }
 
   // right-aligned indicator is glued to the right side of the container
