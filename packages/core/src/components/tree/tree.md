@@ -6,8 +6,8 @@ Trees display hierarchical data.
 
 @## CSS API
 
-See below for the [JavaScript API](#core/components/tree.javascript-api) for the `Tree` React component. However, you
-may also use the provided styles by themselves, without using the component.
+See below for the [JavaScript API](#core/components/tree.javascript-api) for the `Tree` React
+component. However, you may also use the provided styles by themselves, without using the component.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Note that the following examples set a maximum width and background color for the tree;
@@ -22,8 +22,8 @@ The `Tree` component is available in the **@blueprintjs/core** package.
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 `Tree` is a stateless component. Its contents are dictated by the `contents` prop, which is an array
-of `ITreeNode`s (see [below](#components/tree.tree-node-interface)). The tree is multi-rooted if `contents`
-contains more than one top-level object.
+of `ITreeNode`s (see [below](#components/tree.tree-node-interface)). The tree is multi-rooted if
+`contents` contains more than one top-level object.
 
 A variety of interaction callbacks are also exposed as props. All interaction callbacks supply a
 parameter `nodePath`, which is an array of numbers representing a node's position in the tree. For
@@ -33,7 +33,7 @@ example, `[2, 0]` represents the first child (`0`) of the third top-level node (
 
 @### Instance methods
 
-<div class="docs-interface-name">Tree</div>
+<div class="@ns-monospace-text">Tree</div>
 
 * `getNodeContentElement(nodeId: string | number): HTMLElement | undefined` &ndash;
   Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
