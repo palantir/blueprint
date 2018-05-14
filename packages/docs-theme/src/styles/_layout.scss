@@ -34,6 +34,7 @@ Page layout elements
 
 .docs-root {
   background-color: $content-background-color;
+  transition: $dark-theme-transition;
 
   &.#{$ns}-dark {
     background-color: $dark-content-background-color;
@@ -69,6 +70,8 @@ Page layout elements
   margin-left: -$background-shift;
   padding-left: $background-shift + $container-padding;
 
+  transition: $dark-theme-transition;
+
   .#{$ns}-dark & {
     box-shadow: 1px 0 0 $pt-dark-divider-black;
     background-color: $dark-sidebar-background-color;
@@ -85,6 +88,7 @@ Page layout elements
   align-items: flex-start;
   outline: none;
   background-color: $content-background-color;
+  transition: $dark-theme-transition;
 
   .#{$ns}-dark & {
     background-color: $dark-content-background-color;

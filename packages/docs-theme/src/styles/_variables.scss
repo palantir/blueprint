@@ -16,3 +16,5 @@ $content-width: $container-width - $sidebar-width;
 $content-padding: $pt-grid-size * 2;
 $content-background-color: $light-gray5;
 $dark-content-background-color: $dark-gray4;
+
+$dark-theme-transition: background-color $pt-transition-duration $pt-transition-ease;
