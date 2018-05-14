@@ -40,13 +40,13 @@ $tab-indicator-width: 3px !default;
     align-items: flex-start;
 
     .#{$ns}-tab {
+      border-radius: $pt-border-radius;
       width: 100%;
       padding: 0 $pt-grid-size;
-      border-radius: $pt-border-radius;
 
       &[aria-selected="true"] {
-        background-color: rgba($pt-intent-primary, 0.2);
         box-shadow: none;
+        background-color: rgba($pt-intent-primary, 0.2);
       }
     }
 
@@ -108,9 +108,10 @@ $tab-indicator-width: 3px !default;
   .#{$ns}-tab-indicator-wrapper ~ & {
     // these properties are only for static markup, therefore
     // we never want them if there's a tab indicator
-    // stylelint-disable-next-line declaration-no-important
-    background-color: transparent !important;
+    // stylelint-disable declaration-no-important
     box-shadow: none !important;
+    background-color: transparent !important;
+    // stylelint-enable declaration-no-important
   }
 
   &[aria-disabled="true"] {
