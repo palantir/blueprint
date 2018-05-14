@@ -25,18 +25,13 @@ export class TextExample extends BaseExample<ITextExampleState> {
 
     protected renderExample() {
         return (
-            <div style={{ width: "100%" }}>
+            <>
                 <Text ellipsize={true}>
                     {this.state.textContent}
                     &nbsp;
                 </Text>
-                <TextArea
-                    fill={true}
-                    onChange={this.onInputChange}
-                    style={{ marginTop: 20 }}
-                    value={this.state.textContent}
-                />
-            </div>
+                <TextArea fill={true} onChange={this.onInputChange} value={this.state.textContent} />
+            </>
         );
     }
 }

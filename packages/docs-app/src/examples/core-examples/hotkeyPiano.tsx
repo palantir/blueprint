@@ -342,14 +342,14 @@ export class HotkeyPiano extends BaseExample<IHotkeyPianoState> {
 
         if (AUDIO_CONTEXT == null) {
             return (
-                <div tabIndex={0} className="piano-example" ref={this.handleSetPianoRef}>
+                <div tabIndex={0} ref={this.handleSetPianoRef}>
                     Oops! This browser does not support the WebAudio API needed for this example.
                 </div>
             );
         }
 
         return (
-            <div tabIndex={0} className="piano-example" ref={this.handleSetPianoRef}>
+            <div tabIndex={0} className="docs-hotkey-piano-example" ref={this.handleSetPianoRef}>
                 <div>
                     <PianoKey note="C5" hotkey="Q" pressed={keys[0]} context={AUDIO_CONTEXT} />
                     <PianoKey note="C#5" hotkey="2" pressed={keys[1]} context={AUDIO_CONTEXT} />

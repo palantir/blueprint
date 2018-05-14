@@ -9,13 +9,14 @@ import PopperJS from "popper.js";
 import * as React from "react";
 
 import {
+    AnchorButton,
     Button,
     Classes,
     Code,
     FormGroup,
     H5,
-    Icon,
     Intent,
+    Label,
     Menu,
     MenuDivider,
     MenuItem,
@@ -161,8 +162,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                         </select>
                     </div>
                 </FormGroup>,
-                <label className={Classes.LABEL} key="example">
-                    Example content
+                <Label text="Example content" key="example">
                     <div className={Classes.SELECT}>
                         <select value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
                             <option value="0">Text</option>
@@ -173,7 +173,7 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                             <option value="5">Empty</option>
                         </select>
                     </div>
-                </label>,
+                </Label>,
                 <Switch checked={this.state.usePortal} key="portal" onChange={this.toggleUsePortal}>
                     Use <Code>Portal</Code>
                 </Switch>,
@@ -199,13 +199,14 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     options={INTERACTION_KINDS}
                     onChange={this.handleInteractionChange}
                 />,
+            ],
+            [
                 <Switch
                     checked={this.state.canEscapeKeyClose}
                     label="Can escape key close"
                     key="escape"
                     onChange={this.toggleEscapeKey}
                 />,
-                <br key="break" />,
             ],
             [
                 <H5 key="mod">Modifiers</H5>,
@@ -240,11 +241,19 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                         </select>
                     </div>
                 </Switch>,
-                <p key="docs-link">
-                    <a href={POPPER_DOCS} target="_blank">
-                        Popper.js docs <Icon icon="share" />
-                    </a>
-                </p>,
+                <Label text={undefined} key="popper-docs">
+                    <AnchorButton
+                        href={POPPER_DOCS}
+                        fill={true}
+                        intent={Intent.PRIMARY}
+                        minimal={true}
+                        rightIcon="share"
+                        target="_blank"
+                        style={{ marginTop: 20 }}
+                    >
+                        Visit Popper.js docs
+                    </AnchorButton>
+                </Label>,
             ],
         ];
     }

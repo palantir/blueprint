@@ -62,9 +62,9 @@ export class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
             return null;
         }
         return (
-            <div className={classNames("docs-example", this.className)} data-example-id={this.props.id}>
-                <div className="docs-react-example">{this.renderExample()}</div>
-                <div className="docs-react-options">{this.actuallyRenderOptions()}</div>
+            <div className={classNames("docs-example-frame", this.className)} data-example-id={this.props.id}>
+                <div className="docs-example">{this.renderExample()}</div>
+                <div className="docs-example-options">{this.actuallyRenderOptions()}</div>
             </div>
         );
     }

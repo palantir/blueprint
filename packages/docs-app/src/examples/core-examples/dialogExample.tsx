@@ -12,7 +12,7 @@ import { OverlayExample } from "./overlayExample";
 export class DialogExample extends OverlayExample {
     protected renderExample() {
         return (
-            <div className="docs-dialog-example">
+            <>
                 <Button onClick={this.handleOpen}>Show dialog</Button>
                 <Dialog
                     className={this.props.themeName}
@@ -64,14 +64,14 @@ export class DialogExample extends OverlayExample {
                         </div>
                     </div>
                 </Dialog>
-            </div>
+            </>
         );
     }
 
     protected renderOptions() {
         const options = super.renderOptions();
         // delete "hasBackdrop" switch from option controls
-        options[1].splice(2, 1);
+        options[0].splice(-1, 1);
         return options;
     }
 }

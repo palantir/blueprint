@@ -84,7 +84,7 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
                     onChange={this.toggleSelectAll}
                 />,
                 <Switch checked={this.state.confirmOnEnterKey} key="swap" onChange={this.toggleSwap}>
-                    Swap keypress for confirm and newline<br />(multiline only)
+                    Swap keypress for confirm and newline (multiline only)
                 </Switch>,
             ],
         ];

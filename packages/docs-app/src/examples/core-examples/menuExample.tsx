@@ -14,7 +14,7 @@ export class MenuExample extends BaseExample<{}> {
     protected renderExample() {
         return (
             <div>
-                <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
+                <Menu className={Classes.ELEVATION_1}>
                     <MenuItem icon={<PalantirLogo />} text="Custom SVG icon" />
                     <MenuDivider />
                     <MenuItem icon="new-text-box" text="New text box" />
@@ -23,7 +23,7 @@ export class MenuExample extends BaseExample<{}> {
                     <MenuDivider />
                     <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." />
                 </Menu>
-                <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
+                <Menu className={Classes.ELEVATION_1}>
                     <MenuDivider title="Edit" />
                     <MenuItem icon="cut" text="Cut" label="⌘X" />
                     <MenuItem icon="duplicate" text="Copy" label="⌘C" />
