@@ -265,7 +265,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       background: $switch-background-color;
       width: $switch-width;
       height: $switch-height;
-      transition: background $pt-transition-duration $pt-transition-ease;
+      transition: background-color $pt-transition-duration $pt-transition-ease;
 
       &::before {
         display: block;
@@ -334,6 +334,10 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         background-color: $switch-checked-background-color-disabled;
       }
     }
+
+    &.#{$ns}-align-right {
+      padding-right: $switch-width + $pt-grid-size;
+    }
   }
 
   // right-aligned indicator is glued to the right side of the container
@@ -390,6 +394,15 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
           left: $switch-width-large - $switch-height-large + $switch-indicator-margin;
         }
       }
+
+      &.#{$ns}-align-right {
+        padding-right: $switch-width-large + $pt-grid-size;
+      }
+    }
+
+    &.#{$ns}-align-right {
+      padding-right: $control-indicator-size-large + $pt-grid-size;
+      padding-left: 0;
     }
   }
 
