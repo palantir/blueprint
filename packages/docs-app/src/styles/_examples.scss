@@ -4,6 +4,11 @@
 @import "~@blueprintjs/icons/src/icons";
 @import "~@blueprintjs/core/src/common/react-transition";
 
+// Generate a selector for a page ID by reference
+@function page($ref, $comparator: "$=") {
+  @return '[data-page-id#{$comparator}"#{$ref}"]';
+}
+
 // Generate a selector for a React example by name
 @function example($NameExample, $comparator: "=") {
   @return '[data-example-id#{$comparator}"#{$NameExample}"]';
@@ -20,6 +25,10 @@
   25% { transform: rotate(-3deg); }
   75% { transform: rotate(3deg); }
   100% { transform: rotate(0); }
+}
+
+#{page("tree")} .#{$ns}-tree {
+  width: $pt-grid-size * 35;
 }
 
 #{example("ButtonsExample")} {
@@ -415,6 +424,16 @@
 // DATETIME
 //
 
+#{example("DateRangePickerExample")} {
+  flex-direction: column;
+
+  .docs-example-options {
+    margin-top: $pt-grid-size;
+    margin-left: 0;
+    max-width: unset;
+  }
+}
+
 .docs-datetime-example {
   display: flex;
   flex-direction: column;
@@ -433,4 +452,27 @@
 .docs-date-range {
   @include pt-flex-container(row, $pt-grid-size / 2);
   align-items: center;
+}
+
+//
+// TABLE
+//
+
+#{page("table", "^=")} {
+  // make all tables the same width & height
+  .#{$ns}-table-container {
+    width: 100%;
+    height: $pt-grid-size * 36;
+  }
+
+  // options appear below table (so tables can occupy full width)
+  .docs-example-frame {
+    flex-direction: column;
+  }
+
+  .docs-example-options {
+    margin-top: $pt-grid-size;
+    margin-left: 0;
+    max-width: unset;
+  }
 }
