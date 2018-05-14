@@ -6,7 +6,15 @@
 
 import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
 import classNames from "classnames";
-import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty, ITsSignature } from "documentalist/dist/client";
+import {
+    isTag,
+    isTsProperty,
+    ITsClass,
+    ITsInterface,
+    ITsMethod,
+    ITsProperty,
+    ITsSignature,
+} from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
@@ -49,6 +57,11 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
         const { renderBlock, renderType } = this.context;
         const { flags: { isDeprecated, isExternal, isOptional }, name } = entry;
         const { documentation } = isTsProperty(entry) ? entry : entry.signatures[0];
+
+        // ignore props marked with `@internal` tag (this tag is in contents instead of in flags)
+        if (documentation.contents.some(val => isTag(val) && val.tag === "internal")) {
+            return null;
+        }
 
         const classes = classNames("docs-prop-name", {
             "docs-prop-is-deprecated": isDeprecated === true || typeof isDeprecated === "string",
