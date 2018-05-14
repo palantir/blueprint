@@ -27,6 +27,30 @@ $dark-package-colors: (
   "resources": $orange5,
 );
 
+$package-text-colors: (
+  "blueprint": $black,
+  "core": $blue2,
+  "datetime": $red2,
+  "icons": $gold3,
+  "select": $cobalt2,
+  "table": $forest2,
+  "timezone": $vermilion3,
+  "labs": $indigo2,
+  "resources": $orange2,
+);
+
+$dark-package-text-colors: (
+  "blueprint": $white,
+  "core": $blue5,
+  "datetime": $red5,
+  "icons": $gold5,
+  "select": $cobalt5,
+  "table": $forest5,
+  "timezone": $vermilion5,
+  "labs": $indigo5,
+  "resources": $orange5,
+);
+
 .docs-logo {
   display: block;
   opacity: 0.8;
@@ -80,6 +104,7 @@ $dark-package-colors: (
 
   .#{$ns}-menu-item {
     flex: 1 1 auto;
+    background-color: transparent;
     text-transform: uppercase;
     font-weight: 600;
   }
@@ -87,6 +112,8 @@ $dark-package-colors: (
   @each $package-name in map-keys($package-colors) {
     $color: map-get($package-colors, $package-name);
     $dark-color: map-get($dark-package-colors, $package-name);
+    $text-color: map-get($package-text-colors, $package-name);
+    $dark-text-color: map-get($dark-package-text-colors, $package-name);
 
     &[data-route="#{$package-name}"] {
       .docs-nav-package-icon {
@@ -104,10 +131,10 @@ $dark-package-colors: (
       &.docs-nav-expanded {
         .#{$ns}-menu-item,
         + .docs-nav-menu .#{$ns}-menu-item.#{$ns}-active {
-          color: $color;
+          color: $text-color;
 
           .#{$ns}-dark & {
-            color: $dark-color;
+            color: $dark-text-color;
           }
         }
 
