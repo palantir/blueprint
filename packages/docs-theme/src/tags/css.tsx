@@ -4,7 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Code, Switch } from "@blueprintjs/core";
+import { Checkbox, Classes, Code } from "@blueprintjs/core";
+import classNames from "classnames";
 import { IKssPluginData, ITag } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
@@ -28,23 +29,25 @@ export class CssExample extends React.PureComponent<ITag> {
         }
         const { markup, markupHtml, modifiers, reference } = css[value];
         const options = modifiers.map(modifier => (
-            <Switch
+            <Checkbox
                 key={modifier.name}
                 checked={this.state.modifiers.has(modifier.name)}
                 onChange={this.getModifierToggleHandler(modifier.name)}
             >
                 <Code data-modifier={modifier.name}>{modifier.name}</Code>
-                <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
-            </Switch>
+            </Checkbox>
         ));
         return (
-            <div className="docs-example-frame">
-                <div className="docs-example-wrapper" data-reference={reference}>
+            <>
+                <div className="docs-example-frame" data-reference={reference}>
                     <div className="docs-example" dangerouslySetInnerHTML={this.renderExample(markup)} />
-                    <div className={Classes.RUNNING_TEXT} dangerouslySetInnerHTML={{ __html: markupHtml }} />
+                    <div className="docs-example-options">{options}</div>
                 </div>
-                <div className="docs-example-options">{options}</div>
-            </div>
+                <div
+                    className={classNames("docs-example-markup", Classes.RUNNING_TEXT)}
+                    dangerouslySetInnerHTML={{ __html: markupHtml }}
+                />
+            </>
         );
     }
 
