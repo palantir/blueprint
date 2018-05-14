@@ -71,7 +71,7 @@ export class DialogExample extends OverlayExample {
     protected renderOptions() {
         const options = super.renderOptions();
         // delete "hasBackdrop" switch from option controls
-        options[1].splice(2, 1);
+        options[0].splice(-1, 1);
         return options;
     }
 }
