@@ -27,28 +27,6 @@ $dark-options-background-color: $dark-gray5;
   }
 }
 
-.docs-example-wrapper {
-  @include pt-flex-container(column, $example-frame-spacing, $fill: ".docs-example");
-  flex: 1 1 auto;
-  // explicit 0 width ensures options column takes up its space first,
-  // then the rest is filled by this element
-  width: 0;
-
-  .editor {
-    flex: 0 0 auto;
-    margin: 0;
-    border-radius: $example-frame-border-radius;
-    box-shadow: none;
-    background: $code-background-color;
-    transition: $dark-theme-transition;
-
-    .#{$ns}-dark & {
-      box-shadow: none;
-      background: $dark-code-background-color;
-    }
-  }
-}
-
 .docs-example {
   display: flex;
   flex: 1 1 auto;
@@ -61,17 +39,13 @@ $dark-options-background-color: $dark-gray5;
   padding: $example-spacing / 2;
   transition: $dark-theme-transition;
 
-  > * {
-    margin: $example-spacing / 2;
-  }
-
   .#{$ns}-dark & {
     background: $dark-example-background-color;
   }
 }
 
 .docs-example-options {
-  @include pt-flex-container(column, $pt-grid-size * 2);
+  @include pt-flex-container(column, $pt-grid-size);
   flex: 0 0 auto;
   margin-left: $example-frame-spacing;
   border-radius: $example-frame-border-radius;
@@ -92,12 +66,25 @@ $dark-options-background-color: $dark-gray5;
     margin-bottom: 0;
   }
 
-  .docs-prop-description {
-    font-size: $pt-font-size-small;
-  }
-
   .#{$ns}-dark & {
     background-color: $dark-options-background-color;
+  }
+}
+
+.docs-example-markup {
+  margin-top: $example-frame-spacing;
+
+  .editor {
+    margin: 0;
+    border-radius: $example-frame-border-radius;
+    box-shadow: none;
+    background: $code-background-color;
+    transition: $dark-theme-transition;
+
+    .#{$ns}-dark & {
+      box-shadow: none;
+      background: $dark-code-background-color;
+    }
   }
 }
 
