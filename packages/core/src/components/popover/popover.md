@@ -64,13 +64,11 @@ Internally, the provided target is wrapped in a `span.@ns-popover-target`. This 
 ```
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <div class="@ns-callout-text">
-        <h4 class="@ns-heading">Button targets</h4>
-        Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
-        events, which interferes with the popover functioning. If you need to disable a button that
-        triggers a popover, you should use [`AnchorButton`](#core/components/button.anchor-button) instead.
-        See the [callout here](#core/components/button.javascript-api) for more details.
-    </div>
+    <h4 class="@ns-heading">Button targets</h4>
+    Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
+    events, which interferes with the popover functioning. If you need to disable a button that
+    triggers a popover, you should use [`AnchorButton`](#core/components/button.anchor-button) instead.
+    See the [callout here](#core/components/button.javascript-api) for more details.
 </div>
 
 ```tsx
@@ -146,9 +144,7 @@ Modifiers are the tools through which you customize Popper.js's behavior. Popper
 - `updatePopoverState` saves off some popper data to `Popover` React state for fancy things
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <div class="@ns-callout-text">
-        To understand all the Popper.js modifiers available to you, you'll want to read [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers).
-    </div>
+    To understand all the Popper.js modifiers available to you, you'll want to read [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers).
 </div>
 
 @### Controlled mode
@@ -167,11 +163,9 @@ in your application logic whether you should care about a particular invocation 
 if the `nextOpenState` is not the same as the `Popover`'s current state).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <div class="@ns-callout-text">
-        <h4 class="@ns-heading">Disabling controlled popovers</h4>
-        If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
-        The popover will re-open when `disabled` is set to `false.
-    </div>
+    <h4 class="@ns-heading">Disabling controlled popovers</h4>
+    <p>If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
+    The popover will re-open when `disabled` is set to `false.</p>
 </div>
 
 #### Example controlled usage
@@ -237,17 +231,13 @@ The following example demonstrates the various interaction kinds (note: these Po
 The __@blueprintjs/core__ package exports the above values in the `PopoverInteractionKind` enumeration.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <div class="@ns-callout-text">
-        Refer to the top-level [Popover example](#core/components/popover) to experiment with the various `PopoverInteractionKind`s.
-    </div>
+    Refer to the top-level [Popover example](#core/components/popover) to experiment with the various `PopoverInteractionKind`s.
 </div>
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <div class="@ns-callout-text">
-        <h4 class="@ns-heading">Conditionally styling popover targets</h4>
-        When a popover is open, the target has a <code>.@ns-popover-open</code> class applied to it.
-        You can use this to style the target differently when the popover is open.
-    </div>
+    <h4 class="@ns-heading">Conditionally styling popover targets</h4>
+    When a popover is open, the target has a <code>.@ns-popover-open</code> class applied to it.
+    You can use this to style the target differently when the popover is open.
 </div>
 
 #### Click-to-close elements
@@ -257,11 +247,9 @@ To enable click-to-close behavior on an element inside a popover, simply add the
 `popoverClassName="@ns-popover-dismiss"` prop.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <div class="@ns-callout-text">
-        Dismiss elements won't have any effect in a popover with
-        `PopoverInteractionKind.HOVER_TARGET_ONLY`, because there is no way to interact with the popover
-        content itself (the popover is dismissed the moment the user mouses away from the target).
-    </div>
+    Dismiss elements won't have any effect in a popover with
+    `PopoverInteractionKind.HOVER_TARGET_ONLY`, because there is no way to interact with the popover
+    content itself (the popover is dismissed the moment the user mouses away from the target).
 </div>
 
 @### Backdrop
@@ -291,12 +279,10 @@ a translucent background color, like the backdrop for the [`Dialog`](#core/compo
 The backdrop element has the same opacity-fade transition as the `Dialog` backdrop.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <div class="@ns-callout-text">
-        <h4 class="@ns-heading">Dangerous edge case</h4>
-        Rendering a `<Popover isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break
-        your application by covering the UI with an invisible non-interactive backdrop. This edge case
-        must be handled by your application code or simply avoided if possible.
-    </div>
+    <h4 class="@ns-heading">Dangerous edge case</h4>
+    Rendering a `<Popover isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break
+    your application by covering the UI with an invisible non-interactive backdrop. This edge case
+    must be handled by your application code or simply avoided if possible.
 </div>
 
 @### Portal rendering
@@ -367,10 +353,8 @@ documentation.
 @## Testing
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <div class="@ns-callout-text">
-        Your best resource for strategies in popover testing is
-        [its own unit test suite.](https://github.com/palantir/blueprint/blob/develop/packages/core/test/popover/popoverTests.tsx)
-    </div>
+    Your best resource for strategies in popover testing is
+    [its own unit test suite.](https://github.com/palantir/blueprint/blob/develop/packages/core/test/popover/popoverTests.tsx)
 </div>
 
 #### Animation delays

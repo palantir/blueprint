@@ -146,9 +146,7 @@ npm install --save @types/moment-timezone
 Blueprint's declaration files require **TypeScript 2.3+** for default generic parameter arguments: `<P = {}>`.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <div class="@ns-callout-text">
-        For more information, see [Understanding TypeScript](#blueprint/getting-started.understanding-typescript) below.
-    </div>
+  For more information, see [Understanding TypeScript](#blueprint/getting-started.understanding-typescript) below.
 </div>
 
 @## Vanilla JS APIs

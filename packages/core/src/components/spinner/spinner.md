@@ -25,12 +25,10 @@ Note that the CSS modifiers described in the [CSS API](#core/components/progress
 are supported via the `className` prop.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <div class="@ns-callout-text">
-        <h4 class="@ns-heading">IE11 compatibility note</h4>
-        IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
-        `value` will not smoothly transition as `value` changes. Indeterminate spinners still animate
-        correctly because they rely on CSS animations, not transitions.
-    </div>
+    <h4 class="@ns-heading">IE11 compatibility note</h4>
+    IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
+    `value` will not smoothly transition as `value` changes. Indeterminate spinners still animate
+    correctly because they rely on CSS animations, not transitions.
 </div>
 
 @interface ISpinnerProps

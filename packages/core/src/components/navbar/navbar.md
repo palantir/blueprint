@@ -25,12 +25,10 @@ screen as the user scrolls through the document.
 This modifier is not illustrated here because it breaks the documentation flow.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <div class="@ns-callout-text">
-        <h4 class="@ns-heading">Body padding required</h4>
-        The fixed navbar will lie on top of your other content unless you add padding to the top of the
-        `<body>` element equal to the height of the navbar. Use the `$pt-navbar-height` Sass variable to
-        access the height of the navbar (50px).
-    </div>
+    <h4 class="@ns-heading">Body padding required</h4>
+    The fixed navbar will lie on top of your other content unless you add padding to the top of the
+    `<body>` element equal to the height of the navbar. Use the `$pt-navbar-height` Sass variable to
+    access the height of the navbar (50px).
 </div>
 
 @### Fixed width
