@@ -283,6 +283,10 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       }
     }
 
+    &.#{$ns}-align-right {
+      padding-right: $switch-width + $pt-grid-size;
+    }
+
     input:checked ~ .#{$ns}-control-indicator {
       box-shadow: none;
       background-color: $switch-checked-background-color;
@@ -334,10 +338,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         background-color: $switch-checked-background-color-disabled;
       }
     }
-
-    &.#{$ns}-align-right {
-      padding-right: $switch-width + $pt-grid-size;
-    }
   }
 
   // right-aligned indicator is glued to the right side of the container
@@ -363,6 +363,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       line-height: $control-indicator-size-large;
       font-family: $icons20-family;
       font-size: $control-indicator-size-large;
+    }
+
+    &.#{$ns}-align-right {
+      padding-right: $control-indicator-size-large + $pt-grid-size;
+      padding-left: 0;
     }
 
     &.#{$ns}-checkbox input:checked ~ .#{$ns}-control-indicator::before {
@@ -398,11 +403,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       &.#{$ns}-align-right {
         padding-right: $switch-width-large + $pt-grid-size;
       }
-    }
-
-    &.#{$ns}-align-right {
-      padding-right: $control-indicator-size-large + $pt-grid-size;
-      padding-left: 0;
     }
   }
 
