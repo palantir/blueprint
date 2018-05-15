@@ -22,8 +22,6 @@ export class LabelExample extends BaseExample<ILabelExampleState> {
         inline: false,
     };
 
-    protected className = "docs-label-example";
-
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
     private handleHelperTextChange = handleBooleanChange(helperText => this.setState({ helperText }));
     private handleInlineChange = handleBooleanChange(inline => this.setState({ inline }));

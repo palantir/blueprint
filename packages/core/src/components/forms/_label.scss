@@ -77,32 +77,9 @@ label.#{$ns}-label {
   Disabled labels
 
   Markup:
-<<<<<<< HEAD
-  <label class="#{$ns}-label #{$ns}-disabled">
-    <strong>Label A</strong>
-    <span class="#{$ns}-text-muted">(optional)</span>
-    <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
-  </label>
-  <label class="#{$ns}-label #{$ns}-disabled">
-    <strong>Label B</strong>
-    <div class="#{$ns}-input-group #{$ns}-disabled">
-      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
-      <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
-    </div>
-  </label>
-  <label class="#{$ns}-label #{$ns}-disabled">
-    <strong>Label C</strong>
-    <div class="#{$ns}-select #{$ns}-disabled">
-      <select disabled>
-        <option selected>Choose an item...</option>
-        <option value="1">One</option>
-      </select>
-    </div>
-  </label>
-=======
   <div>
     <label class="#{$ns}-label #{$ns}-disabled">
-      Label A
+      <strong>Label A</strong>
       <span class="#{$ns}-text-muted">(optional)</span>
       <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
     </label>
@@ -114,7 +91,7 @@ label.#{$ns}-label {
       </div>
     </label>
     <label class="#{$ns}-label #{$ns}-disabled">
-      Label C
+      <strong>Label C</strong>
       <div class="#{$ns}-select #{$ns}-disabled">
         <select disabled>
           <option selected>Choose an item...</option>
@@ -123,7 +100,6 @@ label.#{$ns}-label {
       </div>
     </label>
   </div>
->>>>>>> origin/develop
 
   Styleguide label-disabled
   */
