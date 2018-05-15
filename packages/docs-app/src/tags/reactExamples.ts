@@ -17,7 +17,9 @@ import { getTheme } from "../components/blueprintDocs";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
 
+/** Extend the library type with additional app-specific fields. */
 export interface IReactExampleProps extends IExampleProps {
+    /** CSS theme like `Classes.DARK` */
     themeName: string;
 }
 

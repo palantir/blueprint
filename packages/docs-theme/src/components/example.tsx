@@ -38,17 +38,17 @@ export interface IDocsExampleProps extends IExampleProps {
  *     }
  * ```
  */
-export class Example extends React.Component<IDocsExampleProps> {
-    // Can't put this in state, because the state typing is generic.
+export class Example extends React.PureComponent<IDocsExampleProps> {
     private hasDelayedBeforeInitialRender = false;
-    private hasCompletedInitialRender = false;
 
     public render() {
-        // HACKHACK: This is the other required piece. Don't let any React nodes into the DOM until the
-        // requestAnimationFrame delay has elapsed. This prevents shouldComponentUpdate snafus at lower levels.
+        // HACKHACK: This is the other required piece. Don't let any React nodes
+        // into the DOM until the requestAnimationFrame delay has elapsed. This
+        // prevents shouldComponentUpdate snafus at lower levels.
         if (!this.hasDelayedBeforeInitialRender) {
             return null;
         }
+
         return (
             <div className={classNames("docs-example-frame", this.props.className)} data-example-id={this.props.id}>
                 <div className="docs-example">{this.props.children}</div>
@@ -57,22 +57,14 @@ export class Example extends React.Component<IDocsExampleProps> {
         );
     }
 
-    public componentWillMount() {
-        // HACKHACK: The docs app suffers from a Flash of Unstyled Content that causes some 'width: 100%' examples to
-        // render incorrectly, because they mis-measure the horizontal space available to them. Until that bug is squashed,
-        // this is the workaround: delay initial render with a requestAnimationFrame.
+    public componentDidMount() {
+        // HACKHACK: The docs app suffers from a Flash of Unstyled Content that
+        // causes some 'width: 100%' examples to mis-measure the horizontal
+        // space available to them. Until that bug is squashed, we must delay
+        // initial render till the DOM loads with a requestAnimationFrame.
         requestAnimationFrame(() => {
             this.hasDelayedBeforeInitialRender = true;
             this.forceUpdate();
         });
-    }
-
-    public componentDidUpdate() {
-        // HACKHACK: Initial render happens as an *update* due to our requestAnimationFrame shenanigans, not as a mount.
-        // Once we've rendered initially, set this flag so that shouldComponentUpdate logic will return to its normal
-        // PureComponent-style logic, ignoring these flags henceforth.
-        if (!this.hasCompletedInitialRender) {
-            this.hasCompletedInitialRender = true;
-        }
     }
 }
