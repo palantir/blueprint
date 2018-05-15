@@ -80,7 +80,25 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
         const minDate = MIN_DATE_OPTIONS[this.state.minDateIndex].value;
         const maxDate = MAX_DATE_OPTIONS[this.state.maxDateIndex].value;
 
-        const options = (
+        return (
+            <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
+                <DateRangePicker
+                    allowSingleDayRange={this.state.allowSingleDayRange}
+                    contiguousCalendarMonths={this.state.contiguousCalendarMonths}
+                    className={Classes.ELEVATION_1}
+                    maxDate={maxDate}
+                    minDate={minDate}
+                    onChange={this.handleDateChange}
+                    reverseMonthAndYearMenus={this.state.reverseMonthAndYearMenus}
+                    shortcuts={this.state.shortcuts}
+                />
+                <MomentDateRange range={this.state.dateRange} />
+            </Example>
+        );
+    }
+    
+    private renderOptions() {
+        return (
             <>
                 <div>
                     <Switch
@@ -115,22 +133,6 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
                     )}
                 </div>
             </>
-        );
-
-        return (
-            <Example options={options} showOptionsBelowExample={true} {...this.props}>
-                <DateRangePicker
-                    allowSingleDayRange={this.state.allowSingleDayRange}
-                    contiguousCalendarMonths={this.state.contiguousCalendarMonths}
-                    className={Classes.ELEVATION_1}
-                    maxDate={maxDate}
-                    minDate={minDate}
-                    onChange={this.handleDateChange}
-                    reverseMonthAndYearMenus={this.state.reverseMonthAndYearMenus}
-                    shortcuts={this.state.shortcuts}
-                />
-                <MomentDateRange range={this.state.dateRange} />
-            </Example>
         );
     }
 
