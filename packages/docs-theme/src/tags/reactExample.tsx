@@ -25,9 +25,11 @@ export interface IExampleProps {
 }
 
 export const ReactExample: React.SFC<IExampleProps> = props => (
-    <div className="docs-example-wrapper">
+    <>
         {props.example.render({ id: props.name })}
         <AnchorButton
+            className="docs-example-view-source"
+            fill={true}
             href={props.example.sourceUrl}
             icon="code"
             intent={Intent.PRIMARY}
@@ -35,7 +37,7 @@ export const ReactExample: React.SFC<IExampleProps> = props => (
             target="_blank"
             text="View source on GitHub"
         />
-    </div>
+    </>
 );
 ReactExample.displayName = "Docs2.ReactExample";
 

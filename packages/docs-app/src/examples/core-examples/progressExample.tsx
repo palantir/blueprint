@@ -24,8 +24,6 @@ export class ProgressExample extends BaseExample<IProgressExampleState> {
         value: 0.7,
     };
 
-    protected className = "docs-progress-example";
-
     private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
     private handleModifierChange = handleStringChange((intent: Intent) => this.setState({ intent }));
 

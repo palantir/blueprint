@@ -1,4 +1,4 @@
-@# Table (HTML)
+@# Tables (HTML)
 
 This component adds Blueprint styling to native HTML tables.
 

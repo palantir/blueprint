@@ -96,8 +96,6 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
                 <Switch checked={usePortal} key="portal" onChange={this.handleUsePortalChange}>
                     Use <Code>Portal</Code>
                 </Switch>,
-            ],
-            [
                 <Switch
                     checked={this.state.canOutsideClickClose}
                     key="click"

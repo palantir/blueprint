@@ -54,7 +54,7 @@ It exposes shorthand props for CSS modifier classes and supports the full range 
 
 @reactExample ButtonGroupExample
 
-@### Usage with Popovers
+@### Usage with popovers
 
 `Button`s inside a `ButtonGroup` can optionally be wrapped with a [`Popover`](#core/components/popover). The following example demonstrates this composition:
 
