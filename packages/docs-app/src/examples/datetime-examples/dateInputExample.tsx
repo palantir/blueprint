@@ -50,9 +50,7 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
                     onChange={this.handleDateChange}
                     popoverProps={{ position: Position.BOTTOM }}
                 />
-                <div className="docs-date-range">
-                    <MomentDate date={date} />
-                </div>
+                <MomentDate date={date} />
             </Example>
         );
     }

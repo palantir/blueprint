@@ -424,13 +424,11 @@
 // DATETIME
 //
 
-#{example("DateRangePickerExample")} {
-  flex-direction: column;
-
-  .docs-example-options {
-    margin-top: $pt-grid-size;
-    margin-left: 0;
-    max-width: unset;
+// all datetime examples show component followed by date tags, so arrange them in a nice column
+#{page("datetime", "^=")} {
+  .docs-example {
+    flex-direction: column;
+    justify-content: center;
   }
 }
 
