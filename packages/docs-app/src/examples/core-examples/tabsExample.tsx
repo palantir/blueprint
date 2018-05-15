@@ -7,17 +7,16 @@
 import * as React from "react";
 
 import { Classes, H1, H3, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITabsExampleState {
-    activeTabId?: TabId;
-    activePanelOnly?: boolean;
-    animate?: boolean;
-    navbarTabId?: TabId;
-    vertical?: boolean;
+    activePanelOnly: boolean;
+    animate: boolean;
+    navbarTabId: TabId;
+    vertical: boolean;
 }
 
-export class TabsExample extends BaseExample<ITabsExampleState> {
+export class TabsExample extends React.PureComponent<IExampleProps, ITabsExampleState> {
     public state: ITabsExampleState = {
         activePanelOnly: false,
         animate: true,
@@ -29,9 +28,21 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
     private toggleAnimate = handleBooleanChange(animate => this.setState({ animate }));
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
-    protected renderExample() {
+    public render() {
+        const options = (
+            <>
+                <Switch checked={this.state.animate} label="Animate indicator" onChange={this.toggleAnimate} />
+                <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
+                <Switch
+                    checked={this.state.activePanelOnly}
+                    label="Render active tab panel only"
+                    onChange={this.toggleActiveOnly}
+                />
+            </>
+        );
+
         return (
-            <div className="docs-tabs-example">
+            <Example className="docs-tabs-example" options={options} {...this.props}>
                 <Navbar>
                     <Navbar.Group>
                         <Navbar.Heading>Tabs example</Navbar.Heading>
@@ -57,7 +68,6 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
                     animate={this.state.animate}
                     id="TabsExample"
                     key={this.state.vertical ? "vertical" : "horizontal"}
-                    onChange={this.handleTabChange}
                     renderActiveTabPanelOnly={this.state.activePanelOnly}
                     vertical={this.state.vertical}
                 >
@@ -68,37 +78,11 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
                     <Tabs.Expander />
                     <input className={Classes.INPUT} type="text" placeholder="Search..." />
                 </Tabs>
-            </div>
+            </Example>
         );
     }
 
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.animate}
-                    label="Animate indicator"
-                    key="animate"
-                    onChange={this.toggleAnimate}
-                />,
-                <Switch
-                    checked={this.state.vertical}
-                    label="Use vertical tabs"
-                    key="vertical"
-                    onChange={this.toggleVertical}
-                />,
-                <Switch
-                    checked={this.state.activePanelOnly}
-                    label="Render active tab panel only"
-                    key="active"
-                    onChange={this.toggleActiveOnly}
-                />,
-            ],
-        ];
-    }
-
     private handleNavbarTabChange = (navbarTabId: TabId) => this.setState({ navbarTabId });
-    private handleTabChange = (activeTabId: TabId) => this.setState({ activeTabId });
 }
 
 const ReactPanel: React.SFC<{}> = () => (

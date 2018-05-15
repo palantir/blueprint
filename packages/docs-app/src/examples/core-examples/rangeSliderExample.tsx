@@ -7,14 +7,14 @@
 import * as React from "react";
 
 import { NumberRange, RangeSlider, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IRangeSliderExampleState {
-    range?: NumberRange;
-    vertical?: boolean;
+    range: NumberRange;
+    vertical: boolean;
 }
 
-export class RangeSliderExample extends BaseExample<IRangeSliderExampleState> {
+export class RangeSliderExample extends React.PureComponent<IExampleProps, IRangeSliderExampleState> {
     public state: IRangeSliderExampleState = {
         range: [36, 72],
         vertical: false,
@@ -22,24 +22,23 @@ export class RangeSliderExample extends BaseExample<IRangeSliderExampleState> {
 
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
-    protected renderExample() {
-        return (
-            <RangeSlider
-                min={0}
-                max={100}
-                stepSize={2}
-                labelStepSize={20}
-                onChange={this.handleValueChange}
-                value={this.state.range}
-                vertical={this.state.vertical}
-            />
-        );
-    }
+    public render() {
+        const { range, vertical } = this.state;
+        const options = <Switch label="Vertical" checked={vertical} onChange={this.toggleVertical} />;
 
-    protected renderOptions() {
-        return [
-            [<Switch checked={this.state.vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />],
-        ];
+        return (
+            <Example options={options} {...this.props}>
+                <RangeSlider
+                    min={0}
+                    max={100}
+                    stepSize={2}
+                    labelStepSize={20}
+                    onChange={this.handleValueChange}
+                    value={range}
+                    vertical={vertical}
+                />
+            </Example>
+        );
     }
 
     private handleValueChange = (range: NumberRange) => this.setState({ range });
