@@ -5,7 +5,7 @@
  */
 
 import { Alignment, Button, ButtonGroup, IconName, Intent, Popover, Position, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
@@ -20,7 +20,7 @@ export interface IButtonGroupPopoverExampleState {
     vertical: boolean;
 }
 
-export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverExampleState> {
+export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps, IButtonGroupPopoverExampleState> {
     public state: IButtonGroupPopoverExampleState = {
         alignText: Alignment.CENTER,
         intent: Intent.NONE,
@@ -38,37 +38,24 @@ export class ButtonGroupPopoverExample extends BaseExample<IButtonGroupPopoverEx
 
     protected renderExample() {
         const { intent, ...bgProps } = this.state;
-
-        return (
-            <ButtonGroup {...bgProps} style={{ minWidth: 120 }}>
-                {this.renderButton("File", "document")}
-                {this.renderButton("Edit", "edit")}
-                {this.renderButton("View", "eye-open")}
-            </ButtonGroup>
+        const options = (
+            <>
+                <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
+                <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
+                <Switch label="Vertical" checked={this.state.vertical} onChange={this.handleVerticalChange} />
+                <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />
+                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
+            </>
         );
-    }
-
-    protected renderOptions() {
-        const { alignText } = this.state;
-        return [
-            [
-                <Switch key="large" checked={this.state.large} onChange={this.handleLargeChange} label="Large" />,
-                <Switch
-                    key="minimal"
-                    checked={this.state.minimal}
-                    onChange={this.handleMinimalChange}
-                    label="Minimal"
-                />,
-                <Switch
-                    key="vertical"
-                    checked={this.state.vertical}
-                    onChange={this.handleVerticalChange}
-                    label="Vertical"
-                />,
-            ],
-            [<AlignmentSelect key="align" align={alignText} onChange={this.handleAlignChange} />],
-            [<IntentSelect key="intent" intent={this.state.intent} onChange={this.handleIntentChange} />],
-        ];
+        return (
+            <Example options={options} {...this.props}>
+                <ButtonGroup {...bgProps} style={{ minWidth: 120 }}>
+                    {this.renderButton("File", "document")}
+                    {this.renderButton("Edit", "edit")}
+                    {this.renderButton("View", "eye-open")}
+                </ButtonGroup>
+            </Example>
+        );
     }
 
     private renderButton(text: string, iconName: IconName) {

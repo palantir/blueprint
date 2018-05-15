@@ -6,8 +6,8 @@
 
 import * as React from "react";
 
-import { Classes } from "@blueprintjs/core";
-import { BaseExample, handleNumberChange } from "@blueprintjs/docs-theme";
+import { Classes, Label } from "@blueprintjs/core";
+import { Example, handleNumberChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnLoadingOption, Table } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
@@ -21,7 +21,7 @@ export interface IColumnLoadingExampleState {
     loadingColumn?: number;
 }
 
-export class ColumnLoadingExample extends BaseExample<IColumnLoadingExampleState> {
+export class ColumnLoadingExample extends React.PureComponent<IExampleProps, IColumnLoadingExampleState> {
     public state: IColumnLoadingExampleState = {
         loadingColumn: 1,
     };
@@ -30,8 +30,12 @@ export class ColumnLoadingExample extends BaseExample<IColumnLoadingExampleState
 
     private handleLoadingColumnChange = handleNumberChange(loadingColumn => this.setState({ loadingColumn }));
 
-    public renderExample() {
-        return <Table numRows={bigSpaceRocks.length}>{this.renderColumns()}</Table>;
+    public render() {
+        return (
+            <Example options={this.renderOptions()} {...this.props}>
+                <Table numRows={bigSpaceRocks.length}>{this.renderColumns()}</Table>
+            </Example>
+        );
     }
 
     protected renderOptions() {
@@ -39,21 +43,17 @@ export class ColumnLoadingExample extends BaseExample<IColumnLoadingExampleState
         const numColumns = Object.keys(firstSpaceRock).length;
         const options: JSX.Element[] = [];
         for (let i = 0; i < numColumns; i++) {
-            options.push(
-                <option key={i} value={i}>
-                    {this.formatColumnName(Object.keys(firstSpaceRock)[i])}
-                </option>,
-            );
+            const label = this.formatColumnName(Object.keys(firstSpaceRock)[i]);
+            options.push(<option key={i} value={i} label={label} />);
         }
         return (
-            <label className={Classes.LABEL}>
-                Loading column
+            <Label text="Loading column">
                 <div className={Classes.SELECT}>
                     <select value={this.state.loadingColumn} onChange={this.handleLoadingColumnChange}>
                         {options}
                     </select>
                 </div>
-            </label>
+            </Label>
         );
     }
 
