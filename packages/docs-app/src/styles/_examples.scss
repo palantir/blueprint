@@ -432,21 +432,6 @@
   }
 }
 
-.docs-datetime-example {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  > :last-child:not(:first-child) {
-    // space above date tags, if present
-    margin-top: $pt-grid-size * 2;
-  }
-
-  .#{$ns}-icon-arrow-right {
-    margin: 0 ($pt-grid-size / 2);
-  }
-}
-
 .docs-date-range {
   @include pt-flex-container(row, $pt-grid-size / 2);
   align-items: center;
