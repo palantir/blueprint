@@ -8,7 +8,7 @@ import * as React from "react";
 
 import { Alert, Button, Intent, IToaster, Switch, Toaster } from "@blueprintjs/core";
 import { Example, handleBooleanChange } from "@blueprintjs/docs-theme";
-import { IReactExampleProps } from "../../tags/reactExamples";
+import { IBlueprintExampleProps } from "../../tags/reactExamples";
 
 export interface IAlertExampleState {
     canEscapeKeyCancel: boolean;
@@ -17,7 +17,7 @@ export interface IAlertExampleState {
     isOpenError: boolean;
 }
 
-export class AlertExample extends React.PureComponent<IReactExampleProps, IAlertExampleState> {
+export class AlertExample extends React.PureComponent<IBlueprintExampleProps, IAlertExampleState> {
     public state: IAlertExampleState = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,

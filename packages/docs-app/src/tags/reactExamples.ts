@@ -18,14 +18,14 @@ import { getTheme } from "../components/blueprintDocs";
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
 
 /** Extend the library type with additional app-specific fields. */
-export interface IReactExampleProps extends IExampleProps {
+export interface IBlueprintExampleProps extends IExampleProps {
     /** CSS theme like `Classes.DARK` */
     themeName: string;
 }
 
 function getPackageExamples(
     packageName: string,
-    packageExamples: { [name: string]: React.ComponentClass<IReactExampleProps> },
+    packageExamples: { [name: string]: React.ComponentClass<IBlueprintExampleProps> },
 ) {
     const ret: IExampleMap = {};
     for (const exampleName of Object.keys(packageExamples)) {
