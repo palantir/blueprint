@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IBaseExampleProps, IExampleMap } from "@blueprintjs/docs-theme";
+import { IExampleMap, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 import * as CoreExamples from "../examples/core-examples";
@@ -17,9 +17,13 @@ import { getTheme } from "../components/blueprintDocs";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
 
+export interface IReactExampleProps extends IExampleProps {
+    themeName: string;
+}
+
 function getPackageExamples(
     packageName: string,
-    packageExamples: { [name: string]: React.ComponentClass<IBaseExampleProps> },
+    packageExamples: { [name: string]: React.ComponentClass<IReactExampleProps> },
 ) {
     const ret: IExampleMap = {};
     for (const exampleName of Object.keys(packageExamples)) {
