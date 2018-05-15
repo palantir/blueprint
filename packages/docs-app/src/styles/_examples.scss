@@ -424,16 +424,6 @@
 // DATETIME
 //
 
-#{example("DateRangePickerExample")} {
-  flex-direction: column;
-
-  .docs-example-options {
-    margin-top: $pt-grid-size;
-    margin-left: 0;
-    max-width: unset;
-  }
-}
-
 .docs-datetime-example {
   display: flex;
   flex-direction: column;
