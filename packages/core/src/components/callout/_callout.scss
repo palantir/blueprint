@@ -33,6 +33,7 @@ Styleguide callout
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
+    display: block;
     position: relative;
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
