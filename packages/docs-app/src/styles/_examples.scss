@@ -57,17 +57,6 @@
   }
 }
 
-#{example("CollapseExample")} {
-  .docs-example {
-    justify-content: unset;
-  }
-
-  .#{$ns}-code-block {
-    width: $pt-grid-size * 40;
-    overflow: hidden;
-  }
-}
-
 .docs-context-menu-example {
   @include pt-flex-container(column, $pt-grid-size * 2);
   align-items: center;
