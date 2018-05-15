@@ -59,7 +59,11 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
         const { documentation } = isTsProperty(entry) ? entry : entry.signatures[0];
 
         // ignore props marked with `@internal` tag (this tag is in contents instead of in flags)
-        if (documentation.contents.some(val => isTag(val) && val.tag === "internal")) {
+        if (
+            documentation != null &&
+            documentation.contents != null &&
+            documentation.contents.some(val => isTag(val) && val.tag === "internal")
+        ) {
             return null;
         }
 
