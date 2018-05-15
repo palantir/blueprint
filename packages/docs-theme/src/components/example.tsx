@@ -13,7 +13,18 @@ export interface IExampleProps extends IProps {
 }
 
 export interface IDocsExampleProps extends IExampleProps {
+    /**
+     * Options for the example, which will appear in a narrow column to the right of the example.
+     */
     options: React.ReactNode;
+
+    /**
+     * HTML markup for the example, which will be directly injected into the
+     * example container using `dangerouslySetInnerHTML`.
+     *
+     * This prop is mutually exclusive with and takes priority over `children`.
+     */
+    html?: string;
 }
 
 /**
@@ -49,10 +60,18 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
             return null;
         }
 
+        const { children, className, html, id, options } = this.props;
+        const example =
+            html == null ? (
+                <div className="docs-example">{children}</div>
+            ) : (
+                <div className="docs-example" dangerouslySetInnerHTML={{ __html: html }} />
+            );
+
         return (
-            <div className={classNames("docs-example-frame", this.props.className)} data-example-id={this.props.id}>
-                <div className="docs-example">{this.props.children}</div>
-                <div className="docs-example-options">{this.props.options}</div>
+            <div className={classNames("docs-example-frame", className)} data-example-id={id}>
+                {example}
+                <div className="docs-example-options">{options}</div>
             </div>
         );
     }

@@ -41,9 +41,7 @@ export class CssExample extends React.PureComponent<ITag> {
         ));
         return (
             <>
-                <Example id={reference} options={options}>
-                    <div dangerouslySetInnerHTML={this.renderExample(markup)} />
-                </Example>
+                <Example id={reference} options={options} html={this.renderExample(markup)} />
                 <div
                     className={classNames("docs-example-markup", Classes.RUNNING_TEXT)}
                     dangerouslySetInnerHTML={{ __html: markupHtml }}
@@ -67,7 +65,7 @@ export class CssExample extends React.PureComponent<ITag> {
     private renderExample(markup: string) {
         const classes = this.getModifiers(".");
         const attrs = this.getModifiers(":");
-        return { __html: markup.replace(MODIFIER_ATTR_REGEXP, attrs).replace(MODIFIER_CLASS_REGEXP, classes) };
+        return markup.replace(MODIFIER_ATTR_REGEXP, attrs).replace(MODIFIER_CLASS_REGEXP, classes);
     }
 
     private getModifiers(prefix: "." | ":") {
