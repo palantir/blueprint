@@ -13,10 +13,12 @@ export class CheckboxExample extends React.PureComponent<IExampleProps> {
     public render() {
         return (
             <Example options={false} {...this.props}>
-                <Label text="Assign responsibility" />
-                <Checkbox label="Gilad Gray" defaultIndeterminate={true} />
-                <Checkbox label="Jason Killian" />
-                <Checkbox label="Antoine Llorca" />
+                <div>
+                    <Label text="Assign responsibility" />
+                    <Checkbox label="Gilad Gray" defaultIndeterminate={true} />
+                    <Checkbox label="Jason Killian" />
+                    <Checkbox label="Antoine Llorca" />
+                </div>
             </Example>
         );
     }
