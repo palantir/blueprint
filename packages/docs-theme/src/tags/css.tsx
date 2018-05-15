@@ -9,6 +9,7 @@ import classNames from "classnames";
 import { IKssPluginData, ITag } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
+import { Example } from "../components/example";
 
 export interface ICssExampleState {
     modifiers: Set<string>;
@@ -40,10 +41,9 @@ export class CssExample extends React.PureComponent<ITag> {
         ));
         return (
             <>
-                <div className="docs-example-frame" data-reference={reference}>
-                    <div className="docs-example" dangerouslySetInnerHTML={this.renderExample(markup)} />
-                    <div className="docs-example-options">{options}</div>
-                </div>
+                <Example id={reference} options={options}>
+                    <div dangerouslySetInnerHTML={this.renderExample(markup)} />
+                </Example>
                 <div
                     className={classNames("docs-example-markup", Classes.RUNNING_TEXT)}
                     dangerouslySetInnerHTML={{ __html: markupHtml }}
