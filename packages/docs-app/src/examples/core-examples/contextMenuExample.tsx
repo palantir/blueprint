@@ -10,7 +10,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 /**
  * This component uses the imperative ContextMenu API.
@@ -48,7 +48,17 @@ class GraphNode extends React.PureComponent<{}, { isContextMenuOpen: boolean }> 
  * This component uses the decorator API and implements the IContextMenuTarget interface.
  */
 @ContextMenuTarget
-export class ContextMenuExample extends BaseExample<{}> {
+class ContextMenuPanel extends React.PureComponent {
+    public render() {
+        return (
+            // root element of decorated component must support onContextMenu prop
+            <div className="context-menu-panel">
+                <GraphNode />
+                <span className={Classes.TEXT_MUTED}>Right-click on node or background.</span>
+            </div>
+        );
+    }
+
     public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
         return (
             <Menu>
@@ -68,13 +78,14 @@ export class ContextMenuExample extends BaseExample<{}> {
             </Menu>
         );
     }
+}
 
-    public renderExample() {
+export class ContextMenuExample extends React.PureComponent<IExampleProps, {}> {
+    public render() {
         return (
-            <div className="docs-context-menu-example">
-                <GraphNode />
-                <span className={Classes.TEXT_MUTED}>Right-click on node or background.</span>
-            </div>
+            <Example className="docs-context-menu-example" options={false} {...this.props}>
+                <ContextMenuPanel />
+            </Example>
         );
     }
 }
