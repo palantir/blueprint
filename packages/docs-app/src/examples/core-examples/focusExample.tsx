@@ -7,13 +7,13 @@
 import * as React from "react";
 
 import { Button, Classes, FocusStyleManager, InputGroup, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IFocusExampleState {
     isFocusActive?: boolean;
 }
 
-export class FocusExample extends BaseExample<IFocusExampleState> {
+export class FocusExample extends React.PureComponent<IExampleProps, IFocusExampleState> {
     public state = {
         isFocusActive: true,
     };
@@ -27,26 +27,16 @@ export class FocusExample extends BaseExample<IFocusExampleState> {
         this.setState({ isFocusActive: FocusStyleManager.isActive() });
     });
 
-    protected renderExample() {
+    public render() {
+        const options = (
+            <Switch checked={this.state.isFocusActive} label="Only show focus on tab" onChange={this.toggleFocus} />
+        );
         return (
-            <div>
+            <Example options={options} {...this.props}>
                 <InputGroup leftIcon="star" placeholder="Test me for focus" />
                 <br />
                 <Button className={Classes.FILL} text="Test me for focus" />
-            </div>
+            </Example>
         );
-    }
-
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.isFocusActive}
-                    label="Only show focus on tab"
-                    key="focus"
-                    onChange={this.toggleFocus}
-                />,
-            ],
-        ];
     }
 }

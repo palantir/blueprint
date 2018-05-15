@@ -7,13 +7,13 @@
 import * as React from "react";
 
 import { Classes, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
-export class MenuExample extends BaseExample<{}> {
+export class MenuExample extends React.PureComponent<IExampleProps, {}> {
     public className = "docs-menu-example";
-    protected renderExample() {
+    public render() {
         return (
-            <div>
+            <Example options={false} {...this.props}>
                 <Menu className={Classes.ELEVATION_1}>
                     <MenuItem icon={<PalantirLogo />} text="Custom SVG icon" />
                     <MenuDivider />
@@ -56,7 +56,7 @@ export class MenuExample extends BaseExample<{}> {
                         </MenuItem>
                     </MenuItem>
                 </Menu>
-            </div>
+            </Example>
         );
     }
 }
