@@ -66,7 +66,7 @@ export class CellLoadingExample extends React.PureComponent<IExampleProps, ICell
             />
         );
         return (
-            <Example options={options} {...this.props}>
+            <Example options={options} showOptionsBelowExample={true} {...this.props}>
                 <Table
                     numRows={bigSpaceRocks.length}
                     rowHeaderCellRenderer={this.renderRowHeaderCell}

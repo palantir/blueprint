@@ -30,7 +30,7 @@ export class ColumnLoadingExample extends React.PureComponent<IExampleProps, ICo
 
     public render() {
         return (
-            <Example options={this.renderOptions()} {...this.props}>
+            <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
                 <Table numRows={bigSpaceRocks.length}>{this.renderColumns()}</Table>
             </Example>
         );

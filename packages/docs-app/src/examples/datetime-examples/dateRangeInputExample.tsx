@@ -4,9 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, IPopoverProps, Switch } from "@blueprintjs/core";
+import { Classes, IPopoverProps, Label, Switch } from "@blueprintjs/core";
 import { DateRange, DateRangeInput, IDateFormatProps } from "@blueprintjs/datetime";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
@@ -18,14 +18,13 @@ export interface IDateRangeInputExampleState {
     contiguousCalendarMonths: boolean;
     disabled: boolean;
     format: IDateFormatProps;
+    isPopoverOpen: boolean;
     range: DateRange;
     reverseMonthAndYearMenus: boolean;
     selectAllOnFocus: boolean;
-
-    isPopoverOpen: boolean;
 }
 
-export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleState> {
+export class DateRangeInputExample extends React.PureComponent<IExampleProps, IDateRangeInputExampleState> {
     public state: IDateRangeInputExampleState = {
         allowSingleDayRange: false,
         closeOnSelection: false,
@@ -54,10 +53,10 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
     private toggleSelectAllOnFocus = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
 
-    protected renderExample() {
+    public render() {
         const { format, range, ...spreadProps } = this.state;
         return (
-            <div className="docs-datetime-example">
+            <Example options={this.renderOptions()} {...this.props}>
                 <DateRangeInput
                     {...spreadProps}
                     {...format}
@@ -65,50 +64,43 @@ export class DateRangeInputExample extends BaseExample<IDateRangeInputExampleSta
                     popoverProps={this.popoverProps}
                 />
                 <MomentDateRange className={this.state.isPopoverOpen ? Classes.INLINE : ""} range={range} />
-            </div>
+            </Example>
         );
     }
 
     protected renderOptions() {
-        return [
-            [
-                <label className={Classes.LABEL} key="modifierslabel">
-                    Modifiers
-                </label>,
+        return (
+            <>
+                <Label text="Modifiers" />
                 <Switch
                     checked={this.state.allowSingleDayRange}
                     label="Allow single day range"
-                    key="Allow single day range"
                     onChange={this.toggleSingleDay}
-                />,
+                />
                 <Switch
                     checked={this.state.closeOnSelection}
                     label="Close on selection"
-                    key="Selection"
                     onChange={this.toggleSelection}
-                />,
+                />
                 <Switch
                     checked={this.state.contiguousCalendarMonths}
                     label="Constrain calendar to contiguous months"
-                    key="Constraint calendar to contiguous months"
                     onChange={this.toggleContiguous}
-                />,
-                <Switch checked={this.state.disabled} label="Disabled" key="Disabled" onChange={this.toggleDisabled} />,
+                />
+                <Switch checked={this.state.disabled} label="Disabled" onChange={this.toggleDisabled} />
                 <Switch
                     checked={this.state.selectAllOnFocus}
                     label="Select all on focus"
-                    key="Select all on focus"
                     onChange={this.toggleSelectAllOnFocus}
-                />,
+                />
                 <Switch
                     checked={this.state.reverseMonthAndYearMenus}
                     label="Reverse month and year menus"
-                    key="Reverse month and year menus"
                     onChange={this.toggleReverseMonthAndYearMenus}
-                />,
-            ],
-            [<FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />],
-        ];
+                />
+                <FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />
+            </>
+        );
     }
 
     private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });

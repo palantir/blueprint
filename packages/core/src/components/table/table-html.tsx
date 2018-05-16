@@ -5,7 +5,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 import { HTML_TABLE, HTML_TABLE_BORDERED, HTML_TABLE_STRIPED, INTERACTIVE, SMALL } from "../../common/classes";
 import { IElementRefProps } from "../html/html";
 
