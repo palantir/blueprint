@@ -7,7 +7,7 @@
     "bundle": "run-s bundle:webpack",
     "bundle:webpack": "webpack --config ./webpack.config.js",
     "clean": "rm -rf dist/*",
-    "dev": "webpack-dev-server --config ./webpack.config.js",
+    "dev": "webpack-dev-server --config ./webpack.config.js --host 0.0.0.0",
     "dist": "NODE_ENV=production yarn bundle",
     "lint": "run-p lint:stylelint lint:tslint",
     "lint:stylelint": "stylelint -s scss 'src/**/*.scss'",
@@ -44,7 +44,7 @@
     "stylelint": "^8.2.0",
     "tslint": "^5.8.0",
     "webpack": "^3.9.1",
-    "webpack-dev-server": "^2.9.5"
+    "webpack-dev-server": "^2.11.1"
   },
   "repository": {
     "type": "git",
