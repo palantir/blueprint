@@ -6,16 +6,40 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, Classes, Dialog, Intent, Tooltip } from "@blueprintjs/core";
-import { OverlayExample } from "./overlayExample";
+import { AnchorButton, Button, Classes, Code, Dialog, Intent, Switch, Tooltip } from "@blueprintjs/core";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { IBlueprintExampleData } from "../../tags/reactExamples";
 
-export class DialogExample extends OverlayExample {
-    protected renderExample() {
+export interface IDialogExampleState {
+    autoFocus: boolean;
+    canEscapeKeyClose: boolean;
+    canOutsideClickClose: boolean;
+    enforceFocus: boolean;
+    isOpen: boolean;
+    usePortal: boolean;
+}
+export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IDialogExampleState> {
+    public state: IDialogExampleState = {
+        autoFocus: true,
+        canEscapeKeyClose: true,
+        canOutsideClickClose: true,
+        enforceFocus: true,
+        isOpen: false,
+        usePortal: true,
+    };
+
+    private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+    private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
+    private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+    private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
+    private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
+
+    public render() {
         return (
-            <>
+            <Example options={this.renderOptions()} {...this.props}>
                 <Button onClick={this.handleOpen}>Show dialog</Button>
                 <Dialog
-                    className={this.props.themeName}
+                    className={this.props.data.themeName}
                     icon="info-sign"
                     onClose={this.handleClose}
                     title="Palantir Foundry"
@@ -64,14 +88,29 @@ export class DialogExample extends OverlayExample {
                         </div>
                     </div>
                 </Dialog>
+            </Example>
+        );
+    }
+
+    private renderOptions() {
+        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, usePortal } = this.state;
+        return (
+            <>
+                <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
+                <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
+                <Switch checked={usePortal} onChange={this.handleUsePortalChange}>
+                    Use <Code>Portal</Code>
+                </Switch>
+                <Switch
+                    checked={canOutsideClickClose}
+                    label="Click outside to close"
+                    onChange={this.handleOutsideClickChange}
+                />
+                <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
             </>
         );
     }
 
-    protected renderOptions() {
-        const options = super.renderOptions();
-        // delete "hasBackdrop" switch from option controls
-        options[0].splice(-1, 1);
-        return options;
-    }
+    private handleOpen = () => this.setState({ isOpen: true });
+    private handleClose = () => this.setState({ isOpen: false });
 }

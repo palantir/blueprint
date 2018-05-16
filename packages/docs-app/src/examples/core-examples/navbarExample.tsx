@@ -16,42 +16,33 @@ import {
     NavbarHeading,
     Switch,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface INavbarExampleState {
-    alignRight?: boolean;
+    alignRight: boolean;
 }
 
-export class NavbarExample extends BaseExample<INavbarExampleState> {
+export class NavbarExample extends React.PureComponent<IExampleProps, INavbarExampleState> {
     public state: INavbarExampleState = {
         alignRight: false,
     };
 
     private handleAlignRightChange = handleBooleanChange(alignRight => this.setState({ alignRight }));
 
-    protected renderExample() {
+    public render() {
+        const { alignRight } = this.state;
+        const options = <Switch checked={alignRight} label="Align right" onChange={this.handleAlignRightChange} />;
         return (
-            <Navbar>
-                <NavbarGroup align={this.state.alignRight ? Alignment.RIGHT : Alignment.LEFT}>
-                    <NavbarHeading>Blueprint</NavbarHeading>
-                    <NavbarDivider />
-                    <Button className={Classes.MINIMAL} icon="home" text="Home" />
-                    <Button className={Classes.MINIMAL} icon="document" text="Files" />
-                </NavbarGroup>
-            </Navbar>
+            <Example options={options} {...this.props}>
+                <Navbar>
+                    <NavbarGroup align={alignRight ? Alignment.RIGHT : Alignment.LEFT}>
+                        <NavbarHeading>Blueprint</NavbarHeading>
+                        <NavbarDivider />
+                        <Button className={Classes.MINIMAL} icon="home" text="Home" />
+                        <Button className={Classes.MINIMAL} icon="document" text="Files" />
+                    </NavbarGroup>
+                </Navbar>
+            </Example>
         );
-    }
-
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.alignRight}
-                    key="align-right"
-                    label="Align right"
-                    onChange={this.handleAlignRightChange}
-                />,
-            ],
-        ];
     }
 }

@@ -7,18 +7,16 @@
 import * as React from "react";
 
 import { Button, Code, IPopoverProps, Popover, Position, Switch } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
-export interface IPopoverInlineExampleState {
+export interface IPopoverPortalExampleState {
     isOpen: boolean;
 }
 
-export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState> {
-    public state: IPopoverInlineExampleState = {
-        isOpen: false,
+export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPopoverPortalExampleState> {
+    public state: IPopoverPortalExampleState = {
+        isOpen: true,
     };
-
-    protected className = "docs-popover-inline-example";
 
     private scrollContainerLeftRef: HTMLDivElement;
     private scrollContainerRightRef: HTMLDivElement;
@@ -28,19 +26,27 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
     };
 
     public componentDidMount() {
-        this.recenter();
+        requestAnimationFrame(this.recenter);
     }
 
-    protected renderExample() {
+    public render() {
         const { isOpen } = this.state;
+
+        const options = (
+            <>
+                <Switch label="Open" checked={isOpen} onChange={this.handleOpen} />
+                <Button text="Re-center" icon="alignment-vertical-center" onClick={this.recenter} />
+            </>
+        );
+
         return (
-            <div className="docs-popover-inline-example-content">
+            <Example className="docs-popover-portal-example" options={options} {...this.props}>
                 <div
-                    className="docs-popover-inline-example-scroll-container"
+                    className="docs-popover-portal-example-scroll-container"
                     ref={this.refHandlers.scrollContainerLeft}
                     onScroll={this.syncScrollLeft}
                 >
-                    <div className="docs-popover-inline-example-scroll-content">
+                    <div className="docs-popover-portal-example-scroll-content">
                         <Popover
                             {...POPOVER_PROPS}
                             content="I am in a Portal (default)."
@@ -52,27 +58,21 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
                     </div>
                 </div>
                 <div
-                    className="docs-popover-inline-example-scroll-container"
+                    className="docs-popover-portal-example-scroll-container"
                     ref={this.refHandlers.scrollContainerRight}
                     onScroll={this.syncScrollRight}
                 >
-                    <div className="docs-popover-inline-example-scroll-content">
+                    <div className="docs-popover-portal-example-scroll-content">
                         <Popover {...POPOVER_PROPS} content="I am an inline popover." isOpen={isOpen} usePortal={false}>
                             <Code>{`usePortal={false}`}</Code>
                         </Popover>
                     </div>
                 </div>
-            </div>
+                <em style={{ textAlign: "center", width: "100%" }}>
+                    Scroll either container and notice what happens when the <Code>Popover</Code> tries to leave.
+                </em>
+            </Example>
         );
-    }
-
-    protected renderOptions() {
-        return [
-            [
-                <Switch key="open" checked={this.state.isOpen} label="Open" onChange={this.handleOpen} />,
-                <Button key="recenter" text="Re-center" icon="alignment-vertical-center" onClick={this.recenter} />,
-            ],
-        ];
     }
 
     private handleOpen = () => this.setState({ isOpen: !this.state.isOpen });
@@ -106,10 +106,11 @@ export class PopoverInlineExample extends BaseExample<IPopoverInlineExampleState
 }
 
 const POPOVER_PROPS: IPopoverProps = {
+    autoFocus: false,
     enforceFocus: false,
     // not relevant to this example, but required in order for default
     // modifiers to work (e.g. `hide`).
     modifiers: { preventOverflow: { boundariesElement: "window" } },
-    popoverClassName: "docs-popover-inline-example-popover",
+    popoverClassName: "docs-popover-portal-example-popover",
     position: Position.BOTTOM,
 };

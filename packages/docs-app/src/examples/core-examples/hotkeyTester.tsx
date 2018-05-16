@@ -7,22 +7,29 @@
 import * as React from "react";
 
 import { Code, getKeyComboString, KeyCombo } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IHotkeyTesterState {
     combo: string;
 }
 
-export class HotkeyTester extends BaseExample<IHotkeyTesterState> {
+export class HotkeyTester extends React.PureComponent<IExampleProps, IHotkeyTesterState> {
     public state: IHotkeyTesterState = {
         combo: null,
     };
 
-    protected renderExample() {
+    public render() {
         return (
-            <div className="docs-hotkey-tester" onKeyDown={this.handleKeyDown} onBlur={this.handleBlur} tabIndex={0}>
-                {this.renderKeyCombo()}
-            </div>
+            <Example options={false} {...this.props}>
+                <div
+                    className="docs-hotkey-tester"
+                    onKeyDown={this.handleKeyDown}
+                    onBlur={this.handleBlur}
+                    tabIndex={0}
+                >
+                    {this.renderKeyCombo()}
+                </div>
+            </Example>
         );
     }
 

@@ -13,26 +13,26 @@ import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
 import * as TimezoneExamples from "../examples/timezone-examples";
 
+/** Interface for `IExampleProps` `data` in this here Blueprint docs-app. */
+export interface IBlueprintExampleData {
+    /** CSS class of theme, typically `""` or `Classes.DARK`. */
+    themeName: string;
+}
+
 import { getTheme } from "../components/blueprintDocs";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
 
-/** Extend the library type with additional app-specific fields. */
-export interface IBlueprintExampleProps extends IExampleProps {
-    /** CSS theme like `Classes.DARK` */
-    themeName: string;
-}
-
 function getPackageExamples(
     packageName: string,
-    packageExamples: { [name: string]: React.ComponentClass<IBlueprintExampleProps> },
+    packageExamples: { [name: string]: React.ComponentClass<IExampleProps<IBlueprintExampleData>> },
 ) {
     const ret: IExampleMap = {};
     for (const exampleName of Object.keys(packageExamples)) {
         const example = packageExamples[exampleName];
         const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
         ret[exampleName] = {
-            render: props => React.createElement(example, { ...props, themeName: getTheme() }),
+            render: props => React.createElement(example, { ...props, data: { themeName: getTheme() } }),
             sourceUrl: [SRC_HREF_BASE, `${packageName}-examples`, fileName].join("/"),
         };
     }

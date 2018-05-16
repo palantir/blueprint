@@ -8,10 +8,31 @@ import { IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import React from "react";
 
-export interface IExampleProps extends IProps {
+export interface IExampleProps<T = {}> extends IProps {
+    /**
+     * Identifier of this example.
+     * This will appear as the `data-example-id` attribute on the DOM element.
+     */
     id: string;
+
+    /**
+     * Container for arbitary data passed to each example from the parent
+     * application. This prop is ignored by the `<Example>` component; it is
+     * available for your example implementations to access by providing a `<T>`
+     * type to this interface. Pass actual `data` when defining your example map
+     * for the `ReactExampleTagRenderer`.
+     *
+     * A container like this is necessary because unknown props on the
+     * `<Example>` component are passed to its underlying DOM element, so adding
+     * your own props will result in React "unknown prop" warnings.
+     */
+    data?: T;
 }
 
+/**
+ * Props supported by the `Example` component.
+ * Additional props will be spread to the root `<div>` element.
+ */
 export interface IDocsExampleProps extends IExampleProps {
     /**
      * Options for the example, which will typically appear in a narrow column
@@ -70,7 +91,8 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
             return null;
         }
 
-        const { children, className, html, id, options, showOptionsBelowExample = false } = this.props;
+        // spread any additional props through to the root element, to support decorators that expect DOM props
+        const { children, className, data, html, id, options, showOptionsBelowExample, ...htmlProps } = this.props;
         const classes = classNames(
             "docs-example-frame",
             showOptionsBelowExample ? "docs-example-frame-column" : "docs-example-frame-row",
@@ -84,7 +106,7 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
             );
 
         return (
-            <div className={classes} data-example-id={id}>
+            <div className={classes} data-example-id={id} {...htmlProps}>
                 {example}
                 <div className="docs-example-options">{options}</div>
             </div>
