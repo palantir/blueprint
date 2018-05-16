@@ -9,7 +9,7 @@
 import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import {
     Cell,
     Column,
@@ -172,7 +172,7 @@ class RecordSortableColumn extends AbstractSortableColumn {
     }
 }
 
-export class TableSortableExample extends BaseExample<{}> {
+export class TableSortableExample extends React.PureComponent<IExampleProps> {
     public state = {
         columns: [
             new TextSortableColumn("Rikishi", 0),
@@ -193,17 +193,19 @@ export class TableSortableExample extends BaseExample<{}> {
         sortedIndexMap: [] as number[],
     };
 
-    public renderExample() {
+    public render() {
         const numRows = this.state.data.length;
         const columns = this.state.columns.map(col => col.getColumn(this.getCellData, this.sortColumn));
         return (
-            <Table
-                bodyContextMenuRenderer={this.renderBodyContextMenu}
-                numRows={numRows}
-                selectionModes={SelectionModes.COLUMNS_AND_CELLS}
-            >
-                {columns}
-            </Table>
+            <Example options={false} showOptionsBelowExample={true} {...this.props}>
+                <Table
+                    bodyContextMenuRenderer={this.renderBodyContextMenu}
+                    numRows={numRows}
+                    selectionModes={SelectionModes.COLUMNS_AND_CELLS}
+                >
+                    {columns}
+                </Table>
+            </Example>
         );
     }
 

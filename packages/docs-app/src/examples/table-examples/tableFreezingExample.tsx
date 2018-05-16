@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table, Utils } from "@blueprintjs/table";
 
 export interface ITableFreezingExampleState {
@@ -19,12 +19,14 @@ const NUM_COLUMNS = 20;
 const NUM_FROZEN_ROWS = 2;
 const NUM_FROZEN_COLUMNS = 1;
 
-export class TableFreezingExample extends BaseExample<ITableFreezingExampleState> {
-    public renderExample() {
+export class TableFreezingExample extends React.PureComponent<IExampleProps, ITableFreezingExampleState> {
+    public render() {
         return (
-            <Table numRows={NUM_ROWS} numFrozenRows={NUM_FROZEN_ROWS} numFrozenColumns={NUM_FROZEN_COLUMNS}>
-                {this.renderColumns()}
-            </Table>
+            <Example options={false} showOptionsBelowExample={true} {...this.props}>
+                <Table numRows={NUM_ROWS} numFrozenRows={NUM_FROZEN_ROWS} numFrozenColumns={NUM_FROZEN_COLUMNS}>
+                    {this.renderColumns()}
+                </Table>
+            </Example>
         );
     }
 
