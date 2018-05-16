@@ -33,6 +33,7 @@ $dark-options-background-color: $dark-gray5;
   // option elements arranged vertically. use headings for grouping.
   .docs-example-options {
     @include pt-flex-container(column, $pt-grid-size);
+    margin-left: $pt-grid-size;
     max-width: $pt-grid-size * 30;
   }
 }
@@ -46,7 +47,6 @@ $dark-options-background-color: $dark-gray5;
     @include pt-flex-container(row, $pt-grid-size * 4);
     justify-content: center;
     margin-top: $pt-grid-size;
-    margin-left: 0;
     max-width: unset;
   }
 }
@@ -75,7 +75,6 @@ $dark-options-background-color: $dark-gray5;
 
 .docs-example-options {
   flex: 0 0 auto;
-  margin-left: $pt-grid-size;
   border-radius: $example-frame-border-radius;
   background-color: $options-background-color;
   padding: $pt-grid-size * 2;
