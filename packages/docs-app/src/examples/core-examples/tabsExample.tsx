@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Alignment, Classes, H1, H3, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
+import { Alignment, Classes, H3, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITabsExampleState {
