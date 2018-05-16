@@ -5,6 +5,7 @@
  */
 
 import { Classes, Intent } from "@blueprintjs/core";
+import classNames from "classnames";
 import * as React from "react";
 
 const INTENTS = [
@@ -16,12 +17,13 @@ const INTENTS = [
 ];
 
 export interface IIntentSelectProps {
+    inline?: boolean;
     intent: Intent;
     onChange: React.FormEventHandler<HTMLSelectElement>;
 }
 
 export const IntentSelect: React.SFC<IIntentSelectProps> = props => (
-    <label className={Classes.LABEL}>
+    <label className={classNames(Classes.LABEL, { [Classes.INLINE]: props.inline })}>
         Intent
         <div className={Classes.SELECT}>
             <select value={props.intent} onChange={props.onChange}>

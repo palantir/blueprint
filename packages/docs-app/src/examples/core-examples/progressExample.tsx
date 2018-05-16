@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
+import { H5, Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -31,7 +31,9 @@ export class ProgressExample extends React.PureComponent<IExampleProps, IProgres
 
         const options = (
             <>
-                <Switch checked={hasValue} label="Known Value" onChange={this.handleIndeterminateChange} />
+                <H5>Props</H5>
+                <IntentSelect intent={intent} onChange={this.handleModifierChange} />
+                <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
                 <Slider
                     disabled={!hasValue}
                     labelStepSize={1}
@@ -43,7 +45,6 @@ export class ProgressExample extends React.PureComponent<IExampleProps, IProgres
                     showTrackFill={false}
                     value={value}
                 />
-                <IntentSelect intent={intent} onChange={this.handleModifierChange} />
             </>
         );
 

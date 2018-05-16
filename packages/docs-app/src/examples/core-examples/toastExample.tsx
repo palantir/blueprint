@@ -10,6 +10,7 @@ import * as React from "react";
 import {
     Button,
     Classes,
+    H5,
     Intent,
     IToasterProps,
     IToastProps,
@@ -109,7 +110,8 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         const { autoFocus, canEscapeKeyClear, position } = this.state;
         return (
             <>
-                <Label text="Toast position">
+                <H5>Props</H5>
+                <Label text="Position">
                     <div className={Classes.SELECT}>
                         <select value={position.toString()} onChange={this.handlePositionChange}>
                             <option value={Position.TOP_LEFT.toString()}>Top left</option>

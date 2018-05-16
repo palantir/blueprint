@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Alignment, AnchorButton, Button, ButtonGroup, Switch } from "@blueprintjs/core";
+import { Alignment, AnchorButton, Button, ButtonGroup, H5, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
@@ -39,12 +39,14 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
         const { iconOnly, ...bgProps } = this.state;
         const options = (
             <>
+                <H5>Props</H5>
                 <Switch checked={this.state.fill} label="Fill" onChange={this.handleFillChange} />
                 <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
                 <Switch checked={this.state.minimal} label="Minimal" onChange={this.handleMinimalChange} />
                 <Switch checked={this.state.vertical} label="Vertical" onChange={this.handleVerticalChange} />
-                <Switch checked={this.state.iconOnly} label="Icons only" onChange={this.handleIconOnlyChange} />
                 <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />
+                <H5>Example</H5>
+                <Switch checked={this.state.iconOnly} label="Icons only" onChange={this.handleIconOnlyChange} />
             </>
         );
         // have the container take up the full-width if `fill` is true;

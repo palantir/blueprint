@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Alignment, Button, ButtonGroup, IconName, Intent, Popover, Position, Switch } from "@blueprintjs/core";
+import { Alignment, Button, ButtonGroup, H5, IconName, Intent, Popover, Position, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
@@ -38,10 +38,12 @@ export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps
         const { intent, ...bgProps } = this.state;
         const options = (
             <>
+                <H5>Props</H5>
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Vertical" checked={this.state.vertical} onChange={this.handleVerticalChange} />
                 <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />
+                <H5>Button props</H5>
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
             </>
         );

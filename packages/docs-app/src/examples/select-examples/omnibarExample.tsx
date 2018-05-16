@@ -8,6 +8,7 @@ import * as React from "react";
 
 import {
     Button,
+    H5,
     Hotkey,
     Hotkeys,
     HotkeysTarget,
@@ -58,7 +59,10 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
 
     public render() {
         const options = (
-            <Switch label="Reset on select" checked={this.state.resetOnSelect} onChange={this.handleResetChange} />
+            <>
+                <H5>Props</H5>
+                <Switch label="Reset on select" checked={this.state.resetOnSelect} onChange={this.handleResetChange} />
+            </>
         );
 
         return (

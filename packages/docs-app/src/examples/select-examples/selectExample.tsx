@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, MenuItem, Switch } from "@blueprintjs/core";
+import { Button, H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
 import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
@@ -70,6 +70,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
     protected renderOptions() {
         return (
             <>
+                <H5>Props</H5>
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
                 <Switch label="Filterable" checked={this.state.filterable} onChange={this.handleFilterableChange} />
                 <Switch
@@ -83,14 +84,15 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     onChange={this.handleResetOnSelectChange}
                 />
                 <Switch
-                    label="Minimal popover style"
-                    checked={this.state.minimal}
-                    onChange={this.handleMinimalChange}
-                />
-                <Switch
                     label="Use initial content"
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
+                />
+                <H5>Example</H5>
+                <Switch
+                    label="Minimal popover style"
+                    checked={this.state.minimal}
+                    onChange={this.handleMinimalChange}
                 />
             </>
         );

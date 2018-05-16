@@ -23,14 +23,16 @@ export class CardExample extends React.PureComponent<IExampleProps, ICardExample
     public render() {
         const options = (
             <>
-                <Label text="Elevation" />
-                <Slider
-                    max={4}
-                    showTrackFill={false}
-                    value={this.state.elevation}
-                    onChange={this.handleElevationChange}
-                />
+                <H5>Props</H5>
                 <Switch checked={this.state.interactive} label="Interactive" onChange={this.handleInteractiveChange} />
+                <Label text="Elevation">
+                    <Slider
+                        max={4}
+                        showTrackFill={false}
+                        value={this.state.elevation}
+                        onChange={this.handleElevationChange}
+                    />
+                </Label>
             </>
         );
 

@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Intent, Switch, Tag } from "@blueprintjs/core";
+import { Button, H5, Intent, Switch, Tag } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IntentSelect } from "./common/intentSelect";
 
@@ -56,11 +56,13 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
         const { intent, interactive, large, minimal, removable } = this.state;
         return (
             <>
+                <H5>Props</H5>
                 <Switch label="Large" checked={large} onChange={this.handleLargeChange} />
                 <Switch label="Minimal" checked={minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Interactive" checked={interactive} onChange={this.handleInteractiveChange} />
                 <Switch label="Removable" checked={removable} onChange={this.handleRemovableChange} />
                 <IntentSelect intent={intent} onChange={this.handleIntentChange} />
+                <H5>Example</H5>
                 <Button icon="refresh" text="Reset tags" onClick={this.resetTags} />
             </>
         );

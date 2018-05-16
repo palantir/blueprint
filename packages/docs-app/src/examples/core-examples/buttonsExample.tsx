@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, Code, Intent, Switch } from "@blueprintjs/core";
+import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -53,12 +53,14 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
 
         const options = (
             <>
+                <H5>Props</H5>
                 <Switch label="Active" checked={this.state.active} onChange={this.handleActiveChange} />
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Loading" checked={this.state.loading} onChange={this.handleLoadingChange} />
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
+                <H5>Example</H5>
                 <Switch label="Icons only" checked={this.state.iconOnly} onChange={this.handleIconOnlyChange} />
             </>
         );

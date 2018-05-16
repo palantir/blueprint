@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, InputGroup, NonIdealState, Switch } from "@blueprintjs/core";
+import { Classes, H5, InputGroup, NonIdealState, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface INonIdealStateExampleState {
@@ -29,6 +29,7 @@ export class NonIdealStateExample extends React.PureComponent<IExampleProps, INo
     public render() {
         const options = (
             <>
+                <H5>Props</H5>
                 <Switch label="Show icon" checked={this.state.icon} onChange={this.toggleIcon} />
                 <Switch label="Show description" checked={this.state.description} onChange={this.toggleDescription} />
                 <Switch label="Show action" checked={this.state.action} onChange={this.toggleAction} />

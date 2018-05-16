@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, Intent, Label, Slider, Spinner, Switch } from "@blueprintjs/core";
+import { Classes, H5, Intent, Label, Slider, Spinner, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IntentSelect } from "./common/intentSelect";
 
@@ -52,7 +52,16 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
         const { size, hasValue, intent, value } = this.state;
         return (
             <>
-                <Switch checked={hasValue} label="Known Value" onChange={this.handleIndeterminateChange} />
+                <H5>Props</H5>
+                <IntentSelect intent={intent} onChange={this.handleModifierChange} />
+                <Label text="Size">
+                    <div className={Classes.SELECT}>
+                        <select value={size} onChange={this.handleSizeChange}>
+                            {SIZES.map((opt, i) => <option key={i} {...opt} />)}
+                        </select>
+                    </div>
+                </Label>
+                <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
                 <Slider
                     disabled={!hasValue}
                     labelStepSize={1}
@@ -64,14 +73,6 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                     showTrackFill={false}
                     value={value}
                 />
-                <IntentSelect intent={intent} onChange={this.handleModifierChange} />
-                <Label text="Size">
-                    <div className={Classes.SELECT}>
-                        <select value={size} onChange={this.handleSizeChange}>
-                            {SIZES.map((opt, i) => <option key={i} {...opt} />)}
-                        </select>
-                    </div>
-                </Label>
             </>
         );
     }
