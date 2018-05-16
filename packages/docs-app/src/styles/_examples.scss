@@ -424,18 +424,11 @@
 // DATETIME
 //
 
-.docs-datetime-example {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  > :last-child:not(:first-child) {
-    // space above date tags, if present
-    margin-top: $pt-grid-size * 2;
-  }
-
-  .#{$ns}-icon-arrow-right {
-    margin: 0 ($pt-grid-size / 2);
+// all datetime examples show component followed by date tags, so arrange them in a nice column
+#{page("datetime", "^=")} {
+  .docs-example {
+    flex-direction: column;
+    justify-content: center;
   }
 }
 
