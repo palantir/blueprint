@@ -8,6 +8,7 @@ import * as React from "react";
 
 import { AnchorButton, Button, Classes, Code, Dialog, Intent, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 export interface IDialogExampleState {
     autoFocus: boolean;
@@ -17,7 +18,7 @@ export interface IDialogExampleState {
     isOpen: boolean;
     usePortal: boolean;
 }
-export class DialogExample extends React.PureComponent<IExampleProps, IDialogExampleState> {
+export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IDialogExampleState> {
     public state: IDialogExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,

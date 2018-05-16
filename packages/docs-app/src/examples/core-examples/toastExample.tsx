@@ -21,10 +21,11 @@ import {
     ToasterPosition,
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 type IToastDemo = IToastProps & { button: string };
 
-export class ToastExample extends React.PureComponent<IExampleProps, IToasterProps> {
+export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IToasterProps> {
     public state: IToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
