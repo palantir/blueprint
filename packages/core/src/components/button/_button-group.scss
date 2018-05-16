@@ -9,29 +9,31 @@
 Button groups
 
 Markup:
-<div class="#{$ns}-button-group {{.modifier}}">
-  <a class="#{$ns}-button #{$ns}-icon-database" tabindex="0" role="button">Queries</a>
-  <a class="#{$ns}-button #{$ns}-icon-function" tabindex="0" role="button">Functions</a>
-  <a class="#{$ns}-button" tabindex="0" role="button">
-    Options <span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
-  </a>
-</div>
-<br /><br />
-<div class="#{$ns}-button-group {{.modifier}}">
-  <a class="#{$ns}-button #{$ns}-icon-chart" tabindex="0" role="button"></a>
-  <a class="#{$ns}-button #{$ns}-icon-control" tabindex="0" role="button"></a>
-  <a class="#{$ns}-button #{$ns}-icon-graph" tabindex="0" role="button"></a>
-  <a class="#{$ns}-button #{$ns}-icon-camera" tabindex="0" role="button"></a>
-  <a class="#{$ns}-button #{$ns}-icon-map" tabindex="0" role="button"></a>
-  <a class="#{$ns}-button #{$ns}-icon-code" tabindex="0" role="button"></a>
-  <a class="#{$ns}-button #{$ns}-icon-th" tabindex="0" role="button"></a>
-  <a class="#{$ns}-button #{$ns}-icon-time" tabindex="0" role="button"></a>
-  <a class="#{$ns}-button #{$ns}-icon-compressed" tabindex="0" role="button"></a>
-</div>
-<br /><br />
-<div class="#{$ns}-button-group {{.modifier}}">
-  <button type="button" class="#{$ns}-button #{$ns}-intent-success">Save</button>
-  <button type="button" class="#{$ns}-button #{$ns}-intent-success #{$ns}-icon-caret-down"></button>
+<div>
+  <div class="#{$ns}-button-group {{.modifier}}">
+    <a class="#{$ns}-button #{$ns}-icon-database" tabindex="0" role="button">Queries</a>
+    <a class="#{$ns}-button #{$ns}-icon-function" tabindex="0" role="button">Functions</a>
+    <a class="#{$ns}-button" tabindex="0" role="button">
+      Options <span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
+    </a>
+  </div>
+  <br /><br /><br />
+  <div class="#{$ns}-button-group {{.modifier}}">
+    <a class="#{$ns}-button #{$ns}-icon-chart" tabindex="0" role="button"></a>
+    <a class="#{$ns}-button #{$ns}-icon-control" tabindex="0" role="button"></a>
+    <a class="#{$ns}-button #{$ns}-icon-graph" tabindex="0" role="button"></a>
+    <a class="#{$ns}-button #{$ns}-icon-camera" tabindex="0" role="button"></a>
+    <a class="#{$ns}-button #{$ns}-icon-map" tabindex="0" role="button"></a>
+    <a class="#{$ns}-button #{$ns}-icon-code" tabindex="0" role="button"></a>
+    <a class="#{$ns}-button #{$ns}-icon-th" tabindex="0" role="button"></a>
+    <a class="#{$ns}-button #{$ns}-icon-time" tabindex="0" role="button"></a>
+    <a class="#{$ns}-button #{$ns}-icon-compressed" tabindex="0" role="button"></a>
+  </div>
+  <br /><br /><br />
+  <div class="#{$ns}-button-group {{.modifier}}">
+    <button type="button" class="#{$ns}-button #{$ns}-intent-success">Save</button>
+    <button type="button" class="#{$ns}-button #{$ns}-intent-success #{$ns}-icon-caret-down"></button>
+  </div>
 </div>
 
 .#{$ns}-large - Use large buttons

@@ -6,7 +6,7 @@
 
 import { Position, Switch } from "@blueprintjs/core";
 import { DateInput, IDateFormatProps, TimePrecision } from "@blueprintjs/datetime";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
@@ -22,7 +22,7 @@ export interface IDateInputExampleState {
     timePrecision: TimePrecision | undefined;
 }
 
-export class DateInputExample extends BaseExample<IDateInputExampleState> {
+export class DateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
     public state: IDateInputExampleState = {
         closeOnSelection: true,
         date: null,
@@ -34,17 +34,15 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
-    private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
-        this.setState({ reverseMonthAndYearMenus }),
-    );
+    private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
     private toggleTimePrecision = handleStringChange((timePrecision: TimePrecision) =>
         this.setState({ timePrecision }),
     );
 
-    protected renderExample() {
+    public render() {
         const { date, format, ...spreadProps } = this.state;
         return (
-            <>
+            <Example options={this.renderOptions()} {...this.props}>
                 <DateInput
                     {...spreadProps}
                     {...format}
@@ -52,41 +50,27 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     onChange={this.handleDateChange}
                     popoverProps={{ position: Position.BOTTOM }}
                 />
-                <div className="docs-date-range">
-                    <MomentDate date={date} />
-                </div>
-            </>
+                <MomentDate date={date} />
+            </Example>
         );
     }
 
     protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.closeOnSelection}
-                    label="Close on selection"
-                    key="Selection"
-                    onChange={this.toggleSelection}
-                />,
-                <Switch checked={this.state.disabled} label="Disabled" key="Disabled" onChange={this.toggleDisabled} />,
-                <Switch
-                    checked={this.state.reverseMonthAndYearMenus}
-                    label="Reverse month and year menus"
-                    key="Reverse month and year menus"
-                    onChange={this.toggleReverseMonthAndYearMenus}
-                />,
-            ],
-            [<FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />],
-            [
+        const { closeOnSelection, disabled, reverseMonthAndYearMenus: reverse, format, timePrecision } = this.state;
+        return (
+            <>
+                <Switch label="Close on selection" checked={closeOnSelection} onChange={this.toggleSelection} />
+                <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
+                <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
+                <FormatSelect format={format} onChange={this.handleFormatChange} />
                 <PrecisionSelect
                     label="Time Precision"
-                    key="precision"
                     allowEmpty={true}
-                    value={this.state.timePrecision}
+                    value={timePrecision}
                     onChange={this.toggleTimePrecision}
-                />,
-            ],
-        ];
+                />
+            </>
+        );
     }
 
     private handleDateChange = (date: Date | null) => this.setState({ date });

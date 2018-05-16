@@ -17,7 +17,7 @@ import {
     Switch,
     Toaster,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 import { filmSelectProps, IFilm } from "./films";
 
@@ -29,7 +29,7 @@ export interface IOmnibarExampleState {
 }
 
 @HotkeysTarget
-export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
+export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarExampleState> {
     public state: IOmnibarExampleState = {
         isOpen: false,
         resetOnSelect: true,
@@ -56,9 +56,19 @@ export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
         );
     }
 
-    protected renderExample() {
+    public render() {
+        const options = (
+            <Switch label="Reset on select" checked={this.state.resetOnSelect} onChange={this.handleResetChange} />
+        );
+
         return (
-            <div>
+            <Example options={options} {...this.props}>
+                <span>
+                    <Button text="Click to show Omnibar" onClick={this.handleClick} />
+                    {" or press "}
+                    <KeyCombo combo="meta + k" />
+                </span>
+
                 <FilmOmnibar
                     {...filmSelectProps}
                     {...this.state}
@@ -68,26 +78,8 @@ export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
                     inputProps={{ onBlur: this.handleBlur }}
                 />
                 <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
-                <span>
-                    <Button text="Click to show Omnibar" onClick={this.handleClick} />
-                    {" or press "}
-                    <KeyCombo combo="meta + k" />
-                </span>
-            </div>
+            </Example>
         );
-    }
-
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    key="reset"
-                    label="Reset on select"
-                    checked={this.state.resetOnSelect}
-                    onChange={this.handleResetChange}
-                />,
-            ],
-        ];
     }
 
     private handleClick = (_event: React.MouseEvent<HTMLElement>) => {

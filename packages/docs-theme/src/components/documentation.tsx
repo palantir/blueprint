@@ -128,9 +128,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         return {
             getDocsData: () => docs,
             renderBlock: block => renderBlock(block, this.props.tagRenderers),
-            renderType: hasTypescriptData(docs)
-                ? type => linkify(type, docs.typescript, name => <ApiLink key={name} name={name} />)
-                : type => type,
+            renderType: this.renderType,
             renderViewSourceLinkText: Utils.isFunction(renderViewSourceLinkText)
                 ? renderViewSourceLinkText
                 : () => "View source",
@@ -237,6 +235,14 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
 
         Utils.safeInvoke(this.props.onComponentUpdate, activePageId);
     }
+
+    private renderType = (type: string) => {
+        const { docs } = this.props;
+        let index = 0;
+        return hasTypescriptData(docs)
+            ? linkify(type, docs.typescript, name => <ApiLink key={`${name}-${index++}`} name={name} />)
+            : type;
+    };
 
     private updateHash() {
         // update state based on current hash location

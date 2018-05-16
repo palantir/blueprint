@@ -80,7 +80,7 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
         const classes = classNames(Classes.ICON, Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
-        // ".pt-icon" will apply a "fill" CSS style, so we need to inject an inline style to override it
+        // ICON class will apply a "fill" CSS style, so we need to inject an inline style to override it
         let { style = {} } = this.props;
         if (color != null) {
             style = { ...style, fill: color };

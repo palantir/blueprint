@@ -4,18 +4,18 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import PopperJS from "popper.js";
 import * as React from "react";
 
 import {
+    AnchorButton,
     Button,
     Classes,
     Code,
     FormGroup,
     H5,
-    Icon,
     Intent,
+    Label,
     Menu,
     MenuDivider,
     MenuItem,
@@ -26,7 +26,13 @@ import {
     Slider,
     Switch,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    handleBooleanChange,
+    handleNumberChange,
+    handleStringChange,
+    IExampleProps,
+} from "@blueprintjs/docs-theme";
 
 const INTERACTION_KINDS = [
     { label: "Click", value: PopoverInteractionKind.CLICK.toString() },
@@ -69,7 +75,7 @@ export interface IPopoverExampleState {
     usePortal?: boolean;
 }
 
-export class PopoverExample extends BaseExample<IPopoverExampleState> {
+export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverExampleState> {
     public state: IPopoverExampleState = {
         canEscapeKeyClose: true,
         exampleIndex: 0,
@@ -88,8 +94,6 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         sliderValue: 5,
         usePortal: true,
     };
-
-    protected className = "docs-popover-example";
 
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
     private handleInteractionChange = handleStringChange((interactionKind: PopoverInteractionKind) => {
@@ -119,39 +123,37 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         this.setState({ usePortal });
     });
 
-    protected renderExample() {
+    public render() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
-        const popoverClassName = classNames(this.className, {
-            [Classes.POPOVER_CONTENT_SIZING]: exampleIndex <= 2,
-        });
         return (
-            <div className="docs-popover-example-scroll" ref={this.centerScroll}>
-                <Popover
-                    popoverClassName={popoverClassName}
-                    portalClassName="foo"
-                    {...popoverProps}
-                    enforceFocus={false}
-                    isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
-                >
-                    <Button intent={Intent.PRIMARY} text="Popover target" />
-                    {this.getContents(exampleIndex)}
-                </Popover>
-                <p>
-                    Scroll around this container to experiment<br />
-                    with <Code>flip</Code> and <Code>preventOverflow</Code> modifiers.
-                </p>
-            </div>
+            <Example options={this.renderOptions()} {...this.props}>
+                <div className="docs-popover-example-scroll" ref={this.centerScroll}>
+                    <Popover
+                        popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
+                        portalClassName="foo"
+                        {...popoverProps}
+                        enforceFocus={false}
+                        isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
+                    >
+                        <Button intent={Intent.PRIMARY} text="Popover target" />
+                        {this.getContents(exampleIndex)}
+                    </Popover>
+                    <p>
+                        Scroll around this container to experiment<br />
+                        with <Code>flip</Code> and <Code>preventOverflow</Code> modifiers.
+                    </p>
+                </div>
+            </Example>
         );
     }
 
-    protected renderOptions() {
+    private renderOptions() {
         const { arrow, flip, preventOverflow } = this.state.modifiers;
-        return [
-            [
-                <H5 key="app">Appearance</H5>,
+        return (
+            <>
+                <H5>Appearance</H5>
                 <FormGroup
                     helperText="May be overridden to prevent overflow"
-                    key="position"
                     label="Position when opened"
                     labelFor="position"
                 >
@@ -160,71 +162,43 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                             {POSITION_OPTIONS}
                         </select>
                     </div>
-                </FormGroup>,
-                <label className={Classes.LABEL} key="example">
-                    Example content
+                </FormGroup>
+                <Label text="Example content">
                     <div className={Classes.SELECT}>
                         <select value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
                             <option value="0">Text</option>
                             <option value="1">Input</option>
                             <option value="2">Slider</option>
                             <option value="3">Menu</option>
-                            <option value="4">Popover Example</option>
-                            <option value="5">Empty</option>
+                            <option value="4">Empty</option>
                         </select>
                     </div>
-                </label>,
-                <Switch checked={this.state.usePortal} key="portal" onChange={this.toggleUsePortal}>
+                </Label>
+                <Switch checked={this.state.usePortal} onChange={this.toggleUsePortal}>
                     Use <Code>Portal</Code>
-                </Switch>,
-                <Switch
-                    checked={this.state.minimal}
-                    label="Minimal appearance"
-                    key="minimal"
-                    onChange={this.toggleMinimal}
-                />,
-                <Switch
-                    checked={this.state.isOpen}
-                    label="Open (controlled mode)"
-                    key="open"
-                    onChange={this.toggleIsOpen}
-                />,
-            ],
-            [
-                <H5 key="int">Interactions</H5>,
+                </Switch>
+                <Switch checked={this.state.minimal} label="Minimal appearance" onChange={this.toggleMinimal} />
+                <Switch checked={this.state.isOpen} label="Open (controlled mode)" onChange={this.toggleIsOpen} />
+
+                <H5>Interactions</H5>
                 <RadioGroup
-                    key="interaction"
                     label="Interaction kind"
                     selectedValue={this.state.interactionKind.toString()}
                     options={INTERACTION_KINDS}
                     onChange={this.handleInteractionChange}
-                />,
+                />
                 <Switch
                     checked={this.state.canEscapeKeyClose}
                     label="Can escape key close"
-                    key="escape"
                     onChange={this.toggleEscapeKey}
-                />,
-                <br key="break" />,
-            ],
-            [
-                <H5 key="mod">Modifiers</H5>,
-                <Switch
-                    checked={arrow.enabled}
-                    label="Arrow"
-                    key="arrow"
-                    onChange={this.getModifierChangeHandler("arrow")}
-                />,
-                <Switch
-                    checked={flip.enabled}
-                    label="Flip"
-                    key="flip"
-                    onChange={this.getModifierChangeHandler("flip")}
-                />,
+                />
+
+                <H5>Modifiers</H5>
+                <Switch checked={arrow.enabled} label="Arrow" onChange={this.getModifierChangeHandler("arrow")} />
+                <Switch checked={flip.enabled} label="Flip" onChange={this.getModifierChangeHandler("flip")} />
                 <Switch
                     checked={preventOverflow.enabled}
                     label="Prevent overflow"
-                    key="preventOverflow"
                     onChange={this.getModifierChangeHandler("preventOverflow")}
                 >
                     <br />
@@ -239,17 +213,25 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                             <option value="window">window</option>
                         </select>
                     </div>
-                </Switch>,
-                <p key="docs-link">
-                    <a href={POPPER_DOCS} target="_blank">
-                        Popper.js docs <Icon icon="share" />
-                    </a>
-                </p>,
-            ],
-        ];
+                </Switch>
+                <Label text={undefined}>
+                    <AnchorButton
+                        href={POPPER_DOCS}
+                        fill={true}
+                        intent={Intent.PRIMARY}
+                        minimal={true}
+                        rightIcon="share"
+                        target="_blank"
+                        style={{ marginTop: 20 }}
+                    >
+                        Visit Popper.js docs
+                    </AnchorButton>
+                </Label>
+            </>
+        );
     }
 
-    private getContents(index: number) {
+    private getContents(index: number): JSX.Element {
         return [
             <div key="text">
                 <H5>Confirm deletion</H5>
@@ -288,7 +270,6 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     <MenuItem icon="underline" text="Underline" />
                 </MenuItem>
             </Menu>,
-            <PopoverExample key="popoverexample" {...this.props} />,
         ][index];
     }
 

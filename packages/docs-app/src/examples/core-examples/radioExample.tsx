@@ -7,29 +7,31 @@
 import * as React from "react";
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
-import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IRadioExampleState {
     radioValue?: string;
 }
 
-export class RadioExample extends BaseExample<IRadioExampleState> {
+export class RadioExample extends React.PureComponent<IExampleProps, IRadioExampleState> {
     public state: IRadioExampleState = {};
 
     private handleRadioChange = handleStringChange(radioValue => this.setState({ radioValue }));
 
-    protected renderExample() {
+    public render() {
         return (
-            <RadioGroup
-                label="Determine lunch"
-                name="group"
-                onChange={this.handleRadioChange}
-                selectedValue={this.state.radioValue}
-            >
-                <Radio label="Soup" value="one" />
-                <Radio label="Salad" value="two" />
-                <Radio label="Sandwich" value="three" />
-            </RadioGroup>
+            <Example options={false} {...this.props}>
+                <RadioGroup
+                    label="Determine lunch"
+                    name="group"
+                    onChange={this.handleRadioChange}
+                    selectedValue={this.state.radioValue}
+                >
+                    <Radio label="Soup" value="one" />
+                    <Radio label="Salad" value="two" />
+                    <Radio label="Sandwich" value="three" />
+                </RadioGroup>
+            </Example>
         );
     }
 }

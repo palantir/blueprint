@@ -1,6 +1,6 @@
 {
   "name": "test-react15",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React 15 dependencies for testing",
   "private": true,
   "dependencies": {

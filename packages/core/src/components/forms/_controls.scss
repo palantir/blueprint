@@ -265,7 +265,7 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       background: $switch-background-color;
       width: $switch-width;
       height: $switch-height;
-      transition: background $pt-transition-duration $pt-transition-ease;
+      transition: background-color $pt-transition-duration $pt-transition-ease;
 
       &::before {
         display: block;
@@ -281,6 +281,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         content: "";
         transition: left $pt-transition-duration $pt-transition-ease;
       }
+    }
+
+    &.#{$ns}-align-right {
+      padding-right: $switch-width + $pt-grid-size;
+      padding-left: 0;
     }
 
     input:checked ~ .#{$ns}-control-indicator {
@@ -361,6 +366,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       font-size: $control-indicator-size-large;
     }
 
+    &.#{$ns}-align-right {
+      padding-right: $control-indicator-size-large + $pt-grid-size;
+      padding-left: 0;
+    }
+
     &.#{$ns}-checkbox input:checked ~ .#{$ns}-control-indicator::before {
       top: 1px;
     }
@@ -389,6 +399,11 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         &::before {
           left: $switch-width-large - $switch-height-large + $switch-indicator-margin;
         }
+      }
+
+      &.#{$ns}-align-right {
+        padding-right: $switch-width-large + $pt-grid-size;
+        padding-left: 0;
       }
     }
   }
@@ -528,22 +543,24 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   Inline labels
 
   Markup:
-  <label class="#{$ns}-label">A group of related options</label>
-  <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
-    <input type="checkbox" />
-    <span class="#{$ns}-control-indicator"></span>
-    First
-  </label>
-  <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
-    <input type="checkbox" />
-    <span class="#{$ns}-control-indicator"></span>
-    Second
-  </label>
-  <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
-    <input type="checkbox" />
-    <span class="#{$ns}-control-indicator"></span>
-    Third
-  </label>
+  <div>
+    <label class="#{$ns}-label">A group of related options</label>
+    <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
+      <input type="checkbox" />
+      <span class="#{$ns}-control-indicator"></span>
+      First
+    </label>
+    <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
+      <input type="checkbox" />
+      <span class="#{$ns}-control-indicator"></span>
+      Second
+    </label>
+    <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
+      <input type="checkbox" />
+      <span class="#{$ns}-control-indicator"></span>
+      Third
+    </label>
+  </div>
 
   Styleguide checkbox-inline
   */

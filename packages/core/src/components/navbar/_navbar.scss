@@ -37,6 +37,7 @@ $dark-navbar-background-color: $dark-gray5 !default;
   z-index: $pt-z-index-content;
   box-shadow: $pt-elevation-shadow-1;
   background-color: $navbar-background-color;
+  width: 100%;
   height: $pt-navbar-height;
   padding: 0 $navbar-padding;
 

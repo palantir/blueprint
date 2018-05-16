@@ -7,8 +7,17 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Boundary, Classes, CollapsibleList, IMenuItemProps, MenuItem, RadioGroup, Slider } from "@blueprintjs/core";
-import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Boundary,
+    Classes,
+    CollapsibleList,
+    IMenuItemProps,
+    Label,
+    MenuItem,
+    RadioGroup,
+    Slider,
+} from "@blueprintjs/core";
+import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ICollapsibleListExampleState {
     collapseFrom?: Boundary;
@@ -20,7 +29,7 @@ const COLLAPSE_FROM_RADIOS = [
     { label: "End", value: Boundary.END.toString() },
 ];
 
-export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleState> {
+export class CollapsibleListExample extends React.PureComponent<IExampleProps, ICollapsibleListExampleState> {
     public state: ICollapsibleListExampleState = {
         collapseFrom: Boundary.START,
         visibleItemCount: 3,
@@ -28,50 +37,44 @@ export class CollapsibleListExample extends BaseExample<ICollapsibleListExampleS
 
     private handleChangeCollapse = handleStringChange((collapseFrom: Boundary) => this.setState({ collapseFrom }));
 
-    protected renderExample() {
-        return (
-            <CollapsibleList
-                {...this.state}
-                className={Classes.BREADCRUMBS}
-                dropdownTarget={<span className={Classes.BREADCRUMBS_COLLAPSED} />}
-                visibleItemRenderer={this.renderBreadcrumb}
-            >
-                <MenuItem icon="folder-close" text="All files" href="#" />
-                <MenuItem icon="folder-close" text="Users" href="#" />
-                <MenuItem icon="folder-close" text="Jane Person" href="#" />
-                <MenuItem icon="folder-close" text="My documents" href="#" />
-                <MenuItem icon="folder-close" text="Classy dayjob" href="#" />
-                <MenuItem icon="document" text="How to crush it" />
-            </CollapsibleList>
-        );
-    }
-
-    protected renderOptions() {
-        return [
-            [
-                <label className={Classes.LABEL} key="visible-label">
-                    Visible items
-                </label>,
+    public render() {
+        const options = (
+            <>
+                <Label text="Visible items" />
                 <Slider
-                    key="visible"
                     max={6}
                     onChange={this.handleChangeCount}
                     showTrackFill={false}
                     value={this.state.visibleItemCount}
-                />,
-            ],
-            [
+                />
                 <RadioGroup
-                    key="collapseFrom"
                     name="collapseFrom"
                     inline={true}
                     label="Collapse from"
                     onChange={this.handleChangeCollapse}
                     options={COLLAPSE_FROM_RADIOS}
                     selectedValue={this.state.collapseFrom.toString()}
-                />,
-            ],
-        ];
+                />
+            </>
+        );
+
+        return (
+            <Example options={options} {...this.props}>
+                <CollapsibleList
+                    {...this.state}
+                    className={Classes.BREADCRUMBS}
+                    dropdownTarget={<span className={Classes.BREADCRUMBS_COLLAPSED} />}
+                    visibleItemRenderer={this.renderBreadcrumb}
+                >
+                    <MenuItem icon="folder-close" text="All files" href="#" />
+                    <MenuItem icon="folder-close" text="Users" href="#" />
+                    <MenuItem icon="folder-close" text="Jane Person" href="#" />
+                    <MenuItem icon="folder-close" text="My documents" href="#" />
+                    <MenuItem icon="folder-close" text="Classy dayjob" href="#" />
+                    <MenuItem icon="document" text="How to crush it" />
+                </CollapsibleList>
+            </Example>
+        );
     }
 
     private renderBreadcrumb(props: IMenuItemProps) {

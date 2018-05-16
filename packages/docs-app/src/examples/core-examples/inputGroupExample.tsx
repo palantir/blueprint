@@ -20,18 +20,19 @@ import {
     Tag,
     Tooltip,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IInputGroupExampleState {
-    disabled?: boolean;
-    filterValue?: string;
-    large?: boolean;
-    showPassword?: boolean;
-    tagValue?: string;
+    disabled: boolean;
+    filterValue: string;
+    large: boolean;
+    showPassword: boolean;
+    tagValue: string;
 }
 
-export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
+export class InputGroupExample extends React.PureComponent<IExampleProps, IInputGroupExampleState> {
     public state: IInputGroupExampleState = {
+        disabled: false,
         filterValue: "",
         large: false,
         showPassword: false,
@@ -43,7 +44,7 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
     private handleFilterChange = handleStringChange(filterValue => this.setState({ filterValue }));
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
-    protected renderExample() {
+    public render() {
         const { disabled, filterValue, large, showPassword, tagValue } = this.state;
 
         const maybeSpinner = filterValue ? <Spinner className={Classes.SMALL} /> : undefined;
@@ -80,54 +81,50 @@ export class InputGroupExample extends BaseExample<IInputGroupExampleState> {
         const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
 
         return (
-            <div className="docs-input-group-example docs-flex-row">
-                <div className="docs-flex-column">
-                    <InputGroup
-                        disabled={disabled}
-                        large={large}
-                        leftIcon="filter"
-                        onChange={this.handleFilterChange}
-                        placeholder="Filter histogram..."
-                        rightElement={maybeSpinner}
-                        value={filterValue}
-                    />
-                    <InputGroup
-                        disabled={disabled}
-                        large={large}
-                        placeholder="Enter your password..."
-                        rightElement={lockButton}
-                        type={showPassword ? "text" : "password"}
-                    />
-                </div>
-                <div className="docs-flex-column">
-                    <InputGroup
-                        disabled={disabled}
-                        large={large}
-                        leftIcon="tag"
-                        onChange={this.handleTagChange}
-                        placeholder="Find tags"
-                        rightElement={resultsTag}
-                        value={tagValue}
-                    />
-                    <InputGroup
-                        disabled={disabled}
-                        large={large}
-                        placeholder="Add people or groups..."
-                        rightElement={permissionsMenu}
-                    />
-                </div>
-            </div>
+            <Example options={this.renderOptions()} {...this.props}>
+                <InputGroup
+                    disabled={disabled}
+                    large={large}
+                    leftIcon="filter"
+                    onChange={this.handleFilterChange}
+                    placeholder="Filter histogram..."
+                    rightElement={maybeSpinner}
+                    value={filterValue}
+                />
+                <InputGroup
+                    disabled={disabled}
+                    large={large}
+                    placeholder="Enter your password..."
+                    rightElement={lockButton}
+                    type={showPassword ? "text" : "password"}
+                />
+                <InputGroup
+                    disabled={disabled}
+                    large={large}
+                    leftIcon="tag"
+                    onChange={this.handleTagChange}
+                    placeholder="Find tags"
+                    rightElement={resultsTag}
+                    value={tagValue}
+                />
+                <InputGroup
+                    disabled={disabled}
+                    large={large}
+                    placeholder="Add people or groups..."
+                    rightElement={permissionsMenu}
+                />
+            </Example>
         );
     }
 
-    protected renderOptions() {
+    private renderOptions() {
         const { disabled, large } = this.state;
-        return [
-            [
-                <Switch key="disabled" label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />,
-                <Switch key="large" label="Large" onChange={this.handleLargeChange} checked={large} />,
-            ],
-        ];
+        return (
+            <>
+                <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
+                <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
+            </>
+        );
     }
 
     private handleLockClick = () => this.setState({ showPassword: !this.state.showPassword });
