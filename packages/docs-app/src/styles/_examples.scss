@@ -49,16 +49,7 @@
 
 .docs-context-menu-example {
   .docs-example {
-    padding: 0;
-  }
-
-  // panel occupies entire frame so you can right-click anywhere
-  .context-menu-panel {
-    @include pt-flex-container(column, $pt-grid-size * 2);
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    width: 100%;
+    flex-direction: column;
     height: $pt-grid-size * 25;
   }
 

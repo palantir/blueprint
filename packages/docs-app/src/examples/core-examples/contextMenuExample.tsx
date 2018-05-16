@@ -48,14 +48,13 @@ class GraphNode extends React.PureComponent<{}, { isContextMenuOpen: boolean }> 
  * This component uses the decorator API and implements the IContextMenuTarget interface.
  */
 @ContextMenuTarget
-class ContextMenuPanel extends React.PureComponent {
+export class ContextMenuExample extends React.PureComponent<IExampleProps, {}> {
     public render() {
         return (
-            // root element of decorated component must support onContextMenu prop
-            <div className="context-menu-panel">
+            <Example className="docs-context-menu-example" options={false} {...this.props}>
                 <GraphNode />
                 <span className={Classes.TEXT_MUTED}>Right-click on node or background.</span>
-            </div>
+            </Example>
         );
     }
 
@@ -76,16 +75,6 @@ class ContextMenuPanel extends React.PureComponent {
                 <MenuDivider />
                 <MenuItem disabled={true} text={`Clicked at (${e.clientX}, ${e.clientY})`} />
             </Menu>
-        );
-    }
-}
-
-export class ContextMenuExample extends React.PureComponent<IExampleProps, {}> {
-    public render() {
-        return (
-            <Example className="docs-context-menu-example" options={false} {...this.props}>
-                <ContextMenuPanel />
-            </Example>
         );
     }
 }
