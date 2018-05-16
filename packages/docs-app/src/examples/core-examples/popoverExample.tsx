@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import PopperJS from "popper.js";
 import * as React from "react";
 
@@ -126,14 +125,11 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
 
     public render() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
-        const popoverClassName = classNames(this.className, {
-            [Classes.POPOVER_CONTENT_SIZING]: exampleIndex <= 2,
-        });
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
                     <Popover
-                        popoverClassName={popoverClassName}
+                        popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
                         portalClassName="foo"
                         {...popoverProps}
                         enforceFocus={false}
