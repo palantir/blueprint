@@ -22,7 +22,7 @@ The `main` module exports all symbols from all modules so you don't have to impo
 1. If you see `UNMET PEER DEPENDENCY` errors, you should manually install React (v15.3 or greater):
 
     ```sh
-    yarn add react react-dom react-transition-group
+    yarn add react react-dom
     ```
 
 1. After installation, you'll be able to import the React components in your application:
@@ -137,7 +137,7 @@ install typings for Blueprint's dependencies before you can consume it:
 
 ```sh
 # required for all @blueprintjs packages:
-npm install --save @types/react @types/react-dom @types/react-transition-group
+npm install --save @types/react @types/react-dom
 
 # @blueprintjs/timezone requires:
 npm install --save @types/moment-timezone
