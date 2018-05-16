@@ -11,7 +11,7 @@ import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { Classes, DateInput, IDateInputProps, TimePicker, TimePickerPrecision } from "../src/index";
+import { Classes, DateInput, IDateInputProps, TimePicker, TimePrecision } from "../src/index";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
@@ -134,13 +134,13 @@ describe("<DateInput>", () => {
     });
 
     it("setting timePrecision renders a TimePicker", () => {
-        const wrapper = mount(<DateInput {...DATE_FORMAT} timePrecision={TimePickerPrecision.SECOND} />).setState({
+        const wrapper = mount(<DateInput {...DATE_FORMAT} timePrecision={TimePrecision.SECOND} />).setState({
             isOpen: true,
         });
         // assert TimePicker appears
         const timePicker = wrapper.find(TimePicker);
         assert.isTrue(timePicker.exists());
-        assert.strictEqual(timePicker.prop("precision"), TimePickerPrecision.SECOND);
+        assert.strictEqual(timePicker.prop("precision"), TimePrecision.SECOND);
         // assert TimePicker disappears in absence of prop
         wrapper.setProps({ timePrecision: undefined });
         assert.isFalse(wrapper.find(TimePicker).exists());
@@ -155,7 +155,7 @@ describe("<DateInput>", () => {
                 <DateInput
                     {...DATE_FORMAT}
                     maxDate={new Date(2050, 5, 4)}
-                    timePrecision={TimePickerPrecision.SECOND}
+                    timePrecision={TimePrecision.SECOND}
                     value={new Date(2030, 4, 5)}
                 />,
             ).setState({ isOpen: true });
@@ -171,14 +171,14 @@ describe("<DateInput>", () => {
             disabled: true,
             // these will each be overridden by top-level props:
             onChange,
-            precision: TimePickerPrecision.MILLISECOND,
+            precision: TimePrecision.MILLISECOND,
             value: new Date(2017, Months.MAY, 6),
         };
 
         const wrapper = mount(
             <DateInput
                 {...DATE_FORMAT}
-                timePrecision={TimePickerPrecision.SECOND}
+                timePrecision={TimePrecision.SECOND}
                 onChange={sinon.spy()}
                 value={value}
                 timePickerProps={timePickerProps}
@@ -188,7 +188,7 @@ describe("<DateInput>", () => {
         const timePicker = wrapper.find(TimePicker);
 
         // ensure the top-level props override props by the same name in timePickerProps
-        assert.equal(timePicker.prop("precision"), TimePickerPrecision.SECOND);
+        assert.equal(timePicker.prop("precision"), TimePrecision.SECOND);
         assert.notEqual(timePicker.prop("onChange"), onChange);
         DateTestUtils.assertDatesEqual(timePicker.prop("value"), value);
 
@@ -327,11 +327,7 @@ describe("<DateInput>", () => {
         it("Popover doesn't close when time changes", () => {
             const defaultValue = new Date(2017, Months.JANUARY, 1, 0, 0, 0, 0);
             const wrapper = mount(
-                <DateInput
-                    {...DATE_FORMAT}
-                    defaultValue={defaultValue}
-                    timePrecision={TimePickerPrecision.MILLISECOND}
-                />,
+                <DateInput {...DATE_FORMAT} defaultValue={defaultValue} timePrecision={TimePrecision.MILLISECOND} />,
             );
             wrapper.setState({ isOpen: true });
 
@@ -431,7 +427,7 @@ describe("<DateInput>", () => {
                     canClearSelection={false}
                     defaultValue={DATE}
                     onChange={onChange}
-                    timePrecision={TimePickerPrecision.SECOND}
+                    timePrecision={TimePrecision.SECOND}
                 />,
             );
             root.setState({ isOpen: true });
@@ -534,7 +530,7 @@ describe("<DateInput>", () => {
                     {...DATE_FORMAT}
                     canClearSelection={false}
                     onChange={onChange}
-                    timePrecision={TimePickerPrecision.SECOND}
+                    timePrecision={TimePrecision.SECOND}
                     value={DATE}
                 />,
             );
