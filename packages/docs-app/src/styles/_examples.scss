@@ -424,16 +424,6 @@
 // DATETIME
 //
 
-#{example("DateRangePickerExample")} {
-  flex-direction: column;
-
-  .docs-example-options {
-    margin-top: $pt-grid-size;
-    margin-left: 0;
-    max-width: unset;
-  }
-}
-
 .docs-datetime-example {
   display: flex;
   flex-direction: column;
@@ -465,14 +455,8 @@
     height: $pt-grid-size * 36;
   }
 
-  // options appear below table (so tables can occupy full width)
-  .docs-example-frame {
-    flex-direction: column;
-  }
-
-  .docs-example-options {
-    margin-top: $pt-grid-size;
-    margin-left: 0;
-    max-width: unset;
+  // reduce example container padding
+  .docs-example {
+    padding: 0;
   }
 }

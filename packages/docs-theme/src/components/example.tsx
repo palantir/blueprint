@@ -14,9 +14,19 @@ export interface IExampleProps extends IProps {
 
 export interface IDocsExampleProps extends IExampleProps {
     /**
-     * Options for the example, which will appear in a narrow column to the right of the example.
+     * Options for the example, which will typically appear in a narrow column
+     * to the right of the example.
      */
     options: React.ReactNode;
+
+    /**
+     * Whether options should appear in a full-width row below the example
+     * container. By default, options appear in a single column to the right of
+     * the example. If this prop is enabled, then the options container becomes
+     * a flex row; group options into columns by wrapping them in a `<div>`.
+     * @default false
+     */
+    showOptionsBelowExample?: boolean;
 
     /**
      * HTML markup for the example, which will be directly injected into the
@@ -60,7 +70,12 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
             return null;
         }
 
-        const { children, className, html, id, options } = this.props;
+        const { children, className, html, id, options, showOptionsBelowExample = false } = this.props;
+        const classes = classNames(
+            "docs-example-frame",
+            showOptionsBelowExample ? "docs-example-frame-column" : "docs-example-frame-row",
+            className,
+        );
         const example =
             html == null ? (
                 <div className="docs-example">{children}</div>
@@ -69,7 +84,7 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
             );
 
         return (
-            <div className={classNames("docs-example-frame", className)} data-example-id={id}>
+            <div className={classes} data-example-id={id}>
                 {example}
                 <div className="docs-example-options">{options}</div>
             </div>
