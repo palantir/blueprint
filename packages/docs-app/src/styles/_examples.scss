@@ -273,7 +273,7 @@
     }
   }
 
-  td:first-child {
+  td:nth-child(1) {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -303,14 +303,13 @@
     height: 7 * $pt-grid-size;
     padding: $pt-grid-size * 2;
     text-align: center;
-    // increase line height to leave room between stacked <code> blocks.
-    line-height: $pt-line-height * 1.1;
-    white-space: nowrap;
+    line-height: 2;
 
     code {
       font-weight: 600;
     }
   }
+}
 
   .docs-popover-position-value-code-block {
     text-align: center;
@@ -333,7 +332,6 @@
       color: $forest5;
     }
   }
-}
 
 .docs-popover-minimal-example {
   .#{$ns}-button:first-child {
@@ -354,11 +352,6 @@
 }
 
 .docs-popover-inline-example {
-  .docs-popover-inline-example-content {
-    display: flex;
-    flex: 1 1 auto;
-  }
-
   .docs-popover-inline-example-scroll-container {
     flex: 1 1 auto;
     border-radius: $pt-border-radius;
@@ -368,14 +361,6 @@
 
     .#{$ns}-dark & {
       background: $dark-gray5;
-    }
-
-    &:first-child {
-      margin-right: $pt-grid-size;
-    }
-
-    &:last-child {
-      margin-left: $pt-grid-size;
     }
   }
 
