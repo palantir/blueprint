@@ -45,6 +45,7 @@ export * from "./spinnerExample";
 export * from "./tabsExample";
 export * from "./inputGroupExample";
 export * from "./tagExample";
+export * from "./tagGroupExample";
 export * from "./toastExample";
 export * from "./tooltipExample";
 export * from "./treeExample";

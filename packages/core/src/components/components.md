@@ -30,6 +30,7 @@
 @page table-html
 @page tabs
 @page tag
+@page tag-group
 @page tag-input
 @page text
 @page toast

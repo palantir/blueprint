@@ -89,7 +89,7 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
 
         return (
             <span {...htmlProps} className={tagClasses}>
-                {children}
+                <span className={Classes.TAG_TEXT}>{children}</span>
                 {removeButton}
             </span>
         );
