@@ -64,14 +64,14 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                     showTrackFill={false}
                     value={value}
                 />
-                <IntentSelect intent={intent} onChange={this.handleModifierChange} />,
+                <IntentSelect intent={intent} onChange={this.handleModifierChange} />
                 <Label text="Size">
                     <div className={Classes.SELECT}>
                         <select value={size} onChange={this.handleSizeChange}>
                             {SIZES.map((opt, i) => <option key={i} {...opt} />)}
                         </select>
                     </div>
-                </Label>,
+                </Label>
             </>
         );
     }

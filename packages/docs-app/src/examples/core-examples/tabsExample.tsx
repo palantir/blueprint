@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, H1, H3, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
+import { Alignment, Classes, H1, H3, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITabsExampleState {
@@ -45,9 +45,11 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
             <Example className="docs-tabs-example" options={options} {...this.props}>
                 <Navbar>
                     <Navbar.Group>
-                        <Navbar.Heading>Tabs example</Navbar.Heading>
+                        <Navbar.Heading>
+                            Current page: <strong>{this.state.navbarTabId}</strong>
+                        </Navbar.Heading>
                     </Navbar.Group>
-                    <Navbar.Group>
+                    <Navbar.Group align={Alignment.RIGHT}>
                         {/* controlled mode & no panels (see h1 below): */}
                         <Tabs
                             animate={this.state.animate}
@@ -62,7 +64,6 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                         </Tabs>
                     </Navbar.Group>
                 </Navbar>
-                <H1 style={{ marginTop: 30, marginBottom: 30 }}>{this.state.navbarTabId}</H1>
                 {/* uncontrolled mode & each Tab has a panel: */}
                 <Tabs
                     animate={this.state.animate}
@@ -76,7 +77,7 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                     <Tab id="mb" title="Ember" panel={<EmberPanel />} />
                     <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
                     <Tabs.Expander />
-                    <input className={Classes.INPUT} type="text" placeholder="Search..." />
+                    <InputGroup className={Classes.FILL} type="text" placeholder="Search..." />
                 </Tabs>
             </Example>
         );

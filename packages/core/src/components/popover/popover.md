@@ -297,7 +297,7 @@ This behavior can be desirable to inherit CSS styles from surrounding elements, 
 when scrolling. Not using a `Portal` works well for most layouts, because popovers style themselves to appear above
 everything else on the page without needing to manually adjust z-indices, and Popper.js will keep them nicely positioned.
 
-@reactExample PopoverInlineExample
+@reactExample PopoverPortalExample
 
 @## Style
 
@@ -311,8 +311,7 @@ As a result, any component that you place inside a `Popover` (such as a `Menu`) 
 inherits the dark theme styles. Note that [`Tooltip`](#core/components/tooltip) uses `Popover` internally, so it also benefits
 from this behavior.
 
-This behavior can be disabled when the `Popover` is not rendered inline via the `inheritDarkTheme`
-prop.
+This behavior can be disabled (if the `Popover` uses a `Portal`) via the `inheritDarkTheme` prop.
 
 @### Sizing
 
