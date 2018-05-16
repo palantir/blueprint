@@ -12,6 +12,10 @@ export interface IExampleProps extends IProps {
     id: string;
 }
 
+/**
+ * Props supported by the `Example` component.
+ * Additional props will be spread to the root `<div>` element.
+ */
 export interface IDocsExampleProps extends IExampleProps {
     /**
      * Options for the example, which will appear in a narrow column to the right of the example.
@@ -60,7 +64,8 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
             return null;
         }
 
-        const { children, className, html, id, options } = this.props;
+        // spread any additional props through to the root element, to support decorators that expect DOM props
+        const { children, className, html, id, options, ...htmlProps } = this.props;
         const example =
             html == null ? (
                 <div className="docs-example">{children}</div>
@@ -69,7 +74,7 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
             );
 
         return (
-            <div className={classNames("docs-example-frame", className)} data-example-id={id}>
+            <div className={classNames("docs-example-frame", className)} data-example-id={id} {...htmlProps}>
                 {example}
                 <div className="docs-example-options">{options}</div>
             </div>
