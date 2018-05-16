@@ -11,7 +11,7 @@ Markup:
 <div>
   <div class="#{$ns}-form-group">
     <label class="#{$ns}-label" for="example-form-group-input-a">
-      <strong>Label A</strong>
+      Label A
       <span class="#{$ns}-text-muted">(required)</span>
     </label>
     <div class="#{$ns}-form-content">
@@ -21,7 +21,7 @@ Markup:
   </div>
   <div class="#{$ns}-form-group #{$ns}-intent-danger">
     <label class="#{$ns}-label" for="example-form-group-input-b">
-      <strong>Label B</strong>
+      Label B
       <span class="#{$ns}-text-muted">(required)</span>
     </label>
     <div class="#{$ns}-form-content">
@@ -34,7 +34,7 @@ Markup:
   </div>
   <div class="#{$ns}-form-group">
     <label class="#{$ns}-label" for="example-form-group-switch-c">
-      <strong>Label C</strong>
+      Label C
       <span class="#{$ns}-text-muted">(required)</span>
     </label>
     <div class="#{$ns}-form-content">
@@ -48,7 +48,7 @@ Markup:
   </div>
   <div class="#{$ns}-form-group #{$ns}-inline">
     <label class="#{$ns}-label" for="example-form-group-input-d">
-      <strong>Label D</strong>
+      Label D
       <span class="#{$ns}-text-muted">(optional)</span>
     </label>
     <div class="#{$ns}-form-content">
@@ -61,7 +61,7 @@ Markup:
   </div>
   <div class="#{$ns}-form-group #{$ns}-inline #{$ns}-large #{$ns}-disabled">
     <label class="#{$ns}-label" for="example-form-group-input-e">
-      <strong>Label E</strong>
+      Label E
       <span class="#{$ns}-text-muted">(optional)</span>
     </label>
     <div class="#{$ns}-form-content">
@@ -74,7 +74,7 @@ Markup:
   </div>
   <div class="#{$ns}-form-group #{$ns}-inline">
     <label class="#{$ns}-label" for="example-form-group-switch-f">
-      <strong>Label F</strong>
+      Label F
     </label>
     <div class="#{$ns}-form-content">
       <label class="#{$ns}-control #{$ns}-switch">
@@ -87,7 +87,7 @@ Markup:
   </div>
   <div class="#{$ns}-form-group #{$ns}-inline #{$ns}-large #{$ns}-disabled">
     <label class="#{$ns}-label" for="example-form-group-switch-g">
-      <strong>Label G</strong>
+      Label G
     </label>
     <div class="#{$ns}-form-content">
       <label class="#{$ns}-control #{$ns}-switch #{$ns}-large #{$ns}-disabled">

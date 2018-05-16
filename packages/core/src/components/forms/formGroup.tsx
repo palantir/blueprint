@@ -71,7 +71,7 @@ export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
         return (
             <div className={classes}>
                 <label className={Classes.LABEL} htmlFor={labelFor}>
-                    <strong>{label}</strong>
+                    {label}
                     {this.maybeRenderRequiredLabel()}
                 </label>
                 <div className={Classes.FORM_CONTENT}>

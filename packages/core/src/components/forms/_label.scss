@@ -9,12 +9,12 @@ Labels
 Markup:
 <div>
   <label class="#{$ns}-label {{.modifier}}">
-    <strong>Label A</strong>
+    Label A
     <span class="#{$ns}-text-muted">(required)</span>
     <input class="#{$ns}-input" style="width: 180px;" type="text" placeholder="Text input" dir="auto" />
   </label>
   <label class="#{$ns}-label {{.modifier}}">
-    <strong>Label B</strong>
+    Label B
     <span class="#{$ns}-text-muted">(optional)</span>
     <div class="#{$ns}-input-group">
       <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
@@ -79,7 +79,7 @@ label.#{$ns}-label {
   Markup:
   <div>
     <label class="#{$ns}-label #{$ns}-disabled">
-      <strong>Label A</strong>
+      Label A
       <span class="#{$ns}-text-muted">(optional)</span>
       <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
     </label>
@@ -91,7 +91,7 @@ label.#{$ns}-label {
       </div>
     </label>
     <label class="#{$ns}-label #{$ns}-disabled">
-      <strong>Label C</strong>
+      Label C
       <div class="#{$ns}-select #{$ns}-disabled">
         <select disabled>
           <option selected>Choose an item...</option>
