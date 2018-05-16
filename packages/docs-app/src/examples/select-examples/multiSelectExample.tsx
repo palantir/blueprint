@@ -166,7 +166,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
     private handleSwitchChange(prop: keyof IMultiSelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
-            this.setState({ ...this.state, [prop]: event.currentTarget.checked });
+            const checked = event.currentTarget.checked;
+            this.setState(state => ({ ...state, [prop]: checked }));
         };
     }
 

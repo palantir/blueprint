@@ -76,7 +76,8 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
 
     private handleSwitchChange(prop: keyof ISuggestExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
-            this.setState({ ...this.state, [prop]: event.currentTarget.checked });
+            const checked = event.currentTarget.checked;
+            this.setState(state => ({ ...state, [prop]: checked }));
         };
     }
 }

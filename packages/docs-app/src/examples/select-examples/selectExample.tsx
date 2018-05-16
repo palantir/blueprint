@@ -100,7 +100,8 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
 
     private handleSwitchChange(prop: keyof ISelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
-            this.setState({ ...this.state, [prop]: event.currentTarget.checked });
+            const checked = event.currentTarget.checked;
+            this.setState(state => ({ ...state, [prop]: checked }));
         };
     }
 }
