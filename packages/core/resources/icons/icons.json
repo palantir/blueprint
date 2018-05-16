@@ -3078,5 +3078,12 @@
     "tags": "protect, protection, secure, security, safe, safety, privacy, marking, control",
     "group": "miscellaneous",
     "content": "\\e7b2"
+  },
+  {
+    "name": "Tree diagram",
+    "className": "pt-icon-diagram-tree",
+    "tags": "organization, chart, hierarchy, relationship, reference",
+    "group": "data",
+    "content": "\\e7b3"
   }
 ]
