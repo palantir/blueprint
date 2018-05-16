@@ -96,7 +96,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
             </Example>
         );
     }
-    
+
     private renderOptions() {
         return (
             <>
