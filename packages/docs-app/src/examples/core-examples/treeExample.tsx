@@ -13,8 +13,8 @@ export interface ITreeExampleState {
     nodes: ITreeNode[];
 }
 
-// override @PureRender because nodes are not a primitive type and therefore aren't included in
-// shallow prop comparison
+// use Component so it re-renders everytime: `nodes` are not a primitive type
+// and therefore aren't included in shallow prop comparison
 export class TreeExample extends React.Component<IExampleProps, ITreeExampleState> {
     public state: ITreeExampleState = { nodes: INITIAL_STATE };
 
