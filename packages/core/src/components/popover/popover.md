@@ -224,7 +224,7 @@ The supported values are:
     - __Opens when:__ the target is clicked
     - __Closes when:__ the target is clicked
 
-The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](http://localhost:9000/#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
+The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
 @reactExample PopoverInteractionKindExample
 
@@ -371,7 +371,7 @@ zeroing the default hover delays.
 
 #### Rendering delays
 
-`Popover` delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target, which may require special handling depending on the current [`interactionKind`](http://localhost:9000/#core/components/popover.opening-and-closing). Popper.js also throttles rendering updates to improve performance. If your components are not updating in a synchronous fashion as expected, you may need to introduce a `setTimeout` to wait for asynchronous Popover rendering to catch up:
+`Popover` delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target, which may require special handling depending on the current [`interactionKind`](#core/components/popover.opening-and-closing). Popper.js also throttles rendering updates to improve performance. If your components are not updating in a synchronous fashion as expected, you may need to introduce a `setTimeout` to wait for asynchronous Popover rendering to catch up:
 
 ```tsx
 import { Classes, Overlay, Popover, PopoverInteractionKind } from "@blueprintjs/core";
