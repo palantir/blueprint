@@ -26,8 +26,6 @@ export class ColumnLoadingExample extends React.PureComponent<IExampleProps, ICo
         loadingColumn: 1,
     };
 
-    protected className = "docs-column-loading-example";
-
     private handleLoadingColumnChange = handleNumberChange(loadingColumn => this.setState({ loadingColumn }));
 
     public render() {

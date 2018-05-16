@@ -43,8 +43,6 @@ export class CellLoadingExample extends React.PureComponent<IExampleProps, ICell
         configuration: CellsLoadingConfiguration.ALL,
     };
 
-    protected className = "docs-cell-loading-example";
-
     private handleConfigurationChange = handleStringChange(configuration => {
         if (configuration === CellsLoadingConfiguration.RANDOM) {
             // calculate random numbers just once instead of inside cellRenderer which is called during table scrolling

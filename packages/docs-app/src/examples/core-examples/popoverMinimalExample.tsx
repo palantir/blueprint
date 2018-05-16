@@ -11,8 +11,6 @@ import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { FileMenu } from "./common/fileMenu";
 
 export class PopoverMinimalExample extends React.PureComponent<IExampleProps> {
-    protected className = "docs-popover-minimal-example";
-
     public render() {
         const baseProps: IPopoverProps = { content: <FileMenu />, position: Position.BOTTOM_LEFT };
 

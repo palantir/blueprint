@@ -29,8 +29,6 @@ export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps
         vertical: false,
     };
 
-    protected className = "docs-popover-button-group-example";
-
     private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));

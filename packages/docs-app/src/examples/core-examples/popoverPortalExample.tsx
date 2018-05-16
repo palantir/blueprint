@@ -18,8 +18,6 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
         isOpen: true,
     };
 
-    protected className = "docs-popover-portal-example";
-
     private scrollContainerLeftRef: HTMLDivElement;
     private scrollContainerRightRef: HTMLDivElement;
     private refHandlers = {
@@ -108,6 +106,7 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
 }
 
 const POPOVER_PROPS: IPopoverProps = {
+    autoFocus: false,
     enforceFocus: false,
     // not relevant to this example, but required in order for default
     // modifiers to work (e.g. `hide`).
