@@ -10,10 +10,9 @@ import { Classes, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 export class MenuExample extends React.PureComponent<IExampleProps, {}> {
-    public className = "docs-menu-example";
     public render() {
         return (
-            <Example options={false} {...this.props}>
+            <Example className="docs-menu-example" options={false} {...this.props}>
                 <Menu className={Classes.ELEVATION_1}>
                     <MenuItem icon={<PalantirLogo />} text="Custom SVG icon" />
                     <MenuDivider />

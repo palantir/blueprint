@@ -7,8 +7,7 @@
 import * as React from "react";
 
 import { AnchorButton, Button, Classes, Code, Dialog, Intent, Switch, Tooltip } from "@blueprintjs/core";
-import { Example, handleBooleanChange } from "@blueprintjs/docs-theme";
-import { IBlueprintExampleProps } from "../../tags/reactExamples";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IDialogExampleState {
     autoFocus: boolean;
@@ -18,7 +17,7 @@ export interface IDialogExampleState {
     isOpen: boolean;
     usePortal: boolean;
 }
-export class DialogExample extends React.PureComponent<IBlueprintExampleProps, IDialogExampleState> {
+export class DialogExample extends React.PureComponent<IExampleProps, IDialogExampleState> {
     public state: IDialogExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
@@ -39,7 +38,7 @@ export class DialogExample extends React.PureComponent<IBlueprintExampleProps, I
             <Example options={this.renderOptions()} {...this.props}>
                 <Button onClick={this.handleOpen}>Show dialog</Button>
                 <Dialog
-                    className={this.props.themeName}
+                    className={this.props.data.themeName}
                     icon="info-sign"
                     onClose={this.handleClose}
                     title="Palantir Foundry"

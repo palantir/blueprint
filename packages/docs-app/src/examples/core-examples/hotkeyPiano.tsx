@@ -155,22 +155,20 @@ export class HotkeyPiano extends React.PureComponent<IExampleProps, IHotkeyPiano
         keys: Array.apply(null, Array(24)).map(() => false),
     };
 
-    private pianoRef: HTMLElement;
+    private pianoRef: HTMLElement | null = null;
 
     public render() {
         const { keys } = this.state;
 
         if (AUDIO_CONTEXT == null) {
             return (
-                <div tabIndex={0} ref={this.handleSetPianoRef}>
-                    Oops! This browser does not support the WebAudio API needed for this example.
-                </div>
+                <div tabIndex={0}>Oops! This browser does not support the WebAudio API needed for this example.</div>
             );
         }
 
         return (
             <Example options={false} {...this.props}>
-                <div tabIndex={0} className="docs-hotkey-piano-example" ref={this.handleSetPianoRef}>
+                <div tabIndex={0} className="docs-hotkey-piano-example" ref={ref => (this.pianoRef = ref)}>
                     <div>
                         <PianoKey note="C5" hotkey="Q" pressed={keys[0]} context={AUDIO_CONTEXT} />
                         <PianoKey note="C#5" hotkey="2" pressed={keys[1]} context={AUDIO_CONTEXT} />
@@ -381,10 +379,6 @@ export class HotkeyPiano extends React.PureComponent<IExampleProps, IHotkeyPiano
             </Hotkeys>
         );
     }
-
-    private handleSetPianoRef = (ref: Element) => {
-        this.pianoRef = ref as HTMLElement;
-    };
 
     private focusPiano = () => {
         if (this.pianoRef != null) {

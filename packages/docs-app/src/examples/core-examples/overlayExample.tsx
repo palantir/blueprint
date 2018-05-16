@@ -7,8 +7,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Button, Classes, Code, H3, Intent, Overlay, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange } from "@blueprintjs/docs-theme";
-import { IBlueprintExampleProps } from "../../tags/reactExamples";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
 
@@ -22,7 +21,7 @@ export interface IOverlayExampleState {
     usePortal: boolean;
 }
 
-export class OverlayExample extends React.PureComponent<IBlueprintExampleProps, IOverlayExampleState> {
+export class OverlayExample extends React.PureComponent<IExampleProps, IOverlayExampleState> {
     public state: IOverlayExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
@@ -46,7 +45,7 @@ export class OverlayExample extends React.PureComponent<IBlueprintExampleProps, 
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
-        const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS, this.props.themeName);
+        const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS, this.props.data.themeName);
 
         return (
             <Example options={this.renderOptions()} {...this.props}>

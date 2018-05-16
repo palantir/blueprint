@@ -37,20 +37,10 @@
   }
 }
 
-.docs-card-example {
-  @include pt-flex-container(row, $pt-grid-size * 2);
-
-  .#{$ns}-card {
-    flex: 1 1 auto;
-
-    &:hover a {
-      text-decoration: underline;
+#{example("EditableTextExample")} {
+  .docs-example {
+    display: block;
     }
-  }
-}
-
-.docs-editable-text-example {
-  width: 100%;
 
   h1 {
     margin-bottom: $pt-grid-size * 3;

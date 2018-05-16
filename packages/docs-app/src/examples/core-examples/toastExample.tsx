@@ -20,12 +20,11 @@ import {
     Toaster,
     ToasterPosition,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
-import { IBlueprintExampleProps } from "../../tags/reactExamples";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 type IToastDemo = IToastProps & { button: string };
 
-export class ToastExample extends React.PureComponent<IBlueprintExampleProps, IToasterProps> {
+export class ToastExample extends React.PureComponent<IExampleProps, IToasterProps> {
     public state: IToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
@@ -134,7 +133,7 @@ export class ToastExample extends React.PureComponent<IBlueprintExampleProps, IT
 
     private renderProgress(amount: number): IToastProps {
         return {
-            className: this.props.themeName,
+            className: this.props.data.themeName,
             icon: "cloud-upload",
             message: (
                 <ProgressBar
@@ -148,7 +147,7 @@ export class ToastExample extends React.PureComponent<IBlueprintExampleProps, IT
     }
 
     private addToast(toast: IToastProps) {
-        toast.className = this.props.themeName;
+        toast.className = this.props.data.themeName;
         toast.timeout = 5000;
         this.toaster.show(toast);
     }

@@ -7,8 +7,7 @@
 import * as React from "react";
 
 import { Alert, Button, Intent, IToaster, Switch, Toaster } from "@blueprintjs/core";
-import { Example, handleBooleanChange } from "@blueprintjs/docs-theme";
-import { IBlueprintExampleProps } from "../../tags/reactExamples";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IAlertExampleState {
     canEscapeKeyCancel: boolean;
@@ -17,7 +16,7 @@ export interface IAlertExampleState {
     isOpenError: boolean;
 }
 
-export class AlertExample extends React.PureComponent<IBlueprintExampleProps, IAlertExampleState> {
+export class AlertExample extends React.PureComponent<IExampleProps, IAlertExampleState> {
     public state: IAlertExampleState = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,
@@ -51,7 +50,7 @@ export class AlertExample extends React.PureComponent<IBlueprintExampleProps, IA
                 <Button onClick={this.handleErrorOpen} text="Open file error alert" />
                 <Alert
                     {...alertProps}
-                    className={this.props.themeName}
+                    className={this.props.data.themeName}
                     confirmButtonText="Okay"
                     isOpen={isOpenError}
                     onClose={this.handleErrorClose}
@@ -65,7 +64,7 @@ export class AlertExample extends React.PureComponent<IBlueprintExampleProps, IA
                 <Button onClick={this.handleMoveOpen} text="Open file deletion alert" />
                 <Alert
                     {...alertProps}
-                    className={this.props.themeName}
+                    className={this.props.data.themeName}
                     cancelButtonText="Cancel"
                     confirmButtonText="Move to Trash"
                     icon="trash"
@@ -91,7 +90,7 @@ export class AlertExample extends React.PureComponent<IBlueprintExampleProps, IA
     private handleMoveOpen = () => this.setState({ isOpen: true });
     private handleMoveConfirm = () => {
         this.setState({ isOpen: false });
-        this.toaster.show({ className: this.props.themeName, message: TOAST_MESSAGE });
+        this.toaster.show({ className: this.props.data.themeName, message: TOAST_MESSAGE });
     };
     private handleMoveCancel = () => this.setState({ isOpen: false });
 }

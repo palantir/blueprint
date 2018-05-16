@@ -9,7 +9,16 @@ import classNames from "classnames";
 import React from "react";
 
 export interface IExampleProps extends IProps {
+    /**
+     * Identifier of this example.
+     * This will appear as the `data-example-id` attribute on the DOM element.
+     */
     id: string;
+
+    /**
+     * Arbitary data passed from parent application into each example.
+     */
+    data?: any;
 }
 
 /**
@@ -65,7 +74,7 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
         }
 
         // spread any additional props through to the root element, to support decorators that expect DOM props
-        const { children, className, html, id, options, ...htmlProps } = this.props;
+        const { children, className, data, html, id, options, ...htmlProps } = this.props;
         const example =
             html == null ? (
                 <div className="docs-example">{children}</div>
