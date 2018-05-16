@@ -28,7 +28,7 @@ $dark-options-background-color: $dark-gray5;
 
 // options to the right of example in same row
 .docs-example-frame-row {
-  @include pt-flex-container(row, $pt-grid-size, $fill: ".docs-example");
+  @include pt-flex-container(row, $fill: ".docs-example");
 
   // option elements arranged vertically. use headings for grouping.
   .docs-example-options {
@@ -39,7 +39,7 @@ $dark-options-background-color: $dark-gray5;
 
 // options below example in its own row.
 .docs-example-frame-column {
-  @include pt-flex-container(column, $pt-grid-size, $fill: ".docs-example");
+  @include pt-flex-container(column, $fill: ".docs-example");
 
   // option elements arranged horizontally. group controls into columns.
   .docs-example-options {
@@ -75,6 +75,7 @@ $dark-options-background-color: $dark-gray5;
 
 .docs-example-options {
   flex: 0 0 auto;
+  margin-left: $pt-grid-size;
   border-radius: $example-frame-border-radius;
   background-color: $options-background-color;
   padding: $pt-grid-size * 2;
@@ -83,6 +84,10 @@ $dark-options-background-color: $dark-gray5;
   // hide when empty (div is always rendered)
   &:empty {
     display: none;
+  }
+
+  .#{$ns}-heading:not(:first-child) {
+    margin-top: $pt-grid-size;
   }
 
   .docs-prop-description {
