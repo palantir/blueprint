@@ -97,7 +97,7 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
                 <Switch label="Add on blur" checked={this.state.addOnBlur} onChange={this.handleAddOnBlurChange} />
-                <H5>Example</H5>
+                <H5>Tag props</H5>
                 <Switch label="Use minimal tags" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Cycle through intents" checked={this.state.intent} onChange={this.handleIntentChange} />
             </>

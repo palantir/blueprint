@@ -4,8 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Intent } from "@blueprintjs/core";
-import classNames from "classnames";
+import { Classes, Intent, Label } from "@blueprintjs/core";
 import * as React from "react";
 
 const INTENTS = [
@@ -23,8 +22,7 @@ export interface IIntentSelectProps {
 }
 
 export const IntentSelect: React.SFC<IIntentSelectProps> = props => (
-    <label className={classNames(Classes.LABEL, { [Classes.INLINE]: props.inline })}>
-        Intent
+    <Label text="Intent">
         <div className={Classes.SELECT}>
             <select value={props.intent} onChange={props.onChange}>
                 {INTENTS.map((opt, i) => (
@@ -34,5 +32,5 @@ export const IntentSelect: React.SFC<IIntentSelectProps> = props => (
                 ))}
             </select>
         </div>
-    </label>
+    </Label>
 );

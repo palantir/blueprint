@@ -88,7 +88,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
                 />
-                <H5>Example</H5>
+                <H5>Popover props</H5>
                 <Switch
                     label="Minimal popover style"
                     checked={this.state.minimal}
