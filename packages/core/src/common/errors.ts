@@ -70,6 +70,10 @@ export const TABS_WARN_DEPRECATED =
     ` <Tabs> is deprecated since v1.11.0; consider upgrading to <Tabs2>.` +
     " https://blueprintjs.com/#components.tabs.js";
 
+export const TOASTER_CREATE_NULL =
+    ns +
+    ` Toaster.create() is not supported inside React lifecycle methods in React 16.` +
+    ` See usage example on the docs site.`;
 export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop as it always creates a new element.`;
 export const TOASTER_WARN_LEFT_RIGHT = ns + ` Toaster does not support LEFT or RIGHT positions.`;
 

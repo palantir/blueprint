@@ -104,15 +104,12 @@ import { Button, Position, Toaster } from "@blueprintjs/core";
 
 class MyComponent extends React.Component<{}, {}> {
     private toaster: Toaster;
-    private refHandlers = {
-        toaster: (ref: Toaster) => this.toaster = ref,
-    };
 
     public render() {
         return (
             <div>
                 <Button onClick={this.addToast} text="Procure toast" />
-                <Toaster position={Position.TOP_RIGHT} ref={this.refHandlers.toaster} />
+                <Toaster position={Position.TOP_RIGHT} ref={ref => this.toaster = ref} />
             </div>
         )
     }
