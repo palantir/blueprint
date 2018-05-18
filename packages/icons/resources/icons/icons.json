@@ -3087,8 +3087,8 @@
     "content": "\\e7b3"
   },
   {
-    "name": "Crown",
-    "className": "pt-icon-crown",
+    "displayName": "Crown",
+    "iconName": "crown",
     "tags": "crown, hat, role, level, permission, king",
     "group": "miscellaneous",
     "content": "\\e7b4"
