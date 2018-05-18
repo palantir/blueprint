@@ -57,6 +57,7 @@ $attribute-modifier-color: $violet5;
 .editor {
   overflow: auto;
   color: inherit;
+  transition: $dark-theme-transition;
 
   .line {
     padding-right: $pt-grid-size * 2;

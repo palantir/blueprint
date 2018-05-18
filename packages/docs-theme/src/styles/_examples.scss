@@ -63,6 +63,7 @@ $dark-options-background-color: $dark-gray5;
   min-width: 0;
   max-width: 100%;
   padding: $example-spacing / 2;
+  transition: $dark-theme-transition;
 
   .#{$ns}-dark & {
     background: $dark-example-background-color;
@@ -79,6 +80,7 @@ $dark-options-background-color: $dark-gray5;
   background-color: $options-background-color;
   padding: $pt-grid-size * 2;
   text-align: left;
+  transition: $dark-theme-transition;
 
   // hide when empty (div is always rendered)
   &:empty {
