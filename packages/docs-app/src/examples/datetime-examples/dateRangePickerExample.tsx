@@ -120,7 +120,6 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
                     />
                 </div>
                 <div>
-                    <H5 />
                     {this.renderSelectMenu(
                         "Minimum date",
                         this.state.minDateIndex,
