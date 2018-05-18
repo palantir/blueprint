@@ -3085,5 +3085,12 @@
     "tags": "organization, chart, hierarchy, relationship, reference",
     "group": "data",
     "content": "\\e7b3"
+  },
+  {
+    "name": "Crown",
+    "className": "pt-icon-crown",
+    "tags": "crown, hat, role, level, permission, king",
+    "group": "miscellaneous",
+    "content": "\\e7b4"
   }
 ]
