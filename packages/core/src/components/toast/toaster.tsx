@@ -10,7 +10,7 @@ import * as ReactDOM from "react-dom";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import { TOASTER_WARN_INLINE } from "../../common/errors";
+import { TOASTER_CREATE_NULL, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
@@ -107,7 +107,11 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
-        return ReactDOM.render(<Toaster {...props} usePortal={false} />, containerElement) as Toaster;
+        const toaster = ReactDOM.render(<Toaster {...props} usePortal={false} />, containerElement) as Toaster;
+        if (toaster == null) {
+            throw new Error(TOASTER_CREATE_NULL);
+        }
+        return toaster;
     }
 
     public state = {
