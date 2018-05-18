@@ -6,7 +6,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, Code, H3, Intent, Overlay, Switch } from "@blueprintjs/core";
+import { Button, Classes, Code, H3, H5, Intent, Overlay, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
@@ -82,6 +82,7 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
         const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, hasBackdrop, usePortal } = this.state;
         return (
             <>
+                <H5>Props</H5>
                 <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
                 <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
                 <Switch checked={usePortal} onChange={this.handleUsePortalChange}>

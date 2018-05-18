@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { MenuItem, Switch } from "@blueprintjs/core";
+import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Suggest } from "@blueprintjs/select";
 import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
@@ -51,6 +51,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
     protected renderOptions() {
         return (
             <>
+                <H5>Props</H5>
                 <Switch
                     label="Close on select"
                     checked={this.state.closeOnSelect}
@@ -61,6 +62,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     checked={this.state.openOnKeyDown}
                     onChange={this.handleOpenOnKeyDownChange}
                 />
+                <H5>Popover props</H5>
                 <Switch
                     label="Minimal popover style"
                     checked={this.state.minimal}

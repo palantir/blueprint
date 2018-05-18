@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Radio, RadioGroup, Switch } from "@blueprintjs/core";
+import { H5, Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { TimezoneDisplayFormat, TimezonePicker } from "@blueprintjs/timezone";
 
@@ -36,6 +36,7 @@ export class TimezonePickerExample extends React.PureComponent<IExampleProps, IT
 
         const options = (
             <>
+                <H5>Props</H5>
                 <Switch checked={showLocalTimezone} label="Show local timezone" onChange={this.handleShowLocalChange} />
                 <Switch checked={disabled} label="Disabled" onChange={this.handleDisabledChange} />
                 <RadioGroup

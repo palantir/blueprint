@@ -92,6 +92,7 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
     private renderOptions() {
         return (
             <>
+                <H5>Props</H5>
                 <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />

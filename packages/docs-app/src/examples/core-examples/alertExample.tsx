@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Alert, Button, Intent, IToaster, Switch, Toaster } from "@blueprintjs/core";
+import { Alert, Button, H5, Intent, IToaster, Switch, Toaster } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
@@ -34,6 +34,7 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
         const { isOpen, isOpenError, ...alertProps } = this.state;
         const options = (
             <>
+                <H5>Props</H5>
                 <Switch
                     checked={this.state.canEscapeKeyCancel}
                     label="Can escape key cancel"

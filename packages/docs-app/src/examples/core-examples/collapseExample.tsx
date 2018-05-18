@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Collapse, Pre, Switch } from "@blueprintjs/core";
+import { Button, Collapse, H5, Pre, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ICollapseExampleState {
@@ -26,11 +26,14 @@ export class CollapseExample extends React.PureComponent<IExampleProps, ICollaps
 
     public render() {
         const options = (
-            <Switch
-                checked={this.state.keepChildrenMounted}
-                label="Keep children mounted"
-                onChange={this.handleChildrenMountedChange}
-            />
+            <>
+                <H5>Props</H5>
+                <Switch
+                    checked={this.state.keepChildrenMounted}
+                    label="Keep children mounted"
+                    onChange={this.handleChildrenMountedChange}
+                />
+            </>
         );
 
         return (

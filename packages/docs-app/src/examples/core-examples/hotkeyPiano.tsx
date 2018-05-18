@@ -162,7 +162,11 @@ export class HotkeyPiano extends React.PureComponent<IExampleProps, IHotkeyPiano
 
         if (AUDIO_CONTEXT == null) {
             return (
-                <div tabIndex={0}>Oops! This browser does not support the WebAudio API needed for this example.</div>
+                <Example options={false} {...this.props}>
+                    <div tabIndex={0}>
+                        Oops! This browser does not support the WebAudio API needed for this example.
+                    </div>
+                </Example>
             );
         }
 

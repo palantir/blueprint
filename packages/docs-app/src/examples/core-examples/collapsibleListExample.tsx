@@ -11,6 +11,7 @@ import {
     Classes,
     CollapseFrom,
     CollapsibleList,
+    H5,
     IMenuItemProps,
     Label,
     MenuItem,
@@ -40,6 +41,7 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
     public render() {
         const options = (
             <>
+                <H5>Props</H5>
                 <Label text="Visible items" />
                 <Slider
                     max={6}

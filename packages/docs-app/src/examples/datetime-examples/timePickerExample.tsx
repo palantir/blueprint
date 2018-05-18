@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Switch } from "@blueprintjs/core";
+import { Classes, H5, Switch } from "@blueprintjs/core";
 import { Example, handleNumberChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
@@ -57,6 +57,7 @@ export class TimePickerExample extends React.PureComponent<IExampleProps, ITimeP
     protected renderOptions() {
         return (
             <>
+                <H5>Props</H5>
                 <Switch
                     checked={this.state.selectAllOnFocus}
                     label="Select all on focus"

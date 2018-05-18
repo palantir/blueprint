@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Label, Switch } from "@blueprintjs/core";
+import { Classes, H5, Label, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleNumberChange, IExampleProps } from "@blueprintjs/docs-theme";
 import moment from "moment";
 import * as React from "react";
@@ -101,6 +101,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
         return (
             <>
                 <div>
+                    <H5>Props</H5>
                     <Switch
                         checked={this.state.allowSingleDayRange}
                         label="Allow single day range"

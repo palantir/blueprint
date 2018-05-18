@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Icon, Label, Slider } from "@blueprintjs/core";
+import { H5, Icon, Label, Slider } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 import { IconSelect } from "./common/iconSelect";
@@ -27,6 +27,7 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
 
         const options = (
             <>
+                <H5>Props</H5>
                 <IconSelect iconName={icon} onChange={this.handleIconNameChange} />
                 <Label text="Icon size" />
                 <Slider

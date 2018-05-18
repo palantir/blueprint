@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, Classes, Code, Dialog, Intent, Switch, Tooltip } from "@blueprintjs/core";
+import { AnchorButton, Button, Classes, Code, Dialog, H5, Intent, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
@@ -96,6 +96,7 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
         const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, usePortal } = this.state;
         return (
             <>
+                <H5>Props</H5>
                 <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
                 <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
                 <Switch checked={usePortal} onChange={this.handleUsePortalChange}>
