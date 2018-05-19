@@ -108,7 +108,7 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
         return (
             <div className={classes} data-example-id={id} {...htmlProps}>
                 {example}
-                <div className="docs-example-options">{options}</div>
+                {options && <div className="docs-example-options">{options}</div>}
             </div>
         );
     }
