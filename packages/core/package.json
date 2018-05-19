@@ -11,7 +11,8 @@
     "*.css"
   ],
   "bin": {
-    "upgrade-blueprint-2.0.0-rename": "./scripts/upgrade-blueprint-2.0.0-rename"
+    "upgrade-blueprint-2.0.0-rename": "./scripts/upgrade-blueprint-2.0.0-rename.sh",
+    "upgrade-blueprint-3.0.0-rename": "./scripts/upgrade-blueprint-3.0.0-rename.sh"
   },
   "scripts": {
     "clean": "rm -rf dist/* && rm -rf lib/*",
