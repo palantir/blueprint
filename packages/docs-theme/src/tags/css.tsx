@@ -41,7 +41,11 @@ export class CssExample extends React.PureComponent<ITag> {
         ));
         return (
             <>
-                <Example id={reference} options={options} html={this.renderExample(markup)} />
+                <Example
+                    id={reference}
+                    options={options.length > 0 ? options : false}
+                    html={this.renderExample(markup)}
+                />
                 <div
                     className={classNames("docs-example-markup", Classes.RUNNING_TEXT)}
                     dangerouslySetInnerHTML={{ __html: markupHtml }}
