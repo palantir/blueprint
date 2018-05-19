@@ -20,10 +20,6 @@ $dark-options-background-color: $dark-gray5;
   position: relative;
   margin-top: $content-padding * 2;
   width: 100%;
-
-  &:empty {
-    display: none;
-  }
 }
 
 // options to the right of example in same row
@@ -77,11 +73,6 @@ $dark-options-background-color: $dark-gray5;
   background-color: $options-background-color;
   padding: $pt-grid-size * 2;
   text-align: left;
-
-  // hide when empty (div is always rendered)
-  &:empty {
-    display: none;
-  }
 
   .#{$ns}-heading:not(:first-child) {
     margin-top: $pt-grid-size;
