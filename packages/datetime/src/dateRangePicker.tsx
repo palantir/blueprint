@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractPureComponent, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, Boundary, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
@@ -14,7 +14,6 @@ import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/prop
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import DateRange = DateUtils.DateRange;
-import DateRangeBoundary = DateUtils.DateRangeBoundary;
 
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
@@ -51,7 +50,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * In that case, the two boundary dates will be auto-swapped to keep them in chronological order.
      * If `undefined`, the picker will revert to its default selection behavior.
      */
-    boundaryToModify?: DateRangeBoundary;
+    boundaryToModify?: Boundary;
 
     /**
      * Whether displayed months in the calendar are contiguous.
@@ -88,7 +87,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * When triggered from mouseenter, it will pass the date range that would result from next click.
      * When triggered from mouseleave, it will pass `undefined`.
      */
-    onHoverChange?: (hoveredDates: DateRange, hoveredDay: Date, hoveredBoundary: DateRangeBoundary) => void;
+    onHoverChange?: (hoveredDates: DateRange, hoveredDay: Date, hoveredBoundary: Boundary) => void;
 
     /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
@@ -329,11 +328,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             throw new Error(Errors.DATERANGEPICKER_VALUE_INVALID);
         }
 
-        if (
-            boundaryToModify != null &&
-            boundaryToModify !== DateRangeBoundary.START &&
-            boundaryToModify !== DateRangeBoundary.END
-        ) {
+        if (boundaryToModify != null && boundaryToModify !== Boundary.START && boundaryToModify !== Boundary.END) {
             throw new Error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID);
         }
     }

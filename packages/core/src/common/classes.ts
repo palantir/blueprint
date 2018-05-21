@@ -4,8 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Elevation } from "../components/card/card";
 import { Alignment } from "./alignment";
+import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 
 const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
@@ -271,7 +271,7 @@ export function iconClass(iconName?: string) {
 }
 
 /** Return CSS class for intent. */
-export function intentClass(intent = Intent.NONE) {
+export function intentClass(intent?: Intent) {
     if (intent == null || intent === Intent.NONE) {
         return undefined;
     }

@@ -5,16 +5,16 @@
  */
 
 import { Classes, H5, Switch } from "@blueprintjs/core";
-import { Example, handleNumberChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleNumberChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
 
-import { TimePicker, TimePickerPrecision } from "@blueprintjs/datetime";
+import { TimePicker, TimePrecision } from "@blueprintjs/datetime";
 // tslint:disable-next-line:no-submodule-imports
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
 
 export interface ITimePickerExampleState {
-    precision?: TimePickerPrecision;
+    precision?: TimePrecision;
     selectAllOnFocus?: boolean;
     showArrowButtons?: boolean;
     disabled?: boolean;
@@ -38,13 +38,13 @@ enum MaximumHours {
 export class TimePickerExample extends React.PureComponent<IExampleProps, ITimePickerExampleState> {
     public state = {
         disabled: false,
-        precision: TimePickerPrecision.MINUTE,
+        precision: TimePrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
         useAmPm: false,
     };
 
-    private handlePrecisionChange = handleNumberChange(precision => this.setState({ precision }));
+    private handlePrecisionChange = handleStringChange((precision: TimePrecision) => this.setState({ precision }));
 
     public render() {
         return (

@@ -8,8 +8,8 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    Boundary,
     Classes,
-    CollapseFrom,
     CollapsibleList,
     H5,
     IMenuItemProps,
@@ -21,22 +21,22 @@ import {
 import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ICollapsibleListExampleState {
-    collapseFrom: CollapseFrom;
-    visibleItemCount: number;
+    collapseFrom?: Boundary;
+    visibleItemCount?: number;
 }
 
 const COLLAPSE_FROM_RADIOS = [
-    { label: "Start", value: CollapseFrom.START.toString() },
-    { label: "End", value: CollapseFrom.END.toString() },
+    { label: "Start", value: Boundary.START.toString() },
+    { label: "End", value: Boundary.END.toString() },
 ];
 
 export class CollapsibleListExample extends React.PureComponent<IExampleProps, ICollapsibleListExampleState> {
     public state: ICollapsibleListExampleState = {
-        collapseFrom: CollapseFrom.START,
+        collapseFrom: Boundary.START,
         visibleItemCount: 3,
     };
 
-    private handleChangeCollapse = handleStringChange((collapseFrom: CollapseFrom) => this.setState({ collapseFrom }));
+    private handleChangeCollapse = handleStringChange((collapseFrom: Boundary) => this.setState({ collapseFrom }));
 
     public render() {
         const options = (
