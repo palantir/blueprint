@@ -46,3 +46,13 @@ Licensed under the terms of the LICENSE file distributed with this project.
     padding-left: 0;
   }
 }
+
+.docs-root,
+.docs-nav,
+.docs-content-wrapper,
+.docs-example,
+.docs-example-options,
+.editor,
+code {
+  transition: background-color $pt-transition-duration $pt-transition-ease;
+}
