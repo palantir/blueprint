@@ -5,15 +5,16 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { dispatchMouseEvent, dispatchTouchEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
-import { Classes, ISliderProps, Slider } from "../../src/index";
+import { Classes, Slider } from "../../src/index";
+import * as Utils from "./sliderTestUtils";
 
 describe("<Slider>", () => {
     let testsContainerElement: HTMLElement;
@@ -67,7 +68,7 @@ describe("<Slider>", () => {
     it("moving mouse calls onChange with nearest value", () => {
         const changeSpy = sinon.spy();
         const slider = renderSlider(<Slider onChange={changeSpy} />).simulate("mousedown", { clientX: 0 });
-        mouseMoveHorizontal(slider.state("tickSize"), 5);
+        Utils.mouseMoveHorizontal(slider.state("tickSize"), 5);
         // called 4 times, for the move to 1, 2, 3, and 4
         assert.equal(changeSpy.callCount, 4, "call count");
         assert.deepEqual(changeSpy.args.map(arg => arg[0]), [1, 2, 3, 4]);
@@ -76,8 +77,8 @@ describe("<Slider>", () => {
     it("releasing mouse calls onRelease with nearest value", () => {
         const releaseSpy = sinon.spy();
         const slider = renderSlider(<Slider onRelease={releaseSpy} />).simulate("mousedown", { clientX: 0 });
-        mouseMoveHorizontal(slider.state("tickSize"), 1);
-        mouseUpHorizontal(slider.state("tickSize"));
+        Utils.mouseMoveHorizontal(slider.state("tickSize"), 1);
+        Utils.mouseUpHorizontal(slider.state("tickSize"));
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
         assert.equal(releaseSpy.args[0][0], 1);
     });
@@ -87,7 +88,7 @@ describe("<Slider>", () => {
         const slider = renderSlider(<Slider onChange={changeSpy} />).simulate("touchstart", {
             changedTouches: [{ clientX: 0 }],
         });
-        touchMoveHorizontal(slider.state("tickSize"), 5);
+        Utils.touchMoveHorizontal(slider.state("tickSize"), 5);
         // called 4 times, for the move to 1, 2, 3, and 4
         assert.equal(changeSpy.callCount, 4);
         assert.deepEqual(changeSpy.args.map(arg => arg[0]), [1, 2, 3, 4]);
@@ -98,8 +99,8 @@ describe("<Slider>", () => {
         const slider = renderSlider(<Slider onRelease={releaseSpy} />).simulate("touchstart", {
             changedTouches: [{ clientX: 0 }],
         });
-        touchMoveHorizontal(slider.state("tickSize"), 1);
-        touchEndHorizontal(slider.state("tickSize"));
+        Utils.touchMoveHorizontal(slider.state("tickSize"), 1);
+        Utils.touchEndHorizontal(slider.state("tickSize"));
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
         assert.equal(releaseSpy.args[0][0], 1);
     });
@@ -134,7 +135,7 @@ describe("<Slider>", () => {
         const slider = renderSlider(<Slider disabled={true} onChange={changeSpy} />).simulate("mousedown", {
             clientX: 0,
         });
-        mouseMoveHorizontal(slider.state("tickSize"), 5);
+        Utils.mouseMoveHorizontal(slider.state("tickSize"), 5);
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
 
@@ -143,7 +144,7 @@ describe("<Slider>", () => {
         const slider = renderSlider(<Slider disabled={true} onChange={changeSpy} />).simulate("touchstart", {
             changedTouches: [{ clientX: 0 }],
         });
-        touchMoveHorizontal(slider.state("tickSize"), 5);
+        Utils.touchMoveHorizontal(slider.state("tickSize"), 5);
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
 
@@ -207,10 +208,10 @@ describe("<Slider>", () => {
 
         it("moving mouse calls onChange with nearest value", () => {
             const slider = renderSlider(<Slider vertical={true} onChange={changeSpy} />);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider.simulate("mousedown", { clientY: sliderBottom });
-            mouseMoveVertical(slider.state("tickSize"), 5, sliderBottom);
+            Utils.mouseMoveVertical(slider.state("tickSize"), 5, 0, sliderBottom);
 
             // called 4 times, for the move to 1, 2, 3, and 4
             assert.equal(changeSpy.callCount, 4);
@@ -219,10 +220,10 @@ describe("<Slider>", () => {
 
         it("releasing mouse calls onRelease with nearest value", () => {
             const slider = renderSlider(<Slider vertical={true} onRelease={releaseSpy} />);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider.simulate("mousedown", { clientY: sliderBottom });
-            mouseUpVertical(sliderBottom - slider.state("tickSize"));
+            Utils.mouseUpVertical(sliderBottom - slider.state("tickSize"));
 
             assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
             assert.equal(releaseSpy.args[0][0], 1);
@@ -230,10 +231,10 @@ describe("<Slider>", () => {
 
         it("moving touch calls onChange with nearest value", () => {
             const slider = renderSlider(<Slider vertical={true} onChange={changeSpy} />);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider.simulate("touchstart", { changedTouches: [{ clientY: sliderBottom }] });
-            touchMoveVertical(slider.state("tickSize"), 5, sliderBottom);
+            Utils.touchMoveVertical(slider.state("tickSize"), 5, 0, sliderBottom);
 
             // called 4 times, for the move to 1, 2, 3, and 4
             assert.equal(changeSpy.callCount, 4);
@@ -242,11 +243,11 @@ describe("<Slider>", () => {
 
         it("releasing touch calls onRelease with nearest value", () => {
             const slider = renderSlider(<Slider vertical={true} onRelease={releaseSpy} />);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider.simulate("touchstart", { changedTouches: [{ clientY: sliderBottom }] });
-            touchMoveVertical(slider.state("tickSize"), 1, sliderBottom);
-            touchEndVertical(sliderBottom - slider.state("tickSize"));
+            Utils.touchMoveVertical(slider.state("tickSize"), 1, 0, sliderBottom);
+            Utils.touchEndVertical(sliderBottom - slider.state("tickSize"));
 
             assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
             assert.equal(releaseSpy.args[0][0], 1);
@@ -254,20 +255,20 @@ describe("<Slider>", () => {
 
         it("disabled slider does not respond to mouse movement", () => {
             const slider = renderSlider(<Slider vertical={true} disabled={true} onChange={changeSpy} />);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider.simulate("mousedown", { clientY: sliderBottom });
-            mouseMoveVertical(slider.state("tickSize"), 5, sliderBottom);
+            Utils.mouseMoveVertical(slider.state("tickSize"), 5, 0, sliderBottom);
 
             assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
         });
 
         it("disabled slider does not respond to touch movement", () => {
             const slider = renderSlider(<Slider vertical={true} disabled={true} onChange={changeSpy} />);
-            const sliderBottom = getSliderBottomPixel(slider);
+            const sliderBottom = Utils.getSliderBottomPixel(slider);
 
             slider.simulate("touchstart", { changedTouches: [{ clientY: sliderBottom }] });
-            touchMoveVertical(slider.state("tickSize"), 5, sliderBottom);
+            Utils.touchMoveVertical(slider.state("tickSize"), 5, 0, sliderBottom);
 
             assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
         });
@@ -275,70 +276,5 @@ describe("<Slider>", () => {
 
     function renderSlider(slider: JSX.Element) {
         return mount(slider, { attachTo: testsContainerElement });
-    }
-
-    function mouseMoveHorizontal(movement: number, times = 1) {
-        genericMoveHorizontal(movement, times, "mousemove");
-    }
-
-    function mouseMoveVertical(movement: number, times = 1, offsetTop: number) {
-        genericMoveVertical(movement, times, "mousemove", offsetTop);
-    }
-
-    function mouseUpHorizontal(clientPixel = 0) {
-        dispatchMouseEvent(document, "mouseup", clientPixel, undefined);
-    }
-
-    function mouseUpVertical(clientPixel = 0) {
-        dispatchMouseEvent(document, "mouseup", undefined, clientPixel);
-    }
-
-    function touchMoveHorizontal(movement: number, times = 1) {
-        genericMoveHorizontal(movement, times, "touchmove");
-    }
-
-    function touchMoveVertical(movement: number, times = 1, offsetTop: number) {
-        genericMoveVertical(movement, times, "touchmove", offsetTop);
-    }
-
-    function genericMoveHorizontal(movement: number, times = 1, eventType: "mousemove" | "touchmove") {
-        // vertical sliders go from bottom-up, so everything is backward
-        const dispatchEventFn = getDispatchEventFn(eventType);
-        for (let i = 0; i < times; i += 1) {
-            const clientPixel = i * movement;
-            dispatchEventFn(document, eventType, clientPixel, undefined);
-        }
-    }
-
-    function genericMoveVertical(
-        movement: number,
-        times = 1,
-        eventType: "mousemove" | "touchmove",
-        sliderBottom: number,
-    ) {
-        const dispatchEventFn = getDispatchEventFn(eventType);
-        // vertical sliders go from the bottom gulp up, so 0 is actually at the
-        // bottom of the element
-        for (let i = 0; i < times; i += 1) {
-            const clientPixel = sliderBottom - i * movement;
-            dispatchEventFn(document, eventType, undefined, clientPixel);
-        }
-    }
-
-    function getDispatchEventFn(eventType: "mousemove" | "touchmove") {
-        return eventType === "touchmove" ? dispatchTouchEvent : dispatchMouseEvent;
-    }
-
-    function touchEndHorizontal(clientX = 0) {
-        dispatchTouchEvent(document, "touchend", clientX, undefined);
-    }
-
-    function touchEndVertical(clientY = 0) {
-        dispatchTouchEvent(document, "touchend", undefined, clientY);
-    }
-
-    function getSliderBottomPixel(slider: ReactWrapper<ISliderProps, any>) {
-        const { height, top } = slider.getDOMNode().getBoundingClientRect();
-        return height + top;
     }
 });

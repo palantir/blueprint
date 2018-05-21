@@ -83,6 +83,16 @@ export interface ISliderState {
 }
 
 export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPureComponent<P, ISliderState> {
+    public static defaultProps: ICoreSliderProps = {
+        disabled: false,
+        labelStepSize: 1,
+        max: 10,
+        min: 0,
+        showTrackFill: true,
+        stepSize: 1,
+        vertical: false,
+    };
+
     public className = Classes.SLIDER;
 
     private trackElement: HTMLElement;
@@ -111,7 +121,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
         );
         return (
             <div className={classes} onMouseDown={this.maybeHandleTrackClick} onTouchStart={this.maybeHandleTrackTouch}>
-                <div className={`${Classes.SLIDER}-track`} ref={this.refHandlers.track} />
+                <div className={Classes.SLIDER_TRACK} ref={this.refHandlers.track} />
                 {this.maybeRenderFill()}
                 {this.maybeRenderAxis()}
                 {this.renderHandles()}

@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
@@ -33,15 +34,9 @@ export interface ISliderProps extends ICoreSliderProps {
 
 export class Slider extends CoreSlider<ISliderProps> {
     public static defaultProps: ISliderProps = {
-        disabled: false,
+        ...CoreSlider.defaultProps,
         initialValue: 0,
-        labelStepSize: 1,
-        max: 10,
-        min: 0,
-        showTrackFill: true,
-        stepSize: 1,
         value: 0,
-        vertical: false,
     };
 
     public static displayName: "Blueprint.Slider";
@@ -67,7 +62,7 @@ export class Slider extends CoreSlider<ISliderProps> {
             ? { bottom: offsetPercentage, height: sizePercentage }
             : { left: offsetPercentage, width: sizePercentage };
 
-        return <div className={`${Classes.SLIDER}-progress`} style={style} />;
+        return <div className={classNames(Classes.SLIDER_PROGRESS, Classes.INTENT_PRIMARY)} style={style} />;
     }
 
     protected renderHandles() {

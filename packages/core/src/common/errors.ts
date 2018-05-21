@@ -65,6 +65,7 @@ export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
 export const SLIDER_ZERO_STEP = ns + ` <Slider> stepSize must be greater than zero.`;
 export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be greater than zero.`;
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
+export const MULTIRANGESLIDER_INVALID_CHILD = ns + ` <MultiRangeSlider> children must be <SliderHandle>s`;
 
 export const TOASTER_CREATE_NULL =
     ns +

@@ -36,14 +36,8 @@ export interface IRangeSliderProps extends ICoreSliderProps {
 
 export class RangeSlider extends CoreSlider<IRangeSliderProps> {
     public static defaultProps: IRangeSliderProps = {
-        disabled: false,
-        labelStepSize: 1,
-        max: 10,
-        min: 0,
-        showTrackFill: true,
-        stepSize: 1,
+        ...CoreSlider.defaultProps,
         value: [0, 10],
-        vertical: false,
     };
 
     public static displayName = "Blueprint2.RangeSlider";
@@ -73,13 +67,17 @@ export class RangeSlider extends CoreSlider<IRangeSliderProps> {
             ? { bottom: offsetCalc, height: sizeCalc }
             : { left: offsetCalc, width: sizeCalc };
 
-        return <div className={`${Classes.SLIDER}-progress`} style={style} />;
+        return <div className={classNames(Classes.SLIDER_PROGRESS, Classes.INTENT_PRIMARY)} style={style} />;
     }
 
     protected renderHandles() {
         const { disabled, max, min, onRelease, stepSize, value, vertical } = this.props;
         return value.map((val, index) => (
             <Handle
+                className={classNames({
+                    [Classes.START]: index === RangeIndex.START,
+                    [Classes.END]: index === RangeIndex.END,
+                })}
                 disabled={disabled}
                 key={index}
                 label={this.formatLabel(val)}
