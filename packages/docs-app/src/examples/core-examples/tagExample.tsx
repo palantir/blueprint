@@ -6,8 +6,8 @@
 
 import * as React from "react";
 
-import { Button, Intent, Switch, Tag } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Button, H5, Intent, Switch, Tag } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface ITagExampleState {
@@ -22,7 +22,7 @@ export interface ITagExampleState {
     tags: string[];
 }
 
-export class TagExample extends BaseExample<ITagExampleState> {
+export class TagExample extends React.PureComponent<IExampleProps, ITagExampleState> {
     public state: ITagExampleState = {
         icon: false,
         intent: Intent.NONE,
@@ -35,8 +35,6 @@ export class TagExample extends BaseExample<ITagExampleState> {
         tags: INITIAL_TAGS,
     };
 
-    protected className = "docs-tag-example";
-
     private handleIconChange = handleBooleanChange(icon => this.setState({ icon }));
     private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
     private handleInteractiveChange = handleBooleanChange(interactive => this.setState({ interactive }));
@@ -46,9 +44,9 @@ export class TagExample extends BaseExample<ITagExampleState> {
     private handleRightIconChange = handleBooleanChange(rightIcon => this.setState({ rightIcon }));
     private handleRoundChange = handleBooleanChange(round => this.setState({ round }));
 
-    protected renderExample() {
-        const { icon, removable, rightIcon, tags: exampleTags, ...tagProps } = this.state;
-        const tags = this.state.tags.map(tag => {
+    public render() {
+        const { icon, removable, rightIcon, tags, ...tagProps } = this.state;
+        const tagElements = tags.map(tag => {
             const onRemove = () => this.setState({ tags: this.state.tags.filter(t => t !== tag) });
             return (
                 <Tag
@@ -62,38 +60,30 @@ export class TagExample extends BaseExample<ITagExampleState> {
                 </Tag>
             );
         });
-        return <div>{tags}</div>;
+        return (
+            <Example options={this.renderOptions()} {...this.props}>
+                {tagElements}
+            </Example>
+        );
     }
 
-    protected renderOptions() {
+    private renderOptions() {
         const { icon, intent, interactive, large, minimal, removable, rightIcon, round } = this.state;
-        return [
-            [
-                <Switch key="large" label="Large" checked={large} onChange={this.handleLargeChange} />,
-                <Switch key="minimal" label="Minimal" checked={minimal} onChange={this.handleMinimalChange} />,
-                <Switch key="round" label="Round" checked={round} onChange={this.handleRoundChange} />,
-                <Switch
-                    key="interactive"
-                    label="Interactive"
-                    checked={interactive}
-                    onChange={this.handleInteractiveChange}
-                />,
-            ],
-            [
-                <Switch key="icon" label="Show icon" checked={icon} onChange={this.handleIconChange} />,
-                <Switch
-                    key="rightIcon"
-                    label="Show right icon"
-                    checked={rightIcon}
-                    onChange={this.handleRightIconChange}
-                />,
-                <Switch key="removable" label="Removable" checked={removable} onChange={this.handleRemovableChange} />,
-            ],
-            [
-                <IntentSelect key="intent" intent={intent} onChange={this.handleIntentChange} />,
-                <Button key="reset" text="Reset tags" onClick={this.resetTags} />,
-            ],
-        ];
+        return (
+            <>
+                <H5>Props</H5>
+                <Switch label="Large" checked={large} onChange={this.handleLargeChange} />
+                <Switch label="Minimal" checked={minimal} onChange={this.handleMinimalChange} />
+                <Switch label="Interactive" checked={interactive} onChange={this.handleInteractiveChange} />
+                <Switch label="Removable" checked={removable} onChange={this.handleRemovableChange} />
+                <Switch label="Round" checked={round} onChange={this.handleRoundChange} />
+                <Switch label="Left icon" checked={icon} onChange={this.handleIconChange} />,
+                <Switch label="Right icon" checked={rightIcon} onChange={this.handleRightIconChange} />,
+                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
+                <H5>Example</H5>
+                <Button icon="refresh" text="Reset tags" onClick={this.resetTags} />
+            </>
+        );
     }
 
     private resetTags = () => this.setState({ tags: INITIAL_TAGS });

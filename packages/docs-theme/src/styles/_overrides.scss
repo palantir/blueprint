@@ -1,12 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-.#{$ns}-html-table {
+table {
   width: 100%;
-}
-
-.#{$ns}-progress-bar {
-  margin-bottom: $pt-grid-size;
 }
 
 // override normalize.css

@@ -30,6 +30,10 @@ $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !defau
   color: $pt-dark-text-color;
   font-size: $pt-font-size-small;
 
+  &:focus {
+    @include focus-outline(0);
+  }
+
   &.#{$ns}-round {
     border-radius: $tag-height / 2;
     // optical adjustment for rounded tags
@@ -50,10 +54,6 @@ $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !defau
 
   &.#{$ns}-tag-removable {
     padding-right: $tag-height;
-  }
-
-  &.#{$ns}-active {
-    @include focus-outline(0);
   }
 
   > #{$icon-classes} {
@@ -151,6 +151,7 @@ $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !defau
       background-color: rgba($background-color, $opacity - 0.15);
     }
 
+    &.#{$ns}-active,
     &:active {
       background-color: rgba($background-color, $opacity - 0.3);
     }
@@ -165,6 +166,7 @@ $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !defau
       background-color: rgba($background-color, $opacity + 0.1);
     }
 
+    &.#{$ns}-active,
     &:active {
       background-color: rgba($background-color, $opacity + 0.2);
     }

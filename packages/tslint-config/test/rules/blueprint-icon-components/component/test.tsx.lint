@@ -1,5 +1,7 @@
 <Button icon="tick" />
-        ~~~~~~~~~~~    [use <NamedIcon /> component for icon prop]
+             ~~~~~~    [err % ("<TickIcon />")]
 
 <Button icon={<TickIcon />} />
 <InputGroup rightElement={<Button />} />
+
+[err]: Replace icon literal with component: %s

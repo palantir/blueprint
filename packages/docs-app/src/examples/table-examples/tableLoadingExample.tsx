@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table, TableLoadingOption } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
@@ -23,14 +23,12 @@ export interface ITableLoadingExampleState {
     rowHeadersLoading?: boolean;
 }
 
-export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> {
+export class TableLoadingExample extends React.PureComponent<IExampleProps, ITableLoadingExampleState> {
     public state: ITableLoadingExampleState = {
         cellsLoading: true,
         columnHeadersLoading: true,
         rowHeadersLoading: true,
     };
-
-    protected className = "docs-table-loading-example";
 
     private handleCellsLoading = handleBooleanChange(cellsLoading => this.setState({ cellsLoading }));
 
@@ -40,60 +38,35 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
 
     private handleRowHeadersLoading = handleBooleanChange(rowHeadersLoading => this.setState({ rowHeadersLoading }));
 
-    public renderExample() {
-        const loadingOptions: TableLoadingOption[] = [];
-        if (this.state.cellsLoading) {
-            loadingOptions.push(TableLoadingOption.CELLS);
-        }
-        if (this.state.columnHeadersLoading) {
-            loadingOptions.push(TableLoadingOption.COLUMN_HEADERS);
-        }
-        if (this.state.rowHeadersLoading) {
-            loadingOptions.push(TableLoadingOption.ROW_HEADERS);
-        }
-
+    public render() {
+        const columns = Object.keys(bigSpaceRocks[0]).map((columnName, index) => (
+            <Column key={index} name={this.formatColumnName(columnName)} cellRenderer={this.renderCell} />
+        ));
         return (
-            <Table numRows={bigSpaceRocks.length} loadingOptions={loadingOptions}>
-                {this.renderColumns()}
-            </Table>
+            <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
+                <Table numRows={bigSpaceRocks.length} loadingOptions={this.getLoadingOptions()}>
+                    {columns}
+                </Table>
+            </Example>
         );
     }
 
     protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.cellsLoading}
-                    label="Cells"
-                    key="cells"
-                    onChange={this.handleCellsLoading}
-                />,
+        return (
+            <>
+                <Switch checked={this.state.cellsLoading} label="Cells" onChange={this.handleCellsLoading} />
                 <Switch
                     checked={this.state.columnHeadersLoading}
                     label="Column headers"
-                    key="columnheaders"
                     onChange={this.handleColumnHeadersLoading}
-                />,
+                />
                 <Switch
                     checked={this.state.rowHeadersLoading}
                     label="Row headers"
-                    key="rowheaders"
                     onChange={this.handleRowHeadersLoading}
-                />,
-            ],
-        ];
-    }
-
-    private renderColumns() {
-        const columns: JSX.Element[] = [];
-
-        Object.keys(bigSpaceRocks[0]).forEach((columnName, index) => {
-            columns.push(
-                <Column key={index} name={this.formatColumnName(columnName)} cellRenderer={this.renderCell} />,
-            );
-        });
-
-        return columns;
+                />
+            </>
+        );
     }
 
     private renderCell = (rowIndex: number, columnIndex: number) => {
@@ -104,4 +77,18 @@ export class TableLoadingExample extends BaseExample<ITableLoadingExampleState> 
     private formatColumnName = (columnName: string) => {
         return columnName.replace(/([A-Z])/g, " $1").replace(/^./, firstCharacter => firstCharacter.toUpperCase());
     };
+
+    private getLoadingOptions() {
+        const loadingOptions: TableLoadingOption[] = [];
+        if (this.state.cellsLoading) {
+            loadingOptions.push(TableLoadingOption.CELLS);
+        }
+        if (this.state.columnHeadersLoading) {
+            loadingOptions.push(TableLoadingOption.COLUMN_HEADERS);
+        }
+        if (this.state.rowHeadersLoading) {
+            loadingOptions.push(TableLoadingOption.ROW_HEADERS);
+        }
+        return loadingOptions;
+    }
 }

@@ -1,0 +1,31 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "common/variables";
+@import "common/mixins";
+
+// Style resets on top of Normalize.css
+
+
+body {
+  @include base-typography();
+  color: $pt-text-color;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: $pt-grid-size;
+}
+
+small {
+  font-size: $pt-font-size-small;
+}
+
+strong {
+  font-weight: 600;
+}
+
+// consistent cross-browser text selection
+::selection {
+  background: $pt-text-selection-color;
+}

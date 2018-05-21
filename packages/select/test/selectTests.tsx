@@ -112,7 +112,7 @@ describe("<Select>", () => {
         const popoverWillOpen = sinon.spy();
         const modifiers = {}; // our own instance
         const wrapper = select({ popoverProps: { popoverWillOpen, modifiers } });
-        wrapper.find("table").simulate("click");
+        wrapper.find("article").simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(popoverWillOpen.calledOnce);
     });
@@ -141,7 +141,7 @@ describe("<Select>", () => {
     function select(props: Partial<ISelectProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(
             <FilmSelect {...defaultProps} {...handlers} {...props}>
-                <table />
+                <article />
             </FilmSelect>,
         );
         if (query !== undefined) {

@@ -8,7 +8,7 @@ Skeletons
 
 Markup:
 <div class="#{$ns}-card">
-  <h5><a class="{{.modifier}}" href="#" tabindex="-1">Card heading</a></h5>
+  <h5 class="#{$ns}-heading"><a class="{{.modifier}}" href="#" tabindex="-1">Card heading</a></h5>
   <p class="{{.modifier}}">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis.
     Fusce dapibus metus in dapibus mollis. Quisque eget ex diam.

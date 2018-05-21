@@ -6,7 +6,15 @@
 
 import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
 import classNames from "classnames";
-import { isTsProperty, ITsClass, ITsInterface, ITsMethod, ITsProperty, ITsSignature } from "documentalist/dist/client";
+import {
+    isTag,
+    isTsProperty,
+    ITsClass,
+    ITsInterface,
+    ITsMethod,
+    ITsProperty,
+    ITsSignature,
+} from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
@@ -20,6 +28,7 @@ export interface IInterfaceTableProps extends IProps {
     title: string;
 }
 
+// tslint:disable:blueprint-html-components - rendered inside RUNNING_TEXT
 export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
     public static contextTypes = DocumentationContextTypes;
     public static displayName = "Docs2.InterfaceTable";
@@ -49,6 +58,15 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
         const { flags: { isDeprecated, isExternal, isOptional }, name } = entry;
         const { documentation } = isTsProperty(entry) ? entry : entry.signatures[0];
 
+        // ignore props marked with `@internal` tag (this tag is in contents instead of in flags)
+        if (
+            documentation != null &&
+            documentation.contents != null &&
+            documentation.contents.some(val => isTag(val) && val.tag === "internal")
+        ) {
+            return null;
+        }
+
         const classes = classNames("docs-prop-name", {
             "docs-prop-is-deprecated": isDeprecated === true || typeof isDeprecated === "string",
             "docs-prop-is-internal": !isExternal,
@@ -74,7 +92,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
                 <td className="docs-prop-details">
                     <code className="docs-prop-type">{typeInfo}</code>
                     <div className="docs-prop-description">{renderBlock(documentation)}</div>
-                    <p className="docs-prop-tags">{this.renderTags(entry)}</p>
+                    <div className="docs-prop-tags">{this.renderTags(entry)}</div>
                 </td>
             </tr>
         );

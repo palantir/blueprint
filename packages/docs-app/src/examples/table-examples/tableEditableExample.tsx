@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Intent } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Column, ColumnHeaderCell, EditableCell, EditableName, Table } from "@blueprintjs/table";
 
 export interface ITableEditableExampleState {
@@ -17,7 +17,7 @@ export interface ITableEditableExampleState {
     sparseColumnIntents?: Intent[];
 }
 
-export class TableEditableExample extends BaseExample<ITableEditableExampleState> {
+export class TableEditableExample extends React.PureComponent<IExampleProps, ITableEditableExampleState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
     };
@@ -34,13 +34,17 @@ export class TableEditableExample extends BaseExample<ITableEditableExampleState
         sparseColumnIntents: [],
     };
 
-    public renderExample() {
+    public render() {
         const columns = this.state.columnNames.map((_: string, index: number) => {
             return (
                 <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
             );
         });
-        return <Table numRows={7}>{columns}</Table>;
+        return (
+            <Example options={false} showOptionsBelowExample={true} {...this.props}>
+                <Table numRows={7}>{columns}</Table>
+            </Example>
+        );
     }
 
     public renderCell = (rowIndex: number, columnIndex: number) => {

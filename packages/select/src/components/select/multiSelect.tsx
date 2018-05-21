@@ -36,7 +36,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
      * Whether the filtering state should be reset to initial when an item is selected
      * (immediately before `onItemSelect` is invoked), or when the popover closes.
      * The query will become the empty string and the first item will be made active.
-     * @default true
+     * @default false
      */
     resetOnSelect?: boolean;
 

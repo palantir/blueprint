@@ -9,9 +9,13 @@ import * as ReactDOM from "react-dom";
 
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { HTMLDivProps, IProps } from "../../common/props";
+import { IProps } from "../../common/props";
+import { isFunction } from "../../common/utils";
 
-export interface IPortalProps extends IProps, HTMLDivProps {
+/** Detect if `React.createPortal()` API method does not exist. */
+const cannotCreatePortal = !isFunction(ReactDOM.createPortal);
+
+export interface IPortalProps extends IProps {
     /**
      * Callback invoked when the children of this `Portal` have been added to the DOM.
      */
@@ -54,7 +58,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         // Only render `children` once this component has mounted in a browser environment, so they are
         // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
         // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-        if (typeof document === "undefined" || !this.state.hasMounted) {
+        if (cannotCreatePortal || typeof document === "undefined" || !this.state.hasMounted) {
             return null;
         } else {
             return ReactDOM.createPortal(this.props.children, this.portalElement);
@@ -65,6 +69,9 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         this.portalElement = this.createContainerElement();
         document.body.appendChild(this.portalElement);
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
+        if (cannotCreatePortal) {
+            this.unstableRenderNoPortal();
+        }
     }
 
     public componentDidUpdate(prevProps: IPortalProps) {
@@ -73,10 +80,16 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
             this.portalElement.classList.remove(prevProps.className);
             maybeAddClass(this.portalElement.classList, this.props.className);
         }
+        if (cannotCreatePortal) {
+            this.unstableRenderNoPortal();
+        }
     }
 
     public componentWillUnmount() {
         if (this.portalElement != null) {
+            if (cannotCreatePortal) {
+                ReactDOM.unmountComponentAtNode(this.portalElement);
+            }
             this.portalElement.remove();
         }
     }
@@ -89,6 +102,14 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
             maybeAddClass(container.classList, this.context.blueprintPortalClassName);
         }
         return container;
+    }
+
+    private unstableRenderNoPortal() {
+        ReactDOM.unstable_renderSubtreeIntoContainer(
+            /* parentComponent */ this,
+            <div>{this.props.children}</div>,
+            this.portalElement,
+        );
     }
 }
 

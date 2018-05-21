@@ -89,7 +89,7 @@ describe("MenuItem", () => {
         const handleClose = spy();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
         const wrapper = mount(
-            <Popover content={menu} isOpen={true} onInteraction={handleClose}>
+            <Popover content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
                 <Button />
             </Popover>,
         );

@@ -11,6 +11,7 @@ import { SinonStub, spy, stub } from "sinon";
 
 import * as Errors from "../../src/common/errors";
 import { Alert, Button, Classes, IAlertProps, IButtonProps, Icon, Intent, Keys } from "../../src/index";
+import { findInPortal } from "../utils";
 
 describe("<Alert>", () => {
     it("renders its content correctly", () => {
@@ -136,7 +137,7 @@ describe("<Alert>", () => {
                     <p>There is no going back.</p>
                 </Alert>,
             );
-            const overlay = alert.find("." + Classes.OVERLAY).hostNodes();
+            const overlay = findInPortal(alert, "." + Classes.OVERLAY).first();
 
             overlay.simulate("keydown", { which: Keys.ESCAPE });
             assert.isTrue(onCancel.notCalled);
@@ -155,7 +156,7 @@ describe("<Alert>", () => {
                     <p>There is no going back.</p>
                 </Alert>,
             );
-            const backdrop = alert.find("." + Classes.OVERLAY_BACKDROP).hostNodes();
+            const backdrop = findInPortal(alert, "." + Classes.OVERLAY_BACKDROP).hostNodes();
 
             backdrop.simulate("mousedown");
             assert.isTrue(onCancel.notCalled);

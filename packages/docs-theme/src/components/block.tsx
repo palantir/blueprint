@@ -4,6 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Classes, Code, H3 } from "@blueprintjs/core";
+import classNames from "classnames";
 import { IBlock } from "documentalist/dist/client";
 import * as React from "react";
 import { ITagRendererMap } from "../tags";
@@ -19,9 +21,10 @@ export function renderBlock(
     if (block === undefined) {
         return null;
     }
+    const textClasses = classNames(Classes.RUNNING_TEXT, textClassName);
     const contents = block.contents.map((node, i) => {
         if (typeof node === "string") {
-            return <div className={textClassName} key={i} dangerouslySetInnerHTML={{ __html: node }} />;
+            return <div className={textClasses} key={i} dangerouslySetInnerHTML={{ __html: node }} />;
         }
         try {
             const renderer = tagRenderers[node.tag];
@@ -32,9 +35,9 @@ export function renderBlock(
         } catch (ex) {
             console.error(ex.message);
             return (
-                <h3 key={`__error-${i}`}>
-                    <code>{ex.message}</code>
-                </h3>
+                <H3 key={`__error-${i}`}>
+                    <Code>{ex.message}</Code>
+                </H3>
             );
         }
     });

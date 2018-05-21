@@ -3071,5 +3071,26 @@
     "tags": "summit, climb, peak",
     "group": "miscellaneous",
     "content": "\\e7b1"
+  },
+  {
+    "displayName": "Shield",
+    "iconName": "shield",
+    "tags": "protect, protection, secure, security, safe, safety, privacy, marking, control",
+    "group": "miscellaneous",
+    "content": "\\e7b2"
+  },
+  {
+    "displayName": "Tree diagram",
+    "iconName": "diagram-tree",
+    "tags": "organization, chart, hierarchy, relationship, reference",
+    "group": "data",
+    "content": "\\e7b3"
+  },
+  {
+    "displayName": "Crown",
+    "iconName": "crown",
+    "tags": "crown, hat, role, level, permission, king",
+    "group": "miscellaneous",
+    "content": "\\e7b4"
   }
 ]

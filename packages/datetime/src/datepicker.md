@@ -31,7 +31,7 @@ in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker
 @## Using modifiers
 
 You can use the `modifiers` prop to conditionally apply styles to days. Modifiers are documented in
-full in the [**react-day-picker** documentation](http://react-day-picker.js.org/Modifiers.html).
+full in the [**react-day-picker** documentation](http://react-day-picker.js.org/docs/matching-days).
 
 The example below creates a `DatePicker` that prevents the user from selecting any Sundays,
 by using the component in controlled mode and with the `modifiers` prop:

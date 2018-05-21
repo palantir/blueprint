@@ -6,8 +6,8 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, Classes, Intent, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -22,7 +22,7 @@ export interface IButtonsExampleState {
     wiggling: boolean;
 }
 
-export class ButtonsExample extends BaseExample<IButtonsExampleState> {
+export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsExampleState> {
     public state: IButtonsExampleState = {
         active: false,
         disabled: false,
@@ -48,14 +48,28 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
         window.clearTimeout(this.wiggleTimeoutId);
     }
 
-    protected renderExample() {
+    public render() {
         const { iconOnly, wiggling, ...buttonProps } = this.state;
 
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch label="Active" checked={this.state.active} onChange={this.handleActiveChange} />
+                <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
+                <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
+                <Switch label="Loading" checked={this.state.loading} onChange={this.handleLoadingChange} />
+                <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
+                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
+                <H5>Example</H5>
+                <Switch label="Icons only" checked={this.state.iconOnly} onChange={this.handleIconOnlyChange} />
+            </>
+        );
+
         return (
-            <div className="docs-react-example-row">
-                <div className="docs-react-example-column">
+            <Example options={options} {...this.props}>
+                <div>
                     <p>
-                        <code>Button</code>
+                        <Code>Button</Code>
                     </p>
                     <Button
                         className={this.state.wiggling ? "docs-wiggle" : ""}
@@ -66,9 +80,9 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                         {!iconOnly && "Click to wiggle"}
                     </Button>
                 </div>
-                <div className="docs-react-example-column">
+                <div>
                     <p>
-                        <code>AnchorButton</code>
+                        <Code>AnchorButton</Code>
                     </p>
                     <AnchorButton
                         href="./#core/components/button.javascript-api"
@@ -79,47 +93,8 @@ export class ButtonsExample extends BaseExample<IButtonsExampleState> {
                         {...buttonProps}
                     />
                 </div>
-            </div>
+            </Example>
         );
-    }
-
-    protected renderOptions() {
-        return [
-            [
-                <label className={Classes.LABEL} key="label">
-                    Modifiers
-                </label>,
-                <Switch checked={this.state.active} key="active" label="Active" onChange={this.handleActiveChange} />,
-                <Switch
-                    checked={this.state.disabled}
-                    key="disabled"
-                    label="Disabled"
-                    onChange={this.handleDisabledChange}
-                />,
-                <Switch checked={this.state.large} key="large" label="Large" onChange={this.handleLargeChange} />,
-                <Switch
-                    checked={this.state.loading}
-                    key="loading"
-                    label="Loading"
-                    onChange={this.handleLoadingChange}
-                />,
-                <Switch
-                    checked={this.state.minimal}
-                    key="minimal"
-                    label="Minimal"
-                    onChange={this.handleMinimalChange}
-                />,
-            ],
-            [
-                <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />,
-                <Switch
-                    checked={this.state.iconOnly}
-                    key="icon"
-                    label="Icons only"
-                    onChange={this.handleIconOnlyChange}
-                />,
-            ],
-        ];
     }
 
     private beginWiggling = () => {
