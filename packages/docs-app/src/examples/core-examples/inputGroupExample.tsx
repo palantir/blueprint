@@ -9,6 +9,7 @@ import * as React from "react";
 import {
     Button,
     Classes,
+    H5,
     InputGroup,
     Intent,
     Menu,
@@ -121,6 +122,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
         const { disabled, large } = this.state;
         return (
             <>
+                <H5>Props</H5>
                 <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
                 <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
             </>

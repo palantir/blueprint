@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Code, IPopoverProps, Popover, Position, Switch } from "@blueprintjs/core";
+import { Button, Code, H5, IPopoverProps, Popover, Position, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IPopoverPortalExampleState {
@@ -34,7 +34,9 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
 
         const options = (
             <>
+                <H5>Props</H5>
                 <Switch label="Open" checked={isOpen} onChange={this.handleOpen} />
+                <H5>Example</H5>
                 <Button text="Re-center" icon="alignment-vertical-center" onClick={this.recenter} />
             </>
         );

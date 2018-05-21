@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Position, Switch } from "@blueprintjs/core";
+import { H5, Position, Switch } from "@blueprintjs/core";
 import { DateInput, IDateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
@@ -59,12 +59,13 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
         const { closeOnSelection, disabled, reverseMonthAndYearMenus: reverse, format, timePrecision } = this.state;
         return (
             <>
+                <H5>Props</H5>
                 <Switch label="Close on selection" checked={closeOnSelection} onChange={this.toggleSelection} />
                 <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
                 <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
                 <FormatSelect format={format} onChange={this.handleFormatChange} />
                 <PrecisionSelect
-                    label="Time Precision"
+                    label="Time precision"
                     allowEmpty={true}
                     value={timePrecision}
                     onChange={this.toggleTimePrecision}

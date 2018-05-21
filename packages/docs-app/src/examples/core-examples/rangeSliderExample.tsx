@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { NumberRange, RangeSlider, Switch } from "@blueprintjs/core";
+import { H5, NumberRange, RangeSlider, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IRangeSliderExampleState {
@@ -24,7 +24,12 @@ export class RangeSliderExample extends React.PureComponent<IExampleProps, IRang
 
     public render() {
         const { range, vertical } = this.state;
-        const options = <Switch label="Vertical" checked={vertical} onChange={this.toggleVertical} />;
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch label="Vertical" checked={vertical} onChange={this.toggleVertical} />
+            </>
+        );
 
         return (
             <Example options={options} {...this.props}>

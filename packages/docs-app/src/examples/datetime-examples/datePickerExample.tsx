@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Switch } from "@blueprintjs/core";
+import { Classes, H5, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
@@ -32,6 +32,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
 
         const options = (
             <>
+                <H5>Props</H5>
                 <Switch checked={showActionsBar} label="Show actions bar" onChange={this.toggleActionsBar} />
                 <Switch
                     checked={reverseMenus}

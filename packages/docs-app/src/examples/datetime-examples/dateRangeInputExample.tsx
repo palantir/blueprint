@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, IPopoverProps, Label, Switch } from "@blueprintjs/core";
+import { Classes, H5, IPopoverProps, Switch } from "@blueprintjs/core";
 import { DateRange, DateRangeInput, IDateFormatProps } from "@blueprintjs/datetime";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
@@ -71,7 +71,7 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
     protected renderOptions() {
         return (
             <>
-                <Label text="Modifiers" />
+                <H5>Props</H5>
                 <Switch
                     checked={this.state.allowSingleDayRange}
                     label="Allow single day range"

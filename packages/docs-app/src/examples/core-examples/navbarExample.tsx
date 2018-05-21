@@ -10,6 +10,7 @@ import {
     Alignment,
     Button,
     Classes,
+    H5,
     Navbar,
     NavbarDivider,
     NavbarGroup,
@@ -31,7 +32,12 @@ export class NavbarExample extends React.PureComponent<IExampleProps, INavbarExa
 
     public render() {
         const { alignRight } = this.state;
-        const options = <Switch checked={alignRight} label="Align right" onChange={this.handleAlignRightChange} />;
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch checked={alignRight} label="Align right" onChange={this.handleAlignRightChange} />
+            </>
+        );
         return (
             <Example options={options} {...this.props}>
                 <Navbar>

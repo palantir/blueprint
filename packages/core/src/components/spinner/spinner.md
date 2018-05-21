@@ -31,8 +31,8 @@ are supported via the `className` prop.
     correctly because they rely on CSS animations, not transitions.
 </div>
 
-@interface ISpinnerProps
-
 @reactExample SpinnerExample
+
+@interface ISpinnerProps
 
 [msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg

@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Alignment, Classes, H3, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
+import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITabsExampleState {
@@ -31,6 +31,7 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
     public render() {
         const options = (
             <>
+                <H5>Props</H5>
                 <Switch checked={this.state.animate} label="Animate indicator" onChange={this.toggleAnimate} />
                 <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
                 <Switch

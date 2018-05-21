@@ -20,10 +20,6 @@ $dark-options-background-color: $dark-gray5;
   position: relative;
   margin-top: $content-padding * 2;
   width: 100%;
-
-  &:empty {
-    display: none;
-  }
 }
 
 // options to the right of example in same row
@@ -45,8 +41,6 @@ $dark-options-background-color: $dark-gray5;
   .docs-example-options {
     @include pt-flex-container(row, $pt-grid-size * 4);
     justify-content: center;
-    margin-top: $pt-grid-size;
-    margin-left: 0;
     max-width: unset;
   }
 }
@@ -56,7 +50,7 @@ $dark-options-background-color: $dark-gray5;
   flex: 1 1 auto;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   border-radius: $example-frame-border-radius;
   background: $example-background-color;
   // https://css-tricks.com/flexbox-truncated-text/#article-header-id-3
@@ -80,9 +74,8 @@ $dark-options-background-color: $dark-gray5;
   padding: $pt-grid-size * 2;
   text-align: left;
 
-  // hide when empty (div is always rendered)
-  &:empty {
-    display: none;
+  .#{$ns}-heading:not(:first-child) {
+    margin-top: $pt-grid-size;
   }
 
   .docs-prop-description {

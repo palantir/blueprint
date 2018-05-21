@@ -64,6 +64,7 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
             minimal,
             onRemove,
             round,
+            tabIndex = 0,
             ...htmlProps
         } = this.props;
         const isRemovable = Utils.isFunction(onRemove);
@@ -88,7 +89,7 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
         ) : null;
 
         return (
-            <span {...htmlProps} className={tagClasses}>
+            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined}>
                 {children}
                 {removeButton}
             </span>

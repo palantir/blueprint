@@ -96,7 +96,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
                 />
-                <H5>Example</H5>
+                <H5>Tag props</H5>
                 <Switch
                     label="Minimal tag style"
                     checked={this.state.tagMinimal}
@@ -107,6 +107,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     checked={this.state.intent}
                     onChange={this.handleIntentChange}
                 />
+                <H5>Popover props</H5>
                 <Switch
                     label="Minimal popover style"
                     checked={this.state.popoverMinimal}
