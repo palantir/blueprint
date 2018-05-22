@@ -61,19 +61,20 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
         return OverflowList as new (props: IOverflowListProps<T>) => OverflowList<T>;
     }
 
-    public state: IOverflowListState<T> = {
-        overflow: [],
-        visible: this.props.items,
-    };
-
     private element: Element | null = null;
-    private observer = new ResizeObserver(
-        throttle((entries: ResizeObserverEntry[]) => {
-            this.resize(entries.map(entry => ({ element: entry.target, width: entry.contentRect.width })));
-        }),
-    );
+    private observer: ResizeObserver;
     private previousWidths = new Map<Element, number>();
     private spacer: Element | null = null;
+
+    public constructor(props: IOverflowListProps<T>, context?: any) {
+        super(props, context);
+
+        this.state = {
+            overflow: [],
+            visible: props.items,
+        };
+        this.observer = new ResizeObserver(throttle(this.resize));
+    }
 
     public componentDidMount() {
         if (this.element != null) {
@@ -85,6 +86,7 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
                     this.previousWidths.set(element, element.getBoundingClientRect().width);
                 }
             }
+            this.repartition(false);
         }
     }
 
@@ -96,11 +98,7 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
     }
 
     public componentDidUpdate() {
-        const entries = Array.from(this.previousWidths.keys()).map(element => ({
-            element,
-            width: element.getBoundingClientRect().width,
-        }));
-        this.resize(entries);
+        this.repartition(false);
     }
 
     public componentWillUnmount() {
@@ -132,15 +130,15 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
         return this.props.overflowRenderer(overflow);
     }
 
-    private resize(entries: Array<{ element: Element; width: number }>) {
+    private resize = (entries: ResizeObserverEntry[]) => {
         // if any parent is growing, assume we have more room than before
         const growing = entries.some(entry => {
-            const previousWidth = this.previousWidths.get(entry.element) || 0;
-            return entry.width > previousWidth;
+            const previousWidth = this.previousWidths.get(entry.target) || 0;
+            return entry.contentRect.width > previousWidth;
         });
         this.repartition(growing);
-        entries.forEach(entry => this.previousWidths.set(entry.element, entry.width));
-    }
+        entries.forEach(entry => this.previousWidths.set(entry.target, entry.contentRect.width));
+    };
 
     private repartition(growing: boolean) {
         if (this.spacer == null) {
