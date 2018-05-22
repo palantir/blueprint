@@ -40,6 +40,8 @@ export interface IOverflowListProps<T> extends IProps {
      */
     overflowRenderer: (overflowItems: T[]) => React.ReactNode;
 
+    style?: React.HTMLProps<HTMLDivElement>;
+
     /**
      * Callback invoked to render each visible item.
      */
@@ -109,10 +111,14 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
     }
 
     public render() {
-        const { className, collapseFrom } = this.props;
+        const { className, collapseFrom, style } = this.props;
         const overflow = this.maybeRenderOverflow();
         return (
-            <div className={classNames(Classes.OVERFLOW_LIST, className)} ref={ref => (this.element = ref)}>
+            <div
+                className={classNames(Classes.OVERFLOW_LIST, className)}
+                ref={ref => (this.element = ref)}
+                style={style}
+            >
                 {collapseFrom === Boundary.START ? overflow : null}
                 {this.renderItems()}
                 {collapseFrom === Boundary.END ? overflow : null}
