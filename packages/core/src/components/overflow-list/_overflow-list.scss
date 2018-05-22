@@ -4,9 +4,9 @@
 .#{$ns}-overflow-list {
   display: flex;
   min-width: 0;
+}
 
-  .#{$ns}-overflow-list-spacer {
-    flex-shrink: 1;
-    width: 1px;
-  }
+.#{$ns}-overflow-list-spacer {
+  flex-shrink: 1;
+  width: 1px;
 }
