@@ -30,6 +30,7 @@ export interface IOverflowListProps<T> extends IProps {
      * be recalculated.
      * Only enable this prop if the overflow should be recalculated when a parent element resizes in a way that does not also cause the
      * `OverflowContainer` to resize.
+     * @default false
      */
     observeParents?: boolean;
 
@@ -53,7 +54,7 @@ export interface IOverflowListState<T> {
 export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOverflowListState<T>> {
     public static displayName = "Blueprint2.OverflowList";
 
-    public static defaultProps: Partial<IOverflowListProps<never>> = {
+    public static defaultProps: Partial<IOverflowListProps<any>> = {
         collapseFrom: Boundary.START,
     };
 
