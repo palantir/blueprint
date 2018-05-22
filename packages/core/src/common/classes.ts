@@ -154,7 +154,7 @@ export const NON_IDEAL_STATE_VISUAL = `${NON_IDEAL_STATE}-visual`;
 export const NUMERIC_INPUT = `${NS}-numeric-input`;
 
 export const OVERFLOW_LIST = `${NS}-overflow-list`;
-export const OVERFLOW_LIST_SPACER = `${NS}-overflow-list-spacer`;
+export const OVERFLOW_LIST_SPACER = `${OVERFLOW_LIST}-spacer`;
 
 export const OVERLAY = `${NS}-overlay`;
 export const OVERLAY_BACKDROP = `${OVERLAY}-backdrop`;
