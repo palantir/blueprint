@@ -20,6 +20,7 @@
 @page menu
 @page navbar
 @page non-ideal-state
+@page overflow-list
 @page overlay
 @page popover
 @page portal

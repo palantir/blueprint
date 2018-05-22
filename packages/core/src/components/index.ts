@@ -46,6 +46,7 @@ export * from "./navbar/navbarDivider";
 export * from "./navbar/navbarGroup";
 export * from "./navbar/navbarHeading";
 export * from "./non-ideal-state/nonIdealState";
+export * from "./overflow-list/overflowList";
 export * from "./overlay/overlay";
 export * from "./table/table-html";
 export * from "./text/text";

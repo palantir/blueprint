@@ -45,7 +45,7 @@ $breadcrumb-line-height: $pt-icon-size-large - 1px !default;
       content: $pt-icon-chevron-right;
     }
 
-    &:last-child::after {
+    &:last-of-type::after {
       display: none;
     }
   }

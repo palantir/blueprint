@@ -189,6 +189,18 @@
   max-width: 280px;
 }
 
+#{example("OverflowListExample")} {
+  .#{$ns}-card {
+    margin: 0;
+    min-width: $pt-grid-size * 7;
+  }
+
+  .#{$ns}-overflow-list {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+}
+
 // prettier-ignore
 .docs-overlay-example-transition {
   $overlay-example-width: $pt-grid-size * 40;
