@@ -428,7 +428,7 @@ describe("<TagInput>", () => {
             "input should be disabled",
         );
         wrapper.find(Tag).forEach(tag => {
-            assert.isFalse(tag.hasClass(Classes.TAG_REMOVABLE), "tag should not have tag-removable applied");
+            assert.lengthOf(tag.find("." + Classes.TAG_REMOVE), 0, "tag should not have tag-remove button");
         });
     });
 
