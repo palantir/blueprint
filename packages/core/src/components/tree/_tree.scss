@@ -44,6 +44,10 @@ Styleguide tree
 $tree-row-height: $pt-grid-size * 3 !default;
 $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
+.#{$ns}-tree #{$icon-classes} {
+  color: $pt-icon-color;
+}
+
 .#{$ns}-tree-node-list {
   margin: 0;
   padding-left: 0;
@@ -103,10 +107,6 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   .#{$ns}-icon {
     margin: $tree-icon-spacing;
   }
-}
-
-#{$icon-classes} {
-  color: $pt-icon-color;
 }
 
 .#{$ns}-tree-node-icon {
