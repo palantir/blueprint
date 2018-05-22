@@ -46,9 +46,15 @@ Styleguide callout
     }
   }
 
-  > .#{$ns}-icon {
-    flex: 0 0 $pt-icon-size-large;
-    margin-right: $pt-grid-size;
+  &.#{$ns}-callout-icon {
+    padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
+
+    > .#{$ns}-icon {
+      position: absolute;
+      top: $pt-grid-size;
+      left: $pt-grid-size;
+      color: $pt-icon-color;
+    }
   }
 
   .#{$ns}-heading {
