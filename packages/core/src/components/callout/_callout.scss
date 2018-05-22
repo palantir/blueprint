@@ -8,8 +8,10 @@ Callout
 
 Markup:
 <div class="#{$ns}-callout {{.modifier}}">
-  <h4 class="#{$ns}-heading">Callout Heading</h4>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
+  <div class="#{$ns}-callout-text">
+    <h4 class="#{$ns}-heading">Callout heading</h4>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
+  </div>
 </div>
 
 .#{$ns}-intent-primary - Primary intent
@@ -23,7 +25,7 @@ Styleguide callout
 
 .#{$ns}-callout {
   @include running-typography();
-  position: relative;
+  display: relative;
   border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
   width: 100%;
@@ -31,6 +33,8 @@ Styleguide callout
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
+    display: block;
+    position: relative;
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
     &::before {
@@ -45,7 +49,7 @@ Styleguide callout
   &.#{$ns}-callout-icon {
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
-    .#{$ns}-icon {
+    > .#{$ns}-icon:first-child {
       position: absolute;
       top: $pt-grid-size;
       left: $pt-grid-size;
@@ -72,7 +76,7 @@ Styleguide callout
       background-color: rgba($color, 0.15);
 
       &[class*="#{$ns}-icon-"]::before,
-      .#{$ns}-icon,
+      > .#{$ns}-icon:first-child,
       .#{$ns}-heading {
         color: map-get($pt-intent-text-colors, $intent);
       }
@@ -81,7 +85,7 @@ Styleguide callout
         background-color: rgba($color, 0.25);
 
         &[class*="#{$ns}-icon-"]::before,
-        .#{$ns}-callout-icon,
+        > .#{$ns}-icon:first-child,
         .#{$ns}-heading {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }
