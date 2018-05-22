@@ -9,6 +9,7 @@ import * as React from "react";
 
 import {
     Boundary,
+    Breadcrumb,
     Card,
     Classes,
     H5,
@@ -100,7 +101,7 @@ export class OverflowListExample extends React.PureComponent<IExampleProps, IOve
         if (props.href != null) {
             return (
                 <li key={index}>
-                    <a className={Classes.BREADCRUMB}>{props.text}</a>
+                    <Breadcrumb {...props} />
                 </li>
             );
         } else {
