@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Intent, MultiRangeSlider, SliderHandle, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ISliderValues {
     outerStart: number;
@@ -24,7 +24,7 @@ export interface IMultiRangeSliderExampleState {
 }
 
 // tslint:disable:object-literal-sort-keys
-export class MultiRangeSliderExample extends BaseExample<IMultiRangeSliderExampleState> {
+export class MultiRangeSliderExample extends React.PureComponent<IExampleProps, IMultiRangeSliderExampleState> {
     public state: IMultiRangeSliderExampleState = {
         hideOuterBounds: false,
         twoTailed: true,
@@ -41,9 +41,9 @@ export class MultiRangeSliderExample extends BaseExample<IMultiRangeSliderExampl
     private toggleHideOuterBounds = handleBooleanChange(hideOuterBounds => this.setState({ hideOuterBounds }));
     private toggleTwoTailed = handleBooleanChange(twoTailed => this.setState({ twoTailed }));
 
-    protected renderExample() {
+    public render() {
         return (
-            <div style={{ width: "100%" }}>
+            <Example options={this.renderOptions()} {...this.props}>
                 <MultiRangeSlider
                     min={0}
                     max={100}
@@ -58,28 +58,22 @@ export class MultiRangeSliderExample extends BaseExample<IMultiRangeSliderExampl
                     {this.renderOuterStartHandle()}
                     {this.renderInnerStartHandle()}
                 </MultiRangeSlider>
-            </div>
+            </Example>
         );
     }
 
-    protected renderOptions() {
-        return [
-            [
-                <Switch checked={this.state.vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />,
+    private renderOptions() {
+        return (
+            <>
+                <Switch checked={this.state.vertical} label="Vertical" onChange={this.toggleVertical} />
                 <Switch
                     checked={this.state.hideOuterBounds}
                     label="Hide outer bounds"
-                    key="hide-outer"
                     onChange={this.toggleHideOuterBounds}
-                />,
-                <Switch
-                    checked={this.state.twoTailed}
-                    label="Two tailed bounds"
-                    key="two-tailed"
-                    onChange={this.toggleTwoTailed}
-                />,
-            ],
-        ];
+                />
+                <Switch checked={this.state.twoTailed} label="Two tailed bounds" onChange={this.toggleTwoTailed} />
+            </>
+        );
     }
 
     private renderOuterStartHandle() {
