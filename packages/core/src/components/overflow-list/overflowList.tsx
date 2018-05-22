@@ -35,8 +35,9 @@ export interface IOverflowListProps<T> extends IProps {
 
     /**
      * Callback invoked to render the overflow if necessary.
+     * @param overflowItems The items that didn’t fit in the container.
      */
-    overflowRenderer: (items: T[]) => React.ReactNode;
+    overflowRenderer: (overflowItems: T[]) => React.ReactNode;
 
     /**
      * Callback invoked to render each visible item.
