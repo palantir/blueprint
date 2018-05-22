@@ -13,10 +13,10 @@ import * as Errors from "../../common/errors";
 import * as Utils from "../../common/utils";
 import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
 import { Handle } from "./handle";
-import { ISliderHandleProps, SliderHandle } from "./sliderHandle";
+import { ISliderHandleProps, SliderHandle, SliderHandleType } from "./sliderHandle";
 
 export interface IMultiRangeSliderProps extends ICoreSliderProps {
-    children?: Array<React.ReactElement<SliderHandle>>;
+    children?: Array<React.ReactElement<ISliderHandleProps>>;
     defaultTrackIntent?: Intent;
     onChange?(values: number[]): void;
     onRelease?(values: number[]): void;
@@ -79,8 +79,8 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
         return this.getSortedHandles().map(({ value, type }, index) => (
             <Handle
                 className={classNames({
-                    [Classes.START]: type === "start",
-                    [Classes.END]: type === "end",
+                    [Classes.START]: type === SliderHandleType.START,
+                    [Classes.END]: type === SliderHandleType.END,
                 })}
                 disabled={disabled}
                 key={`${index}-${this.getHandles().length}`}
@@ -139,8 +139,8 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
             : { left: startOffset, right: endOffset, top: 0 };
 
         const classes = classNames(Classes.SLIDER_PROGRESS, intentClass(intent), {
-            [Classes.START]: start.type === "start",
-            [Classes.END]: end.type === "end",
+            [Classes.START]: start.type === SliderHandleType.START,
+            [Classes.END]: end.type === SliderHandleType.END,
             [`${Classes.SLIDER_PROGRESS}-empty`]: intent === Intent.NONE,
         });
 

@@ -7,7 +7,13 @@
 import * as React from "react";
 import { Intent } from "../../common";
 
-export type SliderHandleType = "full" | "start" | "end";
+export const SliderHandleType = {
+    FULL: "full" as "full",
+    START: "start" as "start",
+    // tslint:disable-next-line:object-literal-sort-keys
+    END: "end" as "end",
+};
+export type SliderHandleType = typeof SliderHandleType[keyof typeof SliderHandleType];
 
 export interface ISliderHandleProps {
     value: number;
