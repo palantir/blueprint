@@ -60,20 +60,19 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
         return OverflowList as new (props: IOverflowListProps<T>) => OverflowList<T>;
     }
 
+    public state: IOverflowListState<T> = {
+        overflow: [],
+        visible: this.props.items,
+    };
+
     private element: Element | null = null;
-    private observer: ResizeObserver;
+    private observer = new ResizeObserver(
+        throttle((entries: ResizeObserverEntry[]) => {
+            this.resize(entries.map(entry => ({ element: entry.target, width: entry.contentRect.width })));
+        }),
+    );
     private previousWidths = new Map<Element, number>();
     private spacer: Element | null = null;
-
-    public constructor(props: IOverflowListProps<T>, context?: any) {
-        super(props, context);
-        this.state = {
-            overflow: [],
-            visible: props.items,
-        };
-
-        this.observer = new ResizeObserver(this.handleResize);
-    }
 
     public componentDidMount() {
         if (this.element != null) {
@@ -141,11 +140,6 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
         this.repartition(growing);
         entries.forEach(entry => this.previousWidths.set(entry.element, entry.width));
     }
-
-    // tslint:disable-next-line:member-ordering
-    private handleResize = throttle((entries: ResizeObserverEntry[]) => {
-        this.resize(entries.map(entry => ({ element: entry.target, width: entry.contentRect.width })));
-    });
 
     private repartition(growing: boolean) {
         if (this.spacer == null) {
