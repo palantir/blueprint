@@ -6,15 +6,15 @@
 
 import * as React from "react";
 
-import { Button, Classes, Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Button, Classes, H1, Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
-export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
+export class TooltipExample extends React.PureComponent<IExampleProps, { isOpen: boolean }> {
     public state = {
         isOpen: false,
     };
 
-    protected renderExample() {
+    public render() {
         // using JSX instead of strings for all content so the tooltips will re-render
         // with every update for dark theme inheritance.
         const lotsOfText = (
@@ -29,7 +29,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
             </em>
         );
         return (
-            <div className="docs-tooltip2-example">
+            <Example options={false} {...this.props}>
                 <div>
                     Inline text can have{" "}
                     <Tooltip className={Classes.TOOLTIP_INDICATOR} content={jsxContent}>
@@ -101,7 +101,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                 </div>
                 <br />
                 <Popover
-                    content={<h1>Popover!</h1>}
+                    content={<H1>Popover!</H1>}
                     position={Position.RIGHT}
                     popoverClassName={Classes.POPOVER_CONTENT_SIZING}
                 >
@@ -113,7 +113,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         <Button intent={Intent.SUCCESS} text="Hover and click me" />
                     </Tooltip>
                 </Popover>
-            </div>
+            </Example>
         );
     }
 

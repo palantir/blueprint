@@ -1,13 +1,15 @@
 {
   "name": "@blueprintjs/icons",
-  "version": "2.2.1",
+  "version": "3.0.0-beta.0",
   "description": "Components, fonts, icons, and css files for creating and displaying icons.",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "typings": "lib/esm/index.d.ts",
   "style": "lib/css/blueprint-icons.css",
   "unpkg": "dist/icons.bundle.js",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "clean": "rm -rf dist/* && rm -rf lib/* && rm -rf src/generated/*",
     "compile": "npm-run-all -s \"compile:pre\" -p \"compile:*\"",
@@ -36,14 +38,13 @@
   },
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.6.1",
-    "@blueprintjs/test-commons": "^0.5.2",
+    "@blueprintjs/test-commons": "^0.6.0",
     "enzyme": "^3.3.0",
     "mocha": "^4.1.0",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
-    "react-transition-group": "^2.2.1",
     "typescript": "~2.7.2",
     "webpack": "^3.10.0"
   },

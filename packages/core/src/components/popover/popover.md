@@ -1,4 +1,4 @@
-@# Popover
+@# Popovers
 
 Popovers display floating content next to a target element.
 
@@ -224,7 +224,7 @@ The supported values are:
     - __Opens when:__ the target is clicked
     - __Closes when:__ the target is clicked
 
-The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](http://localhost:9000/#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
+The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
 @reactExample PopoverInteractionKindExample
 
@@ -297,7 +297,7 @@ This behavior can be desirable to inherit CSS styles from surrounding elements, 
 when scrolling. Not using a `Portal` works well for most layouts, because popovers style themselves to appear above
 everything else on the page without needing to manually adjust z-indices, and Popper.js will keep them nicely positioned.
 
-@reactExample PopoverInlineExample
+@reactExample PopoverPortalExample
 
 @## Style
 
@@ -311,8 +311,7 @@ As a result, any component that you place inside a `Popover` (such as a `Menu`) 
 inherits the dark theme styles. Note that [`Tooltip`](#core/components/tooltip) uses `Popover` internally, so it also benefits
 from this behavior.
 
-This behavior can be disabled when the `Popover` is not rendered inline via the `inheritDarkTheme`
-prop.
+This behavior can be disabled (if the `Popover` uses a `Portal`) via the `inheritDarkTheme` prop.
 
 @### Sizing
 
@@ -372,7 +371,7 @@ zeroing the default hover delays.
 
 #### Rendering delays
 
-`Popover` delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target, which may require special handling depending on the current [`interactionKind`](http://localhost:9000/#core/components/popover.opening-and-closing). Popper.js also throttles rendering updates to improve performance. If your components are not updating in a synchronous fashion as expected, you may need to introduce a `setTimeout` to wait for asynchronous Popover rendering to catch up:
+`Popover` delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target, which may require special handling depending on the current [`interactionKind`](#core/components/popover.opening-and-closing). Popper.js also throttles rendering updates to improve performance. If your components are not updating in a synchronous fashion as expected, you may need to introduce a `setTimeout` to wait for asynchronous Popover rendering to catch up:
 
 ```tsx
 import { Classes, Overlay, Popover, PopoverInteractionKind } from "@blueprintjs/core";

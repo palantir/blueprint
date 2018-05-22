@@ -20,9 +20,9 @@ $icons-per-row: 5;
     justify-content: space-between;
     margin-bottom: $pt-grid-size * 5;
 
-    h3 {
+    .#{$ns}-heading {
       flex: 1 1 100%;
-      margin-top: 0;
+      margin: 0 0 $pt-grid-size * 2;
       text-transform: capitalize;
     }
   }

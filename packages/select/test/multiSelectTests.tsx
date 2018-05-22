@@ -72,7 +72,7 @@ describe("<MultiSelect>", () => {
     function multiselect(props: Partial<IMultiSelectProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(
             <FilmMultiSelect {...defaultProps} {...handlers} {...props}>
-                <table />
+                <article />
             </FilmMultiSelect>,
         );
         if (query !== undefined) {

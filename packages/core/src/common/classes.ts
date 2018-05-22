@@ -4,11 +4,11 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Elevation } from "../components/card/card";
 import { Alignment } from "./alignment";
+import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 
-const NS = process.env.BLUEPRINT_NAMESPACE || "pt";
+const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
 
 // modifiers
 export const ACTIVE = `${NS}-active`;
@@ -128,7 +128,6 @@ export const MODIFIER_KEY = `${NS}-modifier-key`;
 
 export const HOTKEY = `${NS}-hotkey`;
 export const HOTKEY_LABEL = `${HOTKEY}-label`;
-export const HOTKEY_GROUP = `${HOTKEY}-group`;
 export const HOTKEY_COLUMN = `${HOTKEY}-column`;
 export const HOTKEY_DIALOG = `${HOTKEY}-dialog`;
 
@@ -194,8 +193,6 @@ export const SPINNER = `${NS}-spinner`;
 export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
-export const SPINNER_SVG_CONTAINER = `${SPINNER}-svg-container`;
-export const SVG_SPINNER = `${NS}-svg-spinner`;
 
 export const TAB = `${NS}-tab`;
 export const TAB_INDICATOR = `${TAB}-indicator`;
@@ -265,7 +262,7 @@ export function elevationClass(elevation: Elevation) {
     return `${NS}-elevation-${elevation}`;
 }
 
-/** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
+/** Returns CSS class for icon name. */
 export function iconClass(iconName?: string) {
     if (iconName == null) {
         return undefined;
@@ -274,7 +271,7 @@ export function iconClass(iconName?: string) {
 }
 
 /** Return CSS class for intent. */
-export function intentClass(intent = Intent.NONE) {
+export function intentClass(intent?: Intent) {
     if (intent == null || intent === Intent.NONE) {
         return undefined;
     }

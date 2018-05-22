@@ -6,18 +6,20 @@
 
 import * as React from "react";
 
-import { Checkbox, Classes } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Checkbox, Label } from "@blueprintjs/core";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
-export class CheckboxExample extends BaseExample<{}> {
-    protected renderExample() {
+export class CheckboxExample extends React.PureComponent<IExampleProps> {
+    public render() {
         return (
-            <div>
-                <label className={Classes.LABEL}>Assign responsibility</label>
-                <Checkbox label="Gilad Gray" defaultIndeterminate={true} />
-                <Checkbox label="Jason Killian" />
-                <Checkbox label="Antoine Llorca" />
-            </div>
+            <Example options={false} {...this.props}>
+                <div>
+                    <Label text="Assign responsibility" />
+                    <Checkbox label="Gilad Gray" defaultIndeterminate={true} />
+                    <Checkbox label="Jason Killian" />
+                    <Checkbox label="Antoine Llorca" />
+                </div>
+            </Example>
         );
     }
 }

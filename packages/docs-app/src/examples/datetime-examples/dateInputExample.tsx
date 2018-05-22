@@ -4,9 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Position, Switch } from "@blueprintjs/core";
-import { DateInput, IDateFormatProps, TimePickerPrecision } from "@blueprintjs/datetime";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
+import { H5, Position, Switch } from "@blueprintjs/core";
+import { DateInput, IDateFormatProps, TimePrecision } from "@blueprintjs/datetime";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
@@ -19,10 +19,10 @@ export interface IDateInputExampleState {
     disabled: boolean;
     format: IDateFormatProps;
     reverseMonthAndYearMenus: boolean;
-    timePrecision: TimePickerPrecision | undefined;
+    timePrecision: TimePrecision | undefined;
 }
 
-export class DateInputExample extends BaseExample<IDateInputExampleState> {
+export class DateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
     public state: IDateInputExampleState = {
         closeOnSelection: true,
         date: null,
@@ -34,19 +34,15 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
-    private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
-        this.setState({ reverseMonthAndYearMenus }),
-    );
-    private toggleTimePrecision = handleNumberChange(timePrecision =>
-        this.setState({
-            timePrecision: timePrecision < 0 ? undefined : timePrecision,
-        }),
+    private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
+    private toggleTimePrecision = handleStringChange((timePrecision: TimePrecision) =>
+        this.setState({ timePrecision }),
     );
 
-    protected renderExample() {
+    public render() {
         const { date, format, ...spreadProps } = this.state;
         return (
-            <>
+            <Example options={this.renderOptions()} {...this.props}>
                 <DateInput
                     {...spreadProps}
                     {...format}
@@ -54,41 +50,28 @@ export class DateInputExample extends BaseExample<IDateInputExampleState> {
                     onChange={this.handleDateChange}
                     popoverProps={{ position: Position.BOTTOM }}
                 />
-                <div className="docs-date-range">
-                    <MomentDate date={date} />
-                </div>
-            </>
+                <MomentDate date={date} />
+            </Example>
         );
     }
 
     protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.closeOnSelection}
-                    label="Close on selection"
-                    key="Selection"
-                    onChange={this.toggleSelection}
-                />,
-                <Switch checked={this.state.disabled} label="Disabled" key="Disabled" onChange={this.toggleDisabled} />,
-                <Switch
-                    checked={this.state.reverseMonthAndYearMenus}
-                    label="Reverse month and year menus"
-                    key="Reverse month and year menus"
-                    onChange={this.toggleReverseMonthAndYearMenus}
-                />,
-            ],
-            [<FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />],
-            [
+        const { closeOnSelection, disabled, reverseMonthAndYearMenus: reverse, format, timePrecision } = this.state;
+        return (
+            <>
+                <H5>Props</H5>
+                <Switch label="Close on selection" checked={closeOnSelection} onChange={this.toggleSelection} />
+                <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
+                <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
+                <FormatSelect format={format} onChange={this.handleFormatChange} />
                 <PrecisionSelect
-                    label="Time Precision"
-                    key="precision"
+                    label="Time precision"
                     allowEmpty={true}
-                    value={this.state.timePrecision}
+                    value={timePrecision}
                     onChange={this.toggleTimePrecision}
-                />,
-            ],
-        ];
+                />
+            </>
+        );
     }
 
     private handleDateChange = (date: Date | null) => this.setState({ date });

@@ -20,7 +20,7 @@ export const Page: React.SFC<IPageProps> = ({ tagRenderers, page }) => {
     // apply running text styles to blocks in pages (but not on blocks in examples)
     const pageContents = renderBlock(page, tagRenderers, Classes.TEXT_LARGE);
     return (
-        <div className="docs-page" data-page-id={page.reference}>
+        <div className="docs-page" data-page-id={page.route}>
             {pageContents}
         </div>
     );

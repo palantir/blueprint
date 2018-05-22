@@ -1,9 +1,11 @@
+---
+name: 🐛 Bug report
+about: Something not working as expected?
+---
+
 <!-- IF YOU ARE A PALANTIR EMPLOYEE, DO NOT POST INTERNAL LINKS OR REFERENCES HERE -->
 
-<!-- Is this a support question? Please post to Stack Overflow with the "blueprintjs" tag instead. -->
-<!-- Delete this template for feature requests. -->
-
-### Bug report
+#### Environment
 
 - __Package version(s)__: <!-- fill this out -->
 - __Browser and OS versions__: <!-- fill this out -->
@@ -19,5 +21,9 @@
 <!-- fill this out -->
 
 #### Expected behavior
+
+<!-- fill this out -->
+
+#### Possible solution
 
 <!-- fill this out -->

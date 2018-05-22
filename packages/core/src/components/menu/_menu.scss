@@ -122,11 +122,11 @@ Menu headers
 
 Markup:
 <ul class="#{$ns}-menu #{$ns}-elevation-1">
-  <li class="#{$ns}-menu-header"><h6>Layouts</h6></li>
+  <li class="#{$ns}-menu-header"><h6 class="#{$ns}-heading">Layouts</h6></li>
   <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-layout-auto">Auto</button></li>
   <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-layout-circle">Circle</button></li>
   <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-layout-grid">Grid</button></li>
-  <li class="#{$ns}-menu-header"><h6>Views</h6></li>
+  <li class="#{$ns}-menu-header"><h6 class="#{$ns}-heading">Views</h6></li>
   <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-history">History</button></li>
   <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-star">Favorites</button></li>
   <li><button type="button" class="#{$ns}-menu-item #{$ns}-icon-envelope">Messages</button></li>

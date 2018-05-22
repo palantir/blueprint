@@ -8,7 +8,7 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { Classes, Spinner, SVGSpinner } from "../../src/index";
+import { Classes, Spinner } from "../../src/index";
 
 describe("Spinner", () => {
     it("renders a spinner and two paths", () => {
@@ -31,17 +31,6 @@ describe("Spinner", () => {
             `missing class ${Classes.SPINNER_NO_SPIN}`,
         );
         assertStrokePercent(root, 0.35);
-    });
-
-    it("React renders SVGSpinner", () => {
-        assert.lengthOf(
-            mount(
-                <svg>
-                    <SVGSpinner />
-                </svg>,
-            ).find(`.${Classes.SVG_SPINNER} svg`),
-            1,
-        );
     });
 
     function assertStrokePercent(wrapper: ReactWrapper<any, {}>, percent: number) {

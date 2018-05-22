@@ -6,7 +6,7 @@
 import * as React from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
-import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
@@ -38,12 +38,10 @@ export interface ICellLoadingExampleState {
     randomNumbers?: number[];
 }
 
-export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
+export class CellLoadingExample extends React.PureComponent<IExampleProps, ICellLoadingExampleState> {
     public state: ICellLoadingExampleState = {
         configuration: CellsLoadingConfiguration.ALL,
     };
-
-    protected className = "docs-cell-loading-example";
 
     private handleConfigurationChange = handleStringChange(configuration => {
         if (configuration === CellsLoadingConfiguration.RANDOM) {
@@ -58,26 +56,25 @@ export class CellLoadingExample extends BaseExample<ICellLoadingExampleState> {
         this.setState({ configuration: configuration as CellsLoadingConfiguration });
     });
 
-    public renderExample() {
-        return (
-            <Table
-                numRows={bigSpaceRocks.length}
-                rowHeaderCellRenderer={this.renderRowHeaderCell}
-                enableColumnInteractionBar={true}
-            >
-                {this.renderColumns()}
-            </Table>
-        );
-    }
-
-    protected renderOptions() {
-        return (
+    public render() {
+        const options = (
             <RadioGroup
                 label="Example cell loading configurations"
                 selectedValue={this.state.configuration}
                 options={CONFIGURATIONS}
                 onChange={this.handleConfigurationChange}
             />
+        );
+        return (
+            <Example options={options} showOptionsBelowExample={true} {...this.props}>
+                <Table
+                    numRows={bigSpaceRocks.length}
+                    rowHeaderCellRenderer={this.renderRowHeaderCell}
+                    enableColumnInteractionBar={true}
+                >
+                    {this.renderColumns()}
+                </Table>
+            </Example>
         );
     }
 

@@ -8,11 +8,6 @@ import { Months } from "./months";
 
 export type DateRange = [Date | undefined, Date | undefined];
 
-export enum DateRangeBoundary {
-    START = "start",
-    END = "end",
-}
-
 export function isDateValid(date: Date | false | null): date is Date {
     return date instanceof Date && !isNaN(date.valueOf());
 }

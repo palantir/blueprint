@@ -7,10 +7,11 @@
 import { AnchorButton, Intent } from "@blueprintjs/core";
 import { ITag } from "documentalist/dist/client";
 import * as React from "react";
+import { IExampleProps } from "../components/example";
 
 export interface IExample {
     sourceUrl: string;
-    render: (props: { id: string }) => JSX.Element | undefined;
+    render: (props: IExampleProps) => JSX.Element | undefined;
 }
 
 // construct a map of package name to all examples defined in that package.
@@ -18,26 +19,6 @@ export interface IExample {
 export interface IExampleMap {
     [componentName: string]: IExample;
 }
-
-export interface IExampleProps {
-    example: IExample;
-    name: string;
-}
-
-export const ReactExample: React.SFC<IExampleProps> = props => (
-    <div className="docs-example-wrapper">
-        {props.example.render({ id: props.name })}
-        <AnchorButton
-            href={props.example.sourceUrl}
-            icon="code"
-            intent={Intent.PRIMARY}
-            minimal={true}
-            target="_blank"
-            text="View source on GitHub"
-        />
-    </div>
-);
-ReactExample.displayName = "Docs2.ReactExample";
 
 export class ReactExampleTagRenderer {
     constructor(private examples: IExampleMap) {}
@@ -56,6 +37,20 @@ export class ReactExampleTagRenderer {
         if (example == null) {
             throw new Error(`Unknown @example component: ${exampleName}`);
         }
-        return <ReactExample example={example} name={exampleName} />;
+        return (
+            <>
+                {example.render({ id: exampleName })}
+                <AnchorButton
+                    className="docs-example-view-source"
+                    fill={true}
+                    href={example.sourceUrl}
+                    icon="code"
+                    intent={Intent.PRIMARY}
+                    minimal={true}
+                    target="_blank"
+                    text="View source on GitHub"
+                />
+            </>
+        );
     };
 }

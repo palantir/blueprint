@@ -8,6 +8,8 @@ import { Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
+export const WARNING_BASE_EXAMPLE_DEPRECATED = `[Blueprint] BaseExample is deprecated and will be removed in the next beta. Compose new Example component instead of extending BaseExample.`;
+
 export interface IBaseExampleProps {
     id: string;
     themeName: string;
@@ -16,6 +18,7 @@ export interface IBaseExampleProps {
 /**
  * Starter class for all React example components.
  * Examples and options are rendered into separate containers.
+ * @deprecated
  */
 export class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
     /** Define this prop to add a className to the example container */
@@ -46,6 +49,10 @@ export class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
         });
     }
 
+    public componentDidMount() {
+        console.warn(WARNING_BASE_EXAMPLE_DEPRECATED);
+    }
+
     public componentDidUpdate(_nextProps: IBaseExampleProps, _nextState: S) {
         // HACKHACK: Initial render happens as an *update* due to our requestAnimationFrame shenanigans, not as a mount.
         // Once we've rendered initially, set this flag so that shouldComponentUpdate logic will return to its normal
@@ -62,9 +69,9 @@ export class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
             return null;
         }
         return (
-            <div className={classNames("docs-example", this.className)} data-example-id={this.props.id}>
-                <div className="docs-react-example">{this.renderExample()}</div>
-                <div className="docs-react-options">{this.actuallyRenderOptions()}</div>
+            <div className={classNames("docs-example-frame", this.className)} data-example-id={this.props.id}>
+                <div className="docs-example">{this.renderExample()}</div>
+                <div className="docs-example-options">{this.actuallyRenderOptions()}</div>
             </div>
         );
     }

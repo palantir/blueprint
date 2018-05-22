@@ -4,9 +4,9 @@ Tag inputs render [`Tag`](#core/components/tag)s inside an input, followed by an
 
 @reactExample TagInputExample
 
-**`TagInput` must be controlled,** meaning the `values` prop is required and event handlers are strongly suggested. Typing in the input and pressing <kbd class="@ns-key">enter</kbd> will **add new items** by invoking callbacks. If `addOnBlur` is set to true, clicking out of the component will also trigger the callback to add new items. A `separator` prop is supported to allow multiple items to be added at once; the default splits on commas.
+**`TagInput` must be controlled,** meaning the `values` prop is required and event handlers are strongly suggested. Typing in the input and pressing <kbd>enter</kbd> will **add new items** by invoking callbacks. If `addOnBlur` is set to true, clicking out of the component will also trigger the callback to add new items. A `separator` prop is supported to allow multiple items to be added at once; the default splits on commas.
 
-**Tags can be removed** by clicking their <span class="@ns-icon-standard @ns-icon-cross"></span> buttons, or by pressing <kbd class="@ns-key">backspace</kbd> repeatedly. Arrow keys can also be used to focus on a particular tag before removing it. The cursor must be at the beginning of the text input for these interactions.
+**Tags can be removed** by clicking their <span class="@ns-icon-standard @ns-icon-cross"></span> buttons, or by pressing <kbd>backspace</kbd> repeatedly. Arrow keys can also be used to focus on a particular tag before removing it. The cursor must be at the beginning of the text input for these interactions.
 
 **`Tag` appearance can be customized** with `tagProps`: supply an object to apply the same props to every tag, or supply a callback to apply dynamic props per tag. Tag `values` must be an array of strings so you may need a transformation step between your state and these props.
 

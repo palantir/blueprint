@@ -27,7 +27,7 @@ import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateTimePicker } from "./dateTimePicker";
-import { ITimePickerProps, TimePickerPrecision } from "./timePicker";
+import { ITimePickerProps, TimePrecision } from "./timePicker";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
@@ -113,7 +113,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
      * Adds a time chooser to the bottom of the popover.
      * Passed to the `DateTimePicker` component.
      */
-    timePrecision?: TimePickerPrecision;
+    timePrecision?: TimePrecision;
 }
 
 export interface IDateInputState {

@@ -7,32 +7,17 @@ $spinner-width-factor: 0.5 !default;
 $spinner-width-factor-small: 0.24 !default;
 $spinner-width-factor-large: 1 !default;
 
-$spinner-stroke-width: 5 !default;
+$spinner-stroke-width: 7 !default;
 $spinner-stroke-width-small: 12 !default;
-$spinner-stroke-width-large: 3 !default;
+$spinner-stroke-width-large: 4 !default;
 
-$spinner-speed: $pt-transition-duration * 4 !default;
-$spinner-speed-small: $pt-transition-duration * 4 !default;
-$spinner-speed-large: $pt-transition-duration * 4.5 !default;
+$spinner-speed: $pt-transition-duration * 5 !default;
+$spinner-speed-small: $pt-transition-duration * 5 !default;
+$spinner-speed-large: $pt-transition-duration * 6 !default;
 
 @mixin spinner-size($width-factor, $stroke-width, $speed) {
-  &:not(.#{$ns}-svg-spinner) {
-    width: $spinner-width * $width-factor;
-
-    .#{$ns}-spinner-svg-container {
-      animation-duration: $speed;
-    }
-  }
-
-  &.#{$ns}-svg-spinner {
-    animation-duration: $speed;
-  }
-
-  .#{$ns}-svg-spinner-transform-group {
-    transform: scale($width-factor);
-  }
-
-  path {
-    stroke-width: $stroke-width;
-  }
+  width: $spinner-width * $width-factor;
+  height: $spinner-width * $width-factor;
+  animation-duration: $speed;
+  stroke-width: $stroke-width;
 }

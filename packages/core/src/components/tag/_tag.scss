@@ -8,18 +8,16 @@
 Tags
 
 Markup:
-<p>
-  <span class="#{$ns}-tag {{.modifier}}">125</span>
-  <span class="#{$ns}-tag {{.modifier}}">Done</span>
-  <span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
-    Tracking
-    <button class="#{$ns}-tag-remove"></button>
-  </span>
-  <span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
-    Crushed
-    <button class="#{$ns}-tag-remove"></button>
-  </span>
-</p>
+<span class="#{$ns}-tag {{.modifier}}">125</span>
+<span class="#{$ns}-tag {{.modifier}}">Done</span>
+<span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
+  Tracking
+  <button class="#{$ns}-tag-remove"></button>
+</span>
+<span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
+  Crushed
+  <button class="#{$ns}-tag-remove"></button>
+</span>
 <span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
   A rather long string of text that wraps to multiple lines
   demonstrates the position of the remove button.
@@ -27,6 +25,7 @@ Markup:
 </span>
 
 .#{$ns}-large - Large
+.#{$ns}-minimal - Minimal appearance
 .#{$ns}-round - Rounded corners, ideal for badges
 .#{$ns}-interactive - Hover and active effects
 .#{$ns}-intent-primary - Primary intent

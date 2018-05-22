@@ -6,15 +6,15 @@
 
 import * as React from "react";
 
-import { NumberRange, RangeSlider, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { H5, NumberRange, RangeSlider, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IRangeSliderExampleState {
-    range?: NumberRange;
-    vertical?: boolean;
+    range: NumberRange;
+    vertical: boolean;
 }
 
-export class RangeSliderExample extends BaseExample<IRangeSliderExampleState> {
+export class RangeSliderExample extends React.PureComponent<IExampleProps, IRangeSliderExampleState> {
     public state: IRangeSliderExampleState = {
         range: [36, 72],
         vertical: false,
@@ -22,26 +22,28 @@ export class RangeSliderExample extends BaseExample<IRangeSliderExampleState> {
 
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
-    protected renderExample() {
+    public render() {
+        const { range, vertical } = this.state;
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch label="Vertical" checked={vertical} onChange={this.toggleVertical} />
+            </>
+        );
+
         return (
-            <div style={{ width: "100%" }}>
+            <Example options={options} {...this.props}>
                 <RangeSlider
                     min={0}
                     max={100}
                     stepSize={2}
                     labelStepSize={20}
                     onChange={this.handleValueChange}
-                    value={this.state.range}
-                    vertical={this.state.vertical}
+                    value={range}
+                    vertical={vertical}
                 />
-            </div>
+            </Example>
         );
-    }
-
-    protected renderOptions() {
-        return [
-            [<Switch checked={this.state.vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />],
-        ];
     }
 
     private handleValueChange = (range: NumberRange) => this.setState({ range });

@@ -25,15 +25,18 @@ export function isFunction(value: any): value is Function {
 }
 
 /**
- * Converts a React child to an element: non-empty strings or numbers are wrapped in `<span>`;
- * empty strings are discarded.
+ * Converts a React child to an element: non-empty string or number or
+ * `React.Fragment` (React 16.3+) is wrapped in given tag name; empty strings
+ * are discarded.
  */
 export function ensureElement(child: React.ReactChild | undefined, tagName: keyof JSX.IntrinsicElements = "span") {
-    // wrap text in a <span> so children are always elements
-    if (typeof child === "string") {
+    if (child == null) {
+        return undefined;
+    } else if (typeof child === "string") {
         // cull whitespace strings
         return child.trim().length > 0 ? React.createElement(tagName, {}, child) : undefined;
-    } else if (typeof child === "number") {
+    } else if (typeof child === "number" || typeof child.type === "symbol") {
+        // React.Fragment has a symbol type
         return React.createElement(tagName, {}, child);
     } else {
         return child;

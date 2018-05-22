@@ -108,6 +108,7 @@ const INVALID_PROPS = [
     "popoverProps",
     "rightElement",
     "rightIcon",
+    "round",
     "small",
     "text",
 ];

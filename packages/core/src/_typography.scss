@@ -7,30 +7,18 @@
 @import "common/mixins";
 @import "~@blueprintjs/icons/src/icons";
 
-// consistent cross-browser text selection
-::selection {
-  background: $pt-text-selection-color;
-}
-
-body {
-  @include base-typography();
-  color: $pt-text-color;
-}
-
-small {
-  font-size: $pt-font-size-small;
-}
-
 /*
 Headings
 
 Markup:
-<h1 class="pt-heading">H1 heading</h1>
-<h2 class="pt-heading">H2 heading</h2>
-<h3 class="pt-heading">H3 heading</h3>
-<h4 class="pt-heading">H4 heading</h4>
-<h5 class="pt-heading">H5 heading</h5>
-<h6 class="pt-heading">H6 heading</h6>
+<div>
+  <h1 class="@ns-heading">H1 heading</h1>
+  <h2 class="@ns-heading">H2 heading</h2>
+  <h3 class="@ns-heading">H3 heading</h3>
+  <h4 class="@ns-heading">H4 heading</h4>
+  <h5 class="@ns-heading">H5 heading</h5>
+  <h6 class="@ns-heading">H6 heading</h6>
+</div>
 
 Styleguide headings
 */
@@ -67,14 +55,19 @@ UI text
 
 Markup:
 <div class="{{.modifier}}">
-  Blueprint components react overlay date picker. Breadcrumbs dialog progress non-ideal state.
+  More than a decade ago, we set out to create products that would transform
+  the way organizations use their data. Today, our products are deployed at
+  the most critical government, commercial, and non-profit institutions in
+  the world to solve problems we hadn’t even dreamed of back then.
 </div>
 
 .#{$ns}-ui-text - Default Blueprint font styles, applied to the `<body>` tag and available as a class for nested resets.
 .#{$ns}-monospace-text - Use a monospace font (ideal for code).
 .#{$ns}-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
 .#{$ns}-text-large - Use a larger font size.
+.#{$ns}-text-small - Use a smaller font size.
 .#{$ns}-text-muted - Change text color to a gentler gray.
+.#{$ns}-text-disabled - Change text color to a transparent, faded gray.
 .#{$ns}-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its container.
 
 Styleguide ui-text
@@ -98,6 +91,14 @@ Styleguide ui-text
   }
 }
 
+.#{$ns}-text-disabled {
+  color: $pt-text-color-disabled;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-text-color-disabled;
+  }
+}
+
 .#{$ns}-text-overflow-ellipsis {
   @include overflow-ellipsis();
 }
@@ -107,22 +108,20 @@ Running text
 
 Markup:
 <div class="@ns-running-text {{.modifier}}">
-  <blockquote>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-      eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    </p>
-    <ul>
-      <li>Item the <code>first</code>.</li>
-      <li>Item the <strong>second</strong></code>.</li>
-      <li>Item the <a href="#core/typography.running-text">third</a>.</li>
-    </ul>
-    <h3>New section</h3>
-    <p>
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-      nisi ut aliquip ex ea commodo consequat.
-    </p>
-  </blockquote>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  </p>
+  <ul>
+    <li>Item the <code>first</code>.</li>
+    <li>Item the <strong>second</strong></code>.</li>
+    <li>Item the <a href="#core/typography.running-text">third</a>.</li>
+  </ul>
+  <h3>New section</h3>
+  <p>
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat.
+  </p>
 </div>
 
 .#{$ns}-text-large - Use larger font size.
@@ -165,8 +164,16 @@ Styleguide running-text
     @extend %code;
   }
 
+  kbd {
+    @extend %keyboard;
+  }
+
   pre {
     @extend %code-block;
+  }
+
+  table {
+    @extend %html-table;
   }
 
   ul,
@@ -175,9 +182,14 @@ Styleguide running-text
   }
 }
 
-// NOTE: this must be defined after .@ns-running-text in order to override font-size.
+// NOTE: these must be defined after .@ns-running-text in order to override font-size.
 .#{$ns}-text-large {
   font-size: $pt-font-size-large;
+  // line-height comes from .@ns-(ui|running)-text
+}
+
+.#{$ns}-text-small {
+  font-size: $pt-font-size-small;
   // line-height comes from .@ns-(ui|running)-text
 }
 
@@ -225,17 +237,20 @@ a {
 Preformatted text
 
 Markup:
-<p>Use the <code class="pt-code">&lt;code></code> tag for snippets of code.</p>
-<pre class="pt-code-block">Use the &lt;pre> tag for blocks of code.</pre>
-<pre class="pt-code-block"><code>// code sample
-export function hasModifier(modifiers: ts.ModifiersArray, ...modifierKinds: ts.SyntaxKind[]) {
+<div>
+  <p>Use the <code class="@ns-code">&lt;code></code> tag for snippets of code.</p>
+  <pre class="@ns-code-block">Use the &lt;pre> tag for blocks of code.</pre>
+  <pre class="@ns-code-block"><code>// code sample
+export function hasModifier(
+  modifiers: ts.ModifiersArray,
+  ...modifierKinds: ts.SyntaxKind[],
+) {
   if (modifiers == null || modifierKinds == null) {
     return false;
   }
-  return modifiers.some((m) => {
-    return modifierKinds.some((k) => m.kind === k);
-  });
+  return modifiers.some(m => modifierKinds.some(k => m.kind === k));
 }</code></pre>
+</div>
 
 Styleguide preformatted
 */
@@ -293,6 +308,37 @@ Styleguide preformatted
 
 .#{$ns}-code-block {
   @extend %code-block;
+}
+
+%keyboard {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $pt-border-radius;
+  box-shadow: $pt-elevation-shadow-1;
+  background: $white;
+  min-width: $pt-button-height-small;
+  height: $pt-button-height-small;
+  padding: $pt-border-radius ($pt-border-radius * 2);
+  vertical-align: middle;
+  line-height: $pt-button-height-small;
+  color: $pt-text-color-muted;
+  font-family: inherit;
+  font-size: $pt-font-size-small;
+
+  #{$icon-classes} {
+    margin-right: $pt-grid-size / 2;
+  }
+
+  .#{$ns}-dark & {
+    box-shadow: $pt-dark-elevation-shadow-1;
+    background: $dark-gray5;
+    color: $pt-dark-text-color-muted;
+  }
+}
+
+.#{$ns}-key {
+  @extend %keyboard;
 }
 
 /*
