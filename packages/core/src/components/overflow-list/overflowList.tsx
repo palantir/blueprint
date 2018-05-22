@@ -153,13 +153,13 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
             });
         } else if (this.spacer.getBoundingClientRect().width < 1) {
             this.setState(state => {
+                const collapseFromStart = this.props.collapseFrom === Boundary.START;
                 const visible = state.visible.slice();
-                const next = this.props.collapseFrom === Boundary.START ? visible.shift() : visible.pop();
+                const next = collapseFromStart ? visible.shift() : visible.pop();
                 if (next === undefined) {
                     return null;
                 }
-                const overflow =
-                    this.props.collapseFrom === Boundary.START ? [next, ...state.overflow] : [...state.overflow, next];
+                const overflow = collapseFromStart ? [next, ...state.overflow] : [...state.overflow, next];
                 return {
                     overflow,
                     visible,
