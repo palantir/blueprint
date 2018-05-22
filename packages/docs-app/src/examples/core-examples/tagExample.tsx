@@ -52,7 +52,7 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
                 <Tag
                     key={tag}
                     onRemove={removable && onRemove}
-                    icon={icon === true ? "person" : undefined}
+                    icon={icon === true ? "home" : undefined}
                     rightIcon={rightIcon === true ? "small-tick" : undefined}
                     {...tagProps}
                 >
@@ -77,8 +77,8 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
                 <Switch label="Interactive" checked={interactive} onChange={this.handleInteractiveChange} />
                 <Switch label="Removable" checked={removable} onChange={this.handleRemovableChange} />
                 <Switch label="Round" checked={round} onChange={this.handleRoundChange} />
-                <Switch label="Left icon" checked={icon} onChange={this.handleIconChange} />,
-                <Switch label="Right icon" checked={rightIcon} onChange={this.handleRightIconChange} />,
+                <Switch label="Left icon" checked={icon} onChange={this.handleIconChange} />
+                <Switch label="Right icon" checked={rightIcon} onChange={this.handleRightIconChange} />
                 <IntentSelect intent={intent} onChange={this.handleIntentChange} />
                 <H5>Example</H5>
                 <Button icon="refresh" text="Reset tags" onClick={this.resetTags} />
@@ -89,4 +89,4 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
     private resetTags = () => this.setState({ tags: INITIAL_TAGS });
 }
 
-const INITIAL_TAGS = ["@jkillian", "@adahiya", "@ggray", "@allorca", "@bdwyer", "@piotrk"];
+const INITIAL_TAGS = ["London", "New York", "San Francisco", "Seattle"];

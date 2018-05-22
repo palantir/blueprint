@@ -47,6 +47,12 @@
   }
 }
 
+#{example("TagExample")} {
+  .docs-example {
+    flex-direction: column;
+  }
+}
+
 .docs-context-menu-example {
   .docs-example {
     flex-direction: column;
