@@ -18,6 +18,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
   min-height: $pt-input-height;
   padding-right: 0;
   padding-left: $tag-input-padding;
+  line-height: inherit;
 
   .#{$ns}-tag-input-icon {
     // margins to center icon in one-line input
