@@ -63,6 +63,10 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
 
     private element: Element | null = null;
     private observer: ResizeObserver;
+    /**
+     * A cache containing the widths of all elements being observed. The observer calls its
+     * callback on observe, so we don't need to manually measure all elements in the beginning.
+     */
     private previousWidths = new Map<Element, number>();
     private spacer: Element | null = null;
 
@@ -79,11 +83,9 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
     public componentDidMount() {
         if (this.element != null) {
             this.observer.observe(this.element);
-            this.previousWidths.set(this.element, this.element.getBoundingClientRect().width);
             if (this.props.observeParents) {
                 for (let element: Element | null = this.element; element != null; element = element.parentElement) {
                     this.observer.observe(element);
-                    this.previousWidths.set(element, element.getBoundingClientRect().width);
                 }
             }
             this.repartition(false);
