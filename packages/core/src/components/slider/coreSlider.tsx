@@ -137,7 +137,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
         this.updateTickSize();
     }
 
-    public componentWillReceiveProps(props: P & { children: React.ReactNode }) {
+    public componentWillReceiveProps(props: P & { children?: React.ReactNode }) {
         super.componentWillReceiveProps(props);
         this.setState({ labelPrecision: this.getLabelPrecision(props) });
     }
