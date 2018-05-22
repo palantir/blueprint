@@ -18,7 +18,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      */
     active?: boolean;
 
-    /** Name of a Blueprint UI icon (or an icon element) to render before the text. */
+    /** Name of a Blueprint UI icon (or an icon element) to render before the children. */
     icon?: IconName | JSX.Element;
 
     /**
@@ -49,7 +49,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      */
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
 
-    /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
+    /** Name of a Blueprint UI icon (or an icon element) to render after the children. */
     rightIcon?: IconName | JSX.Element;
 
     /** Whether this tag should have rounded ends. */
@@ -80,7 +80,6 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
             Classes.TAG,
             Classes.intentClass(intent),
             {
-                [Classes.TAG_REMOVABLE]: isRemovable,
                 [Classes.ACTIVE]: active,
                 [Classes.INTERACTIVE]: interactive,
                 [Classes.LARGE]: large,
@@ -98,9 +97,9 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
 
         return (
             <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined}>
-                {<Icon icon={icon} className={Classes.ALIGN_LEFT} />}
-                {children}
-                {<Icon icon={rightIcon} className={Classes.ALIGN_RIGHT} />}
+                <Icon icon={icon} />
+                <span>{children}</span>
+                <Icon icon={rightIcon} />
                 {removeButton}
             </span>
         );

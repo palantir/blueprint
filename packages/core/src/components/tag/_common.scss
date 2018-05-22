@@ -5,28 +5,30 @@ $tag-default-color: $gray1 !default;
 $dark-tag-default-color: $gray5 !default;
 
 $tag-height: $pt-grid-size * 2 !default;
-$tag-padding: ($tag-height - $pt-icon-size-standard) / 2 !default;
+$tag-padding: ($tag-height - $pt-icon-size-standard) * 3 / 2 !default;
 $tag-margin: ($pt-input-height - $tag-height) / 2 !default;
 
 $tag-height-large: $pt-grid-size * 3 !default;
-$tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
+$tag-padding-large: ($tag-height-large - $pt-icon-size-large) !default;
 
 $tag-icon-spacing: ($tag-height - 12px) / 2 !default;
 $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !default;
 
+$tag-round-adjustment: 2px !default;
+
 @mixin pt-tag() {
   @include pt-tag-interactive($tag-default-color, 1);
-
-  display: inline-flex;
+  @include pt-flex-container(row, $tag-icon-spacing, inline);
   align-items: center;
+
   position: relative;
   border: none;
   border-radius: $pt-border-radius;
   box-shadow: none;
   background-color: $tag-default-color;
   min-width: $tag-height;
-  padding: $tag-padding ($tag-padding * 3);
-  line-height: $pt-icon-size-standard;
+  min-height: $tag-height;
+  padding: 0 $tag-padding;
   color: $pt-dark-text-color;
   font-size: $pt-font-size-small;
 
@@ -35,10 +37,10 @@ $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !defau
   }
 
   &.#{$ns}-round {
-    border-radius: $tag-height / 2;
+    border-radius: $tag-height-large;
     // optical adjustment for rounded tags
-    padding-right: $tag-padding * 3 + 2;
-    padding-left: $tag-padding * 3 + 2;
+    padding-right: $tag-padding + $tag-round-adjustment;
+    padding-left: $tag-padding + $tag-round-adjustment;
   }
 
   .#{$ns}-dark & {
@@ -52,46 +54,23 @@ $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !defau
     }
   }
 
-  &.#{$ns}-tag-removable {
-    padding-right: $tag-height;
-  }
-
   > #{$icon-classes} {
     flex: 0 0 auto;
     fill: $white;
-
-    &.pt-align-left {
-      margin-right: $tag-icon-spacing;
-    }
-
-    &.pt-align-right {
-      margin-left: $tag-icon-spacing;
-    }
   }
 }
 
 @mixin pt-tag-large() {
+  @include pt-flex-margin(row, $tag-icon-spacing-large);
   min-width: $tag-height-large;
-  padding: $tag-padding-large ($tag-padding-large * 2);
-  line-height: $pt-icon-size-large;
+  min-height: $tag-height-large;
+  padding: 0 $tag-padding-large;
   font-size: $pt-font-size;
 
   &.#{$ns}-round {
-    border-radius: $tag-height-large / 2;
-  }
-
-  &.#{$ns}-tag-removable {
-    padding-right: $tag-height-large;
-  }
-
-  > #{$icon-classes} {
-    &.pt-align-left {
-      margin-right: $tag-icon-spacing-large;
-    }
-
-    &.pt-align-right {
-      margin-left: $tag-icon-spacing-large;
-    }
+    // optical adjustment for rounded tags
+    padding-right: $tag-padding-large + $tag-round-adjustment;
+    padding-left: $tag-padding-large + $tag-round-adjustment;
   }
 }
 
@@ -174,14 +153,14 @@ $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !defau
 }
 
 @mixin pt-tag-remove() {
-  position: absolute;
-  top: 0;
-  right: 0;
   opacity: 0.5;
+  // stylelint-disable-next-line declaration-no-important
+  margin-right: -$tag-padding !important;
   border: none;
   background: none;
   cursor: pointer;
-  padding: $tag-padding;
+  padding: ($tag-height - $pt-icon-size-standard) / 2;
+  padding-left: 0;
   color: inherit;
 
   &:hover {
@@ -201,7 +180,10 @@ $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !defau
   }
 
   .#{$ns}-large & {
-    padding: $tag-padding-large;
+    // stylelint-disable-next-line declaration-no-important
+    margin-right: -$tag-padding-large !important;
+    padding: ($tag-height-large - $pt-icon-size-large) / 2;
+    padding-left: 0;
 
     &:empty::before {
       @include pt-icon-sized($pt-icon-size-large);

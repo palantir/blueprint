@@ -202,7 +202,6 @@ export const TAB_PANEL = `${TAB}-panel`;
 export const TABS = `${TAB}s`;
 
 export const TAG = `${NS}-tag`;
-export const TAG_REMOVABLE = `${TAG}-removable`;
 export const TAG_REMOVE = `${TAG}-remove`;
 
 export const TAG_INPUT = `${NS}-tag-input`;
